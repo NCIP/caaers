@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
+import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 
 @Embeddable
 public class PasswordCreationPolicy {
@@ -9,6 +10,8 @@ public class PasswordCreationPolicy {
     private int minPasswordLength;
     private CombinationPolicy combinationPolicy;
 	
+    /* hard-coded to max at a week for now */
+    @NumInRange(min=0, max=604799)
     public int getMinPasswordAge() {
 	return minPasswordAge;
     }
@@ -17,6 +20,7 @@ public class PasswordCreationPolicy {
 	this.minPasswordAge = minPasswordAge;
     }
     
+    @NumInRange(min=0)
     public int getPasswordHistorySize() {
 	return passwordHistorySize;
     }
@@ -25,6 +29,7 @@ public class PasswordCreationPolicy {
 	this.passwordHistorySize = passwordHistorySize;
     }
     
+    @NumInRange(min=5)
     public int getMinPasswordLength() {
 	return minPasswordLength;
     }

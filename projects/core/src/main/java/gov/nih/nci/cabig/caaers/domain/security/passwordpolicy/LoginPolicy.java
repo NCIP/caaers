@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
 import javax.persistence.Embeddable;
+import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 
 @Embeddable
 public class LoginPolicy {
@@ -8,7 +9,8 @@ public class LoginPolicy {
     private int allowedFailedLoginAttempts;
     private int lockOutDuration;
     private int maxPasswordAge;
-    
+
+    @NumInRange(min=0)
     public int getAllowedFailedLoginAttempts() {
 	return allowedFailedLoginAttempts;
     }
@@ -17,6 +19,7 @@ public class LoginPolicy {
 	this.allowedFailedLoginAttempts = allowedFailedLoginAttempts;
     }
 
+    @NumInRange(min=0)
     public int getLockOutDuration() {
 	return lockOutDuration;
     }
@@ -25,6 +28,8 @@ public class LoginPolicy {
 	this.lockOutDuration = lockOutDuration;
     }
     
+    /* hard-coded to min at a week for now */
+    @NumInRange(min=604800)
     public int getMaxPasswordAge() {
 	return maxPasswordAge;
     }

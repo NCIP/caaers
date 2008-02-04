@@ -343,15 +343,12 @@
 
   <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
-  
-
   <!--  PARTICIPANT   -->
 
-
-  <bean name="/participant/create" id="createParticipantController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
-    <property name="webControllerValidator" ref="webControllerValidator"/>
-  </bean>
+    <bean name="/participant/create" id="createParticipantController" autowire="byType"
+	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
+      <property name="webControllerValidator" ref="webControllerValidator"/> 
+    </bean>
 
   <bean name="/participant/edit" id="editParticipantController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
@@ -391,6 +388,7 @@
   <bean name="/study/edit" id="editStudyController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
   </bean>    
+
   <bean name="/study/studyAgentIND" id="studyAgentINDController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
     <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
@@ -423,7 +421,11 @@
 	class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 
   <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController"/>
+	class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController">
+    <property name="validator">
+      <bean class="gov.nih.nci.cabig.caaers.validation.validator.NumInRangeValidator"/>
+    </property>
+  </bean>
 
   <bean name="/admin/createInvestigator" id="createInvestigatorController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.CreateInvestigatorController">

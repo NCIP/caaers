@@ -141,6 +141,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
 		userGroupTypes.add(UserGroupType.caaers_site_cd);
 		ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
 
+		// there should be a mock emailer...
 		researchStaffRepository.save(researchStaff, "noURL");
 
 		// now create new research staff with same email address and try to save it..

@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.security.passwordpolicy;
 
+import gov.nih.nci.cabig.caaers.validation.annotation.Validatable;
+import gov.nih.nci.cabig.caaers.validation.annotation.NumInRange;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import javax.persistence.Entity;
@@ -17,6 +19,7 @@ import org.hibernate.annotations.Parameter;
 @Table(name="password_policy")
 @GenericGenerator(name="id-generator", strategy="native",
 		  parameters={@Parameter(name="sequence", value="seq_password_policy_id")})
+@Validatable
 public class PasswordPolicy extends AbstractMutableDomainObject {
 
     private static final long TOKEN_TIMEOUT_MS = 48*60*60*1000;
