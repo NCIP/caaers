@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 
@@ -35,7 +36,7 @@ public class LabsTab extends AeTab {
 
     private InputField createLabDateField(String propName, String displayName) {
         return InputFieldFactory.createDateField(propName
-            + ".date", displayName + " date", false);
+            + ".date", displayName + " date", FieldValidator.DATE_VALIDATOR);
     }
 
     private InputField createLabValueField(String propName, String displayName) {

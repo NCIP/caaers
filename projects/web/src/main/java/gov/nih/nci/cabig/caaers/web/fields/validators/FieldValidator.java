@@ -8,10 +8,13 @@ public abstract class FieldValidator {
   public static final FieldValidator NOT_NULL_VALIDATOR;
   public static final FieldValidator EMAIL_VALIDATOR;
   public static final FieldValidator PHONE_VALIDATOR;
+  public static final FieldValidator DATE_VALIDATOR;
+  
   static{
 	  NOT_NULL_VALIDATOR = new NotNullValidator();
 	  EMAIL_VALIDATOR = new EmailValidator();
 	  PHONE_VALIDATOR = new PhoneNumberValidator();
+	  DATE_VALIDATOR = new DateValidator();
   }
   /**
    * Will validate the input, based on the specific validation rules.
