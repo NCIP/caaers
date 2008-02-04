@@ -296,7 +296,7 @@
             
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
-					Enter a MedDRA code (or multiple codes seperated by a comma) and then click Add.<br>
+					Enter a MedDRA code (or multiple codes separated by a comma) and then click Add.<br>
 					<form:hidden  path="diseaseLlt" />
 					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete"/>
                     <input type="button" id="diseaseLlt-clear" value="Clear"/>

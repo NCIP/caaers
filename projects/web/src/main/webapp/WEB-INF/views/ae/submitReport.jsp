@@ -51,7 +51,7 @@
     		
     	<p>To send this report to others, enter the email addresses in the field below.<br />
     		
-    	Multiple email addresses can be entered seperated by a comma.</p>
+    	Multiple email addresses can be entered separated by a comma.</p>
 
             
     	
