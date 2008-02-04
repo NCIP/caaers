@@ -217,7 +217,7 @@
 
     <div class="row">
         <div class="label">Birth Date</div>
-        <div class="value"><tags:formatDate value="${command.participant.dateOfBirth}"/></div>
+        <div class="value">${command.participant.dateOfBirth}</div>
     </div>
 
     <div class="row">
