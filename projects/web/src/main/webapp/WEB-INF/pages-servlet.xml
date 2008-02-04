@@ -90,9 +90,6 @@
       <list>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
-
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Enter routine report" p:linkName="createAdverseEventController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
       </list>
