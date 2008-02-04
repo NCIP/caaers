@@ -9,18 +9,6 @@
         <version>0.10-SNAPSHOT</version>
     </parent>
     <repositories>
-        <!-- It appears that this repo is mirrored a ibiblio now, so we don't need it.
-             Plus, it is horribly, horribly slow.
-        <repository>
-            <id>java.net</id>
-            <name>Java.Net repository (For JAXB) </name>
-            <url>https://maven-repository.dev.java.net/nonav/repository</url>
-            <layout>legacy</layout>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        -->
         <repository>
             <id>codehaus</id>
             <name>Codehaus maven repository</name>
@@ -159,36 +147,7 @@
             <!-- version is in parent pom -->
         </dependency>
         <!-- TODO: remove these direct deps when caaers-rules is built with maven -->
-        <dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-jaxb2</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-spring</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-java5</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-annotations</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-aegis</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.codehaus.xfire</groupId>
-			<artifactId>xfire-core</artifactId>
-			<version>1.2</version>
-		</dependency>
+       
 		<dependency> 
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
