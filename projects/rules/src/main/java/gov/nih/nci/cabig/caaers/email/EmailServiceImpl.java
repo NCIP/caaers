@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import javax.jws.WebService;
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -17,7 +16,6 @@ import javax.mail.internet.MimeMessage;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-@WebService
 public class EmailServiceImpl implements EmailService {
 
 	public void send(EmailInfo ei, SmtpConfig smtpConfig) {

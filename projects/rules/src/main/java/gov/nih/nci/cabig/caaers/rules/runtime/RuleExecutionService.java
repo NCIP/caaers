@@ -6,11 +6,7 @@ import gov.nih.nci.cabig.caaers.rules.domain.StudySDO;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import javax.jws.WebService;
 
-@WebService(
-        serviceName = "RuleExecutionService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService"
-)
 public interface RuleExecutionService {
 
 	

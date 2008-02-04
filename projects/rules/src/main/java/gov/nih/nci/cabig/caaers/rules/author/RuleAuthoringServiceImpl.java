@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jws.WebService;
 import javax.rules.ConfigurationException;
 import javax.rules.RuleServiceProvider;
 import javax.rules.RuleServiceProviderManager;
@@ -50,9 +49,7 @@ import org.drools.repository.RulesRepositoryException;
  *
  * @author Sujith Vellat Thayyilthodi
  * */
-@WebService(
-        serviceName = "RuleAuthoringService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"
-)
+
 public class RuleAuthoringServiceImpl implements RuleAuthoringService 
 {
 	private static Logger logger = Logger.getLogger(RuleAuthoringServiceImpl.class);

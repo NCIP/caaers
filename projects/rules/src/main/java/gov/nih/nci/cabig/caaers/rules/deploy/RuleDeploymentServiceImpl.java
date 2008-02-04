@@ -15,7 +15,6 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.jws.WebService;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
@@ -28,9 +27,7 @@ import org.drools.rule.Package;
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-@WebService(
-        serviceName = "RuleDeploymentService" , endpointInterface = "gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"
-)
+
 public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymentService {
 	
 	private static final Log log = LogFactory.getLog(RuleDeploymentServiceImpl.class);

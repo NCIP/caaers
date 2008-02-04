@@ -1,23 +1,19 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import java.rmi.RemoteException;
-
-import javax.jws.WebService;
-
-import org.drools.rule.Package;
-
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+
+import java.rmi.RemoteException;
+
+import org.drools.rule.Package;
 
 /**
  * The Service Interface for deploying the Business Rules.
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-@WebService(
-        serviceName = "RuleDeploymentService" , endpointInterface = "gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService"
-)
+
 public interface RuleDeploymentService {
 
 	/**

@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jws.WebService;
 import javax.rules.ConfigurationException;
 import javax.rules.RuleRuntime;
 import javax.rules.RuleServiceProvider;
@@ -24,9 +23,7 @@ import javax.rules.StatelessRuleSession;
  *
  * @author Sujith Vellat Thayyilthodi
  */
-@WebService(
-        serviceName = "RuleExecutionService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService"
-)
+
 public class RuleExecutionServiceImpl implements RuleExecutionService {
 
 	public static final String RULE_SERVICE_PROVIDER = "http://drools.org/";

@@ -9,19 +9,13 @@ import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 
-import javax.jws.WebService;
-
-import org.drools.repository.RulesRepository;
-
 /** 
  * Remote interface for Rule Provisioning. 
  * This interface can be exposed as a webservice.
  * 
  * @author Sujith Vellat Thayyilthodi
  * */
-@WebService(
-        serviceName = "RuleAuthoringService", endpointInterface = "gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService"
-)
+
 public interface RuleAuthoringService extends java.rmi.Remote {
 
 	public void createCategory(Category category) throws RemoteException;
