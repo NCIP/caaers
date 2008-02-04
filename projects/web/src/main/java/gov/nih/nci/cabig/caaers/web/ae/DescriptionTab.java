@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -54,6 +55,27 @@ public class DescriptionTab extends AeTab {
             createBooleanSelectField(baseProp + ".retreated", "Has the particpant been re-treated?", false),
             removedDateField
         );
+        
+        InputField reducedDose = InputFieldFactory.createTextField(baseProp + ".reducedDose", "If reduced, specify: New dose", false);
+        
+        creator.createFieldGroup("DCP_INFO",
+                createSelectField(baseProp + ".blindBroken","Was blind broken due to event?", false, createBooleanOptions()),
+                createSelectField(baseProp + ".studyDrugInterrupted","Was Study Drug stopped/interrupted/reduced in response to event?", false, createBooleanOptions()),
+                reducedDose,
+                createDateField(baseProp + ".reducedDate", "Date of recovery or death",  false),
+                InputFieldFactory.createTextField(baseProp + ".daysNotGiven", "If interrupted, specify total number of days not given", false),
+                createSelectField(baseProp + ".eventAbate","Did event abate after study drug was stopped or dose reduced?", false, createBooleanOptions()),
+                createSelectField(baseProp + ".eventReappear","Did event reappear after study drug was reintroduced?", false, createBooleanOptions())
+            );
+    }
+    
+    
+    private Map<Object, Object> createBooleanOptions() {
+        Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
+        expectedOptions.put("", "Please select");
+        expectedOptions.put(Boolean.TRUE, "Yes");
+        expectedOptions.put(Boolean.FALSE, "No");
+        return expectedOptions;
     }
 
     @Override

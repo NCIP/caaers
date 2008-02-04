@@ -114,7 +114,7 @@
 		 </c:forEach>
     </chrome:division>
     
-     <chrome:division title="DCP specific data" >
+     <chrome:division title="Study method details" >
 		 <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
 		  <tags:renderRow field="${field}"  />
 		 </c:forEach>

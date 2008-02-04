@@ -26,6 +26,15 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Date recoveryDate;
     private Boolean retreated;
     private Date dateRemovedFromProtocol;
+    
+    private Boolean blindBroken; 
+    private Boolean studyDrugInterrupted;
+    private String reducedDose;
+    private Date reducedDate;
+    private Integer daysNotGiven;
+    private Boolean eventAbate;
+    private Boolean eventReappear;
+    
 
     ////// LOGIC
 
@@ -77,4 +86,60 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     public void setDateRemovedFromProtocol(Date dateRemovedFromProtocol) {
         this.dateRemovedFromProtocol = dateRemovedFromProtocol;
     }
+
+	public Boolean getBlindBroken() {
+		return blindBroken;
+	}
+
+	public void setBlindBroken(Boolean blindBroken) {
+		this.blindBroken = blindBroken;
+	}
+
+	public Boolean getEventAbate() {
+		return eventAbate;
+	}
+
+	public void setEventAbate(Boolean eventAbate) {
+		this.eventAbate = eventAbate;
+	}
+
+	public Boolean getEventReappear() {
+		return eventReappear;
+	}
+
+	public void setEventReappear(Boolean eventReappear) {
+		this.eventReappear = eventReappear;
+	}
+
+	public Date getReducedDate() {
+		return reducedDate;
+	}
+
+	public void setReducedDate(Date reducedDate) {
+		this.reducedDate = reducedDate;
+	}
+
+	public String getReducedDose() {
+		return reducedDose;
+	}
+
+	public void setReducedDose(String reducedDose) {
+		this.reducedDose = reducedDose;
+	}
+
+	public Boolean getStudyDrugInterrupted() {
+		return studyDrugInterrupted;
+	}
+
+	public void setStudyDrugInterrupted(Boolean studyDrugInterrupted) {
+		this.studyDrugInterrupted = studyDrugInterrupted;
+	}
+
+	public Integer getDaysNotGiven() {
+		return daysNotGiven;
+	}
+
+	public void setDaysNotGiven(Integer daysNotGiven) {
+		this.daysNotGiven = daysNotGiven;
+	}
 }
