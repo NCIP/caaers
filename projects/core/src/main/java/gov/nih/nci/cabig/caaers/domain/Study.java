@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -23,6 +24,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 /**
@@ -107,6 +109,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	// Used to facilitate import of a coordinating center / funding sponsor
 	private FundingSponsor fundingSponsor;
 	private CoordinatingCenter coordinatingCenter;
+	
+	//DCP specific properties 
+	private Design design;
+	
 	
 	public Study() {
 
@@ -702,6 +708,16 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void setAdeersReporting(Boolean adeersSubmission) {
 		this.adeersReporting = adeersSubmission;
+	}
+
+	@Column(name = "design_code")
+	@Type(type = "designCode")
+	public Design getDesign() {
+		return design;
+	}
+
+	public void setDesign(Design design) {
+		this.design = design;
 	}
 
 }

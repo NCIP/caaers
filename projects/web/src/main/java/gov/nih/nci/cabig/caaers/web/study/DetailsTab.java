@@ -1,9 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -34,7 +36,7 @@ public class DetailsTab extends StudyTab {
 
 	private MeddraVersionDao meddraVersionDao;
 
-	InputFieldGroup fieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup, studyDiseaseCodeFieldGroup,coordinatingCenterFieldGroup;
+	InputFieldGroup fieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup, studyDiseaseCodeFieldGroup,coordinatingCenterFieldGroup, dcpCodeFieldGroup;
 
 	public DetailsTab() {
 		super("Basic Details", "Details", "study/study_details");
@@ -78,6 +80,7 @@ public class DetailsTab extends StudyTab {
 			options.put(Boolean.TRUE, "Yes");
 			fields.add(InputFieldFactory.createSelectField("multiInstitutionIndicator", "Multi Institutional",true, options));
 			fields.add(InputFieldFactory.createSelectField("adeersReporting", "AdEERS  reporting required",true, options));
+			
 		}
 		
 		if(fundSponsorFieldGroup == null){
@@ -121,12 +124,23 @@ public class DetailsTab extends StudyTab {
 					.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName")));
 		}
 		
+		if(dcpCodeFieldGroup == null){
+			dcpCodeFieldGroup = new DefaultInputFieldGroup("dcpFieldGroup");
+			List<InputField> fields = dcpCodeFieldGroup.getFields();
+			Map<Object, Object> designOpts = new LinkedHashMap<Object, Object>();
+			designOpts.put("", "Please select");
+			designOpts.putAll(collectOptions(
+	            Arrays.asList(Design.values()), null, "displayName"));
+			fields.add(InputFieldFactory.createSelectField("design", "Study design",false, designOpts));
+		}
+		
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		map.addInputFieldGroup(fieldGroup);
 		map.addInputFieldGroup(fundSponsorFieldGroup);
 		map.addInputFieldGroup(coordinatingCenterFieldGroup);
 		map.addInputFieldGroup(studyCodeFieldGroup);
 		map.addInputFieldGroup(studyDiseaseCodeFieldGroup);
+		map.addInputFieldGroup(dcpCodeFieldGroup);
 		
 		return map;
 	}

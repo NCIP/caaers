@@ -114,6 +114,12 @@
 		 </c:forEach>
     </chrome:division>
     
+     <chrome:division title="DCP specific data" >
+		 <c:forEach items="${fieldGroups.dcpFieldGroup.fields}" var="field" varStatus="status">
+		  <tags:renderRow field="${field}"  />
+		 </c:forEach>
+    </chrome:division>
+    
     <chrome:division title="Coordinating center details" >
 		 <c:forEach items="${fieldGroups.ccFieldGroup.fields}" var="field" varStatus="status">
 		  <tags:renderRow field="${field}"  />

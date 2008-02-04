@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -100,6 +101,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveFlow
 		ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
 		ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
 		ControllerTools.registerEnumEditor(binder, Term.class);
+		ControllerTools.registerEnumEditor(binder, Design.class);
 		ControllerTools.registerEnumEditor(binder, INDType.class);
 	}
 
