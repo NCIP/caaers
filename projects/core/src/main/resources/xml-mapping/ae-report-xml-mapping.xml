@@ -218,6 +218,29 @@
     <field name="dateRemovedFromProtocol" type="date">
       <bind-xml name="dateRemovedFromProtocol" node="element"/>
     </field>
+    
+     <field name="blindBroken" type="boolean">
+      <bind-xml name="blindBroken" node="element"/>
+    </field>  
+     <field name="studyDrugInterrupted" type="boolean">
+      <bind-xml name="studyDrugInterrupted" node="element"/>
+    </field>
+    <field name="reducedDose" type="string">
+      <bind-xml name="reducedDose" node="element"/>
+    </field>
+    <field name="reducedDate" type="date">
+      <bind-xml name="reducedDate" node="element"/>
+    </field>
+    <field name="daysNotGiven" type="integer">
+      <bind-xml name="daysNotGiven" node="element"/>
+    </field>
+    <field name="eventAbate" type="boolean">
+      <bind-xml name="eventAbate" node="element"/>
+    </field>
+    <field name="eventReappear" type="boolean">
+      <bind-xml name="eventReappear" node="element"/>
+    </field>   
+     
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus" verify-constructable="false">
@@ -1101,11 +1124,11 @@
     <field name="lastName" type="string">
       <bind-xml name="lastName" node="element"/>
     </field>
-    <!--
-    <field name="dateOfBirth" type="date">
-      <bind-xml name="dateOfBirth" node="element"/>
+    
+    <field name="dateOfBirth" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="dateOfBirth"/>
     </field>
-    -->
+    
     <field name="gender" type="string">
       <bind-xml name="gender" node="element"/>
     </field>
@@ -1122,6 +1145,20 @@
   
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.DateValue">
+    <map-to xml="DateValue"/>
+
+    <field name="day" type="integer">
+      <bind-xml name="day" node="element"/>
+    </field>
+    <field name="month" type="integer">
+      <bind-xml name="month" node="element"/>
+    </field>
+    <field name="year" type="integer">
+      <bind-xml name="year" node="element"/>
+    </field>    
+  </class>
+  
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
     <map-to xml="StudySite"/>
     <field name="id" type="integer">
