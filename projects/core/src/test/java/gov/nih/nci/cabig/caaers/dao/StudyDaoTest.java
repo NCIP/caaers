@@ -439,7 +439,7 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
 
-	public void testSearchStudyByMultipleCriterias() throws Exception {
+	public void testSearchStudyByMultipleCriteria() throws Exception {
 		List<Study> results;
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("participantFirstName", "Dilbert");

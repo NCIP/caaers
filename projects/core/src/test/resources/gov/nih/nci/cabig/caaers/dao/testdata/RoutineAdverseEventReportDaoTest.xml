@@ -147,4 +147,5 @@
     <ind_holders />		
 	<treatment_assignment />
     <research_staffs />
+    <treatments />
 </dataset>
