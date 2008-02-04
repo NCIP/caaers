@@ -399,6 +399,16 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setPresentStatus(aerd.getPresentStatus());
 		    	adverseEventResponseDescription.setRecoveryDate(aerd.getRecoveryDate());
 		    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
+		    	
+		    	adverseEventResponseDescription.setBlindBroken(aerd.getBlindBroken());
+		    	adverseEventResponseDescription.setStudyDrugInterrupted(adverseEventResponseDescription.getStudyDrugInterrupted());
+		    	adverseEventResponseDescription.setReducedDose(aerd.getReducedDose());
+		    	adverseEventResponseDescription.setReducedDate(aerd.getReducedDate());
+		    	adverseEventResponseDescription.setDaysNotGiven(aerd.getDaysNotGiven());
+		    	adverseEventResponseDescription.setEventAbate(adverseEventResponseDescription.getEventAbate());
+		    	adverseEventResponseDescription.setEventReappear(adverseEventResponseDescription.getEventReappear());
+		    	
+		    	
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getAdverseEventResponseDescription() "+e.getMessage() , e);
 	    	}
