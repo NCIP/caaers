@@ -232,16 +232,16 @@
      						<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
      					</c:if>
      					<c:if test="${command.study.medwatchPDFType}">
-     						<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch PDF</OPTION>
+     						<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
      					</c:if>
      					<c:if test="${command.study.dcpSAEPDFType}">
-     						<OPTION label="dcp" value="dcp">DCP SAE form</OPTION>
+     						<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
      					</c:if>
      					<c:if test="${command.study.ciomsPDFType}">
-     						<OPTION label="cioms" value="cioms">CIOMS Form</OPTION>
+     						<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
      					</c:if>
      					<c:if test="${command.study.ciomsSaePDFType}">
-     						<OPTION label="ciomssae" value="ciomssae">CIOMS SAE Form</OPTION>
+     						<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
      					</c:if>
  					</SELECT>
 					
