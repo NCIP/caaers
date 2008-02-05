@@ -1307,7 +1307,9 @@
     <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
       <bind-xml name="Identifier"/>
     </field>
-   
+    <field name="design" type="gov.nih.nci.cabig.caaers.domain.Design">
+      <bind-xml name="design"/>
+    </field>   
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
@@ -1322,7 +1324,17 @@
       <bind-xml name="primaryIndicator" node="element"/>
     </field>
   </class>
-  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.Design" verify-constructable="false">
+    <map-to xml="Design" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element"/>
+    </field>
+  </class>
+    
   <class name="gov.nih.nci.cabig.caaers.domain.Hospitalization" verify-constructable="false">
     <map-to xml="Hospitalization" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
     <field name="code" type="integer">
