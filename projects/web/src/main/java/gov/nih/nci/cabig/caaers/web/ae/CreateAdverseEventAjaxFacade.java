@@ -21,6 +21,10 @@ import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.Agent;
@@ -30,18 +34,24 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.InterventionSite;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -52,6 +62,7 @@ import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -646,7 +657,39 @@ public class CreateAdverseEventAjaxFacade {
         }
         return list;
     }
-
+    
+    /**
+     * When we delte an element which has been attributed, the attribution also needs to be deleted.
+     * @param o
+     */
+    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
+    	for(AdverseEvent ae : aeReport.getAdverseEvents()){
+    		if(o instanceof RadiationIntervention){
+    			deleteAttribution(o, ae.getRadiationAttributions());
+        	}else if(o instanceof MedicalDevice) {
+        		deleteAttribution(o, ae.getDeviceAttributions());
+        	}else if(o instanceof SurgeryIntervention) {
+        		deleteAttribution(o, ae.getSurgeryAttributions());
+        	}else if(o instanceof CourseAgent) {
+        		deleteAttribution(o, ae.getCourseAgentAttributions());
+        	}else if(o instanceof ConcomitantMedication) {
+        		deleteAttribution(o, ae.getConcomitantMedicationAttributions());
+        	}else if(o instanceof OtherCause) {
+        		deleteAttribution(o, ae.getOtherCauseAttributions());
+        	}else if(o instanceof DiseaseHistory) {
+        		deleteAttribution(o, ae.getDiseaseAttributions());
+        	}
+    	}
+    }
+    
+    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions){
+    	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
+    	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
+    		if(obj.getId().equals(attribution.getCause().getId())) unwantedAttribution = attribution;
+    		break;
+    	}
+    	attributions.remove(unwantedAttribution);
+    }
     /**
      * Deletes an element in a list property of the current session command, shifting everything
      * else around as appropriate.
@@ -674,7 +717,10 @@ public class CreateAdverseEventAjaxFacade {
             return Collections.emptyList();
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
+        Object removedObject = list.get(indexToDelete);
+        cascaeDeleteToAttributions((DomainObject)removedObject, command.getAeReport());
         list.remove(indexToDelete);
+        
         addDisplayNames(listProperty, changes);
         saveIfAlreadyPersistent(command);
         return changes;
