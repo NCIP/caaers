@@ -39,6 +39,7 @@ import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionService;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.rules.ui.Field;
 import gov.nih.nci.cabig.caaers.rules.ui.RuleUi;
+import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleCommand;
 import gov.nih.nci.cabig.caaers.web.rule.author.CreateRuleController;
@@ -789,13 +790,7 @@ public class RuleAjaxFacade
 
         
         // cut down objects for serialization
-        List<Organization> reducedStudies = new ArrayList<Organization>(sites.size());
-        for (Organization site : sites) {
-            reducedStudies.add(
-                buildReduced(site, Arrays.asList("name"))
-            );
-        }
-        return reducedStudies;
+		return ObjectTools.reduceAll(sites, "id", "name", "nciInstituteCode");
     }
 	
 	/*
