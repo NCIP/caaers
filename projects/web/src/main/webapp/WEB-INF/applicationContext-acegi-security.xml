@@ -1,66 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+
 			   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+
 			   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
-	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
-		<property name="filterInvocationDefinitionSource">
-			<value>
-				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
-				PATTERN_TYPE_APACHE_ANT
-				/**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,s[authenticationMode]AuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
-			</value>
-		</property>
-	</bean>
-	<bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
-	<bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
-		<constructor-arg value="/index.jsp"/>
-		<!-- URL redirected to after logout -->
-		<constructor-arg>
-			<list>
-				<bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
-			</list>
-		</constructor-arg>
-	</bean>
-	<bean id="localAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
-		<property name="authenticationManager" ref="authenticationManager"/>
-		<property name="authenticationFailureUrl" value="/public/login?login_error=1"/>
-		<property name="defaultTargetUrl" value="/"/>
-		<property name="filterProcessesUrl" value="/j_acegi_security_check"/>
-	</bean>
-	<bean id="localAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
-		<property name="loginFormUrl" value="/public/login"/>
-		<property name="forceHttps" value="false"/>
-	</bean>
-	<bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
-	<bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
-		<property name="key" value="anonymousAuthKey"/>
-		<property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
-	</bean>
-	<bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
-		<property name="authenticationEntryPoint" ref="s[authenticationMode]AuthenticationProcessingFilterEntryPoint"/>
-		<property name="accessDeniedHandler">
-			<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
-				<property name="errorPage" value="/accessDenied.jsp"/>
-			</bean>
-		</property>
-	</bean>
-	<util:map id="filterObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
-		<entry key="/pages/participant/create.*" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
-		<entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-		<entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
-		<entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
-		<entry key="/pages/study/view.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
-		<entry key="/pages/ae/create.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
-		<entry key="/pages/ae/edit.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
-		<entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="/pages/ae/createRoutine.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+
+    <bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+        <property name="filterInvocationDefinitionSource">
+            <value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /**=channelProcessingFilter,httpSessionContextIntegrationFilter,s[authenticationMode]LogoutFilter,s[authenticationMode]AuthenticationProcessingFilter,securityContextHolderAwareRequestFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+            </value>
+        </property>
+    </bean>
+    <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter"/>
+    <bean id="localLogoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+        <constructor-arg value="/index.jsp"/>
+        <!-- URL redirected to after logout -->
+        <constructor-arg>
+            <list>
+                <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="localAuthenticationProcessingFilter" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+        <property name="authenticationManager" ref="authenticationManager"/>
+        <property name="authenticationFailureUrl" value="/public/login?login_error=1"/>
+        <property name="defaultTargetUrl" value="/"/>
+        <property name="filterProcessesUrl" value="/j_acegi_security_check"/>
+    </bean>
+    <bean id="localAuthenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+        <property name="loginFormUrl" value="/public/login"/>
+        <property name="forceHttps" value="false"/>
+    </bean>
+    <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
+    <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+        <property name="key" value="anonymousAuthKey"/>
+        <property name="userAttribute" value="anonymousUser,ROLE_ANONYMOUS"/>
+    </bean>
+    <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+        <property name="authenticationEntryPoint" ref="s[authenticationMode]AuthenticationProcessingFilterEntryPoint"/>
+        <property name="accessDeniedHandler">
+            <bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+                <property name="errorPage" value="/accessDenied.jsp"/>
+            </bean>
+        </property>
+    </bean>
+    <util:map id="filterObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
+        <entry key="/pages/participant/create.*" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
+        <entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+        <entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
+        <entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+        <entry key="/pages/study/view.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+        <entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+        <entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+        <entry key="/pages/ae/create.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+        <entry key="/pages/ae/edit.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+        <entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+        <entry key="/pages/ae/createRoutine.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
         <entry key="/pages/admin/.*" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
         <!-- TODO: set up correct default -->
 		<entry key="/pages/.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 	</util:map>
+
 	<bean id="filterPrivilegeAndObjectIdGenerator" class="gov.nih.nci.cabig.caaers.web.security.FilterInvocationPrivilegeAndObjectIdGenerator">
 		<property name="objectPrivilegeMap" ref="filterObjectPrivilegeMap"/>
 	</bean>
@@ -145,6 +150,7 @@
 			</bean>
 		</property>
 	</bean>
+
 	<!-- This bean is optional; it isn't used by any other bean as it only listens and logs -->
 	<bean id="loggerListener" class="gov.nih.nci.cabig.caaers.web.security.LoggerListener"/>
 	<bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
@@ -213,33 +219,43 @@
 		</property>
 		<property name="trustStore" value="s[webSSO.server.trustCert]"/>
 	</bean>
-	<bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties" lazy-init="true">
-		<property name="service" value="s[webSSO.cas.acegi.security.url]"/>
-		<property name="sendRenew">
-			<value>false</value>
-		</property>
-	</bean>
-	<bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.caaers.security.WebSSOAuthoritiesPopulator" lazy-init="true">
-		<property name="hostCertificate" value="s[hostCertificate]"/>
-		<property name="hostKey" value="s[hostKey]"/>
-		<property name="userDetailsService">
-			<ref local="csmUserDetailsService"/>
-		</property>
-	</bean>
-	<bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" lazy-init="true">
-           </bean>
-	<bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache" lazy-init="true">
-		<property name="cache">
-			<ref local="ticketCacheBackend"/>
-		</property>
-	</bean>
-	<bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
-		<property name="cacheManager">
-			<ref local="cacheManager"/>
-		</property>
-		<property name="cacheName">
-			<value>ticketCache</value>
-		</property>
-	</bean>
-	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
+    <bean id="webSSOLogoutFilter"
+          class="org.acegisecurity.ui.logout.LogoutFilter">
+        <constructor-arg value="s[webSSO.server.baseUrl]/logout"/>
+        <constructor-arg>
+            <list>
+                <ref local="securityContextLogoutHandler"/>
+            </list>
+        </constructor-arg>
+    </bean>
+    <bean id="serviceProperties" class="org.acegisecurity.ui.cas.ServiceProperties" lazy-init="true">
+        <property name="service" value="s[webSSO.cas.acegi.security.url]"/>
+        <property name="sendRenew">
+            <value>false</value>
+        </property>
+    </bean>
+    <bean id="casAuthoritiesPopulator" class="gov.nih.nci.cabig.caaers.security.WebSSOAuthoritiesPopulator" lazy-init="true">
+        <property name="hostCertificate" value="s[hostCertificate]"/>
+        <property name="hostKey" value="s[hostKey]"/>
+        <property name="userDetailsService">
+            <ref local="csmUserDetailsService"/>
+        </property>
+    </bean>
+    <bean id="casProxyDecider" class="org.acegisecurity.providers.cas.proxy.RejectProxyTickets" lazy-init="true">
+    </bean>
+    <bean id="statelessTicketCache" class="org.acegisecurity.providers.cas.cache.EhCacheBasedTicketCache" lazy-init="true">
+        <property name="cache">
+            <ref local="ticketCacheBackend"/>
+        </property>
+    </bean>
+    <bean id="ticketCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean" lazy-init="true">
+        <property name="cacheManager">
+            <ref local="cacheManager"/>
+        </property>
+        <property name="cacheName">
+            <value>ticketCache</value>
+        </property>
+    </bean>
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" lazy-init="true"/>
 </beans>
+
