@@ -120,7 +120,7 @@
 		 </c:forEach>
     </chrome:division>
 
-     <chrome:division title="Expedited Report Formats" >
+     <chrome:division title="Expedited report formats" >
 		 <c:forEach items="${fieldGroups.rfFieldGroup.fields}" var="field" varStatus="status">
 		  <tags:renderRow field="${field}"  />
 		 </c:forEach>
