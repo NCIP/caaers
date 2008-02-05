@@ -494,10 +494,8 @@
                 </xsl:for-each>
             </xsl:attribute>
             <BIRTH_DATE>
-                <xsl:call-template name="standard_date_yymm">
-                    <xsl:with-param name="date"
-                        select="StudyParticipantAssignment/Participant/dateOfBirth"/>
-                </xsl:call-template>
+                <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/year"/>-<xsl:if test="string-length(StudyParticipantAssignment/Participant/dateOfBirth/month) = 1">0</xsl:if>
+                <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/month"/>
                 <!--2002-09-->
             </BIRTH_DATE>
             <RACE>
