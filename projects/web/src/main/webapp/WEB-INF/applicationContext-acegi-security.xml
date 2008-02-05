@@ -224,7 +224,7 @@
         <constructor-arg value="s[webSSO.server.baseUrl]/logout"/>
         <constructor-arg>
             <list>
-                <ref local="securityContextLogoutHandler"/>
+                 <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
             </list>
         </constructor-arg>
     </bean>
