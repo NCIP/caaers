@@ -22,7 +22,11 @@
                     <xs:element type="customStringType" name="lastName"/>
                     <xs:element type="xs:string" name="maidenName" minOccurs="0"/>
                     <xs:element type="xs:string" name="middleName" minOccurs="0"/>
-                    <xs:element type="xs:date" name="dateOfBirth"/>
+                    
+                    <xs:choice>
+                        <xs:element type="xs:date" name="birthDate" />
+                        <xs:element type="customDateType" name="birthYear"  />
+                    </xs:choice>
                     <xs:element type="genderType" name="gender" minOccurs="0" />
                     <xs:element type="raceType" name="race" minOccurs="0"/>
                     <xs:element type="ethnicityType" name="ethnicity" minOccurs="0" />
@@ -211,6 +215,13 @@
             <xs:enumeration value="Non Hispanic or Latino"/>
             <xs:enumeration value="Not Reported"/>
             <xs:enumeration value="Unknown"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="customDateType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="[1-2][0-9][0-9][0-9]"></xs:pattern>
+            <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
     </xs:simpleType>
     

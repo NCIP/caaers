@@ -200,6 +200,33 @@ public class Participant extends AbstractIdentifiableDomainObject {
 	public void setDateOfBirth(final DateValue dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+	
+	/*
+	 * KK - used as a utility method for data import 
+	 */
+	@Transient
+	public Date getBirthDate(){
+		return this.dateOfBirth != null ? this.dateOfBirth.toDate() : null;
+	}
+	
+	public void setBirthDate(Date date){
+		this.dateOfBirth = new DateValue(date);
+	}
+	
+	/*
+	 * KK - used as a utility method for data import 
+	 */
+	@Transient
+	public Date getBirthYear(){
+		return this.dateOfBirth != null ? this.dateOfBirth.toDate() : null;
+	}
+	
+	public void setBirthYear(Date date){
+		this.dateOfBirth = new DateValue(date);
+		this.dateOfBirth.setDay(0);
+		this.dateOfBirth.setMonth(0);
+	}
+	
 
 	public String getGender() {
 		return gender;

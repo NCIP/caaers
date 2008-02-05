@@ -283,7 +283,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	xstream.alias("studyOrganization", gov.nih.nci.cabig.caaers.domain.StudyOrganization.class);
     	xstream.alias("organization", gov.nih.nci.cabig.caaers.domain.Organization.class);
     	xstream.alias("assignment", gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.class);
-    	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{}));
+    	xstream.registerConverter(new DateConverter("yyyy-MM-dd",new String[]{"yyyy"}));
     	xstream.registerConverter(new CustomStringConverter());
     	// study specific
     	xstream.alias("studyAgent", gov.nih.nci.cabig.caaers.domain.StudyAgent.class);
@@ -559,10 +559,5 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         public Object fromString(String str) {
         		return str.trim();
         }
-}
-	
-	
-	
-	
-	
+	}
 }

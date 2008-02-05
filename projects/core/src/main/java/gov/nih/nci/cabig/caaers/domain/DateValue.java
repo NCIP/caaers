@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Embeddable;
+import java.util.GregorianCalendar;
+import java.util.Calendar;
+import java.util.Date;
 
 @Embeddable
 public class DateValue {
@@ -28,6 +31,15 @@ public class DateValue {
 		this.month = month;
 		this.year = year;
 	}
+	
+	public DateValue(Date date){
+		super();
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(date);
+		this.day = gc.get(Calendar.DAY_OF_MONTH);
+		this.month = gc.get(Calendar.MONTH) + 1;
+		this.year = gc.get(Calendar.YEAR);
+	}
 
 	public int getDay() {
 		return day;
@@ -52,6 +64,7 @@ public class DateValue {
 	public void setYear(int year) {
 		this.year = year;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,6 +100,10 @@ public class DateValue {
 	
 	public String toString(){
 		return String.format(format, day,month,year);
+	}
+	
+	public Date toDate(){
+		return new GregorianCalendar(getYear(),getMonth(),getDay()).getTime();
 	}
 	
 }
