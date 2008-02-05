@@ -507,6 +507,7 @@ public class AdverseEventReportSerializer {
 		    	s.setStatus(hibernateStudy.getStatus());
 		    	s.setTargetAccrualNumber(hibernateStudy.getTargetAccrualNumber());
 		    	s.setCtcVersion(hibernateStudy.getCtcVersion());
+		    	s.setDesign(hibernateStudy.getDesign());
 		    	
 		    	List<Identifier> ids = hibernateStudy.getIdentifiers();
 		    	//s.setIdentifiers(new ArrayList<Identifier>());
