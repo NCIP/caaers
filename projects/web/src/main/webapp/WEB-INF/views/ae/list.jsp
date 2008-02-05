@@ -225,11 +225,25 @@
 					
 					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.id}'/>')">
      					<OPTION selected label="none" value="none">None</OPTION>
-     					<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
-     					<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch PDF</OPTION>
-     					<OPTION label="dcp" value="dcp">DCP SAE form</OPTION>
-     					<OPTION label="xml" value="xml">caAERS XML</OPTION>
-					</SELECT>
+     					<c:if test="${command.study.caaersXMLType}">
+     						<OPTION label="xml" value="xml">caAERS XML</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.adeersPDFType}">
+     						<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.medwatchPDFType}">
+     						<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.dcpSAEPDFType}">
+     						<OPTION label="dcp" value="dcp">DCP SAE form</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.ciomsPDFType}">
+     						<OPTION label="cioms" value="cioms">CIOMS Form</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.ciomsSaePDFType}">
+     						<OPTION label="ciomssae" value="ciomssae">CIOMS SAE Form</OPTION>
+     					</c:if>
+ 					</SELECT>
 					
 					|
 					

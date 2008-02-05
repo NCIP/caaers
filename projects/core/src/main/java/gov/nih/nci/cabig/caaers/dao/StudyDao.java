@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
@@ -91,6 +92,27 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
 			study.setBehavioralTherapyType(Boolean.TRUE);
 		}
+		
+		
+		//select report formats
+		if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+			study.setAdeersPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+			study.setCaaersXMLType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+			study.setCiomsPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+			study.setCiomsSaePDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+			study.setDcpSAEPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+			study.setMedwatchPDFType(Boolean.TRUE);
+		}
 		return study;
 	}
 
@@ -110,6 +132,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		ht.initialize(study.getStudyAgentsInternal());
 		ht.initialize(study.getStudyTherapies());
 		ht.initialize(study.getTreatmentAssignmentsInternal());
+		ht.initialize(study.getReportFormats());
 
 		for (StudyAgent sa : study.getStudyAgents()) {
 			ht.initialize(sa.getStudyAgentINDAssociationsInternal());

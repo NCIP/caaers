@@ -63,6 +63,13 @@ public class EditStudyController extends StudyController<Study> {
 		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());
 		mergedStudy.setRadiationTherapyType(study.getRadiationTherapyType());
 		mergedStudy.setSurgeryTherapyType(study.getSurgeryTherapyType());
+		
+		mergedStudy.setAdeersPDFType(study.getAdeersPDFType());
+		mergedStudy.setCaaersXMLType(study.getCaaersXMLType());
+		mergedStudy.setCiomsPDFType(study.getCiomsPDFType());
+		mergedStudy.setCiomsSaePDFType(study.getCiomsSaePDFType());
+		mergedStudy.setDcpSAEPDFType(study.getDcpSAEPDFType());
+		mergedStudy.setMedwatchPDFType(study.getMedwatchPDFType());		
 		return mergedStudy;
 	}
 

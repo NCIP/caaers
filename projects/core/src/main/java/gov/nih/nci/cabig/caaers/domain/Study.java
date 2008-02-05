@@ -84,6 +84,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private OrganizationAssignedIdentifier organizationAssignedIdentifier;
 
 	private List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
+	
+	private List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
 
 	// TODO move into Command Object
 	private String[] diseaseTermIds;
@@ -103,6 +105,18 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	private Boolean surgeryTherapyType = Boolean.FALSE;
 
 	private Boolean behavioralTherapyType = Boolean.FALSE;
+	
+	private Boolean caaersXMLType = Boolean.FALSE;
+	
+	private Boolean adeersPDFType = Boolean.FALSE;
+
+	private Boolean medwatchPDFType = Boolean.FALSE;
+	
+	private Boolean dcpSAEPDFType = Boolean.FALSE;
+	
+	private Boolean ciomsPDFType = Boolean.FALSE;
+	
+	private Boolean ciomsSaePDFType = Boolean.FALSE;
 	
 	private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 	
@@ -718,6 +732,83 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
 	public void setDesign(Design design) {
 		this.design = design;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
+	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<ReportFormat> getReportFormats() {
+		return reportFormats;
+	}
+
+	public void setReportFormats(final List<ReportFormat> reportFormats) {
+		this.reportFormats = reportFormats;
+	}
+
+	@Transient
+	public void addReportFormat(final ReportFormat reportFormat) {
+		reportFormats.add(reportFormat);
+	}
+	
+	@Transient
+	public ReportFormat getReportFormat(final ReportFormatType reportFormatType) {
+
+		for (ReportFormat reportFormat : reportFormats) {
+			if (reportFormat.getReportFormatType().equals(reportFormatType)) {
+				return reportFormat;
+			}
+
+		}
+		return null;
+	}
+
+	@Transient
+	public Boolean getAdeersPDFType() {
+		return adeersPDFType;
+	}
+
+	public void setAdeersPDFType(final Boolean adeersPDFType) {
+		this.adeersPDFType = adeersPDFType;
+	}
+	
+	@Transient
+	public Boolean getCaaersXMLType() {
+		return caaersXMLType;
+	}
+
+	public void setCaaersXMLType(final Boolean caaersXMLType) {
+		this.caaersXMLType = caaersXMLType;
+	}
+	@Transient
+	public Boolean getCiomsPDFType() {
+		return ciomsPDFType;
+	}
+
+	public void setCiomsPDFType(final Boolean ciomsPDFType) {
+		this.ciomsPDFType = ciomsPDFType;
+	}
+	@Transient
+	public Boolean getCiomsSaePDFType() {
+		return ciomsSaePDFType;
+	}
+
+	public void setCiomsSaePDFType(final Boolean ciomsSaePDFType) {
+		this.ciomsSaePDFType = ciomsSaePDFType;
+	}
+	@Transient
+	public Boolean getDcpSAEPDFType() {
+		return dcpSAEPDFType;
+	}
+
+	public void setDcpSAEPDFType(final Boolean dcpSAEPDFType) {
+		this.dcpSAEPDFType = dcpSAEPDFType;
+	}
+	@Transient
+	public Boolean getMedwatchPDFType() {
+		return medwatchPDFType;
+	}
+
+	public void setMedwatchPDFType(final Boolean medwatchPDFType) {
+		this.medwatchPDFType = medwatchPDFType;
 	}
 
 }

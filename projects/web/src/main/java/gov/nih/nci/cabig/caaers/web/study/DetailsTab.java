@@ -1,12 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.collectOptions;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Design;
+import gov.nih.nci.cabig.caaers.domain.ReportFormat;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -36,7 +39,7 @@ public class DetailsTab extends StudyTab {
 
 	private MeddraVersionDao meddraVersionDao;
 
-	InputFieldGroup fieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup, studyDiseaseCodeFieldGroup,coordinatingCenterFieldGroup, dcpCodeFieldGroup;
+	InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup, studyDiseaseCodeFieldGroup,coordinatingCenterFieldGroup, dcpCodeFieldGroup;
 
 	public DetailsTab() {
 		super("Basic Details", "Details", "study/study_details");
@@ -81,6 +84,35 @@ public class DetailsTab extends StudyTab {
 			fields.add(InputFieldFactory.createSelectField("multiInstitutionIndicator", "Multi Institutional",true, options));
 			fields.add(InputFieldFactory.createSelectField("adeersReporting", "AdEERS  reporting required",true, options));
 			
+		}
+		
+		if (reportFormatFieldGroup == null) {
+			reportFormatFieldGroup = new DefaultInputFieldGroup("rfFieldGroup");
+			List<InputField> fields = reportFormatFieldGroup.getFields();
+			
+			InputField caaersXMLTypeField = InputFieldFactory.createCheckboxField("caaersXMLType", "caAERS XML");
+			InputFieldAttributes.setSize(caaersXMLTypeField, 50);
+			fields.add(caaersXMLTypeField);
+
+			InputField adeersPDFTypeField = InputFieldFactory.createCheckboxField("adeersPDFType", "AdEERS PDF");
+			InputFieldAttributes.setSize(adeersPDFTypeField, 50);
+			fields.add(adeersPDFTypeField);
+
+			InputField ciomsPDFTypeField = InputFieldFactory.createCheckboxField("ciomsPDFType", "CIOMS Form");
+			InputFieldAttributes.setSize(ciomsPDFTypeField, 50);
+			fields.add(ciomsPDFTypeField);
+			
+			InputField ciomsSaePDFTypeField = InputFieldFactory.createCheckboxField("ciomsSaePDFType", "CIOMS SAE Form");
+			InputFieldAttributes.setSize(ciomsSaePDFTypeField, 50);
+			fields.add(ciomsSaePDFTypeField);
+			
+			InputField dcpSAEPDFTypeField = InputFieldFactory.createCheckboxField("dcpSAEPDFType", "DCP SAE Form");
+			InputFieldAttributes.setSize(dcpSAEPDFTypeField, 50);
+			fields.add(dcpSAEPDFTypeField);
+			
+			InputField medwatchPDFTypeField = InputFieldFactory.createCheckboxField("medwatchPDFType", "MedWatch PDF");
+			InputFieldAttributes.setSize(medwatchPDFTypeField, 50);
+			fields.add(medwatchPDFTypeField);			
 		}
 		
 		if(fundSponsorFieldGroup == null){
@@ -136,6 +168,7 @@ public class DetailsTab extends StudyTab {
 		
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		map.addInputFieldGroup(fieldGroup);
+		map.addInputFieldGroup(reportFormatFieldGroup);
 		map.addInputFieldGroup(fundSponsorFieldGroup);
 		map.addInputFieldGroup(coordinatingCenterFieldGroup);
 		map.addInputFieldGroup(studyCodeFieldGroup);
@@ -160,6 +193,84 @@ public class DetailsTab extends StudyTab {
     }
 
 	@Override
+	public void onBind(HttpServletRequest request, Study study, Errors errors) {
+		super.onBind(request, study, errors);
+		List<ReportFormat> reportFormats = study.getReportFormats();
+
+		if (study.getAdeersPDFType()
+				&& study.getReportFormat(ReportFormatType.ADEERSPDF) == null) {
+			ReportFormat adeersPDFReportFormat = new ReportFormat();
+			adeersPDFReportFormat.setStudy(study);
+			adeersPDFReportFormat.setReportFormatType(ReportFormatType.ADEERSPDF);
+			study.getReportFormats().add(adeersPDFReportFormat);
+		}
+		else if (!study.getAdeersPDFType()
+				&& study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.ADEERSPDF));
+		}
+
+		if (study.getCaaersXMLType()
+				&& study.getReportFormat(ReportFormatType.CAAERSXML) == null) {
+			ReportFormat caaersXMLFormat = new ReportFormat();
+			caaersXMLFormat.setStudy(study);
+			caaersXMLFormat.setReportFormatType(ReportFormatType.CAAERSXML);
+			study.getReportFormats().add(caaersXMLFormat);
+		}
+		else if (!study.getCaaersXMLType()
+				&& study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.CAAERSXML));
+		}
+
+		if (study.getCiomsPDFType()
+				&& study.getReportFormat(ReportFormatType.CIOMSFORM) == null) {
+			ReportFormat ciomsPDFFormat = new ReportFormat();
+			ciomsPDFFormat.setStudy(study);
+			ciomsPDFFormat.setReportFormatType(ReportFormatType.CIOMSFORM);
+			study.getReportFormats().add(ciomsPDFFormat);
+		}
+		else if (!study.getCiomsPDFType()
+				&& study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.CIOMSFORM));
+		}
+
+		if (study.getCiomsSaePDFType()
+				&& study.getReportFormat(ReportFormatType.CIOMSSAEFORM) == null) {
+			ReportFormat ciomsSaePDFFormat = new ReportFormat();
+			ciomsSaePDFFormat.setStudy(study);
+			ciomsSaePDFFormat.setReportFormatType(ReportFormatType.CIOMSSAEFORM);
+			study.getReportFormats().add(ciomsSaePDFFormat);
+		}
+		else if (!study.getCiomsSaePDFType()
+				&& study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.CIOMSSAEFORM));
+		}
+
+		if (study.getDcpSAEPDFType()
+				&& study.getReportFormat(ReportFormatType.DCPSAEFORM) == null) {
+			ReportFormat dcpSaePDFFormat = new ReportFormat();
+			dcpSaePDFFormat.setStudy(study);
+			dcpSaePDFFormat.setReportFormatType(ReportFormatType.DCPSAEFORM);
+			study.getReportFormats().add(dcpSaePDFFormat);
+		}
+		else if (!study.getDcpSAEPDFType()
+				&& study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.DCPSAEFORM));
+		}
+
+		if (study.getMedwatchPDFType()
+				&& study.getReportFormat(ReportFormatType.MEDWATCHPDF) == null) {
+			ReportFormat medwatchPDFFormat = new ReportFormat();
+			medwatchPDFFormat.setStudy(study);
+			medwatchPDFFormat.setReportFormatType(ReportFormatType.MEDWATCHPDF);
+			study.getReportFormats().add(medwatchPDFFormat);
+		}
+		else if (!study.getMedwatchPDFType()
+				&& study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+			reportFormats.remove(study.getReportFormat(ReportFormatType.MEDWATCHPDF));
+		}
+	}
+	
+	@Override
 	public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
 		super.postProcess(request, command, errors);
 		if (errors.hasErrors()) {
@@ -175,6 +286,9 @@ public class DetailsTab extends StudyTab {
 				identifier.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
 			}
 		}
+		
+
+		
 	}
 
 	public CtcDao getCtcDao() {

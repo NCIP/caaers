@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -73,16 +74,36 @@ public class ListAdverseEventsCommand {
 
     public Study getStudy() {
         if (study != null) {
-            return study;
+            study = study;
         } else if (assignment != null) {
-            return assignment.getStudySite().getStudy();
+            study = assignment.getStudySite().getStudy();
         } else if (nciIdentifier != null) {
             study = studyDao.getByIdentifier(
                 createIdentifierTemplate(null, nciIdentifier));
-            return study;
         } else {
-            return null;
+            study = null;
         }
+        if (study != null) {
+    		if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+    			study.setAdeersPDFType(Boolean.TRUE);
+    		}
+    		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+    			study.setCaaersXMLType(Boolean.TRUE);
+    		}
+    		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+    			study.setCiomsPDFType(Boolean.TRUE);
+    		}
+    		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+    			study.setCiomsSaePDFType(Boolean.TRUE);
+    		}
+    		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+    			study.setDcpSAEPDFType(Boolean.TRUE);
+    		}
+    		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+    			study.setMedwatchPDFType(Boolean.TRUE);
+    		}
+        }
+        return study;
     }
 
     public Participant getParticipant() {

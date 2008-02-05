@@ -135,6 +135,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
 	<value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
 	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
+	<value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value> 
       </list>
     </property>
     
@@ -280,7 +281,8 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
 	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
 	<value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>             
+	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value> 
+	<value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>             
 	</list>
 	</property> 
 	<!-- 

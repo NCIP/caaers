@@ -81,6 +81,23 @@
             		
         	</div>
        </chrome:division>
+    <chrome:division title="Report Formats">
+    	<table class="tablecontent" width="96%" >
+		<tr >						
+			<th scope="col">Report Format</th>
+		</tr>	
+		<c:forEach items="${command.reportFormats}" var="report">
+		<tr class="results">
+			<td>${report.reportFormatType.displayName}</td>
+		</tr>
+		</c:forEach>
+		<c:if test="${empty command.reportFormats}">
+		<tr>
+		 <td>No report format is selected for this study</td>
+		</tr>
+		</c:if>																		
+		</table>
+    </chrome:division>       
     <chrome:division title="Therapies">
     	<table class="tablecontent" width="96%" >
 		<tr >						
