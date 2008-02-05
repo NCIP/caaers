@@ -685,10 +685,13 @@ public class CreateAdverseEventAjaxFacade {
     public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions){
     	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
     	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
-    		if(obj.getId().equals(attribution.getCause().getId())) unwantedAttribution = attribution;
-    		break;
+    		if(obj.getId().equals(attribution.getCause().getId())) {
+    			unwantedAttribution = attribution;
+    			break;
+    		}
+    		
     	}
-    	attributions.remove(unwantedAttribution);
+    	if(unwantedAttribution != null) attributions.remove(unwantedAttribution);
     }
     /**
      * Deletes an element in a list property of the current session command, shifting everything
