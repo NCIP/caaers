@@ -38,7 +38,7 @@
    	  var wt = $F('aeReport.participantHistory.weight.quantity');
    	  var wtUOM = $F('aeReport.participantHistory.weight.unit');
    	  createAE.calculateBodySurfaceArea(ht, htUOM, wt, wtUOM,function(bsa){
-   	    if(bsa > 0) Element.update($('bsa-value'), bsa);
+   	    if(bsa > 0) Element.update($('bsa-value'), bsa.toFixed(2));
    	  });
    }
     
