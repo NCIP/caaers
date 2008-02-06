@@ -255,7 +255,7 @@ public class AdeersReportGenerator  {
 		String str1="";
 		try {
 		AdeersReportGenerator aeg = new AdeersReportGenerator();
-		FileReader input = new FileReader("/Users/sakkala/Desktop/expeditedAdverseEventReport-9.xml");
+		FileReader input = new FileReader("/Users/sakkala/Desktop/expeditedAdverseEventReport-52.xml");
 		BufferedReader bufRead = new BufferedReader(input);
 		String line = bufRead.readLine();
 		

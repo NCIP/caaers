@@ -401,7 +401,7 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setRetreated(aerd.getRetreated());
 		    	
 		    	adverseEventResponseDescription.setBlindBroken(aerd.getBlindBroken());
-		    	adverseEventResponseDescription.setStudyDrugInterrupted(adverseEventResponseDescription.getStudyDrugInterrupted());
+		    	adverseEventResponseDescription.setStudyDrugInterrupted(aerd.getStudyDrugInterrupted());
 		    	adverseEventResponseDescription.setReducedDose(aerd.getReducedDose());
 		    	adverseEventResponseDescription.setReducedDate(aerd.getReducedDate());
 		    	adverseEventResponseDescription.setDaysNotGiven(aerd.getDaysNotGiven());
