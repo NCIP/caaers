@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -37,8 +38,30 @@ public class ViewReportTab extends AeTab {
     
     @Override
     public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    	
+    	
+    	if (command.getStudy().getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+    		command.getStudy().setAdeersPDFType(Boolean.TRUE);
+		}
+		if (command.getStudy().getReportFormat(ReportFormatType.CAAERSXML) != null) {
+			command.getStudy().setCaaersXMLType(Boolean.TRUE);
+		}
+		if (command.getStudy().getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+			command.getStudy().setCiomsPDFType(Boolean.TRUE);
+		}
+		if (command.getStudy().getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+			command.getStudy().setCiomsSaePDFType(Boolean.TRUE);
+		}
+		if (command.getStudy().getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+			command.getStudy().setDcpSAEPDFType(Boolean.TRUE);
+		}
+		if (command.getStudy().getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+			command.getStudy().setMedwatchPDFType(Boolean.TRUE);
+		}
+		
         Map<String, Object> refdata = super.referenceData(command);
         Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>(); 
+        
        
         //evaluate business rules.
         ReportSubmittability reportSubmittability = new ReportSubmittability();

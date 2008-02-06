@@ -192,7 +192,7 @@
     	<p>&nbsp;</p>
     	<table class="tablecontent" width = "40%">
     			<tr>
-    				<th scope="col" align="left"><b>Report Generation</b></th>
+    				<th scope="col" align="left"><b>View report</b></th>
     			</tr>
     			<tr>
     				<td class="completion-messages">
