@@ -344,10 +344,7 @@
                 <!-- TODO: this is a clear candidate for a CodedEnum -->
                 <entry key="bpsRefData">
                     <list>
-                        <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-                            <property name="code" value="please select--" />
-                            <property name="desc" value="please select--" />
-                        </bean>
+                        
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">
                             <property name="code" value="0 = Normal Activity, asymptomatic" />
                             <property name="desc" value="0 = Normal Activity, asymptomatic" />
