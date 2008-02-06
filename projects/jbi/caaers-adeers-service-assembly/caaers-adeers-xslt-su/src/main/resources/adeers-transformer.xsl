@@ -825,7 +825,7 @@
                 <xsl:for-each select="SurgeryAttribution">
                     <ATTRIBUTION_FOR_AE>
                         <CAUSE_NAME>
-                            <xsl:value-of select="SurgeryIntervention/AnatomicSite/name"/>
+                            <xsl:value-of select="SurgeryIntervention/InterventionSite/name"/>
                         </CAUSE_NAME>
                         <TYPE_OF_CAUSE>SURGERY</TYPE_OF_CAUSE>
                         <ATTRIBUTION>
