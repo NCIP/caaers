@@ -132,6 +132,9 @@
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			(first, last) 
 						  		</fo:block> 						  					
+						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/firstName"/> , <xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/lastName"/>
+						  		</fo:block> 
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-rows-spanned="2">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -150,11 +153,20 @@
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  		Years
 						  		</fo:block>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:variable name="currYear" select="java:format(java:java.text.SimpleDateFormat.new ('yyyy'), java:java.util.Date.new())"/>				      
+						  			<xsl:variable name="birthYear" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>				      
+						  			<xsl:variable name="age" select="$currYear - $birthYear"/>
+						  			<xsl:value-of select="$age"/>
+						  		</fo:block>
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell"  number-rows-spanned="2">
 						  		<fo:block xsl:use-attribute-sets="normal"> 
 						  		3. SEX
-						  		</fo:block>      													  		
+						  		</fo:block> 
+						  		<fo:block xsl:use-attribute-sets="normal"> 
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/gender"/>   
+						  		</fo:block>   													  		
       						</fo:table-cell>    
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -190,17 +202,26 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal"> 
 						  		Day
-						  		</fo:block>      													  		
+						  		</fo:block>   
+						  		<fo:block xsl:use-attribute-sets="normal">   
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>  
+						  		</fo:block>    													  		
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal"> 
 						  		Month
-						  		</fo:block>      													  		
+						  		</fo:block>  
+						  		<fo:block xsl:use-attribute-sets="normal">   
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>  
+						  		</fo:block>    													  		
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal"> 
 						  		Year
-						  		</fo:block>      													  		
+						  		</fo:block>     
+						  		<fo:block xsl:use-attribute-sets="normal">   
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>  
+						  		</fo:block> 													  		
       						</fo:table-cell>
 
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
