@@ -405,8 +405,8 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setReducedDose(aerd.getReducedDose());
 		    	adverseEventResponseDescription.setReducedDate(aerd.getReducedDate());
 		    	adverseEventResponseDescription.setDaysNotGiven(aerd.getDaysNotGiven());
-		    	adverseEventResponseDescription.setEventAbate(adverseEventResponseDescription.getEventAbate());
-		    	adverseEventResponseDescription.setEventReappear(adverseEventResponseDescription.getEventReappear());
+		    	adverseEventResponseDescription.setEventAbate(aerd.getEventAbate());
+		    	adverseEventResponseDescription.setEventReappear(aerd.getEventReappear());
 		    	
 		    	
 	    	} catch (Exception e) {
