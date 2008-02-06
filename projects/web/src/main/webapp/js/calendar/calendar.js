@@ -89,11 +89,14 @@ Calendar.is_ie = ( /msie/i.test(navigator.userAgent) &&
 
 Calendar.is_ie5 = ( Calendar.is_ie && /msie 5\.0/i.test(navigator.userAgent) );
 
+Calendar.is_ie7 = (/MSIE 7/.test(navigator.userAgent));
+
 /// detect Opera browser
 Calendar.is_opera = /opera/i.test(navigator.userAgent);
 
 /// detect KHTML-based browsers
 Calendar.is_khtml = /Konqueror|Safari|KHTML/i.test(navigator.userAgent);
+
 
 // BEGIN: UTILITY FUNCTIONS; beware that these might be moved into a separate
 //        library, at some point.
@@ -1390,8 +1393,18 @@ Calendar.prototype.showAtElement = function (el, opts) {
 		var br = Calendar.getAbsolutePos(cp);
 		document.body.removeChild(cp);
 		if (Calendar.is_ie) {
-			br.y += document.body.scrollTop;
-			br.x += document.body.scrollLeft;
+			if (Calendar.is_ie7) {
+			
+				br.y += document.documentElement.scrollTop;
+				br.x += document.documentElement.scrollLeft;
+
+			} else { 
+				br.y += document.body.scrollTop;
+				br.x += document.body.scrollLeft;
+
+				
+			}
+			
 		} else {
 			br.y += window.scrollY;
 			br.x += window.scrollX;
