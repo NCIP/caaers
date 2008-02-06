@@ -176,22 +176,24 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-rows-spanned="4">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  		8-12 CHECK ALL APPROPRIATE TO ADVERSE REACTION
-						  		</fo:block>    
+						  		</fo:block>  
+						  		<xsl:variable name="oc" select="AdverseEventReport/Outcome/OutcomeType"/>  
+
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>  													  		
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  		[] PATIENT DEAD
+						  		[ <xsl:if test="$oc='DEATH'">x</xsl:if> ] PATIENT DEAD
 						  		</fo:block>  
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  		[] INVOLVED OR PROLONGED INPATIENT HOSPITALISATION
+						  		[ <xsl:if test="$oc='HOSPITALIZATION'">x</xsl:if> ] INVOLVED OR PROLONGED INPATIENT HOSPITALISATION
 						  		</fo:block>  
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  		[] INVOLVED PERSISTENCE OR SIGNIFICANT DISABILITY OR INCAPACITY
+						  		[ <xsl:if test="$oc='DISABILITY'">x</xsl:if> ] INVOLVED PERSISTENCE OR SIGNIFICANT DISABILITY OR INCAPACITY
 						  		</fo:block>  
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  		[] LIFE THREATENING
+						  		[ <xsl:if test="$oc='LIFE_THREATENING'">x</xsl:if> ] LIFE THREATENING
 						  		</fo:block>  
 						  								  								  								  		
       						</fo:table-cell> 
@@ -248,7 +250,20 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="10" number-rows-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="normal"> 
 						  		7 + 13 DESCRIBE REACTION(S) (including relevant tests/lab data)
-						  		</fo:block>      													  		
+						  		</fo:block>     
+						  		<fo:block xsl:use-attribute-sets="normal"> 
+						  			Lab tests 
+						  		</fo:block>	
+						  		<xsl:for-each select="AdverseEventReport/Lab">
+						  			<fo:block xsl:use-attribute-sets="normal">
+						  				<xsl:value-of select="labTerm/term"/>
+							  			<xsl:value-of select="other"/> - 
+							  			
+							  			Baseline value : <xsl:value-of select="baseline/value"/> <xsl:value-of select="units"/>, 
+							  			Worst Value :	<xsl:value-of select="nadir/value"/> <xsl:value-of select="units"/>, 
+							  			Recovery value : <xsl:value-of select="recovery/value"/> <xsl:value-of select="units"/>
+							  		</fo:block>
+						  		</xsl:for-each>											  		
       						</fo:table-cell>
       					</fo:table-row>						
     					
@@ -272,14 +287,21 @@
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			14. SUSPECT DRUG(S) {include generic name}  
-							  		</fo:block>      										  					
+							  		</fo:block>  
+							  		<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+							  			<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  				<xsl:value-of select="StudyAgent/Agent/name"/>
+							  			</fo:block>
+							  		</xsl:for-each>    										  					
 	      						</fo:table-cell>
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" > 
 							  		20. DID REACTION ABATE AFTER STOPPING DRUG 
 							  		</fo:block> 
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			[] YES [] NO [] NA   
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">x</xsl:if> ] YES 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">x</xsl:if> ] NO 
+							  			[ ] NA   
 							  		</fo:block>  													  		
 	      						</fo:table-cell>
 	      				</fo:table-row>
@@ -288,6 +310,9 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			15. DAILY DOSE(S) 
 							  		</fo:block>      										  					
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+							  		</fo:block>
 	      						</fo:table-cell>
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -299,7 +324,9 @@
 								  		21. DID REACTION REAPPEAR AFTER REINTRODUCTION?
 							  		</fo:block>  
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			[] YES [] NO [] NA   
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">x</xsl:if> ] YES 
+							  			[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">x</xsl:if> ] NO 
+							  			[ ] NA   
 							  		</fo:block> 							  															  		
 	      						</fo:table-cell>
 	      				</fo:table-row>
@@ -336,14 +363,25 @@
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			22. CONCOMITANT DRUG(S) AND DATES OF ADMINISTRATION {exclude those used to treat reaction}
-							  		</fo:block>      										  					
+							  		</fo:block>  
+							  		<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
+							  			<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  				<xsl:value-of select="name"/>
+							  			</fo:block>
+							  		</xsl:for-each>    										  					
 	      						</fo:table-cell>
 	      				</fo:table-row>
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell">
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			23. OTHER RELEVANT HISTORY {e.g diagnosis, allergies, pregnancy with last month of period, etc}
-							  		</fo:block>      										  					
+							  		</fo:block>
+							  		<xsl:for-each select="AdverseEventReport/SAEReportPreExistingCondition">
+							  			<fo:block xsl:use-attribute-sets="normal" margin-left="2mm">
+							  				<xsl:value-of select="other"/> 
+							  				<xsl:value-of select="PreExistingCondition/text"/> 
+							  			</fo:block>
+							  		</xsl:for-each>      										  					
 	      						</fo:table-cell>
 	      				</fo:table-row>
 	  			   </fo:table-body >
@@ -366,6 +404,13 @@
 							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 							  			24a. NAME AND ADDRESS OF MANUFACTURER
 							  		</fo:block>      										  					
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerName"/>
+							  		</fo:block> 
+							  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+							  			<xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerCity"/> , 
+							  			<xsl:value-of select="AdverseEventReport/MedicalDevice/manufacturerState"/>
+							  		</fo:block>
 	      						</fo:table-cell>
 	      						<fo:table-cell xsl:use-attribute-sets="small-cell" number-rows-spanned="4">
 							  		<fo:block xsl:use-attribute-sets="normal" > 
