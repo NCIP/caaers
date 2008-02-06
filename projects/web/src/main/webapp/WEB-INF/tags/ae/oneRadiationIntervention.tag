@@ -12,19 +12,19 @@
     
      <div class="row">
 		<div class="label">
-			<tags:renderLabel field="${fieldGroup.fields[0]}"/>
+			Treatment Arm
 		</div>
 		<div class="value">
-			${fieldGroup.fields[0].attributes.details}
+			${code}
 		</div>
 	</div>
 	
 	<div class="row">
 		<div class="label">
-			<tags:renderLabel field="${fieldGroup.fields[1]}"/>
+			Treatment arm description
 		</div>
 		<div class="value">
-			${fieldGroup.fields[1].attributes.details}
+			${description}
 		</div>
 	</div>
     

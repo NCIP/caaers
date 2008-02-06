@@ -30,8 +30,6 @@ public class RadiationInterventionTabTest extends AeTabTestCase {
     public void testFieldProperties() throws Exception {
         assertFieldProperties(
             "radiationIntervention6",
-            "aeReport.radiationInterventions[6].treatmentArm",
-            "aeReport.radiationInterventions[6].description",
             "aeReport.radiationInterventions[6].administration",
             "aeReport.radiationInterventions[6].dosage",
             "aeReport.radiationInterventions[6].dosageUnit",

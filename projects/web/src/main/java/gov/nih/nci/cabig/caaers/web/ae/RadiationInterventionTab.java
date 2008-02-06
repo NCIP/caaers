@@ -27,33 +27,36 @@ public class RadiationInterventionTab extends AeTab {
     public RadiationInterventionTab() {
         super("Radiation Intervention", ExpeditedReportSection.RADIATION_INTERVENTION_SECTION.getDisplayName(), "ae/radiationIntervention");
     }
-
+    
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-    	
-    	String code = command.getAeReport().getTreatmentInformation().getTreatmentAssignment() != null ?
+    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+        Map<String, Object> refData = super.referenceData(command);
+        
+        String code = command.getAeReport().getTreatmentInformation().getTreatmentAssignment() != null ?
     			command.getAeReport().getTreatmentInformation().getTreatmentAssignment().getCode() : null;
     			
     	String description = code != null ? command.getAeReport().getTreatmentInformation().getTreatmentAssignmentDescription() :
     		command.getAeReport().getTreatmentInformation().getTreatmentDescription();
-    			
-        InputField descField = createTextArea("description", "Treatment arm description", false);
-        InputFieldAttributes.setDetails(descField, description);
-        InputFieldAttributes.setSize(descField, 45);
+    	
+        refData.put("code", code);
+        refData.put("description", description);
+       
+        return refData;
+    }
+
+    @Override
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+    	
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(collectOptions(
             Arrays.asList(RadiationAdministration.values()), null, "displayName"));
         
-        InputField codeField = createTextField("treatmentArm", "Treatment arm", false);
-        InputFieldAttributes.setDetails(codeField, code);
         InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit","Unit of measure",false,
                 InputFieldFactory.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"));
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions",
             new SimpleNumericDisplayNameCreator("Radiation"),
-            codeField,
-            descField,
             createSelectField("administration", "Type of radiation administration", false, statusOpts),
             createTextField("dosage", "Dosage", false),
             doseUOMField,
