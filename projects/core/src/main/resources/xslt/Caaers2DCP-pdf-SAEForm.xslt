@@ -116,7 +116,8 @@
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 									Study (Indication):
 									<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/shortTitle"/>
-						  		</fo:block>      							
+						  		</fo:block>   
+						  		   							
       						</fo:table-cell>
       					</fo:table-row>
       					
@@ -124,7 +125,14 @@
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			Drug(s) under Investigation:
-						  		</fo:block>      							
+						  		</fo:block> 
+						  		
+						  			<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+						  				<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
+						  					<xsl:value-of select="StudyAgent/Agent/name"/>
+						  				</fo:block> 
+						  			</xsl:for-each>
+						  		    							
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -494,10 +502,10 @@
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			5.  Was Study Drug stopped/interrupted/reduced in response to event?  
 						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  			[  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/blindBroken = 'false'">x</xsl:if>
+						  			[  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/studyDrugInterrupted = 'false'">x</xsl:if>
 						  			] No  
 						  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-						  			[  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/blindBroken = 'false'">x</xsl:if>
+						  			[  <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/studyDrugInterrupted = 'true'">x</xsl:if>
 						  			] Yes 
 						  		</fo:block>  
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
