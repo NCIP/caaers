@@ -67,24 +67,6 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			gen.generatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,reportId);
-	    			/*
-					File file = new File(pdfOutFile);
-					FileInputStream fileIn = new FileInputStream(file);
-					OutputStream out = response.getOutputStream();
-					response.setContentType( "application/x-download" );
-					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".pdf" );
-					 
-					byte[] buffer = new byte[2048];
-					int bytesRead = fileIn.read(buffer);
-					while (bytesRead >= 0) {
-					  if (bytesRead > 0)
-					    out.write(buffer, 0, bytesRead);
-					    bytesRead = fileIn.read(buffer);
-					}
-					out.flush();
-					out.close();
-					fileIn.close();
-					*/
     			} else if (format.equals("medwatchpdf")) {
  
 	    			String pdfOutFile = "MedWatchReport-"+reportId+".pdf";
@@ -93,56 +75,32 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
 	    			gen.generateMedwatchPdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,reportId);
-	    			/*
-					File file = new File(pdfOutFile);
-					FileInputStream fileIn = new FileInputStream(file);
-					OutputStream out = response.getOutputStream();
-					response.setContentType( "application/x-download" );
-					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".pdf" );
-					 
-					byte[] buffer = new byte[2048];
-					int bytesRead = fileIn.read(buffer);
-					while (bytesRead >= 0) {
-					  if (bytesRead > 0)
-					    out.write(buffer, 0, bytesRead);
-					    bytesRead = fileIn.read(buffer);
-					}
-					out.flush();
-					out.close();
-					fileIn.close();
-					*/
     			} else if (format.equals("dcp")) {
     				String pdfOutFile = "dcp-"+reportId+".pdf";
     				AdeersReportGenerator gen = new AdeersReportGenerator();
     				gen.generateDcpSaeForm(xml, tempDir+File.separator+pdfOutFile);
     				
     				generateOutput(pdfOutFile,response,reportId);
-    			} else {
+    			} else if (format.equals("cioms")) {
+    				String pdfOutFile = "cioms-"+reportId+".pdf";
+    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				gen.generateCIOMS(xml, tempDir+File.separator+pdfOutFile);
+    				
+    				generateOutput(pdfOutFile,response,reportId);
+    			} else if (format.equals("ciomssae")) {
+    				String pdfOutFile = "ciomssae-"+reportId+".pdf";
+    				AdeersReportGenerator gen = new AdeersReportGenerator();
+    				gen.generateCIOMSTypeForm(xml, tempDir+File.separator+pdfOutFile);
+    				
+    				generateOutput(pdfOutFile,response,reportId);
+    			} else  {
 	    			String xmlOutFile = "expeditedAdverseEventReport-"+reportId+".xml";
 	    			
 	    			BufferedWriter outw = new BufferedWriter(new FileWriter(tempDir+File.separator+xmlOutFile));
 	    			outw.write(xml);
 	    			outw.close();
 	    			
-	    			generateOutput(xmlOutFile,response,reportId);
-	    			/*
-					File file = new File(xmlOutFile);
-					FileInputStream fileIn = new FileInputStream(file);
-					OutputStream out = response.getOutputStream();
-					response.setContentType( "application/x-download" );
-					response.setHeader( "Content-Disposition", "attachment; filename=expeditedAdverseEventReport-"+reportId+".xml" );
-					 
-					byte[] buffer = new byte[2048];
-					int bytesRead = fileIn.read(buffer);
-					while (bytesRead >= 0) {
-					  if (bytesRead > 0)
-					    out.write(buffer, 0, bytesRead);
-					    bytesRead = fileIn.read(buffer);
-					}
-					out.flush();
-					out.close();
-					fileIn.close();
-					*/    				
+	    			generateOutput(xmlOutFile,response,reportId);  				
     			}
 				
 			} catch (Exception e) {
