@@ -28,6 +28,17 @@
     	 $('flow-next').value="Go to Manage Reports ";
     })
        
+       function executeAction(aeReportId,url){
+			
+			var actions = $("actions-"+aeReportId)
+			 for ( i=0; i < actions.length; i++)
+               {
+                  if (actions.options[i].selected && actions.options[i].value != "none") {
+                     window.open(url + "&format="+ actions.options[i].value,"_self")
+                   }
+               }
+        }
+        
     </script>
     <style type="text/css">
         td.completion-messages p {
@@ -77,7 +88,9 @@
     		</table>
     		<p> &nbsp; </p>
     	</c:if>
-    	
+
+		
+    		    	
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
@@ -176,7 +189,41 @@
     			</tr>
     			</c:forEach>    						
     	</table>		
-    	
+    	<p>&nbsp;</p>
+    	<table class="tablecontent" width="75%">
+    			<tr>
+    				<th scope="col" align="left"><b>Report Generation</b></th>
+    			</tr>
+    			<tr>
+    				<td class="completion-messages">
+    				
+    				 <SELECT id="actions-${command.aeReport.id}" name="actions" onChange="executeAction(${command.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${command.aeReport.id}'/>')">
+     					<OPTION selected label="none" value="none">None</OPTION>
+     					
+     					<c:if test="${command.study.caaersXMLType}">
+     						<OPTION label="xml" value="xml">caAERS XML</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.adeersPDFType}">
+     						<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.medwatchPDFType}">
+     						<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.dcpSAEPDFType}">
+     						<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.ciomsPDFType}">
+     						<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
+     					</c:if>
+     					<c:if test="${command.study.ciomsSaePDFType}">
+     						<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
+     					</c:if>
+ 					</SELECT>
+     					
+ 					</SELECT>
+    				</td>
+    			</tr>
+    		</table>
     
      <input type="hidden" name="_finish"/>
     </jsp:attribute>

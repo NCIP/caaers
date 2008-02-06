@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -39,7 +40,28 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     @Override
     public Study getStudy() {
-        return getAssignment().getStudySite().getStudy();
+        Study study= getAssignment().getStudySite().getStudy();
+        
+        if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+			study.setAdeersPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+			study.setCaaersXMLType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+			study.setCiomsPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+			study.setCiomsSaePDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+			study.setDcpSAEPDFType(Boolean.TRUE);
+		}
+		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+			study.setMedwatchPDFType(Boolean.TRUE);
+		}
+        
+        return study;
     }
 
     @Override
