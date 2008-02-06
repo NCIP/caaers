@@ -7,3 +7,9 @@ body {
 /* Force hasLayout */
 * html div.row, * html .autoclear { height: 1% }
 #workflow-tabs { height: 1%; }
+
+
+.pane {
+	/* Fix the issue of summary not aligned properly */
+	clear:both;
+}
