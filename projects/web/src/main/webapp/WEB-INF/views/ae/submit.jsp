@@ -190,7 +190,7 @@
     			</c:forEach>    						
     	</table>		
     	<p>&nbsp;</p>
-    	<table class="tablecontent" width="75%">
+    	<table class="tablecontent" width = "40%">
     			<tr>
     				<th scope="col" align="left"><b>Report Generation</b></th>
     			</tr>
