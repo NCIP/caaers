@@ -73,8 +73,8 @@ public class ExpeditedReportTree extends PropertylessNode {
             section(CHECKPOINT_SECTION), // so that ordering lines up
             section(RADIATION_INTERVENTION_SECTION,
                 list("radiationInterventions","RadiationIntervention",
-                    property("treatmentArm", "Treatment arm"),
-                    property("description", "Treatment arm description"),
+                   /* property("treatmentArm", "Treatment arm"),
+                    property("description", "Treatment arm description"),*/
                     property("administration", "Type of radiation administration"),
 
                     // TODO: these should be a component instead
@@ -89,8 +89,8 @@ public class ExpeditedReportTree extends PropertylessNode {
             ),
             section(SURGERY_INTERVENTION_SECTION,
                 list("surgeryInterventions", "SurgeryIntervention",
-                    property("treatmentArm", "Treatment arm"),
-                    property("description", "Treatment arm description"),
+                    /*property("treatmentArm", "Treatment arm"),
+                    property("description", "Treatment arm description"),*/
                     property("interventionSite", "Intervention site"),
                     property("interventionDate", "Intervention date")
                 )
