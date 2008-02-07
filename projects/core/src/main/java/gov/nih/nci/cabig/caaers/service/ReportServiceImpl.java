@@ -388,6 +388,9 @@ public class ReportServiceImpl  implements ReportService {
         attributions.addAll(event.getConcomitantMedicationAttributions());
         attributions.addAll(event.getCourseAgentAttributions());
         attributions.addAll(event.getOtherCauseAttributions());
+        attributions.addAll(event.getRadiationAttributions());
+        attributions.addAll(event.getSurgeryAttributions());
+        attributions.addAll(event.getDeviceAttributions());
         return attributions;
     }
 
