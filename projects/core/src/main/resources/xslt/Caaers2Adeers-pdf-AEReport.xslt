@@ -36,7 +36,7 @@
 	    
 		<fo:layout-master-set>
 		  	<fo:simple-page-master master-name="A4" margin-left="2mm" margin-top="2mm" margin-right="0.25in">
-		    	<fo:region-body margin-top="2in"/>
+		    	<fo:region-body margin-top="3in"/>
 		    	<fo:region-before extent="2in"/>
 		    	<fo:region-after extent="0.5in"/>
 		  	</fo:simple-page-master>
@@ -99,7 +99,7 @@
 				<fo:block margin-left="4mm"> 
 					<fo:inline xsl:use-attribute-sets="label" > Protocol Number  :</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal" > 
-				   		<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/shortTitle"/>
+				   		<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier/value"/>
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160; </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > CTC Version  :</fo:inline>
@@ -392,7 +392,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/institutionalPatientNumber"/>
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/Identifier/value"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -497,7 +497,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/term"/>
+						  			<xsl:value-of select="AdverseEventReport/DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -694,9 +694,12 @@
 		  			</fo:table-body>
 		  		</fo:table>
 		  		
+		  		<xsl:if test="AdverseEventReport/RadiationIntervention">
 				<fo:block>
 					<fo:leader leader-length="95%" leader-pattern="rule"/>
 				</fo:block>
+				
+				
 				
   				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
 		  			Radiation Intervention
@@ -718,7 +721,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/RadiationIntervention/treatmentArm"/>
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -732,7 +735,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/RadiationIntervention/description"/>
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -827,7 +830,11 @@
 		  			    </fo:table-row>		
 		  					  		  			  	  
 		  			</fo:table-body>
-		  		</fo:table>			
+		  		
+		  		</fo:table>		
+		  		</xsl:if>	
+		  		
+		  		<xsl:if test="AdverseEventReport/SurgeryIntervention">
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -852,7 +859,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/SurgeryIntervention/treatmentArm"/>
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/code"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -866,11 +873,11 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/SurgeryIntervention/description"/>
+						  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
-
+<!--
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
@@ -883,7 +890,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
-		  			  
+-->		  			  
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
@@ -892,7 +899,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/SurgeryIntervention/AnatomicSite/name"/>
+						  			<xsl:value-of select="AdverseEventReport/SurgeryIntervention/InterventionSite/name"/>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>
@@ -913,11 +920,17 @@
 		  			    </fo:table-row>
 		  			</fo:table-body>
 		  		</fo:table>								  		  		
+				
+				</xsl:if>
+				
+  				<fo:block break-before="page" /> 
 
-  				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
-		  			Medical Device
-		  		</fo:block>
 		  		
+		  		<xsl:if test="AdverseEventReport/MedicalDevice">
+		  		
+  				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Medical Device
+		  		</fo:block>		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
     				
 		  		<fo:table>
@@ -1185,7 +1198,9 @@
 
 		  			</fo:table-body>
 		  		</fo:table>								  		  		
-
+				
+				</xsl:if>
+				
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -1376,7 +1391,8 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="totalDoseAdministeredThisCourse"/>
+						  			<xsl:value-of select="Dose/amount"/>
+						  			<xsl:value-of select="Dose/units"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
