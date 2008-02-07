@@ -6,14 +6,18 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers-grid</artifactId>
-         <version>0.10-SNAPSHOT</version>
+         <version>{caaers.version}</version>
     </parent>
     <properties>
         <assembly-file>${basedir}/ext-lib-assembly.xml</assembly-file>
     </properties>
     <modules>
+        <!--<module>CaaersDataService</module>-->
+       <!---->
+        <!--<module>StudyService</module>-->
         <module>AdverseEventConsumerService</module>
-        </modules>
+
+    </modules>
 
     <!-- These dependencies are used by all introduce-based services -->
     <dependencies>
@@ -104,6 +108,6 @@
             <groupId>castor</groupId>
             <artifactId>castor</artifactId>
             <version>0.9.9</version>
-        </dependency>
+           </dependency>
     </dependencies>
 </project>

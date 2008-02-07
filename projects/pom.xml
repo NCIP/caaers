@@ -3,7 +3,7 @@
     <groupId>gov.nih.nci.cabig.caaers</groupId>
     <artifactId>caaers</artifactId>
     <packaging>pom</packaging>
-    <version>0.10-SNAPSHOT</version>
+    <version>{caaers.version}</version>
     <name>caAERS</name>
     <description>
         caAERS is the caBIG Adverse Event Reporting System.
@@ -54,10 +54,12 @@
         <module>web</module>
         <module>grid</module>
         <!--<module>jbi</module>-->
+    <!---->
     </modules>
 
     <properties>
         <ctms-commons.version>0.7</ctms-commons.version>
+        <caaers.version>0.10-SNAPSHOT</caaers.version>
     </properties>
 
     <!-- Specify versions once for commonly-used deps -->

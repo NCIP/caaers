@@ -6,7 +6,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>0.10-SNAPSHOT</version>
+        <version>{caaers.version}</version>
     </parent>
     <pluginRepositories>
         <!-- For maven-buildnumber-plugin -->
