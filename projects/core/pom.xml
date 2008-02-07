@@ -57,8 +57,14 @@
             <groupId>gov.nih.nci.security.acegi</groupId>
             <artifactId>acegi-grid</artifactId>
             <version>${ctms-commons.version}</version>
+            <!-- Based on request from caXchange team -->
+          <exclusions>
+             <exclusion>
+             	<groupId>org.globus</groupId>
+             	<artifactId>cog-jglobus</artifactId>
+             </exclusion>
+            </exclusions>
         </dependency>
-
         <dependency>
             <groupId>gov.nih.nci.cabig.ctms</groupId>
             <artifactId>ctms-commons-core</artifactId>
@@ -170,6 +176,7 @@
           <groupId>org.apache.activemq</groupId>
           <artifactId>activemq-core</artifactId>
           <version>4.1.1</version>
+          <scope>provided</scope>
         </dependency>
         <!--
         <dependency> <! This is apparently an activemq dep, but it isn't getting pulled in -
@@ -291,7 +298,14 @@
              <artifactId>activation</artifactId>
              <version>1.1</version>
 		</dependency>
-	
+		<!-- BUILD ONLY DEPS -->
+		 <!-- Added globus as direct dependency, and mentioned in provided scope. -->
+		<dependency>
+			<groupId>org.globus</groupId>
+            <artifactId>cog-jglobus</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+		</dependency>
         <!-- TEST-ONLY DEPS -->
 
         <dependency>
