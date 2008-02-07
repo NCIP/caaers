@@ -29,7 +29,7 @@
 	</div>
     
     
-	 <c:forEach begin="2" end="${fn:length(fieldGroup.fields) - 1}" var="i">
+	 <c:forEach begin="0" end="${fn:length(fieldGroup.fields) - 1}" var="i">
         <tags:renderRow field="${fieldGroup.fields[i]}"/>
     </c:forEach>
     
