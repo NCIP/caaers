@@ -169,36 +169,28 @@
             <RADIATION_INTERVENTION>
                 <xsl:choose>
                     <xsl:when test="RadiationIntervention/administration = 'BT_HDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        HDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy HDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_LDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        LDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy LDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam
-                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_2D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        2D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 2D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_3D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        3D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 3D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_IMRT' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_PROTON' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        Proton</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, Proton</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
                         <TYPE_OF_RADIATION_ADMINISTRATION>Systemic
@@ -872,18 +864,19 @@
                                 <CAUSE_NAME>External Beam NOS</CAUSE_NAME>
                             </xsl:when>
                             <xsl:when test="RadiationIntervention/administration = 'EB_2D' ">
-                                <CAUSE_NAME>External Beam,2D</CAUSE_NAME>
+                                <CAUSE_NAME>External Beam, 2D</CAUSE_NAME>
                             </xsl:when>
                             <xsl:when test="RadiationIntervention/administration = 'EB_3D' ">
-                                <CAUSE_NAME>External Beam,3D</CAUSE_NAME>
+                                <CAUSE_NAME>External Beam, 3D</CAUSE_NAME>
                             </xsl:when>
                             <xsl:when test="RadiationIntervention/administration = 'EB_IMRT' ">
-                                <CAUSE_NAME>External Beam,IMRT</CAUSE_NAME>
+                                <CAUSE_NAME>External Beam, IMRT</CAUSE_NAME>
                             </xsl:when>
                             <xsl:when test="RadiationIntervention/administration = 'EB_PROTON' ">
-                                <CAUSE_NAME>External Beam,Proton</CAUSE_NAME>
+                                <CAUSE_NAME>External Beam, Proton</CAUSE_NAME>
                             </xsl:when>
-                            <xsl:when test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
+                            <xsl:when
+                                test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
                                 <CAUSE_NAME>Systemic radiotherapy</CAUSE_NAME>
                             </xsl:when>
                             <xsl:otherwise>
