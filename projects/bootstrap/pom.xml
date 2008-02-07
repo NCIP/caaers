@@ -11,7 +11,7 @@
     <parent>
         <groupId>gov.nih.nci.cabig.caaers</groupId>
         <artifactId>caaers</artifactId>
-        <version>{caaers.version}</version>
+        <version>${caaers.version}</version>
     </parent>
     <dependencies>
         <!-- BUILD/RUNTIME DEPS -->

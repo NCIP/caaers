@@ -3,7 +3,7 @@
     <groupId>gov.nih.nci.cabig.caaers</groupId>
     <artifactId>caaers</artifactId>
     <packaging>pom</packaging>
-    <version>{caaers.version}</version>
+    <version>${caaers.version}</version>
     <name>caAERS</name>
     <description>
         caAERS is the caBIG Adverse Event Reporting System.
