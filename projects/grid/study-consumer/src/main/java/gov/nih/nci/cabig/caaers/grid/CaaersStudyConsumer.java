@@ -80,7 +80,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         }
 
         String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
-        Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+        gov.nih.nci.cabig.caaers.domain.Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         //check if study was created by the grid service or not
         if (study == null) {
             String message = "Null input";
@@ -128,7 +128,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             logger.info("Begining of studyConsumer : createStudy");
             if (studyDto == null) throw getInvalidStudyException("null input");
 
-            Study study = null;
+            gov.nih.nci.cabig.caaers.domain.Study study = null;
             String ccIdentifier = findCoordinatingCenterIdentifier(studyDto);
             study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             if (study != null) {
@@ -136,7 +136,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 return;
             }
 
-            study = new Study();
+            study = new gov.nih.nci.cabig.caaers.domain.Study();
             study.setGridId(studyDto.getGridId());
             populateStudyDetails(studyDto, study);
             studyDao.save(study);
@@ -180,13 +180,13 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     }
 
-    void populateStudyDetails(gov.nih.nci.ccts.grid.Study studyDto, Study study) throws StudyCreationException, InvalidStudyException {
+    void populateStudyDetails(gov.nih.nci.ccts.grid.Study studyDto, gov.nih.nci.cabig.caaers.domain.Study study) throws StudyCreationException, InvalidStudyException {
 
         study.setShortTitle(studyDto.getShortTitleText());
         study.setLongTitle(studyDto.getLongTitleText());
         study.setPrecis(studyDto.getPrecisText());
         study.setDescription(studyDto.getDescriptionText());
-        study.setStatus(Study.STATUS_ACTIVE);
+        study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
         study.setAdeersReporting(Boolean.FALSE);
         study.setPhaseCode(studyDto.getPhaseCode());
         study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto.getMultiInstitutionIndicator()));
@@ -208,7 +208,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @param identifierTypes
      * @throws StudyCreationException
      */
-    void populateIdentifiers(Study study, IdentifierType[] identifierTypes) throws StudyCreationException {
+    void populateIdentifiers(gov.nih.nci.cabig.caaers.domain.Study study, IdentifierType[] identifierTypes) throws StudyCreationException {
         if (ArrayUtils.isEmpty(identifierTypes)) {
             logger.error("No identifiers are associated to this study");
             String message = "No identifiers are assigned to this study (grid Id : " + study.getGridId() + ")";
@@ -251,18 +251,16 @@ public class CaaersStudyConsumer implements StudyConsumerI {
                 String message = "Unknown IdentifierType in grid Study " + study.getGridId();
                 throw getStudyCreationException(message);
             }
-            
+           /* 
             //find coordinating center identifier
             OrganizationAssignedIdentifier coordinatingCenterId = null;
             //find funding sponsor identifier
             OrganizationAssignedIdentifier fundingSponsorId = null;
             for(OrganizationAssignedIdentifier id : orgIdentifiers) {
-            	if(id.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE) &&
-            			coordinatingCenterId != null){
+            	if(id.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)){
             		coordinatingCenterId = id;
             	}
-            	if(id.getType().equlas(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE) && 
-            			fundingSponsorId != null){
+            	if(StringUtils.equals(id.getType(), OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE) ){
             		fundingSponsorId = id;
             	}
             }
@@ -275,6 +273,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	coordinatingCenterId = new OrganizationAssignedIdentifier();
             	coordinatingCenterId.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
             	coordinatingCenterId.setValue("UNKNOWN");
+            	coordinatingCenterId.setOrganization(fetchOrganization("NCIC"));
             }
             
             if(fundingSponsorId != null){
@@ -283,12 +282,14 @@ public class CaaersStudyConsumer implements StudyConsumerI {
             	fundingSponsorId = new OrganizationAssignedIdentifier();
             	fundingSponsorId.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
             	fundingSponsorId.setValue("UNKNOWN");
+            	fundingSponsorId.setOrganization(fetchOrganization("NCIC"));
             }
             
             
             //Add identifiers to the study.
             study.addIdentifier(fundingSponsorId);
             study.addIdentifier(coordinatingCenterId);
+            */
             for(OrganizationAssignedIdentifier id : orgIdentifiers) {
             	study.addIdentifier(id);
             }
@@ -315,7 +316,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @param studyOrgTypes
      * @throws InvalidStudyException
      */
-    void populateStudyOrganizations(Study study, StudyOrganizationType[] studyOrgTypes) throws StudyCreationException, InvalidStudyException {
+    void populateStudyOrganizations(gov.nih.nci.cabig.caaers.domain.Study study, StudyOrganizationType[] studyOrgTypes) throws StudyCreationException, InvalidStudyException {
 
         if (ArrayUtils.isEmpty(studyOrgTypes)) {
             logger.error("No organization is associated to this study (gridId :" + study.getGridId() + ")");
@@ -444,11 +445,11 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         return orgList.get(0);
     }
 
-    Study fetchStudy(String ccIdentifier, String identifierType) {
+    gov.nih.nci.cabig.caaers.domain.Study fetchStudy(String ccIdentifier, String identifierType) {
         StudyQuery studyQuery = new StudyQuery();
         studyQuery.filterByIdentifierValueExactMatch(ccIdentifier);
         studyQuery.filterByIdentifierType(identifierType);
-        List<Study> studies = studyDao.find(studyQuery);
+        List<gov.nih.nci.cabig.caaers.domain.Study> studies = studyDao.find(studyQuery);
         if (studies == null || studies.isEmpty()) return null;
         return studies.get(0);
 
