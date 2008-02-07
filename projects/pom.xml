@@ -52,7 +52,7 @@
         <module>core</module>
         <module>rules</module>
         <module>web</module>
-        <!--<module>grid</module>-->
+        <module>grid</module>
         <!--<module>jbi</module>-->
     </modules>
 

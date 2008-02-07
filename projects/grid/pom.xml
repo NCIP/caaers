@@ -9,8 +9,7 @@
          <version>0.10-SNAPSHOT</version>
     </parent>
     <modules>
-        <module>study-consumer</module>
-        <module>registration-consumer</module>
+        <module>introduce</module>
     </modules>
 
 </project>

@@ -13,10 +13,7 @@
     </properties>
     <modules>
         <module>AdverseEventConsumerService</module>
-        <module>candidate-AdverseEvent-Creation-Service</module>
-        <module>protocol-service</module>
-        <module>StudyService</module>
-    </modules>
+        </modules>
 
     <!-- These dependencies are used by all introduce-based services -->
     <dependencies>
