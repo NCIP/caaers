@@ -209,7 +209,13 @@
             <version>2.0</version>
             <scope>provided</scope>
         </dependency>
-
+		 <!-- Added globus as direct dependency, and mentioned in provided scope. -->
+		<dependency>
+			<groupId>org.globus</groupId>
+            <artifactId>cog-jglobus</artifactId>
+            <version>1.2</version>
+            <scope>provided</scope>
+		</dependency>
         <!-- RUNTIME-ONLY DEPS -->
 
         <dependency>
