@@ -1198,12 +1198,13 @@
 
 		  			</fo:table-body>
 		  		</fo:table>								  		  		
-				
-				</xsl:if>
-				
-		  			<fo:block>
+					<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
+				</xsl:if>
+				
+				<xsl:if test="AdverseEventReport/SAEReportPriorTherapy">
+
 					
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Prior Therapies
@@ -1249,7 +1250,7 @@
 		     						</fo:table-cell>      						      						      						
 			  			    </fo:table-row> 
 	  			    		  			
-		  	      			<!--  <xsl:apply-templates select="AdverseEventReport/SAEReportPriorTherapy"/> -->
+
 		  	      			
 						<xsl:for-each select="AdverseEventReport/SAEReportPriorTherapy">
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -1289,6 +1290,10 @@
 
 		  			</fo:table-body>
 		  		</fo:table>	
+		  		
+		  		</xsl:if>
+		  		
+		  		<xsl:if test="AdverseEventReport/SAEReportPreExistingCondition">
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -1304,7 +1309,9 @@
 						  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>
-
+				</xsl:if>
+				
+				<xsl:if test="AdverseEventReport/DiseaseHistory/MetastaticDiseaseSite">
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -1319,7 +1326,7 @@
 				</xsl:for-each>		  		
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:block xsl:use-attribute-sets="normal" >  </fo:block>		  		
-
+				</xsl:if>
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -1744,7 +1751,8 @@
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
-					
+				
+				<xsl:if test="AdverseEventReport/Lab">	
 
   				<fo:block  xsl:use-attribute-sets="sub-head" > 
 		  			Abnormal and Relevant Normal Lab Results
@@ -1818,7 +1826,7 @@
 						  		</fo:block>      							
       						</fo:table-cell> 
 		  			    </fo:table-row>
-		  			  
+		  	
  					 <xsl:for-each select="AdverseEventReport/Lab"> 
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell>
@@ -1881,7 +1889,8 @@
 		  			    </fo:table-row>
 					</xsl:for-each>
 		  			</fo:table-body>
-		  		</fo:table>			  		
+		  		</fo:table>		
+		  		</xsl:if>	  		
   			  <fo:block id="content_terminator"/>    
 		  </fo:flow>
 		</fo:page-sequence>
