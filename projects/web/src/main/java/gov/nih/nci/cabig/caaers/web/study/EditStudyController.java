@@ -145,7 +145,7 @@ public class EditStudyController extends StudyController<Study> {
 		if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
 			return false;
 		}
-		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont saveResearchStaff if it is overview page
+		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it is overview page
 	}
 
 }

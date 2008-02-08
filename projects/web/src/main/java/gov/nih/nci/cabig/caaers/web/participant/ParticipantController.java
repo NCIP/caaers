@@ -53,7 +53,6 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 		super.initBinder(request, binder);
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
-		binder.registerCustomEditor(DateValue.class, new DateValueEditor());
 		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
 	}
 

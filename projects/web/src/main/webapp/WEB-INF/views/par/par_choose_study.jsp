@@ -69,7 +69,8 @@ function updateTargetPage(s){
             filterable="false"
             showPagination="false" form="command"
             cellspacing="0" cellpadding="0" border="0" width="80%" style=""
-            styleClass="">
+            styleClass=""
+            autoIncludeParameters="false">
             <ec:row highlightRow="true">
                 <ec:column property="transient0" style="width:10px" filterable="false"
                     sortable="false" title=" ">

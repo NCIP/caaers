@@ -15,6 +15,8 @@
     Object message = request.getAttribute("javax.servlet.error.message");
 %>
 
+<%@page import="java.io.PrintStream"%>
+<%@page import="java.io.PrintWriter"%>
 <page:applyDecorator  name="standard">
 
 <html>
@@ -172,6 +174,15 @@
                 <%
                     }
                 %>
+                <tr>
+                  <td colspan="2">
+                  	   StackTrace :<br />
+                  	   <% 
+                  	   	exception.printStackTrace(new PrintWriter(out)); 
+                  	   %>
+                  	   
+                  </td>
+                </tr>
             </table>
 
         </div>

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -40,6 +41,7 @@ public class NewParticipantCommand {
 
 	public NewParticipantCommand() {
 		participant = new Participant();
+		participant.setDateOfBirth(new DateValue(null, null, null));
 	}
 
 	public NewParticipantCommand(final Participant participant) {

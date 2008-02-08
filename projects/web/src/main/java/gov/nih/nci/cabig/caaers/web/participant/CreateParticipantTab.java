@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -9,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -18,6 +20,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +85,16 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 				InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
 		participantFieldGroup.getFields().add(
 				InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
-		InputField dobField = InputFieldFactory.createTextField("participant.dateOfBirth", "Date of Birth", true);
+		
+		InputField dobYear = InputFieldFactory.createTextField("year", "Year", true);
+		InputFieldAttributes.setSize(dobYear, 4);
+		InputField dobMonth = InputFieldFactory.createTextField("month", "Month");
+		InputFieldAttributes.setSize(dobMonth, 2);
+		InputField dobDay = InputFieldFactory.createTextField("day", "Day");
+		InputFieldAttributes.setSize(dobDay, 2);
+		
+		CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
+		dobField.setRequired(true);
 		dobField.getAttributes().put(InputField.HELP,"par.par_create_participant.participant.dateOfBirth");
 		participantFieldGroup.getFields().add(dobField);
 
@@ -138,71 +150,25 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
 	@Override
 	public void validate(final NewParticipantCommand command, final Errors errors) {
-		boolean noPrimaryIdentifier = true;
-
-		boolean organization = command.getOrganization() == null || command.getOrganization().getName().equals("");
-
-		boolean firstName = command.getParticipant().getFirstName() == null
-				|| command.getParticipant().getFirstName().equals("");
-		boolean lastName = command.getParticipant().getLastName() == null
-				|| command.getParticipant().getLastName().equals("");
-		boolean dateOfBirth = command.getParticipant().getDateOfBirth() == null;
-		boolean gender = command.getParticipant().getGender().equals("---");
-		boolean ethnicity = command.getParticipant().getEthnicity().equals("---");
-		boolean race = command.getParticipant().getRace().equals("---");
-		if (organization) {
-			errors.rejectValue("organization", "REQUIRED", "Missing Site");
+		boolean hasPrimaryID = false;
+		Calendar now = Calendar.getInstance();
+		DateValue dob = command.getParticipant().getDateOfBirth();
+		if( (dob.getMonth() != null && (dob.getMonth() < 0 || dob.getMonth() > 12)) ||
+			(dob.getDay() != null && (dob.getDay() < 0 || dob.getDay() > 31)) || 
+			(dob.getYear() == null || dob.getYear() < 0 || dob.getYear() > now.get(Calendar.YEAR)) ||
+			 now.after(dob.toDate())
+		){
+			errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
 		}
-		if (firstName) {
-			errors.rejectValue("participant.firstName", "REQUIRED", "Missing First Name");
+		
+		
+		for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
+			hasPrimaryID |= identifier.isPrimary();
+			if(hasPrimaryID) break;
 		}
-		if (lastName) {
-			errors.rejectValue("participant.lastName", "REQUIRED", "Missing Last Name");
-		}
-		if (dateOfBirth) {
-			errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Missing Date Of Birth");
-		}
-		if (gender) {
-			errors.rejectValue("participant.gender", "REQUIRED", "Please Specify a Gender");
-		}
-		if (ethnicity) {
-			errors.rejectValue("participant.ethnicity", "REQUIRED", "Please Specify the Ethnicity");
-		}
-		if (race) {
-			errors.rejectValue("participant.race", "REQUIRED", "Please specify the Race");
-		}
-
-		List<Identifier> identifiers = command.getParticipant().getIdentifiers();
-		for (int i = 0; i < identifiers.size(); i++) {
-			Identifier identifier = identifiers.get(i);
-			if (identifier instanceof OrganizationAssignedIdentifier
-					&& ((OrganizationAssignedIdentifier) identifier).getOrganization() == null) {
-				errors.rejectValue("participant.identifiers[" + i + "].organization", "REQUIRED",
-						"Organization is required..!");
-
-			}
-			else if (identifier instanceof SystemAssignedIdentifier
-					&& (((SystemAssignedIdentifier) identifier).getSystemName() == null || ((SystemAssignedIdentifier) identifier)
-							.getSystemName().equals(""))) {
-
-				errors.rejectValue("participant.identifiers[" + i + "].systemName", "REQUIRED",
-						"System Name is required..!");
-			}
-			if (identifier.getValue() == null || identifier.getValue().trim().equals("")) {
-
-				errors.rejectValue("participant.identifiers[" + i + "].value", "REQUIRED", "Identifier is required..!");
-			}
-			if (identifier.getType() == null || identifier.getType().trim().equals("")) {
-
-				errors.rejectValue("participant.identifiers[" + i + "].type", "REQUIRED",
-						"Identifier type is required..!");
-			}
-			noPrimaryIdentifier = false;
-		}
-		if (noPrimaryIdentifier) {
-			errors.rejectValue("participant.identifiers", "REQUIRED",
-					"Please Include at least a single primary Identifier");
-		}
+		if (!hasPrimaryID) errors.rejectValue("participant.identifiers", 
+					"REQUIRED", "Please Include at least a single primary Identifier");
+		
 	}
 
 	public void setOrganizationDao(final OrganizationDao organizationDao) {
