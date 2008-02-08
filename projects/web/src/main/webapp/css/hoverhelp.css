@@ -1,0 +1,27 @@
+@CHARSET "ISO-8859-1";
+/* The hint to Hide and Show */
+.hint {
+	z-index: 3; /* To handle the overlapping issue*/
+    display: none;
+    position: absolute;
+    width: 200px;
+    white-space: normal;
+    margin-top: -4px;
+    border: 1px solid #c93;
+    padding: 10px 12px;
+    opacity:.75;
+    background: #ffc url(../images/pointer.gif) no-repeat -10px 5px;
+}
+
+/* The pointer image is hadded by using another span */
+.hint .hint-pointer {
+	z-index: 3; /* To handle the overlapping issue*/
+    position: absolute;
+	left: -10px;
+    top: 5px;
+    width: 10px;
+    height: 19px;
+    white-space: normal;
+	background: url(../images/pointer.gif) left top no-repeat; 
+}
+
