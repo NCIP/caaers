@@ -10,7 +10,9 @@
     </parent>
     <modules>
         <module>introduce</module>
-        <module>study-consumer</module>
+
+        <!--<module>study-consumer</module>-->
+        <!---->
         <module>registration-consumer</module>
     </modules>
 
