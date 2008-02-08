@@ -249,7 +249,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
         participant.setGridId(partBean.getGridId());
         participant.setGender(partBean.getAdministrativeGenderCode());
-        participant.setDateOfBirth(partBean.getBirthDate());
+        participant.setDateOfBirth(new DateValue(partBean.getBirthDate()));
         participant.setEthnicity(partBean.getEthnicGroupCode());
         participant.setFirstName(partBean.getFirstName());
         participant.setLastName(partBean.getLastName());
