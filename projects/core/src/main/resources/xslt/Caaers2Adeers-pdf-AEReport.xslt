@@ -402,9 +402,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth"/>
-			   						</xsl:call-template>						  		
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>					  		
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
