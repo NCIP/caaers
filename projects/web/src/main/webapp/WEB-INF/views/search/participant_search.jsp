@@ -53,10 +53,10 @@ function buildTable(form) {
 
 
 <form:form name="searchForm" id="searchForm" method="post">
- Search for Subjects by choosing any of the listed Criteria. The result set will show a list of Subjects. 
-The Subject primary identifier , first name , last name , gender, race , ethnicity and the associated study ID will be 
-shown on the screen. 
-<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+<p>
+  Search for subjects by choosing any of the listed criteria.
+</p>
+<chrome:box title="Study sriteria" cssClass="paired" autopad="true">
 		    <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>
@@ -68,7 +68,7 @@ shown on the screen.
 		    </div>
 </chrome:box>
 
-<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
 		      <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="firstName"/></div>
@@ -135,7 +135,7 @@ shown on the screen.
 </div>
 
 
-<chrome:box title="Subject Search Results">
+<chrome:box title="Subject search results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 

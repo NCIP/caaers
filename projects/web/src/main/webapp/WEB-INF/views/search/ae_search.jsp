@@ -53,13 +53,13 @@ function buildTable(form) {
 
 
 <form:form name="searchForm" id="searchForm" method="post">
-Search for Adverse Events by choosing any of the listed Criteria. The result set will only show 
-the Study & Protocol Authority Identifier associated with this AE as well as AE's type, Ctc Term , category , grade, medDRA code and Detection Date
+<p>
+  Search for AEs by choosing any of the listed criteria.
+</p>
 
-
-<chrome:box title="AE Criteria" cssClass="paired" autopad="true">
+<chrome:box title="AE criteria" cssClass="paired" autopad="true">
 		     <div class="row">
-		    	<div class="label"> Ctc Category :&nbsp; </div>
+		    	<div class="label"> CTC Category :&nbsp; </div>
 		    	<div class="value">
 		    	<select onChange="copyValues('prop0_select','prop0')" style="width:150px" id="prop0_select">
 		    			<option>---</option>
@@ -89,7 +89,7 @@ the Study & Protocol Authority Identifier associated with this AE as well as AE'
 </chrome:box>
 
 
-<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Study criteria" cssClass="paired" autopad="true">
 		    
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp;</div>
@@ -104,7 +104,7 @@ the Study & Protocol Authority Identifier associated with this AE as well as AE'
 </chrome:box>
 
 
-<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
 		        <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>
@@ -172,7 +172,7 @@ the Study & Protocol Authority Identifier associated with this AE as well as AE'
 </div>
 
 
-<chrome:box title="Adverse Event Search Results">
+<chrome:box title="AE search results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 

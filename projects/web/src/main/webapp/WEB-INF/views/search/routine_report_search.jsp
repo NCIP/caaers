@@ -52,9 +52,10 @@ function buildTable(form) {
 <body>
 
 <form:form name="searchForm" id="searchForm" method="post">
-Search for Routine AE reports by choosing any of the listed Criteria. The result set will only show 
-the primary AE's Ctc Term which is associated with the Expedited Report , it's grade, attribution and the detection date.
-<chrome:box title="Routine Report Criteria" cssClass="paired" autopad="true">
+<p>
+  Search for routine AEs by choosing any of the listed criteria.
+</p>
+<chrome:box title="Routine AE criteria" cssClass="paired" autopad="true">
 
 			<div class="row">
 		    	<div class="label"> Observation Date :&nbsp; </div>
@@ -62,12 +63,12 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 		    </div>
 				
 		    <div class="row">
-		    	<div class="label"> Ctc Term :&nbsp; </div>
+		    	<div class="label"> CTC Term :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text"/></div>
 		    </div>
 		    
 		   <div class="row">
-		    	<div class="label"> Ctc Category :&nbsp; </div>
+		    	<div class="label"> CTC Category :&nbsp; </div>
 		    	<div class="value">
 		    	<select onChange="copyValues('prop2_select','prop2')" style="width:150px" id="prop2_select">
 		    			<option>---</option>
@@ -85,7 +86,7 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 		    </div>
 </chrome:box>
 
-<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Study criteria" cssClass="paired" autopad="true">
 		    <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop4" type="text"/></div>
@@ -97,7 +98,7 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 		    </div>
 </chrome:box>
 
-<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>
@@ -164,7 +165,7 @@ the primary AE's Ctc Term which is associated with the Expedited Report , it's g
 </div>
 
 
-<chrome:box title="Routine Report Search Results">
+<chrome:box title="Routine AE search results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 

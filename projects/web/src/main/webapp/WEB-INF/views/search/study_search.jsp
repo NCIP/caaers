@@ -52,10 +52,10 @@ function buildTable(form) {
 <body>
 
 <form:form name="searchForm" id="searchForm" method="post">
-  Search for Studies by choosing any of the listed Criteria. The result set will show a list of Studies. 
-The Study primary identifier , short title , sponsor, phase and status will be 
-shown on the screen. 
-<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
+<p>
+  Search for studies by choosing any of the listed criteria.
+</p>  
+<chrome:box title="Study criteria" cssClass="paired" autopad="true">
 		    <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>
@@ -67,7 +67,7 @@ shown on the screen.
 		    </div>
 </chrome:box>
 
-<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="firstName"/></div>
@@ -134,7 +134,7 @@ shown on the screen.
 </div>
 
 
-<chrome:box title="Study Search Results">
+<chrome:box title="Study search results">
 	
      <chrome:division id="single-fields">
         <div id="tableDiv">
