@@ -150,15 +150,10 @@
 							Protocol # :
 						</fo:inline>
 						<fo:inline xsl:use-attribute-sets="normal">
+							<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/Identifier/value"/>
+							-
 							<xsl:value-of
 								select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/shortTitle" />
-						</fo:inline>
-					</fo:block>
-
-					<fo:block margin-left="4mm">
-						<fo:inline xsl:use-attribute-sets="normal">
-							<xsl:value-of
-								select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/description" />
 						</fo:inline>
 
 					</fo:block>
@@ -193,7 +188,7 @@
 								</fo:table-cell>
 								<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/institutionalPatientNumber"/>
+							  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/Identifier/value"/>
 							  		</fo:block>  
 								</fo:table-cell>
 							</fo:table-row>
@@ -206,11 +201,11 @@
 									</fo:block>
 								</fo:table-cell>
 								<fo:table-cell>
-							  		<fo:block xsl:use-attribute-sets="normal" > 
-										<xsl:call-template name="standard_date">
-										        <xsl:with-param name="date" select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth"/>
-				   						</xsl:call-template>						  		
-							  		</fo:block> 
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>					  		
+						  		</fo:block> 
 								</fo:table-cell>
 
 							</fo:table-row>
