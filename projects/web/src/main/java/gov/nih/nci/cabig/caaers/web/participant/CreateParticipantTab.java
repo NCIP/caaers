@@ -155,7 +155,7 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 		DateValue dob = command.getParticipant().getDateOfBirth();
 		if( (dob.getMonth() != null && (dob.getMonth() < 0 || dob.getMonth() > 12)) ||
 			(dob.getDay() != null && (dob.getDay() < 0 || dob.getDay() > 31)) || 
-			(dob.getYear() == null || dob.getYear() < 0 || dob.getYear() > now.get(Calendar.YEAR)) ||
+			(dob.getYear() == null || dob.getYear() < 1900 || dob.getYear() > now.get(Calendar.YEAR)) ||
 			 now.after(dob.toDate())
 		){
 			errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
