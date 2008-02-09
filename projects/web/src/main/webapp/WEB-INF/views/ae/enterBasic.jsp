@@ -300,7 +300,7 @@
             createAE.buildTermsTableByCategory(parameterMap, ctcId, tableId, showTable2);
             function showTable2(table) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById(tableId);
+                var testDiv = $(tableId);
                 testDiv.innerHTML = table;
                 testDiv.show();
 
@@ -314,7 +314,7 @@
 
             function showTable2(table) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById(tableId);
+                var testDiv = $(tableId);
                 testDiv.innerHTML = table;
                 testDiv.show();
 
@@ -326,20 +326,20 @@
 
             var index = tableId.substring(tableId.length - 1, tableId.length)
 
-            var div = document.getElementById(tableId)
+            var div = $(tableId)
             div.hide()
             createAE.getTermByTermId(termId, function(values) {
 
                 var ae = AESections[index];
                 ae.selectTerm(values[0])
-                var ctcTerm = document.getElementById('aeReport.adverseEvents[' + index + '].adverseEventCtcTerm.ctcTerm-input')
+                var ctcTerm = $('aeReport.adverseEvents[' + index + '].adverseEventCtcTerm.ctcTerm-input')
                 ctcTerm.value = termValueSelector(values[0])
 
             });
         }
 
         function enableDisableAjaxTable(tableIndex) {
-            var testDiv = document.getElementById('table' + tableIndex);
+            var testDiv = $('table' + tableIndex);
             if (!testDiv== '')
             {
                 testDiv.hide()

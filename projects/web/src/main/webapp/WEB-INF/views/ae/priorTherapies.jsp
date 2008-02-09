@@ -112,7 +112,7 @@
                var parameterMap = getParameterMap('command');
                createAE.buildChemoAgentsTable(parameterMap,tableId,showPopUpTable);
                function showPopUpTable(table) {
-                   var testDiv = document.getElementById(tableId);
+                   var testDiv = $(tableId);
                    testDiv.innerHTML = table;
                    testDiv.show();
 
@@ -121,9 +121,7 @@
            }
 
         function fillChemoAgentAutoCompletor(chemoAgentId, tableId) {
-
-
-            var div = document.getElementById(tableId)
+            var div = $(tableId)
             div.hide()
             createAE.getChemoAgentById(chemoAgentId, function(values) {
 
@@ -131,9 +129,9 @@
                 var index = tableId.substring(tableId.indexOf('index') + 5, tableId.length)
 
                 var autoCompleterFileId = 'aeReport.saeReportPriorTherapies[' + parentIndex + '].priorTherapyAgents[' + index + '].chemoAgent'
-                var ctcTerm = document.getElementById(autoCompleterFileId + '-input')
+                var ctcTerm = $(autoCompleterFileId + '-input')
                 ctcTerm.value = values.name
-                document.getElementById(autoCompleterFileId).value = chemoAgentId
+                $(autoCompleterFileId).value = chemoAgentId
 
             });
         }

@@ -168,10 +168,9 @@
         var parameterMap = getParameterMap('command');
         createAE.buildAnatomicSiteTable(parameterMap,tableId,showPopUpTable);
         function showPopUpTable(table) {
-            var testDiv = document.getElementById(tableId);
+            var testDiv = $(tableId)
             testDiv.innerHTML = table;
             testDiv.show();
-
         }
 
     }
@@ -179,20 +178,20 @@
     function fillDiseaseSiteAutoCompletor(diseaseSiteId,tableId) {
 
 
-        var div = document.getElementById(tableId)
+        var div = $(tableId)
         div.hide()
         createAE.getAnatomicSiteById(diseaseSiteId, function(values) {
             if (tableId == 'primarySiteOfDiseaseTable')
             {
-                var ctcTerm = document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
+                var ctcTerm = $('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
                 ctcTerm.value = primarySiteValueSelector(values)
-                document.getElementById('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = diseaseSiteId
+                $('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = diseaseSiteId
             }else{
                 var index = tableId.substring(tableId.length - 1, tableId.length)
 
-                var ctcTerm = document.getElementById('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite-input')
+                var ctcTerm = $('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite-input')
                 ctcTerm.value = primarySiteValueSelector(values)
-                document.getElementById('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite').value = diseaseSiteId
+                $('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite').value = diseaseSiteId
             }
 
         });
@@ -252,15 +251,12 @@
                 <tags:renderRow field="${field}"/>
             </c:forEach>
 
-            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="2" end="2">
-                         <tags:renderRow field="${field}"
-                                         extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable')\">Show All</a>"/>
+           <tags:renderRow field="${fieldGroups['disease'].fields[2]}"
+                             extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable')\">Show All</a>" />
+           <div id="primarySiteOfDiseaseTable"
+                      style="position: absolute; display:block; left: 640px; width:400px; z-index:99;" >
+           </div>
 
-                <div id="primarySiteOfDiseaseTable"
-                      style="position: absolute; display: block; left: 640px; width:400px; z-index:99;" >
-                </div>
-
-            </c:forEach>
 
             <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="3" end="4">
                          <tags:renderRow field="${field}"/>
