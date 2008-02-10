@@ -58,8 +58,8 @@
             </c:forEach>
            
 
-			if ( $('surgeryIntervention-0') != null ){
-				$('add-surgeryIntervention-button').type="hidden";
+			if ( $('surgeryIntervention-0')){
+				$('add-surgeryIntervention-button').hide();
 			}
 			
             new ListEditor("surgeryIntervention", createAE, "SurgeryIntervention", {
@@ -68,7 +68,11 @@
                 addCallback: function(index) {
                 	AE.registerCalendarPopups("surgeryIntervention-" + index)
                 	new EnterAnatomicSite(index);
-                	$('add-surgeryIntervention-button').type="hidden";
+                	$('add-surgeryIntervention-button').hide();
+                	
+                },
+                removeCallback: function(index) {
+                	$('add-surgeryIntervention-button').show();
                 	
                 },
                  deletable: true

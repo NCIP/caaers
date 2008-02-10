@@ -37,7 +37,7 @@
             //Event.observe("aeReport.medicalDevice.deviceOperator", "change", function() { showOther(otherTextId,otherSelectId) })
 
 			if ( $('medicalDevice-0') != null ){
-				$('add-medicalDevice-button').type="hidden";
+				$('add-medicalDevice-button').hide();
 			}
 			
             new ListEditor("medicalDevice", createAE, "MedicalDevice", {
@@ -45,11 +45,11 @@
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                 	AE.registerCalendarPopups("medicalDevice-" + index)
-                	$('add-medicalDevice-button').type="hidden";
+                	$('add-medicalDevice-button').hide();
                 	
                 },
                 removeCallback: function(index) {
-                	$('add-medicalDevice-button').type="button";
+                	$('add-medicalDevice-button').show();
                 	
                 },
                  deletable: true

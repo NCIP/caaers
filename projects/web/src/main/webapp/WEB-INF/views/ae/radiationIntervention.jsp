@@ -16,8 +16,8 @@
 
         Element.observe(window, "load", function() {
         
-			if ( $('radiationIntervention-0') != null ){
-				$('add-radiationIntervention-button').type="hidden";
+			if ( $('radiationIntervention-0')){
+				$('add-radiationIntervention-button').hide();
 			}
 			
 			
@@ -26,11 +26,11 @@
                 addParameters: [aeReportId],
                 addCallback: function(index) {
                 	AE.registerCalendarPopups("radiationIntervention-" + index)
-                	$('add-radiationIntervention-button').type="hidden";
+                	$('add-radiationIntervention-button').hide();
                 	
                 },
                 removeCallback: function(index) {
-                	$('add-radiationIntervention-button').type="button";
+                	$('add-radiationIntervention-button').show();
                 	
                 },
                 deletable: true

@@ -9,7 +9,7 @@
     <tags:includeScriptaculous/>
     <style type="text/css">
         
-        div.row div.label { width: 18em; } 
+        div.row div.label { width: 18em;} 
 		div.row div.value, div.row div.extra { margin-left: 19em; }
     </style>
     
@@ -26,7 +26,6 @@
                 $('aeReport.responseDescription.daysNotGiven').removeAttribute('readOnly')
                 $('aeReport.responseDescription.reducedDate').removeAttribute('readOnly')
 			}else{
-				console.debug("hello")
 				$('aeReport.responseDescription.reducedDose').setAttribute('readOnly',true);
                 $('aeReport.responseDescription.daysNotGiven').setAttribute('readOnly',true);
                 $('aeReport.responseDescription.reducedDate').setAttribute('readOnly',true);
