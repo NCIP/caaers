@@ -53,7 +53,8 @@
                	 AE.createStandardAutocompleter(this.meddraProperty,
 					function(autocompleter, text) {
 						createAE.matchLowLevelTermsByCode(text, function(values) {
-													autocompleter.setChoices(values)})
+													autocompleter.setChoices(values)
+						})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
                
@@ -106,7 +107,7 @@
                 	selectOther.click()
                 }
                 }
-            },
+            }
         })
 
 
