@@ -3,7 +3,7 @@
     <groupId>gov.nih.nci.cabig.caaers</groupId>
     <artifactId>caaers</artifactId>
     <packaging>pom</packaging>
-    <version>0.10-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
     <name>caAERS</name>
     <description>
         caAERS is the caBIG Adverse Event Rpeporting System.
@@ -17,9 +17,9 @@
     </licenses>
     -->
     <scm>
-        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0-stable</url>
-        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0-stable</connection>
-        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0-stable</developerConnection>
+        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</connection>
+        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</developerConnection>
     </scm>
     <repositories>
         <repository>
