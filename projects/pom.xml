@@ -3,7 +3,7 @@
     <groupId>gov.nih.nci.cabig.caaers</groupId>
     <artifactId>caaers</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <name>caAERS</name>
     <description>
         caAERS is the caBIG Adverse Event Rpeporting System.
@@ -17,9 +17,9 @@
     </licenses>
     -->
     <scm>
-        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</url>
-        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</connection>
-        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/0.9-stable</developerConnection>
+        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0</connection>
+        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.0</developerConnection>
     </scm>
     <repositories>
         <repository>
@@ -52,7 +52,7 @@
         <module>core</module>
         <module>rules</module>
         <module>web</module>
-        <module>grid</module>
+	<!--<module>grid</module> -->
         <!--<module>jbi</module>-->
     
     </modules>
