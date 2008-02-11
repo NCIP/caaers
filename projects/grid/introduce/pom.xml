@@ -13,7 +13,7 @@
     </properties>
     <modules>
         <!--<module>CaaersDataService</module>-->
-       <!---->
+       
         <!--<module>StudyService</module>-->
         <module>AdverseEventConsumerService</module>
 
