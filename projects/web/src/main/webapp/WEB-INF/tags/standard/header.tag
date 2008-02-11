@@ -7,7 +7,7 @@
 
         <a href="/caaers/pages/task">
 
-            <img src="<chrome:imageUrl name="caAERSlogo.gif" />" alt="caAERS" id="logo" >
+            <img src="<chrome:imageUrl name="caAERSlogo.gif" />" alt="caAERS" id="logo" border="0">
        </a>
 
         <img src="<chrome:imageUrl name="caAERS.gif"/>" alt="cancer Adverse Event Reporting System" id="tagline">
