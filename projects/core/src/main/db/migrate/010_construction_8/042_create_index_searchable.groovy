@@ -1,7 +1,7 @@
 class CreateIndicies extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
  		execute('CREATE INDEX studies_short_title_idx ON studies (short_title)')
- 		execute('CREATE INDEX identifiers_valtyp_idx ON identifiers (value, "type")')
+ 		execute('CREATE INDEX identifiers_valtyp_idx ON identifiers (value)')
  		execute('CREATE INDEX participants_flegdob_idx ON participants (first_name, last_name, ethnicity, gender, birth_year, birth_month, birth_day)')
  		execute('CREATE INDEX organizations_namecode_idx ON organizations (name, nci_institute_code)')
  		
