@@ -325,7 +325,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			studyCriteria.add(example);
 			if (study.getIdentifiers().size() > 0) {
 				studyCriteria.createCriteria("identifiers").add(
-						Restrictions.like("value", study.getIdentifiers().get(0).getValue() + "%"));
+						Restrictions.ilike("value", study.getIdentifiers().get(0).getValue() + "%"));
 			}
 			if (study.getStudyOrganizations().size() > 0) {
 				studyCriteria.createCriteria("studyOrganizations").add(
@@ -363,69 +363,5 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public void delete(Study study){
 		getHibernateTemplate().delete(study);
 	}
-	
-/*	*//**
-	 * This will remove a study from the database
-	 * @param study
-	 *//*
-	@Transactional(readOnly=false)
-	public void deleteInprogressStudy(final String ccIdentifier){
-		final Object objStudyId = fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier);
-		if(objStudyId == null) throw new CaaersSystemException("No study exist with Coordinating Center Identifier :" + ccIdentifier);
-		getHibernateTemplate().execute(new HibernateCallback(){
-			public Object doInHibernate(Session session)throws HibernateException, SQLException {
 
-				//delete study invs
-				session.createSQLQuery("delete from study_investigators where study_sites_id in (" + 
-		             " select id from study_organizations where study_id = " + objStudyId.toString() + ")").executeUpdate();
-				
-				//delete study orgs
-				session.createSQLQuery("delete from study_organizations where study_id = " +
-						 objStudyId.toString() ).executeUpdate();
-				
-				//delete identifiers
-				session.createSQLQuery("delete from identifiers where stu_id = " +
-						 objStudyId.toString() ).executeUpdate();
-				
-				//delete study
-				session.createSQLQuery("delete from studies where id = " +
-						 objStudyId.toString() ).executeUpdate();
-
-				return null;
-			}
-		});
-	}
-	
-	@Transactional(readOnly=false)
-	public void commitInprogressStudy(final String ccIdentifier) {
-		final Object objStudyId = fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier);
-		if(objStudyId == null) throw new CaaersSystemException("No study exist with Coordinating Center Identifier :" + ccIdentifier);
-		getHibernateTemplate().execute(new HibernateCallback(){
-			public Object doInHibernate(Session session)throws HibernateException, SQLException {
-
-				//update load status
-				session.createSQLQuery("update studies set load_status = 1 where id = " +
-						 objStudyId.toString() ).executeUpdate();
-
-				return null;
-			}
-		});
-	}
-    
-	public boolean isInprogressStudyExist(String ccIdentifier){
-		return fetchStudyIdByCoordinatingCenterIdentifier(ccIdentifier) != null;
-	}
-	
-	private Object fetchStudyIdByCoordinatingCenterIdentifier(final String ccIdentifier){
-		return getHibernateTemplate().execute(new HibernateCallback(){
-			public Object doInHibernate(Session session)throws HibernateException, SQLException {
-				return session.createSQLQuery("select s.id from studies s " +
-						" join identifiers i on s.id = i.stu_id " +
-						" where i.type = '" + OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE + "'" + 
-						" and i.value = '" + ccIdentifier + "' "  ).uniqueResult();
-			}
-		});
-		
-	}
-	*/
 }
