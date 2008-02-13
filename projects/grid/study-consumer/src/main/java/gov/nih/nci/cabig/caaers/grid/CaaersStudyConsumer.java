@@ -37,7 +37,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     private ConfigProperty configurationProperty;
     private AuditHistoryRepository auditHistoryRepository;
     private String studyConsumerGridServiceUrl;
-
+    private Integer rollbackInterval;
 
     public void commit(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
             InvalidStudyException {
@@ -98,7 +98,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         Calendar calendar = Calendar.getInstance();
 
         boolean checkIfStudyWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.
-                checkIfEntityWasCreatedMinutesBeforeSpecificDate(study.getClass(), study.getId(), calendar, 100);
+                checkIfEntityWasCreatedMinutesBeforeSpecificDate(study.getClass(), study.getId(), calendar, rollbackInterval);
         try {
             if (checkIfStudyWasCreatedOneMinuteBeforeCurrentTime) {
                 logger.info("Study was created one minute before the current time:" + calendar.getTime().toString() + " so deleting this study:" + study.getId());
@@ -514,4 +514,8 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     public void setStudyConsumerGridServiceUrl(String studyConsumerGridServiceUrl) {
         this.studyConsumerGridServiceUrl = studyConsumerGridServiceUrl;
     }
+    @Required
+    public void setRollbackInterval(Integer rollbackInterval) {
+		this.rollbackInterval = rollbackInterval;
+	}
 }

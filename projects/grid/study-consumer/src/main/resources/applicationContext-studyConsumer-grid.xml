@@ -16,7 +16,11 @@
 
     <bean id="studyConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersStudyConsumer" autowire="byType">
         <property name="studyConsumerGridServiceUrl" ref="studyConsumerGridServiceUrl"/>
+     <property name="rollbackInterval" ref ="studyRollbackInterval" />
     </bean>
+	<bean id="studyRollbackInterval" class="java.lang.Integer">
+		<constructor-arg value="s[grid.studyconsumer.rollbackInterval]" />
+	</bean>
     <bean id="studyConsumerGridServiceUrl" class="java.lang.String">
         <constructor-arg value="s[grid.studyconsumer.url]"/>
     </bean>
