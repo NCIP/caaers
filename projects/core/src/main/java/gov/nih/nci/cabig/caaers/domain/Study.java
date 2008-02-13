@@ -575,6 +575,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 
 	@Transient
+	@UniqueObjectInCollection(message="Duplicate treatment assignment")
 	public List<TreatmentAssignment> getTreatmentAssignments() {
 		return lazyListHelper.getLazyList(TreatmentAssignment.class);
 	}
