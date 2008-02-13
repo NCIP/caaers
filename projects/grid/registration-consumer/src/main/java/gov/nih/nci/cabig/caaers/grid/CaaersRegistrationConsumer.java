@@ -175,6 +175,26 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
             stubWebRequest = preProcess();
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
+            
+        	boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
+        	if (!checkIfEntityWasCreatedByGridService) {
+                logger.debug("Participant was not created by the grid service url:" + registrationConsumerGridServiceUrl + " so can not rollback this registration:" + participant.getId());
+                return;
+            }
+            logger.info("Subject (id:" + participant.getId() + ") was created by the grid service url:" + registrationConsumerGridServiceUrl);            
+
+            //check if this subject was created one minute before or not
+            Calendar calendar = Calendar.getInstance();
+            boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.
+                    checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant.getClass(), participant.getId(), calendar, 1);
+            if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
+                logger.debug("Participant was not created one minute before the current time:" + calendar.getTime().toString() + " so can not rollback this registration:" + participant.getId());
+                return;
+
+            }
+            logger.info("Participant was created one minute before the current time:" + calendar.getTime().toString());
+
+            
             if (participant.getAssignments().size() <= 1) {
                 logger.info("The participant is assigned to only one study, so removing the participant");
                 participantDao.delete(participant);
@@ -189,30 +209,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
                     RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                     throw exp;
                 }
-                //check if participant was created by the grid service or not
-
-                boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
-
-                if (!checkIfEntityWasCreatedByGridService) {
-                    logger.debug("Participant was not created by the grid service url:" + registrationConsumerGridServiceUrl + " so can not rollback this registration:" + participant.getId());
-                    return;
-                }
-                logger.info("Subject (id:" + participant.getId() + ") was created by the grid service url:" + registrationConsumerGridServiceUrl);
-
-                //check if this subject was created one minute before or not
-
-
-                Calendar calendar = Calendar.getInstance();
-                boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.
-                        checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant.getClass(), participant.getId(), calendar, 1);
-                if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
-                    logger.debug("Participant was not created one minute before the current time:" + calendar.getTime().toString() + " so can not rollback this registration:" + participant.getId());
-                    return;
-
-                }
-                logger.info("Participant was created one minute before the current time:" + calendar.getTime().toString());
-
-
+               
                 String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
                 StudySite site = findStudySite(study, siteNCICode);
 
