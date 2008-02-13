@@ -52,6 +52,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     private StudyParticipantAssignmentAspect assignmentAspect;
     private AuditHistoryRepository auditHistoryRepository;
     private String registrationConsumerGridServiceUrl;
+    private Integer rollbackInterval;
 
     private WebRequest preProcess() {
         assignmentAspect.setSecurityInterceptor(new AspectJSecurityInterceptorStub());
@@ -175,18 +176,23 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
             stubWebRequest = preProcess();
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
+            if(participant == null ){
+            	logger.info("Unable to find the participant with MRN :" + mrn);
+            	return;
+            }
             
         	boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
         	if (!checkIfEntityWasCreatedByGridService) {
                 logger.debug("Participant was not created by the grid service url:" + registrationConsumerGridServiceUrl + " so can not rollback this registration:" + participant.getId());
                 return;
             }
+        	
             logger.info("Subject (id:" + participant.getId() + ") was created by the grid service url:" + registrationConsumerGridServiceUrl);            
 
             //check if this subject was created one minute before or not
             Calendar calendar = Calendar.getInstance();
             boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.
-                    checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant.getClass(), participant.getId(), calendar, 1);
+                    checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant.getClass(), participant.getId(), calendar, rollbackInterval);
             if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
                 logger.debug("Participant was not created one minute before the current time:" + calendar.getTime().toString() + " so can not rollback this registration:" + participant.getId());
                 return;
@@ -486,7 +492,12 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     public void setRegistrationConsumerGridServiceUrl(String registrationConsumerGridServiceUrl) {
         this.registrationConsumerGridServiceUrl = registrationConsumerGridServiceUrl;
     }
-
+    
+    @Required
+    public void setRollbackInterval(Integer rollbackInterval) {
+		this.rollbackInterval = rollbackInterval;
+	}
+    
     private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
             return null;

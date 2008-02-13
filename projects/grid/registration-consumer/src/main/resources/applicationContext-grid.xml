@@ -15,8 +15,11 @@
 		
 	<bean id="registrationConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersRegistrationConsumer" autowire="byType">
         <property name="registrationConsumerGridServiceUrl" ref="registrationConsumerGridServiceUrl"/>
+        <property name="rollbackInterval" ref ="registrationRollbackInterval" />
     </bean>
-
+	<bean id="registrationRollbackInterval" class="java.lang.Integer">
+		<constructor-arg value="s[grid.registrationconsumer.rollbackInterval]" />
+	</bean>
     <bean id="registrationConsumerGridServiceUrl" class="java.lang.String">
         <constructor-arg value="s[grid.registrationconsumer.url]"/>
     </bean>
