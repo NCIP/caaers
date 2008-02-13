@@ -36,6 +36,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 	public ResearchStaffTab() {
 		super("Research Staff Details", "Details", "admin/research_staff_details");
 		setAutoPopulateHelpKey(true);
+		addHelpKeyExclusion("firstName", "middleName","lastName","emailAddress","phoneNumber","faxNumber");
 	}
 	
 	@Override

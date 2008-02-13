@@ -28,7 +28,7 @@ public class PriorTherapyTab extends AeTab {
     public PriorTherapyTab() {
         super("Prior Therapies", ExpeditedReportSection.PRIOR_THERAPIES_SECTION.getDisplayName(), "ae/priorTherapies");
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("other");
+        addHelpKeyExclusion("other","startDate","endDate");
     }
 
     @Override

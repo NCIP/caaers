@@ -50,6 +50,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 	public InvestigatorTab() {
 		super("Investigator Details", "Investigator Details", "admin/investigator_details");
 		setAutoPopulateHelpKey(true);
+		addHelpKeyExclusion("firstName", "middleName","lastName","emailAddress","phoneNumber","faxNumber","statusCode");
 	}
 
 	@Override
