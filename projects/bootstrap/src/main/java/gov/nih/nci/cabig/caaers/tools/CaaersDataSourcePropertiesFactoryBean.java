@@ -24,6 +24,9 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
     public static final String WEBSSO_HOST_CERTIFICATE = "hostCertificate";
     public static final String WEBSSO_HOST_KEY = "hostKey";
     public static final String WEBSSO_CAS_ACEGI_SECURITY_URL = "webSSO.cas.acegi.security.url" ;
+    public static final String GRID_STUDYCONSUMER_ROLLBACK_INTERVAL = "grid.studyconsumer.rollbackInterval";
+    public static final String GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL = "grid.registrationconsumer.rollbackInterval";
+    
 
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
@@ -44,6 +47,8 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
         if(properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(WEBSSO_HOST_CERTIFICATE, "dummyHostCert");
         if(properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(WEBSSO_HOST_KEY, "dummykey");
         if(properties.getProperty(WEBSSO_CAS_ACEGI_SECURITY_URL) == null) properties.setProperty(WEBSSO_CAS_ACEGI_SECURITY_URL, "http://dummy.com/casurl/");
+        if(properties.getProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL) == null) properties.setProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL, "1");
+        if(properties.getProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL) == null) properties.setProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL, "1");
     }
 
     /**
