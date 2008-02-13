@@ -56,7 +56,7 @@ public class CaaersDataSourcePropertiesFactoryBean extends DataSourceSelfDiscove
      * @return
      */
     private String selectQuartzDelegateClass(){
-    	////hibernate for time being will use default (http://jira.opensymphony.com/browse/QUARTZ-560)
+    	////hsql for time being will use default (http://jira.opensymphony.com/browse/QUARTZ-560)
     	String defaultClass = "org.quartz.impl.jdbcjobstore.StdJDBCDelegate"; 
     	String postgresClass = "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate";
     	String oracleClass = "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
