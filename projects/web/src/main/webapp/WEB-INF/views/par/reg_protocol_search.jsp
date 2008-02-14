@@ -82,7 +82,7 @@
 </chrome:box>
 
 <p id="instructions">
-Please choose a Study and then press Save &amps; Continue to proceed 
+Please choose a Study and then press Save & Continue to proceed 
 </p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">
