@@ -263,8 +263,10 @@ public class CreateStudyAjaxFacade {
 		if (AgentsTab.IND_TYPE_CTEP == indType) {
 			InvestigationalNewDrug ind = investigationalNewDrugDao.fetchCtepInd();
 			aList.get(0).setInvestigationalNewDrug(ind);
-		}
-		else if (AgentsTab.IND_TYPE_OTHER == indType) {
+		}else if (AgentsTab.IND_TYPE_DCP_IND == indType){
+			InvestigationalNewDrug ind = investigationalNewDrugDao.fetchDcpInd();
+			aList.get(0).setInvestigationalNewDrug(ind);
+		}else if (AgentsTab.IND_TYPE_OTHER == indType) {
 			AgentsTab agentTab = new AgentsTab();
 			// pre-initialize one IND
 			aList.get(0);
