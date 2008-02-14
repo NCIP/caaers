@@ -102,9 +102,16 @@ td#linkPosition a img {
 				     	});
 					}else if(event.target.value == 'CTEP_IND'){
 						createStudy.addIND(index, 0, 1,function(html){
-						var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
-						if(el){
-							el.parentNode.removeChild(el);
+							var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+							if(el){
+								el.parentNode.removeChild(el);
+							}	
+						});
+					}else if(event.target.value == 'DCP_IND'){
+						createStudy.addIND(index, 0, 5,function(html){
+							var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+							if(el){
+								el.parentNode.removeChild(el);
 							}	
 						});
 					}else {
