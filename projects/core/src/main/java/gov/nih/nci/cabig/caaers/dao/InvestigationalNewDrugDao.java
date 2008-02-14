@@ -20,10 +20,15 @@ public class InvestigationalNewDrugDao extends GridIdentifiableDao<Investigation
 implements MutableDomainObjectDao<InvestigationalNewDrug>{
 
 	//queries
+	//TODO: Migrate this to query framework.
 	private static final String CTEP_IND_QUERY = "select o from "
 		+ InvestigationalNewDrug.class.getName()
-		+" o where indNumber = -111";
-
+		+ " o where indNumber = -111";
+	
+	private static final String DCP_IND_QUERY = "select o from "
+		+ InvestigationalNewDrug.class.getName()
+		+ " o where indNumber = -222";
+	
 	private static final String FIND_BY_IND_ID_QUERY =  "select distinct o from "
 		+ InvestigationalNewDrug.class.getName()
 		+ " o where str(indNumber) like :indNo";
@@ -64,6 +69,16 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 		return (InvestigationalNewDrug) getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query query=session.createQuery(CTEP_IND_QUERY);
+				return query.uniqueResult();
+			};
+
+		});
+	}
+	
+	public InvestigationalNewDrug fetchDcpInd(){
+		return (InvestigationalNewDrug) getHibernateTemplate().execute(new HibernateCallback(){
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				Query query=session.createQuery(DCP_IND_QUERY);
 				return query.uniqueResult();
 			};
 
