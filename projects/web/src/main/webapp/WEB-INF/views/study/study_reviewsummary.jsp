@@ -135,7 +135,7 @@
 					<c:if test="${fn:length(studyAgent.studyAgentINDAssociations) > 0}">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
 					 <c:forEach items="${studyAgent.studyAgentINDAssociations }" var="sai">
-						  <tr><td>${sai.investigationalNewDrug.indNumber eq -111 ? 'CTEP IND' : sai.investigationalNewDrug.indNumber }</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
+						  <tr><td>${sai.investigationalNewDrug.indNumber eq -111 ? 'CTEP IND' : sai.investigationalNewDrug.indNumber eq -222 ? 'DCP IND' : sai.investigationalNewDrug.indNumber }</td><td>${sai.investigationalNewDrug.holderName}</td></tr>
 				 	 </c:forEach>
 					</table>					
 					</c:if>
