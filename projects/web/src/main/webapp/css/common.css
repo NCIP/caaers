@@ -128,7 +128,11 @@ ul.tabs li {
   text-decoration: none;
 }
 
-#current-task { font-weight: bold; }
+#taskbar a.selected{
+  font-weight: bold;
+  background: url(../images/arrow_icon.gif) repeat-y 6px;
+}
+
 
 /**** PAGE CONTENT BOXES */
 

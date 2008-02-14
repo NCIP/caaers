@@ -208,11 +208,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				
 				if (ctepCode != null) {
 					String[] cc = { ctepCode };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
+					//ctcTerm = ctcTermDao.getCtcTerm(cc);
+					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
 				}
 				if (term != null) {
 					String[] cc = { term };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
+					//ctcTerm = ctcTermDao.getCtcTerm(cc);
+					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
 				}
 				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The CtcTerm you provided is not valid");
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, false);
@@ -244,11 +246,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				
 				if (ctepCode != null) {
 					String[] cc = { ctepCode };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
+					//ctcTerm = ctcTermDao.getCtcTerm(cc);
+					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
 				}
 				if (term != null) {
 					String[] cc = { term };
-					ctcTerm = ctcTermDao.getCtcTerm(cc);
+					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
+					//ctcTerm = ctcTermDao.getCtcTerm(cc);
 				}
 				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided " + termConcatCtepCode + " is not valid ");
 				
@@ -357,9 +361,10 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 							ctcVersion.getName());
 				}
 				
-				if (isCurrent) {
+				if (isCurrent && ctcTerm.getCategory().getCtc().getId() == 3) {
 				// Get Contextual grades for this specific Term
 				HashMap<Grade,CtcGrade> contextualGrades = new HashMap<Grade,CtcGrade>();
+				
 				for (CtcGrade ctcContextualGrade : ctcTerm.getContextualGrades()) {
 					contextualGrades.put(ctcContextualGrade.getGrade(), ctcContextualGrade);	
 				}
@@ -373,6 +378,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
 							"The grade you provided for " + ctcTerm.getFullName() + " is not allowed use one of those : " + grades);
 				}
+				
 				}
 				
 				// does the CtcTerm require other(verbatim) or other(MedDRA) ? 

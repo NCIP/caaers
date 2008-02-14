@@ -41,6 +41,22 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
             SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
     }
     
+    public CtcTerm getCtcTerm(String[] subnames, Integer ctcVersionId, Integer ctcCategoryId) {
+        List<Object> extraParams = new LinkedList<Object>();
+        StringBuilder extraConds = new StringBuilder("");
+        if (ctcVersionId != null) {
+        	extraConds.append("o.category.ctc.id = ?");
+        	extraParams.add(ctcVersionId);
+        }
+        if (ctcCategoryId != null) {
+            extraConds.append(" and o.category.id = ?");
+            extraParams.add(ctcCategoryId);
+        }
+        List<CtcTerm> ctcTerms =  findBySubname(subnames, extraConds.toString(), extraParams,EMPTY_PROPERTIES, EXACT_MATCH_PROPERTIES);
+        System.out.println("Size of ctcTerms returned : " + ctcTerms.size() + subnames.toString() + " : " + ctcVersionId.toString() );
+        return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
+    }
+    
     @SuppressWarnings("unchecked")
 	public CtcTerm getCtcTerm(final String[] subnames) {
 		List<CtcTerm> ctcTerms = findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_PROPERTIES);

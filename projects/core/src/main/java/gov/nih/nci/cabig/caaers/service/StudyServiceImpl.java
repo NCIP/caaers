@@ -195,7 +195,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		// Setup organizationAssignedIdentifier
 		Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
-		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
+		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in coordinatingCenter is invalid");
 		organizationAssignedIdentifier.setOrganization(organization);
 		organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 		organizationAssignedIdentifier.setPrimaryIndicator(true);

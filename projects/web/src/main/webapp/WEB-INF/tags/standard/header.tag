@@ -32,7 +32,7 @@
                 Tasks:
                 <c:forEach items="${currentSection.tasks}" var="task">
                     <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                        <a href="<c:url value="${task.url}"/>">${task.displayName}</a> 
+                        <a class="${task == currentTask ? 'selected' : ''}" href="<c:url value="${task.url}"/>">${task.displayName}</a> 
                     </csmauthz:accesscontrol>
                 </c:forEach>
             </c:if>

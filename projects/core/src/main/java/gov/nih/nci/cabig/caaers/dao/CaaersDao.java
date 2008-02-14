@@ -122,6 +122,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 			}
 		}
 		getHibernateTemplate().setMaxResults(30);
+		log.debug("query::" + query.toString());
 		return getHibernateTemplate().find(query.toString(), params.toArray());
 	}
 

@@ -37,6 +37,7 @@ public abstract class AbstractImportServiceImpl {
 				Identifier identifier = (Identifier) source.getIdentifiers().get(i);
 				if (identifier instanceof OrganizationAssignedIdentifier) {
 					Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
+					ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in identifier is invalid");
 					((OrganizationAssignedIdentifier) identifier).setOrganization(organization);	
 				}
 				if (identifier instanceof SystemAssignedIdentifier) {
