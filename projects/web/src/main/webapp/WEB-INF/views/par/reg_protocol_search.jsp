@@ -84,7 +84,7 @@
 <p id="instructions">
 Please choose a Study and then press Save &amps; Continue to proceed 
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}" title="Study search resultsx">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">
         <tags:tabFields tab="${tab}" />
                     <ec:table autoIncludeParameters="false" items="command.studies" var="study" 
