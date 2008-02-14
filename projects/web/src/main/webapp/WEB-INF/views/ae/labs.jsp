@@ -143,7 +143,10 @@
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section15labs">
     <jsp:attribute name="instructions">
-    <tags:instructions code="instruction_ae_labs" />
+    	<c:if test="${not empty configuration.map.labViewerBaseUrl}">
+			<p>View this person's details in the <a href="${configuration.map.labViewerBaseUrl}/studysubject?studySubjectGridId=${command.assignment.gridId}" class="sso">lab viewer</a>.</p>
+		</c:if>
+    	<tags:instructions code="instruction_ae_labs" />
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <c:forEach items="${command.aeReport.labs}" varStatus="status">
