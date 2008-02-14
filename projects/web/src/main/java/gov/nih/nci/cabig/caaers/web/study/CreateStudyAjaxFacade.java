@@ -24,11 +24,11 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
-import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade.IndexChange;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
+import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -40,6 +40,7 @@ import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
 /**
@@ -125,6 +126,34 @@ public class CreateStudyAjaxFacade {
 		Study study = getStudyFromSession(request);
 		request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, study);
 		return study;
+	}
+	//TODO: Need to refactor this to a different class (may be a common super class)
+	private void replaceStudyInSessionWithNew(HttpServletRequest request , Study oldStudy){
+		
+		if(oldStudy.getId()  == null) return;
+		
+		Study study = studyDao.getStudyDesignById(oldStudy.getId());
+		
+		Study s = (Study) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
+		if(s != null){
+			 request.getSession().setAttribute(CREATE_STUDY_REPLACED_FORM_NAME, study);
+			 return;
+		}
+		s = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
+		if(s != null){
+			 request.getSession().setAttribute(CREATE_STUDY_FORM_NAME, study);
+			 return;
+		}
+		s = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
+		if(s != null){
+			 request.getSession().setAttribute(EDIT_STUDY_REPLACED_FORM_NAME, study);
+			 return;
+		}
+		s = (Study) request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
+		if(s != null){
+			 request.getSession().setAttribute(EDIT_STUDY_FORM_NAME, study);
+			 return;
+		}
 	}
 
 	public List<Agent> matchAgents(final String text) {
@@ -279,22 +308,32 @@ public class CreateStudyAjaxFacade {
      *      The element to remove will be represented by a move to a negative index.
      */
     @SuppressWarnings({ "unchecked" })
-    public List<IndexChange> remove(String listProperty, int indexToDelete, String displayName) {
+    public AjaxOutput remove(String listProperty, int indexToDelete, String displayName) {
     	HttpServletRequest request = getHttpServletRequest();
         Study command = getStudyCommand(request);
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
         }
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to delete. Attempted to delete from an invalid index; " + indexToDelete + " < 0");
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
-        list.remove(indexToDelete);
-        saveIfAlreadyPersistent(command);
-        return changes;
+        Object o = list.remove(indexToDelete);
+        try{
+        	saveIfAlreadyPersistent(command);
+        }catch(DataIntegrityViolationException die){
+        	log.error("Error occured while deleting [listProperty :" + listProperty + 
+        			", indexToDelete :" + indexToDelete + 
+        			", displayName :" + displayName +"]", die);
+        	list.add(indexToDelete, o);
+        	replaceStudyInSessionWithNew(request, command);
+        	return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
+        }
+        
+        return new AjaxOutput(changes);
     }
 
     private List<IndexChange> createDeleteChangeList(int indexToDelete, int length, String displayName) {
@@ -313,7 +352,7 @@ public class CreateStudyAjaxFacade {
            this.studyDao.save(study);
         }
     }
-
+    
 
 	private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex,
 			final String subview) {

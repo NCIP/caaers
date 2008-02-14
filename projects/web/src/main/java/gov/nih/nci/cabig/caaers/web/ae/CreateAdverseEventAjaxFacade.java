@@ -5,35 +5,37 @@ import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -48,10 +50,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -62,6 +61,8 @@ import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
+import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.io.IOException;
@@ -79,15 +80,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Required;
+import org.extremecomponents.table.bean.Column;
+import org.extremecomponents.table.bean.Row;
+import org.extremecomponents.table.bean.Table;
 import org.extremecomponents.table.context.Context;
 import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
-import org.extremecomponents.table.bean.Table;
-import org.extremecomponents.table.bean.Row;
-import org.extremecomponents.table.bean.Column;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.OptimisticLockingFailureException;
 
 /**
  * @author Rhett Sutphin
@@ -615,31 +618,38 @@ public class CreateAdverseEventAjaxFacade {
      *         This list will be empty if the requested change is invalid or if the change is a no-op.
      */
     @SuppressWarnings({"unchecked"})
-    public List<IndexChange> reorder(String listProperty, int objectIndex, int targetIndex) {
+    public AjaxOutput reorder(String listProperty, int objectIndex, int targetIndex) {
         Object command = extractCommand();
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (targetIndex >= list.size()) {
             log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to reorder. Attempted to delete beyond the end; " + targetIndex + " >= " + list.size());
         }
         if (targetIndex < 0) {
             log.debug("Attempted to move past the start; " + targetIndex + " < 0");
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to reorder. Attempted to move past the start; " + targetIndex + " < 0");
         }
         if (objectIndex == targetIndex) {
             log.debug("No move requested; " + objectIndex + " == " + targetIndex);
-            return Collections.emptyList();
+            return new AjaxOutput();
         }
         if (0 > objectIndex || objectIndex >= list.size()) {
             log.debug("No " + listProperty + " with index " + objectIndex);
-            return Collections.emptyList();
+            return new AjaxOutput();
         }
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
         List<IndexChange> changes = createMoveChangeList(objectIndex, targetIndex);
         addDisplayNames(listProperty, changes);
-        saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
-        return changes;
+        try {
+			saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+		} catch( OptimisticLockingFailureException ole){
+			log.error("Error occured while reordering [listProperty :" + listProperty + 
+        			", objectIndex :" + targetIndex + 
+        			", targetIndex :" + targetIndex +"]", ole);
+        	return new AjaxOutput("Unable to reorder at this point. The same data is being modified by someone else, please restart the page flow");
+		}
+        return new AjaxOutput(changes);
     }
 
     private List<IndexChange> createMoveChangeList(int original, int target) {
@@ -709,18 +719,18 @@ public class CreateAdverseEventAjaxFacade {
      *         The element to remove will be represented by a move to a negative index.
      */
     @SuppressWarnings({"unchecked"})
-    public List<IndexChange> remove(String listProperty, int indexToDelete) {
+    public AjaxOutput remove(String listProperty, int indexToDelete) {
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand)extractCommand();
         command.reassociate(); //reassociate to session
         command.getStudy(); //this is to fix the LazyInit execption on "Save&Continue" after a delete(GForge #11981, comments has the details) 
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
         }
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
-            return Collections.emptyList();
+            return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
         Object removedObject = list.get(indexToDelete);
@@ -728,8 +738,20 @@ public class CreateAdverseEventAjaxFacade {
         list.remove(indexToDelete);
         
         addDisplayNames(listProperty, changes);
-        saveIfAlreadyPersistent(command);
-        return changes;
+        try{
+        	saveIfAlreadyPersistent(command);
+        }catch(DataIntegrityViolationException die){
+        	log.error("Error occured while deleting [listProperty :" + listProperty + 
+        			", indexToDelete :" + indexToDelete + 
+        			"]", die);
+        	return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
+        }catch(OptimisticLockingFailureException ole){
+        	log.error("Error occured while deleting [listProperty :" + listProperty + 
+        			", indexToDelete :" + indexToDelete + 
+        			"]", ole);
+        	return new AjaxOutput("Unable to delete. The same data is being modified by someone else, please restart the page flow.");
+        }
+        return new AjaxOutput(changes);
     }
 
     private List<IndexChange> createDeleteChangeList(int indexToDelete, int length) {
@@ -974,34 +996,5 @@ public class CreateAdverseEventAjaxFacade {
     }
 
 
-    public static class IndexChange {
-        private Integer original, current;
-        private String currentDisplayName;
-
-        public IndexChange(Integer original, Integer current) {
-            this.original = original;
-            this.current = current;
-        }
-
-        public Integer getOriginal() {
-            return original;
-        }
-
-        public Integer getCurrent() {
-            return current;
-        }
-
-        public String getCurrentDisplayName() {
-            return currentDisplayName;
-        }
-
-        public void setCurrentDisplayName(String currentDisplayName) {
-            this.currentDisplayName = currentDisplayName;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("%d => %d", original, current);
-        }
-    }
+  
 }

@@ -55,9 +55,12 @@ public class EditStudyController extends StudyController<Study> {
 			return study;
 		}
 		Study mergedStudy = getDao().merge(study);
-		mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
+		
 		getDao().initialize(mergedStudy);
-
+		
+		//update the studySiteIndex
+		mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
+		
 		// now check for study therapies.
 		mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
 		mergedStudy.setDeviceTherapyType(study.getDeviceTherapyType());

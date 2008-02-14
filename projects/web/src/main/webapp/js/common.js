@@ -303,7 +303,13 @@ Object.extend(ListEditor.prototype, {
         if(this.options.removeParameters){
           delArgs = delArgs.concat(this.options.removeParameters);
         }
-        delArgs = delArgs.concat([function(changes) {
+        delArgs = delArgs.concat([function(ajaxOutput) {
+        
+        	if(ajaxOutput.error){
+        		alert(ajaxOutput.errorMessage);
+        		return;
+        	}
+        
             if (changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)
@@ -339,7 +345,13 @@ Object.extend(ListEditor.prototype, {
             return;
         }
 
-        reorderFn.apply(this, [this.collectionProperty, original, target, function(changes) {
+        reorderFn.apply(this, [this.collectionProperty, original, target, function(ajaxOutput) {
+        	if(ajaxOutput.error){
+        		alert(ajaxOutput.errorMessage);
+        		return;
+        	}
+        	
+        	var changes = ajaxOutput.changes;
             if (changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)

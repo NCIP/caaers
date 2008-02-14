@@ -16,6 +16,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
@@ -30,6 +31,8 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
@@ -39,6 +42,7 @@ import gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade;
 import gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController;
 import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
 import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +52,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.easymock.classextension.EasyMock;
 
 /**
  * @author Rhett Sutphin
@@ -62,6 +68,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private InteroperationService interoperationService;
     private RoutineAdverseEventReportDao routineReportDao;
+    private StudyParticipantAssignmentDao assignmentDao;
+    private StudyParticipantAssignment assignment;
+    private StudySite studySite;
 
     @Override
     protected void setUp() throws Exception {
@@ -74,7 +83,10 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         interoperationService = registerMockFor(InteroperationService.class);
         treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class);
         routineReportDao = registerDaoMockFor(RoutineAdverseEventReportDao.class);
-
+        assignmentDao   = registerDaoMockFor(StudyParticipantAssignmentDao.class);
+        assignment = registerMockFor(StudyParticipantAssignment.class);
+        studySite = registerMockFor(StudySite.class);
+        
         facade = new CreateAdverseEventAjaxFacade();
         facade.setParticipantDao(participantDao);
         facade.setStudyDao(studyDao);
@@ -409,8 +421,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 1, 2);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 1, 2).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 0, 2, 1, 3);
@@ -423,8 +435,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 0, 3);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 0, 3).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 1, 2, 3, 0);
@@ -439,8 +451,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 2, 0);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 2, 0).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 2, 0, 1, 3);
@@ -454,8 +466,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 1, 4);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 1, 4).getChanges();
         verifyMocks();
 
         assertNotMoved(command);
@@ -466,8 +478,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 4, 1);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 4, 1).getChanges();
         verifyMocks();
 
         assertNotMoved(command);
@@ -478,8 +490,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
 
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.reorder("aeReport.adverseEvents", 2, 0);
+        List<IndexChange> actual
+            = facade.reorder("aeReport.adverseEvents", 2, 0).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 2, 0, 1, 3);
@@ -490,11 +502,15 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     }
 
     public void testDeleteFromEnd() throws Exception {
+    	
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        //mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(assignment.getStudySite()).andReturn(studySite);
+        expect(studySite.getStudy()).andReturn(new Study());
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.remove("aeReport.adverseEvents", 3);
+        List<IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 3).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 0, 1, 2);
@@ -504,10 +520,14 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testDeleteFromTop() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        //mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(assignment.getStudySite()).andReturn(studySite);
+        expect(studySite.getStudy()).andReturn(new Study());
+       
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.remove("aeReport.adverseEvents", 0);
+        List<IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 0).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 1, 2, 3);
@@ -520,10 +540,14 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testDeleteInMiddle() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        //mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(assignment.getStudySite()).andReturn(studySite);
+        expect(studySite.getStudy()).andReturn(new Study());
+       
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.remove("aeReport.adverseEvents", 2);
+        List<IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 2).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 0, 1, 3);
@@ -534,10 +558,14 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testDeleteOutOfRange() throws Exception {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-
+        //mock - expectations
+        assignmentDao.reassociate(assignment);
+        expect(assignment.getStudySite()).andReturn(studySite);
+        expect(studySite.getStudy()).andReturn(new Study());
+       
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.remove("aeReport.adverseEvents", 4);
+        List<IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 4).getChanges();
         verifyMocks();
 
         assertNotMoved(command);
@@ -548,10 +576,10 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
         command.getAeReport().setId(17);
         aeReportDao.save(command.getAeReport());
-
+        expect(aeReportDao.merge(command.getAeReport())).andReturn(command.getAeReport());
         replayMocks();
-        List<CreateAdverseEventAjaxFacade.IndexChange> actual
-            = facade.remove("aeReport.adverseEvents", 3);
+        List<IndexChange> actual
+            = facade.remove("aeReport.adverseEvents", 3).getChanges();
         verifyMocks();
 
         assertAdverseEventsIdOrder(command, 0, 1, 2);
@@ -559,11 +587,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertIndexChange(3, null, actual.get(0));
     }
 
-    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, CreateAdverseEventAjaxFacade.IndexChange actual) {
+    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, IndexChange actual) {
         assertIndexChange(expectedOriginal, expectedCurrent, null, actual);
     }
 
-    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, String expectedDisplay, CreateAdverseEventAjaxFacade.IndexChange actual) {
+    private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent, String expectedDisplay, IndexChange actual) {
         assertEquals("Wrong original", expectedOriginal, actual.getOriginal());
         assertEquals("Wrong current", expectedCurrent, actual.getCurrent());
         if (expectedDisplay != null) {
@@ -586,13 +614,17 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     }
 
     private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
+    	
         EditExpeditedAdverseEventCommand command
-            = new EditExpeditedAdverseEventCommand(null, null, null, null);
+            = new EditExpeditedAdverseEventCommand(null, null, assignmentDao, null);
+        
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.addAdverseEvent(setId(0, new AdverseEvent()));
         report.addAdverseEvent(setId(1, new AdverseEvent()));
         report.addAdverseEvent(setId(2, new AdverseEvent()));
         report.addAdverseEvent(setId(3, new AdverseEvent()));
+        report.setAssignment(assignment);
+       
         command.setAeReport(report);
         session.setAttribute(EditAdverseEventController.class.getName() + ".FORM.command", command);
         expect(webContext.getSession()).andReturn(session).anyTimes();
