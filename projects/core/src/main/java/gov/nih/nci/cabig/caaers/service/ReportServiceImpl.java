@@ -373,7 +373,7 @@ public class ReportServiceImpl  implements ReportService {
     		   if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
     			   messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
     					   String.format(
-    							   "The adverse event %s is not attributed to a cause. " +
+    							   "The adverse event, '%s,' is not attributed to a cause. " +
     							   "An attribution of possible or higher must be selected for at least one of the causes.",
     							   ae.getAdverseEventTerm().getUniversalTerm()));
     		   }
