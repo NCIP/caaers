@@ -50,10 +50,16 @@ public class MedicalDeviceTab extends AeTab {
     	
     	InputField reprocessorName = InputFieldFactory.createTextField("reprocessorName", " Reprocessor name", false);
     	InputFieldAttributes.setSize(reprocessorName, 45);
+    	reprocessorName.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.reprocessorName");
     	
     	InputField reprocessorAddress = InputFieldFactory.createTextField("reprocessorAddress", " Reprocessor address", false);
     	InputFieldAttributes.setSize(reprocessorAddress, 45);
     	
+    	InputField deviceReprocessedField = InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, InputFieldFactory.collectOptions(Arrays.asList(Availability.values()), null, "displayName"));
+    	deviceReprocessedField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.deviceReprocessed");
+    	
+    	InputField evaluationAvailabilityField = InputFieldFactory.createSelectField("evaluationAvailability", "Evaluation availability", false, InputFieldFactory.collectOptions(Arrays.asList(Availability.values()), null, "displayName"));
+    	evaluationAvailabilityField.getAttributes().put(InputField.HELP, "ae.medicalDevice.aeReport.medicalDevices.evaluationAvailability");
     	
     	creator.createRepeatingFieldGroup("medicalDevice", "medicalDevices",
             new SimpleNumericDisplayNameCreator("Medical device"),
@@ -78,12 +84,12 @@ public class MedicalDeviceTab extends AeTab {
             InputFieldFactory.createDateField("implantedDate", "If implanted give a date",  false),
             InputFieldFactory.createDateField("explantedDate", "IF explanted give a date",  false),
 
-            InputFieldFactory.createSelectField("deviceReprocessed", "Device reprocessed", false, InputFieldFactory.collectOptions(Arrays.asList(Availability.values()), null, "displayName")),
+            deviceReprocessedField,
 
             reprocessorName,
             reprocessorAddress,
             
-            InputFieldFactory.createSelectField("evaluationAvailability", "Evaluation availability", false, InputFieldFactory.collectOptions(Arrays.asList(Availability.values()), null, "displayName")),
+            evaluationAvailabilityField,
 
             InputFieldFactory.createDateField("returnedDate", "Returned date",  false)
         );

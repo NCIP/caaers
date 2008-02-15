@@ -39,6 +39,7 @@ public class TreatmentTab extends AeTab {
             "treatmentAssignment",
             "Treatment assignment code", false, collectTreatmentAssignmentCodes(command));
         InputFieldAttributes.setSize(assignmentField, 20);
+        assignmentField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.treatmentAssignment");
         InputField descField = InputFieldFactory.createTextArea("treatmentAssignmentDescription",
             "Description of treatment assignment or dose level");
         InputFieldAttributes.setColumns(descField,70);
@@ -57,13 +58,19 @@ public class TreatmentTab extends AeTab {
             "Total number of courses to date", false
         );
         InputFieldAttributes.setSize(totalCourseField, 4);
+        
+        InputField firstCourseDateField = InputFieldFactory.createDateField("firstCourseDate", "Start date of first course", false);
+        firstCourseDateField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
 
+        InputField adverseEventCourse_dateField = InputFieldFactory.createDateField("adverseEventCourse.date", "Start date of course associated with expedited report", false);
+        adverseEventCourse_dateField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.adverseEventCourse.date");
+        
         creator.createFieldGroup("treatmentInfo", null, "treatmentInformation",
             assignmentField,
             descField,
             newDescField,
-            InputFieldFactory.createDateField("firstCourseDate", "Start date of first course", false),
-            InputFieldFactory.createDateField("adverseEventCourse.date", "Start date of course associated with expedited report", false),
+            firstCourseDateField,
+            adverseEventCourse_dateField,
             eventCourseField,
             totalCourseField
         );
@@ -88,7 +95,8 @@ public class TreatmentTab extends AeTab {
             "comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
         InputFieldAttributes.setRows(commentsField, 4);
-
+        InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
+        modifiedDoseField.getAttributes().put(InputField.HELP, "ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
         creator.createRepeatingFieldGroup("courseAgent", "treatmentInformation.courseAgents",
             new SimpleNumericDisplayNameCreator("Study agent"),
             agentField,
@@ -97,7 +105,7 @@ public class TreatmentTab extends AeTab {
             InputFieldFactory.createDateField("lastAdministeredDate", "Date last administered", false),
             adminDelayField,
             commentsField,
-            createDoseField("modifiedDose", "Modified dose", false, true)
+            modifiedDoseField
         );
     }
 

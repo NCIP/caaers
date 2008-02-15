@@ -54,14 +54,15 @@ public class RadiationInterventionTab extends AeTab {
         
         InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit","Unit of measure",false,
                 InputFieldFactory.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"));
-
+        InputField fractionNumberField = createTextField("fractionNumber", "Schedule number of fractions", false);
+        fractionNumberField.getAttributes().put(InputField.HELP, "ae.radiationIntervention.aeReport.radiationInterventions.fractionNumber");
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions",
             new SimpleNumericDisplayNameCreator("Radiation"),
             createSelectField("administration", "Type of radiation administration", false, statusOpts),
             createTextField("dosage", "Dosage", false),
             doseUOMField,
             createDateField("lastTreatmentDate", "Date of last treatment",  false),
-            createTextField("fractionNumber", "Schedule number of fractions", false),
+            fractionNumberField,
             createTextField("daysElapsed", " Number of elapsed days", false),
             //createTextField("adjustment", "Adjustment", false)
             createSelectField("adjustment", "Adjustment", false, 
