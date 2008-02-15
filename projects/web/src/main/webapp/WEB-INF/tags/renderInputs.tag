@@ -7,9 +7,9 @@
 <%@attribute name="size"%>
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <c:choose>
-    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
+    <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MINLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
-    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
+    <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MINLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
     <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox path="${field.propertyName}" disabled="${disabled}"/></c:when>
     <c:when test="${field.categoryName == 'select'}" >
         <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}"/>
