@@ -58,7 +58,7 @@
     </modules>
 
     <properties>
-        <ctms-commons.version>0.7</ctms-commons.version>
+        <ctms-commons.version>0.8-SNAPSHOT</ctms-commons.version>
     </properties>
 
     <!-- Specify versions once for commonly-used deps -->
