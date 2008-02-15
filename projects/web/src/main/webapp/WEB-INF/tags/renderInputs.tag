@@ -1,4 +1,4 @@
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="ctmsfn" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
@@ -45,7 +45,7 @@
     </c:otherwise>
 </c:choose>
  	<c:if test="${not empty field.attributes.help}">
- 		<tags:hoverHelp path="${field.propertyName}"><spring:message code="${field.attributes.help}" text="No help available ${field.attributes.help}" /></tags:hoverHelp>
+ 		<tags:hoverHelp path="${field.propertyName}" key="${field.attributes.help}" />
     </c:if>
 <tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>
