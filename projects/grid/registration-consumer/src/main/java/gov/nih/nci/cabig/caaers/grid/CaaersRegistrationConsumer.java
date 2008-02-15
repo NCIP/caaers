@@ -181,7 +181,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
             	return;
             }
             
-        	boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
+        	boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.
+        	checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
         	if (!checkIfEntityWasCreatedByGridService) {
                 logger.debug("Participant was not created by the grid service url:" + registrationConsumerGridServiceUrl + " so can not rollback this registration:" + participant.getId());
                 return;
@@ -226,6 +227,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
 
         } catch (Exception exp) {
+        	exp.printStackTrace(); 
+        	logger.error(exp);
             String message = "Error while rolling back, " + exp.getMessage();
             InvalidRegistrationException e = getInvalidRegistrationException(message);
             throw e;
@@ -497,6 +500,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     public void setRollbackInterval(Integer rollbackInterval) {
 		this.rollbackInterval = rollbackInterval;
 	}
+    
+    @Required
+    public void setAuditHistoryRepository(AuditHistoryRepository auditHistoryRepository) {
+        this.auditHistoryRepository = auditHistoryRepository;
+    }
     
     private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
