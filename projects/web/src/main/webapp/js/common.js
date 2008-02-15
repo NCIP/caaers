@@ -309,8 +309,8 @@ Object.extend(ListEditor.prototype, {
         		alert(ajaxOutput.errorMessage);
         		return;
         	}
-        
-            if (changes.length == 0) return;
+        	
+            if (ajaxOutput.changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)
             if (!divs[indexToDelete]) return;
@@ -322,7 +322,7 @@ Object.extend(ListEditor.prototype, {
             container.removeChild(toDelete)
 
             this.updateFirstAndLast()
-            this.applyIndexChanges(changes)
+            this.applyIndexChanges(ajaxOutput.changes)
 
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
             
@@ -351,8 +351,7 @@ Object.extend(ListEditor.prototype, {
         		return;
         	}
         	
-        	var changes = ajaxOutput.changes;
-            if (changes.length == 0) return;
+            if (ajaxOutput.changes.length == 0) return;
 
             var divs = $$('div.' + this.divisionClass)
             if (!divs[original]) return;
@@ -385,7 +384,7 @@ Object.extend(ListEditor.prototype, {
             }
 
             this.updateFirstAndLast()
-            this.applyIndexChanges(changes)
+            this.applyIndexChanges(ajaxOutput.changes)
             
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
         }.bind(this)])
