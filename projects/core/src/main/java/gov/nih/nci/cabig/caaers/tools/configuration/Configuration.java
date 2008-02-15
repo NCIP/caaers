@@ -35,7 +35,6 @@ public class Configuration extends DatabaseBackedConfiguration {
     public static final ConfigurationProperty<String> SYSTEM_FROM_EMAIL
         = PROPERTIES.add(new ConfigurationProperty.Text("systemFromEmail"));
 
-    @Override
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
     }
