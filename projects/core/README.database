@@ -1,4 +1,4 @@
-DATABASE CONFIGURATION (for developers)
+DATABASE CONFIGURATION (for developers) 
 ======================
 This doc describes the database configuration system for caAERS.  This system
 defers most database configuration determinations until the application is
