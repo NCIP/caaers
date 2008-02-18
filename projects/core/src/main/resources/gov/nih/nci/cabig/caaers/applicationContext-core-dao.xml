@@ -98,7 +98,7 @@ This applicationContext contains the definition of the DAOs
 	<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
 	<value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
 	<value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
-	<value>gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationEntry</value>
+	<value>gov.nih.nci.cabig.ctms.tools.configuration.DefaultConfigurationEntry</value>
 	<value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
 	<value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
 	<value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
