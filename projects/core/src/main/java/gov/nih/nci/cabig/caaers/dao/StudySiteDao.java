@@ -12,7 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class StudySiteDao extends CaaersDao<StudySite> {
-    public Class<StudySite> domainClass() {
+    /**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
+	public Class<StudySite> domainClass() {
         return StudySite.class;
     }
     

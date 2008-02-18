@@ -28,16 +28,32 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 
 	private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
 
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<ResearchStaff> domainClass() {
 		return ResearchStaff.class;
 	}
-
+	/**
+	 * Save or update the research staff in the db.
+	 * 
+	 * @param The research staff.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final ResearchStaff researchStaff) {
 		getHibernateTemplate().saveOrUpdate(researchStaff);
 	}
-
+	/**
+	 * Search for research staffs using query.
+	 * 
+	 * @param query The query used to search for research staffs
+	 * @return The list of research staffs.
+	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
 		String queryString = query.getQueryString();
@@ -58,7 +74,13 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 		});
 
 	}
-
+	/**
+	 * Get the list of research staffs matching the name fragments and belonging to specified site.
+	 * 
+	 * @param subnames the name fragments to search on.
+	 * @param site The organization ID of the site.
+	 * @return List of matching research staffs.
+	 */
 	public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
 
 		return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS, SUBSTRING_MATCH_PROPERTIES,

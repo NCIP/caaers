@@ -27,7 +27,13 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 	private static final String JOINS = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm "
 			+ " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier "
 			+ " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
-
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<RoutineAdverseEventReport> domainClass() {
 		return RoutineAdverseEventReport.class;
@@ -60,6 +66,9 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 		return routineReports;
 	}*/
 	
+	/**
+	 * TODO kkk
+	 */
 	@Transactional(readOnly = false)
 	public void batchClean(final List<RoutineAdverseEventReport> reports){
 		log.debug("Time now : " + new java.util.Date());
@@ -68,7 +77,11 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 			session.evict(report);
 		}
 	}
-
+	/**
+	 * Save or update the routine adverse event report in the db.
+	 * 
+	 * @param The routine adverse event report.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final RoutineAdverseEventReport report) {
 		getHibernateTemplate().saveOrUpdate(report);
@@ -76,7 +89,12 @@ public class RoutineAdverseEventReportDao extends GridIdentifiableDao<RoutineAdv
 			getHibernateTemplate().saveOrUpdate(ae);
 		}
 	}
-
+	/**
+	 * Search for routine adverse event reports using query.
+	 * 
+	 * @param query The query used to search for routine adverse event reports
+	 * @return The list of routine adverse event reports.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<RoutineAdverseEventReport> searchRoutineReports(final Map props) throws ParseException {
 

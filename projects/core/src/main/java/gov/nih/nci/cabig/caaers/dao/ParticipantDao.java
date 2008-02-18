@@ -43,17 +43,31 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	private static final String JOINS = "join o.identifiers as identifier "
 			+ "join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
 	
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<Participant> domainClass() {
 		return Participant.class;
 	}
-
+	/**
+	 * Save or update the participant in the db.
+	 * 
+	 * @param The participant.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final Participant participant) {
 		getHibernateTemplate().saveOrUpdate(participant);
 	}
 	
-	
+	/**
+	 * TODO
+	 * @param domainObjectImportOutcome
+	 */
 	@Transactional(readOnly = false)
 	public void batchSave(final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome){
 		log.debug("Time now : " + new java.util.Date());
@@ -63,7 +77,11 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 			session.merge(participant);
 		}
 	}
-
+	/**
+	 * Get the list of all participants.
+	 * 
+	 * @return return the list of participants.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Participant> getAll() {
 		return getHibernateTemplate().find("from Participant p order by p.lastName, p.firstName");
@@ -79,6 +97,11 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 	
+	/**
+	 * TODO
+	 * @param subnames
+	 * @return
+	 */
 	public List<Participant> getBySubnamesJoinOnIdentifier(final String[] subnames) {
 		String joins = " join o.identifiers as identifier ";
 		List<String> subStringMatchProperties = Arrays.asList("o.firstName", "o.lastName","identifier.type", "identifier.value");
@@ -94,11 +117,23 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 	public List<Participant> getByUniqueIdentifiers(final String[] subnames) {
 		return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
 	}
-
+	/**
+	 * Gets the participant by id. This initializes the participant and loads all
+	 * the objects.
+	 * 
+	 * @param identifier the id.
+	 * 
+	 * @return the participant by id.
+	 */
 	public Participant getByIdentifier(final Identifier identifier) {
 		return findByIdentifier(identifier);
 	}
-
+	/**
+	 * TODO
+	 * @param studyId
+	 * @param text
+	 * @return
+	 */
 	public List<Participant> matchParticipantByStudy(final Integer studyId, final String text) {
 
 		String joins = " join o.identifiers as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s ";
@@ -132,6 +167,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
 
+	/**
+	 * Search for participants given search criteria.
+	 * @param props The search criteria.
+	 * @return The list of participants.
+	 * @throws ParseException
+	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<Participant> searchParticipant(final Map props) throws ParseException {
 
@@ -225,6 +266,10 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 		return participant;
 	}
+	/**
+	 * This will initialize a lazy collection, consisting of participant objects.
+	 * @param participant The participant object.
+	 */
 
 	public Participant initialize(final Participant participant) {
 		HibernateTemplate ht = getHibernateTemplate();
@@ -234,7 +279,11 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 		return participant;
 	}
-
+	/**
+	 * Search for participants using query.
+	 * @param query The query used to search for participants
+	 * @return The list of participants.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Participant> searchParticipant(final ParticipantQuery query) {
 		String queryString = query.getQueryString();
@@ -254,11 +303,18 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements 
 
 		});
 	}
-	
+	/**
+	 * This method will reassociate the domain object to hibernate session. With a lock mode none.
+	 * @param o - the domain object instance that is to be reassociated.
+	 */
 	public void reassociateUsingLock(Participant o) {
 		getHibernateTemplate().lock(o, LockMode.NONE);
 	}
 	
+	/**
+	 * Delete the specified participant.
+	 * @param p The participant.
+	 */
 	@Transactional(readOnly=false)
 	public void delete(Participant p){
 		getHibernateTemplate().delete(p);

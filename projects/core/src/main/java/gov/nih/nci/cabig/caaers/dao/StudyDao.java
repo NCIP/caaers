@@ -54,11 +54,22 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName()
 			+ " s where shortTitle = :st";
 	
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<Study> domainClass() {
 		return Study.class;
 	}
-
+	/**
+	 * Get the list of all studies.
+	 * 
+	 * @return return the list of studies.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Study> getAllStudies() {
 		return getHibernateTemplate().find("from Study");
@@ -115,6 +126,10 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		}
 		return study;
 	}
+	/**
+	 * This will initialize a lazy collection, consisting of study objects.
+	 * @param study The study to be initialized.
+	 */
 
 	public Study initialize(final Study study) {
 		HibernateTemplate ht = getHibernateTemplate();
@@ -139,12 +154,19 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		}
 		return study;
 	}
-
+	/**
+	 * Save or update the study in the db.
+	 * 
+	 * @param The study.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final Study study) {
 		getHibernateTemplate().saveOrUpdate(study);
 	}
-
+	/**
+	 * TODO kkk
+	 * @param domainObjectImportOutcome
+	 */
 	@Transactional(readOnly = false)
 	public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome){
 		log.debug("Batch saving start time : " + new java.util.Date());
@@ -154,12 +176,23 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 			session.merge(study);
 		}
 	}
-
+	/**
+	 * Get the list of studies matching the name fragments.
+	 * 
+	 * @param subnames the name fragments to search on.
+	 * @return List of matching studies.
+	 */
 	public List<Study> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, null, null, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
 	/*
 	 * Added extraCondition parameter, as a fix for bug 9514
+	 */
+	/**
+	 * TODO kkk
+	 * @param subnames
+	 * @param extraConditions
+	 * @return The list of studies.
 	 */
 	public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames, String extraConditions) {
 		String joins = " join o.identifiers as identifier ";
@@ -172,7 +205,13 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 * public List<Study> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) { return
 	 * findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS); }
 	 */
-
+	/**
+	 * TODO kkk
+	 * @param participantId
+	 * @param text
+	 * @param extraCondition
+	 * @return
+	 */
 	public List<Study> matchStudyByParticipant(final Integer participantId, final String text, final String extraCondition) {
 
 		String joins = " join o.identifiers as identifier join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p ";
@@ -206,7 +245,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		getHibernateTemplate().setMaxResults(30);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
-
+	/**
+	 * Search for studies given search criteria.
+	 * @param props The search criteria.
+	 * @return The list of studies.
+	 * @throws ParseException
+	 */
 	public List<Study> searchStudy(final Map props) throws ParseException {
 
 		List<Object> params = new ArrayList<Object>();
@@ -296,7 +340,14 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	public List<Study> getByUniqueIdentifiers(final String[] subnames) {
 		return findBySubname(subnames, null, null, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
 	}
-
+	/**
+	 * Gets the study by id. This initializes the study and loads all
+	 * the objects.
+	 * 
+	 * @param id the id.
+	 * 
+	 * @return the study by id.
+	 */
 	public Study getByIdentifier(final Identifier identifier) {
 		return findByIdentifier(identifier);
 	}
@@ -313,6 +364,12 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		return null;
 	}
 
+	/**
+	 * TODO kkk
+	 * @param study
+	 * @param isWildCard
+	 * @return
+	 */
 	@Override
 	// TODO - Need to refactor the below into CaaersDao along with identifiers
 	public List<Study> searchByExample(final Study study, final boolean isWildCard) {
@@ -337,7 +394,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		}
 		return studyCriteria.add(example).list();
 	}
-
+	/**
+	 * TODO kkk
+	 * @param query
+	 * @return
+	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<Study> find(final AbstractQuery query) {
 		String queryString = query.getQueryString();
@@ -358,7 +419,10 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		});
 
 	}
-	
+	/**
+	 * Delete the study.
+	 * @param study The study to be deleted.
+	 */
 	@Transactional(readOnly=false)
 	public void delete(Study study){
 		getHibernateTemplate().delete(study);

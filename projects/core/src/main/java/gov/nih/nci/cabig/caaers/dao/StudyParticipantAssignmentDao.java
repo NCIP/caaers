@@ -23,7 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyParticipantAssignment> {
-    @Override
+    /**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
+	@Override
 	public Class<StudyParticipantAssignment> domainClass() {
         return StudyParticipantAssignment.class;
     }
@@ -31,6 +38,12 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
     /*
      * I guess this is not safe to use , A study might have multiple sites. 
      */
+	/**
+	 * TODO kkk
+	 * @param participant
+	 * @param study
+	 * @return
+	 */
     @SuppressWarnings("unchecked")
     public StudyParticipantAssignment getAssignment(Participant participant, Study study) {
         return CollectionUtils.firstElement(
@@ -40,6 +53,12 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
         );
     }
     
+    /**
+     * TODO kkk
+     * @param participant
+     * @param studySite
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public StudyParticipantAssignment getAssignment(Participant participant, StudySite studySite) {
         return CollectionUtils.firstElement(
@@ -48,14 +67,22 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
                 new Object[] { participant, studySite })
         );
     }
-
+    /**
+	 * This method will reassociate the domain object to hibernate session. With a lock mode none.
+	 * @param assignment - the domain object instance that is to be reassociated.
+	 */
     @Override
     public void reassociate(StudyParticipantAssignment assignment) {
     	getHibernateTemplate().lock(assignment, LockMode.NONE);
     }
     
     
-
+    /**
+     * TODO kkk
+     * @param participant
+     * @param site
+     * @return
+     */
 	public Boolean isAssignmentExist(final Participant participant, final StudySite site){
 	    return (Boolean)getHibernateTemplate().execute(new HibernateCallback(){
 	    	public Object doInHibernate(Session session) throws HibernateException, SQLException {

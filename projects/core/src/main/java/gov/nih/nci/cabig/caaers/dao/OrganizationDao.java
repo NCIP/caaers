@@ -25,12 +25,21 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 	private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
 
 	private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
     @Override
 	public Class<Organization> domainClass() {
 		return Organization.class;
 	}
-
+    /**
+     * Get the default organization.
+     * @return The default organization.
+     */
 	public Organization getDefaultOrganization() {
 		List<Organization> results = getHibernateTemplate().find("from Organization where name=?",
 				Organization.DEFAULT_SITE_NAME);
@@ -40,16 +49,30 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
 		}
 		return results.get(0);
 	}
-
+	/**
+	 * Get the list of all organizations.
+	 * 
+	 * @return return the list of organizations.
+	 */
 	public List<Organization> getAll() {
 		return getHibernateTemplate().find("from Organization");
 	}
-
+	/**
+	 * Get organization given organization name.
+	 * @param name The name of the organization.
+	 * @return The organization.
+	 */
 	public Organization getByName(final String name) {
 		List<Organization> results = getHibernateTemplate().find("from Organization where name= ?", name);
 		return results.size() > 0 ? results.get(0) : null;
 	}
-
+	/**
+	 * Get the list of organizations matching the name fragments.
+	 * 
+	 * @param subnames
+	 *            the name fragments to search on.
+	 * @return List of matching organizations.
+	 */
 	public List<Organization> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
@@ -64,12 +87,20 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
         getHibernateTemplate().saveOrUpdate(organization);
 	}
 
+	/**
+	 * Get list of organizations having study sites.
+	 * @return The list of organizations.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Organization> getOrganizationsHavingStudySites() {
 
 		return getHibernateTemplate().find("select distinct ss.organization from StudySite ss");
 	}
-
+	/**
+	 * Search for organizations using query
+	 * @param query The query for finding organizations.
+	 * @return The list of organizations.
+	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<Organization> searchOrganization(final OrganizationQuery query) {
 		String queryString = query.getQueryString();
