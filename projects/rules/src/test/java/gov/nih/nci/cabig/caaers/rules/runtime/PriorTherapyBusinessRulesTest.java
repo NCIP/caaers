@@ -35,7 +35,7 @@ public class PriorTherapyBusinessRulesTest extends
 	public void testCorrectPriorTherapy() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		ValidationErrors errors = fireRules(aeReport);
-		assertNoErrors(errors, "When other comments is not provided for a non 'No Prior Therapy'");
+		assertNoErrors(errors, "When other comments is not provided for a non 'Prior Therapy NOS'");
 	}
 	
 	/**
@@ -46,13 +46,13 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testNoPriorTherapy_With_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
-		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
 		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
-		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(1).setOther("Other1");
 		ValidationErrors errors = fireRules(aeReport);
-		assertNoErrors(errors, "When other comments is provided for a non 'No Prior Therapy'");
+		assertNoErrors(errors, "When other comments is provided for a non 'Prior Therapy NOS'");
 	}
 	
 	/**
@@ -63,11 +63,11 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testNoPriorTherapy_Without_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
-		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
 		System.out.println(aeReport.getSaeReportPriorTherapies().get(0).getName());
 		aeReport.getSaeReportPriorTherapies().get(0).setOther(null);
-		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(1).setOther(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_BR1_ERR");
@@ -84,10 +84,10 @@ public class PriorTherapyBusinessRulesTest extends
 	 */
 	public void testOneOutOfTwoPriorTherapy_IsWithout_OtherComments() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();	
-		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new Date());
 		aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
-		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("No Prior Therapy");
+		aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
 		aeReport.getSaeReportPriorTherapies().get(1).setOther(null);
 		ValidationErrors errors = fireRules(aeReport);
 		assertCorrectErrorCode(errors, "PTY_BR1_ERR");
