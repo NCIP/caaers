@@ -78,6 +78,17 @@ function submitPage(s){
     	</div>
       
 	</chrome:division>
+	<chrome:division title="User Roles">
+		<c:forEach var="role" items="${researchStaff.userGroupTypes}">
+			<li>
+				${role.csmName eq 'caaers_participant_cd' ? 'Subject coordinator' : ''}
+				${role.csmName eq 'caaers_study_cd' ? 'Study coordinator' : ''}
+				${role.csmName eq 'caaers_ae_cd' ? 'Adverse event coordinator' : ''}
+				${role.csmName eq 'caaers_site_cd' ? 'Site coordinator' : ''}
+			</li>
+		</c:forEach>
+	</chrome:division>
+	
 </chrome:box>
 
 </body>
