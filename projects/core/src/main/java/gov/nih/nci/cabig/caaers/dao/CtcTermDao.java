@@ -17,15 +17,35 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
     private static final List<String> EXACT_MATCH_PROPERTIES = Arrays.asList("term", "ctepCode");
-
+    /**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
     @Override
 	public Class<CtcTerm> domainClass() {
         return CtcTerm.class;
     }
+    /**
+     * Search for CTC term by identifier.
+     * @param id The CTC term identifer.
+     * @return The CTC term for the given identifier.
+     */  
     @Override
     public CtcTerm getById(int id) {
     	return super.getById(id);
     }
+    /**
+	 * Get the list of CTC terms matching the name fragments.
+	 * 
+	 * @param subnames the name fragments to search on.
+	 * @param ctcVersionId The CTC version being used.
+	 * @param ctcCategoryId The CTC category of the CTC term.
+	 * @return List of matching CTC terms.
+	 */
+
     public List<CtcTerm> getBySubname(String[] subnames, Integer ctcVersionId, Integer ctcCategoryId) {
         List<Object> extraParams = new LinkedList<Object>();
         StringBuilder extraConds = new StringBuilder("");
@@ -41,6 +61,13 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
             SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
     }
     
+    /**
+     * 
+     * @param subnames the name fragments to search on.
+     * @param ctcVersionId The CTC version being used.
+     * @param ctcCategoryId The CTC category of the CTC term.
+     * @return The matching CTC term.
+     */
     public CtcTerm getCtcTerm(String[] subnames, Integer ctcVersionId, Integer ctcCategoryId) {
         List<Object> extraParams = new LinkedList<Object>();
         StringBuilder extraConds = new StringBuilder("");
@@ -57,12 +84,21 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
         return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
     }
     
+    /**
+     * 
+     * @param subnames subnames the name fragments to search on.
+     * @return The matching CTC term.
+     */
     @SuppressWarnings("unchecked")
 	public CtcTerm getCtcTerm(final String[] subnames) {
 		List<CtcTerm> ctcTerms = findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_PROPERTIES);
 		return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
 	}
-
+    /**
+	 * Get the list of all CTC terms.
+	 * 
+	 * @return return the list of CTC terms.
+	 */
     @SuppressWarnings("unchecked")
     public List<CtcTerm> getAll() {
         return getHibernateTemplate().find("from CtcTerm");

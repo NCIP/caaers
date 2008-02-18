@@ -14,6 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class AdverseEventDao extends CaaersDao<AdverseEvent> {
+	/**
+	 * Get the Class representation of the domain object that this DAO is representing.
+	 * @return Class representation of the domain object that this DAO is representing.
+	 */
 	@Override
 	public Class<AdverseEvent> domainClass() {
 		return AdverseEvent.class;
@@ -24,15 +28,32 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 			+ " join expeditedReport.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier"
 			+ " join spa.participant as p join p.identifiersInternal as pIdentifier";
 
+	/**
+	 * Get list of Adverse events with supplied criteria.
+	 * @param subnames The name fragments to search on.
+	 * @param subStringMatchProperties A list of properties of the implementing object which should be matched as case-insensitive
+	 *            substrings
+	 * @see findBySubname {@link CaaersDao#findBySubname(String[], String, List, List, List)}
+	 * @return
+	 */
 	public List<AdverseEvent> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
-
+	/**
+	 * Save the Adverse Event.
+	 * @param event The event to be saved.
+	 * 
+	 */
 	@Transactional(readOnly = false)
 	public void save(final AdverseEvent event) {
 		getHibernateTemplate().saveOrUpdate(event);
 	}
-
+	/**
+	 * Search for Adverse events with the supplied property list
+	 * @param props The criteria for searching Adverse Events
+	 * @return The list of Adverse events that match the criteria
+	 * @throws ParseException
+	 */
 	@SuppressWarnings( { "unchecked" })
 	public List<AdverseEvent> searchAdverseEvents(final Map props) throws ParseException {
 

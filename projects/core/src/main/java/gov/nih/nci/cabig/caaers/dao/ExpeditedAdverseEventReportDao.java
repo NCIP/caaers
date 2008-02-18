@@ -27,17 +27,35 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			+ " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
 
 	private ReportDao reportDao;
-
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<ExpeditedAdverseEventReport> domainClass() {
 		return ExpeditedAdverseEventReport.class;
 	}
-
+	
+	/**
+	 * Get list of Adverse event reports with supplied criteria.
+	 * @param subnames The name fragments to search on.
+	 * @param substringMatchProperties A list of properties of the implementing object which should be matched as case-insensitive
+	 *            substrings
+	 * @see findBySubname {@link CaaersDao#findBySubname(String[], String, List, List, List)}
+	 * @return
+	 */
 	public List<ExpeditedAdverseEventReport> getByCriteria(final String[] subnames,
 			final List<String> substringMatchProperties) {
 		return findBySubname(subnames, null, null, substringMatchProperties, null, JOINS);
 	}
 
+
+	/**
+	 * @param report Save the Expedited AE report.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final ExpeditedAdverseEventReport report) {
 		getHibernateTemplate().saveOrUpdate(report);
@@ -70,7 +88,10 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 		// reportDao.save(r);
 		// }
 	}
-
+	/**
+	 * This method will reassociate the domain object to hibernate session. With a lock mode none.
+	 * @param report - the domain object instance that is to be reassociated.
+	 */
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public void reassociate(final ExpeditedAdverseEventReport report) {
@@ -92,7 +113,12 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 			reportDao.reassociate(r);
 		}
 	}
-
+	/**
+	 * Search for Adverse event reports with the supplied property list.
+	 * @param props The criteria for searching Adverse Event reports.
+	 * @return The list of Adverse event reports that match the criteria.
+	 * @throws ParseException
+	 */
 	@SuppressWarnings("unchecked")
 	public List<ExpeditedAdverseEventReport> searchExpeditedReports(final Map props) throws ParseException {
 
@@ -194,7 +220,11 @@ public class ExpeditedAdverseEventReportDao extends GridIdentifiableDao<Expedite
 		getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
 		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
 	}
-
+	
+	/**
+	 * Set the report DAO.
+	 * @param reportDao The report DAO to be set.
+	 */
 	public void setReportDao(final ReportDao reportDao) {
 		this.reportDao = reportDao;
 	}

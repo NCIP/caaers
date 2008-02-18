@@ -7,7 +7,14 @@ import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
  * @author kulasekaran
  */
 public class CtepStudyDiseaseDao extends GridIdentifiableDao<CtepStudyDisease> {
-    public Class<CtepStudyDisease> domainClass() {
+    /**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
+	public Class<CtepStudyDisease> domainClass() {
         return CtepStudyDisease.class;
     }    
     

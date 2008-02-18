@@ -15,7 +15,12 @@ public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifia
     extends CaaersDao<T>
     implements gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao<T> 
 {
-    @SuppressWarnings("unchecked")
+    /**
+     * Get object of class&ltT&gt specified by the grid ID in the template.
+     * @param template The template that contains the grid ID.
+     * @return The object of class&ltT&gt.
+     */
+	@SuppressWarnings("unchecked")
     public T getByGridId(T template) {
         return (T) CollectionUtils.firstElement(getHibernateTemplate().findByExample(template));
     }
@@ -31,7 +36,11 @@ public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifia
         return (T) CollectionUtils.firstElement(criteria.list());
     }
     */
-
+	/**
+     * Get object of class&ltT&gt specified by the grid ID.
+     * @param gridId The grid ID of the object.
+     * @return The object of class&ltT&gt.
+     */
     @SuppressWarnings("unchecked")
     public T getByGridId(String gridId) {
         StringBuilder query = new StringBuilder("from ")

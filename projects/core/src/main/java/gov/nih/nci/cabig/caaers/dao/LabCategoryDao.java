@@ -11,10 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly=true)
 public class LabCategoryDao extends CaaersDao<LabCategory> {
-    public Class<LabCategory> domainClass() {
+    /**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
+	public Class<LabCategory> domainClass() {
         return LabCategory.class;
     }
-
+	/**
+	 * Get the list of all lab categories.
+	 * 
+	 * @return return the list of lab categories.
+	 */
     @SuppressWarnings("unchecked")
     public List<LabCategory> getAll() {
         return getHibernateTemplate().find("from LabCategory");

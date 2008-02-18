@@ -21,16 +21,29 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 			= Collections.emptyList();
 	private static final List<Object> EXTRA_PARAMS
 			= Collections.emptyList();
-	
+	/**
+	 * Get the Class representation of the domain object that this DAO is representing.
+	* @return Class representation of the domain object that this DAO is representing.
+	 */
 	public Class<AnatomicSite> domainClass() {
         return AnatomicSite.class;
     } 
-    
+
+	/**
+     * Get the list of Anatomic sites matching the name fragments.
+     * @param subnames the name fragments to search on.
+     * @return List of matching Anatomic sites.
+     */
+
     public List<AnatomicSite> getBySubnames(String[] subnames) {
         return findBySubname(subnames,null,EXTRA_PARAMS,
             SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
-
+    /**
+	 * Get the list of all anatomic sites.
+	 * 
+	 * @return return the list of anatomic sites.
+	 */
     public List<AnatomicSite> getAll() {
         return findAll("o.name");
     }

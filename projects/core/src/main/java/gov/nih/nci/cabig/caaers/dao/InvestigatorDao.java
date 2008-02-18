@@ -26,16 +26,32 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 
 	private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<Investigator> domainClass() {
 		return Investigator.class;
 	}
-
+	
+	/**
+	 * Save the investigator. 
+	 * @param investigator The investigator to be saved.
+	 */
 	@Transactional(readOnly = false)
 	public void save(final Investigator investigator) {
 		getHibernateTemplate().saveOrUpdate(investigator);
 	}
-
+	/**
+	 * Get the list of investigators matching the name fragments.
+	 * 
+	 * @param subnames the name fragments to search on.
+	 * @return List of matching investigators.
+	 */
 	public List<Investigator> getBySubnames(final String[] subnames) {
 		return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
 	}
@@ -53,14 +69,22 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 
 		return investigator;
 	}
-
+	/**
+	 * TODO
+	 * @param investigator
+	 * @return
+	 */
 	public Investigator initialize(final Investigator investigator) {
 		HibernateTemplate ht = getHibernateTemplate();
 		ht.initialize(investigator.getSiteInvestigatorsInternal());
 
 		return investigator;
 	}
-
+	/**
+	 * Get list of investigators based on query.
+	 * @param query The query used to search for investigators.
+	 * @return The list of investigators.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Investigator> searchInvestigator(final InvestigatorQuery query) {
 		String queryString = query.getQueryString();
@@ -68,14 +92,14 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
 		return (List<Investigator>) getHibernateTemplate().execute(new HibernateCallback() {
 
 			public Object doInHibernate(final Session session) throws HibernateException, SQLException {
-				org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+				org.hibernate.Query hibernateQuery = session.createQuery(query.getQueryString());
 				Map<String, Object> queryParameterMap = query.getParameterMap();
 				for (String key : queryParameterMap.keySet()) {
 					Object value = queryParameterMap.get(key);
-					hiberanteQuery.setParameter(key, value);
+					hibernateQuery.setParameter(key, value);
 
 				}
-				return hiberanteQuery.list();
+				return hibernateQuery.list();
 			}
 
 		});

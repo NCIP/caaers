@@ -40,23 +40,41 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 		+ " left join h.investigator as inv"
 		+ " where (org.name like :name or inv.firstName like :name) and str(ind.indNumber) like :indNo";
 
+	/**
+	 * Get the Class representation of the domain object that this DAO is
+	 * representing.
+	 * 
+	 * @return Class representation of the domain object that this DAO is
+	 *         representing.
+	 */
 	@Override
 	public Class<InvestigationalNewDrug> domainClass() {
 		return InvestigationalNewDrug.class;
 	}
-
+	/** Save the investigational new drug.
+	 * @param iNewDrug The investigational new drug.
+	 */
 	@Transactional(readOnly=false)
 	public void save(InvestigationalNewDrug iNewDrug) {
 		getHibernateTemplate().saveOrUpdate(iNewDrug);
 	}
-
+	/**
+	 * Get the list of investigational new drugs which match the input parameters.
+	 * @param paramMap The input parameters.
+	 * @return The list of investigational new drugs.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<InvestigationalNewDrug> searchInvestigationalNewDrugs(Map<String, String> paramMap){
 	 return getHibernateTemplate().findByNamedParam(SEARCH_IND_QUERY,
 			 new String[]{"name","indNo"},
 			 new String[]{"%" + MapUtils.getString(paramMap,"sponsorName","%") + "%", "%" + MapUtils.getString(paramMap,"strINDNumber","%") + "%"});
 	}
-
+	
+	/**
+	 * Get the list of investigational new drugs which match the IND number.
+	 * @param ids The IND number.
+	 * @return The list of investigational new drugs.
+	 */
 	@SuppressWarnings("unchecked")
 	public List<InvestigationalNewDrug> findByIds(String[] ids){
 		 return getHibernateTemplate().findByNamedParam(FIND_BY_IND_ID_QUERY,
@@ -64,7 +82,11 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 				 new String[]{"%" + ids[0] + "%" });
 
 	}
-
+	
+	/**
+	 * TODO
+	 * @return
+	 */
 	public InvestigationalNewDrug fetchCtepInd(){
 		return (InvestigationalNewDrug) getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
@@ -74,7 +96,10 @@ implements MutableDomainObjectDao<InvestigationalNewDrug>{
 
 		});
 	}
-	
+	/**
+	 * TODO
+	 * @return
+	 */
 	public InvestigationalNewDrug fetchDcpInd(){
 		return (InvestigationalNewDrug) getHibernateTemplate().execute(new HibernateCallback(){
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
