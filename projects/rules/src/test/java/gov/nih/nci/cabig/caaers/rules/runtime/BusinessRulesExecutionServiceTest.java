@@ -115,6 +115,7 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		AdverseEventCtcTerm aeCTC = new AdverseEventCtcTerm();
 		aeCTC.setId(5);
 		CtcTerm term = new CtcTerm();
+		term.setId(5);
 		term.setTerm("abc");
 		aeCTC.setTerm(term);
 		ae1.setAdverseEventCtcTerm(aeCTC);
@@ -136,6 +137,7 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
 		aeCTC2.setId(6);
 		CtcTerm term2 = new CtcTerm();
 		term2.setTerm("abcx");
+		term2.setId(6);
 		aeCTC2.setTerm(term2);
 		ae2.setAdverseEventCtcTerm(aeCTC2);
 		DiseaseAttribution da2 = new DiseaseAttribution();
