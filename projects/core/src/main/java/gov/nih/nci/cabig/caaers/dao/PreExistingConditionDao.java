@@ -42,4 +42,3 @@ public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {
         return getHibernateTemplate().find("from PreExistingCondition");
     }    
 }
-s
