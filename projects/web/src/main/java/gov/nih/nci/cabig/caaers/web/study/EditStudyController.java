@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class EditStudyController extends StudyController<Study> {
 
 	private static final Log log = LogFactory.getLog(EditStudyController.class);
+	private Task task;
 
 
     public EditStudyController() {
@@ -100,7 +102,8 @@ public class EditStudyController extends StudyController<Study> {
 	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
 			final int page) throws Exception {
 		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
-
+		
+        refdata.put("currentTask", task);
 		Study study = (Study) command;
 		if (isSummaryEnabled()) {
 			List<ListValues> summary = new ArrayList<ListValues>();
@@ -151,4 +154,11 @@ public class EditStudyController extends StudyController<Study> {
 		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it is overview page
 	}
 
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 }

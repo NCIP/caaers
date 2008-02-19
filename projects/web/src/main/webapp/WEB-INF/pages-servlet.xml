@@ -160,7 +160,7 @@
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Import Studies" p:linkName="importController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Create Study" p:linkName="createStudyController"/>
+	      p:displayName="Enter Study" p:linkName="createStudyController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Search Studies" p:linkName="searchStudyController"/>
 
@@ -243,7 +243,7 @@
 	  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Create Study" p:linkName="createStudyController"/>
+		    p:displayName="Enter Study" p:linkName="createStudyController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Search Studies" p:linkName="searchStudyController"/>
 	    </list>
@@ -255,9 +255,9 @@
 	  <property name="tasks">
 	    <list>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Create Subject" p:linkName="createParticipantController"/>
+		    p:displayName="Enter Subject" p:linkName="createParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Search/Edit Subject" p:linkName="searchParticipantController"/>
+		    p:displayName="Search Subjects" p:linkName="searchParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Assign Subjects to Studies" p:linkName="assignController"/>
 	    </list>
@@ -344,6 +344,9 @@
   <bean id="tabConfigurer" class="gov.nih.nci.cabig.ctms.web.tabs.DefaultTabConfigurer"/>
 
   <!--  PARTICIPANT   -->
+  
+  	<bean name="participantEditTask" id="participantEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
+  	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType"
 	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
@@ -351,7 +354,7 @@
     </bean>
 
   <bean name="/participant/edit" id="editParticipantController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" >
+	class="gov.nih.nci.cabig.caaers.web.participant.EditParticipantController" p:task-ref="participantEditTask">
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
 
@@ -372,6 +375,11 @@
 	class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
   </bean>
 
+  <!--  STUDY   -->
+
+  <bean name="studyEditTask" id="studyEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
+  	  autowire="byType" p:displayName="Enter Study" p:linkName="editStudyController"/>
+
   <bean name="/study/create" id="createStudyController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController">
   </bean>
@@ -386,13 +394,21 @@
   </bean>
   
   <bean name="/study/edit" id="editStudyController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.study.EditStudyController">
+	class="gov.nih.nci.cabig.caaers.web.study.EditStudyController" p:task-ref="studyEditTask">
   </bean>    
 
   <bean name="/study/studyAgentIND" id="studyAgentINDController" autowire="byType"
 	class="org.springframework.web.servlet.mvc.ParameterizableViewController">
     <property name="viewName"><value>study/ajax/studyAgentINDSection</value></property>
   </bean>    
+  
+   <!--  AE   -->
+
+  <bean name="aeEditTask" id="aeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
+  	  autowire="byType" p:displayName="Enter expedited report" p:linkName="editAdverseEventController"/>
+  
+  <bean name="routineAeEditTask" id="routineAeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
+  	  autowire="byType" p:displayName="Document routine AEs" p:linkName="editRoutineAdverseEventController"/>	  
   
   <bean name="/ae/create" id="createAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
@@ -401,13 +417,13 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>    
 
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController"/>
+	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
   
   <bean name="/ae/submitReport" id="submitReportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   
   <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController"/>    
+	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/>    
   
   
 

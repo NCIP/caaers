@@ -3,11 +3,13 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class EditParticipantController extends ParticipantController<NewParticipantCommand> {
 
 	private static final Log log = LogFactory.getLog(EditParticipantController.class);
+	private Task task;
+	
 
 	public EditParticipantController() {
 		setBindOnNewForm(true);
@@ -109,5 +113,21 @@ public class EditParticipantController extends ParticipantController<NewParticip
 		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont save if it is overview page
 
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
+			final int page) throws Exception {
+		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+		refdata.put("currentTask",task);
+		return refdata;
+	}
 
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 }

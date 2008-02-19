@@ -4,8 +4,12 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
+
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
+
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +21,9 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController {
-    public EditAdverseEventController() {
+	private Task task; 
+
+	public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
@@ -27,6 +33,16 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return new ExpeditedFlowFactory("Edit expedited report");
     }
 
+    
+    @Override
+    protected Map referenceData(
+            HttpServletRequest request, Object oCommand, Errors errors, int page
+        ) throws Exception {
+            Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+            refdata.put("currentTask", task);
+            return refdata;
+        }
+    
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         EditExpeditedAdverseEventCommand command
@@ -101,4 +117,13 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
+    
+    
+    public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 }

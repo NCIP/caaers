@@ -4,7 +4,9 @@ import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +16,7 @@ import java.util.Map;
  * @author Krikor Krumlian
  */
 public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEventInputController {
+	private Task task;
     public EditRoutineAdverseEventController() {
         setCommandClass(EditRoutineAdverseEventCommand.class);
         setBindOnNewForm(true);
@@ -28,6 +31,17 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         return new EditRoutineAdverseEventCommand(getDao());
     }
+    
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(
+        HttpServletRequest request, Object oCommand, Errors errors, int page
+    ) throws Exception {
+    	 Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+    	 refdata.put("currentTask", task);
+    	 return refdata;
+		}
+    
     
     @Override
     @SuppressWarnings("unchecked")
@@ -55,4 +69,12 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
     	}
 
     }
+
+	public Task getTask() {
+		return task;
+	}
+
+	public void setTask(Task task) {
+		this.task = task;
+	}
 }
