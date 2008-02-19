@@ -108,7 +108,7 @@ public class Identifier extends AbstractMutableDomainObject {
 		if (obj == null) {
 			return false;
 		}
-		if (getClass() != obj.getClass()) {
+		if (!(obj instanceof Identifier)) {
 			return false;
 		}
 		final Identifier other = (Identifier) obj;

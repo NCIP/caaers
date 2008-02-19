@@ -9,7 +9,7 @@ public class ParticipantQuery extends AbstractQuery {
     private static final String LAST_NAME = "lastName";
 
     private static final String IDENTIFIER_VALUE = "identifier";
-
+    private static final String IDENTIFIER_TYPE = "type";
 
     private static final String STUDY_SITE_ID = "studySiteId";
 
@@ -35,7 +35,7 @@ public class ParticipantQuery extends AbstractQuery {
     public void joinOnIdentifiers() {
         join("p.identifiers");
     }
-
+    
     public void filterByFirstName(final String firstName) {
         String searchString = "%" + firstName.toLowerCase() + "%";
         andWhere("lower(p.firstName) LIKE :" + FIRST_NAME);
@@ -58,27 +58,34 @@ public class ParticipantQuery extends AbstractQuery {
         andWhere("p.identifiers.value = :" + IDENTIFIER_VALUE);
         setParameter(IDENTIFIER_VALUE, value);
     }
-
+    
+    public void filterByIdentifierTypeExactMatch(final String type){
+    	andWhere("p.identifiers.type = :" + IDENTIFIER_TYPE);
+    	setParameter(IDENTIFIER_TYPE, type);
+    }
+    
     public void filterByNotMachingStudySiteId(final Integer studySiteId) {
         andWhere("p.id not in (select assignments.participant.id from  StudyParticipantAssignment assignments where assignments.studySite.id=:" + STUDY_SITE_ID+")");
         setParameter(STUDY_SITE_ID, studySiteId);
     }
 
-    public void filterByGender(final String gender) {
+    public void excludeHavingGender(final String gender) {
         andWhere("p.gender != :" + GENDER);
         setParameter(GENDER, gender);
 
     }
 
-    public void filterByRace(final String race) {
-        andWhere("p.gender != :" + race);
+    public void excludeHavingRace(final String race) {
+        andWhere("p.gender != :" + RACE);
         setParameter(RACE, race);
 
     }
 
-    public void filterByEthnicity(final String ethnicity) {
-        andWhere("p.ethnicity != :" + ethnicity);
+    public void excludeHavingEthnicity(final String ethnicity) {
+        andWhere("p.ethnicity != :" + ETHNITICTY);
         setParameter(ETHNITICTY, ethnicity);
 
     }
+    
+
 }

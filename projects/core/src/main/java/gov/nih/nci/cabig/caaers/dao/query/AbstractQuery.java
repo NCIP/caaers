@@ -23,12 +23,14 @@ public class AbstractQuery {
 	private final List<String> joins = new ArrayList<String>();
 
 	private final Map<String, Object> queryParameterMap;
-
-	private static String WHERE = "WHERE";
-
-	private static String AND = "AND";
 	
-	private static String OR = "OR";
+	public final static String ID = "OBJID";
+
+	public final static String WHERE = "WHERE";
+
+	public final static String AND = "AND";
+	
+	public final static String OR = "OR";
 
 	public AbstractQuery(final String queryString) {
 		this.queryString = queryString;

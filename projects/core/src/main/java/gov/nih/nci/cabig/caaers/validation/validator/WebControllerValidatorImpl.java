@@ -3,18 +3,24 @@ package gov.nih.nci.cabig.caaers.validation.validator;
 import gov.nih.nci.cabig.caaers.validation.PropertyUtil;
 import gov.nih.nci.cabig.caaers.validation.annotation.Validator;
 import gov.nih.nci.cabig.caaers.validation.annotation.ValidatorClass;
+
+import java.lang.annotation.Annotation;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.BindException;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.annotation.Annotation;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * Controller validation logic for validating objects.
@@ -30,32 +36,41 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             BeanWrapperImpl beanWrapperImpl = new BeanWrapperImpl(command);
 
             Enumeration<String> propertyNames = request.getParameterNames();
-            Map<String, String> collectionProperties = new HashMap<String, String>();
+            Map<String, String> propertyMap = new LinkedHashMap<String, String>();
+            Map<String, String> collectionPropertyMap = new LinkedHashMap<String, String>();
+            
             while (propertyNames.hasMoreElements()) {
                 String propertyName = propertyNames.nextElement();
-                String propertyNameWhereErrorWillBeDisplayed = propertyName;
                 if (beanWrapperImpl.isReadableProperty(propertyName))
                     validateProperty(propertyName, beanWrapperImpl, propertyName, errors, propertyName);
 
                 //now check for collection properties
                 String collectionPropertyName = PropertyUtil.getColletionPropertyName(propertyName);
 
-                if (collectionPropertyName != null && beanWrapperImpl.isReadableProperty(collectionPropertyName) && collectionProperties.get(propertyName) == null) {
-                    collectionProperties.put(collectionPropertyName, propertyName);
+                if (collectionPropertyName != null && beanWrapperImpl.isReadableProperty(collectionPropertyName) && propertyMap.get(propertyName) == null) {
+                	//individual properties (items in collection)
+                    propertyMap.put(collectionPropertyName, propertyName);
+                    //collection properties.
+                    collectionPropertyMap.put(PropertyUtil.getCollectionMethodName(collectionPropertyName), propertyName);
                 }
 
             }
 
             //now validate the collection
-            for (String collectionPropertyName : collectionProperties.keySet()) {
+            for (String collectionPropertyName : propertyMap.keySet()) {
 
-                String propertyNameWhereErrorWillBeDisplayed = collectionProperties.get(collectionPropertyName);
+                String propertyNameWhereErrorWillBeDisplayed = propertyMap.get(collectionPropertyName);
                 //logger.info("Found collection property:" + collectionPropertyName + " and property name where error messages(if any) will be displayed:" + propertyNameWhereErrorWillBeDisplayed);
                 String readMethodName = PropertyUtil.getCollectionMethodName(propertyNameWhereErrorWillBeDisplayed);
                 validateCollectionProperty(readMethodName, beanWrapperImpl, collectionPropertyName, errors, propertyNameWhereErrorWillBeDisplayed);
 
             }
-
+            
+            //for UniqueObjectInCollection validator
+            for(String collectionProperty : collectionPropertyMap.keySet()){
+            	validateCollectionProperty(collectionProperty, beanWrapperImpl, collectionProperty, errors, collectionPropertyMap.get(collectionProperty));
+            }
+            
         }
 
     }
