@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * This class represents the additional information attached to the Adverse event report
  * @author Krikor Krumlian
  */
 @Entity
@@ -36,12 +37,23 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
     ////// BEAN PROPERTIES
 	
+	/**
+	 * getter method for autopsy Report.
+	 * @return autopsyReport
+	 */
 	public Boolean getAutopsyReport() {
 		return autopsyReport;
 	}
+	/**
+	 * setter method for autopsy Report.
+	 * 
+	 * @param autopsyReport
+	 * 
+	 */
 	public void setAutopsyReport(Boolean autopsyReport) {
 		this.autopsyReport = autopsyReport;
 	}
+	
 	public Boolean getConsults() {
 		return consults;
 	}
