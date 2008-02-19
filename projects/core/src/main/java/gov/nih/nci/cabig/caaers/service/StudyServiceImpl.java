@@ -83,9 +83,11 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		getStudyDao().save(study);		
 	}
 	
-	/*
+	/**
 	 *  Given a study object which has been serialized from an xml format
 	 *  is recreated here and made ready to be saved. 
+	 * @param xstreamStudy - The serialized xml stream
+	 * @return An outcome object containing the {@link Study}
 	 */
 	public DomainObjectImportOutcome<Study> createStudyObjects(Study xstreamStudy)
 	{
@@ -127,7 +129,12 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 	}
 	
 	
-	
+	/**
+	 * This method will deep clone the {@link StudyTherapy} objects from the source to destination
+	 * @param destination - The to which the objects are copied
+	 * @param source - The study from which objects are copied
+	 * @param studyImportOutcome - This object will store the outcome.
+	 */
 	private void migrateTherapies(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){	
 
 		if (source.getDrugAdministrationTherapyType()) {
