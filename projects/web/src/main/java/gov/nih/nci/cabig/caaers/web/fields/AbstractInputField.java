@@ -114,7 +114,10 @@ public abstract class AbstractInputField implements InputField {
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
-
+    
+    public FieldValidator[] getValidators() {
+    	return validators;
+    }
     //////OBJECT METHODS
 
 	@Override

@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.fields;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -15,6 +17,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     private InputField src;
     private Map<String, Object> attributes;
     private boolean mandatory;
+    private FieldValidator[] validators;
 
     public QualifiedPropertyNameInputField(InputField src) {
         this.src = src;
@@ -24,11 +27,27 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     protected InputField getSourceField() {
         return src;
     }
-
+    
+    
+    /**
+     * This method will validate against the Source field validators.
+     */
     public void validate(BeanWrapper commandBean, Errors errors) {
-        AbstractInputField.validateRequired(this, commandBean, errors);
+    	FieldValidator[] validators = getValidators();
+    	if(validators == null) return;
+    	for(FieldValidator validator : validators){
+    		if(!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))){
+    			 errors.rejectValue(this.getPropertyName(),
+    	                    "REQUIRED", validator.getMessagePrefix()+ " " + this.getDisplayName());
+    			 return;
+    		}
+    	}
     }
-
+    
+    public FieldValidator[] getValidators() {
+    	return src.getValidators();
+    }
+    
     public Category getCategory() {
         return getSourceField().getCategory();
     }
@@ -54,7 +73,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     }
 
     protected abstract String qualifyPropertyName(String propertyName);
-
+    
     @SuppressWarnings("unchecked")
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = new LinkedHashMap<String, Object>(attributes);

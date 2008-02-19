@@ -9,7 +9,7 @@ public class DateValidator extends FieldValidator{
 		if(fieldValue instanceof Date){
 			Date date = (Date) fieldValue;
 			Date now = new Date();
-			if(date.compareTo(now) < 0) return false;
+			if(date.compareTo(now) > 0) return false;
 		}
 		return true;
 	}

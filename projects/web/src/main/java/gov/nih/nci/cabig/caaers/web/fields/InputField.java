@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.fields;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+
 import java.util.Map;
 
 /**
@@ -40,7 +42,12 @@ public interface InputField {
     boolean isRequired();
 
     void validate(BeanWrapper commandBean, Errors errors);
-
+    /**
+     * Returns an array of validators configured for this field.
+     * @return {@link FieldValidator}
+     */
+    FieldValidator[] getValidators();
+    
     String getPropertyName();
 
     Map<String, Object> getAttributes();
