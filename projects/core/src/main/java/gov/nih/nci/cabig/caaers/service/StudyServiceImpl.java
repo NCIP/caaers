@@ -172,7 +172,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		}
 	}
 	
-	
+	 
 	private void migrateFundingSponsor(Study destination, Study source , DomainObjectImportOutcome studyImportOutcome){ 
 		
 		OrganizationAssignedIdentifier  organizationAssignedIdentifier = source.getFundingSponsor().getOrganizationAssignedIdentifier();
