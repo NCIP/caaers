@@ -41,11 +41,11 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
             participantQuery.leftJoinFetchOnIdentifiers();
             participantQuery.filterByIdentifierValue(searchText);
         } else if ("g".equals(searchType)) {
-            participantQuery.filterByGender(searchText);
+            participantQuery.excludeHavingGender(searchText);
         } else if ("r".equals(searchType)) {
-            participantQuery.filterByRace(searchText);
+            participantQuery.excludeHavingRace(searchText);
         } else if ("e".equals(searchType)) {
-            participantQuery.filterByEthnicity(searchText);
+            participantQuery.excludeHavingEthnicity(searchText);
 
         }
 
