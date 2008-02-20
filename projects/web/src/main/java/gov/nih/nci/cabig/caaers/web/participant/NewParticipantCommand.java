@@ -1,17 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Krikor Krumlian
@@ -28,8 +22,6 @@ public class NewParticipantCommand {
 
 	private String searchText;
 
-	// NEWLY ADDED
-	private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 
 	private List<Study> studies = new ArrayList<Study>();
 
@@ -39,7 +31,10 @@ public class NewParticipantCommand {
 
 	private Participant participant;
 
-	public NewParticipantCommand() {
+    private String studySubjectIdentifier;
+
+
+    public NewParticipantCommand() {
 		participant = new Participant();
 		participant.setDateOfBirth(new DateValue(null, null, null));
 	}
@@ -81,13 +76,6 @@ public class NewParticipantCommand {
 		this.searchText = searchText;
 	}
 
-	public StudyParticipantAssignment getStudyParticipantAssignment() {
-		return studyParticipantAssignment;
-	}
-
-	public void setStudyParticipantAssignment(final StudyParticipantAssignment studyParticipantAssignment) {
-		this.studyParticipantAssignment = studyParticipantAssignment;
-	}
 
 	public List<Study> getStudies() {
 		return studies;
@@ -121,4 +109,12 @@ public class NewParticipantCommand {
 	public void setParticipant(final Participant participant) {
 		this.participant = participant;
 	}
+
+    public String getStudySubjectIdentifier() {
+        return studySubjectIdentifier;
+    }
+
+    public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
+        this.studySubjectIdentifier = studySubjectIdentifier;
+    }
 }

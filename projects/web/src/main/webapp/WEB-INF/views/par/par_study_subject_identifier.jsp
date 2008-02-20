@@ -21,18 +21,12 @@
         }
     </style>
 
-
-
-
 </head>
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false">
 
 		 <jsp:attribute name="singleFields">
-            <div>
-
-
         <chrome:division>
 
             <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
@@ -44,7 +38,7 @@
 
      </jsp:attribute>
 
-    
+
 </tags:tabForm>
 </body>
 </html>
