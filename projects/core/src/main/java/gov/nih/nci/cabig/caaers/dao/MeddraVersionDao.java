@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the MeddraVersion domain object.
  * @author Krikor Krumlian
  */
 @Transactional(readOnly=true)

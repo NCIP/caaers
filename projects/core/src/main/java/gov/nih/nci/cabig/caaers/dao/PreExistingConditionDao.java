@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * This class implements the Data access related operations for the PreExistingCondition domain object.
  * @author Krikor Krumlian
  */
 public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {

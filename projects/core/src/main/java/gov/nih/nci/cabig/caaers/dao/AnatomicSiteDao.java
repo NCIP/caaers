@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
-/*
+/**
+ * This class implements the Data access related operations for the AnatomicSite domain object.
  * @author kulasekaran
- * 
+ *
  */
 @Transactional(readOnly=true)
 public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {

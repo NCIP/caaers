@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
+ * This class implements the Data access related operations for the User domain object.
  * @author Jared Flatow
  */
 @Transactional(readOnly=true)

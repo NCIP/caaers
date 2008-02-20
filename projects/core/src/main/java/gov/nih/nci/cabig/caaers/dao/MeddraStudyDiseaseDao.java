@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 
 
 /**
+ * This class implements the Data access related operations for the MeddraStudyDisease domain object.
  * @author krikor krumlian
  */
 public class MeddraStudyDiseaseDao extends GridIdentifiableDao<MeddraStudyDisease> {

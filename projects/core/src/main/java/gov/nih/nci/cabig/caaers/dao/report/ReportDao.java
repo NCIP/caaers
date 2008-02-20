@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ *This class implements the Data access related operations for the Report domain object.
  *
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 13, 2007

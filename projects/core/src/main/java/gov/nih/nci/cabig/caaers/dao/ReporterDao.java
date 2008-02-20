@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 /**
+ * This class implements the Data access related operations for the Reporter domain object.
  * @author Kulasekaran
  */
 @Transactional(readOnly=true)

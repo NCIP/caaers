@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 /**
+ * This class implements the Data access related operations for the RoutineAdverseEventReport domain object.
  * @author Krikor Krumlian
  */
 @Transactional(readOnly = true)

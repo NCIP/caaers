@@ -30,6 +30,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the Study domain object.
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  * @author Priyatam

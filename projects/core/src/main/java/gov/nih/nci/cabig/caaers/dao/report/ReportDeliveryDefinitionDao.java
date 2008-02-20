@@ -10,7 +10,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.springframework.transaction.annotation.Transactional;
 /**
- * 
+ * This class implements the Data access related operations for the ReportDeliveryDefinition domain object.
  * 
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  * Created-on : May 13, 2007

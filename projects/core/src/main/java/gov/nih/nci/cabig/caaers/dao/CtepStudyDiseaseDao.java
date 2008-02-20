@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 
 
 /**
+ * This class implements the Data access related operations for the CtepStudyDisease domain object.
  * @author kulasekaran
  */
 public class CtepStudyDiseaseDao extends GridIdentifiableDao<CtepStudyDisease> {

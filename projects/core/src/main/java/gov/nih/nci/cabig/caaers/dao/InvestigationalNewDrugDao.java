@@ -15,6 +15,11 @@ import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 
+ * This class implements the Data access related operations for the InvestigationalNewDrug domain object.
+ *
+ */
 @Transactional(readOnly=true)
 public class InvestigationalNewDrugDao extends GridIdentifiableDao<InvestigationalNewDrug>
 implements MutableDomainObjectDao<InvestigationalNewDrug>{

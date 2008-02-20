@@ -10,19 +10,19 @@ import java.util.Map;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the AdverseEvent domain object.
+ * 
  * @author Rhett Sutphin
  */
 @Transactional(readOnly = true)
 public class AdverseEventDao extends CaaersDao<AdverseEvent> {
-	/**
-	 * Get the Class representation of the domain object that this DAO is representing.
-	 * @return Class representation of the domain object that this DAO is representing.
-	 */
+	
 	@Override
 	public Class<AdverseEvent> domainClass() {
 		return AdverseEvent.class;
 	}
 
+	/** The Constant JOINS. */
 	private static final String JOINS = " join o.adverseEventTerm as aeCtcTerm join aeCtcTerm.term as ctcTerm join ctcTerm.category as ctcCategory  "
 			+ "  join o.report as expeditedReport "
 			+ " join expeditedReport.assignment as spa join spa.studySite as studySite join studySite.study as study join study.identifiers as identifier"
@@ -39,10 +39,11 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	public List<AdverseEvent> getByCriteria(final String[] subnames, final List<String> subStringMatchProperties) {
 		return findBySubname(subnames, null, null, subStringMatchProperties, null, JOINS);
 	}
+	
 	/**
 	 * Save the Adverse Event.
-	 * @param event The event to be saved.
 	 * 
+	 * @param event The event to be saved.
 	 */
 	@Transactional(readOnly = false)
 	public void save(final AdverseEvent event) {

@@ -16,6 +16,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the Organization domain object.
  * @author Padmaja Vedula
  * @author Rhett Sutphin
  */

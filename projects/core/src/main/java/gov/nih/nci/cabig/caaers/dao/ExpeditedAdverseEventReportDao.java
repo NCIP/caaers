@@ -16,6 +16,7 @@ import org.hibernate.LockMode;
 import org.hibernate.LazyInitializationException;
 
 /**
+ * This class implements the Data access related operations for the ExpeditedAdverseEventReport domain object.
  * @author Rhett Sutphin
  * @author Krikor Krumlian
  */

@@ -3,7 +3,11 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 
 import java.util.List;
-
+/**
+ * This class implements the Data access related operations for the TreatmentAssignment domain object.
+ * @author 
+ *
+ */
 public class TreatmentAssignmentDao extends GridIdentifiableDao<TreatmentAssignment> {
 
 	/**

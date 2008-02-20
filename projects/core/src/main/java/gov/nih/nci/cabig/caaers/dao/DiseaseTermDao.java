@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import java.util.List;
 
 /**
+ * This class implements the Data access related operations for the DiseaseTerm domain object.
  * @author Krikor Krumlian
  */
 public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {

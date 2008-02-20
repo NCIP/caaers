@@ -16,6 +16,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the ResearchStaff domain object.
  * @author Kulasekaran
  */
 @Transactional(readOnly = true)

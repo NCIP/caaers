@@ -8,6 +8,7 @@ import java.util.List;
 
 
 /**
+ * This class implements the Data access related operations for the Agent domain object.
  * @author Krikor Krumlian
  */
 public class AgentDao extends GridIdentifiableDao<Agent> {

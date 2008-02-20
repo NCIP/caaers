@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyDisease;
 
 
 /**
+ * This class implements the Data access related operations for the StudyDisease domain object.
  * @author kulasekaran
  */
 public class StudyDiseaseDao extends GridIdentifiableDao<StudyDisease> {

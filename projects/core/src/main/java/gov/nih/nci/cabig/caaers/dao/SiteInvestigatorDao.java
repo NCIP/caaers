@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * This class implements the Data access related operations for the SiteInvestigator domain object.
  * @author Kulasekaran
  */
 public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {

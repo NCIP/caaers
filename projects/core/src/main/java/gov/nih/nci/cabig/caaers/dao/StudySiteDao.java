@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * This class implements the Data access related operations for the StudySite domain object.
  * @author Padmaja Vedula
  */
 @Transactional(readOnly=true)
