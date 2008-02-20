@@ -96,9 +96,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!--========= SEARCH ========-->
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-		<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 
 	</util:map>
 	
