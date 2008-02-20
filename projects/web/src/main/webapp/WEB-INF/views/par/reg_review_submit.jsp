@@ -103,7 +103,12 @@ function submitPage(s){
       					<img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
 							height="1" class="heightControl">
 					   </c:forEach>
-					</chrome:division>
+                        <div class="row">
+                            <div class="label">Study subject identifer </div>
+                            <div class="value">${command.studySubjectIdentifier}</div>
+                        </div>
+
+                    </chrome:division>
 				</td>
 			</tr>
 		</table>

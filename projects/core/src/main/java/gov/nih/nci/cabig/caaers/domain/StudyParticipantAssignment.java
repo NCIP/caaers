@@ -38,6 +38,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private List<RoutineAdverseEventReport> aeRoutineReports;
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
+    private String studySubjectIdentifier;
+
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
         this.studySite = studySite;
@@ -145,4 +147,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         result = 29 * result + (dateOfEnrollment != null ? dateOfEnrollment.hashCode() : 0);
         return result;
     }
+
+    public String getStudySubjectIdentifier() {
+        return studySubjectIdentifier;
+    }
+
+    public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
+        this.studySubjectIdentifier = studySubjectIdentifier;
+    }
+
+    
 }
+
+

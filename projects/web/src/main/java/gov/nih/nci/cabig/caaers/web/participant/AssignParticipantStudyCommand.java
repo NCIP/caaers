@@ -1,18 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
-
+import gov.nih.nci.cabig.caaers.domain.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Krikor Krumlian
@@ -68,7 +61,7 @@ public class AssignParticipantStudyCommand {
 	private Integer participantId;
 
 	// NEWLY ADDED
-	private StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
+    private String studySubjectIdentifier;
 
 	private List<Study> studies = new ArrayList<Study>();
 
@@ -88,25 +81,25 @@ public class AssignParticipantStudyCommand {
 	 * participant.setIdentifiers(getIdentifiers()); return participant; }
 	 */
 
-	public Participant createParticipant() {
-		Participant participant = new Participant();
-		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
-		participant.setInstitution(getInstitution());
-		participant.setFirstName(getFirstName());
-		participant.setMaidenName(getMaidenName());
-		participant.setMiddleName(getMiddleName());
-		participant.setLastName(getLastName());
-		participant.setDateOfBirth(getDateOfBirth());
-		participant.setGender(getGender());
-		participant.setRace(getRace());
-		participant.setEthnicity(getEthnicity());
-		participant.setIdentifiers(getIdentifiers());
-
-		for (int i = 0; i < studySites.size(); i++) {
-			participant.getAssignments().add(new StudyParticipantAssignment(participant, studySites.get(i)));
-		}
-		return participant;
-	}
+//	public Participant createParticipant() {
+//		Participant participant = new Participant();
+//		participant.setInstitutionalPatientNumber(getInstituitionalPatientNumber());
+//		participant.setInstitution(getInstitution());
+//		participant.setFirstName(getFirstName());
+//		participant.setMaidenName(getMaidenName());
+//		participant.setMiddleName(getMiddleName());
+//		participant.setLastName(getLastName());
+//		participant.setDateOfBirth(getDateOfBirth());
+//		participant.setGender(getGender());
+//		participant.setRace(getRace());
+//		participant.setEthnicity(getEthnicity());
+//		participant.setIdentifiers(getIdentifiers());
+//
+//		for (int i = 0; i < studySites.size(); i++) {
+//			participant.getAssignments().add(new StudyParticipantAssignment(participant, studySites.get(i)));
+//		}
+//		return participant;
+//	}
 
 	public String getInstituitionalPatientNumber() {
 		return instituitionalPatientNumber;
@@ -272,13 +265,6 @@ public class AssignParticipantStudyCommand {
 		this.participantType = participantType;
 	}
 
-	public StudyParticipantAssignment getStudyParticipantAssignment() {
-		return studyParticipantAssignment;
-	}
-
-	public void setStudyParticipantAssignment(final StudyParticipantAssignment studyParticipantAssignment) {
-		this.studyParticipantAssignment = studyParticipantAssignment;
-	}
 
 	public List<Study> getStudies() {
 		return studies;
@@ -327,6 +313,12 @@ public class AssignParticipantStudyCommand {
 	public void setStudySiteId(Integer studySiteId) {
 		this.studySiteId = studySiteId;
 	}
-	
-	
+
+    public String getStudySubjectIdentifier() {
+        return studySubjectIdentifier;
+    }
+
+    public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
+        this.studySubjectIdentifier = studySubjectIdentifier;
+    }
 }
