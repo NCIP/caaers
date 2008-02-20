@@ -5,29 +5,18 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import org.springframework.validation.Errors;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.validation.Errors;
 
 public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
@@ -71,7 +60,7 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 		options.put("", "Please select");
 		List<Organization> organizations = organizationDao.getOrganizationsHavingStudySites();
 		if (organizations != null) {
-			options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
+			options.putAll(InputFieldFactory.collectOptions(organizations, "id", "fullName"));
 		}
 		siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("organization", "Site", true, options));
 
