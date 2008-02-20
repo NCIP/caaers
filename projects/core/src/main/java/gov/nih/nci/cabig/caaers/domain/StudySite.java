@@ -13,6 +13,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 /**
+ * This class represents the StudySite domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  * @author Kulasekaran
  */

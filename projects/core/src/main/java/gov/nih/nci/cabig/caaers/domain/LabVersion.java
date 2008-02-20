@@ -13,6 +13,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.List;
 
 /**
+ * This class represents the LabVersion domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  * 
  * NOTE: this class is currently not utilized but it might be helpful for 

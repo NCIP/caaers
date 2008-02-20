@@ -6,6 +6,7 @@ import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
+ * This class represents the Term domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 public enum Term implements CodedEnum<Integer> {

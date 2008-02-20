@@ -9,6 +9,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 /**
+ * This class represents the OrganizationAssignedIdentifier domain object associated with the Adverse event report.
  * @author Saurabh Agrawal
  */
 @Entity

@@ -11,6 +11,7 @@ import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
+ * This class represents the StudyPersonnel domain object associated with the Adverse event report.
  * @author Kulasekaran
  */
 @Entity

@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Embeddable;
 
 /**
+ * This class represents the CourseDate domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Embeddable

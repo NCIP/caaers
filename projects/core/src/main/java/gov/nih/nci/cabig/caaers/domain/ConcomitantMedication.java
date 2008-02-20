@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 /**
+ * This class represents the ConcomitantMedication domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

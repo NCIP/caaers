@@ -19,6 +19,7 @@ import java.util.Date;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
+ * This class represents the CourseAgent domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

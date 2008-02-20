@@ -14,6 +14,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.Length;
 
 /**
+ * This class represents the TreatmentAssignment domain object associated with the Adverse event report.
  * Domain object representing Study Therapy
  *
  * @author Saurabh Agrawal

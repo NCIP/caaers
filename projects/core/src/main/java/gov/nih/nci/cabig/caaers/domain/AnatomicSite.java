@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 /**
+ * This class represents the AnatomicSite domain object associated with the Adverse event report.
  * @author Kulasekaran
  * @version 1.0
  */

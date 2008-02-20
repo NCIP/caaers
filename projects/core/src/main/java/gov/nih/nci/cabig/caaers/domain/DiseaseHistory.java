@@ -18,6 +18,7 @@ import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 /**
+ * This class represents the DiseaseHistory domain object associated with the Adverse event report.
  * @author Kulasekaran
  * @author Rhett Sutphin
  */

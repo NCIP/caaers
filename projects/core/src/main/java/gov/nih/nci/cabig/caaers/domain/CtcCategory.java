@@ -10,6 +10,7 @@ import javax.persistence.OrderBy;
 import java.util.List;
 
 /**
+ * This class represents the CtcCategory domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

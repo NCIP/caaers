@@ -7,6 +7,7 @@ import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
+ * This class represents the Attribution domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 public enum Attribution implements CodedEnum<Integer> {

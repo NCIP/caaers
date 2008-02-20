@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Column;
 
 /**
+ * This class represents the OtherCause domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

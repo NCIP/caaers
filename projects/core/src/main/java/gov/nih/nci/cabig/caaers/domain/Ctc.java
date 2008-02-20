@@ -13,6 +13,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.List;
 
 /**
+ * This class represents the Ctc domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

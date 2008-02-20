@@ -29,6 +29,7 @@ import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 
 /**
+ * This class represents the ExpeditedAdverseEventReport domain object.
  * @author Rhett Sutphin
  */
 @Entity

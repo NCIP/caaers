@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
+ * This class represents the MedicalDevice domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

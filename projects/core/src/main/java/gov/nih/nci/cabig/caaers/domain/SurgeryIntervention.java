@@ -11,6 +11,7 @@ import java.util.Date;
 
 
 /**
+ * This class represents the SurgeryIntervention domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

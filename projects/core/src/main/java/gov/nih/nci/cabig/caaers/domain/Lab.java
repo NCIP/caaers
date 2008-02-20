@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 import java.util.Date;
 
 /**
+ * This class represents the Lab domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

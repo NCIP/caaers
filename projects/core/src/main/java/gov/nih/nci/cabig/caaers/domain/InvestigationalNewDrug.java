@@ -14,6 +14,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+/**
+ * This class represents the InvestigationalNewDrug domain object associated with the Adverse event report.
+ * @author
+ *
+ */
 @Entity
 @Table (name = "investigational_new_drugs")
 @GenericGenerator(name="id-generator", strategy = "native",

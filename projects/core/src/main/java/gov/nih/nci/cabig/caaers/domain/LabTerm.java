@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
+ * This class represents the LabTerm domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

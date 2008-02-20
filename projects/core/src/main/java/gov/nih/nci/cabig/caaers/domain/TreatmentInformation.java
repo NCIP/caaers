@@ -24,6 +24,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 /**
+ * This class represents the TreatmentInformation domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

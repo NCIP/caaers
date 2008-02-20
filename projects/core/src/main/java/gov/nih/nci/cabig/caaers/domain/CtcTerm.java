@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 /**
+ * This class represents the CtcTerm domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

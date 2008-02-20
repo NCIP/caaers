@@ -20,6 +20,7 @@ import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 /**
+ * This class represents the User domain object associated with the Adverse event report.
  * @author Saurabh Agrawal
  */
 @MappedSuperclass

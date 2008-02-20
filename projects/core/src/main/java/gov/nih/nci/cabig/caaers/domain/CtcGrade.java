@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 /**
+ * This class represents the CtcGrade domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

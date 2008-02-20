@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 /**
+ * This class represents the MetastaticDiseaseSite domain object associated with the Adverse event report.
  * @author Kulasekaran
  * @author Rhett Sutphin
  */

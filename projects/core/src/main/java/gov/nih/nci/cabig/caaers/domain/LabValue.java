@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Date;
 
 /**
+ * This class represents the LabValue domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Embeddable

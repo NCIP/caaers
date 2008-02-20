@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * This class represents the SAEReportPreExistingCondition domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Entity

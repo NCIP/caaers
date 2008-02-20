@@ -35,6 +35,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This class represents the Adverse Event domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 

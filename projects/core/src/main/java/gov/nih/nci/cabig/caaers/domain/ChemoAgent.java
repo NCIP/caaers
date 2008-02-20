@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 import javax.persistence.Entity;
 
 /**
+ * This class represents the ChemoAgent domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 /**
- *
+ * This class represents the StudyFundingSponsor domain object associated with the Adverse event report.
  * @author Ram Chilukuri
  *
  */

@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 
 /**
+ * This class represents the StudyDisease domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 

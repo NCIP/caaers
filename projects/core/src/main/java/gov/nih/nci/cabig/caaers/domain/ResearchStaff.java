@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 /**
+ * This class represents the ResearchStaff domain object associated with the Adverse event report.
  * @author Priyatam
  * @author Kulasekaran
  */

@@ -16,6 +16,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 /**
+ * This class represents the AeTerminology domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

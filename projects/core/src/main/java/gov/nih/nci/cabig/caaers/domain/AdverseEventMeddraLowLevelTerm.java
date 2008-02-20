@@ -9,6 +9,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 /**
+ * This class represents the AdverseEventMeddraLowLevelTerm domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

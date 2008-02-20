@@ -13,6 +13,7 @@ import java.util.List;
 
 
 /**
+ * This class represents the DiseaseCategory domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

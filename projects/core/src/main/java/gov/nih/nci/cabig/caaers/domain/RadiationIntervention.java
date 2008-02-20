@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 /**
+ * This class represents the RadiationIntervention domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

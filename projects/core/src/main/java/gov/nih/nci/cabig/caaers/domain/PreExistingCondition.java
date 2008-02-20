@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 /**
+ * This class represents the PreExistingCondition domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

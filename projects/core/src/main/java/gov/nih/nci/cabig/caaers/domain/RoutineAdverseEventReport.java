@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.LinkedHashMap;
 
 /**
+ * This class represents the RoutineAdverseEventReport domain object.
  * @author Krikor Krumlian
  */
 @Entity

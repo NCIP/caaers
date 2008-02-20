@@ -15,7 +15,7 @@ import org.hibernate.annotations.Type;
 import java.util.Date;
 
 /**
- * 
+ * This class represents the Outcome domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

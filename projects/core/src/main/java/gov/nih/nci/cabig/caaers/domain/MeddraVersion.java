@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 
 /**
+ * This class represents the MeddraVersion domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 

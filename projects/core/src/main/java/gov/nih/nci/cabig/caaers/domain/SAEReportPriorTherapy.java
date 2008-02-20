@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This class represents the SAEReportPriorTherapy domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  */
 @Entity

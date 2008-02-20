@@ -10,6 +10,7 @@ import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
+ * This class represents the Notification domain object associated with the Adverse event report.
  * @author Sujith Vellat Thayyilthodi
  * */
 @Entity

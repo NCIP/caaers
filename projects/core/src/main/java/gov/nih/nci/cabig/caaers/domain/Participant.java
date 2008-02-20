@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * This class represents the Participant domain object associated with the Adverse event report.
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */

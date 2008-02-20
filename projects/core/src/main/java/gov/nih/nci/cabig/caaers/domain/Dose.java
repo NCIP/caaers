@@ -6,6 +6,7 @@ import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 /**
+ * This class represents the Dose domain object associated with the Adverse event report.
  * @author Rhett Sutphin
  */
 @Embeddable

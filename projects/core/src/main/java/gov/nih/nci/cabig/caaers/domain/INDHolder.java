@@ -18,6 +18,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+/**
+ * This class represents the INDHolder domain object associated with the Adverse event report.
+ * @author
+ *
+ */
 @Entity
 @Table(name = "ind_holders")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
