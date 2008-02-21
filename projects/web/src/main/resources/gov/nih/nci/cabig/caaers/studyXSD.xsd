@@ -41,6 +41,7 @@
                     <xs:element type="xs:boolean" name="adeersReporting"/>
                     <xs:element ref="aeTerminology"/>
                     <xs:element ref="diseaseTerminology"/>
+                    <xs:element type="designCodeType" name="design" minOccurs="0"/>
                                
                     <xs:element type="xs:boolean" name="drugAdministrationTherapyType"  minOccurs="0"/>
                     <xs:element type="xs:boolean" name="deviceTherapyType"  minOccurs="0"/>
@@ -550,6 +551,14 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="CTEP"/>
             <xs:enumeration value="MEDDRA"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="designCodeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="BLIND"/>
+            <xs:enumeration value="OPEN_UNBLIND"/>
+            <xs:enumeration value="PARTIAL"/>
         </xs:restriction>
     </xs:simpleType>
     

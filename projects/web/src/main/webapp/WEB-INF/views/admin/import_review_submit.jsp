@@ -51,8 +51,7 @@
 				//$(barId).innerHTML = numberOfRecordsProcessed + " of " + totalNumberOfRecords;
 			})
 		}
-		$(statusId).innerHTML = "Importing ..."
-		$(statusId).innerHTML = "Import complete , please press Save at the bottom of the screen to continue"
+		$(statusId).update("Import complete , please press Save at the bottom of the screen to continue")
 	}
 	
 	function validatePage(){
@@ -91,7 +90,7 @@
 		<br/><br/>
 		<div class="row">
 			<div class="label">
-				<input id='button3' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				<input id='button3' class='ibutton' type='button' value='Import'  title='Import Studies'
 				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study','button3')" />	
            </div>
 		   <div class="value">
@@ -167,7 +166,7 @@
 		<br/><br/>
 		<div class="row">
 			<div class="label">
-				<input id='button2' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
+				<input id='button2' class='ibutton' type='button' value='Import'  title='Import Participants'
 				   	onclick="startImport(${fn:length(command.importableParticipants)},'bar2','importStatus2','participant','button2')" />	
            </div>
 		   <div class="value">
