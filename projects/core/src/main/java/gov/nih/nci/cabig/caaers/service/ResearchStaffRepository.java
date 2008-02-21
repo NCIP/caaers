@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * 
+ * This is the repository class for managing the research staff domain object.
  * @author Biju Joseph
  * @author Jared Flatow
  */

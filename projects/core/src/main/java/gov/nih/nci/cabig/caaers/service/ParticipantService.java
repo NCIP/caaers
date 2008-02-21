@@ -4,7 +4,11 @@ import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 
 import java.util.List;
-
+/**
+ * This service interface is used to perform various services related to the participant domain object.
+ * 
+ *
+ */
 public interface ParticipantService {
 
     /**

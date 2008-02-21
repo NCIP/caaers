@@ -5,7 +5,7 @@ import java.util.List;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 /*
  * A wrapper around a MutableDomain object
- * 
+ * This class shows the status of the imported domain object.
  */
 public class DomainObjectImportOutcome<T extends MutableDomainObject> {
     private List<Message> messages = new ArrayList<Message>();

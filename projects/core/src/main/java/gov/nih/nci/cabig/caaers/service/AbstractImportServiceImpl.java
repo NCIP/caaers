@@ -16,7 +16,11 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
+/**
+ * Abstract that sets up the template for import of various domain objects like study, routine AE and study.
+ * @author
+ *
+ */
 public abstract class AbstractImportServiceImpl {
 	
 	private OrganizationDao organizationDao;

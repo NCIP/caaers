@@ -2,7 +2,12 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-
+/**
+ * 
+ * This service interface is used to manage user access to the caaers UI. 
+ *
+ *
+ */
 public interface UserService {
     /**
      * Create the csm users and groups for newly created research staff or updates csm users/groups if research staff already exists.

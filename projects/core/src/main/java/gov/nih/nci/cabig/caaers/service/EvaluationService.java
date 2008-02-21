@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Collection;
 
 /**
+ * This service interface is used to implement various caaers business rules.
  * @author Rhett Sutphin
  */
 public interface EvaluationService {
