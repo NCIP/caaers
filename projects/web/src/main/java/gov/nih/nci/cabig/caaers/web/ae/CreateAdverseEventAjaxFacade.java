@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
@@ -30,6 +31,7 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -55,6 +57,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.service.ParticipantService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
@@ -124,6 +127,7 @@ public class CreateAdverseEventAjaxFacade {
     private LabTermDao labTermDao;
     private ChemoAgentDao chemoAgentDao;
     private InterventionSiteDao interventionSiteDao;
+    private CtepStudyDiseaseDao ctepStudyDiseaseDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -232,6 +236,11 @@ public class CreateAdverseEventAjaxFacade {
     public List<Agent> matchAgents(String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
+    }
+    
+    public Integer getDiseaseFromStudyDisease(String studyDiseaseId) {
+    	CtepStudyDisease ctepStudyDisease= ctepStudyDiseaseDao.getById(Integer.parseInt(studyDiseaseId));
+        return ctepStudyDisease.getTerm().getId();
     }
 
 
@@ -994,6 +1003,15 @@ public class CreateAdverseEventAjaxFacade {
     public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
         this.interventionSiteDao = interventionSiteDao;
     }
+    @Required
+	public CtepStudyDiseaseDao getCtepStudyDiseaseDao() {
+		return ctepStudyDiseaseDao;
+	}
+	public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
+		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
+	}
+    
+    
 
 
   

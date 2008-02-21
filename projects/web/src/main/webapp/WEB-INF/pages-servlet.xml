@@ -423,7 +423,11 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   
   <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/>    
+	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/> 
+	
+ <bean name="/ae/viewRoutine" id="viewRoutineAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.ViewRoutineAeController" >
+  </bean>	   
   
   
 

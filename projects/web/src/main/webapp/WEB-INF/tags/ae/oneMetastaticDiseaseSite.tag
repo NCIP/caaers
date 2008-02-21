@@ -12,7 +12,6 @@
                     extraParams="<a id=\"showAll${index}\" href=\"javascript:showDiseaseSiteTable('metastaticDiseaseSitesTable${index}')\">Show All</a>" >
         <jsp:attribute name="label">
             <label>
-                <input id="select-codedSite-${index}" name="anatomicOrOther${index}" type="radio"/>
                 ${fieldGroup.fields[0].displayName}
             </label>
         </jsp:attribute>
@@ -21,10 +20,9 @@
          style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
     </div>
 
-    <tags:renderRow field="${fieldGroup.fields[1]}">
+    <tags:renderRow field="${fieldGroup.fields[1]}" style="display: none">
         <jsp:attribute name="label">
             <label>
-                <input id="select-otherSite-${index}" name="anatomicOrOther${index}" type="radio"/>
                 ${fieldGroup.fields[1].displayName}
             </label>
         </jsp:attribute>

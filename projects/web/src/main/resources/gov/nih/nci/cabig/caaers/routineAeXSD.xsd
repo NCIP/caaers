@@ -143,7 +143,7 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element ref="lowLevelTerm" minOccurs="0"/>
+                    <xs:element ref="lowLevelTerm"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -154,8 +154,7 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element type="xs:string" name="meddraCode" maxOccurs="1" minOccurs="0"
-                        nillable="true"/>
+                    <xs:element type="xs:string" name="meddraCode" nillable="true"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

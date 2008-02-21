@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
@@ -74,7 +75,8 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 						&& aeTerminology.getTerm() == Term.MEDDRA) {
 					migrateMeddraBasedAdverseEvents(routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
-							routineAdverseEventReportImportOutcome);
+							routineAdverseEventReportImportOutcome,
+							aeTerminology.getMeddraVersion());
 				}
 			}
 			// STATUS = LEGACY
@@ -94,7 +96,8 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					migrateMeddraBasedAdverseEventsRelaxed(
 							routineAdverseEventReport,
 							xstreamRoutineAdverseEventReport,
-							routineAdverseEventReportImportOutcome);
+							routineAdverseEventReportImportOutcome,
+							aeTerminology.getMeddraVersion());
 				}
 			}
 		}
@@ -200,9 +203,12 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
 				Ctc ctcVersion) {
 			
+			Integer ordinal = 1;
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
-				String ctepCode = adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode();
-				String term = adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm();
+				String ctepCode = (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ? 
+						adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode() : null;
+				String term =  (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ?
+					 adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm() : null;
 				CtcTerm ctcTerm = null;
 				AdverseEvent ae = new AdverseEvent();
 				
@@ -216,7 +222,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					//ctcTerm = ctcTermDao.getCtcTerm(cc);
 					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
 				}
-				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The CtcTerm you provided is not valid");
+				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + ctcVersion.getName() + " term.");
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, false);
 				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 				
@@ -226,6 +232,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
 				destination.addAdverseEvent(ae);
+				ordinal++;
 			}
 			
 			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"A list of AdverseEvents could not be found");
@@ -237,10 +244,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
 				Ctc ctcVersion) {
 			
+			Integer ordinal = 1;
+			
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
-				String ctepCode = adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode();
-				String term = adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm();
-				String termConcatCtepCode = term == null ? ctepCode == null ? "N/A" : ctepCode :term;
+				String ctepCode = (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ? 
+						adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode() : null;
+				String term =  (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ?
+					 adverseEvent.getAdverseEventCtcTerm().getTerm().getTerm() : null;
 				CtcTerm ctcTerm = null;
 				AdverseEvent ae = new AdverseEvent();
 				
@@ -254,7 +264,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					ctcTerm = ctcTermDao.getCtcTerm(cc, ctcVersion.getId(), null);
 					//ctcTerm = ctcTermDao.getCtcTerm(cc);
 				}
-				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided " + termConcatCtepCode + " is not valid ");
+				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + ctcVersion.getName() + " term.");
 				
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, true);
 				
@@ -265,12 +275,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setExpected(adverseEvent.getExpected());
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
-				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid");
-				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid");
-				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid");
-				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid");
+				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid in AE " + ordinal + " .");
 				
 				destination.addAdverseEvent(ae);
+				ordinal++;
 			}
 			
 			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"AdverseEvents are either Empty or Not Valid");
@@ -279,10 +290,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		
 		private void migrateMeddraBasedAdverseEvents(RoutineAdverseEventReport destination,
 				RoutineAdverseEventReport source,
-				DomainObjectImportOutcome routineAdverseEventReportImportOutcome) {
+				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
+				MeddraVersion meddraVersion) {
 			
+			Integer ordinal = 1;
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
-				String meddraCode = adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode();
+				String meddraCode = (adverseEvent.getAdverseEventMeddraLowLevelTerm() != null && adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm() != null ) ? 
+					adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode() : null;
 				LowLevelTerm lowLevelTerm =null;
 				AdverseEvent ae =new AdverseEvent();
 				
@@ -291,7 +305,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(meddraCode);
 					lowLevelTerm = terms.isEmpty() == false ? terms.get(0) : null;
 				}
-				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"LowLevelTerm is either Empty or Not Valid");
+				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + meddraVersion.getName() + " term.");
 
 				ae.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(lowLevelTerm);
 				ae.setGrade(adverseEvent.getGrade());
@@ -299,14 +313,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setExpected(adverseEvent.getExpected());
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
-				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid");
-				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid");
-				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid");
-				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid");
+				ifNullObject(ae.getGrade(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Grade is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getHospitalization(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Hospitalization is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getExpected(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Expectedness is either Empty or Not Valid in AE " + ordinal + " .");
+				ifNullObject(ae.getAttributionSummary(), routineAdverseEventReportImportOutcome,Severity.ERROR, "Attribution is either Empty or Not Valid in AE " + ordinal + " .");
 				
 				destination.addAdverseEvent(ae);
-				//System.out.println("Hospitalization : " + adverseEvent.getHospitalization());
-				//System.out.println("Meddra Term Id : " + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
+				ordinal++;
 			}
 			
 			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR, "AdverseEvents are either Empty or Not Valid");
@@ -315,10 +328,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		
 		private void migrateMeddraBasedAdverseEventsRelaxed(RoutineAdverseEventReport destination,
 				RoutineAdverseEventReport source,
-				DomainObjectImportOutcome routineAdverseEventReportImportOutcome) {
+				DomainObjectImportOutcome routineAdverseEventReportImportOutcome,
+				MeddraVersion meddraVersion) {
 			
+			Integer ordinal =1;
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
-				String meddraCode = adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode();
+				String meddraCode = (adverseEvent.getAdverseEventMeddraLowLevelTerm() != null && adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm() != null ) ? 
+						adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm().getMeddraCode() : null;
 				LowLevelTerm lowLevelTerm =null;
 				AdverseEvent ae =new AdverseEvent();
 				
@@ -327,7 +343,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 					List<LowLevelTerm> terms = lowLevelTermDao.getByMeddraCode(meddraCode);
 					lowLevelTerm = terms.isEmpty() == false ? terms.get(0) : null;
 				}
-				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"LowLevelTerm is either Empty or Not Valid");
+				ifNullObject(lowLevelTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + meddraVersion.getName() + " term.");
 
 				ae.getAdverseEventMeddraLowLevelTerm().setLowLevelTerm(lowLevelTerm);
 				ae.setGrade(adverseEvent.getGrade());
@@ -336,8 +352,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ae.setAttributionSummary(adverseEvent.getAttributionSummary());
 				
 				destination.addAdverseEvent(ae);
-
-				//System.out.println("ter" + adverseEvent.getAdverseEventMeddraLowLevelTerm().getTerm());
+				ordinal++;
 			}
 			
 			ifNullOrEmptyList(source.getAdverseEvents(), routineAdverseEventReportImportOutcome, Severity.ERROR,"AdverseEvents are either Empty or Not Valid");
@@ -353,7 +368,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 									 boolean isCurrent){
 			if (ctcTerm != null ){
 				// Is provided CtcTerm same version as Ctc version specified in Study ?
-				//System.out.println(" The CTC version of the provided Term :" + ctcTerm.getCategory().getCtc().getName());
+				//log.debug(" The CTC version of the provided Term :" + ctcTerm.getCategory().getCtc().getName());
 				if (! ctcTerm.getCategory().getCtc().getName().equals(ctcVersion.getName())){
 					errorInBusinessLogic(routineAdverseEventReportImportOutcome,Severity.ERROR,
 							"There is a discrepency between the CTC versions, The Ctc Term : " + 

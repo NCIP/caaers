@@ -42,16 +42,33 @@
    	  });
    }
     
-     function chooseDiseaseOrOther() {
+     function chooseDiseaseOrOther(other) {
         var term = '';
         if($('aeReport.diseaseHistory.ctepStudyDisease')){
           term = $F('aeReport.diseaseHistory.ctepStudyDisease')
-        }else if($('aeReport.diseaseHistory.meddraStudyDisease')) {
-          term = $F('aeReport.diseaseHistory.meddraStudyDisease');
+           if (term != ''){
+           createAE.getDiseaseFromStudyDisease(term == '' ? '' : term ,function(diseaseId){
+   	    		if ( diseaseId == '190' || diseaseId == '98'){
+        		AE.slideAndShow("aeReport.diseaseHistory.otherPrimaryDisease-row")
+    			}else{
+        		 $('aeReport.diseaseHistory.otherPrimaryDisease').value = ''
+       		 	 AE.slideAndHide("aeReport.diseaseHistory.otherPrimaryDisease-row")
+    		} }); 
+   	  	   }
         }
-        $('aeReport.diseaseHistory.otherPrimaryDisease').disabled = (term != '');
-        
     }
+
+
+	function choosePrimarySiteOrOther() {
+        var primaryDiseaseSiteId = $F('aeReport.diseaseHistory.codedPrimaryDiseaseSite')
+        if (primaryDiseaseSiteId == '110'){
+        	AE.slideAndShow("aeReport.diseaseHistory.otherPrimaryDiseaseSite-row")
+        }else{
+        	AE.slideAndHide("aeReport.diseaseHistory.otherPrimaryDiseaseSite-row")
+        }
+       
+    }
+
 
     var EnterDiseaseSite = Class.create()
     Object.extend(EnterDiseaseSite.prototype, {
@@ -62,52 +79,43 @@
             this.otherProperty = cmProperty + ".otherSite"
 
             if (anatomicSiteName) $(this.anatomicSiteProperty + "-input").value = anatomicSiteName
-            $("select-codedSite-" + this.index)
-                .observe("click", this.updateAnatomicOrOther.bind(this))
-            $("select-otherSite-" + this.index)
-                .observe("click", this.updateAnatomicOrOther.bind(this))
 
             AE.createStandardAutocompleter(
                 this.anatomicSiteProperty, this.termPopulator.bind(this),
                 function(anatomicSite) {
                     return anatomicSite.name
-                })
+                },
+                {
+                	 afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                	 	   var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSites[" + index + "]";
+            			   var anatomicSiteProperty = cmProperty + ".codedSite"
+            			   var otherProperty = cmProperty + ".otherSite"
+                	 	   
+                		   $(anatomicSiteProperty).value = selectedChoice.id
+                		    if (selectedChoice.id == '110'){
+        						AE.slideAndShow(otherProperty + "-row")
+        					}else{
+        						$(otherProperty).value=""
+        						AE.slideAndHide(otherProperty + "-row")
+
+        					}
+               }	
+               })
 
             this.initializeAnatomicOrOther()
         },
-
+        
         termPopulator: function(autocompleter, text) {
             createAE.matchAnatomicSite(text, function(values) {
                 autocompleter.setChoices(values)
             })
         },
-
-        updateAnatomicOrOther: function() {
-            var isAnatomicSite = $("select-codedSite-" + this.index).checked
-            var anatomicSiteRow = $(this.anatomicSiteProperty + "-row")
-            var otherRow = $(this.otherProperty + "-row")
-            if (isAnatomicSite) {
-                $('showAll' + this.index).show()
-                anatomicSiteRow.removeClassName("disabled")
-                otherRow.addClassName("disabled")
-                anatomicSiteRow.getElementsByClassName("value")[0].enableDescendants()
-                otherRow.getElementsByClassName("value")[0].disableDescendants()
-            } else {
-                otherRow.removeClassName("disabled")
-                anatomicSiteRow.addClassName("disabled")
-                $('showAll' + this.index).hide()
-                otherRow.getElementsByClassName("value")[0].enableDescendants()
-                anatomicSiteRow.getElementsByClassName("value")[0].disableDescendants()
-            }
-        },
-
         initializeAnatomicOrOther: function() {
-            var otherValue = $(this.otherProperty).value
-            if (otherValue.length == 0) {
-                $("select-codedSite-" + this.index).click()
-            } else {
-                $("select-otherSite-" + this.index).click()
-            }
+        	if ($F(this.anatomicSiteProperty) == '110'){
+        		AE.slideAndShow(this.otherProperty + "-row")
+        	}else{
+        		AE.slideAndHide(this.otherProperty + "-row")	
+        	}
         }
     })
 
@@ -123,8 +131,18 @@
                 })
             },
             primarySiteValueSelector, {
-                initialInputValue: initialAnatomicSite.name
-            }
+                initialInputValue: initialAnatomicSite.name,
+                afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+                		   $('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = selectedChoice.id
+                		    if (selectedChoice.id == '110'){
+        						AE.slideAndShow("aeReport.diseaseHistory.otherPrimaryDiseaseSite-row")
+        					}else{
+        						$("aeReport.diseaseHistory.otherPrimaryDiseaseSite").value=""
+        						AE.slideAndHide("aeReport.diseaseHistory.otherPrimaryDiseaseSite-row")
+
+        					}
+               }
+           }
         )
     })
 
@@ -145,15 +163,16 @@
 		
 		if($('aeReport.diseaseHistory.ctepStudyDisease')){
         	$('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
-            	chooseDiseaseOrOther();
+            	chooseDiseaseOrOther($('aeReport.diseaseHistory.otherPrimaryDisease').value);
         	})
         }
         if($('aeReport.diseaseHistory.meddraStudyDisease')){
         	$('aeReport.diseaseHistory.meddraStudyDisease').observe("change", function() {
-            	chooseDiseaseOrOther();
+            	chooseDiseaseOrOther($('aeReport.diseaseHistory.otherPrimaryDisease').value);
         	})
 		}
-        chooseDiseaseOrOther()
+        chooseDiseaseOrOther($('aeReport.diseaseHistory.otherPrimaryDisease').value)
+        choosePrimarySiteOrOther()
         
         //observe the onChange and onBlur on height and weight
         Event.observe('aeReport.participantHistory.height.quantity','blur' ,findBSA);
@@ -235,7 +254,7 @@
     </div>
 	
 	<tags:renderRow field="${fieldGroups['participant'].fields[0]}"/>
-	<tags:renderRow field="${fieldGroups['participant'].fields[1]}"/>
+	<tags:renderRow field="${fieldGroups['participant'].fields[1]}" />
 	<div class="row">
         <div class="label">Body surface area</div>
         <div class="value"><span id="bsa-value">  </span></div>
@@ -246,10 +265,9 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Disease information" id="diseaseInfo">
-           
-            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="0" end="1">
-                <tags:renderRow field="${field}"/>
-            </c:forEach>
+            
+            <tags:renderRow field="${fieldGroups['disease'].fields[0]}"/>
+			<tags:renderRow field="${fieldGroups['disease'].fields[1]}" style="display: none" />
 
            <tags:renderRow field="${fieldGroups['disease'].fields[2]}"
                              extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable')\">Show All</a>" />
@@ -257,11 +275,8 @@
                       style="position: absolute; display:block; left: 640px; width:400px; z-index:99;" >
            </div>
 
-
-            <c:forEach items="${fieldGroups['disease'].fields}" var="field" begin="3" end="4">
-                         <tags:renderRow field="${field}"/>
-                     </c:forEach>
-
+			<tags:renderRow field="${fieldGroups['disease'].fields[3]}" style="display: none"/>
+			<tags:renderRow field="${fieldGroups['disease'].fields[4]}"/>
 
         </chrome:division>
 

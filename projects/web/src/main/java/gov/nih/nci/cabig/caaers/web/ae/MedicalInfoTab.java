@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -14,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,13 @@ public class MedicalInfoTab extends AeTab {
     	diseases.addAll(study.getCtepStudyDiseases());
     	diseases.addAll(study.getMeddraStudyDiseases());
     	return diseases;
-    	
+    }
+    
+    private Map<Object, Object> optionsForCtep(ExpeditedAdverseEventInputCommand command){
+    	Map<Object, Object> ctepStudyDiseaseOptions = new LinkedHashMap<Object, Object>();
+    	ctepStudyDiseaseOptions.put("","Please select");
+    	ctepStudyDiseaseOptions.putAll(InputFieldFactory.collectOptions(command.getStudy().getCtepStudyDiseases(),"id", "term.term"));
+    	return ctepStudyDiseaseOptions;
     }
 
     @Override
@@ -67,9 +75,9 @@ public class MedicalInfoTab extends AeTab {
         // Business Rule default to CTEP , if MedDRA then return MedDRA
         Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory
 				.collectOptions(command.getStudy().getCtepStudyDiseases(),
-						"id", "term.term", "");
+						"id", "term.term","");
 		studyDisease = InputFieldFactory.createSelectField("ctepStudyDisease",
-				"Disease name", false, ctepStudyDiseaseOptions);
+				"Disease name", false, optionsForCtep(command));
         
         if (((ExpeditedAdverseEventInputCommand)command).getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
     		

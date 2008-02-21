@@ -472,9 +472,16 @@
                 		<table width="100%" class="tablecontent">
                 		<tr>
                 		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>
+                			<c:if test="${routineReport.status == 'CURRENT'}" >
                 			<a style="text-decoration:none" href="<c:url value="/pages/ae/editRoutine?aeRoutineReport=${routineReport.id}"/>">
                 			${adverseEvent.adverseEventTerm.universalTerm}
                 			</a>
+                			</c:if>
+                			<c:if test="${routineReport.status == 'LEGACY'}" >
+                			<a style="text-decoration:none" href="<c:url value="/pages/ae/viewRoutine?id=${routineReport.id}"/>">
+                			${adverseEvent.adverseEventTerm.universalTerm}
+                			</a>
+                			</c:if>
                 		</td>
  						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td></tr>
  						</table>	
