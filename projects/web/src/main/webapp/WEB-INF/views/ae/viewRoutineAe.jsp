@@ -104,7 +104,7 @@ participant flow. Factor out their commonalities. -->
             		
             		
    				<td><c:out value="${ae.hospitalization}"/></td>
-   				<td><c:out value="${ae.expected == true ? 'Yes' : 'No' }" /></td>
+   				<td><c:out value="${ae.expected == true ? 'Yes' : ae.expected == false ? 'No' : '' }" /></td>
             	
    			</tr>	 
             
