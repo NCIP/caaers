@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-
-import java.util.Map;
+import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.validation.Errors;
+import java.util.Map;
 /**
  * @author Krikor Krumlian
  */
@@ -28,6 +26,7 @@ public class AssignParticipantController extends AssignParticipantStudyControlle
         Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Participant to Study");
         flow.addTab(new AssignParticipantTab());
         flow.addTab(new AssignStudyTab());
+        flow.addTab(new AssignStudySubjectIdentifierTab());
         flow.addTab(new ReviewAssignmentTab());
         setFlow(flow);
     }
