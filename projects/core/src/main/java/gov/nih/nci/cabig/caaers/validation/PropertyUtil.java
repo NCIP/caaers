@@ -1,14 +1,7 @@
 package gov.nih.nci.cabig.caaers.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by IntelliJ IDEA.
- * User: admin
- * Date: Oct 30, 2007
- * Time: 12:17:40 PM
- * To change this template use File | Settings | File Templates.
+ * @Biju Joseph
  */
 public class PropertyUtil {
 
@@ -18,28 +11,32 @@ public class PropertyUtil {
     private static String PROPERTY_KEY_SUFFIX = "]";
     private static char PROPERTY_KEY_SUFFIX_CHAR = ']';
 
-    private static char DOT_CHAR='.';
+    private static char DOT_CHAR = '.';
 
     public static String getCollectionMethodName(String propertyName) {
 
-        if(propertyName==null ||propertyName.indexOf(PROPERTY_KEY_PREFIX)==-1 ||propertyName.indexOf(PROPERTY_KEY_SUFFIX)==-1 ||propertyName.indexOf(DOT_CHAR)==-1){
+        if (propertyName == null || propertyName.indexOf(PROPERTY_KEY_PREFIX) == -1 ||
+                propertyName.indexOf(PROPERTY_KEY_SUFFIX) == -1
+            //|| propertyName.indexOf(DOT_CHAR) == -1
+                ) {
             return null;
         }
         int keyStart = propertyName.lastIndexOf(PROPERTY_KEY_PREFIX);
-        int keyEnd=  propertyName.lastIndexOf(PROPERTY_KEY_SUFFIX);
+        int keyEnd = propertyName.lastIndexOf(PROPERTY_KEY_SUFFIX);
 
-        return propertyName.substring(0,keyStart);
+        return propertyName.substring(0, keyStart);
     }
+
     public static String getColletionPropertyName(String propertyName) {
 
-        if(propertyName==null ||propertyName.indexOf(PROPERTY_KEY_PREFIX)==-1 ||propertyName.indexOf(PROPERTY_KEY_SUFFIX)==-1 ||propertyName.indexOf(DOT_CHAR)==-1){
+        if (propertyName == null || propertyName.indexOf(PROPERTY_KEY_PREFIX) == -1 || propertyName.indexOf(PROPERTY_KEY_SUFFIX) == -1 || propertyName.indexOf(DOT_CHAR) == -1) {
             return null;
         }
-        int keyStart =       propertyName.indexOf(DOT_CHAR);
-                //propertyName.lastIndexOf(PROPERTY_KEY_PREFIX);
-        int keyEnd=  propertyName.lastIndexOf(PROPERTY_KEY_SUFFIX);
+        int keyStart = propertyName.indexOf(DOT_CHAR);
+        //propertyName.lastIndexOf(PROPERTY_KEY_PREFIX);
+        int keyEnd = propertyName.lastIndexOf(PROPERTY_KEY_SUFFIX);
 
-        return propertyName.substring(0,keyEnd+1);
+        return propertyName.substring(0, keyEnd + 1);
     }
 //    public static String getMethodNameForColletionProperty(String propertyName) {
 //          String actualName = null;
