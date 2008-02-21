@@ -39,9 +39,14 @@ public class ExportRuleController extends AbstractCommandController {
     			rulesEngineService.exportRule(ruleSetName, tempDir);
 				File file = new File(tempDir+File.separator+RuleUtil.getStringWithoutSpaces(ruleSetName)+".xml");
 				FileInputStream fileIn = new FileInputStream(file);
-				OutputStream out = response.getOutputStream();
-				response.setContentType( "application/x-download" );
+				
+				response.setContentType( "application/xml" );
 				response.setHeader( "Content-Disposition", "attachment; filename=" + RuleUtil.getStringWithoutSpaces(ruleSetName) + ".xml" );
+				response.setHeader("Content-length", String.valueOf(file.length()));
+				response.setHeader("Pragma", "private");
+				response.setHeader("Cache-control","private, must-revalidate");
+				
+				OutputStream out = response.getOutputStream();
 				 
 				byte[] buffer = new byte[2048];
 				int bytesRead = fileIn.read(buffer);
