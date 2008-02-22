@@ -31,6 +31,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
         report = new RoutineAdverseEventReport();
         report.setStartDate(START_DATE);
         report.setEndDate(END_DATE);
@@ -50,6 +51,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
     public void testGetAdverseEventNeverThrowsIndexOutOfBounds() throws Exception {
         AdverseEvent e4 = report.getAdverseEvents().get(4);
         assertNotNull(e4);
+	System.out.println("testGetAdverseEventNeverThrowsIndexOutOfBounds");
     }
 
     public void testSetAdverseEventsInternalReflectedInAdverseEvents() throws Exception {
@@ -61,11 +63,13 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
         assertEquals(10, (int) report.getAdverseEvents().get(0).getId());
         assertEquals(12, (int) report.getAdverseEvents().get(1).getId());
         assertEquals(14, (int) report.getAdverseEvents().get(2).getId());
+	System.out.println("testSetAdverseEvents...");
     }
 
     public void testDynamicallyCreatedAdverseEventsInInternal() throws Exception {
         AdverseEvent e4 = report.getAdverseEvents().get(4);
         assertSame(e4, report.getAdverseEventsInternal().get(4));
+	System.out.println("testDynamically...");
     }
 
     public void testNotificationMessage() throws Exception {

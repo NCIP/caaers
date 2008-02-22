@@ -1,6 +1,7 @@
 class OrganizationCodes extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        // Have to break up the inserts so as not to exceed the java max method length
+        if (!databaseMatches("hsql")) {
+	// Have to break up the inserts so as not to exceed the java max method length
         m0()
         m1()
         m2()
@@ -42,6 +43,7 @@ class OrganizationCodes extends edu.northwestern.bioinformatics.bering.Migration
         m38()
         m39()
         m40()
+	}
     }
 
     void m0() {

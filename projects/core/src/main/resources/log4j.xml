@@ -21,7 +21,7 @@
   
   <!-- for testing, purge the log on each run -->
   <appender name="file" class="org.apache.log4j.FileAppender">
-    <param name="file" value="${catalina.home}/logs/caaers.log"/>
+    <param name="file" value="${java.io.tmpdir}/caaers.log"/>
     <param name="append" value="false"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>

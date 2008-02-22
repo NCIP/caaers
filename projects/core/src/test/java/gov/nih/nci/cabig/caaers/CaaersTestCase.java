@@ -37,6 +37,7 @@ public abstract class CaaersTestCase extends CoreTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+
         DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
         // JAP: need this to ensure that security aspect
