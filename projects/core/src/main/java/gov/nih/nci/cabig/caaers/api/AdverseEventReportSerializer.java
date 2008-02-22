@@ -25,6 +25,7 @@ import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -38,6 +39,7 @@ import java.util.List;
 
 public class AdverseEventReportSerializer {
 
+	
 	   private ExpeditedAdverseEventReportDao adverseEventReportDao;
 	   private ExpeditedAdverseEventReport adverseEventReportDataObject;
 
@@ -257,6 +259,7 @@ public class AdverseEventReportSerializer {
 		   s.setId(saeReportPriorTherapy.getId());
 		   s.setPriorTherapy(saeReportPriorTherapy.getPriorTherapy());
 		   s.setStartDate(saeReportPriorTherapy.getStartDate());
+		   s.setEndDate(saeReportPriorTherapy.getEndDate());
 		   s.setOther(saeReportPriorTherapy.getOther());
 		   
 		   List<PriorTherapyAgent> agents = saeReportPriorTherapy.getPriorTherapyAgents();
@@ -509,6 +512,11 @@ public class AdverseEventReportSerializer {
 		    	s.setCtcVersion(hibernateStudy.getCtcVersion());
 		    	s.setDesign(hibernateStudy.getDesign());
 		    	
+		    	List<StudyAgent> sas = hibernateStudy.getStudyAgents();
+		    	for (StudyAgent sa:sas) {
+		    		s.addStudyAgent(getStudyAgent(sa));
+		    	}
+		    	
 		    	List<Identifier> ids = hibernateStudy.getIdentifiers();
 		    	//s.setIdentifiers(new ArrayList<Identifier>());
 		    	for (Identifier id:ids) {
@@ -526,6 +534,12 @@ public class AdverseEventReportSerializer {
 	    	return studySite;
 	    }
 	    
+	    private StudyAgent getStudyAgent(StudyAgent sa) {
+	    	StudyAgent studyAgent = new StudyAgent();
+	    	studyAgent.setIndType(sa.getIndType());
+	    	
+	    	return studyAgent;
+	    }
 	    private Organization getOrganization(Organization org) {
 	    	Organization organization = new Organization();
 	    	organization.setId(org.getId());

@@ -471,13 +471,74 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  		
 						  			
+						  			
+						  			<xsl:variable name="wtunit" select="AdverseEventReport/ParticipantHistory/weight/unit"/>
+						  			<xsl:variable name="htunit" select="AdverseEventReport/ParticipantHistory/height/unit"/>
+						  			
+						  			<xsl:choose>
+						  				<xsl:when test="$wtunit='Kilogram' and $htunit='Centimeter'">
+						  					
+						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
+						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
+						  					<xsl:variable name="val">
+								  				<xsl:call-template name="sqrt">
+						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
+						                    	</xsl:call-template>
+						                    </xsl:variable>
+				                      
+				                      		<xsl:value-of select="substring-before($val, '.')" />.
+				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
+				                      		
+						  				</xsl:when>
+						  				<xsl:when test="$wtunit='Kilogram' and $htunit='Inch'">
+						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity * 2.54"/>
+						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
+						  					<xsl:variable name="val">
+								  				<xsl:call-template name="sqrt">
+						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
+						                    	</xsl:call-template>
+						                    </xsl:variable>
+				                      
+				                      		<xsl:value-of select="substring-before($val, '.')" />.
+				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
+						  				</xsl:when>
+						  				<xsl:when test="$wtunit='Pound' and $htunit='Centimeter'">
+						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity div 2.20462262185"/>
+						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity"/>
+						  					<xsl:variable name="val">
+								  				<xsl:call-template name="sqrt">
+						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
+						                    	</xsl:call-template>
+						                    </xsl:variable>
+				                      
+				                      		<xsl:value-of select="substring-before($val, '.')" />.
+				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
+						  				</xsl:when>
+						  				<xsl:when test="$wtunit='Pound' and $htunit='Inch'">
+						  					<xsl:variable name="wt" select="AdverseEventReport/ParticipantHistory/weight/quantity div 2.20462262185"/>
+						  					<xsl:variable name="ht" select="AdverseEventReport/ParticipantHistory/height/quantity * 2.54"/>
+						  					<xsl:variable name="val">
+								  				<xsl:call-template name="sqrt">
+						                        	<xsl:with-param name="num" select="($wt * $ht) div 3600"/>				                        	
+						                    	</xsl:call-template>
+						                    </xsl:variable>
+				                      
+				                      		<xsl:value-of select="substring-before($val, '.')" />.
+				                      		<xsl:value-of select="substring(substring-after($val, '.'),1,3)" />
+						  				</xsl:when>
+
+						  			</xsl:choose>
+
+						  			   
+
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		
 						<fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell number-columns-spanned="4">
+      						<fo:table-cell number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
 						  			Baseline performance status at initiation of protocol - ECOG/Zubrod scale :  
 						  		</fo:block>      							
@@ -687,7 +748,13 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
+						  		<xsl:variable name="flg">
+						  			<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/StudyAgent">
+						  				<xsl:if test="INDType != 'NA'">Yes </xsl:if>
+						  			</xsl:for-each>
+						  		</xsl:variable>
+						  		<xsl:value-of select="substring($flg,1,3)"/>
+						  		<xsl:if test="string-length($flg)=0">No</xsl:if>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			    </fo:table-row>				  			  		  			  	  
@@ -698,9 +765,7 @@
 				<fo:block>
 					<fo:leader leader-length="95%" leader-pattern="rule"/>
 				</fo:block>
-				
-				
-				
+
   				<fo:block break-before="page" xsl:use-attribute-sets="sub-head" > 
 		  			Radiation Intervention
 		  		</fo:block>
@@ -1197,7 +1262,147 @@
 		  			    </fo:table-row>			  			    
 
 		  			</fo:table-body>
-		  		</fo:table>								  		  		
+		  		</fo:table>	
+		  			
+					<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>		  		
+		  		
+				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Description of Event 
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+
+										
+		  			<fo:table-body>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm"> 
+						  			Description and Treatment of Event :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+									<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventDescription"/>									
+						  		</fo:block>      							
+      						</fo:table-cell>
+      					</fo:table-row>
+      					
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Present Status :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+				  		            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+				  			
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Date of Recovery or Death :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+			   						</xsl:call-template>
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Retreated :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'false'">NO</xsl:if>
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'true'">YES</xsl:if>
+						  		</fo:block>      							
+      						</fo:table-cell>     						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Removed from Protocol Treatment (to date) :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Date Removed from Protocol Treatment :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/>
+			   						</xsl:call-template>						  		
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Cause of Death :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Death Date :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Autopsy Performed :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>		  			  		  			  		  			  
+	  			</fo:table-body>
+		  		</fo:table>
+		  		
+		  		
+		  								  		  		
 					<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
@@ -1256,7 +1461,7 @@
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:value-of select="PriorTherapy/text"/><xsl:value-of select="other"/>
+							  			<xsl:value-of select="PriorTherapy/text"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
@@ -1275,13 +1480,15 @@
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			
+							  				<xsl:value-of select="other"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
-							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			
-							  		</fo:block>      							
+	      							<xsl:for-each select="PriorTherapyAgent">
+							  			<fo:block xsl:use-attribute-sets="normal" > 
+							  				<xsl:value-of select="ChemoAgent/name"/>
+							  			</fo:block> 
+							  		</xsl:for-each>     							
 	      						</fo:table-cell>      						      						      						      						
 			  			    </fo:table-row> 
 		  			    </xsl:for-each>  			  
@@ -1643,7 +1850,33 @@
 					<fo:table-column column-width="30%"/>
 					<fo:table-column column-width="30%"/>
 		  			<fo:table-body>
-			
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			Course 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
+
+			  			    <xsl:for-each select="CourseAgentAttribution"> 
+				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="CourseAgent/StudyAgent/Agent/name"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:value-of select="attribution"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+				  			    </fo:table-row>
+			  			    </xsl:for-each>
+			  			    			
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -1660,7 +1893,7 @@
 				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 		      						<fo:table-cell>
 								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="ConcomitantMedication/Agent/name"/> <xsl:value-of select="ConcomitantMedication/other"/>
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="ConcomitantMedication/name"/> <xsl:value-of select="ConcomitantMedication/other"/>
 								  		</fo:block>      							
 		      						</fo:table-cell>
 		      						<fo:table-cell>
@@ -1698,32 +1931,7 @@
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
 
-			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-	      						<fo:table-cell>
-							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			Course 
-							  		</fo:block>      							
-	      						</fo:table-cell>
-	      						<fo:table-cell>
-							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  		</fo:block>      							
-	      						</fo:table-cell>
-			  			    </fo:table-row>
 
-			  			    <xsl:for-each select="CourseAgentAttribution"> 
-				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-		      						<fo:table-cell>
-								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="CourseAgent/StudyAgent/Agent/name"/>
-								  		</fo:block>      							
-		      						</fo:table-cell>
-		      						<fo:table-cell>
-								  		<fo:block xsl:use-attribute-sets="normal" > 
-								  			<xsl:value-of select="attribution"/>
-								  		</fo:block>      							
-		      						</fo:table-cell>
-				  			    </fo:table-row>
-			  			    </xsl:for-each>
 
 
 			  			    
@@ -1956,5 +2164,27 @@
   </xsl:call-template>
 </xsl:template>
 
+<xsl:template name="sqrt">
+	<xsl:param name="num" select="0"/>  <!-- The number you want to find the square root of -->
+    <xsl:param name="try" select="1"/>  <!-- The current 'try'.  This is used internally. -->
+    <xsl:param name="iter" select="1"/> <!-- The current iteration, checked against maxiter to limit loop count -->
+   <xsl:param name="maxiter" select="10"/>  <!-- Set this up to insure against infinite loops -->
+
+   <!-- This template was written by Nate Austin using Sir Isaac Newton's method of finding roots -->
+
+   <xsl:choose>
+     <xsl:when test="$try * $try = $num or $iter &gt; $maxiter">
+       <xsl:value-of select="$try"/>
+     </xsl:when>
+     <xsl:otherwise>
+       <xsl:call-template name="sqrt">
+         <xsl:with-param name="num" select="$num"/>
+         <xsl:with-param name="try" select="$try - (($try * $try - $num) div (2 * $try))"/>
+         <xsl:with-param name="iter" select="$iter + 1"/>
+         <xsl:with-param name="maxiter" select="$maxiter"/>
+       </xsl:call-template>
+     </xsl:otherwise>
+   </xsl:choose>
+</xsl:template>
   
 </xsl:stylesheet>

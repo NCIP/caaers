@@ -282,7 +282,7 @@
       <bind-xml name="startDate" node="element"/>
     </field>
     <field name="endDate" type="date">
-      <bind-xml name="endDate"/>
+      <bind-xml name="endDate" node="element"/>
     </field>
     <field name="priorTherapyAgents" type="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent" collection="arraylist">
       <bind-xml name="PriorTherapyAgent"/>
@@ -852,8 +852,23 @@
     <field name="Agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
       <bind-xml name="Agent"/>
     </field>
-  </class>
 
+    <field name="indType" type="gov.nih.nci.cabig.caaers.domain.INDType">
+      <bind-xml name="INDType"/>
+    </field>  
+   </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.INDType" verify-constructable="false">
+    <map-to xml="INDType"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName"/>
+    </field>
+  </class>
+  
+  
   <class name="gov.nih.nci.cabig.caaers.domain.DelayUnits" verify-constructable="false">
     <map-to xml="DelayUnits" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
     <field name="displayName" type="string">
@@ -1303,13 +1318,15 @@
     <field name="ctcVersion" type="gov.nih.nci.cabig.caaers.domain.Ctc">
       <bind-xml name="Ctc"/>
     </field>
-   
     <field name="identifiers" type="gov.nih.nci.cabig.caaers.domain.Identifier" collection="arraylist">
       <bind-xml name="Identifier"/>
     </field>
     <field name="design" type="gov.nih.nci.cabig.caaers.domain.Design">
       <bind-xml name="design"/>
     </field>   
+    <field name="studyAgents" type="gov.nih.nci.cabig.caaers.domain.StudyAgent" collection="arraylist">
+      <bind-xml name="StudyAgent"/>
+    </field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
