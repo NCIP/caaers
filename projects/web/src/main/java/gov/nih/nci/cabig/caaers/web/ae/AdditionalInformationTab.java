@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createBooleanSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createCheckboxField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -26,18 +26,18 @@ public class AdditionalInformationTab extends AeTab {
         		"Other Information&quot; field.Separate each item with a comma &quot;,&quot;.");
 
         creator.createFieldGroup("desc", null, "additionalInformation",
-            createBooleanSelectField("autopsyReport", "Autopsy Report", false),
-            createBooleanSelectField("consults", "Consults", false),
-            createBooleanSelectField("dischargeSummary", "Discharge Summary", false),
-            createBooleanSelectField("flowCharts", "Flow Sheets/Case Report Forms", false),
-            createBooleanSelectField("labReports", "Laboratory Reports", false),
-            createBooleanSelectField("obaForm", "OBA Form", false),
-            createBooleanSelectField("other", "Other", false),
-            createBooleanSelectField("pathologyReport", "Pathology Report", false),
-            createBooleanSelectField("progressNotes", "Progress Notes", false),
-            createBooleanSelectField("radiologyReports", "Radiology Report", false),
-            createBooleanSelectField("referralLetters", "Referral Letters", false),
-            createBooleanSelectField("irbReport", "Summary Report Sent to IRB", false),
+        	createCheckboxField("autopsyReport", "Autopsy Report"),
+        	createCheckboxField("consults", "Consults"),
+            createCheckboxField("dischargeSummary", "Discharge Summary"),
+            createCheckboxField("flowCharts", "Flow Sheets/Case Report Forms"),
+            createCheckboxField("labReports", "Laboratory Reports"),
+            createCheckboxField("obaForm", "OBA Form"),
+            createCheckboxField("pathologyReport", "Pathology Report"),
+            createCheckboxField("progressNotes", "Progress Notes"),
+            createCheckboxField("radiologyReports", "Radiology Report"),
+            createCheckboxField("referralLetters", "Referral Letters"),
+            createCheckboxField("irbReport", "Summary Report Sent to IRB"),
+            createCheckboxField("other", "Other"),
             otherInfoField
         );
     }
