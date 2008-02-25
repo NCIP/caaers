@@ -16,3 +16,13 @@
         </c:if>	
     </c:if>
 </form:errors>
+<%-- Only show global errors --%>
+<form:errors>
+ <c:if test="${hideErrorDetails and not empty messages}">
+  <ul class="errors">
+   <c:forEach items="${messages}" var="msg">
+   	  <li>${msg}</li>
+   </c:forEach>
+  </ul>
+ </c:if>
+</form:errors>
