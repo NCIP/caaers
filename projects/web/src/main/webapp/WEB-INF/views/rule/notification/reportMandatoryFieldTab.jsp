@@ -24,8 +24,24 @@
     	  <br> 
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
-		
-		<chrome:division title="Reporter information">
+		<chrome:division title="Course and agent">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
+			  <tr>
+			  	  <td width="50%" VALIGN="top">
+			   		<chrome:division title=""  cssClass="paired" >
+					 <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION" />
+			   		</chrome:division>
+			 	  </td>
+			 	  <td width="50%" VALIGN="top">
+			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents" />
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
+			   		</chrome:division>
+			 	  </td>
+			  </tr>
+			</table>
+		</chrome:division>
+		<chrome:division title="Reporter">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
 			  	  <td width="50%">
@@ -40,10 +56,20 @@
 			 	  </td>
 			  </tr>
 			</table>
-			
 		</chrome:division>
-		
-		<chrome:division title="Medical information">
+		<chrome:division title="Describe event">
+		   <table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
+			  <tr>
+			  	  <td width="50%" VALIGN="top">
+					 <rd:renderMandatoryFields key="DESCRIPTION_SECTION" startIndex="0" endIndex="5" />
+			 	  </td>
+			 	  <td width="50%" VALIGN="top">
+			    	  <rd:renderMandatoryFields key="DESCRIPTION_SECTION" startIndex="6"/>
+			 	  </td>
+			  </tr>
+			</table>
+		</chrome:division>
+		<chrome:division title="Patient details">
 		   
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
@@ -59,9 +85,21 @@
 			 	  </td>
 			  </tr>
 			</table>
-			
 		</chrome:division>
 		
+		<chrome:division title="Pre-existing condictions">
+			<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~SAEReportPreExistingConditions" />
+		</chrome:division>
+		
+		<chrome:division title="Prior therapies">
+		<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
+		</chrome:division>
+		<chrome:division title="Concomitant Medications">
+		<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~ConcomitantMedications" />
+		</chrome:division>
+		<chrome:division title="Other contributing causes">
+			<rd:renderMandatoryFields key="OTHER_CAUSE_SECTION~OtherCausess" />
+		</chrome:division>
 		<chrome:division title="Intervention information">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
@@ -79,9 +117,7 @@
 			</table>
 			
 		</chrome:division>
-		<chrome:division title="Event and response description">
-		   <rd:renderMandatoryFields key="DESCRIPTION_SECTION" />
-		</chrome:division>
+		
 		<chrome:division title="Medical devices">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
@@ -93,29 +129,8 @@
 			 	  </td>
 			  </tr>
 			</table>
-		
-		
-		 
 		</chrome:division>
-		<chrome:division title="Treatment Information">
-			
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
-			  <tr>
-			  	  <td width="50%" VALIGN="top">
-			   		<chrome:division title=""  cssClass="paired" >
-					 <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION" />
-			   		</chrome:division>
-			 	  </td>
-			 	  <td width="50%" VALIGN="top">
-			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents" />
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
-			   		</chrome:division>
-			 	  </td>
-			  </tr>
-			</table>
-			
-		</chrome:division>
+		
 		<chrome:division title="Labs">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
@@ -130,22 +145,7 @@
 			  </tr>
 			</table>
 		</chrome:division>
-		
-		<chrome:division title="Prior Therapies">
-		<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
-		</chrome:division>
-		
-		<chrome:division title="Pre-Existing Condictions">
-		<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~SAEReportPreExistingConditions" />
-		</chrome:division>
-		
-		<chrome:division title="Concomitant Medications">
-		<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~ConcomitantMedications" />
-		</chrome:division>
-		
-		<chrome:division title="Other contributing causes">
-			<rd:renderMandatoryFields key="OTHER_CAUSE_SECTION~OtherCausess" />
-		</chrome:division>
+	
 		</jsp:attribute>
 	</tags:tabForm> 
 </body>
