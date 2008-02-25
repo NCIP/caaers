@@ -310,8 +310,8 @@ public class SearchStudyAjaxFacade {
 		model.addColumn(colummEthnicity);
 
 		Column columnStudyPrimaryIdentifier = model.getColumnInstance();
-		columnStudyPrimaryIdentifier.setProperty("test");
-		columnStudyPrimaryIdentifier.setSortable(false);
+		//columnStudyPrimaryIdentifier.setProperty("test");
+		//columnStudyPrimaryIdentifier.setSortable(false);
 		columnStudyPrimaryIdentifier.setTitle("Associated Study ID(s)");
 		columnStudyPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantStudyLinkDisplayCell");
 		model.addColumn(columnStudyPrimaryIdentifier);
@@ -457,15 +457,15 @@ public class SearchStudyAjaxFacade {
 		model.addColumn(aeDetectionDate);
 
 		Column columnstudyIdentifier = model.getColumnInstance();
-		columnstudyIdentifier.setProperty("test");
-		columnstudyIdentifier.setSortable(false);
+		columnstudyIdentifier.setProperty("study.primaryIdentifier.value");
+		//columnstudyIdentifier.setSortable(false);
 		columnstudyIdentifier.setTitle("Study ID");
 		columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCellExpedited");
 		model.addColumn(columnstudyIdentifier);
 
 		Column columnParticipantIdentifier = model.getColumnInstance();
-		columnParticipantIdentifier.setSortable(false);
-		columnParticipantIdentifier.setProperty("primaryIdentifier");
+		//columnParticipantIdentifier.setSortable(false);
+		columnParticipantIdentifier.setProperty("participant.primaryIdentifier.value");
 		columnParticipantIdentifier.setTitle("Participant ID");
 		columnParticipantIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCellExpedited");
 		model.addColumn(columnParticipantIdentifier);
@@ -544,14 +544,14 @@ public class SearchStudyAjaxFacade {
 
 		Column columnstudyIdentifier = model.getColumnInstance();
 		columnstudyIdentifier.setSortable(false);
-		columnstudyIdentifier.setProperty("test");
+		columnstudyIdentifier.setProperty("study.primaryIdentifier.value");
 		columnstudyIdentifier.setTitle("Study ID");
 		columnstudyIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.StudyLinkDisplayCellRoutine");
 		model.addColumn(columnstudyIdentifier);
 
 		Column columnParticipantIdentifier = model.getColumnInstance();
 		columnParticipantIdentifier.setSortable(false);
-		columnParticipantIdentifier.setProperty("primaryIdentifier");
+		columnParticipantIdentifier.setProperty("participant.primaryIdentifier.value");
 		columnParticipantIdentifier.setTitle("Participant ID");
 		columnParticipantIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCellRoutine");
 		model.addColumn(columnParticipantIdentifier);
