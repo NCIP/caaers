@@ -22,10 +22,19 @@
         <tags:instructions code="instruction_ae_additionalInfo" />
     </jsp:attribute>
     <jsp:attribute name="singleFields">
-        <c:forEach items="${fieldGroups.desc.fields}" var="field" begin="0" end="11">
+    	<div class="leftpanel">
+    	<c:forEach items="${fieldGroups.desc.fields}" var="field" begin="0" end="5">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-
+    	
+    	</div>
+    	<div class="rightpanel">
+    	<c:forEach items="${fieldGroups.desc.fields}" var="field" begin="6" end="11">
+            <tags:renderRow field="${field}"/>
+        </c:forEach>
+    	
+    	</div>
+        <div id="spacer" style="clear: both;"> </div>
         <div class="row">
          <div class="label"><tags:renderLabel field="${fieldGroups.desc.fields[12]}" /></div>
          <div class="value">
