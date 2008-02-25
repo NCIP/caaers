@@ -68,7 +68,7 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             
             //for UniqueObjectInCollection validator
             for(String collectionProperty : collectionPropertyMap.keySet()){
-            	validateCollectionProperty(collectionProperty, beanWrapperImpl, collectionProperty, errors, collectionPropertyMap.get(collectionProperty));
+            	validateCollectionProperty(collectionProperty, beanWrapperImpl, collectionProperty, errors, null);
             }
             
         }
@@ -82,8 +82,6 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
                     .getAnnotations();
             Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
             validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
-//            //validate for UniqueObjectInCollection validator also
-//            validate(annotationsArray, beanWrapperImpl.getPropertyValue(readMethodName), propertyNameWhereErrorWillBeDisplayed, errors);
         }
 
     }
@@ -116,11 +114,15 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             if (validator != null) {
                 logger.info("Found read property   property-value:" + propertyValue + " with validator :" + validator.getClass().getName() + ". Errors (if any) will be displayed on property-name:" + errorPropertyName);
                 if (!validator.validate(propertyValue)) {
-                    String errorCode = validator.message();
-                    logger.info("Found error code:" + errorCode + " for property:" + errorPropertyName + " value:"
+                    String errMsg = validator.message();
+                    logger.info("Found error code:" + errMsg + " for property:" + errorPropertyName + " value:"
                             + propertyValue + " & validator:" + validator.getClass().getName());
-
-                    errors.rejectValue(errorPropertyName, "REQUIRED", errorCode);
+                    if(errorPropertyName != null){
+                    	errors.rejectValue(errorPropertyName, "REQUIRED", errMsg);	
+                    }else {
+                    	errors.reject("DUPLICATE", errMsg);
+                    }
+                    
                 }
             }
         }
