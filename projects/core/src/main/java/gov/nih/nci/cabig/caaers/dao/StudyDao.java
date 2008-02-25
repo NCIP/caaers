@@ -50,7 +50,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	private static final List<String> EXACT_MATCH_TITLE_PROPERTIES = Arrays.asList("shortTitle");
 
 	private static final String JOINS = "join o.identifiers as identifier "
-			+ "join o.studyOrganizations as ss join ss.studyParticipantAssignments as spa join spa.participant as p join p.identifiers as pIdentifier";
+			+ "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
 
 	private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName()
 			+ " s where shortTitle = :st";

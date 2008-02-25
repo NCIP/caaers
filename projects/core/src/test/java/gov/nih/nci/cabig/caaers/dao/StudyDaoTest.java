@@ -402,6 +402,33 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
 	}
+	
+	public void testSearchStudyWithNoParticipantAssignedByStudyShortTitle() throws Exception {
+		List<Study> results;
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("studyShortTitle", "No participant");
+		results = getDao().searchStudy(m);
+		assertEquals("Wrong number of results", 1, results.size());
+		assertEquals("Wrong match", "No participant assigned to this study", results.get(0).getShortTitle());
+	}
+	
+	public void testExactSearchStudyWithNoParticipantByStudyIdentifier() throws Exception {
+		List<Study> results;
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("studyIdentifier", "908-23153-221");
+		results = getDao().searchStudy(m);
+		assertEquals("Wrong number of results", 1, results.size());
+		assertEquals("Wrong match", "No participant assigned to this study", results.get(0).getShortTitle());
+	}
+	
+	public void testPartialSearchStudyWithNoParticipantByStudyIdentifier() throws Exception {
+		List<Study> results;
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("studyIdentifier", "-23153-");
+		results = getDao().searchStudy(m);
+		assertEquals("Wrong number of results", 1, results.size());
+		assertEquals("Wrong match", "No participant assigned to this study", results.get(0).getShortTitle());
+	}
 
 	public void testSearchStudyByStudyIdentifier() throws Exception {
 		List<Study> results;
@@ -434,6 +461,16 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		List<Study> results;
 		Map<String, String> m = new HashMap<String, String>();
 		m.put("participantIdentifier", "13js77");
+		results = getDao().searchStudy(m);
+		assertEquals("Wrong number of results", 1, results.size());
+		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
+	}
+	
+	public void testSearchStudyByParticipantIdentifierANDStudyIdentifier() throws Exception {
+		List<Study> results;
+		Map<String, String> m = new HashMap<String, String>();
+		m.put("participantIdentifier", "13js77");
+		m.put("studyIdentifier", "1138-43");
 		results = getDao().searchStudy(m);
 		assertEquals("Wrong number of results", 1, results.size());
 		assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());

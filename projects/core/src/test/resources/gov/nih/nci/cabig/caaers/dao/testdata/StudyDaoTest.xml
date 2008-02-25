@@ -32,6 +32,15 @@
         description="Yet another different description"
         load_status="0"
         />
+    <STUDIES
+        id="-5"
+        multi_institution_indicator="0"
+        short_title="No participant assigned to this study"
+        long_title="No participant assigned to this study"
+        description="Is this a valid Description"
+        grid_id=""
+        load_status="1"
+        />    
         
     <DISEASE_TERMINOLOGIES
     	id="-11"
@@ -49,7 +58,12 @@
     	id="-13"
     	term_code="1"
     	study_id="-4"
-    	/>	   	   
+    	/>
+    <DISEASE_TERMINOLOGIES
+    	id="-14"
+    	term_code="1"
+    	study_id="-5"
+    	/>   		   	   
 
    <TERMINOLOGIES
    		id="-10"
@@ -71,6 +85,13 @@
    		ctc_id="3"
    		study_id="-2"
    		/>
+   		
+   	<TERMINOLOGIES
+   		id="-13"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-5"
+   		/>	
 
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
@@ -102,13 +123,27 @@
         type="uniqueness"
        	system_name="system_name"
        	discriminator_column="2"/>
- <IDENTIFIERS
+ 	<IDENTIFIERS
         id="-166"
         stu_id="-4"
         value="3333"
         type="Coordinating Center Identifier"
        	system_name="CTEP"
        	discriminator_column="1"/>
+    <IDENTIFIERS
+        id="-19"
+        stu_id="-5"
+        value="908-23153-221"
+        type="local"
+        organization_id="-1003"
+        discriminator_column="1"/>
+    <IDENTIFIERS
+        id="-20"
+        stu_id="-5"
+        value="-9442608"
+        type="uniqueness"
+       	organization_id="-1003"
+       	discriminator_column="1"/>   	
 
 
     <PARTICIPANTS
@@ -258,6 +293,36 @@
     	study_id="-3"
     	site_id="-1002"
     	type="SCC"/>
+    <STUDY_ORGANIZATIONS
+    	id="-1006"
+    	version="1"
+    	status_code="active"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-5"
+    	site_id="-1003"
+    	type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+    	id="-1007"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-5"
+    	site_id="-1001"
+    	type="SFS"
+    />
+    <STUDY_ORGANIZATIONS
+    	id="-1008"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-5"
+    	site_id="-1002"
+    	type="SCC"
+    />	
 
      	<investigational_new_drugs id = "-881" ind_number="-881"/>
    		<investigational_new_drugs id = "-882"  ind_number="-882"/>
