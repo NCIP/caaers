@@ -29,14 +29,15 @@
                 createAE.getResearchStaff(id, updateReporterFromStaff)
             }
         }
-
+		/* IE7 fix:- null text is displayed when staff[field] is empty or null*/
         function updateReporterFromStaff(staff) {
             NAME_FIELDS.each(function(field) {
-                $('aeReport.reporter.' + field).value = staff[field]
+            	if(staff[field] != null) $('aeReport.reporter.' + field).value = staff[field]
+                
             })
-			$('aeReport.reporter.' + 'contactMechanisms[e-mail]').value = staff['emailAddress']
-			$('aeReport.reporter.' + 'contactMechanisms[phone]').value = staff['phoneNumber']
-			$('aeReport.reporter.' + 'contactMechanisms[fax]').value = staff['faxNumber']
+			if(staff['emailAddress'] != null) $('aeReport.reporter.' + 'contactMechanisms[e-mail]').value = staff['emailAddress']
+			if(staff['phoneNumber'] != null) $('aeReport.reporter.' + 'contactMechanisms[phone]').value = staff['phoneNumber']
+			if(staff['faxNumber'] != null) $('aeReport.reporter.' + 'contactMechanisms[fax]').value = staff['faxNumber']
 			
             updatePhysicianFromReporterIfSame()
         }
