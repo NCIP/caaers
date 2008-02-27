@@ -36,6 +36,8 @@
 		 			 	createIND.matchInvestigators(text, function(values) {
          					autocompleter.setChoices(values)
          				})
+		 			 }else {
+		 			 	alert("Please select appropriate value in 'IND Held by?'");
 		 			 }
 		 		}, function(obj){
 		 		     return obj.fullName;
