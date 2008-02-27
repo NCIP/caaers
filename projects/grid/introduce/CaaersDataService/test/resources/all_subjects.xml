@@ -1,0 +1,14 @@
+<!-- Get All Aes -->
+<gov.nih.nci.cagrid.cqlquery.CQLQuery xmlns="http://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery">
+     <Target name="gov.nih.nci.cabig.caaers.domain.Participant">
+          <ReturnAttributes>
+               <ReturnAttribute>id</ReturnAttribute>
+               <ReturnAttribute>firstName</ReturnAttribute>
+               <ReturnAttribute>lastName</ReturnAttribute>
+               <ReturnAttribute>gender</ReturnAttribute>
+          </ReturnAttributes>
+     </Target>
+</gov.nih.nci.cagrid.cqlquery.CQLQuery>
+
+
+
