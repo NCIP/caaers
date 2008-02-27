@@ -178,7 +178,7 @@ td#linkPosition a img {
     Event.observe(window, "load", function() {
    
         <c:forEach varStatus="status" items="${command.studyAgents}" var="sa">
-      		new jsStudyAgent(${status.index}, "${sa.agent.nscNumber}::${sa.agent.name}" );
+      		new jsStudyAgent(${status.index}, "${sa.agent.nscNumber}${sa.agent.name ne null ? '::':''}${sa.agent.name}" );
       		<c:forEach varStatus="indStatus" items="${sa.studyAgentINDAssociations}" var="sai">
       			jsAgents[${status.index}].initINDAutoCompleter(${indStatus.index},'${sai.investigationalNewDrug.indNumber}','${sai.investigationalNewDrug.holderName}');
       		</c:forEach>
