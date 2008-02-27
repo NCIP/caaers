@@ -69,8 +69,13 @@
             			<c:out value="${ae.expected == true ? 'Yes' : 'No' }" />
             		</td>
             		<td>
+            			<c:if test="${ae.report == null }" >
             			<a href="javascript:fireAction('removeTerm',${status.index});">
 								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a>
+						</c:if>
+						<c:if test="${ae.report != null }" >
+            				<c:out value="SAE" />
+						</c:if>
             		</td>
             	</tr>	 
             </c:forEach>

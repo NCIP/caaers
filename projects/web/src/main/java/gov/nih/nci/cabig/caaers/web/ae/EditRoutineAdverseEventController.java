@@ -29,7 +29,8 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new EditRoutineAdverseEventCommand(getDao());
+        return new EditRoutineAdverseEventCommand(getDao(), reportDao, nowFactory, evaluationService);
+        //new CreateRoutineAdverseEventCommand(assignmentDao, routineReportDao, reportDao, nowFactory, evaluationService);
     }
     
     @Override
@@ -47,7 +48,7 @@ public class EditRoutineAdverseEventController extends AbstractRoutineAdverseEve
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditRoutineAdverseEventCommand command = (EditRoutineAdverseEventCommand) oCommand;
-        
+        command.checkRoutineAesForExpeditedness();
         // everything is saved as you move from page to page, so no action required here
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());

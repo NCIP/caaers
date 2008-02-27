@@ -11,14 +11,20 @@
      <style type="text/css">
    
 	.cats {
-		font:9px arial;
+		font-size:9pt;
+		font-family: Helvetica,Arial,sans-serif;
 	}
 	
 	.selects {
 		top-padding:2px;
 		width:90%;
-		font:11px arial;	
+		font-size:10pt;
+		font-family: Helvetica,Arial,sans-serif
 	}
+	.sae {
+		color:green;
+	}
+	
 	</style>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
@@ -54,6 +60,7 @@
 					function(autocompleter, text) {
 						createAE.matchLowLevelTermsByCode(text, function(values) {
 													autocompleter.setChoices(values)
+
 						})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
@@ -115,7 +122,7 @@
         Element.observe(window, "load", function() {
 	        
 	        <c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status" var="adverseEvent">
-	        	<c:if test="${adverseEvent.ctcTerm.otherRequired == 'true'}" >
+	        	<c:if test="${adverseEvent.ctcTerm.otherRequired == 'true' && adverseEvent.report == null }" >
            		new EnterMeddra(${status.index}, '${adverseEvent.lowLevelTerm.fullName}')
            		</c:if>
             </c:forEach>
@@ -221,23 +228,28 @@
     				
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" var="ae" varStatus="status">
             	<tr>
-            		<td>${ae.ctcTerm.term}
-            			<c:if test="${ae.ctcTerm.otherRequired == 'true'}" >
+            		<td>
+            			<c:choose>
+						 	<c:when test="${ae.report != null}">
+   								<span class="sae"><c:out value="${ae.adverseEventTerm.universalTerm}" /></span>
+							</c:when>
+						    <c:otherwise>
+						    	<c:out value="${ae.ctcTerm.term}" />
+							</c:otherwise>
+						</c:choose>
+            			
+            			<c:if test="${ae.ctcTerm.otherRequired == 'true' && ae.report == null }" >
             				<center>
-            				
             				<div class="row">
             					<div class="label"><input id="select-meddra-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (MedDRA)</div>
             					<div class="value">
-            						
             						<form:hidden  path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm" />
-            						
             						<input type="text" id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-input" class="autocomplete"/>
                     				<tags:indicator id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-indicator"/>
                     				<div id="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm-choices" class="autocomplete"></div>
             					</div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].lowLevelTerm"/>
             				</div>	
-            				
             				<div class="row">
             					<div class="label"><input id="select-other-${status.index}" name="meddraOrVerbatim${status.index}" type="radio"/>Other (verbatim)</div>
             					<div class="value">            						
@@ -245,49 +257,72 @@
             					</div>
             					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].detailsForOther"/>
             				</div>	
-            				
             				</center>
-            				
-            				
-            				
-            				
             			</c:if>
             		</td>
             		<td>
-            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
-            				<form:option value=" " label="Please select" />
-            				<c:if test="${fn:length(ae.ctcTerm.contextualGrades) == 0}" >
-            					<form:options items="${grade}" itemValue="name" itemLabel="code"/>
-            				</c:if>
-            				<form:options items="${ae.ctcTerm.contextualGrades}" itemValue="grade.name" itemLabel="grade.code"/>
-            			</form:select>
-            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].grade"/>
+            			<c:choose>
+						 	<c:when test="${ae.report != null}">
+   								<span class="sae"><c:out value="${ae.grade}" /></span>
+							</c:when>
+						    <c:otherwise>
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].grade">
+            					<form:option value=" " label="Please select" />
+            					<c:if test="${fn:length(ae.ctcTerm.contextualGrades) == 0}" >
+            						<form:options items="${grade}" itemValue="name" itemLabel="code"/>
+            					</c:if>
+            					<form:options items="${ae.ctcTerm.contextualGrades}" itemValue="grade.name" itemLabel="grade.code"/>
+            					</form:select>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].grade"/>
+							</c:otherwise>
+						</c:choose>
             		</td>
             		
             		<td>
-            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary">
-            				<form:option value=" " label="Please select" />
-            				<form:options items="${attribution}" itemValue="name" itemLabel="displayName"/>
-            			</form:select>
-            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary"/>
+            			<c:choose>
+						 	<c:when test="${ae.report != null}">
+   								<span class="sae"><c:out value="${ae.attributionSummary}" /></span>
+							</c:when>
+						    <c:otherwise>
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary">
+            					<form:option value=" " label="Please select" />
+            					<form:options items="${attribution}" itemValue="name" itemLabel="displayName"/>
+            					</form:select>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].attributionSummary"/>
+							</c:otherwise>
+						</c:choose>
             		</td>
             		
             		<td>
-            			<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization">
-            				<form:option value=" " label="Please select" />
-            				<form:options items="${hospitalization}" itemValue="name" itemLabel="displayName"/>
-            			</form:select>
-            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].hospitalization"/>
+            			<c:choose>
+						 	<c:when test="${ae.report != null}">
+   								<span class="sae"><c:out value="${ae.hospitalization}" /></span>
+							</c:when>
+						    <c:otherwise>
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].hospitalization">
+            					<form:option value=" " label="Please select" />
+            					<form:options items="${hospitalization}" itemValue="name" itemLabel="displayName"/>
+            					</form:select>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].hospitalization"/>
+							</c:otherwise>
+						</c:choose>
             		</td>
             		
-            		<td><form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" >
-            				<form:option value="" label="Please select" />
-            				<form:option value="true" label="Yes" />
-            				<form:option value="false" label="No" />
-            			</form:select>
-            			<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].expected"/>
+            		<td>
+            			<c:choose>
+						 	<c:when test="${ae.report != null}">
+   								<span class="sae"><c:out value="${ae.expected == true ? 'Yes' : 'No' }" /></span>
+							</c:when>
+						    <c:otherwise>
+						    	<form:select path="aeRoutineReport.adverseEvents[${status.index}].expected" >
+            						<form:option value="" label="Please select" />
+            						<form:option value="true" label="Yes" />
+            						<form:option value="false" label="No" />
+            					</form:select>
+            					<tags:errors path="aeRoutineReport.adverseEvents[${status.index}].expected"/>
+							</c:otherwise>
+						</c:choose>
             		</td>
-            		<%--<td><form:input path="aeRoutineReport.adverseEvents[${status.index}].comments" /></td>--%>
             	</tr>	 
             </c:forEach>
             </table>

@@ -15,13 +15,29 @@
 
     
     	<tr class="division ae-section" id="ae-section-${index}" >
+    	
     	<td>
+    	<c:if test="${command.aeRoutineReport.adverseEvents[index].report == null}">
     	<tags:renderInputs field="${fieldGroups[ctcTermGroup].fields[0]}"/>
+    	</c:if>
+    	<c:if test="${command.aeRoutineReport.adverseEvents[index].report != null}">
+    		<span class="sae"><c:out value="${command.aeRoutineReport.adverseEvents[index].adverseEventTerm.universalTerm}" /></span>
+    	</c:if>
     	</td>
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
             <%--<tags:renderRow field="${field}"/>--%>
+
+			<c:if test="${command.aeRoutineReport.adverseEvents[index].report == null}">
             <td>
-            <tags:renderInputs field="${field}"/>
-            </td>
+				<tags:renderInputs field="${field}"/>
+            </td>				
+			</c:if>
         </c:forEach>
+        <c:if test="${command.aeRoutineReport.adverseEvents[index].report != null}">
+        	<td><span class="sae"><c:out value="${command.aeRoutineReport.adverseEvents[index].grade}" /></span></td>
+   			<td><span class="sae"><c:out value="${command.aeRoutineReport.adverseEvents[index].attributionSummary}" /></span></td>
+   			<td><span class="sae"><c:out value="${command.aeRoutineReport.adverseEvents[index].hospitalization}" /></span></td>
+   			<td><span class="sae"><c:out value="${command.aeRoutineReport.adverseEvents[index].expected}" /></span></td>
+   		</c:if>
+        
         </tr>

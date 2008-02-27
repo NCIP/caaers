@@ -9,6 +9,11 @@
 <html>
 <head>
     <title>Enter basic AE information</title>
+     <style type="text/css">
+		.sae {
+			color:green;
+		}
+	 </style>	
     <tags:stylesheetLink name="ae"/>
    
     <tags:includeScriptaculous/>
@@ -45,7 +50,9 @@
 
         Element.observe(window, "load", function() {
             <c:forEach items="${command.aeRoutineReport.adverseEvents}" varStatus="status" var="aeLowLevelTerm">
-            new LowLevelTerm(${status.index}, '${aeLowLevelTerm.adverseEventMeddraLowLevelTerm.lowLevelTerm.fullName}')
+            	<c:if test="${command.aeRoutineReport.adverseEvents[status.index].report == null }" >
+		            new LowLevelTerm(${status.index}, '${aeLowLevelTerm.adverseEventMeddraLowLevelTerm.lowLevelTerm.fullName}')
+           		</c:if>
             </c:forEach>
             
              new ListEditor("ae-section", createAE, "RoutineAeMeddra", {
