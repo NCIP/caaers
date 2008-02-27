@@ -20,7 +20,7 @@ public class TestAe extends TestCase{
 	}
 	
 	public void  testGetAllAes() {
-		System.out.println("All Aes ");
+		System.out.println("Get All Aes ");
 		try{ 
 			CaaersClient client = new CaaersClient("http://cagrid-cccwfu.wfubmc.edu:8080/wsrf/services/cagrid/Caaers");
 

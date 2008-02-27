@@ -20,7 +20,7 @@ public class TestStudy extends TestCase{
 	}
 	
 	public void  testGetAllStudies() {
-		System.out.println("Running the Grid Service Client");
+		System.out.println("Get all studies");
 		try{ 
 			CaaersClient client = new CaaersClient("http://cagrid-cccwfu.wfubmc.edu:8080/wsrf/services/cagrid/Caaers");
 
