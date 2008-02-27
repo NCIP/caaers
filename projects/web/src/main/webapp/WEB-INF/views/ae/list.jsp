@@ -169,7 +169,7 @@
 				onMouseOut="this.className='<%= currClass %>'">
 			<td width="2%" onClick="
 				<c:choose>
-					<c:when test="${fn:length(report.reports) > 0}">
+					<c:when test="${fn:length(report.submitableReports) > 0}">
 						new Element.toggle('studySites-table-${statusReport.index }');
 							toggleImage('image-open-${statusReport.index }');
 					</c:when>
@@ -177,7 +177,7 @@
 					</c:otherwise>
 				</c:choose>
 			">
-					<c:if test="${fn:length(report.reports) > 0}">
+					<c:if test="${fn:length(report.submitableReports) > 0}">
 						<img id="image-open-${statusReport.index }" src="<c:url value="/images/b-plus.gif"/>" border="0" alt="expand">
 					</c:if>
 			</td>
@@ -263,7 +263,7 @@
 			</td>
 			
 		</tr>
-		<c:if test="${fn:length(report.reports) > 0}">
+		<c:if test="${fn:length(report.submitableReports) > 0}">
 			<tr id="studySites-table-${statusReport.index }" style="display:none;">
 				<td colspan="1">&nbsp;</td>
 				<td colspan="5" height="0" class>
@@ -280,7 +280,7 @@
 						</tr>
 						</thead>
 						<%int j=i*100; %>
-						<c:forEach items="${report.reports}" var="theReport" varStatus="siteIndex">
+						<c:forEach items="${report.submitableReports}" var="theReport" varStatus="siteIndex">
 						<% String currClassJ=j%2==0? "odd":"even"; %>
 							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
 									onMouseOut="this.className='<%= currClass %>'" 
