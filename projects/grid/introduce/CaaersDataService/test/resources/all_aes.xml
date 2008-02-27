@@ -3,6 +3,8 @@
      <Target name="gov.nih.nci.cabig.caaers.domain.AdverseEvent">
           <ReturnAttributes>
                <ReturnAttribute>id</ReturnAttribute>
+               <ReturnAttribute>detailsForOther</ReturnAttribute>
+               <ReturnAttribute>expected</ReturnAttribute>
                <ReturnAttribute>comments</ReturnAttribute>
           </ReturnAttributes>
      </Target>
