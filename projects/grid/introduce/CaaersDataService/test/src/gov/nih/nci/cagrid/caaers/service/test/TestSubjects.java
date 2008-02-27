@@ -13,19 +13,20 @@ import junit.framework.TestCase;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.xml.sax.InputSource;
 
-public class TestExpeditedReports extends TestCase{
+public class TestSubjects extends TestCase{
 	
 	public void setUp() throws Exception {
 		super.setUp();
 	}
 	
-	public void  testGetAllExpeditedReports() {
-		System.out.println("Get all expedited reports");
+	public void  testGetAllSubjects() {
+		System.out.println("All Subjects ");
 		try{ 
 			CaaersClient client = new CaaersClient("http://cagrid-cccwfu.wfubmc.edu:8080/wsrf/services/cagrid/Caaers");
 
+			//CaaersClient client = new CaaersClient("https://localhost/wsrf-ds/services/cagrid/Caaers");
 
-            java.lang.Object qryObj = ObjectDeserializer.deserialize(new InputSource(new FileInputStream("test/resources/aereports.xml")),CQLQuery.class);
+            java.lang.Object qryObj = ObjectDeserializer.deserialize(new InputSource(new FileInputStream("test/resources/all_subjects.xml")),CQLQuery.class);
 
 			CQLQuery cqlQuery = (CQLQuery)qryObj;
             CQLQueryResults results = client.query(cqlQuery);
@@ -35,12 +36,12 @@ public class TestExpeditedReports extends TestCase{
 			System.out.println(" ");
 			System.out.println(" - - - - Results - - - ");
 			System.out.println(" ");
-			
+			System.out.println("ID | FIRST NAME | LAST NAME	| GENDER");
 	           while (iter.hasNext()) {
 
-	        	   gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport obj = (gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport) iter.next();
+	        	   gov.nih.nci.cabig.caaers.domain.Participant obj = (gov.nih.nci.cabig.caaers.domain.Participant) iter.next();
 
-				   System.out.println(obj.getId() + " | " + obj.getCreatedAt());
+				   System.out.println(obj.getId() + " | " + obj.getFirstName()+ " | " + obj.getLastName()+ " | " + obj.getGender());
 
 				//   System.out.println( "Version is " + obj.getExpected() );
 
@@ -51,4 +52,5 @@ public class TestExpeditedReports extends TestCase{
 			System.exit(1);
 		}
 	}
+	
 }

@@ -22,7 +22,7 @@ public class TestStudy extends TestCase{
 	public void  testGetAllStudies() {
 		System.out.println("Running the Grid Service Client");
 		try{ 
-			CaaersClient client = new CaaersClient("http://10.10.10.2:18030/wsrf/services/cagrid/Caaers");
+			CaaersClient client = new CaaersClient("http://cagrid-cccwfu.wfubmc.edu:8080/wsrf/services/cagrid/Caaers");
 
 
             java.lang.Object qryObj = ObjectDeserializer.deserialize(new InputSource(new FileInputStream("test/resources/all_studies.xml")),CQLQuery.class);
