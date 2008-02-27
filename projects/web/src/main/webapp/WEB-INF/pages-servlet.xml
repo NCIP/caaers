@@ -322,8 +322,10 @@
 		    p:displayName="Study search" p:linkName="studyController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Subject search" p:linkName="participantController"/>
+		  <!-- 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="AE search" p:linkName="adverseEventController"/>
+		   -->    
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Expedited Report search" p:linkName="reportController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
