@@ -565,6 +565,21 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
     }
+    
+    /**
+     * This method returns all the reports that are not in {@link ReportStatus}.WITHDRAWN. 
+     * @return
+     */
+    @Transient
+    public List<Report> getSubmitableReports(){
+    	List<Report> reports = getReports();
+    	if(reports.isEmpty()) return reports;
+    	List<Report> submitableReports = new ArrayList<Report>();
+    	for(Report report : reports){
+    		if(!report.getStatus().equals(ReportStatus.WITHDRAWN)) submitableReports.add(report);
+    	}
+    	return submitableReports;
+    }
 
     public void setReports(List<Report> reports) {
         this.reports = reports;
