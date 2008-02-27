@@ -20,7 +20,7 @@
          div.row div.label { width: 9em; } 
         div.row div.value { margin-left: 10em; }
 </style>
-<title>${tab.longTitle}</title>
+<title>${tab.longTitle} Study search</title>
 <tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 

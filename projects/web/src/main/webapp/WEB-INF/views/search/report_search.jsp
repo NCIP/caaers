@@ -21,7 +21,7 @@
          input { width:8em; }
          .box.paired { width: 30%; }
 </style>
-<title>${tab.longTitle}</title>
+<title>${tab.longTitle} Expedited report search</title>
 <tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="search"/>
 
