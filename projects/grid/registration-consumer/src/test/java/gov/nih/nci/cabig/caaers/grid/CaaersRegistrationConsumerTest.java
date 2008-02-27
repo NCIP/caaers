@@ -29,7 +29,6 @@ import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     private String clientConfigFile;
     private String registrationResourceName;
-    private String serviceUrl;
     
 
     
@@ -37,10 +36,9 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     protected void setUp() throws Exception {
     	super.setUp();
     	// TODO Auto-generated method stub
-    	 this.clientConfigFile = "/gov/nih/nci/ccts/grid/client/client-config.wsdd"; //"C:/devtools/workspace/REF-RegistrationConsumer/src/gov/nih/nci/ccts/grid/client/client-config.wsdd";	
+    	 this.clientConfigFile = "/gov/nih/nci/ccts/grid/client/client-config.wsdd"; 
          this.registrationResourceName = "/SampleRegistrationMessage.xml"; //"C:/devtools/workspace/REF-RegistrationConsumer/test/resources/SampleRegistrationMessage.xml";
          //this.serviceUrl = "http://localhost:8080/wsrf/services/cagrid/RegistrationConsumer";
-         this.serviceUrl = "http://10.10.10.2:8015/wsrf/services/cagrid/StudyConsumer";
          
     }
     
@@ -73,8 +71,6 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
 		System.out.println("***********************************************");
 		try{
 			Registration reg = obtainRegistrationDTO();
-			System.out.println(reg);
-			//org.springframework.context.ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext-grid.xml"});
 			CaaersRegistrationConsumer consumer = getRegistrationConsumer();
 			consumer.register(reg);
 
@@ -88,8 +84,6 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
 	public void testRollbackLocal() throws Exception{
 		try{
 			Registration reg = obtainRegistrationDTO();
-			System.out.println(reg);
-		//	org.springframework.context.ApplicationContext ctx = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext-grid.xml"});
 			CaaersRegistrationConsumer consumer = getRegistrationConsumer();
 			consumer.rollback(reg);
 
@@ -107,14 +101,11 @@ public class CaaersRegistrationConsumerTest extends CaaersTestCase {
     		InputStream fis = getClass().getResourceAsStream(clientConfigFile);
     		registration = (Registration) Utils.deserializeObject(reader, Registration.class,fis);
     		} catch (Exception e) {
-    			// TODO Auto-generated catch block
     			e.printStackTrace();
     			throw e;
     		}
     		return registration;
     }
     
-    protected void onSetUpInTransaction() throws Exception {
-    	 this.setUp();
-    }
+    
 }
