@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.HashMap;
 
@@ -204,6 +205,8 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				Ctc ctcVersion) {
 			
 			Integer ordinal = 1;
+			HashSet<Integer> hSet = new HashSet<Integer>();
+			
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
 				String ctepCode = (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ? 
 						adverseEvent.getAdverseEventCtcTerm().getTerm().getCtepCode() : null;
@@ -224,6 +227,13 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				}
 				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + ctcVersion.getName() + " term.");
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, false);
+				
+				if ( ctcTerm != null){
+					if(!hSet.add(ctcTerm.getId())){
+						routineAdverseEventReportImportOutcome.addErrorMessage("The Term you provided in AE " + ordinal + " already exists.", Severity.ERROR);
+					}
+				}
+				
 				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 				
 				ae.setGrade(adverseEvent.getGrade());
@@ -245,6 +255,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				Ctc ctcVersion) {
 			
 			Integer ordinal = 1;
+			HashSet<Integer> hSet = new HashSet<Integer>();
 			
 			for (AdverseEvent adverseEvent : source.getAdverseEvents()) {
 				String ctepCode = (adverseEvent.getAdverseEventCtcTerm() != null && adverseEvent.getAdverseEventCtcTerm().getTerm() != null ) ? 
@@ -267,6 +278,12 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 				ifNullObject(ctcTerm, routineAdverseEventReportImportOutcome,Severity.ERROR,"The Term you provided in AE " + ordinal + " is not valid. Make sure you provide a " + ctcVersion.getName() + " term.");
 				
 				ctcTermValidity(ctcTerm, ctcVersion, adverseEvent, ae, routineAdverseEventReportImportOutcome, true);
+				
+				if ( ctcTerm != null){
+					if(!hSet.add(ctcTerm.getId())){
+						routineAdverseEventReportImportOutcome.addErrorMessage("The Term you provided in AE " + ordinal + " already exists.", Severity.ERROR);
+					}
+				}
 				
 				ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
 				

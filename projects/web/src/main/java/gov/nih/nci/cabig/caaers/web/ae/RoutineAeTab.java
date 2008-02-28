@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.HashSet;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,7 +45,9 @@ public class RoutineAeTab extends AeRoutTab {
     		  CtcTerm ctcTerm = ctcTermDao.getById(Integer.parseInt(ctcTermId));
     		  AdverseEvent ae = new AdverseEvent();
     		  ae.getAdverseEventCtcTerm().setCtcTerm(ctcTerm);
-    		  c.getAeRoutineReport().addAdverseEvent(ae);
+    		  if( uniqueAeValidate(c,errors,ae) ){
+    			  c.getAeRoutineReport().addAdverseEvent(ae);
+    		  }
     		  }
     	  }else{
     		  postProcessValidate(c, errors);
@@ -68,6 +71,22 @@ public class RoutineAeTab extends AeRoutTab {
         return refdata;
     }
     
+    protected boolean uniqueAeValidate(RoutineAdverseEventInputCommand command, Errors errors , AdverseEvent adverseEvent) {
+    	int index = 0;
+    	boolean isAeUnique = true;
+    	HashSet<Integer> hSet = new HashSet<Integer>();
+    	 if (command.getAeRoutineReport().getAdverseEvents() != null) {
+ 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport().getAdverseEvents().listIterator(); lit.hasNext();) {
+ 				AdverseEvent ae = lit.next();
+ 				hSet.add(ae.getAdverseEventCtcTerm().getCtcTerm().getId());
+ 			}
+ 			if(!hSet.add(adverseEvent.getAdverseEventCtcTerm().getCtcTerm().getId())){
+ 				errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].adverseEventTerm", "DUPLICATE", "CTC term you tried to add already exists");
+ 				return false;
+ 			}
+    	 }
+    	 return isAeUnique;
+    }
     
     protected void postProcessValidate(RoutineAdverseEventInputCommand command, Errors errors) {
     	int index = 0;
@@ -82,6 +101,7 @@ public class RoutineAeTab extends AeRoutTab {
 			for (ListIterator<AdverseEvent> lit = command.getAeRoutineReport()
 					.getAdverseEvents().listIterator(); lit.hasNext();) {
 				AdverseEvent ae = lit.next();
+				
 				if (ae.getAdverseEventCtcTerm().getTerm().isOtherRequired() && ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null){
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].detailsForOther", "REQUIRED", "Missing Other(Verbatim)");
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].lowLevelTerm", "REQUIRED", "Missing Other(MedDRA)");
