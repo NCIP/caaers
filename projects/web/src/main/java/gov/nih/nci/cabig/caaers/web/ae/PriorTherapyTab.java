@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,18 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class PriorTherapyTab extends AeTab {
 
 	private PriorTherapyDao priorTherapyDao;
+	private ArrayList<Integer> priorTherapiesThatAllowAgents = new  ArrayList<Integer>();
 	
     public PriorTherapyTab() {
         super("Prior Therapies", ExpeditedReportSection.PRIOR_THERAPIES_SECTION.getDisplayName(), "ae/priorTherapies");
         setAutoPopulateHelpKey(true);
         addHelpKeyExclusion("other","startDate","endDate");
+        priorTherapiesThatAllowAgents.add(3);
+        priorTherapiesThatAllowAgents.add(4);
+        priorTherapiesThatAllowAgents.add(5);
+        priorTherapiesThatAllowAgents.add(7);
+        priorTherapiesThatAllowAgents.add(8);
+        priorTherapiesThatAllowAgents.add(11);
     }
 
     @Override
@@ -91,6 +99,16 @@ public class PriorTherapyTab extends AeTab {
                 "REQUIRED",
                 "Prior Therapy is required"
             );
+        }
+        if (aePriorTherapy.getPriorTherapyAgents() != null && 
+        	aePriorTherapy.getPriorTherapyAgents().size()>0 &&
+        	! priorTherapiesThatAllowAgents.contains(aePriorTherapy.getPriorTherapy().getId())){
+        	errors.rejectValue(
+                    String.format("aeReport.saeReportPriorTherapies[%d]", index),
+                    "NOT VALID",
+                    "Prior Therapy can not have agents : Delete Agents and then proceed"
+                );
+        	
         }
     }
     @Override
