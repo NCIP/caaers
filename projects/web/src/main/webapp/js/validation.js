@@ -1,3 +1,6 @@
+
+//Note:- caAERS has tweaked the validation.js
+
 // ===================================================================
 // Author: Kruttik Aggarwal <kruttikagarwal@@gmail.com>
 // 
@@ -94,7 +97,7 @@ var ValidationManager = {
 		checkFields.each(ValidationManager.prepareField)
 		if(ValidationManager.afterPrepareFeilds(formVar)){
 			flag=validateFields(checkFields)
-			if(ValidationManager.submitPostProcess(formVar, flag)){
+			if(ValidationManager.submitPostProcess(formVar, flag, submit)){
 				ValidationManager.invokeAll(formVar)
 				if(ValidationManager.debug){
 					ValidationManager.currentFormVar=formVar
@@ -112,7 +115,18 @@ var ValidationManager = {
 			}
 		}
 	},
-	submitPostProcess: function(formElement, validationFlag){return validationFlag},
+	submitPostProcess: function(formElement, validationFlag, submit){
+		//tabbedflow.js will disable the button on click,so if there is 
+		// validation error, makesure we enable the button back. 	 
+		
+		if(!validationFlag ){
+			if((AE.clickSrc != null) && (!AE.clickSrc.visible())){
+				AE.clickSrc.show();
+			}
+		} 
+		AE.clickSrc = null;
+		return validationFlag;
+	},
 	submitPreProcess: function(formElement){return ValidationManager.validate;},
 	afterPrepareFeilds: function(formElement){return true},
 	
