@@ -1,3 +1,4 @@
+AE.clickSrc;
 AE.tabbedFlowUpdateTarget = function(evt) {
     var a = Event.element(evt)
     var tabclass = Element.classNames(a).detect(function(cls) { return cls.slice(0, 3) == "tab" })
@@ -19,7 +20,11 @@ AE.tabbedFlowSelectAndSubmit = function(click) {
 
 AE.tabbedFlowDisableTarget = function(click) {
 	//click.target.disble() - the event submission process stops in case of IE7,so using hide().
-	$(click.target).hide();
+	var btn = $(click.target);
+	if(btn.type == 'submit' || btn.type == 'button'){
+	 btn.hide();
+	 AE.clickSrc=btn;
+	}
 }
 
 Event.observe(window, "load", function() {
