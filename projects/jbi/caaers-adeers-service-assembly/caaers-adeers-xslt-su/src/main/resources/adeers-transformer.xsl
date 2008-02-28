@@ -169,28 +169,36 @@
             <RADIATION_INTERVENTION>
                 <xsl:choose>
                     <xsl:when test="RadiationIntervention/administration = 'BT_HDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy HDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
+                        HDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_LDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy LDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
+                        LDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
+                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam
+                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_2D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 2D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
+                        2D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_3D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 3D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
+                        3D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_IMRT' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
+                        IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_PROTON' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, Proton</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
+                        Proton</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
                         <TYPE_OF_RADIATION_ADMINISTRATION>Systemic
@@ -974,50 +982,55 @@
                 no -->
             </LAB_RESULT>
         </xsl:for-each>
-        <ADDITIONAL_INFORMATION>
+        
             <xsl:if test="AdditionalInformation/autopsyReport = 'true'">
-                <ADDITIONAL_INFO_NAME>Autopsy Report</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Autopsy Report</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/consults = 'true'">
-                <ADDITIONAL_INFO_NAME>Consults</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Consults</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/dischargeSummary = 'true'">
-                <ADDITIONAL_INFO_NAME>Discharge Summary</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Discharge Summary</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/flowCharts = 'true'">
-                <ADDITIONAL_INFO_NAME>Flow Sheets/Case Report Forms</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Flow Sheets/Case Report Forms</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/labReports = 'true'">
-                <ADDITIONAL_INFO_NAME>Laboratory Reports</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Laboratory Reports</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/obaForm = 'true'">
-                <ADDITIONAL_INFO_NAME>OBA Form</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>OBA Form</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
+            <!--
             <xsl:if test="AdditionalInformation/other = 'true'">
                 <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
             </xsl:if>
+            -->
             <xsl:if test="AdditionalInformation/pathologyReport = 'true'">
-                <ADDITIONAL_INFO_NAME>Pathology Report</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Pathology Report</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/progressNotes = 'true'">
-                <ADDITIONAL_INFO_NAME>Progress Notes</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Progress Notes</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/radiologyReports = 'true'">
-                <ADDITIONAL_INFO_NAME>Radiology Reports</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Radiology Reports</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/referralLetters = 'true'">
-                <ADDITIONAL_INFO_NAME>Referral Letters</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Referral Letters</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
             <xsl:if test="AdditionalInformation/irbReport = 'true'">
-                <ADDITIONAL_INFO_NAME>Summary Report Sent to IRB</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Summary Report Sent to IRB</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
             </xsl:if>
 
             <xsl:if test="AdditionalInformation/otherInformation != ''">
-                <ADDITIONAL_INFO_OTHER>
-                    <xsl:value-of select="AdditionalInformation/otherInformation"/>
-                </ADDITIONAL_INFO_OTHER>
+                <ADDITIONAL_INFORMATION>
+                    <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
+                    <ADDITIONAL_INFO_OTHER>
+                        <xsl:value-of select="AdditionalInformation/otherInformation"/>
+                    </ADDITIONAL_INFO_OTHER>
+                </ADDITIONAL_INFORMATION>
             </xsl:if>
-        </ADDITIONAL_INFORMATION>
+        
     </xsl:template>
 
     <xsl:template name="standard_date">
