@@ -8,7 +8,7 @@ AE.tabbedFlowUpdateTarget = function(evt) {
     }else{
     	if ($('command')._finish) $('command')._finish.disable()
     }
-    
+    AE.tabbedFlowDisableTarget(evt);
 }
 
 AE.tabbedFlowSelectAndSubmit = function(click) {
@@ -17,10 +17,16 @@ AE.tabbedFlowSelectAndSubmit = function(click) {
     $('command').submit() // command is the default ID for a form created with form:form
 }
 
+AE.tabbedFlowDisableTarget = function(click) {
+	//click.target.disble() - the event submission process stops in case of IE7,so using hide().
+	$(click.target).hide();
+}
+
 Event.observe(window, "load", function() {
     $$("li.tab a").each(function(a) {
         Event.observe(a, "click", AE.tabbedFlowSelectAndSubmit)
     })
     if ($("flow-prev")) Event.observe("flow-prev", "click", AE.tabbedFlowUpdateTarget)
     if ($("flow-update")) Event.observe("flow-update", "click", AE.tabbedFlowUpdateTarget)
+    if ($("flow-next")) Event.observe("flow-next", "click", AE.tabbedFlowDisableTarget)
 })
