@@ -113,14 +113,14 @@
 
             function showTable2(t) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById(t);
-               // testDiv.innerHTML = "xyz";
+                
+                var testDiv = $(t);               
                 testDiv.show();
             }
             function hideTable2(t) {
                 //$('indicator').className = 'indicator'
-                var testDiv = document.getElementById(t);
-               // testDiv.innerHTML = "xyz";
+                //var testDiv = document.getElementById(t);
+               var testDiv = $(t);
                 testDiv.hide();
             }
         
