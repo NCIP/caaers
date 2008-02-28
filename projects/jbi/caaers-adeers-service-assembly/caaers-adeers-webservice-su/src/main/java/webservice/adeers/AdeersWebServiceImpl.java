@@ -10,6 +10,8 @@ import java.io.StringReader;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.log4j.Logger;
+
 import webservice.AdeersWebService;
 import caaers.client.AEReportXMLServiceSoapBindingStub;
 import caaers.client.AEReportXMLService_ServiceLocator;
@@ -21,6 +23,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	private String externalEPRs = "";
 	private String reportId = "";
 	private String submitterEmail = "";
+	Logger log = Logger.getLogger(getClass());
 	
 	public String callWebService(String aeReport) throws Exception {
 		
@@ -29,6 +32,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	
 	private String submitAEDataXMLAsAttachment(String aeReportWithCaaersId) throws Exception {
 		 
+		//log.info(" REPORT ID " + aeReportWithCaaersId);
 		String aeReport = detach(aeReportWithCaaersId);	
 		//System.out.println("EXTERNAL EPRS " + this.externalEPRs);
 		String adeersEPR = externalEPRs.split(",")[0];
@@ -40,7 +44,9 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String clientTrustStore = "caAERs-AdEERS";
 		String userDir = System.getProperty("user.home");
 		String fileSeparator = System.getProperty("file.separator");
-		String clientAbsoluteTrustStore = userDir + fileSeparator + clientTrustStore;
+		String clientAbsoluteTrustStore = System.getenv("SERVICEMIX_HOME") + fileSeparator + clientTrustStore;
+		
+		log.info("PATH " + clientAbsoluteTrustStore);
 		
     	//System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caAERs-AdEERS");
 		//System.setProperty("javax.net.ssl.trustStore", "/Users/sakkala/temp/certs/caAERs-AdEERS");
