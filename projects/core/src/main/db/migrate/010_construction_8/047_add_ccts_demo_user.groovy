@@ -5,7 +5,7 @@ class UpdateCsmPrivileges extends edu.northwestern.bioinformatics.bering.Migrati
 		insert('CSM_USER',
 			[
 				USER_ID: -7,LOGIN_NAME: 'cctsdemo1@nci.nih.gov', FIRST_NAME: 'cctsdemo ', LAST_NAME: 'user',
-                PASSWORD: 'yDq1c1nU4E7almNpMZNexg==',EMAIL_ID: 'cctsdemo1@nci.nih.gov', UPDATE_DATE: '2007-01-27'
+                PASSWORD: 'yDq1c1nU4E7almNpMZNexg==',EMAIL_ID: 'cctsdemo1@nci.nih.gov', UPDATE_DATE: '27-JAN-2007'
 
 			],
 			primaryKey: false
