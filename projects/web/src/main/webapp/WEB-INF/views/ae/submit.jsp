@@ -100,7 +100,7 @@
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
-    			<c:forEach items="${command.aeReport.submitableReports}" varStatus="status" var="report">
+    			<c:forEach items="${command.aeReport.nonWithdrawnReports}" varStatus="status" var="report">
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.name}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
