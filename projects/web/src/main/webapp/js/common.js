@@ -184,11 +184,11 @@ Object.extend(ListEditor.prototype, {
             
         }
         if (this.options.minimizeable) {
-        	var minMaxControl = Builder.node("a", { 'class': 'list-control min-max-control', 'title': 'MinimizeMaximize', 'href': '#' });
+        	var minMaxControl = Builder.node("a", { 'class': 'list-control min-max-control', 'title': 'Show-Hide Section', 'href': '#' });
         	if(itemDiv.hasClassName('minimized')) {
-        		minMaxControl.innerHTML = '<img border="0" alt="expand" src="/caaers/images/b-plus.gif" />';
+        		minMaxControl.innerHTML = '<img border="0" alt="Show Section" src="/caaers/images/b-plus.gif" />';
         	}else{
-        		minMaxControl.innerHTML = '<img border="0" alt="expand" src="/caaers/images/b-minus.gif" />'; 
+        		minMaxControl.innerHTML = '<img border="0" alt="Hide Section" src="/caaers/images/b-minus.gif" />'; 
         	}
         	// set directly to avoid escaping
             Event.observe(minMaxControl, "click", this.minMax.bindAsEventListener(this))
