@@ -571,7 +571,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
      * @return
      */
     @Transient
-    public List<Report> getSubmitableReports(){
+    public List<Report> getNonWithdrawnReports(){
     	List<Report> reports = getReports();
     	if(reports.isEmpty()) return reports;
     	List<Report> submitableReports = new ArrayList<Report>();
