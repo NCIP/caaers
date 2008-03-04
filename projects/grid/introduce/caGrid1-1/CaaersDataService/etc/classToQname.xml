@@ -22,8 +22,7 @@
  <ns21:mapping className="gov.nih.nci.cabig.caaers.domain.Study" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns21:classToQname" xmlns:ns21="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns22:mapping className="gov.nih.nci.cabig.caaers.domain.Participant" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns22:classToQname" xmlns:ns22="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns23:mapping className="gov.nih.nci.cabig.caaers.domain.AdverseEvent" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns23:classToQname" xmlns:ns23="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns24:mapping className="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns24:classToQname" xmlns:ns24="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
- <ns25:mapping className="gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns25:classToQname" xmlns:ns25="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns24:mapping className="gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns24:classToQname" xmlns:ns24="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  
 
 </ns1:ClassMappings>
