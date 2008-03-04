@@ -11,15 +11,18 @@ import java.util.List;
 
 /**
  * This class represents the LabCategory domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 public class LabCategory extends AbstractImmutableDomainObject {
     private String name;
+
     private List<LabTerm> terms;
+
     private LabVersion labVersion;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getName() {
         return name;
@@ -40,7 +43,8 @@ public class LabCategory extends AbstractImmutableDomainObject {
     }
 
     @OneToMany(mappedBy = "category")
-    @OrderBy // by ID for consistency
+    @OrderBy
+    // by ID for consistency
     public List<LabTerm> getTerms() {
         return terms;
     }

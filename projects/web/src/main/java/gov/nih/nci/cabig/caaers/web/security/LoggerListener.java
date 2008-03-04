@@ -23,33 +23,39 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.util.ClassUtils;
 
-
 /**
- * Outputs authentication-related application events to Commons Logging.<P>All authentication events are logged at
- * the warning level.</p>
- *
+ * Outputs authentication-related application events to Commons Logging.
+ * <P>
+ * All authentication events are logged at the warning level.
+ * </p>
+ * 
  * @author Ben Alex
  * @version $Id: LoggerListener.java 1496 2006-05-23 13:38:33Z benalex $
  */
 public class LoggerListener implements ApplicationListener {
-    //~ Static fields/initializers =====================================================================================
+    // ~ Static fields/initializers
+    // =====================================================================================
 
     private static final Log logger = LogFactory.getLog(LoggerListener.class);
 
-    //~ Methods ========================================================================================================
+    // ~ Methods
+    // ========================================================================================================
 
     public void onApplicationEvent(ApplicationEvent event) {
         if (event instanceof AbstractAuthenticationEvent) {
             AbstractAuthenticationEvent authEvent = (AbstractAuthenticationEvent) event;
 
             if (logger.isWarnEnabled()) {
-                String message = "Authentication event " + ClassUtils.getShortName(authEvent.getClass()) + ": "
-                    + authEvent.getAuthentication().getName() + "; details: "
-                    + authEvent.getAuthentication().getDetails();
+                String message = "Authentication event "
+                                + ClassUtils.getShortName(authEvent.getClass()) + ": "
+                                + authEvent.getAuthentication().getName() + "; details: "
+                                + authEvent.getAuthentication().getDetails();
 
                 if (event instanceof AbstractAuthenticationFailureEvent) {
-                    message = message + "; exception: "
-                        + ((AbstractAuthenticationFailureEvent) event).getException().getMessage();
+                    message = message
+                                    + "; exception: "
+                                    + ((AbstractAuthenticationFailureEvent) event).getException()
+                                                    .getMessage();
                 }
 
                 logger.warn(message);

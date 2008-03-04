@@ -42,27 +42,31 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdverseEventReportDao> {
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
-    private StudyParticipantAssignmentDao assignmentDao
-        = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
-    private AnatomicSiteDao anatomicSiteDao
-    = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
-    private InterventionSiteDao interventionSiteDao
-        = (InterventionSiteDao) getApplicationContext().getBean("interventionSiteDao");
-    private ReportDefinitionDao reportDefinitionDao
-        = (ReportDefinitionDao) getApplicationContext().getBean("reportDefinitionDao");
+
+    private StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext()
+                    .getBean("studyParticipantAssignmentDao");
+
+    private AnatomicSiteDao anatomicSiteDao = (AnatomicSiteDao) getApplicationContext().getBean(
+                    "anatomicSiteDao");
+
+    private InterventionSiteDao interventionSiteDao = (InterventionSiteDao) getApplicationContext()
+                    .getBean("interventionSiteDao");
+
+    private ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao) getApplicationContext()
+                    .getBean("reportDefinitionDao");
 
     public void testGet() throws Exception {
         ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
         assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
         assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
-        CoreTestCase.assertDayOfDate("Wrong created at (date)", 2004, Calendar.SEPTEMBER, 4,
-            loaded.getCreatedAt());
-        CoreTestCase.assertTimeOfDate("Wrong created at (time)", 13, 15, 30, 0,
-            loaded.getCreatedAt());
+        CoreTestCase.assertDayOfDate("Wrong created at (date)", 2004, Calendar.SEPTEMBER, 4, loaded
+                        .getCreatedAt());
+        CoreTestCase.assertTimeOfDate("Wrong created at (time)", 13, 15, 30, 0, loaded
+                        .getCreatedAt());
     }
 
     public void testGetLabs() throws Exception {
@@ -80,20 +84,21 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertLabValue("Wrong nadir", "3.54", 2007, Calendar.MARCH, 19, l1.getRecovery());
     }
 
-    private static void assertLabValue(
-        String message, String expectedValue, int expectedYear, int expectedMonth, int expectedDay,
-        LabValue actual
-    ) {
-        assertDayOfDate(prependMessage(message) + "wrong date",
-            expectedYear, expectedMonth, expectedDay, actual.getDate());
+    private static void assertLabValue(String message, String expectedValue, int expectedYear,
+                    int expectedMonth, int expectedDay, LabValue actual) {
+        assertDayOfDate(prependMessage(message) + "wrong date", expectedYear, expectedMonth,
+                        expectedDay, actual.getDate());
         assertEquals(prependMessage(message) + "wrong value", expectedValue, actual.getValue());
     }
 
     public void testGetConcomitantMedications() throws Exception {
         ExpeditedAdverseEventReport loaded = getDao().getById(-1);
-        assertEquals("Wrong number of concomitant meds", 2, loaded.getConcomitantMedications().size());
-        assertEquals("Wrong con med 0", -31, (int) loaded.getConcomitantMedications().get(0).getId());
-        assertEquals("Wrong con med 1", -30, (int) loaded.getConcomitantMedications().get(1).getId());
+        assertEquals("Wrong number of concomitant meds", 2, loaded.getConcomitantMedications()
+                        .size());
+        assertEquals("Wrong con med 0", -31, (int) loaded.getConcomitantMedications().get(0)
+                        .getId());
+        assertEquals("Wrong con med 1", -30, (int) loaded.getConcomitantMedications().get(1)
+                        .getId());
 
         ConcomitantMedication cm1 = loaded.getConcomitantMedications().get(1);
         assertSame("Wrong report", loaded, cm1.getReport());
@@ -106,14 +111,18 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
         TreatmentInformation actual = loaded.getTreatmentInformation();
         assertEquals("Wrong treatment information", -10, (int) actual.getId());
-        assertDayOfDate("Wrong first course date", 2005, Calendar.JUNE, 4, actual.getFirstCourseDate());
-        assertDayOfDate("Wrong adverse event course date", 2006, Calendar.JULY, 9, actual.getAdverseEventCourse().getDate());
-        assertEquals("Wrong adverse event course number", 8, (int) actual.getAdverseEventCourse().getNumber());
+        assertDayOfDate("Wrong first course date", 2005, Calendar.JUNE, 4, actual
+                        .getFirstCourseDate());
+        assertDayOfDate("Wrong adverse event course date", 2006, Calendar.JULY, 9, actual
+                        .getAdverseEventCourse().getDate());
+        assertEquals("Wrong adverse event course number", 8, (int) actual.getAdverseEventCourse()
+                        .getNumber());
 
         assertEquals("Wrong number of course agents", 2, actual.getCourseAgents().size());
         assertEquals("Wrong course agent 0", -19, (int) actual.getCourseAgents().get(0).getId());
         assertNotNull("Worng association to TreatmentAssignment", actual.getTreatmentAssignment());
-        assertEquals("Wrong treatmentAssignment code", "TAC010" ,actual.getTreatmentAssignment().getCode());
+        assertEquals("Wrong treatmentAssignment code", "TAC010", actual.getTreatmentAssignment()
+                        .getCode());
 
         CourseAgent agent1 = actual.getCourseAgents().get(1);
         assertEquals("Wrong course agent 1", -20, (int) agent1.getId());
@@ -125,12 +134,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong dose route", "aural", agent1.getDose().getRoute());
         assertEquals("Wrong duration", "8 times every third hour", agent1.getDurationAndSchedule());
 
-        assertEquals("Wrong modified dose amount", new BigDecimal("10"), agent1.getModifiedDose().getAmount());
+        assertEquals("Wrong modified dose amount", new BigDecimal("10"), agent1.getModifiedDose()
+                        .getAmount());
         assertEquals("Wrong modified dose units", "mg", agent1.getModifiedDose().getUnits());
         assertEquals("Wrong modified dose route", "aural", agent1.getModifiedDose().getRoute());
 
-        assertEquals("Wrong total dose", new BigDecimal("7"), agent1.getTotalDoseAdministeredThisCourse());
-        assertDayOfDate("Wrong last administered date", 2006, Calendar.JULY, 10, agent1.getLastAdministeredDate());
+        assertEquals("Wrong total dose", new BigDecimal("7"), agent1
+                        .getTotalDoseAdministeredThisCourse());
+        assertDayOfDate("Wrong last administered date", 2006, Calendar.JULY, 10, agent1
+                        .getLastAdministeredDate());
     }
 
     public void testGetOtherCauses() throws Exception {
@@ -141,14 +153,14 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong cause 1", -80, (int) loaded.getOtherCauses().get(1).getId());
         assertEquals("Wrong cause 2", -82, (int) loaded.getOtherCauses().get(2).getId());
 
-        assertEquals("Wrong text for cause 1", "Crossed against light",
-            loaded.getOtherCauses().get(1).getText());
+        assertEquals("Wrong text for cause 1", "Crossed against light", loaded.getOtherCauses()
+                        .get(1).getText());
     }
 
     public void testGetResponseDescription() throws Exception {
         AdverseEventResponseDescription actual = getDao().getById(-1).getResponseDescription();
-        assertEquals("Wrong present status", PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE,
-            actual.getPresentStatus());
+        assertEquals("Wrong present status", PostAdverseEventStatus.RECOVERED_WITH_SEQUELAE, actual
+                        .getPresentStatus());
         assertEquals("Wrong event description", "It was real bad", actual.getEventDescription());
         assertEquals("Wrong retreated flag", Boolean.FALSE, actual.getRetreated());
         assertDayOfDate("Wrong date removed", 2012, Calendar.MARCH, 4, actual.getRecoveryDate());
@@ -163,9 +175,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         Report actualReport1 = actual.get(1);
         assertNotNull(actualReport1);
         assertEquals("Wrong report 1", -41, (int) actualReport1.getId());
-        assertEquals("Wrong def for report 1", -30,
-            (int) actualReport1.getReportDefinition().getId());
-        assertDayOfDate("Wrong due date for report 1", 2007, Calendar.MAY, 5, actualReport1.getDueOn());
+        assertEquals("Wrong def for report 1", -30, (int) actualReport1.getReportDefinition()
+                        .getId());
+        assertDayOfDate("Wrong due date for report 1", 2007, Calendar.MAY, 5, actualReport1
+                        .getDueOn());
     }
 
     public void testGetReporter() throws Exception {
@@ -190,11 +203,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         DiseaseHistory actual = getDao().getById(-1).getDiseaseHistory();
         assertNotNull("No disease history", actual);
         assertEquals("Wrong history", -53, (int) actual.getId());
-        assertEquals("Wrong primary disease site", -1, (int) actual.getCodedPrimaryDiseaseSite().getId());
+        assertEquals("Wrong primary disease site", -1, (int) actual.getCodedPrimaryDiseaseSite()
+                        .getId());
         assertEquals("Wrong disease from study", -4, (int) actual.getMeddraStudyDisease().getId());
-        assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual.getDiagnosisDate());
-        assertEquals("Wrong number of metastatic disease sites", 1, actual.getMetastaticDiseaseSites().size());
-        assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites().get(0).getId());
+        assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual
+                        .getDiagnosisDate());
+        assertEquals("Wrong number of metastatic disease sites", 1, actual
+                        .getMetastaticDiseaseSites().size());
+        assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites()
+                        .get(0).getId());
     }
 
     public void testGetParticipantHistory() throws Exception {
@@ -217,7 +234,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
                 event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
-                event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000));
+                event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
+                                .getTime() + 600000));
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
@@ -239,9 +257,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 AdverseEvent loadedEvent0 = loaded.getAdverseEvents().get(0);
                 assertNotNull("Cascaded AE not found", loadedEvent0);
                 assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
-                assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm().getCtcTerm().getId());
+                assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm()
+                                .getCtcTerm().getId());
                 assertNotNull("No report", loadedEvent0.getReport());
-                assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION, loadedEvent0.getHospitalization());
+                assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION,
+                                loadedEvent0.getHospitalization());
                 assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
                 assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
             }
@@ -254,10 +274,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 ConcomitantMedication conMed = report.getConcomitantMedications().get(0);
                 conMed.setAgentName("agentName");
                 AdverseEvent ae0 = report.getAdverseEvents().get(0);
-                report.getAdverseEvents().get(0).getConcomitantMedicationAttributions()
-                    .add(new ConcomitantMedicationAttribution());
-                ConcomitantMedicationAttribution conMedAttrib
-                    = ae0.getConcomitantMedicationAttributions().get(0);
+                report.getAdverseEvents().get(0).getConcomitantMedicationAttributions().add(
+                                new ConcomitantMedicationAttribution());
+                ConcomitantMedicationAttribution conMedAttrib = ae0
+                                .getConcomitantMedicationAttributions().get(0);
                 conMedAttrib.setCause(conMed);
                 conMedAttrib.setAttribution(Attribution.PROBABLE);
             }
@@ -267,11 +287,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
                 assertEquals(1, loaded.getConcomitantMedications().size());
 
-                List<ConcomitantMedicationAttribution> attribs
-                    = loaded.getAdverseEvents().get(0).getConcomitantMedicationAttributions();
+                List<ConcomitantMedicationAttribution> attribs = loaded.getAdverseEvents().get(0)
+                                .getConcomitantMedicationAttributions();
                 assertEquals(1, attribs.size());
-                assertEquals("Wrong number of con med attribs", "agentName",
-                     attribs.get(0).getCause().getAgentName());
+                assertEquals("Wrong number of con med attribs", "agentName", attribs.get(0)
+                                .getCause().getAgentName());
             }
         });
     }
@@ -285,19 +305,19 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 ti.setFirstCourseDate(DateTools.createDate(2005, Calendar.JULY, 30));
                 ti.getCourseAgents().get(0).setAdministrationDelay(new BigDecimal(480));
                 ti.getCourseAgents().get(0).getDose().setAmount(new BigDecimal("45.2"));
-                //TODO: load the treatmentAssignment and add it, before saving.
+                // TODO: load the treatmentAssignment and add it, before saving.
                 report.setTreatmentInformation(ti);
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 TreatmentInformation ti = loaded.getTreatmentInformation();
                 assertNotNull("Should have treatment info", ti);
-                assertDayOfDate("Wrong first course date", 2005, Calendar.JULY, 30,
-                    ti.getFirstCourseDate());
-                assertEquals("Wrong AE course number", 4,
-                    (int) ti.getAdverseEventCourse().getNumber());
-                assertDayOfDate("Wrong AE course date", 2006, Calendar.MAY, 4,
-                    ti.getAdverseEventCourse().getDate());
+                assertDayOfDate("Wrong first course date", 2005, Calendar.JULY, 30, ti
+                                .getFirstCourseDate());
+                assertEquals("Wrong AE course number", 4, (int) ti.getAdverseEventCourse()
+                                .getNumber());
+                assertDayOfDate("Wrong AE course date", 2006, Calendar.MAY, 4, ti
+                                .getAdverseEventCourse().getDate());
 
                 assertEquals("Wrong number of course agents", 1, ti.getCourseAgents().size());
                 CourseAgent ca = ti.getCourseAgents().get(0);
@@ -330,7 +350,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(2, loaded.getPhysician().getContactMechanisms().size());
-                assertEquals("312-333-2100", loaded.getPhysician().getContactMechanisms().get("phone"));
+                assertEquals("312-333-2100", loaded.getPhysician().getContactMechanisms().get(
+                                "phone"));
             }
         });
     }
@@ -340,14 +361,16 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             ExpeditedAdverseEventReport report = getDao().getById(-1);
             assertEquals(2, report.getReporter().getContactMechanisms().size());
             report.getReporter().getContactMechanisms().remove("e-mail");
-            assertEquals("Not removed from memory copy", 1, report.getReporter().getContactMechanisms().size());
+            assertEquals("Not removed from memory copy", 1, report.getReporter()
+                            .getContactMechanisms().size());
             getDao().save(report);
         }
 
         interruptSession();
 
         ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
-        assertEquals("Removal not persisted", 1, reloaded.getReporter().getContactMechanisms().size());
+        assertEquals("Removal not persisted", 1, reloaded.getReporter().getContactMechanisms()
+                        .size());
     }
 
     public void testUpdateContactMechanism() throws Exception {
@@ -361,10 +384,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         interruptSession();
 
         ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
-        assertEquals("Wrong number of mechanisms after reload", 2,
-            reloaded.getReporter().getContactMechanisms().size());
-        assertEquals("Change not persisted", "clipper@yankee.com",
-            reloaded.getReporter().getContactMechanisms().get("e-mail"));
+        assertEquals("Wrong number of mechanisms after reload", 2, reloaded.getReporter()
+                        .getContactMechanisms().size());
+        assertEquals("Change not persisted", "clipper@yankee.com", reloaded.getReporter()
+                        .getContactMechanisms().get("e-mail"));
     }
 
     public void testSaveNewAdditionalInformation() throws Exception {
@@ -382,7 +405,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewMedicalDevice() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-            	report.getMedicalDevices().get(0).setBrandName("IBM");
+                report.getMedicalDevices().get(0).setBrandName("IBM");
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
@@ -390,7 +413,6 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             }
         });
     }
-    
 
     public void testSaveNewRadiationIntervention() throws Exception {
         doSaveTest(new SaveTester() {
@@ -407,11 +429,13 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveNewSurgeryIntervention() throws Exception {
         doSaveTest(new SaveTester() {
             public void setupReport(ExpeditedAdverseEventReport report) {
-                report.getSurgeryInterventions().get(0).setInterventionSite(interventionSiteDao.getById(-33));
+                report.getSurgeryInterventions().get(0).setInterventionSite(
+                                interventionSiteDao.getById(-33));
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0).getInterventionSite().getId());
+                assertEquals(-33, (int) loaded.getSurgeryInterventions().get(0)
+                                .getInterventionSite().getId());
             }
         });
     }
@@ -445,8 +469,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveSavesReporterWhenSavable() throws Exception {
         doSaveTest(new SaveTester() {
             private static final String FIRST_NAME = "Joe";
+
             private static final String LAST_NAME = "Arimathea";
+
             private static final String ADDRESS = "joe@arimatheaonline.net";
+
             private static final String PHONE = "312-HY-GRAIL";
 
             public void setupReport(ExpeditedAdverseEventReport report) {
@@ -459,8 +486,10 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(FIRST_NAME, loaded.getReporter().getFirstName());
                 assertEquals(LAST_NAME, loaded.getReporter().getLastName());
-                assertEquals(ADDRESS, loaded.getReporter().getContactMechanisms().get(ReportPerson.EMAIL));
-                assertEquals(PHONE, loaded.getReporter().getContactMechanisms().get(ReportPerson.PHONE));
+                assertEquals(ADDRESS, loaded.getReporter().getContactMechanisms().get(
+                                ReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getReporter().getContactMechanisms().get(
+                                ReportPerson.PHONE));
             }
         });
     }
@@ -468,8 +497,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     public void testSaveSavesPhysicianWhenSavable() throws Exception {
         doSaveTest(new SaveTester() {
             private static final String FIRST_NAME = "Henry";
+
             private static final String LAST_NAME = "Jones";
+
             private static final String ADDRESS = "jonessr@indianaonline.net";
+
             private static final String PHONE = "773-LOST-BOK";
 
             public void setupReport(ExpeditedAdverseEventReport report) {
@@ -482,30 +514,32 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
                 assertEquals(FIRST_NAME, loaded.getPhysician().getFirstName());
                 assertEquals(LAST_NAME, loaded.getPhysician().getLastName());
-                assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(ReportPerson.EMAIL));
-                assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(ReportPerson.PHONE));
+                assertEquals(ADDRESS, loaded.getPhysician().getContactMechanisms().get(
+                                ReportPerson.EMAIL));
+                assertEquals(PHONE, loaded.getPhysician().getContactMechanisms().get(
+                                ReportPerson.PHONE));
             }
         });
     }
 
-//    public void testSaveSavesSubmittableReports() throws Exception {
-//        doSaveTest(new SaveTester() {
-//            public void setupReport(ExpeditedAdverseEventReport report) {
-//                Report submittable = new Report();
-//                submittable.setDueOn(new Date());
-//                submittable.setCreatedOn(new Date());
-//              //  submittable.setName("What is this field for?");
-//                submittable.setReportDefinition(reportDefinitionDao.getById(-30));
-//                report.addReport(submittable);
-//            }
-//
-//            public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-//                assertEquals("Report not saved", 1, loaded.getReports().size());
-//                assertEquals("Report has wrong definition",
-//                    -30, (int) loaded.getReports().get(0).getReportDefinition().getId());
-//            }
-//        });
-//    }
+    // public void testSaveSavesSubmittableReports() throws Exception {
+    // doSaveTest(new SaveTester() {
+    // public void setupReport(ExpeditedAdverseEventReport report) {
+    // Report submittable = new Report();
+    // submittable.setDueOn(new Date());
+    // submittable.setCreatedOn(new Date());
+    // // submittable.setName("What is this field for?");
+    // submittable.setReportDefinition(reportDefinitionDao.getById(-30));
+    // report.addReport(submittable);
+    // }
+    //
+    // public void assertCorrect(ExpeditedAdverseEventReport loaded) {
+    // assertEquals("Report not saved", 1, loaded.getReports().size());
+    // assertEquals("Report has wrong definition",
+    // -30, (int) loaded.getReports().get(0).getReportDefinition().getId());
+    // }
+    // });
+    // }
 
     public void testDeleteOrphanAdverseEvent() throws Exception {
         {
@@ -521,14 +555,17 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
         ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
         assertEquals("Wrong number of AEs when reloaded", 1, reloaded.getAdverseEvents().size());
-        assertEquals("Wrong AE when reloaded", -11, (int) reloaded.getAdverseEvents().get(0).getId());
+        assertEquals("Wrong AE when reloaded", -11, (int) reloaded.getAdverseEvents().get(0)
+                        .getId());
     }
 
     public void testDeleteMetastaticDiseaseSiteDoesNotDeleteAnatomicSite() throws Exception {
         {
             ExpeditedAdverseEventReport loaded = getDao().getById(-1);
-            assertEquals("Data not as initially expected", 1, loaded.getDiseaseHistory().getMetastaticDiseaseSites().size());
-            assertEquals("Data not as initially expected", -33, (int) loaded.getDiseaseHistory().getMetastaticDiseaseSites().get(0).getCodedSite().getId());
+            assertEquals("Data not as initially expected", 1, loaded.getDiseaseHistory()
+                            .getMetastaticDiseaseSites().size());
+            assertEquals("Data not as initially expected", -33, (int) loaded.getDiseaseHistory()
+                            .getMetastaticDiseaseSites().get(0).getCodedSite().getId());
 
             loaded.getDiseaseHistory().getMetastaticDiseaseSites().remove(0);
             getDao().save(loaded);
@@ -537,34 +574,33 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         interruptSession();
 
         ExpeditedAdverseEventReport reloaded = getDao().getById(-1);
-        assertEquals("Metastatic site not removed", 0, reloaded.getDiseaseHistory().getMetastaticDiseaseSites().size());
+        assertEquals("Metastatic site not removed", 0, reloaded.getDiseaseHistory()
+                        .getMetastaticDiseaseSites().size());
         assertNotNull("Anatomic site deleted", anatomicSiteDao.getById(-33));
     }
 
     public void testSearchExpeditedReportByCtcTermPartial() throws Exception {
-    	List<ExpeditedAdverseEventReport> results;
-    	Map<String,String> m = new HashMap<String,String>();
-    	m.put("ctcTerm", "Auditory/Ear");
-    	results = getDao().searchExpeditedReports(m);
-    	assertEquals("Wrong number of results", 1, results.size());
+        List<ExpeditedAdverseEventReport> results;
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("ctcTerm", "Auditory/Ear");
+        results = getDao().searchExpeditedReports(m);
+        assertEquals("Wrong number of results", 1, results.size());
     }
 
-
-
     public void testSearchExpeditedReportByParticipantFirstName() throws Exception {
-    	List<ExpeditedAdverseEventReport> results;
-    	Map<String,String> m = new HashMap<String,String>();
-    	m.put("participantFirstName", "Michael");
-    	results = getDao().searchExpeditedReports(m);
-    	assertEquals("Wrong number of results", 1, results.size());
+        List<ExpeditedAdverseEventReport> results;
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("participantFirstName", "Michael");
+        results = getDao().searchExpeditedReports(m);
+        assertEquals("Wrong number of results", 1, results.size());
     }
 
     public void testSearchExpeditedReportByStudyShortTitle() throws Exception {
-    	List<ExpeditedAdverseEventReport> results;
-    	Map<String,String> m = new HashMap<String,String>();
-    	m.put("studyShortTitle", "That");
-    	results = getDao().searchExpeditedReports(m);
-    	assertEquals("Wrong number of results", 1, results.size());
+        List<ExpeditedAdverseEventReport> results;
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("studyShortTitle", "That");
+        results = getDao().searchExpeditedReports(m);
+        assertEquals("Wrong number of results", 1, results.size());
     }
 
     private void doSaveTest(SaveTester tester) {
@@ -591,12 +627,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     private ExpeditedAdverseEventReport createMinimalAeReport() {
         ExpeditedAdverseEventReport report = Fixtures.createSavableExpeditedReport();
         report.setAssignment(assignmentDao.getById(-14));
-        report.getAdverseEvents().get(0).setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(report.getAdverseEvents().get(0), ctcTermDao.getById(3012)));
+        report.getAdverseEvents().get(0).setAdverseEventCtcTerm(
+                        Fixtures.createAdverseEventCtcTerm(report.getAdverseEvents().get(0),
+                                        ctcTermDao.getById(3012)));
         return report;
     }
 
     private static interface SaveTester {
         void setupReport(ExpeditedAdverseEventReport report);
+
         void assertCorrect(ExpeditedAdverseEventReport loaded);
     }
 }

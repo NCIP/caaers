@@ -25,15 +25,17 @@ public abstract class PersonContact extends Person {
 
     /** {@link #getContactMechanisms} key for the e-mail address */
     public static final String EMAIL = "e-mail";
+
     /** {@link #getContactMechanisms} key for the fax number */
     public static final String FAX = "fax";
+
     /** {@link #getContactMechanisms} key for the phone number */
     public static final String PHONE = "phone";
 
-    public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS
-        = Arrays.asList(EMAIL, PHONE, FAX); 
+    public static final List<String> DEFAULT_CONTACT_MECHANISM_KEYS = Arrays.asList(EMAIL, PHONE,
+                    FAX);
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public boolean isTransient() { // TODO: this should go in one of the base classes
@@ -43,19 +45,15 @@ public abstract class PersonContact extends Person {
     @Transient
     public boolean isSavable() {
         return getFirstName() != null && getLastName() != null
-            && getContactMechanisms().get(EMAIL) != null;
+                        && getContactMechanisms().get(EMAIL) != null;
     }
 
-    ////// BOUND PROPERTIES
-
+    // //// BOUND PROPERTIES
 
     @CollectionOfElements
-    @JoinTable(
-        name="contact_mechanisms",
-        joinColumns = @JoinColumn(name="person_id")
-    )
-    @MapKey(columns=@Column(name="type"))
-    @Column(name="value")
+    @JoinTable(name = "contact_mechanisms", joinColumns = @JoinColumn(name = "person_id"))
+    @MapKey(columns = @Column(name = "type"))
+    @Column(name = "value")
     public Map<String, String> getContactMechanisms() {
         return contactMechanisms;
     }

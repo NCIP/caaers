@@ -12,6 +12,8 @@ import java.util.List;
  * @author Ram Chilukuri
  */
 public interface AdverseEventService {
-    public static String DEFAULT_SITE_NAME = "Default Site"; 
-    public String createCandidateAdverseEvent(Study study, Participant participant, Organization organization, AdverseEvent ae, List<Lab> labs);
+    public static String DEFAULT_SITE_NAME = "Default Site";
+
+    public String createCandidateAdverseEvent(Study study, Participant participant,
+                    Organization organization, AdverseEvent ae, List<Lab> labs);
 }

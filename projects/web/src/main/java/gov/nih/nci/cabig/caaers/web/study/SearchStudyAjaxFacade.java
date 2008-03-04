@@ -21,10 +21,9 @@ import org.extremecomponents.table.core.TableModelImpl;
 
 public class SearchStudyAjaxFacade {
 
-	private StudyService studyService;    
+    private StudyService studyService;
 
-    public Object build(TableModel model, Collection studies) throws Exception 
-    {
+    public Object build(TableModel model, Collection studies) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("assembler");
         table.setForm("assembler");
@@ -38,95 +37,90 @@ public class SearchStudyAjaxFacade {
         table.setSortable(false);
         table.setAutoIncludeParameters(false);
         model.addTable(table);
-        
+
         Row row = model.getRowInstance();
-        row.setHighlightRow(Boolean.TRUE);        
+        row.setHighlightRow(Boolean.TRUE);
         model.addRow(row);
-          
+
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setProperty("primaryIdentifier");
         columnPrimaryIdentifier.setTitle("Primary ID");
-        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");        
+        columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnPrimaryIdentifier);
-        
-        Column columnShortTitle = model.getColumnInstance(); 
+
+        Column columnShortTitle = model.getColumnInstance();
         columnShortTitle.setProperty("shortTitle");
         columnShortTitle.setCell("gov.nih.nci.cabig.caaers.web.study.StudyLinkDisplayCell");
         model.addColumn(columnShortTitle);
-        
+
         Column columnSponsorCode = model.getColumnInstance();
         columnSponsorCode.setTitle("Funding Sponsor");
         columnSponsorCode.setProperty("primarySponsorCode");
         model.addColumn(columnSponsorCode);
-        
+
         Column columnPhaseCode = model.getColumnInstance();
         columnPhaseCode.setTitle("Phase");
         columnPhaseCode.setProperty("phaseCode");
         model.addColumn(columnPhaseCode);
-        
+
         Column columnStatusCode = model.getColumnInstance();
         columnStatusCode.setProperty("status");
         model.addColumn(columnStatusCode);
-                        
+
         return model.assemble();
     }
-            	
-    public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) 
-    {
-    	Study study = new Study();
-    	StringTokenizer typeToken = new StringTokenizer(type, ",");
-    	StringTokenizer textToken = new StringTokenizer(text, ",");
-    	String sType = null;
-    	String sText = null;
-    	while(typeToken.hasMoreTokens() && textToken.hasMoreTokens())
-    	{
-    		sType = typeToken.nextToken();
-    		sText = textToken.nextToken();
-    		
-    		if ("st".equals(sType))
-    			study.setShortTitle(sText);
-    		else if ("idtf".equals(sType))
-    		{
-    			Identifier id = new Identifier();
-        		id.setValue(sText);
-        		study.addIdentifier(id);
-    		}
-    	}
-    	
-        if(parameterMap != null)
-        {
-        	String a = parameterMap.get("assembler_p").toString();
+
+    public String getTable(Map parameterMap, String type, String text, HttpServletRequest request) {
+        Study study = new Study();
+        StringTokenizer typeToken = new StringTokenizer(type, ",");
+        StringTokenizer textToken = new StringTokenizer(text, ",");
+        String sType = null;
+        String sText = null;
+        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+            sType = typeToken.nextToken();
+            sText = textToken.nextToken();
+
+            if ("st".equals(sType)) study.setShortTitle(sText);
+            else if ("idtf".equals(sType)) {
+                Identifier id = new Identifier();
+                id.setValue(sText);
+                study.addIdentifier(id);
+            }
         }
-    	
-		List<Study> studies = null;
-		try {
-			studies = studyService.search(study);
-		} catch (Exception e1) {	
-			e1.printStackTrace();
-		}
-		
+
+        if (parameterMap != null) {
+            String a = parameterMap.get("assembler_p").toString();
+        }
+
+        List<Study> studies = null;
+        try {
+            studies = studyService.search(study);
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
+
         Context context = null;
         if (parameterMap == null) {
-          context = new HttpServletRequestContext(request);
+            context = new HttpServletRequestContext(request);
         } else {
-          context = new HttpServletRequestContext(request, parameterMap);
+            context = new HttpServletRequestContext(request, parameterMap);
         }
 
         TableModel model = new TableModelImpl(context);
         try {
-          return build(model, studies).toString();
+            return build(model, studies).toString();
         } catch (Exception e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
 
         return "";
-     }
-     
-	public StudyService getStudyService() {
-		return studyService;
-	}
+    }
 
-	public void setStudyService(StudyService studyService) {
-		this.studyService = studyService;
-	} 	
+    public StudyService getStudyService() {
+        return studyService;
+    }
+
+    public void setStudyService(StudyService studyService) {
+        this.studyService = studyService;
+    }
 }

@@ -26,134 +26,142 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
-public class CreateINDController extends SimpleFormController{
-	private InputFieldGroupMap fieldMap;
-	private InvestigationalNewDrugDao investigationalNewDrugDao;
-	private OrganizationDao organizationDao;
-	private InvestigatorDao investigatorDao;
+public class CreateINDController extends SimpleFormController {
+    private InputFieldGroupMap fieldMap;
 
-	public CreateINDController() {
+    private InvestigationalNewDrugDao investigationalNewDrugDao;
+
+    private OrganizationDao organizationDao;
+
+    private InvestigatorDao investigatorDao;
+
+    public CreateINDController() {
         setFormView("admin/ind_details");
-		setSuccessView("admin/ind_details");
-		setCommandClass(INDCommand.class);
-		fieldMap =  new InputFieldGroupMap();
-		InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
-		InputField indNumberField = InputFieldFactory.createTextField("strINDNumber","IND #", true);
+        setSuccessView("admin/ind_details");
+        setCommandClass(INDCommand.class);
+        fieldMap = new InputFieldGroupMap();
+        InputFieldGroup fieldGroup = new DefaultInputFieldGroup("main");
+        InputField indNumberField = InputFieldFactory
+                        .createTextField("strINDNumber", "IND #", true);
 
-		Map<Object, Object> holderTypeOptions = new LinkedHashMap<Object, Object>();
-		holderTypeOptions.put("", "Select a value");
-		holderTypeOptions.put("org", "Organization");
-		holderTypeOptions.put("inv", "Investigator");
-		InputField holderTypeField = InputFieldFactory.createSelectField("holderType", "IND held by?",true, holderTypeOptions);
-		InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId", "IND Holder", true);
-		sponsorField.getAttributes().put(InputField.ENABLE_CLEAR, true);
-		//InputFieldAttributes.setDetails(sponsorField, "Enter a portion of the Sponsor name");
+        Map<Object, Object> holderTypeOptions = new LinkedHashMap<Object, Object>();
+        holderTypeOptions.put("", "Select a value");
+        holderTypeOptions.put("org", "Organization");
+        holderTypeOptions.put("inv", "Investigator");
+        InputField holderTypeField = InputFieldFactory.createSelectField("holderType",
+                        "IND held by?", true, holderTypeOptions);
+        InputField sponsorField = InputFieldFactory.createAutocompleterField("strSponsorId",
+                        "IND Holder", true);
+        sponsorField.getAttributes().put(InputField.ENABLE_CLEAR, true);
+        // InputFieldAttributes.setDetails(sponsorField, "Enter a portion of the Sponsor name");
 
         fieldGroup.getFields().add(indNumberField);
         fieldGroup.getFields().add(holderTypeField);
         fieldGroup.getFields().add(sponsorField);
         fieldMap.addInputFieldGroup(fieldGroup);
-	}
+    }
 
-	@Override
-	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder)
-		throws Exception {
-		super.initBinder(request, binder);
-		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    @Override
+    protected void initBinder(final HttpServletRequest request,
+                    final ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request, binder);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
-	}
+    }
 
-	@Override
-	protected Object formBackingObject(final HttpServletRequest request)
-			throws Exception {
-		INDCommand command = new INDCommand();
-		command.setInvestigatorDao(investigatorDao);
-		command.setOrganizationDao(organizationDao);
-		return command;
-	}
+    @Override
+    protected Object formBackingObject(final HttpServletRequest request) throws Exception {
+        INDCommand command = new INDCommand();
+        command.setInvestigatorDao(investigatorDao);
+        command.setOrganizationDao(organizationDao);
+        return command;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Map referenceData(final HttpServletRequest request, final Object command,
-		final Errors errors) throws Exception {
-		Map<Object, Object> refDataMap = new LinkedHashMap<Object,Object>() ;
-		refDataMap.put("fieldGroups", fieldMap);
+    @SuppressWarnings("unchecked")
+    @Override
+    protected Map referenceData(final HttpServletRequest request, final Object command,
+                    final Errors errors) throws Exception {
+        Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
+        refDataMap.put("fieldGroups", fieldMap);
 
-		return refDataMap;
-	}
-	/**
-	 * Validate the form,if no errors found, save the InvestigationalNewDrug object.
-	 * Then return to the success view.
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected ModelAndView onSubmit(HttpServletRequest request,
-			HttpServletResponse response, Object cmd, BindException errors)
-			throws Exception {
-		INDCommand command = (INDCommand)cmd;
-		validate(command, errors);
-		if(!errors.hasErrors()){
-			InvestigationalNewDrug iNewDrug = command.createInvestigationalNewDrug();
-			investigationalNewDrugDao.save(iNewDrug);
-			request.setAttribute("flashMessage", "Successfully saved the Investigational New Drug details");
-			command.reset();
-		}
-		Map map = this.referenceData(request, command, errors);
-		map.putAll(errors.getModel());
-		ModelAndView modelAndView= new ModelAndView(getSuccessView(), map);
-    	// needed for saving session state
-    	request.getSession().setAttribute(getFormSessionAttributeName(), command);
+        return refDataMap;
+    }
 
-		return modelAndView;
-	}
+    /**
+     * Validate the form,if no errors found, save the InvestigationalNewDrug object. Then return to
+     * the success view.
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
+                    Object cmd, BindException errors) throws Exception {
+        INDCommand command = (INDCommand) cmd;
+        validate(command, errors);
+        if (!errors.hasErrors()) {
+            InvestigationalNewDrug iNewDrug = command.createInvestigationalNewDrug();
+            investigationalNewDrugDao.save(iNewDrug);
+            request.setAttribute("flashMessage",
+                            "Successfully saved the Investigational New Drug details");
+            command.reset();
+        }
+        Map map = this.referenceData(request, command, errors);
+        map.putAll(errors.getModel());
+        ModelAndView modelAndView = new ModelAndView(getSuccessView(), map);
+        // needed for saving session state
+        request.getSession().setAttribute(getFormSessionAttributeName(), command);
 
-	public void validate(INDCommand command, BindException errors){
-		BeanWrapper commandBean = new BeanWrapperImpl(command);
-		for (InputFieldGroup fieldGroup : fieldMap.values()) {
+        return modelAndView;
+    }
+
+    public void validate(INDCommand command, BindException errors) {
+        BeanWrapper commandBean = new BeanWrapperImpl(command);
+        for (InputFieldGroup fieldGroup : fieldMap.values()) {
             for (InputField field : fieldGroup.getFields()) {
                 field.validate(commandBean, errors);
             }
         }
-		//check if the strINDNumber is a numeric value
-		if(!StringUtils.isNumeric((String)commandBean.getPropertyValue("strINDNumber"))){
-			errors.rejectValue("strINDNumber","REQUIRED" ,"IND# must be numeric");
-		}
-	}
+        // check if the strINDNumber is a numeric value
+        if (!StringUtils.isNumeric((String) commandBean.getPropertyValue("strINDNumber"))) {
+            errors.rejectValue("strINDNumber", "REQUIRED", "IND# must be numeric");
+        }
+    }
 
-	public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
-		return investigationalNewDrugDao;
-	}
-	public void setInvestigationalNewDrugDao(
-			InvestigationalNewDrugDao investigationalNewDrugDao) {
-		this.investigationalNewDrugDao = investigationalNewDrugDao;
-	}
+    public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
+        return investigationalNewDrugDao;
+    }
 
-	/**
-	 * @return the organizationDao
-	 */
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
-	}
+    public void setInvestigationalNewDrugDao(InvestigationalNewDrugDao investigationalNewDrugDao) {
+        this.investigationalNewDrugDao = investigationalNewDrugDao;
+    }
 
-	/**
-	 * @param organizationDao the organizationDao to set
-	 */
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+    /**
+     * @return the organizationDao
+     */
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
 
-	/**
-	 * @return the investigatorDao
-	 */
-	public InvestigatorDao getInvestigatorDao() {
-		return investigatorDao;
-	}
+    /**
+     * @param organizationDao
+     *                the organizationDao to set
+     */
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
 
-	/**
-	 * @param investigatorDao the investigatorDao to set
-	 */
-	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
+    /**
+     * @return the investigatorDao
+     */
+    public InvestigatorDao getInvestigatorDao() {
+        return investigatorDao;
+    }
+
+    /**
+     * @param investigatorDao
+     *                the investigatorDao to set
+     */
+    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+        this.investigatorDao = investigatorDao;
+    }
 
 }

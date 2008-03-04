@@ -14,6 +14,7 @@ public abstract class TreeNode {
     protected final Log log = LogFactory.getLog(getClass());
 
     private TreeNode parent;
+
     private DisplayNameCreator displayNameCreator;
 
     private List<TreeNode> children;
@@ -24,7 +25,8 @@ public abstract class TreeNode {
 
     public static TreeNode property(String propertyName, String displayName, TreeNode... children) {
         TreeNode f = new PropertyNode(propertyName);
-        f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(displayName));
+        f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(
+                        displayName));
         return f.add(children);
     }
 
@@ -36,7 +38,8 @@ public abstract class TreeNode {
         return list(propertyName, new DefaultListDisplayNameCreator(baseDisplayName), children);
     }
 
-    public static TreeNode list(String propertyName, DisplayNameCreator creator, TreeNode... children) {
+    public static TreeNode list(String propertyName, DisplayNameCreator creator,
+                    TreeNode... children) {
         TreeNode f = new ListPropertyNode(propertyName).add(children);
         f.setDisplayNameCreator(creator);
         return f;
@@ -46,12 +49,10 @@ public abstract class TreeNode {
         return new SectionNode(section).add(children);
     }
 
-    public static TreeNode codedOrOther(
-        String codedPropertyName, String codedDisplayName,
-        String otherPropertyName, String otherDisplayName
-    ) {
-        CodedOrOtherPropertyNode node
-            = new CodedOrOtherPropertyNode(codedPropertyName, otherPropertyName);
+    public static TreeNode codedOrOther(String codedPropertyName, String codedDisplayName,
+                    String otherPropertyName, String otherDisplayName) {
+        CodedOrOtherPropertyNode node = new CodedOrOtherPropertyNode(codedPropertyName,
+                        otherPropertyName);
         node.setCodedDisplayName(codedDisplayName);
         node.setOtherDisplayName(otherDisplayName);
         return node;
@@ -81,14 +82,14 @@ public abstract class TreeNode {
     }
 
     /**
-     * Finds the {@link TreeNode} with the given property name, relative to this node.  E.g.,
-     * if this node is "a.b" in the tree which contains "a.b.c.d.e", the following calls will succeed:
+     * Finds the {@link TreeNode} with the given property name, relative to this node. E.g., if this
+     * node is "a.b" in the tree which contains "a.b.c.d.e", the following calls will succeed:
      * <ul>
-     *   <li><code>find("c")</code></li>
-     *   <li><code>find("c.d")</code></li>
-     *   <li><code>find("c.d.e")</code></li>
+     * <li><code>find("c")</code></li>
+     * <li><code>find("c.d")</code></li>
+     * <li><code>find("c.d.e")</code></li>
      * </ul>
-     *
+     * 
      * @param desiredPropertyName
      */
     public TreeNode find(String desiredPropertyName) {
@@ -100,7 +101,7 @@ public abstract class TreeNode {
     }
 
     /**
-     * Finds the node (either this node or a child) which matches the given path.  This is different
+     * Finds the node (either this node or a child) which matches the given path. This is different
      * from {@link #find}, which only matches children.
      */
     protected abstract TreeNode matchProperty(String desiredPropertyName);
@@ -120,21 +121,21 @@ public abstract class TreeNode {
     /**
      * The qualified name will be displayName[of parent]~displayName[of this node]
      */
-    public String getQualifiedDisplayName(){
+    public String getQualifiedDisplayName() {
         String name = (parent != null) ? parent.getQualifiedDisplayName() : "";
         String displayName = getDisplayName();
-        if (displayName != null && displayName.length() > 0)
-            name += ( (name.length() > 0) ? "~" + displayName : displayName);
+        if (displayName != null && displayName.length() > 0) name += ((name.length() > 0) ? "~"
+                        + displayName : displayName);
         return name;
     }
 
     /**
-     * Find the property value(s) matching this node from the given object.
-     * These may not exactly match the properties returned by a simple BeanWrapper.  In particular,
-     * this will be true for list properties (where the returned values will be values in
-     * the list, not the list itself) and for coded-or-other properties (where the return value
-     * will be either the coded value or the "other" value, whichever is set).
-     *
+     * Find the property value(s) matching this node from the given object. These may not exactly
+     * match the properties returned by a simple BeanWrapper. In particular, this will be true for
+     * list properties (where the returned values will be values in the list, not the list itself)
+     * and for coded-or-other properties (where the return value will be either the coded value or
+     * the "other" value, whichever is set).
+     * 
      * @param value
      * @return
      */
@@ -142,9 +143,11 @@ public abstract class TreeNode {
 
     public abstract String getPropertyName();
 
-    public boolean isList() { return false; }
+    public boolean isList() {
+        return false;
+    }
 
-    ///// BEAN ACCESSORS
+    // /// BEAN ACCESSORS
 
     public TreeNode getParent() {
         return parent;
@@ -166,14 +169,12 @@ public abstract class TreeNode {
         return children;
     }
 
-    ////// OBJECT METHODS
+    // //// OBJECT METHODS
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append('[').append(getPropertyName())
-            .append(", ").append(getDisplayName()).append(']')
-            .toString();
+        return new StringBuilder(getClass().getSimpleName()).append('[').append(getPropertyName())
+                        .append(", ").append(getDisplayName()).append(']').toString();
     }
 
     public boolean isAncestorOf(TreeNode node) {
@@ -188,7 +189,8 @@ public abstract class TreeNode {
     private static final class NullDisplayNameCreator implements DisplayNameCreator {
         public static final DisplayNameCreator INSTANCE = new NullDisplayNameCreator();
 
-        private NullDisplayNameCreator() { }
+        private NullDisplayNameCreator() {
+        }
 
         public String createIndexedName(int i) {
             return null;

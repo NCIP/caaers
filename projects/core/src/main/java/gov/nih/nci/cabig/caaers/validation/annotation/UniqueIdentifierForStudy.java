@@ -10,9 +10,8 @@ import static java.lang.annotation.ElementType.FIELD;
 
 @Documented
 @ValidatorClass(UniqueIdentifierForStudyValidator.class)
-@Target({METHOD, FIELD, ElementType.PARAMETER})
+@Target( { METHOD, FIELD, ElementType.PARAMETER })
 @Retention(RUNTIME)
-
 public @interface UniqueIdentifierForStudy {
     int max() default Integer.MAX_VALUE;
 

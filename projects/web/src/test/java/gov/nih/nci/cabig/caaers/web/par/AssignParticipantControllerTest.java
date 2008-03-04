@@ -17,11 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Krikor Krumlian
  */
-@CaaersUseCases({ ASSIGN_PARTICIPANT })
+@CaaersUseCases( { ASSIGN_PARTICIPANT })
 public class AssignParticipantControllerTest extends WebTestCase {
     private AssignParticipantController controller = new AssignParticipantController();
+
     private ParticipantDao participantDao;
-    private StudySiteDao   studySiteDao;
+
+    private StudySiteDao studySiteDao;
+
     private ListValues listValues;
 
     protected void setUp() throws Exception {
@@ -30,21 +33,21 @@ public class AssignParticipantControllerTest extends WebTestCase {
         controller.setListValues(new ListValues());
         controller.setParticipantDao(participantDao);
     }
-   
+
     public void testViewOnGoodSubmit() throws Exception {
         request.addParameter("firstName", "Boston");
         request.addParameter("lastName", "Scott");
         request.addParameter("gender", "Male");
         request.addParameter("dateOfBirth", "2006-12-12");
         request.setParameter("_target0", "");
-        
+
         ModelAndView mv = controller.handleRequest(request, response);
         assertEquals("par/reg_participant_search", mv.getViewName());
     }
 
-   private AssignParticipantStudyCommand postAndReturnCommand() throws Exception {
+    private AssignParticipantStudyCommand postAndReturnCommand() throws Exception {
         request.setMethod("POST");
-        participantDao.save((Participant) notNull());  
+        participantDao.save((Participant) notNull());
         expectLastCall().atLeastOnce().asStub();
 
         replayMocks();

@@ -30,20 +30,15 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 /**
- * A report sending schedule for an adverse event.
- * The RuleExecutionService, evaluates pre-defined set of rules over the attributes of an AdverseEvent,
- * and creates a Report.
- *
+ * A report sending schedule for an adverse event. The RuleExecutionService, evaluates pre-defined
+ * set of rules over the attributes of an AdverseEvent, and creates a Report.
+ * 
  * @author Biju Joseph
- *
+ * 
  */
 @Entity
 @Table(name = "REPORT_SCHEDULES")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_report_schedules_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_schedules_id") })
 public class Report extends AbstractMutableDomainObject implements Serializable {
     private boolean required;
 
@@ -54,68 +49,75 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     private List<ScheduledNotification> notifications;
 
     private Date createdOn;
+
     private Date dueOn;
+
     private Date submittedOn;
+
     private Submitter submitter;
+
     private Boolean physicianSignoff;
+
     private String assignedIdentifer;
+
     private String submissionUrl;
+
     private String submissionMessage;
 
     private ReportStatus status = ReportStatus.PENDING;
+
     private List<ReportVersion> reportVersions;
-    
+
     // TODO: This is to CC people when submitting report - Not sure if this
     // should be here or if we should create a new ReportDelivery object which in
     // turn is tied into ReportDeliveryDefinition & ReportDefinition
     private String email;
-	private List<ReportDelivery> deliveries;
 
-    ////// LOGIC
-	
-	
-	 public void addReportVersion(ReportVersion reportVersion) {
-	        if (reportVersions == null) reportVersions = new ArrayList<ReportVersion>();
-	        reportVersion.setReport(this);
-	        reportVersions.add(reportVersion);
-	    }
+    private List<ReportDelivery> deliveries;
+
+    // //// LOGIC
+
+    public void addReportVersion(ReportVersion reportVersion) {
+        if (reportVersions == null) reportVersions = new ArrayList<ReportVersion>();
+        reportVersion.setReport(this);
+        reportVersions.add(reportVersion);
+    }
 
     public void addScheduledNotification(ScheduledNotification nf) {
         if (notifications == null) notifications = new ArrayList<ScheduledNotification>();
         notifications.add(nf);
     }
 
-	public void addReportDelivery(ReportDelivery rd){
-		if(this.deliveries == null) deliveries = new ArrayList<ReportDelivery>();
-		deliveries.add(rd);
-		rd.setReport(this);
-	}
+    public void addReportDelivery(ReportDelivery rd) {
+        if (this.deliveries == null) deliveries = new ArrayList<ReportDelivery>();
+        deliveries.add(rd);
+        rd.setReport(this);
+    }
 
-	public boolean hasScheduledNotifications(){
-		return (notifications != null) &&	(!notifications.isEmpty());
-	}
+    public boolean hasScheduledNotifications() {
+        return (notifications != null) && (!notifications.isEmpty());
+    }
 
-	/**
-	 * Returns the notification having the supplied Id.
-	 */
-	public ScheduledNotification fetchScheduledNotification(Integer nfId){
-		if(notifications == null) return null;
-		for(ScheduledNotification nf : notifications){
-			if(nf.getId().equals(nfId)) return nf;
-		}
-		return null;
-	}
-	
-	@Transient
-	public ReportVersion getLastVersion(){
-		
-		return reportVersions!= null && reportVersions.size() > 0  ? 
-				reportVersions.get(reportVersions.size() -1) : 
-					 null;
-	}
+    /**
+     * Returns the notification having the supplied Id.
+     */
+    public ScheduledNotification fetchScheduledNotification(Integer nfId) {
+        if (notifications == null) return null;
+        for (ScheduledNotification nf : notifications) {
+            if (nf.getId().equals(nfId)) return nf;
+        }
+        return null;
+    }
 
-    ////// BEAN PROPERTIES
-	@Temporal(value=TemporalType.TIMESTAMP)
+    @Transient
+    public ReportVersion getLastVersion() {
+
+        return reportVersions != null && reportVersions.size() > 0 ? reportVersions
+                        .get(reportVersions.size() - 1) : null;
+    }
+
+    // //// BEAN PROPERTIES
+    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getCreatedOn() {
         return createdOn;
     }
@@ -126,7 +128,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rct_id")
-    @Cascade({ CascadeType.LOCK})
+    @Cascade( { CascadeType.LOCK })
     public ReportDefinition getReportDefinition() {
         return reportDefinition;
     }
@@ -156,7 +158,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.aeReport = aeReport;
     }
 
-    @Temporal(value=TemporalType.TIMESTAMP)
+    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getDueOn() {
         return dueOn;
     }
@@ -165,7 +167,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.dueOn = dueOn;
     }
 
-    @Temporal(value=TemporalType.TIMESTAMP)
+    @Temporal(value = TemporalType.TIMESTAMP)
     public Date getSubmittedOn() {
         return submittedOn;
     }
@@ -173,6 +175,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public void setSubmittedOn(Date submittedOn) {
         this.submittedOn = submittedOn;
     }
+
     @Transient
     public String getName() {
         return reportDefinition.getName();
@@ -196,118 +199,116 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.required = required;
     }
 
-    @OneToMany(fetch=FetchType.LAZY,mappedBy="report")
-	@Cascade(value = { CascadeType.ALL , CascadeType.DELETE_ORPHAN})
-	public List<ReportDelivery> getReportDeliveries() {
-		return deliveries;
-	}
-
-	public void setReportDeliveries(List<ReportDelivery> deliveries) {
-		this.deliveries = deliveries;
-	}
-
-	@Transient
-	public void addSubmitter(){
-		if (submitter == null) setSubmitter(new Submitter());
-	}
-	
-	@Transient
-    public Submitter getSubmitter() {
-       //if (submitter == null) setSubmitter(new Submitter());
-       return submitter;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<ReportDelivery> getReportDeliveries() {
+        return deliveries;
     }
-    
-	@Transient
+
+    public void setReportDeliveries(List<ReportDelivery> deliveries) {
+        this.deliveries = deliveries;
+    }
+
+    @Transient
+    public void addSubmitter() {
+        if (submitter == null) setSubmitter(new Submitter());
+    }
+
+    @Transient
+    public Submitter getSubmitter() {
+        // if (submitter == null) setSubmitter(new Submitter());
+        return submitter;
+    }
+
+    @Transient
     public void setSubmitter(Submitter submitter) {
         this.submitter = submitter;
     }
 
-    @Column(name="physician_signoff")
-	public Boolean getPhysicianSignoff() {
-		return physicianSignoff;
-	}
+    @Column(name = "physician_signoff")
+    public Boolean getPhysicianSignoff() {
+        return physicianSignoff;
+    }
 
-	public void setPhysicianSignoff(Boolean physicianSignoff) {
-		this.physicianSignoff = physicianSignoff;
-	}
+    public void setPhysicianSignoff(Boolean physicianSignoff) {
+        this.physicianSignoff = physicianSignoff;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Transient
-	public String[] getEmailAsArray(){
-		if (this.email == null) {
-			return null;
-		}
-		String[] emails = this.email.split(",");
-		return emails;
-	}
-	
-	 @OneToMany
-	 @JoinColumn(name="report_id", nullable=true)
-	 @IndexColumn(name="list_index")
-	 @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<ReportVersion> getReportVersions() {
-		return reportVersions;
-	}
+    @Transient
+    public String[] getEmailAsArray() {
+        if (this.email == null) {
+            return null;
+        }
+        String[] emails = this.email.split(",");
+        return emails;
+    }
 
-	public void setReportVersions(List<ReportVersion> reportVersions) {
-		this.reportVersions = reportVersions;
-	}
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = true)
+    @IndexColumn(name = "list_index")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<ReportVersion> getReportVersions() {
+        return reportVersions;
+    }
 
-    ////// OBJECT METHODS
+    public void setReportVersions(List<ReportVersion> reportVersions) {
+        this.reportVersions = reportVersions;
+    }
 
-	@Override
+    // //// OBJECT METHODS
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Report [").append("id : ").append(getId())
-            .append(", createdOn :").append(String.valueOf(createdOn))
-            .append(", submittedOn :").append(String.valueOf(submittedOn))
-            .append(", dueOn :").append(String.valueOf(dueOn));
+        sb.append("Report [").append("id : ").append(getId()).append(", createdOn :").append(
+                        String.valueOf(createdOn)).append(", submittedOn :").append(
+                        String.valueOf(submittedOn)).append(", dueOn :").append(
+                        String.valueOf(dueOn));
         sb.append("\r\n notifications :");
-        if(notifications != null){
-        	for (ScheduledNotification sn : notifications) {
-        		sb.append("\r\n").append(String.valueOf(sn));
-        	}
+        if (notifications != null) {
+            for (ScheduledNotification sn : notifications) {
+                sb.append("\r\n").append(String.valueOf(sn));
+            }
         }
-        if(deliveries != null){
-        	for (ReportDelivery delivery : deliveries) {
-        		sb.append("\r\n").append(String.valueOf(delivery));
-        	}
+        if (deliveries != null) {
+            for (ReportDelivery delivery : deliveries) {
+                sb.append("\r\n").append(String.valueOf(delivery));
+            }
         }
         sb.append("]");
         return sb.toString();
     }
 
-	public String getAssignedIdentifer() {
-		return assignedIdentifer;
-	}
+    public String getAssignedIdentifer() {
+        return assignedIdentifer;
+    }
 
+    public void setAssignedIdentifer(String assignedIdentifer) {
+        this.assignedIdentifer = assignedIdentifer;
+    }
 
-	public void setAssignedIdentifer(String assignedIdentifer) {
-		this.assignedIdentifer = assignedIdentifer;
-	}
+    public String getSubmissionMessage() {
+        return submissionMessage;
+    }
 
-	public String getSubmissionMessage() {
-		return submissionMessage;
-	}
+    public void setSubmissionMessage(String submissionMessage) {
+        this.submissionMessage = submissionMessage;
+    }
 
-	public void setSubmissionMessage(String submissionMessage) {
-		this.submissionMessage = submissionMessage;
-	}
+    public String getSubmissionUrl() {
+        return submissionUrl;
+    }
 
-	public String getSubmissionUrl() {
-		return submissionUrl;
-	}
+    public void setSubmissionUrl(String submissionUrl) {
+        this.submissionUrl = submissionUrl;
+    }
 
-	public void setSubmissionUrl(String submissionUrl) {
-		this.submissionUrl = submissionUrl;
-	}
-	
 }
-

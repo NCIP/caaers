@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
  * @author Rhett Sutphin
  */
 public class InputFieldGroupMapTest extends CaaersTestCase {
-    @SuppressWarnings({ "MismatchedQueryAndUpdateOfCollection" })
+    @SuppressWarnings( { "MismatchedQueryAndUpdateOfCollection" })
     private InputFieldGroupMap map = new InputFieldGroupMap();
 
     public void testAddRepeatingGroupFactory() throws Exception {
@@ -24,7 +24,7 @@ public class InputFieldGroupMapTest extends CaaersTestCase {
         assertNotNull(map.get("foo12"));
         assertEquals(4, map.size());
     }
-    
+
     public void testAddInputFieldGroup() throws Exception {
         map.addInputFieldGroup(new DefaultInputFieldGroup("bar"));
         assertEquals(1, map.size());

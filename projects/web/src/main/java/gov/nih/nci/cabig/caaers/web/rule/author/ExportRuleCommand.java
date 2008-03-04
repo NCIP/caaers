@@ -6,42 +6,39 @@ import java.rmi.RemoteException;
 
 public class ExportRuleCommand implements RuleInputCommand {
 
-	private String folder;
-	private String message;
-	private boolean updated = false ;
+    private String folder;
 
-	public boolean isUpdated() {
-		return updated;
-	}
+    private String message;
 
+    private boolean updated = false;
 
-	public void setUpdated(boolean updated) {
-		this.updated = updated;
-	}
+    public boolean isUpdated() {
+        return updated;
+    }
 
+    public void setUpdated(boolean updated) {
+        this.updated = updated;
+    }
 
-	public ExportRuleCommand() throws RemoteException {
-		//ruleSets = ruleAuthoringService.getAllRuleSets();
-		//ruleSets.remove(0);//removing the default
-	}
+    public ExportRuleCommand() throws RemoteException {
+        // ruleSets = ruleAuthoringService.getAllRuleSets();
+        // ruleSets.remove(0);//removing the default
+    }
 
+    public String getFolder() {
+        return folder;
+    }
 
-	public String getFolder() {
-		return folder;
-	}
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
 
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

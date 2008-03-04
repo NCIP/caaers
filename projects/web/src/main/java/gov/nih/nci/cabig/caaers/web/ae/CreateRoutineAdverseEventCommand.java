@@ -26,33 +26,41 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author Krikor Krumlian
  */
-public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInputCommand  {
+public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInputCommand {
     private static final Log log = LogFactory.getLog(CreateRoutineAdverseEventCommand.class);
 
     private ExpeditedAdverseEventReport aeReport;
+
     private RoutineAdverseEventReport aeRoutineReport;
 
     private Participant participant;
+
     private Study study;
 
     private ExpeditedAdverseEventReportDao reportDao;
+
     private RoutineAdverseEventReportDao routineReportDao;
+
     private StudyParticipantAssignmentDao assignmentDao;
 
     private EvaluationService evaluationService;
+
     private Map<String, List<List<Attribution>>> attributionMap;
+
     private NowFactory nowFactory;
 
     private List<CtcCategory> categories;
+
     private String[] ctcCatIds;
+
     private String[] cats;
+
     private String[] ctcTermIds;
-    
-    
-    public CreateRoutineAdverseEventCommand(
-        StudyParticipantAssignmentDao assignmentDao, RoutineAdverseEventReportDao routineReportDao,
-        ExpeditedAdverseEventReportDao reportDao, NowFactory nowFactory, EvaluationService evaluationService
-    ) {
+
+    public CreateRoutineAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao,
+                    RoutineAdverseEventReportDao routineReportDao,
+                    ExpeditedAdverseEventReportDao reportDao, NowFactory nowFactory,
+                    EvaluationService evaluationService) {
         this.assignmentDao = assignmentDao;
         this.aeRoutineReport = new RoutineAdverseEventReport();
         this.reportDao = reportDao;
@@ -62,8 +70,8 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.evaluationService = evaluationService;
     }
 
-    ////// LOGIC
-    //TODO Needs refactoring, as the same info is fetched from DB on every call. 
+    // //// LOGIC
+    // TODO Needs refactoring, as the same info is fetched from DB on every call.
     public StudyParticipantAssignment getAssignment() {
         if (getParticipant() != null && getStudy() != null) {
             return assignmentDao.getAssignment(getParticipant(), getStudy());
@@ -72,18 +80,17 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         }
     }
 
-    private void prepareExpeditedReport()
-    {
-    	this.aeReport = new ExpeditedAdverseEventReport();
+    private void prepareExpeditedReport() {
+        this.aeReport = new ExpeditedAdverseEventReport();
         this.aeReport.setAssignment(getAssignment());
         this.aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-        this.aeReport.getTreatmentInformation().setTreatmentAssignment(this.aeRoutineReport.getTreatmentAssignment());
+        this.aeReport.getTreatmentInformation().setTreatmentAssignment(
+                        this.aeRoutineReport.getTreatmentAssignment());
     }
 
     public void setAeRoutineReport(RoutineAdverseEventReport aeRoutineReport) {
         this.aeRoutineReport = aeRoutineReport;
     }
-
 
     // This method deliberately sets only one side of the bidirectional link.
     // This is so hibernate will not discover the link from the persistent side
@@ -93,41 +100,44 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     }
 
     /*
-     * Will try to find serious AEs if found they will be reported as expedited.
-     * An AE might be MedDRA or CTC based Rules should take that into consideration
-     *
+     * Will try to find serious AEs if found they will be reported as expedited. An AE might be
+     * MedDRA or CTC based Rules should take that into consideration
+     * 
      * @see gov.nih.nci.cabig.caaers.web.ae.AdverseEventInputCommand#save()
      */
     public void save() {
-    	StudyParticipantAssignment assignment = getAssignment();
-    	
-    	assignment.addRoutineReport(aeRoutineReport);
-        
-        //create the expedited report, container for AEs
+        StudyParticipantAssignment assignment = getAssignment();
+
+        assignment.addRoutineReport(aeRoutineReport);
+
+        // create the expedited report, container for AEs
         prepareExpeditedReport();
-        
-        //check if the event reported is an SAE.
-        for(AdverseEvent ae : aeRoutineReport.getAdverseEvents()){
-    	   if(evaluationService.isSevere(assignment, ae)){
-    		   if(log.isDebugEnabled()){
-    			   log.debug("The AE " + String.valueOf(ae) +  " is identified as SAE, for the assignment " +  String.valueOf(assignment));
-    		   }
-    		   this.aeReport.addAdverseEvent(ae);
-    	   }
-       }
-       //save the routine ae reprot 
-       routineReportDao.save(getAeRoutineReport());
-       
-       //if there are SAEs, then save the aeReport,then identify mandatory report schedules
-       if(!aeReport.getAdverseEvents().isEmpty()){
-    	   reportDao.save(aeReport);
-    	   List<ReportDefinition> reportDefs = evaluationService.findRequiredReportDefinitions(aeReport);
-    	   evaluationService.addOptionalReports(aeReport, reportDefs);
-       }
-       
+
+        // check if the event reported is an SAE.
+        for (AdverseEvent ae : aeRoutineReport.getAdverseEvents()) {
+            if (evaluationService.isSevere(assignment, ae)) {
+                if (log.isDebugEnabled()) {
+                    log.debug("The AE " + String.valueOf(ae)
+                                    + " is identified as SAE, for the assignment "
+                                    + String.valueOf(assignment));
+                }
+                this.aeReport.addAdverseEvent(ae);
+            }
+        }
+        // save the routine ae reprot
+        routineReportDao.save(getAeRoutineReport());
+
+        // if there are SAEs, then save the aeReport,then identify mandatory report schedules
+        if (!aeReport.getAdverseEvents().isEmpty()) {
+            reportDao.save(aeReport);
+            List<ReportDefinition> reportDefs = evaluationService
+                            .findRequiredReportDefinitions(aeReport);
+            evaluationService.addOptionalReports(aeReport, reportDefs);
+        }
+
     }
 
-    ////// BOUND PROPERTIES
+    // //// BOUND PROPERTIES
 
     public ExpeditedAdverseEventReport getAeReport() {
         return aeReport;
@@ -158,20 +168,18 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             this.study.getStudyAgents().size();
             this.study.getCtepStudyDiseases().size();
             this.study.getStudySites().size();
-            for(StudySite site : study.getStudySites()){
+            for (StudySite site : study.getStudySites()) {
                 site.getStudyPersonnels().size();
             }
         }
         updateReportAssignmentLink();
     }
 
+    public RoutineAdverseEventReport getAeRoutineReport() {
+        return aeRoutineReport;
+    }
 
-	public RoutineAdverseEventReport getAeRoutineReport() {
-		return aeRoutineReport;
-	}
-
-
-	public List<CtcCategory> getCategories() {
+    public List<CtcCategory> getCategories() {
         return categories;
     }
 
@@ -204,23 +212,25 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     }
 
     public String getTreatmentDescriptionType() {
-    	// TODO Check if we need this for routine adverse events
-    	return null;
+        // TODO Check if we need this for routine adverse events
+        return null;
     }
+
     public void setTreatmentDescriptionType(String type) {
-    	// TODO Check if this is needed for routine adverse events
+        // TODO Check if this is needed for routine adverse events
 
     }
+
     public boolean getIgnoreCompletedStudy() {
-    	return true;
+        return true;
     }
-    
+
     public EvaluationService getEvaluationService() {
-		return evaluationService;
-	}
+        return evaluationService;
+    }
+
     public void setEvaluationService(EvaluationService evaluationService) {
-		this.evaluationService = evaluationService;
-	}
-    
-    
+        this.evaluationService = evaluationService;
+    }
+
 }

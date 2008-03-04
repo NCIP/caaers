@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_REPORT_FORMAT })
+@CaaersUseCases( { CREATE_REPORT_FORMAT })
 public class ExpeditedReportPersonTest extends CaaersTestCase {
     private ReportPerson person;
 
@@ -39,7 +39,7 @@ public class ExpeditedReportPersonTest extends CaaersTestCase {
         person.getContactMechanisms().remove(ReportPerson.EMAIL);
         assertFalse(person.isSavable());
     }
-    
+
     private void setSaveable() {
         person.setFirstName("Mr.");
         person.setLastName("Anderson");

@@ -20,72 +20,70 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * 
  * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class RuleServiceContext {
 
-	private static final String DEFAULT_RULE_SERVICE_PROVIDER = "gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl";
+    private static final String DEFAULT_RULE_SERVICE_PROVIDER = "gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl";
 
-	public RuleServiceProvider ruleServiceProvider;
+    public RuleServiceProvider ruleServiceProvider;
 
-	public LocalRuleExecutionSetProvider ruleSetProvider;
+    public LocalRuleExecutionSetProvider ruleSetProvider;
 
-	public RuleAdministrator ruleAdministrator;
-	
-	public RepositoryService repositoryService;
-	
-	public ApplicationContext applicationContext;
-	
-	private static RuleServiceContext instance;
-	
-	private RuleServiceContext() {
-		initializeService();
-	}
+    public RuleAdministrator ruleAdministrator;
 
-	private void initializeService() {
-		try {
-/*			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
-					Class
-					.forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
-*/
+    public RepositoryService repositoryService;
 
-			this.applicationContext = new ClassPathXmlApplicationContext(
-	                new String[] { "classpath*:config/spring/applicationContext-rules-jcr.xml" });
+    public ApplicationContext applicationContext;
 
-			this.repositoryService = (RepositoryServiceImpl)applicationContext.getBean("jcrService");			
+    private static RuleServiceContext instance;
 
-			RuleServiceProviderManager.registerRuleServiceProvider(
-					RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER, Class
-							.forName(DEFAULT_RULE_SERVICE_PROVIDER));
-			
-			this.ruleServiceProvider = RuleServiceProviderManager
-					.getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
+    private RuleServiceContext() {
+        initializeService();
+    }
 
-			this.ruleAdministrator = this.ruleServiceProvider
-					.getRuleAdministrator();
+    private void initializeService() {
+        try {
+            /*
+             * RuleServiceProviderManager.registerRuleServiceProvider(
+             * RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER, Class
+             * .forName("org.drools.jsr94.rules.RuleServiceProviderImpl"));
+             */
 
-			this.ruleSetProvider = this.ruleAdministrator
-					.getLocalRuleExecutionSetProvider(null);
-			
-		} catch (RemoteException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (ConfigurationException e) {
-			throw new RuleException(e.getMessage(), e);
-		} catch (ClassNotFoundException e) {
-			throw new RuleException(e.getMessage(), e);
-		}
-	}	
+            this.applicationContext = new ClassPathXmlApplicationContext(
+                            new String[] { "classpath*:config/spring/applicationContext-rules-jcr.xml" });
 
-/*	private static class RuleServiceContextHolder {
-		static RuleServiceContext instance = new RuleServiceContext();
-	}*/
-	
-	public static RuleServiceContext getInstance() {
-		if(instance == null)
-			instance = new RuleServiceContext();
-		return instance;
-		//return RuleServiceContextHolder.instance;
-	}
+            this.repositoryService = (RepositoryServiceImpl) applicationContext
+                            .getBean("jcrService");
 
+            RuleServiceProviderManager.registerRuleServiceProvider(
+                            RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER, Class
+                                            .forName(DEFAULT_RULE_SERVICE_PROVIDER));
+
+            this.ruleServiceProvider = RuleServiceProviderManager
+                            .getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
+
+            this.ruleAdministrator = this.ruleServiceProvider.getRuleAdministrator();
+
+            this.ruleSetProvider = this.ruleAdministrator.getLocalRuleExecutionSetProvider(null);
+
+        } catch (RemoteException e) {
+            throw new RuleException(e.getMessage(), e);
+        } catch (ConfigurationException e) {
+            throw new RuleException(e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            throw new RuleException(e.getMessage(), e);
+        }
+    }
+
+    /*
+     * private static class RuleServiceContextHolder { static RuleServiceContext instance = new
+     * RuleServiceContext(); }
+     */
+
+    public static RuleServiceContext getInstance() {
+        if (instance == null) instance = new RuleServiceContext();
+        return instance;
+        // return RuleServiceContextHolder.instance;
+    }
 
 }

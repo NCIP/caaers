@@ -22,15 +22,17 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * A mock implementation of {@link gov.nih.nci.cabig.caaers.service.EvaluationService}, suitable
  * for local testing.
- *
+ * 
  * @author Rhett Sutphin
  */
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class MockEvaluationService implements EvaluationService {
     private static final Log log = LogFactory.getLog(MockEvaluationService.class);
 
     private ReportDefinitionDao reportDefinitionDao;
+
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+
     private ReportService reportService;
 
     /**
@@ -43,7 +45,7 @@ public class MockEvaluationService implements EvaluationService {
     /**
      * Mock implementation adds a report for the first report def returned by reportDefDao#getAll.
      */
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void addRequiredReports(ExpeditedAdverseEventReport expeditedData) {
         List<ReportDefinition> allDefs = reportDefinitionDao.getAll();
         if (allDefs.size() == 0) {
@@ -61,64 +63,69 @@ public class MockEvaluationService implements EvaluationService {
         expeditedAdverseEventReportDao.save(expeditedData);
     }
 
-    private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData, ReportDefinition def) {
+    private Report existingReportWithDef(ExpeditedAdverseEventReport expeditedData,
+                    ReportDefinition def) {
         for (Report report : expeditedData.getReports()) {
-            log.debug("Examining Report with def "+ report.getReportDefinition().getName()
-                + " (id: " + report.getReportDefinition().getId() + "; hash: "
-                + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
+            log.debug("Examining Report with def " + report.getReportDefinition().getName()
+                            + " (id: " + report.getReportDefinition().getId() + "; hash: "
+                            + Integer.toHexString(report.getReportDefinition().hashCode()) + ')');
             if (report.getReportDefinition().getId().equals(def.getId())) {
                 log.debug("Matched");
                 return report;
             }
         }
-        log.debug("No Report with def matching " + def.getName()
-            + " (id: " + def.getId() + "; hash: "
-            + Integer.toHexString(def.hashCode()) + ") found in EAER " + expeditedData.getId());
+        log.debug("No Report with def matching " + def.getName() + " (id: " + def.getId()
+                        + "; hash: " + Integer.toHexString(def.hashCode()) + ") found in EAER "
+                        + expeditedData.getId());
         return null;
     }
+
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData) {
-    	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 
     public List<ReportDefinition> findRequiredReportDefinitions(
-    		ExpeditedAdverseEventReport expeditedData) {
-    	// TODO Auto-generated method stub
-    	return null;
+                    ExpeditedAdverseEventReport expeditedData) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData) {
-    	return new ArrayList<ExpeditedReportSection>();
+    public Collection<ExpeditedReportSection> mandatorySections(
+                    ExpeditedAdverseEventReport expeditedData) {
+        return new ArrayList<ExpeditedReportSection>();
     }
 
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-		List<ReportDefinition> reportDefs) {
-    	// TODO Auto-generated method stub
+                    List<ReportDefinition> reportDefs) {
+        // TODO Auto-generated method stub
 
     }
 
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
-    	// TODO Auto-generated method stub
-    	return null;
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public ReportSubmittability isSubmittable(Report report) {
-    	// TODO Auto-generated method stub
-    	return null;
+        // TODO Auto-generated method stub
+        return null;
     }
-    public ValidationErrors validateReportingBusinessRules(
-		ExpeditedAdverseEventReport aeReport,
-		ExpeditedReportSection sectionName) {
-    	// TODO Auto-generated method stub
-    	return null;
+
+    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
+                    ExpeditedReportSection sectionName) {
+        // TODO Auto-generated method stub
+        return null;
     }
-    ////// CONFIGURATION
+
+    // //// CONFIGURATION
 
     public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
         this.reportDefinitionDao = reportDefinitionDao;
     }
 
-    public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+    public void setExpeditedAdverseEventReportDao(
+                    ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 

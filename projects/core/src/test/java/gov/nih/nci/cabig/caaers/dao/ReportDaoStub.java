@@ -23,177 +23,172 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class ReportDaoStub extends ReportDao {
 
-	HashMap<Object,Report> map = new HashMap<Object, Report>();
+    HashMap<Object, Report> map = new HashMap<Object, Report>();
 
-	public ReportDaoStub() {
-		init(-444);
-		init(-885);
-	}
-	public void init(int reportId){
-		Report rs = getDummyReportSchedule(reportId);
-		map.put(rs.getName() + reportId, rs);
+    public ReportDaoStub() {
+        init(-444);
+        init(-885);
+    }
 
-	}
-	public Report getById(int id, boolean refresh){
-		map.clear();
-		init(-444);
-		init(-885);
-		return getById(id);
-	}
-	@Override
-	public Report getById(int id) {
-		logger.debug("ReportScheduleDAOStub : getById(" + id +")");
-		for(Report rs : map.values()){
-			if(rs.getId() == id) return rs;
-		}
-		logger.debug("ReportScheduleDAOStub : getById(returning NULL )");
-		return null;
-	}
+    public void init(int reportId) {
+        Report rs = getDummyReportSchedule(reportId);
+        map.put(rs.getName() + reportId, rs);
 
+    }
 
+    public Report getById(int id, boolean refresh) {
+        map.clear();
+        init(-444);
+        init(-885);
+        return getById(id);
+    }
 
-	/* (non-Javadoc)
-	 * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.helper.ReportSchedule)
-	 */
-	@Override
-	public void save(Report rs) {
-		logger.debug("ReportDaoStub : save()\r\n" + String.valueOf(rs));
-		map.put(rs.getName(), rs);
-	}
+    @Override
+    public Report getById(int id) {
+        logger.debug("ReportScheduleDAOStub : getById(" + id + ")");
+        for (Report rs : map.values()) {
+            if (rs.getId() == id) return rs;
+        }
+        logger.debug("ReportScheduleDAOStub : getById(returning NULL )");
+        return null;
+    }
 
-	@Override
-	public Report merge(Report o) {
-		// TODO Auto-generated method stub
-		save(o);
-		return o;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see gov.nih.nci.cabig.caaers.dao.ReportScheduleDao#save(gov.nih.nci.cabig.caaers.helper.ReportSchedule)
+     */
+    @Override
+    public void save(Report rs) {
+        logger.debug("ReportDaoStub : save()\r\n" + String.valueOf(rs));
+        map.put(rs.getName(), rs);
+    }
 
-	public Report getDummyReportSchedule(final int reportId){
+    @Override
+    public Report merge(Report o) {
+        // TODO Auto-generated method stub
+        save(o);
+        return o;
+    }
 
-		ReportDefinition reportDefinition = null;
-		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-		aeReport.setId(reportId);
+    public Report getDummyReportSchedule(final int reportId) {
 
-		Report report = null;
+        ReportDefinition reportDefinition = null;
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        aeReport.setId(reportId);
 
+        Report report = null;
 
-		Calendar cal = GregorianCalendar.getInstance();
-		Date now = new Date();
+        Calendar cal = GregorianCalendar.getInstance();
+        Date now = new Date();
 
-		List<Recipient> rList = new ArrayList<Recipient>();
-		rList.add(new RoleBasedRecipient("Reporter"));
-		rList.add(new ContactMechanismBasedRecipient("biju@gmail.com"));
+        List<Recipient> rList = new ArrayList<Recipient>();
+        rList.add(new RoleBasedRecipient("Reporter"));
+        rList.add(new ContactMechanismBasedRecipient("biju@gmail.com"));
 
-		NotificationBodyContent content = new NotificationBodyContent();
-		content.setBody("This is my body");
+        NotificationBodyContent content = new NotificationBodyContent();
+        content.setBody("This is my body");
 
-		List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
-		List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
+        List<ScheduledNotification> snfList = new ArrayList<ScheduledNotification>();
+        List<PlannedNotification> pnfList = new ArrayList<PlannedNotification>();
 
+        reportDefinition = new ReportDefinition();
+        reportDefinition.setDescription("a rct description");
+        reportDefinition.setDuration(28);
+        reportDefinition.setId(-333);
+        reportDefinition.setName("24 Hr 5Day report");
+        reportDefinition.setTimeScaleUnitType(TimeScaleUnit.SECOND);
+        reportDefinition.setPlannedNotifications(pnfList);
 
+        report = new Report() {
+            int callCount = 0;
 
-		reportDefinition = new ReportDefinition();
-		reportDefinition.setDescription("a rct description");
-		reportDefinition.setDuration(28);
-		reportDefinition.setId(-333);
-		reportDefinition.setName("24 Hr 5Day report");
-		reportDefinition.setTimeScaleUnitType(TimeScaleUnit.SECOND);
-		reportDefinition.setPlannedNotifications(pnfList);
+            @Override
+            public ReportStatus getStatus() {
+                callCount++;
+                if (reportId == -885 && callCount > 1) return ReportStatus.COMPLETED;
+                return super.getStatus();
+            }
+        };
+        report.setStatus(ReportStatus.PENDING);
+        // rs.setName("24Hour5Day("+ reportId+")");
+        report.setCreatedOn(new Date());
+        report.setId(reportId);
+        report.setReportDefinition(reportDefinition);
+        report.setAeReport(aeReport);
+        aeReport.addReport(report);
+        report.setScheduledNotifications(snfList);
 
+        PlannedEmailNotification penf = new PlannedEmailNotification();
+        penf.setId(-3331);
+        penf.setIndexOnTimeScale(8);
+        penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
+        penf.setNotificationBodyContent(content);
+        penf.setRecipients(rList);
+        pnfList.add(penf);
 
-		report = new Report(){
-			int callCount = 0;
-			@Override
-			public ReportStatus getStatus(){
-				callCount++;
-				if(reportId == -885 && callCount > 1)
-					return ReportStatus.COMPLETED;
-				return super.getStatus();
-			}
-		};
-		report.setStatus(ReportStatus.PENDING);
-		//rs.setName("24Hour5Day("+ reportId+")");
-		report.setCreatedOn(new Date());
-		report.setId(reportId);
-		report.setReportDefinition(reportDefinition);
-		report.setAeReport(aeReport);
-		aeReport.addReport(report);
-		report.setScheduledNotifications(snfList);
+        cal.setTime(now);
+        cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf
+                        .getIndexOnTimeScale());
+        ScheduledEmailNotification senf = new ScheduledEmailNotification();
+        senf.setId(reportId - 11);
+        senf.setBody(penf.getNotificationBodyContent().getBody());
+        senf.setCreatedOn(new Date());
+        senf.setDeliveryStatus(DeliveryStatus.CREATED);
+        senf.setPlanedNotificaiton(penf);
+        senf.setScheduledOn(cal.getTime());
+        senf.setToAddress("biju.joseph@semanticbits.com");
+        senf.setSubjectLine(penf.getSubjectLine());
+        snfList.add(senf);
 
-		PlannedEmailNotification penf = new PlannedEmailNotification();
-		penf.setId(-3331);
-		penf.setIndexOnTimeScale(8);
-		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
-		penf.setNotificationBodyContent(content);
-		penf.setRecipients(rList);
-		pnfList.add(penf);
+        penf = new PlannedEmailNotification();
+        penf.setId(-3332);
+        penf.setIndexOnTimeScale(40);
+        penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
+        penf.setNotificationBodyContent(content);
+        penf.setRecipients(rList);
+        pnfList.add(penf);
 
-		cal.setTime(now);
-		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
-		ScheduledEmailNotification senf = new ScheduledEmailNotification();
-		senf.setId(reportId - 11);
-		senf.setBody(penf.getNotificationBodyContent().getBody());
-		senf.setCreatedOn(new Date());
-		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setPlanedNotificaiton(penf);
-		senf.setScheduledOn(cal.getTime());
-		senf.setToAddress("biju.joseph@semanticbits.com");
-		senf.setSubjectLine(penf.getSubjectLine());
-		snfList.add(senf);
+        cal.setTime(now);
+        cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf
+                        .getIndexOnTimeScale());
+        senf = new ScheduledEmailNotification();
+        senf.setId(reportId - 12);
+        senf.setBody(penf.getNotificationBodyContent().getBody());
+        senf.setCreatedOn(new Date());
+        senf.setDeliveryStatus(DeliveryStatus.CREATED);
+        senf.setPlanedNotificaiton(penf);
+        senf.setScheduledOn(cal.getTime());
+        senf.setToAddress("biju.joseph@semanticbits.com");
+        senf.setSubjectLine(penf.getSubjectLine());
+        snfList.add(senf);
 
+        penf = new PlannedEmailNotification();
+        penf.setId(-3333);
+        penf.setIndexOnTimeScale(75);
+        penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
+        senf.setSubjectLine(penf.getSubjectLine());
+        penf.setNotificationBodyContent(content);
+        penf.setRecipients(rList);
+        pnfList.add(penf);
 
+        cal.setTime(now);
+        cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf
+                        .getIndexOnTimeScale());
+        senf = new ScheduledEmailNotification();
+        senf.setId(reportId - 13);
+        senf.setBody(penf.getNotificationBodyContent().getBody());
+        senf.setCreatedOn(new Date());
+        senf.setDeliveryStatus(DeliveryStatus.CREATED);
+        senf.setPlanedNotificaiton(penf);
+        senf.setScheduledOn(cal.getTime());
+        senf.setToAddress("biju.joseph@semanticbits.com");
+        senf.setSubjectLine(penf.getSubjectLine());
+        snfList.add(senf);
 
-		penf = new PlannedEmailNotification();
-		penf.setId(-3332);
-		penf.setIndexOnTimeScale(40);
-		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
-		penf.setNotificationBodyContent(content);
-		penf.setRecipients(rList);
-		pnfList.add(penf);
-
-
-		cal.setTime(now);
-		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
-	    senf = new ScheduledEmailNotification();
-	    senf.setId(reportId - 12);
-		senf.setBody(penf.getNotificationBodyContent().getBody());
-		senf.setCreatedOn(new Date());
-		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setPlanedNotificaiton(penf);
-		senf.setScheduledOn(cal.getTime());
-		senf.setToAddress("biju.joseph@semanticbits.com");
-		senf.setSubjectLine(penf.getSubjectLine());
-		snfList.add(senf);
-
-
-		penf = new PlannedEmailNotification();
-		penf.setId(-3333);
-		penf.setIndexOnTimeScale(75);
-		penf.setSubjectLine("Subject Line for day " + penf.getIndexOnTimeScale());
-		senf.setSubjectLine(penf.getSubjectLine());
-		penf.setNotificationBodyContent(content);
-		penf.setRecipients(rList);
-		pnfList.add(penf);
-
-
-		cal.setTime(now);
-		cal.add(reportDefinition.getTimeScaleUnitType().getCalendarTypeCode(), penf.getIndexOnTimeScale());
-	    senf = new ScheduledEmailNotification();
-	    senf.setId(reportId - 13);
-		senf.setBody(penf.getNotificationBodyContent().getBody());
-		senf.setCreatedOn(new Date());
-		senf.setDeliveryStatus(DeliveryStatus.CREATED);
-		senf.setPlanedNotificaiton(penf);
-		senf.setScheduledOn(cal.getTime());
-		senf.setToAddress("biju.joseph@semanticbits.com");
-		senf.setSubjectLine(penf.getSubjectLine());
-		snfList.add(senf);
-
-		return report;
-	}
-
+        return report;
+    }
 
 }

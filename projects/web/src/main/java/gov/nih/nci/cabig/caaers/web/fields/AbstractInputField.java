@@ -14,26 +14,31 @@ import org.springframework.validation.Errors;
  */
 public abstract class AbstractInputField implements InputField {
     private String displayName;
+
     private String propertyName;
+
     private boolean required;
+
     private boolean mandatory;
 
     private Map<String, Object> attributes;
+
     private FieldValidator[] validators;
-    
+
     protected AbstractInputField() {
         this.attributes = new LinkedHashMap<String, Object>();
     }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
-    	this();
+        this();
         this.displayName = displayName;
         this.propertyName = propertyName;
-        if(required) this.validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR};
+        if (required) this.validators = new FieldValidator[] { FieldValidator.NOT_NULL_VALIDATOR };
     }
-    
-    protected AbstractInputField(String propertyName, String displayName, FieldValidator... validators) {
-    	this();
+
+    protected AbstractInputField(String propertyName, String displayName,
+                    FieldValidator... validators) {
+        this();
         this.displayName = displayName;
         this.propertyName = propertyName;
         this.validators = validators;
@@ -41,28 +46,28 @@ public abstract class AbstractInputField implements InputField {
 
     /** This base implementation does a simple not-null check if the field is required. */
     public void validate(BeanWrapper commandBean, Errors errors) {
-    	if(validators == null) return;
-    	for(FieldValidator validator : validators){
-    		if(!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))){
-    			 errors.rejectValue(this.getPropertyName(),
-    	                    "REQUIRED", validator.getMessagePrefix()+ " " + this.getDisplayName());
-    			 return;
-    		}
-    	}
-    }
-
-    /**
-     * Helper so that other InputField implementations can easily implement requiredness
-     * validation just like this class.
-     */
-    public static void validateRequired(InputField field, BeanWrapper commandBean, Errors errors) {
-        if (field.isRequired() && isEmpty(field, commandBean)) {
-                errors.rejectValue(field.getPropertyName(),
-                    "REQUIRED", "Missing " + field.getDisplayName());
+        if (validators == null) return;
+        for (FieldValidator validator : validators) {
+            if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
+                errors.rejectValue(this.getPropertyName(), "REQUIRED", validator.getMessagePrefix()
+                                + " " + this.getDisplayName());
+                return;
+            }
         }
     }
 
-    public static boolean isEmpty(InputField field, BeanWrapper commandBean){
+    /**
+     * Helper so that other InputField implementations can easily implement requiredness validation
+     * just like this class.
+     */
+    public static void validateRequired(InputField field, BeanWrapper commandBean, Errors errors) {
+        if (field.isRequired() && isEmpty(field, commandBean)) {
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
+                            + field.getDisplayName());
+        }
+    }
+
+    public static boolean isEmpty(InputField field, BeanWrapper commandBean) {
         return commandBean.getPropertyValue(field.getPropertyName()) == null;
     }
 
@@ -83,19 +88,19 @@ public abstract class AbstractInputField implements InputField {
     public boolean isRequired() {
         return ArrayUtils.contains(validators, FieldValidator.NOT_NULL_VALIDATOR);
     }
-    
+
     @Deprecated
     public void setRequired(boolean required) {
-    	if(!required) return;
-        if(!ArrayUtils.contains(validators, FieldValidator.NOT_NULL_VALIDATOR)){
-        	if(validators != null && validators.length > 0){
-        		FieldValidator[] oldValidators = validators;
-        		validators = new FieldValidator[oldValidators.length + 1];
-        		System.arraycopy(oldValidators, 0, validators, 1, oldValidators.length);
-        	}else{
-        		validators = new FieldValidator[1];
-        	}
-        	validators[0] = FieldValidator.NOT_NULL_VALIDATOR; //this should be the first
+        if (!required) return;
+        if (!ArrayUtils.contains(validators, FieldValidator.NOT_NULL_VALIDATOR)) {
+            if (validators != null && validators.length > 0) {
+                FieldValidator[] oldValidators = validators;
+                validators = new FieldValidator[oldValidators.length + 1];
+                System.arraycopy(oldValidators, 0, validators, 1, oldValidators.length);
+            } else {
+                validators = new FieldValidator[1];
+            }
+            validators[0] = FieldValidator.NOT_NULL_VALIDATOR; // this should be the first
         }
     }
 
@@ -114,17 +119,17 @@ public abstract class AbstractInputField implements InputField {
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
-    
-    public FieldValidator[] getValidators() {
-    	return validators;
-    }
-    //////OBJECT METHODS
 
-	@Override
-	public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append("[propertyName=").append(getPropertyName())
-            .append("; category=").append(getCategoryName()).append(']')
-            .toString();
+    public FieldValidator[] getValidators() {
+        return validators;
+    }
+
+    // ////OBJECT METHODS
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
+                        getPropertyName()).append("; category=").append(getCategoryName()).append(
+                        ']').toString();
     }
 }

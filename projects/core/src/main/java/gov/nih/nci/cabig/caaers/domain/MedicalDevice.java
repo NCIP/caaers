@@ -11,6 +11,7 @@ import java.util.Date;
 
 /**
  * This class represents the MedicalDevice domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
@@ -18,212 +19,224 @@ import java.util.Date;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_medical_devices_id") })
 public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild {
 
-	private String brandName;
-	private String commonName;
-	private String deviceType;
-	
-	private String manufacturerName;
-	private String manufacturerCity;
-	private String manufacturerState;
-	
-	private String modelNumber;
-	private String lotNumber;
-	private String catalogNumber;
-	
-	private Date expirationDate;
-	private String serialNumber;
-	private String otherNumber;
-	
-	private DeviceOperator deviceOperator;
-	private String otherDeviceOperator;
-	private Date implantedDate;
-	private Date explantedDate;
-	private Availability deviceReprocessed;
-	private String reprocessorName;
-	private String reprocessorAddress;
-	private Availability evaluationAvailability;
-	private Date returnedDate;
-	
+    private String brandName;
 
-	// //// LOGIC
+    private String commonName;
 
-	// //// BEAN PROPERTIES
+    private String deviceType;
 
-	public String getBrandName() {
-		return brandName;
-	}
+    private String manufacturerName;
 
-	public void setBrandName(String brandName) {
-		this.brandName = brandName;
-	}
+    private String manufacturerCity;
 
-	public String getCatalogNumber() {
-		return catalogNumber;
-	}
+    private String manufacturerState;
 
-	public void setCatalogNumber(String catalogNumber) {
-		this.catalogNumber = catalogNumber;
-	}
+    private String modelNumber;
 
-	public String getCommonName() {
-		return commonName;
-	}
+    private String lotNumber;
 
-	public void setCommonName(String commonName) {
-		this.commonName = commonName;
-	}
+    private String catalogNumber;
 
-	
-	@Column(name = "device_reprocessed_code")
-	@Type(type = "availability")
-	public Availability getDeviceReprocessed() {
-		return deviceReprocessed;
-	}
+    private Date expirationDate;
 
-	public void setDeviceReprocessed(Availability deviceReprocessed) {
-		this.deviceReprocessed = deviceReprocessed;
-	}
+    private String serialNumber;
 
-	@Column(name = "device_operator_code")
-	@Type(type = "deviceOperator")
-	public DeviceOperator getDeviceOperator() {
-		return deviceOperator;
-	}
+    private String otherNumber;
 
-	public void setDeviceOperator(DeviceOperator deviceOperator) {
-		this.deviceOperator = deviceOperator;
-	}
+    private DeviceOperator deviceOperator;
 
-	public String getDeviceType() {
-		return deviceType;
-	}
+    private String otherDeviceOperator;
 
-	public void setDeviceType(String deviceType) {
-		this.deviceType = deviceType;
-	}
+    private Date implantedDate;
 
-	@Column(name = "evaluation_availability_code")
-	@Type(type = "availability")
-	public Availability getEvaluationAvailability() {
-		return evaluationAvailability;
-	}
+    private Date explantedDate;
 
-	public void setEvaluationAvailability(Availability evaluationAvailability) {
-		this.evaluationAvailability = evaluationAvailability;
-	}
+    private Availability deviceReprocessed;
 
-	public Date getExpirationDate() {
-		return expirationDate;
-	}
+    private String reprocessorName;
 
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
-	}
+    private String reprocessorAddress;
 
-	public Date getExplantedDate() {
-		return explantedDate;
-	}
+    private Availability evaluationAvailability;
 
-	public void setExplantedDate(Date explantedDate) {
-		this.explantedDate = explantedDate;
-	}
+    private Date returnedDate;
 
-	public Date getImplantedDate() {
-		return implantedDate;
-	}
+    // //// LOGIC
 
-	public void setImplantedDate(Date implantedDate) {
-		this.implantedDate = implantedDate;
-	}
+    // //// BEAN PROPERTIES
 
-	public String getLotNumber() {
-		return lotNumber;
-	}
+    public String getBrandName() {
+        return brandName;
+    }
 
-	public void setLotNumber(String lotNumber) {
-		this.lotNumber = lotNumber;
-	}
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
 
-	public String getManufacturerCity() {
-		return manufacturerCity;
-	}
+    public String getCatalogNumber() {
+        return catalogNumber;
+    }
 
-	public void setManufacturerCity(String manufacturerCity) {
-		this.manufacturerCity = manufacturerCity;
-	}
+    public void setCatalogNumber(String catalogNumber) {
+        this.catalogNumber = catalogNumber;
+    }
 
-	public String getManufacturerName() {
-		return manufacturerName;
-	}
+    public String getCommonName() {
+        return commonName;
+    }
 
-	public void setManufacturerName(String manufacturerName) {
-		this.manufacturerName = manufacturerName;
-	}
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
+    }
 
-	public String getManufacturerState() {
-		return manufacturerState;
-	}
+    @Column(name = "device_reprocessed_code")
+    @Type(type = "availability")
+    public Availability getDeviceReprocessed() {
+        return deviceReprocessed;
+    }
 
-	public void setManufacturerState(String manufacturerState) {
-		this.manufacturerState = manufacturerState;
-	}
+    public void setDeviceReprocessed(Availability deviceReprocessed) {
+        this.deviceReprocessed = deviceReprocessed;
+    }
 
-	public String getModelNumber() {
-		return modelNumber;
-	}
+    @Column(name = "device_operator_code")
+    @Type(type = "deviceOperator")
+    public DeviceOperator getDeviceOperator() {
+        return deviceOperator;
+    }
 
-	public void setModelNumber(String modelNumber) {
-		this.modelNumber = modelNumber;
-	}
+    public void setDeviceOperator(DeviceOperator deviceOperator) {
+        this.deviceOperator = deviceOperator;
+    }
 
-	public String getOtherNumber() {
-		return otherNumber;
-	}
+    public String getDeviceType() {
+        return deviceType;
+    }
 
-	public void setOtherNumber(String otherNumber) {
-		this.otherNumber = otherNumber;
-	}
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
 
-	public String getReprocessorAddress() {
-		return reprocessorAddress;
-	}
+    @Column(name = "evaluation_availability_code")
+    @Type(type = "availability")
+    public Availability getEvaluationAvailability() {
+        return evaluationAvailability;
+    }
 
-	public void setReprocessorAddress(String reprocessorAddress) {
-		this.reprocessorAddress = reprocessorAddress;
-	}
+    public void setEvaluationAvailability(Availability evaluationAvailability) {
+        this.evaluationAvailability = evaluationAvailability;
+    }
 
-	public String getReprocessorName() {
-		return reprocessorName;
-	}
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
 
-	public void setReprocessorName(String reprocessorName) {
-		this.reprocessorName = reprocessorName;
-	}
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 
-	public Date getReturnedDate() {
-		return returnedDate;
-	}
+    public Date getExplantedDate() {
+        return explantedDate;
+    }
 
-	public void setReturnedDate(Date returnedDate) {
-		this.returnedDate = returnedDate;
-	}
+    public void setExplantedDate(Date explantedDate) {
+        this.explantedDate = explantedDate;
+    }
 
-	public String getSerialNumber() {
-		return serialNumber;
-	}
+    public Date getImplantedDate() {
+        return implantedDate;
+    }
 
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
+    public void setImplantedDate(Date implantedDate) {
+        this.implantedDate = implantedDate;
+    }
 
-	public String getOtherDeviceOperator() {
-		return otherDeviceOperator;
-	}
+    public String getLotNumber() {
+        return lotNumber;
+    }
 
-	public void setOtherDeviceOperator(String otherDeviceOperator) {
-		this.otherDeviceOperator = otherDeviceOperator;
-	}
-	
-	
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber;
+    }
+
+    public String getManufacturerCity() {
+        return manufacturerCity;
+    }
+
+    public void setManufacturerCity(String manufacturerCity) {
+        this.manufacturerCity = manufacturerCity;
+    }
+
+    public String getManufacturerName() {
+        return manufacturerName;
+    }
+
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
+    public String getManufacturerState() {
+        return manufacturerState;
+    }
+
+    public void setManufacturerState(String manufacturerState) {
+        this.manufacturerState = manufacturerState;
+    }
+
+    public String getModelNumber() {
+        return modelNumber;
+    }
+
+    public void setModelNumber(String modelNumber) {
+        this.modelNumber = modelNumber;
+    }
+
+    public String getOtherNumber() {
+        return otherNumber;
+    }
+
+    public void setOtherNumber(String otherNumber) {
+        this.otherNumber = otherNumber;
+    }
+
+    public String getReprocessorAddress() {
+        return reprocessorAddress;
+    }
+
+    public void setReprocessorAddress(String reprocessorAddress) {
+        this.reprocessorAddress = reprocessorAddress;
+    }
+
+    public String getReprocessorName() {
+        return reprocessorName;
+    }
+
+    public void setReprocessorName(String reprocessorName) {
+        this.reprocessorName = reprocessorName;
+    }
+
+    public Date getReturnedDate() {
+        return returnedDate;
+    }
+
+    public void setReturnedDate(Date returnedDate) {
+        this.returnedDate = returnedDate;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
+    public void setSerialNumber(String serialNumber) {
+        this.serialNumber = serialNumber;
+    }
+
+    public String getOtherDeviceOperator() {
+        return otherDeviceOperator;
+    }
+
+    public void setOtherDeviceOperator(String otherDeviceOperator) {
+        this.otherDeviceOperator = otherDeviceOperator;
+    }
 
 }

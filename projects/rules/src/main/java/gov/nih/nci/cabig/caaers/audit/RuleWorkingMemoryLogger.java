@@ -49,7 +49,7 @@ import org.drools.spi.Activation;
 
 import org.drools.spi.Tuple;
 
-public  class RuleWorkingMemoryLogger
+public class RuleWorkingMemoryLogger
 
 implements
 
@@ -57,393 +57,401 @@ WorkingMemoryEventListener,
 
 AgendaEventListener {
 
-	private RuleLogger logger; 
-	
-	private final List filters = new ArrayList();
-
-	private WorkingMemory workingMemory;
-	
-	private DecisionContext dc;
-	
-	private String bindUri;
-
-	/**
-	 * 
-	 * Creates a new working memory logger for the given working memory.
-	 * 
-	 * 
-	 * 
-	 * @param workingMemory
-	 * 
-	 */
-
-	public RuleWorkingMemoryLogger(final WorkingMemory workingMemory,String bindUri) throws Exception{
-
-		this.workingMemory = workingMemory;
-
-		workingMemory.addEventListener((WorkingMemoryEventListener) this);
-
-		workingMemory.addEventListener((AgendaEventListener) this);
-		
-		 dc = new DecisionContext();
-		 
-		 this.bindUri=bindUri;
-		
-		try {
-			logger = RuleLogger.getInstance();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			throw e;
-		}
-
-	}
-
-	/**
-	 * 
-	 * This method is invoked every time a new log event is created.
-	 * 
-	 * Subclasses should implement this method and store the event,
-	 * 
-	 * like for example log to a file or database.
-	 * 
-	 * 
-	 * 
-	 * @param logEvent
-	 * 
-	 */
-
-	public void logEventCreated(LogEvent logEvent){
-		;;
-	}
-
-	/**
-	 * 
-	 * This method is invoked every time a new log event is created.
-	 * 
-	 * It filters out unwanted events.
-	 * 
-	 * 
-	 * 
-	 * @param logEvent
-	 * 
-	 */
-
-	private void filterLogEvent(final LogEvent logEvent) {
-        ;;
-
-	}
-
-	/**
-	 * 
-	 * Adds the given filter to the list of filters for this event log.
-	 * 
-	 * A log event must be accepted by all the filters to be entered in
-	 * 
-	 * the event log.
-	 * 
-	 * 
-	 * 
-	 * @param filter
-	 *            The filter that should be added.
-	 * 
-	 */
-
-	public void addFilter(final ILogEventFilter filter) {
-
-		;;
-
-	}
-
-	/**
-	 * 
-	 * Removes the given filter from the list of filters for this event log.
-	 * 
-	 * If the given filter was not a filter of this event log, nothing
-	 * 
-	 * happens.
-	 * 
-	 * 
-	 * 
-	 * @param filter
-	 *            The filter that should be removed.
-	 * 
-	 */
-
-	public void removeFilter(final ILogEventFilter filter) {
-
-		;;
-
-	}
-
-	/**
-	 * 
-	 * Clears all filters of this event log.
-	 * 
-	 */
-
-	public void clearFilters() {
-
-		;;
-
-	}
-
-	/**
-	 * 
-	 * @see org.drools.event.WorkingMemoryEventListener
-	 * 
-	 */
-
-	public void objectAsserted(final ObjectAssertedEvent event) {
-
-		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_ASSERTED, ((InternalFactHandle) event.getFactHandle()).getId(),event.getObject().toString()));
-		
-		//logger.logMessage("Object is asserted:"+event.toString());
-		
-		
-		
-	}
-
-	/**
-	 * 
-	 * @see org.drools.event.WorkingMemoryEventListener
-	 * 
-	 */
-
-	public void objectModified(final ObjectModifiedEvent event) {
-
-		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_MODIFIED,((InternalFactHandle) event.getFactHandle()).getId(),event.getObject().toString()));
-		//logger.logMessage("Object is modified");
-
-	}
-
-	/**
-	 * 
-	 * @see org.drools.event.WorkingMemoryEventListener
-	 * 
-	 */
+    private RuleLogger logger;
+
+    private final List filters = new ArrayList();
+
+    private WorkingMemory workingMemory;
+
+    private DecisionContext dc;
+
+    private String bindUri;
+
+    /**
+     * 
+     * Creates a new working memory logger for the given working memory.
+     * 
+     * 
+     * 
+     * @param workingMemory
+     * 
+     */
+
+    public RuleWorkingMemoryLogger(final WorkingMemory workingMemory, String bindUri)
+                    throws Exception {
+
+        this.workingMemory = workingMemory;
+
+        workingMemory.addEventListener((WorkingMemoryEventListener) this);
+
+        workingMemory.addEventListener((AgendaEventListener) this);
+
+        dc = new DecisionContext();
+
+        this.bindUri = bindUri;
+
+        try {
+            logger = RuleLogger.getInstance();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            throw e;
+        }
+
+    }
+
+    /**
+     * 
+     * This method is invoked every time a new log event is created.
+     * 
+     * Subclasses should implement this method and store the event,
+     * 
+     * like for example log to a file or database.
+     * 
+     * 
+     * 
+     * @param logEvent
+     * 
+     */
+
+    public void logEventCreated(LogEvent logEvent) {
+        ;
+        ;
+    }
+
+    /**
+     * 
+     * This method is invoked every time a new log event is created.
+     * 
+     * It filters out unwanted events.
+     * 
+     * 
+     * 
+     * @param logEvent
+     * 
+     */
+
+    private void filterLogEvent(final LogEvent logEvent) {
+        ;
+        ;
+
+    }
+
+    /**
+     * 
+     * Adds the given filter to the list of filters for this event log.
+     * 
+     * A log event must be accepted by all the filters to be entered in
+     * 
+     * the event log.
+     * 
+     * 
+     * 
+     * @param filter
+     *                The filter that should be added.
+     * 
+     */
+
+    public void addFilter(final ILogEventFilter filter) {
+
+        ;
+        ;
+
+    }
+
+    /**
+     * 
+     * Removes the given filter from the list of filters for this event log.
+     * 
+     * If the given filter was not a filter of this event log, nothing
+     * 
+     * happens.
+     * 
+     * 
+     * 
+     * @param filter
+     *                The filter that should be removed.
+     * 
+     */
 
-	public void objectRetracted(final ObjectRetractedEvent event) {
+    public void removeFilter(final ILogEventFilter filter) {
 
-		//filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_RETRACTED,	((InternalFactHandle) event.getFactHandle()).getId(),event.getOldObject().toString()));
-		//logger.logMessage("Object is retracted:"+event.toString());
-		
-	}
+        ;
+        ;
 
-	/**
-	 * 
-	 * @see org.drools.event.AgendaEventListener
-	 * 
-	 */
+    }
 
-	public void activationCreated(final ActivationCreatedEvent event) {
+    /**
+     * 
+     * Clears all filters of this event log.
+     * 
+     */
 
-		//filterLogEvent(new ActivationLogEvent(LogEvent.ACTIVATION_CREATED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		//logger.logMessage("Object is created");
-	}
+    public void clearFilters() {
 
-	/**
-	 * 
-	 * @see org.drools.event.AgendaEventListener
-	 * 
-	 */
+        ;
+        ;
 
-	public void activationCancelled(final ActivationCancelledEvent event) {
+    }
 
-		//filterLogEvent(new ActivationLogEvent(LogEvent.ACTIVATION_CANCELLED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		//logger.logMessage("activation is cancelled");
-	}
+    /**
+     * 
+     * @see org.drools.event.WorkingMemoryEventListener
+     * 
+     */
+
+    public void objectAsserted(final ObjectAssertedEvent event) {
+
+        // filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_ASSERTED, ((InternalFactHandle)
+        // event.getFactHandle()).getId(),event.getObject().toString()));
+
+        // logger.logMessage("Object is asserted:"+event.toString());
+
+    }
+
+    /**
+     * 
+     * @see org.drools.event.WorkingMemoryEventListener
+     * 
+     */
+
+    public void objectModified(final ObjectModifiedEvent event) {
+
+        // filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_MODIFIED,((InternalFactHandle)
+        // event.getFactHandle()).getId(),event.getObject().toString()));
+        // logger.logMessage("Object is modified");
+
+    }
 
-	/**
-	 * 
-	 * @see org.drools.event.AgendaEventListener
-	 * 
-	 */
+    /**
+     * 
+     * @see org.drools.event.WorkingMemoryEventListener
+     * 
+     */
 
-	public void beforeActivationFired(final BeforeActivationFiredEvent event) {
+    public void objectRetracted(final ObjectRetractedEvent event) {
 
-		//filterLogEvent(new ActivationLogEvent(LogEvent.BEFORE_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		//logger.logMessage("Before activation is fired");
-	}
+        // filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_RETRACTED, ((InternalFactHandle)
+        // event.getFactHandle()).getId(),event.getOldObject().toString()));
+        // logger.logMessage("Object is retracted:"+event.toString());
 
-	/**
-	 * 
-	 * @see org.drools.event.AgendaEventListener
-	 * 
-	 */
+    }
 
-	public void afterActivationFired(final AfterActivationFiredEvent event) {
+    /**
+     * 
+     * @see org.drools.event.AgendaEventListener
+     * 
+     */
 
-		//filterLogEvent(new ActivationLogEvent(LogEvent.AFTER_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
-		//logger.logMessage("after tthe action fired");
-	}
+    public void activationCreated(final ActivationCreatedEvent event) {
 
-	/**
-	 * 
-	 * Creates a string representation of the declarations of an activation.
-	 * 
-	 * This is a list of name-value-pairs for each of the declarations in the
-	 * 
-	 * tuple of the activation. The name is the identifier (=name) of the
-	 * 
-	 * declaration, and the value is a toString of the value of the
-	 * 
-	 * parameter, followed by the id of the fact between parentheses.
-	 * 
-	 * 
-	 * 
-	 * @param activation
-	 *            The activation from which the declarations should be extracted
-	 * 
-	 * @return A String represetation of the declarations of the activation.
-	 * 
-	 */
+        // filterLogEvent(new
+        // ActivationLogEvent(LogEvent.ACTIVATION_CREATED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
+        // logger.logMessage("Object is created");
+    }
 
-	private String extractDeclarations(final Activation activation) {
+    /**
+     * 
+     * @see org.drools.event.AgendaEventListener
+     * 
+     */
 
-		final StringBuffer result = new StringBuffer();
+    public void activationCancelled(final ActivationCancelledEvent event) {
 
-		final Tuple tuple = activation.getTuple();
+        // filterLogEvent(new
+        // ActivationLogEvent(LogEvent.ACTIVATION_CANCELLED,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
+        // logger.logMessage("activation is cancelled");
+    }
 
-		final Declaration[] declarations = activation.getRule()
-				.getDeclarations();
+    /**
+     * 
+     * @see org.drools.event.AgendaEventListener
+     * 
+     */
 
-		for (int i = 0, length = declarations.length; i < length; i++) {
+    public void beforeActivationFired(final BeforeActivationFiredEvent event) {
 
-			final Declaration declaration = declarations[i];
+        // filterLogEvent(new
+        // ActivationLogEvent(LogEvent.BEFORE_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
+        // logger.logMessage("Before activation is fired");
+    }
 
-			final FactHandle handle = tuple.get(declaration);
+    /**
+     * 
+     * @see org.drools.event.AgendaEventListener
+     * 
+     */
 
-			if (handle instanceof InternalFactHandle) {
+    public void afterActivationFired(final AfterActivationFiredEvent event) {
 
-				final InternalFactHandle handleImpl = (InternalFactHandle) handle;
+        // filterLogEvent(new
+        // ActivationLogEvent(LogEvent.AFTER_ACTIVATION_FIRE,getActivationId(event.getActivation()),event.getActivation().getRule().getName(),extractDeclarations(event.getActivation())));
+        // logger.logMessage("after tthe action fired");
+    }
 
-				if (handleImpl.getId() == -1) {
+    /**
+     * 
+     * Creates a string representation of the declarations of an activation.
+     * 
+     * This is a list of name-value-pairs for each of the declarations in the
+     * 
+     * tuple of the activation. The name is the identifier (=name) of the
+     * 
+     * declaration, and the value is a toString of the value of the
+     * 
+     * parameter, followed by the id of the fact between parentheses.
+     * 
+     * 
+     * 
+     * @param activation
+     *                The activation from which the declarations should be extracted
+     * 
+     * @return A String represetation of the declarations of the activation.
+     * 
+     */
 
-					// This handle is now invalid, probably due to an fact
-					// retraction
+    private String extractDeclarations(final Activation activation) {
 
-					continue;
+        final StringBuffer result = new StringBuffer();
 
-				}
+        final Tuple tuple = activation.getTuple();
 
-				final Object value = declaration.getValue(this.workingMemory
-						.getObject(handle));
+        final Declaration[] declarations = activation.getRule().getDeclarations();
 
-				result.append(declaration.getIdentifier());
+        for (int i = 0, length = declarations.length; i < length; i++) {
 
-				result.append("=");
+            final Declaration declaration = declarations[i];
 
-				if (value == null) {
+            final FactHandle handle = tuple.get(declaration);
 
-					// this should never occur
+            if (handle instanceof InternalFactHandle) {
 
-					result.append("null");
+                final InternalFactHandle handleImpl = (InternalFactHandle) handle;
 
-				} else {
+                if (handleImpl.getId() == -1) {
 
-					result.append(value);
+                    // This handle is now invalid, probably due to an fact
+                    // retraction
 
-					result.append("(");
+                    continue;
 
-					result.append(handleImpl.getId());
+                }
 
-					result.append(")");
+                final Object value = declaration.getValue(this.workingMemory.getObject(handle));
 
-				}
+                result.append(declaration.getIdentifier());
 
-			}
+                result.append("=");
 
-			if (i < declarations.length - 1) {
+                if (value == null) {
 
-				result.append("; ");
+                    // this should never occur
 
-			}
+                    result.append("null");
 
-		}
+                } else {
 
-		return result.toString();
+                    result.append(value);
 
-	}
+                    result.append("(");
 
-	/**
-	 * 
-	 * Returns a String that can be used as unique identifier for an
-	 * 
-	 * activation. Since the activationId is the same for all assertions
-	 * 
-	 * that are created during a single assert, modify or retract, the
-	 * 
-	 * key of the tuple of the activation is added too (which is a set
-	 * 
-	 * of fact handle ids).
-	 * 
-	 * 
-	 * 
-	 * @param activation
-	 *            The activation for which a unique id should be generated
-	 * 
-	 * @return A unique id for the activation
-	 * 
-	 */
+                    result.append(handleImpl.getId());
 
-	private static String getActivationId(final Activation activation) {
+                    result.append(")");
 
-		final StringBuffer result = new StringBuffer(activation.getRule()
-				.getName());
+                }
 
-		result.append(" [");
+            }
 
-		final Tuple tuple = activation.getTuple();
+            if (i < declarations.length - 1) {
 
-		final FactHandle[] handles = tuple.getFactHandles();
+                result.append("; ");
 
-		for (int i = 0; i < handles.length; i++) {
+            }
 
-			result.append(((InternalFactHandle) handles[i]).getId());
+        }
 
-			if (i < handles.length - 1) {
+        return result.toString();
 
-				result.append(", ");
+    }
 
-			}
+    /**
+     * 
+     * Returns a String that can be used as unique identifier for an
+     * 
+     * activation. Since the activationId is the same for all assertions
+     * 
+     * that are created during a single assert, modify or retract, the
+     * 
+     * key of the tuple of the activation is added too (which is a set
+     * 
+     * of fact handle ids).
+     * 
+     * 
+     * 
+     * @param activation
+     *                The activation for which a unique id should be generated
+     * 
+     * @return A unique id for the activation
+     * 
+     */
 
-		}
+    private static String getActivationId(final Activation activation) {
 
-		return result.append("]").toString();
+        final StringBuffer result = new StringBuffer(activation.getRule().getName());
 
-	}
+        result.append(" [");
 
-	public void activationCancelled(ActivationCancelledEvent arg0, WorkingMemory arg1) {
-		// TODO Auto-generated method stub
-		//logger.logMessage("Activation cancelled with working memory");
-	}
+        final Tuple tuple = activation.getTuple();
 
-	public void activationCreated(ActivationCreatedEvent arg0, WorkingMemory arg1) {
-		// TODO Auto-generated method stub
-		//logger.logMessage("Activation created with working memory");
-	}
+        final FactHandle[] handles = tuple.getFactHandles();
 
-	public void afterActivationFired(AfterActivationFiredEvent event, WorkingMemory arg1) {
-		// TODO Auto-generated method stub
-		//logger.logMessage("After Activation fired with working memory");
-		dc.getFiredRuleNames().add(event.getActivation().getRule().getName());
-	}
+        for (int i = 0; i < handles.length; i++) {
 
-	public void beforeActivationFired(BeforeActivationFiredEvent arg0, WorkingMemory arg1) {
-		// TODO Auto-generated method stub
-		//logger.logMessage("Before Activation fired with working memory");
-	}
-	
-	public void logExecutionSummary(List<Object> assertedObjects) throws Exception{
-		FiredRuleSetInfoBuilder fsb = new FiredRuleSetInfoBuilder();
-		FiredRuleSetInfo firedRuleSetInfo = fsb.build(bindUri);
-		dc.setFiredRuleSetInfo(firedRuleSetInfo);
-		dc.setAssertedObjects(assertedObjects);
-		dc.buildExecutionSummary();
-		LogObjectFormatter lof = new LogObjectFormatter();
-		String logRecord = lof.toTextTable(dc);
-		logger.logMessage(logRecord);
-		
-	}
+            result.append(((InternalFactHandle) handles[i]).getId());
+
+            if (i < handles.length - 1) {
+
+                result.append(", ");
+
+            }
+
+        }
+
+        return result.append("]").toString();
+
+    }
+
+    public void activationCancelled(ActivationCancelledEvent arg0, WorkingMemory arg1) {
+        // TODO Auto-generated method stub
+        // logger.logMessage("Activation cancelled with working memory");
+    }
+
+    public void activationCreated(ActivationCreatedEvent arg0, WorkingMemory arg1) {
+        // TODO Auto-generated method stub
+        // logger.logMessage("Activation created with working memory");
+    }
+
+    public void afterActivationFired(AfterActivationFiredEvent event, WorkingMemory arg1) {
+        // TODO Auto-generated method stub
+        // logger.logMessage("After Activation fired with working memory");
+        dc.getFiredRuleNames().add(event.getActivation().getRule().getName());
+    }
+
+    public void beforeActivationFired(BeforeActivationFiredEvent arg0, WorkingMemory arg1) {
+        // TODO Auto-generated method stub
+        // logger.logMessage("Before Activation fired with working memory");
+    }
+
+    public void logExecutionSummary(List<Object> assertedObjects) throws Exception {
+        FiredRuleSetInfoBuilder fsb = new FiredRuleSetInfoBuilder();
+        FiredRuleSetInfo firedRuleSetInfo = fsb.build(bindUri);
+        dc.setFiredRuleSetInfo(firedRuleSetInfo);
+        dc.setAssertedObjects(assertedObjects);
+        dc.buildExecutionSummary();
+        LogObjectFormatter lof = new LogObjectFormatter();
+        String logRecord = lof.toTextTable(dc);
+        logger.logMessage(logRecord);
+
+    }
 
 }

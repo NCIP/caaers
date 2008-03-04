@@ -6,26 +6,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-
 @Entity
 @DiscriminatorValue("ORG")
 public class OrganizationHeldIND extends INDHolder {
-	private Organization organization;
+    private Organization organization;
 
-	@ManyToOne(optional=false)
-	@JoinColumn(name="org_id",nullable=false)
-	public Organization getOrganization() {
-		return organization;
-	}
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "org_id", nullable = false)
+    public Organization getOrganization() {
+        return organization;
+    }
 
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
-	@Override
-	@Transient
-	public String getName() {
-		if(organization != null) return organization.getName();
-		return null;
-	}
+    @Override
+    @Transient
+    public String getName() {
+        if (organization != null) return organization.getName();
+        return null;
+    }
 }

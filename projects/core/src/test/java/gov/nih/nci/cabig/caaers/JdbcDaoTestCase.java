@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers;
 
-
 /**
  * @author Krikor Krumlian
  */

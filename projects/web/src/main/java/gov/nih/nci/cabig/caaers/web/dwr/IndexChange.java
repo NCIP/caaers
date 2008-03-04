@@ -1,34 +1,33 @@
 package gov.nih.nci.cabig.caaers.web.dwr;
 
-
 public class IndexChange {
-      private Integer original, current;
-      private String currentDisplayName;
+    private Integer original, current;
 
-      public IndexChange(Integer original, Integer current) {
-          this.original = original;
-          this.current = current;
-      }
+    private String currentDisplayName;
 
-      public Integer getOriginal() {
-          return original;
-      }
+    public IndexChange(Integer original, Integer current) {
+        this.original = original;
+        this.current = current;
+    }
 
-      public Integer getCurrent() {
-          return current;
-      }
+    public Integer getOriginal() {
+        return original;
+    }
 
-      public String getCurrentDisplayName() {
-          return currentDisplayName;
-      }
+    public Integer getCurrent() {
+        return current;
+    }
 
-      public void setCurrentDisplayName(String currentDisplayName) {
-          this.currentDisplayName = currentDisplayName;
-      }
+    public String getCurrentDisplayName() {
+        return currentDisplayName;
+    }
 
-      @Override
-      public String toString() {
-          return String.format("%d => %d", original, current);
-      }
-  }
+    public void setCurrentDisplayName(String currentDisplayName) {
+        this.currentDisplayName = currentDisplayName;
+    }
 
+    @Override
+    public String toString() {
+        return String.format("%d => %d", original, current);
+    }
+}

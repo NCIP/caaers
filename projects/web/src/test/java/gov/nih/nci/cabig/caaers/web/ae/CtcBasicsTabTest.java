@@ -24,9 +24,10 @@ import org.easymock.classextension.EasyMock;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT , CREATE_ROUTINE_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class CtcBasicsTabTest extends AeTabTestCase {
     private AdverseEvent ae0;
+
     private Ctc ctcae3;
 
     @Override
@@ -34,28 +35,33 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         super.setUp();
 
         ctcae3 = Fixtures.createCtcaeV3();
-        AeTerminology t
-            = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite().getStudy());
+        AeTerminology t = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite()
+                        .getStudy());
         command.getAssignment().getStudySite().getStudy().setAeTerminology(t);
-        command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(Fixtures.createCtcaeV3());
+        command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(
+                        Fixtures.createCtcaeV3());
 
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
-        
+
     }
 
     @Override
     protected CtcBasicsTab createTab() {
-    	CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
-    	 EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
-     	 ctcBasicsTab.setEvaluationService(evaluationServiceMock);
-         EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),ExpeditedReportSection.BASICS_SECTION )).andReturn(new ValidationErrors());
-        return ctcBasicsTab; 
+        CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
+        EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
+        ctcBasicsTab.setEvaluationService(evaluationServiceMock);
+        EasyMock.expect(
+                        evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),
+                                        ExpeditedReportSection.BASICS_SECTION)).andReturn(
+                        new ValidationErrors());
+        return ctcBasicsTab;
     }
 
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
-        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(command).get("ctcCategories");
+        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(command).get(
+                        "ctcCategories");
         assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
@@ -72,13 +78,15 @@ public class CtcBasicsTabTest extends AeTabTestCase {
     public void testHospitalizationRequired() throws Exception {
         ae0.setHospitalization(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].hospitalization", "Hospitalization");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].hospitalization",
+                        "Hospitalization");
     }
 
     public void testCtcTermRequired() throws Exception {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm", "CTC term");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm",
+                        "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
@@ -91,17 +99,21 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         ae0.setLowLevelTerm(null);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].lowLevelTerm", "Other (MedDRA)");
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther", "Other (verbatim)");
+        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther",
+                        "Other (verbatim)");
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public void testGradeFieldOptions() throws Exception {
         InputFieldGroup main = getFieldGroup("main0");
         InputField gradeField = main.getFields().get(0);
-        assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField.getPropertyName());
+        assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField
+                        .getPropertyName());
         Map<Object, Object> options = InputFieldAttributes.getOptions(gradeField);
-        assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL.getName()));
-        assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL.toString()));
+        assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL
+                        .getName()));
+        assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL
+                        .toString()));
         assertEquals("Wrong number of options", 5, options.size());
 
         assertGradeOptionPresent(options, Grade.MILD);

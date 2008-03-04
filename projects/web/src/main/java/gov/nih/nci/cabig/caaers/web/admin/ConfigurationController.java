@@ -28,11 +28,12 @@ public class ConfigurationController extends SimpleFormController {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+                    throws Exception {
         super.initBinder(request, binder);
         for (ConfigurationProperty<?> property : configuration.getProperties().getAll()) {
             binder.registerCustomEditor(Object.class, "conf[" + property.getKey() + "].value",
-                new ConfigurationPropertyEditor(property));
+                            new ConfigurationPropertyEditor(property));
         }
     }
 

@@ -22,71 +22,69 @@ import org.hibernate.annotations.Type;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_therapy_id") })
 public class StudyTherapy extends AbstractMutableDomainObject implements StudyChild {
 
-	private Study study;
+    private Study study;
 
-	private StudyTherapyType studyTherapyType;
+    private StudyTherapyType studyTherapyType;
 
-	@ManyToOne
-	@JoinColumn(name = "study_id", nullable = false)
-	public Study getStudy() {
-		return study;
-	}
+    @ManyToOne
+    @JoinColumn(name = "study_id", nullable = false)
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setStudy(final Study study) {
-		this.study = study;
-	}
+    public void setStudy(final Study study) {
+        this.study = study;
+    }
 
-	@Column(name = "STUDY_THERAPY_TYPE")
-	@Type(type = "studyTherapyType")
-	public StudyTherapyType getStudyTherapyType() {
-		return studyTherapyType;
-	}
+    @Column(name = "STUDY_THERAPY_TYPE")
+    @Type(type = "studyTherapyType")
+    public StudyTherapyType getStudyTherapyType() {
+        return studyTherapyType;
+    }
 
-	public void setStudyTherapyType(final StudyTherapyType studyTherapyType) {
-		this.studyTherapyType = studyTherapyType;
-	}
+    public void setStudyTherapyType(final StudyTherapyType studyTherapyType) {
+        this.studyTherapyType = studyTherapyType;
+    }
 
-	public StudyTherapy() {
-	}
+    public StudyTherapy() {
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (study == null ? 0 : study.getId().hashCode());
-		result = prime * result + (studyTherapyType == null ? 0 : studyTherapyType.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (study == null ? 0 : study.getId().hashCode());
+        result = prime * result + (studyTherapyType == null ? 0 : studyTherapyType.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final StudyTherapy other = (StudyTherapy) obj;
-		if (study == null) {
-			if (other.study != null) {
-				return false;
-			}
-		}
-		else if (!study.getId().equals(other.study.getId())) {
-			return false;
-		}
-		if (studyTherapyType == null) {
-			if (other.studyTherapyType != null) {
-				return false;
-			}
-		}
-		else if (!studyTherapyType.equals(other.studyTherapyType)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final StudyTherapy other = (StudyTherapy) obj;
+        if (study == null) {
+            if (other.study != null) {
+                return false;
+            }
+        } else if (!study.getId().equals(other.study.getId())) {
+            return false;
+        }
+        if (studyTherapyType == null) {
+            if (other.studyTherapyType != null) {
+                return false;
+            }
+        } else if (!studyTherapyType.equals(other.studyTherapyType)) {
+            return false;
+        }
+        return true;
+    }
 
 }

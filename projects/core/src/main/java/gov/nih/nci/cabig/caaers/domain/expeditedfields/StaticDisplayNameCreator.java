@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 /**
  * This implementation returns the given display name, unmodified, for every query.
- *
+ * 
  * @author Rhett Sutphin
  */
 public class StaticDisplayNameCreator implements DisplayNameCreator {

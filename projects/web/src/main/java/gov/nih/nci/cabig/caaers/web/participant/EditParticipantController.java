@@ -26,108 +26,113 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class EditParticipantController extends ParticipantController<NewParticipantCommand> {
 
-	private static final Log log = LogFactory.getLog(EditParticipantController.class);
-	private Task task;
-	
+    private static final Log log = LogFactory.getLog(EditParticipantController.class);
 
-	public EditParticipantController() {
-		setBindOnNewForm(true);
-	}
+    private Task task;
 
-	@Override
-	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
+    public EditParticipantController() {
+        setBindOnNewForm(true);
+    }
 
-		request.getSession().removeAttribute(CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
-		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-		Participant participant = participantDao.getParticipantById(Integer.parseInt(request
-				.getParameter("participantId")));
+    @Override
+    protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Retrieved Participant :" + String.valueOf(participant));
-		}
+        request.getSession().removeAttribute(
+                        CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
+        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+        Participant participant = participantDao.getParticipantById(Integer.parseInt(request
+                        .getParameter("participantId")));
 
-		NewParticipantCommand participantCommand = new NewParticipantCommand(participant);
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieved Participant :" + String.valueOf(participant));
+        }
 
-		List<StudyParticipantAssignment> assignments = participant.getAssignments();
-		List<StudySite> studySites = new ArrayList<StudySite>();
-		for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
-			studySites.add(studyParticipantAssignment.getStudySite());
-		}
-		participantCommand.setStudySites(studySites);
-		participantCommand.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
-		return participantCommand;
+        NewParticipantCommand participantCommand = new NewParticipantCommand(participant);
 
-	}
+        List<StudyParticipantAssignment> assignments = participant.getAssignments();
+        List<StudySite> studySites = new ArrayList<StudySite>();
+        for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
+            studySites.add(studyParticipantAssignment.getStudySite());
+        }
+        participantCommand.setStudySites(studySites);
+        participantCommand.setOrganization(participant.getAssignments().get(0).getStudySite()
+                        .getOrganization());
+        return participantCommand;
 
-	@Override
-	protected NewParticipantCommand save(final NewParticipantCommand newParticipantCommand, final Errors errors) {
+    }
 
-		if (errors.hasErrors()) {
-			return newParticipantCommand;
-		}
-		Participant participant = newParticipantCommand.getParticipant();
-		Participant mergedParticipant = getDao().merge(participant);
-		getDao().initialize(mergedParticipant);
-		getDao().save(mergedParticipant);
-		newParticipantCommand.setParticipant(mergedParticipant);
-		return newParticipantCommand;
-	}
+    @Override
+    protected NewParticipantCommand save(final NewParticipantCommand newParticipantCommand,
+                    final Errors errors) {
 
-	@Override
-	protected boolean isSummaryEnabled() {
-		return true;
-	}
+        if (errors.hasErrors()) {
+            return newParticipantCommand;
+        }
+        Participant participant = newParticipantCommand.getParticipant();
+        Participant mergedParticipant = getDao().merge(participant);
+        getDao().initialize(mergedParticipant);
+        getDao().save(mergedParticipant);
+        newParticipantCommand.setParticipant(mergedParticipant);
+        return newParticipantCommand;
+    }
 
-	@Override
-	protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
-		flow.addTab(new ReviewParticipantTab());
-		flow.addTab(new CreateParticipantTab());
+    @Override
+    protected boolean isSummaryEnabled() {
+        return true;
+    }
 
-	}
+    @Override
+    protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
+        flow.addTab(new ReviewParticipantTab());
+        flow.addTab(new CreateParticipantTab());
 
-	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
+    }
 
-		NewParticipantCommand participantCommand = (NewParticipantCommand) command;
-		Participant participant = participantCommand.getParticipant();
-		participantDao.merge(participant);
-		request.setAttribute("flashMessage", "Successfully updated the Participant");
-		ModelAndView modelAndView = new ModelAndView("par/par_confirm");
-		return modelAndView;
-	}
+    @Override
+    protected ModelAndView processFinish(final HttpServletRequest request,
+                    final HttpServletResponse response, final Object command,
+                    final BindException errors) throws Exception {
 
-	@Override
-	protected boolean shouldSave(final HttpServletRequest request, final NewParticipantCommand command,
-			final Tab<NewParticipantCommand> tab) {
-		// supress for ajax and delete requests
-		Object isAjax = findInRequest(request, "_isAjax");
-		if (isAjax != null) {
-			return false;
-		}
+        NewParticipantCommand participantCommand = (NewParticipantCommand) command;
+        Participant participant = participantCommand.getParticipant();
+        participantDao.merge(participant);
+        request.setAttribute("flashMessage", "Successfully updated the Participant");
+        ModelAndView modelAndView = new ModelAndView("par/par_confirm");
+        return modelAndView;
+    }
 
-		String action = (String) super.findInRequest(request, "_action");
-		if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-			return false;
-		}
-		return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont save if it is overview page
+    @Override
+    protected boolean shouldSave(final HttpServletRequest request,
+                    final NewParticipantCommand command, final Tab<NewParticipantCommand> tab) {
+        // supress for ajax and delete requests
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null) {
+            return false;
+        }
 
-	}
-	
-	@Override
-	@SuppressWarnings("unchecked")
-	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
-			final int page) throws Exception {
-		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
-		refdata.put("currentTask",task);
-		return refdata;
-	}
+        String action = (String) super.findInRequest(request, "_action");
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
+            return false;
+        }
+        return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont save if it
+                                                                                // is overview page
 
-	public Task getTask() {
-		return task;
-	}
+    }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(final HttpServletRequest request, final Object command,
+                    final Errors errors, final int page) throws Exception {
+        Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+        refdata.put("currentTask", task);
+        return refdata;
+    }
+
+    public Task getTask() {
+        return task;
+    }
+
+    public void setTask(Task task) {
+        this.task = task;
+    }
 }

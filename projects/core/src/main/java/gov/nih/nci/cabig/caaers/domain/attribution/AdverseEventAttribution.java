@@ -27,25 +27,22 @@ import javax.persistence.FetchType;
 @Entity
 @Table(name = "ae_attributions")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "cause_type",
-    discriminatorType = DiscriminatorType.STRING
-)
-@DiscriminatorValue("ABSTRACT_BASE") // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_ae_attributions_id")
-    }
-)
-public abstract class AdverseEventAttribution<T extends DomainObject> extends AbstractMutableDomainObject {
+@DiscriminatorColumn(name = "cause_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("ABSTRACT_BASE")
+// should be ignored
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_attributions_id") })
+public abstract class AdverseEventAttribution<T extends DomainObject> extends
+                AbstractMutableDomainObject {
     private T cause;
+
     private Attribution attribution;
+
     private AdverseEvent adverseEvent;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable=false, updatable=false, nullable=false)
+    @JoinColumn(insertable = false, updatable = false, nullable = false)
     public AdverseEvent getAdverseEvent() {
         return adverseEvent;
     }
@@ -54,7 +51,7 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends Ab
         this.adverseEvent = adverseEvent;
     }
 
-    @Type(type="attribution")
+    @Type(type = "attribution")
     @Column(name = "attribution_code")
     public Attribution getAttribution() {
         return attribution;
@@ -65,10 +62,9 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends Ab
     }
 
     @Transient
-    /* this is only transient here -- subclasses need to override it and specify what it refers to
-       This should work:
-    @ManyToOne
-    @JoinColumn(name = "cause_id", nullable = false)
+    /*
+     * this is only transient here -- subclasses need to override it and specify what it refers to
+     * This should work: @ManyToOne @JoinColumn(name = "cause_id", nullable = false)
      */
     public T getCause() {
         return cause;

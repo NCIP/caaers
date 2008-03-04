@@ -26,50 +26,49 @@ import java.util.LinkedHashMap;
 
 /**
  * This class represents the RoutineAdverseEventReport domain object.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_routine_reports")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_ae_routine_reports_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_routine_reports_id") })
 public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
+
     private Date startDate;
+
     private Date endDate;
+
     private Status status = Status.CURRENT;
+
     private TreatmentAssignment treatmentAssignment;
+
     private LazyListHelper lazyListHelper;
 
     public RoutineAdverseEventReport() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(AdverseEvent.class);
-        
+
     }
 
     private <T extends RoutineAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
-        lazyListHelper.add(klass,
-            new RoutineAdverseEventReportChildFactory<T>(klass, this));
+        lazyListHelper.add(klass, new RoutineAdverseEventReportChildFactory<T>(klass, this));
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public String getNotificationMessage() {
         if (isNotificationMessagePossible()) {
             AdverseEvent firstAe = getAdverseEventsInternal().get(0);
             CtcTerm term = firstAe.getAdverseEventCtcTerm().getCtcTerm();
-            String other = term.isOtherRequired()
-                ? String.format(" (%s)", firstAe.getDetailsForOther()) : "";
-            return String.format("Grade %d adverse event with term %s%s",
-                firstAe.getGrade().getCode(),
-                term.getFullName(), other
-            );
+            String other = term.isOtherRequired() ? String.format(" (%s)", firstAe
+                            .getDetailsForOther()) : "";
+            return String.format("Grade %d adverse event with term %s%s", firstAe.getGrade()
+                            .getCode(), term.getFullName(), other);
         } else {
             throw new CaaersSystemException(
-                "Cannot create notification message until primary AE is filled in");
+                            "Cannot create notification message until primary AE is filled in");
         }
     }
 
@@ -77,7 +76,8 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     public boolean isNotificationMessagePossible() {
         if (getAdverseEventsInternal().size() < 1) return false;
         AdverseEvent ae = getAdverseEventsInternal().get(0);
-        return ae != null && ae.getGrade() != null && ae.getAdverseEventCtcTerm().getCtcTerm() != null;
+        return ae != null && ae.getGrade() != null
+                        && ae.getAdverseEventCtcTerm().getCtcTerm() != null;
     }
 
     @Transient
@@ -103,15 +103,16 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 
     @Transient
     public String getParticipantSummaryLine() {
-    	Participant participant = getParticipant();
+        Participant participant = getParticipant();
         if (participant == null) return null;
         StringBuilder sb = new StringBuilder(participant.getFullName());
         appendPrimaryIdentifier(participant, sb);
         return sb.toString();
     }
+
     @Transient
     public String getStudySummaryLine() {
-    	Study study = getStudy();
+        Study study = getStudy();
         if (study == null) return null;
         StringBuilder sb = new StringBuilder(study.getShortTitle());
         appendPrimaryIdentifier(study, sb);
@@ -128,22 +129,19 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         getAdverseEventsInternal().add(adverseEvent);
         if (adverseEvent != null) adverseEvent.setRoutineReport(this);
     }
-    
+
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<AdverseEvent> getAdverseEvents() {
         return lazyListHelper.getLazyList(AdverseEvent.class);
     }
 
-	@Transient
-	public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
-		setAdverseEventsInternal(adverseEvents);
-	}
+    @Transient
+    public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
+        setAdverseEventsInternal(adverseEvents);
+    }
 
-   
-    ////// BEAN PROPERTIES
-
-   
+    // //// BEAN PROPERTIES
 
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {
@@ -155,14 +153,14 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     // This is annotated this way so that the IndexColumn will work with
-    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
-    @JoinColumn(name="routine_report_id", nullable=true)
-    @IndexColumn(name="routine_list_index")
+    @JoinColumn(name = "routine_report_id", nullable = true)
+    @IndexColumn(name = "routine_list_index")
     @Cascade(value = {
-        // Manually-managing PERSIST cascades due to cascade ordering issue
-        CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
-        CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
+            // Manually-managing PERSIST cascades due to cascade ordering issue
+            CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DELETE_ORPHAN })
     protected List<AdverseEvent> getAdverseEventsInternal() {
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }
@@ -172,23 +170,23 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         lazyListHelper.setInternalList(AdverseEvent.class, adverseEvents);
     }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	
-	@Type(type = "status")
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Type(type = "status")
     @Column(name = "status_code")
     public Status getStatus() {
         return status;
@@ -198,17 +196,15 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
         this.status = status;
     }
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="treatment_assignment_id")
-    @Cascade(value={CascadeType.LOCK})
-	public TreatmentAssignment getTreatmentAssignment() {
-		return treatmentAssignment;
-	}
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "treatment_assignment_id")
+    @Cascade(value = { CascadeType.LOCK })
+    public TreatmentAssignment getTreatmentAssignment() {
+        return treatmentAssignment;
+    }
 
-	public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
-		this.treatmentAssignment = treatmentAssignment;
-	}
-    
-    
-    
+    public void setTreatmentAssignment(TreatmentAssignment treatmentAssignment) {
+        this.treatmentAssignment = treatmentAssignment;
+    }
+
 }

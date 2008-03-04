@@ -22,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the StudyAgent domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 
@@ -30,168 +31,160 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_agents_id") })
 public class StudyAgent extends AbstractMutableDomainObject implements StudyChild {
 
-	private LazyListHelper lazyListHelper;
+    private LazyListHelper lazyListHelper;
 
-	private Study study;
+    private Study study;
 
-	private Agent agent;
+    private Agent agent;
 
-	private String agentAsString;
+    private String agentAsString;
 
-	private String otherAgent;
+    private String otherAgent;
 
-	@Embedded
-	private Participation participation;
+    @Embedded
+    private Participation participation;
 
-	private INDType indType;
-	
-	private Boolean partOfLeadIND;
-	
-	/*
-	 * Constructor -- Initializes participation at create time
-	 */
-	public StudyAgent() {
-		participation = new Participation();
-		lazyListHelper = new LazyListHelper();
-		lazyListHelper.add(StudyAgentINDAssociation.class,
-				new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this, StudyAgentINDAssociation.class));
-	}
+    private INDType indType;
 
-	@ManyToOne
-	@JoinColumn(name = "study_id")
-	public Study getStudy() {
-		return study;
-	}
+    private Boolean partOfLeadIND;
 
-	public void setStudy(Study study) {
-		this.study = study;
-	}
+    /*
+     * Constructor -- Initializes participation at create time
+     */
+    public StudyAgent() {
+        participation = new Participation();
+        lazyListHelper = new LazyListHelper();
+        lazyListHelper.add(StudyAgentINDAssociation.class,
+                        new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,
+                                        StudyAgentINDAssociation.class));
+    }
 
-	@ManyToOne
-	@JoinColumn(name = "agent_id")
-	// We should never create new agents here, so no cascades
-	public Agent getAgent() {
-		return agent;
-	}
+    @ManyToOne
+    @JoinColumn(name = "study_id")
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setAgent(Agent agent) {
-		this.agent = agent;
-	}
+    public void setStudy(Study study) {
+        this.study = study;
+    }
 
-	@OneToMany(mappedBy = "studyAgent", fetch = FetchType.EAGER)
-	@Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
-		return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
-	}
+    @ManyToOne
+    @JoinColumn(name = "agent_id")
+    // We should never create new agents here, so no cascades
+    public Agent getAgent() {
+        return agent;
+    }
 
-	public void setStudyAgentINDAssociationsInternal(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
-		lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
-	}
+    public void setAgent(Agent agent) {
+        this.agent = agent;
+    }
 
-	@Transient
-	public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
-		return lazyListHelper.getLazyList(StudyAgentINDAssociation.class);
-	}
+    @OneToMany(mappedBy = "studyAgent", fetch = FetchType.EAGER)
+    @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
+        return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);
+    }
 
-	@Transient
-	public void setStudyAgentINDAssociations(List<StudyAgentINDAssociation> studyAgentINDAssociations) {
-		setStudyAgentINDAssociationsInternal(studyAgentINDAssociations);
-	}
+    public void setStudyAgentINDAssociationsInternal(
+                    List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+        lazyListHelper.setInternalList(StudyAgentINDAssociation.class, studyAgentINDAssociations);
+    }
 
-	@Transient
-	public String getAgentAsString() {
-		return agentAsString;
-	}
+    @Transient
+    public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
+        return lazyListHelper.getLazyList(StudyAgentINDAssociation.class);
+    }
 
-	public void setAgentAsString(String agentAsString) {
-		this.agentAsString = agentAsString;
-	}
+    @Transient
+    public void setStudyAgentINDAssociations(
+                    List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+        setStudyAgentINDAssociationsInternal(studyAgentINDAssociations);
+    }
 
-	public Participation getParticipation() {
-		return participation;
-	}
+    @Transient
+    public String getAgentAsString() {
+        return agentAsString;
+    }
 
-	public void setParticipation(Participation participation) {
-		this.participation = participation;
-	}
+    public void setAgentAsString(String agentAsString) {
+        this.agentAsString = agentAsString;
+    }
 
-	@Transient
-	public boolean getInvestigationalNewDrugIndicator() {
-		return getStudyAgentINDAssociations() != null && getStudyAgentINDAssociations().size() > 0;
-	}
+    public Participation getParticipation() {
+        return participation;
+    }
 
-	@Transient
-	public void addStudyAgentINDAssociation(StudyAgentINDAssociation ass) {
-		getStudyAgentINDAssociations().add(ass);
-		ass.setStudyAgent(this);
-	}
+    public void setParticipation(Participation participation) {
+        this.participation = participation;
+    }
 
-	public INDType getIndType() {
-		return indType;
-	}
-	public void setIndType(INDType indType) {
-		this.indType = indType;
-	}
+    @Transient
+    public boolean getInvestigationalNewDrugIndicator() {
+        return getStudyAgentINDAssociations() != null && getStudyAgentINDAssociations().size() > 0;
+    }
 
-	public String getOtherAgent() {
-		return otherAgent;
-	}
+    @Transient
+    public void addStudyAgentINDAssociation(StudyAgentINDAssociation ass) {
+        getStudyAgentINDAssociations().add(ass);
+        ass.setStudyAgent(this);
+    }
 
-	public void setOtherAgent(String otherAgent) {
-		this.otherAgent = otherAgent;
-	}
-	
-	
+    public INDType getIndType() {
+        return indType;
+    }
 
-	public Boolean getPartOfLeadIND() {
-		return partOfLeadIND;
-	}
+    public void setIndType(INDType indType) {
+        this.indType = indType;
+    }
 
-	public void setPartOfLeadIND(Boolean partOfLeadIND) {
-		this.partOfLeadIND = partOfLeadIND;
-	}
+    public String getOtherAgent() {
+        return otherAgent;
+    }
 
-	@Transient
-	public String getAgentName(){
-		if(StringUtils.isNotEmpty(otherAgent)) return otherAgent;
-		if(agent != null) return agent.getName();
-		return "no-agent-name";
-	}
+    public void setOtherAgent(String otherAgent) {
+        this.otherAgent = otherAgent;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((agent == null) ? 0 : agent.hashCode());
-		result = prime * result
-				+ ((otherAgent == null) ? 0 : otherAgent.hashCode());
-		return result;
-	}
+    public Boolean getPartOfLeadIND() {
+        return partOfLeadIND;
+    }
 
-	///OBJECT METHODS
-	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final StudyAgent other = (StudyAgent) obj;
-		if (agent == null) {
-			if (other.agent != null)
-				return false;
-		} else if (!agent.equals(other.agent))
-			return false;
-		if (otherAgent == null) {
-			if (other.otherAgent != null)
-				return false;
-		} else if (!otherAgent.equals(other.otherAgent))
-			return false;
-		return true;
-	}
-	
+    public void setPartOfLeadIND(Boolean partOfLeadIND) {
+        this.partOfLeadIND = partOfLeadIND;
+    }
 
-	
+    @Transient
+    public String getAgentName() {
+        if (StringUtils.isNotEmpty(otherAgent)) return otherAgent;
+        if (agent != null) return agent.getName();
+        return "no-agent-name";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((agent == null) ? 0 : agent.hashCode());
+        result = prime * result + ((otherAgent == null) ? 0 : otherAgent.hashCode());
+        return result;
+    }
+
+    // /OBJECT METHODS
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final StudyAgent other = (StudyAgent) obj;
+        if (agent == null) {
+            if (other.agent != null) return false;
+        } else if (!agent.equals(other.agent)) return false;
+        if (otherAgent == null) {
+            if (other.otherAgent != null) return false;
+        } else if (!otherAgent.equals(other.otherAgent)) return false;
+        return true;
+    }
+
 }

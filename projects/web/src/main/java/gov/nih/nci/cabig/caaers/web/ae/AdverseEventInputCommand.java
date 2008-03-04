@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 
-
 /**
  * @author Krikor Krumlian
  */
@@ -19,7 +18,8 @@ public interface AdverseEventInputCommand {
     void save();
 
     public String getTreatmentDescriptionType();
+
     public void setTreatmentDescriptionType(String type);
-    
+
     public boolean getIgnoreCompletedStudy();
 }

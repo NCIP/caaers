@@ -17,23 +17,25 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * This is a nested collection view of an AdverseEventReport, exposing the various attributions
- * in a way that's friendly to the form view and the data binder.  It's a map of lists of lists.
- * The keys/indices are
+ * This is a nested collection view of an AdverseEventReport, exposing the various attributions in a
+ * way that's friendly to the form view and the data binder. It's a map of lists of lists. The
+ * keys/indices are
  * <ul>
- *   <li>The attribution key (from the constants in {@link ExpeditedAdverseEventInputCommand})
- *   <li>The adverse event index (relative to the AE report)
- *   <li>The cause (study agent, concomitant medication, disease, etc.) index within the AE
+ * <li>The attribution key (from the constants in {@link ExpeditedAdverseEventInputCommand})
+ * <li>The adverse event index (relative to the AE report)
+ * <li>The cause (study agent, concomitant medication, disease, etc.) index within the AE
  * </ul>
- *
+ * 
  * @author Rhett Sutphin
  */
 public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
     public AttributionMap(ExpeditedAdverseEventReport aeReport) {
-        super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(aeReport));
+        super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(
+                        aeReport));
     }
 
-    private static class AeAttributionListTransformer implements Transformer<String, List<List<Attribution>>> {
+    private static class AeAttributionListTransformer implements
+                    Transformer<String, List<List<Attribution>>> {
         private ExpeditedAdverseEventReport aeReport;
 
         public AeAttributionListTransformer(ExpeditedAdverseEventReport aeReport) {
@@ -43,7 +45,8 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
         public List<List<Attribution>> transform(String s) {
             CauseAndAttributionAccessor<?, ?> accessor = CauseAndAttributionAccessor.getByKey(s);
             if (accessor == null) {
-                throw new IllegalArgumentException("Don't know how to map " + s + " to a attributions collection");
+                throw new IllegalArgumentException("Don't know how to map " + s
+                                + " to a attributions collection");
             }
             return new AdverseEventsList(aeReport, accessor);
         }
@@ -51,12 +54,11 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
 
     private static class AdverseEventsList extends AbstractListDecorator<List<Attribution>> {
         private ExpeditedAdverseEventReport adverseEventReport;
+
         private CauseAndAttributionAccessor<?, ?> accessor;
 
-        public AdverseEventsList(
-            ExpeditedAdverseEventReport adverseEventReport,
-            CauseAndAttributionAccessor<?, ?> accessor
-        ) {
+        public AdverseEventsList(ExpeditedAdverseEventReport adverseEventReport,
+                        CauseAndAttributionAccessor<?, ?> accessor) {
             this.adverseEventReport = adverseEventReport;
             this.accessor = accessor;
         }
@@ -69,21 +71,20 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
     }
 
     private static class AttributionsList<C extends DomainObject, A extends AdverseEventAttribution<C>>
-        implements List<Attribution>
-    {
+                    implements List<Attribution> {
         private AdverseEvent adverseEvent;
+
         private CauseAndAttributionAccessor<C, A> accessor;
+
         private List<A> attributions;
 
-        public AttributionsList(
-            AdverseEvent adverseEvent,
-            CauseAndAttributionAccessor<C, A> accessor
-        ) {
+        public AttributionsList(AdverseEvent adverseEvent,
+                        CauseAndAttributionAccessor<C, A> accessor) {
             this.adverseEvent = adverseEvent;
             this.accessor = accessor;
         }
 
-        @SuppressWarnings({ "unchecked" })
+        @SuppressWarnings( { "unchecked" })
         private List<A> getAeAttributions() {
             if (attributions == null) {
                 List<A> realAttribs = accessor.getAttributionsList(adverseEvent);
@@ -134,8 +135,7 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
             return aeAttrib;
         }
 
-        ////// UNIMPLEMENTED LIST METHODS
-
+        // //// UNIMPLEMENTED LIST METHODS
 
         public boolean contains(Object o) {
             throw new UnsupportedOperationException("contains not implemented");

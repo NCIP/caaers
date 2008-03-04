@@ -13,23 +13,26 @@ import java.util.LinkedHashMap;
 import java.util.Collection;
 
 /**
- * Created by IntelliJ IDEA.
- * User: Biju Joseph
- * Date: Oct 8, 2007
- * Time: 11:39:45 AM
- * To change this template use File | Settings | File Templates.
+ * Created by IntelliJ IDEA. User: Biju Joseph Date: Oct 8, 2007 Time: 11:39:45 AM To change this
+ * template use File | Settings | File Templates.
  */
-public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implements AfterInvocationProvider {
+public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implements
+                AfterInvocationProvider {
 
-    private String accessPrivilege = Constants.CSM_ACCESS_PRIVILEGE; //default
+    private String accessPrivilege = Constants.CSM_ACCESS_PRIVILEGE; // default
+
     private String processConfigAttribute;
+
     private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
+
     private Class processDomainObjectClass = AbstractMutableDomainObject.class;
 
-    private Logger log = Logger.getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
+    private Logger log = Logger
+                    .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
 
-
-    public Object decide(Authentication authentication, Object object, ConfigAttributeDefinition configAttributeDefinition, Object returnedObject) throws AccessDeniedException {
+    public Object decide(Authentication authentication, Object object,
+                    ConfigAttributeDefinition configAttributeDefinition, Object returnedObject)
+                    throws AccessDeniedException {
 
         if (returnedObject == null) {
             if (log.isDebugEnabled()) {
@@ -38,8 +41,8 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
 
             return null;
         }
-        if (returnedObject instanceof Collection ||returnedObject.getClass().isArray()) {
-         log.debug("Return object is collection, skipping");
+        if (returnedObject instanceof Collection || returnedObject.getClass().isArray()) {
+            log.debug("Return object is collection, skipping");
             return returnedObject;
         }
         log.debug("Checking authorization on object " + returnedObject.getClass().getName());
@@ -57,9 +60,11 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
             hasPermission = true;
         }
 
-        DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap.get(returnedObject.getClass().getName());
+        DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
+                        .get(returnedObject.getClass().getName());
         if (auth != null) {
-            hasPermission = auth.checkAuthorization(authentication, "ACCESS", (AbstractMutableDomainObject) returnedObject);
+            hasPermission = auth.checkAuthorization(authentication, "ACCESS",
+                            (AbstractMutableDomainObject) returnedObject);
         }
         if (hasPermission) {
             return returnedObject;
@@ -69,11 +74,9 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
             }
 
             throw new AccessDeniedException(
-                    "User does not have permission to view to this Study Site"
-            );
+                            "User does not have permission to view to this Study Site");
         }
     }
-
 
     public String getAccessPrivilege() {
         return accessPrivilege;
@@ -95,7 +98,6 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
         return true;
     }
 
-
     public String getProcessConfigAttribute() {
         return processConfigAttribute;
     }
@@ -108,7 +110,8 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
         return domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
     }
 
-    public void setDomainObjectSiteSecurityAuhthorizationCheckProvidersMap(LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
+    public void setDomainObjectSiteSecurityAuhthorizationCheckProvidersMap(
+                    LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
         this.domainObjectSiteSecurityAuhthorizationCheckProvidersMap = domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
     }
 }

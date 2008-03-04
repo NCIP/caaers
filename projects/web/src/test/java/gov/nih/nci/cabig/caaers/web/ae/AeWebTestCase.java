@@ -25,17 +25,24 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public abstract class AeWebTestCase extends WebTestCase {
     protected StudyParticipantAssignment assignment;
 
     protected StudyParticipantAssignmentDao assignmentDao;
+
     protected CreateExpeditedAdverseEventCommand command;
+
     protected ExpeditedAdverseEventReportDao reportDao;
+
     protected ReportDefinitionDao reportDefinitionDao;
+
     protected StudyDao studyDao;
+
     protected ParticipantDao participantDao;
+
     protected Errors errors;
+
     protected ExpeditedReportTree expeditedReportTree;
 
     @Override
@@ -57,11 +64,15 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract CreateExpeditedAdverseEventCommand createCommand();
 
     protected final CreateExpeditedAdverseEventCommand createRealCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory, expeditedReportTree);
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao,
+                        reportDefinitionDao, studyDao, participantDao, nowFactory,
+                        expeditedReportTree);
     }
 
     protected final CreateExpeditedAdverseEventCommand createMockCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao, reportDefinitionDao, studyDao, participantDao, nowFactory, expeditedReportTree) {
+        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao,
+                        reportDefinitionDao, studyDao, participantDao, nowFactory,
+                        expeditedReportTree) {
             @Override
             public StudyParticipantAssignment getAssignment() {
                 return assignment;
@@ -88,13 +99,15 @@ public abstract class AeWebTestCase extends WebTestCase {
         c.getAeReport().setReporter(new Reporter());
         c.getAeReport().getReporter().setFirstName("Dan");
         c.getAeReport().getReporter().setLastName("McReporter");
-        c.getAeReport().getReporter().getContactMechanisms().put(ReportPerson.EMAIL, "dan@example.com");
+        c.getAeReport().getReporter().getContactMechanisms().put(ReportPerson.EMAIL,
+                        "dan@example.com");
         c.getAeReport().setPhysician(new Physician());
         c.getAeReport().getPhysician().setFirstName("Jim");
         c.getAeReport().getPhysician().setLastName("O'Physician");
-        c.getAeReport().getPhysician().getContactMechanisms().put(ReportPerson.EMAIL, "docjim@example.com");
-        
-        //CheckpointTab
+        c.getAeReport().getPhysician().getContactMechanisms().put(ReportPerson.EMAIL,
+                        "docjim@example.com");
+
+        // CheckpointTab
         c.setNextPage(5);
         return c;
     }

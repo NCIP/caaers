@@ -14,15 +14,17 @@ import java.util.List;
 
 /**
  * This class represents the Ctc domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "ctc_versions")
 public class Ctc extends AbstractImmutableDomainObject {
     private String name;
+
     private List<CtcCategory> categories;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getName() {
         return name;
@@ -33,7 +35,8 @@ public class Ctc extends AbstractImmutableDomainObject {
     }
 
     @OneToMany(mappedBy = "ctc")
-    @OrderBy // by ID for consistency
+    @OrderBy
+    // by ID for consistency
     @Cascade(value = { CascadeType.LOCK })
     public List<CtcCategory> getCategories() {
         return categories;

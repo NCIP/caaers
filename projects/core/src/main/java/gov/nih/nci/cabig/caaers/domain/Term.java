@@ -7,14 +7,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This class represents the Term domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 public enum Term implements CodedEnum<Integer> {
-    CTC(1,"CTC"),
-    MEDDRA(2,"MedDRA")
-    ;
+    CTC(1, "CTC"), MEDDRA(2, "MedDRA");
 
     private int code;
+
     private String displayName;
 
     Term(int code) {

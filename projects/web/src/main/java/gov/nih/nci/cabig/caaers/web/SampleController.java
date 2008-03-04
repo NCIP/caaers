@@ -29,7 +29,8 @@ public class SampleController extends AbstractTabbedFlowFormController<Object> {
     }
 
     @Override
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
+                    Object command, BindException errors) throws Exception {
         log.info("Sample controller finished");
         return new ModelAndView(new RedirectView("/pages/ae/sample", true));
     }

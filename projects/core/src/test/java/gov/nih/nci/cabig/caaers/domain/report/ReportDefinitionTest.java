@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT, CREATE_REPORT_FORMAT  })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_REPORT_FORMAT })
 public class ReportDefinitionTest extends CaaersTestCase {
     private ReportDefinition def;
 
@@ -18,7 +18,7 @@ public class ReportDefinitionTest extends CaaersTestCase {
         super.setUp();
         def = new ReportDefinition();
     }
-    
+
     public void testCreateReport() throws Exception {
         Report created = def.createReport();
         assertNotNull(created);
@@ -29,7 +29,8 @@ public class ReportDefinitionTest extends CaaersTestCase {
     // hibernate uses dynamic proxies for items in collections
     public void testEqualsIfOneIsSubclass() throws Exception {
         ReportDefinition def1 = new ReportDefinition();
-        ReportDefinition def2 = new ReportDefinition() { }; // anonymous subclass
+        ReportDefinition def2 = new ReportDefinition() {
+        }; // anonymous subclass
 
         assertEquals(def1, def2);
     }

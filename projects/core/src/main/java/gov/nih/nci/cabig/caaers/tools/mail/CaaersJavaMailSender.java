@@ -31,27 +31,27 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl {
     }
 
     public String getPassword() {
-	return configuration.get(Configuration.SMTP_PASSWORD);
+        return configuration.get(Configuration.SMTP_PASSWORD);
     }
 
     public void setPassword(String password) {
-	throw unsupported("password");
+        throw unsupported("password");
     }
 
     @Override
     public void send(SimpleMailMessage message) {
-	String fromAddress = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
-	if (!fromAddress.equals("")) 
-	    message.setFrom(fromAddress);
-	super.send(message);
+        String fromAddress = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
+        if (!fromAddress.equals("")) message.setFrom(fromAddress);
+        super.send(message);
     }
-    
+
     @Required
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
     private UnsupportedOperationException unsupported(String prop) {
-        return new UnsupportedOperationException(prop + " is set through the application configuration");
+        return new UnsupportedOperationException(prop
+                        + " is set through the application configuration");
     }
 }

@@ -42,24 +42,36 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Krikor Krumlian
  */
 public abstract class AbstractRoutineAdverseEventInputController
-    extends AutomaticSaveFlowFormController<RoutineAdverseEventInputCommand, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
+                extends
+                AutomaticSaveFlowFormController<RoutineAdverseEventInputCommand, RoutineAdverseEventReport, RoutineAdverseEventReportDao>
 
 {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
     protected ParticipantDao participantDao;
+
     protected StudyDao studyDao;
+
     protected StudyParticipantAssignmentDao assignmentDao;
+
     protected CtcTermDao ctcTermDao;
+
     protected ExpeditedAdverseEventReportDao reportDao;
+
     protected RoutineAdverseEventReportDao routineReportDao;
+
     protected StudyAgentDao studyAgentDao;
+
     protected CtcCategoryDao ctcCategoryDao;
+
     protected LowLevelTermDao lowLevelTermDao;
+
     protected TreatmentAssignmentDao treatmentAssignmentDao;
+
     protected NowFactory nowFactory;
+
     protected EvaluationService evaluationService;
-    
+
     private final Log log = LogFactory.getLog(getClass());
 
     protected AbstractRoutineAdverseEventInputController() {
@@ -71,7 +83,8 @@ public abstract class AbstractRoutineAdverseEventInputController
     protected abstract FlowFactory<RoutineAdverseEventInputCommand> createFlowFactory();
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+                    throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
@@ -88,67 +101,74 @@ public abstract class AbstractRoutineAdverseEventInputController
         ControllerTools.registerEnumEditor(binder, Attribution.class);
     }
 
-    
     @Override
-    protected int getInitialPage(HttpServletRequest request){
-    	boolean isActionAvailable = request.getParameter("action") != null ? true : false;
-    	
-    	if (isActionAvailable && request.getParameter("action").equals("create")){
-    		log.debug("This is a Create where the Participant & Study are already defined");
-    		return 1;
-    	}
-    	// default behaviour 
-    	return super.getInitialPage(request);
-    }
-    
-    @Override
-    @SuppressWarnings("unchecked")
-    protected Map referenceData(
-        HttpServletRequest request, Object oCommand, Errors errors, int page
-    ) throws Exception {
-    	//If Study MedDRA based create an AdverseEvent , else Don't  
-    	RoutineAdverseEventInputCommand command = ((RoutineAdverseEventInputCommand)oCommand);
-    	if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
-    		 if (command.getAeRoutineReport().getAdverseEvents().size() == 0) {
-    	        	command.getAeRoutineReport().addAdverseEvent(new AdverseEvent());
-    	        }
-		}
-    	
-        Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
-        refdata.put("participantSummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getParticipantSummaryLine());
-        refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getStudySummaryLine());
-        refdata.put("term",  getTerm(command));
-        if (displaySummary(page)) {
-            refdata.put("routineAeSummary", ((RoutineAdverseEventInputCommand) oCommand).getAeRoutineReport().getSummary());
+    protected int getInitialPage(HttpServletRequest request) {
+        boolean isActionAvailable = request.getParameter("action") != null ? true : false;
+
+        if (isActionAvailable && request.getParameter("action").equals("create")) {
+            log.debug("This is a Create where the Participant & Study are already defined");
+            return 1;
         }
-        return refdata;
-    }
-    
-    private String getTerm( RoutineAdverseEventInputCommand command){
-    	String studyTerminology = "";
-    	if (command.getStudy() != null ) {
-    		Term term = command.getStudy().getAeTerminology().getTerm();
-    		if (term == Term.MEDDRA) {
-    			studyTerminology = " " + command.getStudy().getAeTerminology().getMeddraVersion().getName();
-			}
-    		if (term == Term.CTC) {
-    			studyTerminology = " " + command.getStudy().getAeTerminology().getCtcVersion().getName();
-			}
-		}
-    	return studyTerminology;
+        // default behaviour
+        return super.getInitialPage(request);
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request, RoutineAdverseEventInputCommand command, Tab<RoutineAdverseEventInputCommand> tab) {
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
+                    throws Exception {
+        // If Study MedDRA based create an AdverseEvent , else Don't
+        RoutineAdverseEventInputCommand command = ((RoutineAdverseEventInputCommand) oCommand);
+        if (command.getStudy() != null
+                        && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+            if (command.getAeRoutineReport().getAdverseEvents().size() == 0) {
+                command.getAeRoutineReport().addAdverseEvent(new AdverseEvent());
+            }
+        }
+
+        Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+        refdata.put("participantSummaryLine", ((RoutineAdverseEventInputCommand) oCommand)
+                        .getAeRoutineReport().getParticipantSummaryLine());
+        refdata.put("studySummaryLine", ((RoutineAdverseEventInputCommand) oCommand)
+                        .getAeRoutineReport().getStudySummaryLine());
+        refdata.put("term", getTerm(command));
+        if (displaySummary(page)) {
+            refdata.put("routineAeSummary", ((RoutineAdverseEventInputCommand) oCommand)
+                            .getAeRoutineReport().getSummary());
+        }
+        return refdata;
+    }
+
+    private String getTerm(RoutineAdverseEventInputCommand command) {
+        String studyTerminology = "";
+        if (command.getStudy() != null) {
+            Term term = command.getStudy().getAeTerminology().getTerm();
+            if (term == Term.MEDDRA) {
+                studyTerminology = " "
+                                + command.getStudy().getAeTerminology().getMeddraVersion()
+                                                .getName();
+            }
+            if (term == Term.CTC) {
+                studyTerminology = " "
+                                + command.getStudy().getAeTerminology().getCtcVersion().getName();
+            }
+        }
+        return studyTerminology;
+    }
+
+    @Override
+    protected boolean shouldSave(HttpServletRequest request,
+                    RoutineAdverseEventInputCommand command,
+                    Tab<RoutineAdverseEventInputCommand> tab) {
         return super.shouldSave(request, command, tab)
-            && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
+                        && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
 
     protected boolean displaySummary(int page) {
         return true;
     }
 
-    /** Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller. */
+    /** Adds ajax sub-page view capability. TODO: factor this into main tabbed flow controller. */
     @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
         String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
@@ -161,9 +181,8 @@ public abstract class AbstractRoutineAdverseEventInputController
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModelAndView processFinish(
-        HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
-    ) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
+                    Object oCommand, BindException errors) throws Exception {
         RoutineAdverseEventInputCommand command = (RoutineAdverseEventInputCommand) oCommand;
         save(command, errors);
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
@@ -177,11 +196,12 @@ public abstract class AbstractRoutineAdverseEventInputController
     }
 
     @Override
-    protected RoutineAdverseEventReport getPrimaryDomainObject(RoutineAdverseEventInputCommand command) {
+    protected RoutineAdverseEventReport getPrimaryDomainObject(
+                    RoutineAdverseEventInputCommand command) {
         return command.getAeRoutineReport();
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
@@ -200,7 +220,7 @@ public abstract class AbstractRoutineAdverseEventInputController
     }
 
     public void setReportDao(ExpeditedAdverseEventReportDao reportDao) {
-        this.reportDao = reportDao; 
+        this.reportDao = reportDao;
     }
 
     public void setStudyAgentDao(StudyAgentDao studyAgentDao) {
@@ -216,14 +236,14 @@ public abstract class AbstractRoutineAdverseEventInputController
     }
 
     public LowLevelTermDao getLowLevelTermDao() {
-		return lowLevelTermDao;
-	}
+        return lowLevelTermDao;
+    }
 
-	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
-		this.lowLevelTermDao = lowLevelTermDao;
-	}
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
 
-	public NowFactory getNowFactory() {
+    public NowFactory getNowFactory() {
         return nowFactory;
     }
 
@@ -239,21 +259,20 @@ public abstract class AbstractRoutineAdverseEventInputController
         this.routineReportDao = routineReportDao;
     }
 
-	public TreatmentAssignmentDao getTreatmentAssignmentDao() {
-		return treatmentAssignmentDao;
-	}
+    public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+        return treatmentAssignmentDao;
+    }
 
-	public void setTreatmentAssignmentDao(
-			TreatmentAssignmentDao treatmentAssignmentDao) {
-		this.treatmentAssignmentDao = treatmentAssignmentDao;
-	}
+    public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
+        this.treatmentAssignmentDao = treatmentAssignmentDao;
+    }
 
-	public EvaluationService getEvaluationService() {
-		return evaluationService;
-	}
+    public EvaluationService getEvaluationService() {
+        return evaluationService;
+    }
 
-	public void setEvaluationService(EvaluationService evaluationService) {
-		this.evaluationService = evaluationService;
-	}
-    
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
 }

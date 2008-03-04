@@ -24,122 +24,124 @@ import org.springframework.web.servlet.mvc.BaseCommandController;
  */
 public class CreateParticipantAjaxFacade {
 
-	public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
+    public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
 
-	public static final String AJAX_INDEX_PARAMETER = "index";
+    public static final String AJAX_INDEX_PARAMETER = "index";
 
-	public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
+    public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
 
-	public static final String CREATE_PARTICIPANT_FORM_NAME = CreateParticipantController.class.getName()
-			+ ".FORM.command";
+    public static final String CREATE_PARTICIPANT_FORM_NAME = CreateParticipantController.class
+                    .getName()
+                    + ".FORM.command";
 
-	public static final String EDIT_PARTICIPANT_FORM_NAME = EditParticipantController.class.getName() + ".FORM.command";
+    public static final String EDIT_PARTICIPANT_FORM_NAME = EditParticipantController.class
+                    .getName()
+                    + ".FORM.command";
 
-	public static final String CREATE_PARTICIPANT_REPLACED_FORM_NAME = CREATE_PARTICIPANT_FORM_NAME + ".to-replace";
+    public static final String CREATE_PARTICIPANT_REPLACED_FORM_NAME = CREATE_PARTICIPANT_FORM_NAME
+                    + ".to-replace";
 
-	public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME + ".to-replace";
+    public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME
+                    + ".to-replace";
 
+    private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
 
-	private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
+    private OrganizationDao organizationDao;
 
-	private OrganizationDao organizationDao;
+    private NewParticipantCommand getParticipantCommand(final HttpServletRequest request) {
+        NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession()
+                        .getAttribute(CREATE_PARTICIPANT_REPLACED_FORM_NAME);
+        if (newParticipantCommand == null) {
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+                            CREATE_PARTICIPANT_FORM_NAME);
+        }
+        if (newParticipantCommand == null) {
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+                            EDIT_PARTICIPANT_REPLACED_FORM_NAME);
+        }
 
-	private NewParticipantCommand getParticipantCommand(final HttpServletRequest request) {
-		NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-				CREATE_PARTICIPANT_REPLACED_FORM_NAME);
-		if (newParticipantCommand == null) {
-			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-					CREATE_PARTICIPANT_FORM_NAME);
-		}
-		if (newParticipantCommand == null) {
-			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-					EDIT_PARTICIPANT_REPLACED_FORM_NAME);
-		}
+        if (newParticipantCommand == null) {
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
+                            EDIT_PARTICIPANT_FORM_NAME);
+        }
 
-		if (newParticipantCommand == null) {
-			newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-					EDIT_PARTICIPANT_FORM_NAME);
-		}
+        request.setAttribute(BaseCommandController.DEFAULT_COMMAND_NAME, newParticipantCommand);
+        return newParticipantCommand;
+    }
 
-		request.setAttribute(BaseCommandController.DEFAULT_COMMAND_NAME, newParticipantCommand);
-		return newParticipantCommand;
-	}
+    public List<Organization> matchOrganization(final String text) {
+        List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+    }
 
-	public List<Organization> matchOrganization(final String text) {
-		List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
-		return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
-	}
+    private String[] extractSubnames(final String text) {
+        return text.split("\\s+");
+    }
 
-	private String[] extractSubnames(final String text) {
-		return text.split("\\s+");
-	}
+    public String addIdentifier(final int index, final int type) {
+        HttpServletRequest request = getHttpServletRequest();
+        NewParticipantCommand newParticipantCommand = getParticipantCommand(request);
 
-	public String addIdentifier(final int index, final int type) {
-		HttpServletRequest request = getHttpServletRequest();
-		NewParticipantCommand newParticipantCommand = getParticipantCommand(request);
+        if (type == 1) {
+            newParticipantCommand.getParticipant().getIdentifiers().add(
+                            new SystemAssignedIdentifier());
+        } else if (type == 2) {
+            newParticipantCommand.getParticipant().getIdentifiers().add(
+                            new OrganizationAssignedIdentifier());
+        }
+        request.setAttribute("listEditorIndex", index);
+        request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getParticipant()
+                        .getIdentifiers().size() - 1);
+        request.setAttribute("type", type);
+        request.setAttribute(AJAX_SUBVIEW_PARAMETER, "newParticipantCommandIdentifierSection");
+        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
 
-		if (type == 1) {
-			newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
-		}
-		else if (type == 2) {
-			newParticipantCommand.getParticipant().getIdentifiers().add(new OrganizationAssignedIdentifier());
-		}
-		request.setAttribute("listEditorIndex", index);
-		request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getParticipant().getIdentifiers().size() - 1);
-		request.setAttribute("type", type);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, "newParticipantCommandIdentifierSection");
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+        String url = getCurrentPageContextRelative(WebContextFactory.get());
+        String html = getOutputFromJsp(url);
+        request.setAttribute(AJAX_INDEX_PARAMETER, index);
 
-		String url = getCurrentPageContextRelative(WebContextFactory.get());
-		String html = getOutputFromJsp(url);
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
+        return html;
+    }
 
-		return html;
-	}
+    public boolean deleteIdentifier(final int index) {
+        NewParticipantCommand newParticipantCommand = getParticipantCommand(getHttpServletRequest());
+        return newParticipantCommand.getParticipant().getIdentifiers().remove(index) != null;
+    }
 
-	public boolean deleteIdentifier(final int index) {
-		NewParticipantCommand newParticipantCommand = getParticipantCommand(getHttpServletRequest());
-		return newParticipantCommand.getParticipant().getIdentifiers().remove(index) != null;
-	}
+    private String getOutputFromJsp(final String jspResource) {
+        String html = "Error in rendering...";
+        try {
+            html = WebContextFactory.get().forwardToString(jspResource);
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e.getMessage(), e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e.getMessage(), e);
+        }
+        return html;
+    }
 
-	private String getOutputFromJsp(final String jspResource) {
-		String html = "Error in rendering...";
-		try {
-			html = WebContextFactory.get().forwardToString(jspResource);
-		}
-		catch (ServletException e) {
-			throw new CaaersSystemException(e.getMessage(), e);
-		}
-		catch (IOException e) {
-			throw new CaaersSystemException(e.getMessage(), e);
-		}
-		return html;
-	}
+    private String getCurrentPageContextRelative(final WebContext webContext) {
+        String contextPath = webContext.getHttpServletRequest().getContextPath();
+        String page = webContext.getCurrentPage();
+        if (contextPath == null) {
+            log.debug("context path not set");
+            return page;
+        } else if (!page.startsWith(contextPath)) {
+            log.debug(page + " does not start with context path " + contextPath);
+            return page;
+        } else {
+            return page.substring(contextPath.length());
+        }
+    }
 
-	private String getCurrentPageContextRelative(final WebContext webContext) {
-		String contextPath = webContext.getHttpServletRequest().getContextPath();
-		String page = webContext.getCurrentPage();
-		if (contextPath == null) {
-			log.debug("context path not set");
-			return page;
-		}
-		else if (!page.startsWith(contextPath)) {
-			log.debug(page + " does not start with context path " + contextPath);
-			return page;
-		}
-		else {
-			return page.substring(contextPath.length());
-		}
-	}
+    private HttpServletRequest getHttpServletRequest() {
+        return WebContextFactory.get().getHttpServletRequest();
+    }
 
-	private HttpServletRequest getHttpServletRequest() {
-		return WebContextFactory.get().getHttpServletRequest();
-	}
+    // //// CONFIGURATION
 
-	// //// CONFIGURATION
-
-	public void setOrganizationDao(final OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+    public void setOrganizationDao(final OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
 
 }

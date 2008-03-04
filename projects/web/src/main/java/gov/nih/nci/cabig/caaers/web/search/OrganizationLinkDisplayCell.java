@@ -8,16 +8,18 @@ import org.extremecomponents.table.core.TableModel;
 
 public class OrganizationLinkDisplayCell extends AbstractCell {
 
-	@Override
-	protected String getCellValue(final TableModel model, final Column column) {
+    @Override
+    protected String getCellValue(final TableModel model, final Column column) {
 
-		Organization organization = (Organization) model.getCurrentRowBean();
-		String cellValue = column.getValueAsString();
-		String link = model.getContext().getContextPath() + "/pages/admin/editOrganization?organizationId=";
+        Organization organization = (Organization) model.getCurrentRowBean();
+        String cellValue = column.getValueAsString();
+        String link = model.getContext().getContextPath()
+                        + "/pages/admin/editOrganization?organizationId=";
 
-		if (organization != null) {
-			cellValue = "<a href=\"" + link + organization.getId().toString() + "\">" + cellValue + "</a>";
-		}
-		return cellValue;
-	}
+        if (organization != null) {
+            cellValue = "<a href=\"" + link + organization.getId().toString() + "\">" + cellValue
+                            + "</a>";
+        }
+        return cellValue;
+    }
 }

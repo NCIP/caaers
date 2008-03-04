@@ -12,87 +12,91 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND;
-@CaaersUseCases({ CREATE_STUDY })
-public class InvestigationalNewDrugDaoTest extends  DaoTestCase<InvestigationalNewDrugDao> {
-	OrganizationDao orgDao;
-	InvestigatorDao invDao;
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		 orgDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-		 invDao = (InvestigatorDao) getApplicationContext().getBean("investigatorDao");
-	}
 
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+@CaaersUseCases( { CREATE_STUDY })
+public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNewDrugDao> {
+    OrganizationDao orgDao;
 
-	public void testDomainClass(){
-		assertEquals("Domain class should be same", getDao().domainClass().getName(), InvestigationalNewDrug.class.getName());
-	}
+    InvestigatorDao invDao;
 
-	public void testSave() {
-		int id = 0;
-		{
-			Organization org = orgDao.getById(-1001);
-			InvestigationalNewDrug idrug = new InvestigationalNewDrug();
-			idrug.setIndNumber(12345);
-			OrganizationHeldIND holder = new OrganizationHeldIND();
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        orgDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
+        invDao = (InvestigatorDao) getApplicationContext().getBean("investigatorDao");
+    }
 
-			holder.setOrganization(org);
-			idrug.setINDHolder(holder);
-			holder.setInvestigationalNewDrug(idrug);
-		    getDao().save(idrug);
-		    id = idrug.getId();
-		    log.debug("ID of the InvestigationalNewDrug :" + idrug.getId());
-		}
-		interruptSession();
-		{
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-			InvestigationalNewDrug nDrug = getDao().getById(id);
-			Organization org = orgDao.getById(-1001);
-			assertEquals("IND number should be same", new Integer(12345), nDrug.getIndNumber());
-			System.out.println(nDrug.getINDHolder());
-			assertEquals("The organization Id should be same", org.getId(),((OrganizationHeldIND) nDrug.getINDHolder()).getOrganization().getId());
-		}
+    public void testDomainClass() {
+        assertEquals("Domain class should be same", getDao().domainClass().getName(),
+                        InvestigationalNewDrug.class.getName());
+    }
 
-		//Investigator Held
-		{
-			Investigator inv = invDao.getById(-100);
-			InvestigationalNewDrug idrug = new InvestigationalNewDrug();
-			idrug.setIndNumber(12346);
-			InvestigatorHeldIND holder = new InvestigatorHeldIND();
-			holder.setInvestigator(inv);
-			idrug.setINDHolder(holder);
-			holder.setInvestigationalNewDrug(idrug);
-			getDao().save(idrug);
-			id = idrug.getId();
-			log.debug("ID of the InvestigationalNewDrug :" + idrug.getId());
+    public void testSave() {
+        int id = 0;
+        {
+            Organization org = orgDao.getById(-1001);
+            InvestigationalNewDrug idrug = new InvestigationalNewDrug();
+            idrug.setIndNumber(12345);
+            OrganizationHeldIND holder = new OrganizationHeldIND();
 
-		}
-		interruptSession();
-		{
-			InvestigationalNewDrug nDrug = getDao().getById(id);
-			assertEquals("IND number should be same", new Integer(12346), nDrug.getIndNumber());
-		}
-	}
+            holder.setOrganization(org);
+            idrug.setINDHolder(holder);
+            holder.setInvestigationalNewDrug(idrug);
+            getDao().save(idrug);
+            id = idrug.getId();
+            log.debug("ID of the InvestigationalNewDrug :" + idrug.getId());
+        }
+        interruptSession();
+        {
 
+            InvestigationalNewDrug nDrug = getDao().getById(id);
+            Organization org = orgDao.getById(-1001);
+            assertEquals("IND number should be same", new Integer(12345), nDrug.getIndNumber());
+            System.out.println(nDrug.getINDHolder());
+            assertEquals("The organization Id should be same", org.getId(),
+                            ((OrganizationHeldIND) nDrug.getINDHolder()).getOrganization().getId());
+        }
 
-	public void testSearchInvestigationalNewDrugs(){
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("sponsorName", "N");
-		//map.put("xstrINDNumber", "8");
-		List<InvestigationalNewDrug> inds = getDao().searchInvestigationalNewDrugs(map );
-		for(InvestigationalNewDrug ind : inds)
-		   System.out.println(ind);
-		assertEquals("Search Result size", 2, inds.size());
-	}
+        // Investigator Held
+        {
+            Investigator inv = invDao.getById(-100);
+            InvestigationalNewDrug idrug = new InvestigationalNewDrug();
+            idrug.setIndNumber(12346);
+            InvestigatorHeldIND holder = new InvestigatorHeldIND();
+            holder.setInvestigator(inv);
+            idrug.setINDHolder(holder);
+            holder.setInvestigationalNewDrug(idrug);
+            getDao().save(idrug);
+            id = idrug.getId();
+            log.debug("ID of the InvestigationalNewDrug :" + idrug.getId());
 
-	public void testFindByIds() throws Exception{
-		List<InvestigationalNewDrug> drugs = getDao().findByIds(new String[]{"-881"});
-		assertNotNull("There should be Investigational New Drugs available", drugs);
-		assertEquals("IND number should be -881", -881, (int)drugs.get(0).getIndNumber());
-	}
+        }
+        interruptSession();
+        {
+            InvestigationalNewDrug nDrug = getDao().getById(id);
+            assertEquals("IND number should be same", new Integer(12346), nDrug.getIndNumber());
+        }
+    }
+
+    public void testSearchInvestigationalNewDrugs() {
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("sponsorName", "N");
+        // map.put("xstrINDNumber", "8");
+        List<InvestigationalNewDrug> inds = getDao().searchInvestigationalNewDrugs(map);
+        for (InvestigationalNewDrug ind : inds)
+            System.out.println(ind);
+        assertEquals("Search Result size", 2, inds.size());
+    }
+
+    public void testFindByIds() throws Exception {
+        List<InvestigationalNewDrug> drugs = getDao().findByIds(new String[] { "-881" });
+        assertNotNull("There should be Investigational New Drugs available", drugs);
+        assertEquals("IND number should be -881", -881, (int) drugs.get(0).getIndNumber());
+    }
 
 }

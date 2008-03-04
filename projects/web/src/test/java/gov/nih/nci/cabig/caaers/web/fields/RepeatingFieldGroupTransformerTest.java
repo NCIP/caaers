@@ -9,7 +9,9 @@ public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
     private RepeatingFieldGroupTransformer transformer;
 
     private static final InputField.Category FACTORY_0_FIELD_0_CATEGORY = InputField.Category.TEXT;
+
     private static final InputField.Category FACTORY_1_FIELD_0_CATEGORY = InputField.Category.DATE;
+
     private static final InputField.Category FACTORY_2_FIELD_0_CATEGORY = InputField.Category.TEXTAREA;
 
     @Override

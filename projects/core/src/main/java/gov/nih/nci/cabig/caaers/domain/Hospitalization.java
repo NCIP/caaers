@@ -8,14 +8,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This class represents the Hospitalization domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 public enum Hospitalization implements CodedEnum<Integer> {
-    NONE(0),
-    HOSPITALIZATION(1),
-    PROLONGED_HOSPITALIZATION(2, "Prolonged hospitalization");
+    NONE(0), HOSPITALIZATION(1), PROLONGED_HOSPITALIZATION(2, "Prolonged hospitalization");
 
     private int code;
+
     private String displayName;
 
     Hospitalization(int code) {

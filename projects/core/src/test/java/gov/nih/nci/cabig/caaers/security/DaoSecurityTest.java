@@ -37,8 +37,9 @@ import org.springframework.test.AbstractTransactionalSpringContextTests;
  */
 public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 
-    private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo("dun", "127.1.2.7",
-            DateUtils.createDate(2004, Calendar.NOVEMBER, 2), "/studycalendar/zippo");
+    private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(
+                    "dun", "127.1.2.7", DateUtils.createDate(2004, Calendar.NOVEMBER, 2),
+                    "/studycalendar/zippo");
 
     @Override
     public String[] getConfigLocations() {
@@ -50,11 +51,14 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         DatabaseDataSourceConnection conn = null;
         try {
             conn = new DatabaseDataSourceConnection(dataSource);
-            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader()
-                    .getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/DaoSecurityTest.xml"));
+            FlatXmlDataSet data = new FlatXmlDataSet(
+                            Thread
+                                            .currentThread()
+                                            .getContextClassLoader()
+                                            .getResourceAsStream(
+                                                            "gov/nih/nci/cabig/caaers/security/testdata/DaoSecurityTest.xml"));
             DatabaseOperation.CLEAN_INSERT.execute(conn, data);
-        }
-        finally {
+        } finally {
             if (conn != null) {
                 conn.close();
             }
@@ -86,32 +90,33 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
     // Temporarily commented
     public void testStudySave() {
         // TODO: Uncomment this testcase, after checking with Joshua
-//        assert true;
-//        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
-//        StudyDao dao = (StudyDao)
-//                getApplicationContext().getBean("studyDao");
-//        Study study = new Study();
-//        study.setShortTitle("short title");
-//        study.setLongTitle("long title");
-//        study.setMultiInstitutionIndicator(Boolean.FALSE); //study.setPrimarySponsorCode("SCODE_101"); --
-//        // we should set the primaryfundinsponsor (Object) //study.setCtcVersion(getCtc());
-//        study.setTerminology(Fixtures.createCtcV3Terminology(study));
-//        try {
-//            dao.save(study);
-//            fail("Should have failed to save study");
-//        }
-//        catch (AccessDeniedException ex) {
-//            assertTrue(true);
-//        } catch (RuntimeException ex) {
-//            Throwable rootCause =
-//                    SecurityTestUtils.getRootCause(ex);
-//            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof
-//                    AccessDeniedException);
-//        }
-//        SecurityTestUtils.switchToSuperuser();
-//        dao.save(study);
-//
-//        SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        // assert true;
+        // SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
+        // StudyDao dao = (StudyDao)
+        // getApplicationContext().getBean("studyDao");
+        // Study study = new Study();
+        // study.setShortTitle("short title");
+        // study.setLongTitle("long title");
+        // study.setMultiInstitutionIndicator(Boolean.FALSE);
+        // //study.setPrimarySponsorCode("SCODE_101"); --
+        // // we should set the primaryfundinsponsor (Object) //study.setCtcVersion(getCtc());
+        // study.setTerminology(Fixtures.createCtcV3Terminology(study));
+        // try {
+        // dao.save(study);
+        // fail("Should have failed to save study");
+        // }
+        // catch (AccessDeniedException ex) {
+        // assertTrue(true);
+        // } catch (RuntimeException ex) {
+        // Throwable rootCause =
+        // SecurityTestUtils.getRootCause(ex);
+        // assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof
+        // AccessDeniedException);
+        // }
+        // SecurityTestUtils.switchToSuperuser();
+        // dao.save(study);
+        //
+        // SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
 
     }
 
@@ -146,13 +151,12 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         study.setAeTerminology(Fixtures.createCtcV3Terminology(study));
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
         // study.setPrimarySponsorCode("SCODE_101");
-         try {
-         dao.merge(study);
-         } catch (AccessDeniedException ex) {
-             assertTrue(true);
-          }
-        SecurityTestUtils.switchUser("study_cd1", new String[]{
-                "ROLE_caaers_study_cd"});
+        try {
+            dao.merge(study);
+        } catch (AccessDeniedException ex) {
+            assertTrue(true);
+        }
+        SecurityTestUtils.switchUser("study_cd1", new String[] { "ROLE_caaers_study_cd" });
         dao.merge(study);
 
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
@@ -176,20 +180,18 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         try {
             dao.save(participant);
             fail("Should have failed to save participant");
-        }
-        catch (AccessDeniedException ex) {
+        } catch (AccessDeniedException ex) {
             assertTrue(true);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
 
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
         try {
             dao.save(participant);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Should not have failed to save participant: " + ex.getMessage());
         }
@@ -213,8 +215,7 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
         try {
             dao.save(participant);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Should not have failed to save study: " + ex.getMessage());
         }
@@ -229,19 +230,17 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         try {
             dao.save(participant);
             fail("Should have failed to update participant");
-        }
-        catch (AccessDeniedException ex) {
+        } catch (AccessDeniedException ex) {
             assertTrue(true);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
         try {
             dao.save(participant);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Should not have failed to update participant: " + ex.getMessage());
         }
@@ -258,20 +257,18 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         try {
             a.setParticipant(new Participant());
             fail("Should have prevented setting participant");
-        }
-        catch (AccessDeniedException ex) {
+        } catch (AccessDeniedException ex) {
             assertTrue(true);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
 
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
         try {
             a.setParticipant(new Participant());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Should not have prevented setting participant");
         }
@@ -280,13 +277,13 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
     }
 
     public void testAuthorizationSwitch() {
-        AuthorizationSwitch authzSwitch = (AuthorizationSwitch) getApplicationContext().getBean("authorizationSwitch");
+        AuthorizationSwitch authzSwitch = (AuthorizationSwitch) getApplicationContext().getBean(
+                        "authorizationSwitch");
         authzSwitch.setOn(false);
         StudyParticipantAssignment a = new StudyParticipantAssignment();
         try {
             a.setParticipant(new Participant());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             fail("Should not have prevented setting participant");
         }
@@ -295,13 +292,12 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         try {
             a.setParticipant(new Participant());
             fail("Should have prevented setting participant");
-        }
-        catch (AccessDeniedException ex) {
+        } catch (AccessDeniedException ex) {
             assertTrue(true);
-        }
-        catch (RuntimeException ex) {
+        } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
     }
 

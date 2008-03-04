@@ -22,17 +22,20 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     private static final Log log = LogFactory.getLog(CreateExpeditedAdverseEventCommand.class);
 
     private Participant participant;
+
     private Study study;
 
     private ParticipantDao participantDao;
+
     private StudyDao studyDao;
+
     private StudyParticipantAssignmentDao assignmentDao;
 
-    public CreateExpeditedAdverseEventCommand(
-        StudyParticipantAssignmentDao assignmentDao, ExpeditedAdverseEventReportDao reportDao,
-        ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ParticipantDao participantDao,
-        NowFactory nowFactory, ExpeditedReportTree expeditedReportTree
-    ) {
+    public CreateExpeditedAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao,
+                    ExpeditedAdverseEventReportDao reportDao,
+                    ReportDefinitionDao reportDefinitionDao, StudyDao studyDao,
+                    ParticipantDao participantDao, NowFactory nowFactory,
+                    ExpeditedReportTree expeditedReportTree) {
         super(reportDao, reportDefinitionDao, expeditedReportTree);
         this.assignmentDao = assignmentDao;
         this.studyDao = studyDao;
@@ -41,7 +44,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Override
     public StudyParticipantAssignment getAssignment() {
@@ -75,7 +78,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         }
     }
 
-    ////// BOUND PROPERTIES
+    // //// BOUND PROPERTIES
 
     @Override
     public Participant getParticipant() {
@@ -94,16 +97,16 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
     public void setStudy(Study study) {
         this.study = study;
-//        // TODO: this is temporary -- need a cleaner way to force this to load
-//        // in same session as study is loaded and/or reassociate study with hib session later
-//        if (study != null) {
-//            this.study.getStudyAgents().size();
-//            this.study.getCtepStudyDiseases().size();
-//            this.study.getStudySites().size();
-//            for(StudySite site : study.getStudySites()){
-//                site.getStudyPersonnels().size();
-//            }
-//        }
+        // // TODO: this is temporary -- need a cleaner way to force this to load
+        // // in same session as study is loaded and/or reassociate study with hib session later
+        // if (study != null) {
+        // this.study.getStudyAgents().size();
+        // this.study.getCtepStudyDiseases().size();
+        // this.study.getStudySites().size();
+        // for(StudySite site : study.getStudySites()){
+        // site.getStudyPersonnels().size();
+        // }
+        // }
         updateReportAssignmentLink();
     }
 }

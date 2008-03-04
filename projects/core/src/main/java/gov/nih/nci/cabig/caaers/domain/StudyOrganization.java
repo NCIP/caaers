@@ -23,9 +23,9 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * This class encapsulates all types of organizations associated with a Study
- *
+ * 
  * @author Ram Chilukuri
- *
+ * 
  */
 @Entity
 @Table(name = "study_organizations")
@@ -34,19 +34,22 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_organizations_id") })
 public abstract class StudyOrganization extends AbstractMutableDomainObject implements StudyChild {
 
-	private Study study;
+    private Study study;
 
-	private Organization organization;
+    private Organization organization;
 
-	private LazyListHelper lazyListHelper;
+    private LazyListHelper lazyListHelper;
 
+    public StudyOrganization() {
+        lazyListHelper = new LazyListHelper();
+        lazyListHelper.add(StudyInvestigator.class,
+                        new StudyOrganizationChildInstantiateFactory<StudyInvestigator>(this,
+                                        StudyInvestigator.class));
+        lazyListHelper.add(StudyPersonnel.class,
+                        new StudyOrganizationChildInstantiateFactory<StudyPersonnel>(this,
+                                        StudyPersonnel.class));
 
-	public StudyOrganization(){
-		lazyListHelper = new LazyListHelper();
-    	lazyListHelper.add(StudyInvestigator.class, new StudyOrganizationChildInstantiateFactory<StudyInvestigator>( this, StudyInvestigator.class));
-    	lazyListHelper.add(StudyPersonnel.class, new StudyOrganizationChildInstantiateFactory<StudyPersonnel>(this, StudyPersonnel.class) );
-
-	}
+    }
 
     public void addStudyPersonnel(StudyPersonnel studyPersonnel) {
         getStudyPersonnels().add(studyPersonnel);
@@ -58,66 +61,67 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
         studyInvestigator.setStudyOrganization(this);
     }
 
-	@ManyToOne
-	@JoinColumn(name = "site_id", nullable = false)
-	@Cascade(value = { CascadeType.LOCK })
-	public Organization getOrganization() {
-		return organization;
-	}
+    @ManyToOne
+    @JoinColumn(name = "site_id", nullable = false)
+    @Cascade(value = { CascadeType.LOCK })
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	@ManyToOne
-	@JoinColumn(name = "study_id", nullable = false)
-	@Cascade(value = { CascadeType.LOCK })
-	public Study getStudy() {
-		return study;
-	}
+    @ManyToOne
+    @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = { CascadeType.LOCK })
+    public Study getStudy() {
+        return study;
+    }
 
-    @OneToMany (mappedBy = "studyOrganization")
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studyOrganization")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyInvestigator> getStudyInvestigatorsInternal() {
-		return lazyListHelper.getInternalList(StudyInvestigator.class);
-	}
+        return lazyListHelper.getInternalList(StudyInvestigator.class);
+    }
 
-	public void setStudyInvestigatorsInternal(List<StudyInvestigator> studyInvestigators) {
-		lazyListHelper.setInternalList(StudyInvestigator.class, studyInvestigators);
-	}
+    public void setStudyInvestigatorsInternal(List<StudyInvestigator> studyInvestigators) {
+        lazyListHelper.setInternalList(StudyInvestigator.class, studyInvestigators);
+    }
 
-	@OneToMany (mappedBy = "studyOrganization", fetch=FetchType.LAZY)
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<StudyPersonnel> getStudyPersonnelsInternal() {
-		return lazyListHelper.getInternalList(StudyPersonnel.class);
-	}
+    @OneToMany(mappedBy = "studyOrganization", fetch = FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<StudyPersonnel> getStudyPersonnelsInternal() {
+        return lazyListHelper.getInternalList(StudyPersonnel.class);
+    }
 
-	public void setStudyPersonnelsInternal(List<StudyPersonnel> studyPersonnels) {
-		lazyListHelper.setInternalList(StudyPersonnel.class, studyPersonnels);
-	}
+    public void setStudyPersonnelsInternal(List<StudyPersonnel> studyPersonnels) {
+        lazyListHelper.setInternalList(StudyPersonnel.class, studyPersonnels);
+    }
 
-	@Transient
-	public List<StudyPersonnel> getStudyPersonnels() {
-		return lazyListHelper.getLazyList(StudyPersonnel.class);
-	}
+    @Transient
+    public List<StudyPersonnel> getStudyPersonnels() {
+        return lazyListHelper.getLazyList(StudyPersonnel.class);
+    }
 
-	public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
-		setStudyPersonnelsInternal(studyPersonnels);
-	}
-	@Transient
-	public List<StudyInvestigator> getStudyInvestigators() {
-		return lazyListHelper.getLazyList(StudyInvestigator.class);
-	}
+    public void setStudyPersonnels(List<StudyPersonnel> studyPersonnels) {
+        setStudyPersonnelsInternal(studyPersonnels);
+    }
 
-	public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
-		setStudyInvestigatorsInternal(studyInvestigators);
-	}
+    @Transient
+    public List<StudyInvestigator> getStudyInvestigators() {
+        return lazyListHelper.getLazyList(StudyInvestigator.class);
+    }
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
-	}
+    public void setStudyInvestigators(List<StudyInvestigator> studyInvestigators) {
+        setStudyInvestigatorsInternal(studyInvestigators);
+    }
 
-	public void setStudy(final Study study) {
-		this.study = study;
-	}
+    public void setOrganization(final Organization organization) {
+        this.organization = organization;
+    }
 
-	@Transient
-	public abstract String getRoleName();
+    public void setStudy(final Study study) {
+        this.study = study;
+    }
+
+    @Transient
+    public abstract String getRoleName();
 
 }

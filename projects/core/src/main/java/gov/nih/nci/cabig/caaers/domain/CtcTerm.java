@@ -14,19 +14,26 @@ import java.util.Collections;
 
 /**
  * This class represents the CtcTerm domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
 public class CtcTerm extends AbstractImmutableDomainObject {
     private String term;
+
     private String select;
+
     private String ctepTerm;
+
     private String ctepCode;
+
     private CtcCategory category;
+
     private boolean otherRequired;
+
     private List<CtcGrade> contextualGrades;
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public String getFullName() {
@@ -36,7 +43,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
             return getTerm() + " - " + getSelect();
         }
     }
-    
+
     @Transient
     public String getFullNameWithMedDRA() {
         if (select == null) {
@@ -49,14 +56,14 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     @Transient
     public List<CodedGrade> getGrades() {
         if (getContextualGrades() == null || getContextualGrades().size() == 0) {
-            return Arrays.<CodedGrade>asList(Grade.values());
+            return Arrays.<CodedGrade> asList(Grade.values());
         } else {
             // this rigamarole is just to change the generic type without creating a new list
-            return Collections.<CodedGrade>unmodifiableList(getContextualGrades());
+            return Collections.<CodedGrade> unmodifiableList(getContextualGrades());
         }
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getTerm() {
         return term;

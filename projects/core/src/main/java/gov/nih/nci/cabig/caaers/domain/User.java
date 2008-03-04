@@ -21,32 +21,44 @@ import org.hibernate.annotations.IndexColumn;
 
 /**
  * This class represents the User domain object associated with the Adverse event report.
+ * 
  * @author Saurabh Agrawal
  */
 @MappedSuperclass
 public abstract class User extends AbstractMutableDomainObject {
 
     private String loginId;
+
     private List<UserGroupType> userGroupTypes;
+
     private String emailAddress;
+
     private String phoneNumber;
+
     private String faxNumber;
+
     private String firstName;
+
     private String middleName;
+
     private String lastName;
 
     private String salt;
+
     private String token;
+
     private Timestamp tokenTime;
+
     private Timestamp passwordLastSet;
+
     private int numFailedLogins;
+
     private List<String> passwordHistory;
 
     public User() {
         userGroupTypes = new ArrayList<UserGroupType>();
-	passwordHistory = new ArrayList<String>();
+        passwordHistory = new ArrayList<String>();
     }
-
 
     public String getLoginId() {
         return loginId;
@@ -83,76 +95,76 @@ public abstract class User extends AbstractMutableDomainObject {
 
     /* begin password stuff */
 
-    @Column(name="salt")
+    @Column(name = "salt")
     public String getSalt() {
-	return salt == null ? "" : salt;
+        return salt == null ? "" : salt;
     }
 
     public void setSalt(String salt) {
-	this.salt = salt;
+        this.salt = salt;
     }
 
-    @Column(name="token")
+    @Column(name = "token")
     public String getToken() {
-	return token;
+        return token;
     }
 
     public void setToken(String token) {
-	this.token = token;
+        this.token = token;
     }
 
     public void resetToken() {
-	this.tokenTime = new Timestamp(0);
+        this.tokenTime = new Timestamp(0);
     }
 
-    @Column(name="token_time")
+    @Column(name = "token_time")
     public Timestamp getTokenTime() {
-	return tokenTime;
+        return tokenTime;
     }
 
     public void setTokenTime(Timestamp tokenTime) {
-	this.tokenTime = tokenTime;
+        this.tokenTime = tokenTime;
     }
 
-    @Column(name="password_last_set")
+    @Column(name = "password_last_set")
     public Timestamp getPasswordLastSet() {
-	return passwordLastSet == null ? new Timestamp(0) : passwordLastSet;
+        return passwordLastSet == null ? new Timestamp(0) : passwordLastSet;
     }
 
     public void setPasswordLastSet(Timestamp passwordLastSet) {
-	this.passwordLastSet = passwordLastSet;
+        this.passwordLastSet = passwordLastSet;
     }
 
     @Transient
     public long getPasswordAge() {
-	return new Date().getTime() - getPasswordLastSet().getTime();
+        return new Date().getTime() - getPasswordLastSet().getTime();
     }
 
     @CollectionOfElements
-    @JoinTable(name="password_history",
-	       joinColumns=@JoinColumn(name="user_id"))
-    @IndexColumn(name="list_index")
-    @Column(name="password")
+    @JoinTable(name = "password_history", joinColumns = @JoinColumn(name = "user_id"))
+    @IndexColumn(name = "list_index")
+    @Column(name = "password")
     public List<String> getPasswordHistory() {
-	return passwordHistory;
+        return passwordHistory;
     }
 
     public void setPasswordHistory(List<String> passwordHistory) {
-	this.passwordHistory = passwordHistory;
+        this.passwordHistory = passwordHistory;
     }
 
     public void addPasswordToHistory(String password, int maxHistorySize) {
-	passwordHistory.add(password);
-	while (passwordHistory.size() > maxHistorySize && maxHistorySize > 0) passwordHistory.remove(0); 
+        passwordHistory.add(password);
+        while (passwordHistory.size() > maxHistorySize && maxHistorySize > 0)
+            passwordHistory.remove(0);
     }
 
-    @Column(name="num_failed_logins")
+    @Column(name = "num_failed_logins")
     public int getFailedLoginAttempts() {
-	return numFailedLogins;
+        return numFailedLogins;
     }
 
     public void setFailedLoginAttempts(int numFailedLogins) {
-	this.numFailedLogins = numFailedLogins;
+        this.numFailedLogins = numFailedLogins;
     }
 
     /* end password stuff */
@@ -163,7 +175,8 @@ public abstract class User extends AbstractMutableDomainObject {
 
         User user = (User) o;
 
-        if (emailAddress != null ? !emailAddress.equals(user.emailAddress) : user.emailAddress != null) return false;
+        if (emailAddress != null ? !emailAddress.equals(user.emailAddress)
+                        : user.emailAddress != null) return false;
         if (faxNumber != null ? !faxNumber.equals(user.faxNumber) : user.faxNumber != null) return false;
         if (loginId != null ? !loginId.equals(user.loginId) : user.loginId != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
@@ -180,12 +193,11 @@ public abstract class User extends AbstractMutableDomainObject {
         return result;
     }
 
-    //@OneToMany(targetEntity = UserGroup.class,)
-//    @Transient
-//    public List<UserGroup> getUserGroups() {
-//        return null;
-//    }
-
+    // @OneToMany(targetEntity = UserGroup.class,)
+    // @Transient
+    // public List<UserGroup> getUserGroups() {
+    // return null;
+    // }
 
     @Transient
     public List<UserGroupType> getUserGroupTypes() {
@@ -193,7 +205,7 @@ public abstract class User extends AbstractMutableDomainObject {
     }
 
     public void setUserGroupTypes(List<UserGroupType> userGroupTypes) {
-        //this.userGroupTypes = new HashSet<UserGroupType>();
+        // this.userGroupTypes = new HashSet<UserGroupType>();
         this.userGroupTypes = userGroupTypes;
     }
 
@@ -204,7 +216,6 @@ public abstract class User extends AbstractMutableDomainObject {
     public void removeUserGroupType(UserGroupType userGroupType) {
         this.userGroupTypes.remove(userGroupType);
     }
-
 
     @Transient
     public String getLastFirst() {

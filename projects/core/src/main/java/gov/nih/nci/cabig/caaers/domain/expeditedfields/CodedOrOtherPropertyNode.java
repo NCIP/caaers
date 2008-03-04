@@ -7,6 +7,7 @@ import org.springframework.beans.MutablePropertyValues;
  */
 class CodedOrOtherPropertyNode extends PropertyNode {
     private String otherPropertyName;
+
     private String otherDisplayName;
 
     public CodedOrOtherPropertyNode(String codedPropertyName, String otherPropertyName) {
@@ -28,10 +29,10 @@ class CodedOrOtherPropertyNode extends PropertyNode {
     @Override
     protected boolean isImmediatePropertyMatch(String immediatePropertyName) {
         return immediatePropertyName.equals(getCodedPropertyName())
-            || immediatePropertyName.equals(getOtherPropertyName());
+                        || immediatePropertyName.equals(getOtherPropertyName());
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getCodedPropertyName() {
         return getPropertyName();

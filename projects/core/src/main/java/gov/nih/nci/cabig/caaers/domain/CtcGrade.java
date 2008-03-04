@@ -10,15 +10,18 @@ import javax.persistence.Transient;
 
 /**
  * This class represents the CtcGrade domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
 public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrade {
     private Grade grade;
+
     private CtcTerm term;
+
     private String text;
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public Integer getCode() {
@@ -30,7 +33,7 @@ public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrad
         return getText();
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     @Type(type = "grade")
     @Column(name = "grade_code")

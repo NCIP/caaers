@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_STUDY })
+@CaaersUseCases( { CREATE_STUDY })
 public class StudyAgentDaoTest extends DaoTestCase<StudyAgentDao> {
     public void testGetById() throws Exception {
         StudyAgent loaded = getDao().getById(-11);

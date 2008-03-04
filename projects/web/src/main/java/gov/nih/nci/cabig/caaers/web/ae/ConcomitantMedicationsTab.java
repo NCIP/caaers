@@ -11,20 +11,19 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 public class ConcomitantMedicationsTab extends AeTab {
 
     public ConcomitantMedicationsTab() {
-        super("Concomitant medications", 
-        		ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION.getDisplayName(), 
-        		"ae/conMed");
+        super("Concomitant medications", ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION
+                        .getDisplayName(), "ae/conMed");
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-        InputField agentNameField = InputFieldFactory.createTextField("agentName", "Information about concomitant medication", false);
+    protected void createFieldGroups(AeInputFieldCreator creator,
+                    ExpeditedAdverseEventInputCommand command) {
+        InputField agentNameField = InputFieldFactory.createTextField("agentName",
+                        "Information about concomitant medication", false);
         InputFieldAttributes.setSize(agentNameField, 50);
 
         creator.createRepeatingFieldGroup("conmed", "concomitantMedications",
-            new SimpleNumericDisplayNameCreator("Medication"),
-            agentNameField
-        );
+                        new SimpleNumericDisplayNameCreator("Medication"), agentNameField);
     }
 
     @Override

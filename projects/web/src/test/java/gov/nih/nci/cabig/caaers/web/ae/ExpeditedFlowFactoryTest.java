@@ -12,7 +12,9 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
  */
 public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     private ExpeditedFlowFactory factory = new ExpeditedFlowFactory("Test flow");
+
     private ExpeditedAdverseEventInputCommand command;
+
     private Study study;
 
     @Override
@@ -30,18 +32,18 @@ public class ExpeditedFlowFactoryTest extends CaaersTestCase {
     public void testTabCount() throws Exception {
         assertEquals(17, factory.createFlow(command).getTabCount());
     }
-    
+
     public void testTabCountIfAdeersReportingNotRequiredCtc() throws Exception {
-    	study.setAdeersReporting(Boolean.FALSE);
+        study.setAdeersReporting(Boolean.FALSE);
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertEquals(17, flow.getTabCount());
         assertTrue("Wrong basics tab", flow.getTab(0) instanceof CtcBasicsOutcomeTab);
     }
-    
+
     public void testTabCountIfAdeersReportingNotRequiredMeddra() throws Exception {
-    	study.getAeTerminology().setTerm(Term.MEDDRA);
-    	study.setAdeersReporting(Boolean.FALSE);
-    	Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
+        study.getAeTerminology().setTerm(Term.MEDDRA);
+        study.setAdeersReporting(Boolean.FALSE);
+        Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertEquals(17, flow.getTabCount());
         assertTrue("Wrong basics tab", flow.getTab(0) instanceof MeddraBasicsOutcomeTab);
     }

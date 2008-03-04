@@ -9,13 +9,13 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputField.SIZE;
 import java.util.Map;
 
 /**
- * Helpers for accessing known attributes of InputFields without having to cast.
- * (Also serves as documentation of the expected types of various attributes.)
- *
+ * Helpers for accessing known attributes of InputFields without having to cast. (Also serves as
+ * documentation of the expected types of various attributes.)
+ * 
  * @author Rhett Sutphin
  */
 public class InputFieldAttributes {
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public static Map<Object, Object> getOptions(InputField field) {
         return (Map<Object, Object>) field.getAttributes().get(OPTIONS);
     }
@@ -32,12 +32,12 @@ public class InputFieldAttributes {
         field.getAttributes().put(COLS, cols);
     }
 
-    public static Integer getRows(InputField field){
-    	return (Integer) field.getAttributes().get(ROWS);
+    public static Integer getRows(InputField field) {
+        return (Integer) field.getAttributes().get(ROWS);
     }
 
-    public static void setRows(InputField field, Integer rows){
-    	field.getAttributes().put(ROWS, rows);
+    public static void setRows(InputField field, Integer rows) {
+        field.getAttributes().put(ROWS, rows);
     }
 
     public static Integer getSize(InputField field) {
@@ -55,10 +55,11 @@ public class InputFieldAttributes {
     public static void setDetails(InputField field, String details) {
         field.getAttributes().put(DETAILS, details);
     }
-    
-    public static void enableAutoCompleterClearButton(InputField field){
-    	field.getAttributes().put(InputField.ENABLE_CLEAR, true);
+
+    public static void enableAutoCompleterClearButton(InputField field) {
+        field.getAttributes().put(InputField.ENABLE_CLEAR, true);
     }
-    
-    private InputFieldAttributes() { }
+
+    private InputFieldAttributes() {
+    }
 }

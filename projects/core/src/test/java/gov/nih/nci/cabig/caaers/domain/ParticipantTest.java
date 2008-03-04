@@ -6,9 +6,10 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 import java.util.List;
 
-@CaaersUseCases({ CREATE_PARTICIPANT})
+@CaaersUseCases( { CREATE_PARTICIPANT })
 public class ParticipantTest extends CaaersTestCase {
     private Participant participant;
+
     private static final Organization SITE = Fixtures.createOrganization("Round abouts here");
 
     @Override

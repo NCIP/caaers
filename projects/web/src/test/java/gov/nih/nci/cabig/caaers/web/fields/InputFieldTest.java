@@ -8,15 +8,18 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 
 /**
- * This class actually tests the features of {@link AbstractInputField};
- * maven doesn't seem to run testcases that start with "Abstract".
- *
+ * This class actually tests the features of {@link AbstractInputField}; maven doesn't seem to run
+ * testcases that start with "Abstract".
+ * 
  * @author Rhett Sutphin
  */
 public class InputFieldTest extends CaaersTestCase {
     private AbstractInputField field;
+
     private TestBean bean;
+
     private BeanWrapper wrappedBean;
+
     private Errors errors;
 
     @Override
@@ -27,7 +30,8 @@ public class InputFieldTest extends CaaersTestCase {
         errors = new BindException(bean, "command");
 
         field = new AbstractInputField() {
-            @Override public Category getCategory() {
+            @Override
+            public Category getCategory() {
                 return Category.TEXT;
             }
         };
@@ -58,7 +62,8 @@ public class InputFieldTest extends CaaersTestCase {
         FieldError actualError = errors.getFieldError("name");
         assertNotNull("Error is on wrong property", actualError);
         assertEquals("Wrong key for error", "REQUIRED", actualError.getCode());
-        assertEquals("Wrong default message for error", "Missing Nomen", actualError.getDefaultMessage());
+        assertEquals("Wrong default message for error", "Missing Nomen", actualError
+                        .getDefaultMessage());
     }
 
     public void testNoErrorsWhenNotRequiredFieldIsNotPresent() throws Exception {

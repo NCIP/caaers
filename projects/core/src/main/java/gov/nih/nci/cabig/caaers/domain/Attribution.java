@@ -8,16 +8,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This class represents the Attribution domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 public enum Attribution implements CodedEnum<Integer> {
-    UNRELATED(1),
-    UNLIKELY(2),
-    POSSIBLE(3),
-    PROBABLE(4),
-    DEFINITE(5);
+    UNRELATED(1), UNLIKELY(2), POSSIBLE(3), PROBABLE(4), DEFINITE(5);
 
     private int code;
+
     Attribution(int code) {
         this.code = code;
         register(this);

@@ -26,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {
 
-	public SubmitReportController() {
+    public SubmitReportController() {
         setCommandClass(SubmitExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
     }
@@ -38,91 +38,92 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-    	SubmitExpeditedAdverseEventCommand command
-            = new SubmitExpeditedAdverseEventCommand(getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
+        SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
+                        getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));
         return command;
-        
+
     }
 
-    @Override	
-   // @Transactional
+    @Override
+    // @Transactional
     @SuppressWarnings("unchecked")
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
-    	SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
+                    Object oCommand, BindException errors) throws Exception {
+        SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
-        
+
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
-        Report report = aeReport.getReports().get(((int)reportIndex));
-        
-       ReportStatus status = null;
-       Date date = new Date();
-       String message = "";
-       String url = "";
-        
+        Report report = aeReport.getReports().get(((int) reportIndex));
+
+        ReportStatus status = null;
+        Date date = new Date();
+        String message = "";
+        String url = "";
+
         boolean endPointUrl = false;
-        for (ReportDelivery delivery: report.getReportDeliveries()) {
-			ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
+        for (ReportDelivery delivery : report.getReportDeliveries()) {
+            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
 
-			if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL)) {
-				endPointUrl=true;
-				break;
-			}
-		}
-        
-        System.out.println("END POINT URL .. " + endPointUrl);
-        
-        if (!endPointUrl) {
-	        // TODO: take out
-        	status = ReportStatus.COMPLETED;
-    	} else {
-        	status = ReportStatus.INPROCESS;      	
+            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL)) {
+                endPointUrl = true;
+                break;
+            }
         }
-        
-    	//generate report and send ...
-    	AdeersReportGenerator aegen = (AdeersReportGenerator)getApplicationContext().getBean("adeersReportGenerator");
-     	//command.save();
 
-    	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-		String xml = aeser.serialize(aeReport);
+        System.out.println("END POINT URL .. " + endPointUrl);
 
-		
-		try {
-			aegen.generateAndNotify(aeReport.getId()+"", report , xml);
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.error("Error broadcasting message to ESB " + e.getMessage());
-			status = ReportStatus.FAILED;
-			message = "Problem communicating with ESB <br> Please try to resubmit the report <br>"+e.getMessage();
-		}
-		report.setStatus(status);
-		report.setSubmissionUrl(url);
-		report.setSubmissionMessage(message);
-		report.setSubmittedOn(date);
-		
-		report.getLastVersion().setReportStatus(status);
-		report.getLastVersion().setSubmissionUrl(url);
-		report.getLastVersion().setSubmissionMessage(message);
-		report.getLastVersion().setSubmittedOn(date);		
-		
-		command.save();
-    	
-    	
-    	ModelAndView modelAndView;
-    	if (command.getFrom()!= null && command.getFrom().equals("list") ){
-    		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
+        if (!endPointUrl) {
+            // TODO: take out
+            status = ReportStatus.COMPLETED;
+        } else {
+            status = ReportStatus.INPROCESS;
+        }
+
+        // generate report and send ...
+        AdeersReportGenerator aegen = (AdeersReportGenerator) getApplicationContext().getBean(
+                        "adeersReportGenerator");
+        // command.save();
+
+        AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
+        String xml = aeser.serialize(aeReport);
+
+        try {
+            aegen.generateAndNotify(aeReport.getId() + "", report, xml);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Error broadcasting message to ESB " + e.getMessage());
+            status = ReportStatus.FAILED;
+            message = "Problem communicating with ESB <br> Please try to resubmit the report <br>"
+                            + e.getMessage();
+        }
+        report.setStatus(status);
+        report.setSubmissionUrl(url);
+        report.setSubmissionMessage(message);
+        report.setSubmittedOn(date);
+
+        report.getLastVersion().setReportStatus(status);
+        report.getLastVersion().setSubmissionUrl(url);
+        report.getLastVersion().setSubmissionMessage(message);
+        report.getLastVersion().setSubmittedOn(date);
+
+        command.save();
+
+        ModelAndView modelAndView;
+        if (command.getFrom() != null && command.getFrom().equals("list")) {
+            Map<String, Object> model = new ModelMap("participant", command.getParticipant()
+                            .getId());
             model.put("study", command.getStudy().getId());
-            modelAndView =  new ModelAndView("redirectToAeList", model);
-    	}else{
-    		Map<String, Object> model = new ModelMap("aeReport", aeReport.getId());
+            modelAndView = new ModelAndView("redirectToAeList", model);
+        } else {
+            Map<String, Object> model = new ModelMap("aeReport", aeReport.getId());
             model.put("action", "reportSubmission");
-    		modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
-    	}
-    	
+            modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
+        }
+
         return modelAndView;
     }
-
 
 }

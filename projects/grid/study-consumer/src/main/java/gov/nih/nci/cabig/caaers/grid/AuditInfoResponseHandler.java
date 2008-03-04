@@ -19,13 +19,15 @@ public class AuditInfoResponseHandler extends BasicHandler {
 
     private static final Log logger = LogFactory.getLog(AuditInfoResponseHandler.class);
 
-    /*                                                    A
-      * (non-Javadoc)
-      * @see org.apache.axis.Handler#invoke(org.apache.axis.MessageContext)
-      */
+    /*
+     * A (non-Javadoc)
+     * 
+     * @see org.apache.axis.Handler#invoke(org.apache.axis.MessageContext)
+     */
     public void invoke(final MessageContext context) throws AxisFault {
 
-        HttpServletRequest request = (HttpServletRequest) context.getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
+        HttpServletRequest request = (HttpServletRequest) context
+                        .getProperty(HTTPConstants.MC_HTTP_SERVLETREQUEST);
         String identity = SecurityManager.getManager().getCaller();
         if (identity == null) {
             identity = "ANONYMOUS";
@@ -38,10 +40,9 @@ public class AuditInfoResponseHandler extends BasicHandler {
         // logger.error("Error serializing message to string: " + ex.getMessage(), ex);
         // }
         info = request.getRequestURI();
-        gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo.setLocal(new DataAuditInfo(identity, request.getRemoteAddr(),
-                new Date(), info));
+        gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo.setLocal(new DataAuditInfo(identity,
+                        request.getRemoteAddr(), new Date(), info));
 
     }
 
 }
-

@@ -16,13 +16,16 @@ import org.easymock.classextension.EasyMock;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ListAdverseEventsCommandTest extends CaaersTestCase {
     private ListAdverseEventsCommand command;
 
     private StudyDao studyDao;
+
     private StudyParticipantAssignmentDao assignmentDao;
+
     private ParticipantDao participantDao;
+
     private EvaluationService evaluationService;
 
     @Override
@@ -33,7 +36,8 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
         participantDao = registerDaoMockFor(ParticipantDao.class);
         evaluationService = registerMockFor(EvaluationService.class);
 
-        command = new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao, evaluationService);
+        command = new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao,
+                        evaluationService);
     }
 
     public void testExplicitStudyTrumps() throws Exception {
@@ -45,7 +49,7 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
         assertSame(expected, command.getStudy());
         verifyMocks();
     }
-    
+
     public void testGetStudyByNciIdentifier() throws Exception {
         command.setNciIdentifier("NCI");
         Identifier expectedIdentifier = new Identifier();
@@ -53,7 +57,8 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
         expectedIdentifier.setValue("NCI");
         Study expectedStudy = new Study();
 
-        EasyMock.expect(studyDao.getByIdentifier(matchByProperties(expectedIdentifier))).andReturn(expectedStudy);
+        EasyMock.expect(studyDao.getByIdentifier(matchByProperties(expectedIdentifier))).andReturn(
+                        expectedStudy);
         replayMocks();
         assertSame(expectedStudy, command.getStudy());
         verifyMocks();
@@ -76,7 +81,8 @@ public class ListAdverseEventsCommandTest extends CaaersTestCase {
         expectedIdentifier.setValue("MRGR");
         Participant expectedParticipant = new Participant();
 
-        EasyMock.expect(participantDao.getByIdentifier(matchByProperties(expectedIdentifier))).andReturn(expectedParticipant);
+        EasyMock.expect(participantDao.getByIdentifier(matchByProperties(expectedIdentifier)))
+                        .andReturn(expectedParticipant);
         replayMocks();
         assertSame(expectedParticipant, command.getParticipant());
         verifyMocks();

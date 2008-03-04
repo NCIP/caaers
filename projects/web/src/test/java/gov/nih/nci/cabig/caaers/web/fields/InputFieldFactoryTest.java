@@ -26,7 +26,8 @@ public class InputFieldFactoryTest extends CaaersTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade.getName());
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade
+                            .getName());
         }
     }
 
@@ -47,7 +48,8 @@ public class InputFieldFactoryTest extends CaaersTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.toString()), grade.getName());
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.toString()), grade
+                            .getName());
         }
     }
 
@@ -57,7 +59,8 @@ public class InputFieldFactoryTest extends CaaersTestCase {
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
-            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade.toString());
+            assertEquals("Mismatch at expected item " + grade, actual.get(grade.getCode()), grade
+                            .toString());
         }
     }
 }

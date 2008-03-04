@@ -10,8 +10,8 @@ import org.acegisecurity.AuthenticationException;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public interface AuthenticationRequestPopulator {
-	Authentication populate(HttpServletRequest request) throws AuthenticationException;
+    Authentication populate(HttpServletRequest request) throws AuthenticationException;
 }

@@ -24,21 +24,26 @@ import org.springframework.web.context.request.WebRequest;
 /**
  * @author Rhett Sutphin
  */
-/* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: much of this class is shared with PSC. Refactor into a shared library. */
 public class OpenSessionInViewInterceptorFilterTest extends WebTestCase {
     private static final String BEAN_NAME = "interceptor";
 
     private OpenSessionInViewInterceptorFilter filter;
+
     private ApplicationContext applicationContext;
+
     private OpenSessionInViewInterceptor interceptor;
+
     private FilterChain filterChain;
+
     private WebRequestMatcher webRequestMatcher = new WebRequestMatcher();
 
     protected void setUp() throws Exception {
         super.setUp();
         applicationContext = registerMockFor(WebApplicationContext.class);
         interceptor = registerMockFor(OpenSessionInViewInterceptor.class);
-        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext);
+        servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE,
+                        applicationContext);
         expect(applicationContext.getBean(BEAN_NAME)).andReturn(interceptor);
         filterChain = registerMockFor(FilterChain.class);
         // put a parameter on request for use by WebRequestMatcher

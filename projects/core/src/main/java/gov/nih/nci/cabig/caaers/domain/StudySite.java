@@ -14,6 +14,7 @@ import org.hibernate.annotations.CascadeType;
 
 /**
  * This class represents the StudySite domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  * @author Kulasekaran
  */
@@ -21,25 +22,27 @@ import org.hibernate.annotations.CascadeType;
 @DiscriminatorValue(value = "SST")
 public class StudySite extends StudyOrganization {
 
-	private String statusCode;
+    private String statusCode;
+
     private Date startDate;
+
     private Date endDate;
+
     private List<StudyParticipantAssignment> studyParticipantAssignments = new ArrayList<StudyParticipantAssignment>();
 
-	//TODO : to be removed.
-	private Date irbApprovalDate;
+    // TODO : to be removed.
+    private Date irbApprovalDate;
+
     private String roleCode;
 
-
-    //////LOGIC
-
+    // ////LOGIC
 
     public void addAssignment(StudyParticipantAssignment assignment) {
         getStudyParticipantAssignments().add(assignment);
         assignment.setStudySite(this);
     }
 
-	/** Are there any assignments using this relationship? */
+    /** Are there any assignments using this relationship? */
     @Transient
     public boolean isUsed() {
         return getStudyParticipantAssignments().size() > 0;
@@ -50,48 +53,47 @@ public class StudySite extends StudyOrganization {
         return getStudy().getShortTitle() + " : " + getOrganization().getName();
     }
 
-    /// BEAN PROPERTIES
+    // / BEAN PROPERTIES
 
-    public void setStudyParticipantAssignments(List<StudyParticipantAssignment> studyParticipantAssignments) {
+    public void setStudyParticipantAssignments(
+                    List<StudyParticipantAssignment> studyParticipantAssignments) {
         this.studyParticipantAssignments = studyParticipantAssignments;
     }
 
-    @OneToMany (mappedBy = "studySite")
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "studySite")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyParticipantAssignment> getStudyParticipantAssignments() {
         return studyParticipantAssignments;
     }
 
-
     public Date getStartDate() {
-		return startDate;
-	}
+        return startDate;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	public String getStatusCode() {
-		return statusCode;
-	}
+    public String getStatusCode() {
+        return statusCode;
+    }
 
-	public void setStatusCode(String statusCode) {
-		this.statusCode = statusCode;
-	}
+    public void setStatusCode(String statusCode) {
+        this.statusCode = statusCode;
+    }
 
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	@Override
-	@Transient
-	public String getRoleName() {
-		return "Site";
-	}
+    @Override
+    @Transient
+    public String getRoleName() {
+        return "Site";
+    }
 
 }

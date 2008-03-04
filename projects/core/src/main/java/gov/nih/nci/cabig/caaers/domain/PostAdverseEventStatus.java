@@ -8,17 +8,17 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Rhett Sutphin
  */
 public enum PostAdverseEventStatus implements CodedEnum<Integer> {
-	
-	INTERVENTION_CONTINUES(1, "Intervention for AE continues"),
-    RECOVERING(2,"Recovering/Resolving"),
-    RECOVERED_WITH_SEQUELAE(3,"Recovered/Resolved with Sequelae"),
-    RECOVERED_WITHOUT_SEQUELAE(4,"Recovered/Resolved without Sequelae"),
-    NOT_RECOVERED(4, "Not recovered/Not resolved"),
-    DEAD(5, "Fatal/Died")
-    
+
+    INTERVENTION_CONTINUES(1, "Intervention for AE continues"), RECOVERING(2,
+                    "Recovering/Resolving"), RECOVERED_WITH_SEQUELAE(3,
+                    "Recovered/Resolved with Sequelae"), RECOVERED_WITHOUT_SEQUELAE(4,
+                    "Recovered/Resolved without Sequelae"), NOT_RECOVERED(4,
+                    "Not recovered/Not resolved"), DEAD(5, "Fatal/Died")
+
     ;
 
     private int code;
+
     private String displayName;
 
     PostAdverseEventStatus(int code) {

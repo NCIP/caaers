@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class ReviewParticipantTab extends Tab<NewParticipantCommand> {
 
-	public ReviewParticipantTab() {
-		super("Review and Submit", "Review", "par/par_confirmation");
-	}
+    public ReviewParticipantTab() {
+        super("Review and Submit", "Review", "par/par_confirmation");
+    }
 
-	@Override
-	public Map<String, Object> referenceData() {
-		Map<String, Object> refdata = super.referenceData();
-		return refdata;
-	}
+    @Override
+    public Map<String, Object> referenceData() {
+        Map<String, Object> refdata = super.referenceData();
+        return refdata;
+    }
 
 }

@@ -18,6 +18,7 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the ResearchStaff domain object associated with the Adverse event report.
+ * 
  * @author Priyatam
  * @author Kulasekaran
  */
@@ -26,44 +27,43 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_research_staffs_id") })
 public class ResearchStaff extends User {
 
+    private String nciIdentifier;
 
-	private String nciIdentifier;
+    private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
 
-	private List<StudyPersonnel> studyPersonnels = new ArrayList<StudyPersonnel>();
+    private Organization organization;
 
-	private Organization organization;
+    // LOGIC
+    @Transient
+    public boolean isAssociatedToUserGroup(UserGroupType groupType) {
+        return getUserGroupTypes().contains(groupType);
+    }
 
-	//LOGIC
-	@Transient
-	public boolean isAssociatedToUserGroup(UserGroupType groupType){
-		return getUserGroupTypes().contains(groupType);
-	}
-	
-	public void addStudyPersonnel(final StudyPersonnel studyPersonnel) {
-		getStudyPersonnels().add(studyPersonnel);
-	}
+    public void addStudyPersonnel(final StudyPersonnel studyPersonnel) {
+        getStudyPersonnels().add(studyPersonnel);
+    }
 
-	// bean methods
+    // bean methods
 
     @OneToMany(mappedBy = "researchStaff", fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<StudyPersonnel> getStudyPersonnels() {
-		return studyPersonnels;
-	}
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<StudyPersonnel> getStudyPersonnels() {
+        return studyPersonnels;
+    }
 
-	public void setStudyPersonnels(final List<StudyPersonnel> studyPersonnels) {
-		this.studyPersonnels = studyPersonnels;
-	}
+    public void setStudyPersonnels(final List<StudyPersonnel> studyPersonnels) {
+        this.studyPersonnels = studyPersonnels;
+    }
 
-	@ManyToOne
-	@JoinColumn(name = "site_id")
-	public Organization getOrganization() {
-		return organization;
-	}
+    @ManyToOne
+    @JoinColumn(name = "site_id")
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
-	}
+    public void setOrganization(final Organization organization) {
+        this.organization = organization;
+    }
 
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,8 +72,8 @@ public class ResearchStaff extends User {
 
         ResearchStaff that = (ResearchStaff) o;
 
-        if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier) : that.nciIdentifier != null)
-            return false;
+        if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier)
+                        : that.nciIdentifier != null) return false;
 
         return true;
     }
@@ -84,13 +84,12 @@ public class ResearchStaff extends User {
         return result;
     }
 
-   
     public String getNciIdentifier() {
-		return nciIdentifier;
-	}
+        return nciIdentifier;
+    }
 
-	public void setNciIdentifier(final String nciIdentifier) {
-		this.nciIdentifier = nciIdentifier;
-	}
+    public void setNciIdentifier(final String nciIdentifier) {
+        this.nciIdentifier = nciIdentifier;
+    }
 
 }

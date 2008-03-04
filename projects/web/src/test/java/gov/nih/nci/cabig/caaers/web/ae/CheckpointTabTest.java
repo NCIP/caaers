@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createReportDefinition;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
@@ -18,11 +17,12 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class CheckpointTabTest extends AeTabTestCase {
     private ReportDefinition r1, r2, r3;
 
     private EvaluationService evaluationService;
+
     private ReportService reportService;
 
     @Override
@@ -90,7 +90,7 @@ public class CheckpointTabTest extends AeTabTestCase {
 
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.FALSE);
-       
+
         // TODO: there will probably be a call to a service in here somewhere
         getTab().postProcess(request, command, errors);
         List<Report> actualReports = command.getAeReport().getReports();
@@ -107,7 +107,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         command.getOptionalReportDefinitionsMap().put(r1, Boolean.FALSE);
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.FALSE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.FALSE);
-        
+
         // TODO: there will probably be a call to a service in here somewhere
         getTab().postProcess(request, command, errors);
 
@@ -133,45 +133,37 @@ public class CheckpointTabTest extends AeTabTestCase {
         getTab().postProcess(request, command, errors);
     }
 
-   /* No longer we call addRequired report method of evaluation service.
-    * public void testPreProcessEvaluates() throws Exception {
-        evaluationService.addRequiredReports(command.getAeReport());
-        expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
-            .andReturn(Collections.<ReportDefinition>emptyList());
-
-        replayMocks();
-        getTab().onDisplay(request, command);
-        verifyMocks();
-    }
-
-    public void testPreProcessSetsUpOptionalDefList() throws Exception {
-        command.getAeReport().getReports().clear();
-        command.getAeReport().addReport(r1.createReport());
-        command.getAeReport().addReport(createRequiredReport(r2));
-
-        evaluationService.addRequiredReports(command.getAeReport());
-        expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
-            .andReturn(new ArrayList<ReportDefinition>(Arrays.asList(r1, r2, r3)));
-
-        replayMocks();
-        getTab().onDisplay(request, command);
-        verifyMocks();
-
-        Map<ReportDefinition,Boolean> map = command.getOptionalReportDefinitionsMap();
-
-        assertEquals("Wrong number of optional defs", 2, map.size());
-        assertTrue("Optional defs does not include r1", map.containsKey(r1));
-        assertTrue("Optional defs does not include r3", map.containsKey(r3));
-    }
-*/
+    /*
+     * No longer we call addRequired report method of evaluation service. public void
+     * testPreProcessEvaluates() throws Exception {
+     * evaluationService.addRequiredReports(command.getAeReport());
+     * expect(evaluationService.applicableReportDefinitions(command.getAssignment()))
+     * .andReturn(Collections.<ReportDefinition>emptyList());
+     * 
+     * replayMocks(); getTab().onDisplay(request, command); verifyMocks(); }
+     * 
+     * public void testPreProcessSetsUpOptionalDefList() throws Exception {
+     * command.getAeReport().getReports().clear();
+     * command.getAeReport().addReport(r1.createReport());
+     * command.getAeReport().addReport(createRequiredReport(r2));
+     * 
+     * evaluationService.addRequiredReports(command.getAeReport());
+     * expect(evaluationService.applicableReportDefinitions(command.getAssignment())) .andReturn(new
+     * ArrayList<ReportDefinition>(Arrays.asList(r1, r2, r3)));
+     * 
+     * replayMocks(); getTab().onDisplay(request, command); verifyMocks();
+     * 
+     * Map<ReportDefinition,Boolean> map = command.getOptionalReportDefinitionsMap();
+     * 
+     * assertEquals("Wrong number of optional defs", 2, map.size()); assertTrue("Optional defs does
+     * not include r1", map.containsKey(r1)); assertTrue("Optional defs does not include r3",
+     * map.containsKey(r3)); }
+     */
     public void testFieldsPresentForOptionalReports() throws Exception {
         command.getAeReport().addReport(r2.createReport());
         command.setOptionalReportDefinitions(Arrays.asList(r1, r2, r3));
-        assertFieldProperties("optionalReports",
-            "optionalReportDefinitionsMap[1]",
-            "optionalReportDefinitionsMap[2]",
-            "optionalReportDefinitionsMap[3]"
-        );
+        assertFieldProperties("optionalReports", "optionalReportDefinitionsMap[1]",
+                        "optionalReportDefinitionsMap[2]", "optionalReportDefinitionsMap[3]");
     }
 
     public void testNoReportsIsError() throws Exception {
@@ -183,8 +175,8 @@ public class CheckpointTabTest extends AeTabTestCase {
 
         assertEquals(1, errors.getErrorCount());
         assertEquals(1, errors.getGlobalErrorCount());
-        assertEquals("At least one expedited report must be selected to proceed",
-            errors.getGlobalError().getDefaultMessage());
+        assertEquals("At least one expedited report must be selected to proceed", errors
+                        .getGlobalError().getDefaultMessage());
     }
 
     public void testAtLeastOneSelectedOptionalReportIsNotError() throws Exception {

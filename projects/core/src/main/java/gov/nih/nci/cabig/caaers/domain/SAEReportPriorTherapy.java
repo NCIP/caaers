@@ -19,35 +19,35 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class represents the SAEReportPriorTherapy domain object associated with the Adverse event report.
+ * This class represents the SAEReportPriorTherapy domain object associated with the Adverse event
+ * report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_prior_therapies")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_ae_prior_therapies_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_prior_therapies_id") })
 public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
     private PriorTherapy priorTherapy;
+
     private String other;
+
     private Date startDate;
+
     private Date endDate;
-    
+
     private LazyListHelper lazyListHelper;
-    
+
     public SAEReportPriorTherapy() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(PriorTherapyAgent.class);
     }
 
     private <T> void addReportChildLazyList(Class<T> klass) {
-        lazyListHelper.add(klass,
-            new SAEReportPriorTherapyFactory<T>(klass, this));
+        lazyListHelper.add(klass, new SAEReportPriorTherapyFactory<T>(klass, this));
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public String getName() {
@@ -60,7 +60,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         }
     }
 
-    ////// BOUND PROPERTIES
+    // //// BOUND PROPERTIES
 
     public String getOther() {
         return other;
@@ -71,33 +71,32 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     }
 
     @ManyToOne
-	public PriorTherapy getPriorTherapy() {
-		return priorTherapy;
-	}
+    public PriorTherapy getPriorTherapy() {
+        return priorTherapy;
+    }
 
-	public void setPriorTherapy(PriorTherapy priorTherapy) {
-		this.priorTherapy = priorTherapy;
-	}
-	
-	public void addPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
-		getPriorTherapyAgentsInternal().add(priorTherapyAgent);
-	        if (priorTherapyAgent != null) priorTherapyAgent.setSaeReportPriorTherapy(this);
-	}
+    public void setPriorTherapy(PriorTherapy priorTherapy) {
+        this.priorTherapy = priorTherapy;
+    }
 
-	/**
-	 * @return a wrapped list which will never throw an
-	 *         {@link IndexOutOfBoundsException}
-	 */
-	@Transient
-	public List<PriorTherapyAgent> getPriorTherapyAgents() {
-		return lazyListHelper.getLazyList(PriorTherapyAgent.class);
-	}
-	
-	// This is annotated this way so that the IndexColumn will work with
-    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    public void addPriorTherapyAgent(PriorTherapyAgent priorTherapyAgent) {
+        getPriorTherapyAgentsInternal().add(priorTherapyAgent);
+        if (priorTherapyAgent != null) priorTherapyAgent.setSaeReportPriorTherapy(this);
+    }
+
+    /**
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
+    @Transient
+    public List<PriorTherapyAgent> getPriorTherapyAgents() {
+        return lazyListHelper.getLazyList(PriorTherapyAgent.class);
+    }
+
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
-    @JoinColumn(name="ae_prior_therapy_id", nullable=false)
-    @IndexColumn(name="list_index")
+    @JoinColumn(name = "ae_prior_therapy_id", nullable = false)
+    @IndexColumn(name = "list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     protected List<PriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return lazyListHelper.getInternalList(PriorTherapyAgent.class);
@@ -107,54 +106,54 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         lazyListHelper.setInternalList(PriorTherapyAgent.class, priorTherapyAgentsInternal);
     }
 
-	public Date getEndDate() {
-		return endDate;
-	}
+    public Date getEndDate() {
+        return endDate;
+    }
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 
-	public Date getStartDate() {
-		return startDate;
-	}
+    public Date getStartDate() {
+        return startDate;
+    }
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
-		result = prime * result + ((other == null) ? 0 : other.hashCode());
-		result = prime * result	+ ((priorTherapy == null) ? 0 : priorTherapy.hashCode());
-		result = prime * result	+ ((startDate == null) ? 0 : startDate.hashCode());
-		
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+        result = prime * result + ((other == null) ? 0 : other.hashCode());
+        result = prime * result + ((priorTherapy == null) ? 0 : priorTherapy.hashCode());
+        result = prime * result + ((startDate == null) ? 0 : startDate.hashCode());
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) return true;
-		if (obj == null) return false;
-		if (getClass() != obj.getClass()) return false;
-		
-		final SAEReportPriorTherapy other = (SAEReportPriorTherapy) obj;
-		if (endDate == null) {
-			if (other.endDate != null) return false;
-		} else if (!endDate.equals(other.endDate))	return false;
-		if (this.other == null) {
-			if (other.other != null) return false;
-		} else if (!this.other.equals(other.other)) return false;
-		if (priorTherapy == null) {
-			if (other.priorTherapy != null) return false;
-		} else if (!priorTherapy.equals(other.priorTherapy))return false;
-		if (startDate == null) {
-			if (other.startDate != null) return false;
-		} else if (!startDate.equals(other.startDate)) return false;
-		return true;
-	}
-	
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+
+        final SAEReportPriorTherapy other = (SAEReportPriorTherapy) obj;
+        if (endDate == null) {
+            if (other.endDate != null) return false;
+        } else if (!endDate.equals(other.endDate)) return false;
+        if (this.other == null) {
+            if (other.other != null) return false;
+        } else if (!this.other.equals(other.other)) return false;
+        if (priorTherapy == null) {
+            if (other.priorTherapy != null) return false;
+        } else if (!priorTherapy.equals(other.priorTherapy)) return false;
+        if (startDate == null) {
+            if (other.startDate != null) return false;
+        } else if (!startDate.equals(other.startDate)) return false;
+        return true;
+    }
+
 }

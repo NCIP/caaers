@@ -6,17 +6,11 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This enumeration represents the status of an EmailNotificaiton.
- *
+ * 
  * @author Biju Joseph
  */
 public enum DeliveryStatus implements CodedEnum<Integer> {
-    CREATED(1),
-    SCHEDULED(2),
-    DELIVERED(3),
-    ERROR(4),
-    RETRY(5),
-    RECALLED(6);
-
+    CREATED(1), SCHEDULED(2), DELIVERED(3), ERROR(4), RETRY(5), RECALLED(6);
 
     private int code;
 

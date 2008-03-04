@@ -16,12 +16,12 @@ import java.util.List;
 public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
 
     private static final Log log = LogFactory.getLog(AssignParticipantTab.class);
+
     private ParticipantService participantService;
 
     public AssignParticipantTab() {
         super("Choose Study", "Search Subject", "par/reg_participant_search");
     }
-
 
     @Override
     public void onDisplay(HttpServletRequest request, AssignParticipantStudyCommand command) {
@@ -30,7 +30,7 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
         String searchText = command.getParticipantText();
         String searchType = command.getParticipantType();
         log.debug("Search text : " + searchText + "Type : " + searchType);
-        if (StringUtils.isEmpty(searchText)) return; //no search keyword
+        if (StringUtils.isEmpty(searchText)) return; // no search keyword
 
         ParticipantQuery participantQuery = new ParticipantQuery();
         if ("fn".equals(searchType)) {
@@ -63,7 +63,8 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
+    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command,
+                    Errors errors) {
         super.postProcess(request, command, errors);
         List<Participant> participants = new ArrayList<Participant>();
         for (Participant participant : command.getParticipantSearchResults()) {
@@ -78,18 +79,16 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
     @Override
     public void validate(AssignParticipantStudyCommand command, Errors errors) {
         super.validate(command, errors);
-        if (command.getParticipantId() == null)
-            errors.rejectValue("participantId", "REQUIRED", "Participant not selected");
+        if (command.getParticipantId() == null) errors.rejectValue("participantId", "REQUIRED",
+                        "Participant not selected");
     }
 
     public ParticipantService getParticipantService() {
         return participantService;
     }
 
-
     public void setParticipantService(ParticipantService participantService) {
         this.participantService = participantService;
     }
-
 
 }

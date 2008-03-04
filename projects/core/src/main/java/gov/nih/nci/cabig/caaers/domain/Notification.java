@@ -11,55 +11,52 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the Notification domain object associated with the Adverse event report.
+ * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 @Entity
 @Table(name = "notifications")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_notifications_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_notifications_id") })
 public class Notification extends AbstractMutableDomainObject implements Serializable {
 
-	private String email;
-	
-	private String content;
-	
-	private String subject;
-	
-	private String name;
+    private String email;
 
-	public String getName() {
-		return name;
-	}
+    private String content;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String subject;
 
-	public String getEmail() {
-		return email;
-	}
+    private String name;
 
-	public void setEmail(String to) {
-		this.email = to;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public String getContent() {
-		return content;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public void setEmail(String to) {
+        this.email = to;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
 }

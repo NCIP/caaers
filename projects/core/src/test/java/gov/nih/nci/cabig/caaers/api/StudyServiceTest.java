@@ -17,12 +17,15 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
- *
+ * 
  */
 public class StudyServiceTest extends CaaersDbTestCase {
 
-    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
+                    "organizationDao");
+
+    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
+                    "participantDao");
 
     public String getTestDataFileName() {
         String fileName = "testdata/StudyServiceTest.xml";
@@ -38,7 +41,8 @@ public class StudyServiceTest extends CaaersDbTestCase {
             {
                 Organization organization = organizationDao.getByGridId(siteGridId);
                 StudySite studySite = organization.getStudySites().get(0);
-                assertEquals("Wrong study site found in test setup", studySiteId, studySite.getId().intValue());
+                assertEquals("Wrong study site found in test setup", studySiteId, studySite.getId()
+                                .intValue());
                 Study study = studySite.getStudy();
 
                 Participant participant = new Participant();
@@ -64,8 +68,8 @@ public class StudyServiceTest extends CaaersDbTestCase {
             Participant loaded = participantDao.getById(participantId.intValue());
             assertNotNull("Participant reloading failed", loaded);
             StudyParticipantAssignment newAssignment = null;
-            for(StudyParticipantAssignment a : loaded.getAssignments()){
-                if(a.getStudySite().getId().intValue() == studySiteId){
+            for (StudyParticipantAssignment a : loaded.getAssignments()) {
+                if (a.getStudySite().getId().intValue() == studySiteId) {
                     newAssignment = a;
                     break;
                 }

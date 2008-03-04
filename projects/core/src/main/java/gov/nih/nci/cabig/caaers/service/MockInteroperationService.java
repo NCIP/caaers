@@ -5,9 +5,9 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 /**
- * Contains do-nothing implementations of {@link InteroperationService}, suitable for
- * local testing.
- *
+ * Contains do-nothing implementations of {@link InteroperationService}, suitable for local
+ * testing.
+ * 
  * @author Rhett Sutphin
  */
 public class MockInteroperationService implements InteroperationService {
@@ -17,11 +17,11 @@ public class MockInteroperationService implements InteroperationService {
         int rand = (int) Math.floor(Math.random() * 4);
         if (rand == 3) throw new CaaersSystemException("You lose");
     }
-    
+
     public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
-    		throws CaaersSystemException {
-    	int rand = (int) Math.floor(Math.random() * 4);
+                    throws CaaersSystemException {
+        int rand = (int) Math.floor(Math.random() * 4);
         if (rand == 3) throw new CaaersSystemException("You lose");
-    	
+
     }
 }

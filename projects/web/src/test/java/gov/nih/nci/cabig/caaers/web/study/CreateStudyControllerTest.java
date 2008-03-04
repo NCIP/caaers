@@ -23,17 +23,23 @@ import java.util.List;
  * @author Kulasekaran
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_STUDY })
+@CaaersUseCases( { CREATE_STUDY })
 public class CreateStudyControllerTest extends WebTestCase {
     private CreateStudyController controller;
+
     private StudyDao studyDao;
+
     private OrganizationDao organizationDao;
+
     private AgentDao agentDao;
+
     private ResearchStaffDao researchStaffDao;
+
     private SiteInvestigatorDao siteInvestigatorDao;
+
     private CtcDao ctcDao;
+
     private ConfigProperty configProperty;
-    
 
     @Override
     protected void setUp() throws Exception {
@@ -50,10 +56,11 @@ public class CreateStudyControllerTest extends WebTestCase {
             }
         };
         configProperty = registerMockFor(ConfigProperty.class);
-        expect(configProperty.getMap()).andReturn(Collections.<String, List<Lov>>emptyMap()).anyTimes();
+        expect(configProperty.getMap()).andReturn(Collections.<String, List<Lov>> emptyMap())
+                        .anyTimes();
 
-        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
-            ctcDao, organizationDao, studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
+        StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(ctcDao, organizationDao,
+                        studyDao, agentDao, researchStaffDao, siteInvestigatorDao);
         tabConfigurer.addBean("configurationProperty", configProperty);
 
         controller = new CreateStudyController();
@@ -65,44 +72,33 @@ public class CreateStudyControllerTest extends WebTestCase {
         controller.setCtcDao(ctcDao);
         controller.setTabConfigurer(tabConfigurer);
     }
-    
-    
-    //TODO: fix this 
+
+    // TODO: fix this
     public void testViewOnGet() throws Exception {
         request.setMethod("GET");
-        //replayMocks();
-        //ModelAndView mv = controller.handleRequest(request, response);
-        //verifyMocks();
-        //assertEquals("study/study_details", mv.getViewName());
-        
+        // replayMocks();
+        // ModelAndView mv = controller.handleRequest(request, response);
+        // verifyMocks();
+        // assertEquals("study/study_details", mv.getViewName());
+
     }
 
-    /* I think this test is failing b/c the command isn't in the session.
-       No time to fix right now.  RMS20070502 
-    public void testDetailsTabSubmit() throws Exception {
-        request.setMethod("POST");
-        request.addParameter("multiInstitutionIndicator", "true");
-        request.addParameter("shortTitle", "Scott");
-        request.addParameter("longTitle", "Male");
-        request.addParameter("description", "Description");
-        request.addParameter("primarySponsorCode", "Primary Sponsor Code");
-        request.addParameter("phaseCode", "PhaseCode");
-        //request.addParameter("reviewDate", "2006-01-01");
-        request.setParameter("_page", "0");
-        request.setParameter("_target1", "");
-
-        replayMocks();
-        ModelAndView mv = controller.handleRequest(request, response);
-        verifyMocks();
-        System.out.println("mv.getModel() = " + mv.getModel());
-        Errors errors = (Errors) mv.getModel().get(BindingResult.class + ".command");
-        assertNotNull("Errors obj. should be in model", errors);
-        assertEquals("Should be no errors", 0, errors.getErrorCount());
-
-        assertEquals("study/study_identifiers", mv.getViewName());
-        Study command = (Study) mv.getModel().get("command");
-        assertEquals("Scott", command.getShortTitle());
-        // exhaustively testing binding is pointless
-    }
-    */
+    /*
+     * I think this test is failing b/c the command isn't in the session. No time to fix right now.
+     * RMS20070502 public void testDetailsTabSubmit() throws Exception { request.setMethod("POST");
+     * request.addParameter("multiInstitutionIndicator", "true"); request.addParameter("shortTitle",
+     * "Scott"); request.addParameter("longTitle", "Male"); request.addParameter("description",
+     * "Description"); request.addParameter("primarySponsorCode", "Primary Sponsor Code");
+     * request.addParameter("phaseCode", "PhaseCode"); //request.addParameter("reviewDate",
+     * "2006-01-01"); request.setParameter("_page", "0"); request.setParameter("_target1", "");
+     * 
+     * replayMocks(); ModelAndView mv = controller.handleRequest(request, response); verifyMocks();
+     * System.out.println("mv.getModel() = " + mv.getModel()); Errors errors = (Errors)
+     * mv.getModel().get(BindingResult.class + ".command"); assertNotNull("Errors obj. should be in
+     * model", errors); assertEquals("Should be no errors", 0, errors.getErrorCount());
+     * 
+     * assertEquals("study/study_identifiers", mv.getViewName()); Study command = (Study)
+     * mv.getModel().get("command"); assertEquals("Scott", command.getShortTitle()); // exhaustively
+     * testing binding is pointless }
+     */
 }

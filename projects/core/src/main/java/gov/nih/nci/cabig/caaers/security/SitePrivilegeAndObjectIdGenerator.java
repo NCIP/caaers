@@ -9,19 +9,21 @@ import gov.nih.nci.security.acegi.csm.authorization.CSMPrivilegeGenerator;
 
 /**
  * @author <a href="mailto:saurabh.agrawal@semanticbits.com">Saurabh Agrawal</a>
- *
+ * 
  */
-public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGenerator, CSMObjectIdGenerator {
+public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGenerator,
+                CSMObjectIdGenerator {
 
     private String accessPrivilege;
 
-    //default value
+    // default value
     private String pathSeperator = ".";
 
     /**
      * Returns a CSM privilege name, given an object.
-     *
-     * @param object from which to determine privilege
+     * 
+     * @param object
+     *                from which to determine privilege
      * @return CSM privilege name
      */
     public String generatePrivilege(Object object) {
@@ -31,8 +33,9 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
 
     /**
      * Returns a CSM objectId, given an object.
-     *
-     * @param object from which ID should be generated
+     * 
+     * @param object
+     *                from which ID should be generated
      * @return CSM objectId
      */
     public String generateId(Object object) {
@@ -41,7 +44,6 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
 
         return object.getClass().getName() + pathSeperator + site.getNciInstituteCode();
     }
-
 
     public String getPathSeperator() {
         return pathSeperator;
@@ -68,8 +70,7 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
             throw new NullPointerException("Object is null");
         }
         if (!supports(object)) {
-            throw new IllegalArgumentException("unsupported object "
-                    + object.getClass().getName());
+            throw new IllegalArgumentException("unsupported object " + object.getClass().getName());
         }
     }
 

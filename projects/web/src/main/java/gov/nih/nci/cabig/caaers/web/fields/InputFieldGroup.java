@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface InputFieldGroup {
     String getName();
-    
+
     String getDisplayName();
 
     List<InputField> getFields();

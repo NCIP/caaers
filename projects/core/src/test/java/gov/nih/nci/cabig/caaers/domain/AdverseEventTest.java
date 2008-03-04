@@ -7,11 +7,11 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({AE_DATA_COLLECTION })
+@CaaersUseCases( { AE_DATA_COLLECTION })
 public class AdverseEventTest extends CaaersTestCase {
     public void testDefaultExpectedness() throws Exception {
         AdverseEvent ae = new AdverseEvent();
         assertNull(ae.getExpected());
-        //assertFalse(ae.getExpected());
+        // assertFalse(ae.getExpected());
     }
 }

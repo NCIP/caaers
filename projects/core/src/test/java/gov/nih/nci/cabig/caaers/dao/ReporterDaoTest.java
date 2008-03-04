@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
 /**
  * @author Kulasekaran
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ReporterDaoTest extends DaoTestCase<ReporterDao> {
 
     public void testGetById() throws Exception {
@@ -39,10 +39,10 @@ public class ReporterDaoTest extends DaoTestCase<ReporterDao> {
             assertNotNull("Could not reload reporter " + savedId, loaded);
             assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
             assertEquals("Wrong lastname", "Someone", loaded.getLastName());
-            assertEquals("Wrong number of contact mechanisms", 1,
-                loaded.getContactMechanisms().size());
-            assertEquals("Wrong contact mechanism", "abc1@abc.com",
-                loaded.getContactMechanisms().get("e-mail"));
+            assertEquals("Wrong number of contact mechanisms", 1, loaded.getContactMechanisms()
+                            .size());
+            assertEquals("Wrong contact mechanism", "abc1@abc.com", loaded.getContactMechanisms()
+                            .get("e-mail"));
         }
     }
 }

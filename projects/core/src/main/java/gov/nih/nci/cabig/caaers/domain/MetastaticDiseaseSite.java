@@ -9,21 +9,19 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 /**
- * This class represents the MetastaticDiseaseSite domain object associated with the Adverse event report.
+ * This class represents the MetastaticDiseaseSite domain object associated with the Adverse event
+ * report.
+ * 
  * @author Kulasekaran
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "metastatic_disease_sites")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_metastatic_disease_sites_id")
-    }
-)
-
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_metastatic_disease_sites_id") })
 // TODO: this sort of class might be better as a component rather than another domain object
 public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
     private String otherSite;
+
     private AnatomicSite codedSite;
 
     public String getOtherSite() {
@@ -44,4 +42,3 @@ public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
         this.codedSite = codedSite;
     }
 }
-

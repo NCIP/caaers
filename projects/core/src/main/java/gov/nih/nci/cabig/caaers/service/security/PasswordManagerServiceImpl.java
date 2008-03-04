@@ -20,39 +20,45 @@ import org.springframework.beans.factory.annotation.Required;
 public class PasswordManagerServiceImpl implements PasswordManagerService {
 
     private PasswordPolicyService passwordPolicyService;
+
     private UserService userService;
 
     public String requestToken(String userName) throws CaaersSystemException {
-	return userService.userCreateToken(userName);
+        return userService.userCreateToken(userName);
     }
 
-    public void setPassword(String userName, String password, String token) throws CaaersSystemException {
-	validateToken(userName, token);
-	validateAndSetPassword(userName, password);
-    }
-    
-    private boolean validateToken(String userName, String token) throws CaaersSystemException {	
-	User user = userService.getUserByName(userName);
-	if (user.getTokenTime().after(new Timestamp(new Date().getTime() - passwordPolicyService.getPasswordPolicy().getTokenTimeout()))
-	    && token.equals(user.getToken())) return true;
-	throw new CaaersSystemException("Invalid token.");	
+    public void setPassword(String userName, String password, String token)
+                    throws CaaersSystemException {
+        validateToken(userName, token);
+        validateAndSetPassword(userName, password);
     }
 
-    private boolean validateAndSetPassword(String userName, String password) throws CaaersSystemException {
-	passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName, password));	    
-	userService.userChangePassword(userName, password,
-				       passwordPolicyService.getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
-	return true;
+    private boolean validateToken(String userName, String token) throws CaaersSystemException {
+        User user = userService.getUserByName(userName);
+        if (user.getTokenTime().after(
+                        new Timestamp(new Date().getTime()
+                                        - passwordPolicyService.getPasswordPolicy()
+                                                        .getTokenTimeout()))
+                        && token.equals(user.getToken())) return true;
+        throw new CaaersSystemException("Invalid token.");
+    }
+
+    private boolean validateAndSetPassword(String userName, String password)
+                    throws CaaersSystemException {
+        passwordPolicyService.validatePasswordAgainstCreationPolicy(new Credential(userName,
+                        password));
+        userService.userChangePassword(userName, password, passwordPolicyService
+                        .getPasswordPolicy().getPasswordCreationPolicy().getPasswordHistorySize());
+        return true;
     }
 
     @Required
     public void setPasswordPolicyService(PasswordPolicyService passwordPolicyService) {
-	this.passwordPolicyService = passwordPolicyService;
+        this.passwordPolicyService = passwordPolicyService;
     }
 
     @Required
     public void setUserService(UserService userService) {
-	this.userService = userService;
+        this.userService = userService;
     }
 }
-

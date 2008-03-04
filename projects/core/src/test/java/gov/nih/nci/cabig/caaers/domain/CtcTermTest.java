@@ -10,7 +10,7 @@ import java.util.Arrays;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({MAPPING_VOCAB })
+@CaaersUseCases( { MAPPING_VOCAB })
 public class CtcTermTest extends CaaersTestCase {
     private CtcTerm term = new CtcTerm();
 

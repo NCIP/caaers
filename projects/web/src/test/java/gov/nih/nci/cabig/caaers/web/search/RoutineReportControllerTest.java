@@ -15,7 +15,7 @@ public class RoutineReportControllerTest extends WebTestCase {
         super.setUp();
         controller.setListValues(new ListValues());
     }
-   
+
     public void testViewOnGoodSubmit() throws Exception {
 
         ModelAndView mv = controller.handleRequest(request, response);

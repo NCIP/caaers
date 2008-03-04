@@ -26,155 +26,157 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
- * Base Controller class to handle the basic work flow in the Creation / Updation of a Investigator Design This uses
- * AbstractTabbedFlowFormController to implement tabbed workflow
+ * Base Controller class to handle the basic work flow in the Creation / Updation of a Investigator
+ * Design This uses AbstractTabbedFlowFormController to implement tabbed workflow
+ * 
  * @author Saurabh
  */
 public abstract class InvestigatorController<C extends Investigator> extends
-		AutomaticSaveFlowFormController<C, Investigator, InvestigatorDao> {
+                AutomaticSaveFlowFormController<C, Investigator, InvestigatorDao> {
 
-	private static final Log log = LogFactory.getLog(InvestigatorController.class);
+    private static final Log log = LogFactory.getLog(InvestigatorController.class);
 
-	protected InvestigatorDao investigatorDao;
+    protected InvestigatorDao investigatorDao;
 
-	protected OrganizationDao organizationDao;
+    protected OrganizationDao organizationDao;
 
-	protected ConfigProperty configurationProperty;
+    protected ConfigProperty configurationProperty;
 
-	public InvestigatorController() {
-		setCommandClass(Investigator.class);
-		Flow<C> flow = new Flow<C>("Create Investigator");
-		layoutTabs(flow);
-		setFlow(flow);
-		setAllowDirtyBack(false);
-		setAllowDirtyForward(false);
-	}
+    public InvestigatorController() {
+        setCommandClass(Investigator.class);
+        Flow<C> flow = new Flow<C>("Create Investigator");
+        layoutTabs(flow);
+        setFlow(flow);
+        setAllowDirtyBack(false);
+        setAllowDirtyForward(false);
+    }
 
-	@Override
-	protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
-		super.initBinder(request, binder);
-		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    @Override
+    protected void initBinder(final HttpServletRequest request,
+                    final ServletRequestDataBinder binder) throws Exception {
+        super.initBinder(request, binder);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 
-		binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
-		binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
-	}
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
+        binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
+    }
 
-	/**
-	 * Template method to let the subclass decide the order of tab
-	 */
-	protected abstract void layoutTabs(Flow<C> flow);
+    /**
+     * Template method to let the subclass decide the order of tab
+     */
+    protected abstract void layoutTabs(Flow<C> flow);
 
-	@Override
-	@SuppressWarnings("unchecked")
-	protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors,
-			final int page) throws Exception {
-		Map<String, Object> refdata = super.referenceData(request, command, errors, page);
-		return refdata;
+    @Override
+    @SuppressWarnings("unchecked")
+    protected Map referenceData(final HttpServletRequest request, final Object command,
+                    final Errors errors, final int page) throws Exception {
+        Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+        return refdata;
 
-	}
+    }
 
-	/**
-	 * Override this in sub controller if summary is needed
-	 * @return
-	 */
-	protected boolean isSummaryEnabled() {
-		return false;
-	}
+    /**
+     * Override this in sub controller if summary is needed
+     * 
+     * @return
+     */
+    protected boolean isSummaryEnabled() {
+        return false;
+    }
 
-	@Override
-	protected boolean suppressValidation(final HttpServletRequest request) {
+    @Override
+    protected boolean suppressValidation(final HttpServletRequest request) {
 
-		Object isAjax = findInRequest(request, "_isAjax");
-		if (isAjax != null) {
-			return true;
-		}
-		String action = (String) findInRequest(request, "_action");
-		if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-			return true;
-		}
-		return super.suppressValidation(request);
-	}
+        Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null) {
+            return true;
+        }
+        String action = (String) findInRequest(request, "_action");
+        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
+            return true;
+        }
+        return super.suppressValidation(request);
+    }
 
-	@Override
-	protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
-		Object subviewName = findInRequest(request, "_subview");
-		if (subviewName != null) {
-			return "par/ajax/" + subviewName;
-		}
-		else {
-			return super.getViewName(request, command, page);
-		}
-	}
+    @Override
+    protected String getViewName(final HttpServletRequest request, final Object command,
+                    final int page) {
+        Object subviewName = findInRequest(request, "_subview");
+        if (subviewName != null) {
+            return "par/ajax/" + subviewName;
+        } else {
+            return super.getViewName(request, command, page);
+        }
+    }
 
-	/**
-	 * Returns the value associated with the <code>attributeName</code>, if present in HttpRequest parameter, if not available, will
-	 * check in HttpRequest attribute map.
-	 */
-	protected Object findInRequest(final HttpServletRequest request, final String attributName) {
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
 
-		Object attr = request.getParameter(attributName);
-		if (attr == null) {
-			attr = request.getAttribute(attributName);
-		}
-		return attr;
-	}
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
 
-	@Override
-	protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response,
-			final Object command, final BindException errors) throws Exception {
+    @Override
+    protected ModelAndView processFinish(final HttpServletRequest request,
+                    final HttpServletResponse response, final Object command,
+                    final BindException errors) throws Exception {
 
-		int selected = Integer.parseInt(request.getParameter("_selected"));
-		String action = request.getParameter("_action");
-		Investigator investigator = (Investigator) command;
+        int selected = Integer.parseInt(request.getParameter("_selected"));
+        String action = request.getParameter("_action");
+        Investigator investigator = (Investigator) command;
 
-		if ("addSiteInvestigator".equals(action)) {
-		}
-		else if ("removeInvestigator".equals(action)) {
-		}
-		else {
-			investigatorDao.save(investigator);
-			request.setAttribute("statusMessage", "Successfully saved the investigator");
-			ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
-			modelAndView.addAllObjects(errors.getModel());
-			modelAndView.addObject("investigator", investigator);
-			return modelAndView;
-		}
-		return new ModelAndView(new RedirectView("createInvestigator"));
+        if ("addSiteInvestigator".equals(action)) {
+        } else if ("removeInvestigator".equals(action)) {
+        } else {
+            investigatorDao.save(investigator);
+            request.setAttribute("statusMessage", "Successfully saved the investigator");
+            ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
+            modelAndView.addAllObjects(errors.getModel());
+            modelAndView.addObject("investigator", investigator);
+            return modelAndView;
+        }
+        return new ModelAndView(new RedirectView("createInvestigator"));
 
-	}
+    }
 
-	@Override
-	protected Investigator getPrimaryDomainObject(final C command) {
-		return command;
-	}
+    @Override
+    protected Investigator getPrimaryDomainObject(final C command) {
+        return command;
+    }
 
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
-	}
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
 
-	public void setOrganizationDao(final OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+    public void setOrganizationDao(final OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
 
-	public InvestigatorDao getInvestigatorDao() {
-		return investigatorDao;
-	}
+    public InvestigatorDao getInvestigatorDao() {
+        return investigatorDao;
+    }
 
-	public ConfigProperty getConfigurationProperty() {
-		return configurationProperty;
-	}
+    public ConfigProperty getConfigurationProperty() {
+        return configurationProperty;
+    }
 
-	public void setConfigurationProperty(final ConfigProperty configurationProperty) {
-		this.configurationProperty = configurationProperty;
-	}
+    public void setConfigurationProperty(final ConfigProperty configurationProperty) {
+        this.configurationProperty = configurationProperty;
+    }
 
-	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
+    public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
+        this.investigatorDao = investigatorDao;
+    }
 
-	@Override
-	protected InvestigatorDao getDao() {
-		return investigatorDao;
-	}
+    @Override
+    protected InvestigatorDao getDao() {
+        return investigatorDao;
+    }
 
 }

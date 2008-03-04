@@ -14,64 +14,63 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
+
 /**
  * @author Kulasekaran
  * @author Rhett Sutphin
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
-    
-	private EvaluationService evaluationService;
-    
+
+    private EvaluationService evaluationService;
 
     public ReporterTab() {
-        super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(),
-        	"Reporter", "ae/reporter");
+        super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter",
+                        "ae/reporter");
     }
 
     @Override
     public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.REPORTER_INFO_SECTION;
+        return ExpeditedReportSection.REPORTER_INFO_SECTION;
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator,
+                    ExpeditedAdverseEventInputCommand command) {
         createPersonGroup(creator, "reporter");
         createPersonGroup(creator, "physician");
     }
 
     private void createPersonGroup(AeInputFieldCreator creator, String person) {
-        String base = person  + '.';
-        InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
-        InputField middleNameField = InputFieldFactory.createTextField(base + "middleName", "Middle name", false);
-        InputField lastNameField = InputFieldFactory.createTextField(base + "lastName", "Last name", true);
+        String base = person + '.';
+        InputField firstNameField = InputFieldFactory.createTextField(base + "firstName",
+                        "First name", true);
+        InputField middleNameField = InputFieldFactory.createTextField(base + "middleName",
+                        "Middle name", false);
+        InputField lastNameField = InputFieldFactory.createTextField(base + "lastName",
+                        "Last name", true);
         InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", true);
         InputFieldAttributes.setSize(emailField, 50);
 
         creator.createFieldGroup(person, StringUtils.capitalize(person) + " details",
-            firstNameField,
-            middleNameField,
-            lastNameField,
-            emailField,
-            createContactField(base, ReportPerson.PHONE),
-            createContactField(base, ReportPerson.FAX)
-        );
+                        firstNameField, middleNameField, lastNameField, emailField,
+                        createContactField(base, ReportPerson.PHONE), createContactField(base,
+                                        ReportPerson.FAX));
     }
 
     private InputField createContactField(String base, String contactType) {
         return createContactField(base, contactType, StringUtils.capitalize(contactType), false);
     }
 
-    private InputField createContactField(
-        String base, String contactType, String displayName, boolean required
-    ) {
-        return InputFieldFactory.createTextField(
-            base + "contactMechanisms[" + contactType + ']', displayName, required);
+    private InputField createContactField(String base, String contactType, String displayName,
+                    boolean required) {
+        return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']',
+                        displayName, required);
     }
 
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        super.onDisplay(request,command);
+        super.onDisplay(request, command);
         boolean severe = false;
         for (AdverseEvent event : command.getAeReport().getAdverseEvents()) {
             severe |= evaluationService.isSevere(command.getAssignment(), event);

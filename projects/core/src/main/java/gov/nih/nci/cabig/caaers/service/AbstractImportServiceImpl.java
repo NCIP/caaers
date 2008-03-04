@@ -17,112 +17,120 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Abstract that sets up the template for import of various domain objects like study, routine AE and study.
+ * Abstract that sets up the template for import of various domain objects like study, routine AE
+ * and study.
+ * 
  * @author
- *
+ * 
  */
 public abstract class AbstractImportServiceImpl {
-	
-	private OrganizationDao organizationDao;
-	private StudyDao studyDao;
-	protected final Log log = LogFactory.getLog(getClass());
-	
-	/*
-	 * This is common for participant and study
-	 */
-	protected void migrateIdentifiers(
-			AbstractIdentifiableDomainObject destination,
-			AbstractIdentifiableDomainObject source,
-			DomainObjectImportOutcome studyImportOutcome) {
 
-		// Identifiers
-		if (source.getIdentifiers() != null) {
-			for (int i = 0; i < source.getIdentifiers().size(); i++) {
-				Identifier identifier = (Identifier) source.getIdentifiers().get(i);
-				if (identifier instanceof OrganizationAssignedIdentifier) {
-					Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier).getOrganization().getName());
-					ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in identifier is invalid");
-					((OrganizationAssignedIdentifier) identifier).setOrganization(organization);	
-				}
-				if (identifier instanceof SystemAssignedIdentifier) {
-					// I don't need to do anything i think
-				}
-				destination.getIdentifiers().add(identifier);
-			}
-		}
-		ifNullOrEmptyList(destination.getIdentifiers(),studyImportOutcome,Severity.ERROR, "Identifiers are either Empty or Not Valid");
-	}
-	
-	/*
-	 * This is common for participant and study , make the first instance of primary indicators 
-	 * hold and set the rest to false
-	 * 
-	 */
-	protected void firstPrimaryIndicatorInIdentifiers(
-			AbstractIdentifiableDomainObject destination,
-			DomainObjectImportOutcome studyImportOutcome) {
+    private OrganizationDao organizationDao;
 
-		boolean isPrimaryIndicatorAvailable = Boolean.FALSE;
-		for (Identifier identifier : destination.getIdentifiers()) {
-			if (identifier.getPrimaryIndicator() && !isPrimaryIndicatorAvailable ) {
-				isPrimaryIndicatorAvailable = Boolean.TRUE;
-			}else{
-				identifier.setPrimaryIndicator(Boolean.FALSE);
-			}
-			
-		}
-	}
-	
-	
-	//	Helpers
-	protected Organization getOrganization(String organizationName){
-		Organization org = organizationDao.getByName(organizationName);
-		return org;
-	}
-	
-	protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome, Severity severity){
-		if(domainObject == null){
-			importOutcome.addErrorMessage(" is required or has errors", severity);
-		}
-	}
-	
-	protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome, Severity severity, String message){
-		if(domainObject == null){
-			importOutcome.addErrorMessage(message, severity);
-		}
-	}
-	
-	protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome, Severity severity){
-		if(list.isEmpty()){
-			studyImportOutcome.addErrorMessage("is required or has errors",severity);
-		}
-	}
-	
-	protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome, Severity severity,String message){
-		if(list.isEmpty()){
-			studyImportOutcome.addErrorMessage(message,severity);
-		}
-	}
-	
-	protected void errorInBusinessLogic(DomainObjectImportOutcome importOutcome, Severity severity, String message){
-		importOutcome.addErrorMessage(message , severity);
-	}
-	
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
-	}
+    private StudyDao studyDao;
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
-	
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
+    protected final Log log = LogFactory.getLog(getClass());
 
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
-	
-	
+    /*
+     * This is common for participant and study
+     */
+    protected void migrateIdentifiers(AbstractIdentifiableDomainObject destination,
+                    AbstractIdentifiableDomainObject source,
+                    DomainObjectImportOutcome studyImportOutcome) {
+
+        // Identifiers
+        if (source.getIdentifiers() != null) {
+            for (int i = 0; i < source.getIdentifiers().size(); i++) {
+                Identifier identifier = (Identifier) source.getIdentifiers().get(i);
+                if (identifier instanceof OrganizationAssignedIdentifier) {
+                    Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier)
+                                    .getOrganization().getName());
+                    ifNullObject(organization, studyImportOutcome, Severity.ERROR,
+                                    "The organization specified in identifier is invalid");
+                    ((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
+                }
+                if (identifier instanceof SystemAssignedIdentifier) {
+                    // I don't need to do anything i think
+                }
+                destination.getIdentifiers().add(identifier);
+            }
+        }
+        ifNullOrEmptyList(destination.getIdentifiers(), studyImportOutcome, Severity.ERROR,
+                        "Identifiers are either Empty or Not Valid");
+    }
+
+    /*
+     * This is common for participant and study , make the first instance of primary indicators hold
+     * and set the rest to false
+     * 
+     */
+    protected void firstPrimaryIndicatorInIdentifiers(AbstractIdentifiableDomainObject destination,
+                    DomainObjectImportOutcome studyImportOutcome) {
+
+        boolean isPrimaryIndicatorAvailable = Boolean.FALSE;
+        for (Identifier identifier : destination.getIdentifiers()) {
+            if (identifier.getPrimaryIndicator() && !isPrimaryIndicatorAvailable) {
+                isPrimaryIndicatorAvailable = Boolean.TRUE;
+            } else {
+                identifier.setPrimaryIndicator(Boolean.FALSE);
+            }
+
+        }
+    }
+
+    // Helpers
+    protected Organization getOrganization(String organizationName) {
+        Organization org = organizationDao.getByName(organizationName);
+        return org;
+    }
+
+    protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome,
+                    Severity severity) {
+        if (domainObject == null) {
+            importOutcome.addErrorMessage(" is required or has errors", severity);
+        }
+    }
+
+    protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome,
+                    Severity severity, String message) {
+        if (domainObject == null) {
+            importOutcome.addErrorMessage(message, severity);
+        }
+    }
+
+    protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome,
+                    Severity severity) {
+        if (list.isEmpty()) {
+            studyImportOutcome.addErrorMessage("is required or has errors", severity);
+        }
+    }
+
+    protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome,
+                    Severity severity, String message) {
+        if (list.isEmpty()) {
+            studyImportOutcome.addErrorMessage(message, severity);
+        }
+    }
+
+    protected void errorInBusinessLogic(DomainObjectImportOutcome importOutcome, Severity severity,
+                    String message) {
+        importOutcome.addErrorMessage(message, severity);
+    }
+
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
+
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
+
 }

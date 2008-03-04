@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.ctms.tools.DatabaseConfigurationAccessor;
  */
 public class JndiDataSourceFactoryBean extends DatabaseConfigurationAccessor implements FactoryBean {
     private static final Log log = LogFactory.getLog(JndiDataSourceFactoryBean.class);
+
     private JndiTemplate jndiTemplate;
 
     public Object getObject() throws Exception {
@@ -38,7 +39,7 @@ public class JndiDataSourceFactoryBean extends DatabaseConfigurationAccessor imp
         return true;
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     public JndiTemplate getJndiTemplate() {
         return jndiTemplate;

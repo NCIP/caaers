@@ -9,23 +9,21 @@ import org.jibx.runtime.IBindingFactory;
 import org.jibx.runtime.IMarshallingContext;
 import org.jibx.runtime.JiBXException;
 
-
 public class XMLUtil {
 
-	public static String getXML(Object rootElement) {
-		IMarshallingContext mctx = null;
-		StringWriter writer = new StringWriter();
-		try {
-			IBindingFactory bfact = BindingDirectory
-					.getFactory(rootElement.getClass());
-			mctx = bfact.createMarshallingContext();
-			mctx.setOutput(writer);
-			mctx.marshalDocument(rootElement);
-		} catch (JiBXException e) {
-			throw new CaaersSystemException(e.getMessage(), e);
-		}
-		//String returnString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
-	}
+    public static String getXML(Object rootElement) {
+        IMarshallingContext mctx = null;
+        StringWriter writer = new StringWriter();
+        try {
+            IBindingFactory bfact = BindingDirectory.getFactory(rootElement.getClass());
+            mctx = bfact.createMarshallingContext();
+            mctx.setOutput(writer);
+            mctx.marshalDocument(rootElement);
+        } catch (JiBXException e) {
+            throw new CaaersSystemException(e.getMessage(), e);
+        }
+        // String returnString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
+    }
 
 }

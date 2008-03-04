@@ -9,6 +9,7 @@ import java.util.Collections;
  */
 public class BasePropertyInputFieldGroup extends AbstractInputFieldGroup {
     private String baseProperty;
+
     private List<InputField> fields;
 
     public BasePropertyInputFieldGroup(String name, String baseProperty) {

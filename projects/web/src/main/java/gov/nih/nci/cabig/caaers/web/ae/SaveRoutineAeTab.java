@@ -25,23 +25,25 @@ import org.springframework.validation.Errors;
 public class SaveRoutineAeTab extends AeRoutTab {
 
     private CtcDao ctcDao;
+
     private CtcTermDao ctcTermDao;
 
     public SaveRoutineAeTab() {
-    	super("Confirm and save", "Save", "ae/saveRoutine");
+        super("Confirm and save", "Save", "ae/saveRoutine");
     }
-    
+
     @Override
-    public void postProcess(HttpServletRequest request, RoutineAdverseEventInputCommand command, Errors errors) {
-    	handleTermAction(command, request.getParameter("_action"),request.getParameter("_selected"));
-    	
-    	
+    public void postProcess(HttpServletRequest request, RoutineAdverseEventInputCommand command,
+                    Errors errors) {
+        handleTermAction(command, request.getParameter("_action"), request
+                        .getParameter("_selected"));
+
     }
-    
-    private void handleTermAction(RoutineAdverseEventInputCommand c, String action, String selected){
-    	  if ("removeTerm".equals(action)) {
-    		  c.getAeRoutineReport().getAdverseEvents().remove(Integer.parseInt(selected));
-    	  }
+
+    private void handleTermAction(RoutineAdverseEventInputCommand c, String action, String selected) {
+        if ("removeTerm".equals(action)) {
+            c.getAeRoutineReport().getAdverseEvents().remove(Integer.parseInt(selected));
+        }
     }
 
     @Override
@@ -51,20 +53,16 @@ public class SaveRoutineAeTab extends AeRoutTab {
         return map;
     }
 
-  
-    
     @Override
-    protected void validate(
-        RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-    	if (command.getAeRoutineReport().getAdverseEvents().isEmpty() ){
-    		errors.rejectValue("aeRoutineReport.adverseEvents", "REQUIRED", "Missing Adverse Events");
-    	}
+    protected void validate(RoutineAdverseEventInputCommand command, BeanWrapper commandBean,
+                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        if (command.getAeRoutineReport().getAdverseEvents().isEmpty()) {
+            errors.rejectValue("aeRoutineReport.adverseEvents", "REQUIRED",
+                            "Missing Adverse Events");
+        }
     }
-    
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     @Required
     public void setCtcDao(CtcDao ctcDao) {
@@ -76,14 +74,13 @@ public class SaveRoutineAeTab extends AeRoutTab {
         return ctcDao;
     }
 
-	public CtcTermDao getCtcTermDao() {
-		return ctcTermDao;
-	}
+    public CtcTermDao getCtcTermDao() {
+        return ctcTermDao;
+    }
 
-	@Required
-	public void setCtcTermDao(CtcTermDao ctcTermDao) {
-		this.ctcTermDao = ctcTermDao;
-	}
-    
-    
+    @Required
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+        this.ctcTermDao = ctcTermDao;
+    }
+
 }

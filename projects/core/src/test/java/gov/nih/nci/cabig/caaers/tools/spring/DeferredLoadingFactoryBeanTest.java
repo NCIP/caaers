@@ -22,9 +22,7 @@ public class DeferredLoadingFactoryBeanTest extends CaaersTestCase {
 
         factoryBean = new DeferredLoadingFactoryBean();
         factoryBean.setApplicationContext(context);
-        factoryBean.setBeanNames(Arrays.asList(
-            "ONE", "two", "3"
-        ));
+        factoryBean.setBeanNames(Arrays.asList("ONE", "two", "3"));
     }
 
     public void testUserFirstIfNonNull() throws Exception {

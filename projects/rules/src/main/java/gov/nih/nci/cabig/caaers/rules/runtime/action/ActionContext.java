@@ -5,28 +5,27 @@ import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class ActionContext {
 
-	private Action action;
+    private Action action;
 
-	private String actionId;
-	
-	public Action getAction() {
-		return action;
-	}
+    private String actionId;
 
-	public void setAction(Action action) {
-		this.action = action;
-	}
+    public Action getAction() {
+        return action;
+    }
 
-	public String getActionId() {
-		return actionId;
-	}
+    public void setAction(Action action) {
+        this.action = action;
+    }
 
-	public void setActionId(String actionId) {
-		this.actionId = actionId;
-	}
+    public String getActionId() {
+        return actionId;
+    }
 
+    public void setActionId(String actionId) {
+        this.actionId = actionId;
+    }
 
 }

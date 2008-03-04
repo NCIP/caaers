@@ -23,24 +23,32 @@ public class ListAdverseEventsCommand {
     // TODO: these should be collected with other known ID types centrally
     // package-level for testing
     static final String PROTOCOL_AUTHORITY_IDENTIFIER_TYPE = "Protocol Authority Identifier";
+
     static final String MRN_IDENTIFIER_TYPE = "MRN";
 
     private StudyParticipantAssignment assignment;
 
     private Study study;
+
     private Participant participant;
+
     Map<Integer, Boolean> reportsSubmittable;
 
     // Alternate parameters
     private String mrn;
+
     private String nciIdentifier;
 
     private StudyParticipantAssignmentDao assignmentDao;
+
     private StudyDao studyDao;
+
     private ParticipantDao participantDao;
+
     private EvaluationService evaluationService;
 
-    public ListAdverseEventsCommand(StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, EvaluationService evaluationService) {
+    public ListAdverseEventsCommand(StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao,
+                    ParticipantDao participantDao, EvaluationService evaluationService) {
         this.assignmentDao = assignmentDao;
         this.studyDao = studyDao;
         this.participantDao = participantDao;
@@ -48,7 +56,7 @@ public class ListAdverseEventsCommand {
         reportsSubmittable = new HashMap<Integer, Boolean>();
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
     public StudyParticipantAssignment getAssignment() {
         if (assignment != null) {
@@ -78,30 +86,29 @@ public class ListAdverseEventsCommand {
         } else if (assignment != null) {
             study = assignment.getStudySite().getStudy();
         } else if (nciIdentifier != null) {
-            study = studyDao.getByIdentifier(
-                createIdentifierTemplate(null, nciIdentifier));
+            study = studyDao.getByIdentifier(createIdentifierTemplate(null, nciIdentifier));
         } else {
             study = null;
         }
         if (study != null) {
-    		if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
-    			study.setAdeersPDFType(Boolean.TRUE);
-    		}
-    		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
-    			study.setCaaersXMLType(Boolean.TRUE);
-    		}
-    		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
-    			study.setCiomsPDFType(Boolean.TRUE);
-    		}
-    		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
-    			study.setCiomsSaePDFType(Boolean.TRUE);
-    		}
-    		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
-    			study.setDcpSAEPDFType(Boolean.TRUE);
-    		}
-    		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
-    			study.setMedwatchPDFType(Boolean.TRUE);
-    		}
+            if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+                study.setAdeersPDFType(Boolean.TRUE);
+            }
+            if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+                study.setCaaersXMLType(Boolean.TRUE);
+            }
+            if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+                study.setCiomsPDFType(Boolean.TRUE);
+            }
+            if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+                study.setCiomsSaePDFType(Boolean.TRUE);
+            }
+            if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+                study.setDcpSAEPDFType(Boolean.TRUE);
+            }
+            if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+                study.setMedwatchPDFType(Boolean.TRUE);
+            }
         }
         return study;
     }
@@ -112,8 +119,8 @@ public class ListAdverseEventsCommand {
         } else if (assignment != null) {
             return assignment.getParticipant();
         } else if (mrn != null) {
-            participant = participantDao.getByIdentifier(
-                createIdentifierTemplate(MRN_IDENTIFIER_TYPE, mrn));
+            participant = participantDao.getByIdentifier(createIdentifierTemplate(
+                            MRN_IDENTIFIER_TYPE, mrn));
             return participant;
         } else {
             return null;
@@ -131,7 +138,7 @@ public class ListAdverseEventsCommand {
         return reportsSubmittable;
     }
 
-    ////// BOUND PROPERTIES
+    // //// BOUND PROPERTIES
 
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
@@ -152,8 +159,9 @@ public class ListAdverseEventsCommand {
     public void setMrn(String mrn) {
         this.mrn = mrn;
     }
+
     public boolean getIgnoreCompletedStudy() {
-		return false;
-	}
-    
+        return false;
+    }
+
 }

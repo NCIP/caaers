@@ -23,19 +23,20 @@ import java.util.List;
  * @author Krikor Krumlian
  */
 @Entity
-@Table (name = "participant_assignments")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_participant_assignments_id")
-    }
-)
-@Where(clause="load_status > 0")
+@Table(name = "participant_assignments")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participant_assignments_id") })
+@Where(clause = "load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Participant participant;
+
     private StudySite studySite;
+
     private Date dateOfEnrollment;
+
     private List<ExpeditedAdverseEventReport> aeReports;
+
     private List<RoutineAdverseEventReport> aeRoutineReports;
+
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     private String studySubjectIdentifier;
@@ -45,22 +46,23 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         this.studySite = studySite;
         this.dateOfEnrollment = new Date();
     }
-    
-    public StudyParticipantAssignment() { }
 
-    ////// LOGIC
+    public StudyParticipantAssignment() {
+    }
+
+    // //// LOGIC
 
     public void addReport(ExpeditedAdverseEventReport report) {
         report.setAssignment(this);
         getAeReports().add(report);
     }
-    
+
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
         routineReport.setAssignment(this);
         getAeRoutineReports().add(routineReport);
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public void setStudySite(StudySite studySite) {
         this.studySite = studySite;
@@ -68,18 +70,18 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_site_id")
-    @Cascade({ CascadeType.LOCK})
+    @Cascade( { CascadeType.LOCK })
     public StudySite getStudySite() {
         return studySite;
     }
-    
+
     public void setParticipant(Participant participant) {
         this.participant = participant;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
-    @Cascade({ CascadeType.LOCK })
+    @Cascade( { CascadeType.LOCK })
     public Participant getParticipant() {
         return participant;
     }
@@ -102,7 +104,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
         this.aeReports = aeReports;
     }
-    
+
     @OneToMany(mappedBy = "assignment")
     public List<RoutineAdverseEventReport> getAeRoutineReports() {
         if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
@@ -112,15 +114,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
         this.aeRoutineReports = aeRoutineReports;
     }
-    
+
     public Integer getLoadStatus() {
-		return loadStatus;
-	}
+        return loadStatus;
+    }
+
     public void setLoadStatus(Integer loadStatus) {
-		this.loadStatus = loadStatus;
-	}
-    
-    ////// OBJECT METHODS
+        this.loadStatus = loadStatus;
+    }
+
+    // //// OBJECT METHODS
 
     @Override
     public boolean equals(Object o) {
@@ -129,10 +132,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
         final StudyParticipantAssignment that = (StudyParticipantAssignment) o;
 
-        if (dateOfEnrollment != null ? !dateOfEnrollment.equals(that.dateOfEnrollment) : that.dateOfEnrollment != null)
-            return false;
-        if (studySite != null ? !studySite.equals(that.studySite) : that.studySite != null)
-            return false;
+        if (dateOfEnrollment != null ? !dateOfEnrollment.equals(that.dateOfEnrollment)
+                        : that.dateOfEnrollment != null) return false;
+        if (studySite != null ? !studySite.equals(that.studySite) : that.studySite != null) return false;
         // Participant#equals calls this method, so we can't use it here
         if (!DomainObjectTools.equalById(participant, that.participant)) return false;
 
@@ -156,7 +158,4 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         this.studySubjectIdentifier = studySubjectIdentifier;
     }
 
-    
 }
-
-

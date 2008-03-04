@@ -20,177 +20,188 @@ import org.quartz.Trigger;
 import org.quartz.TriggerUtils;
 
 /**
- * This service will schedule the ScheduledNotification objects present in
- * the Report, using Quartz scheduling engine.
- *
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- * Created-on : May 29, 2007
- * @version     %I%, %G%
- * @since       1.0
+ * This service will schedule the ScheduledNotification objects present in the Report, using Quartz
+ * scheduling engine.
+ * 
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : May 29, 2007
+ * @version %I%, %G%
+ * @since 1.0
  */
 public class SchedulerServiceImpl implements SchedulerService {
 
-	private static final Log logger = LogFactory.getLog(SchedulerServiceImpl.class);
-	private Scheduler scheduler;
-	private ReportDao reportScheduleDao;
-	private Map<String,String> jobClassMapping;
+    private static final Log logger = LogFactory.getLog(SchedulerServiceImpl.class);
 
+    private Scheduler scheduler;
 
-	/**
-	 * This method will scheduled the notifications, based on the Report.
-	 *
-	 */
-	public void scheduleNotification(Report report){
+    private ReportDao reportScheduleDao;
 
-		assert report != null : "report should not be null";
-		assert report.getId() != null : "report must have a valid id";
-		assert report.getScheduledNotifications() != null : "report must have valid scheduled notifications";
+    private Map<String, String> jobClassMapping;
 
-		if(logger.isDebugEnabled()){
-			logger.debug(String.valueOf(report));
-			logReportSchedule(report);
-		}
+    /**
+     * This method will scheduled the notifications, based on the Report.
+     * 
+     */
+    public void scheduleNotification(Report report) {
 
-		try {
+        assert report != null : "report should not be null";
+        assert report.getId() != null : "report must have a valid id";
+        assert report.getScheduledNotifications() != null : "report must have valid scheduled notifications";
 
-			//TODO: Audit Logging.
-			List<ScheduledNotification> notifications = report.getScheduledNotifications();
-			int curIndex = 0;
-			assert notifications.size() > 0 : "report must have atleast one valid schedulded notification";
-			//for each notification creat job detail, and associate with the scheduler
-			for(ScheduledNotification nf: notifications){
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.valueOf(report));
+            logReportSchedule(report);
+        }
 
-				assert nf != null :"report must not contain invalid ScheduledNotificaiton objects";
-				assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
-				if(nf.getDeliveryStatus() != DeliveryStatus.CREATED){
-					throw new CaaersSystemException("Cannot schedule a Scheduled Notification which transitioned from DeliveryStatus.CREATED");
-				}
+        try {
 
-				//create a trigger
-				Trigger trigger = makeTrigger(nf);
+            // TODO: Audit Logging.
+            List<ScheduledNotification> notifications = report.getScheduledNotifications();
+            int curIndex = 0;
+            assert notifications.size() > 0 : "report must have atleast one valid schedulded notification";
+            // for each notification creat job detail, and associate with the scheduler
+            for (ScheduledNotification nf : notifications) {
 
-				//create job detail and set the map values
-				String jobName = "J-" +  nf.getId().toString();
-				Class jobClass = findJobClass(nf);
-				if(logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
-				JobDetail jobDetail = new JobDetail(jobName,"JG-" + String.valueOf(report.getId()),
-						jobClass);
-				JobDataMap jobDataMap = jobDetail.getJobDataMap();
-				jobDataMap.put("report.id", report.getId());
-				jobDataMap.put("scheduledNotifiction.id",nf.getId());
-				jobDataMap.put("curIndex", curIndex);
+                assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
+                assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
+                if (nf.getDeliveryStatus() != DeliveryStatus.CREATED) {
+                    throw new CaaersSystemException(
+                                    "Cannot schedule a Scheduled Notification which transitioned from DeliveryStatus.CREATED");
+                }
 
-				//schedule the jobs
-				logger.info("Scheduling the job (jobFullName : "+ jobDetail.getFullName() + ")");
-				scheduler.scheduleJob(jobDetail, trigger);
+                // create a trigger
+                Trigger trigger = makeTrigger(nf);
 
-				//update the delivery status of the ScheduledNotification
-				nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
+                // create job detail and set the map values
+                String jobName = "J-" + nf.getId().toString();
+                Class jobClass = findJobClass(nf);
+                if (logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
+                JobDetail jobDetail = new JobDetail(jobName,
+                                "JG-" + String.valueOf(report.getId()), jobClass);
+                JobDataMap jobDataMap = jobDetail.getJobDataMap();
+                jobDataMap.put("report.id", report.getId());
+                jobDataMap.put("scheduledNotifiction.id", nf.getId());
+                jobDataMap.put("curIndex", curIndex);
 
-				curIndex++;
-			}//for each nf
-			reportScheduleDao.save(report);
-		} catch (SchedulerException e) {
-			logger.error("Exception while scheduling " ,e);
-			throw new CaaersSystemException("Exception while scheduling report{"+ String.valueOf(report)+"}", e);
-		}
+                // schedule the jobs
+                logger.info("Scheduling the job (jobFullName : " + jobDetail.getFullName() + ")");
+                scheduler.scheduleJob(jobDetail, trigger);
 
-	}
+                // update the delivery status of the ScheduledNotification
+                nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
 
-	/**
-	 * Will unschedule a scheduled notification
-	 */
-	 public void unScheduleNotification(Report report) {
-		 assert report != null : "report should not be null";
-		 assert report.getId() != null : "report must have a valid id";
+                curIndex++;
+            }// for each nf
+            reportScheduleDao.save(report);
+        } catch (SchedulerException e) {
+            logger.error("Exception while scheduling ", e);
+            throw new CaaersSystemException("Exception while scheduling report{"
+                            + String.valueOf(report) + "}", e);
+        }
 
-		 try {
-			//delete all the jobs configured for ScheduledNotificaiton
-			 String jobName;
-			 String groupName = "JG-" + String.valueOf(report.getId());
-			 boolean status = false;
-			 for(ScheduledNotification nf: report.getScheduledNotifications()){
-				assert nf != null :"report must not contain invalid ScheduledNotificaiton objects";
-				assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
-				jobName = "J-" +  nf.getId().toString();
-				status = scheduler.deleteJob(jobName,groupName);
-				if(status) nf.setDeliveryStatus(DeliveryStatus.RECALLED);
-				logger.info("Deleted job[jobName : " + jobName +", groupName :" + groupName + "], sucessful? = " + status);
-			 }
-		} catch (SchedulerException e) {
-			logger.error("Exception while unscheduling " ,e);
-			throw new CaaersSystemException("Exception while unscheduling report{"+ String.valueOf(report)+"}", e);
-		}
-	}
+    }
 
-	/**
-	 * This function makes a triggerr based on ScheduledNotification.scheduledOn value
-	 * @param nf - A ScheduledNotification
-	 * @return - A trigger.
-	 */
-	private Trigger makeTrigger(ScheduledNotification nf){
-		String strId = nf.getId().toString();
-		Trigger t = TriggerUtils.makeMinutelyTrigger("T-"+ strId, 1, 0);
-		t.setGroup("TG-" + strId);
-		t.setStartTime(nf.getScheduledOn());
+    /**
+     * Will unschedule a scheduled notification
+     */
+    public void unScheduleNotification(Report report) {
+        assert report != null : "report should not be null";
+        assert report.getId() != null : "report must have a valid id";
 
-		return t;
-	}
+        try {
+            // delete all the jobs configured for ScheduledNotificaiton
+            String jobName;
+            String groupName = "JG-" + String.valueOf(report.getId());
+            boolean status = false;
+            for (ScheduledNotification nf : report.getScheduledNotifications()) {
+                assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
+                assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
+                jobName = "J-" + nf.getId().toString();
+                status = scheduler.deleteJob(jobName, groupName);
+                if (status) nf.setDeliveryStatus(DeliveryStatus.RECALLED);
+                logger.info("Deleted job[jobName : " + jobName + ", groupName :" + groupName
+                                + "], sucessful? = " + status);
+            }
+        } catch (SchedulerException e) {
+            logger.error("Exception while unscheduling ", e);
+            throw new CaaersSystemException("Exception while unscheduling report{"
+                            + String.valueOf(report) + "}", e);
+        }
+    }
 
-	/**
-	 * This method returns the JobClass type to be used
-	 * inside the scheduler. The ScheduledNotificaiton - JobClass mapping
-	 * is available in <code>jobClassMapping</code>, which is configured in
-	 * the <code>applicationContext-scheduler.xml</code>.
-	 * @param nf - A {@link ScheduledNotification}
-	 * @return - A class, that is representing the job implementation.
-	 */
-	private Class findJobClass(ScheduledNotification nf){
-		String className = null;
-		if(nf instanceof ScheduledEmailNotification)
-			className = jobClassMapping.get(nf.getClass().getName());
-		try {
-			logger.debug("Loading class :" + className);
-			return Class.forName(className,true, this.getClass().getClassLoader());
-		} catch (ClassNotFoundException e) {
-			throw new CaaersSystemException("Error while loading job class",e);
-		}
-	}
+    /**
+     * This function makes a triggerr based on ScheduledNotification.scheduledOn value
+     * 
+     * @param nf -
+     *                A ScheduledNotification
+     * @return - A trigger.
+     */
+    private Trigger makeTrigger(ScheduledNotification nf) {
+        String strId = nf.getId().toString();
+        Trigger t = TriggerUtils.makeMinutelyTrigger("T-" + strId, 1, 0);
+        t.setGroup("TG-" + strId);
+        t.setStartTime(nf.getScheduledOn());
 
-	public Scheduler getScheduler() {
-		return scheduler;
-	}
+        return t;
+    }
 
-	public void setScheduler(Scheduler scheduler) {
-		this.scheduler = scheduler;
-	}
-	public void setJobClassMapping(Map<String, String> map){
-		this.jobClassMapping = map;
-	}
-	public Map<String, String> getJobClassMapping(){
-		return jobClassMapping;
-	}
+    /**
+     * This method returns the JobClass type to be used inside the scheduler. The
+     * ScheduledNotificaiton - JobClass mapping is available in <code>jobClassMapping</code>,
+     * which is configured in the <code>applicationContext-scheduler.xml</code>.
+     * 
+     * @param nf -
+     *                A {@link ScheduledNotification}
+     * @return - A class, that is representing the job implementation.
+     */
+    private Class findJobClass(ScheduledNotification nf) {
+        String className = null;
+        if (nf instanceof ScheduledEmailNotification) className = jobClassMapping.get(nf.getClass()
+                        .getName());
+        try {
+            logger.debug("Loading class :" + className);
+            return Class.forName(className, true, this.getClass().getClassLoader());
+        } catch (ClassNotFoundException e) {
+            throw new CaaersSystemException("Error while loading job class", e);
+        }
+    }
 
-	/**
-	 * @return the reportScheduleDao
-	 */
-	public ReportDao getReportScheduleDao() {
-		return reportScheduleDao;
-	}
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
 
-	/**
-	 * @param reportDao the reportScheduleDao to set
-	 */
-	public void setReportScheduleDao(ReportDao reportDao) {
-		this.reportScheduleDao = reportDao;
-	}
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
+    }
 
-	public void logReportSchedule(Report s){
-		StringBuffer sb = new StringBuffer();
-		sb.append(s.getId()).append("type:").append(String.valueOf(s.getName()));
-		sb.append("emailNotifications:[").append(String.valueOf(s.getScheduledNotifications())).append("]");
-		logger.debug("Report :[" + sb.toString()+"]");
-	}
+    public void setJobClassMapping(Map<String, String> map) {
+        this.jobClassMapping = map;
+    }
 
+    public Map<String, String> getJobClassMapping() {
+        return jobClassMapping;
+    }
+
+    /**
+     * @return the reportScheduleDao
+     */
+    public ReportDao getReportScheduleDao() {
+        return reportScheduleDao;
+    }
+
+    /**
+     * @param reportDao
+     *                the reportScheduleDao to set
+     */
+    public void setReportScheduleDao(ReportDao reportDao) {
+        this.reportScheduleDao = reportDao;
+    }
+
+    public void logReportSchedule(Report s) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(s.getId()).append("type:").append(String.valueOf(s.getName()));
+        sb.append("emailNotifications:[").append(String.valueOf(s.getScheduledNotifications()))
+                        .append("]");
+        logger.debug("Report :[" + sb.toString() + "]");
+    }
 
 }

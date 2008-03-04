@@ -24,10 +24,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     private Logger log = Logger.getLogger(getClass());
 
     private UserProvisioningManager userProvisioningManager;
+
     private OrganizationDao organizationDao;
 
     private String csmApplicationContextName;
+
     private String siteProtectionGroupId;
+
     private String siteAccessRoleId;
 
     private CSMObjectIdGenerator siteObjectIdGenerator;
@@ -41,10 +44,10 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     /**
-     * Create a new organization.  Note that this method must be used when entering a new organization
-     * (not {@link OrganizationDao#save}).  As written, it is not suitable for updating an existing
-     * organization.
-     *
+     * Create a new organization. Note that this method must be used when entering a new
+     * organization (not {@link OrganizationDao#save}). As written, it is not suitable for updating
+     * an existing organization.
+     * 
      * @param site
      * @throws CaaersSystemException
      */
@@ -53,7 +56,8 @@ public class OrganizationServiceImpl implements OrganizationService {
         organizationDao.save(site);
     }
 
-    private Group createGroupForOrganization(Organization organization) throws CaaersSystemException {
+    private Group createGroupForOrganization(Organization organization)
+                    throws CaaersSystemException {
         Group group = new Group();
         try {
             String siteId = siteObjectIdGenerator.generateId(organization);
@@ -68,7 +72,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 
             ProtectionGroup protectionGroup = new ProtectionGroup();
             protectionGroup.setApplication(app);
-            protectionGroup.setParentProtectionGroup(userProvisioningManager.getProtectionGroupById(siteProtectionGroupId));
+            protectionGroup.setParentProtectionGroup(userProvisioningManager
+                            .getProtectionGroupById(siteProtectionGroupId));
             protectionGroup.setProtectionGroupName(siteId);
             log.debug("Creating protection group for new organization:" + siteId);
             userProvisioningManager.createProtectionGroup(protectionGroup);
@@ -84,13 +89,19 @@ public class OrganizationServiceImpl implements OrganizationService {
             protectionElement.setProtectionGroups(protectionGroups);
             userProvisioningManager.createProtectionElement(protectionElement);
 
-            userProvisioningManager.assignGroupRoleToProtectionGroup(protectionGroup.getProtectionGroupId().toString(), group.getGroupId().toString(), new String[]{siteAccessRoleId});
+            userProvisioningManager.assignGroupRoleToProtectionGroup(protectionGroup
+                            .getProtectionGroupId().toString(), group.getGroupId().toString(),
+                            new String[] { siteAccessRoleId });
 
         } catch (CSObjectNotFoundException e) {
-            log.error("###Error getting info for" + csmApplicationContextName + " application from CSM. Application configuration exception###", e);
-            throw new CaaersSystemException("Application configuration problem. Cannot find application '" + csmApplicationContextName + "' in CSM", e);
+            log.error("###Error getting info for" + csmApplicationContextName
+                            + " application from CSM. Application configuration exception###", e);
+            throw new CaaersSystemException(
+                            "Application configuration problem. Cannot find application '"
+                                            + csmApplicationContextName + "' in CSM", e);
         } catch (CSTransactionException e) {
-            log.warn("Could not create group for organization: " + organization.getNciInstituteCode());
+            log.warn("Could not create group for organization: "
+                            + organization.getNciInstituteCode());
             throw new CaaersSystemException("Cannot create group for organization.", e);
         }
         return group;

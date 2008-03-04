@@ -11,19 +11,18 @@ import gov.nih.nci.cabig.caaers.domain.CtcTerm;
  */
 public class CtcTermLinkDisplayCell extends AbstractCell {
 
-	@Override
-	protected String getCellValue(final TableModel model, final Column column) {
+    @Override
+    protected String getCellValue(final TableModel model, final Column column) {
 
-		CtcTerm ctcTerm = (CtcTerm) model.getCurrentRowBean();
-		String cellValue = column.getValueAsString();
+        CtcTerm ctcTerm = (CtcTerm) model.getCurrentRowBean();
+        String cellValue = column.getValueAsString();
         String tableId = model.getTableHandler().getTable().getTableId();
 
-
-		if (ctcTerm != null) {
-            cellValue="<a  href=\"javascript:fillCtcTerm('"+ctcTerm.getId()+"','"+tableId+"')\">"+ctcTerm.getFullName()+"</a>";
+        if (ctcTerm != null) {
+            cellValue = "<a  href=\"javascript:fillCtcTerm('" + ctcTerm.getId() + "','" + tableId
+                            + "')\">" + ctcTerm.getFullName() + "</a>";
         }
         return cellValue;
-	}
-
+    }
 
 }

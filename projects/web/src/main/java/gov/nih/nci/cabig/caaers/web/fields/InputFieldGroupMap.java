@@ -14,7 +14,8 @@ public class InputFieldGroupMap extends LazyMap<String, InputFieldGroup> {
 
     public static InputFieldGroupMap create(InputFieldGroup... groups) {
         InputFieldGroupMap map = new InputFieldGroupMap();
-        for (InputFieldGroup group : groups) map.addInputFieldGroup(group);
+        for (InputFieldGroup group : groups)
+            map.addInputFieldGroup(group);
         return map;
     }
 
@@ -30,6 +31,7 @@ public class InputFieldGroupMap extends LazyMap<String, InputFieldGroup> {
     /** Add a {@link RepeatingFieldGroupFactory} plus some number of existing field groups */
     public void addRepeatingFieldGroupFactory(RepeatingFieldGroupFactory groupFactory, int count) {
         ((RepeatingFieldGroupTransformer) transformer).addFactory(groupFactory);
-        for (int i = 0 ; i < count ; i++) addInputFieldGroup(groupFactory.createGroup(i));
+        for (int i = 0; i < count; i++)
+            addInputFieldGroup(groupFactory.createGroup(i));
     }
 }

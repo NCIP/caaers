@@ -9,27 +9,28 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author Jared Flatow
  */
-@Transactional(readOnly=true)
-public class PasswordPolicyDao extends GridIdentifiableDao<PasswordPolicy> implements MutableDomainObjectDao<PasswordPolicy> {
+@Transactional(readOnly = true)
+public class PasswordPolicyDao extends GridIdentifiableDao<PasswordPolicy> implements
+                MutableDomainObjectDao<PasswordPolicy> {
 
     /**
-	 * Get the Class representation of the domain object that this DAO is
-	 * representing.
-	 * 
-	 * @return Class representation of the domain object that this DAO is
-	 *         representing.
-	 */
-	@Override
+     * Get the Class representation of the domain object that this DAO is representing.
+     * 
+     * @return Class representation of the domain object that this DAO is representing.
+     */
+    @Override
     public Class<PasswordPolicy> domainClass() {
-	return PasswordPolicy.class;
+        return PasswordPolicy.class;
     }
+
     /**
-	 * Save or update the password policy in the db.
-	 * 
-	 * @param The password policy.
-	 */
-    @Transactional(readOnly=false)
+     * Save or update the password policy in the db.
+     * 
+     * @param The
+     *                password policy.
+     */
+    @Transactional(readOnly = false)
     public void save(final PasswordPolicy passwordPolicy) {
-	getHibernateTemplate().saveOrUpdate(passwordPolicy);
-    }  
+        getHibernateTemplate().saveOrUpdate(passwordPolicy);
+    }
 }

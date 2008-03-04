@@ -7,39 +7,39 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
- * For now list all the notifications from the notifications table. 
+ * For now list all the notifications from the notifications table.
  * 
- * */
+ */
 public class ListNotificationController extends SimpleFormController {
 
-	private ReportDefinitionDao rdDao;
-	
-	public ListNotificationController() {
-	
-		setCommandClass(ListNotificationCommand.class);
-		setBindOnNewForm(true);
-		setFormView("rule/notification/list");
-		setSuccessView("rule/notification/list");
-	}
-	
-	@Override
-	public Object formBackingObject(HttpServletRequest request) {
-		return new ListNotificationCommand(rdDao);
-	}
+    private ReportDefinitionDao rdDao;
 
-	/**
-	 * @return the reportCalendarTemplateDao
-	 */
-	public ReportDefinitionDao getRdDao() {
-		return rdDao;
-	}
+    public ListNotificationController() {
 
-	/**
-	 * @param reportDefinitionDao the reportCalendarTemplateDao to set
-	 */
-	public void setRdDao(ReportDefinitionDao rdDao) {
-		this.rdDao = rdDao;
-	}
+        setCommandClass(ListNotificationCommand.class);
+        setBindOnNewForm(true);
+        setFormView("rule/notification/list");
+        setSuccessView("rule/notification/list");
+    }
 
-	
+    @Override
+    public Object formBackingObject(HttpServletRequest request) {
+        return new ListNotificationCommand(rdDao);
+    }
+
+    /**
+     * @return the reportCalendarTemplateDao
+     */
+    public ReportDefinitionDao getRdDao() {
+        return rdDao;
+    }
+
+    /**
+     * @param reportDefinitionDao
+     *                the reportCalendarTemplateDao to set
+     */
+    public void setRdDao(ReportDefinitionDao rdDao) {
+        this.rdDao = rdDao;
+    }
+
 }

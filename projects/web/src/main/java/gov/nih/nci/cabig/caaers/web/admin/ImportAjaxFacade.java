@@ -34,257 +34,260 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
  */
 public class ImportAjaxFacade {
 
-	public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
+    public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
 
-	public static final String AJAX_INDEX_PARAMETER = "index";
+    public static final String AJAX_INDEX_PARAMETER = "index";
 
-	public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
+    public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
 
-	public static final String IMPORT_FORM_NAME = ImportController.class.getName() + ".FORM.command";
+    public static final String IMPORT_FORM_NAME = ImportController.class.getName()
+                    + ".FORM.command";
 
-	private static final Log log = LogFactory.getLog(ImportAjaxFacade.class);
+    private static final Log log = LogFactory.getLog(ImportAjaxFacade.class);
 
-	private NowFactory nowFactory;
-	private RoutineAdverseEventReportDao routineAdverseEventReportDao;
-	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	private ParticipantDao participantDao;
-	private StudyDao studyDao;
-	private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+    private NowFactory nowFactory;
 
-	private ImportCommand getImportCommandFromSession(final HttpServletRequest request) {
+    private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
-		ImportCommand importCommand = (ImportCommand) request.getSession().getAttribute(IMPORT_FORM_NAME);
-		return importCommand;
+    private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-	}
+    private ParticipantDao participantDao;
 
-	private ImportCommand getImportCommand(final HttpServletRequest request) {
-		ImportCommand importCommand = getImportCommandFromSession(request);
-		request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, importCommand);
-		return importCommand;
-	}
+    private StudyDao studyDao;
 
-	/*
-	public String addStudyPersonnel(final int index) {
-		HttpServletRequest request = getHttpServletRequest();
-		getImportCommand(request);
-		setRequestAttributes(request, index, -1, "studySitePersonnelSection");
-		String url = getCurrentPageContextRelative(WebContextFactory.get());
-		return getOutputFromJsp(url);
-	}
-	*/
-	
-	public String saveObjectBlock(final int loopNumber, String type){
-		if ("participant".equals(type)){
-			return saveParticipantBlock(loopNumber);
-		}
-		if ("study".equals(type)){
-			return saveStudyBlock(loopNumber);
-		}
-		if ("routineAe".equals(type)){
-			return saveRoutineAeBlock(loopNumber);
-		}
-		return "NA";
-	}
-	
-	public String saveStudyBlock(final int loopNumber) {
-		HttpServletRequest request = getHttpServletRequest();
-		
-		ImportCommand importCommand = getImportCommand(request);
-		//int startIndex = importCommand.getRoutineStart();
-		int startIndex = 5 * loopNumber;
-		int endIndex = importCommand.getImportableStudies().size() ;
-		int loopBy = startIndex + 5 >= endIndex ? endIndex :startIndex + 5;
-		System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy " + loopBy);
-		saveStudies(importCommand.getImportableStudies(),startIndex, loopBy );
-		//importCommand.setRoutineStart(loopBy);
-		return String.valueOf(loopBy - startIndex);
-	}
-	
-	public String saveParticipantBlock(final int loopNumber) {
-		HttpServletRequest request = getHttpServletRequest();
-		
-		ImportCommand importCommand = getImportCommand(request);
-		//int startIndex = importCommand.getRoutineStart();
-		int startIndex = 5 * loopNumber;
-		int endIndex = importCommand.getImportableParticipants().size() ;
-		int loopBy = startIndex + 5 >= endIndex ? endIndex :startIndex + 5;
-		System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy " + loopBy);
-		saveParticipants(importCommand.getImportableParticipants(),startIndex, loopBy );
-		//importCommand.setRoutineStart(loopBy);
-		return String.valueOf(loopBy - startIndex);
-	}
-	
-	private void saveParticipants(List<DomainObjectImportOutcome<Participant>> importableParticipants,int startIndex, int endIndex){
-		if (importableParticipants.size() > 0){
-			
-			for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants.subList(startIndex, endIndex)) {
-				participantDao.save(importOutcome.getImportedDomainObject());
-			}
-		}
-	}
-	
-	private void saveStudies(List<DomainObjectImportOutcome<Study>> importableParticipants,int startIndex, int endIndex){
-		if (importableParticipants.size() > 0){
-			
-			for (DomainObjectImportOutcome<Study> importOutcome : importableParticipants.subList(startIndex, endIndex)) {
-				studyDao.save(importOutcome.getImportedDomainObject());
-			}
-		}
-	}
-	
-	
-	//
-	public String saveRoutineAeBlock(final int loopNumber) {
-		HttpServletRequest request = getHttpServletRequest();
-		
-		ImportCommand importCommand = getImportCommand(request);
-		//int startIndex = importCommand.getRoutineStart();
-		int startIndex = 5 * loopNumber;
-		int endIndex = importCommand.getImportableRoutineAdverseEventReports().size() ;
-		int loopBy = startIndex + 5 >= endIndex ? endIndex :startIndex + 5;
-		System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy " + loopBy);
-		saveRoutineAEs(importCommand.getImportableRoutineAdverseEventReports(),startIndex, loopBy );
-		//importCommand.setRoutineStart(loopBy);
-		
-		
-		return String.valueOf(loopBy - startIndex);
-	}
-	
-	private void saveRoutineAEs(List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports,int startIndex, int endIndex){
-	if (importableRoutineAdverseEventReports.size() > 0){
-		
-		for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : importableRoutineAdverseEventReports.subList(startIndex, endIndex)) {
-			if (importOutcome.getImportedDomainObject().getStatus() == Status.CURRENT) {
-				// expedited reporting ? , create ExpeditedReport save routineReport,expeditedReport 
-				ExpeditedAdverseEventReport expeditedReport = getExpedited(importOutcome.getImportedDomainObject());
-				routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-				if (expeditedReport != null) {
-					expeditedAdverseEventReportDao.save(expeditedReport);
-				}
-			}else{
-				// Status = Legacy => save routineAe 
-				routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-			}
-		}
-	}
-	}
-	
-	public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer ){
-		log.debug("Checking for expedited AEs");
-		Study study = raer.getStudy();
-		
-		//Create the expedited Report
-		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-		aeReport.setAssignment(raer.getAssignment());
-		aeReport.setCreatedAt(nowFactory.getNowTimestamp());
-		
-    	try {
-			for (AdverseEvent ae : raer.getAdverseEvents()) {
-				
-				String message = adverseEventEvaluationService.assesAdverseEvent(ae, study);
-				if (message.equals("SERIOUS_ADVERSE_EVENT")) {
-					aeReport.addAdverseEvent(ae);
-				}
-			}
-			return aeReport.getAdverseEvents().isEmpty() ? null : aeReport;
-		}
-    	catch(Exception e){
-    		throw new CaaersSystemException("There was an error evaluating Routine AEs",e);
-    	}
+    private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+
+    private ImportCommand getImportCommandFromSession(final HttpServletRequest request) {
+
+        ImportCommand importCommand = (ImportCommand) request.getSession().getAttribute(
+                        IMPORT_FORM_NAME);
+        return importCommand;
+
     }
 
-	
+    private ImportCommand getImportCommand(final HttpServletRequest request) {
+        ImportCommand importCommand = getImportCommandFromSession(request);
+        request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, importCommand);
+        return importCommand;
+    }
 
+    /*
+     * public String addStudyPersonnel(final int index) { HttpServletRequest request =
+     * getHttpServletRequest(); getImportCommand(request); setRequestAttributes(request, index, -1,
+     * "studySitePersonnelSection"); String url =
+     * getCurrentPageContextRelative(WebContextFactory.get()); return getOutputFromJsp(url); }
+     */
 
-	private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex,
-			final String subview) {
-		request.setAttribute(AJAX_INDEX_PARAMETER, index);
-		request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
-		request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-		request.setAttribute("listEditorIndex", listEditorIndex);
-	}
+    public String saveObjectBlock(final int loopNumber, String type) {
+        if ("participant".equals(type)) {
+            return saveParticipantBlock(loopNumber);
+        }
+        if ("study".equals(type)) {
+            return saveStudyBlock(loopNumber);
+        }
+        if ("routineAe".equals(type)) {
+            return saveRoutineAeBlock(loopNumber);
+        }
+        return "NA";
+    }
 
-	private String getOutputFromJsp(final String jspResource) {
-		String html = "Error in rendering...";
-		try {
-			html = WebContextFactory.get().forwardToString(jspResource);
-		}
-		catch (ServletException e) {
-			throw new CaaersSystemException(e.getMessage(), e);
-		}
-		catch (IOException e) {
-			throw new CaaersSystemException(e.getMessage(), e);
-		}
-		return html;
-	}
+    public String saveStudyBlock(final int loopNumber) {
+        HttpServletRequest request = getHttpServletRequest();
 
-	private String getCurrentPageContextRelative(final WebContext webContext) {
-		String contextPath = webContext.getHttpServletRequest().getContextPath();
-		String page = webContext.getCurrentPage();
-		if (contextPath == null) {
-			log.debug("context path not set");
-			return page;
-		}
-		else if (!page.startsWith(contextPath)) {
-			log.debug(page + " does not start with context path " + contextPath);
-			return page;
-		}
-		else {
-			return page.substring(contextPath.length());
-		}
-	}
+        ImportCommand importCommand = getImportCommand(request);
+        // int startIndex = importCommand.getRoutineStart();
+        int startIndex = 5 * loopNumber;
+        int endIndex = importCommand.getImportableStudies().size();
+        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
+        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
+                        + loopBy);
+        saveStudies(importCommand.getImportableStudies(), startIndex, loopBy);
+        // importCommand.setRoutineStart(loopBy);
+        return String.valueOf(loopBy - startIndex);
+    }
 
-	private HttpServletRequest getHttpServletRequest() {
-		return WebContextFactory.get().getHttpServletRequest();
-	}
+    public String saveParticipantBlock(final int loopNumber) {
+        HttpServletRequest request = getHttpServletRequest();
 
-	// //// CONFIGURATION
-	
+        ImportCommand importCommand = getImportCommand(request);
+        // int startIndex = importCommand.getRoutineStart();
+        int startIndex = 5 * loopNumber;
+        int endIndex = importCommand.getImportableParticipants().size();
+        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
+        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
+                        + loopBy);
+        saveParticipants(importCommand.getImportableParticipants(), startIndex, loopBy);
+        // importCommand.setRoutineStart(loopBy);
+        return String.valueOf(loopBy - startIndex);
+    }
 
-	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
-		return expeditedAdverseEventReportDao;
-	}
+    private void saveParticipants(
+                    List<DomainObjectImportOutcome<Participant>> importableParticipants,
+                    int startIndex, int endIndex) {
+        if (importableParticipants.size() > 0) {
 
-	public void setExpeditedAdverseEventReportDao(
-			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-	}
+            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants
+                            .subList(startIndex, endIndex)) {
+                participantDao.save(importOutcome.getImportedDomainObject());
+            }
+        }
+    }
 
-	public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
-		return routineAdverseEventReportDao;
-	}
+    private void saveStudies(List<DomainObjectImportOutcome<Study>> importableParticipants,
+                    int startIndex, int endIndex) {
+        if (importableParticipants.size() > 0) {
 
-	public void setRoutineAdverseEventReportDao(
-			RoutineAdverseEventReportDao routineAdverseEventReportDao) {
-		this.routineAdverseEventReportDao = routineAdverseEventReportDao;
-	}
-	
-	public NowFactory getNowFactory() {
-		return nowFactory;
-	}
+            for (DomainObjectImportOutcome<Study> importOutcome : importableParticipants.subList(
+                            startIndex, endIndex)) {
+                studyDao.save(importOutcome.getImportedDomainObject());
+            }
+        }
+    }
 
-	public void setNowFactory(NowFactory nowFactory) {
-		this.nowFactory = nowFactory;
-	}
+    //
+    public String saveRoutineAeBlock(final int loopNumber) {
+        HttpServletRequest request = getHttpServletRequest();
 
-	public ParticipantDao getParticipantDao() {
-		return participantDao;
-	}
+        ImportCommand importCommand = getImportCommand(request);
+        // int startIndex = importCommand.getRoutineStart();
+        int startIndex = 5 * loopNumber;
+        int endIndex = importCommand.getImportableRoutineAdverseEventReports().size();
+        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
+        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
+                        + loopBy);
+        saveRoutineAEs(importCommand.getImportableRoutineAdverseEventReports(), startIndex, loopBy);
+        // importCommand.setRoutineStart(loopBy);
 
-	public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
-	}
+        return String.valueOf(loopBy - startIndex);
+    }
 
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
+    private void saveRoutineAEs(
+                    List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports,
+                    int startIndex, int endIndex) {
+        if (importableRoutineAdverseEventReports.size() > 0) {
 
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
-	
-	
+            for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : importableRoutineAdverseEventReports
+                            .subList(startIndex, endIndex)) {
+                if (importOutcome.getImportedDomainObject().getStatus() == Status.CURRENT) {
+                    // expedited reporting ? , create ExpeditedReport save
+                    // routineReport,expeditedReport
+                    ExpeditedAdverseEventReport expeditedReport = getExpedited(importOutcome
+                                    .getImportedDomainObject());
+                    routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
+                    if (expeditedReport != null) {
+                        expeditedAdverseEventReportDao.save(expeditedReport);
+                    }
+                } else {
+                    // Status = Legacy => save routineAe
+                    routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
+                }
+            }
+        }
+    }
 
-	
+    public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer) {
+        log.debug("Checking for expedited AEs");
+        Study study = raer.getStudy();
+
+        // Create the expedited Report
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        aeReport.setAssignment(raer.getAssignment());
+        aeReport.setCreatedAt(nowFactory.getNowTimestamp());
+
+        try {
+            for (AdverseEvent ae : raer.getAdverseEvents()) {
+
+                String message = adverseEventEvaluationService.assesAdverseEvent(ae, study);
+                if (message.equals("SERIOUS_ADVERSE_EVENT")) {
+                    aeReport.addAdverseEvent(ae);
+                }
+            }
+            return aeReport.getAdverseEvents().isEmpty() ? null : aeReport;
+        } catch (Exception e) {
+            throw new CaaersSystemException("There was an error evaluating Routine AEs", e);
+        }
+    }
+
+    private void setRequestAttributes(final HttpServletRequest request, final int index,
+                    final int listEditorIndex, final String subview) {
+        request.setAttribute(AJAX_INDEX_PARAMETER, index);
+        request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
+        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+        request.setAttribute("listEditorIndex", listEditorIndex);
+    }
+
+    private String getOutputFromJsp(final String jspResource) {
+        String html = "Error in rendering...";
+        try {
+            html = WebContextFactory.get().forwardToString(jspResource);
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e.getMessage(), e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e.getMessage(), e);
+        }
+        return html;
+    }
+
+    private String getCurrentPageContextRelative(final WebContext webContext) {
+        String contextPath = webContext.getHttpServletRequest().getContextPath();
+        String page = webContext.getCurrentPage();
+        if (contextPath == null) {
+            log.debug("context path not set");
+            return page;
+        } else if (!page.startsWith(contextPath)) {
+            log.debug(page + " does not start with context path " + contextPath);
+            return page;
+        } else {
+            return page.substring(contextPath.length());
+        }
+    }
+
+    private HttpServletRequest getHttpServletRequest() {
+        return WebContextFactory.get().getHttpServletRequest();
+    }
+
+    // //// CONFIGURATION
+
+    public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+        return expeditedAdverseEventReportDao;
+    }
+
+    public void setExpeditedAdverseEventReportDao(
+                    ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
+
+    public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
+        return routineAdverseEventReportDao;
+    }
+
+    public void setRoutineAdverseEventReportDao(
+                    RoutineAdverseEventReportDao routineAdverseEventReportDao) {
+        this.routineAdverseEventReportDao = routineAdverseEventReportDao;
+    }
+
+    public NowFactory getNowFactory() {
+        return nowFactory;
+    }
+
+    public void setNowFactory(NowFactory nowFactory) {
+        this.nowFactory = nowFactory;
+    }
+
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
+    }
+
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
+
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
+
 }

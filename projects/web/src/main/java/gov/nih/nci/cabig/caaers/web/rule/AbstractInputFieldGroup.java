@@ -7,9 +7,11 @@ import java.util.List;
  */
 public abstract class AbstractInputFieldGroup implements InputFieldGroup {
     private String name;
+
     private String displayName;
 
-    protected AbstractInputFieldGroup() { }
+    protected AbstractInputFieldGroup() {
+    }
 
     protected AbstractInputFieldGroup(String name) {
         this.name = name;

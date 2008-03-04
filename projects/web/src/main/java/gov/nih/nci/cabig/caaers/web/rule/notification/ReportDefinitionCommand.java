@@ -19,200 +19,197 @@ import org.apache.commons.collections15.Factory;
 import org.apache.commons.collections15.list.LazyList;
 
 /**
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- *         Created-on : May 22, 2007
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : May 22, 2007
  * @version %I%, %G%
  * @since 1.0
  */
-public class ReportDefinitionCommand  {
-	
-	private ConfigProperty configurationProperty;
-	
-	// page -4
-	private String pointOnScale = "0"; // the selected point in the time scale
-	private String lastPointOnScale;
-	private String indexToFetch = "0";
+public class ReportDefinitionCommand {
 
-	private Map<String, Integer> mandatoryFieldMap;
+    private ConfigProperty configurationProperty;
 
-	// supporting domain objects
-	protected ReportDefinition rpDef;
-	protected ReportDefinitionDao rpDefDao;
+    // page -4
+    private String pointOnScale = "0"; // the selected point in the time scale
 
-	//flow support variables
-	private String indexToDelete; //index in the list to be deleted
-	private String tempProperty;
-	
-	//hide validation errors
-	private boolean hideErrors;
-	
-	public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao,
-			ConfigProperty configurationProperty){
-		
-		this.rpDef = rpDef;
-		this.rpDefDao = rpDefDao;
-		this.configurationProperty = configurationProperty;
-		initializeMandatoryFieldMap();
-	}
+    private String lastPointOnScale;
 
-	@SuppressWarnings("unchecked")
-	public List<PlannedNotification> getEmailNotifications(){
-		List<PlannedNotification> plannedNotifications = rpDef.fetchPlannedNotification(Integer.parseInt(indexToFetch));
-		return  LazyList.decorate(plannedNotifications,
-				new PlannedEmailNotificationFactory(this.rpDef.getPlannedNotifications())
-			);
-	}
+    private String indexToFetch = "0";
 
+    private Map<String, Integer> mandatoryFieldMap;
 
-	///LOGIC
-	public void initializeMandatoryFieldMap(){
-		mandatoryFieldMap = new LinkedHashMap<String, Integer>();
-		String path;
-		int i = 0;
-		for(ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()){
-			path = mf.getFieldPath();
-    		mandatoryFieldMap.put(path, i);
-    		i++;
-    	}
-	}
+    // supporting domain objects
+    protected ReportDefinition rpDef;
 
+    protected ReportDefinitionDao rpDefDao;
 
-	protected Map<Object, Object> collectRoleOptions(){
+    // flow support variables
+    private String indexToDelete; // index in the list to be deleted
+
+    private String tempProperty;
+
+    // hide validation errors
+    private boolean hideErrors;
+
+    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao,
+                    ConfigProperty configurationProperty) {
+
+        this.rpDef = rpDef;
+        this.rpDefDao = rpDefDao;
+        this.configurationProperty = configurationProperty;
+        initializeMandatoryFieldMap();
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<PlannedNotification> getEmailNotifications() {
+        List<PlannedNotification> plannedNotifications = rpDef.fetchPlannedNotification(Integer
+                        .parseInt(indexToFetch));
+        return LazyList.decorate(plannedNotifications, new PlannedEmailNotificationFactory(
+                        this.rpDef.getPlannedNotifications()));
+    }
+
+    // /LOGIC
+    public void initializeMandatoryFieldMap() {
+        mandatoryFieldMap = new LinkedHashMap<String, Integer>();
+        String path;
+        int i = 0;
+        for (ReportMandatoryFieldDefinition mf : rpDef.getMandatoryFields()) {
+            path = mf.getFieldPath();
+            mandatoryFieldMap.put(path, i);
+            i++;
+        }
+    }
+
+    protected Map<Object, Object> collectRoleOptions() {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.put("" , "Please select");
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"),
-        		"code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"),
-        		"code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"),
-        		"code", "desc"));
+        options.put("", "Please select");
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+                        "reportingRolesRefData"), "code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+                        "invRoleCodeRefData"), "code", "desc"));
+        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+                        "studyPersonnelRoleRefData"), "code", "desc"));
 
         return options;
     }
 
-	///BEAN PROPERTIES
-	
-	public void setConfigurationProperty(ConfigProperty configurationProperty) {
-		this.configurationProperty = configurationProperty;
-	}
-	
-	public ConfigProperty getConfigurationProperty() {
-		return configurationProperty;
-	}
-	
-	/**
-	 * Will tell the index of the PlannedNotification to be deleted.
-	 */
-	public String getIndexToDelete() {
-		return indexToDelete;
-	}
+    // /BEAN PROPERTIES
 
-	public void setIndexToDelete(String delete) {
-		this.indexToDelete = delete;
-	}
+    public void setConfigurationProperty(ConfigProperty configurationProperty) {
+        this.configurationProperty = configurationProperty;
+    }
 
+    public ConfigProperty getConfigurationProperty() {
+        return configurationProperty;
+    }
 
-	public ReportDefinitionDao getReportDefinitionDao() {
-		return rpDefDao;
-	}
+    /**
+     * Will tell the index of the PlannedNotification to be deleted.
+     */
+    public String getIndexToDelete() {
+        return indexToDelete;
+    }
 
-	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
-		this.rpDefDao = rdDao;
-	}
+    public void setIndexToDelete(String delete) {
+        this.indexToDelete = delete;
+    }
 
-	/**
-	 * The underlying domain object, used by this command object
-	 * @return
-	 */
-	public ReportDefinition getReportDefinition() {
-		return rpDef;
-	}
+    public ReportDefinitionDao getReportDefinitionDao() {
+        return rpDefDao;
+    }
 
+    public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
+        this.rpDefDao = rdDao;
+    }
 
-	public void setReportDefinition(ReportDefinition calendarTemplate) {
-		this.rpDef = calendarTemplate;
-	}
+    /**
+     * The underlying domain object, used by this command object
+     * 
+     * @return
+     */
+    public ReportDefinition getReportDefinition() {
+        return rpDef;
+    }
 
-	public String getPointOnScale() {
-		return pointOnScale;
-	}
+    public void setReportDefinition(ReportDefinition calendarTemplate) {
+        this.rpDef = calendarTemplate;
+    }
 
-	public void setPointOnScale(String pointOnScale) {
-		this.pointOnScale = pointOnScale;
-	}
+    public String getPointOnScale() {
+        return pointOnScale;
+    }
 
-	public String getLastPointOnScale() {
-		return lastPointOnScale;
-	}
+    public void setPointOnScale(String pointOnScale) {
+        this.pointOnScale = pointOnScale;
+    }
 
-	public void setLastPointOnScale(String lastPointOnScale) {
-		this.lastPointOnScale = lastPointOnScale;
-	}
+    public String getLastPointOnScale() {
+        return lastPointOnScale;
+    }
 
-	public Map<Object, Object> getRoles() {
-		return collectRoleOptions();
-	}
-	
+    public void setLastPointOnScale(String lastPointOnScale) {
+        this.lastPointOnScale = lastPointOnScale;
+    }
 
+    public Map<Object, Object> getRoles() {
+        return collectRoleOptions();
+    }
 
-	public Map<String, Integer> getMandatoryFieldMap() {
-		return mandatoryFieldMap;
-	}
+    public Map<String, Integer> getMandatoryFieldMap() {
+        return mandatoryFieldMap;
+    }
 
-	public void setMandatoryFieldMap(
-			Map<String, Integer> mandatoryFieldMap) {
-		this.mandatoryFieldMap = mandatoryFieldMap;
-	}
+    public void setMandatoryFieldMap(Map<String, Integer> mandatoryFieldMap) {
+        this.mandatoryFieldMap = mandatoryFieldMap;
+    }
 
+    /**
+     * @return the indexToFetch
+     */
+    public String getIndexToFetch() {
+        return indexToFetch;
+    }
 
-	/**
-	 * @return the indexToFetch
-	 */
-	public String getIndexToFetch() {
-		return indexToFetch;
-	}
+    /**
+     * @param indexToFetch
+     *                the indexToFetch to set
+     */
+    public void setIndexToFetch(String indexToFetch) {
+        this.indexToFetch = indexToFetch;
+    }
 
-	/**
-	 * @param indexToFetch the indexToFetch to set
-	 */
-	public void setIndexToFetch(String indexToFetch) {
-		this.indexToFetch = indexToFetch;
-	}
-	public String getTempProperty() {
-		return tempProperty;
-	}
-	public void setTempProperty(String tempProperty){
-		this.tempProperty = tempProperty;
-	}
-	
-	public void setHideErrors(boolean hideErrors) {
-		this.hideErrors = hideErrors;
-	}
-	
-	public boolean getHideErrors(){
-		return this.hideErrors;
-	}
+    public String getTempProperty() {
+        return tempProperty;
+    }
 
-	 class PlannedEmailNotificationFactory<T extends PlannedNotification> implements Factory<T>{
-		private List<PlannedNotification> plannedNotificationList;
+    public void setTempProperty(String tempProperty) {
+        this.tempProperty = tempProperty;
+    }
 
-		public PlannedEmailNotificationFactory(List<PlannedNotification> plannedNotificationList) {
-			this.plannedNotificationList = plannedNotificationList;
-		}
+    public void setHideErrors(boolean hideErrors) {
+        this.hideErrors = hideErrors;
+    }
 
-		@SuppressWarnings("unchecked")
-		public T create() {
-			PlannedEmailNotification nf = new PlannedEmailNotification();
-			NotificationBodyContent bodyContent = new NotificationBodyContent();
-			nf.setNotificationBodyContent(bodyContent);
-			nf.setRecipients(new ArrayList<Recipient>());
-			this.plannedNotificationList.add(nf);
-			return (T) nf;
-		}
-	}
+    public boolean getHideErrors() {
+        return this.hideErrors;
+    }
 
+    class PlannedEmailNotificationFactory<T extends PlannedNotification> implements Factory<T> {
+        private List<PlannedNotification> plannedNotificationList;
 
+        public PlannedEmailNotificationFactory(List<PlannedNotification> plannedNotificationList) {
+            this.plannedNotificationList = plannedNotificationList;
+        }
+
+        @SuppressWarnings("unchecked")
+        public T create() {
+            PlannedEmailNotification nf = new PlannedEmailNotification();
+            NotificationBodyContent bodyContent = new NotificationBodyContent();
+            nf.setNotificationBodyContent(bodyContent);
+            nf.setRecipients(new ArrayList<Recipient>());
+            this.plannedNotificationList.add(nf);
+            return (T) nf;
+        }
+    }
 
 }

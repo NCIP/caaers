@@ -9,6 +9,7 @@ import junit.framework.TestCase;
  */
 public class MandatoryPropertiesTest extends TestCase {
     private MandatoryProperties mandatory;
+
     private ExpeditedReportTree tree;
 
     @Override
@@ -19,16 +20,17 @@ public class MandatoryPropertiesTest extends TestCase {
     }
 
     public void testAddFieldFromDefinition() throws Exception {
-        ReportMandatoryFieldDefinition def
-            = new ReportMandatoryFieldDefinition("participantHistory.baselinePerformanceStatus", true);
+        ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
+                        "participantHistory.baselinePerformanceStatus", true);
         mandatory.add(def);
         assertEquals(1, mandatory.getMandatoryNodes().size());
-        assertSame(tree.find("participantHistory.baselinePerformanceStatus"), mandatory.getMandatoryNodes().iterator().next());
+        assertSame(tree.find("participantHistory.baselinePerformanceStatus"), mandatory
+                        .getMandatoryNodes().iterator().next());
     }
 
     public void testAddFieldFromDefinitionWhenNotMandatory() throws Exception {
-        ReportMandatoryFieldDefinition def
-            = new ReportMandatoryFieldDefinition("participantHistory.baselinePerformanceStatus", false);
+        ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
+                        "participantHistory.baselinePerformanceStatus", false);
         mandatory.add(def);
         assertEquals(0, mandatory.getMandatoryNodes().size());
     }
@@ -41,7 +43,7 @@ public class MandatoryPropertiesTest extends TestCase {
     public void testIsMandatoryForNonMandatorySimpleField() throws Exception {
         assertFalse(mandatory.isMandatory("participantHistory.baselinePerformanceStatus"));
     }
-    
+
     public void testIsMandatoryForMandatoryListProperty() throws Exception {
         mandatory.add(tree.find("treatmentInformation.courseAgents[].dose.amount"));
         assertTrue(mandatory.isMandatory("treatmentInformation.courseAgents[0].dose.amount"));

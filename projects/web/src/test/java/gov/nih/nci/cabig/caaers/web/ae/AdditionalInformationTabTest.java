@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Krikor Krumlian
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class AdditionalInformationTabTest extends AeTabTestCase {
     @Override
     protected AdditionalInformationTab createTab() {
@@ -14,20 +14,18 @@ public class AdditionalInformationTabTest extends AeTabTestCase {
     }
 
     public void testFields() throws Exception {
-        assertFieldProperties("desc",
-            "aeReport.additionalInformation.autopsyReport",
-            "aeReport.additionalInformation.consults",
-            "aeReport.additionalInformation.dischargeSummary",
-            "aeReport.additionalInformation.flowCharts",
-            "aeReport.additionalInformation.labReports",
-            "aeReport.additionalInformation.obaForm",
-            "aeReport.additionalInformation.other",
-            "aeReport.additionalInformation.pathologyReport",
-            "aeReport.additionalInformation.progressNotes",
-            "aeReport.additionalInformation.radiologyReports",
-            "aeReport.additionalInformation.referralLetters",
-            "aeReport.additionalInformation.irbReport",
-            "aeReport.additionalInformation.otherInformation"
-        );
+        assertFieldProperties("desc", "aeReport.additionalInformation.autopsyReport",
+                        "aeReport.additionalInformation.consults",
+                        "aeReport.additionalInformation.dischargeSummary",
+                        "aeReport.additionalInformation.flowCharts",
+                        "aeReport.additionalInformation.labReports",
+                        "aeReport.additionalInformation.obaForm",
+                        "aeReport.additionalInformation.other",
+                        "aeReport.additionalInformation.pathologyReport",
+                        "aeReport.additionalInformation.progressNotes",
+                        "aeReport.additionalInformation.radiologyReports",
+                        "aeReport.additionalInformation.referralLetters",
+                        "aeReport.additionalInformation.irbReport",
+                        "aeReport.additionalInformation.otherInformation");
     }
 }

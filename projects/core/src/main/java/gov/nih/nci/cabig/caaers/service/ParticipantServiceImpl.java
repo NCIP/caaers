@@ -13,14 +13,17 @@ import java.util.List;
 public class ParticipantServiceImpl extends AbstractImportServiceImpl implements ParticipantService {
 
     ParticipantDao participantDao;
+
     StudySiteDao studySiteDao;
 
     /**
      * Search using a sample. Populate a Participant object
-     *
-     * @param participant object
+     * 
+     * @param participant
+     *                object
      * @return List of Participant objects based on the sample participant object
-     * @throws Runtime exception
+     * @throws Runtime
+     *                 exception
      */
     public List<Participant> search(Participant participant) throws Exception {
         return participantDao.searchByExample(participant);
@@ -59,8 +62,8 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
         this.participantDao = participantDao;
     }
 
-
-    public DomainObjectImportOutcome<Participant> createParticipantObjects(Participant xstreamParticipant) {
+    public DomainObjectImportOutcome<Participant> createParticipantObjects(
+                    Participant xstreamParticipant) {
 
         Participant participant = new Participant();
         DomainObjectImportOutcome<Participant> participantImportOutcome = new DomainObjectImportOutcome<Participant>();
@@ -74,10 +77,9 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
         participant.setRace(xstreamParticipant.getRace());
         participant.setEthnicity(xstreamParticipant.getEthnicity());
 
-        //migrateIdentifiers(participant,xstreamParticipant);
+        // migrateIdentifiers(participant,xstreamParticipant);
         migrateIdentifiers(participant, xstreamParticipant, participantImportOutcome);
         migrateAssignments(participant, xstreamParticipant, participantImportOutcome);
-
 
         participantImportOutcome.setImportedDomainObject(participant);
         participantUniquenessCheck(participant, participantImportOutcome, Severity.ERROR);
@@ -85,60 +87,65 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
         return participantImportOutcome;
     }
 
-    private void migrateAssignments(Participant destination,
-                                    Participant source,
-                                    DomainObjectImportOutcome participantImportOutcome) {
+    private void migrateAssignments(Participant destination, Participant source,
+                    DomainObjectImportOutcome participantImportOutcome) {
 
         if (source.getAssignments() != null) {
             ArrayList<String> studySites = new ArrayList<String>();
             for (int i = 0; i < source.getAssignments().size(); i++) {
-                StudyParticipantAssignment studyParticipantAssignment = source
-                        .getAssignments().get(i);
+                StudyParticipantAssignment studyParticipantAssignment = source.getAssignments()
+                                .get(i);
                 String theIdentifier = "";
 
-                for (Identifier identifier : studyParticipantAssignment
-                        .getStudySite().getStudy().getIdentifiers()) {
+                for (Identifier identifier : studyParticipantAssignment.getStudySite().getStudy()
+                                .getIdentifiers()) {
 
-                    log.debug("Size of identifiers : " + studyParticipantAssignment.getStudySite().getStudy().getIdentifiers());
+                    log.debug("Size of identifiers : "
+                                    + studyParticipantAssignment.getStudySite().getStudy()
+                                                    .getIdentifiers());
                     theIdentifier = identifier.getValue();
                     StudySite studySite = studySiteDao.matchByStudyAndOrg(
-                            studyParticipantAssignment.getStudySite().getOrganization().getName(),
-                            identifier.getValue(), identifier.getType());
-
+                                    studyParticipantAssignment.getStudySite().getOrganization()
+                                                    .getName(), identifier.getValue(), identifier
+                                                    .getType());
 
                     if (studySite != null && !studySites.contains(studySite.getId().toString())) {
                         studySites.add(studySite.getId().toString());
                         log.info("StudySite was found id :  " + studySite.getId());
                         destination.getAssignments().add(
-                                new StudyParticipantAssignment(destination,
-                                        studySite));
+                                        new StudyParticipantAssignment(destination, studySite));
                         break;
                     }
 
-                    ifNullObject(studySite, participantImportOutcome, Severity.ERROR, "The Study with Identifier \" " + theIdentifier +
-                            " \" is either nonexistant or does not match the provided Site");
+                    ifNullObject(
+                                    studySite,
+                                    participantImportOutcome,
+                                    Severity.ERROR,
+                                    "The Study with Identifier \" "
+                                                    + theIdentifier
+                                                    + " \" is either nonexistant or does not match the provided Site");
 
                 }
             }
         }
-        ifNullOrEmptyList(source.getAssignments(), participantImportOutcome,
-                Severity.ERROR, "Assignments are either Empty or Not Valid");
+        ifNullOrEmptyList(source.getAssignments(), participantImportOutcome, Severity.ERROR,
+                        "Assignments are either Empty or Not Valid");
     }
 
-
-    private void participantUniquenessCheck(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity) {
+    private void participantUniquenessCheck(Participant participant,
+                    DomainObjectImportOutcome participantImportOutcome, Severity severity) {
 
         firstPrimaryIndicatorInIdentifiers(participant, participantImportOutcome);
 
         for (Identifier identifier : participant.getIdentifiers()) {
             Participant tempParticipant = getParticipantDao().getByIdentifier(identifier);
             if (tempParticipant != null) {
-                participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " identifier already exists. ", severity);
+                participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName()
+                                + " identifier already exists. ", severity);
                 break;
             }
         }
     }
-
 
     public StudySiteDao getStudySiteDao() {
         return studySiteDao;
@@ -147,6 +154,5 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
     public void setStudySiteDao(StudySiteDao studySiteDao) {
         this.studySiteDao = studySiteDao;
     }
-
 
 }

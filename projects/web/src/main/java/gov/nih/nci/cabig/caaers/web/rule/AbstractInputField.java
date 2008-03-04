@@ -5,11 +5,15 @@ package gov.nih.nci.cabig.caaers.web.rule;
  */
 public abstract class AbstractInputField implements InputField {
     private String displayName;
+
     private String propertyName;
+
     private boolean required;
+
     private String extraInformation;
 
-    protected AbstractInputField() { }
+    protected AbstractInputField() {
+    }
 
     protected AbstractInputField(String propertyName, String displayName, boolean required) {
         this.displayName = displayName;

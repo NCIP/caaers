@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ConcomitantMedicationsTabTest extends AeTabTestCase {
     @Override
     protected ConcomitantMedicationsTab createTab() {
@@ -20,10 +20,7 @@ public class ConcomitantMedicationsTabTest extends AeTabTestCase {
     }
 
     public void testFieldProperties() throws Exception {
-        assertFieldProperties(
-            "conmed7",
-            "aeReport.concomitantMedications[7].agentName"
-        );
+        assertFieldProperties("conmed7", "aeReport.concomitantMedications[7].agentName");
     }
 
     public void testConcomitantMedicationValidWithAgentName() throws Exception {

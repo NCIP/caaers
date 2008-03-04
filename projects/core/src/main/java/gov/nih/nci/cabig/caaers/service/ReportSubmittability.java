@@ -18,7 +18,7 @@ public class ReportSubmittability {
         return messages.isEmpty();
     }
 
-    public void addMissingField(ExpeditedReportSection section, String name, String property){
+    public void addMissingField(ExpeditedReportSection section, String name, String property) {
         insert(section, new Message(name + " is mandatory", property));
     }
 
@@ -44,6 +44,7 @@ public class ReportSubmittability {
 
     public static class Message {
         private String text;
+
         private String property;
 
         public Message(String text) {
@@ -62,9 +63,10 @@ public class ReportSubmittability {
         public String getProperty() {
             return property;
         }
+
         @Override
         public String toString() {
-        	return text + ":" + property;
+            return text + ":" + property;
         }
     }
 }

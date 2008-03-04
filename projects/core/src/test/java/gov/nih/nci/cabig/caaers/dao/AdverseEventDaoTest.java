@@ -26,14 +26,14 @@ import java.util.Calendar;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testGet() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("AE not found", loaded);
         assertEquals("Wrong grade", Grade.DEATH, loaded.getGrade());
-        assertDayOfDate("Wrong start date", 2007, Calendar.SEPTEMBER, 12,loaded.getStartDate());
-        assertDayOfDate("Wrong end date", 2007, Calendar.SEPTEMBER, 12,loaded.getEndDate());
+        assertDayOfDate("Wrong start date", 2007, Calendar.SEPTEMBER, 12, loaded.getStartDate());
+        assertDayOfDate("Wrong end date", 2007, Calendar.SEPTEMBER, 12, loaded.getEndDate());
         assertEquals("Wrong term", 3012, (int) loaded.getAdverseEventCtcTerm().getCtcTerm().getId());
         assertEquals("Wrong hosp.", Hospitalization.NONE, loaded.getHospitalization());
         assertEquals("Wrong expectedness", Boolean.TRUE, loaded.getExpected());
@@ -50,21 +50,22 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.POSSIBLE, actual.getAttribution());
 
-        assertEquals("Wrong treatment attribution 0", -27,
-            (int) loaded.getCourseAgentAttributions().get(0).getCause().getId());
+        assertEquals("Wrong treatment attribution 0", -27, (int) loaded
+                        .getCourseAgentAttributions().get(0).getCause().getId());
     }
 
     public void testLoadConMedAttributions() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertEquals(2, loaded.getConcomitantMedicationAttributions().size());
-        ConcomitantMedicationAttribution actual = loaded.getConcomitantMedicationAttributions().get(0);
+        ConcomitantMedicationAttribution actual = loaded.getConcomitantMedicationAttributions()
+                        .get(0);
         assertEquals("Wrong attribution", -7, (int) actual.getId());
         assertEquals("Wrong con med", -77, (int) actual.getCause().getId());
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.UNLIKELY, actual.getAttribution());
 
-        assertEquals("Wrong con med attrib 1", -78,
-            (int) loaded.getConcomitantMedicationAttributions().get(1).getCause().getId());
+        assertEquals("Wrong con med attrib 1", -78, (int) loaded
+                        .getConcomitantMedicationAttributions().get(1).getCause().getId());
     }
 
     public void testLoadOtherCauseAttributions() throws Exception {
@@ -76,8 +77,8 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertSame("Wrong reverse reference", loaded, actual.getAdverseEvent());
         assertEquals("Wrong attribution", Attribution.UNRELATED, actual.getAttribution());
 
-        assertEquals("Wrong other cause attribution 0", -72,
-            (int) loaded.getOtherCauseAttributions().get(0).getCause().getId());
+        assertEquals("Wrong other cause attribution 0", -72, (int) loaded
+                        .getOtherCauseAttributions().get(0).getCause().getId());
     }
 
     public void testLoadDiseaseAttributions() throws Exception {
@@ -123,17 +124,21 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testLoadCtcBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("Ctc Term is null", loaded.getAdverseEventTerm());
-        assertEquals("This term is not Ctc",true, loaded.getAdverseEventTerm() instanceof AdverseEventCtcTerm);
-        assertEquals("This term is not CtcTerm",true, loaded.getAdverseEventTerm().getTerm() instanceof CtcTerm);
-        assertEquals("Wrong Ctc Id",3012, (int) loaded.getAdverseEventTerm().getTerm().getId());
+        assertEquals("This term is not Ctc", true,
+                        loaded.getAdverseEventTerm() instanceof AdverseEventCtcTerm);
+        assertEquals("This term is not CtcTerm", true,
+                        loaded.getAdverseEventTerm().getTerm() instanceof CtcTerm);
+        assertEquals("Wrong Ctc Id", 3012, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
 
     public void testLoadMeddraBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-3);
         assertNotNull("Meddra Term is null", loaded.getAdverseEventTerm());
-		assertEquals("This term is not MedDRA",true, loaded.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm);
-		assertEquals("This term is not LowLevelTerm",true, loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
-		assertEquals("Wrong Meddra Id",-11, (int) loaded.getAdverseEventTerm().getTerm().getId());
+        assertEquals("This term is not MedDRA", true,
+                        loaded.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm);
+        assertEquals("This term is not LowLevelTerm", true,
+                        loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
+        assertEquals("Wrong Meddra Id", -11, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
 
 }

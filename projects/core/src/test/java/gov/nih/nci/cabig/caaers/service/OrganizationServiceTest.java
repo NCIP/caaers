@@ -25,12 +25,17 @@ import org.springframework.beans.BeanWrapperImpl;
  */
 public class OrganizationServiceTest extends CaaersTestCase {
     private static final String APP_NAME = "ZAMO";
+
     private static final String SITE_ROLE_ID = "ARB";
+
     private static final String SITE_PG_ID = "LAMBDA";
 
     private OrganizationServiceImpl service;
+
     private OrganizationDao organizationDao;
+
     private CSMObjectIdGenerator idGenerator;
+
     private UserProvisioningManager userProvisioningManager;
 
     @Override
@@ -76,18 +81,22 @@ public class OrganizationServiceTest extends CaaersTestCase {
         verifyMocks();
     }
 
-    private Organization expectCreate(Organization toCreate) throws CSObjectNotFoundException, CSTransactionException {
+    private Organization expectCreate(Organization toCreate) throws CSObjectNotFoundException,
+                    CSTransactionException {
         String expectedGeneratedId = "a great ID";
 
         expect(idGenerator.generateId(toCreate)).andReturn(expectedGeneratedId);
         expect(userProvisioningManager.getApplication(APP_NAME)).andReturn(new Application());
-        expect(userProvisioningManager.getProtectionGroupById(SITE_PG_ID)).andReturn(new ProtectionGroup());
+        expect(userProvisioningManager.getProtectionGroupById(SITE_PG_ID)).andReturn(
+                        new ProtectionGroup());
 
-        // TODO: Ideally these would test the properties of the created CSM elts, but I'm in a hurry.  RMS20071012.
+        // TODO: Ideally these would test the properties of the created CSM elts, but I'm in a
+        // hurry. RMS20071012.
         userProvisioningManager.createGroup(saveableGroup(4));
         userProvisioningManager.createProtectionGroup(saveablePG(8));
         userProvisioningManager.createProtectionElement(saveablePE(9));
-        userProvisioningManager.assignGroupRoleToProtectionGroup(eq("8"), eq("4"), aryEq(new String[] { SITE_ROLE_ID }));
+        userProvisioningManager.assignGroupRoleToProtectionGroup(eq("8"), eq("4"),
+                        aryEq(new String[] { SITE_ROLE_ID }));
 
         organizationDao.save(toCreate);
         return toCreate;
@@ -110,6 +119,7 @@ public class OrganizationServiceTest extends CaaersTestCase {
 
     private static final class NotNullSetCsmIdMatcher implements IArgumentMatcher {
         private Class<?> csmObjectClass;
+
         private long desiredId;
 
         public NotNullSetCsmIdMatcher(long desiredId, Class<?> csmObjectClass) {

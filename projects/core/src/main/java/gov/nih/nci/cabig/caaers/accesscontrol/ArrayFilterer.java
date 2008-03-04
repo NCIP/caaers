@@ -11,75 +11,80 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * @author Biju Joseph
- * Date: Sep 20, 2007
- * Time: 10:55:46 AM
+ * @author Biju Joseph Date: Sep 20, 2007 Time: 10:55:46 AM
  * 
  */
 
-   class ArrayFilterer implements Filterer {
-   //~ Static fields/initializers =====================================================================================
+class ArrayFilterer implements Filterer {
+    // ~ Static fields/initializers
+    // =====================================================================================
 
-   protected static final Log logger = LogFactory.getLog(BasicAclEntryAfterInvocationCollectionFilteringProvider.class);
+    protected static final Log logger = LogFactory
+                    .getLog(BasicAclEntryAfterInvocationCollectionFilteringProvider.class);
 
-   //~ Instance fields ================================================================================================
+    // ~ Instance fields
+    // ================================================================================================
 
-   private List removeList;
-   private Object[] list;
+    private List removeList;
 
-   //~ Constructors ===================================================================================================
+    private Object[] list;
 
-   ArrayFilterer(Object[] list) {
-       this.list = list;
+    // ~ Constructors
+    // ===================================================================================================
 
-       // Collect the removed objects to a HashSet so that
-       // it is fast to lookup them when a filtered array
-       // is constructed.
-       removeList = new ArrayList();
-   }
+    ArrayFilterer(Object[] list) {
+        this.list = list;
 
-   //~ Methods ========================================================================================================
+        // Collect the removed objects to a HashSet so that
+        // it is fast to lookup them when a filtered array
+        // is constructed.
+        removeList = new ArrayList();
+    }
 
-   /**
-    *
-    * @see org.acegisecurity.afterinvocation.Filterer#getFilteredObject()
-    */
-   public Object getFilteredObject() {
-       // Recreate an array of same type and filter the removed objects.
-       int originalSize = list.length;
-       int sizeOfResultingList = originalSize - removeList.size();
-       Object[] filtered = (Object[]) Array.newInstance(list.getClass().getComponentType(), sizeOfResultingList);
+    // ~ Methods
+    // ========================================================================================================
 
-       for (int i = 0, j = 0; i < list.length; i++) {
-           Object object = list[i];
+    /**
+     * 
+     * @see org.acegisecurity.afterinvocation.Filterer#getFilteredObject()
+     */
+    public Object getFilteredObject() {
+        // Recreate an array of same type and filter the removed objects.
+        int originalSize = list.length;
+        int sizeOfResultingList = originalSize - removeList.size();
+        Object[] filtered = (Object[]) Array.newInstance(list.getClass().getComponentType(),
+                        sizeOfResultingList);
 
-           if (!removeList.contains(object)) {
-               filtered[j] = object;
-               j++;
-           }
-       }
+        for (int i = 0, j = 0; i < list.length; i++) {
+            Object object = list[i];
 
-       if (logger.isDebugEnabled()) {
-           logger.debug("Original array contained " + originalSize + " elements; now contains " + sizeOfResultingList
-               + " elements");
-       }
+            if (!removeList.contains(object)) {
+                filtered[j] = object;
+                j++;
+            }
+        }
 
-       return filtered;
-   }
+        if (logger.isDebugEnabled()) {
+            logger.debug("Original array contained " + originalSize + " elements; now contains "
+                            + sizeOfResultingList + " elements");
+        }
 
-   /**
-    *
-    * @see org.acegisecurity.afterinvocation.Filterer#iterator()
-    */
-   public Iterator iterator() {
-       return new ArrayIterator(list);
-   }
+        return filtered;
+    }
 
-   /**
-    *
-    * @see org.acegisecurity.afterinvocation.Filterer#remove(java.lang.Object)
-    */
-   public void remove(Object object) {
-       removeList.add(object);
-   }
-   }
+    /**
+     * 
+     * @see org.acegisecurity.afterinvocation.Filterer#iterator()
+     */
+    public Iterator iterator() {
+        return new ArrayIterator(list);
+    }
+
+    /**
+     * 
+     * @see org.acegisecurity.afterinvocation.Filterer#remove(java.lang.Object)
+     */
+    public void remove(Object object) {
+        removeList.add(object);
+    }
+}

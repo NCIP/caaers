@@ -13,85 +13,85 @@ import org.springframework.web.servlet.ModelAndView;
 
 /**
  * The Class CreateOrganizationControllerTest.
+ * 
  * @author Saurabh Agrawal
  */
 public class CreateOrganizationControllerTest extends TestCase {
-	private CreateOrganizationController controller;
+    private CreateOrganizationController controller;
 
-	private OrganizationDao organizationDao;
+    private OrganizationDao organizationDao;
 
-	private MockHttpServletRequest request;
+    private MockHttpServletRequest request;
 
-	private MockHttpServletResponse response;
+    private MockHttpServletResponse response;
 
-	private ServletRequestDataBinder binder;
+    private ServletRequestDataBinder binder;
 
-	private Organization organization;
-	
-	private WebControllerValidator validator;
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		organizationDao = EasyMock.createMock(OrganizationDao.class);
-		validator = EasyMock.createMock(WebControllerValidator.class);
-		controller = new CreateOrganizationController();
-		controller.setWebControllerValidator(validator);
-		controller.setOrganizationDao(organizationDao);
-		request = new MockHttpServletRequest();
-		response = new MockHttpServletResponse();
-		organization = new Organization();
+    private Organization organization;
 
-	}
+    private WebControllerValidator validator;
 
-	public void testViewOnGoodSubmit() throws Exception {
-		try {
-			controller.handleRequest(request, response);
-			fail("Should have throught the RequestNotSupportedException");
-		}
-		catch (Exception e) {
-		}
-		request.setMethod("POST");
-		ModelAndView mv = controller.handleRequest(request, response);
-		assertEquals("admin/organization_details", mv.getViewName());
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        organizationDao = EasyMock.createMock(OrganizationDao.class);
+        validator = EasyMock.createMock(WebControllerValidator.class);
+        controller = new CreateOrganizationController();
+        controller.setWebControllerValidator(validator);
+        controller.setOrganizationDao(organizationDao);
+        request = new MockHttpServletRequest();
+        response = new MockHttpServletResponse();
+        organization = new Organization();
 
-		binder = new ServletRequestDataBinder(organization, "organization");
+    }
 
-		request.setParameter("name", "test name");
-		request.setParameter("descriptionText", "test desc");
-		binder.bind(request);
-		assertEquals("test name", organization.getName());
-		assertEquals("test desc", organization.getDescriptionText());
+    public void testViewOnGoodSubmit() throws Exception {
+        try {
+            controller.handleRequest(request, response);
+            fail("Should have throught the RequestNotSupportedException");
+        } catch (Exception e) {
+        }
+        request.setMethod("POST");
+        ModelAndView mv = controller.handleRequest(request, response);
+        assertEquals("admin/organization_details", mv.getViewName());
 
-		mv = controller.handleRequest(request, response);
-		assertEquals("admin/organization_details", mv.getViewName());
+        binder = new ServletRequestDataBinder(organization, "organization");
 
-		request.setParameter("nciInstituteCode", "abc");
-		binder.bind(request);
-		assertEquals("abc", organization.getNciInstituteCode());
+        request.setParameter("name", "test name");
+        request.setParameter("descriptionText", "test desc");
+        binder.bind(request);
+        assertEquals("test name", organization.getName());
+        assertEquals("test desc", organization.getDescriptionText());
 
-		mv = controller.handleRequest(request, response);
-		// organization was added..
-		assertEquals("admin/organization_details", mv.getViewName());
+        mv = controller.handleRequest(request, response);
+        assertEquals("admin/organization_details", mv.getViewName());
 
-	}
+        request.setParameter("nciInstituteCode", "abc");
+        binder.bind(request);
+        assertEquals("abc", organization.getNciInstituteCode());
 
-	public void testViewOnSubmit() throws Exception {
-		try {
-			controller.handleRequest(request, response);
-			fail("Should have throught the RequestNotSupportedException");
-		}
-		catch (Exception e) {
-		}
-		request.setMethod("POST");
-		ModelAndView mv = controller.handleRequest(request, response);
-		assertEquals("admin/organization_details", mv.getViewName());
+        mv = controller.handleRequest(request, response);
+        // organization was added..
+        assertEquals("admin/organization_details", mv.getViewName());
 
-		binder = new ServletRequestDataBinder(organization, "organization");
+    }
 
-		request.setParameter("name", "test name");
-		request.setParameter("descriptionTest", "test desc");
-		binder.bind(request);
-		assertEquals("test name", organization.getName());
-	}
+    public void testViewOnSubmit() throws Exception {
+        try {
+            controller.handleRequest(request, response);
+            fail("Should have throught the RequestNotSupportedException");
+        } catch (Exception e) {
+        }
+        request.setMethod("POST");
+        ModelAndView mv = controller.handleRequest(request, response);
+        assertEquals("admin/organization_details", mv.getViewName());
+
+        binder = new ServletRequestDataBinder(organization, "organization");
+
+        request.setParameter("name", "test name");
+        request.setParameter("descriptionTest", "test desc");
+        binder.bind(request);
+        assertEquals("test name", organization.getName());
+    }
 
 }

@@ -11,14 +11,14 @@ import java.util.regex.Pattern;
 
 /**
  * @author Rhett Sutphin
-*/
+ */
 public class RepeatingFieldGroupTransformer implements Transformer<String, InputFieldGroup> {
     private static final Log log = LogFactory.getLog(RepeatingFieldGroupTransformer.class);
-    private static final Pattern CREATED_FIELD_GROUP_PATTERN
-        = Pattern.compile("([a-zA-Z_-]+)(\\d+)");
 
-    private Map<String, RepeatingFieldGroupFactory> factories
-        = new HashMap<String, RepeatingFieldGroupFactory>();
+    private static final Pattern CREATED_FIELD_GROUP_PATTERN = Pattern
+                    .compile("([a-zA-Z_-]+)(\\d+)");
+
+    private Map<String, RepeatingFieldGroupFactory> factories = new HashMap<String, RepeatingFieldGroupFactory>();
 
     public InputFieldGroup transform(String in) {
         if (log.isDebugEnabled()) log.debug("Creating new field group for " + in);
@@ -28,7 +28,8 @@ public class RepeatingFieldGroupTransformer implements Transformer<String, Input
             String basename = match.group(1);
             RepeatingFieldGroupFactory factory = factories.get(basename);
             if (factory == null) {
-                log.warn(String.format("No RepeatingFieldGroupFactory with basename '%s' for '%s'", basename, in));
+                log.warn(String.format("No RepeatingFieldGroupFactory with basename '%s' for '%s'",
+                                basename, in));
                 return null;
             } else {
                 Integer index = new Integer(match.group(2));

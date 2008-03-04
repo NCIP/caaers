@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 
 /**
  * Link between an constraint annotation and it's validator implementation
+ * 
  * @author Saurabh Agrawal, Created on August,11th, 2007
  * 
  */
@@ -17,5 +18,5 @@ import java.lang.annotation.Target;
 @Target( { ANNOTATION_TYPE })
 @Retention(RUNTIME)
 public @interface ValidatorClass {
-	Class<? extends Validator> value();
+    Class<? extends Validator> value();
 }

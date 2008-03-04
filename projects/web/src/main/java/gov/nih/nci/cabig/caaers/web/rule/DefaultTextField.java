@@ -5,7 +5,8 @@ package gov.nih.nci.cabig.caaers.web.rule;
  */
 public class DefaultTextField extends AbstractInputField {
 
-    public DefaultTextField() { }
+    public DefaultTextField() {
+    }
 
     public DefaultTextField(String propertyName, String displayName, boolean required) {
         super(propertyName, displayName, required);

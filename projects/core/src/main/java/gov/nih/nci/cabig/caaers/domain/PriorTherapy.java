@@ -11,19 +11,18 @@ import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 /**
  * This class represents the PriorTherapy domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "prior_therapies")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_prior_therapies_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_prior_therapies_id") })
 public class PriorTherapy extends AbstractImmutableDomainObject {
     private String text;
-    private String meddraTerm; //MedDRA v9.0 Lower Level Term (LLT)
-    private String meddraCode; //MedDRA v9.0 LLT/CTEP Provisional Code
+
+    private String meddraTerm; // MedDRA v9.0 Lower Level Term (LLT)
+
+    private String meddraCode; // MedDRA v9.0 LLT/CTEP Provisional Code
 
     @Column(name = "therapy_text")
     public String getText() {
@@ -35,60 +34,49 @@ public class PriorTherapy extends AbstractImmutableDomainObject {
     }
 
     @Column(name = "meddra_code")
-	public String getMeddraCode() {
-		return meddraCode;
-	}
+    public String getMeddraCode() {
+        return meddraCode;
+    }
 
-	public void setMeddraCode(String meddraCode) {
-		this.meddraCode = meddraCode;
-	}
-	@Column(name = "meddra_term")
-	public String getMeddraTerm() {
-		return meddraTerm;
-	}
+    public void setMeddraCode(String meddraCode) {
+        this.meddraCode = meddraCode;
+    }
 
-	public void setMeddraTerm(String meddraTerm) {
-		this.meddraTerm = meddraTerm;
-	}
+    @Column(name = "meddra_term")
+    public String getMeddraTerm() {
+        return meddraTerm;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((meddraCode == null) ? 0 : meddraCode.hashCode());
-		result = prime * result
-				+ ((meddraTerm == null) ? 0 : meddraTerm.hashCode());
-		result = prime * result + ((text == null) ? 0 : text.hashCode());
-		return result;
-	}
+    public void setMeddraTerm(String meddraTerm) {
+        this.meddraTerm = meddraTerm;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final PriorTherapy other = (PriorTherapy) obj;
-		if (meddraCode == null) {
-			if (other.meddraCode != null)
-				return false;
-		} else if (!meddraCode.equals(other.meddraCode))
-			return false;
-		if (meddraTerm == null) {
-			if (other.meddraTerm != null)
-				return false;
-		} else if (!meddraTerm.equals(other.meddraTerm))
-			return false;
-		if (text == null) {
-			if (other.text != null)
-				return false;
-		} else if (!text.equals(other.text))
-			return false;
-		return true;
-	}
-    
-    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((meddraCode == null) ? 0 : meddraCode.hashCode());
+        result = prime * result + ((meddraTerm == null) ? 0 : meddraTerm.hashCode());
+        result = prime * result + ((text == null) ? 0 : text.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        final PriorTherapy other = (PriorTherapy) obj;
+        if (meddraCode == null) {
+            if (other.meddraCode != null) return false;
+        } else if (!meddraCode.equals(other.meddraCode)) return false;
+        if (meddraTerm == null) {
+            if (other.meddraTerm != null) return false;
+        } else if (!meddraTerm.equals(other.meddraTerm)) return false;
+        if (text == null) {
+            if (other.text != null) return false;
+        } else if (!text.equals(other.text)) return false;
+        return true;
+    }
+
 }

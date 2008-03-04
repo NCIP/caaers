@@ -9,20 +9,20 @@ import org.extremecomponents.table.core.TableModel;
 
 public class AeDetectionDateDisplayCell extends AbstractCell {
 
-	@Override
-	protected String getCellValue(TableModel model, Column column) {
+    @Override
+    protected String getCellValue(TableModel model, Column column) {
 
-		AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
-		String date = ae.getReport() != null ? ControllerTools.formatDate(ae
-				.getReport().getAdverseEvents().get(0).getStartDate() )
-				: ae.getRoutineReport() != null ? ControllerTools.formatDate(ae
-						.getRoutineReport().getStartDate())
-						+ " - "
-						+ ControllerTools.formatDate(ae.getRoutineReport()
-								.getEndDate()) : "N/A";
+        AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
+        String date = ae.getReport() != null ? ControllerTools.formatDate(ae.getReport()
+                        .getAdverseEvents().get(0).getStartDate())
+                        : ae.getRoutineReport() != null ? ControllerTools.formatDate(ae
+                                        .getRoutineReport().getStartDate())
+                                        + " - "
+                                        + ControllerTools.formatDate(ae.getRoutineReport()
+                                                        .getEndDate()) : "N/A";
 
-		String cellValue = column.getValueAsString();
-		cellValue = date;
-		return cellValue;
-	}
+        String cellValue = column.getValueAsString();
+        cellValue = date;
+        return cellValue;
+    }
 }

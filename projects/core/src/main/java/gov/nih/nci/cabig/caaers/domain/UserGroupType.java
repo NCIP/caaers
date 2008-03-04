@@ -7,19 +7,17 @@ import gov.nih.nci.cabig.ctms.domain.EnumHelper;
 
 /**
  * This enumeration represents the user group types
- *
+ * 
  * @author Biju Joseph
  */
 public enum UserGroupType implements CodedEnum<Integer> {
-    caaers_user(-2,"caaers_user"),
-    caaers_admin(-1,"caaers_admin"),
-    caaers_super_user(-3,"caaers_super_user"),
-    caaers_study_cd(-4,"caaers_study_cd"),
-    caaers_participant_cd(-5,"caaers_participant_cd"),
-    caaers_ae_cd(-13,"caaers_ae_cd"),
-    caaers_site_cd(-14,"caaers_site_cd");
+    caaers_user(-2, "caaers_user"), caaers_admin(-1, "caaers_admin"), caaers_super_user(-3,
+                    "caaers_super_user"), caaers_study_cd(-4, "caaers_study_cd"), caaers_participant_cd(
+                    -5, "caaers_participant_cd"), caaers_ae_cd(-13, "caaers_ae_cd"), caaers_site_cd(
+                    -14, "caaers_site_cd");
 
     private String csmName;
+
     private int code;
 
     UserGroupType(final int code, final String name) {
@@ -37,15 +35,13 @@ public enum UserGroupType implements CodedEnum<Integer> {
         return EnumHelper.sentenceCasedName(this);
     }
 
+    public Integer getCode() {
+        return code;
+    }
 
-	public Integer getCode() {
-		return code;
-	}
-    
     public static UserGroupType getByCode(final int code) {
         return getByClassAndCode(UserGroupType.class, code);
     }
-
 
     public String toString() {
         return csmName;

@@ -16,7 +16,9 @@ import org.springframework.validation.Errors;
  */
 public class TabWithFieldsTest extends CaaersTestCase {
     private TestBean command;
+
     private TabWithFields<TestBean> tab;
+
     private InputFieldGroup group;
 
     @Override
@@ -52,7 +54,7 @@ public class TabWithFieldsTest extends CaaersTestCase {
             public boolean matches(Object argument) {
                 assertTrue("Parameter is not a bean wrapper", argument instanceof BeanWrapper);
                 assertSame("Wrapper is of wrong instance", expectedUnwrapped,
-                    ((BeanWrapper) argument).getWrappedInstance());
+                                ((BeanWrapper) argument).getWrappedInstance());
                 return true;
             }
 
@@ -66,6 +68,7 @@ public class TabWithFieldsTest extends CaaersTestCase {
 
     private static class TestBean {
         private Integer integer;
+
         private String string;
 
         public Integer getInteger() {

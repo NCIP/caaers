@@ -19,36 +19,33 @@ import org.springframework.beans.factory.annotation.Required;
 @Aspect
 public class StudyParticipantAssignmentAspect {
 
-	private static final Log logger = LogFactory
-			.getLog(StudyParticipantAssignmentAspect.class);
+    private static final Log logger = LogFactory.getLog(StudyParticipantAssignmentAspect.class);
 
-	private AspectJSecurityInterceptor securityInterceptor;
+    private AspectJSecurityInterceptor securityInterceptor;
 
-	@Before("execution(public void gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment+.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant+))")
-	public void advise(JoinPoint jp) {
-//		logger.debug("############ advising " + jp.toLongString()
-//				+ " ############");
-		AspectJCallback callback = new AspectJCallback() {
-			public Object proceedWithObject() {
-				return null;
-			}
-		};
-		AspectJSecurityInterceptor interceptor = getSecurityInterceptor();
-		if(interceptor == null){
-			throw new RuntimeException("interceptor not set");
-		}
-		interceptor.invoke(jp, callback);
-	}
+    @Before("execution(public void gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment+.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant+))")
+    public void advise(JoinPoint jp) {
+        // logger.debug("############ advising " + jp.toLongString()
+        // + " ############");
+        AspectJCallback callback = new AspectJCallback() {
+            public Object proceedWithObject() {
+                return null;
+            }
+        };
+        AspectJSecurityInterceptor interceptor = getSecurityInterceptor();
+        if (interceptor == null) {
+            throw new RuntimeException("interceptor not set");
+        }
+        interceptor.invoke(jp, callback);
+    }
 
-	
-	public AspectJSecurityInterceptor getSecurityInterceptor() {
-		return securityInterceptor;
-	}
+    public AspectJSecurityInterceptor getSecurityInterceptor() {
+        return securityInterceptor;
+    }
 
-	@Required
-	public void setSecurityInterceptor(
-			AspectJSecurityInterceptor securityInterceptor) {
-		this.securityInterceptor = securityInterceptor;
-	}
+    @Required
+    public void setSecurityInterceptor(AspectJSecurityInterceptor securityInterceptor) {
+        this.securityInterceptor = securityInterceptor;
+    }
 
 }

@@ -15,10 +15,12 @@ public interface RoutineAdverseEventInputCommand extends AdverseEventInputComman
     ExpeditedAdverseEventReport getAeReport();
 
     RoutineAdverseEventReport getAeRoutineReport();
-    
+
     String[] getCtcTermIds();
 
-    /* attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs
-     * in AdverseEventReport and AdverseEvent */
+    /*
+     * attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs in
+     * AdverseEventReport and AdverseEvent
+     */
     Map<String, List<List<Attribution>>> getAttributionMap();
 }

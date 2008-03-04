@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class CourseAgentTest extends CaaersTestCase {
     private CourseAgent courseAgent = new CourseAgent();
 

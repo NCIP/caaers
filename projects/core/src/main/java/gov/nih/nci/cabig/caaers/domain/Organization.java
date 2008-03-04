@@ -23,43 +23,51 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the Organization domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
 @Entity
-@Table (name = "organizations")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_organizations_id")
-    }
-)
+@Table(name = "organizations")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_organizations_id") })
 public class Organization extends AbstractMutableDomainObject {
     public static final String DEFAULT_SITE_NAME = "default";
 
     private String name;
+
     private String nciInstituteCode;
+
     private String descriptionText;
+
     private List<SiteInvestigator> siteInvestigators = new ArrayList<SiteInvestigator>();
+
     private List<ResearchStaff> researchStaffs = new ArrayList<ResearchStaff>();
+
     private List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
+
     private List<ReportDefinition> reportDefinitions;
+
     private String city;
+
     private String state;
+
     private String country;
 
-    ////// LOGIC
+    // //// LOGIC
 
     /*
-     * @See study_details.jsp , study_identifiers.jsp 
+     * @See study_details.jsp , study_identifiers.jsp
      */
     @Transient
-    public String getFullName(){
-    	return getName() + ( getNciInstituteCode() == null ? "" : " ( " + getNciInstituteCode() + " ) ");
+    public String getFullName() {
+        return getName()
+                        + (getNciInstituteCode() == null ? "" : " ( " + getNciInstituteCode()
+                                        + " ) ");
     }
-    
-	public void addStudyOrganization(StudyOrganization studyOrg) {
-    	this.getStudyOrganizations().add(studyOrg);
-    	studyOrg.setOrganization(this);
+
+    public void addStudyOrganization(StudyOrganization studyOrg) {
+        this.getStudyOrganizations().add(studyOrg);
+        studyOrg.setOrganization(this);
 
     }
 
@@ -69,17 +77,17 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     public void addResearchStaff(ResearchStaff staff) {
-    	getResearchStaffs().add(staff);
-    	staff.setOrganization(this);
+        getResearchStaffs().add(staff);
+        staff.setOrganization(this);
     }
 
-    public void addReportDefinition(ReportDefinition  reportDefinition){
-    	if(reportDefinitions == null) reportDefinitions = new ArrayList<ReportDefinition>();
-    	reportDefinitions.add(reportDefinition);
-    	reportDefinition.setOrganization(this);
+    public void addReportDefinition(ReportDefinition reportDefinition) {
+        if (reportDefinitions == null) reportDefinitions = new ArrayList<ReportDefinition>();
+        reportDefinitions.add(reportDefinition);
+        reportDefinition.setOrganization(this);
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     @Column(name = "name")
     public String getName() {
@@ -89,114 +97,112 @@ public class Organization extends AbstractMutableDomainObject {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Column(name = "city")
     public String getCity() {
-		return city;
-	}
+        return city;
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public void setCity(String city) {
+        this.city = city;
+    }
 
-	@Column(name = "country")
-	public String getCountry() {
-		return country;
-	}
+    @Column(name = "country")
+    public String getCountry() {
+        return country;
+    }
 
-	public void setCountry(String country) {
-		this.country = country;
-	}
+    public void setCountry(String country) {
+        this.country = country;
+    }
 
-	@Column(name = "state")
-	public String getState() {
-		return state;
-	}
+    @Column(name = "state")
+    public String getState() {
+        return state;
+    }
 
-	public void setState(String state) {
-		this.state = state;
-	}
-	
-	//Cascade limited to DELETE, Fix for #11452
-	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @OrderBy // order by ID for testing consistency
-	@Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    // Cascade limited to DELETE, Fix for #11452
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @OrderBy
+    // order by ID for testing consistency
+    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     public List<StudyOrganization> getStudyOrganizations() {
-		return studyOrganizations;
-	}
+        return studyOrganizations;
+    }
 
-	public void setStudyOrganizations(List<StudyOrganization> studyOrganizations) {
-		this.studyOrganizations = studyOrganizations;
-	}
+    public void setStudyOrganizations(List<StudyOrganization> studyOrganizations) {
+        this.studyOrganizations = studyOrganizations;
+    }
 
-	public void addStudySite(StudySite studySite) {
-		addStudyOrganization(studySite);
-	}
+    public void addStudySite(StudySite studySite) {
+        addStudyOrganization(studySite);
+    }
 
-	@Transient
-	public List<StudySite> getStudySites() {
-		List<StudySite> sites = new ArrayList<StudySite>();
-		for(StudyOrganization studyOrg: this.getStudyOrganizations()){
-			if (studyOrg instanceof StudySite){
-				sites.add((StudySite)studyOrg);
-			}
-		}
-		return sites;
-	}
+    @Transient
+    public List<StudySite> getStudySites() {
+        List<StudySite> sites = new ArrayList<StudySite>();
+        for (StudyOrganization studyOrg : this.getStudyOrganizations()) {
+            if (studyOrg instanceof StudySite) {
+                sites.add((StudySite) studyOrg);
+            }
+        }
+        return sites;
+    }
 
-
-    @OneToMany (mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade (value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<SiteInvestigator> getSiteInvestigators() {
-		return siteInvestigators;
-	}
+        return siteInvestigators;
+    }
 
-	public void setSiteInvestigators(List<SiteInvestigator> siteInvestigators) {
-		this.siteInvestigators = siteInvestigators;
-	}
+    public void setSiteInvestigators(List<SiteInvestigator> siteInvestigators) {
+        this.siteInvestigators = siteInvestigators;
+    }
 
-	@OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<ResearchStaff> getResearchStaffs() {
-		return researchStaffs;
-	}
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<ResearchStaff> getResearchStaffs() {
+        return researchStaffs;
+    }
 
-	public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
-		this.researchStaffs = researchStaffs;
-	}
-	//Cascade limited to DELETE, Fix for #11452
-    @OneToMany(mappedBy="organization", fetch=FetchType.LAZY)
-    @Cascade(value={CascadeType.DELETE ,CascadeType.DELETE_ORPHAN})
-	public List<ReportDefinition> getReportDefinitions() {
-		return reportDefinitions;
-	}
+    public void setResearchStaffs(List<ResearchStaff> researchStaffs) {
+        this.researchStaffs = researchStaffs;
+    }
 
-	public void setReportDefinitions(List<ReportDefinition> reportDefinitions) {
-		this.reportDefinitions = reportDefinitions;
-	}
+    // Cascade limited to DELETE, Fix for #11452
+    @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
+    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    public List<ReportDefinition> getReportDefinitions() {
+        return reportDefinitions;
+    }
+
+    public void setReportDefinitions(List<ReportDefinition> reportDefinitions) {
+        this.reportDefinitions = reportDefinitions;
+    }
 
     public String getDescriptionText() {
-		return descriptionText;
-	}
+        return descriptionText;
+    }
 
-
-	public void setDescriptionText(String description) {
-		this.descriptionText = description;
-	}
-
+    public void setDescriptionText(String description) {
+        this.descriptionText = description;
+    }
 
     @UniqueNciIdentifierForOrganization(message = "Nci  Identifier already exits in the datbase...!")
     public String getNciInstituteCode() {
-		return nciInstituteCode;
-	}
+        return nciInstituteCode;
+    }
 
+    public void setNciInstituteCode(String nciInstituteCode) {
+        this.nciInstituteCode = nciInstituteCode;
+    }
 
-	public void setNciInstituteCode(String nciInstituteCode) {
-		this.nciInstituteCode = nciInstituteCode;
-	}
-
-	@Override
-	public boolean equals(Object o) {
+    @Override
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Organization)) return false;
 
@@ -208,13 +214,12 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     @Override
-	public int hashCode() {
+    public int hashCode() {
         return (getName() != null ? getName().hashCode() : 0);
     }
 
     @Override
     public String toString() {
-    	return name;
+        return name;
     }
 }
-

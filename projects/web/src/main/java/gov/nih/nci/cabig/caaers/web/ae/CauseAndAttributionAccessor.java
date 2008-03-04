@@ -28,27 +28,25 @@ import java.util.Map;
 
 /**
  * This class is part of the implementation of AttributionMap and AttributionTab.
- *
+ * 
  * @author Rhett Sutphin
  */
 public abstract class CauseAndAttributionAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>> {
-    private static final Map<String, CauseAndAttributionAccessor<?, ?>> KEY_TO_ACCESSOR
-        = new LinkedHashMap<String, CauseAndAttributionAccessor<?, ?>>();
+    private static final Map<String, CauseAndAttributionAccessor<?, ?>> KEY_TO_ACCESSOR = new LinkedHashMap<String, CauseAndAttributionAccessor<?, ?>>();
 
-    public static final CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution>
-        COURSE_AGENT = new CourseAgentAccessor();
-    public static final CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution>
-        CONCOMITANT_MEDICATION = new ConcomitantMedicationAccessor();
-    public static final CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution>
-        OTHER_CAUSE = new OtherCauseAccessor();
-    public static final CauseAndAttributionAccessor<DiseaseHistory, DiseaseAttribution>
-        DISEASE = new DiseaseAccessor();
-    public static final CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution>
-        SURGERY = new SurgeryAccessor();
-    public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution>
-        RADIATION = new RadiationAccessor();
-    public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution>
-        DEVICE = new DeviceAccessor();
+    public static final CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> COURSE_AGENT = new CourseAgentAccessor();
+
+    public static final CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> CONCOMITANT_MEDICATION = new ConcomitantMedicationAccessor();
+
+    public static final CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> OTHER_CAUSE = new OtherCauseAccessor();
+
+    public static final CauseAndAttributionAccessor<DiseaseHistory, DiseaseAttribution> DISEASE = new DiseaseAccessor();
+
+    public static final CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> SURGERY = new SurgeryAccessor();
+
+    public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> RADIATION = new RadiationAccessor();
+
+    public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> DEVICE = new DeviceAccessor();
 
     protected CauseAndAttributionAccessor() {
         KEY_TO_ACCESSOR.put(getKey(), this);
@@ -61,22 +59,25 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     public final C findCause(int i, ExpeditedAdverseEventReport aeReport) {
         List<C> causes = getCauseList(aeReport);
         if (causes.size() <= i) {
-            throw new CaaersSystemException(
-                "Could not locate cause " + i + " for report using accessor " + getClass().getSimpleName()
-                + ".  This may indicate a problem in generating the attribution form."
-            );
+            throw new CaaersSystemException("Could not locate cause " + i
+                            + " for report using accessor " + getClass().getSimpleName()
+                            + ".  This may indicate a problem in generating the attribution form.");
         }
         return causes.get(i);
     }
 
     protected abstract List<C> getCauseList(ExpeditedAdverseEventReport aeReport);
+
     public abstract A createAttribution();
+
     public abstract List<A> getAttributionsList(AdverseEvent adverseEvent);
+
     public abstract String getKey();
 
     public abstract String getDisplayName(C c);
 
-    private static class CourseAgentAccessor extends CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
+    private static class CourseAgentAccessor extends
+                    CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY;
@@ -95,9 +96,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         protected List<CourseAgent> getCauseList(ExpeditedAdverseEventReport aeReport) {
             TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
-            return treatmentInformation == null
-                ? Collections.<CourseAgent>emptyList()
-                : treatmentInformation.getCourseAgents();
+            return treatmentInformation == null ? Collections.<CourseAgent> emptyList()
+                            : treatmentInformation.getCourseAgents();
         }
 
         @Override
@@ -106,7 +106,9 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class ConcomitantMedicationAccessor extends CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> {
+    private static class ConcomitantMedicationAccessor
+                    extends
+                    CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY;
@@ -133,7 +135,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class OtherCauseAccessor extends CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
+    private static class OtherCauseAccessor extends
+                    CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY;
@@ -160,7 +163,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private abstract static class SingleObjectAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>> extends CauseAndAttributionAccessor<C, A> {
+    private abstract static class SingleObjectAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>>
+                    extends CauseAndAttributionAccessor<C, A> {
         @Override
         protected final List<C> getCauseList(ExpeditedAdverseEventReport aeReport) {
             C cause = getSingleCause(aeReport);
@@ -174,18 +178,19 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         protected abstract C getSingleCause(ExpeditedAdverseEventReport aeReport);
 
         /**
-         * Return true if the provided (non-null) cause instance should be treated as though
-         * there's nothing entered.  (This is to support accessors which always return a non-null
-         * dependent object, even if there's been no explicit user input.)
+         * Return true if the provided (non-null) cause instance should be treated as though there's
+         * nothing entered. (This is to support accessors which always return a non-null dependent
+         * object, even if there's been no explicit user input.)
          * <p>
-         * Note that this should always return true if {@link #getDisplayName} won't be able
-         * to complete, or will return null.  That might not be the only case where it should be
-         * true, though. 
+         * Note that this should always return true if {@link #getDisplayName} won't be able to
+         * complete, or will return null. That might not be the only case where it should be true,
+         * though.
          */
         protected abstract boolean considerEmpty(C cause);
     }
 
-    private static class DiseaseAccessor extends SingleObjectAccessor<DiseaseHistory, DiseaseAttribution> {
+    private static class DiseaseAccessor extends
+                    SingleObjectAccessor<DiseaseHistory, DiseaseAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.DISEASE_ATTRIBUTION_KEY;
@@ -221,28 +226,25 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class SurgeryAccessor extends CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> {
+    private static class SurgeryAccessor extends
+                    CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.SURGERY_ATTRIBUTION_KEY;
         }
 
         /*
-        @Override
-        protected SurgeryIntervention getSingleCause(ExpeditedAdverseEventReport aeReport) {
-            return aeReport.getSurgeryIntervention();
-        }
+         * @Override protected SurgeryIntervention getSingleCause(ExpeditedAdverseEventReport
+         * aeReport) { return aeReport.getSurgeryIntervention(); }
+         * 
+         * @Override protected boolean considerEmpty(SurgeryIntervention cause) { return
+         * cause.getDescription() == null; }
+         */
 
-        @Override
-        protected boolean considerEmpty(SurgeryIntervention cause) {
-            return cause.getDescription() == null;
-        }*/
-        
         @Override
         protected List<SurgeryIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getSurgeryInterventions();
         }
-
 
         @Override
         public SurgeryAttribution createAttribution() {
@@ -260,28 +262,25 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class RadiationAccessor extends CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> {
+    private static class RadiationAccessor extends
+                    CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.RADIATION_ATTRIBUTION_KEY;
         }
-        
-        /*
-        @Override
-        protected RadiationIntervention getSingleCause(ExpeditedAdverseEventReport aeReport) {
-            return aeReport.getRadiationIntervention();
-        }
 
-        @Override
-        protected boolean considerEmpty(RadiationIntervention cause) {
-            return cause.getDescription() == null;
-        }*/
-        
+        /*
+         * @Override protected RadiationIntervention getSingleCause(ExpeditedAdverseEventReport
+         * aeReport) { return aeReport.getRadiationIntervention(); }
+         * 
+         * @Override protected boolean considerEmpty(RadiationIntervention cause) { return
+         * cause.getDescription() == null; }
+         */
+
         @Override
         protected List<RadiationIntervention> getCauseList(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getRadiationInterventions();
         }
-        
 
         @Override
         public RadiationAttribution createAttribution() {
@@ -299,7 +298,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class DeviceAccessor extends CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> {
+    private static class DeviceAccessor extends
+                    CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.DEVICE_ATTRIBUTION_KEY;
@@ -309,7 +309,6 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         protected List<MedicalDevice> getCauseList(ExpeditedAdverseEventReport aeReport) {
             return aeReport.getMedicalDevices();
         }
-
 
         @Override
         public DeviceAttribution createAttribution() {

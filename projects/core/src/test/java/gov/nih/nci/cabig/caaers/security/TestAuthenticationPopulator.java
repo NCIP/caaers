@@ -12,74 +12,73 @@ import org.apache.commons.logging.LogFactory;
 
 public class TestAuthenticationPopulator {
 
-	private static final Log logger = LogFactory
-			.getLog(gov.nih.nci.cabig.caaers.security.TestAuthenticationPopulator.class);
+    private static final Log logger = LogFactory
+                    .getLog(gov.nih.nci.cabig.caaers.security.TestAuthenticationPopulator.class);
 
-	private String username;
+    private String username;
 
-	private String password;
+    private String password;
 
-	private String includePattern = ".*";
+    private String includePattern = ".*";
 
-	private String excludePattern;
+    private String excludePattern;
 
-	private List<String> authorities;
+    private List<String> authorities;
 
-	public void populate() {
+    public void populate() {
 
-		logger.debug("################# Populating Authentication #################");
-		
-		List<String> l = getAuthorities();
-		GrantedAuthority[] auths = new GrantedAuthority[l.size()];
-		int idx = 0;
-		for (String auth : l) {
-			auths[idx++] = new GrantedAuthorityImpl(auth);
-		}
-		Authentication auth = new TestingAuthenticationToken(getUsername(),
-				getPassword(), auths);
-		auth.setAuthenticated(true);
-		SecurityContextHolder.getContext().setAuthentication(auth);
+        logger.debug("################# Populating Authentication #################");
 
-	}
+        List<String> l = getAuthorities();
+        GrantedAuthority[] auths = new GrantedAuthority[l.size()];
+        int idx = 0;
+        for (String auth : l) {
+            auths[idx++] = new GrantedAuthorityImpl(auth);
+        }
+        Authentication auth = new TestingAuthenticationToken(getUsername(), getPassword(), auths);
+        auth.setAuthenticated(true);
+        SecurityContextHolder.getContext().setAuthentication(auth);
 
-	public String getUsername() {
-		return username;
-	}
+    }
 
-	public void setUsername(String userName) {
-		this.username = userName;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public List<String> getAuthorities() {
-		return authorities;
-	}
+    public void setUsername(String userName) {
+        this.username = userName;
+    }
 
-	public void setAuthorities(List<String> authorities) {
-		this.authorities = authorities;
-	}
+    public List<String> getAuthorities() {
+        return authorities;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setAuthorities(List<String> authorities) {
+        this.authorities = authorities;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public String getPassword() {
+        return password;
+    }
 
-	public String getExcludePattern() {
-		return excludePattern;
-	}
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	public void setExcludePattern(String excludePattern) {
-		this.excludePattern = excludePattern;
-	}
+    public String getExcludePattern() {
+        return excludePattern;
+    }
 
-	public String getIncludePattern() {
-		return includePattern;
-	}
+    public void setExcludePattern(String excludePattern) {
+        this.excludePattern = excludePattern;
+    }
 
-	public void setIncludePattern(String includedPattern) {
-		this.includePattern = includedPattern;
-	}
+    public String getIncludePattern() {
+        return includePattern;
+    }
+
+    public void setIncludePattern(String includedPattern) {
+        this.includePattern = includedPattern;
+    }
 
 }

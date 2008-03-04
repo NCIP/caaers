@@ -1,11 +1,10 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
-
 import java.util.List;
 
 /**
  * Refactoring pending.
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
  */
 public interface MessageBroadcastService {

@@ -10,15 +10,13 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Rhett Sutphin
  */
 public enum Grade implements CodedEnum<Integer>, CodedGrade {
-    NORMAL(0),
-    MILD(1),
-    MODERATE(2),
-    SEVERE(3),
-    LIFE_THREATENING(4, "Life-threatening or disabling"),
-    DEATH(5);
+    NORMAL(0), MILD(1), MODERATE(2), SEVERE(3), LIFE_THREATENING(4, "Life-threatening or disabling"), DEATH(
+                    5);
 
     private int code;
+
     private String displayName;
+
     Grade(int code) {
         this(code, null);
     }

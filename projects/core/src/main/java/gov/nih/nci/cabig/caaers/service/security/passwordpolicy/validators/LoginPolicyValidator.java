@@ -14,37 +14,40 @@ public class LoginPolicyValidator implements PasswordPolicyValidator {
 
     private UserService userService;
 
-    public boolean validate(PasswordPolicy policy, Credential credential) throws ValidationException {
-	LoginPolicy loginPolicy = policy.getLoginPolicy();
+    public boolean validate(PasswordPolicy policy, Credential credential)
+                    throws ValidationException {
+        LoginPolicy loginPolicy = policy.getLoginPolicy();
 
-	return validateAllowedFailedLoginAttempts(loginPolicy, credential)
-	    && validateLockOutDuration(loginPolicy, credential)
-	    && validateMaxPasswordAge(loginPolicy, credential);
+        return validateAllowedFailedLoginAttempts(loginPolicy, credential)
+                        && validateLockOutDuration(loginPolicy, credential)
+                        && validateMaxPasswordAge(loginPolicy, credential);
     }
 
-    private boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential) 
-	throws ValidationException {
-	if (userService.getUserByName(credential.getUserName()).getFailedLoginAttempts() > policy.getAllowedFailedLoginAttempts()) {	    
-	    throw new ValidationException("Too many failed logins.");
-	}
-	return true;
-    }
-    
-    private boolean validateLockOutDuration(LoginPolicy policy, Credential credential) 
-	throws ValidationException {
-	// TODO
-	return true;
+    private boolean validateAllowedFailedLoginAttempts(LoginPolicy policy, Credential credential)
+                    throws ValidationException {
+        if (userService.getUserByName(credential.getUserName()).getFailedLoginAttempts() > policy
+                        .getAllowedFailedLoginAttempts()) {
+            throw new ValidationException("Too many failed logins.");
+        }
+        return true;
     }
 
-    private boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential) 
-	throws ValidationException {
-	if (userService.getUserByName(credential.getUserName()).getPasswordAge() > policy.getMaxPasswordAge()) {
-	    throw new ValidationException("Password is too old.");
-	}
-	return true;
+    private boolean validateLockOutDuration(LoginPolicy policy, Credential credential)
+                    throws ValidationException {
+        // TODO
+        return true;
+    }
+
+    private boolean validateMaxPasswordAge(LoginPolicy policy, Credential credential)
+                    throws ValidationException {
+        if (userService.getUserByName(credential.getUserName()).getPasswordAge() > policy
+                        .getMaxPasswordAge()) {
+            throw new ValidationException("Password is too old.");
+        }
+        return true;
     }
 
     public void setUserService(UserService userService) {
-	this.userService = userService;
-    }    
+        this.userService = userService;
+    }
 }

@@ -22,97 +22,95 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+
 /**
- * This class contains the details of the notification, that is to be send
- * out.
- *
+ * This class contains the details of the notification, that is to be send out.
+ * 
  * @author Biju Joseph
- *
+ * 
  */
 
 @Entity
 @Table(name = "SCHEDULED_NOTIFICATIONS")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "dtype",
-    discriminatorType = DiscriminatorType.STRING
-)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("dtype")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_scheduled_notifications_id")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_scheduled_notifications_id") })
+public abstract class ScheduledNotification extends AbstractMutableDomainObject implements
+                Serializable {
+
+    protected DeliveryStatus deliveryStatus;
+
+    protected Date createdOn;
+
+    protected Date scheduledOn;
+
+    protected PlannedNotification planedNotificaiton;
+
+    protected String body;
+
+    public ScheduledNotification() {
+        deliveryStatus = DeliveryStatus.CREATED;
     }
-)
-public  abstract class ScheduledNotification extends AbstractMutableDomainObject  implements Serializable{
 
-
-	protected DeliveryStatus deliveryStatus;
-
-	protected Date createdOn;
-
-	protected Date scheduledOn;
-
-	protected PlannedNotification planedNotificaiton;
-
-	protected String body;
-
-	public ScheduledNotification(){
-		deliveryStatus = DeliveryStatus.CREATED;
-	}
-
-	@Type(type = "deliveryStatus")
+    @Type(type = "deliveryStatus")
     @Column(name = "DELIVERY_STATUS_CODE")
-	public DeliveryStatus getDeliveryStatus() {
-		return deliveryStatus;
-	}
-	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
-		this.deliveryStatus = deliveryStatus;
-	}
+    public DeliveryStatus getDeliveryStatus() {
+        return deliveryStatus;
+    }
 
-	@Temporal(value=TemporalType.TIMESTAMP)
-	public Date getCreatedOn() {
-		return createdOn;
-	}
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
 
-	@Temporal(value=TemporalType.TIMESTAMP)
-	public Date getScheduledOn() {
-		return scheduledOn;
-	}
-	public void setScheduledOn(Date scheduledOn) {
-		this.scheduledOn = scheduledOn;
-	}
+    @Temporal(value = TemporalType.TIMESTAMP)
+    public Date getCreatedOn() {
+        return createdOn;
+    }
 
-	/**
-	 * @return the planedNotificaiton
-	 */
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="plnf_id", nullable=false)
-	public PlannedNotification getPlanedNotificaiton() {
-		return planedNotificaiton;
-	}
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
-	/**
-	 * @param planedNotificaiton the planedNotificaiton to set
-	 */
-	public void setPlanedNotificaiton(PlannedNotification planedNotificaiton) {
-		this.planedNotificaiton = planedNotificaiton;
-	}
+    @Temporal(value = TemporalType.TIMESTAMP)
+    public Date getScheduledOn() {
+        return scheduledOn;
+    }
 
-	/**
-	 * @return the bodyContent
-	 */
-	public String getBody() {
-		return body;
-	}
+    public void setScheduledOn(Date scheduledOn) {
+        this.scheduledOn = scheduledOn;
+    }
 
-	/**
-	 * @param bodyContent the bodyContent to set
-	 */
-	public void setBody(String bodyContent) {
-		this.body = bodyContent;
-	}
+    /**
+     * @return the planedNotificaiton
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plnf_id", nullable = false)
+    public PlannedNotification getPlanedNotificaiton() {
+        return planedNotificaiton;
+    }
+
+    /**
+     * @param planedNotificaiton
+     *                the planedNotificaiton to set
+     */
+    public void setPlanedNotificaiton(PlannedNotification planedNotificaiton) {
+        this.planedNotificaiton = planedNotificaiton;
+    }
+
+    /**
+     * @return the bodyContent
+     */
+    public String getBody() {
+        return body;
+    }
+
+    /**
+     * @param bodyContent
+     *                the bodyContent to set
+     */
+    public void setBody(String bodyContent) {
+        this.body = bodyContent;
+    }
 
 }

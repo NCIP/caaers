@@ -7,8 +7,11 @@ import junit.framework.TestCase;
  */
 public class AdverseEventCtcTermTest extends TestCase {
     private AdverseEventCtcTerm term;
+
     private AdverseEvent adverseEvent;
+
     private CtcTerm coagOther;
+
     private CtcTerm cd4;
 
     @Override

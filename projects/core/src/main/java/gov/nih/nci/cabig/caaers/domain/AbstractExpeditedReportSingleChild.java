@@ -11,7 +11,8 @@ import javax.persistence.MappedSuperclass;
  * @author Rhett Sutphin
  */
 @MappedSuperclass
-public class AbstractExpeditedReportSingleChild extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild {
+public class AbstractExpeditedReportSingleChild extends AbstractMutableDomainObject implements
+                ExpeditedAdverseEventReportChild {
     private ExpeditedAdverseEventReport report;
 
     @OneToOne(fetch = FetchType.LAZY)

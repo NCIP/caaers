@@ -9,11 +9,10 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Krikor Krumlian
  */
 public enum Design implements CodedEnum<Integer> {
-    BLIND(1, "Blind"),
-    OPEN_UNBLIND(2, "Open/Unblind"),
-    PARTIAL(3, "Partial Blind");
+    BLIND(1, "Blind"), OPEN_UNBLIND(2, "Open/Unblind"), PARTIAL(3, "Partial Blind");
 
     private int code;
+
     private String displayName;
 
     Design(int code) {

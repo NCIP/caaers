@@ -12,15 +12,14 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class PostAdverseEventStatusTest extends CaaersTestCase {
     public void testDisplayNames() throws Exception {
-        assertEquals("Intervention for AE continues", 
-            INTERVENTION_CONTINUES.getDisplayName());
+        assertEquals("Intervention for AE continues", INTERVENTION_CONTINUES.getDisplayName());
         assertEquals("Not recovered/Not resolved", NOT_RECOVERED.getDisplayName());
         assertEquals("Fatal/Died", DEAD.getDisplayName());
     }
-    
+
     public void testGetByCode() throws Exception {
         assertSame(RECOVERED_WITH_SEQUELAE, getByCode(RECOVERED_WITH_SEQUELAE.getCode()));
     }

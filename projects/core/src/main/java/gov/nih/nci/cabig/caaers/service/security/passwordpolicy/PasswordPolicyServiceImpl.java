@@ -13,52 +13,56 @@ import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PasswordPolicyServiceImpl implements PasswordPolicyService {
-    
+
     PasswordCreationPolicyValidator passwordCreationPolicyValidator;
+
     LoginPolicyValidator loginPolicyValidator;
+
     PasswordPolicyDao passwordPolicyDao;
+
     UserService userService;
 
     public PasswordPolicyServiceImpl() {
-	passwordCreationPolicyValidator = new PasswordCreationPolicyValidator();
-	loginPolicyValidator = new LoginPolicyValidator();
+        passwordCreationPolicyValidator = new PasswordCreationPolicyValidator();
+        loginPolicyValidator = new LoginPolicyValidator();
     }
 
     public PasswordPolicy getPasswordPolicy() {
-	return passwordPolicyDao.getById(1);
+        return passwordPolicyDao.getById(1);
     }
-    
+
     public void setPasswordPolicy(PasswordPolicy passwordPolicy) {
-	passwordPolicyDao.save(passwordPolicy);
+        passwordPolicyDao.save(passwordPolicy);
     }
-    
+
     public String publishPasswordPolicy() {
-	return "TODO";
+        return "TODO";
     }
 
     public String publishPasswordPolicy(String xsltFileName) {
-	return "TODO";
+        return "TODO";
     }
-    
-    public boolean validatePasswordAgainstCreationPolicy(Credential credential) throws CaaersSystemException {
-	return passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential);
+
+    public boolean validatePasswordAgainstCreationPolicy(Credential credential)
+                    throws CaaersSystemException {
+        return passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential);
     }
 
     /*
-    public boolean validatePasswordAgainstLoginPolicy(Credential credential) throws CaaersSystemException {
-	return loginPolicyValidator.validate(getPasswordPolicy(), credential);
-    }
-    */
+     * public boolean validatePasswordAgainstLoginPolicy(Credential credential) throws
+     * CaaersSystemException { return loginPolicyValidator.validate(getPasswordPolicy(),
+     * credential); }
+     */
 
     @Required
     public void setPasswordPolicyDao(PasswordPolicyDao passwordPolicyDao) {
-	this.passwordPolicyDao = passwordPolicyDao;
+        this.passwordPolicyDao = passwordPolicyDao;
     }
 
     @Required
     public void setUserService(UserService userService) {
-	this.userService = userService;
-	passwordCreationPolicyValidator.setUserService(userService);
-	loginPolicyValidator.setUserService(userService);
+        this.userService = userService;
+        passwordCreationPolicyValidator.setUserService(userService);
+        loginPolicyValidator.setUserService(userService);
     }
 }

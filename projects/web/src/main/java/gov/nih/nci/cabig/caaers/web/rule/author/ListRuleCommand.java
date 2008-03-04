@@ -10,22 +10,21 @@ import java.util.List;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class ListRuleCommand implements RuleInputCommand {
 
-	private List<RuleSet> ruleSets;
-	
-	
-	public ListRuleCommand(RuleAuthoringService ruleAuthoringService) throws RemoteException {
-		ruleSets = ruleAuthoringService.getAllRuleSets();
-		//ruleSets.remove(0);//removing the default
-	}
+    private List<RuleSet> ruleSets;
 
-	public List<RuleSet> getRuleSets() {
-		return ruleSets;
-	}
+    public ListRuleCommand(RuleAuthoringService ruleAuthoringService) throws RemoteException {
+        ruleSets = ruleAuthoringService.getAllRuleSets();
+        // ruleSets.remove(0);//removing the default
+    }
 
-	public void setRuleSets(List<RuleSet> ruleSets) {
-		this.ruleSets = ruleSets;
-	}
+    public List<RuleSet> getRuleSets() {
+        return ruleSets;
+    }
+
+    public void setRuleSets(List<RuleSet> ruleSets) {
+        this.ruleSets = ruleSets;
+    }
 }

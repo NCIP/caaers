@@ -25,23 +25,19 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "ae_terms")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "term_type",
-    discriminatorType = DiscriminatorType.STRING
-)
-@DiscriminatorValue("ABSTRACT_TERM") // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_ae_terms_id")
-    }
-)
-public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends AbstractMutableDomainObject {
-    private T term;  
+@DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("ABSTRACT_TERM")
+// should be ignored
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_terms_id") })
+public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
+                AbstractMutableDomainObject {
+    private T term;
+
     private AdverseEvent adverseEvent;
 
-    ////// BEAN PROPERTIES
-	
-	@OneToOne(fetch = FetchType.LAZY)
+    // //// BEAN PROPERTIES
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "adverse_event_id")
     public AdverseEvent getAdverseEvent() {
         return adverseEvent;
@@ -50,17 +46,14 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends A
     public void setAdverseEvent(AdverseEvent adverseEvent) {
         this.adverseEvent = adverseEvent;
     }
-    
+
     @Transient
     public abstract String getUniversalTerm();
-    
-    
-    
+
     @Transient
-    /* this is only transient here -- subclasses need to override it and specify what it refers to
-       This should work:
-    @ManyToOne
-    @JoinColumn(name = "cause_id", nullable = false)
+    /*
+     * this is only transient here -- subclasses need to override it and specify what it refers to
+     * This should work: @ManyToOne @JoinColumn(name = "cause_id", nullable = false)
      */
     public T getTerm() {
         return term;

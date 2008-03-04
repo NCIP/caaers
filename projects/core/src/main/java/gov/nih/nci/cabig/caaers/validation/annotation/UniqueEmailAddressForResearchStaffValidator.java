@@ -13,10 +13,10 @@ import java.util.List;
 /**
  * @author Biju Joseph, Created on December,6th, 2007
  */
-public class UniqueEmailAddressForResearchStaffValidator implements Validator<UniqueEmailAddressForResearchStaff> {
+public class UniqueEmailAddressForResearchStaffValidator implements
+                Validator<UniqueEmailAddressForResearchStaff> {
 
     String message;
-
 
     private ResearchStaffDao researchStaffDao;
 
@@ -25,7 +25,8 @@ public class UniqueEmailAddressForResearchStaffValidator implements Validator<Un
 
             ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
             researchStaffQuery.filterByEmailAddress((String) value);
-            List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
+            List<ResearchStaff> researchStaffList = researchStaffDao
+                            .searchResearchStaff(researchStaffQuery);
             return (researchStaffList == null || researchStaffList.isEmpty()) ? true : false;
         }
         return true;
@@ -36,11 +37,9 @@ public class UniqueEmailAddressForResearchStaffValidator implements Validator<Un
 
     }
 
-
     public String message() {
         return message;
     }
-
 
     @Required
     public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {

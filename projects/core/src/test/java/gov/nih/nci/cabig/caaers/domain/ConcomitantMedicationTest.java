@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ConcomitantMedicationTest extends CaaersTestCase {
     private ConcomitantMedication medication = new ConcomitantMedication();
 

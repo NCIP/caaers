@@ -5,11 +5,14 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
 /**
  * @author Rhett Sutphin
  */
-/* TODO: this class is shared with PSC (there it is called StudyCalendarNamingStrategy).
-   Refactor into a shared library. */
+/*
+ * TODO: this class is shared with PSC (there it is called StudyCalendarNamingStrategy). Refactor
+ * into a shared library.
+ */
 public class WonderfulNamingStrategy extends ImprovedNamingStrategy {
     @Override
-    public String foreignKeyColumnName(String propertyName, String propertyEntityName, String propertyTableName, String referencedColumnName) {
+    public String foreignKeyColumnName(String propertyName, String propertyEntityName,
+                    String propertyTableName, String referencedColumnName) {
         return columnName(propertyName) + "_id";
     }
 

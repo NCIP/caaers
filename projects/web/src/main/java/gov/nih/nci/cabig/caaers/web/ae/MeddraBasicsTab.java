@@ -11,15 +11,16 @@ public class MeddraBasicsTab extends BasicsTab {
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
 
     public MeddraBasicsTab() {
-        super("Enter basic AE information", ExpeditedReportSection.BASICS_SECTION.getDisplayName(), "ae/enterBasicMeddra");
+        super("Enter basic AE information", ExpeditedReportSection.BASICS_SECTION.getDisplayName(),
+                        "ae/enterBasicMeddra");
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator,
+                    ExpeditedAdverseEventInputCommand command) {
         super.createFieldGroups(creator, command);
-        creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents",
-            InputFieldFactory.createAutocompleterField(
-                "adverseEventMeddraLowLevelTerm.lowLevelTerm", "MedDRA code", true)
-        );
+        creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents", InputFieldFactory
+                        .createAutocompleterField("adverseEventMeddraLowLevelTerm.lowLevelTerm",
+                                        "MedDRA code", true));
     }
 }

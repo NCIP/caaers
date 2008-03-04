@@ -13,7 +13,7 @@ public class LabsDisplayNameCreatorTest extends TestCase {
         super.setUp();
         creator = new LabsDisplayNameCreator();
     }
-             
+
     public void testIndexedName() throws Exception {
         assertEquals("Lab A", creator.createIndexedName(0));
         assertEquals("Lab E", creator.createIndexedName(4));

@@ -5,9 +5,12 @@ package gov.nih.nci.cabig.caaers.web.fields;
  */
 public abstract class AbstractInputFieldGroup implements InputFieldGroup {
     private String name;
+
     private String displayName;
 
-    protected AbstractInputFieldGroup() { this(null); }
+    protected AbstractInputFieldGroup() {
+        this(null);
+    }
 
     protected AbstractInputFieldGroup(String name) {
         this(name, null);
@@ -36,9 +39,8 @@ public abstract class AbstractInputFieldGroup implements InputFieldGroup {
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append("[name=").append(getName())
-            .append("; displayName=").append(getDisplayName())
-            .append("; fields=").append(getFields()).toString();
+        return new StringBuilder(getClass().getSimpleName()).append("[name=").append(getName())
+                        .append("; displayName=").append(getDisplayName()).append("; fields=")
+                        .append(getFields()).toString();
     }
 }

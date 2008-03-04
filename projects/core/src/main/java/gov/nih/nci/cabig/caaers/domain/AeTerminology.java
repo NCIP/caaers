@@ -17,63 +17,62 @@ import org.hibernate.annotations.Type;
 
 /**
  * This class represents the AeTerminology domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "terminologies")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_terminologies_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_terminologies_id") })
 public class AeTerminology extends AbstractMutableDomainObject {
     private Term term;
+
     private Ctc ctcVersion;
+
     private MeddraVersion meddraVersion;
+
     private Study study;
 
-    ////// BEAN PROPERTIES
-    
+    // //// BEAN PROPERTIES
+
     @Column(name = "term_code")
-	@Type(type = "term")
-	public Term getTerm() {
-		return term;
-	}
+    @Type(type = "term")
+    public Term getTerm() {
+        return term;
+    }
 
-	public void setTerm(Term term) {
-		this.term = term;
-	}
-	
-	@OneToOne
-	@JoinColumn(name = "ctc_id")
-	@Cascade(value = { CascadeType.LOCK })
-	public Ctc getCtcVersion() {
-		return ctcVersion;
-	}
+    public void setTerm(Term term) {
+        this.term = term;
+    }
 
-	public void setCtcVersion(Ctc ctcVersion) {
-		this.ctcVersion = ctcVersion;
-	}
-	
-	@OneToOne
-	@JoinColumn(name = "meddra_version_id")
-	public MeddraVersion getMeddraVersion() {
-		return meddraVersion;
-	}
+    @OneToOne
+    @JoinColumn(name = "ctc_id")
+    @Cascade(value = { CascadeType.LOCK })
+    public Ctc getCtcVersion() {
+        return ctcVersion;
+    }
 
-	public void setMeddraVersion(MeddraVersion meddraVersion) {
-		this.meddraVersion = meddraVersion;
-	}
+    public void setCtcVersion(Ctc ctcVersion) {
+        this.ctcVersion = ctcVersion;
+    }
 
-	@OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "meddra_version_id")
+    public MeddraVersion getMeddraVersion() {
+        return meddraVersion;
+    }
+
+    public void setMeddraVersion(MeddraVersion meddraVersion) {
+        this.meddraVersion = meddraVersion;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
-	public Study getStudy() {
-		return study;
-	}
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setStudy(Study study) {
-		this.study = study;
-	}
-	
-	
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+
 }

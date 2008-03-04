@@ -8,37 +8,40 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 /**
  * This Job will send an email reminder notifaction,based on a Report.
+ * 
  * @author Biju Joseph
- *
+ * 
  */
 public class ReminderEmailJob extends ScheduledNotificationJobTemplate {
 
-	@Override
-	public DeliveryStatus processNotification() {
-		logger.debug("\n\r\n\r\nProceeding with emailing...[ \r\n\r\n" + String.valueOf(report) +"\r\n]\r\n\r\n");
-		ScheduledEmailNotification sen = (ScheduledEmailNotification) notification;
-		SimpleMailMessage msg = new SimpleMailMessage();
-		msg.setTo(sen.getToAddress());
-		msg.setFrom(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
-		msg.setReplyTo(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
-		msg.setSentDate(sen.getScheduledOn());
-		msg.setSubject(sen.getSubjectLine());
-		msg.setText(new String(sen.getBody()));
+    @Override
+    public DeliveryStatus processNotification() {
+        logger.debug("\n\r\n\r\nProceeding with emailing...[ \r\n\r\n" + String.valueOf(report)
+                        + "\r\n]\r\n\r\n");
+        ScheduledEmailNotification sen = (ScheduledEmailNotification) notification;
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(sen.getToAddress());
+        msg.setFrom(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
+        msg.setReplyTo(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
+        msg.setSentDate(sen.getScheduledOn());
+        msg.setSubject(sen.getSubjectLine());
+        msg.setText(new String(sen.getBody()));
 
-		try{
-			JavaMailSenderImpl mailer = (JavaMailSenderImpl)applicationContext.getBean("mailer");
-			String username = configuration.get(Configuration.SMTP_USER);
-			if(StringUtils.isNotEmpty(username)) mailer.setUsername(username);
-			System.out.println("--- before send()");
+        try {
+            JavaMailSenderImpl mailer = (JavaMailSenderImpl) applicationContext.getBean("mailer");
+            String username = configuration.get(Configuration.SMTP_USER);
+            if (StringUtils.isNotEmpty(username)) mailer.setUsername(username);
+            System.out.println("--- before send()");
             mailer.send(msg);
             System.out.println("---- after send ()");
             return DeliveryStatus.DELIVERED;
-        }catch(Exception ex) {
-        	ex.printStackTrace();
-        	logger.error("Error while trying to email", ex);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error("Error while trying to email", ex);
         }
         return DeliveryStatus.ERROR;
-	}
+    }
 }

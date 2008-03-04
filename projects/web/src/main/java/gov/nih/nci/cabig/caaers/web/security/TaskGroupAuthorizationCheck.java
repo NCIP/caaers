@@ -21,7 +21,8 @@ public class TaskGroupAuthorizationCheck implements CSMAuthorizationCheck {
         if (object != null && object instanceof TaskGroup) {
             List<Task> taskList = ((TaskGroup) object).getTaskList();
             for (Task task : taskList) {
-                authorized = taskAuthorizationCheck.checkAuthorization(authentication, privilege, task);
+                authorized = taskAuthorizationCheck.checkAuthorization(authentication, privilege,
+                                task);
                 if (authorized) break;
             }
         }
@@ -31,25 +32,27 @@ public class TaskGroupAuthorizationCheck implements CSMAuthorizationCheck {
 
     /**
      * NOT IMPLEMENTED
-     *
+     * 
      * @param authentication
      * @param privilege
      * @param objectId
      * @return
      */
-    public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege, String objectId) {
+    public boolean checkAuthorizationForObjectId(Authentication authentication, String privilege,
+                    String objectId) {
         return false;
     }
 
     /**
      * NOT IMPLEMENTED
-     *
+     * 
      * @param authentication
      * @param privilege
      * @param objectId
      * @return
      */
-    public boolean checkAuthorizationForObjectIds(Authentication authentication, String privilege, String[] objectId) {
+    public boolean checkAuthorizationForObjectIds(Authentication authentication, String privilege,
+                    String[] objectId) {
         return false;
     }
 

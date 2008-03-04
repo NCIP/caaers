@@ -17,19 +17,16 @@ public class ObjectToolsTest extends CaaersTestCase {
     }
 
     public void testReduceAll() throws Exception {
-        List<Bean> src = Arrays.asList(
-            new Bean("A", 1, 2, (byte) 3),
-            new Bean("E", 3, 6, (byte) 9)
-        );
+        List<Bean> src = Arrays
+                        .asList(new Bean("A", 1, 2, (byte) 3), new Bean("E", 3, 6, (byte) 9));
         List<Bean> reduced = ObjectTools.reduceAll(src, "integer", "primitiveLong");
         assertEquals("Wrong number of beans copied", 2, reduced.size());
         assertBean(null, 1, 2, (byte) 0, reduced.get(0));
         assertBean(null, 3, 6, (byte) 0, reduced.get(1));
     }
 
-    private static void assertBean(
-        String expectedString, Integer expectedInteger, long expectedLong, byte expectedByte, Bean actual
-    ) {
+    private static void assertBean(String expectedString, Integer expectedInteger,
+                    long expectedLong, byte expectedByte, Bean actual) {
         assertEquals("Wrong string", expectedString, actual.getString());
         assertEquals("Wrong integer", expectedInteger, actual.getInteger());
         assertEquals("Wrong long", expectedLong, actual.getPrimitiveLong());
@@ -38,8 +35,11 @@ public class ObjectToolsTest extends CaaersTestCase {
 
     private static class Bean {
         private String string;
+
         private Integer integer;
+
         private long primitiveLong;
+
         private byte primitiveByte;
 
         public Bean() {

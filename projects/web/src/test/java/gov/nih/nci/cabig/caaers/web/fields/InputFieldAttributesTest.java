@@ -42,7 +42,7 @@ public class InputFieldAttributesTest extends TestCase {
         assertSame(expectedDetails, InputFieldAttributes.getDetails(field));
     }
 
-    @SuppressWarnings({ "UnnecessaryBoxing" })
+    @SuppressWarnings( { "UnnecessaryBoxing" })
     public void testSetSize() throws Exception {
         InputFieldAttributes.setSize(field, 88);
         assertEquals(Integer.valueOf(88), field.getAttributes().get(SIZE));
@@ -53,7 +53,7 @@ public class InputFieldAttributesTest extends TestCase {
         assertEquals(56, (int) InputFieldAttributes.getSize(field));
     }
 
-    @SuppressWarnings({ "UnnecessaryBoxing" })
+    @SuppressWarnings( { "UnnecessaryBoxing" })
     public void testSetColumns() throws Exception {
         InputFieldAttributes.setColumns(field, 45);
         assertEquals(Integer.valueOf(45), field.getAttributes().get(COLS));

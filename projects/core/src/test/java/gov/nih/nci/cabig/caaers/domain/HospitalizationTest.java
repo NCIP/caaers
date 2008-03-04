@@ -8,11 +8,12 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class HospitalizationTest extends CaaersTestCase {
     public void testToString() throws Exception {
         assertEquals("0: None", Hospitalization.NONE.toString());
-        assertEquals("2: Prolonged hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION.toString());
+        assertEquals("2: Prolonged hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION
+                        .toString());
         assertEquals("1: Hospitalization", Hospitalization.HOSPITALIZATION.toString());
     }
 

@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT,CREATE_ROUTINE_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class AttributionTest extends CaaersTestCase {
     public void testToString() throws Exception {
         assertEquals("2: Unlikely", Attribution.UNLIKELY.toString());

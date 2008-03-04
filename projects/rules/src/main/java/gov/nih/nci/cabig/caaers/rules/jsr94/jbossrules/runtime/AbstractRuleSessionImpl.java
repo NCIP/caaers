@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime;
 
-
 /*
  * Copyright 2005 JBoss Inc
  * 
@@ -37,26 +36,21 @@ import org.drools.jsr94.rules.RuleExecutionSetMetadataImpl;
 import org.drools.jsr94.rules.admin.RuleExecutionSetImpl;
 
 /**
- * The Drools implementation of the <code>RuleSession</code> interface which is
- * a representation of a client session with a rules engine. A rules engine
- * session serves as an entry point into an underlying rules engine. The
- * <code>RuleSession</code> is bound to a rules engine instance and exposes a
- * vendor-neutral rule processing API for executing <code>Rule</code>s within a
- * bound <code>RuleExecutionSet</code>.
- * <p/>
- * Note: the <code>release</code> method must be called to clean up all
- * resources used by the <code>RuleSession</code>. Calling <code>release</code>
- * may make the <code>RuleSession</code> eligible to be returned to a
- * <code>RuleSession</code> pool.
- *
+ * The Drools implementation of the <code>RuleSession</code> interface which is a representation
+ * of a client session with a rules engine. A rules engine session serves as an entry point into an
+ * underlying rules engine. The <code>RuleSession</code> is bound to a rules engine instance and
+ * exposes a vendor-neutral rule processing API for executing <code>Rule</code>s within a bound
+ * <code>RuleExecutionSet</code>. <p/> Note: the <code>release</code> method must be called to
+ * clean up all resources used by the <code>RuleSession</code>. Calling <code>release</code>
+ * may make the <code>RuleSession</code> eligible to be returned to a <code>RuleSession</code>
+ * pool.
+ * 
  * @see RuleSession
- *
+ * 
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-abstract class AbstractRuleSessionImpl
-    implements
-    RuleSession {
+abstract class AbstractRuleSessionImpl implements RuleSession {
     private RuleExecutionSetRepository repository;
 
     public AbstractRuleSessionImpl(final RuleExecutionSetRepository repository) {
@@ -65,42 +59,38 @@ abstract class AbstractRuleSessionImpl
     }
 
     /**
-     * The Drools <code>WorkingMemory</code> associated
-     * with this <code>RuleSession</code>.
+     * The Drools <code>WorkingMemory</code> associated with this <code>RuleSession</code>.
      */
-    private WorkingMemory        workingMemory;
+    private WorkingMemory workingMemory;
 
     /**
-     * The Drools <code>RuleExecutionSet</code> associated
-     * with this <code>RuleSession</code>.
+     * The Drools <code>RuleExecutionSet</code> associated with this <code>RuleSession</code>.
      */
     private RuleExecutionSetImpl ruleExecutionSet;
 
     /**
-     * A <code>Map</code> of <code>String</code>/<code>Object</code> pairs
-     * passed as application data to the Drools <code>WorkingMemory</code>.
+     * A <code>Map</code> of <code>String</code>/<code>Object</code> pairs passed as
+     * application data to the Drools <code>WorkingMemory</code>.
      */
-    private Map                  properties;
+    private Map properties;
 
     /**
-     * Initialize this <code>RuleSession</code>
-     * with a new <code>WorkingMemory</code>.
-     *
+     * Initialize this <code>RuleSession</code> with a new <code>WorkingMemory</code>.
+     * 
      * @see #newWorkingMemory()
      */
     protected void initWorkingMemory() {
-        this.setWorkingMemory( this.newWorkingMemory() );
+        this.setWorkingMemory(this.newWorkingMemory());
     }
 
     /**
-     * Creates a new <code>WorkingMemory</code> for this
-     * <code>RuleSession</code>. All properties set prior to calling this method
-     * are added as application data to the new <code>WorkingMemory</code>.
-     * The created <code>WorkingMemory</code> uses the default conflict
-     * resolution strategy.
-     *
+     * Creates a new <code>WorkingMemory</code> for this <code>RuleSession</code>. All
+     * properties set prior to calling this method are added as application data to the new
+     * <code>WorkingMemory</code>. The created <code>WorkingMemory</code> uses the default
+     * conflict resolution strategy.
+     * 
      * @return the new <code>WorkingMemory</code>.
-     *
+     * 
      * @see #setProperties(Map)
      * @see WorkingMemory#setApplicationData(String, Object)
      */
@@ -108,11 +98,10 @@ abstract class AbstractRuleSessionImpl
         final WorkingMemory newWorkingMemory = this.getRuleExecutionSet().newWorkingMemory();
 
         final Map props = this.getProperties();
-        if ( props != null ) {
-            for ( final Iterator iterator = props.entrySet().iterator(); iterator.hasNext(); ) {
+        if (props != null) {
+            for (final Iterator iterator = props.entrySet().iterator(); iterator.hasNext();) {
                 final Map.Entry entry = (Map.Entry) iterator.next();
-                newWorkingMemory.setGlobal( (String) entry.getKey(),
-                                            entry.getValue() );
+                newWorkingMemory.setGlobal((String) entry.getKey(), entry.getValue());
             }
         }
 
@@ -121,78 +110,76 @@ abstract class AbstractRuleSessionImpl
 
     /**
      * Sets additional properties used to create this <code>RuleSession</code>.
-     *
-     * @param properties additional properties used to create the
-     *        <code>RuleSession</code> implementation.
+     * 
+     * @param properties
+     *                additional properties used to create the <code>RuleSession</code>
+     *                implementation.
      */
     protected void setProperties(final Map properties) {
         this.properties = properties;
     }
 
     /**
-     * Returns the additional properties used to create this
-     * <code>RuleSession</code>.
-     *
-     * @return the additional properties used to create this
-     *         <code>RuleSession</code>.
+     * Returns the additional properties used to create this <code>RuleSession</code>.
+     * 
+     * @return the additional properties used to create this <code>RuleSession</code>.
      */
     protected Map getProperties() {
         return this.properties;
     }
 
     /**
-     * Sets the Drools <code>WorkingMemory</code> associated
-     * with this <code>RuleSession</code>.
-     *
-     * @param workingMemory the <code>WorkingMemory</code> to associate
-     *        with this <code>RuleSession</code>.
+     * Sets the Drools <code>WorkingMemory</code> associated with this <code>RuleSession</code>.
+     * 
+     * @param workingMemory
+     *                the <code>WorkingMemory</code> to associate with this
+     *                <code>RuleSession</code>.
      */
     protected void setWorkingMemory(final WorkingMemory workingMemory) {
         this.workingMemory = workingMemory;
     }
 
     /**
-     * Returns the Drools <code>WorkingMemory</code> associated
-     * with this <code>RuleSession</code>.
-     *
-     * @return the Drools <code>WorkingMemory</code> to associate
-     *         with this <code>RuleSession</code>.
+     * Returns the Drools <code>WorkingMemory</code> associated with this <code>RuleSession</code>.
+     * 
+     * @return the Drools <code>WorkingMemory</code> to associate with this
+     *         <code>RuleSession</code>.
      */
     protected WorkingMemory getWorkingMemory() {
         return this.workingMemory;
     }
 
     /**
-     * Sets the Drools <code>RuleExecutionSet</code> associated
-     * with this <code>RuleSession</code>.
-     *
-     * @param ruleExecutionSet the Drools <code>RuleExecutionSet</code> to associate
-     *        with this <code>RuleSession</code>.
+     * Sets the Drools <code>RuleExecutionSet</code> associated with this <code>RuleSession</code>.
+     * 
+     * @param ruleExecutionSet
+     *                the Drools <code>RuleExecutionSet</code> to associate with this
+     *                <code>RuleSession</code>.
      */
     protected void setRuleExecutionSet(final RuleExecutionSetImpl ruleExecutionSet) {
         this.ruleExecutionSet = ruleExecutionSet;
     }
 
     /**
-     * Returns the Drools <code>RuleExecutionSet</code> associated
-     * with this <code>RuleSession</code>.
-     *
-     * @return the Drools <code>RuleExecutionSet</code> associated
-     * with this <code>RuleSession</code>.
+     * Returns the Drools <code>RuleExecutionSet</code> associated with this
+     * <code>RuleSession</code>.
+     * 
+     * @return the Drools <code>RuleExecutionSet</code> associated with this
+     *         <code>RuleSession</code>.
      */
     protected RuleExecutionSetImpl getRuleExecutionSet() {
         return this.ruleExecutionSet;
     }
 
     /**
-     * Ensures this <code>RuleSession</code> is not
-     * in an illegal rule session state.
-     *
-     * @throws InvalidRuleSessionException on illegal rule session state.
+     * Ensures this <code>RuleSession</code> is not in an illegal rule session state.
+     * 
+     * @throws InvalidRuleSessionException
+     *                 on illegal rule session state.
      */
     protected void checkRuleSessionValidity() throws InvalidRuleSessionException {
-        if ( this.workingMemory == null ) {
-            throw new InvalidRuleSessionException( "invalid rule session" );
+        if (this.workingMemory == null) {
+            throw new InvalidRuleSessionException("invalid rule session");
         }
     }
 
@@ -200,16 +187,17 @@ abstract class AbstractRuleSessionImpl
      * Applies the given <code>ObjectFilter</code> to the <code>List</code> of
      * <code>Object</code>s, removing all <code>Object</code>s from the given
      * <code>List</code> that do not pass the filter.
-     *
-     * @param objects <code>List</code> of <code>Object</code>s to be filtered
-     * @param objectFilter the <code>ObjectFilter</code> to be applied
+     * 
+     * @param objects
+     *                <code>List</code> of <code>Object</code>s to be filtered
+     * @param objectFilter
+     *                the <code>ObjectFilter</code> to be applied
      */
-    protected void applyFilter(final List objects,
-                               final ObjectFilter objectFilter) {
-        if ( objectFilter != null ) {
-            for ( final Iterator objectIter = objects.iterator(); objectIter.hasNext(); ) {
+    protected void applyFilter(final List objects, final ObjectFilter objectFilter) {
+        if (objectFilter != null) {
+            for (final Iterator objectIter = objects.iterator(); objectIter.hasNext();) {
                 final Object object = objectIter.next();
-                if ( objectFilter.filter( object ) == null ) {
+                if (objectFilter.filter(object) == null) {
                     objectIter.remove();
                 }
             }
@@ -219,67 +207,63 @@ abstract class AbstractRuleSessionImpl
     // JSR94 interface methods start here -------------------------------------
 
     /**
-     * Returns the meta data for the rule execution set bound to this rule
-     * session.
-     *
+     * Returns the meta data for the rule execution set bound to this rule session.
+     * 
      * @return the RuleExecutionSetMetaData bound to this rule session.
      */
     public RuleExecutionSetMetadata getRuleExecutionSetMetadata() {
         String theBindUri = null;
-        for ( final Iterator i = this.repository.getRegistrations().iterator(); i.hasNext(); ) {
+        for (final Iterator i = this.repository.getRegistrations().iterator(); i.hasNext();) {
             final String aBindUri = (String) i.next();
-            final RuleExecutionSet aRuleSet = this.repository.getRuleExecutionSet( aBindUri );
-            if ( aRuleSet == this.ruleExecutionSet ) {
+            final RuleExecutionSet aRuleSet = this.repository.getRuleExecutionSet(aBindUri);
+            if (aRuleSet == this.ruleExecutionSet) {
                 theBindUri = aBindUri;
                 break;
             }
         }
 
-        return new RuleExecutionSetMetadataImpl( theBindUri,
-                                                 this.ruleExecutionSet.getName(),
-                                                 this.ruleExecutionSet.getDescription() );
+        return new RuleExecutionSetMetadataImpl(theBindUri, this.ruleExecutionSet.getName(),
+                        this.ruleExecutionSet.getDescription());
     }
 
     /**
-     * Returns the type identifier for this <code>RuleSession</code>. The
-     * type identifiers are defined in the <code>RuleRuntime</code> interface.
-     *
+     * Returns the type identifier for this <code>RuleSession</code>. The type identifiers are
+     * defined in the <code>RuleRuntime</code> interface.
+     * 
      * @return the type identifier for this <code>RuleSession</code>
-     *
-     * @throws InvalidRuleSessionException on illegal rule session state.
-     *
+     * 
+     * @throws InvalidRuleSessionException
+     *                 on illegal rule session state.
+     * 
      * @see RuleRuntime#STATEFUL_SESSION_TYPE
      * @see RuleRuntime#STATELESS_SESSION_TYPE
      */
     public int getType() throws InvalidRuleSessionException {
-        if ( this instanceof StatelessRuleSession ) {
+        if (this instanceof StatelessRuleSession) {
             return RuleRuntime.STATELESS_SESSION_TYPE;
         }
 
-        if ( this instanceof StatefulRuleSession ) {
+        if (this instanceof StatefulRuleSession) {
             return RuleRuntime.STATEFUL_SESSION_TYPE;
         }
 
-        throw new InvalidRuleSessionException( "unknown type" );
+        throw new InvalidRuleSessionException("unknown type");
     }
 
     /**
-     * Releases all resources used by this rule session.
-     * This method renders this rule session unusable until
-     * it is reacquired through the <code>RuleRuntime</code>.
+     * Releases all resources used by this rule session. This method renders this rule session
+     * unusable until it is reacquired through the <code>RuleRuntime</code>.
      */
     public void release() {
-        this.setProperties( null );
-        this.setWorkingMemory( null );
-        this.setRuleExecutionSet( null );
+        this.setProperties(null);
+        this.setWorkingMemory(null);
+        this.setRuleExecutionSet(null);
     }
 
     /**
-     * Resets this rule session. Calling this method will bring the rule session
-     * state to its initial state for this rule session and will reset any other
-     * state associated with this rule session.
-     * <p/>
-     * A reset will not reset the state on the default object filter for a
+     * Resets this rule session. Calling this method will bring the rule session state to its
+     * initial state for this rule session and will reset any other state associated with this rule
+     * session. <p/> A reset will not reset the state on the default object filter for a
      * <code>RuleExecutionSet</code>.
      */
     public void reset() {

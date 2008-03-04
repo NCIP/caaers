@@ -28,12 +28,13 @@ import java.util.List;
 
 /**
  * This class represents the Participant domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
 @Entity
 @Table
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_participants_id")})
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participants_id") })
 @Where(clause = "load_status > 0")
 public class Participant extends AbstractIdentifiableDomainObject {
     private String institutionalPatientNumber;
@@ -55,8 +56,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
     private String race;
 
     private String ethnicity;
-    private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
+    private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     private final LazyListHelper lazyListHelper;
 
@@ -75,11 +76,14 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     public void addAssignment(final StudyParticipantAssignment studyParticipantAssignment) {
 
-        //make sure user can not add same assignment again
-        if (studyParticipantAssignment != null && studyParticipantAssignment.getStudySite() != null && studyParticipantAssignment.getStudySite().getId() != null) {
+        // make sure user can not add same assignment again
+        if (studyParticipantAssignment != null && studyParticipantAssignment.getStudySite() != null
+                        && studyParticipantAssignment.getStudySite().getId() != null) {
             for (StudyParticipantAssignment assignment : getAssignments()) {
-                if (assignment.getStudySite() != null && studyParticipantAssignment.getStudySite().getId().equals(assignment.getStudySite().getId())) {
-                    //dont add this assignment as it already exists..
+                if (assignment.getStudySite() != null
+                                && studyParticipantAssignment.getStudySite().getId().equals(
+                                                assignment.getStudySite().getId())) {
+                    // dont add this assignment as it already exists..
                     return;
                 }
             }
@@ -131,7 +135,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     /**
      * Will tell whether this participant is assigned to the give site.
-     *
+     * 
      * @param site
      * @return
      */
@@ -141,8 +145,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     public StudyParticipantAssignment getStudyParticipantAssignment(StudySite site) {
         for (StudyParticipantAssignment assignment : getAssignments()) {
-            if (assignment.getStudySite().getId().equals(site.getId()))
-                return assignment;
+            if (assignment.getStudySite().getId().equals(site.getId())) return assignment;
         }
         return null;
     }
@@ -200,11 +203,9 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides({
-    @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
-    @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
-    @AttributeOverride(name = "year", column = @Column(name = "birth_year"))
-            })
+    @AttributeOverrides( { @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "birth_year")) })
     public DateValue getDateOfBirth() {
         return dateOfBirth;
     }
@@ -214,8 +215,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     /*
-      * KK - used as a utility method for data import
-      */
+     * KK - used as a utility method for data import
+     */
     @Transient
     public Date getBirthDate() {
         return this.dateOfBirth != null ? this.dateOfBirth.toDate() : null;
@@ -226,8 +227,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     /*
-      * KK - used as a utility method for data import
-      */
+     * KK - used as a utility method for data import
+     */
     @Transient
     public Date getBirthYear() {
         return this.dateOfBirth != null ? this.dateOfBirth.toDate() : null;
@@ -238,7 +239,6 @@ public class Participant extends AbstractIdentifiableDomainObject {
         this.dateOfBirth.setDay(0);
         this.dateOfBirth.setMonth(0);
     }
-
 
     public String getGender() {
         return gender;
@@ -267,7 +267,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
     @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
     @OrderBy
     // order by ID for testing consistency
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
     }
@@ -329,7 +329,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     @Override
     @OneToMany
-    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     @JoinColumn(name = "participant_id")
     @UniqueIdentifierForParticipant
     @UniqueObjectInCollection

@@ -23,7 +23,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
 
     private StudyDao studyDao;
+
     private StudySiteDao studySiteDao;
+
     private ConfigProperty configurationProperty;
 
     @Override
@@ -41,14 +43,15 @@ public class CreateParticipantController extends ParticipantController<NewPartic
         NewParticipantCommand participantCommand = new NewParticipantCommand();
         OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
         organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-        organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
+        organizationAssignedIdentifier.setType(configurationProperty.getMap().get(
+                        "participantIdentifiersType").get(0).getCode());
         participantCommand.getParticipant().addIdentifier(organizationAssignedIdentifier);
         return participantCommand;
     }
 
     @Override
-    protected void onBind(final HttpServletRequest request, final Object command, final BindException errors)
-            throws Exception {
+    protected void onBind(final HttpServletRequest request, final Object command,
+                    final BindException errors) throws Exception {
         log.debug("Entering onBind...");
         NewParticipantCommand participantCommand = (NewParticipantCommand) command;
         String searchtext = participantCommand.getSearchText();
@@ -79,8 +82,8 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 
         // This will happen every-time studySiteArray is populated
         if (participantCommand.getStudySiteArray() != null) {
-            Set<String> studySiteIdSet = new java.util.HashSet<String>(java.util.Arrays.asList(participantCommand
-                    .getStudySiteArray()));
+            Set<String> studySiteIdSet = new java.util.HashSet<String>(java.util.Arrays
+                            .asList(participantCommand.getStudySiteArray()));
             for (String siteId : studySiteIdSet) {
                 StudySite studySite = studySiteDao.getById(Integer.parseInt(siteId));
                 studySites.add(studySite);
@@ -89,8 +92,10 @@ public class CreateParticipantController extends ParticipantController<NewPartic
             Participant participant = participantCommand.getParticipant();
             List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
             for (int i = 0; i < studySites.size(); i++) {
-                final StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment(participant, studySites.get(i));
-                studyParticipantAssignment.setStudySubjectIdentifier(participantCommand.getStudySubjectIdentifier());
+                final StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment(
+                                participant, studySites.get(i));
+                studyParticipantAssignment.setStudySubjectIdentifier(participantCommand
+                                .getStudySubjectIdentifier());
                 assignments.add(studyParticipantAssignment);
             }
             participant.setAssignments(assignments);
@@ -100,7 +105,7 @@ public class CreateParticipantController extends ParticipantController<NewPartic
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        //supress validation when target page is less than current page.
+        // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
@@ -116,7 +121,6 @@ public class CreateParticipantController extends ParticipantController<NewPartic
     public void setStudyDao(final StudyDao studyDao) {
         this.studyDao = studyDao;
     }
-
 
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;

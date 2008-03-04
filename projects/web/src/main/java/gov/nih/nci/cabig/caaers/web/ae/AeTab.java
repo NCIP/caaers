@@ -32,9 +32,11 @@ import org.springframework.validation.Errors;
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
     protected static final String MANDATORY_FIELD_ATTR = "mandatory";
-    
+
     private ExpeditedReportTree expeditedReportTree;
+
     protected ReportService reportService;
+
     protected EvaluationService evaluationService;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
@@ -49,9 +51,11 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     /**
-     * Template method for subclasses to instantiate their fields via the {@link AeInputFieldCreator}.
+     * Template method for subclasses to instantiate their fields via the
+     * {@link AeInputFieldCreator}.
      */
-    protected abstract void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command);
+    protected abstract void createFieldGroups(AeInputFieldCreator creator,
+                    ExpeditedAdverseEventInputCommand command);
 
     /**
      * Will also update the InputField mandatory flag.
@@ -68,11 +72,13 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      * Will populate the mandatory flag.
      */
     @SuppressWarnings("unchecked")
-    private void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
-        //TODO: need to see how to manage (this or that) kind mandatory fields
-        //TODO: Why not this we handle in createFields() of every tab, so that the looping through the fields
+    private void populateMandatoryFlag(Object fieldGroups,
+                    ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
+        // TODO: need to see how to manage (this or that) kind mandatory fields
+        // TODO: Why not this we handle in createFields() of every tab, so that the looping through
+        // the fields
         // here can be avoided.
- 
+
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
 
@@ -86,16 +92,16 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     /**
-     * Tells whether the given field is mandatory.
-     * In case of Composite fields, the given field (parent) will be marked mandatory if any of its subfields
-     * are mandatory.
-     *
+     * Tells whether the given field is mandatory. In case of Composite fields, the given field
+     * (parent) will be marked mandatory if any of its subfields are mandatory.
+     * 
      * @param field
      * @return
      */
     private boolean isMandatory(MandatoryProperties mandatoryProps, InputField field) {
-    	if(mandatoryProps == null) return false;
-        boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.", ""));
+        if (mandatoryProps == null) return false;
+        boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.",
+                        ""));
         if (field.getCategory() == InputField.Category.COMPOSITE) {
             for (InputField subfield : CompositeField.getSubfields(field))
                 mandatory |= isMandatory(mandatoryProps, subfield);
@@ -124,25 +130,25 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
 
     public abstract ExpeditedReportSection section();
-    
+
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, 
-    		Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-    	super.validate(command, commandBean, fieldGroups, errors);
-    	if(section().isAssociatedToBusinessRules()){
-    		ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
-    		for(ValidationError vError : validationErrors.getErrors()){
-        		errors.reject(vError.getCode(), vError.getMessage());	
-        	}		
-    	}
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
+                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
+        if (section().isAssociatedToBusinessRules()) {
+            ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(
+                            command.getAeReport(), section());
+            for (ValidationError vError : validationErrors.getErrors()) {
+                errors.reject(vError.getCode(), vError.getMessage());
+            }
+        }
     }
 
-    ////// CONFIGURATION
-    
+    // //// CONFIGURATION
+
     public ExpeditedReportTree getExpeditedReportTree() {
         return expeditedReportTree;
     }
-
 
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
@@ -156,10 +162,11 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         this.evaluationService = evaluationService;
     }
 
-    //////
+    // ////
 
     protected class AeInputFieldCreator {
         protected final ExpeditedAdverseEventInputCommand command;
+
         private BeanWrapper wrappedReport;
 
         private InputFieldGroupMap map;
@@ -171,24 +178,30 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         }
 
         /**
-         * Add a RepeatingFieldGroup to the groups for this tab.  Note that the
-         * listProperty should be relative to {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport}
-         * <em>not</em> the command.  That is, it should not begin with <code>aeReport.</code>.
+         * Add a RepeatingFieldGroup to the groups for this tab. Note that the listProperty should
+         * be relative to {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport}
+         * <em>not</em> the command. That is, it should not begin with <code>aeReport.</code>.
          */
-        public final AeInputFieldCreator createRepeatingFieldGroup(String basename, String listProperty, InputField... fields) {
+        public final AeInputFieldCreator createRepeatingFieldGroup(String basename,
+                        String listProperty, InputField... fields) {
             return createRepeatingFieldGroup(basename, listProperty, null, fields);
         }
 
-        public final AeInputFieldCreator createRepeatingFieldGroup(String basename, String listProperty, RepeatingFieldGroupFactory.DisplayNameCreator nameCreator, InputField... fields) {
-            RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory(basename, "aeReport." + listProperty);
+        public final AeInputFieldCreator createRepeatingFieldGroup(String basename,
+                        String listProperty,
+                        RepeatingFieldGroupFactory.DisplayNameCreator nameCreator,
+                        InputField... fields) {
+            RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory(basename,
+                            "aeReport." + listProperty);
             TreeNode listNode = expeditedReportTree.find(listProperty);
             if (listNode == null) {
-                throw new CaaersSystemException(listProperty + " does not appear in the expedited report tree");
+                throw new CaaersSystemException(listProperty
+                                + " does not appear in the expedited report tree");
             }
             for (InputField field : fields) {
-                List<String> props = field.getCategory() == InputField.Category.COMPOSITE
-                    ? CompositeField.getEffectivePropertyNames(field)
-                    : Arrays.asList(field.getPropertyName());
+                List<String> props = field.getCategory() == InputField.Category.COMPOSITE ? CompositeField
+                                .getEffectivePropertyNames(field)
+                                : Arrays.asList(field.getPropertyName());
                 for (String prop : props) {
                     setMandatoryAttribute(listNode.find(prop), field);
                     setHelpKeyAttribute(field);
@@ -208,26 +221,26 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         }
 
         /**
-         * Add a normal, single group of fields to this tab.  Note that the fields' propertyNames
+         * Add a normal, single group of fields to this tab. Note that the fields' propertyNames
          * should be relative to {@link gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport}
-         * <em>not</em> the command.  That is, they should not begin with <code>aeReport.</code>.
+         * <em>not</em> the command. That is, they should not begin with <code>aeReport.</code>.
          */
         public final AeInputFieldCreator createFieldGroup(String name, InputField... fields) {
             return createFieldGroup(name, null, fields);
         }
 
-        public final AeInputFieldCreator createFieldGroup(
-            String name, String displayName, InputField... fields
-        ) {
+        public final AeInputFieldCreator createFieldGroup(String name, String displayName,
+                        InputField... fields) {
             return createFieldGroup(name, displayName, null, fields);
         }
 
-        public final AeInputFieldCreator createFieldGroup(
-            String name, String displayName, String baseProperty, InputField... fields
-        ) {
-            BasePropertyInputFieldGroup group = new BasePropertyInputFieldGroup(name, displayName, "aeReport" + (baseProperty == null ? "" : '.' + baseProperty));
+        public final AeInputFieldCreator createFieldGroup(String name, String displayName,
+                        String baseProperty, InputField... fields) {
+            BasePropertyInputFieldGroup group = new BasePropertyInputFieldGroup(name, displayName,
+                            "aeReport" + (baseProperty == null ? "" : '.' + baseProperty));
             for (InputField field : fields) {
-                String treePropName = (baseProperty == null ? "" : baseProperty + '.') + field.getPropertyName();
+                String treePropName = (baseProperty == null ? "" : baseProperty + '.')
+                                + field.getPropertyName();
                 setMandatoryAttribute(expeditedReportTree.find(treePropName), field);
                 setHelpKeyAttribute(field);
                 group.addField(field);
@@ -249,9 +262,9 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         }
 
         /**
-         * Directly add an input field group.  This group should not contain any fields which
+         * Directly add an input field group. This group should not contain any fields which
          * represent properties in the command's aeReport.
-         *
+         * 
          * @param group
          */
         public void addUnprocessedFieldGroup(InputFieldGroup group) {
@@ -259,7 +272,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         }
     }
 
-    protected final class SimpleNumericDisplayNameCreator implements RepeatingFieldGroupFactory.DisplayNameCreator {
+    protected final class SimpleNumericDisplayNameCreator implements
+                    RepeatingFieldGroupFactory.DisplayNameCreator {
         private String heading;
 
         public SimpleNumericDisplayNameCreator(String heading) {

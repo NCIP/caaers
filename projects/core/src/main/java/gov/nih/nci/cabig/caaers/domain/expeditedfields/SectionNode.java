@@ -8,7 +8,7 @@ class SectionNode extends PropertylessNode {
 
     public SectionNode(ExpeditedReportSection section) {
         this.section = section;
-        // section.name() is legacy support.  TODO: why not section.displayName?
+        // section.name() is legacy support. TODO: why not section.displayName?
         setDisplayNameCreator(new StaticDisplayNameCreator(section.name()));
     }
 

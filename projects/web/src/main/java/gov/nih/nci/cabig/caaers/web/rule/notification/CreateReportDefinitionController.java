@@ -12,49 +12,50 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Required;
 
- 
 /**
  * @author Sujith Vellat Thayyilthodi
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- * */
-public class CreateReportDefinitionController  extends AbstractReportDefinitionController{
+ */
+public class CreateReportDefinitionController extends AbstractReportDefinitionController {
     private ExpeditedReportTree expeditedReportTree;
 
     @Override
-	public String getFlowName() {
-		return "Create Report Definition";
-	}
-    
-    @Override
-    protected boolean shouldSave(HttpServletRequest request,ReportDefinitionCommand command, Tab<ReportDefinitionCommand> tab) {
-    	return false;
+    public String getFlowName() {
+        return "Create Report Definition";
     }
-    
-    @Override
-    protected boolean suppressValidation(HttpServletRequest request,Object command) {
-    	//supress validation when target page is less than current page.
-    	int curPage = getCurrentPage(request);
-		int targetPage = getTargetPage(request, curPage);
-		if(targetPage < curPage) return true;
-    	return super.suppressValidation(request, command);
-    }
-    
-	/**
-	 * In the create flow of report definition, we should make sure that
-	 * there exists at least one ReportDeliveryDefinition.
-	 */
-	@Override
-	public Object formBackingObject(HttpServletRequest request) {
-		ReportDefinition reportDef = new ReportDefinition();
-		reportDef.setAmendable(true);
-		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
-		populateMandatoryFields(mandatoryFields, expeditedReportTree);
-		reportDef.setMandatoryFields(mandatoryFields);
 
-		ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef, reportDefinitionDao, getConfigurationProperty());
-	
-		return rpDefCmd;
-	}
+    @Override
+    protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command,
+                    Tab<ReportDefinitionCommand> tab) {
+        return false;
+    }
+
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        // supress validation when target page is less than current page.
+        int curPage = getCurrentPage(request);
+        int targetPage = getTargetPage(request, curPage);
+        if (targetPage < curPage) return true;
+        return super.suppressValidation(request, command);
+    }
+
+    /**
+     * In the create flow of report definition, we should make sure that there exists at least one
+     * ReportDeliveryDefinition.
+     */
+    @Override
+    public Object formBackingObject(HttpServletRequest request) {
+        ReportDefinition reportDef = new ReportDefinition();
+        reportDef.setAmendable(true);
+        List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
+        populateMandatoryFields(mandatoryFields, expeditedReportTree);
+        reportDef.setMandatoryFields(mandatoryFields);
+
+        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(reportDef,
+                        reportDefinitionDao, getConfigurationProperty());
+
+        return rpDefCmd;
+    }
 
     @Required
     public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {

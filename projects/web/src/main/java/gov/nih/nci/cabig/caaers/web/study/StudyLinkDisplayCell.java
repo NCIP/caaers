@@ -15,8 +15,7 @@ public class StudyLinkDisplayCell extends AbstractCell {
         String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
 
         if (study != null) {
-            cellValue = "<a href=\"" + link + study.getId().toString() + "\">"
-                + cellValue + "</a>";
+            cellValue = "<a href=\"" + link + study.getId().toString() + "\">" + cellValue + "</a>";
         }
 
         return cellValue;

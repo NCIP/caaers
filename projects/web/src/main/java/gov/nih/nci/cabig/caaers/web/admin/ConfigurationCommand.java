@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
  */
 public class ConfigurationCommand {
     private Configuration configuration;
+
     private Map<String, BoundProperty<?>> conf;
 
     public ConfigurationCommand(Configuration configuration) {

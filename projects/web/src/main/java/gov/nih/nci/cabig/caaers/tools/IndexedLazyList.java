@@ -8,9 +8,9 @@ import java.util.List;
 /**
  * Just like {@link org.apache.commons.collections15.list.LazyList}, except that it uses a
  * {@link org.apache.commons.collections15.Transformer}&lt;Integer, E&gt; instead of a
- * {@link org.apache.commons.collections15.Factory}&lt;E&gt;.  The transformer is provided with
- * the index whenever a new object needs to be created.
- *
+ * {@link org.apache.commons.collections15.Factory}&lt;E&gt;. The transformer is provided with the
+ * index whenever a new object needs to be created.
+ * 
  * @author Rhett Sutphin
  */
 public class IndexedLazyList<E> extends AbstractListDecorator<E> {
@@ -18,10 +18,13 @@ public class IndexedLazyList<E> extends AbstractListDecorator<E> {
 
     /**
      * Constructor that wraps (not copies).
-     *
-     * @param list    the list to decorate, must not be null
-     * @param transformer the factory to use for creation, must not be null
-     * @throws IllegalArgumentException if list or factory is null
+     * 
+     * @param list
+     *                the list to decorate, must not be null
+     * @param transformer
+     *                the factory to use for creation, must not be null
+     * @throws IllegalArgumentException
+     *                 if list or factory is null
      */
     protected IndexedLazyList(List<E> list, Transformer<Integer, ? extends E> transformer) {
         super(list);
@@ -36,14 +39,13 @@ public class IndexedLazyList<E> extends AbstractListDecorator<E> {
     }
 
     /**
-     * Decorate the get method to perform the lazy behaviour.
-     * <p/>
-     * If the requested index is greater than the current size, the list will
-     * grow to the new size and a new object will be returned from the factory.
-     * Indexes in-between the old size and the requested size are left with a
+     * Decorate the get method to perform the lazy behaviour. <p/> If the requested index is greater
+     * than the current size, the list will grow to the new size and a new object will be returned
+     * from the factory. Indexes in-between the old size and the requested size are left with a
      * placeholder that is replaced with a factory object when requested.
-     *
-     * @param index the index to retrieve
+     * 
+     * @param index
+     *                the index to retrieve
      */
     @Override
     public E get(int index) {

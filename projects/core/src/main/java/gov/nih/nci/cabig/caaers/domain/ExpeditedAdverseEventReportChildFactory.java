@@ -5,12 +5,12 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 /**
  * @author Rhett Sutphin
  */
-public class ExpeditedAdverseEventReportChildFactory<T extends ExpeditedAdverseEventReportChild> extends InstantiateFactory<T> {
+public class ExpeditedAdverseEventReportChildFactory<T extends ExpeditedAdverseEventReportChild>
+                extends InstantiateFactory<T> {
     private ExpeditedAdverseEventReport report;
 
-    public ExpeditedAdverseEventReportChildFactory(
-        Class<T> classToInstantiate, ExpeditedAdverseEventReport parent
-    ) {
+    public ExpeditedAdverseEventReportChildFactory(Class<T> classToInstantiate,
+                    ExpeditedAdverseEventReport parent) {
         super(classToInstantiate);
         this.report = parent;
     }

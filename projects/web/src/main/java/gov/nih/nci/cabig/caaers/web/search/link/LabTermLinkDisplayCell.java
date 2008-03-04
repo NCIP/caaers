@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.LabTerm;
  */
 public class LabTermLinkDisplayCell extends AbstractCell {
 
-
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
@@ -19,12 +18,11 @@ public class LabTermLinkDisplayCell extends AbstractCell {
         String cellValue = column.getValueAsString();
         String tableId = model.getTableHandler().getTable().getTableId();
 
-
         if (labTerm != null) {
-            cellValue="<a  href=\"javascript:fillLabsAutoCompletor('"+labTerm.getId()+"','"+tableId+"')\">"+labTerm.getTerm()+"</a>";
-                     }
+            cellValue = "<a  href=\"javascript:fillLabsAutoCompletor('" + labTerm.getId() + "','"
+                            + tableId + "')\">" + labTerm.getTerm() + "</a>";
+        }
         return cellValue;
     }
-
 
 }

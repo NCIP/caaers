@@ -14,20 +14,21 @@ import java.util.List;
 
 /**
  * This class represents the LabVersion domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  * 
- * NOTE: this class is currently not utilized but it might be helpful for 
- * the future when new lists of this lab data are to be imported into 
- * caAERS.
+ * NOTE: this class is currently not utilized but it might be helpful for the future when new lists
+ * of this lab data are to be imported into caAERS.
  * 
  */
 @Entity
 @Table(name = "lab_versions")
 public class LabVersion extends AbstractImmutableDomainObject {
     private String name;
+
     private List<LabCategory> categories;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getName() {
         return name;
@@ -38,7 +39,8 @@ public class LabVersion extends AbstractImmutableDomainObject {
     }
 
     @OneToMany(mappedBy = "labVersion")
-    @OrderBy // by ID for consistency
+    @OrderBy
+    // by ID for consistency
     @Cascade(value = { CascadeType.LOCK })
     public List<LabCategory> getCategories() {
         return categories;

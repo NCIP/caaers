@@ -24,27 +24,31 @@ import java.util.List;
 
 public class DefaultAdverseEventService implements AdverseEventService {
     private StudyDao studyDao;
+
     private OrganizationDao organizationDao;
+
     private ParticipantDao participantDao;
+
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
+
     private ExpeditedAdverseEventReportDao adverseEventReportDao;
-    
+
     public DefaultAdverseEventService() {
     }
 
-    public String createCandidateAdverseEvent(Study study,
-			Participant participant, Organization organization, AdverseEvent ae, List<Lab> labs) {
-		ParameterLoader loader = new ParameterLoader(study, organization, participant);
-		StudyParticipantAssignment studyParticipantAssignment = getStudyParticipantAssignmentDao()
-				.getAssignment(loader.participant, loader.study);
+    public String createCandidateAdverseEvent(Study study, Participant participant,
+                    Organization organization, AdverseEvent ae, List<Lab> labs) {
+        ParameterLoader loader = new ParameterLoader(study, organization, participant);
+        StudyParticipantAssignment studyParticipantAssignment = getStudyParticipantAssignmentDao()
+                        .getAssignment(loader.participant, loader.study);
 
-		ExpeditedAdverseEventReport adverseEventReport = new ExpeditedAdverseEventReport();
-		adverseEventReport.setAssignment(studyParticipantAssignment);
-		adverseEventReport.addAdverseEvent(ae);
-		adverseEventReport.getLabs().addAll(labs);
-		getAdverseEventReportDao().save(adverseEventReport);
-		return adverseEventReport.getGridId();
-	}
+        ExpeditedAdverseEventReport adverseEventReport = new ExpeditedAdverseEventReport();
+        adverseEventReport.setAssignment(studyParticipantAssignment);
+        adverseEventReport.addAdverseEvent(ae);
+        adverseEventReport.getLabs().addAll(labs);
+        getAdverseEventReportDao().save(adverseEventReport);
+        return adverseEventReport.getGridId();
+    }
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
@@ -69,72 +73,78 @@ public class DefaultAdverseEventService implements AdverseEventService {
     public ParticipantDao getParticipantDao() {
         return participantDao;
     }
-    
-    private <T extends DomainObject & GridIdentifiable> T load(T param, GridIdentifiableDao<T> dao, boolean required) {
+
+    private <T extends DomainObject & GridIdentifiable> T load(T param, GridIdentifiableDao<T> dao,
+                    boolean required) {
         T loaded = null;
         boolean hasGridId = checkForGridId(param);
         boolean hasIdentifiers = this.checkForIdentifiers(param);
-        if (!hasGridId && !hasIdentifiers){
-            throw new IllegalArgumentException(param.getClass().getSimpleName() + " doesn't have grid identifiers or identifiers");
+        if (!hasGridId && !hasIdentifiers) {
+            throw new IllegalArgumentException(param.getClass().getSimpleName()
+                            + " doesn't have grid identifiers or identifiers");
         }
-        if(hasGridId){
+        if (hasGridId) {
             loaded = dao.getByGridId(param.getGridId());
-            if (loaded != null){
+            if (loaded != null) {
                 return loaded;
             }
-            
+
         }
-        if (hasIdentifiers){
-//        	load based on identifiers
-        	loaded = loadByIdentifiers(param);
+        if (hasIdentifiers) {
+            // load based on identifiers
+            loaded = loadByIdentifiers(param);
         }
-        
-        if(loaded == null){
+
+        if (loaded == null) {
             throw new IllegalArgumentException(param.getClass().getSimpleName() + " doesn't exist.");
         }
         return loaded;
     }
-    
+
     @SuppressWarnings("unchecked")
-	private  <T extends DomainObject> T loadByIdentifiers(T param) {
-    	DomainObject returnObject = null;
-    	if(param instanceof Participant) {
-    		returnObject = (DomainObject)getParticipantDao().getByIdentifier(((Participant)param).getIdentifiers().get(0));
-    	} else if(param instanceof Study) {
-    		returnObject = (DomainObject)getStudyDao().getByIdentifier(((Study)param).getIdentifiers().get(0));
-    	}
-    	return  (T)returnObject;
-    	//getByExample(param, {"identifiers"}, )
+    private <T extends DomainObject> T loadByIdentifiers(T param) {
+        DomainObject returnObject = null;
+        if (param instanceof Participant) {
+            returnObject = (DomainObject) getParticipantDao().getByIdentifier(
+                            ((Participant) param).getIdentifiers().get(0));
+        } else if (param instanceof Study) {
+            returnObject = (DomainObject) getStudyDao().getByIdentifier(
+                            ((Study) param).getIdentifiers().get(0));
+        }
+        return (T) returnObject;
+        // getByExample(param, {"identifiers"}, )
     }
 
     private boolean checkForGridId(GridIdentifiable gridIdentifiable) {
         if (!gridIdentifiable.hasGridId()) {
             return false;
-            //throw new IllegalArgumentException(
-              //  "No gridId on " + gridIdentifiable.getClass().getSimpleName().toLowerCase() + " parameter");
+            // throw new IllegalArgumentException(
+            // "No gridId on " + gridIdentifiable.getClass().getSimpleName().toLowerCase() + "
+            // parameter");
         }
-        return true;
-    }
-    
-    private boolean checkForIdentifiers(DomainObject obj){
-        List<Identifier> identifiers = null;
-        if (obj instanceof Study ){
-            Study study = (Study)obj;
-            identifiers = study.getIdentifiers();
-        }
-        if (obj instanceof Participant ){
-            Participant subject = (Participant)obj;
-            identifiers = subject.getIdentifiers();
-        }
-        
-        if (identifiers == null){
-            return false;
-        }
-        
         return true;
     }
 
-    public void setStudyParticipantAssignmentDao(StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+    private boolean checkForIdentifiers(DomainObject obj) {
+        List<Identifier> identifiers = null;
+        if (obj instanceof Study) {
+            Study study = (Study) obj;
+            identifiers = study.getIdentifiers();
+        }
+        if (obj instanceof Participant) {
+            Participant subject = (Participant) obj;
+            identifiers = subject.getIdentifiers();
+        }
+
+        if (identifiers == null) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public void setStudyParticipantAssignmentDao(
+                    StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
         this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
     }
 
@@ -142,29 +152,31 @@ public class DefaultAdverseEventService implements AdverseEventService {
         return studyParticipantAssignmentDao;
     }
 
-	public ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
-		return adverseEventReportDao;
-	}
+    public ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
+        return adverseEventReportDao;
+    }
 
-	public void setAdverseEventReportDao(ExpeditedAdverseEventReportDao adverseEventReportDao) {
-		this.adverseEventReportDao = adverseEventReportDao;
-	}
-    
-    private class ParameterLoader{
+    public void setAdverseEventReportDao(ExpeditedAdverseEventReportDao adverseEventReportDao) {
+        this.adverseEventReportDao = adverseEventReportDao;
+    }
+
+    private class ParameterLoader {
         private Study study;
+
         private Organization organization;
-		private Participant participant;
-        
-        public ParameterLoader(Study study, Organization organization){
+
+        private Participant participant;
+
+        public ParameterLoader(Study study, Organization organization) {
             loadStudy(study);
             loadOrganization(organization);
         }
 
-        public ParameterLoader(Study study, Organization organization, Participant participant){
-            this(study,organization);
+        public ParameterLoader(Study study, Organization organization, Participant participant) {
+            this(study, organization);
             loadParticipant(participant);
-        }        
-        
+        }
+
         public StudySite validateSiteInStudy() {
             StudySite studySite = null;
             for (StudySite aStudySite : getStudy().getStudySites()) {
@@ -172,22 +184,23 @@ public class DefaultAdverseEventService implements AdverseEventService {
                     studySite = aStudySite;
                 }
             }
-            if(studySite == null){
-                throw new IllegalArgumentException("Site " + getOrganization().getId() + " not associated with study " + getStudy().getId());
+            if (studySite == null) {
+                throw new IllegalArgumentException("Site " + getOrganization().getId()
+                                + " not associated with study " + getStudy().getId());
             }
             return studySite;
         }
 
         private void loadOrganization(Organization param) {
-            if(param == null) {
-            	this.organization = getOrganizationDao().getDefaultOrganization();
+            if (param == null) {
+                this.organization = getOrganizationDao().getDefaultOrganization();
             } else {
-	        	this.organization = load(param, getOrganizationDao(), true);
-	            if(this.organization == null) {
-	                if(this.organization == null) {
-	                	this.organization = getOrganizationDao().getDefaultOrganization();
-	                }
-	            }
+                this.organization = load(param, getOrganizationDao(), true);
+                if (this.organization == null) {
+                    if (this.organization == null) {
+                        this.organization = getOrganizationDao().getDefaultOrganization();
+                    }
+                }
             }
         }
 
@@ -197,8 +210,8 @@ public class DefaultAdverseEventService implements AdverseEventService {
 
         private void loadParticipant(Participant param) {
             this.participant = load(param, getParticipantDao(), true);
-        }        
-        
+        }
+
         public Study getStudy() {
             return study;
         }
@@ -215,13 +228,13 @@ public class DefaultAdverseEventService implements AdverseEventService {
             this.organization = organization;
         }
 
-		public Participant getParticipant() {
-			return participant;
-		}
+        public Participant getParticipant() {
+            return participant;
+        }
 
-		public void setParticipant(Participant participant) {
-			this.participant = participant;
-		}
+        public void setParticipant(Participant participant) {
+            this.participant = participant;
+        }
     }
 
 }

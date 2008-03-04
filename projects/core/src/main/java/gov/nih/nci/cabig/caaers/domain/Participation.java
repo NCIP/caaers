@@ -11,27 +11,29 @@ import javax.persistence.Embeddable;
 
 @Embeddable
 public class Participation {
-	
-	//private String roleCode;
-	//private String statusCode;
-	
-	
-	private Date startDate;
-	private Date endDate;
-	
-	@Column(name= "endDate" , nullable = true)
-	public Date getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-	
-	@Column(name= "startDate" , nullable = true)
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
+
+    // private String roleCode;
+    // private String statusCode;
+
+    private Date startDate;
+
+    private Date endDate;
+
+    @Column(name = "endDate", nullable = true)
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Column(name = "startDate", nullable = true)
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
 }

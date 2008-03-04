@@ -11,40 +11,47 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- * This class represents the AdverseEventResponseDescription domain object associated with the Adverse event report.
+ * This class represents the AdverseEventResponseDescription domain object associated with the
+ * Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
-@Table(name="ae_report_descriptions")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_ae_report_descriptions_id")
-    }
-)
+@Table(name = "ae_report_descriptions")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_report_descriptions_id") })
 public class AdverseEventResponseDescription extends AbstractExpeditedReportSingleChild {
     private String eventDescription;
-    private PostAdverseEventStatus presentStatus;
-    private Date recoveryDate;
-    private Boolean retreated;
-    private Date dateRemovedFromProtocol;
-    
-    private Boolean blindBroken; 
-    private Boolean studyDrugInterrupted;
-    private String reducedDose;
-    private Date reducedDate;
-    private Integer daysNotGiven;
-    private Boolean eventAbate;
-    private Boolean eventReappear;
-    
 
-    ////// LOGIC
+    private PostAdverseEventStatus presentStatus;
+
+    private Date recoveryDate;
+
+    private Boolean retreated;
+
+    private Date dateRemovedFromProtocol;
+
+    private Boolean blindBroken;
+
+    private Boolean studyDrugInterrupted;
+
+    private String reducedDose;
+
+    private Date reducedDate;
+
+    private Integer daysNotGiven;
+
+    private Boolean eventAbate;
+
+    private Boolean eventReappear;
+
+    // //// LOGIC
 
     @Transient
     public boolean isRemovedFromProtocol() {
         return getDateRemovedFromProtocol() != null;
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getEventDescription() {
         return eventDescription;
@@ -88,59 +95,59 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
         this.dateRemovedFromProtocol = dateRemovedFromProtocol;
     }
 
-	public Boolean getBlindBroken() {
-		return blindBroken;
-	}
+    public Boolean getBlindBroken() {
+        return blindBroken;
+    }
 
-	public void setBlindBroken(Boolean blindBroken) {
-		this.blindBroken = blindBroken;
-	}
+    public void setBlindBroken(Boolean blindBroken) {
+        this.blindBroken = blindBroken;
+    }
 
-	public Boolean getEventAbate() {
-		return eventAbate;
-	}
+    public Boolean getEventAbate() {
+        return eventAbate;
+    }
 
-	public void setEventAbate(Boolean eventAbate) {
-		this.eventAbate = eventAbate;
-	}
+    public void setEventAbate(Boolean eventAbate) {
+        this.eventAbate = eventAbate;
+    }
 
-	public Boolean getEventReappear() {
-		return eventReappear;
-	}
+    public Boolean getEventReappear() {
+        return eventReappear;
+    }
 
-	public void setEventReappear(Boolean eventReappear) {
-		this.eventReappear = eventReappear;
-	}
+    public void setEventReappear(Boolean eventReappear) {
+        this.eventReappear = eventReappear;
+    }
 
-	public Date getReducedDate() {
-		return reducedDate;
-	}
+    public Date getReducedDate() {
+        return reducedDate;
+    }
 
-	public void setReducedDate(Date reducedDate) {
-		this.reducedDate = reducedDate;
-	}
+    public void setReducedDate(Date reducedDate) {
+        this.reducedDate = reducedDate;
+    }
 
-	public String getReducedDose() {
-		return reducedDose;
-	}
+    public String getReducedDose() {
+        return reducedDose;
+    }
 
-	public void setReducedDose(String reducedDose) {
-		this.reducedDose = reducedDose;
-	}
+    public void setReducedDose(String reducedDose) {
+        this.reducedDose = reducedDose;
+    }
 
-	public Boolean getStudyDrugInterrupted() {
-		return studyDrugInterrupted;
-	}
+    public Boolean getStudyDrugInterrupted() {
+        return studyDrugInterrupted;
+    }
 
-	public void setStudyDrugInterrupted(Boolean studyDrugInterrupted) {
-		this.studyDrugInterrupted = studyDrugInterrupted;
-	}
+    public void setStudyDrugInterrupted(Boolean studyDrugInterrupted) {
+        this.studyDrugInterrupted = studyDrugInterrupted;
+    }
 
-	public Integer getDaysNotGiven() {
-		return daysNotGiven;
-	}
+    public Integer getDaysNotGiven() {
+        return daysNotGiven;
+    }
 
-	public void setDaysNotGiven(Integer daysNotGiven) {
-		this.daysNotGiven = daysNotGiven;
-	}
+    public void setDaysNotGiven(Integer daysNotGiven) {
+        this.daysNotGiven = daysNotGiven;
+    }
 }

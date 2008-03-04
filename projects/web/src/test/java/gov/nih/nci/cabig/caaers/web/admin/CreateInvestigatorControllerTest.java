@@ -14,33 +14,33 @@ import java.util.List;
  */
 public class CreateInvestigatorControllerTest extends WebTestCase {
 
-	private CreateInvestigatorController controller = new CreateInvestigatorController();
+    private CreateInvestigatorController controller = new CreateInvestigatorController();
 
-	private InvestigatorDao investigatorDao;
+    private InvestigatorDao investigatorDao;
 
-	private OrganizationDao organizationDao;
+    private OrganizationDao organizationDao;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		investigatorDao = registerDaoMockFor(InvestigatorDao.class);
-		// siteDao = registerDaoMockFor(SiteDao.class);
-		organizationDao = new OrganizationDao() {
-			@Override
-			public List<Organization> getAll() {
-				List<Organization> organizations = new ArrayList<Organization>();
-				return organizations;
-			}
-		};
-		controller.setInvestigatorDao(investigatorDao);
-		controller.setOrganizationDao(organizationDao);
-		controller.setConfigurationProperty(new ConfigProperty());
-		// controller.setListValues(new ListValues());
-	}
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        investigatorDao = registerDaoMockFor(InvestigatorDao.class);
+        // siteDao = registerDaoMockFor(SiteDao.class);
+        organizationDao = new OrganizationDao() {
+            @Override
+            public List<Organization> getAll() {
+                List<Organization> organizations = new ArrayList<Organization>();
+                return organizations;
+            }
+        };
+        controller.setInvestigatorDao(investigatorDao);
+        controller.setOrganizationDao(organizationDao);
+        controller.setConfigurationProperty(new ConfigProperty());
+        // controller.setListValues(new ListValues());
+    }
 
-	public void testViewOnGet() throws Exception {
-		// request.setMethod("GET");
-		// ModelAndView mv = controller.handleRequest(request, response);
-		// assertEquals("admin/investigator_details", mv.getViewName());
-	}
+    public void testViewOnGet() throws Exception {
+        // request.setMethod("GET");
+        // ModelAndView mv = controller.handleRequest(request, response);
+        // assertEquals("admin/investigator_details", mv.getViewName());
+    }
 }

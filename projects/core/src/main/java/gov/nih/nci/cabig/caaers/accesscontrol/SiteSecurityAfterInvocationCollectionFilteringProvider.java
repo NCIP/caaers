@@ -16,19 +16,22 @@ import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Will filter collection of caAERS domain objects based on Organization permissions.
- *
- * Date: Sep 20, 2007
- * Time: 10:49:51 AM
+ * 
+ * Date: Sep 20, 2007 Time: 10:49:51 AM
  */
-public class SiteSecurityAfterInvocationCollectionFilteringProvider implements AfterInvocationProvider {
+public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
+                AfterInvocationProvider {
 
     private String processConfigAttribute;
+
     private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
 
-    private Logger log = Logger.getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
+    private Logger log = Logger
+                    .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
 
-    public Object decide(Authentication authentication, Object object, ConfigAttributeDefinition configAttributeDefinition,
-                         Object returnedObject) throws AccessDeniedException {
+    public Object decide(Authentication authentication, Object object,
+                    ConfigAttributeDefinition configAttributeDefinition, Object returnedObject)
+                    throws AccessDeniedException {
 
         if (returnedObject == null) {
             if (log.isDebugEnabled()) {
@@ -62,13 +65,15 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements A
 
             boolean hasPermission = false;
 
-            if (domainObject == null  || !(domainObject instanceof AbstractMutableDomainObject)) {
+            if (domainObject == null || !(domainObject instanceof AbstractMutableDomainObject)) {
                 hasPermission = true;
             }
 
-            DomainObjectSiteSecurityAuthorizationCheckProvider auth =  (DomainObjectSiteSecurityAuthorizationCheckProvider)domainObjectSiteSecurityAuhthorizationCheckProvidersMap.get(domainObject.getClass().getName());
-            if(auth!=null){
-            hasPermission = auth.checkAuthorization(authentication,"ACCESS",(AbstractMutableDomainObject)domainObject);
+            DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
+                            .get(domainObject.getClass().getName());
+            if (auth != null) {
+                hasPermission = auth.checkAuthorization(authentication, "ACCESS",
+                                (AbstractMutableDomainObject) domainObject);
             }
             if (!hasPermission) {
                 filterer.remove(domainObject);
@@ -82,7 +87,6 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements A
         return filterer.getFilteredObject();
     }
 
-
     @Required
     public boolean supports(ConfigAttribute config) {
         return config.getAttribute().equals(processConfigAttribute);
@@ -92,15 +96,14 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements A
         return true;
     }
 
-
     @Required
     public void setProcessConfigAttribute(String processConfigAttribute) {
         this.processConfigAttribute = processConfigAttribute;
     }
-    
+
     @Required
-    public void setDomainObjectSiteSecurityAuhthorizationCheckProvidersMap(LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
+    public void setDomainObjectSiteSecurityAuhthorizationCheckProvidersMap(
+                    LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
         this.domainObjectSiteSecurityAuhthorizationCheckProvidersMap = domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
     }
 }
-

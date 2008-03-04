@@ -20,68 +20,68 @@ import org.springframework.context.ApplicationContext;
  */
 public class CSMTest extends TestCase {
 
-	/**
-	 * 
-	 */
-	public CSMTest() {
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * 
+     */
+    public CSMTest() {
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @param arg0
-	 */
-	public CSMTest(String arg0) {
-		super(arg0);
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @param arg0
+     */
+    public CSMTest(String arg0) {
+        super(arg0);
+        // TODO Auto-generated constructor stub
+    }
 
-	public void testCSMLoad() {
+    public void testCSMLoad() {
 
-		try {
-			MyThread t = new MyThread();
-			t.start();
-			t.join(60 * 1000);
-			assertTrue(t.getDone());
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			fail("Error encountered: " + ex.getMessage());
-		}
+        try {
+            MyThread t = new MyThread();
+            t.start();
+            t.join(60 * 1000);
+            assertTrue(t.getDone());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail("Error encountered: " + ex.getMessage());
+        }
 
-	}
+    }
 
-	private void printStats(BasicDataSource bds) {
-		System.out.println("##########################################");
-		System.out.println("numActive: " + bds.getNumActive());
-		System.out.println("numIdle: " + bds.getNumIdle());
-		System.out.println("##########################################");
-	}
+    private void printStats(BasicDataSource bds) {
+        System.out.println("##########################################");
+        System.out.println("numActive: " + bds.getNumActive());
+        System.out.println("numIdle: " + bds.getNumIdle());
+        System.out.println("##########################################");
+    }
 
-	private class MyThread extends Thread {
-		private boolean done = false;
-		public boolean getDone(){
-			return done;
-		}
-		public void run() {
-			String userId = "study_cd1";
-			String objectId = "gov.nih.nci.cabig.caaers.domain.Study";
-			String privilege = "CREATE";
-			Authentication auth = new TestingAuthenticationToken(
-					userId,
-					"ignored",
-					new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
+    private class MyThread extends Thread {
+        private boolean done = false;
 
-			ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
+        public boolean getDone() {
+            return done;
+        }
 
-//			 BasicDataSource bds = (BasicDataSource)ctx.getBean("dataSource");
+        public void run() {
+            String userId = "study_cd1";
+            String objectId = "gov.nih.nci.cabig.caaers.domain.Study";
+            String privilege = "CREATE";
+            Authentication auth = new TestingAuthenticationToken(userId, "ignored",
+                            new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
 
-			CSMAuthorizationCheck check = (CSMAuthorizationCheck) ctx
-					.getBean("testCsmGroupAuthorizationCheck");
-			for (int i = 0; i < 50; i++) {
-//				 printStats(bds);
-				check.checkAuthorizationForObjectId(auth, privilege, objectId);
-			}
-			done = true;
-		}
-	}
+            ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
+
+            // BasicDataSource bds = (BasicDataSource)ctx.getBean("dataSource");
+
+            CSMAuthorizationCheck check = (CSMAuthorizationCheck) ctx
+                            .getBean("testCsmGroupAuthorizationCheck");
+            for (int i = 0; i < 50; i++) {
+                // printStats(bds);
+                check.checkAuthorizationForObjectId(auth, privilege, objectId);
+            }
+            done = true;
+        }
+    }
 
 }

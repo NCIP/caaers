@@ -11,30 +11,32 @@ import org.springframework.validation.Errors;
  */
 public class MeddraBasicsOutcomeTab extends MeddraBasicsTab {
     private static final Log log = LogFactory.getLog(MeddraBasicsOutcomeTab.class);
-    
+
     public MeddraBasicsOutcomeTab() {
         super();
         super.outcomeHelpKeyExclusion();
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-    	
-    	super.createFieldGroups(creator, command);
+    protected void createFieldGroups(AeInputFieldCreator creator,
+                    ExpeditedAdverseEventInputCommand command) {
+
+        super.createFieldGroups(creator, command);
         creator.addUnprocessedFieldGroup(super.getOutcomeInputFieldGroup(command));
     }
 
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-    	command.updateOutcomes();
-    	
-    	for (String outcome : command.getOutcomes().keySet()) {
-    		log.debug(outcome + "  :   " + command.getOutcomes().get(outcome));
-		}
+        command.updateOutcomes();
+
+        for (String outcome : command.getOutcomes().keySet()) {
+            log.debug(outcome + "  :   " + command.getOutcomes().get(outcome));
+        }
     }
-    
-	@Override  	
-	public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {	
-		super.postProcessOutcomes(command);
-	}
+
+    @Override
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
+                    Errors errors) {
+        super.postProcessOutcomes(command);
+    }
 }

@@ -13,7 +13,8 @@ import java.util.List;
 /**
  * @author Biju Joseph, Created on December,6th, 2007
  */
-public class UniqueNciIdentifierForOrganizationValidator implements Validator<UniqueNciIdentifierForOrganization> {
+public class UniqueNciIdentifierForOrganizationValidator implements
+                Validator<UniqueNciIdentifierForOrganization> {
 
     String message;
 
@@ -23,7 +24,8 @@ public class UniqueNciIdentifierForOrganizationValidator implements Validator<Un
         if (value instanceof String) {
             OrganizationQuery organizationQuery = new OrganizationQuery();
             organizationQuery.filterByNciCodeExactMatch((String) value);
-            List<Organization> organizationList = organizationDao.searchOrganization(organizationQuery);
+            List<Organization> organizationList = organizationDao
+                            .searchOrganization(organizationQuery);
             return (organizationList == null || organizationList.isEmpty()) ? true : false;
         }
         return true;

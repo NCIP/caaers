@@ -15,40 +15,39 @@ import org.apache.commons.logging.LogFactory;
  */
 public class EditResearchStaffController extends ResearchStaffController<ResearchStaff> {
 
-	private static final Log log = LogFactory.getLog(EditResearchStaffController.class);
+    private static final Log log = LogFactory.getLog(EditResearchStaffController.class);
 
-	public EditResearchStaffController() {
-		setBindOnNewForm(true);
-	}
+    public EditResearchStaffController() {
+        setBindOnNewForm(true);
+    }
 
-	// /LOGIC
+    // /LOGIC
 
-	@Override
-	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
-		request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+    @Override
+    protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
+        request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
 
-		ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request.getParameter("researchStaffId")));
+        ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request
+                        .getParameter("researchStaffId")));
 
-		if (log.isDebugEnabled()) {
-			log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
-		}
+        if (log.isDebugEnabled()) {
+            log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
+        }
 
-		return researchStaff;
-	}
+        return researchStaff;
+    }
 
+    @Override
+    protected void layoutTabs(final Flow<ResearchStaff> flow) {
+        flow.addTab(new ResearchStaffTab());
 
+    }
 
-	@Override
-	protected void layoutTabs(final Flow<ResearchStaff> flow) {
-		flow.addTab(new ResearchStaffTab());
-
-	}
-
-	@Override
-	protected boolean shouldSave(final HttpServletRequest request, final ResearchStaff command,
-			final Tab<ResearchStaff> tab) {
-		// supress for ajax and delete requests
-		return super.shouldSave(request, command, tab);
-	}
+    @Override
+    protected boolean shouldSave(final HttpServletRequest request, final ResearchStaff command,
+                    final Tab<ResearchStaff> tab) {
+        // supress for ajax and delete requests
+        return super.shouldSave(request, command, tab);
+    }
 
 }

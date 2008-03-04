@@ -5,17 +5,12 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- *         Created-on : May 15, 2007
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : May 15, 2007
  * @version %I%, %G%
  * @since 1.0
  */
 public enum ReportStatus implements CodedEnum<Integer> {
-    PENDING(1),
-    COMPLETED(2),
-    WITHDRAWN(3),    
-    INPROCESS(4),
-    FAILED(5);
+    PENDING(1), COMPLETED(2), WITHDRAWN(3), INPROCESS(4), FAILED(5);
     private int code;
 
     private ReportStatus(int code) {

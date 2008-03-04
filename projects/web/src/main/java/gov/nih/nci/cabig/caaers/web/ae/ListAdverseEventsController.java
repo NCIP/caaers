@@ -23,8 +23,11 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public class ListAdverseEventsController extends SimpleFormController {
     private StudyParticipantAssignmentDao assignmentDao;
+
     private ParticipantDao participantDao;
+
     private StudyDao studyDao;
+
     protected EvaluationService evaluationService;
 
     public ListAdverseEventsController() {
@@ -36,11 +39,13 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-        return new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao, evaluationService);
+        return new ListAdverseEventsCommand(assignmentDao, studyDao, participantDao,
+                        evaluationService);
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+                    throws Exception {
         ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "assignment", assignmentDao);
@@ -50,60 +55,59 @@ public class ListAdverseEventsController extends SimpleFormController {
     @SuppressWarnings("unchecked")
     protected boolean isFormSubmission(HttpServletRequest request) {
         Set<String> paramNames = request.getParameterMap().keySet();
-        boolean hasParticipant
-            =  paramNames.contains("participant")
-            || paramNames.contains("mrn")
-            || paramNames.contains("assignment");
-        boolean hasStudy
-            =  paramNames.contains("study") 
-            || paramNames.contains("nciIdentifier")
-            || paramNames.contains("assignment");
+        boolean hasParticipant = paramNames.contains("participant") || paramNames.contains("mrn")
+                        || paramNames.contains("assignment");
+        boolean hasStudy = paramNames.contains("study") || paramNames.contains("nciIdentifier")
+                        || paramNames.contains("assignment");
         boolean hasStudySubjectGridId = paramNames.contains("studySubjectGridId");
         return (hasParticipant && hasStudy) || hasStudySubjectGridId;
     }
+
     @Override
-    protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
-    	super.onBind(request, command, errors);
-    	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
-    	String assignmentGridId = request.getParameter("studySubjectGridId");
-    	//forwarded from external system (eg : Labviewer)
-    	if(assignmentGridId != null){
-    		StudyParticipantAssignment assignment = assignmentDao.getByGridId(assignmentGridId);
-    		//able to load the assignment?
-    		if(assignment != null){
-    			listAECmd.setAssignment(assignment);
-    			listAECmd.setParticipant(listAECmd.getAssignment().getParticipant());
-    			listAECmd.setStudy(listAECmd.getAssignment().getStudySite().getStudy());
-    		}
-    	}
+    protected void onBind(HttpServletRequest request, Object command, BindException errors)
+                    throws Exception {
+        super.onBind(request, command, errors);
+        ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+        String assignmentGridId = request.getParameter("studySubjectGridId");
+        // forwarded from external system (eg : Labviewer)
+        if (assignmentGridId != null) {
+            StudyParticipantAssignment assignment = assignmentDao.getByGridId(assignmentGridId);
+            // able to load the assignment?
+            if (assignment != null) {
+                listAECmd.setAssignment(assignment);
+                listAECmd.setParticipant(listAECmd.getAssignment().getParticipant());
+                listAECmd.setStudy(listAECmd.getAssignment().getStudySite().getStudy());
+            }
+        }
     }
-    
+
     @Override
-    protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
-    	super.onBindAndValidate(request, command, errors);
-    	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
-    	 boolean noStudy = listAECmd.getStudy() == null;
-         boolean noParticipant = listAECmd.getParticipant() == null;
-    	if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
+    protected void onBindAndValidate(HttpServletRequest request, Object command,
+                    BindException errors) throws Exception {
+        super.onBindAndValidate(request, command, errors);
+        ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
+        boolean noStudy = listAECmd.getStudy() == null;
+        boolean noParticipant = listAECmd.getParticipant() == null;
+        if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
         if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing participant");
         if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
             errors.reject("REQUIRED", "The participant is not assigned to the provided study");
         }
     }
-    
+
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(
-        HttpServletRequest request, Object command, Errors errors
-    ) throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
+                    throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("pageTitle", "Manage AEs: Select Participant & Study");
         refdata.put("bodyTitle", "Manage AEs: Select Participant & Study");
-        refdata.put("instructions", "Select a participant and study to see all the AEs for that combination.");
+        refdata.put("instructions",
+                        "Select a participant and study to see all the AEs for that combination.");
         return refdata;
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
         this.assignmentDao = assignmentDao;
@@ -117,14 +121,12 @@ public class ListAdverseEventsController extends SimpleFormController {
         this.studyDao = studyDao;
     }
 
-	public EvaluationService getEvaluationService() {
-		return evaluationService;
-	}
+    public EvaluationService getEvaluationService() {
+        return evaluationService;
+    }
 
-	public void setEvaluationService(EvaluationService evaluationService) {
-		this.evaluationService = evaluationService;
-	}
-    
-    
-    
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
 }

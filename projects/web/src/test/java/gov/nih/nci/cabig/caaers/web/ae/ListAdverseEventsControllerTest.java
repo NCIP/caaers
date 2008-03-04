@@ -17,13 +17,16 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ListAdverseEventsControllerTest extends WebTestCase {
     private ListAdverseEventsController controller;
+
     private ListAdverseEventsCommand mockCommand;
 
     private StudyParticipantAssignmentDao assignmentDao;
+
     private ParticipantDao participantDao;
+
     private StudyDao studyDao;
 
     @Override
@@ -55,7 +58,7 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         request.addParameter("study", "foo");
         assertTrue(controller.isFormSubmission(request));
     }
-    
+
     public void testIsFormSubmissionWithMrnAndNci() throws Exception {
         request.addParameter("mrn", "foo");
         request.addParameter("nciIdentifier", "foo");
@@ -63,8 +66,8 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
     }
 
     public void testBindAssignment() throws Exception {
-        StudyParticipantAssignment expectedAssignment
-            = Fixtures.setId(3, new StudyParticipantAssignment());
+        StudyParticipantAssignment expectedAssignment = Fixtures.setId(3,
+                        new StudyParticipantAssignment());
         String expectedGridId = "a-grid-id";
         request.setParameter("assignment", expectedGridId);
         expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);

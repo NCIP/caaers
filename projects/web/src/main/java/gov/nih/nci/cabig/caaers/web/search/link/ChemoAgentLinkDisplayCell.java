@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
  */
 public class ChemoAgentLinkDisplayCell extends AbstractCell {
 
-
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
@@ -19,13 +18,11 @@ public class ChemoAgentLinkDisplayCell extends AbstractCell {
         String cellValue = column.getValueAsString();
         String tableId = model.getTableHandler().getTable().getTableId();
 
-
         if (chemoAgent != null) {
-            cellValue="<a  href=\"javascript:fillChemoAgentAutoCompletor('"+chemoAgent.getId()+"','"+tableId+"')\">"+chemoAgent.getName()+"</a>";
-                     }
+            cellValue = "<a  href=\"javascript:fillChemoAgentAutoCompletor('" + chemoAgent.getId()
+                            + "','" + tableId + "')\">" + chemoAgent.getName() + "</a>";
+        }
         return cellValue;
     }
 
-
 }
-

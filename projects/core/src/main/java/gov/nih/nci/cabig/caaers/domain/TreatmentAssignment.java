@@ -14,9 +14,9 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.Length;
 
 /**
- * This class represents the TreatmentAssignment domain object associated with the Adverse event report.
- * Domain object representing Study Therapy
- *
+ * This class represents the TreatmentAssignment domain object associated with the Adverse event
+ * report. Domain object representing Study Therapy
+ * 
  * @author Saurabh Agrawal
  */
 @Entity
@@ -24,128 +24,124 @@ import org.hibernate.validator.Length;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_treatment_assignment_id") })
 public class TreatmentAssignment extends AbstractMutableDomainObject implements StudyChild {
 
-	private Study study;
+    private Study study;
 
-	private String code;
+    private String code;
 
-	private Integer doseLevelOrder;
+    private Integer doseLevelOrder;
 
-	private String description;
+    private String description;
 
-	private String comments;
+    private String comments;
 
-	@ManyToOne
-	@JoinColumn(name = "study_id", nullable = false)
-	public Study getStudy() {
-		return study;
-	}
+    @ManyToOne
+    @JoinColumn(name = "study_id", nullable = false)
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setStudy(final Study study) {
-		this.study = study;
-	}
+    public void setStudy(final Study study) {
+        this.study = study;
+    }
 
-	public TreatmentAssignment() {
-	}
+    public TreatmentAssignment() {
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@Length(max = 99)
-	public Integer getDoseLevelOrder() {
-		return doseLevelOrder;
-	}
+    @Length(max = 99)
+    public Integer getDoseLevelOrder() {
+        return doseLevelOrder;
+    }
 
-	public void setDoseLevelOrder(Integer doseLevelOrder) {
-		this.doseLevelOrder = doseLevelOrder;
-	}
+    public void setDoseLevelOrder(Integer doseLevelOrder) {
+        this.doseLevelOrder = doseLevelOrder;
+    }
 
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	@Transient
-	/**
-	 * The below function is only used for UI purpose
-	 */
-	public String getEscapedDescription(){
-		return StringEscapeUtils.escapeJavaScript(description);
-	}
-	
-	public String getComments() {
-		return comments;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (code == null ? 0 : code.hashCode());
-		result = prime * result + (comments == null ? 0 : comments.hashCode());
-		result = prime * result + (description == null ? 0 : description.hashCode());
-		result = prime * result + ( doseLevelOrder == null? 0 : doseLevelOrder);
-		result = prime * result + (study.getId() == null ? 0 : study.getId().hashCode());
-		return result;
-	}
+    @Transient
+    /**
+     * The below function is only used for UI purpose
+     */
+    public String getEscapedDescription() {
+        return StringEscapeUtils.escapeJavaScript(description);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		final TreatmentAssignment other = (TreatmentAssignment) obj;
-		if (code == null) {
-			if (other.code != null) {
-				return false;
-			}
-		}
-		else if (!code.equals(other.code)) {
-			return false;
-		}
-		if (comments == null) {
-			if (other.comments != null) {
-				return false;
-			}
-		}
-		else if (!comments.equals(other.comments)) {
-			return false;
-		}
-		if (description == null) {
-			if (other.description != null) {
-				return false;
-			}
-		}
-		else if (!description.equals(other.description)) {
-			return false;
-		}
+    public String getComments() {
+        return comments;
+    }
 
-		if (study.getId() == null) {
-			if (other.study.getId() != null) {
-				return false;
-			}
-		}
-		else if (!study.getId().equals(other.study.getId())) {
-			return false;
-		}
-		return true;
-	}
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (code == null ? 0 : code.hashCode());
+        result = prime * result + (comments == null ? 0 : comments.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (doseLevelOrder == null ? 0 : doseLevelOrder);
+        result = prime * result + (study.getId() == null ? 0 : study.getId().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final TreatmentAssignment other = (TreatmentAssignment) obj;
+        if (code == null) {
+            if (other.code != null) {
+                return false;
+            }
+        } else if (!code.equals(other.code)) {
+            return false;
+        }
+        if (comments == null) {
+            if (other.comments != null) {
+                return false;
+            }
+        } else if (!comments.equals(other.comments)) {
+            return false;
+        }
+        if (description == null) {
+            if (other.description != null) {
+                return false;
+            }
+        } else if (!description.equals(other.description)) {
+            return false;
+        }
+
+        if (study.getId() == null) {
+            if (other.study.getId() != null) {
+                return false;
+            }
+        } else if (!study.getId().equals(other.study.getId())) {
+            return false;
+        }
+        return true;
+    }
 
 }

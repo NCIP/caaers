@@ -16,47 +16,47 @@ import org.dbunit.operation.DatabaseOperation;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
- *
+ * 
  */
 public class CSMSearchTest extends CaaersDbTestCase {
 
-	public String getTestDataFileName() {
+    public String getTestDataFileName() {
         return "testdata/CSMSearchTest.xml";
     }
-	
-	protected DatabaseOperation getSetUpOperation(){
-		return DatabaseOperation.INSERT;
-	}
-	
-	protected DatabaseOperation getTearDownOperation(){
-		return DatabaseOperation.DELETE;
-	}
-	
-	public void testGridGroupSearch(){
-		
-		
-		
-		String gridGroupNamePattern = "^\\{http(s?)\\:\\/\\/.*\\}.+";
-		UserProvisioningManager mgr = (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
-		Application appProt = new Application();
-		appProt.setApplicationName((String)getApplicationContext().getBean("csmApplicationContextName"));
-		Group grpProt = new Group();
-		grpProt.setApplication(appProt);
-		GroupSearchCriteria sc = new GroupSearchCriteria(grpProt);
-		List groups = mgr.getObjects(sc);
-		
-		int expectedNumGridGroups = 1;
-		int numGridGroups = 0;
-		for(Iterator i = groups.iterator(); i.hasNext(); ){
-			Group group = (Group)i.next();
-			String groupName = group.getGroupName();
-			if(groupName != null && groupName.matches(gridGroupNamePattern)){
-				numGridGroups++;
-			}
-		}
-		
-		assertTrue("Expected " + expectedNumGridGroups + " grid groups. Found " + numGridGroups, expectedNumGridGroups == numGridGroups);
-	}
-	
+
+    protected DatabaseOperation getSetUpOperation() {
+        return DatabaseOperation.INSERT;
+    }
+
+    protected DatabaseOperation getTearDownOperation() {
+        return DatabaseOperation.DELETE;
+    }
+
+    public void testGridGroupSearch() {
+
+        String gridGroupNamePattern = "^\\{http(s?)\\:\\/\\/.*\\}.+";
+        UserProvisioningManager mgr = (UserProvisioningManager) getApplicationContext().getBean(
+                        "csmUserProvisioningManager");
+        Application appProt = new Application();
+        appProt.setApplicationName((String) getApplicationContext().getBean(
+                        "csmApplicationContextName"));
+        Group grpProt = new Group();
+        grpProt.setApplication(appProt);
+        GroupSearchCriteria sc = new GroupSearchCriteria(grpProt);
+        List groups = mgr.getObjects(sc);
+
+        int expectedNumGridGroups = 1;
+        int numGridGroups = 0;
+        for (Iterator i = groups.iterator(); i.hasNext();) {
+            Group group = (Group) i.next();
+            String groupName = group.getGroupName();
+            if (groupName != null && groupName.matches(gridGroupNamePattern)) {
+                numGridGroups++;
+            }
+        }
+
+        assertTrue("Expected " + expectedNumGridGroups + " grid groups. Found " + numGridGroups,
+                        expectedNumGridGroups == numGridGroups);
+    }
 
 }

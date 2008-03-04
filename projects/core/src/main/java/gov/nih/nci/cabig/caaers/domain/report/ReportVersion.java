@@ -18,7 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -27,55 +26,58 @@ import org.hibernate.annotations.Type;
 
 /**
  * Every report has a report version
- *
+ * 
  * @author Krikor Krumlian
- *
+ * 
  */
 @Entity
 @Table(name = "report_versions")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_report_versions_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_versions_id") })
 public class ReportVersion extends AbstractMutableDomainObject implements Serializable {
-	
-	private Date createdOn;
-	private Date dueOn;
-	private Date submittedOn;
-	private Date withdrawnOn;
-	
-	private Submitter submitter;
+
+    private Date createdOn;
+
+    private Date dueOn;
+
+    private Date submittedOn;
+
+    private Date withdrawnOn;
+
+    private Submitter submitter;
+
     private Boolean physicianSignoff;
+
     private String ccEmails;
+
     private String reportVersionId;
-	private ReportStatus reportStatus;
+
+    private ReportStatus reportStatus;
 
     private String assignedIdentifer;
+
     // private String submissionStatus;
-     private String submissionUrl;
-     private String submissionMessage;
-     
-	private Report report; 
-	
-	//////Logic
-	
+    private String submissionUrl;
 
-	@Column(name = "status_code")
-	@Type(type = "reportStatus")
-	public ReportStatus getReportStatus() {
-		return reportStatus;
-	}
+    private String submissionMessage;
 
-	public void setReportStatus(ReportStatus reportStatus) {
-		this.reportStatus = reportStatus;
-	}
-	
+    private Report report;
+
+    // ////Logic
+
+    @Column(name = "status_code")
+    @Type(type = "reportStatus")
+    public ReportStatus getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(ReportStatus reportStatus) {
+        this.reportStatus = reportStatus;
+    }
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable=false, updatable=false, nullable=false)
+    @JoinColumn(insertable = false, updatable = false, nullable = false)
     public Report getReport() {
         return report;
     }
@@ -84,50 +86,50 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
         this.report = report;
     }
 
-    @Temporal(value=TemporalType.TIMESTAMP)
-	public Date getCreatedOn() {
-		return createdOn;
-	}
+    @Temporal(value = TemporalType.TIMESTAMP)
+    public Date getCreatedOn() {
+        return createdOn;
+    }
 
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
 
-	@Temporal(value=TemporalType.TIMESTAMP)
-	public Date getSubmittedOn() {
-		return submittedOn;
-	}
+    @Temporal(value = TemporalType.TIMESTAMP)
+    public Date getSubmittedOn() {
+        return submittedOn;
+    }
 
-	public void setSubmittedOn(Date submittedOn) {
-		this.submittedOn = submittedOn;
-	}
+    public void setSubmittedOn(Date submittedOn) {
+        this.submittedOn = submittedOn;
+    }
 
-	public Date getWithdrawnOn() {
-		return withdrawnOn;
-	}
+    public Date getWithdrawnOn() {
+        return withdrawnOn;
+    }
 
-	public void setWithdrawnOn(Date withdrawnOn) {
-		this.withdrawnOn = withdrawnOn;
-	}
+    public void setWithdrawnOn(Date withdrawnOn) {
+        this.withdrawnOn = withdrawnOn;
+    }
 
-	public Date getDueOn() {
-		return dueOn;
-	}
+    public Date getDueOn() {
+        return dueOn;
+    }
 
-	public void setDueOn(Date dueOn) {
-		this.dueOn = dueOn;
-	}
-	
-	@Transient
-	public void addSubmitter(){
-		if (submitter == null) setSubmitter(new Submitter());
-	}
+    public void setDueOn(Date dueOn) {
+        this.dueOn = dueOn;
+    }
 
-	// non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
+    @Transient
+    public void addSubmitter() {
+        if (submitter == null) setSubmitter(new Submitter());
+    }
+
+    // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "report")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public Submitter getSubmitter() {
-       return submitter;
+        return submitter;
     }
 
     public void setSubmitter(Submitter submitter) {
@@ -135,79 +137,76 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
         if (submitter != null) submitter.setReport(this);
     }
 
-    @Column(name="physician_signoff")
-	public Boolean getPhysicianSignoff() {
-		return physicianSignoff;
-	}
+    @Column(name = "physician_signoff")
+    public Boolean getPhysicianSignoff() {
+        return physicianSignoff;
+    }
 
-	public void setPhysicianSignoff(Boolean physicianSignoff) {
-		this.physicianSignoff = physicianSignoff;
-	}
+    public void setPhysicianSignoff(Boolean physicianSignoff) {
+        this.physicianSignoff = physicianSignoff;
+    }
 
-	@Column(name = "email")
-	public String getCcEmails() {
-		return ccEmails;
-	}
+    @Column(name = "email")
+    public String getCcEmails() {
+        return ccEmails;
+    }
 
-	public void setCcEmails(String email) {
-		this.ccEmails = email;
-	}
+    public void setCcEmails(String email) {
+        this.ccEmails = email;
+    }
 
-	@Transient
-	public String[] getEmailAsArray(){
-		if (this.ccEmails == null) {
-			return null;
-		}
-		String[] emails = this.ccEmails.split(",");
-		return emails;
-	}
+    @Transient
+    public String[] getEmailAsArray() {
+        if (this.ccEmails == null) {
+            return null;
+        }
+        String[] emails = this.ccEmails.split(",");
+        return emails;
+    }
 
-	public String getReportVersionId() {
-		if ((this.reportVersionId == null) || 
-				(this.reportVersionId != null && this.reportVersionId.equals("NA")) ){
-			setReportVersionId("NA");
-		}
-		return reportVersionId;
-	}
+    public String getReportVersionId() {
+        if ((this.reportVersionId == null)
+                        || (this.reportVersionId != null && this.reportVersionId.equals("NA"))) {
+            setReportVersionId("NA");
+        }
+        return reportVersionId;
+    }
 
-	public void setReportVersionId(String reportVersionId) {
-		String id;
-		if ( getId() != null ){
-			id = Integer.toString(getId() + 1000);
-			if (this.getReport() != null && this.getReport().getReportDefinition() != null && this.getReport().getReportDefinition().getOrganization() !=null){
-				id = id + this.getReport().getReportDefinition().getOrganization().getId();
-				this.reportVersionId = id;
-			}
-		}else
-		{
-			this.reportVersionId = reportVersionId;
-		}
-	}
-	
-	
-	public String getAssignedIdentifer() {
-		return assignedIdentifer;
-	}
+    public void setReportVersionId(String reportVersionId) {
+        String id;
+        if (getId() != null) {
+            id = Integer.toString(getId() + 1000);
+            if (this.getReport() != null && this.getReport().getReportDefinition() != null
+                            && this.getReport().getReportDefinition().getOrganization() != null) {
+                id = id + this.getReport().getReportDefinition().getOrganization().getId();
+                this.reportVersionId = id;
+            }
+        } else {
+            this.reportVersionId = reportVersionId;
+        }
+    }
 
+    public String getAssignedIdentifer() {
+        return assignedIdentifer;
+    }
 
-	public void setAssignedIdentifer(String assignedIdentifer) {
-		this.assignedIdentifer = assignedIdentifer;
-	}
+    public void setAssignedIdentifer(String assignedIdentifer) {
+        this.assignedIdentifer = assignedIdentifer;
+    }
 
-	public String getSubmissionMessage() {
-		return submissionMessage;
-	}
+    public String getSubmissionMessage() {
+        return submissionMessage;
+    }
 
-	public void setSubmissionMessage(String submissionMessage) {
-		this.submissionMessage = submissionMessage;
-	}
+    public void setSubmissionMessage(String submissionMessage) {
+        this.submissionMessage = submissionMessage;
+    }
 
-	public String getSubmissionUrl() {
-		return submissionUrl;
-	}
+    public String getSubmissionUrl() {
+        return submissionUrl;
+    }
 
-	public void setSubmissionUrl(String submissionUrl) {
-		this.submissionUrl = submissionUrl;
-	}
+    public void setSubmissionUrl(String submissionUrl) {
+        this.submissionUrl = submissionUrl;
+    }
 }
-

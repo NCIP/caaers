@@ -7,12 +7,12 @@ import javax.rules.admin.RuleExecutionSetRegisterException;
 
 public interface RuleExecutionSetRepository {
 
-	public List getRegistrations();
+    public List getRegistrations();
 
-	public RuleExecutionSet getRuleExecutionSet(final String bindUri);
+    public RuleExecutionSet getRuleExecutionSet(final String bindUri);
 
-    public void registerRuleExecutionSet(final String bindUri,
-            final RuleExecutionSet ruleSet) throws RuleExecutionSetRegisterException;
+    public void registerRuleExecutionSet(final String bindUri, final RuleExecutionSet ruleSet)
+                    throws RuleExecutionSetRegisterException;
 
     public void unregisterRuleExecutionSet(final String bindUri);
 }

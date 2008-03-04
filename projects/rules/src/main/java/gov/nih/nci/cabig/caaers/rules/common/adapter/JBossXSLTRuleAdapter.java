@@ -29,12 +29,11 @@ import javax.xml.transform.stream.StreamSource;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
 import org.drools.compiler.PackageBuilderConfiguration;
-import org.drools.rule.Package;
-/*import org.jibx.runtime.BindingDirectory;
-import org.jibx.runtime.IBindingFactory;
-import org.jibx.runtime.IMarshallingContext;
-import org.jibx.runtime.JiBXException;
-*/
+import org.drools.rule.Package; /*import org.jibx.runtime.BindingDirectory;
+ import org.jibx.runtime.IBindingFactory;
+ import org.jibx.runtime.IMarshallingContext;
+ import org.jibx.runtime.JiBXException;
+ */
 /**
  * Adaptor class for converting the Rule in CaAERS format to JBoss Rules format.
  * 
@@ -53,14 +52,16 @@ import org.jibx.runtime.JiBXException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 public class JBossXSLTRuleAdapter implements RuleAdapter {
-	private static final Log log = LogFactory.getLog(JBossXSLTRuleAdapter.class);
-	
-	public Package adapt(RuleSet ruleSet){
-		if(true){
-			throw new RuntimeException("Deprecated, dont use JBossXSLTRuleAdapter, instead use CaAERSJBossXSLTRuleAdapter");
-		}
-		return null;
-	}
-	
+    private static final Log log = LogFactory.getLog(JBossXSLTRuleAdapter.class);
+
+    public Package adapt(RuleSet ruleSet) {
+        if (true) {
+            throw new RuntimeException(
+                            "Deprecated, dont use JBossXSLTRuleAdapter, instead use CaAERSJBossXSLTRuleAdapter");
+        }
+        return null;
+    }
+
 }

@@ -8,52 +8,49 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImportRuleCommand implements RuleInputCommand {
 
-	private String folder;
-	private String message;
-	private boolean updated = false ;
-	private MultipartFile ruleSetFile1;
+    private String folder;
 
-	public MultipartFile getRuleSetFile1() {
-		return ruleSetFile1;
-	}
+    private String message;
 
+    private boolean updated = false;
 
-	public void setRuleSetFile1(MultipartFile ruleSetFile1) {
-		this.ruleSetFile1 = ruleSetFile1;
-	}
+    private MultipartFile ruleSetFile1;
 
+    public MultipartFile getRuleSetFile1() {
+        return ruleSetFile1;
+    }
 
-	public boolean isUpdated() {
-		return updated;
-	}
+    public void setRuleSetFile1(MultipartFile ruleSetFile1) {
+        this.ruleSetFile1 = ruleSetFile1;
+    }
 
+    public boolean isUpdated() {
+        return updated;
+    }
 
-	public void setUpdated(boolean updated) {
-		this.updated = updated;
-	}
+    public void setUpdated(boolean updated) {
+        this.updated = updated;
+    }
 
+    public ImportRuleCommand() throws RemoteException {
+        // ruleSets = ruleAuthoringService.getAllRuleSets();
+        // ruleSets.remove(0);//removing the default
+    }
 
-	public ImportRuleCommand() throws RemoteException {
-		//ruleSets = ruleAuthoringService.getAllRuleSets();
-		//ruleSets.remove(0);//removing the default
-	}
+    public String getFolder() {
+        return folder;
+    }
 
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
 
-	public String getFolder() {
-		return folder;
-	}
+    public String getMessage() {
+        return message;
+    }
 
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 }

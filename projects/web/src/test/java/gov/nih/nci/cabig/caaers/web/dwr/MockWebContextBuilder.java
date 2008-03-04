@@ -19,10 +19,8 @@ public class MockWebContextBuilder implements WebContextFactory.WebContextBuilde
         this.webContext = webContext;
     }
 
-    public void set(
-        HttpServletRequest request, HttpServletResponse response, ServletConfig config,
-        ServletContext context, Container container
-    ) {
+    public void set(HttpServletRequest request, HttpServletResponse response, ServletConfig config,
+                    ServletContext context, Container container) {
     }
 
     public WebContext get() {

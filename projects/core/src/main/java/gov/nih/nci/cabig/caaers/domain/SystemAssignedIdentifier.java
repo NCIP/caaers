@@ -10,22 +10,22 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("2")
 public class SystemAssignedIdentifier extends Identifier {
-	
-	public static final String MRN_IDENTIFIER_TYPE = "MRN";
 
-	private String systemName;
+    public static final String MRN_IDENTIFIER_TYPE = "MRN";
 
-	/**
-	 * Returns the system name.
-	 * 
-	 * @return the system name
-	 */
-	@Column(name = "system_name", nullable = true)
-	public String getSystemName() {
-		return systemName;
-	}
+    private String systemName;
 
-	public void setSystemName(final String systemName) {
-		this.systemName = systemName;
-	}
+    /**
+     * Returns the system name.
+     * 
+     * @return the system name
+     */
+    @Column(name = "system_name", nullable = true)
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(final String systemName) {
+        this.systemName = systemName;
+    }
 }

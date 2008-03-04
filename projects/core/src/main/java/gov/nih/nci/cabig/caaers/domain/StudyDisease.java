@@ -11,95 +11,78 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-
 /**
  * This class represents the StudyDisease domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 
 @Entity
-@Table (name = "study_diseases")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_study_diseases_id")
-    }
-)
+@Table(name = "study_diseases")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_diseases_id") })
 public class StudyDisease extends AbstractMutableDomainObject {
-	
-	private Study study;
-	private DiseaseTerm diseaseTerm;
-	private Boolean leadDisease;
 
-	/*
-	 * Constructor -- Initializes participation at create time 
-	 * 
-	 */
-	public StudyDisease() {
-		super(); 
-	}
-	
-	@ManyToOne
+    private Study study;
+
+    private DiseaseTerm diseaseTerm;
+
+    private Boolean leadDisease;
+
+    /*
+     * Constructor -- Initializes participation at create time
+     * 
+     */
+    public StudyDisease() {
+        super();
+    }
+
+    @ManyToOne
     @JoinColumn(name = "study_id")
-	public Study getStudy() {
-		return study;
-	}
+    public Study getStudy() {
+        return study;
+    }
 
-	public void setStudy(Study study) {
-		this.study = study;
-	}
-	
-	@ManyToOne
+    public void setStudy(Study study) {
+        this.study = study;
+    }
+
+    @ManyToOne
     @JoinColumn(name = "disease_term_id")
     @Cascade(value = { CascadeType.ALL })
-	public DiseaseTerm getDiseaseTerm() {
-		return diseaseTerm;
-	}
-	
-	public void setDiseaseTerm(DiseaseTerm diseaseTerm) {
-		this.diseaseTerm = diseaseTerm;
-	}
+    public DiseaseTerm getDiseaseTerm() {
+        return diseaseTerm;
+    }
 
-	public Boolean getLeadDisease() {
-		return leadDisease;
-	}
+    public void setDiseaseTerm(DiseaseTerm diseaseTerm) {
+        this.diseaseTerm = diseaseTerm;
+    }
 
-	public void setLeadDisease(Boolean leadDisease) {
-		this.leadDisease = leadDisease;
-	}
-	
-	
-	
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    public Boolean getLeadDisease() {
+        return leadDisease;
+    }
 
-		final StudyDisease that = (StudyDisease) o;
+    public void setLeadDisease(Boolean leadDisease) {
+        this.leadDisease = leadDisease;
+    }
 
-		if (study != null ? !study.equals(that.study)
-				: that.study != null)
-			return false;
-		if (diseaseTerm != null ? !diseaseTerm.getId().equals(that.diseaseTerm.getId())
-				: that.diseaseTerm != null)
-			return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		return true;
-	}
+        final StudyDisease that = (StudyDisease) o;
 
-	public int hashCode() {
-		int result;
-		result = (diseaseTerm != null ? diseaseTerm.hashCode() : 0);
-		result = 29 * result + (study != null ? study.hashCode() : 0);
-		return result;
-	}
-	
+        if (study != null ? !study.equals(that.study) : that.study != null) return false;
+        if (diseaseTerm != null ? !diseaseTerm.getId().equals(that.diseaseTerm.getId())
+                        : that.diseaseTerm != null) return false;
 
-	
-	
-	
-	
-	
-	
+        return true;
+    }
+
+    public int hashCode() {
+        int result;
+        result = (diseaseTerm != null ? diseaseTerm.hashCode() : 0);
+        result = 29 * result + (study != null ? study.hashCode() : 0);
+        return result;
+    }
 
 }

@@ -19,13 +19,17 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
-    private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
+    private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9,
+                    8, 7);
 
     private ExpeditedAdverseEventReport report;
+
     private BeanWrapper wrappedReport;
+
     private CtcTerm ctcTerm;
+
     private AdverseEvent adverseEvent;
 
     @Override
@@ -53,11 +57,9 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     }
 
     public void testSetAdverseEventsInternalReflectedInAdverseEvents() throws Exception {
-        report.setAdverseEventsInternal(new ArrayList<AdverseEvent>(Arrays.asList(
-            Fixtures.setId(10, new AdverseEvent()),
-            Fixtures.setId(12, new AdverseEvent()),
-            Fixtures.setId(14, new AdverseEvent())
-        )));
+        report.setAdverseEventsInternal(new ArrayList<AdverseEvent>(Arrays.asList(Fixtures.setId(
+                        10, new AdverseEvent()), Fixtures.setId(12, new AdverseEvent()), Fixtures
+                        .setId(14, new AdverseEvent()))));
         assertEquals(10, (int) report.getAdverseEvents().get(0).getId());
         assertEquals(12, (int) report.getAdverseEvents().get(1).getId());
         assertEquals(14, (int) report.getAdverseEvents().get(2).getId());
@@ -75,11 +77,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     }
 
     public void testSetLabsInternalReflectedInLabs() throws Exception {
-        report.setLabsInternal(new ArrayList<Lab>(Arrays.asList(
-            Fixtures.setId(10, new Lab()),
-            Fixtures.setId(12, new Lab()),
-            Fixtures.setId(14, new Lab())
-        )));
+        report.setLabsInternal(new ArrayList<Lab>(Arrays.asList(Fixtures.setId(10, new Lab()),
+                        Fixtures.setId(12, new Lab()), Fixtures.setId(14, new Lab()))));
         assertEquals(10, (int) report.getLabs().get(0).getId());
         assertEquals(12, (int) report.getLabs().get(1).getId());
         assertEquals(14, (int) report.getLabs().get(2).getId());
@@ -97,13 +96,15 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     }
 
     public void testNotificationMessage() throws Exception {
-        assertEquals("Grade 2 adverse event with term Term - Select", report.getNotificationMessage());
+        assertEquals("Grade 2 adverse event with term Term - Select", report
+                        .getNotificationMessage());
     }
 
     public void testNotificationMessageWithOther() throws Exception {
         ctcTerm.setOtherRequired(true);
         adverseEvent.setDetailsForOther("other");
-        assertEquals("Grade 2 adverse event with term Term - Select (other)", report.getNotificationMessage());
+        assertEquals("Grade 2 adverse event with term Term - Select (other)", report
+                        .getNotificationMessage());
     }
 
     public void testNotificationMessageExceptionForNoAe() throws Exception {
@@ -113,7 +114,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             report.getNotificationMessage();
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
-            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+            assertEquals("Cannot create notification message until primary AE is filled in", cse
+                            .getMessage());
         }
     }
 
@@ -124,7 +126,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             report.getNotificationMessage();
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
-            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+            assertEquals("Cannot create notification message until primary AE is filled in", cse
+                            .getMessage());
         }
     }
 
@@ -135,7 +138,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             report.getNotificationMessage();
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
-            assertEquals("Cannot create notification message until primary AE is filled in", cse.getMessage());
+            assertEquals("Cannot create notification message until primary AE is filled in", cse
+                            .getMessage());
         }
     }
 
@@ -209,7 +213,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     private void assertChildNeverNull(String childProp) {
         assertNotNull(childProp + " null initially", wrappedReport.getPropertyValue(childProp));
         wrappedReport.setPropertyValue(childProp, null);
-        ExpeditedAdverseEventReportChild actual = (ExpeditedAdverseEventReportChild) wrappedReport.getPropertyValue(childProp);
+        ExpeditedAdverseEventReportChild actual = (ExpeditedAdverseEventReportChild) wrappedReport
+                        .getPropertyValue(childProp);
         assertNotNull(childProp + " not reinited after set null", actual);
         assertSame("Reverse link not set", report, actual.getReport());
     }

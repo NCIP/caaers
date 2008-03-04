@@ -6,11 +6,11 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public interface IdentifiableByAssignedIdentifers {
-	List<Identifier> getIdentifiers();
+    List<Identifier> getIdentifiers();
 
-	void setIdentifiers(List<Identifier> identifiers);
+    void setIdentifiers(List<Identifier> identifiers);
 
-	Identifier getPrimaryIdentifier();
+    Identifier getPrimaryIdentifier();
 
-	List<Identifier> getSecondaryIdentifiers();
+    List<Identifier> getSecondaryIdentifiers();
 }

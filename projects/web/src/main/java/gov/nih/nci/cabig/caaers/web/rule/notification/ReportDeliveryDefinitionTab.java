@@ -16,56 +16,55 @@ import org.springframework.validation.Errors;
 import java.util.Map;
 
 /**
- *
- *
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- * Created-on : Jun 22, 2007
- * @version     %I%, %G%
- * @since       1.0
+ * 
+ * 
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : Jun 22, 2007
+ * @version %I%, %G%
+ * @since 1.0
  */
 public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionCommand> {
 
-    public ReportDeliveryDefinitionTab(){
-        super("Report Delivery Details", "Delivery Details","rule/notification/reportDeliveryTab");
+    public ReportDeliveryDefinitionTab() {
+        super("Report Delivery Details", "Delivery Details", "rule/notification/reportDeliveryTab");
     }
 
     @Override
-    public Map<String,InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
-    	//-
-    	RepeatingFieldGroupFactory rfgFactory;
+    public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {
+        // -
+        RepeatingFieldGroupFactory rfgFactory;
         rfgFactory = new RepeatingFieldGroupFactory("main", "reportDefinition.deliveryDefinitions");
-        InputField eNameField = InputFieldFactory.createTextField("entityName","Name", true);
+        InputField eNameField = InputFieldFactory.createTextField("entityName", "Name", true);
         InputFieldAttributes.setSize(eNameField, 30);
         rfgFactory.addField(eNameField);
-        
+
         InputField uName = InputFieldFactory.createTextField("userName", "Username");
         rfgFactory.addField(uName);
-        
+
         InputField pwd = InputFieldFactory.createTextField("password", "Password");
         rfgFactory.addField(pwd);
-        
-        InputField addressField = InputFieldFactory.createTextField("endPoint","Address", true);
+
+        InputField addressField = InputFieldFactory.createTextField("endPoint", "Address", true);
         InputFieldAttributes.setSize(addressField, 50);
         rfgFactory.addField(addressField);
-        rfgFactory.addField(InputFieldFactory.createSelectField("endPoint", "Role", true,
-            command.getRoles()));
-    	//-
+        rfgFactory.addField(InputFieldFactory.createSelectField("endPoint", "Role", true, command
+                        .getRoles()));
+        // -
         InputFieldGroupMap map = new InputFieldGroupMap();
         int rddCount = command.getReportDefinition().getDeliveryDefinitions().size();
         map.addRepeatingFieldGroupFactory(rfgFactory, rddCount);
         return map;
     }
 
-
     @Override
-    public void postProcess(HttpServletRequest request,ReportDefinitionCommand command, Errors errors) {
-    	String action = request.getParameter("_action");
-    	String selectedIndex = request.getParameter("_selected");
-    	if(StringUtils.equals(action, "deleteDelivery")){
-    		int index = Integer.parseInt(selectedIndex);
-    		command.getReportDefinition().getDeliveryDefinitions().remove(index);
-    	}
-    	super.postProcess(request, command, errors);
+    public void postProcess(HttpServletRequest request, ReportDefinitionCommand command,
+                    Errors errors) {
+        String action = request.getParameter("_action");
+        String selectedIndex = request.getParameter("_selected");
+        if (StringUtils.equals(action, "deleteDelivery")) {
+            int index = Integer.parseInt(selectedIndex);
+            command.getReportDefinition().getDeliveryDefinitions().remove(index);
+        }
+        super.postProcess(request, command, errors);
     }
 
 }

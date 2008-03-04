@@ -22,7 +22,7 @@ import org.springframework.validation.Errors;
  * @author Krikor Krumlian
  */
 public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
-   // private EvaluationService evaluationService;
+    // private EvaluationService evaluationService;
 
     public SubmitterTab() {
         super("Submitter info", "Submitter", "ae/submitter");
@@ -31,29 +31,37 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
     @Override
     @SuppressWarnings("unchecked")
     public InputFieldGroupMap createFieldGroups(ExpeditedAdverseEventInputCommand command) {
-    	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex() ;
-    	if ( reportIndex == null ){
-    		throw new CaaersSystemException("Report Index Not Defined");
-    	}
+        String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
+        if (reportIndex == null) {
+            throw new CaaersSystemException("Report Index Not Defined");
+        }
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup physicianSignoff = new DefaultInputFieldGroup("physicianSignoff");
         physicianSignoff.getFields().add(
-				InputFieldFactory.createSelectField("aeReport.reports["
-						+ reportIndex + "].lastVersion.physicianSignoff",
-						"Physician sign-off", true,createExpectedOptions()));
+                        InputFieldFactory.createSelectField("aeReport.reports[" + reportIndex
+                                        + "].lastVersion.physicianSignoff", "Physician sign-off",
+                                        true, createExpectedOptions()));
         map.addInputFieldGroup(physicianSignoff);
-        map.addInputFieldGroup(createPersonGroup("reporter",null));
-        map.addInputFieldGroup(createPersonGroup("reports["+ reportIndex + "].lastVersion.submitter","submitter"));
+        map.addInputFieldGroup(createPersonGroup("reporter", null));
+        map.addInputFieldGroup(createPersonGroup("reports[" + reportIndex
+                        + "].lastVersion.submitter", "submitter"));
         return map;
     }
 
     private InputFieldGroup createPersonGroup(String person, String name) {
-    	String groupName = name == null ? person : name;
-        InputFieldGroup group = new DefaultInputFieldGroup(groupName, StringUtils.capitalize(person) + " details");
-        String base = "aeReport." + person  + '.';
-        group.getFields().add(InputFieldFactory.createTextField(base + "firstName", "First name", true));
-        group.getFields().add(InputFieldFactory.createTextField(base + "middleName", "Middle name", false));
-        group.getFields().add(InputFieldFactory.createTextField(base + "lastName", "Last name", true));
+        String groupName = name == null ? person : name;
+        InputFieldGroup group = new DefaultInputFieldGroup(groupName, StringUtils
+                        .capitalize(person)
+                        + " details");
+        String base = "aeReport." + person + '.';
+        group.getFields().add(
+                        InputFieldFactory.createTextField(base + "firstName", "First name", true));
+        group.getFields()
+                        .add(
+                                        InputFieldFactory.createTextField(base + "middleName",
+                                                        "Middle name", false));
+        group.getFields().add(
+                        InputFieldFactory.createTextField(base + "lastName", "Last name", true));
         group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", true));
         group.getFields().add(createContactField(base, ReportPerson.PHONE));
         group.getFields().add(createContactField(base, ReportPerson.FAX));
@@ -72,27 +80,26 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
         return createContactField(base, contactType, StringUtils.capitalize(contactType), false);
     }
 
-    private InputField createContactField(
-        String base, String contactType, String displayName, boolean required
-    ) {
-        return InputFieldFactory.createTextField(
-            base + "contactMechanisms[" + contactType + ']', displayName, required);
+    private InputField createContactField(String base, String contactType, String displayName,
+                    boolean required) {
+        return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']',
+                        displayName, required);
     }
-    
-    
+
     @Override
-    protected void validate(
-        ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-        Map<String, InputFieldGroup> fieldGroups, Errors errors
-    ) {
-    	String reportIndex =  ((SubmitExpeditedAdverseEventCommand)command).getReportIndex();
-    	Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(((int)Integer.parseInt(reportIndex))).getLastVersion().getPhysicianSignoff();
-    	hasPhysicianSignedOff = hasPhysicianSignedOff == null ? false : hasPhysicianSignedOff;
-            
-        	if (!hasPhysicianSignedOff){
-        		InputField field = fieldGroups.get("physicianSignoff").getFields().get(0);
-                errors.rejectValue(field.getPropertyName(), "Physician sign-off required", "Not Valid " + field.getDisplayName());
-        	}
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
+                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        String reportIndex = ((SubmitExpeditedAdverseEventCommand) command).getReportIndex();
+        Boolean hasPhysicianSignedOff = command.getAeReport().getReports().get(
+                        ((int) Integer.parseInt(reportIndex))).getLastVersion()
+                        .getPhysicianSignoff();
+        hasPhysicianSignedOff = hasPhysicianSignedOff == null ? false : hasPhysicianSignedOff;
+
+        if (!hasPhysicianSignedOff) {
+            InputField field = fieldGroups.get("physicianSignoff").getFields().get(0);
+            errors.rejectValue(field.getPropertyName(), "Physician sign-off required", "Not Valid "
+                            + field.getDisplayName());
         }
-    
+    }
+
 }

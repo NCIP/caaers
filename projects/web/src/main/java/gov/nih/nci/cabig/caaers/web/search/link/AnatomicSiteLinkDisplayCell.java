@@ -11,7 +11,6 @@ import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
  */
 public class AnatomicSiteLinkDisplayCell extends AbstractCell {
 
-
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
@@ -19,13 +18,12 @@ public class AnatomicSiteLinkDisplayCell extends AbstractCell {
         String cellValue = column.getValueAsString();
         String tableId = model.getTableHandler().getTable().getTableId();
 
-
         if (anatomicSite != null) {
-            cellValue = "<a  href=\"javascript:fillDiseaseSiteAutoCompletor('" + anatomicSite.getId() + "','" + tableId + "')\">" + anatomicSite.getName() + "</a>";
+            cellValue = "<a  href=\"javascript:fillDiseaseSiteAutoCompletor('"
+                            + anatomicSite.getId() + "','" + tableId + "')\">"
+                            + anatomicSite.getName() + "</a>";
         }
         return cellValue;
     }
 
-
 }
-

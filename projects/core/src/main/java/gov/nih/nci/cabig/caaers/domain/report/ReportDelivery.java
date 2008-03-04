@@ -13,70 +13,69 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+
 @Entity
-@Table(name="report_deliveries")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_report_deliveries_id")
+@Table(name = "report_deliveries")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_deliveries_id") })
+public class ReportDelivery extends AbstractMutableDomainObject {
+
+    private ReportDeliveryDefinition template;
+
+    private DeliveryStatus deliveryStatus;
+
+    private String endPoint;
+
+    private Report report;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rdd_id")
+    public ReportDeliveryDefinition getReportDeliveryDefinition() {
+        return template;
     }
-)
-public class ReportDelivery extends AbstractMutableDomainObject{
-	
-	private ReportDeliveryDefinition template;
-	
-	private DeliveryStatus deliveryStatus;
-	
-	private String endPoint;
-	
-	private Report report;
-	
-	@OneToOne(fetch=FetchType.LAZY )
-	@JoinColumn(name="rdd_id")
-	public ReportDeliveryDefinition getReportDeliveryDefinition(){
-		return template;
-	}
-	
-	public void setReportDeliveryDefinition(ReportDeliveryDefinition template){
-		this.template = template;
-	}
 
-	/**
-	 * @return the deliveryStatus
-	 */
-	@Column(name="delivery_status")
-	@Type(type="deliveryStatus")
-	public DeliveryStatus getDeliveryStatus() {
-		return deliveryStatus;
-	}
+    public void setReportDeliveryDefinition(ReportDeliveryDefinition template) {
+        this.template = template;
+    }
 
-	/**
-	 * @param deliveryStatus the deliveryStatus to set
-	 */
-	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
-		this.deliveryStatus = deliveryStatus;
-	}
+    /**
+     * @return the deliveryStatus
+     */
+    @Column(name = "delivery_status")
+    @Type(type = "deliveryStatus")
+    public DeliveryStatus getDeliveryStatus() {
+        return deliveryStatus;
+    }
 
-	/**
-	 * @return the endPoint
-	 */
-	public String getEndPoint() {
-		return endPoint;
-	}
+    /**
+     * @param deliveryStatus
+     *                the deliveryStatus to set
+     */
+    public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+        this.deliveryStatus = deliveryStatus;
+    }
 
-	/**
-	 * @param endPoint the endPoint to set
-	 */
-	public void setEndPoint(String endPoint) {
-		this.endPoint = endPoint;
-	}
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="rp_id", nullable=false)
-	public Report getReport(){
-		return report;
-	}
-	
-	public void setReport(Report report){
-		this.report = report;
-	}
+    /**
+     * @return the endPoint
+     */
+    public String getEndPoint() {
+        return endPoint;
+    }
+
+    /**
+     * @param endPoint
+     *                the endPoint to set
+     */
+    public void setEndPoint(String endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rp_id", nullable = false)
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
 }

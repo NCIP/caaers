@@ -4,18 +4,22 @@ import org.springframework.web.servlet.mvc.Controller;
 
 /**
  * Encapsulates a controller's URL, both context- and servlet-relative.
- *
+ * 
  * @author Rhett Sutphin
  */
-/* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
-/* TODO: this class has been copied into CTMS commons.  Remove it from here. */
+/* TODO: much of this class is shared with PSC. Refactor into a shared library. */
+/* TODO: this class has been copied into CTMS commons. Remove it from here. */
 public class ResolvedControllerReference {
     private String beanName;
+
     private String className;
+
     private String servletName;
+
     private String url;
 
-    public ResolvedControllerReference(String beanName, String className, String servletName, String url) {
+    public ResolvedControllerReference(String beanName, String className, String servletName,
+                    String url) {
         this.beanName = beanName;
         this.className = className;
         this.servletName = servletName;

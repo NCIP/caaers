@@ -11,21 +11,22 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 /**
- *
+ * 
  * @author Rhett Sutphin
  */
 
 public class CaaersConnectionFactory implements ConnectionFactory {
     private ConnectionFactory delegate;
+
     private Configuration configuration;
+
     private static final Log log = LogFactory.getLog(CaaersConnectionFactory.class);
-    
-    public CaaersConnectionFactory(Configuration configuration) throws Exception{
-    	this.configuration = configuration;
+
+    public CaaersConnectionFactory(Configuration configuration) throws Exception {
+        this.configuration = configuration;
     }
-    
+
     public Connection createConnection() throws JMSException {
         return createConnection(null, null);
     }
@@ -38,15 +39,16 @@ public class CaaersConnectionFactory implements ConnectionFactory {
     }
 
     protected ConnectionFactory createDelegate(final String url) {
-    	if (url == null) {
-    		   throw new CaaersConfigurationException("No ESB Queue URL set.  Please set the property and then restart caAERS.");
-    	}
+        if (url == null) {
+            throw new CaaersConfigurationException(
+                            "No ESB Queue URL set.  Please set the property and then restart caAERS.");
+        }
 
         ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory();
         factory.setBrokerURL(url);
         return factory;
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
 }

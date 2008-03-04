@@ -8,18 +8,18 @@ import junit.framework.TestCase;
  */
 public class PropertyUtilTest extends TestCase {
 
-
     public void testValidateForNestedProperty() throws Exception {
 
-        String studySiteMethodName = PropertyUtil.getCollectionMethodName("studySites[0].statusCode");
+        String studySiteMethodName = PropertyUtil
+                        .getCollectionMethodName("studySites[0].statusCode");
         assertEquals("studySites", studySiteMethodName);
 
         String testProperty = PropertyUtil.getCollectionMethodName("studySites[0]");
         assertEquals("studySites", testProperty);
 
-        String testStudySiteMethodName = PropertyUtil.getCollectionMethodName("studySites[0].test[4].statusCode");
+        String testStudySiteMethodName = PropertyUtil
+                        .getCollectionMethodName("studySites[0].test[4].statusCode");
         assertEquals("studySites[0].test", testStudySiteMethodName);
-
 
         testProperty = PropertyUtil.getCollectionMethodName(null);
         assertEquals(null, testProperty);

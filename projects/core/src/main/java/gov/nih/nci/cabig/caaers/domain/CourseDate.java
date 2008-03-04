@@ -6,14 +6,17 @@ import javax.persistence.Embeddable;
 
 /**
  * This class represents the CourseDate domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Embeddable
 public class CourseDate {
     private Integer number;
+
     private Date date;
 
-    public CourseDate() { }
+    public CourseDate() {
+    }
 
     public CourseDate(Integer number) {
         this.number = number;

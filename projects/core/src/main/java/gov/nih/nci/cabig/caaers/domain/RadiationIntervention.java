@@ -11,109 +11,113 @@ import javax.persistence.Transient;
 import java.util.Date;
 
 /**
- * This class represents the RadiationIntervention domain object associated with the Adverse event report.
+ * This class represents the RadiationIntervention domain object associated with the Adverse event
+ * report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
-@Table(name="ae_radiation_interventions")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_ae_radiation_interventi_id")
-    }
-)
+@Table(name = "ae_radiation_interventions")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_radiation_interventi_id") })
 public class RadiationIntervention extends AbstractExpeditedReportCollectionElementChild {
-   
+
     private String treatmentArm;
+
     private String description;
+
     private RadiationAdministration administration;
+
     private String dosage;
-    private String dosageUnit; //TODO : figure out what the units are ?
+
+    private String dosageUnit; // TODO : figure out what the units are ?
+
     private Date lastTreatmentDate;
-    
-    //schedule
+
+    // schedule
     private String fractionNumber;
+
     private String daysElapsed;
-    
-    private String adjustment; //TODO : figure out if this is a drop down or not ?
 
-    
-    ////// LOGIC
+    private String adjustment; // TODO : figure out if this is a drop down or not ?
 
-    ////// BEAN PROPERTIES
-    
+    // //// LOGIC
+
+    // //// BEAN PROPERTIES
+
     @Transient
     public String getTreatmentArm() {
-		return treatmentArm;
-	}
+        return treatmentArm;
+    }
 
-	public void setTreatmentArm(String treatmentArm) {
-		this.treatmentArm = treatmentArm;
-	}
-	@Transient
-	public String getDescription() {
-		return description;
-	}
-	
-	public void setDescription(String description) {
-		this.description = description;
-	}
-    
-	public String getAdjustment() {
-		return adjustment;
-	}
+    public void setTreatmentArm(String treatmentArm) {
+        this.treatmentArm = treatmentArm;
+    }
 
-	public void setAdjustment(String adjustment) {
-		this.adjustment = adjustment;
-	}
+    @Transient
+    public String getDescription() {
+        return description;
+    }
 
-	public String getDaysElapsed() {
-		return daysElapsed;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setDaysElapsed(String daysElapsed) {
-		this.daysElapsed = daysElapsed;
-	}
+    public String getAdjustment() {
+        return adjustment;
+    }
 
-	public String getDosage() {
-		return dosage;
-	}
+    public void setAdjustment(String adjustment) {
+        this.adjustment = adjustment;
+    }
 
-	public void setDosage(String dosage) {
-		this.dosage = dosage;
-	}
+    public String getDaysElapsed() {
+        return daysElapsed;
+    }
 
-	public String getDosageUnit() {
-		return dosageUnit;
-	}
+    public void setDaysElapsed(String daysElapsed) {
+        this.daysElapsed = daysElapsed;
+    }
 
-	public void setDosageUnit(String dosageUnit) {
-		this.dosageUnit = dosageUnit;
-	}
+    public String getDosage() {
+        return dosage;
+    }
 
-	public String getFractionNumber() {
-		return fractionNumber;
-	}
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
+    }
 
-	public void setFractionNumber(String fractionNumber) {
-		this.fractionNumber = fractionNumber;
-	}
+    public String getDosageUnit() {
+        return dosageUnit;
+    }
 
-	public Date getLastTreatmentDate() {
-		return lastTreatmentDate;
-	}
+    public void setDosageUnit(String dosageUnit) {
+        this.dosageUnit = dosageUnit;
+    }
 
-	public void setLastTreatmentDate(Date lastTreatmentDate) {
-		this.lastTreatmentDate = lastTreatmentDate;
-	}
-	
-	@Column(name = "radiation_administration_code")
-	@Type(type = "radiationAdministration")
-	public RadiationAdministration getAdministration() {
-		return administration;
-	}
+    public String getFractionNumber() {
+        return fractionNumber;
+    }
 
-	public void setAdministration(RadiationAdministration administration) {
-		this.administration = administration;
-	}
-    
+    public void setFractionNumber(String fractionNumber) {
+        this.fractionNumber = fractionNumber;
+    }
+
+    public Date getLastTreatmentDate() {
+        return lastTreatmentDate;
+    }
+
+    public void setLastTreatmentDate(Date lastTreatmentDate) {
+        this.lastTreatmentDate = lastTreatmentDate;
+    }
+
+    @Column(name = "radiation_administration_code")
+    @Type(type = "radiationAdministration")
+    public RadiationAdministration getAdministration() {
+        return administration;
+    }
+
+    public void setAdministration(RadiationAdministration administration) {
+        this.administration = administration;
+    }
+
 }

@@ -43,15 +43,25 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     private static final Log logger = LogFactory.getLog(CaaersRegistrationConsumer.class);
 
     private OrganizationDao organizationDao;
+
     private StudyDao studyDao;
+
     private ParticipantDao participantDao;
+
     private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
+
     private ConfigProperty configurationProperty;
+
     private OpenSessionInViewInterceptor openSessionInViewInterceptor;
+
     private AuthorizationSwitch authorizationSwitch;
+
     private StudyParticipantAssignmentAspect assignmentAspect;
+
     private AuditHistoryRepository auditHistoryRepository;
+
     private String registrationConsumerGridServiceUrl;
+
     private Integer rollbackInterval;
 
     private WebRequest preProcess() {
@@ -60,8 +70,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         GrantedAuthority[] authorities = new GrantedAuthority[1];
         authorities[0] = new GrantedAuthorityImpl("ROLE_caaers_super_user");
 
-        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user",
-                "ignored", authorities);
+        Authentication auth = new TestingAuthenticationToken("ROLE_caaers_super_user", "ignored",
+                        authorities);
         auth.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(auth);
 
@@ -74,35 +84,31 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
     }
 
-    //@Transactional(readOnly=false)
-    public void commit(Registration registration) throws RemoteException, InvalidRegistrationException {
+    // @Transactional(readOnly=false)
+    public void commit(Registration registration) throws RemoteException,
+                    InvalidRegistrationException {
         logger.info("Begining of registration-commit");
         System.out.println("-- RegistrationConsumer :commit called");
-        /*WebRequest stubWebRequest = null;
-          try{
-              stubWebRequest = preProcess();
-              String mrn = findMedicalRecordNumber(registration.getParticipant());
-              participantDao.commitParticipant(mrn);
-
-          }catch(Exception exp){
-              InvalidRegistrationException e = new InvalidRegistrationException();
-              e.setFaultReason("Error while comitting, " + exp.getMessage());
-              e.setFaultString("Error while comitting, " + exp.getMessage());
-              exp.printStackTrace();
-              throw e;
-          }finally{
-              postProcess(stubWebRequest);
-          }*/
+        /*
+         * WebRequest stubWebRequest = null; try{ stubWebRequest = preProcess(); String mrn =
+         * findMedicalRecordNumber(registration.getParticipant());
+         * participantDao.commitParticipant(mrn);
+         * 
+         * }catch(Exception exp){ InvalidRegistrationException e = new
+         * InvalidRegistrationException(); e.setFaultReason("Error while comitting, " +
+         * exp.getMessage()); e.setFaultString("Error while comitting, " + exp.getMessage());
+         * exp.printStackTrace(); throw e; }finally{ postProcess(stubWebRequest); }
+         */
         logger.info("End of registration-commit");
     }
 
     /**
-     * 1. Fetch the study based on Coordinating center Identifier
-     * 2. Fetch the Organization to which the participant is registered
+     * 1. Fetch the study based on Coordinating center Identifier 2. Fetch the Organization to which
+     * the participant is registered
      */
-    //@Transactional(readOnly=false)
-    public Registration register(Registration registration) throws RemoteException, InvalidRegistrationException,
-            RegistrationConsumptionException {
+    // @Transactional(readOnly=false)
+    public Registration register(Registration registration) throws RemoteException,
+                    InvalidRegistrationException, RegistrationConsumptionException {
         logger.info("Begining of registration-register");
         System.out.println("-- RegistrationConsumer : register");
         WebRequest stubWebRequest = null;
@@ -110,19 +116,25 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
             stubWebRequest = preProcess();
 
             String ccIdentifier = findCoordinatingCenterIdentifier(registration);
-            Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+            Study study = fetchStudy(ccIdentifier,
+                            OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 
             if (study == null) {
-                String message = "Study identified by Coordinating Center Identifier '" + ccIdentifier + "' doesn't exist";
+                String message = "Study identified by Coordinating Center Identifier '"
+                                + ccIdentifier + "' doesn't exist";
                 RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                 throw exp;
             }
 
-            String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
+            String siteNCICode = registration.getStudySite().getHealthcareSite(0)
+                            .getNciInstituteCode();
             StudySite site = findStudySite(study, siteNCICode);
             if (site == null) {
-                String message = "The study '" + study.getShortTitle() + "', identified by Coordinating Center Identifier '" + ccIdentifier +
-                        "' is not associated to a site identified by NCI code :'" + siteNCICode + "'";
+                String message = "The study '" + study.getShortTitle()
+                                + "', identified by Coordinating Center Identifier '"
+                                + ccIdentifier
+                                + "' is not associated to a site identified by NCI code :'"
+                                + siteNCICode + "'";
 
                 throw getRegistrationConsumptionException(message);
 
@@ -135,10 +147,15 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
                 createStudyParticipantAssignment(registration.getGridId(), participant, site);
             } else {
 
-                logger.info("The participant identified by MRN :" + mrn + ", already available, so using existing participant");
+                logger.info("The participant identified by MRN :" + mrn
+                                + ", already available, so using existing participant");
                 if (participant.isAssignedToStudySite(site)) {
-                    logger.info("Already this participant is associated to the study, so throwing exception");
-                    String message = "Participant with MRN : " + mrn + ", is already associated to the Study (Coordinating Center Identifier :" + ccIdentifier + ")";
+                    logger
+                                    .info("Already this participant is associated to the study, so throwing exception");
+                    String message = "Participant with MRN : "
+                                    + mrn
+                                    + ", is already associated to the Study (Coordinating Center Identifier :"
+                                    + ccIdentifier + ")";
                     RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                     throw exp;
                 }
@@ -168,67 +185,81 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         return exp;
     }
 
-    //@Transactional(readOnly=false)
-    public void rollback(Registration registration) throws RemoteException, InvalidRegistrationException {
+    // @Transactional(readOnly=false)
+    public void rollback(Registration registration) throws RemoteException,
+                    InvalidRegistrationException {
         WebRequest stubWebRequest = null;
         logger.info("Begining of registration-rollback");
         try {
             stubWebRequest = preProcess();
             String mrn = findMedicalRecordNumber(registration.getParticipant());
             Participant participant = fetchParticipant(mrn);
-            if(participant == null ){
-            	logger.info("Unable to find the participant with MRN :" + mrn);
-            	return;
-            }
-            
-        	boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository.
-        	checkIfEntityWasCreatedByUrl(participant.getClass(),participant.getId(), registrationConsumerGridServiceUrl);
-        	if (!checkIfEntityWasCreatedByGridService) {
-                logger.debug("Participant was not created by the grid service url:" + registrationConsumerGridServiceUrl + " so can not rollback this registration:" + participant.getId());
+            if (participant == null) {
+                logger.info("Unable to find the participant with MRN :" + mrn);
                 return;
             }
-        	
-            logger.info("Subject (id:" + participant.getId() + ") was created by the grid service url:" + registrationConsumerGridServiceUrl);            
 
-            //check if this subject was created one minute before or not
+            boolean checkIfEntityWasCreatedByGridService = auditHistoryRepository
+                            .checkIfEntityWasCreatedByUrl(participant.getClass(), participant
+                                            .getId(), registrationConsumerGridServiceUrl);
+            if (!checkIfEntityWasCreatedByGridService) {
+                logger.debug("Participant was not created by the grid service url:"
+                                + registrationConsumerGridServiceUrl
+                                + " so can not rollback this registration:" + participant.getId());
+                return;
+            }
+
+            logger.info("Subject (id:" + participant.getId()
+                            + ") was created by the grid service url:"
+                            + registrationConsumerGridServiceUrl);
+
+            // check if this subject was created one minute before or not
             Calendar calendar = Calendar.getInstance();
-            boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository.
-                    checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant.getClass(), participant.getId(), calendar, rollbackInterval);
+            boolean checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime = auditHistoryRepository
+                            .checkIfEntityWasCreatedMinutesBeforeSpecificDate(participant
+                                            .getClass(), participant.getId(), calendar,
+                                            rollbackInterval);
             if (!checkIfSubjectWasCreatedOneMinuteBeforeCurrentTime) {
-                logger.debug("Participant was not created one minute before the current time:" + calendar.getTime().toString() + " so can not rollback this registration:" + participant.getId());
+                logger.debug("Participant was not created one minute before the current time:"
+                                + calendar.getTime().toString()
+                                + " so can not rollback this registration:" + participant.getId());
                 return;
 
             }
-            logger.info("Participant was created one minute before the current time:" + calendar.getTime().toString());
+            logger.info("Participant was created one minute before the current time:"
+                            + calendar.getTime().toString());
 
-            
             if (participant.getAssignments().size() <= 1) {
-                logger.info("The participant is assigned to only one study, so removing the participant");
+                logger
+                                .info("The participant is assigned to only one study, so removing the participant");
                 participantDao.delete(participant);
             } else {
                 logger.info("Removing only the assignment");
 
                 String ccIdentifier = findCoordinatingCenterIdentifier(registration);
-                Study study = fetchStudy(ccIdentifier, OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+                Study study = fetchStudy(ccIdentifier,
+                                OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 
                 if (study == null) {
-                    String message = "Study identified by Coordinating Center Identifier '" + ccIdentifier + "' doesn't exist";
+                    String message = "Study identified by Coordinating Center Identifier '"
+                                    + ccIdentifier + "' doesn't exist";
                     RegistrationConsumptionException exp = getRegistrationConsumptionException(message);
                     throw exp;
                 }
-               
-                String siteNCICode = registration.getStudySite().getHealthcareSite(0).getNciInstituteCode();
+
+                String siteNCICode = registration.getStudySite().getHealthcareSite(0)
+                                .getNciInstituteCode();
                 StudySite site = findStudySite(study, siteNCICode);
 
-                StudyParticipantAssignment assignment = participant.getStudyParticipantAssignment(site);
+                StudyParticipantAssignment assignment = participant
+                                .getStudyParticipantAssignment(site);
                 participant.getAssignments().remove(assignment);
                 participantDao.save(participant);
             }
 
-
         } catch (Exception exp) {
-        	exp.printStackTrace(); 
-        	logger.error(exp);
+            exp.printStackTrace();
+            logger.error(exp);
             String message = "Error while rolling back, " + exp.getMessage();
             InvalidRegistrationException e = getInvalidRegistrationException(message);
             throw e;
@@ -272,8 +303,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         return participant;
     }
 
-
-    void populateIdentifiers(Participant participant, IdentifierType[] identifierTypes) throws InvalidRegistrationException {
+    void populateIdentifiers(Participant participant, IdentifierType[] identifierTypes)
+                    throws InvalidRegistrationException {
         if (identifierTypes == null) {
             logger.info("The participant has no identifiers.");
             return;
@@ -284,10 +315,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
             knownIdentifierTypes.add(lov.getCode());
         }
 
-
         for (IdentifierType identifierType : identifierTypes) {
             if (!knownIdentifierTypes.contains(identifierType.getType())) {
-                logger.warn("The identifier type '" + identifierType.getType() + "' is unknown to caAERS. So ignoring the identifier(" + identifierType.getValue() + ")");
+                logger.warn("The identifier type '" + identifierType.getType()
+                                + "' is unknown to caAERS. So ignoring the identifier("
+                                + identifierType.getValue() + ")");
                 continue;
             }
 
@@ -307,17 +339,20 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
                 id.setPrimaryIndicator(orgIdType.getPrimaryIndicator());
                 id.setType(orgIdType.getType());
                 id.setValue(orgIdType.getValue());
-                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite().getNciInstituteCode()));
+                id.setOrganization(fetchOrganization(orgIdType.getHealthcareSite()
+                                .getNciInstituteCode()));
                 participant.addIdentifier(id);
             } else {
-                logger.error("Unknown IdentifierType in grid Paricipant " + participant.getFullName());
+                logger.error("Unknown IdentifierType in grid Paricipant "
+                                + participant.getFullName());
                 throw getInvalidRegistrationException("Unknown IdentifierType in grid Participant ");
             }
         }
     }
 
     String findMedicalRecordNumber(ParticipantType participant) throws InvalidRegistrationException {
-        String pIdentifier = findIdentifierOfType(participant.getIdentifier(), SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
+        String pIdentifier = findIdentifierOfType(participant.getIdentifier(),
+                        SystemAssignedIdentifier.MRN_IDENTIFIER_TYPE);
 
         if (pIdentifier == null) {
             logger.info("The participant has no identifiers.");
@@ -327,10 +362,12 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     }
 
     /*
-      * Finds the coordinating center identifier for the sutdy
-      */
-    String findCoordinatingCenterIdentifier(Registration registration) throws InvalidRegistrationException {
-        String ccIdentifier = findIdentifierOfType(registration.getStudyRef().getIdentifier(), OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+     * Finds the coordinating center identifier for the sutdy
+     */
+    String findCoordinatingCenterIdentifier(Registration registration)
+                    throws InvalidRegistrationException {
+        String ccIdentifier = findIdentifierOfType(registration.getStudyRef().getIdentifier(),
+                        OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 
         if (ccIdentifier == null) {
             String message = "In StudyRef-Identifiers, Coordinating Center Identifier is not available";
@@ -340,12 +377,11 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
     }
 
-
     private String findIdentifierOfType(IdentifierType[] idTypes, String ofType) {
         if (idTypes == null) return null;
         for (IdentifierType idType : idTypes) {
-            if (idType instanceof OrganizationAssignedIdentifierType &&
-                    StringUtils.equals(idType.getType(), ofType)) {
+            if (idType instanceof OrganizationAssignedIdentifierType
+                            && StringUtils.equals(idType.getType(), ofType)) {
                 return idType.getValue();
             }
         }
@@ -361,13 +397,12 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
     /**
      * Fetches the organization from the DB
-     *
+     * 
      * @param nciCode
      * @return
      */
     Organization fetchOrganization(String nciCode) {
         OrganizationQuery orgQuery = new OrganizationQuery();
-
 
         if (StringUtils.isNotEmpty(nciCode)) {
             orgQuery.filterByNciCodeExactMatch(nciCode);
@@ -393,9 +428,9 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         List<Study> studies = studyDao.find(studyQuery);
         if (studies == null || studies.isEmpty()) return null;
         Study study = studies.get(0);
-        /*if(study != null){
-              studyDao.initialize(study);
-          }*/
+        /*
+         * if(study != null){ studyDao.initialize(study); }
+         */
         return study;
     }
 
@@ -408,8 +443,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         return participants.get(0);
     }
 
-
-    StudyParticipantAssignment createStudyParticipantAssignment(String assignmentGridId, Participant participant, StudySite site) {
+    StudyParticipantAssignment createStudyParticipantAssignment(String assignmentGridId,
+                    Participant participant, StudySite site) {
         StudyParticipantAssignment assignment = new StudyParticipantAssignment(participant, site);
         assignment.setGridId(assignmentGridId);
         participant.addAssignment(assignment);
@@ -417,7 +452,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         return assignment;
     }
 
-    ///BEAN PROPERTIES
+    // /BEAN PROPERTIES
 
     public OrganizationDao getOrganizationDao() {
         return organizationDao;
@@ -448,7 +483,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     }
 
     public void setStudyParticipantAssignmentDao(
-            StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+                    StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
         this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
     }
 
@@ -463,14 +498,13 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
     @Required
     public void setOpenSessionInViewInterceptor(
-            OpenSessionInViewInterceptor openSessionInViewInterceptor) {
+                    OpenSessionInViewInterceptor openSessionInViewInterceptor) {
         this.openSessionInViewInterceptor = openSessionInViewInterceptor;
     }
 
     public OpenSessionInViewInterceptor getOpenSessionInViewInterceptor() {
         return openSessionInViewInterceptor;
     }
-
 
     @Required
     public void setAuthorizationSwitch(AuthorizationSwitch authorizationSwitch) {
@@ -487,7 +521,7 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
     @Required
     public void setStudyParticipantAssignmentAspect(
-            StudyParticipantAssignmentAspect assignmentAspect) {
+                    StudyParticipantAssignmentAspect assignmentAspect) {
         this.assignmentAspect = assignmentAspect;
     }
 
@@ -495,17 +529,17 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
     public void setRegistrationConsumerGridServiceUrl(String registrationConsumerGridServiceUrl) {
         this.registrationConsumerGridServiceUrl = registrationConsumerGridServiceUrl;
     }
-    
+
     @Required
     public void setRollbackInterval(Integer rollbackInterval) {
-		this.rollbackInterval = rollbackInterval;
-	}
-    
+        this.rollbackInterval = rollbackInterval;
+    }
+
     @Required
     public void setAuditHistoryRepository(AuditHistoryRepository auditHistoryRepository) {
         this.auditHistoryRepository = auditHistoryRepository;
     }
-    
+
     private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
             return null;
@@ -533,7 +567,8 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
         public void removeAttribute(final String name, final int scope) {
         }
 
-        public void registerDestructionCallback(final String name, final Runnable callback, final int scope) {
+        public void registerDestructionCallback(final String name, final Runnable callback,
+                        final int scope) {
         }
 
         public String getSessionId() {
@@ -542,6 +577,6 @@ public class CaaersRegistrationConsumer implements RegistrationConsumer {
 
         public Object getSessionMutex() {
             return null;
-		}
-	}
+        }
+    }
 }

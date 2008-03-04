@@ -26,8 +26,7 @@ public class SecurityTestUtils {
         for (int i = 0; i < roles.length; i++) {
             authorities[i] = new GrantedAuthorityImpl(roles[i]);
         }
-        Authentication auth = new TestingAuthenticationToken(userName,
-            "ignored", authorities);
+        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
         auth.setAuthenticated(true);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
@@ -47,14 +46,14 @@ public class SecurityTestUtils {
         sw.setOn(on);
         return current;
     }
-    
+
     public static Throwable getRootCause(Exception ex) {
-		Throwable t = ex;
-		do{
-			t = t.getCause();
-		}while(t.getCause() != null);
-		return t;
-	}
+        Throwable t = ex;
+        do {
+            t = t.getCause();
+        } while (t.getCause() != null);
+        return t;
+    }
 
     public static void insertCSMPolicy(DataSource dataSource) throws Exception {
         applyPolicy(DatabaseOperation.CLEAN_INSERT, dataSource);
@@ -64,12 +63,17 @@ public class SecurityTestUtils {
         applyPolicy(DatabaseOperation.DELETE_ALL, dataSource);
     }
 
-    private static void applyPolicy(DatabaseOperation op, DataSource dataSource) throws SQLException, IOException, DatabaseUnitException {
+    private static void applyPolicy(DatabaseOperation op, DataSource dataSource)
+                    throws SQLException, IOException, DatabaseUnitException {
         DatabaseDataSourceConnection conn = null;
         try {
             conn = new DatabaseDataSourceConnection(dataSource);
-            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread().getContextClassLoader()
-                .getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
+            FlatXmlDataSet data = new FlatXmlDataSet(
+                            Thread
+                                            .currentThread()
+                                            .getContextClassLoader()
+                                            .getResourceAsStream(
+                                                            "gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"));
             op.execute(conn, data);
         } finally {
             if (conn != null) conn.close();

@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ MAPPING_VOCAB })
+@CaaersUseCases( { MAPPING_VOCAB })
 public class CtcDaoTest extends DaoTestCase<CtcDao> {
     public void testGetV3() throws Exception {
         Ctc v3 = getDao().getCtcaeV3();

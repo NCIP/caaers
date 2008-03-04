@@ -13,33 +13,32 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CreateOrganizationController extends OrganizationController<Organization> {
 
-	/**
-	 * Creates a new organization that is not yet persisted to DB.
-	 * 
-	 * @return the organization
-	 */
-	private Organization createOrganization() {
-		Organization organization = new Organization();
-		return organization;
-	}
+    /**
+     * Creates a new organization that is not yet persisted to DB.
+     * 
+     * @return the organization
+     */
+    private Organization createOrganization() {
+        Organization organization = new Organization();
+        return organization;
+    }
 
-	@Override
-	protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
-		return createOrganization();
-	}
+    @Override
+    protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
+        return createOrganization();
+    }
 
-	@Override
-	protected void layoutTabs(final Flow<Organization> flow) {
-		flow.addTab(new OrganizationTab());
-	}
-	
-	
-	@Override
-    protected boolean suppressValidation(HttpServletRequest request,Object command) {
-    	//supress validation when target page is less than current page.
-    	int curPage = getCurrentPage(request);
-		int targetPage = getTargetPage(request, curPage);
-		if(targetPage < curPage) return true;
-    	return super.suppressValidation(request, command);
+    @Override
+    protected void layoutTabs(final Flow<Organization> flow) {
+        flow.addTab(new OrganizationTab());
+    }
+
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        // supress validation when target page is less than current page.
+        int curPage = getCurrentPage(request);
+        int targetPage = getTargetPage(request, curPage);
+        if (targetPage < curPage) return true;
+        return super.suppressValidation(request, command);
     }
 }

@@ -8,11 +8,11 @@ import java.util.Map;
 public class DefaultSelectField extends AbstractInputField implements SelectField {
     private Map<Object, Object> options;
 
-    public DefaultSelectField() { }
+    public DefaultSelectField() {
+    }
 
-    public DefaultSelectField(
-        String propertyName, String displayName, boolean required, Map<Object, Object> options
-    ) {
+    public DefaultSelectField(String propertyName, String displayName, boolean required,
+                    Map<Object, Object> options) {
         super(propertyName, displayName, required);
         this.options = options;
     }

@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.CaaersTestCase;
 /**
  * @author Rhett Sutphin
  */
-/* TODO: this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: this class is shared with PSC. Refactor into a shared library. */
 public class WonderfulNamingStrategyTest extends CaaersTestCase {
     private static final String DC = "DON'T CARE";
 

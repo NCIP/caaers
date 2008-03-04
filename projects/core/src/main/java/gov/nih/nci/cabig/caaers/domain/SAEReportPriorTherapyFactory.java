@@ -8,9 +8,7 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 public class SAEReportPriorTherapyFactory<T> extends InstantiateFactory<T> {
     private SAEReportPriorTherapy saeReportPriorTherapy;
 
-    public SAEReportPriorTherapyFactory(
-        Class<T> classToInstantiate, SAEReportPriorTherapy parent
-    ) {
+    public SAEReportPriorTherapyFactory(Class<T> classToInstantiate, SAEReportPriorTherapy parent) {
         super(classToInstantiate);
         this.saeReportPriorTherapy = parent;
     }
@@ -18,7 +16,7 @@ public class SAEReportPriorTherapyFactory<T> extends InstantiateFactory<T> {
     @Override
     public T create() {
         T child = super.create();
-        ((PriorTherapyAgent)child).setSaeReportPriorTherapy(saeReportPriorTherapy);
+        ((PriorTherapyAgent) child).setSaeReportPriorTherapy(saeReportPriorTherapy);
         return child;
     }
 }

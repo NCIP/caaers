@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 
@@ -18,31 +17,32 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ViewParticipantController extends ParameterizableViewController {
 
-	private static Log log = LogFactory.getLog(ViewParticipantController.class);
-	private ParticipantDao participantDao;
-	
-	public ViewParticipantController() {
-		setViewName("par/par_confirm");
-	}
-	
-	public ParticipantDao getParticipantDao() {
-		return participantDao;
-	}
-    
-    public void setParticipantDao(ParticipantDao participantDao) {
-		this.participantDao = participantDao;
-	}
+    private static Log log = LogFactory.getLog(ViewParticipantController.class);
 
-	public ModelAndView handleRequestInternal(
-		        HttpServletRequest request,
-		        HttpServletResponse response) throws Exception {
-		 
-		 // TODO: according to type go to a different view
-		 String type = request.getParameter("type");
-		 setViewName("par/par_confirm");
-		 Participant participant =participantDao.getById(Integer.parseInt(request.getParameter("participantId")));
-		 ModelAndView mav = new ModelAndView("par/par_confirm","participant",participant);
-		
-		 return mav;        
-		    }
+    private ParticipantDao participantDao;
+
+    public ViewParticipantController() {
+        setViewName("par/par_confirm");
+    }
+
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
+    }
+
+    public ModelAndView handleRequestInternal(HttpServletRequest request,
+                    HttpServletResponse response) throws Exception {
+
+        // TODO: according to type go to a different view
+        String type = request.getParameter("type");
+        setViewName("par/par_confirm");
+        Participant participant = participantDao.getById(Integer.parseInt(request
+                        .getParameter("participantId")));
+        ModelAndView mav = new ModelAndView("par/par_confirm", "participant", participant);
+
+        return mav;
+    }
 }

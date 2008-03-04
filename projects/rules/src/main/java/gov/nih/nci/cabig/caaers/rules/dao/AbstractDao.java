@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.dao;
 
-
 import gov.nih.nci.cabig.caaers.rules.domain.DomainObject;
 
 import org.apache.commons.logging.Log;
@@ -15,6 +14,6 @@ public abstract class AbstractDao<T extends DomainObject> extends HibernateDaoSu
         return (T) getHibernateTemplate().get(domainClass(), id);
     }
 
-	protected abstract Class domainClass();
+    protected abstract Class domainClass();
 
 }

@@ -14,20 +14,19 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ImportMeddraController extends ParameterizableViewController {
 
-	private static Log log = LogFactory.getLog(ImportMeddraController.class);
-	
-	public ImportMeddraController() {
-		setViewName("admin/meddra_import");
-	}
+    private static Log log = LogFactory.getLog(ImportMeddraController.class);
 
-	public ModelAndView handleRequestInternal(
-		        HttpServletRequest request,
-		        HttpServletResponse response) throws Exception {
-		 
-		 setViewName("admin/meddra_import");
-		 ModelAndView mav = new ModelAndView("admin/meddra_import");
-		 log.debug("modelAndView" + mav.getViewName());
-		
-		 return mav;        
-		    }
+    public ImportMeddraController() {
+        setViewName("admin/meddra_import");
+    }
+
+    public ModelAndView handleRequestInternal(HttpServletRequest request,
+                    HttpServletResponse response) throws Exception {
+
+        setViewName("admin/meddra_import");
+        ModelAndView mav = new ModelAndView("admin/meddra_import");
+        log.debug("modelAndView" + mav.getViewName());
+
+        return mav;
+    }
 }

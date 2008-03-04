@@ -14,10 +14,12 @@ import org.springframework.beans.BeanWrapperImpl;
 public class ObjectTools {
     /**
      * Creates a copy of the given object with only the listed properties included.
+     * 
      * @param src
-     * @param initializer if supplied, the new instance will be passed to this object's
-     *      {@link Initializer#initialize} method before the properties are copied.
-     *      This provides an opportunity to initialize intermediate objects.
+     * @param initializer
+     *                if supplied, the new instance will be passed to this object's
+     *                {@link Initializer#initialize} method before the properties are copied. This
+     *                provides an opportunity to initialize intermediate objects.
      * @param properties
      * @return a newly-created object of the same class as <code>src</code>
      */
@@ -37,15 +39,13 @@ public class ObjectTools {
         BeanWrapper source = new BeanWrapperImpl(src);
         BeanWrapper destination = new BeanWrapperImpl(dst);
         for (String property : properties) {
-            destination.setPropertyValue(
-                property,
-                source.getPropertyValue(property)
-            );
+            destination.setPropertyValue(property, source.getPropertyValue(property));
         }
         return dst;
     }
 
-    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer, String... properties) {
+    public static <T> List<T> reduceAll(List<T> src, Initializer<T> initializer,
+                    String... properties) {
         List<T> dst = new ArrayList<T>(src.size());
         for (T t : src) {
             dst.add(reduce(t, initializer, properties));
@@ -55,6 +55,7 @@ public class ObjectTools {
 
     /**
      * Creates a copy of the given object with only the listed properties included.
+     * 
      * @param src
      * @param properties
      * @return a newly-created object of the same class as <code>src</code>
@@ -67,12 +68,13 @@ public class ObjectTools {
         return reduceAll(src, null, properties);
     }
 
-    // TODO: the initializer callback is a bit of a hack.  Come up with a different way to
+    // TODO: the initializer callback is a bit of a hack. Come up with a different way to
     // initialize intermediate subobjects.
     public static interface Initializer<T> {
         void initialize(T instance);
     }
 
     // Static class
-    private ObjectTools() { }
+    private ObjectTools() {
+    }
 }

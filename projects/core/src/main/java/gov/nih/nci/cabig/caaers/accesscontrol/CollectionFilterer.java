@@ -10,26 +10,29 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * @author Biju Joseph
- * Date: Sep 20, 2007
- * Time: 10:54:51 AM
+ * @author Biju Joseph Date: Sep 20, 2007 Time: 10:54:51 AM
  * 
  */
 class CollectionFilterer implements Filterer {
-    //~ Static fields/initializers =====================================================================================
+    // ~ Static fields/initializers
+    // =====================================================================================
 
-    protected static final Log logger = LogFactory.getLog(BasicAclEntryAfterInvocationCollectionFilteringProvider.class);
+    protected static final Log logger = LogFactory
+                    .getLog(BasicAclEntryAfterInvocationCollectionFilteringProvider.class);
 
-    //~ Instance fields ================================================================================================
+    // ~ Instance fields
+    // ================================================================================================
 
     private Collection collection;
 
     // collectionIter offers significant performance optimisations (as
     // per acegisecurity-developer mailing list conversation 19/5/05)
     private Iterator collectionIter;
+
     private List removeList;
 
-    //~ Constructors ===================================================================================================
+    // ~ Constructors
+    // ===================================================================================================
 
     CollectionFilterer(Collection collection) {
         this.collection = collection;
@@ -44,10 +47,11 @@ class CollectionFilterer implements Filterer {
         removeList = new ArrayList();
     }
 
-    //~ Methods ========================================================================================================
+    // ~ Methods
+    // ========================================================================================================
 
     /**
-     *
+     * 
      * @see org.acegisecurity.afterinvocation.Filterer#getFilteredObject()
      */
     public Object getFilteredObject() {
@@ -61,15 +65,15 @@ class CollectionFilterer implements Filterer {
         }
 
         if (logger.isDebugEnabled()) {
-            logger.debug("Original collection contained " + originalSize + " elements; now contains "
-                + collection.size() + " elements");
+            logger.debug("Original collection contained " + originalSize
+                            + " elements; now contains " + collection.size() + " elements");
         }
 
         return collection;
     }
 
     /**
-     *
+     * 
      * @see org.acegisecurity.afterinvocation.Filterer#iterator()
      */
     public Iterator iterator() {
@@ -79,7 +83,7 @@ class CollectionFilterer implements Filterer {
     }
 
     /**
-     *
+     * 
      * @see org.acegisecurity.afterinvocation.Filterer#remove(java.lang.Object)
      */
     public void remove(Object object) {

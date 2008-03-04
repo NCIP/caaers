@@ -8,9 +8,7 @@ import java.math.BigDecimal;
  * @author Rhett Sutphin
  */
 public enum DelayUnits {
-    MINUTES(1),
-    HOURS(60),
-    DAYS(24 * 60);
+    MINUTES(1), HOURS(60), DAYS(24 * 60);
 
     private BigDecimal factor;
 
@@ -31,7 +29,6 @@ public enum DelayUnits {
     }
 
     public boolean isExact(BigDecimal minuteValue) {
-        return minuteValue.scale() <= 0
-            && 0 == minuteValue.remainder(factor).intValueExact();
+        return minuteValue.scale() <= 0 && 0 == minuteValue.remainder(factor).intValueExact();
     }
 }

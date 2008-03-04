@@ -67,63 +67,84 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class CreateAdverseEventControllerTest extends WebTestCase {
     protected ParticipantDao participantDao;
+
     protected StudyDao studyDao;
+
     protected CtcDao ctcDao;
+
     protected CtcCategoryDao ctcCategoryDao;
+
     protected CtcTermDao ctcTermDao;
+
     protected StudyParticipantAssignmentDao assignmentDao;
+
     protected ExpeditedAdverseEventReportDao adverseEventReportDao;
+
     protected StudyAgentDao studyAgentDao;
+
     protected AgentDao agentDao;
+
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+
     protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
+
     protected AnatomicSiteDao anatomicSiteDao;
+
     protected PriorTherapyDao priorTherapyDao;
+
     protected ReportDefinitionDao reportDefinitionDao;
+
     protected PreExistingConditionDao preExistingConditionDao;
+
     protected LowLevelTermDao lowLevelTermDao;
+
     protected TreatmentAssignmentDao treatmentAssignmentDao;
+
     protected LabTermDao labTermDao;
+
     protected ChemoAgentDao chemoAgentDao;
+
     protected InterventionSiteDao interventionSiteDao;
 
     private StudyParticipantAssignment assignment;
 
     private CreateAdverseEventController controller;
+
     private CreateExpeditedAdverseEventCommand firstCommand;
+
     private ExpeditedReportTree expeditedReportTree;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         StaticTabConfigurer tabConfigurer = new StaticTabConfigurer(
-            adverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class),
-            agentDao = registerDaoMockFor(AgentDao.class),
-            anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class),
-            assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class),
-            ctcDao = registerDaoMockFor(CtcDao.class),
-            ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class),
-            ctcTermDao = registerDaoMockFor(CtcTermDao.class),
-            ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class),
-            meddraStudyDiseaseDao = registerDaoMockFor(MeddraStudyDiseaseDao.class),
-            participantDao = registerDaoMockFor(ParticipantDao.class),
-            priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class),
-            preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class),
-            reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class),
-            studyDao = registerDaoMockFor(StudyDao.class),
-            lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class),
-            studyAgentDao = registerDaoMockFor(StudyAgentDao.class),
-            treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class),
-            labTermDao = registerDaoMockFor(LabTermDao.class),
-            chemoAgentDao = registerDaoMockFor(ChemoAgentDao.class),
-            interventionSiteDao = registerDaoMockFor(InterventionSiteDao.class),
-            expeditedReportTree = new ExpeditedReportTree()
-        );
+                        adverseEventReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class),
+                        agentDao = registerDaoMockFor(AgentDao.class),
+                        anatomicSiteDao = registerDaoMockFor(AnatomicSiteDao.class),
+                        assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class),
+                        ctcDao = registerDaoMockFor(CtcDao.class),
+                        ctcCategoryDao = registerDaoMockFor(CtcCategoryDao.class),
+                        ctcTermDao = registerDaoMockFor(CtcTermDao.class),
+                        ctepStudyDiseaseDao = registerDaoMockFor(CtepStudyDiseaseDao.class),
+                        meddraStudyDiseaseDao = registerDaoMockFor(MeddraStudyDiseaseDao.class),
+                        participantDao = registerDaoMockFor(ParticipantDao.class),
+                        priorTherapyDao = registerDaoMockFor(PriorTherapyDao.class),
+                        preExistingConditionDao = registerDaoMockFor(PreExistingConditionDao.class),
+                        reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class),
+                        studyDao = registerDaoMockFor(StudyDao.class),
+                        lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class),
+                        studyAgentDao = registerDaoMockFor(StudyAgentDao.class),
+                        treatmentAssignmentDao = registerDaoMockFor(TreatmentAssignmentDao.class),
+                        labTermDao = registerDaoMockFor(LabTermDao.class),
+                        chemoAgentDao = registerDaoMockFor(ChemoAgentDao.class),
+                        interventionSiteDao = registerDaoMockFor(InterventionSiteDao.class),
+                        expeditedReportTree = new ExpeditedReportTree());
         ConfigProperty configProperty = new ConfigProperty();
-        configProperty.setMap(LazyMap.decorate(new HashMap<String, List<Lov>>(), new InstantiateFactory(ArrayList.class)));
+        configProperty.setMap(LazyMap.decorate(new HashMap<String, List<Lov>>(),
+                        new InstantiateFactory(ArrayList.class)));
         tabConfigurer.addBean("configurationProperty", configProperty);
 
         controller = new CreateAdverseEventController();
@@ -159,17 +180,15 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         passFirstPage();
     }
 
-
     public void testBindCtcTerm() throws Exception {
         CtcTerm expectedTerm = new CtcTerm();
         request.setParameter("aeReport.adverseEvents[2].adverseEventCtcTerm.ctcTerm", "3022");
         expect(ctcTermDao.getById(3022)).andReturn(expectedTerm);
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2).getAdverseEventCtcTerm().getCtcTerm());
+        assertSame(expectedTerm, command.getAeReport().getAdverseEvents().get(2)
+                        .getAdverseEventCtcTerm().getCtcTerm());
     }
-
-
 
     public void testBindStudyAgent() throws Exception {
         StudyAgent expected = setId(332, createStudyAgent("Zed"));
@@ -177,8 +196,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         expect(studyAgentDao.getById(332)).andReturn(expected);
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertSame(expected,
-            command.getAeReport().getTreatmentInformation().getCourseAgents().get(1).getStudyAgent());
+        assertSame(expected, command.getAeReport().getTreatmentInformation().getCourseAgents().get(
+                        1).getStudyAgent());
     }
 
     public void testBindAdverseEventCourse() throws Exception {
@@ -186,7 +205,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         request.setParameter("aeReport.treatmentInformation.adverseEventCourse.number", "7");
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        CourseDate aeCourse = command.getAeReport().getTreatmentInformation().getAdverseEventCourse();
+        CourseDate aeCourse = command.getAeReport().getTreatmentInformation()
+                        .getAdverseEventCourse();
 
         assertEquals(7, (int) aeCourse.getNumber());
         assertDayOfDate(2023, Calendar.JULY, 3, aeCourse.getDate());
@@ -194,12 +214,19 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     public void testBindBigDecimalFields() throws Exception {
         request.setParameter("aeReport.treatmentInformation.courseAgents[1].dose.amount", "432.1");
-        request.setParameter("aeReport.treatmentInformation.courseAgents[1].totalDoseAdministeredThisCourse", "9433");
-        request.setParameter("aeReport.treatmentInformation.courseAgents[1].administrationDelayAmount", "12");
-        request.setParameter("aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount", "");
+        request
+                        .setParameter(
+                                        "aeReport.treatmentInformation.courseAgents[1].totalDoseAdministeredThisCourse",
+                                        "9433");
+        request.setParameter(
+                        "aeReport.treatmentInformation.courseAgents[1].administrationDelayAmount",
+                        "12");
+        request.setParameter("aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount",
+                        "");
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        CourseAgent courseAgent1 = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
+        CourseAgent courseAgent1 = command.getAeReport().getTreatmentInformation()
+                        .getCourseAgents().get(1);
         assertEquals(new BigDecimal("432.1"), courseAgent1.getDose().getAmount());
         assertEquals(new BigDecimal("9433"), courseAgent1.getTotalDoseAdministeredThisCourse());
         assertEquals(new BigDecimal("12"), courseAgent1.getAdministrationDelayAmount());
@@ -210,15 +237,15 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         String property = "aeReport.treatmentInformation.courseAgents[1].modifiedDose.amount";
 
         firstCommand.getAeReport().getTreatmentInformation().getCourseAgents().get(1)
-            .getModifiedDose().setAmount(new BigDecimal(44));
+                        .getModifiedDose().setAmount(new BigDecimal(44));
         request.setParameter(property, "");
 
         Object[] objects = bindAndReturnCommandAndErrors();
         CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) objects[0];
         Errors errors = (Errors) objects[1];
         assertFalse("Should not be any errors: " + errors, errors.hasFieldErrors(property));
-        CourseAgent courseAgent1
-            = command.getAeReport().getTreatmentInformation().getCourseAgents().get(1);
+        CourseAgent courseAgent1 = command.getAeReport().getTreatmentInformation()
+                        .getCourseAgents().get(1);
         assertNull(courseAgent1.getModifiedDose().getAmount());
     }
 
@@ -226,8 +253,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         request.setParameter("aeReport.responseDescription.presentStatus", "NOT_RECOVERED");
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertSame(PostAdverseEventStatus.NOT_RECOVERED,
-            command.getAeReport().getResponseDescription().getPresentStatus());
+        assertSame(PostAdverseEventStatus.NOT_RECOVERED, command.getAeReport()
+                        .getResponseDescription().getPresentStatus());
     }
 
     public void testBindReportDefinitionKey() throws Exception {
@@ -241,9 +268,9 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
     }
 
     /*
-        TODO: an NPE in org.apache.commons.collections15.collection.AbstractCollectionDecorator
-        is causing this test to fail.  Fix it.
-    */
+     * TODO: an NPE in org.apache.commons.collections15.collection.AbstractCollectionDecorator is
+     * causing this test to fail. Fix it.
+     */
     public void testBindAttributions() throws Exception {
         firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
         firstCommand.getAeReport().getTreatmentInformation().addCourseAgent(new CourseAgent());
@@ -255,33 +282,37 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         request.setParameter("attributionMap[conMed][0][2]", Attribution.PROBABLE.name());
 
         CreateExpeditedAdverseEventCommand command = bindAndReturnCommand();
-        assertEquals(Attribution.DEFINITE,
-            command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(1));
-        assertEquals(Attribution.PROBABLE,
-            command.getAttributionMap().get(ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY).get(0).get(2));
+        assertEquals(Attribution.DEFINITE, command.getAttributionMap().get(
+                        ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY).get(1).get(
+                        1));
+        assertEquals(Attribution.PROBABLE, command.getAttributionMap().get(
+                        ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY)
+                        .get(0).get(2));
     }
 
     public void testNoAlwaysVisibleFieldsPastReporterAreAbsolutelyRequired() throws Exception {
-        Flow<ExpeditedAdverseEventInputCommand> flow = controller.getFlowFactory().createFlow(firstCommand);
+        Flow<ExpeditedAdverseEventInputCommand> flow = controller.getFlowFactory().createFlow(
+                        firstCommand);
         List<Tab<ExpeditedAdverseEventInputCommand>> tabs = flow.getTabs();
         assertTrue("Test expectation violation: tab 0 not begin", tabs.get(0) instanceof BeginTab);
-        assertTrue("Test expectation violation: tab 1 not basics", tabs.get(1) instanceof CtcBasicsTab);
-        assertTrue("Test expectation violation: tab 3 not reporter", tabs.get(3) instanceof ReporterTab);
-        assertTrue("Test expectation violation: tab 4 not checkpoint", tabs.get(4) instanceof CheckpointTab);
+        assertTrue("Test expectation violation: tab 1 not basics",
+                        tabs.get(1) instanceof CtcBasicsTab);
+        assertTrue("Test expectation violation: tab 3 not reporter",
+                        tabs.get(3) instanceof ReporterTab);
+        assertTrue("Test expectation violation: tab 4 not checkpoint",
+                        tabs.get(4) instanceof CheckpointTab);
         for (int i = 4; i < tabs.size(); i++) {
             if (!(tabs.get(i) instanceof TabWithFields)) continue;
-            TabWithFields<ExpeditedAdverseEventInputCommand> tab
-                = (TabWithFields<ExpeditedAdverseEventInputCommand>) tabs.get(i);
-            if(tab instanceof TreatmentTab) continue; //treatment tab has got 'Required' fields
+            TabWithFields<ExpeditedAdverseEventInputCommand> tab = (TabWithFields<ExpeditedAdverseEventInputCommand>) tabs
+                            .get(i);
+            if (tab instanceof TreatmentTab) continue; // treatment tab has got 'Required' fields
             Map<String, InputFieldGroup> groups = tab.createFieldGroups(firstCommand);
             for (String groupName : groups.keySet()) {
                 InputFieldGroup group = groups.get(groupName);
                 for (InputField field : group.getFields()) {
-                    assertFalse(
-                        field.getDisplayName() + " in group " + groupName +
-                        " on tab " + tab.getShortTitle() + " (" + tab.getNumber() +
-                        ") is absolutely required",
-                        field.isRequired());
+                    assertFalse(field.getDisplayName() + " in group " + groupName + " on tab "
+                                    + tab.getShortTitle() + " (" + tab.getNumber()
+                                    + ") is absolutely required", field.isRequired());
                 }
             }
         }
@@ -291,8 +322,7 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         firstCommand.getAeReport().setId(17);
 
         ExpeditedAdverseEventReport expectedEAER = new ExpeditedAdverseEventReport();
-        expect(adverseEventReportDao.merge(firstCommand.getAeReport()))
-            .andReturn(expectedEAER);
+        expect(adverseEventReportDao.merge(firstCommand.getAeReport())).andReturn(expectedEAER);
 
         replayMocks();
         assertSame(firstCommand, controller.currentFormObject(request, firstCommand));
@@ -312,7 +342,8 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
         replayMocks();
         ModelAndView mv = controller.handleRequest(request, response);
         verifyMocks();
-        CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) mv.getModel().get("command");
+        CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) mv
+                        .getModel().get("command");
         Errors errors = (Errors) mv.getModel().get(BindingResult.MODEL_KEY_PREFIX + "command");
         assertNotNull(command);
         return new Object[] { command, errors };
@@ -327,20 +358,24 @@ public class CreateAdverseEventControllerTest extends WebTestCase {
 
     // get the session in place & set study/participant
     private void passFirstPage() throws Exception {
-        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
-            .andReturn(assignment).anyTimes();
+        expect(
+                        assignmentDao.getAssignment(assignment.getParticipant(), assignment
+                                        .getStudySite().getStudy())).andReturn(assignment)
+                        .anyTimes();
         request.setParameter("_target0", "");
         replayMocks();
-        firstCommand
-            = (CreateExpeditedAdverseEventCommand) controller.handleRequest(request, response).getModel().get("command");
+        firstCommand = (CreateExpeditedAdverseEventCommand) controller.handleRequest(request,
+                        response).getModel().get("command");
         firstCommand.setParticipant(assignment.getParticipant());
         firstCommand.setStudy(assignment.getStudySite().getStudy());
         resetMocks();
 
-        expect(assignmentDao.getAssignment(assignment.getParticipant(), assignment.getStudySite().getStudy()))
-            .andReturn(assignment).anyTimes();
-        expect(studyDao.getById(assignment.getStudySite().getStudy().getId()))
-            .andReturn(assignment.getStudySite().getStudy()).anyTimes();
+        expect(
+                        assignmentDao.getAssignment(assignment.getParticipant(), assignment
+                                        .getStudySite().getStudy())).andReturn(assignment)
+                        .anyTimes();
+        expect(studyDao.getById(assignment.getStudySite().getStudy().getId())).andReturn(
+                        assignment.getStudySite().getStudy()).anyTimes();
         participantDao.reassociate((Participant) notNull());
         expectLastCall().anyTimes();
     }

@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT , CREATE_ROUTINE_REPORT})
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class BeginTabTest extends AeWebTestCase {
     private BeginTab<ExpeditedAdverseEventInputCommand> tab;
 
@@ -35,7 +35,7 @@ public class BeginTabTest extends AeWebTestCase {
         assertEquals(1, getErrors().getErrorCount());
         assertEquals(1, getErrors().getFieldErrorCount("participant"));
     }
-    
+
     public void testAssignmentRequired() throws Exception {
         assignment = null;
         doValidate();

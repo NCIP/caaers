@@ -25,40 +25,34 @@ import javax.persistence.DiscriminatorValue;
 @Entity
 @Table(name = "study_diseases")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "term_type",
-    discriminatorType = DiscriminatorType.STRING
-)
-@DiscriminatorValue("ABSTRACT_TERM") // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_study_diseases_id")
-    }
-)
-public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject implements Serializable {
+@DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorValue("ABSTRACT_TERM")
+// should be ignored
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_diseases_id") })
+public abstract class AbstractStudyDisease<T extends DomainObject> extends
+                AbstractMutableDomainObject implements Serializable {
     private T term;
+
     private Study study;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(insertable=false, updatable=false, nullable=false)
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(insertable=false, updatable=false, nullable=false)
     @ManyToOne
-    @JoinColumn(insertable=false, updatable=false)
+    @JoinColumn(insertable = false, updatable = false)
     public Study getStudy() {
-		return study;
-	}
+        return study;
+    }
 
-	public void setStudy(Study study) {
-		this.study = study;
-	}
-
+    public void setStudy(Study study) {
+        this.study = study;
+    }
 
     @Transient
-    /* this is only transient here -- subclasses need to override it and specify what it refers to
-       This should work:
-    @ManyToOne
-    @JoinColumn(name = "cause_id", nullable = false)
+    /*
+     * this is only transient here -- subclasses need to override it and specify what it refers to
+     * This should work: @ManyToOne @JoinColumn(name = "cause_id", nullable = false)
      */
     public T getTerm() {
         return term;
@@ -67,8 +61,11 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends Abstr
     public void setTerm(T term) {
         this.term = term;
     }
+
     @Transient
     public abstract String getTermName();
+
     @Transient
-    public void setTermName(String name){}
+    public void setTermName(String name) {
+    }
 }

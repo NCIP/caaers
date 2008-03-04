@@ -20,32 +20,34 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the CourseAgent domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "course_agents")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_course_agents_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_course_agents_id") })
 public class CourseAgent extends AbstractMutableDomainObject {
     private TreatmentInformation treatmentInformation;
 
     private StudyAgent studyAgent;
+
     private Dose dose;
+
     private String durationAndSchedule;
 
     private BigDecimal administrationDelayAmount;
+
     private DelayUnits administrationDelayUnits;
+
     private Dose modifiedDose;
 
     private Date lastAdministeredDate;
+
     private BigDecimal totalDoseAdministeredThisCourse;
+
     private String comments;
 
-
-    ////// LOGIC
+    // //// LOGIC
 
     /**
      * Administration delay is stored in minutes.
@@ -97,16 +99,15 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     @Transient
     public boolean isDoseModified() {
-        return getModifiedDose().getAmount() != null
-            && !getDose().equals(getModifiedDose());
+        return getModifiedDose().getAmount() != null && !getDose().equals(getModifiedDose());
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="treatment_id", insertable=false, updatable=false, nullable=false)
+    @JoinColumn(name = "treatment_id", insertable = false, updatable = false, nullable = false)
     public TreatmentInformation getTreatmentInformation() {
         return treatmentInformation;
     }
@@ -135,11 +136,10 @@ public class CourseAgent extends AbstractMutableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
-        @AttributeOverride(name = "units", column = @Column(name = "modified_dose_units")),
-        @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route"))
-    })
+    @AttributeOverrides( {
+            @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
+            @AttributeOverride(name = "units", column = @Column(name = "modified_dose_units")),
+            @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route")) })
     public Dose getModifiedDose() {
         if (modifiedDose == null) modifiedDose = new Dose();
         return modifiedDose;
@@ -193,9 +193,10 @@ public class CourseAgent extends AbstractMutableDomainObject {
     }
 
     public String getComments() {
-		return comments;
-	}
-    public void setComments(String comments){
-    	this.comments = comments;
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 }

@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.admin;
 
-
 /*
  * Copyright 2005 JBoss Inc
  * 
@@ -32,29 +31,26 @@ import org.drools.jsr94.rules.admin.LocalRuleExecutionSetProviderImpl;
 import org.drools.jsr94.rules.admin.RuleExecutionSetProviderImpl;
 
 /**
- * The Drools implementation of the <code>RuleAdministrator</code> interface
- * which is used by rule execution set administrators to load rule execution
- * sets from external sources and create a <code>RuleExecutionSet</code>
- * runtime object. <p/> The <code>RuleAdministrator</code> should be accessed
- * by calling: <p/> <code>
+ * The Drools implementation of the <code>RuleAdministrator</code> interface which is used by rule
+ * execution set administrators to load rule execution sets from external sources and create a
+ * <code>RuleExecutionSet</code> runtime object. <p/> The <code>RuleAdministrator</code> should
+ * be accessed by calling: <p/> <code>
  * RuleServiceProvider ruleServiceProvider =
  *     RuleServiceProvider.newInstance();<br/>
  * RuleAdministrator ruleAdministration =
  *     ruleServiceProvider.getRuleAdministrator();
  * </code>
  * <p/> In an additional step the administrator may also choose to bind the
- * <code>RuleExecutionSet</code> instance to a URI so that it is globally
- * accessible and <code>RuleSession</code>s can be created for the
- * <code>RuleExecutionSet</code> through the RuleRuntime.
+ * <code>RuleExecutionSet</code> instance to a URI so that it is globally accessible and
+ * <code>RuleSession</code>s can be created for the <code>RuleExecutionSet</code> through the
+ * RuleRuntime.
  * 
  * @see RuleAdministrator
  * 
  * @author N. Alex Rupp (n_alex <at>codehaus.org)
  * @author <a href="mailto:thomas.diesler@softcon-itec.de">thomas diesler </a>
  */
-public class RuleAdministratorImpl
-    implements
-    RuleAdministrator, java.io.Serializable {
+public class RuleAdministratorImpl implements RuleAdministrator, java.io.Serializable {
     private RuleExecutionSetRepository repository;
 
     /** Default constructor. */
@@ -67,7 +63,7 @@ public class RuleAdministratorImpl
      * Returns a <code>RuleExecutionSetProvider</code> implementation.
      * 
      * @param properties
-     *            additional properties
+     *                additional properties
      * 
      * @return The created <code>RuleExecutionSetProvider</code>.
      */
@@ -78,12 +74,12 @@ public class RuleAdministratorImpl
     /**
      * Returns a <code>LocalRuleExecutionSetProvider</code> implementation.
      * 
-     * Returns a <code>LocalRuleExecutionSetProvider</code> implementation or
-     * null if this implementation does not support creating a
-     * <code>RuleExecutionSet</code> from non-serializable resources.
+     * Returns a <code>LocalRuleExecutionSetProvider</code> implementation or null if this
+     * implementation does not support creating a <code>RuleExecutionSet</code> from
+     * non-serializable resources.
      * 
      * @param properties
-     *            additional properties
+     *                additional properties
      * 
      * @return The created <code>LocalRuleExecutionSetProvider</code>.
      */
@@ -92,51 +88,47 @@ public class RuleAdministratorImpl
     }
 
     /**
-     * Registers a <code>RuleExecutionSet</code> and associates it with a
-     * given URI. Once a <code>RuleExecutionSet</code> has been registered it
-     * is accessible to runtime clients through the <code>RuleRuntime</code>.
-     * If a <code>RuleExecutionSet</code> has already been associated with the
-     * URI it should be deregistered (as if
-     * <code>deregisterRuleExecutionSet/</code> had been called) and the URI
-     * should be associated with the new <code>RuleExecutionSet</code>.
+     * Registers a <code>RuleExecutionSet</code> and associates it with a given URI. Once a
+     * <code>RuleExecutionSet</code> has been registered it is accessible to runtime clients
+     * through the <code>RuleRuntime</code>. If a <code>RuleExecutionSet</code> has already
+     * been associated with the URI it should be deregistered (as if
+     * <code>deregisterRuleExecutionSet/</code> had been called) and the URI should be associated
+     * with the new <code>RuleExecutionSet</code>.
      * 
      * @param bindUri
-     *            the URI to associate with the <code>RuleExecutionSet</code>.
+     *                the URI to associate with the <code>RuleExecutionSet</code>.
      * @param set
-     *            the <code>RuleExecutionSet</code> to associate with the URI
+     *                the <code>RuleExecutionSet</code> to associate with the URI
      * @param properties
-     *            additional properties used to perform the registration
+     *                additional properties used to perform the registration
      * 
      * @throws RuleExecutionSetRegisterException
-     *             if an error occurred that prevented registration
+     *                 if an error occurred that prevented registration
      */
-    public void registerRuleExecutionSet(final String bindUri,
-                                         final RuleExecutionSet set,
-                                         final Map properties) throws RuleExecutionSetRegisterException {
+    public void registerRuleExecutionSet(final String bindUri, final RuleExecutionSet set,
+                    final Map properties) throws RuleExecutionSetRegisterException {
         // Note: an existing RuleExecutionSet is simply replaced
-        this.repository.registerRuleExecutionSet( bindUri,
-                                                  set );
+        this.repository.registerRuleExecutionSet(bindUri, set);
     }
 
     /**
-     * Unregisters a previously registered <code>RuleExecutionSet</code> from
-     * a URI.
+     * Unregisters a previously registered <code>RuleExecutionSet</code> from a URI.
      * 
      * @param bindUri
-     *            the URI to disassociate with the <code>RuleExecutionSet</code>.
+     *                the URI to disassociate with the <code>RuleExecutionSet</code>.
      * @param properties
-     *            additional properties used to perform the deregistration
+     *                additional properties used to perform the deregistration
      * 
      * @throws RuleExecutionSetDeregistrationException
-     *             if an error occurred that prevented unregistration
+     *                 if an error occurred that prevented unregistration
      */
-    public void deregisterRuleExecutionSet(final String bindUri,
-                                           final Map properties) throws RuleExecutionSetDeregistrationException {
-        if ( this.repository.getRuleExecutionSet( bindUri ) == null ) {
-            throw new RuleExecutionSetDeregistrationException( "no execution set bound to: " + bindUri );
+    public void deregisterRuleExecutionSet(final String bindUri, final Map properties)
+                    throws RuleExecutionSetDeregistrationException {
+        if (this.repository.getRuleExecutionSet(bindUri) == null) {
+            throw new RuleExecutionSetDeregistrationException("no execution set bound to: "
+                            + bindUri);
         }
 
-        this.repository.unregisterRuleExecutionSet( bindUri );
+        this.repository.unregisterRuleExecutionSet(bindUri);
     }
 }
-

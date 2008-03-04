@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.tools;
 
-import junit.framework.TestCase;
+import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 
 import java.io.File;
 import java.util.Properties;
 
-import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
+import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
@@ -32,26 +32,33 @@ public class CaaersDataSourcePropertiesFactoryBeanTest extends TestCase {
     }
 
     // TODO: this isn't a test -- it's just a recapitulation of the select logic
-    public void testSelectQuartzDelegateClass() throws Exception{
-    	Properties actual = getActualProperties();
-    	String dbProperty = String.valueOf(actual.getProperty(DataSourceSelfDiscoveringPropertiesFactoryBean.DRIVER_PROPERTY_NAME)) + String.valueOf(actual.getProperty(DataSourceSelfDiscoveringPropertiesFactoryBean.RDBMS_PROPERTY_NAME)) ;
-    	String quartzDelegateClass = actual.getProperty(CaaersDataSourcePropertiesFactoryBean.QUARTZ_DELEGATE_PROPERTY_NAME);
-    	assertNotNull("Quartz Delegate class empty", quartzDelegateClass);
-    	if(dbProperty.toLowerCase().contains("oracle")){
-    		assertEquals("Expected org.quartz.impl.jdbcjobstore.oracle.OracleDelegate",
-    				"org.quartz.impl.jdbcjobstore.oracle.OracleDelegate" , quartzDelegateClass);
-    	return;
-    	}
-    	if(dbProperty.toLowerCase().contains("postgres")){
-    		assertEquals("Expected org.quartz.impl.jdbcjobstore.PostgreSQLDelegate",
-    				"org.quartz.impl.jdbcjobstore.PostgreSQLDelegate" , quartzDelegateClass);
-    	return;
-    	}
-    	if(dbProperty.toLowerCase().contains("hsql")){
-    		assertEquals("Expected org.quartz.impl.jdbcjobstore.StdJDBCDelegate(Hibernate)",
-    				"org.quartz.impl.jdbcjobstore.StdJDBCDelegate" , quartzDelegateClass);
-    	return;
-    	}
-    	//assertTrue("datasource.properties has wrong configuation", false);
+    public void testSelectQuartzDelegateClass() throws Exception {
+        Properties actual = getActualProperties();
+        String dbProperty = String
+                        .valueOf(actual
+                                        .getProperty(DataSourceSelfDiscoveringPropertiesFactoryBean.DRIVER_PROPERTY_NAME))
+                        + String
+                                        .valueOf(actual
+                                                        .getProperty(DataSourceSelfDiscoveringPropertiesFactoryBean.RDBMS_PROPERTY_NAME));
+        String quartzDelegateClass = actual
+                        .getProperty(CaaersDataSourcePropertiesFactoryBean.QUARTZ_DELEGATE_PROPERTY_NAME);
+        assertNotNull("Quartz Delegate class empty", quartzDelegateClass);
+        if (dbProperty.toLowerCase().contains("oracle")) {
+            assertEquals("Expected org.quartz.impl.jdbcjobstore.oracle.OracleDelegate",
+                            "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate",
+                            quartzDelegateClass);
+            return;
+        }
+        if (dbProperty.toLowerCase().contains("postgres")) {
+            assertEquals("Expected org.quartz.impl.jdbcjobstore.PostgreSQLDelegate",
+                            "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate", quartzDelegateClass);
+            return;
+        }
+        if (dbProperty.toLowerCase().contains("hsql")) {
+            assertEquals("Expected org.quartz.impl.jdbcjobstore.StdJDBCDelegate(Hibernate)",
+                            "org.quartz.impl.jdbcjobstore.StdJDBCDelegate", quartzDelegateClass);
+            return;
+        }
+        // assertTrue("datasource.properties has wrong configuation", false);
     }
 }

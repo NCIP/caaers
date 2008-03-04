@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
-
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
@@ -31,48 +30,54 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 /**
- * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code> objects for an AdverseEventReport.
- * A ReportDefinition is applied or used by the Report to determine the notifications that are to be send out
- * on a particular instance of time.
- *
- * A ReportDefinition instance to be used, is picked-up by the Rules Engine Component, for a specific kind of report
- * based on the <code>name</code>.
- *
+ * ReportDefinition represents the predefined set of notifications <code>PlannedNotification</code>
+ * objects for an AdverseEventReport. A ReportDefinition is applied or used by the Report to
+ * determine the notifications that are to be send out on a particular instance of time.
+ * 
+ * A ReportDefinition instance to be used, is picked-up by the Rules Engine Component, for a
+ * specific kind of report based on the <code>name</code>.
+ * 
  * @author Biju Joseph
- *
+ * 
  */
 @Entity
-@Table(name="REPORT_CALENDAR_TEMPLATES")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-    @Parameter(name="sequence", value="seq_report_calendar_templat_id")
-        }
-)
-public class ReportDefinition extends AbstractMutableDomainObject implements Serializable{
+@Table(name = "REPORT_CALENDAR_TEMPLATES")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_calendar_templat_id") })
+public class ReportDefinition extends AbstractMutableDomainObject implements Serializable {
     private static final Log log = LogFactory.getLog(ReportDefinition.class);
 
     private String name;
+
     private String description;
+
     private Boolean amendable;
+
     private Integer duration;
+
     private TimeScaleUnit timeScaleUnitType;
+
     private LazyListHelper lazyListHelper;
+
     private Organization organization;
+
     private List<ReportMandatoryFieldDefinition> mandatoryFields;
+
     private Boolean attributionRequired;
 
-    public ReportDefinition(){
+    public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
-            new InstantiateFactory<ReportDeliveryDefinition>(ReportDeliveryDefinition.class));
-        lazyListHelper.add(PlannedNotification.class,
-        	new InstantiateFactory<PlannedNotification>(PlannedNotification.class));
+                        new InstantiateFactory<ReportDeliveryDefinition>(
+                                        ReportDeliveryDefinition.class));
+        lazyListHelper.add(PlannedNotification.class, new InstantiateFactory<PlannedNotification>(
+                        PlannedNotification.class));
         attributionRequired = false;
     }
 
-    ////// LOGIC
+    // //// LOGIC
     /**
-     * This method will create a Report object(an instance of, in the context of an AE Report) of a ReportDefinition.
+     * This method will create a Report object(an instance of, in the context of an AE Report) of a
+     * ReportDefinition.
      */
     public Report createReport() {
         Report report = new Report();
@@ -82,22 +87,24 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
 
     /**
-     * This method will return the details of the reminder(PlannedNotification)
-     * configured at the specific index (represented by indexOnScale) of the
-     * this ReportDefinition
+     * This method will return the details of the reminder(PlannedNotification) configured at the
+     * specific index (represented by indexOnScale) of the this ReportDefinition
+     * 
      * @param indexOnScale
      * @return
      */
     public List<PlannedNotification> fetchPlannedNotification(int indexOnScale) {
-    	List<PlannedNotification> plannedNotificaitons = new ArrayList<PlannedNotification>();
+        List<PlannedNotification> plannedNotificaitons = new ArrayList<PlannedNotification>();
 
         for (PlannedNotification pn : getPlannedNotifications()) {
             if (pn.getIndexOnTimeScale() == indexOnScale) plannedNotificaitons.add(pn);
         }
         return plannedNotificaitons;
     }
+
     /**
      * This method will add a PlannedNotification to the plannedNotifications list.
+     * 
      * @param pn
      */
     public void addPlannedNotification(PlannedNotification pn) {
@@ -107,38 +114,40 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 
     /**
      * This method will append a ReportDeliveryDefinition to the reportDeliveriesInternal list.
+     * 
      * @param rdd
      */
-	public void addReportDeliveryDefinition(ReportDeliveryDefinition rdd){
-		if(rdd == null) return;
-		getDeliveryDefinitionsInternal().add(rdd);
-	}
+    public void addReportDeliveryDefinition(ReportDeliveryDefinition rdd) {
+        if (rdd == null) return;
+        getDeliveryDefinitionsInternal().add(rdd);
+    }
 
-	@Transient
-	public List<ReportDeliveryDefinition> getDeliveryDefinitions() {
-		return lazyListHelper.getLazyList(ReportDeliveryDefinition.class);
-	}
+    @Transient
+    public List<ReportDeliveryDefinition> getDeliveryDefinitions() {
+        return lazyListHelper.getLazyList(ReportDeliveryDefinition.class);
+    }
 
-	/**
-	 * Returns the mandatory flag associated with the ReportMandatoryField, whose fieldPath matches
-	 * with the parameter <param>fieldPath</param>
-	 */
-	public boolean isFieldMandatory(String fieldPath){
-		if(mandatoryFields == null) return false;
-		for(ReportMandatoryFieldDefinition mandatoryField : mandatoryFields){
-			if(StringUtils.equals(fieldPath, mandatoryField.getFieldPath())){
-				return mandatoryField.getMandatory();
-			}
-		}
+    /**
+     * Returns the mandatory flag associated with the ReportMandatoryField, whose fieldPath matches
+     * with the parameter <param>fieldPath</param>
+     */
+    public boolean isFieldMandatory(String fieldPath) {
+        if (mandatoryFields == null) return false;
+        for (ReportMandatoryFieldDefinition mandatoryField : mandatoryFields) {
+            if (StringUtils.equals(fieldPath, mandatoryField.getFieldPath())) {
+                return mandatoryField.getMandatory();
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
-	public String getName() {
+    public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -146,6 +155,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -153,6 +163,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public Integer getDuration() {
         return duration;
     }
+
     public void setDuration(Integer duration) {
         this.duration = duration;
     }
@@ -162,99 +173,104 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     public TimeScaleUnit getTimeScaleUnitType() {
         return timeScaleUnitType;
     }
+
     public void setTimeScaleUnitType(TimeScaleUnit timeScaleUnitType) {
         this.timeScaleUnitType = timeScaleUnitType;
     }
 
-    @OneToMany(fetch=FetchType.EAGER)
-    @JoinColumn(name="rct_id")
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rct_id")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<PlannedNotification> getPlannedNotificationsInternal() {
         return lazyListHelper.getInternalList(PlannedNotification.class);
     }
+
     public void setPlannedNotificationsInternal(List<PlannedNotification> plannedNotifications) {
         lazyListHelper.setInternalList(PlannedNotification.class, plannedNotifications);
     }
+
     @Transient
     public List<PlannedNotification> getPlannedNotifications() {
         return lazyListHelper.getLazyList(PlannedNotification.class);
     }
+
     @Transient
     public void setPlannedNotifications(List<PlannedNotification> plannedNotifications) {
         lazyListHelper.setInternalList(PlannedNotification.class, plannedNotifications);
     }
 
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="rct_id")
-	@Cascade(value = { CascadeType.ALL})
-	public List<ReportDeliveryDefinition> getDeliveryDefinitionsInternal() {
-		return lazyListHelper.getInternalList(ReportDeliveryDefinition.class);
-	}
-	public void setDeliveryDefinitionsInternal(
-			List<ReportDeliveryDefinition> deliveryDefinitions) {
-		lazyListHelper.setInternalList(ReportDeliveryDefinition.class, deliveryDefinitions);
-	}
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rct_id")
+    @Cascade(value = { CascadeType.ALL })
+    public List<ReportDeliveryDefinition> getDeliveryDefinitionsInternal() {
+        return lazyListHelper.getInternalList(ReportDeliveryDefinition.class);
+    }
 
-	@ManyToOne(optional=false, fetch=FetchType.LAZY)
-	@JoinColumn(name="org_id")
-	public Organization getOrganization() {
-		return organization;
-	}
-	public void setOrganization(Organization organization) {
-		this.organization = organization;
-	}
+    public void setDeliveryDefinitionsInternal(List<ReportDeliveryDefinition> deliveryDefinitions) {
+        lazyListHelper.setInternalList(ReportDeliveryDefinition.class, deliveryDefinitions);
+    }
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	@OneToMany(fetch=FetchType.LAZY)
-	@JoinColumn(name="rct_id")
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-	public List<ReportMandatoryFieldDefinition> getMandatoryFields() {
-		return mandatoryFields;
-	}
-	public void setMandatoryFields(List<ReportMandatoryFieldDefinition> mandatoryFields) {
-		this.mandatoryFields = mandatoryFields;
-	}
+    public void setOrganization(Organization organization) {
+        this.organization = organization;
+    }
 
-	public Boolean getAmendable() {
-		return amendable;
-	}
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "rct_id")
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<ReportMandatoryFieldDefinition> getMandatoryFields() {
+        return mandatoryFields;
+    }
 
-	public void setAmendable(Boolean amendable) {
-		this.amendable = amendable;
-	}
-	
-	public Boolean getAttributionRequired() {
-		return attributionRequired;
-	}
-	
-	public void setAttributionRequired(Boolean attributionRequired) {
-		this.attributionRequired = attributionRequired;
-	}
+    public void setMandatoryFields(List<ReportMandatoryFieldDefinition> mandatoryFields) {
+        this.mandatoryFields = mandatoryFields;
+    }
 
-	////// OBJECT METHODS
+    public Boolean getAmendable() {
+        return amendable;
+    }
+
+    public void setAmendable(Boolean amendable) {
+        this.amendable = amendable;
+    }
+
+    public Boolean getAttributionRequired() {
+        return attributionRequired;
+    }
+
+    public void setAttributionRequired(Boolean attributionRequired) {
+        this.attributionRequired = attributionRequired;
+    }
+
+    // //// OBJECT METHODS
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append('[').append(getName()).append(", ").append(getOrganization()).append(']')
-            .toString();
+        return new StringBuilder(getClass().getSimpleName()).append('[').append(getName()).append(
+                        ", ").append(getOrganization()).append(']').toString();
     }
 
     @Override
-	public int hashCode() {
-		final int PRIME = 31;
-		int result = 1;
-		result = PRIME * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
-		result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
-		result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
-		result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
-		result = PRIME * result + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
-		return result;
-	}
+    public int hashCode() {
+        final int PRIME = 31;
+        int result = 1;
+        result = PRIME * result + ((getDescription() == null) ? 0 : getDescription().hashCode());
+        result = PRIME * result + ((getDuration() == null) ? 0 : getDuration());
+        result = PRIME * result + ((getName() == null) ? 0 : getName().hashCode());
+        result = PRIME * result + ((getOrganization() == null) ? 0 : getOrganization().hashCode());
+        result = PRIME
+                        * result
+                        + ((getTimeScaleUnitType() == null) ? 0 : getTimeScaleUnitType().hashCode());
+        return result;
+    }
 
-
-	@Override
-	public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
         return equals(obj, false);
     }
 
@@ -296,6 +312,5 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         if (trace) log.debug("== by properties");
         return true;
     }
-
 
 }

@@ -13,7 +13,7 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 
-@CaaersUseCases({MAPPING_VOCAB })
+@CaaersUseCases( { MAPPING_VOCAB })
 public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
     public void testGetById() throws Exception {
         CtcTerm loaded = getDao().getById(3001);
@@ -43,8 +43,8 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
 
     public void testGetBySubnameMatchesFiltersByCategory() throws Exception {
         List<CtcTerm> unfilteredMatches = getDao().getBySubname(new String[] { "skin" }, 3, null);
-        assertEquals("Test setup invalid: wrong number of matches w/o category filter",
-            2, unfilteredMatches.size());
+        assertEquals("Test setup invalid: wrong number of matches w/o category filter", 2,
+                        unfilteredMatches.size());
 
         List<CtcTerm> matches = getDao().getBySubname(new String[] { "skin" }, 3, 302);
         assertEquals("Wrong number of matches", 1, matches.size());

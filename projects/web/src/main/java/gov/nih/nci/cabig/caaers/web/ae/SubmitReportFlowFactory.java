@@ -7,36 +7,38 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
  * @author Krikor Krumlian
  * 
  */
-// TODO: this class is unnecessary -- you don't need a custom flow factory unless the flow changes depending on the command
+// TODO: this class is unnecessary -- you don't need a custom flow factory unless the flow changes
+// depending on the command
 // Just use a static flow (with setFlow in the controller)
 public class SubmitReportFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
     protected String flowName;
+
     private Flow<ExpeditedAdverseEventInputCommand> submitReportFlow;
 
     public SubmitReportFlowFactory(String flowName) {
         this.flowName = flowName;
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
-    
-    protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow){
-    	flow.addTab(new SubmitterTab());
-    	flow.addTab(new SubmitReportTab());
-    	
+    protected void addTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+        flow.addTab(new SubmitterTab());
+        flow.addTab(new SubmitReportTab());
+
     }
 
-    public Flow<ExpeditedAdverseEventInputCommand> createFlow(ExpeditedAdverseEventInputCommand command) {
-    	return getSubmitReportFlow(); 
+    public Flow<ExpeditedAdverseEventInputCommand> createFlow(
+                    ExpeditedAdverseEventInputCommand command) {
+        return getSubmitReportFlow();
     }
 
     private Flow<ExpeditedAdverseEventInputCommand> createEmptyFlow() {
         return new Flow<ExpeditedAdverseEventInputCommand>(flowName);
     }
-    
+
     private Flow<ExpeditedAdverseEventInputCommand> getSubmitReportFlow() {
         if (submitReportFlow == null) {
-        	submitReportFlow = createEmptyFlow();
+            submitReportFlow = createEmptyFlow();
             addTabs(submitReportFlow);
         }
         return submitReportFlow;

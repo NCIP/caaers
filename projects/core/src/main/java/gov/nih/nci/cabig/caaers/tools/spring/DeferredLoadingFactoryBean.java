@@ -10,19 +10,22 @@ import org.apache.commons.logging.LogFactory;
 import java.util.List;
 
 /**
- * This class iterates over a list of bean names, attempting to load each one from the
- * application context.  It returns the first one that isn't null.
- *
- * The purpose of this is to allow beans later in the list to be configured with
- * lazy-init="true" and never be loaded unless they are needed.
- *
+ * This class iterates over a list of bean names, attempting to load each one from the application
+ * context. It returns the first one that isn't null.
+ * 
+ * The purpose of this is to allow beans later in the list to be configured with lazy-init="true"
+ * and never be loaded unless they are needed.
+ * 
  * @author Rhett Sutphin
  */
-public class DeferredLoadingFactoryBean implements FactoryBean, BeanNameAware, ApplicationContextAware {
+public class DeferredLoadingFactoryBean implements FactoryBean, BeanNameAware,
+                ApplicationContextAware {
     private static final Log log = LogFactory.getLog(DeferredLoadingFactoryBean.class);
 
     private ApplicationContext applicationContext;
+
     private List<String> beanNames;
+
     private String beanName;
 
     public Object getObject() throws Exception {
@@ -46,7 +49,7 @@ public class DeferredLoadingFactoryBean implements FactoryBean, BeanNameAware, A
         return true;
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     public List<String> getBeanNames() {
         return beanNames;

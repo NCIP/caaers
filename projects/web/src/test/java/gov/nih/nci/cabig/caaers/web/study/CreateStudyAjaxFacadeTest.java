@@ -22,12 +22,14 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_STUDY })
+@CaaersUseCases( { CREATE_STUDY })
 public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private CreateStudyAjaxFacade facade;
+
     protected Study command;
 
     private SiteInvestigatorDao siteInvestigatorDao;
+
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     @Override
@@ -40,10 +42,8 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
 
         command = new Study();
-        request.getSession().setAttribute(
-            CreateStudyController.class.getName() + ".FORM.command",
-            command
-        );
+        request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command",
+                        command);
     }
 
     public void testSiteInvestigatorsReduced() throws Exception {
@@ -58,8 +58,8 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         studySite.setOrganization(setId(6, new Organization()));
         command.addStudySite(studySite);
 
-        expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6)))
-            .andReturn(Arrays.asList(expectedInvestigator));
+        expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(
+                        Arrays.asList(expectedInvestigator));
         replayMocks();
         List<SiteInvestigator> results = facade.matchSiteInvestigator("foo", 0);
         verifyMocks();
@@ -69,26 +69,26 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("id not copied to result", 34, (int) actual.getId());
         assertEquals("First name not copied", "Joe", actual.getInvestigator().getFirstName());
         assertEquals("Last name not copied", "Something", actual.getInvestigator().getLastName());
-     }
+    }
 
     public void testResearchStaffReduced() throws Exception {
         // TODO
     }
 
-    public void testMatchINDs() throws Exception{
-    	InvestigationalNewDrug expectedIND = new InvestigationalNewDrug();
-    	expectedIND.setId(32);
-    	expectedIND.setIndNumber(99);
+    public void testMatchINDs() throws Exception {
+        InvestigationalNewDrug expectedIND = new InvestigationalNewDrug();
+        expectedIND.setId(32);
+        expectedIND.setIndNumber(99);
 
-    	expect(investigationalNewDrugDao.findByIds(aryEq(new String[]{"9"})))
-    	.andReturn(Arrays.asList(expectedIND));
-    	replayMocks();
-    	List<InvestigationalNewDrug> results = facade.matchINDs("9");
-    	verifyMocks();
+        expect(investigationalNewDrugDao.findByIds(aryEq(new String[] { "9" }))).andReturn(
+                        Arrays.asList(expectedIND));
+        replayMocks();
+        List<InvestigationalNewDrug> results = facade.matchINDs("9");
+        verifyMocks();
 
-    	assertEquals("Wrong number of results", 1, results.size());
-    	InvestigationalNewDrug actual = results.get(0);
-    	assertEquals("IND number is not matching", (int)actual.getIndNumber(), 99);
-    	//
+        assertEquals("Wrong number of results", 1, results.size());
+        InvestigationalNewDrug actual = results.get(0);
+        assertEquals("IND number is not matching", (int) actual.getIndNumber(), 99);
+        //
     }
 }

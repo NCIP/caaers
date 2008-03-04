@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the Identifier domain object associated with the Adverse event report.
+ * 
  * @author Priyatam
  * @author Krikor Krumlian
  * @author Rhett Sutphin
@@ -25,119 +26,117 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @DiscriminatorColumn(name = "discriminator_column", discriminatorType = DiscriminatorType.INTEGER)
 public class Identifier extends AbstractMutableDomainObject {
 
-	private String type;
+    private String type;
 
-	private String value;
+    private String value;
 
-	private Boolean primaryIndicator = false;
+    private Boolean primaryIndicator = false;
 
-	public static Identifier createTemplate(final String type, final String value) {
-		Identifier id = new Identifier();
-		id.setType(type);
-		id.setValue(value);
-		return id;
-	}
+    public static Identifier createTemplate(final String type, final String value) {
+        Identifier id = new Identifier();
+        id.setType(type);
+        id.setValue(value);
+        return id;
+    }
 
-	public static Identifier createTemplate(final String value) {
-		return createTemplate(null, value);
-	}
+    public static Identifier createTemplate(final String value) {
+        return createTemplate(null, value);
+    }
 
-	/**
-	 * Null-safe conversion from primaryIndicator property to simple boolean. TODO: switch the db field to not-null, default false so this
-	 * isn't necessary.
-	 */
-	@Transient
-	public boolean isPrimary() {
-		return getPrimaryIndicator() == null ? false : getPrimaryIndicator();
-	}
+    /**
+     * Null-safe conversion from primaryIndicator property to simple boolean. TODO: switch the db
+     * field to not-null, default false so this isn't necessary.
+     */
+    @Transient
+    public boolean isPrimary() {
+        return getPrimaryIndicator() == null ? false : getPrimaryIndicator();
+    }
 
-	// //// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setType(final String type) {
-		this.type = type;
-	}
+    public void setType(final String type) {
+        this.type = type;
+    }
 
-	public String getValue() {
-		return value;
-	}
+    public String getValue() {
+        return value;
+    }
 
-	public void setValue(final String value) {
-		this.value = value;
-	}
+    public void setValue(final String value) {
+        this.value = value;
+    }
 
-	public Boolean getPrimaryIndicator() {
-		return primaryIndicator;
-	}
+    public Boolean getPrimaryIndicator() {
+        return primaryIndicator;
+    }
 
-	public void setPrimaryIndicator(Boolean primaryIndicator) {
-		if (primaryIndicator == null) {
-			primaryIndicator = false;
-		}
-		this.primaryIndicator = primaryIndicator;
-	}
+    public void setPrimaryIndicator(Boolean primaryIndicator) {
+        if (primaryIndicator == null) {
+            primaryIndicator = false;
+        }
+        this.primaryIndicator = primaryIndicator;
+    }
 
-	@Transient
-	public String getSummary() {
-		return new StringBuilder(getClass().getSimpleName()).append("[value=").append(getValue()).append("; primary? ")
-				.append(getPrimaryIndicator()).append("; type=").append(getType()).append(']').toString();
-	}
+    @Transient
+    public String getSummary() {
+        return new StringBuilder(getClass().getSimpleName()).append("[value=").append(getValue())
+                        .append("; primary? ").append(getPrimaryIndicator()).append("; type=")
+                        .append(getType()).append(']').toString();
+    }
 
-	@Override
-	public String toString() {
-		return getValue();
-	}
+    @Override
+    public String toString() {
+        return getValue();
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (getId() == null ? 0 : getId().hashCode());
-		result = prime * result + (type == null ? 0 : type.hashCode());
-		result = prime * result + (value == null ? 0 : value.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (getId() == null ? 0 : getId().hashCode());
+        result = prime * result + (type == null ? 0 : type.hashCode());
+        result = prime * result + (value == null ? 0 : value.hashCode());
+        return result;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (!(obj instanceof Identifier)) {
-			return false;
-		}
-		final Identifier other = (Identifier) obj;
-		if (getId() == null) {
-			if (other.getId() != null) {
-				return false;
-			}
-		}
-		else if (!getId().equals(other.getId())) {
-			return false;
-		}
-		if (type == null) {
-			if (other.type != null) {
-				return false;
-			}
-		}
-		else if (!type.equals(other.type)) {
-			return false;
-		}
-		if (value == null) {
-			if (other.value != null) {
-				return false;
-			}
-		}
-		else if (!value.equals(other.value)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Identifier)) {
+            return false;
+        }
+        final Identifier other = (Identifier) obj;
+        if (getId() == null) {
+            if (other.getId() != null) {
+                return false;
+            }
+        } else if (!getId().equals(other.getId())) {
+            return false;
+        }
+        if (type == null) {
+            if (other.type != null) {
+                return false;
+            }
+        } else if (!type.equals(other.type)) {
+            return false;
+        }
+        if (value == null) {
+            if (other.value != null) {
+                return false;
+            }
+        } else if (!value.equals(other.value)) {
+            return false;
+        }
+        return true;
+    }
 
 }

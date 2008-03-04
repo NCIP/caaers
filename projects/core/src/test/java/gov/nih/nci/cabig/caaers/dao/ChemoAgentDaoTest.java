@@ -11,7 +11,7 @@ import java.util.List;
  * @author Krikor Krumlian
  */
 
-@CaaersUseCases({MAPPING_VOCAB })
+@CaaersUseCases( { MAPPING_VOCAB })
 public class ChemoAgentDaoTest extends DaoTestCase<ChemoAgentDao> {
     public void testGetById() throws Exception {
         ChemoAgent loaded = getDao().getById(1002);

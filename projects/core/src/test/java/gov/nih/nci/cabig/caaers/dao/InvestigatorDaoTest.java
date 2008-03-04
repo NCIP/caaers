@@ -11,35 +11,35 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 @CaaersUseCases( { STUDY_ABSTRACTION })
 public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
 
-	public void testGetById() throws Exception {
-		Investigator investigator = getDao().getById(-100);
-		assertNotNull("Investigator not found", investigator);
-		assertEquals("Wrong last name", "Scott", investigator.getLastName());
-		assertEquals("Wrong first name", "Dilbert", investigator.getFirstName());
-	}
+    public void testGetById() throws Exception {
+        Investigator investigator = getDao().getById(-100);
+        assertNotNull("Investigator not found", investigator);
+        assertEquals("Wrong last name", "Scott", investigator.getLastName());
+        assertEquals("Wrong first name", "Dilbert", investigator.getFirstName());
+    }
 
-	public void testSaveNewInvestigator() throws Exception {
-		Integer savedId;
-		{
-			Investigator investigator = new Investigator();
-			investigator.setFirstName("Jeff");
-			investigator.setLastName("Someone");
+    public void testSaveNewInvestigator() throws Exception {
+        Integer savedId;
+        {
+            Investigator investigator = new Investigator();
+            investigator.setFirstName("Jeff");
+            investigator.setLastName("Someone");
 
-			investigator.setEmailAddress("abc@def.com");
-			investigator.setPhoneNumber("123-456-789");
+            investigator.setEmailAddress("abc@def.com");
+            investigator.setPhoneNumber("123-456-789");
 
-			getDao().save(investigator);
-			savedId = investigator.getId();
-			assertNotNull("The saved investigator id", savedId);
-		}
+            getDao().save(investigator);
+            savedId = investigator.getId();
+            assertNotNull("The saved investigator id", savedId);
+        }
 
-		interruptSession();
+        interruptSession();
 
-		{
-			Investigator loaded = getDao().getById(savedId);
-			assertNotNull("Could not reload investigator id " + savedId, loaded);
-			assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
-			assertEquals("Wrong lastname", "Someone", loaded.getLastName());
-		}
-	}
+        {
+            Investigator loaded = getDao().getById(savedId);
+            assertNotNull("Could not reload investigator id " + savedId, loaded);
+            assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
+            assertEquals("Wrong lastname", "Someone", loaded.getLastName());
+        }
+    }
 }

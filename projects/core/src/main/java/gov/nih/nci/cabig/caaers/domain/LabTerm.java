@@ -7,14 +7,16 @@ import javax.persistence.ManyToOne;
 
 /**
  * This class represents the LabTerm domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 @Entity
 public class LabTerm extends AbstractImmutableDomainObject {
     private String term;
+
     private LabCategory category;
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     public String getTerm() {
         return term;

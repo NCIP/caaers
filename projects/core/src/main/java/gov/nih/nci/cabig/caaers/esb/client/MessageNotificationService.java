@@ -25,177 +25,175 @@ import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
 
 public class MessageNotificationService {
-	protected Configuration configuration;
-	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-	protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
-	protected final Log log = LogFactory.getLog(getClass());
+    protected Configuration configuration;
 
+    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-	private ReportDao reportDao;
+    protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
 
+    protected final Log log = LogFactory.getLog(getClass());
 
-	
-	public void setReportDao(ReportDao reportDao) {
-		this.reportDao = reportDao;
-	}
-	
-	private WebRequest preProcess(){
-		
-		WebRequest stubWebRequest = new StubWebRequest();
-		openSessionInViewInterceptor.preHandle(stubWebRequest);
-		return stubWebRequest;
-	}
-	
-	private void postProcess(WebRequest stubWebRequest){
-		openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
-	}
-	
+    private ReportDao reportDao;
 
-	public void sendNotificationToReporter(String submitterEmail, String messages, String aeReportId,String reportId,boolean success, String ticketNumber,String url) throws Exception {
-		//get AEreport by using this id
+    public void setReportDao(ReportDao reportDao) {
+        this.reportDao = reportDao;
+    }
 
-		
-		WebRequest stubWebRequest = preProcess();
-		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
-		
-		Report r = reportDao.getById(Integer.parseInt(reportId));
-		ReportVersion rv = r.getLastVersion();
-		
-		
-		//get submitter info
-		/*
-		Reporter reporter = aeReport.getReporter();
-		Map contact = reporter.getContactMechanisms();
-		
+    private WebRequest preProcess() {
 
-		//get email
-		String email = contact.get(Reporter.EMAIL).toString();
-		*/
-		
-		
-		postProcess(stubWebRequest);
+        WebRequest stubWebRequest = new StubWebRequest();
+        openSessionInViewInterceptor.preHandle(stubWebRequest);
+        return stubWebRequest;
+    }
 
-		
-		log.debug("Saving data into report versions table");
-		if (success) {
-			r.setAssignedIdentifer(ticketNumber);
-			r.setSubmissionUrl(url);			
-			r.setSubmittedOn(new Date());
-			r.setStatus(ReportStatus.COMPLETED);
-			
-			rv.setAssignedIdentifer(ticketNumber);
-			rv.setSubmissionUrl(url);
-			rv.setSubmittedOn(new Date());
-			rv.setReportStatus(ReportStatus.COMPLETED);
-			
-		} else {
-			r.setSubmittedOn(new Date());
-			r.setStatus(ReportStatus.FAILED);
-			
-			rv.setSubmittedOn(new Date());
-			rv.setReportStatus(ReportStatus.FAILED);			
-		}
-		rv.setSubmissionMessage(messages);
-		r.setSubmissionMessage(messages);
-		reportDao.save(r);
-		
-		if (success) {
-			messages = messages + url;
-		}
+    private void postProcess(WebRequest stubWebRequest) {
+        openSessionInViewInterceptor.afterCompletion(stubWebRequest, null);
+    }
 
+    public void sendNotificationToReporter(String submitterEmail, String messages,
+                    String aeReportId, String reportId, boolean success, String ticketNumber,
+                    String url) throws Exception {
+        // get AEreport by using this id
 
-		log.debug("send email ");
-//		send email .
-		sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration.get(Configuration.SMTP_USER), 
-				configuration.get(Configuration.SMTP_PASSWORD) , configuration.get(Configuration.SYSTEM_FROM_EMAIL),submitterEmail,messages,success, aeReportId);
-		//sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
-	}
+        WebRequest stubWebRequest = preProcess();
+        ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer
+                        .parseInt(aeReportId));
 
-	private void sendMail(String mailHost, String user, String pwd, String from, String to, String messages, boolean success,String aeReportId) throws Exception {
-		try {	
-			JavaMailSenderImpl sender = new JavaMailSenderImpl();
-			//sender.setHost("smtp.comcast.net");
-			sender.setUsername(user);
-			sender.setPassword(pwd);
-			System.out.println("host .." + mailHost );
-			sender.setHost(mailHost);
-			MimeMessage message = sender.createMimeMessage();
-			//message.setFrom(new InternetAddress(from));
-			if (success) {
-				message.setSubject("Submission of Expedited Report("+aeReportId+") to AdEERS");
-			} else {
-				message.setSubject("Problem with Submission of Expedited Report("+aeReportId+") to AdEERS");
-			}
-			message.setFrom(new InternetAddress(from));
-			
-//			 use the true flag to indicate you need a multipart message
-			MimeMessageHelper helper = new MimeMessageHelper(message, false);
-			helper.setTo(to);
-			message.setText(messages);
-			sender.send(message);
-			
-			System.out.println("sent . . ");
-		} catch (Exception e ) {
-			throw new Exception (" Error in sending email , please check the confiuration " + e);
-		}
+        Report r = reportDao.getById(Integer.parseInt(reportId));
+        ReportVersion rv = r.getLastVersion();
 
-}
-	
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+        // get submitter info
+        /*
+         * Reporter reporter = aeReport.getReporter(); Map contact =
+         * reporter.getContactMechanisms();
+         * 
+         * 
+         * //get email String email = contact.get(Reporter.EMAIL).toString();
+         */
 
+        postProcess(stubWebRequest);
 
-	public void setExpeditedAdverseEventReportDao(
-			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-	}
+        log.debug("Saving data into report versions table");
+        if (success) {
+            r.setAssignedIdentifer(ticketNumber);
+            r.setSubmissionUrl(url);
+            r.setSubmittedOn(new Date());
+            r.setStatus(ReportStatus.COMPLETED);
 
+            rv.setAssignedIdentifer(ticketNumber);
+            rv.setSubmissionUrl(url);
+            rv.setSubmittedOn(new Date());
+            rv.setReportStatus(ReportStatus.COMPLETED);
 
-	public void setOpenSessionInViewInterceptor(
-			org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor openSessionInViewInterceptor) {
-		this.openSessionInViewInterceptor = openSessionInViewInterceptor;
-	}
+        } else {
+            r.setSubmittedOn(new Date());
+            r.setStatus(ReportStatus.FAILED);
 
+            rv.setSubmittedOn(new Date());
+            rv.setReportStatus(ReportStatus.FAILED);
+        }
+        rv.setSubmissionMessage(messages);
+        r.setSubmissionMessage(messages);
+        reportDao.save(r);
 
-	
-	private static class StubWebRequest implements WebRequest {
-		public String getParameter(final String paramName) {
-			return null;
-		}
+        if (success) {
+            messages = messages + url;
+        }
 
-		public String[] getParameterValues(final String paramName) {
-			return null;
-		}
+        log.debug("send email ");
+        // send email .
+        sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration
+                        .get(Configuration.SMTP_USER), configuration
+                        .get(Configuration.SMTP_PASSWORD), configuration
+                        .get(Configuration.SYSTEM_FROM_EMAIL), submitterEmail, messages, success,
+                        aeReportId);
+        // sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
+    }
 
-		public Map getParameterMap() {
-			return Collections.emptyMap();
-		}
+    private void sendMail(String mailHost, String user, String pwd, String from, String to,
+                    String messages, boolean success, String aeReportId) throws Exception {
+        try {
+            JavaMailSenderImpl sender = new JavaMailSenderImpl();
+            // sender.setHost("smtp.comcast.net");
+            sender.setUsername(user);
+            sender.setPassword(pwd);
+            System.out.println("host .." + mailHost);
+            sender.setHost(mailHost);
+            MimeMessage message = sender.createMimeMessage();
+            // message.setFrom(new InternetAddress(from));
+            if (success) {
+                message.setSubject("Submission of Expedited Report(" + aeReportId + ") to AdEERS");
+            } else {
+                message.setSubject("Problem with Submission of Expedited Report(" + aeReportId
+                                + ") to AdEERS");
+            }
+            message.setFrom(new InternetAddress(from));
 
-		public Locale getLocale() {
-			return null;
-		}
+            // use the true flag to indicate you need a multipart message
+            MimeMessageHelper helper = new MimeMessageHelper(message, false);
+            helper.setTo(to);
+            message.setText(messages);
+            sender.send(message);
 
-		public Object getAttribute(final String name, final int scope) {
-			return null;
-		}
+            System.out.println("sent . . ");
+        } catch (Exception e) {
+            throw new Exception(" Error in sending email , please check the confiuration " + e);
+        }
 
-		public void setAttribute(final String name, final Object value, final int scope) {
-		}
+    }
 
-		public void removeAttribute(final String name, final int scope) {
-		}
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-		public void registerDestructionCallback(final String name, final Runnable callback, final int scope) {
-		}
+    public void setExpeditedAdverseEventReportDao(
+                    ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
 
-		public String getSessionId() {
-			return null;
-		}
+    public void setOpenSessionInViewInterceptor(
+                    org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor openSessionInViewInterceptor) {
+        this.openSessionInViewInterceptor = openSessionInViewInterceptor;
+    }
 
-		public Object getSessionMutex() {
-			return null;
-		}
-	}
-	
+    private static class StubWebRequest implements WebRequest {
+        public String getParameter(final String paramName) {
+            return null;
+        }
+
+        public String[] getParameterValues(final String paramName) {
+            return null;
+        }
+
+        public Map getParameterMap() {
+            return Collections.emptyMap();
+        }
+
+        public Locale getLocale() {
+            return null;
+        }
+
+        public Object getAttribute(final String name, final int scope) {
+            return null;
+        }
+
+        public void setAttribute(final String name, final Object value, final int scope) {
+        }
+
+        public void removeAttribute(final String name, final int scope) {
+        }
+
+        public void registerDestructionCallback(final String name, final Runnable callback,
+                        final int scope) {
+        }
+
+        public String getSessionId() {
+            return null;
+        }
+
+        public Object getSessionMutex() {
+            return null;
+        }
+    }
+
 }

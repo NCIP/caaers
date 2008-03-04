@@ -20,154 +20,172 @@ import org.quartz.SchedulerException;
 import org.springframework.context.ApplicationContext;
 
 /**
- * This class serves as the parent of all the job classes scheduled by <code>scheduler</code> component.
- * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
- * Created-on : May 30, 2007
- * @version     %I%, %G%
- * @since       1.0
+ * This class serves as the parent of all the job classes scheduled by <code>scheduler</code>
+ * component.
+ * 
+ * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a> Created-on : May 30, 2007
+ * @version %I%, %G%
+ * @since 1.0
  */
-public abstract class ScheduledNotificationJobTemplate implements Job{
+public abstract class ScheduledNotificationJobTemplate implements Job {
 
-	protected static final Log logger = LogFactory.getLog(ScheduledNotificationJobTemplate.class);
-	protected Scheduler scheduler;
-	protected JobDetail jobDetail;
-	protected JobExecutionContext jobContext;
+    protected static final Log logger = LogFactory.getLog(ScheduledNotificationJobTemplate.class);
 
-	protected Report report;
-	protected ScheduledNotification notification;
-	protected ApplicationContext applicationContext;
-	protected ReportDao reportDao;
-	protected Configuration configuration;
-	protected ScheduledNotificationDao notificationDao;
+    protected Scheduler scheduler;
 
-	public ScheduledNotificationJobTemplate() {
-		super();
-	}
+    protected JobDetail jobDetail;
 
-	public JobExecutionContext getJobContext() {
-		return jobContext;
-	}
+    protected JobExecutionContext jobContext;
 
-	public JobDetail getJobDetail() {
-		return jobDetail;
-	}
+    protected Report report;
 
-	public Report getReportSchedule() {
-		return report;
-	}
+    protected ScheduledNotification notification;
 
-	public ScheduledNotification getScheduledNotification() {
-		return notification;
-	}
+    protected ApplicationContext applicationContext;
 
-	public ApplicationContext getApplicationContext() {
-		return applicationContext;
-	}
+    protected ReportDao reportDao;
 
-	public ReportDao getReportScheduleDao() {
-		return reportDao;
-	}
+    protected Configuration configuration;
 
+    protected ScheduledNotificationDao notificationDao;
 
-	public Configuration getConfiguration() {
-		return configuration;
-	}
+    public ScheduledNotificationJobTemplate() {
+        super();
+    }
 
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+    public JobExecutionContext getJobContext() {
+        return jobContext;
+    }
 
-	public ScheduledNotificationDao getNotificationDao() {
-		return notificationDao;
-	}
+    public JobDetail getJobDetail() {
+        return jobDetail;
+    }
 
-	public void setNotificationDao(ScheduledNotificationDao notificationDao) {
-		this.notificationDao = notificationDao;
-	}
+    public Report getReportSchedule() {
+        return report;
+    }
 
-	/**
-	 * Will reload the {@link Report} identified by <code>report.id</code>
-	 * and {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>,
-	 * in {@link JobDetail} data map({@link JobDataMap}).
-	 * This method will then check the present status of the AdverseEventReport, and if found {@link ReportStatus}.PENDING,
-	 * will call the <code>processNotification()</code> function, otherwise will delete all the scheduled
-	 * notifications and sets the ScheduledNotification status as{@link ReportStatus}.RECALL.
-	 */
-	public final void execute(JobExecutionContext context) throws JobExecutionException {
-		if(logger.isDebugEnabled()) logger.debug("Executing ScheduledNotification Job");
-		try {
+    public ScheduledNotification getScheduledNotification() {
+        return notification;
+    }
 
-			//init the member variables
-			scheduler = context.getScheduler();
-			jobDetail = context.getJobDetail();
-			applicationContext = (ApplicationContext)scheduler.getContext().get("applicationContext");
-			reportDao = (ReportDao)applicationContext.getBean("reportDao");
-			notificationDao = (ScheduledNotificationDao) applicationContext.getBean("scheduledNotificationDao");
-			configuration = (Configuration)applicationContext.getBean("configuration");
+    public ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
 
-			JobDataMap jobDataMap = jobDetail.getJobDataMap();
-			Integer scheduledNFId = jobDataMap.getInt("scheduledNotifiction.id");
-			Integer reportId = jobDataMap.getInt("report.id");
-			report = reportDao.getInitializedReportById(reportId);
-			notification = report.fetchScheduledNotification(scheduledNFId);
+    public ReportDao getReportScheduleDao() {
+        return reportDao;
+    }
 
-			boolean reportStatus = verifyAeReportStatus();
-			if(reportStatus){
-				DeliveryStatus deliveryStatus = processNotification();
-				logger.info("Delivery status of the notification :" + deliveryStatus);
-				//update the delivery status.
-				notificationDao.updateDeliveryStatus(notification, notification.getDeliveryStatus(), deliveryStatus);
+    public Configuration getConfiguration() {
+        return configuration;
+    }
 
-			}else {
-				deleteSubsequentJobs();
-				//mark the status of all jobs which are in SCHEDULED status to RECALLED
-				notificationDao.recallScheduledNotifications(report.getScheduledNotifications());
-			}
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-		} catch (Exception e) {
-			logger.error("execution of job failed",e);
-		}
+    public ScheduledNotificationDao getNotificationDao() {
+        return notificationDao;
+    }
 
-	  }
+    public void setNotificationDao(ScheduledNotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
+    }
 
-	/**
-	 * This method will return true, if the status of the Report is still pending.
-	 * @return true - when stautus is {@link Report}.PENDING
-	 * @see Report
+    /**
+     * Will reload the {@link Report} identified by <code>report.id</code> and
+     * {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>, in
+     * {@link JobDetail} data map({@link JobDataMap}). This method will then check the present
+     * status of the AdverseEventReport, and if found {@link ReportStatus}.PENDING, will call the
+     * <code>processNotification()</code> function, otherwise will delete all the scheduled
+     * notifications and sets the ScheduledNotification status as{@link ReportStatus}.RECALL.
      */
-	public boolean verifyAeReportStatus() {
-		 return report.getStatus().equals(ReportStatus.PENDING);
-	}
+    public final void execute(JobExecutionContext context) throws JobExecutionException {
+        if (logger.isDebugEnabled()) logger.debug("Executing ScheduledNotification Job");
+        try {
 
-	/**
-	 * This method will delete all the jobs that are available(scheduled for later execution) in the
-	 * same group (associated to the same ScheduleReport).
-	 * @param context - The JobExecutionContext
-	 */
-	public void deleteSubsequentJobs() {
+            // init the member variables
+            scheduler = context.getScheduler();
+            jobDetail = context.getJobDetail();
+            applicationContext = (ApplicationContext) scheduler.getContext().get(
+                            "applicationContext");
+            reportDao = (ReportDao) applicationContext.getBean("reportDao");
+            notificationDao = (ScheduledNotificationDao) applicationContext
+                            .getBean("scheduledNotificationDao");
+            configuration = (Configuration) applicationContext.getBean("configuration");
 
-		//delete all the open jobs in the scheduler under the same group
-		String groupName = jobDetail.getGroup();
-		String currentJobName = jobDetail.getName();
-		String[] jobNames = new String[0];
-		//fetch all the active jobs belonging to present job group
-		try {
-			jobNames = scheduler.getJobNames(groupName);
-			//delete all jobs, other than the current job.
-			for(String jobName : jobNames){
-				if(currentJobName.equals(jobName)) continue;
-				if(logger.isInfoEnabled())	logger.info("Deleting job [" +  jobDetail.getFullName() + "]");
-				//delete this job
-				boolean status = scheduler.deleteJob(jobName, groupName);
-				if(!status)	logger.warn("Unbale to delete job [" + jobDetail.getFullName() + "], status:" + status);
-			}//for each jobName
-		} catch (SchedulerException e) {
-			logger.warn("Error while deleting job[" + jobDetail.getFullName() + "]",e);
-		}
+            JobDataMap jobDataMap = jobDetail.getJobDataMap();
+            Integer scheduledNFId = jobDataMap.getInt("scheduledNotifiction.id");
+            Integer reportId = jobDataMap.getInt("report.id");
+            report = reportDao.getInitializedReportById(reportId);
+            notification = report.fetchScheduledNotification(scheduledNFId);
 
-	}
-	/**
-	 * This method is to be overriden in the subclasses,and should contain the logic for processing the notification.
-	 */
-	public abstract DeliveryStatus processNotification();
+            boolean reportStatus = verifyAeReportStatus();
+            if (reportStatus) {
+                DeliveryStatus deliveryStatus = processNotification();
+                logger.info("Delivery status of the notification :" + deliveryStatus);
+                // update the delivery status.
+                notificationDao.updateDeliveryStatus(notification,
+                                notification.getDeliveryStatus(), deliveryStatus);
+
+            } else {
+                deleteSubsequentJobs();
+                // mark the status of all jobs which are in SCHEDULED status to RECALLED
+                notificationDao.recallScheduledNotifications(report.getScheduledNotifications());
+            }
+
+        } catch (Exception e) {
+            logger.error("execution of job failed", e);
+        }
+
+    }
+
+    /**
+     * This method will return true, if the status of the Report is still pending.
+     * 
+     * @return true - when stautus is {@link Report}.PENDING
+     * @see Report
+     */
+    public boolean verifyAeReportStatus() {
+        return report.getStatus().equals(ReportStatus.PENDING);
+    }
+
+    /**
+     * This method will delete all the jobs that are available(scheduled for later execution) in the
+     * same group (associated to the same ScheduleReport).
+     * 
+     * @param context -
+     *                The JobExecutionContext
+     */
+    public void deleteSubsequentJobs() {
+
+        // delete all the open jobs in the scheduler under the same group
+        String groupName = jobDetail.getGroup();
+        String currentJobName = jobDetail.getName();
+        String[] jobNames = new String[0];
+        // fetch all the active jobs belonging to present job group
+        try {
+            jobNames = scheduler.getJobNames(groupName);
+            // delete all jobs, other than the current job.
+            for (String jobName : jobNames) {
+                if (currentJobName.equals(jobName)) continue;
+                if (logger.isInfoEnabled()) logger.info("Deleting job [" + jobDetail.getFullName()
+                                + "]");
+                // delete this job
+                boolean status = scheduler.deleteJob(jobName, groupName);
+                if (!status) logger.warn("Unbale to delete job [" + jobDetail.getFullName()
+                                + "], status:" + status);
+            }// for each jobName
+        } catch (SchedulerException e) {
+            logger.warn("Error while deleting job[" + jobDetail.getFullName() + "]", e);
+        }
+
+    }
+
+    /**
+     * This method is to be overriden in the subclasses,and should contain the logic for processing
+     * the notification.
+     */
+    public abstract DeliveryStatus processNotification();
 }

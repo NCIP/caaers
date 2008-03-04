@@ -9,34 +9,33 @@ import org.drools.WorkingMemory;
 /**
  * A carrier of information when rule is getting fired.
  * 
- * This will be made available as a global.
- * So that any information that needs at action 
- * processing can be added to this.
- *
+ * This will be made available as a global. So that any information that needs at action processing
+ * can be added to this.
+ * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class RuleContext {
 
-	public Map eventMap = new HashMap();
-	
-	private List inputObjects;
-	
-	private WorkingMemory workingMemory;
+    public Map eventMap = new HashMap();
 
-	public List getInputObjects() {
-		return inputObjects;
-	}
+    private List inputObjects;
 
-	public void setInputObjects(List inputObjects) {
-		this.inputObjects = inputObjects;
-	}
+    private WorkingMemory workingMemory;
 
-	public WorkingMemory getWorkingMemory() {
-		return workingMemory;
-	}
+    public List getInputObjects() {
+        return inputObjects;
+    }
 
-	public void setWorkingMemory(WorkingMemory workingMemory) {
-		this.workingMemory = workingMemory;
-	}
-	
+    public void setInputObjects(List inputObjects) {
+        this.inputObjects = inputObjects;
+    }
+
+    public WorkingMemory getWorkingMemory() {
+        return workingMemory;
+    }
+
+    public void setWorkingMemory(WorkingMemory workingMemory) {
+        this.workingMemory = workingMemory;
+    }
+
 }

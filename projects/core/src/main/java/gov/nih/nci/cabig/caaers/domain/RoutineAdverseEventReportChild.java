@@ -5,5 +5,6 @@ package gov.nih.nci.cabig.caaers.domain;
  */
 public interface RoutineAdverseEventReportChild {
     void setRoutineReport(RoutineAdverseEventReport report);
+
     RoutineAdverseEventReport getRoutineReport();
 }

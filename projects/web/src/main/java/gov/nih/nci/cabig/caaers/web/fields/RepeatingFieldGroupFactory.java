@@ -8,7 +8,9 @@ import java.util.List;
  */
 public class RepeatingFieldGroupFactory {
     private String basename;
+
     private String listPropertyName;
+
     private DisplayNameCreator displayNameCreator;
 
     private List<InputField> baseFields = new LinkedList<InputField>();
@@ -20,7 +22,8 @@ public class RepeatingFieldGroupFactory {
 
     public InputFieldGroup createGroup(int index) {
         RepeatingFieldGroup group = new RepeatingFieldGroup(createName(index), index);
-        if (displayNameCreator != null) group.setDisplayName(displayNameCreator.createDisplayName(index));
+        if (displayNameCreator != null) group.setDisplayName(displayNameCreator
+                        .createDisplayName(index));
         return group;
     }
 
@@ -66,8 +69,8 @@ public class RepeatingFieldGroupFactory {
 
             @Override
             protected String qualifyPropertyName(String propertyName) {
-                StringBuilder qual = new StringBuilder(listPropertyName)
-                    .append('[').append(RepeatingFieldGroup.this.getIndex()).append(']');
+                StringBuilder qual = new StringBuilder(listPropertyName).append('[').append(
+                                RepeatingFieldGroup.this.getIndex()).append(']');
                 if (propertyName != null) {
                     qual.append('.').append(propertyName);
                 }

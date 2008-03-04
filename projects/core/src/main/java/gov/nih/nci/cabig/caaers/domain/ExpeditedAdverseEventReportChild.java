@@ -5,5 +5,6 @@ package gov.nih.nci.cabig.caaers.domain;
  */
 public interface ExpeditedAdverseEventReportChild {
     void setReport(ExpeditedAdverseEventReport report);
+
     ExpeditedAdverseEventReport getReport();
 }

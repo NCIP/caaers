@@ -55,40 +55,65 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Rhett Sutphin
  */
 public abstract class AbstractAdverseEventInputController
-    extends AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao>
-{
+                extends
+                AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao> {
 
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+
     private static final int SUBMISSION_PAGE = 16;
+
     private static final String UNFILLED_TAB_KEY = "UNFILLED_TABS";
+
     private static final String MANDATORY_TAB_KEY = "MANDATORY_TABS";
 
     protected final Log log = LogFactory.getLog(getClass());
 
     protected ParticipantDao participantDao;
+
     protected StudyDao studyDao;
+
     protected StudyParticipantAssignmentDao assignmentDao;
+
     protected CtcTermDao ctcTermDao;
+
     protected LowLevelTermDao lowLevelTermDao;
+
     protected AgentDao agentDao;
+
     protected ExpeditedAdverseEventReportDao reportDao;
+
     protected RoutineAdverseEventReportDao routineReportDao;
+
     protected StudyAgentDao studyAgentDao;
+
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+
     protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
+
     protected AnatomicSiteDao anatomicSiteDao;
+
     protected PriorTherapyDao priorTherapyDao;
+
     protected CtcCategoryDao ctcCategoryDao;
+
     protected PreExistingConditionDao preExistingConditionDao;
+
     protected TreatmentAssignmentDao treatmentAssignmentDao;
+
     protected LabTermDao labTermDao;
+
     protected ChemoAgentDao chemoAgentDao;
+
     protected LabCategoryDao labCategoryDao;
+
     protected InterventionSiteDao interventionSiteDao;
 
     protected NowFactory nowFactory;
+
     protected EvaluationService evaluationService;
+
     protected ReportDefinitionDao reportDefinitionDao;
+
     protected ExpeditedReportTree expeditedReportTree;
 
     protected AbstractAdverseEventInputController() {
@@ -100,14 +125,17 @@ public abstract class AbstractAdverseEventInputController
     protected abstract FlowFactory<ExpeditedAdverseEventInputCommand> createFlowFactory();
 
     @Override
-    @SuppressWarnings({ "unchecked" })
-    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors) throws Exception {
+    @SuppressWarnings( { "unchecked" })
+    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors)
+                    throws Exception {
         super.onBind(request, oCommand, errors);
-        ((ExpeditedAdverseEventInputCommand)oCommand).setNextPage(getTargetPage(request, getCurrentPage(request)));
+        ((ExpeditedAdverseEventInputCommand) oCommand).setNextPage(getTargetPage(request,
+                        getCurrentPage(request)));
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+                    throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
@@ -137,36 +165,38 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    protected int getInitialPage(HttpServletRequest request){
-    	boolean isActionAvailable = request.getParameter("action") != null ? true : false;
+    protected int getInitialPage(HttpServletRequest request) {
+        boolean isActionAvailable = request.getParameter("action") != null ? true : false;
 
-    	if (isActionAvailable && request.getParameter("action").equals("reportSubmission")){
-    		log.debug("This is a report Submission");
-    		return SUBMISSION_PAGE;
-    	}
-    	if (isActionAvailable && request.getParameter("action").equals("create")){
-    		log.debug("This is a Create where the StudyParticipantAssignment is already defined");
-    		return 1;
-    	}
-    	// default behaviour
-    	return super.getInitialPage(request);
+        if (isActionAvailable && request.getParameter("action").equals("reportSubmission")) {
+            log.debug("This is a report Submission");
+            return SUBMISSION_PAGE;
+        }
+        if (isActionAvailable && request.getParameter("action").equals("create")) {
+            log.debug("This is a Create where the StudyParticipantAssignment is already defined");
+            return 1;
+        }
+        // default behaviour
+        return super.getInitialPage(request);
     }
 
     @Override
-    @SuppressWarnings({ "unchecked", "RawUseOfParameterizedType" })
-    protected Map referenceData(
-        HttpServletRequest request, Object oCommand, Errors errors, int page
-    ) throws Exception {
-    	ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand) oCommand;
+    @SuppressWarnings( { "unchecked", "RawUseOfParameterizedType" })
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
+                    throws Exception {
+        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand) oCommand;
         Map<String, Object> refdata = super.referenceData(request, cmd, errors, page);
         StringBuffer sb = new StringBuffer("notab");
         StringBuffer sbSections = new StringBuffer();
-        for(Tab<ExpeditedAdverseEventInputCommand> tab  : getFlow(cmd).getTabs()){
-        	if(tab instanceof AeTab){
-        		AeTab aeTab = (AeTab) tab;
-        		sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
-        		sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
-        	}
+        for (Tab<ExpeditedAdverseEventInputCommand> tab : getFlow(cmd).getTabs()) {
+            if (tab instanceof AeTab) {
+                AeTab aeTab = (AeTab) tab;
+                sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
+                sb.append(",")
+                                .append(
+                                                aeTab.hasEmptyMandatoryFields(cmd) ? tab
+                                                                .getShortTitle() : "");
+            }
         }
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());
         refdata.put(UNFILLED_TAB_KEY, sb.toString());
@@ -175,19 +205,18 @@ public abstract class AbstractAdverseEventInputController
         }
         return refdata;
     }
-    
+
     @Override
-    protected boolean suppressValidation(HttpServletRequest request,Object command) {
-    	return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
     }
-    
+
     @Override
-    protected boolean shouldSave(
-        HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
-        Tab<ExpeditedAdverseEventInputCommand> tab
-    ) {
+    protected boolean shouldSave(HttpServletRequest request,
+                    ExpeditedAdverseEventInputCommand command,
+                    Tab<ExpeditedAdverseEventInputCommand> tab) {
         return super.shouldSave(request, command, tab)
-            && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
+                        && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
 
     protected boolean displaySummary(int page) {
@@ -195,7 +224,7 @@ public abstract class AbstractAdverseEventInputController
     }
 
     /**
-     * Adds ajax sub-page view capability.  TODO: factor this into main tabbed flow controller.
+     * Adds ajax sub-page view capability. TODO: factor this into main tabbed flow controller.
      */
     @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
@@ -210,7 +239,8 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand)
+                    throws Exception {
         oCommand = super.currentFormObject(request, oCommand);
         ((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
         return oCommand;
@@ -218,9 +248,8 @@ public abstract class AbstractAdverseEventInputController
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModelAndView processFinish(
-        HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors
-    ) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
+                    Object oCommand, BindException errors) throws Exception {
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
         save(command, errors);
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
@@ -234,11 +263,12 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    protected ExpeditedAdverseEventReport getPrimaryDomainObject(ExpeditedAdverseEventInputCommand command) {
+    protected ExpeditedAdverseEventReport getPrimaryDomainObject(
+                    ExpeditedAdverseEventInputCommand command) {
         return command.getAeReport();
     }
 
-    ////// CONFIGURATION
+    // //// CONFIGURATION
 
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
@@ -304,14 +334,13 @@ public abstract class AbstractAdverseEventInputController
         this.routineReportDao = routineReportDao;
     }
 
-	public PreExistingConditionDao getPreExistingConditionDao() {
-		return preExistingConditionDao;
-	}
+    public PreExistingConditionDao getPreExistingConditionDao() {
+        return preExistingConditionDao;
+    }
 
-	public void setPreExistingConditionDao(
-			PreExistingConditionDao preExistingConditionDao) {
-		this.preExistingConditionDao = preExistingConditionDao;
-	}
+    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
+        this.preExistingConditionDao = preExistingConditionDao;
+    }
 
     public EvaluationService getEvaluationService() {
         return evaluationService;
@@ -329,57 +358,63 @@ public abstract class AbstractAdverseEventInputController
         this.reportDefinitionDao = reportDefinitionDao;
     }
 
-	public LowLevelTermDao getLowLevelTermDao() {
-		return lowLevelTermDao;
-	}
+    public LowLevelTermDao getLowLevelTermDao() {
+        return lowLevelTermDao;
+    }
 
-	public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
-		this.lowLevelTermDao = lowLevelTermDao;
-	}
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
 
-	public TreatmentAssignmentDao getTreatmentAssignmentDao() {
-		return treatmentAssignmentDao;
-	}
-	public void setTreatmentAssignmentDao(
-			TreatmentAssignmentDao treatmentAssignmentDao) {
-		this.treatmentAssignmentDao = treatmentAssignmentDao;
-	}
+    public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+        return treatmentAssignmentDao;
+    }
+
+    public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
+        this.treatmentAssignmentDao = treatmentAssignmentDao;
+    }
+
     public MeddraStudyDiseaseDao getMeddraStudyDiseaseDao() {
-		return meddraStudyDiseaseDao;
-	}
+        return meddraStudyDiseaseDao;
+    }
 
-	public void setMeddraStudyDiseaseDao(MeddraStudyDiseaseDao meddraStudyDiseaseDao) {
-		this.meddraStudyDiseaseDao = meddraStudyDiseaseDao;
-	}
-	public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
+    public void setMeddraStudyDiseaseDao(MeddraStudyDiseaseDao meddraStudyDiseaseDao) {
+        this.meddraStudyDiseaseDao = meddraStudyDiseaseDao;
+    }
+
+    public void setExpeditedReportTree(ExpeditedReportTree expeditedReportTree) {
         this.expeditedReportTree = expeditedReportTree;
     }
-	public LabTermDao getLabTermDao() {
-		return labTermDao;
-	}
-	public void setLabTermDao(LabTermDao labTermDao) {
-		this.labTermDao = labTermDao;
-	}
 
-	public LabCategoryDao getLabCategoryDao() {
-		return labCategoryDao;
-	}
-	public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
-		this.labCategoryDao = labCategoryDao;
-	}
+    public LabTermDao getLabTermDao() {
+        return labTermDao;
+    }
 
-	public ChemoAgentDao getChemoAgentDao() {
-		return chemoAgentDao;
-	}
-	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
-		this.chemoAgentDao = chemoAgentDao;
-	}
+    public void setLabTermDao(LabTermDao labTermDao) {
+        this.labTermDao = labTermDao;
+    }
 
-	public InterventionSiteDao getInterventionSiteDao() {
-		return interventionSiteDao;
-	}
+    public LabCategoryDao getLabCategoryDao() {
+        return labCategoryDao;
+    }
 
-	public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
-		this.interventionSiteDao = interventionSiteDao;
-	}
+    public void setLabCategoryDao(LabCategoryDao labCategoryDao) {
+        this.labCategoryDao = labCategoryDao;
+    }
+
+    public ChemoAgentDao getChemoAgentDao() {
+        return chemoAgentDao;
+    }
+
+    public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+        this.chemoAgentDao = chemoAgentDao;
+    }
+
+    public InterventionSiteDao getInterventionSiteDao() {
+        return interventionSiteDao;
+    }
+
+    public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
+        this.interventionSiteDao = interventionSiteDao;
+    }
 }

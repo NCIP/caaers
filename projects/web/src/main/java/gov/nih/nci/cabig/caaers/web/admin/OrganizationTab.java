@@ -21,48 +21,50 @@ import org.springframework.validation.Errors;
  */
 public class OrganizationTab extends TabWithFields<Organization> {
 
-	protected static final Log log = LogFactory.getLog(OrganizationTab.class);
+    protected static final Log log = LogFactory.getLog(OrganizationTab.class);
 
-	private static final String ORGANIZATION_FIELD_GROUP = "organization";
+    private static final String ORGANIZATION_FIELD_GROUP = "organization";
 
-	public OrganizationTab() {
-		super("Organization Details", "Organization Details", "admin/organization_details");
-		setAutoPopulateHelpKey(true);
-		addHelpKeyExclusion("name");
-	}
+    public OrganizationTab() {
+        super("Organization Details", "Organization Details", "admin/organization_details");
+        setAutoPopulateHelpKey(true);
+        addHelpKeyExclusion("name");
+    }
 
-	@Override
-	public Map<String, InputFieldGroup> createFieldGroups(final Organization command) {
-		InputFieldGroup organizationFieldGroup;
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(final Organization command) {
+        InputFieldGroup organizationFieldGroup;
 
-		organizationFieldGroup = new DefaultInputFieldGroup(ORGANIZATION_FIELD_GROUP);
+        organizationFieldGroup = new DefaultInputFieldGroup(ORGANIZATION_FIELD_GROUP);
 
-		InputField nameField = InputFieldFactory.createTextField("name", "Name", true);
-		InputFieldAttributes.setSize(nameField, 80);
+        InputField nameField = InputFieldFactory.createTextField("name", "Name", true);
+        InputFieldAttributes.setSize(nameField, 80);
 
-		organizationFieldGroup.getFields().add(nameField);
+        organizationFieldGroup.getFields().add(nameField);
 
-		InputField descriptionField = InputFieldFactory.createTextArea("descriptionText", "Description", false);
+        InputField descriptionField = InputFieldFactory.createTextArea("descriptionText",
+                        "Description", false);
 
-		InputFieldAttributes.setColumns(descriptionField, 60);
+        InputFieldAttributes.setColumns(descriptionField, 60);
 
-		organizationFieldGroup.getFields().add(descriptionField);
+        organizationFieldGroup.getFields().add(descriptionField);
 
-		InputField nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode", "NCI Identifier", true);
-		InputFieldAttributes.setSize(nciInstituteField, 40);
+        InputField nciInstituteField = InputFieldFactory.createTextField("nciInstituteCode",
+                        "NCI Identifier", true);
+        InputFieldAttributes.setSize(nciInstituteField, 40);
 
-		organizationFieldGroup.getFields().add(nciInstituteField);
+        organizationFieldGroup.getFields().add(nciInstituteField);
 
-		InputFieldGroupMap map = new InputFieldGroupMap();
-		map.addInputFieldGroup(organizationFieldGroup);
-		return map;
-	}
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        map.addInputFieldGroup(organizationFieldGroup);
+        return map;
+    }
 
-	@Override
-	protected void validate(final Organization command, final BeanWrapper commandBean,
-			final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
-		super.validate(command, commandBean, fieldGroups, errors);
+    @Override
+    protected void validate(final Organization command, final BeanWrapper commandBean,
+                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
 
-	}
+    }
 
 }

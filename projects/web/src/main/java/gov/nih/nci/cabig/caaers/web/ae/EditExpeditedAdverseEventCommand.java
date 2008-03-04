@@ -16,14 +16,12 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
 
-    ////// LOGIC
+    // //// LOGIC
 
-    public EditExpeditedAdverseEventCommand(
-        ExpeditedAdverseEventReportDao expeditedAeReportDao,
-        ReportDefinitionDao reportDefinitionDao,
-        StudyParticipantAssignmentDao assignmentDao,
-        ExpeditedReportTree expeditedReportTree
-    ) {
+    public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
+                    ReportDefinitionDao reportDefinitionDao,
+                    StudyParticipantAssignmentDao assignmentDao,
+                    ExpeditedReportTree expeditedReportTree) {
         super(expeditedAeReportDao, reportDefinitionDao, expeditedReportTree);
         this.assignmentDao = assignmentDao;
     }
@@ -40,27 +38,27 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 
     @Override
     public Study getStudy() {
-        Study study= getAssignment().getStudySite().getStudy();
-        
+        Study study = getAssignment().getStudySite().getStudy();
+
         if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
-			study.setAdeersPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
-			study.setCaaersXMLType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
-			study.setCiomsPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
-			study.setCiomsSaePDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
-			study.setDcpSAEPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
-			study.setMedwatchPDFType(Boolean.TRUE);
-		}
-        
+            study.setAdeersPDFType(Boolean.TRUE);
+        }
+        if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+            study.setCaaersXMLType(Boolean.TRUE);
+        }
+        if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+            study.setCiomsPDFType(Boolean.TRUE);
+        }
+        if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+            study.setCiomsSaePDFType(Boolean.TRUE);
+        }
+        if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+            study.setDcpSAEPDFType(Boolean.TRUE);
+        }
+        if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+            study.setMedwatchPDFType(Boolean.TRUE);
+        }
+
         return study;
     }
 

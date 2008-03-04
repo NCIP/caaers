@@ -9,15 +9,12 @@ import javax.persistence.Column;
 
 /**
  * This class represents the OtherCause domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "other_causes")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_other_causes_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_other_causes_id") })
 public class OtherCause extends AbstractExpeditedReportCollectionElementChild {
     private String text;
 

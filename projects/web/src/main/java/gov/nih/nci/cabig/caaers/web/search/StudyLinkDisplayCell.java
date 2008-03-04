@@ -13,18 +13,17 @@ public class StudyLinkDisplayCell extends AbstractCell {
     protected String getCellValue(TableModel model, Column column) {
         AdverseEvent ae = (AdverseEvent) model.getCurrentRowBean();
         Study study = null;
-        if (ae.getReport() != null){
-        	study = ae.getReport().getAssignment().getStudySite().getStudy();
+        if (ae.getReport() != null) {
+            study = ae.getReport().getAssignment().getStudySite().getStudy();
         }
-        if (ae.getRoutineReport() != null){
-        	study = ae.getRoutineReport().getAssignment().getStudySite().getStudy();
+        if (ae.getRoutineReport() != null) {
+            study = ae.getRoutineReport().getAssignment().getStudySite().getStudy();
         }
         String cellValue = study.getPrimaryIdentifier().getValue();
         String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
 
         if (study != null) {
-            cellValue = "<a href=\"" + link + study.getId().toString() + "\">"
-                + cellValue + "</a>";
+            cellValue = "<a href=\"" + link + study.getId().toString() + "\">" + cellValue + "</a>";
         }
 
         return cellValue;

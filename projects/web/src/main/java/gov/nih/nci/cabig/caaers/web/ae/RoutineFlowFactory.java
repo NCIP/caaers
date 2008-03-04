@@ -6,14 +6,16 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.caaers.domain.Term;
 
 /**
- * This factory is a lot like {@link ExpeditedFlowFactory}, but not in such a way that it's fruitful
- * to give them a common superclass.
- *
+ * This factory is a lot like {@link ExpeditedFlowFactory}, but not in such a way that it's
+ * fruitful to give them a common superclass.
+ * 
  * @author Rhett Sutphin
  */
 public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputCommand> {
     private String flowName;
+
     private Flow<RoutineAdverseEventInputCommand> ctepFlow;
+
     private Flow<RoutineAdverseEventInputCommand> meddraFlow;
 
     public RoutineFlowFactory(String flowName) {
@@ -21,7 +23,8 @@ public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputC
     }
 
     public Flow<RoutineAdverseEventInputCommand> createFlow(RoutineAdverseEventInputCommand command) {
-        if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+        if (command.getStudy() != null
+                        && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
             return getMeddraFlow();
         } else {
             return getCtepFlow();

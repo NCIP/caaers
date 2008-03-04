@@ -15,15 +15,15 @@ import java.io.IOException;
 import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
 
 /**
- * A filter which implements the Open Session In View pattern.  Different
- * from the one built into Spring because this one delegates to an instance of
- * {@link OpenSessionInViewInterceptor} configured in the application context.
- * This permits the use of the same interceptor for deployed code & unit tests.
- *
+ * A filter which implements the Open Session In View pattern. Different from the one built into
+ * Spring because this one delegates to an instance of {@link OpenSessionInViewInterceptor}
+ * configured in the application context. This permits the use of the same interceptor for deployed
+ * code & unit tests.
+ * 
  * @see org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
  * @author Rhett Sutphin
  */
-/* TODO: this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: this class is shared with PSC. Refactor into a shared library. */
 public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAdapter {
     private String interceptorBeanName;
 
@@ -36,15 +36,15 @@ public class OpenSessionInViewInterceptorFilter extends ContextRetainingFilterAd
      * @see OpenSessionInViewInterceptor
      * @see org.springframework.web.servlet.HandlerInterceptor#afterCompletion
      */
-    public void doFilter(
-        ServletRequest request, ServletResponse response, FilterChain chain
-    ) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                    throws IOException, ServletException {
         HttpServletRequest httpReq = ((HttpServletRequest) request);
         if (log.isDebugEnabled()) {
-            log.debug("Opening session for request " + httpReq.getMethod() + ' ' + httpReq.getRequestURI());
+            log.debug("Opening session for request " + httpReq.getMethod() + ' '
+                            + httpReq.getRequestURI());
         }
-        OpenSessionInViewInterceptor interceptor
-            = (OpenSessionInViewInterceptor) getApplicationContext().getBean(getInterceptorBeanName());
+        OpenSessionInViewInterceptor interceptor = (OpenSessionInViewInterceptor) getApplicationContext()
+                        .getBean(getInterceptorBeanName());
         WebRequest webRequest = new ServletWebRequest(httpReq);
         interceptor.preHandle(webRequest);
         try {

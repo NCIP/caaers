@@ -16,11 +16,12 @@ import java.util.List;
 import org.easymock.EasyMock;
 
 /**
- * This class also contains tests for the shared behavior in AbstractExpeditedAdverseEventInputCommand
- *
+ * This class also contains tests for the shared behavior in
+ * AbstractExpeditedAdverseEventInputCommand
+ * 
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
     @Override
     protected CreateExpeditedAdverseEventCommand createCommand() {
@@ -33,7 +34,7 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
 
     protected void expectGetAssignment(StudyParticipantAssignment spa) {
         EasyMock.expect(assignmentDao.getAssignment(command.getParticipant(), command.getStudy()))
-            .andReturn(spa).anyTimes();
+                        .andReturn(spa).anyTimes();
     }
 
     public void testGetAssignment() throws Exception {
@@ -48,7 +49,7 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
         assertSame(expectedAssignment, command.getAssignment());
         verifyMocks();
     }
-    
+
     public void testGetAssignmentNullWhenStudyNull() throws Exception {
         command.setParticipant(new Participant());
         replayMocks();
@@ -120,37 +121,38 @@ public class CreateExpeditedAdverseEventCommandTest extends AeWebTestCase {
         assertEquals(Boolean.FALSE, command.getOptionalReportDefinitionsMap().get(r3));
         assertEquals("Reseted r4", Boolean.TRUE, command.getOptionalReportDefinitionsMap().get(r4));
     }
-    
-    public void testGetSelectedReportDefs(){
-    	assertEquals("Test setup failure", 0, command.getOptionalReportDefinitionsMap().size());
-    	ReportDefinition r1 = createReportDefinition("R1");
+
+    public void testGetSelectedReportDefs() {
+        assertEquals("Test setup failure", 0, command.getOptionalReportDefinitionsMap().size());
+        ReportDefinition r1 = createReportDefinition("R1");
         ReportDefinition r2 = createReportDefinition("R2");
         ReportDefinition r3 = createReportDefinition("R3");
         ReportDefinition r4 = createReportDefinition("R4");
-       
+
         command.setSelectedReportDefinitions(Arrays.asList(r3, r4));
         command.setOptionalReportDefinitions(Arrays.asList(r1, r2, r4));
-        
+
         List<ReportDefinition> list = command.getSelectedReportDefinitions();
         assertEquals(1, list.size());
-    	
+
     }
-    public void testGetInstantiatedReportDefs(){
-    	ReportDefinition r1 = createReportDefinition("R1");
+
+    public void testGetInstantiatedReportDefs() {
+        ReportDefinition r1 = createReportDefinition("R1");
         ReportDefinition r2 = createReportDefinition("R2");
         ReportDefinition r3 = createReportDefinition("R3");
         ReportDefinition r4 = createReportDefinition("R4");
-        
+
         ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         aeReport.addReport(r1.createReport());
         aeReport.addReport(r2.createReport());
         aeReport.addReport(r3.createReport());
         aeReport.getReports().get(0).setStatus(ReportStatus.WITHDRAWN);
         command.setAeReport(aeReport);
-       
+
         List<ReportDefinition> list = command.getInstantiatedReportDefinitions();
         assertEquals(2, list.size());
-    	
+
     }
-    
+
 }

@@ -28,7 +28,9 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
     private static final Log logger = LogFactory.getLog(AdverseEventReportDaoSecurityTest.class);
 
     CtcTermDao ctcTermDao;
+
     StudyParticipantAssignmentDao assignmentDao;
+
     ExpeditedAdverseEventReportDao adverseEventReportDao;
 
     @Override
@@ -37,14 +39,14 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
     }
 
     @Override
-    protected void setUp() throws Exception{
+    protected void setUp() throws Exception {
         super.setUp();
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
         ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
-        assignmentDao = (StudyParticipantAssignmentDao)
-            getApplicationContext().getBean("studyParticipantAssignmentDao");
-        adverseEventReportDao = (ExpeditedAdverseEventReportDao)
-            getApplicationContext().getBean("expeditedAdverseEventReportDao");
+        assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext().getBean(
+                        "studyParticipantAssignmentDao");
+        adverseEventReportDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean(
+                        "expeditedAdverseEventReportDao");
     }
 
     @Override
@@ -65,12 +67,13 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         try {
             adverseEventReportDao.save(newReport);
             fail("Should have failed to save report");
-        } catch (AccessDeniedException ex){
+        } catch (AccessDeniedException ex) {
             // expected
-            // TODO: what is actually expected here?  AccessDeniedException or a wrapped exception?
+            // TODO: what is actually expected here? AccessDeniedException or a wrapped exception?
         } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
 
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
@@ -103,8 +106,10 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         ExpeditedAdverseEventReport report = adverseEventReportDao.getById(id);
         assertNotNull("report " + id + " is null", report);
 
-        // TODO: not sure this is the right way to handle this (i.e., may be hiding a bug) - RMS20070702
-        // (since UPDATE doesn't cascade to reporter/physician, have to load everything before disconnecting the session)
+        // TODO: not sure this is the right way to handle this (i.e., may be hiding a bug) -
+        // RMS20070702
+        // (since UPDATE doesn't cascade to reporter/physician, have to load everything before
+        // disconnecting the session)
         report.getReporter().getContactMechanisms().size();
         report.getPhysician().getContactMechanisms().size();
 
@@ -112,12 +117,13 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         try {
             adverseEventReportDao.save(report);
             fail("Should have failed to update report");
-        } catch(AccessDeniedException ex){
+        } catch (AccessDeniedException ex) {
             // expected
-            // TODO: what is actually expected here?  AccessDeniedException or a wrapped exception?
+            // TODO: what is actually expected here? AccessDeniedException or a wrapped exception?
         } catch (RuntimeException ex) {
             Throwable rootCause = SecurityTestUtils.getRootCause(ex);
-            assertTrue("Expecting AccessDeniedException, got: " + rootCause, rootCause instanceof AccessDeniedException);
+            assertTrue("Expecting AccessDeniedException, got: " + rootCause,
+                            rootCause instanceof AccessDeniedException);
         }
         SecurityTestUtils.switchUser("participant_cd1", "ROLE_caaers_participant_cd");
 
@@ -129,8 +135,8 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
         interruptSession();
 
-        assertEquals("Report not updated", "Yadda",
-            adverseEventReportDao.getById(id).getAdverseEvents().get(0).getComments());
+        assertEquals("Report not updated", "Yadda", adverseEventReportDao.getById(id)
+                        .getAdverseEvents().get(0).getComments());
     }
 
     private ExpeditedAdverseEventReport createReport() {
@@ -140,7 +146,8 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.getAdverseEventCtcTerm().setCtcTerm(term);
         newEvent.setExpected(Boolean.FALSE);
         newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
-        newEvent.setStartDate((new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25).getTime() + 600000)));
+        newEvent.setStartDate((new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
+                        .getTime() + 600000)));
         ExpeditedAdverseEventReport newReport = Fixtures.createSavableExpeditedReport();
         newReport.addAdverseEvent(newEvent);
         newReport.setAssignment(assignmentDao.getById(-14));

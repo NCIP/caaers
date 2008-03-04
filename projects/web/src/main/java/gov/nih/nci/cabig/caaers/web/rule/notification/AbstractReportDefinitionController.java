@@ -28,24 +28,28 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-public abstract class AbstractReportDefinitionController extends AutomaticSaveFlowFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao>{
-	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-	
-	private ConfigProperty configurationProperty;
-	
-	protected ReportDefinitionDao reportDefinitionDao;
+public abstract class AbstractReportDefinitionController
+                extends
+                AutomaticSaveFlowFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
+    public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
-	protected Map<String, String> roles;
-	protected OrganizationDao organizationDao;
+    public static final String AJAX_REQUEST_PARAMETER = "isAjax";
 
-	public AbstractReportDefinitionController(){
-		initFlow();
-		super.setAllowDirtyBack(false);
-		super.setAllowDirtyForward(false);
-	}
+    private ConfigProperty configurationProperty;
 
-	//initializes the flow
+    protected ReportDefinitionDao reportDefinitionDao;
+
+    protected Map<String, String> roles;
+
+    protected OrganizationDao organizationDao;
+
+    public AbstractReportDefinitionController() {
+        initFlow();
+        super.setAllowDirtyBack(false);
+        super.setAllowDirtyForward(false);
+    }
+
+    // initializes the flow
     protected void initFlow() {
         setFlow(new Flow<ReportDefinitionCommand>(getFlowName()));
         BasicsTab firstTab = new BasicsTab();
@@ -53,7 +57,7 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveFl
         ReportMandatoryFieldDefinitionTab mandatoryFieldTab = new ReportMandatoryFieldDefinitionTab();
         NotificationsTab secondTab = new NotificationsTab();
         ReviewTab thirdTab = new ReviewTab();
-        
+
         getFlow().addTab(firstTab);
         getFlow().addTab(deliveryDefTab);
         getFlow().addTab(mandatoryFieldTab);
@@ -62,26 +66,27 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveFl
     }
 
     @Override
-	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-		super.initBinder(request, binder);
-		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-		ControllerTools.registerDomainObjectEditor(binder, organizationDao);
-		ControllerTools.registerEnumEditor(binder, ReportFormat.class);
-		ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
-	}
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+                    throws Exception {
+        super.initBinder(request, binder);
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+        ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerEnumEditor(binder, ReportFormat.class);
+        ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
+    }
 
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res, Object cmd, BindException arg3) throws Exception {
-		ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand)cmd;
-		reportDefinitionDao.save(rpDefCmd.getReportDefinition());
+    @Override
+    protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res,
+                    Object cmd, BindException arg3) throws Exception {
+        ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand) cmd;
+        reportDefinitionDao.save(rpDefCmd.getReportDefinition());
         Map<String, Object> model = new ModelMap();
-        //model.put("study", command.getStudy().getId());
+        // model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToNotificationList", model);
-	}
+    }
 
-
-	@Override
-	protected String getViewName(HttpServletRequest request, Object command, int page) {
+    @Override
+    protected String getViewName(HttpServletRequest request, Object command, int page) {
         Object subviewName = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
             return "rule/notification/ajax/" + subviewName;
@@ -90,77 +95,79 @@ public abstract class AbstractReportDefinitionController extends AutomaticSaveFl
         }
     }
 
-	/** Should return the name of the flow */
-	public abstract String getFlowName();
+    /** Should return the name of the flow */
+    public abstract String getFlowName();
 
-    private Object findInRequest(HttpServletRequest request, String attributName){
+    private Object findInRequest(HttpServletRequest request, String attributName) {
 
-    	Object attr = request.getParameter(attributName);
-    	if(attr == null) attr = request.getAttribute(attributName);
-    	return attr;
+        Object attr = request.getParameter(attributName);
+        if (attr == null) attr = request.getAttribute(attributName);
+        return attr;
     }
 
-	@Override
-	protected boolean suppressValidation(HttpServletRequest request, Object command) {
-		return isAjaxRequest(request) ? true :  super.suppressValidation(request, command);
-	}
-	
-	
-	protected boolean isAjaxRequest(HttpServletRequest request){
-		return findInRequest(request, AJAX_REQUEST_PARAMETER) != null;
-	}
-	
-	protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList, TreeNode node) {
-		if(StringUtils.isNotEmpty(node.getPropertyPath())){
-			ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node.getPropertyPath());
-			mfList.add(mf);
-		}
-		if(node.getChildren() != null){
-			for(TreeNode n : node.getChildren())
-				populateMandatoryFields(mfList, n);
-		}
-	}
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        return isAjaxRequest(request) ? true : super.suppressValidation(request, command);
+    }
 
+    protected boolean isAjaxRequest(HttpServletRequest request) {
+        return findInRequest(request, AJAX_REQUEST_PARAMETER) != null;
+    }
 
-	
-	@Override
-	protected ReportDefinitionDao getDao() {
-		return reportDefinitionDao;
-	}
-	
-	@Override
-	protected ReportDefinition getPrimaryDomainObject(ReportDefinitionCommand cmd) {
-		return cmd.getReportDefinition();
-	}
+    protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList,
+                    TreeNode node) {
+        if (StringUtils.isNotEmpty(node.getPropertyPath())) {
+            ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node
+                            .getPropertyPath());
+            mfList.add(mf);
+        }
+        if (node.getChildren() != null) {
+            for (TreeNode n : node.getChildren())
+                populateMandatoryFields(mfList, n);
+        }
+    }
 
-	///BEAN PROPERTIES
-	public ReportDefinitionDao getReportDefinitionDao() {
-		return reportDefinitionDao;
-	}
+    @Override
+    protected ReportDefinitionDao getDao() {
+        return reportDefinitionDao;
+    }
 
-	public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
-		this.reportDefinitionDao = rdDao;
-	}
+    @Override
+    protected ReportDefinition getPrimaryDomainObject(ReportDefinitionCommand cmd) {
+        return cmd.getReportDefinition();
+    }
 
-	public void setRoles(Map<String,String> roleList){
-		this.roles = roleList;
-	}
+    // /BEAN PROPERTIES
+    public ReportDefinitionDao getReportDefinitionDao() {
+        return reportDefinitionDao;
+    }
 
-	public Map<String,String> getAllRoles(){
-		return roles;
-	}
+    public void setReportDefinitionDao(ReportDefinitionDao rdDao) {
+        this.reportDefinitionDao = rdDao;
+    }
 
-	public OrganizationDao getOrganizationDao(){
-		return organizationDao;
-	}
-	public void setOrganizationDao(OrganizationDao organizationDao){
-		this.organizationDao = organizationDao;
-	}
-	public ConfigProperty getConfigurationProperty() {
-		return configurationProperty;
-	}
-	public void setConfigurationProperty(ConfigProperty configurationProperty) {
-		this.configurationProperty = configurationProperty;
-	}
+    public void setRoles(Map<String, String> roleList) {
+        this.roles = roleList;
+    }
+
+    public Map<String, String> getAllRoles() {
+        return roles;
+    }
+
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
+
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
+
+    public ConfigProperty getConfigurationProperty() {
+        return configurationProperty;
+    }
+
+    public void setConfigurationProperty(ConfigProperty configurationProperty) {
+        this.configurationProperty = configurationProperty;
+    }
 
 }

@@ -15,93 +15,84 @@ import javax.mail.internet.MimeMessage;
 /**
  * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class EmailServiceImpl implements EmailService {
 
-	public void send(EmailInfo ei, SmtpConfig smtpConfig) {
-		Session mailSession = getSMTPSession(smtpConfig);
-		MimeMessage mesg = new MimeMessage(mailSession);
-		
-		String addr = ei.getFrom();
-		if (addr != null && addr.trim().length() > 0)
-			try {
-				mesg.setFrom(new InternetAddress(addr));
+    public void send(EmailInfo ei, SmtpConfig smtpConfig) {
+        Session mailSession = getSMTPSession(smtpConfig);
+        MimeMessage mesg = new MimeMessage(mailSession);
 
-				if (addr != null && addr.trim().length() > 0)
-					mesg.setRecipients(javax.mail.Message.RecipientType.TO,
-							getAddresses(ei.getTo()));
+        String addr = ei.getFrom();
+        if (addr != null && addr.trim().length() > 0) try {
+            mesg.setFrom(new InternetAddress(addr));
 
-				if (ei.getCc() != null && ei.getCc().size() > 0)
-					mesg.setRecipients(javax.mail.Message.RecipientType.CC,
-							getAddresses(ei.getCc()));
+            if (addr != null && addr.trim().length() > 0) mesg.setRecipients(
+                            javax.mail.Message.RecipientType.TO, getAddresses(ei.getTo()));
 
-				if (ei.getBcc() != null && ei.getBcc().size() > 0)
-					mesg.setRecipients(javax.mail.Message.RecipientType.BCC,
-							getAddresses(ei.getBcc()));
+            if (ei.getCc() != null && ei.getCc().size() > 0) mesg.setRecipients(
+                            javax.mail.Message.RecipientType.CC, getAddresses(ei.getCc()));
 
-				addr = ei.getReplyTo();
-				if (ei.getReplyTo() != null
-						&& ei.getReplyTo().trim().length() > 0) {
-					mesg.setReplyTo(getAddresses(ei.getReplyTo()));
-				}
+            if (ei.getBcc() != null && ei.getBcc().size() > 0) mesg.setRecipients(
+                            javax.mail.Message.RecipientType.BCC, getAddresses(ei.getBcc()));
 
-				String sub = ei.getSubject();
-				if (sub != null && sub.trim().length() > 0)
-					mesg.setSubject(sub, "UTF-8");
+            addr = ei.getReplyTo();
+            if (ei.getReplyTo() != null && ei.getReplyTo().trim().length() > 0) {
+                mesg.setReplyTo(getAddresses(ei.getReplyTo()));
+            }
 
-				String body = ei.getContent();
-				if (body != null && body.trim().length() > 0)
-					mesg.setContent(body,  "text/html");
+            String sub = ei.getSubject();
+            if (sub != null && sub.trim().length() > 0) mesg.setSubject(sub, "UTF-8");
 
-				mesg.setSentDate(new Date());
+            String body = ei.getContent();
+            if (body != null && body.trim().length() > 0) mesg.setContent(body, "text/html");
 
-				System.out.println(ei);
-				
-				javax.mail.Transport.send(mesg);
-			} catch (AddressException e) {
-				throw new EmailException(e.getMessage(), e);
-			} catch (MessagingException e) {
-				throw new EmailException(e.getMessage(), e);
-			}
-	}
+            mesg.setSentDate(new Date());
 
-	private InternetAddress[] getAddresses(List<String> addresses)
-			throws AddressException {
-		InternetAddress[] internetAddress = new InternetAddress[addresses
-				.size()];
-		for (int count = 0; count < addresses.size(); count++) {
-			String emailAddress = addresses.get(count);
-			internetAddress[count] = new InternetAddress(emailAddress);
-		}
-		return internetAddress;
-	}
+            System.out.println(ei);
 
-	private InternetAddress[] getAddresses(String emailAddress)
-			throws AddressException {
-		return new InternetAddress[] { new InternetAddress(emailAddress) };
-	}
+            javax.mail.Transport.send(mesg);
+        } catch (AddressException e) {
+            throw new EmailException(e.getMessage(), e);
+        } catch (MessagingException e) {
+            throw new EmailException(e.getMessage(), e);
+        }
+    }
 
-	private Session getSMTPSession(SmtpConfig smtpConfig) {
-		Properties sessionProps = System.getProperties();
-		sessionProps.put("mail.smtp.host", smtpConfig.getHost());
-		sessionProps.put("mail.smtp.user", smtpConfig.getUser());
-		sessionProps.put("mail.smtp.password", smtpConfig.getPassword());
-		sessionProps.put("mail.smtp.auth", Boolean.valueOf(smtpConfig.getAuth()).booleanValue());
-		sessionProps.put("mail.smtp.port", smtpConfig.getPort());
-		sessionProps.put("mail.transport.protocol","smtp");
-		return javax.mail.Session.getInstance(sessionProps, new Auth(smtpConfig));
-	}
+    private InternetAddress[] getAddresses(List<String> addresses) throws AddressException {
+        InternetAddress[] internetAddress = new InternetAddress[addresses.size()];
+        for (int count = 0; count < addresses.size(); count++) {
+            String emailAddress = addresses.get(count);
+            internetAddress[count] = new InternetAddress(emailAddress);
+        }
+        return internetAddress;
+    }
 
-	 class Auth extends Authenticator {
-		 
-		 private SmtpConfig smtpConfig = null;
-		 Auth(SmtpConfig smtpConfig) {
-			 this.smtpConfig = smtpConfig;
-		 }
-		 
-	     protected PasswordAuthentication getPasswordAuthentication() {
-	         return new PasswordAuthentication(smtpConfig.getUser(),smtpConfig.getPassword());
-	     }
-	 }
+    private InternetAddress[] getAddresses(String emailAddress) throws AddressException {
+        return new InternetAddress[] { new InternetAddress(emailAddress) };
+    }
+
+    private Session getSMTPSession(SmtpConfig smtpConfig) {
+        Properties sessionProps = System.getProperties();
+        sessionProps.put("mail.smtp.host", smtpConfig.getHost());
+        sessionProps.put("mail.smtp.user", smtpConfig.getUser());
+        sessionProps.put("mail.smtp.password", smtpConfig.getPassword());
+        sessionProps.put("mail.smtp.auth", Boolean.valueOf(smtpConfig.getAuth()).booleanValue());
+        sessionProps.put("mail.smtp.port", smtpConfig.getPort());
+        sessionProps.put("mail.transport.protocol", "smtp");
+        return javax.mail.Session.getInstance(sessionProps, new Auth(smtpConfig));
+    }
+
+    class Auth extends Authenticator {
+
+        private SmtpConfig smtpConfig = null;
+
+        Auth(SmtpConfig smtpConfig) {
+            this.smtpConfig = smtpConfig;
+        }
+
+        protected PasswordAuthentication getPasswordAuthentication() {
+            return new PasswordAuthentication(smtpConfig.getUser(), smtpConfig.getPassword());
+        }
+    }
 
 }

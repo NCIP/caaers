@@ -12,103 +12,99 @@ import java.util.List;
  */
 
 public class NewParticipantCommand {
-	protected final Log log = LogFactory.getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
-	private String[] studySiteArray;
+    private String[] studySiteArray;
 
-	private String searchTypeText;
+    private String searchTypeText;
 
-	private String searchType;
+    private String searchType;
 
-	private String searchText;
+    private String searchText;
 
+    private List<Study> studies = new ArrayList<Study>();
 
-	private List<Study> studies = new ArrayList<Study>();
+    private List<StudySite> studySites = new ArrayList<StudySite>();
 
-	private List<StudySite> studySites = new ArrayList<StudySite>();
+    private Organization organization;
 
-	private Organization organization;
-
-	private Participant participant;
+    private Participant participant;
 
     private String studySubjectIdentifier;
 
-
     public NewParticipantCommand() {
-		participant = new Participant();
-		participant.setDateOfBirth(new DateValue(null, null, null));
-	}
+        participant = new Participant();
+        participant.setDateOfBirth(new DateValue(null, null, null));
+    }
 
-	public NewParticipantCommand(final Participant participant) {
-		this.participant = participant;
-	}
+    public NewParticipantCommand(final Participant participant) {
+        this.participant = participant;
+    }
 
+    public String[] getStudySiteArray() {
+        return studySiteArray;
+    }
 
-	public String[] getStudySiteArray() {
-		return studySiteArray;
-	}
+    public void setStudySiteArray(final String[] studySiteArray) {
+        this.studySiteArray = studySiteArray;
+    }
 
-	public void setStudySiteArray(final String[] studySiteArray) {
-		this.studySiteArray = studySiteArray;
-	}
+    public String getSearchType() {
+        return searchType;
+    }
 
-	public String getSearchType() {
-		return searchType;
-	}
+    public void setSearchType(final String searchType) {
+        this.searchType = searchType;
+    }
 
-	public void setSearchType(final String searchType) {
-		this.searchType = searchType;
-	}
+    public String getSearchTypeText() {
+        return searchTypeText;
+    }
 
-	public String getSearchTypeText() {
-		return searchTypeText;
-	}
+    public void setSearchTypeText(final String searchTypeText) {
+        this.searchTypeText = searchTypeText;
+    }
 
-	public void setSearchTypeText(final String searchTypeText) {
-		this.searchTypeText = searchTypeText;
-	}
+    public String getSearchText() {
+        return searchText;
+    }
 
-	public String getSearchText() {
-		return searchText;
-	}
+    public void setSearchText(final String searchText) {
+        this.searchText = searchText;
+    }
 
-	public void setSearchText(final String searchText) {
-		this.searchText = searchText;
-	}
+    public List<Study> getStudies() {
+        return studies;
+    }
 
+    public void setStudies(final List<Study> studies) {
+        this.studies = studies;
+    }
 
-	public List<Study> getStudies() {
-		return studies;
-	}
+    public List<StudySite> getStudySites() {
+        return studySites;
+    }
 
-	public void setStudies(final List<Study> studies) {
-		this.studies = studies;
-	}
+    public void setStudySites(final List<StudySite> studySites) {
+        this.studySites = studySites;
 
-	public List<StudySite> getStudySites() {
-		return studySites;
-	}
+    }
 
-	public void setStudySites(final List<StudySite> studySites) {
-		this.studySites = studySites;
+    public Organization getOrganization() {
+        return organization;
+    }
 
-	}
+    public void setOrganization(final Organization organization) {
+        this.organization = organization;
+    }
 
-	public Organization getOrganization() {
-		return organization;
-	}
+    public Participant getParticipant() {
+        return participant;
+    }
 
-	public void setOrganization(final Organization organization) {
-		this.organization = organization;
-	}
-
-	public Participant getParticipant() {
-		return participant;
-	}
-
-	public void setParticipant(final Participant participant) {
-		this.participant = participant;
-	}
+    public void setParticipant(final Participant participant) {
+        this.participant = participant;
+    }
 
     public String getStudySubjectIdentifier() {
         return studySubjectIdentifier;

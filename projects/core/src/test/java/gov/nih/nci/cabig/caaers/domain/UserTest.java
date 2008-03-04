@@ -11,24 +11,24 @@ public class UserTest extends CaaersTestCase {
 
     @Override
     protected void setUp() throws Exception {
-	super.setUp();
-	user = new ResearchStaff();
+        super.setUp();
+        user = new ResearchStaff();
     }
 
     public void testAddPasswordToHistory() throws Exception {
-	user.addPasswordToHistory("test", 1);
-	user.addPasswordToHistory("test_b", 1);
-	assertEquals(user.getPasswordHistory().size(), 1);
+        user.addPasswordToHistory("test", 1);
+        user.addPasswordToHistory("test_b", 1);
+        assertEquals(user.getPasswordHistory().size(), 1);
 
-	user.addPasswordToHistory("test_b", 2);
-	assertEquals(user.getPasswordHistory().size(), 2);
+        user.addPasswordToHistory("test_b", 2);
+        assertEquals(user.getPasswordHistory().size(), 2);
     }
 
     public void testGetLastFirst() throws Exception {
-	assertEquals(user.getLastFirst(), "");
+        assertEquals(user.getLastFirst(), "");
     }
 
     public void testGetFullName() throws Exception {
-	assertEquals(user.getFullName(), "");
+        assertEquals(user.getFullName(), "");
     }
 }

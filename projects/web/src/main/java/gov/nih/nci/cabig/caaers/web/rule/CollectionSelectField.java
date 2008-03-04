@@ -11,13 +11,13 @@ import java.util.LinkedHashMap;
  */
 public class CollectionSelectField extends DefaultSelectField {
     private Collection<?> items;
+
     private String itemValueProperty;
+
     private String itemLabelProperty;
 
-    public CollectionSelectField(
-        String propertyName, String displayName, boolean required,
-        Collection<?> items, String itemValueProperty, String itemDisplayProperty
-    ) {
+    public CollectionSelectField(String propertyName, String displayName, boolean required,
+                    Collection<?> items, String itemValueProperty, String itemDisplayProperty) {
         super(propertyName, displayName, required, new LinkedHashMap<Object, Object>());
         this.items = items;
         this.itemValueProperty = itemValueProperty;

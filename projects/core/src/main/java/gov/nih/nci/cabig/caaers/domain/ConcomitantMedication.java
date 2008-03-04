@@ -7,26 +7,24 @@ import javax.persistence.Entity;
 import javax.persistence.Transient;
 
 /**
- * This class represents the ConcomitantMedication domain object associated with the Adverse event report.
+ * This class represents the ConcomitantMedication domain object associated with the Adverse event
+ * report.
+ * 
  * @author Rhett Sutphin
  */
 @Entity
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_concomitant_medications_id")
-    }
-)
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_concomitant_medications_id") })
 public class ConcomitantMedication extends AbstractExpeditedReportCollectionElementChild {
     private String agentName;
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public String getName() {
-       return agentName;
+        return agentName;
     }
 
-    ////// BOUND PROPERTIES
+    // //// BOUND PROPERTIES
 
     public String getAgentName() {
         return agentName;

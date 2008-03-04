@@ -5,12 +5,12 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 /**
  * @author Rhett Sutphin
  */
-public class RoutineAdverseEventReportChildFactory<T extends RoutineAdverseEventReportChild> extends InstantiateFactory<T> {
+public class RoutineAdverseEventReportChildFactory<T extends RoutineAdverseEventReportChild>
+                extends InstantiateFactory<T> {
     private RoutineAdverseEventReport report;
 
-    public RoutineAdverseEventReportChildFactory(
-        Class<T> classToInstantiate, RoutineAdverseEventReport parent
-    ) {
+    public RoutineAdverseEventReportChildFactory(Class<T> classToInstantiate,
+                    RoutineAdverseEventReport parent) {
         super(classToInstantiate);
         this.report = parent;
     }

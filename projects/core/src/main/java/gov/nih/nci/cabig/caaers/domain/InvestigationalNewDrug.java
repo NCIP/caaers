@@ -14,76 +14,78 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 /**
- * This class represents the InvestigationalNewDrug domain object associated with the Adverse event report.
+ * This class represents the InvestigationalNewDrug domain object associated with the Adverse event
+ * report.
+ * 
  * @author
- *
+ * 
  */
 @Entity
-@Table (name = "investigational_new_drugs")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_investigational_new_dru_id")
-    }
-)
+@Table(name = "investigational_new_drugs")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_investigational_new_dru_id") })
 public class InvestigationalNewDrug extends AbstractMutableDomainObject {
-	private Integer indNumber;
-	private INDHolder iNDHolder;
-	private List<StudyAgentINDAssociation> studyAgentINDAssociations;
-	private transient String holderName;
+    private Integer indNumber;
 
-	public Integer getIndNumber() {
-		return indNumber;
-	}
+    private INDHolder iNDHolder;
 
-	public void setIndNumber(Integer number) {
-		indNumber = number;
-	}
+    private List<StudyAgentINDAssociation> studyAgentINDAssociations;
 
+    private transient String holderName;
 
-	@OneToOne(mappedBy="investigationalNewDrug",  fetch=FetchType.EAGER)
-	@Cascade({CascadeType.ALL})
-	public INDHolder getINDHolder() {
-		return iNDHolder;
-	}
+    public Integer getIndNumber() {
+        return indNumber;
+    }
 
+    public void setIndNumber(Integer number) {
+        indNumber = number;
+    }
 
-	public void setINDHolder(INDHolder holder) {
-		iNDHolder = holder;
-		holderName = holder.getName();
-	}
+    @OneToOne(mappedBy = "investigationalNewDrug", fetch = FetchType.EAGER)
+    @Cascade( { CascadeType.ALL })
+    public INDHolder getINDHolder() {
+        return iNDHolder;
+    }
 
-	@OneToMany(mappedBy="investigationalNewDrug", fetch=FetchType.EAGER)
-	 @Cascade({CascadeType.DELETE,CascadeType.DELETE_ORPHAN})
-	public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
-		return studyAgentINDAssociations;
-	}
+    public void setINDHolder(INDHolder holder) {
+        iNDHolder = holder;
+        holderName = holder.getName();
+    }
 
-	public void setStudyAgentINDAssociations(
-			List<StudyAgentINDAssociation> studyAgentINDAssociations) {
-		this.studyAgentINDAssociations = studyAgentINDAssociations;
-	}
+    @OneToMany(mappedBy = "investigationalNewDrug", fetch = FetchType.EAGER)
+    @Cascade( { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
+    public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
+        return studyAgentINDAssociations;
+    }
 
+    public void setStudyAgentINDAssociations(
+                    List<StudyAgentINDAssociation> studyAgentINDAssociations) {
+        this.studyAgentINDAssociations = studyAgentINDAssociations;
+    }
 
-	@Transient
-	public String getHolderName(){
-		if(holderName != null) return holderName;
-		return (iNDHolder != null)? iNDHolder.getName(): "";
-	}
-	@Transient
-	public void setHolderName(String holderName){
-		this.holderName = holderName;
-	}
+    @Transient
+    public String getHolderName() {
+        if (holderName != null) return holderName;
+        return (iNDHolder != null) ? iNDHolder.getName() : "";
+    }
 
-	@Transient
-	public String getStrINDNo(){
-		return String.valueOf(indNumber);
-	}
-	public void setStrINDNo(String strINDNo){
-		indNumber = new Integer(strINDNo);
-	}
-	@Override
-	public String toString() {
-		return "InvestigationalNewDrug[" + indNumber +" : " + getHolderName() +"]";
-	}
+    @Transient
+    public void setHolderName(String holderName) {
+        this.holderName = holderName;
+    }
+
+    @Transient
+    public String getStrINDNo() {
+        return String.valueOf(indNumber);
+    }
+
+    public void setStrINDNo(String strINDNo) {
+        indNumber = new Integer(strINDNo);
+    }
+
+    @Override
+    public String toString() {
+        return "InvestigationalNewDrug[" + indNumber + " : " + getHolderName() + "]";
+    }
 }

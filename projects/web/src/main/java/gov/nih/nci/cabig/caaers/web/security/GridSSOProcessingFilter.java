@@ -34,185 +34,174 @@ import org.springframework.util.Assert;
  */
 public class GridSSOProcessingFilter implements Filter, InitializingBean {
 
-	private static final Log logger = LogFactory
-			.getLog(GridSSOProcessingFilter.class);
+    private static final Log logger = LogFactory.getLog(GridSSOProcessingFilter.class);
 
-	private AuthenticationRequestPopulator authenticationRequestPopulator;
+    private AuthenticationRequestPopulator authenticationRequestPopulator;
 
-	private AuthenticationEntryPoint authenticationEntryPoint;
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
-	private AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
-	private RememberMeServices rememberMeServices;
+    private RememberMeServices rememberMeServices;
 
-	private boolean ignoreFailure = false;
+    private boolean ignoreFailure = false;
 
-	public AuthenticationEntryPoint getAuthenticationEntryPoint() {
-		return authenticationEntryPoint;
-	}
+    public AuthenticationEntryPoint getAuthenticationEntryPoint() {
+        return authenticationEntryPoint;
+    }
 
-	public void setAuthenticationEntryPoint(
-			AuthenticationEntryPoint authenticationEntryPoint) {
-		this.authenticationEntryPoint = authenticationEntryPoint;
-	}
+    public void setAuthenticationEntryPoint(AuthenticationEntryPoint authenticationEntryPoint) {
+        this.authenticationEntryPoint = authenticationEntryPoint;
+    }
 
-	public AuthenticationManager getAuthenticationManager() {
-		return authenticationManager;
-	}
+    public AuthenticationManager getAuthenticationManager() {
+        return authenticationManager;
+    }
 
-	public void setAuthenticationManager(
-			AuthenticationManager authenticationManager) {
-		this.authenticationManager = authenticationManager;
-	}
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
 
-	public boolean isIgnoreFailure() {
-		return ignoreFailure;
-	}
+    public boolean isIgnoreFailure() {
+        return ignoreFailure;
+    }
 
-	public void setIgnoreFailure(boolean ignoreError) {
-		this.ignoreFailure = ignoreError;
-	}
+    public void setIgnoreFailure(boolean ignoreError) {
+        this.ignoreFailure = ignoreError;
+    }
 
-	public RememberMeServices getRememberMeServices() {
-		return rememberMeServices;
-	}
+    public RememberMeServices getRememberMeServices() {
+        return rememberMeServices;
+    }
 
-	public void setRememberMeServices(RememberMeServices rememberMeServices) {
-		this.rememberMeServices = rememberMeServices;
-	}
+    public void setRememberMeServices(RememberMeServices rememberMeServices) {
+        this.rememberMeServices = rememberMeServices;
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.servlet.Filter#destroy()
-	 */
-	public void destroy() {
-		// nothing to do here
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.Filter#destroy()
+     */
+    public void destroy() {
+        // nothing to do here
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
-	 *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
-	 */
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
-		if (!(request instanceof HttpServletRequest)) {
-			throw new ServletException("Can only process HttpServletRequest");
-		}
-		if (!(response instanceof HttpServletResponse)) {
-			throw new ServletException("Can only process HttpServletResponse");
-		}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.Filter#doFilter(javax.servlet.ServletRequest,
+     *      javax.servlet.ServletResponse, javax.servlet.FilterChain)
+     */
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+                    throws IOException, ServletException {
+        if (!(request instanceof HttpServletRequest)) {
+            throw new ServletException("Can only process HttpServletRequest");
+        }
+        if (!(response instanceof HttpServletResponse)) {
+            throw new ServletException("Can only process HttpServletResponse");
+        }
 
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		Authentication existingAuth = SecurityContextHolder.getContext()
-				.getAuthentication();
-		if (existingAuth != null) {
-//			logger.debug("Existing Authentication found for " + existingAuth.getName() + ". Proceeeding with filter.");
-			chain.doFilter(request, response);
-		} else {
-//			logger.debug("No Authentication found.");
-			AuthenticationException error = null;
-			Authentication authResult = null;
-			try {
-//				logger.debug("Populating authentication request...");
-				Authentication authRequest = getAuthenticationRequestPopulator()
-						.populate(httpRequest);
-				authResult = getAuthenticationManager().authenticate(
-						authRequest);
-//				logger.debug("...done");
-			} catch (AuthenticationException ex) {
-//				logger.info("Authentication request failed: " + ex.getMessage());
-				error = ex;
-			}
-			if (error != null){
-//				logger.debug("Error encountered.");
-				SecurityContextHolder.getContext().setAuthentication(null);
-				if (getRememberMeServices() != null) {
-					getRememberMeServices()
-							.loginFail(httpRequest, httpResponse);
-				}
-				if (isIgnoreFailure()) {
-//					logger.debug("Ignoring failure.");
-					chain.doFilter(request, response);
-				} else {
-//					logger.debug("Commencing AuthenticationEntryPoint");
-					getAuthenticationEntryPoint().commence(request, response,
-							error);
-				}
-			
-			} else {
-//				logger
-//						.debug("Authentication success: "
-//								+ authResult.toString());
-				SecurityContextHolder.getContext()
-						.setAuthentication(authResult);
-				
-				
-				/*
-				 * TODO: remove hack
-				 * 
-				 * This is a hack to get the gridProxy into the session
-				 * so that the SSO-link functionality works. It should
-				 * be removed when the final SSO framework is in place.
-				 * 
-				 */
-				//begin hack
-				try{
-//					logger.debug("Doing gridProxy hack...");
-					GlobusCredentialAuthenticationToken gcToken = (GlobusCredentialAuthenticationToken)authResult;
-					httpRequest.getSession().setAttribute("gridProxy", Utils.toString(gcToken.getGlobusCredential()));
-//					logger.debug("...done hack.");
-				}catch(Exception ex){
-//					logger.warn("Failed to do gridProxy hack: " + ex.getMessage(), ex); 
-				}
-				//end hack
-				
-				
-				if (getRememberMeServices() != null) {
-					getRememberMeServices().loginSuccess(httpRequest,
-							httpResponse, authResult);
-				}
-//				logger.debug("Proceeding with filter after successful authentication.");
-				chain.doFilter(request, response);
-			}
-		}
+        Authentication existingAuth = SecurityContextHolder.getContext().getAuthentication();
+        if (existingAuth != null) {
+            // logger.debug("Existing Authentication found for " + existingAuth.getName() + ".
+            // Proceeeding with filter.");
+            chain.doFilter(request, response);
+        } else {
+            // logger.debug("No Authentication found.");
+            AuthenticationException error = null;
+            Authentication authResult = null;
+            try {
+                // logger.debug("Populating authentication request...");
+                Authentication authRequest = getAuthenticationRequestPopulator().populate(
+                                httpRequest);
+                authResult = getAuthenticationManager().authenticate(authRequest);
+                // logger.debug("...done");
+            } catch (AuthenticationException ex) {
+                // logger.info("Authentication request failed: " + ex.getMessage());
+                error = ex;
+            }
+            if (error != null) {
+                // logger.debug("Error encountered.");
+                SecurityContextHolder.getContext().setAuthentication(null);
+                if (getRememberMeServices() != null) {
+                    getRememberMeServices().loginFail(httpRequest, httpResponse);
+                }
+                if (isIgnoreFailure()) {
+                    // logger.debug("Ignoring failure.");
+                    chain.doFilter(request, response);
+                } else {
+                    // logger.debug("Commencing AuthenticationEntryPoint");
+                    getAuthenticationEntryPoint().commence(request, response, error);
+                }
 
-	}
+            } else {
+                // logger
+                // .debug("Authentication success: "
+                // + authResult.toString());
+                SecurityContextHolder.getContext().setAuthentication(authResult);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
-	 */
-	public void init(FilterConfig arg0) throws ServletException {
-		// nothing to do here
-	}
+                /*
+                 * TODO: remove hack
+                 * 
+                 * This is a hack to get the gridProxy into the session so that the SSO-link
+                 * functionality works. It should be removed when the final SSO framework is in
+                 * place.
+                 * 
+                 */
+                // begin hack
+                try {
+                    // logger.debug("Doing gridProxy hack...");
+                    GlobusCredentialAuthenticationToken gcToken = (GlobusCredentialAuthenticationToken) authResult;
+                    httpRequest.getSession().setAttribute("gridProxy",
+                                    Utils.toString(gcToken.getGlobusCredential()));
+                    // logger.debug("...done hack.");
+                } catch (Exception ex) {
+                    // logger.warn("Failed to do gridProxy hack: " + ex.getMessage(), ex);
+                }
+                // end hack
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
-	public void afterPropertiesSet() throws Exception {
-		Assert.notNull(this.authenticationEntryPoint,
-				"An AuthenticationEntryPoint is required.");
-		Assert.notNull(this.authenticationManager,
-				"An AuthenticationManager is required.");
-		Assert.notNull(this.authenticationRequestPopulator,
-				"An AuthenticationRequestPopulator is required.");
-	}
+                if (getRememberMeServices() != null) {
+                    getRememberMeServices().loginSuccess(httpRequest, httpResponse, authResult);
+                }
+                // logger.debug("Proceeding with filter after successful authentication.");
+                chain.doFilter(request, response);
+            }
+        }
 
-	public AuthenticationRequestPopulator getAuthenticationRequestPopulator() {
-		return authenticationRequestPopulator;
-	}
+    }
 
-	public void setAuthenticationRequestPopulator(
-			AuthenticationRequestPopulator authenticationRequestPopulator) {
-		this.authenticationRequestPopulator = authenticationRequestPopulator;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see javax.servlet.Filter#init(javax.servlet.FilterConfig)
+     */
+    public void init(FilterConfig arg0) throws ServletException {
+        // nothing to do here
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+     */
+    public void afterPropertiesSet() throws Exception {
+        Assert.notNull(this.authenticationEntryPoint, "An AuthenticationEntryPoint is required.");
+        Assert.notNull(this.authenticationManager, "An AuthenticationManager is required.");
+        Assert.notNull(this.authenticationRequestPopulator,
+                        "An AuthenticationRequestPopulator is required.");
+    }
+
+    public AuthenticationRequestPopulator getAuthenticationRequestPopulator() {
+        return authenticationRequestPopulator;
+    }
+
+    public void setAuthenticationRequestPopulator(
+                    AuthenticationRequestPopulator authenticationRequestPopulator) {
+        this.authenticationRequestPopulator = authenticationRequestPopulator;
+    }
 
 }

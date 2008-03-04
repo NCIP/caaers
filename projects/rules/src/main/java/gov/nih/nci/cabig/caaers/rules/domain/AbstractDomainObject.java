@@ -7,7 +7,8 @@ public class AbstractDomainObject implements DomainObject {
 
     private Integer id;
 
-    @Id @GeneratedValue(generator = "id-generator")
+    @Id
+    @GeneratedValue(generator = "id-generator")
     public Integer getId() {
         return id;
     }

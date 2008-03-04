@@ -7,16 +7,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
  * This class represents the Availability domain object associated with the Adverse event report.
+ * 
  * @author Krikor Krumlian
  */
 public enum Availability implements CodedEnum<Integer> {
-    YES(1),
-    NO(2),
-    UNKNOWN(3),
-    RETURNED(4)
-    ;
+    YES(1), NO(2), UNKNOWN(3), RETURNED(4);
 
     private int code;
+
     private String displayName;
 
     Availability(int code) {

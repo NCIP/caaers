@@ -20,71 +20,79 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 
  * This is the repository class for managing the research staff domain object.
+ * 
  * @author Biju Joseph
  * @author Jared Flatow
  */
-@Transactional(readOnly=true)
+@Transactional(readOnly = true)
 public class ResearchStaffRepository {
-    
-    private UserService userService;    
-    private ResearchStaffDao researchStaffDao;    
-    private UserProvisioningManager userProvisioningManager;    
-    private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);    
+
+    private UserService userService;
+
+    private ResearchStaffDao researchStaffDao;
+
+    private UserProvisioningManager userProvisioningManager;
+
+    private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
+
     public List<ResearchStaff> getAll() {
-	ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-	return researchStaffDao.searchResearchStaff(researchStaffQuery);
+        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+        return researchStaffDao.searchResearchStaff(researchStaffQuery);
     }
-    
+
     /**
      * Saves or update the research staff.
      * 
-     * @throws CaaersSystemException if research staff can not be created.
-     * @param researchStaff the research staff
+     * @throws CaaersSystemException
+     *                 if research staff can not be created.
+     * @param researchStaff
+     *                the research staff
      */
-    @Transactional(readOnly=false)
+    @Transactional(readOnly = false)
     public void save(final ResearchStaff researchStaff, String changeURL) {
-	userService.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+        userService.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
     }
-    
+
     public ResearchStaff getById(final int id) {
-	ResearchStaff researchStaff = researchStaffDao.getById(id);
-	initialize(researchStaff);
-	return researchStaff;
+        ResearchStaff researchStaff = researchStaffDao.getById(id);
+        initialize(researchStaff);
+        return researchStaff;
     }
-    
+
     @SuppressWarnings("unchecked")
-    public ResearchStaff initialize(final ResearchStaff researchStaff) {	
-	try {
-	    List<Group> groups = new ArrayList(userProvisioningManager.getGroups(researchStaff.getLoginId()));	    
-	    for (Group group : groups) {		
-		UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(group.getGroupId()).intValue());		
-		if (userGroupType != null) {
-		    researchStaff.addUserGroupType(userGroupType);
-		}
-	    }	    
-	}
-	catch (CSObjectNotFoundException e) {
-	    throw new CaaersSystemException("Error while retriving research staff", e);
-	}	
-	return researchStaff;
+    public ResearchStaff initialize(final ResearchStaff researchStaff) {
+        try {
+            List<Group> groups = new ArrayList(userProvisioningManager.getGroups(researchStaff
+                            .getLoginId()));
+            for (Group group : groups) {
+                UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(
+                                group.getGroupId()).intValue());
+                if (userGroupType != null) {
+                    researchStaff.addUserGroupType(userGroupType);
+                }
+            }
+        } catch (CSObjectNotFoundException e) {
+            throw new CaaersSystemException("Error while retriving research staff", e);
+        }
+        return researchStaff;
     }
-    
-    public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {	
-	return researchStaffDao.getBySubnames(subnames, site);
+
+    public List<ResearchStaff> getBySubnames(final String[] subnames, final int site) {
+        return researchStaffDao.getBySubnames(subnames, site);
     }
-    
+
     @Required
     public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
-	this.researchStaffDao = researchStaffDao;
+        this.researchStaffDao = researchStaffDao;
     }
-    
+
     @Required
     public void setUserService(final UserService userService) {
-	this.userService = userService;
+        this.userService = userService;
     }
-    
+
     @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
-	this.userProvisioningManager = userProvisioningManager;
+        this.userProvisioningManager = userProvisioningManager;
     }
 }

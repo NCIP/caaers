@@ -12,20 +12,16 @@ import org.hibernate.annotations.Parameter;
 
 /**
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 @Entity
 @Table(name = "notifications")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_notifications_id")
-    }
-)
-
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_notifications_id") })
 public class Notification implements Serializable {
 
     private Integer id;
 
-    @Id @GeneratedValue(generator = "id-generator")
+    @Id
+    @GeneratedValue(generator = "id-generator")
     public Integer getId() {
         return id;
     }
@@ -33,45 +29,45 @@ public class Notification implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-	
-	private String email;
-	
-	private String content;
-	
-	private String subject;
-	
-	private String name;
 
-	public String getName() {
-		return name;
-	}
+    private String email;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private String content;
 
-	public String getEmail() {
-		return email;
-	}
+    private String subject;
 
-	public void setEmail(String to) {
-		this.email = to;
-	}
+    private String name;
 
-	public String getContent() {
-		return content;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
+    public void setEmail(String to) {
+        this.email = to;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 
 }

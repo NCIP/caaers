@@ -17,13 +17,15 @@ import java.util.Map;
 public class AssignStudySubjectIdentifierTab extends Tab<AssignParticipantStudyCommand> {
 
     private static final Log log = LogFactory.getLog(AssignStudySubjectIdentifierTab.class);
+
     private final String STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP = "studySubjectIdentifier";
+
     private final String STUDY_SUBJECT_IDENTIFIER_FIELD = "studySubjectIdentifier";
 
     public AssignStudySubjectIdentifierTab() {
-        super("Choose Study Subject Identifier ", "Study Subject Identifier", "par/par_study_subject_identifier");
+        super("Choose Study Subject Identifier ", "Study Subject Identifier",
+                        "par/par_study_subject_identifier");
     }
-
 
     @Override
     public Map<String, Object> referenceData(final AssignParticipantStudyCommand command) {
@@ -34,11 +36,14 @@ public class AssignStudySubjectIdentifierTab extends Tab<AssignParticipantStudyC
         return refdata;
     }
 
-    private Map<String, InputFieldGroup> createFieldGroups(final AssignParticipantStudyCommand command) {
+    private Map<String, InputFieldGroup> createFieldGroups(
+                    final AssignParticipantStudyCommand command) {
 
-        InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
+        InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(
+                        STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
         studySubjectIdentifierFieldGroup.getFields().add(
-                InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", true));
+                        InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD,
+                                        "Study subject identifier", true));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(studySubjectIdentifierFieldGroup);
@@ -49,9 +54,9 @@ public class AssignStudySubjectIdentifierTab extends Tab<AssignParticipantStudyC
     public void validate(AssignParticipantStudyCommand command, Errors errors) {
         super.validate(command, errors);
         if (command.getStudySubjectIdentifier() == null
-                || command.getStudySubjectIdentifier().trim().equalsIgnoreCase(""))
-            errors.rejectValue(STUDY_SUBJECT_IDENTIFIER_FIELD, "REQUIRED", "Missing study subject identifier");
+                        || command.getStudySubjectIdentifier().trim().equalsIgnoreCase("")) errors
+                        .rejectValue(STUDY_SUBJECT_IDENTIFIER_FIELD, "REQUIRED",
+                                        "Missing study subject identifier");
     }
-
 
 }

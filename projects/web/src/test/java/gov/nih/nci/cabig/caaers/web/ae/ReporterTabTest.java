@@ -12,9 +12,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class ReporterTabTest extends AeTabTestCase {
     private EvaluationService evaluationService;
+
     private AdverseEvent ae0;
 
     @Override
@@ -22,8 +23,8 @@ public class ReporterTabTest extends AeTabTestCase {
         evaluationService = registerMockFor(EvaluationService.class);
         super.setUp();
         ae0 = command.getAeReport().getAdverseEvents().get(0);
-        assertEquals("Test setup failure -- only expected 1 AE initially", 1,
-            command.getAeReport().getAdverseEvents().size());
+        assertEquals("Test setup failure -- only expected 1 AE initially", 1, command.getAeReport()
+                        .getAdverseEvents().size());
     }
 
     @Override
@@ -56,25 +57,19 @@ public class ReporterTabTest extends AeTabTestCase {
     }
 
     public void testReporterFieldProperties() throws Exception {
-        assertFieldProperties("reporter",
-            "aeReport.reporter.firstName",
-            "aeReport.reporter.middleName",
-            "aeReport.reporter.lastName",
-            "aeReport.reporter.contactMechanisms[e-mail]",
-            "aeReport.reporter.contactMechanisms[phone]",
-            "aeReport.reporter.contactMechanisms[fax]"
-        );
+        assertFieldProperties("reporter", "aeReport.reporter.firstName",
+                        "aeReport.reporter.middleName", "aeReport.reporter.lastName",
+                        "aeReport.reporter.contactMechanisms[e-mail]",
+                        "aeReport.reporter.contactMechanisms[phone]",
+                        "aeReport.reporter.contactMechanisms[fax]");
     }
 
     public void testPhysicianFieldProperties() throws Exception {
-        assertFieldProperties("physician",
-            "aeReport.physician.firstName",
-            "aeReport.physician.middleName",
-            "aeReport.physician.lastName",
-            "aeReport.physician.contactMechanisms[e-mail]",
-            "aeReport.physician.contactMechanisms[phone]",
-            "aeReport.physician.contactMechanisms[fax]"
-        );
+        assertFieldProperties("physician", "aeReport.physician.firstName",
+                        "aeReport.physician.middleName", "aeReport.physician.lastName",
+                        "aeReport.physician.contactMechanisms[e-mail]",
+                        "aeReport.physician.contactMechanisms[phone]",
+                        "aeReport.physician.contactMechanisms[fax]");
     }
 
     public void testReporterFirstNameRequired() throws Exception {
@@ -92,7 +87,8 @@ public class ReporterTabTest extends AeTabTestCase {
     public void testReporterEmailAddressRequired() throws Exception {
         command.getAeReport().getReporter().getContactMechanisms().remove(ReportPerson.EMAIL);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.reporter.contactMechanisms[e-mail]", "E-mail address");
+        assertFieldRequiredErrorRaised("aeReport.reporter.contactMechanisms[e-mail]",
+                        "E-mail address");
     }
 
     public void testPhysicianFirstNameRequired() throws Exception {
@@ -110,7 +106,8 @@ public class ReporterTabTest extends AeTabTestCase {
     public void testPhysicianEmailAddressRequired() throws Exception {
         command.getAeReport().getPhysician().getContactMechanisms().remove(ReportPerson.EMAIL);
         doValidate();
-        assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]", "E-mail address");
+        assertFieldRequiredErrorRaised("aeReport.physician.contactMechanisms[e-mail]",
+                        "E-mail address");
     }
 
     public void testOnDisplayEvaluates() throws Exception {

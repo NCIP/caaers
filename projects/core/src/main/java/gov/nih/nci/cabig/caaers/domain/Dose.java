@@ -7,15 +7,18 @@ import java.math.BigDecimal;
 
 /**
  * This class represents the Dose domain object associated with the Adverse event report.
+ * 
  * @author Rhett Sutphin
  */
 @Embeddable
 public class Dose {
     private BigDecimal amount;
+
     private String units; // TODO: source from caDSR
+
     private String route; // caDSR?
 
-    ////// LOGIC
+    // //// LOGIC
 
     @Transient
     public String getDisplayName() {
@@ -25,7 +28,7 @@ public class Dose {
         return sb.toString();
     }
 
-    ////// BEAN PROPERTIES
+    // //// BEAN PROPERTIES
 
     @Column(name = "dose_amount")
     public BigDecimal getAmount() {
@@ -54,7 +57,7 @@ public class Dose {
         this.route = route;
     }
 
-    ////// OBJECT METHODS
+    // //// OBJECT METHODS
 
     @Override
     public boolean equals(Object o) {

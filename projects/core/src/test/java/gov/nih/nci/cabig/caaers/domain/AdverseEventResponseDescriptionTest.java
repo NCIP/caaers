@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class AdverseEventResponseDescriptionTest extends CaaersTestCase {
     private AdverseEventResponseDescription description;
 
@@ -23,7 +23,7 @@ public class AdverseEventResponseDescriptionTest extends CaaersTestCase {
         description.setDateRemovedFromProtocol(new Date());
         assertTrue(description.isRemovedFromProtocol());
     }
-    
+
     public void testIsNotRemovedWhenRemoved() throws Exception {
         description.setDateRemovedFromProtocol(null);
         assertFalse(description.isRemovedFromProtocol());

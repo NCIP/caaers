@@ -19,115 +19,116 @@ import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- *
+ * 
  * @author Sujith Vellat Thayyilthodi
- * */
+ */
 public class CreateRuleController extends AbstractRuleInputController<CreateRuleCommand> {
 
-	private RuleAuthoringService ruleAuthoringService;
-	
-	private StudyDao studyDao;
-	
-	private NotificationDao notificationDao;
-	
-	private ReportDefinitionDao reportDefinitionDao;
-	
-	private OrganizationDao organizationDao;
-	
-	private RulesEngineService rulesEngineService;
-	
-	private CtcDao ctcDao;
-	
+    private RuleAuthoringService ruleAuthoringService;
+
+    private StudyDao studyDao;
+
+    private NotificationDao notificationDao;
+
+    private ReportDefinitionDao reportDefinitionDao;
+
+    private OrganizationDao organizationDao;
+
+    private RulesEngineService rulesEngineService;
+
+    private CtcDao ctcDao;
+
     public NotificationDao getNotificationDao() {
-		return notificationDao;
-	}
+        return notificationDao;
+    }
 
-	public void setNotificationDao(NotificationDao notificationDao) {
-		this.notificationDao = notificationDao;
-	}
+    public void setNotificationDao(NotificationDao notificationDao) {
+        this.notificationDao = notificationDao;
+    }
 
-	public CreateRuleController() {
-    	super();
-    	setBindOnNewForm(false);
+    public CreateRuleController() {
+        super();
+        setBindOnNewForm(false);
         addTabs();
     }
 
-	@Override
-	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
-		
-		
-		CreateRuleCommand command = (CreateRuleCommand) oCommand;
+    @Override
+    protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1,
+                    Object oCommand, BindException arg3) throws Exception {
+
+        CreateRuleCommand command = (CreateRuleCommand) oCommand;
         command.save();
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("ruleSet", command.getRuleSet());
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("ruleSet", command.getRuleSet());
         return new ModelAndView("redirectToTriggerList", model);
 
-	}
-	
-	@Override
-	protected Object formBackingObject(HttpServletRequest request) {
-		return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService,reportDefinitionDao,organizationDao,ctcDao);	
-	}
+    }
+
+    @Override
+    protected Object formBackingObject(HttpServletRequest request) {
+        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao,
+                        rulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+    }
 
     @Override
     protected void initFlow() {
         super.initFlow();
-        
+
     }
 
     @Override
     protected String getFlowName() {
         return "Author Rule";
     }
-    
-    protected void addTabs() 
-    {
-    	getFlow().addTab(new SelectRuleTypeTab());
-    	getFlow().addTab(new DisplayRuleSetsTab());
+
+    protected void addTabs() {
+        getFlow().addTab(new SelectRuleTypeTab());
+        getFlow().addTab(new DisplayRuleSetsTab());
         getFlow().addTab(new RuleTab());
         getFlow().addTab(new ReviewTab());
-    }    
-    
-	public RuleAuthoringService getRuleAuthoringService() {
-		return ruleAuthoringService;
-	}
+    }
 
-	public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
-		this.ruleAuthoringService = ruleAuthoringService;
-	}
+    public RuleAuthoringService getRuleAuthoringService() {
+        return ruleAuthoringService;
+    }
 
-	public StudyDao getStudyDao() {
-		return studyDao;
-	}
+    public void setRuleAuthoringService(RuleAuthoringService ruleAuthoringService) {
+        this.ruleAuthoringService = ruleAuthoringService;
+    }
 
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
+    public StudyDao getStudyDao() {
+        return studyDao;
+    }
 
-	public RulesEngineService getRulesEngineService() {
-		return rulesEngineService;
-	}
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
 
-	public void setRulesEngineService(RulesEngineService rulesEngineService) {
-		this.rulesEngineService = rulesEngineService;
-	}
+    public RulesEngineService getRulesEngineService() {
+        return rulesEngineService;
+    }
 
-	public ReportDefinitionDao getReportDefinitionDao() {
-		return reportDefinitionDao;
-	}
+    public void setRulesEngineService(RulesEngineService rulesEngineService) {
+        this.rulesEngineService = rulesEngineService;
+    }
 
-	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
-		this.reportDefinitionDao = reportDefinitionDao;
-	}
+    public ReportDefinitionDao getReportDefinitionDao() {
+        return reportDefinitionDao;
+    }
 
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
-	}
+    public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao) {
+        this.reportDefinitionDao = reportDefinitionDao;
+    }
 
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
-	public void setCtcDao(CtcDao ctcDao) {
-		this.ctcDao = ctcDao;
-	}
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
+
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
+
+    public void setCtcDao(CtcDao ctcDao) {
+        this.ctcDao = ctcDao;
+    }
 }

@@ -8,18 +8,18 @@ import java.util.List;
 import java.util.LinkedList;
 
 /**
- * An {@link InputField} which actually should be rendered as multiple
- * HTML inputs.  The multiple inputs are provided as an {@link InputFieldGroup};
- * the effective property names of the fields in that group will be
- * (the property name of the <code>CompositeField</code>) + <code>'.'</code> + (the property
- * name of the field in the group) 
- *
+ * An {@link InputField} which actually should be rendered as multiple HTML inputs. The multiple
+ * inputs are provided as an {@link InputFieldGroup}; the effective property names of the fields in
+ * that group will be (the property name of the <code>CompositeField</code>) + <code>'.'</code> +
+ * (the property name of the field in the group)
+ * 
  * @author Rhett Sutphin
  */
 public class CompositeField extends AbstractInputField {
     private InputFieldGroup group;
 
-    public CompositeField() { }
+    public CompositeField() {
+    }
 
     public CompositeField(String propertyName, InputFieldGroup group) {
         super();
@@ -28,7 +28,7 @@ public class CompositeField extends AbstractInputField {
         getAttributes().put(SUBFIELDS, createSubfields());
     }
 
-    @SuppressWarnings({ "unchecked" })
+    @SuppressWarnings( { "unchecked" })
     public static List<InputField> getSubfields(InputField compositeField) {
         return (List<InputField>) compositeField.getAttributes().get(SUBFIELDS);
     }
@@ -87,8 +87,7 @@ public class CompositeField extends AbstractInputField {
         protected String qualifyPropertyName(String propertyName) {
             StringBuilder qual = new StringBuilder();
             if (CompositeField.this.getPropertyName() != null) {
-                qual.append(CompositeField.this.getPropertyName())
-                    .append('.');
+                qual.append(CompositeField.this.getPropertyName()).append('.');
             }
             return qual.append(propertyName).toString();
         }

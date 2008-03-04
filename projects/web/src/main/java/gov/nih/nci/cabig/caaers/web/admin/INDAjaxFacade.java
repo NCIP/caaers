@@ -9,32 +9,33 @@ import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import java.util.List;
 
 public class INDAjaxFacade {
-	private OrganizationDao organizationDao;
-	private InvestigatorDao investigatorDao;
+    private OrganizationDao organizationDao;
 
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
-	}
+    private InvestigatorDao investigatorDao;
 
-	public void setOrganizationDao(final OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
-	}
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
+    }
 
-	public InvestigatorDao getInvestigatorDao() {
-		return investigatorDao;
-	}
+    public void setOrganizationDao(final OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
+    }
 
-	public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
+    public InvestigatorDao getInvestigatorDao() {
+        return investigatorDao;
+    }
 
-	public List<Investigator> matchInvestigators(String text){
-		List<Investigator> investigators = investigatorDao.getBySubnames(new String[]{text});
-		return ObjectTools.reduceAll(investigators, "id", "firstName", "lastName");
-	}
+    public void setInvestigatorDao(final InvestigatorDao investigatorDao) {
+        this.investigatorDao = investigatorDao;
+    }
 
-	public List<Organization> matchOrganization(String text){
-    	List<Organization> orgs = organizationDao.getBySubnames(new String[]{text});
-    	return ObjectTools.reduceAll(orgs, "id","name","nciInstituteCode");
-	}
+    public List<Investigator> matchInvestigators(String text) {
+        List<Investigator> investigators = investigatorDao.getBySubnames(new String[] { text });
+        return ObjectTools.reduceAll(investigators, "id", "firstName", "lastName");
+    }
+
+    public List<Organization> matchOrganization(String text) {
+        List<Organization> orgs = organizationDao.getBySubnames(new String[] { text });
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+    }
 }

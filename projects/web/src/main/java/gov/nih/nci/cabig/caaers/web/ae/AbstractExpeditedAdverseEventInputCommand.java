@@ -42,40 +42,54 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
-	
-    private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
+public abstract class AbstractExpeditedAdverseEventInputCommand implements
+                ExpeditedAdverseEventInputCommand {
+
+    private static final Log log = LogFactory
+                    .getLog(AbstractExpeditedAdverseEventInputCommand.class);
 
     private ExpeditedAdverseEventReport aeReport;
+
     private Map<String, List<List<Attribution>>> attributionMap;
+
     private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
-    
+
     protected Collection<ExpeditedReportSection> mandatorySections;
+
     protected MandatoryProperties mandatoryProperties;
 
     protected ExpeditedAdverseEventReportDao reportDao;
+
     protected ReportDefinitionDao reportDefinitionDao;
+
     protected ExpeditedReportTree expeditedReportTree;
 
     protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
 
     private String treatmentDescriptionType;
+
     private List<ReportDefinition> allReportDefinitions;
-    private List<ReportDefinition> requiredReportDefinitions; //report definitions identified by rules engine
+
+    private List<ReportDefinition> requiredReportDefinitions; // report definitions identified by
+                                                                // rules engine
+
     private int nextPage;
 
-    protected Map<String,Boolean> outcomes;
+    protected Map<String, Boolean> outcomes;
+
     private Date outcomeDate;
+
     private String otherOutcome;
-    
-    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
+
+    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao,
+                    ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
         this.expeditedReportTree = expeditedReportTree;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
         this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
         this.outcomes = new LinkedHashMap<String, Boolean>();
-        
+
     }
 
     public abstract StudyParticipantAssignment getAssignment();
@@ -95,19 +109,19 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             setAeReport(merged);
         }
     }
-    
-    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs){
-    	//deselect all previously selected report
-    	for(Map.Entry<ReportDefinition, Boolean>  entry: optionalReportDefinitionsMap.entrySet()){
-			entry.setValue(false);
-		}
-    	setSelectedReportDefinitions(defs);
+
+    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs) {
+        // deselect all previously selected report
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            entry.setValue(false);
+        }
+        setSelectedReportDefinitions(defs);
     }
-    
+
     public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
-    	if(defs == null || defs.isEmpty()) return;
-    	for (ReportDefinition def : defs) {
-                optionalReportDefinitionsMap.put(def, false);
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, false);
         }
         // Deliberately not removing entries from the map that aren't in defs.
         // This is so that the user may still remove Reports whose ReportDefinitions
@@ -117,7 +131,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap() {
         return optionalReportDefinitionsMap;
     }
-    
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
         if (aeReport.getAdverseEvents().size() == 0) {
@@ -134,12 +147,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private void updateOptionalReportDefinitionsMapFromAeReport() {
         Set<ReportDefinition> defsInAeReport = new HashSet<ReportDefinition>();
         for (Report report : this.getAeReport().getReports()) {
-            log.debug("Found Report in new aeReport: "
-                + report.getReportDefinition().getName() + ' ' + report.getId());
-            log.debug("Report def hashCode is " + Integer.toHexString(report.getReportDefinition().hashCode()));
+            log.debug("Found Report in new aeReport: " + report.getReportDefinition().getName()
+                            + ' ' + report.getId());
+            log.debug("Report def hashCode is "
+                            + Integer.toHexString(report.getReportDefinition().hashCode()));
             defsInAeReport.add(report.getReportDefinition());
             optionalReportDefinitionsMap.put(report.getReportDefinition(), true);
-            log.debug("Report is not required, so added to optional reports map: " + optionalReportDefinitionsMap);
+            log.debug("Report is not required, so added to optional reports map: "
+                            + optionalReportDefinitionsMap);
         }
         // deselect any definitions which were already in the map but not in the aeReport
         for (ReportDefinition inMap : optionalReportDefinitionsMap.keySet()) {
@@ -172,66 +187,69 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         mandatoryProperties = new MandatoryProperties(expeditedReportTree);
         for (Report report : aeReport.getReports()) {
             if (report.getReportDefinition().getMandatoryFields() == null) continue;
-            for (ReportMandatoryFieldDefinition field : report.getReportDefinition().getMandatoryFields()) {
+            for (ReportMandatoryFieldDefinition field : report.getReportDefinition()
+                            .getMandatoryFields()) {
                 mandatoryProperties.add(field);
             }
         }
     }
-    
-    /** 
+
+    /**
      * The repeating fields available in the mandatory sections will be pre-initialized here.
      */
-    
+
     @SuppressWarnings("unchecked")
-	public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
-    	if(mandatorySections == null || mandatorySections.isEmpty()){
-    		log.info("No mandatory sections available, so no fields will be pre initialized");
-    		return;
-    	}
-    	
-    	//pre-initialize lazy fields in mandatory sections.
-    	BeanWrapper wrapper = new BeanWrapperImpl(getAeReport());
-        for(ExpeditedReportSection section :getMandatorySections()){
-        	assert (section != null) : "A section is null in command.getManatorySections()";
-        	
-        	TreeNode sectionNode = tree.getNodeForSection(section);
-        	if(sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
-        	
-        	assert (sectionNode != null) : section.toString() + ", is not available in ExpeditedReportTree.";
-        	if(sectionNode.getChildren() == null) continue;
-        	
-        	for(TreeNode node : sectionNode.getChildren()){
-        		if(node.isList()){
-        			log.info("Initialized '" + node.getPropertyName() + "' in section " + section.name());
-        			wrapper.getPropertyValue(node.getPropertyName()+"[0]");
-        		}
-        	}
-        	
-        	
-        	//special case, when TreatmentInformation (course&agents tab) is mandatory.
-        	//All StudyAgents associated with lead IND should be pre-initialized.
-        	if(ExpeditedReportSection.TREATMENT_INFO_SECTION.equals(section)){
-        		List<CourseAgent> courseAgents = (List<CourseAgent>)wrapper.getPropertyValue(sectionNode.getChildren().get(0).getPropertyName() + ".courseAgents");
-        		if(courseAgents.size() <= 0){
-        			//first time, the user did not override system pre selection.
-        			int i = 0; 
-        			for(StudyAgent agent : getAeReport().getStudy().getStudyAgents()){
-        				if(agent.getPartOfLeadIND()!= null && agent.getPartOfLeadIND()){
-        					CourseAgent courseAgent = courseAgents.get(i);
-        					courseAgent.setStudyAgent(agent);
-        					i++;
-            			}	
-        			}
-        		}
-        	}
-        	
-        	
-        	
-        	
+    public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
+        if (mandatorySections == null || mandatorySections.isEmpty()) {
+            log.info("No mandatory sections available, so no fields will be pre initialized");
+            return;
         }
-    	
+
+        // pre-initialize lazy fields in mandatory sections.
+        BeanWrapper wrapper = new BeanWrapperImpl(getAeReport());
+        for (ExpeditedReportSection section : getMandatorySections()) {
+            assert (section != null) : "A section is null in command.getManatorySections()";
+
+            TreeNode sectionNode = tree.getNodeForSection(section);
+            if (sectionNode == null) log.warn("Unable to fetch TreeNode for section"
+                            + section.name());
+
+            assert (sectionNode != null) : section.toString()
+                            + ", is not available in ExpeditedReportTree.";
+            if (sectionNode.getChildren() == null) continue;
+
+            for (TreeNode node : sectionNode.getChildren()) {
+                if (node.isList()) {
+                    log.info("Initialized '" + node.getPropertyName() + "' in section "
+                                    + section.name());
+                    wrapper.getPropertyValue(node.getPropertyName() + "[0]");
+                }
+            }
+
+            // special case, when TreatmentInformation (course&agents tab) is mandatory.
+            // All StudyAgents associated with lead IND should be pre-initialized.
+            if (ExpeditedReportSection.TREATMENT_INFO_SECTION.equals(section)) {
+                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper
+                                .getPropertyValue(sectionNode.getChildren().get(0)
+                                                .getPropertyName()
+                                                + ".courseAgents");
+                if (courseAgents.size() <= 0) {
+                    // first time, the user did not override system pre selection.
+                    int i = 0;
+                    for (StudyAgent agent : getAeReport().getStudy().getStudyAgents()) {
+                        if (agent.getPartOfLeadIND() != null && agent.getPartOfLeadIND()) {
+                            CourseAgent courseAgent = courseAgents.get(i);
+                            courseAgent.setStudyAgent(agent);
+                            i++;
+                        }
+                    }
+                }
+            }
+
+        }
+
     }
-    
+
     public MandatoryProperties getMandatoryProperties() {
         return mandatoryProperties;
     }
@@ -244,189 +262,191 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         this.treatmentDescriptionType = type;
     }
 
-	public Map<String, Boolean> getMandatoryFieldMap() {
-		return mandatoryFieldMap;
-	}
-	
-	/**
-	 * Returns all the {@link ReportDefinition} available to this AE
-	 */
-	public List<ReportDefinition> getAllReportDefinitions() {
-		return allReportDefinitions;
-	}
-	public void setAllReportDefinitions(
-			List<ReportDefinition> allReportDefinitions) {
-		this.allReportDefinitions = allReportDefinitions;
-	}
-	
-	/**
-	 * This method will return the {@link ReportDefinition} that are instantiated
-	 */
-	public List<ReportDefinition> getInstantiatedReportDefinitions(){
-		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-		for(Report report : aeReport.getReports()){
-			if(!report.getStatus().equals(ReportStatus.WITHDRAWN))
-				reportDefs.add(report.getReportDefinition());
-		}
-		
-		return reportDefs;
-
-	}
-	/**
-	 * This method will return the ReportDefinition which are selected by user 
-	 * in the checkpoint page.
-	 */
-	public List<ReportDefinition> getSelectedReportDefinitions() {
-		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();	
-		for(Map.Entry<ReportDefinition, Boolean>  entry: optionalReportDefinitionsMap.entrySet()){
-			if(entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
-		}
-		return reportDefs;
-	}
-	
-	public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
-		if(defs == null || defs.isEmpty()) return;
-    	for (ReportDefinition def : defs) {
-    		optionalReportDefinitionsMap.put(def, true);
-        }
-	}
-
-	public void setSelectedReportDefinitionNames(String selectedNames){
-		if(selectedNames == null || selectedNames.length() < 1) return;
-		String[] names = selectedNames.split(",");
-		String name = null;
-		Map<ReportDefinition, Boolean> map = new LinkedHashMap<ReportDefinition, Boolean>();
-		for(Map.Entry<ReportDefinition, Boolean> entry: optionalReportDefinitionsMap.entrySet()){
-			name = "optionalReportDefinitionsMap[" + entry.getKey().getId() + "]";
-			if(ArrayUtils.contains(names, name)){
-				map.put(entry.getKey(), true);
-			}else{
-				map.put(entry.getKey(), false);
-			}
-		}
-		//add all
-		optionalReportDefinitionsMap.putAll(map);
-	}
-	
-	public String getRequiredReportDefinitionNames(){
-		return getReportDefinitionNames(getRequiredReportDeifnitions());
-	}
-	
-	public String getSelectedReportDefinitionNames() {
-		return getReportDefinitionNames(getSelectedReportDefinitions());
-	}
-	
-	public List<ReportDefinition> getRequiredReportDeifnitions() {
-		return requiredReportDefinitions;
-	}
-	
-	public void setRequiredReportDefinition(List<ReportDefinition> defs) {
-		if(defs != null) requiredReportDefinitions.addAll(defs);
-	}
-	
-	public Collection<ReportDefinition> getSubmittedReportDefinitions() {
-		Set<ReportDefinition> defs = new HashSet<ReportDefinition>();
-		if(getAeReport().getReports() != null){
-			for(Report report : getAeReport().getReports()){
-				if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)){
-					defs.add(report.getReportDefinition());
-				}
-			}
-		}
-		return null;
-	}
-	
-	public boolean getIgnoreCompletedStudy() {
-		return true;
-	}
-	
-	public int getNextPage() {
-		return nextPage;
-	}
-	public void setNextPage(int page) {
-		this.nextPage = page;
-	}
-	
-	
-	
-    public Map<String, Boolean> getOutcomes() {
-		return outcomes;
-	}
-
-	public void setOutcomes(Map<String, Boolean> outcomes) {
-		this.outcomes = outcomes;
-	}
-
-	public void updateOutcomes(){
-		
-		// populate checkboxes with data from db 
-		// not all checkboxes are populated from db - as we need to allow dynamic updates to 
-		// support changes that might happen in the Primary Adverse event. 
-		HashMap<String,Boolean> dbOutcomeHolder = new HashMap<String,Boolean>();
-		for (Outcome outcome : aeReport.getOutcomes()) {
-			if ( outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION ) 
-			{
-				dbOutcomeHolder.put(outcome.getOutcomeType().getCode().toString(), Boolean.TRUE);
-			}
-			if (outcome.getOutcomeType() == OutcomeType.DEATH ){
-				this.outcomeDate = outcome.getDate();
-			}
-			if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS ){
-				this.otherOutcome = outcome.getOther();
-			}
-		}
-		
-		Grade grade = aeReport.getAdverseEvents().size() >0 ? aeReport.getAdverseEvents().get(0).getGrade() : null;
-		Hospitalization hospitalization =  aeReport.getAdverseEvents().size() >0 ? aeReport.getAdverseEvents().get(0).getHospitalization() : null;
-		
-		for (OutcomeType outcomeType : OutcomeType.values()) {
-			boolean choice = Boolean.FALSE;
-			if(hospitalization != null && hospitalization.getName().contains(outcomeType.getName())){
-				choice = Boolean.TRUE;
-			}
-			if(dbOutcomeHolder.get(outcomeType.getCode().toString()) != null){
-				choice = Boolean.TRUE;
-			}
-			outcomes.put(outcomeType.getCode().toString(),choice);
-		}
-	}
-
-	public Date getOutcomeDate() {
-		return outcomeDate;
-	}
-
-	public void setOutcomeDate(Date outcomeDate) {
-		this.outcomeDate = outcomeDate;
-	}
-
-	public String getOtherOutcome() {
-		return otherOutcome;
-	}
-
-	public void setOtherOutcome(String otherOutcome) {
-		this.otherOutcome = otherOutcome;
-	}
-	
-	public Integer getZERO() {
-		return ExpeditedAdverseEventInputCommand.ZERO;
-	}
-	
-	@Override
-    public String toString() {
-        return new StringBuilder(getClass().getName())
-            .append("[\n    aeReport: ").append(getAeReport())
-            .append("\n    optionalReportDefinitionsMap: ").append(getOptionalReportDefinitionsMap())
-            // TODO: This line is throwing an NPE sometimes.  Figure out why.
-            // .append("\n    attributionMap: ").append(getAttributionMap())
-            .append("\n]").toString();
+    public Map<String, Boolean> getMandatoryFieldMap() {
+        return mandatoryFieldMap;
     }
-    
-    private String getReportDefinitionNames(List<ReportDefinition> defs){
-    	if(defs == null || defs.isEmpty()) return "" ;
-		StringBuilder sb = new StringBuilder();
-		for(ReportDefinition def : defs){
-			sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
-		}
-		return sb.toString();
-	}
+
+    /**
+     * Returns all the {@link ReportDefinition} available to this AE
+     */
+    public List<ReportDefinition> getAllReportDefinitions() {
+        return allReportDefinitions;
+    }
+
+    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
+        this.allReportDefinitions = allReportDefinitions;
+    }
+
+    /**
+     * This method will return the {@link ReportDefinition} that are instantiated
+     */
+    public List<ReportDefinition> getInstantiatedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (Report report : aeReport.getReports()) {
+            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report
+                            .getReportDefinition());
+        }
+
+        return reportDefs;
+
+    }
+
+    /**
+     * This method will return the ReportDefinition which are selected by user in the checkpoint
+     * page.
+     */
+    public List<ReportDefinition> getSelectedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            if (entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
+        }
+        return reportDefs;
+    }
+
+    public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, true);
+        }
+    }
+
+    public void setSelectedReportDefinitionNames(String selectedNames) {
+        if (selectedNames == null || selectedNames.length() < 1) return;
+        String[] names = selectedNames.split(",");
+        String name = null;
+        Map<ReportDefinition, Boolean> map = new LinkedHashMap<ReportDefinition, Boolean>();
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            name = "optionalReportDefinitionsMap[" + entry.getKey().getId() + "]";
+            if (ArrayUtils.contains(names, name)) {
+                map.put(entry.getKey(), true);
+            } else {
+                map.put(entry.getKey(), false);
+            }
+        }
+        // add all
+        optionalReportDefinitionsMap.putAll(map);
+    }
+
+    public String getRequiredReportDefinitionNames() {
+        return getReportDefinitionNames(getRequiredReportDeifnitions());
+    }
+
+    public String getSelectedReportDefinitionNames() {
+        return getReportDefinitionNames(getSelectedReportDefinitions());
+    }
+
+    public List<ReportDefinition> getRequiredReportDeifnitions() {
+        return requiredReportDefinitions;
+    }
+
+    public void setRequiredReportDefinition(List<ReportDefinition> defs) {
+        if (defs != null) requiredReportDefinitions.addAll(defs);
+    }
+
+    public Collection<ReportDefinition> getSubmittedReportDefinitions() {
+        Set<ReportDefinition> defs = new HashSet<ReportDefinition>();
+        if (getAeReport().getReports() != null) {
+            for (Report report : getAeReport().getReports()) {
+                if (report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
+                    defs.add(report.getReportDefinition());
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean getIgnoreCompletedStudy() {
+        return true;
+    }
+
+    public int getNextPage() {
+        return nextPage;
+    }
+
+    public void setNextPage(int page) {
+        this.nextPage = page;
+    }
+
+    public Map<String, Boolean> getOutcomes() {
+        return outcomes;
+    }
+
+    public void setOutcomes(Map<String, Boolean> outcomes) {
+        this.outcomes = outcomes;
+    }
+
+    public void updateOutcomes() {
+
+        // populate checkboxes with data from db
+        // not all checkboxes are populated from db - as we need to allow dynamic updates to
+        // support changes that might happen in the Primary Adverse event.
+        HashMap<String, Boolean> dbOutcomeHolder = new HashMap<String, Boolean>();
+        for (Outcome outcome : aeReport.getOutcomes()) {
+            if (outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION) {
+                dbOutcomeHolder.put(outcome.getOutcomeType().getCode().toString(), Boolean.TRUE);
+            }
+            if (outcome.getOutcomeType() == OutcomeType.DEATH) {
+                this.outcomeDate = outcome.getDate();
+            }
+            if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS) {
+                this.otherOutcome = outcome.getOther();
+            }
+        }
+
+        Grade grade = aeReport.getAdverseEvents().size() > 0 ? aeReport.getAdverseEvents().get(0)
+                        .getGrade() : null;
+        Hospitalization hospitalization = aeReport.getAdverseEvents().size() > 0 ? aeReport
+                        .getAdverseEvents().get(0).getHospitalization() : null;
+
+        for (OutcomeType outcomeType : OutcomeType.values()) {
+            boolean choice = Boolean.FALSE;
+            if (hospitalization != null
+                            && hospitalization.getName().contains(outcomeType.getName())) {
+                choice = Boolean.TRUE;
+            }
+            if (dbOutcomeHolder.get(outcomeType.getCode().toString()) != null) {
+                choice = Boolean.TRUE;
+            }
+            outcomes.put(outcomeType.getCode().toString(), choice);
+        }
+    }
+
+    public Date getOutcomeDate() {
+        return outcomeDate;
+    }
+
+    public void setOutcomeDate(Date outcomeDate) {
+        this.outcomeDate = outcomeDate;
+    }
+
+    public String getOtherOutcome() {
+        return otherOutcome;
+    }
+
+    public void setOtherOutcome(String otherOutcome) {
+        this.otherOutcome = otherOutcome;
+    }
+
+    public Integer getZERO() {
+        return ExpeditedAdverseEventInputCommand.ZERO;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getName()).append("[\n    aeReport: ").append(
+                        getAeReport()).append("\n    optionalReportDefinitionsMap: ").append(
+                        getOptionalReportDefinitionsMap())
+        // TODO: This line is throwing an NPE sometimes. Figure out why.
+                        // .append("\n attributionMap: ").append(getAttributionMap())
+                        .append("\n]").toString();
+    }
+
+    private String getReportDefinitionNames(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (ReportDefinition def : defs) {
+            sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
+        }
+        return sb.toString();
+    }
 }

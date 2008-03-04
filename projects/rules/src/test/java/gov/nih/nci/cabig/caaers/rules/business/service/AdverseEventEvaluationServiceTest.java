@@ -9,46 +9,47 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import junit.framework.TestCase;
 
 public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
-	AdverseEventEvaluationServiceImpl service;
-	RulesEngineService rulesEngineService;
-	
-	protected void setUp() throws Exception {
-		super.setUp();
-		service = new AdverseEventEvaluationServiceImpl();
-		rulesEngineService = registerMockFor(RulesEngineService.class);
-		service.setRulesEngineService(rulesEngineService);
-	}
+    AdverseEventEvaluationServiceImpl service;
 
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+    RulesEngineService rulesEngineService;
 
-	public void testAssesAdverseEvent() throws Exception{
-		Study study = Fixtures.createStudy("Test");
-		Organization org = Fixtures.createOrganization("testOrg");
-		study.setPrimaryFundingSponsorOrganization(org);
-		AdverseEvent ae = new AdverseEvent();
-		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		ae.setReport(aeReport);
-		String s = service.assesAdverseEvent(ae, study);
-		
-		System.out.println(s);
-	}
+    protected void setUp() throws Exception {
+        super.setUp();
+        service = new AdverseEventEvaluationServiceImpl();
+        rulesEngineService = registerMockFor(RulesEngineService.class);
+        service.setRulesEngineService(rulesEngineService);
+    }
 
-	public void testEvaluateSAEReportSchedule() {
-		fail("Not yet implemented");
-	}
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
 
-	public void testMandatorySections() {
-		fail("Not yet implemented");
-	}
+    public void testAssesAdverseEvent() throws Exception {
+        Study study = Fixtures.createStudy("Test");
+        Organization org = Fixtures.createOrganization("testOrg");
+        study.setPrimaryFundingSponsorOrganization(org);
+        AdverseEvent ae = new AdverseEvent();
+        ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+        ae.setReport(aeReport);
+        String s = service.assesAdverseEvent(ae, study);
 
-	public void testMandatorySectionsForReport() {
-		fail("Not yet implemented");
-	}
+        System.out.println(s);
+    }
 
-	public void testValidateReportingBusinessRules() {
-		fail("Not yet implemented");
-	}
+    public void testEvaluateSAEReportSchedule() {
+        fail("Not yet implemented");
+    }
+
+    public void testMandatorySections() {
+        fail("Not yet implemented");
+    }
+
+    public void testMandatorySectionsForReport() {
+        fail("Not yet implemented");
+    }
+
+    public void testValidateReportingBusinessRules() {
+        fail("Not yet implemented");
+    }
 
 }

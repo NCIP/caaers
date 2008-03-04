@@ -7,12 +7,11 @@ import gov.nih.nci.cabig.ctms.domain.EnumHelper;
  * @author Sujith Vellat Thayyilthodi
  */
 public enum NotificationType implements CodedEnum<Integer> {
-    EMAIL_NOTIFICATION(1, "Email Notification"),
-    FAX_NOTIFICATION(2, "Fax Notification"),
-    PAGER_NOTIFICATION(3, "Pager Notification"),
-    XML_NOTIFICATION(4, "XML Notification");
+    EMAIL_NOTIFICATION(1, "Email Notification"), FAX_NOTIFICATION(2, "Fax Notification"), PAGER_NOTIFICATION(
+                    3, "Pager Notification"), XML_NOTIFICATION(4, "XML Notification");
 
     private int code;
+
     private String name;
 
     NotificationType(int code, String name) {

@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * @author Rhett Sutphin
  */
-/* TODO: much of this class is shared with PSC.  Refactor into a shared library. */
+/* TODO: much of this class is shared with PSC. Refactor into a shared library. */
 public class ControllerTools {
     private static ThreadLocal<DateFormat> dateFormat = new ThreadLocal<DateFormat>();
 
@@ -39,33 +39,30 @@ public class ControllerTools {
         return dateFormat.get().format(date);
     }
 
-    public static void registerDomainObjectEditor(
-        ServletRequestDataBinder binder, String field, CaaersDao<?> dao
-    ) {
+    public static void registerDomainObjectEditor(ServletRequestDataBinder binder, String field,
+                    CaaersDao<?> dao) {
         binder.registerCustomEditor(dao.domainClass(), field, new DaoBasedEditor(dao));
     }
 
-    public static void registerDomainObjectEditor(
-        ServletRequestDataBinder binder, CaaersDao<?> dao
-    ) {
+    public static void registerDomainObjectEditor(ServletRequestDataBinder binder, CaaersDao<?> dao) {
         binder.registerCustomEditor(dao.domainClass(), new DaoBasedEditor(dao));
     }
 
-    public static void registerGridDomainObjectEditor(
-        ServletRequestDataBinder binder, String field, GridIdentifiableDao<?> dao
-    ) {
-        binder.registerCustomEditor(dao.domainClass(), field, new GridIdentifiableDaoBasedEditor(dao));
+    public static void registerGridDomainObjectEditor(ServletRequestDataBinder binder,
+                    String field, GridIdentifiableDao<?> dao) {
+        binder.registerCustomEditor(dao.domainClass(), field, new GridIdentifiableDaoBasedEditor(
+                        dao));
     }
 
-    public static <E extends Enum<E>> void registerEnumEditor(
-        ServletRequestDataBinder binder, Class<E> enumClass
-    ) {
+    public static <E extends Enum<E>> void registerEnumEditor(ServletRequestDataBinder binder,
+                    Class<E> enumClass) {
         binder.registerCustomEditor(enumClass, new EnumByNameEditor<E>(enumClass));
     }
-    
+
     /**
-     * Determine whether the given request was made via an asynchronous request mechanism.
-     * Current implementation works for prototype.js-initiated requests only.
+     * Determine whether the given request was made via an asynchronous request mechanism. Current
+     * implementation works for prototype.js-initiated requests only.
+     * 
      * @param request
      */
     public static boolean isAjaxRequest(HttpServletRequest request) {
@@ -73,5 +70,6 @@ public class ControllerTools {
         return header != null && "XMLHttpRequest".equals(header);
     }
 
-    private ControllerTools() { }
+    private ControllerTools() {
+    }
 }

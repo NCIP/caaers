@@ -10,21 +10,23 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
  */
 public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
     protected String flowName;
+
     private Flow<ExpeditedAdverseEventInputCommand> ctepFlow;
+
     private Flow<ExpeditedAdverseEventInputCommand> meddraFlow;
 
     public ExpeditedFlowFactory(String flowName) {
         this.flowName = flowName;
     }
 
-    ////// LOGIC
+    // //// LOGIC
 
     protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
     }
 
     protected void addPostBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-    	flow.addTab(new TreatmentTab());
-    	flow.addTab(new ReporterTab());
+        flow.addTab(new TreatmentTab());
+        flow.addTab(new ReporterTab());
         flow.addTab(new CheckpointTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
@@ -32,7 +34,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         flow.addTab(new PriorTherapyTab());
         flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
-       
+
         flow.addTab(new RadiationInterventionTab());
         flow.addTab(new SurgeryInterventionTab());
         flow.addTab(new MedicalDeviceTab());
@@ -42,8 +44,10 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         flow.addTab(new ViewReportTab());
     }
 
-    public Flow<ExpeditedAdverseEventInputCommand> createFlow(ExpeditedAdverseEventInputCommand command) {
-        if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+    public Flow<ExpeditedAdverseEventInputCommand> createFlow(
+                    ExpeditedAdverseEventInputCommand command) {
+        if (command.getStudy() != null
+                        && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
             return getMeddraFlow(command);
         } else {
             return getCtepFlow(command);
@@ -54,39 +58,43 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         return new Flow<ExpeditedAdverseEventInputCommand>(flowName);
     }
 
-    private Flow<ExpeditedAdverseEventInputCommand> getMeddraFlow(ExpeditedAdverseEventInputCommand command) {
+    private Flow<ExpeditedAdverseEventInputCommand> getMeddraFlow(
+                    ExpeditedAdverseEventInputCommand command) {
         if (meddraFlow == null || (meddraFlow != null && command.getStudy() == null)) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new MeddraBasicsTab());
             addPostBasicTabs(meddraFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && meddraFlow != null && (
-        		meddraFlow.getTabCount() == 18 || meddraFlow.getTabCount() == 17)){
-        	meddraFlow = createEmptyFlow();
-             addPreBasicTabs(meddraFlow);
-             meddraFlow.addTab(new MeddraBasicsOutcomeTab());
-             addPostBasicTabs(meddraFlow);
+        if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
+                        && meddraFlow != null
+                        && (meddraFlow.getTabCount() == 18 || meddraFlow.getTabCount() == 17)) {
+            meddraFlow = createEmptyFlow();
+            addPreBasicTabs(meddraFlow);
+            meddraFlow.addTab(new MeddraBasicsOutcomeTab());
+            addPostBasicTabs(meddraFlow);
         }
         return meddraFlow;
     }
 
-    private Flow<ExpeditedAdverseEventInputCommand> getCtepFlow(ExpeditedAdverseEventInputCommand command) {
-    	
-    	if (ctepFlow == null || (ctepFlow != null && command.getStudy() == null)) {
+    private Flow<ExpeditedAdverseEventInputCommand> getCtepFlow(
+                    ExpeditedAdverseEventInputCommand command) {
+
+        if (ctepFlow == null || (ctepFlow != null && command.getStudy() == null)) {
             ctepFlow = createEmptyFlow();
             addPreBasicTabs(ctepFlow);
             ctepFlow.addTab(new CtcBasicsTab());
             addPostBasicTabs(ctepFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && ctepFlow != null && (
-        		ctepFlow.getTabCount() == 18 || ctepFlow.getTabCount() == 17)){
-        	 ctepFlow = createEmptyFlow();
-             addPreBasicTabs(ctepFlow);
-             ctepFlow.addTab(new CtcBasicsOutcomeTab());
-             addPostBasicTabs(ctepFlow);
+        if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
+                        && ctepFlow != null
+                        && (ctepFlow.getTabCount() == 18 || ctepFlow.getTabCount() == 17)) {
+            ctepFlow = createEmptyFlow();
+            addPreBasicTabs(ctepFlow);
+            ctepFlow.addTab(new CtcBasicsOutcomeTab());
+            addPostBasicTabs(ctepFlow);
         }
-        
+
         return ctepFlow;
     }
 }

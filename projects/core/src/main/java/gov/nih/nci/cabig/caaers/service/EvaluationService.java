@@ -8,77 +8,81 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-
 import java.util.List;
 import java.util.Collection;
 
 /**
  * This service interface is used to implement various caaers business rules.
+ * 
  * @author Rhett Sutphin
  */
 public interface EvaluationService {
     /**
-     * @return true if the given adverse event is severe in the context of the provided
-     *  study, site, and participant
+     * @return true if the given adverse event is severe in the context of the provided study, site,
+     *         and participant
      */
     boolean isSevere(StudyParticipantAssignment assignment, AdverseEvent adverseEvent);
 
     /**
      * Checks whether all the mandatory fields, are duly filled. If the report is complete, the
      * ErrorMessages will be empty
-     * @param report - {@link Report}
+     * 
+     * @param report -
+     *                {@link Report}
      * @return {@link ReportSubmittability}
      */
-    //return type based on the method name, is misleading,need to find a better name.
+    // return type based on the method name, is misleading,need to find a better name.
     ReportSubmittability isSubmittable(Report report);
 
     /**
      * Will return the ReportDefinition that are marked required at rules engine.
-     *
-     * @param expeditedData - The expedited adverse event report
+     * 
+     * @param expeditedData -
+     *                The expedited adverse event report
      * @return - A list of {@link ReportDefinition} objects.
      */
     List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData);
 
     /**
-     * Evaluates the provided data and associates new {@link Report}
-     * instances with the given {@link ExpeditedAdverseEventReport}.
+     * Evaluates the provided data and associates new {@link Report} instances with the given
+     * {@link ExpeditedAdverseEventReport}.
      * <p>
-     * This method may be called multiple times for the same expedited data.  Implementors must be
-     * sure not to add multiple {@link Report}s for the same
-     * {@link ReportDefinition}.  Implementors must also <em>not</em> remove
+     * This method may be called multiple times for the same expedited data. Implementors must be
+     * sure not to add multiple {@link Report}s for the same {@link ReportDefinition}.
+     * Implementors must also <em>not</em> remove
      * {@link gov.nih.nci.cabig.caaers.domain.report.Report}s if they don't evaluate as required
-     * (e.g., some reports may have been directly selected by the user).  Instead, implementors
+     * (e.g., some reports may have been directly selected by the user). Instead, implementors
      * should update the {@link Report#setRequired} flag.
-     *
+     * 
      * @param expeditedData
      * @return the report definitions which the evaluation indicated were required.
      */
-   // @Deprecated
-    //void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
-
+    // @Deprecated
+    // void addRequiredReports(ExpeditedAdverseEventReport expeditedData);
     /**
      * This method will instantiate and saves the optional reports.
+     * 
      * @param expeditedData
-     * @param reportDefs - A list of ReportDefinitions
+     * @param reportDefs -
+     *                A list of ReportDefinitions
      */
-    void addOptionalReports(ExpeditedAdverseEventReport expeditedData, List<ReportDefinition> reportDefs);
-
+    void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
+                    List<ReportDefinition> reportDefs);
 
     /**
-     *
+     * 
      * @param expeditedData
      * @return All the mandatory sections for a given expedited report.
      */
     Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData);
 
     /**
-     * @return All the report definitions which might apply to the given
-     *  study, site, and participant
+     * @return All the report definitions which might apply to the given study, site, and
+     *         participant
      */
     // TODO: it might more sense for this to go in ReportService
     List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment);
-    
+
     /**
      * Runs through the Business rules set at "FundingSponsor" level, for the section.
      * 
@@ -86,7 +90,7 @@ public interface EvaluationService {
      * @param sectionName
      * @return - {@link ValidationErrors}, that contains the errors.
      */
-    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection sectionName);
-
+    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
+                    ExpeditedReportSection sectionName);
 
 }

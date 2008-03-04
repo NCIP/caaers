@@ -9,54 +9,54 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-@Entity
-@Table(name="MANDATORY_FIELD_DEFS")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-    @Parameter(name="sequence", value="seq_mandatory_field_defs_id")
-        }
-)
-// TODO: why store field definitions for mandatory=false?
-public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements Serializable {
 
-	private String fieldPath;
+@Entity
+@Table(name = "MANDATORY_FIELD_DEFS")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_mandatory_field_defs_id") })
+// TODO: why store field definitions for mandatory=false?
+public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject implements
+                Serializable {
+
+    private String fieldPath;
+
     private Boolean mandatory;
 
+    public ReportMandatoryFieldDefinition() {
+        this("", Boolean.FALSE);
+    }
 
-	public ReportMandatoryFieldDefinition(){
-		this("", Boolean.FALSE);
-	}
+    public ReportMandatoryFieldDefinition(String fieldPath) {
+        this(fieldPath, Boolean.FALSE);
+    }
 
-	public ReportMandatoryFieldDefinition( String fieldPath){
-		this(fieldPath, Boolean.FALSE);
-	}
-	public ReportMandatoryFieldDefinition(String fieldPath, Boolean mandatory){
-		this.mandatory = mandatory;
-		this.fieldPath = fieldPath;
-	}
+    public ReportMandatoryFieldDefinition(String fieldPath, Boolean mandatory) {
+        this.mandatory = mandatory;
+        this.fieldPath = fieldPath;
+    }
 
-//    @Transient
-//    public boolean isMandatory() {
-//        return getMandatory() != null && getMandatory();
-//    }
+    // @Transient
+    // public boolean isMandatory() {
+    // return getMandatory() != null && getMandatory();
+    // }
 
     public String getFieldPath() {
-		return fieldPath;
-	}
-	public void setFieldPath(String fieldPath) {
-		this.fieldPath = fieldPath;
-	}
+        return fieldPath;
+    }
 
-	public Boolean getMandatory() {
-		return mandatory ;
-	}
+    public void setFieldPath(String fieldPath) {
+        this.fieldPath = fieldPath;
+    }
 
-	public void setMandatory(Boolean mandatory) {
-		this.mandatory = mandatory;
-	}
+    public Boolean getMandatory() {
+        return mandatory;
+    }
 
-	@Override
-	public String toString() {
-		return "ReportMandatoryFieldDefinition[" + fieldPath + ", " + mandatory.toString()+ "]";
-	}
+    public void setMandatory(Boolean mandatory) {
+        this.mandatory = mandatory;
+    }
+
+    @Override
+    public String toString() {
+        return "ReportMandatoryFieldDefinition[" + fieldPath + ", " + mandatory.toString() + "]";
+    }
 }

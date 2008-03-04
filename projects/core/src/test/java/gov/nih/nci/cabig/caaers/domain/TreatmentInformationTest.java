@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases({ CREATE_EXPEDITED_REPORT })
+@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class TreatmentInformationTest extends CaaersTestCase {
     private TreatmentInformation treatmentInformation = new TreatmentInformation();
 
@@ -40,10 +40,10 @@ public class TreatmentInformationTest extends CaaersTestCase {
     private CourseAgent createCourseAgent(Boolean newDrug) {
         CourseAgent ca = new CourseAgent();
         StudyAgent sa = new StudyAgent();
-        if(newDrug != null && newDrug.booleanValue()){
-        	sa.getStudyAgentINDAssociations().get(0);
+        if (newDrug != null && newDrug.booleanValue()) {
+            sa.getStudyAgentINDAssociations().get(0);
         }
-        //sa.setInvestigationalNewDrugIndicator(newDrug);
+        // sa.setInvestigationalNewDrugIndicator(newDrug);
         ca.setStudyAgent(sa);
 
         return ca;

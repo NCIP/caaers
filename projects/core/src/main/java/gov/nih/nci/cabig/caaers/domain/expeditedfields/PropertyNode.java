@@ -68,14 +68,12 @@ class PropertyNode extends TreeNode {
     }
 
     protected void addPropertyValues(String baseName, Object baseValue, MutablePropertyValues target) {
-        target.addPropertyValue(qualifyName(baseName, getPropertyName()),
-            nullSafePropertyValue(baseValue, getPropertyName()));
+        target.addPropertyValue(qualifyName(baseName, getPropertyName()), nullSafePropertyValue(
+                        baseValue, getPropertyName()));
     }
 
     protected static Object nullSafePropertyValue(Object bean, String propertyName) {
-        return bean == null
-            ? null
-            : new BeanWrapperImpl(bean).getPropertyValue(propertyName);
+        return bean == null ? null : new BeanWrapperImpl(bean).getPropertyValue(propertyName);
     }
 
     @Override

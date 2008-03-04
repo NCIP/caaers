@@ -23,96 +23,96 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
 /**
- * This class represent the details that which is to be used
- * while creating the actual ScheduledNotification.
+ * This class represent the details that which is to be used while creating the actual
+ * ScheduledNotification.
+ * 
  * @author Biju Joseph
  */
 @Entity
 @Table(name = "planned_notifications")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(
-    name = "dtype",
-    discriminatorType = DiscriminatorType.STRING
-)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("dtype")
-@GenericGenerator(name = "id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name = "sequence", value = "seq_planned_notifications_id")
-    }
-)
-public abstract class PlannedNotification extends AbstractMutableDomainObject implements Serializable{
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_planned_notifications_id") })
+public abstract class PlannedNotification extends AbstractMutableDomainObject implements
+                Serializable {
 
-	/** The actual mark selected on the time scale*/
-	@Column(name="index_on_time_scale")
-	private int indexOnTimeScale;
+    /** The actual mark selected on the time scale */
+    @Column(name = "index_on_time_scale")
+    private int indexOnTimeScale;
 
-	/** The recipients of this content */
-	private List<Recipient> recipients;
+    /** The recipients of this content */
+    private List<Recipient> recipients;
 
-	private NotificationBodyContent bodyContent;
+    private NotificationBodyContent bodyContent;
 
-	private List<NotificationAttachment> attachments;
+    private List<NotificationAttachment> attachments;
 
     // TODO: this signature may be insufficient
     public abstract ScheduledNotification createScheduledNotification(Object obj);
 
     @Embedded
-	public NotificationBodyContent getNotificationBodyContent(){
-		return bodyContent;
-	}
-	public void setNotificationBodyContent(NotificationBodyContent content){
-		this.bodyContent = content;
-	}
-	public int getIndexOnTimeScale() {
-		return indexOnTimeScale;
-	}
+    public NotificationBodyContent getNotificationBodyContent() {
+        return bodyContent;
+    }
 
-	public void setIndexOnTimeScale(int indexOnTimeScale) {
-		this.indexOnTimeScale = indexOnTimeScale;
-	}
+    public void setNotificationBodyContent(NotificationBodyContent content) {
+        this.bodyContent = content;
+    }
 
-	@OneToMany
-	@JoinColumn(name="plnf_id", nullable=false)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<Recipient> getRecipients() {
+    public int getIndexOnTimeScale() {
+        return indexOnTimeScale;
+    }
 
-		return recipients;
-	}
+    public void setIndexOnTimeScale(int indexOnTimeScale) {
+        this.indexOnTimeScale = indexOnTimeScale;
+    }
 
-	public void setRecipients(List<Recipient> recipients) {
-		this.recipients = recipients;
-	}
-	/**
-	 * @return the attachments
-	 */
-	@OneToMany
-	@JoinColumn(name="plnf_id", nullable=false)
-	@Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-	public List<NotificationAttachment> getAttachments() {
-		return attachments;
-	}
-	/**
-	 * @param attachments the attachments to set
-	 */
-	public void setAttachments(List<NotificationAttachment> attachments) {
-		this.attachments = attachments;
-	}
+    @OneToMany
+    @JoinColumn(name = "plnf_id", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<Recipient> getRecipients() {
 
-	@Transient
-	public List<RoleBasedRecipient> getRoleBasedRecipients(){
-		return new ProjectedList<RoleBasedRecipient>(recipients, RoleBasedRecipient.class);
-	}
+        return recipients;
+    }
 
-	
-	@Transient
-	public List<ContactMechanismBasedRecipient> getContactMechanismBasedRecipients(){
-		return new ProjectedList<ContactMechanismBasedRecipient>(recipients, ContactMechanismBasedRecipient.class);
-	}
+    public void setRecipients(List<Recipient> recipients) {
+        this.recipients = recipients;
+    }
 
-	public void addRecipient(Recipient rr){
-		getRecipients().add(rr);
-	}
-	
-	
+    /**
+     * @return the attachments
+     */
+    @OneToMany
+    @JoinColumn(name = "plnf_id", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    public List<NotificationAttachment> getAttachments() {
+        return attachments;
+    }
+
+    /**
+     * @param attachments
+     *                the attachments to set
+     */
+    public void setAttachments(List<NotificationAttachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    @Transient
+    public List<RoleBasedRecipient> getRoleBasedRecipients() {
+        return new ProjectedList<RoleBasedRecipient>(recipients, RoleBasedRecipient.class);
+    }
+
+    @Transient
+    public List<ContactMechanismBasedRecipient> getContactMechanismBasedRecipients() {
+        return new ProjectedList<ContactMechanismBasedRecipient>(recipients,
+                        ContactMechanismBasedRecipient.class);
+    }
+
+    public void addRecipient(Recipient rr) {
+        getRecipients().add(rr);
+    }
+
 }

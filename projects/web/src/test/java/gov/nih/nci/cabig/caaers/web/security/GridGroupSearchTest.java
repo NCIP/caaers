@@ -21,37 +21,36 @@ import junit.framework.TestCase;
  */
 public class GridGroupSearchTest extends TestCase {
 
+    public GridGroupSearchTest() {
 
-	public GridGroupSearchTest() {
+    }
 
-	}
+    public GridGroupSearchTest(String name) {
+        super(name);
+    }
 
-	public GridGroupSearchTest(String name) {
-		super(name);
-	}
+    public void testGroupSearch() {
 
-	public void testGroupSearch() {
+        UserProvisioningManager mgr = new MockUserProvisioningManagerAdapter() {
+            public List getObjects(SearchCriteria sc) {
+                List objects = new ArrayList();
+                Group group = new Group();
+                group.setGroupName("{http://some.host/SomeGridGrouper}someStem:someGroup");
+                objects.add(group);
+                return objects;
+            }
+        };
+        GridGrouperClientFactory fact = new GridGrouperClientFactory() {
+            public GrouperI newGridGrouperClient(String url) {
+                return new MockGridGrouperClient();
+            }
 
-		UserProvisioningManager mgr = new MockUserProvisioningManagerAdapter() {
-			public List getObjects(SearchCriteria sc){
-				List objects = new ArrayList();
-				Group group = new Group();
-				group.setGroupName("{http://some.host/SomeGridGrouper}someStem:someGroup");
-				objects.add(group);
-				return objects;
-			}
-		};
-		GridGrouperClientFactory fact = new GridGrouperClientFactory(){
-			public GrouperI newGridGrouperClient(String url) {
-				return new MockGridGrouperClient();
-			}
-			
-		};
-		CSMGridGroupSearch search = new CSMGridGroupSearch();
-		search.setCsmApplicationContextName("ignored");
-		search.setUserProvisioningManager(mgr);
-		search.setGridGrouperClientFactory(fact);
-		List groupNames = search.getGridGroupNames("ignored");
-		assertTrue(groupNames.size() == 1);
-	}
+        };
+        CSMGridGroupSearch search = new CSMGridGroupSearch();
+        search.setCsmApplicationContextName("ignored");
+        search.setUserProvisioningManager(mgr);
+        search.setGridGrouperClientFactory(fact);
+        List groupNames = search.getGridGroupNames("ignored");
+        assertTrue(groupNames.size() == 1);
+    }
 }

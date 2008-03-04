@@ -25,10 +25,10 @@ import org.springframework.validation.Errors;
  */
 public abstract class StudyTab extends TabWithFields<Study> {
     // TODO: This should be named after the class, but the existing context instance
-    // is named like this.  Alternate TODO: get rid of this bogus class entirely.
+    // is named like this. Alternate TODO: get rid of this bogus class entirely.
     private ConfigProperty configurationProperty;
-    protected static final Log log = LogFactory.getLog(StudyTab.class);
 
+    protected static final Log log = LogFactory.getLog(StudyTab.class);
 
     public StudyTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -45,54 +45,58 @@ public abstract class StudyTab extends TabWithFields<Study> {
     protected void addConfigMapToRefdata(Map<String, Object> refdata, String name) {
         refdata.put(name, getConfigurationProperty().getMap().get(name));
     }
-    protected Map<Object, Object> collectOptions(List list,
-    		String nameProperty, String valueProperty, String... exclusionProperties){
-    	Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-    	options.put("" , "Please select");
-    	options.putAll(InputFieldFactory.collectOptions(list,nameProperty, valueProperty));
-    	for(String key : exclusionProperties){
-    		options.remove(key);
-    	}
-    	return options;
+
+    protected Map<Object, Object> collectOptions(List list, String nameProperty,
+                    String valueProperty, String... exclusionProperties) {
+        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.putAll(InputFieldFactory.collectOptions(list, nameProperty, valueProperty));
+        for (String key : exclusionProperties) {
+            options.remove(key);
+        }
+        return options;
     }
+
     protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName,
-    		String nameProperty, String valueProperty, String... exclusionProperties){
-    	return collectOptions(configurationProperty.getMap().get(configPropertyName),
-    			nameProperty, valueProperty, exclusionProperties);
+                    String nameProperty, String valueProperty, String... exclusionProperties) {
+        return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,
+                        valueProperty, exclusionProperties);
     }
 
+    @Override
+    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+        return new InputFieldGroupMap();
+    }
 
-	@Override
-	public Map<String, InputFieldGroup> createFieldGroups(Study command) {
-		return new InputFieldGroupMap();
-	}
+    protected List<Lov> collectStudyOrganizations(Study study) {
+        ArrayList<Lov> list = new ArrayList<Lov>();
+        list.add(new Lov("-1", " - Please select - "));
+        if (study.getStudyOrganizations() != null) {
+            int i = -1;
+            for (StudyOrganization so : study.getStudyOrganizations()) {
+                i++;
+                if (so.getOrganization() == null) continue;
+                list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + "("
+                                + so.getRoleName() + ")"));
+            }
+        }
 
-	protected List<Lov> collectStudyOrganizations(Study study){
-		ArrayList<Lov> list = new ArrayList<Lov>();
-		list.add(new Lov("-1", " - Please select - "));
-		if(study.getStudyOrganizations() != null){
-			int i = -1;
-			for(StudyOrganization so : study.getStudyOrganizations()){
-				i++;
-				if(so.getOrganization() == null) continue;
-				list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + "(" + so.getRoleName() + ")"));
-			}
-		}
+        return list;
+    }
 
-		return list;
-	}
+    public String fieldValuesAsString(List<InputField> fields, BeanWrapper bean) {
+        StringBuilder sb = new StringBuilder();
+        for (InputField field : fields) {
+            sb.append(String.valueOf(bean.getPropertyValue(field.getPropertyName())));
+        }
+        return sb.toString();
+    }
 
-	public String fieldValuesAsString(List<InputField> fields, BeanWrapper bean){
-		StringBuilder sb = new StringBuilder();
-		for(InputField field : fields){
-			sb.append(String.valueOf(bean.getPropertyValue(field.getPropertyName())));
-		}
-		return sb.toString();
-	}
-	public void rejectFields(List<InputField> fields, Errors errors, String errorMessage){
-		for(InputField field : fields){
-			errors.rejectValue(field.getPropertyName(), "REQUIRED",errorMessage +" " + field.getDisplayName());
-		}
-	}
+    public void rejectFields(List<InputField> fields, Errors errors, String errorMessage) {
+        for (InputField field : fields) {
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", errorMessage + " "
+                            + field.getDisplayName());
+        }
+    }
 
 }

@@ -15,8 +15,11 @@ import java.util.Map;
  */
 public abstract class QualifiedPropertyNameInputField implements InputField {
     private InputField src;
+
     private Map<String, Object> attributes;
+
     private boolean mandatory;
+
     private FieldValidator[] validators;
 
     public QualifiedPropertyNameInputField(InputField src) {
@@ -27,27 +30,26 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     protected InputField getSourceField() {
         return src;
     }
-    
-    
+
     /**
      * This method will validate against the Source field validators.
      */
     public void validate(BeanWrapper commandBean, Errors errors) {
-    	FieldValidator[] validators = getValidators();
-    	if(validators == null) return;
-    	for(FieldValidator validator : validators){
-    		if(!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))){
-    			 errors.rejectValue(this.getPropertyName(),
-    	                    "REQUIRED", validator.getMessagePrefix()+ " " + this.getDisplayName());
-    			 return;
-    		}
-    	}
+        FieldValidator[] validators = getValidators();
+        if (validators == null) return;
+        for (FieldValidator validator : validators) {
+            if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
+                errors.rejectValue(this.getPropertyName(), "REQUIRED", validator.getMessagePrefix()
+                                + " " + this.getDisplayName());
+                return;
+            }
+        }
     }
-    
+
     public FieldValidator[] getValidators() {
-    	return src.getValidators();
+        return src.getValidators();
     }
-    
+
     public Category getCategory() {
         return getSourceField().getCategory();
     }
@@ -73,7 +75,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     }
 
     protected abstract String qualifyPropertyName(String propertyName);
-    
+
     @SuppressWarnings("unchecked")
     public void setAttributes(Map<String, Object> attributes) {
         this.attributes = new LinkedHashMap<String, Object>(attributes);
@@ -91,9 +93,8 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName())
-            .append("[propertyName=").append(getPropertyName())
-            .append("; source propertyName=").append(getSourceField().getPropertyName())
-            .append(']').toString();
+        return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
+                        getPropertyName()).append("; source propertyName=").append(
+                        getSourceField().getPropertyName()).append(']').toString();
     }
 }
