@@ -1,0 +1,16 @@
+http\://caaers.cagrid.nci.nih.gov/CaaersDataService=gov.nih.nci.cagrid.caaers.stubs
+http\://caaers.cagrid.nci.nih.gov/CaaersDataService/bindings=gov.nih.nci.cagrid.caaers.stubs.bindings
+http\://caaers.cagrid.nci.nih.gov/CaaersDataService/service=gov.nih.nci.cagrid.caaers.stubs.service
+http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
+http\://gov.nih.nci.cagrid.data/DataService=gov.nih.nci.cagrid.data
+
+http\://CQL.caBIG/1/gov.nih.nci.cagrid.CQLQuery=gov.nih.nci.cagrid.cqlquery
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata=gov.nih.nci.cagrid.metadata
+http\://gov.nih.nci.cagrid.data/DataServiceExceptions=gov.nih.nci.cagrid.data.faults
+http\://caaers.cagrid.nci.nih.gov/CaaersDataService/CQLResultTypes=gov.nih.nci.cagrid.caaers.cqlresulttypes
+http\://CQL.caBIG/1/gov.nih.nci.cagrid.CQLResultSet=gov.nih.nci.cagrid.cqlresultset
+http\://caaers.cagrid.nci.nih.gov/CaaersDataService/types=gov.nih.nci.cagrid.caaers.stubs.types
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.dataservice=gov.nih.nci.cagrid.metadata.dataservice
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service=gov.nih.nci.cagrid.metadata.service
+gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common=gov.nih.nci.cagrid.metadata.common
