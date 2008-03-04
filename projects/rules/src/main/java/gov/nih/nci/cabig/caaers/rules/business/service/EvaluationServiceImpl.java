@@ -59,6 +59,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     /**
      * The report definitions that are marked as mandatory at rules engine.
+     * Bug fix : 12770, will filter already instantiated reports (that are not in WITHDRAWN) status.
      * @param expeditedData - The {@link ExpeditedAdverseEventReport}
      * @return - The list of {@link ReportDefinition} objects, that are associated to this report.
      */
@@ -93,7 +94,21 @@ public class EvaluationServiceImpl implements EvaluationService {
             	defList.add(reportDefTreeSet.last());
             }
         }
-        return defList;
+        
+        //Bug fix - 12770
+        if(defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
+        //Will filter already instantiated reports.  
+        List<ReportDefinition> filterdReportDefs = new ArrayList<ReportDefinition>();
+        for(Report report : expeditedData.getNonWithdrawnReports()){
+        	for(ReportDefinition def : defList){
+        		if(!def.getId().equals(report.getReportDefinition().getId())){
+        			filterdReportDefs.add(def);
+        		}
+        	}
+        	
+        }
+        
+        return filterdReportDefs;
     }
 
     /**
