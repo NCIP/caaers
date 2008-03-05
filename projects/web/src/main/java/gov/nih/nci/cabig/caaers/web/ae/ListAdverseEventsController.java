@@ -89,9 +89,9 @@ public class ListAdverseEventsController extends SimpleFormController {
         boolean noStudy = listAECmd.getStudy() == null;
         boolean noParticipant = listAECmd.getParticipant() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing participant");
+        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
         if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
-            errors.reject("REQUIRED", "The participant is not assigned to the provided study");
+            errors.reject("REQUIRED", "The subject is not assigned to the provided study");
         }
     }
 
@@ -100,10 +100,10 @@ public class ListAdverseEventsController extends SimpleFormController {
     protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
                     throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("pageTitle", "Manage AEs: Select Participant & Study");
-        refdata.put("bodyTitle", "Manage AEs: Select Participant & Study");
+        refdata.put("pageTitle", "Manage AEs: Select Subject & Study");
+        refdata.put("bodyTitle", "Manage AEs: Select Subject & Study");
         refdata.put("instructions",
-                        "Select a participant and study to see all the AEs for that combination.");
+                        "Select a subject and study to see all the AEs for that combination.");
         return refdata;
     }
 

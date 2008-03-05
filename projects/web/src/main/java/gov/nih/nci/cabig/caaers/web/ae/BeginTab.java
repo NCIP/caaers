@@ -14,12 +14,12 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
     String instructions;
 
     public BeginTab() {
-        super("Select participant and study", "Begin", "ae/selectAssignment");
+        super("Select subject and study", "Begin", "ae/selectAssignment");
 
     }
 
     public BeginTab(String instructions) {
-        super("Select participant and study", "Begin", "ae/selectAssignment");
+        super("Select subject and study", "Begin", "ae/selectAssignment");
         this.instructions = instructions;
 
     }
@@ -29,13 +29,10 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
         Map<String, Object> refdata = super.referenceData();
         refdata.put("pageTitle", getLongTitle());
         refdata.put("bodyTitle", getLongTitle()); // TODO: this should incorporate the flow name
-        refdata
-                        .put(
-                                        "instructions",
-                                        this.instructions != null ? this.instructions
-                                                        : "In order to create or edit an AE or SAE, you need to first select a participant and a\n"
-                                                                        + "study. You may start with either one. Once you have selected one, the options\n"
-                                                                        + "for the other will be automatically constrained.");
+        refdata.put("instructions",this.instructions != null ? this.instructions
+                                   : "In order to create or edit an AE or SAE, you need to first select a subject and a\n"
+                                   + "study. You may start with either one. Once you have selected one, the options\n"
+                                   + "for the other will be automatically constrained.");
         return refdata;
     }
 
@@ -44,7 +41,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing participant");
+        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
         if (!(noStudy || noParticipant) && command.getAssignment() == null) {
             errors.reject("NO_ASSIGNMENT", "The selected ");
         }
