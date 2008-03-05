@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 import javax.persistence.Entity;
@@ -88,6 +89,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
+    @UniqueObjectInCollection(message="Duplicate prior therapy agents")
     public List<PriorTherapyAgent> getPriorTherapyAgents() {
         return lazyListHelper.getLazyList(PriorTherapyAgent.class);
     }

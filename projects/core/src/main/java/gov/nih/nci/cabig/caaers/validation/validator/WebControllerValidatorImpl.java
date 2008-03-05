@@ -6,21 +6,19 @@ import gov.nih.nci.cabig.caaers.validation.annotation.ValidatorClass;
 
 import java.lang.annotation.Annotation;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.InvalidPropertyException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.validation.BindException;
-
 
 /**
  * Controller validation logic for validating objects.
@@ -28,7 +26,7 @@ import org.springframework.validation.BindException;
  * @author Biju Joseph, Created on December,7th, 2007
  */
 public class WebControllerValidatorImpl implements ApplicationContextAware, WebControllerValidator {
-    private final static Logger logger = Logger.getLogger(WebControllerValidatorImpl.class.getName());
+   private static final Log logger = LogFactory.getLog(WebControllerValidatorImpl.class);
 
     public void validate(final HttpServletRequest request, final Object command, final BindException errors) {
 
@@ -78,10 +76,14 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
     private void validateCollectionProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, BindException errors, String propertyNameWhereErrorWillBeDisplayed) {
         if (readMethodName != null) {
 
-            Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
-                    .getAnnotations();
-            Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
-            validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+            try {
+				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
+				        .getAnnotations();
+				Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
+				validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+			} catch (InvalidPropertyException e) {
+				logger.warn("Invalid property [readMethod:" + readMethodName + ", propertyName :" + propertyName + "]", e);
+			}
         }
 
     }
@@ -97,10 +99,14 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
     private void validateProperty(String readMethodName, BeanWrapperImpl beanWrapperImpl, String propertyName, BindException errors, String propertyNameWhereErrorWillBeDisplayed) {
         if (readMethodName != null) {
 
-            Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
-                    .getAnnotations();
-            Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
-            validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+            try {
+				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
+				        .getAnnotations();
+				Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
+				validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
+			} catch (BeansException e) {
+				logger.warn("Invalid property [readMethod:" + readMethodName + ", propertyName :" + propertyName + "]", e);
+			}
         }
 
     }
