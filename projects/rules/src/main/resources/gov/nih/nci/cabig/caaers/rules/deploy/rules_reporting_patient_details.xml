@@ -65,7 +65,7 @@
 		<lhs>
 			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>!( "null".equals(NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite")) || StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other") )</eval>
+			<eval>!( "null".equals(NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name")) || StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other") )</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDiseaseSite")!= null</eval>
 		</lhs>
 		<rhs>
