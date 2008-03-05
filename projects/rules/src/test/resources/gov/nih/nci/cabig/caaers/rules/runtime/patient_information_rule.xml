@@ -89,7 +89,7 @@
 					if(aeReport.getDiseaseHistory().getMetastaticDiseaseSites() == null) return SUCCESS;
 					for(MetastaticDiseaseSite ds : aeReport.getDiseaseHistory().getMetastaticDiseaseSites()){
 						i++;
-						if(ds.getCodedSite() != null &amp;&amp; ds.getOtherSite() != null){
+						if( (ds.getCodedSite() != null &amp;&amp; !"Other".equals(ds.getCodedSite().getName())) &amp;&amp; ds.getOtherSite() != null){
 							errors.addValidationError("SMD_BR1_ERR", "'Sites of Metastatic Disease' must not be provided if 'Other Sites of Metastatic Disease' is provided and vice-versa.", i);
 						}
 					}

@@ -301,4 +301,42 @@ public class PatientInformationBusinessRulesTest extends BusinessRulesExecutionS
                         .getReplacementVariables()[0]);
 
     }
+    
+    /**
+     * RuleName : SMD_BR1_CHK Logic : 'Sites of Metastatic Disease' must not be provided if 'Other
+     * Sites of Metastatic Disease' is provided and vice-versa. Error Code : SMD_BR1_ERR Error
+     * Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must
+     * be provided.
+     */
+    public void testMetastaticDiseaseWithOnlySiteName_Is_Other() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        AnatomicSite diseaseSite = new AnatomicSite();
+        diseaseSite.setName("Other");
+        MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+        site.setCodedSite(diseaseSite);
+        aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors,
+                        "No errors should be there when there only site name in metastatic disease");
+    }
+    
+
+    /**
+     * RuleName : SMD_BR1_CHK Logic : 'Sites of Metastatic Disease' must not be provided if 'Other
+     * Sites of Metastatic Disease' is provided and vice-versa. Error Code : SMD_BR1_ERR Error
+     * Message : Either and only SITE_OF_METASTATIC_DISEASE or OTHER_SITE_OF_METASTATIC_DISEASE must
+     * be provided.
+     */
+    public void testMetastaticDiseaseWithOnlySiteName_Is_OtherAndOtherSite() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        AnatomicSite diseaseSite = new AnatomicSite();
+        diseaseSite.setName("Other");
+        MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+        site.setCodedSite(diseaseSite);
+        site.setOtherSite("another");
+        aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors,
+                        "No errors should be there when there only site name in metastatic disease");
+    }
 }
