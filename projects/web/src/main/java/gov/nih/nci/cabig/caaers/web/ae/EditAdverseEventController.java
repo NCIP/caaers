@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -22,7 +24,9 @@ import java.util.Map;
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController {
     private Task task;
-
+	//validator needs to be called in onBindAndValidate()
+	protected WebControllerValidator webControllerValidator;
+	
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
@@ -111,7 +115,16 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         model.put("study", command.getStudy().getId());
         return new ModelAndView("redirectToAeList", model);
     }
-
+    /**
+     * Will call the validate method on web controller.
+     */
+    @Override
+	protected void onBindAndValidate(HttpServletRequest request,
+			Object command, BindException errors, int page) throws Exception {
+		super.onBindAndValidate(request, command, errors, page);
+		webControllerValidator.validate(request, command, errors);
+	}
+    
     public Task getTask() {
         return task;
     }
@@ -119,4 +132,9 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     public void setTask(Task task) {
         this.task = task;
     }
+	
+	@Required
+	public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
+	    this.webControllerValidator = webControllerValidator;
+	}
 }
