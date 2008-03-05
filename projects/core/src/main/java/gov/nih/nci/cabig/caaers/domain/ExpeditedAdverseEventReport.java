@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -286,6 +287,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
+    @UniqueObjectInCollection(message="Duplicate prior therapy")
     public List<SAEReportPriorTherapy> getSaeReportPriorTherapies() {
         return lazyListHelper.getLazyList(SAEReportPriorTherapy.class);
     }
