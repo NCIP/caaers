@@ -86,7 +86,6 @@ Please choose a Study and then press Save & Continue to proceed
 </p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Study search results">
     <jsp:attribute name="singleFields">
-        <tags:tabFields tab="${tab}" />
                     <ec:table autoIncludeParameters="false" items="command.studies" var="study" 
                         action="${pageContext.request.contextPath}/pages/newParticipant"
                         imagePath="${pageContext.request.contextPath}/images/table/*.gif"
