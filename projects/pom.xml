@@ -17,9 +17,9 @@
     </licenses>
     -->
     <scm>
-        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/1.0-stable</url>
-        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/1.0-stable</connection>
-        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/branches/releases/caaers/1.0-stable</developerConnection>
+        <url>http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.1-stable</url>
+        <connection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.1-stable</connection>
+        <developerConnection>scm:svn:http://gforge.nci.nih.gov/svnroot/caaersappdev/tags/releases/caaers/1.1-stable</developerConnection>
     </scm>
     <repositories>
         <repository>
