@@ -49,10 +49,10 @@
     </pluginRepositories>
     <modules>
         <module>bootstrap</module>
-        <module>core</module>
+	<module>core</module>
         <module>rules</module>
         <module>web</module>
-		<module>grid</module>
+	<!-- <module>grid</module> -->
         <!--<module>jbi</module>-->
     
     </modules>
@@ -179,6 +179,7 @@
                     <!-- workaround for http://jira.codehaus.org/browse/MJAR-68 -->
                     <preparationGoals>clean install</preparationGoals>
                     <arguments>-Dmaven.test.skip=true</arguments>
+		    <autoVersionSubmodules>true</autoVersionSubmodules>
                 </configuration>
             </plugin>
             <plugin>

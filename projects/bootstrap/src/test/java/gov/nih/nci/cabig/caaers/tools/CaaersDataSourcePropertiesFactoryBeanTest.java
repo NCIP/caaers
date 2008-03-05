@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.tools;
 import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 
 import java.io.File;
+import java.net.URI;
 import java.util.Properties;
 
 import junit.framework.TestCase;
@@ -16,7 +17,8 @@ public class CaaersDataSourcePropertiesFactoryBeanTest extends TestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        File thisDir = new File(getClass().getResource("/").toURI());
+	String thisPath = getClass().getResource("/conf/caaers/empty.properties").toURI().toString();
+        File thisDir = new File(new URI(thisPath.substring(0, thisPath.indexOf("/conf/caaers/empty.properties"))));
         System.setProperty("catalina.home", thisDir.getCanonicalPath());
 
         factoryBean = new CaaersDataSourcePropertiesFactoryBean();
