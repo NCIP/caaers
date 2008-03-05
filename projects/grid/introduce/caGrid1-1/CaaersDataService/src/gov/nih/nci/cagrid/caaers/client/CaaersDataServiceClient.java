@@ -103,7 +103,7 @@ public class CaaersDataServiceClient extends ServiceSecurityClient implements Ca
 			
 			CQLQuery cqlQuery = new CQLQuery();
 			gov.nih.nci.cagrid.cqlquery.Object targetObj = new gov.nih.nci.cagrid.cqlquery.Object();
-			targetObj.setName("gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport");
+			targetObj.setName("gov.nih.nci.cabig.caaers.domain.Study");
 			
 			cqlQuery.setTarget(targetObj);
             CQLQueryResults results = client.query(cqlQuery);
@@ -111,13 +111,8 @@ public class CaaersDataServiceClient extends ServiceSecurityClient implements Ca
 			CQLQueryResultsIterator iter = new CQLQueryResultsIterator(results, new FileInputStream(new File("src/gov/nih/nci/cagrid/caaers/client/client-config.wsdd")));
 	          
 			while (iter.hasNext()) {
-
-	        	   gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport obj = (gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport) iter.next();
-
-				   System.out.println(obj.getId() +"	"+ obj.getEndDate());
-
-				//   System.out.println( "Version is " + obj.getExpected() );
-
+	        	   gov.nih.nci.cabig.caaers.domain.Study obj = (gov.nih.nci.cabig.caaers.domain.Study) iter.next();
+				   System.out.println(obj.getId() +"	"+ obj.getShortTitle());
 	           }
 			
 			
