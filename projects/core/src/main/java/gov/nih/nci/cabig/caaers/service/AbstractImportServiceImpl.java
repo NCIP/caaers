@@ -50,25 +50,6 @@ public abstract class AbstractImportServiceImpl {
                         "Identifiers are either Empty or Not Valid");
     }
 
-    /*
-     * This is common for participant and study , make the first instance of primary indicators hold
-     * and set the rest to false
-     * 
-     */
-    protected void firstPrimaryIndicatorInIdentifiers(AbstractIdentifiableDomainObject destination,
-                    DomainObjectImportOutcome studyImportOutcome) {
-
-        boolean isPrimaryIndicatorAvailable = Boolean.FALSE;
-        for (Identifier identifier : destination.getIdentifiers()) {
-            if (identifier.getPrimaryIndicator() && !isPrimaryIndicatorAvailable) {
-                isPrimaryIndicatorAvailable = Boolean.TRUE;
-            } else {
-                identifier.setPrimaryIndicator(Boolean.FALSE);
-            }
-
-        }
-    }
-
     // Helpers
     protected Organization getOrganization(String organizationName) {
         Organization org = organizationDao.getByName(organizationName);

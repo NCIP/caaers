@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -8,17 +9,15 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 /**
  * Subclass of
  * {@link AbstractMutableDomainObject> that implements {@link gov.nih.nci.cabig.caaers.domain.IdentifiableByAssignedIdentifers}.
- * 
+ *
  * @author Rhett Sutphin
  */
 @MappedSuperclass
 public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDomainObject
-                implements IdentifiableByAssignedIdentifers {
+        implements IdentifiableByAssignedIdentifers {
     private static final Log log = LogFactory.getLog(AbstractIdentifiableDomainObject.class);
 
     private List<Identifier> identifiers = new ArrayList<Identifier>();
@@ -92,5 +91,25 @@ public abstract class AbstractIdentifiableDomainObject extends AbstractMutableDo
 
     public void setIdentifiers(final List<Identifier> identifiers) {
         this.identifiers = identifiers;
+    }
+
+    
+    /*
+    * This is common for participant and study , make the first instance of primary indicators hold
+    * and set the rest to false
+    *
+    */
+    @Transient
+    public void firstPrimaryIndicatorInIdentifiers() {
+
+        boolean isPrimaryIndicatorAvailable = Boolean.FALSE;
+        for (Identifier identifier : getIdentifiers()) {
+            if (identifier.getPrimaryIndicator() && !isPrimaryIndicatorAvailable) {
+                isPrimaryIndicatorAvailable = Boolean.TRUE;
+            } else {
+                identifier.setPrimaryIndicator(Boolean.FALSE);
+            }
+
+        }
     }
 }
