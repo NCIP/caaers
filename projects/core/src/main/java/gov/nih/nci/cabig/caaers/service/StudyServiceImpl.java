@@ -1,51 +1,14 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
-import gov.nih.nci.cabig.caaers.dao.MedDRADao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.AeTerminology;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
-import gov.nih.nci.cabig.caaers.domain.INDType;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional
 public class StudyServiceImpl extends AbstractImportServiceImpl implements StudyService {
@@ -181,7 +144,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		// Setup organizationAssignedIdentifier
 		Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
-		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in fundingSponsor is invalid");
+        studyImportOutcome.ifNullObject(organization, Severity.ERROR,"The organization specified in fundingSponsor is invalid");
 		organizationAssignedIdentifier.setOrganization(organization);
 		organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
 		organizationAssignedIdentifier.setPrimaryIndicator(false);
@@ -203,7 +166,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 		
 		// Setup organizationAssignedIdentifier
 		Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
-		ifNullObject(organization, studyImportOutcome,Severity.ERROR,"The organization specified in coordinatingCenter is invalid");
+		studyImportOutcome.ifNullObject(organization, Severity.ERROR,"The organization specified in coordinatingCenter is invalid");
 		organizationAssignedIdentifier.setOrganization(organization);
 		organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 		organizationAssignedIdentifier.setPrimaryIndicator(true);
@@ -257,10 +220,10 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				if ( studyAgent.getOtherAgent() != null && agent == null) {
 					target.setOtherAgent(studyAgent.getOtherAgent());
 				}
-				ifNullObject(agent,studyImportOutcome, Severity.ERROR," Provdided Agent is not Valid ");
+				studyImportOutcome.ifNullObject(agent, Severity.ERROR," Provdided Agent is not Valid ");
 				target.setIndType(studyAgent.getIndType());
 				if (target.getIndType() == INDType.DCP_IND || target.getIndType() == INDType.CTEP_IND){
-					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
+					studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), Severity.ERROR," Lead IND required ");
 					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
 				}
 				if (target.getIndType() == INDType.CTEP_IND){
@@ -274,14 +237,14 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 						indAssociation.setInvestigationalNewDrug(ind);
 						target.addStudyAgentINDAssociation(indAssociation);
 					}else{
-						ifNullObject(null,studyImportOutcome, Severity.ERROR,"The investigational new drug for a CTEP IND" 
+						studyImportOutcome.ifNullObject(null, Severity.ERROR,"The investigational new drug for a CTEP IND"
 								+ " is not Valid ");
 					}
 				}
 				if (target.getIndType() == INDType.OTHER ){
-					ifNullObject(studyAgent.getPartOfLeadIND(),studyImportOutcome, Severity.ERROR," Lead IND required ");
+					studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), Severity.ERROR," Lead IND required ");
 					target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
-					ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(),studyImportOutcome, Severity.ERROR,"With the selected IND Type it is " +
+					studyImportOutcome.ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(), Severity.ERROR,"With the selected IND Type it is " +
 							"required to provide an investigational new drug ");
 					
 					for( StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()){
@@ -294,7 +257,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 							indAssociation.setInvestigationalNewDrug(ind);
 							target.addStudyAgentINDAssociation(indAssociation);
 						}else{
-							ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected investigational new drug " 
+							studyImportOutcome.ifNullObject(null, Severity.ERROR,"The selected investigational new drug "
 									+ indNumber + " is not Valid ");
 						}
 					}
@@ -326,7 +289,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 						diseaseTerm = diseaseTermDao.getByMeddra(ctepStudyDisease.getTerm().getMedraCode());
 					}
 				
-					ifNullObject(diseaseTerm,studyImportOutcome, Severity.ERROR,"The selected disease Term " +
+					studyImportOutcome.ifNullObject(diseaseTerm, Severity.ERROR,"The selected disease Term " +
 							term  + " is not Valid ");
 				
 					destinationCtepStudyDisease.setTerm(diseaseTerm);
@@ -334,7 +297,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 					destination.addCtepStudyDisease(destinationCtepStudyDisease);
 			}
 			}else{
-				ifNullObject(null,studyImportOutcome, Severity.ERROR," Selected terminology is not CTEP ");
+				studyImportOutcome.ifNullObject(null, Severity.ERROR," Selected terminology is not CTEP ");
 			}
 		}
 	}
@@ -352,7 +315,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 								lowLevelTermDao.getByMeddraCode(meddraStudyDisease.getMeddraCode()).get(0) : null; 
 					}
 				
-					ifNullObject(lowLevelTerm,studyImportOutcome, Severity.ERROR,"The selected MedDRA code " +
+					studyImportOutcome.ifNullObject(lowLevelTerm, Severity.ERROR,"The selected MedDRA code " +
 							meddraStudyDisease.getMeddraCode()  + " is not Valid ");
 					
 					destinationMeddraStudyDisease.setTerm(lowLevelTerm == null ? null : lowLevelTerm);
@@ -360,7 +323,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 					destination.addMeddraStudyDisease(destinationMeddraStudyDisease);
 				}
 			}else{
-				ifNullObject(null,studyImportOutcome, Severity.ERROR," Selected terminology is not MedDRA ");
+				studyImportOutcome.ifNullObject(null, Severity.ERROR," Selected terminology is not MedDRA ");
 			}
 		}
 	}
@@ -374,7 +337,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				AeTerminology t = destination.getAeTerminology();
 				t.setTerm(Term.CTC);
 				t.setCtcVersion(ctc);
-				ifNullObject(ctc,studyImportOutcome, Severity.ERROR,"CTC is either Empty or Not Valid");
+				studyImportOutcome.ifNullObject(ctc, Severity.ERROR,"CTC is either Empty or Not Valid");
 				
 			}
 			if(source.getAeTerminology().getMeddraVersion() != null){
@@ -382,20 +345,20 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				AeTerminology t = destination.getAeTerminology();
 				t.setTerm(Term.MEDDRA);
 				t.setMeddraVersion(meddraVersion);
-				ifNullObject(meddraVersion,studyImportOutcome, Severity.ERROR,"MedDRA Version is either Empty or Not Valid");
+				studyImportOutcome.ifNullObject(meddraVersion, Severity.ERROR,"MedDRA Version is either Empty or Not Valid");
 			}
 		}
-		ifNullObject(source.getAeTerminology(),studyImportOutcome, Severity.ERROR,"AeTerminology is either Empty or Not Valid");
+		studyImportOutcome.ifNullObject(source.getAeTerminology(), Severity.ERROR,"AeTerminology is either Empty or Not Valid");
 	}
 	
 	private void migrateDiseaseTerminology(Study destination,Study source, DomainObjectImportOutcome studyImportOutcome){
 		
 		// AeTerminology and Version 
 		destination.setDiseaseTerminology(source.getDiseaseTerminology());
-		ifNullObject(destination.getDiseaseTerminology(),studyImportOutcome, Severity.ERROR,"Disease AeTerminology is either Empty or Not Valid");
+		studyImportOutcome.ifNullObject(destination.getDiseaseTerminology(), Severity.ERROR,"Disease AeTerminology is either Empty or Not Valid");
 		if (destination.getDiseaseTerminology() != null ){
 			destination.getDiseaseTerminology().setStudy(destination);
-			ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(),studyImportOutcome, Severity.ERROR,"Disease Code Term is either Empty or Not Valid");
+			studyImportOutcome.ifNullObject(destination.getDiseaseTerminology().getDiseaseCodeTerm(), Severity.ERROR,"Disease Code Term is either Empty or Not Valid");
 		}
 	}
 	
@@ -444,7 +407,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				studyInvestigator.setStudyOrganization(studyOrganization);	
 			}else{
 				//studyOrganization.getStudyInvestigators().remove(studyInvestigator);
-				ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected investigator " +
+				studyImportOutcome.ifNullObject(null, Severity.ERROR,"The selected investigator " +
 						investigator.getFirstName() + " " + investigator.getLastName() + " is not Valid ");
 			}
 		}
@@ -465,7 +428,7 @@ public class StudyServiceImpl extends AbstractImportServiceImpl implements Study
 				studyPersonnel.setResearchStaff(researchStaff);
 				studyPersonnel.setStudyOrganization(studyOrganization);
 			}else{
-				ifNullObject(null,studyImportOutcome, Severity.ERROR,"The selected personnel " +
+				studyImportOutcome.ifNullObject(null, Severity.ERROR,"The selected personnel " +
 						researchStaffer.getFirstName() + " " + researchStaffer.getLastName() + " is not Valid ");
 			}
 		}

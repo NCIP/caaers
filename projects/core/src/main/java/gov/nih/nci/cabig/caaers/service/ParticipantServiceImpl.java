@@ -117,10 +117,9 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
                         break;
                     }
 
-                    ifNullObject(
+                    participantImportOutcome.ifNullObject(
                                     studySite,
-                                    participantImportOutcome,
-                                    Severity.ERROR,
+                            Severity.ERROR,
                                     "The Study with Identifier \" "
                                                     + theIdentifier
                                                     + " \" is either nonexistant or does not match the provided Site");
@@ -128,7 +127,7 @@ public class ParticipantServiceImpl extends AbstractImportServiceImpl implements
                 }
             }
         }
-        ifNullOrEmptyList(source.getAssignments(), participantImportOutcome, Severity.ERROR,
+        participantImportOutcome.ifNullOrEmptyList(source.getAssignments(), Severity.ERROR,
                         "Assignments are either Empty or Not Valid");
     }
 

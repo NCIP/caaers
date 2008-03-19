@@ -2,17 +2,8 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractIdentifiableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
-
-import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -45,7 +36,7 @@ public abstract class AbstractImportServiceImpl {
                 if (identifier instanceof OrganizationAssignedIdentifier) {
                     Organization organization = getOrganization(((OrganizationAssignedIdentifier) identifier)
                                     .getOrganization().getName());
-                    ifNullObject(organization, studyImportOutcome, Severity.ERROR,
+                    studyImportOutcome.ifNullObject(organization, Severity.ERROR,
                                     "The organization specified in identifier is invalid");
                     ((OrganizationAssignedIdentifier) identifier).setOrganization(organization);
                 }
@@ -55,7 +46,7 @@ public abstract class AbstractImportServiceImpl {
                 destination.getIdentifiers().add(identifier);
             }
         }
-        ifNullOrEmptyList(destination.getIdentifiers(), studyImportOutcome, Severity.ERROR,
+        studyImportOutcome.ifNullOrEmptyList(destination.getIdentifiers(), Severity.ERROR,
                         "Identifiers are either Empty or Not Valid");
     }
 
@@ -84,38 +75,6 @@ public abstract class AbstractImportServiceImpl {
         return org;
     }
 
-    protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome,
-                    Severity severity) {
-        if (domainObject == null) {
-            importOutcome.addErrorMessage(" is required or has errors", severity);
-        }
-    }
-
-    protected void ifNullObject(Object domainObject, DomainObjectImportOutcome importOutcome,
-                    Severity severity, String message) {
-        if (domainObject == null) {
-            importOutcome.addErrorMessage(message, severity);
-        }
-    }
-
-    protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome,
-                    Severity severity) {
-        if (list.isEmpty()) {
-            studyImportOutcome.addErrorMessage("is required or has errors", severity);
-        }
-    }
-
-    protected void ifNullOrEmptyList(List list, DomainObjectImportOutcome studyImportOutcome,
-                    Severity severity, String message) {
-        if (list.isEmpty()) {
-            studyImportOutcome.addErrorMessage(message, severity);
-        }
-    }
-
-    protected void errorInBusinessLogic(DomainObjectImportOutcome importOutcome, Severity severity,
-                    String message) {
-        importOutcome.addErrorMessage(message, severity);
-    }
 
     public OrganizationDao getOrganizationDao() {
         return organizationDao;
