@@ -53,8 +53,8 @@ public class ParticipantImportServiceTest extends AbstractTestCase {
         DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
 
         validate(xstreamParticipant, participantDomainObjectImportOutcome);
-
         validateImportedObject(participantDomainObjectImportOutcome);
+
 
         List<DomainObjectImportOutcome.Message> messages = participantDomainObjectImportOutcome.getMessages();
         assertEquals(2, messages.size());
@@ -76,6 +76,7 @@ public class ParticipantImportServiceTest extends AbstractTestCase {
         verifyMocks();
 
         validate(xstreamParticipant, participantDomainObjectImportOutcome);
+        validateImportedObject(participantDomainObjectImportOutcome);
 
         validateImportedObject(participantDomainObjectImportOutcome);
         List<DomainObjectImportOutcome.Message> messages = participantDomainObjectImportOutcome.getMessages();
@@ -120,6 +121,32 @@ public class ParticipantImportServiceTest extends AbstractTestCase {
         assertEquals(1, messages.size());
 
         assertEquals("Identifiers are either Empty or Not Valid", messages.get(0).getMessage());
+
+    }
+
+    public void testImportParticipantForNoErrors() {
+        xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
+        xstreamParticipant.addIdentifier(systemAssignedIdentifier);
+
+        // migrate assignments when study has  identifiers
+        study.addIdentifier(organizationAssignedIdentifier);
+        studyParticipantAssignment = Fixtures.assignParticipant(xstreamParticipant, study, organization);
+
+        StudySite studySite = new StudySite();
+        studySite.setId(123);
+        EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
+                organizationAssignedIdentifier.getType())).andReturn(studySite);
+        EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+
+        replayMocks();
+
+        DomainObjectImportOutcome<Participant> participantDomainObjectImportOutcome = participantImportService.importParticipant(xstreamParticipant);
+        verifyMocks();
+        validate(xstreamParticipant, participantDomainObjectImportOutcome);
+        assertFalse(participantDomainObjectImportOutcome.hasErrors());
+        assertTrue(participantDomainObjectImportOutcome.isSavable());
+        assertTrue(participantDomainObjectImportOutcome.getMessages().isEmpty());
 
     }
 

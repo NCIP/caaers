@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers;
 import edu.nwu.bioinformatics.commons.ComparisonUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
-import junit.framework.TestCase;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
