@@ -39,39 +39,39 @@
         id="-1001"
         name="New Site"
         grid_id="gridSite"/>
-    <STUDIES 
-    	id="-2001" 
+    <STUDIES
+    	id="-2001"
     	multi_institution_indicator="0"
     	short_title="New Study"
-    	long_title="Long Title" 
-    	description="Description" 
+    	long_title="Long Title"
+    	description="Description"
     	grid_id="gridStudy"
     	load_status="1" />
-    
-    <STUDIES 
-    	id="-2000" 
-    	multi_institution_indicator="0" 
+
+    <STUDIES
+    	id="-2000"
+    	multi_institution_indicator="0"
     	short_title="Short Title"
-    	long_title="Long Title" 
-    	description="Description" 
+    	long_title="Long Title"
+    	description="Description"
     	grid_id=""
     	load_status="1"
     	/>
-    	
+
      <TERMINOLOGIES
    		id="-11"
    		term_code="1"
    		ctc_id="3"
    		study_id="-2000"
    		/>
-   	
+
    	<TERMINOLOGIES
    		id="-12"
    		term_code="1"
    		ctc_id="3"
    		study_id="-2001"
-   		/>	 		   	
-    
+   		/>
+
     <STUDY_ORGANIZATIONS
         id="-3001"
         site_id="-1001"
@@ -91,7 +91,7 @@
         study_site_id="-3000"
         load_status="1" />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
-    <investigational_new_drugs />    
-    <ind_holders />		
-        
+    <investigational_new_drugs />
+    <ind_holders />
+
 </dataset>

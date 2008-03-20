@@ -8,10 +8,12 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.repository.OrganizationRepository;
-import gov.nih.nci.cabig.caaers.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.service.*;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -57,7 +59,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private StudyDao studyDao;
 
-    private ParticipantRepository participantRepository;
 
     private OrganizationRepository organizationRepository;
 
@@ -73,7 +74,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private StudyServiceImpl studyServiceImpl;
 
-    private ParticipantServiceImpl participantServiceImpl;
 
     private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
@@ -473,13 +473,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.agentDao = agentDao;
     }
 
-    public ParticipantRepository getParticipantRepository() {
-        return participantRepository;
-    }
 
-    public void setParticipantRepository(ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
-    }
 
     public MedDRADao getMeddraDao() {
         return meddraDao;
@@ -514,13 +508,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.studyServiceImpl = studyServiceImpl;
     }
 
-    public ParticipantServiceImpl getParticipantServiceImpl() {
-        return participantServiceImpl;
-    }
-
-    public void setParticipantServiceImpl(ParticipantServiceImpl participantServiceImpl) {
-        this.participantServiceImpl = participantServiceImpl;
-    }
 
     public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
         return routineAdverseEventReportServiceImpl;

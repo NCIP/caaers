@@ -23,9 +23,7 @@ This applicationContext contains the definition of the concrete services
 
   <bean id="studyService" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl"/>
-  <bean id="participantService" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl"/>
-  <bean id="interoperationService" autowire="byType"
+    <bean id="interoperationService" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 
   <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>

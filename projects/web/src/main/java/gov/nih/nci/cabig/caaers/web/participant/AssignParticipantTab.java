@@ -2,12 +2,13 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.service.ParticipantService;
+import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -17,8 +18,8 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
 
     private static final Log log = LogFactory.getLog(AssignParticipantTab.class);
 
-    private ParticipantService participantService;
-
+    private ParticipantRepository participantRepository;
+   
     public AssignParticipantTab() {
         super("Choose Study", "Search Subject", "par/reg_participant_search");
     }
@@ -53,7 +54,7 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
         participantQuery.filterByNotMachingStudySiteId(studySiteId);
         List<Participant> participants = null;
         try {
-            participants = participantService.searchParticipant(participantQuery);
+            participants = participantRepository.searchParticipant(participantQuery);
         } catch (Exception e) {
             log.error("Error while searching participants", e);
         }
@@ -83,12 +84,8 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
                         "Participant not selected");
     }
 
-    public ParticipantService getParticipantService() {
-        return participantService;
+    @Required
+    public void setParticipantRepository(final ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
     }
-
-    public void setParticipantService(ParticipantService participantService) {
-        this.participantService = participantService;
-    }
-
 }

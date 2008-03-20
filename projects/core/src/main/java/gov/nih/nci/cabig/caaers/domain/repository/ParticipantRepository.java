@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,6 +33,28 @@ public class ParticipantRepository {
             }
         }
         return false;
+    }
+
+
+    /**
+     * Search using a sample. Populate a Participant object
+     *
+     * @param participant object
+     * @return List of Participant objects based on the sample participant object
+     * @throws Runtime exception
+     */
+    public List<Participant> search(Participant participant) throws Exception {
+        return participantDao.searchByExample(participant);
+    }
+
+    /**
+     * Search for participants using query.
+     *
+     * @param query The query used to search for participants
+     * @return The list of participants.
+     */
+    public List<Participant> searchParticipant(final ParticipantQuery query) {
+        return participantDao.searchParticipant(query);
     }
 
     @Required
