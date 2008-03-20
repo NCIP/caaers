@@ -427,5 +427,10 @@ This applicationContext contains the definition of the DAOs
     </bean>
     <!-- validator beans end here-->
 
+    <!-- Repository beans end here-->
+    <bean id="participantRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository">
+        <property name="participantDao" ref="participantDao"></property>
+    </bean>
+    <!-- Repository beans end here-->
 
 </beans>
