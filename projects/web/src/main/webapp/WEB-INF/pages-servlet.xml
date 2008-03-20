@@ -399,6 +399,7 @@
   <bean name="/study/search" id="searchStudyController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.study.SearchStudyController">
     <property name="sessionForm" value="true"/>
+      <property name="studyRepository" ref="studyRepository"/>
   </bean>
   
   <bean name="/study/edit" id="editStudyController" autowire="byType"
@@ -496,6 +497,7 @@
     <bean name="/admin/import" id="importController" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
         <property name="participantImportService" ref="participantImportService"/>
+        <property name="studyImportService" ref="studyImportService"/>
     </bean>
   
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"

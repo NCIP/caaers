@@ -1,32 +1,24 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-
-/**
- * 
- * @author Biju Joseph
- *
- */
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
 
-    private StudyService studyService;
+    private StudyRepository studyRepository;
 
     public AssignStudyTab() {
         super("Search for Studies", "Search Study", "par/reg_protocol_search");
@@ -59,7 +51,7 @@ public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
             exampleStudy.addIdentifier(identifier);
         }
         try {
-            studies = studyService.search(exampleStudy);
+            studies = studyRepository.search(exampleStudy);
         } catch (Exception ex) {
             log.error("Error in search", ex);
         }
@@ -98,12 +90,7 @@ public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
         }
     }
 
-    public void setStudyService(StudyService studyService) {
-        this.studyService = studyService;
+    public void setStudyRepository(final StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
     }
-
-    public StudyService getStudyService() {
-        return studyService;
-    }
-
 }

@@ -1,0 +1,109 @@
+<dataset>
+	<ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+    <PARTICIPANTS
+        id="-101"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+       birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1"/>
+    <ORGANIZATIONS
+        id="-1001"
+        name="New Site"
+        grid_id="gridSite"/>
+    <STUDIES
+    	id="-2001"
+    	multi_institution_indicator="0"
+    	short_title="New Study"
+    	long_title="Long Title"
+    	description="Description"
+    	grid_id="gridStudy"
+    	load_status="1" />
+
+    <STUDIES
+    	id="-2000"
+    	multi_institution_indicator="0"
+    	short_title="Short Title"
+    	long_title="Long Title"
+    	description="Description"
+    	grid_id=""
+    	load_status="1"/>
+
+    <DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-2000"
+    	/>
+    <DISEASE_TERMINOLOGIES
+    	id="-12"
+    	term_code="1"
+    	study_id="-2001"
+    	/>
+
+     <TERMINOLOGIES
+   		id="-2000"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2001"
+   		/>
+
+   	<TERMINOLOGIES
+   		id="-2001"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2000"
+   		/>
+
+    <STUDY_ORGANIZATIONS
+        id="-3001"
+        site_id="-1001"
+        study_id="-2001"
+        type="SST"
+        />
+    <STUDY_ORGANIZATIONS
+        id="-3000"
+        site_id="-1001"
+        study_id="-2000"
+        type="SST"
+        />
+    <PARTICIPANT_ASSIGNMENTS
+        id="-10"
+        date_of_enrollment="2006-12-12"
+        participant_id="-100"
+        study_site_id="-3000"
+        load_status="1" />
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />
+    <ind_holders />
+    <!--  for ctc_versions delete -->
+    <ctc_categories />
+    <ctc_terms />
+    <ctc_grades />
+    <research_staffs />
+</dataset>

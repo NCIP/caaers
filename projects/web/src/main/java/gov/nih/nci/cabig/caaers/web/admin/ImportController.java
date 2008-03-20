@@ -10,10 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
-import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
-import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
+import gov.nih.nci.cabig.caaers.service.*;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -27,6 +24,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.factory.annotation.Required;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -72,8 +70,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private CtcDao ctcDao;
 
-    private StudyServiceImpl studyServiceImpl;
-
+   private StudyImportServiceImpl studyImportService;
 
     private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
@@ -387,7 +384,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private void migrateStudy(Study xstreamStudy, ImportCommand command) {
 
-        DomainObjectImportOutcome<Study> studyImportOutcome = studyServiceImpl
+        DomainObjectImportOutcome<Study> studyImportOutcome = studyImportService
                         .createStudyObjects(xstreamStudy);
         if (studyImportOutcome.isSavable()) {
             command.addImportableStudy(studyImportOutcome);
@@ -500,14 +497,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.routineAdverseEventReportDao = routineAdverseEventReportDao;
     }
 
-    public StudyServiceImpl getStudyServiceImpl() {
-        return studyServiceImpl;
+    @Required
+    public void setStudyImportService(final StudyImportServiceImpl studyImportService) {
+        this.studyImportService = studyImportService;
     }
-
-    public void setStudyServiceImpl(StudyServiceImpl studyServiceImpl) {
-        this.studyServiceImpl = studyServiceImpl;
-    }
-
 
     public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
         return routineAdverseEventReportServiceImpl;

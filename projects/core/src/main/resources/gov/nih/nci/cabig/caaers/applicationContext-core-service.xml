@@ -21,8 +21,20 @@ This applicationContext contains the definition of the concrete services
         <property name="studySiteDao" ref="studySiteDao"/>
     </bean>
 
-  <bean id="studyService" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl"/>
+    <bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
+        <property name="organizationDao" ref="organizationDao"/>
+        <property name="agentDao" ref="agentDao"/>
+        <property name="ctcDao" ref="ctcDao"/>
+        <property name="diseaseTermDao" ref="diseaseTermDao"/>
+        <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao"/>
+        <property name="lowLevelTermDao" ref="lowLevelTermDao"/>
+        <property name="meddraDao" ref="medDRADao"/>
+        <property name="meddraVersionDao" ref="meddraVersionDao"/>
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="siteInvestigatorDao" ref="siteInvestigatorDao"/>
+        <property name="studyDao" ref="studyDao"/>
+    </bean>
+
     <bean id="interoperationService" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 

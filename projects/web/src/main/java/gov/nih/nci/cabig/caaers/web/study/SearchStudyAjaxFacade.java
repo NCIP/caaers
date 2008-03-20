@@ -2,15 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.StudyService;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-
-import javax.servlet.http.HttpServletRequest;
-
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Row;
 import org.extremecomponents.table.bean.Table;
@@ -18,10 +10,17 @@ import org.extremecomponents.table.context.Context;
 import org.extremecomponents.table.context.HttpServletRequestContext;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.core.TableModelImpl;
+import org.springframework.beans.factory.annotation.Required;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class SearchStudyAjaxFacade {
 
-    private StudyService studyService;
+    private StudyRepository studyRepository;
 
     public Object build(TableModel model, Collection studies) throws Exception {
         Table table = model.getTableInstance();
@@ -94,7 +93,7 @@ public class SearchStudyAjaxFacade {
 
         List<Study> studies = null;
         try {
-            studies = studyService.search(study);
+            studies = studyRepository.search(study);
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -116,11 +115,9 @@ public class SearchStudyAjaxFacade {
         return "";
     }
 
-    public StudyService getStudyService() {
-        return studyService;
-    }
 
-    public void setStudyService(StudyService studyService) {
-        this.studyService = studyService;
+    @Required
+    public void setStudyRepository(StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
     }
 }

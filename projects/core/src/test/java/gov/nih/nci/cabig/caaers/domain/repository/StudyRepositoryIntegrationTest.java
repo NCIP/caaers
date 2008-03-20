@@ -1,39 +1,34 @@
-/**
- *
- */
-package gov.nih.nci.cabig.caaers.service;
+package gov.nih.nci.cabig.caaers.domain.repository;
+
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.domain.Study;
-
 /**
- * @author Krikor Krumlian
- * 
+ * @author Biju Joseph
  */
-public class StudyServiceTest extends CaaersDbTestCase {
+public class StudyRepositoryIntegrationTest extends CaaersDbTestCase {
 
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-                    "organizationDao");
+            "organizationDao");
 
     private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
-                    "participantDao");
+            "participantDao");
 
-    StudyService studyService = (StudyService) getApplicationContext().getBean("studyService");
+    StudyRepository studyRepository = (StudyRepository) getApplicationContext().getBean("studyRepository");
 
     public String getTestDataFileName() {
-        String fileName = "testdata/StudyServiceTest.xml";
+        String fileName = "testdata/StudyRepositoryTest.xml";
         return fileName;
     }
 
     public void testSearchStudyByExample() throws Exception {
         Study study = new Study();
         study.setShortTitle("New Study");
-        List<Study> studies = studyService.search(study);
+        List<Study> studies = studyRepository.search(study);
         assertNotNull("Studes is null", studies);
     }
-
 }

@@ -431,6 +431,10 @@ This applicationContext contains the definition of the DAOs
     <bean id="participantRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository">
         <property name="participantDao" ref="participantDao"></property>
     </bean>
+    <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
+           <property name="studyDao" ref="studyDao"></property>
+       </bean>
+
     <!-- Repository beans end here-->
 
 </beans>
