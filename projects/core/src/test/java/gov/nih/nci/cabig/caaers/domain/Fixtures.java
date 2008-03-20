@@ -54,16 +54,17 @@ public class Fixtures {
                         createOrganization("N/A"));
     }
 
-    public static StudyParticipantAssignment assignParticipant(final Participant p,
+    public static StudyParticipantAssignment assignParticipant(final Participant participant,
                     final Study study, final Organization organization) {
-        StudySite ss = new StudySite();
-        ss.setOrganization(organization);
-        study.addStudySite(ss);
-        organization.addStudySite(ss);
+        StudySite studySite = new StudySite();
+        studySite.setId(123);
+        studySite.setOrganization(organization);
+        study.addStudySite(studySite);
+        organization.addStudySite(studySite);
 
         StudyParticipantAssignment assignment = new StudyParticipantAssignment();
-        ss.addAssignment(assignment);
-        p.addAssignment(assignment);
+        studySite.addAssignment(assignment);
+        participant.addAssignment(assignment);
 
         return assignment;
     }

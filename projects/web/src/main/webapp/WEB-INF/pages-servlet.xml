@@ -491,10 +491,12 @@
 	class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
-  
-  
-  <bean name="/admin/import" id="importController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.ImportController"/>
+
+
+    <bean name="/admin/import" id="importController" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
+        <property name="participantImportService" ref="participantImportService"/>
+    </bean>
   
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
 	class="gov.nih.nci.cabig.caaers.web.admin.ImportMeddraController" >

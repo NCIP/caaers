@@ -19,7 +19,7 @@ public class DomainObjectImportOutcome<T extends MutableDomainObject> {
 
     private boolean isSavable = true;
 
-    protected void ifNullObject(Object domainObject,
+    public void ifNullObject(Object domainObject,
                                 Severity severity, String message) {
         if (domainObject == null) {
             addErrorMessage(message, severity);

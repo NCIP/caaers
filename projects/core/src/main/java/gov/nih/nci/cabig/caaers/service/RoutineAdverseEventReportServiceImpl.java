@@ -85,7 +85,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 
 		routineAdverseEventReportImportOutcome.setImportedDomainObject(routineAdverseEventReport);
 		//System.out.println("Number of messages : " + routineAdverseEventReportImportOutcome.getMessages().size());
-		//participantUniquenessCheck(routineAdverseEventReport,routineAdverseEventReportImportOutcome,Severity.ERROR);
+		//checkIfParticipantExistsForGivenIdentifiers(routineAdverseEventReport,routineAdverseEventReportImportOutcome,Severity.ERROR);
 
 		return routineAdverseEventReportImportOutcome;
 		}
@@ -413,7 +413,7 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 		}
 
 		/*
-		private void participantUniquenessCheck(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
+		private void checkIfParticipantExistsForGivenIdentifiers(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
 
 			String[] s = { participant.getFirstName(),participant.getLastName() };
 			List<Participant> pars = participantDao.getByUniqueIdentifiers(s);

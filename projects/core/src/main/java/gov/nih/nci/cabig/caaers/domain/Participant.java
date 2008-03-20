@@ -1,40 +1,29 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Where;
-
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipant;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Column;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.OrderBy;
-import javax.persistence.Transient;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * This class represents the Participant domain object associated with the Adverse event report.
- * 
+ *
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
 @Entity
 @Table
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participants_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_participants_id")})
 @Where(clause = "load_status > 0")
 public class Participant extends AbstractIdentifiableDomainObject {
     private String institutionalPatientNumber;
@@ -73,23 +62,25 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     // //// LOGIC
-
+    @Transient
     public void addAssignment(final StudyParticipantAssignment studyParticipantAssignment) {
 
         // make sure user can not add same assignment again
         if (studyParticipantAssignment != null && studyParticipantAssignment.getStudySite() != null
-                        && studyParticipantAssignment.getStudySite().getId() != null) {
-            for (StudyParticipantAssignment assignment : getAssignments()) {
-                if (assignment.getStudySite() != null
-                                && studyParticipantAssignment.getStudySite().getId().equals(
-                                                assignment.getStudySite().getId())) {
-                    // dont add this assignment as it already exists..
-                    return;
-                }
+                && studyParticipantAssignment.getStudySite().getId() != null) {
+
+            //first check if assignment already exists or not for a given studySite
+
+            StudyParticipantAssignment existingParticipantAssignment = this.getStudyParticipantAssignment(studyParticipantAssignment.getStudySite());
+
+            if (existingParticipantAssignment == null) {
+                studyParticipantAssignment.setParticipant(this);
+                this.getAssignments().add(studyParticipantAssignment);
+                return;
             }
+
+
         }
-        getAssignments().add(studyParticipantAssignment);
-        studyParticipantAssignment.setParticipant(this);
     }
 
     @Transient
@@ -135,7 +126,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     /**
      * Will tell whether this participant is assigned to the give site.
-     * 
+     *
      * @param site
      * @return
      */
@@ -143,9 +134,11 @@ public class Participant extends AbstractIdentifiableDomainObject {
         return getStudyParticipantAssignment(site) != null;
     }
 
-    public StudyParticipantAssignment getStudyParticipantAssignment(StudySite site) {
-        for (StudyParticipantAssignment assignment : getAssignments()) {
-            if (assignment.getStudySite().getId().equals(site.getId())) return assignment;
+    public StudyParticipantAssignment getStudyParticipantAssignment(StudySite studySite) {
+        if (studySite != null) {
+            for (StudyParticipantAssignment assignment : getAssignments()) {
+                if (assignment.getStudySite().getId().equals(studySite.getId())) return assignment;
+            }
         }
         return null;
     }
@@ -203,9 +196,9 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides( { @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
-            @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
-            @AttributeOverride(name = "year", column = @Column(name = "birth_year")) })
+    @AttributeOverrides({@AttributeOverride(name = "day", column = @Column(name = "birth_day")),
+    @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
+    @AttributeOverride(name = "year", column = @Column(name = "birth_year"))})
     public DateValue getDateOfBirth() {
         return dateOfBirth;
     }
@@ -267,7 +260,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
     @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
     @OrderBy
     // order by ID for testing consistency
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
     }
@@ -329,7 +322,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     @Override
     @OneToMany
-    @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     @UniqueIdentifierForParticipant
     @UniqueObjectInCollection
@@ -360,5 +353,6 @@ public class Participant extends AbstractIdentifiableDomainObject {
         }
         return null;
     }
+
 
 }

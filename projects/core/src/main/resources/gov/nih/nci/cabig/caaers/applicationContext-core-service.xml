@@ -15,6 +15,11 @@ This applicationContext contains the definition of the concrete services
   <tx:annotation-driven proxy-target-class="true"/>
 
   <!-- ACTUAL SERVICE LAYER -->
+    <bean id="participantImportService" class="gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl">
+        <property name="organizationDao" ref="organizationDao"/>
+        <property name="participantRepository" ref="participantRepository"/>
+        <property name="studySiteDao" ref="studySiteDao"/>
+    </bean>
 
   <bean id="studyService" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.service.StudyServiceImpl"/>

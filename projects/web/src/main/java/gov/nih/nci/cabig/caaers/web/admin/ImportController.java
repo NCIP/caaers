@@ -1,75 +1,50 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.MedDRADao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.ParticipantServiceImpl;
-import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
-import gov.nih.nci.cabig.caaers.service.StudyServiceImpl;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
+import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
+import gov.nih.nci.cabig.caaers.service.*;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-
-import java.io.BufferedReader;
-import java.io.EOFException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Date;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import javax.xml.validation.Schema;
-import javax.xml.validation.Validator;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.XMLConstants;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.Source;
-import javax.xml.transform.dom.DOMSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.DateConverter;
-import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
-import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Source;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.*;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author Krikor Krumlian
@@ -82,9 +57,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private StudyDao studyDao;
 
-    private ParticipantDao participantDao;
+    private ParticipantRepository participantRepository;
 
-    private OrganizationDao organizationDao;
+    private OrganizationRepository organizationRepository;
 
     private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
@@ -103,6 +78,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
     private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+
+    private ParticipantImportServiceImpl participantImportService;
 
     public ImportController() {
 
@@ -421,8 +398,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private void migrateParticipant(Participant xstreamParticipant, ImportCommand command) {
 
-        DomainObjectImportOutcome<Participant> participantImportOutcome = participantServiceImpl
-                        .createParticipantObjects(xstreamParticipant);
+        DomainObjectImportOutcome<Participant> participantImportOutcome = participantImportService
+                        .importParticipant(xstreamParticipant);
         if (participantImportOutcome.isSavable()) {
             command.addImportableParticipant(participantImportOutcome);
         } else {
@@ -480,12 +457,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.studyDao = studyDao;
     }
 
-    public OrganizationDao getOrganizationDao() {
-        return organizationDao;
+    public OrganizationRepository getOrganizationRepository() {
+        return organizationRepository;
     }
 
-    public void setOrganizationDao(OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
+    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
     }
 
     public AgentDao getAgentDao() {
@@ -496,12 +473,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.agentDao = agentDao;
     }
 
-    public ParticipantDao getParticipantDao() {
-        return participantDao;
+    public ParticipantRepository getParticipantRepository() {
+        return participantRepository;
     }
 
-    public void setParticipantDao(ParticipantDao participantDao) {
-        this.participantDao = participantDao;
+    public void setParticipantRepository(ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
     }
 
     public MedDRADao getMeddraDao() {
@@ -580,5 +557,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         public Object fromString(String str) {
             return str.trim();
         }
+    }
+
+    public void setParticipantImportService(final ParticipantImportServiceImpl participantImportService) {
+        this.participantImportService = participantImportService;
     }
 }
