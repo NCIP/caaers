@@ -4,38 +4,27 @@ import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
-
 /**
  * Domain object representing Study(Protocol)
- * 
+ *
  * @author Sujith Vellat Thayyilthodi
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "studies")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_studies_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_studies_id")})
 @Where(clause = "load_status > 0")
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
@@ -100,7 +89,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private String diseaseLlt;
 
     private int studySiteIndex = -1; // represents the studysite, selected in the (add
-                                        // Investigators page)
+    // Investigators page)
 
     private Boolean drugAdministrationTherapyType = Boolean.FALSE;
 
@@ -140,16 +129,16 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
         // register with lazy list helper study site.
         lazyListHelper.add(StudySite.class, new StudyChildInstantiateFactory<StudySite>(this,
-                        StudySite.class));
+                StudySite.class));
         lazyListHelper.add(StudyFundingSponsor.class,
-                        new StudyChildInstantiateFactory<StudyFundingSponsor>(this,
-                                        StudyFundingSponsor.class));
+                new StudyChildInstantiateFactory<StudyFundingSponsor>(this,
+                        StudyFundingSponsor.class));
         lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
         lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this,
-                        StudyAgent.class));
+                StudyAgent.class));
 
         lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(
-                        TreatmentAssignment.class));
+                TreatmentAssignment.class));
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());
@@ -259,13 +248,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @Transient
     public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
         return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations,
-                        StudyCoordinatingCenter.class);
+                StudyCoordinatingCenter.class);
     }
 
     @Transient
     public StudyCoordinatingCenter getStudyCoordinatingCenter() {
         return getStudyCoordinatingCenters().isEmpty() ? null : getStudyCoordinatingCenters()
-                        .get(0);
+                .get(0);
     }
 
     @Transient
@@ -275,8 +264,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
             for (Identifier identifier : getIdentifiers()) {
 
                 if (identifier instanceof OrganizationAssignedIdentifier
-                                && identifier.getType().equalsIgnoreCase(
-                                                "Co-ordinating Center Identifier")) {
+                        && identifier.getType().equalsIgnoreCase(
+                        "Co-ordinating Center Identifier")) {
                     organizationAssignedIdentifier = (OrganizationAssignedIdentifier) identifier;
                     return organizationAssignedIdentifier;
                 }
@@ -294,7 +283,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     public void setOrganizationAssignedIdentifier(
-                    final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+            final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
         this.organizationAssignedIdentifier = organizationAssignedIdentifier;
     }
 
@@ -321,10 +310,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // / BEAN PROPERTIES
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
+
     @Transient
     public int getStudySiteIndex() {
         return studySiteIndex; // returns the index of the study site selected in investigators
-                                // page
+        // page
     }
 
     public void setStudySiteIndex(final int studySiteIndex) {
@@ -373,7 +363,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public DiseaseTerminology getDiseaseTerminology() {
         if (diseaseTerminology == null) {
             diseaseTerminology = new DiseaseTerminology();
@@ -387,7 +377,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AeTerminology getAeTerminology() {
         if (aeTerminology == null) {
             aeTerminology = new AeTerminology();
@@ -402,7 +392,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Override
     @OneToMany
-    @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "STU_ID")
     @OrderBy
     public List<Identifier> getIdentifiers() {
@@ -427,7 +417,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyAgent> getStudyAgentsInternal() {
         return lazyListHelper.getInternalList(StudyAgent.class);
     }
@@ -438,7 +428,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
     @UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
     // it is pretty lame that this is necessary
@@ -452,7 +442,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'meddra'")
     @UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
     // it is pretty lame that this is necessary
@@ -561,7 +551,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -570,14 +560,14 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         this.studyOrganizations = studyOrganizations;
         // initialize projected list for StudySite, StudyFundingSponsor and StudyCoordinatingCenter
         lazyListHelper.setInternalList(StudySite.class, new ProjectedList<StudySite>(
-                        this.studyOrganizations, StudySite.class));
+                this.studyOrganizations, StudySite.class));
         lazyListHelper.setInternalList(StudyFundingSponsor.class,
-                        new ProjectedList<StudyFundingSponsor>(this.studyOrganizations,
-                                        StudyFundingSponsor.class));
+                new ProjectedList<StudyFundingSponsor>(this.studyOrganizations,
+                        StudyFundingSponsor.class));
     }
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<TreatmentAssignment> getTreatmentAssignmentsInternal() {
         return lazyListHelper.getInternalList(TreatmentAssignment.class);
     }
@@ -619,13 +609,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // TODO Below methods are to be removed.....
 
     // TODO check how to get rid of this???? (Admin module require this method)
-    public void setPrimarySponsorCode(final String sponsorCode) {
-        throw new UnsupportedOperationException(
-                        "'setPrimarySponsorCode', one should not access this method!");
-    }
+//    public void setPrimarySponsorCode(final String sponsorCode) {
+//        throw new UnsupportedOperationException(
+//                        "'setPrimarySponsorCode', one should not access this method!");
+//    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyTherapy> getStudyTherapies() {
         return studyTherapies;
     }
@@ -703,13 +693,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @Transient
     public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
         return new ProjectedList<SystemAssignedIdentifier>(getIdentifiersLazy(),
-                        SystemAssignedIdentifier.class);
+                SystemAssignedIdentifier.class);
     }
 
     @Transient
     public List<OrganizationAssignedIdentifier> getOrganizationAssignedIdentifiers() {
         return new ProjectedList<OrganizationAssignedIdentifier>(getIdentifiersLazy(),
-                        OrganizationAssignedIdentifier.class);
+                OrganizationAssignedIdentifier.class);
     }
 
     @Transient
@@ -749,7 +739,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<ReportFormat> getReportFormats() {
         return reportFormats;
     }

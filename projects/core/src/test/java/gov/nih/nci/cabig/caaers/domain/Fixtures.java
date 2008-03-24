@@ -1,17 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
-import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
-import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
+import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -48,14 +43,16 @@ public class Fixtures {
         return organization;
     }
 
-    /** Creates an assignment and the associated Study, Participant, StudySite, and Site objs */
+    /**
+     * Creates an assignment and the associated Study, Participant, StudySite, and Site objs
+     */
     public static StudyParticipantAssignment createAssignment() {
         return assignParticipant(createParticipant("D", "C"), createStudy("DC"),
-                        createOrganization("N/A"));
+                createOrganization("N/A"));
     }
 
     public static StudyParticipantAssignment assignParticipant(final Participant participant,
-                    final Study study, final Organization organization) {
+                                                               final Study study, final Organization organization) {
         StudySite studySite = new StudySite();
         studySite.setId(123);
         studySite.setOrganization(organization);
@@ -156,7 +153,7 @@ public class Fixtures {
     }
 
     public static AdverseEventCtcTerm createAdverseEventCtcTerm(final AdverseEvent adverseEvent,
-                    final CtcTerm ctcTerm) {
+                                                                final CtcTerm ctcTerm) {
         AdverseEventCtcTerm adverseEventCtcTerm = adverseEvent.getAdverseEventCtcTerm();
         adverseEventCtcTerm.setCtcTerm(ctcTerm);
         return adverseEventCtcTerm;
@@ -180,7 +177,7 @@ public class Fixtures {
     }
 
     public static ResearchStaff createResearchStaff(final Organization organization,
-                    final List<UserGroupType> userGroupTypes, final String name) {
+                                                    final List<UserGroupType> userGroupTypes, final String name) {
         ResearchStaff researchStaff = new ResearchStaff();
         researchStaff.setFirstName("Jeff");
         researchStaff.setLastName("Someone");
@@ -205,7 +202,7 @@ public class Fixtures {
     }
 
     public static OrganizationAssignedIdentifier createOrganizationAssignedIdentifier(
-                    final String value, final Organization organization) {
+            final String value, final Organization organization) {
         OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
         organizationAssignedIdentifier.setOrganization(organization);
         organizationAssignedIdentifier.setType("type");
@@ -237,5 +234,14 @@ public class Fixtures {
         passwordPolicy.setLoginPolicy(loginPolicy);
         passwordPolicy.setPasswordCreationPolicy(passwordCreationPolicy);
         return passwordPolicy;
+    }
+
+    public static TreatmentAssignment createTreatmentAssignment() {
+        TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
+        treatmentAssignment.setCode("code");
+        treatmentAssignment.setComments("comments");
+        treatmentAssignment.setDescription("description");
+        treatmentAssignment.setDoseLevelOrder(Integer.valueOf(2));
+        return treatmentAssignment;
     }
 }

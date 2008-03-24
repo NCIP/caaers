@@ -3,8 +3,7 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.util.List;
 
@@ -57,6 +56,47 @@ public class StudyImportServiceTest extends AbstractTestCase {
 
     }
 
+    public void testImportStudyForMigratingTherapy() {
+
+        xstreamStudy.setDrugAdministrationTherapyType(Boolean.TRUE);
+        xstreamStudy.setRadiationTherapyType(Boolean.TRUE);
+
+
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+        assertEquals(2, studyDomainObjectImportOutcome.getImportedDomainObject().getStudyTherapies().size());
+
+        validate(xstreamStudy, studyDomainObjectImportOutcome);
+        validateImportedObject(studyDomainObjectImportOutcome);
+
+
+        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
+
+        assertEquals(2, messages.size());
+        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
+
+        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+
+    }
+
+    public void testImportStudyForMigratingTreatmentAssignments() {
+        TreatmentAssignment treatmentAssignment = Fixtures.createTreatmentAssignment();
+        xstreamStudy.addTreatmentAssignment(treatmentAssignment);
+
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+
+        validate(xstreamStudy, studyDomainObjectImportOutcome);
+        validateImportedObject(studyDomainObjectImportOutcome);
+
+
+        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
+
+        assertEquals(2, messages.size());
+        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
+
+        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+
+    }
+
     private void validateImportedObject(final DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
         assertTrue(studyDomainObjectImportOutcome.hasErrors());
         assertFalse(studyDomainObjectImportOutcome.isSavable());
@@ -81,6 +121,39 @@ public class StudyImportServiceTest extends AbstractTestCase {
         assertEquals(xstreamStudy.getSurgeryTherapyType(), study.getSurgeryTherapyType());
         assertEquals(xstreamStudy.getBehavioralTherapyType(), study.getBehavioralTherapyType());
 
+        if (!study.getStudyTherapies().isEmpty()) {
+
+
+            StudyTherapy actualTherapy = study.getStudyTherapies().get(0);
+            assertEquals(StudyTherapyType.DRUG_ADMINISTRATION, actualTherapy.getStudyTherapyType());
+            assertEquals(study, actualTherapy.getStudy());
+
+            actualTherapy = study.getStudyTherapies().get(1);
+
+            assertEquals(StudyTherapyType.RADIATION, actualTherapy.getStudyTherapyType());
+            assertEquals(study, actualTherapy.getStudy());
+
+
+        }
+        assertEquals(study.getTreatmentAssignments().size(), xstreamStudy.getTreatmentAssignments().size());
+        if (!xstreamStudy.getTreatmentAssignments().isEmpty()) {
+
+            assertEquals(1, study.getTreatmentAssignments().size());
+
+            final TreatmentAssignment actualTreatmentAssignment = study.getTreatmentAssignments().get(0);
+            final TreatmentAssignment expectedTreatmentAssignment = xstreamStudy.getTreatmentAssignments().get(0);
+
+            assertEquals(actualTreatmentAssignment.getCode(), expectedTreatmentAssignment.getCode());
+            assertEquals(actualTreatmentAssignment.getComments(), expectedTreatmentAssignment.getComments());
+            assertEquals(actualTreatmentAssignment.getDescription(), expectedTreatmentAssignment.getDescription());
+            assertEquals(actualTreatmentAssignment.getDoseLevelOrder(), expectedTreatmentAssignment.getDoseLevelOrder());
+
+
+            assertEquals(xstreamStudy, expectedTreatmentAssignment.getStudy());
+
+            assertEquals(study, actualTreatmentAssignment.getStudy());
+
+        }
 
     }
 

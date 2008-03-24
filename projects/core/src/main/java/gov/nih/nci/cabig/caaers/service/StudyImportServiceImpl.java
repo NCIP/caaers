@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -31,41 +32,41 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
      * @param xstreamStudy - The serialized xml stream
      * @return An outcome object containing the {@link Study
      */
-    public DomainObjectImportOutcome<Study> createStudyObjects(Study xstreamStudy) {
-        Study st = new Study();
+    public DomainObjectImportOutcome<Study> importStudy(Study xstreamStudy) {
+        Study study = new Study();
         DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();
 
-        st.setShortTitle(StringUtils.isNotEmpty(xstreamStudy.getShortTitle()) ? xstreamStudy.getShortTitle() : "NA");
-        st.setLongTitle(xstreamStudy.getLongTitle());
-        st.setDescription(xstreamStudy.getDescription());
-        st.setPrecis(xstreamStudy.getPrecis());
-        st.setPhaseCode(xstreamStudy.getPhaseCode());
-        st.setStatus(xstreamStudy.getStatus());
-        st.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
-        st.setAdeersReporting(xstreamStudy.getAdeersReporting());
-        st.setDesign(xstreamStudy.getDesign());
+        study.setShortTitle(StringUtils.isNotEmpty(xstreamStudy.getShortTitle()) ? xstreamStudy.getShortTitle() : "NA");
+        study.setLongTitle(xstreamStudy.getLongTitle());
+        study.setDescription(xstreamStudy.getDescription());
+        study.setPrecis(xstreamStudy.getPrecis());
+        study.setPhaseCode(xstreamStudy.getPhaseCode());
+        study.setStatus(xstreamStudy.getStatus());
+        study.setMultiInstitutionIndicator(xstreamStudy.getMultiInstitutionIndicator());
+        study.setAdeersReporting(xstreamStudy.getAdeersReporting());
+        study.setDesign(xstreamStudy.getDesign());
 
-        st.setDrugAdministrationTherapyType(xstreamStudy.getDrugAdministrationTherapyType());
-        st.setRadiationTherapyType(xstreamStudy.getRadiationTherapyType());
-        st.setDeviceTherapyType(xstreamStudy.getDeviceTherapyType());
-        st.setSurgeryTherapyType(xstreamStudy.getSurgeryTherapyType());
-        st.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
+        study.setDrugAdministrationTherapyType(xstreamStudy.getDrugAdministrationTherapyType());
+        study.setRadiationTherapyType(xstreamStudy.getRadiationTherapyType());
+        study.setDeviceTherapyType(xstreamStudy.getDeviceTherapyType());
+        study.setSurgeryTherapyType(xstreamStudy.getSurgeryTherapyType());
+        study.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
 
-        migrateTherapies(st, xstreamStudy, studyImportOutcome);
-        migrateTerminology(st, xstreamStudy, studyImportOutcome);
-        migrateDiseaseTerminology(st, xstreamStudy, studyImportOutcome);
-        migrateFundingSponsor(st, xstreamStudy, studyImportOutcome);
-        migrateCoordinatingCenter(st, xstreamStudy, studyImportOutcome);
-        migrateIdentifiers(st, xstreamStudy, studyImportOutcome);
-        migrateStudyOrganizations(st, xstreamStudy, studyImportOutcome);
-        migrateOrganizationAssignedIdentifier(st, xstreamStudy, studyImportOutcome);
-        migrateStudyAgents(st, xstreamStudy, studyImportOutcome);
-        migrateCtepStudyDiseases(st, xstreamStudy, studyImportOutcome);
-        migrateTreatmentAssignments(st, xstreamStudy, studyImportOutcome);
-        migrateMeddraStudyDiseases(st, xstreamStudy, studyImportOutcome);
+        migrateTherapies(study, xstreamStudy, studyImportOutcome);
+        migrateTerminology(study, xstreamStudy, studyImportOutcome);
+        migrateDiseaseTerminology(study, xstreamStudy, studyImportOutcome);
+        migrateFundingSponsor(study, xstreamStudy, studyImportOutcome);
+        migrateCoordinatingCenter(study, xstreamStudy, studyImportOutcome);
+        migrateIdentifiers(study, xstreamStudy, studyImportOutcome);
+        migrateStudyOrganizations(study, xstreamStudy, studyImportOutcome);
+        migrateOrganizationAssignedIdentifier(study, xstreamStudy, studyImportOutcome);
+        migrateStudyAgents(study, xstreamStudy, studyImportOutcome);
+        migrateCtepStudyDiseases(study, xstreamStudy, studyImportOutcome);
+        migrateTreatmentAssignments(study, xstreamStudy, studyImportOutcome);
+        migrateMeddraStudyDiseases(study, xstreamStudy, studyImportOutcome);
 
-        studyImportOutcome.setImportedDomainObject(st);
-        studyUniquenessCheck(st, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
+        studyImportOutcome.setImportedDomainObject(study);
+        studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
 
         return studyImportOutcome;
     }
@@ -79,7 +80,6 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
      * @param studyImportOutcome - This object will store the outcome.
      */
     private void migrateTherapies(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
-
         if (source.getDrugAdministrationTherapyType()) {
             StudyTherapy drugAdministrationTherapy = new StudyTherapy();
             drugAdministrationTherapy.setStudy(destination);
@@ -118,47 +118,54 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
     private void migrateFundingSponsor(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
-        OrganizationAssignedIdentifier organizationAssignedIdentifier = source.getFundingSponsor().getOrganizationAssignedIdentifier();
-        StudyFundingSponsor studyFundingSponsor = source.getFundingSponsor().getStudyFundingSponsor();
 
-        // Setup organizationAssignedIdentifier
-        Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
-        studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in fundingSponsor is invalid");
-        organizationAssignedIdentifier.setOrganization(organization);
-        organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-        organizationAssignedIdentifier.setPrimaryIndicator(false);
-        destination.getIdentifiers().add(organizationAssignedIdentifier);
+        final FundingSponsor fundingSponsor = source.getFundingSponsor();
+        if (fundingSponsor != null) {
+            OrganizationAssignedIdentifier organizationAssignedIdentifier = fundingSponsor.getOrganizationAssignedIdentifier();
+            StudyFundingSponsor studyFundingSponsor = fundingSponsor.getStudyFundingSponsor();
 
-        // Setup fundingSponsor
-        studyFundingSponsor.setOrganization(organization);
-        //	Migrate Study investigators and Study Personnels
-        migrateStudyInvestigators(studyFundingSponsor, organization, studyImportOutcome);
-        migrateStudyPersonnels(studyFundingSponsor, organization, studyImportOutcome);
-        destination.addStudyFundingSponsor(studyFundingSponsor);
+            // Setup organizationAssignedIdentifier
+            Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
+            studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in fundingSponsor is invalid");
+            organizationAssignedIdentifier.setOrganization(organization);
+            organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+            organizationAssignedIdentifier.setPrimaryIndicator(false);
+            destination.getIdentifiers().add(organizationAssignedIdentifier);
+
+            // Setup fundingSponsor
+            studyFundingSponsor.setOrganization(organization);
+            //	Migrate Study investigators and Study Personnels
+            migrateStudyInvestigators(studyFundingSponsor, organization, studyImportOutcome);
+            migrateStudyPersonnels(studyFundingSponsor, organization, studyImportOutcome);
+            destination.addStudyFundingSponsor(studyFundingSponsor);
+        }
+
+
     }
 
     private void migrateCoordinatingCenter(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
+        final CoordinatingCenter coordinatingCenter = source.getCoordinatingCenter();
+        if (coordinatingCenter != null) {
+            OrganizationAssignedIdentifier organizationAssignedIdentifier = coordinatingCenter.getOrganizationAssignedIdentifier();
+            StudyCoordinatingCenter studyCoordinatingCenter = coordinatingCenter.getStudyCoordinatingCenter();
 
-        OrganizationAssignedIdentifier organizationAssignedIdentifier = source.getCoordinatingCenter().getOrganizationAssignedIdentifier();
-        StudyCoordinatingCenter studyCoordinatingCenter = source.getCoordinatingCenter().getStudyCoordinatingCenter();
+            // Setup organizationAssignedIdentifier
+            Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
+            studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in coordinatingCenter is invalid");
+            organizationAssignedIdentifier.setOrganization(organization);
+            organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
+            organizationAssignedIdentifier.setPrimaryIndicator(true);
+            destination.getIdentifiers().add(organizationAssignedIdentifier);
 
-        // Setup organizationAssignedIdentifier
-        Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
-        studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in coordinatingCenter is invalid");
-        organizationAssignedIdentifier.setOrganization(organization);
-        organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-        organizationAssignedIdentifier.setPrimaryIndicator(true);
-        destination.getIdentifiers().add(organizationAssignedIdentifier);
+            // Setup StudyCoordinatingCenter
+            studyCoordinatingCenter.setOrganization(organization);
+            //	Migrate Study investigators and Study Personnels
+            migrateStudyInvestigators(studyCoordinatingCenter, organization, studyImportOutcome);
+            migrateStudyPersonnels(studyCoordinatingCenter, organization, studyImportOutcome);
 
-        // Setup StudyCoordinatingCenter
-        studyCoordinatingCenter.setOrganization(organization);
-        //	Migrate Study investigators and Study Personnels
-        migrateStudyInvestigators(studyCoordinatingCenter, organization, studyImportOutcome);
-        migrateStudyPersonnels(studyCoordinatingCenter, organization, studyImportOutcome);
-
-        ((Study) destination).addStudyOrganization(studyCoordinatingCenter);
+            ((Study) destination).addStudyOrganization(studyCoordinatingCenter);
+        }
     }
-
 
     private void migrateTreatmentAssignments(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
@@ -166,10 +173,7 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         if (source.getTreatmentAssignments() != null) {
             for (TreatmentAssignment treatmentAssignment : source.getTreatmentAssignments()) {
                 TreatmentAssignment target = new TreatmentAssignment();
-                target.setCode(treatmentAssignment.getCode());
-                target.setDoseLevelOrder(treatmentAssignment.getDoseLevelOrder());
-                target.setDescription(treatmentAssignment.getDescription());
-                target.setComments(treatmentAssignment.getComments());
+                BeanUtils.copyProperties(treatmentAssignment, target, new String[]{"study"});
                 destination.addTreatmentAssignment(target);
             }
         }
@@ -178,71 +182,69 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
     private void migrateStudyAgents(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
-        //StudyAgents
-        if (source.getStudyAgents() != null) {
 
-            for (int i = 0; i < source.getStudyAgents().size(); i++) {
-                StudyAgent studyAgent = source.getStudyAgents().get(i);
-                StudyAgent target = new StudyAgent();
-                Agent agent = null;
+        for (StudyAgent studyAgent : source.getStudyAgents()) {
+            StudyAgent target = new StudyAgent();
+            Agent agent = null;
 
-                if (studyAgent.getAgent().getName() != null) {
-                    agent = agentDao.getByName(studyAgent.getAgent().getName());
-                    target.setAgent(agent);
+            if (studyAgent.getAgent().getName() != null) {
+                agent = agentDao.getByName(studyAgent.getAgent().getName());
+                target.setAgent(agent);
+            }
+            if (studyAgent.getAgent().getNscNumber() != null && agent == null) {
+                agent = agentDao.getByNscNumber(studyAgent.getAgent().getNscNumber());
+                target.setAgent(agent);
+            }
+            if (studyAgent.getOtherAgent() != null && agent == null) {
+                target.setOtherAgent(studyAgent.getOtherAgent());
+            }
+            studyImportOutcome.ifNullObject(agent, DomainObjectImportOutcome.Severity.ERROR, " Provdided Agent is not Valid ");
+            target.setIndType(studyAgent.getIndType());
+
+            if (target.getIndType() == INDType.DCP_IND || target.getIndType() == INDType.CTEP_IND) {
+                studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
+                target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
+            }
+            if (target.getIndType() == INDType.CTEP_IND) {
+                // Ok so we have to provide the id here , well i can't see a different way to do this , defenitly ugly
+                // TODO: see how to enhance.
+                String[] inds = {"-111"};
+                List<InvestigationalNewDrug> investigationalNewDrugs = investigationalNewDrugDao.findByIds(inds);
+                StudyAgentINDAssociation indAssociation = new StudyAgentINDAssociation();
+                if (investigationalNewDrugs.size() > 0) {
+                    InvestigationalNewDrug ind = investigationalNewDrugs.get(0);
+                    indAssociation.setInvestigationalNewDrug(ind);
+                    target.addStudyAgentINDAssociation(indAssociation);
+                } else {
+                    studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The investigational new drug for a CTEP IND"
+                            + " is not Valid ");
                 }
-                if (studyAgent.getAgent().getNscNumber() != null && agent == null) {
-                    agent = agentDao.getByNscNumber(studyAgent.getAgent().getNscNumber());
-                    target.setAgent(agent);
-                }
-                if (studyAgent.getOtherAgent() != null && agent == null) {
-                    target.setOtherAgent(studyAgent.getOtherAgent());
-                }
-                studyImportOutcome.ifNullObject(agent, DomainObjectImportOutcome.Severity.ERROR, " Provdided Agent is not Valid ");
-                target.setIndType(studyAgent.getIndType());
-                if (target.getIndType() == INDType.DCP_IND || target.getIndType() == INDType.CTEP_IND) {
-                    studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
-                    target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
-                }
-                if (target.getIndType() == INDType.CTEP_IND) {
-                    // Ok so we have to provide the id here , well i can't see a different way to do this , defenitly ugly
-                    // TODO: see how to enhance.
-                    String[] inds = {"-111"};
+            }
+            if (target.getIndType() == INDType.OTHER) {
+                studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
+                target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
+                studyImportOutcome.ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(), DomainObjectImportOutcome.Severity.ERROR, "With the selected IND Type it is " +
+                        "required to provide an investigational new drug ");
+
+                for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
+                    String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
+                    String[] inds = {indNumber};
                     List<InvestigationalNewDrug> investigationalNewDrugs = investigationalNewDrugDao.findByIds(inds);
-                    StudyAgentINDAssociation indAssociation = new StudyAgentINDAssociation();
+
                     if (investigationalNewDrugs.size() > 0) {
                         InvestigationalNewDrug ind = investigationalNewDrugs.get(0);
                         indAssociation.setInvestigationalNewDrug(ind);
                         target.addStudyAgentINDAssociation(indAssociation);
                     } else {
-                        studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The investigational new drug for a CTEP IND"
-                                + " is not Valid ");
+                        studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The selected investigational new drug "
+                                + indNumber + " is not Valid ");
                     }
                 }
-                if (target.getIndType() == INDType.OTHER) {
-                    studyImportOutcome.ifNullObject(studyAgent.getPartOfLeadIND(), DomainObjectImportOutcome.Severity.ERROR, " Lead IND required ");
-                    target.setPartOfLeadIND(studyAgent.getPartOfLeadIND());
-                    studyImportOutcome.ifNullOrEmptyList(studyAgent.getStudyAgentINDAssociations(), DomainObjectImportOutcome.Severity.ERROR, "With the selected IND Type it is " +
-                            "required to provide an investigational new drug ");
-
-                    for (StudyAgentINDAssociation indAssociation : studyAgent.getStudyAgentINDAssociations()) {
-                        String indNumber = indAssociation.getInvestigationalNewDrug().getIndNumber().toString();
-                        String[] inds = {indNumber};
-                        List<InvestigationalNewDrug> investigationalNewDrugs = investigationalNewDrugDao.findByIds(inds);
-
-                        if (investigationalNewDrugs.size() > 0) {
-                            InvestigationalNewDrug ind = investigationalNewDrugs.get(0);
-                            indAssociation.setInvestigationalNewDrug(ind);
-                            target.addStudyAgentINDAssociation(indAssociation);
-                        } else {
-                            studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The selected investigational new drug "
-                                    + indNumber + " is not Valid ");
-                        }
-                    }
-                }
-
-                destination.addStudyAgent(target);
-                // TODO: ADD error handling with user interaction
             }
+
+            destination.addStudyAgent(target);
+            // TODO: ADD error handling with user interaction
+
         }
     }
 
@@ -342,32 +344,22 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
     private void migrateStudyOrganizations(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
-        if (source.getStudyOrganizations() != null) {
-            for (int i = 0; i < source.getStudyOrganizations().size(); i++) {
-                StudyOrganization studyOrganization = source.getStudyOrganizations().get(i);
-                if (studyOrganization instanceof StudySite) {
-                    StudySite studySite = (StudySite) studyOrganization;
-                    Organization organization = getOrganization(studySite.getOrganization().getName());
-                    studySite.setOrganization(organization);
-                    // Migrate Study investigators and Study Personnels
-                    migrateStudyInvestigators(studySite, organization, studyImportOutcome);
-                    migrateStudyPersonnels(studySite, organization, studyImportOutcome);
+        for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
+            Organization organization = getOrganization(studyOrganization.getOrganization().getName());
+            studyOrganization.setOrganization(organization);
 
-                    destination.addStudySite(studySite);
-                }
-                if (studyOrganization instanceof StudyFundingSponsor) {
-                    StudyFundingSponsor studyFundingSponsor = (StudyFundingSponsor) studyOrganization;
-                    Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
-                    studyFundingSponsor.setOrganization(organization);
-                    //	Migrate Study investigators and Study Personnels
-                    migrateStudyInvestigators(studyFundingSponsor, organization, studyImportOutcome);
-                    migrateStudyPersonnels(studyFundingSponsor, organization, studyImportOutcome);
+            // Migrate Study investigators and Study Personnels
+            migrateStudyInvestigators(studyOrganization, organization, studyImportOutcome);
+            migrateStudyPersonnels(studyOrganization, organization, studyImportOutcome);
 
-                    destination.addStudyFundingSponsor(studyFundingSponsor);
-                }
-
+            if (studyOrganization instanceof StudySite) {
+                destination.addStudySite((StudySite) studyOrganization);
+            } else if (studyOrganization instanceof StudyFundingSponsor) {
+                destination.addStudyFundingSponsor((StudyFundingSponsor) studyOrganization);
             }
+
         }
+
 
     }
 
@@ -417,7 +409,7 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
     */
     private void migrateOrganizationAssignedIdentifier(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
-        if (source.getMultiInstitutionIndicator().booleanValue()) {
+        if (source.getMultiInstitutionIndicator() != null && source.getMultiInstitutionIndicator().booleanValue()) {
             String organizationName = source.getOrganizationAssignedIdentifier().getOrganization().getName();
             Organization organization = getOrganization(organizationName);
 
@@ -429,12 +421,6 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
     }
 
-    private StudyAgent createStudyAgent(Agent agent) {
-
-        StudyAgent studyAgent = new StudyAgent();
-        studyAgent.setAgent(agent);
-        return studyAgent;
-    }
 
     private void studyUniquenessCheck(Study study, DomainObjectImportOutcome studyImportOutcome, DomainObjectImportOutcome.Severity severity) {
 

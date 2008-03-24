@@ -385,7 +385,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private void migrateStudy(Study xstreamStudy, ImportCommand command) {
 
         DomainObjectImportOutcome<Study> studyImportOutcome = studyImportService
-                        .createStudyObjects(xstreamStudy);
+                        .importStudy(xstreamStudy);
         if (studyImportOutcome.isSavable()) {
             command.addImportableStudy(studyImportOutcome);
         } else {
