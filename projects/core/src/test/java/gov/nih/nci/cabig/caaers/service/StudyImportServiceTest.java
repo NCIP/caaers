@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.*;
+import org.easymock.classextension.EasyMock;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class StudyImportServiceTest extends AbstractTestCase {
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     private Study xstreamStudy;
+    private Organization organization;
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -36,6 +38,7 @@ public class StudyImportServiceTest extends AbstractTestCase {
 
         xstreamStudy = Fixtures.createStudy("short title");
 
+        organization = Fixtures.createOrganization("org ");
     }
 
 
@@ -65,6 +68,30 @@ public class StudyImportServiceTest extends AbstractTestCase {
         DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
         assertEquals(2, studyDomainObjectImportOutcome.getImportedDomainObject().getStudyTherapies().size());
 
+        validate(xstreamStudy, studyDomainObjectImportOutcome);
+        validateImportedObject(studyDomainObjectImportOutcome);
+
+
+        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
+
+        assertEquals(2, messages.size());
+        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
+
+        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+
+    }
+
+    public void testImportStudyForMigratingStudyOrganizations() {
+
+        StudySite studySite = new StudySite();
+        studySite.setStudy(xstreamStudy);
+        studySite.setOrganization(organization);
+        xstreamStudy.addStudyOrganization(studySite);
+
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        replayMocks();
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+        verifyMocks();
         validate(xstreamStudy, studyDomainObjectImportOutcome);
         validateImportedObject(studyDomainObjectImportOutcome);
 
@@ -152,6 +179,19 @@ public class StudyImportServiceTest extends AbstractTestCase {
             assertEquals(xstreamStudy, expectedTreatmentAssignment.getStudy());
 
             assertEquals(study, actualTreatmentAssignment.getStudy());
+
+        }
+        assertEquals(study.getStudyOrganizations().size(), xstreamStudy.getStudyOrganizations().size());
+        if (!xstreamStudy.getStudyOrganizations().isEmpty()) {
+
+            assertEquals(1, study.getStudyOrganizations().size());
+
+            final StudyOrganization actualStudyOrganization = study.getStudyOrganizations().get(0);
+            final StudyOrganization expectedStudyOrganization = xstreamStudy.getStudyOrganizations().get(0);
+
+            assertEquals(actualStudyOrganization.getOrganization(), expectedStudyOrganization.getOrganization());
+
+            assertEquals(study, actualStudyOrganization.getStudy());
 
         }
 

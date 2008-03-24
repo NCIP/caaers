@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
-    private OrganizationDao organizationDao;
     private AgentDao agentDao;
     private MedDRADao meddraDao;
     private CtcDao ctcDao;
@@ -433,10 +432,7 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         }
     }
 
-    public void setOrganizationDao(final OrganizationDao organizationDao) {
-        this.organizationDao = organizationDao;
-    }
-
+    
     public void setAgentDao(final AgentDao agentDao) {
         this.agentDao = agentDao;
     }
