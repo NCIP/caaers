@@ -7,7 +7,6 @@ import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.*;
@@ -58,7 +57,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private StudyDao studyDao;
 
 
-    private OrganizationRepository organizationRepository;
+    private OrganizationDao organizationDao;
 
     private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
@@ -454,12 +453,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.studyDao = studyDao;
     }
 
-    public OrganizationRepository getOrganizationRepository() {
-        return organizationRepository;
+    public OrganizationDao getOrganizationDao() {
+        return organizationDao;
     }
 
-    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
-        this.organizationRepository = organizationRepository;
+    public void setOrganizationDao(final OrganizationDao organizationDao) {
+        this.organizationDao = organizationDao;
     }
 
     public AgentDao getAgentDao() {
