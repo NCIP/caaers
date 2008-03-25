@@ -609,10 +609,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // TODO Below methods are to be removed.....
 
     // TODO check how to get rid of this???? (Admin module require this method)
-//    public void setPrimarySponsorCode(final String sponsorCode) {
-//        throw new UnsupportedOperationException(
-//                        "'setPrimarySponsorCode', one should not access this method!");
-//    }
+    public void setPrimarySponsorCode(final String sponsorCode) {
+        throw new UnsupportedOperationException(
+                        "'setPrimarySponsorCode', one should not access this method!");
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "study")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
