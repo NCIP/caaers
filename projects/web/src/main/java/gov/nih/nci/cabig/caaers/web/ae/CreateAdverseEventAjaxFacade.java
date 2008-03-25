@@ -1,83 +1,25 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.service.ParticipantService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -95,6 +37,14 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Rhett Sutphin
  */
@@ -105,7 +55,7 @@ public class CreateAdverseEventAjaxFacade {
     };
 
     private StudyDao studyDao;
-    private ParticipantDao participantDao;
+    private ParticipantRepository participantRepository;
     private CtcTermDao ctcTermDao;
     private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
@@ -122,7 +72,6 @@ public class CreateAdverseEventAjaxFacade {
     private ExpeditedReportTree expeditedReportTree;
     private ConfigProperty configProperty;
     private ReportService reportService;
-    private ParticipantService participantService;
     private LabCategoryDao labCategoryDao;
     private LabTermDao labTermDao;
     private ChemoAgentDao chemoAgentDao;
@@ -252,9 +201,9 @@ public class CreateAdverseEventAjaxFacade {
     public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants;
         if (studyId == null) {
-            participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
+            participants = participantRepository.getBySubnamesJoinOnIdentifier(extractSubnames(text));
         } else {
-            participants = participantDao.matchParticipantByStudy(studyId, text);
+            participants = participantRepository.matchParticipantByStudy(studyId, text);
         }
         // cut down objects for serialization
         return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
@@ -262,7 +211,7 @@ public class CreateAdverseEventAjaxFacade {
 
     /* Depracated and replace by a hql based query to enhance performance
     public List<Participant> matchParticipants(String text, Integer studyId) {
-        List<Participant> participants = participantDao.getBySubnames(extractSubnames(text));
+        List<Participant> participants = participantRepository.getBySubnames(extractSubnames(text));
         if (studyId != null) {
             for (Iterator<Participant> it = participants.iterator(); it.hasNext();) {
                 Participant participant = it.next();
@@ -611,7 +560,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM) {
-        return participantService.bodySuraceArea(ht, htUOM, wt, wtUOM);
+        return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
     }
 
     /**
@@ -870,8 +819,8 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     @Required
-    public void setParticipantDao(ParticipantDao participantDao) {
-        this.participantDao = participantDao;
+    public void setParticipantRepository(ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
     }
 
     @Required
@@ -961,11 +910,6 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setRoutineAdverseEventReportDao(RoutineAdverseEventReportDao roReportDao) {
         this.roReportDao = roReportDao;
-    }
-
-    @Required
-    public void setParticipantService(ParticipantService participantService) {
-        this.participantService = participantService;
     }
 
     @Required
