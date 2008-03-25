@@ -9,7 +9,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
@@ -55,7 +54,7 @@ public class CreateAdverseEventAjaxFacade {
     };
 
     private StudyDao studyDao;
-    private ParticipantRepository participantRepository;
+    private ParticipantDao participantDao;
     private CtcTermDao ctcTermDao;
     private CtcCategoryDao ctcCategoryDao;
     private CtcDao ctcDao;
@@ -186,7 +185,7 @@ public class CreateAdverseEventAjaxFacade {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
-    
+
     public Integer getDiseaseFromStudyDisease(String studyDiseaseId) {
     	CtepStudyDisease ctepStudyDisease= ctepStudyDiseaseDao.getById(Integer.parseInt(studyDiseaseId));
         return ctepStudyDisease.getTerm().getId();
@@ -201,9 +200,9 @@ public class CreateAdverseEventAjaxFacade {
     public List<Participant> matchParticipants(String text, Integer studyId) {
         List<Participant> participants;
         if (studyId == null) {
-            participants = participantRepository.getBySubnamesJoinOnIdentifier(extractSubnames(text));
+            participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
         } else {
-            participants = participantRepository.matchParticipantByStudy(studyId, text);
+            participants = participantDao.matchParticipantByStudy(studyId, text);
         }
         // cut down objects for serialization
         return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
@@ -602,8 +601,8 @@ public class CreateAdverseEventAjaxFacade {
         try {
 			saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
 		} catch( OptimisticLockingFailureException ole){
-			log.error("Error occured while reordering [listProperty :" + listProperty + 
-        			", objectIndex :" + targetIndex + 
+			log.error("Error occured while reordering [listProperty :" + listProperty +
+        			", objectIndex :" + targetIndex +
         			", targetIndex :" + targetIndex +"]", ole);
         	return new AjaxOutput("Unable to reorder at this point. The same data is being modified by someone else, please restart the page flow");
 		}
@@ -625,7 +624,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         return list;
     }
-    
+
     /**
      * When we delte an element which has been attributed, the attribution also needs to be deleted.
      * @param o
@@ -649,7 +648,7 @@ public class CreateAdverseEventAjaxFacade {
         	}
     	}
     }
-    
+
     public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
     	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
     	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
@@ -657,7 +656,7 @@ public class CreateAdverseEventAjaxFacade {
     			unwantedAttribution = attribution;
     			break;
     		}
-    		
+
     	}
     	if(unwantedAttribution != null){
     		attributions.remove(unwantedAttribution);
@@ -694,18 +693,18 @@ public class CreateAdverseEventAjaxFacade {
         Object removedObject = list.get(indexToDelete);
         cascaeDeleteToAttributions((DomainObject)removedObject, command.getAeReport());
         list.remove(indexToDelete);
-        
+
         addDisplayNames(listProperty, changes);
         try{
         	saveIfAlreadyPersistent(command);
         }catch(DataIntegrityViolationException die){
-        	log.error("Error occured while deleting [listProperty :" + listProperty + 
-        			", indexToDelete :" + indexToDelete + 
+        	log.error("Error occured while deleting [listProperty :" + listProperty +
+        			", indexToDelete :" + indexToDelete +
         			"]", die);
         	return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
         }catch(OptimisticLockingFailureException ole){
-        	log.error("Error occured while deleting [listProperty :" + listProperty + 
-        			", indexToDelete :" + indexToDelete + 
+        	log.error("Error occured while deleting [listProperty :" + listProperty +
+        			", indexToDelete :" + indexToDelete +
         			"]", ole);
         	return new AjaxOutput("Unable to delete. The same data is being modified by someone else, please restart the page flow.");
         }
@@ -817,11 +816,12 @@ public class CreateAdverseEventAjaxFacade {
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
-
     @Required
-    public void setParticipantRepository(ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
+    public void setParticipantDao(final ParticipantDao participantDao) {
+        this.participantDao = participantDao;
     }
+
+
 
     @Required
     public void setCtcDao(CtcDao ctcDao) {
@@ -954,9 +954,9 @@ public class CreateAdverseEventAjaxFacade {
 	public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
 		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
 	}
-    
-    
 
 
-  
+
+
+
 }
