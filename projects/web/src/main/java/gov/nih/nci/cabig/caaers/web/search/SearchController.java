@@ -9,10 +9,10 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.service.StudyService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,7 +31,7 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  */
 public abstract class SearchController extends SimpleFormController {
 
-    private StudyService studyService;
+    private StudyRepository studyRepository;
 
     private ConfigProperty configurationProperty;
 
@@ -129,12 +129,12 @@ public abstract class SearchController extends SimpleFormController {
         request.setAttribute("assembler", viewData);
     }
 
-    public StudyService getStudyService() {
-        return studyService;
+    public StudyRepository getStudyRepository() {
+        return studyRepository;
     }
 
-    public void setStudyService(final StudyService studyService) {
-        this.studyService = studyService;
+    public void setStudyRepository(final StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
     }
 
     public ConfigProperty getConfigurationProperty() {

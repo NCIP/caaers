@@ -22,7 +22,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.service.StudyService;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -50,7 +50,7 @@ import org.extremecomponents.table.view.CsvView;
 public class SearchStudyAjaxFacade {
 	private static final Log log = LogFactory.getLog(SearchStudyAjaxFacade.class);
 
-	private StudyService studyService;
+    private StudyRepository studyRepository;
 
 	private StudyDao studyDao;
 
@@ -1371,15 +1371,15 @@ public class SearchStudyAjaxFacade {
 
 	}
 
-	public StudyService getStudyService() {
-		return studyService;
-	}
+    public StudyRepository getStudyRepository() {
+        return studyRepository;
+    }
 
-	public void setStudyService(final StudyService studyService) {
-		this.studyService = studyService;
-	}
+    public void setStudyRepository(final StudyRepository studyRepository) {
+        this.studyRepository = studyRepository;
+    }
 
-	public StudyDao getStudyDao() {
+    public StudyDao getStudyDao() {
 		return studyDao;
 	}
 
