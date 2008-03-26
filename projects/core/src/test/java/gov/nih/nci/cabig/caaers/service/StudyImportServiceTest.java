@@ -53,6 +53,41 @@ public class StudyImportServiceTest extends AbstractTestCase {
         organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("value", organization);
     }
 
+    public void testImportStudyForMigratingCoordinatingCenter() {
+
+        CoordinatingCenter coordinatingCenter = Fixtures.createCoordinatingCenter(organization, organizationAssignedIdentifier);
+        xstreamStudy.setCoordinatingCenter(coordinatingCenter);
+
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        EasyMock.expect(studyDao.getByIdentifier(organizationAssignedIdentifier)).andReturn(null);
+
+        replayMocks();
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+        verifyMocks();
+
+        Study study = studyDomainObjectImportOutcome.getImportedDomainObject();
+        assertFalse(study.getIdentifiers().isEmpty());
+        assertFalse(study.getStudyOrganizations().isEmpty());
+
+        OrganizationAssignedIdentifier actualOrganizationAssignedIdentifier = (OrganizationAssignedIdentifier) study.getIdentifiers().get(0);
+        assertEquals(xstreamStudy.getCoordinatingCenter().getOrganizationAssignedIdentifier(), actualOrganizationAssignedIdentifier);
+
+        assertEquals(xstreamStudy.getCoordinatingCenter().getOrganizationAssignedIdentifier().getOrganization(), actualOrganizationAssignedIdentifier.getOrganization());
+        assertEquals(xstreamStudy.getCoordinatingCenter().getOrganizationAssignedIdentifier().getType(), actualOrganizationAssignedIdentifier.getType());
+        assertEquals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE, actualOrganizationAssignedIdentifier.getType());
+
+        assertEquals(xstreamStudy.getCoordinatingCenter().getOrganizationAssignedIdentifier().getValue(), actualOrganizationAssignedIdentifier.getValue());
+
+        StudyOrganization actualCoordinatingCenter = study.getStudyOrganizations().get(0);
+        assertTrue(actualCoordinatingCenter instanceof StudyCoordinatingCenter);
+
+        assertEquals(xstreamStudy.getCoordinatingCenter().getStudyCoordinatingCenter().getOrganization(), actualCoordinatingCenter.getOrganization());
+
+        validateOutcome(studyDomainObjectImportOutcome, 1);
+
+    }
+
+
     public void testImportStudyForMigratingFundingSponsors() {
         FundingSponsor fundingSponsor = Fixtures.createFundingSponsor(organization, organizationAssignedIdentifier);
         xstreamStudy.setFundingSponsor(fundingSponsor);

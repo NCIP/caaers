@@ -265,4 +265,18 @@ public class Fixtures {
         fundingSponsor.setStudyFundingSponsor(studyFundingSponsor);
         return fundingSponsor;
     }
+
+    public static CoordinatingCenter createCoordinatingCenter(final Organization organization, final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+        CoordinatingCenter coordinatingCenter = new CoordinatingCenter();
+        coordinatingCenter.setOrganizationAssignedIdentifier(organizationAssignedIdentifier);
+        StudyCoordinatingCenter studyCoordinatingCenter = createStudyCoordinatingCenter(organization);
+        coordinatingCenter.setStudyCoordinatingCenter(studyCoordinatingCenter);
+        return coordinatingCenter;
+    }
+
+    private static StudyCoordinatingCenter createStudyCoordinatingCenter(final Organization organization) {
+        StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
+        studyCoordinatingCenter.setOrganization(organization);
+        return studyCoordinatingCenter;
+    }
 }
