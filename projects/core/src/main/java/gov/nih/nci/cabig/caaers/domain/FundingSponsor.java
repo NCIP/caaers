@@ -1,19 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-public class FundingSponsor {
-
-    private OrganizationAssignedIdentifier organizationAssignedIdentifier;
+public class FundingSponsor extends AbstractSponsor {
 
     private StudyFundingSponsor studyFundingSponsor;
-
-    public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
-        return organizationAssignedIdentifier;
-    }
-
-    public void setOrganizationAssignedIdentifier(
-                    OrganizationAssignedIdentifier organizationAssignedIdentifier) {
-        this.organizationAssignedIdentifier = organizationAssignedIdentifier;
-    }
 
     public StudyFundingSponsor getStudyFundingSponsor() {
         return studyFundingSponsor;
@@ -23,4 +12,7 @@ public class FundingSponsor {
         this.studyFundingSponsor = studyFundingSponsor;
     }
 
+    public StudyOrganization getStudyOrganization() {
+        return studyFundingSponsor;
+    }
 }

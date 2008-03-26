@@ -3,24 +3,14 @@ package gov.nih.nci.cabig.caaers.domain;
 /**
  * This class represents the CoordinatingCenter domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author
- * 
  */
-public class CoordinatingCenter {
+public class CoordinatingCenter extends AbstractSponsor {
 
-    private OrganizationAssignedIdentifier organizationAssignedIdentifier;
 
     private StudyCoordinatingCenter studyCoordinatingCenter;
 
-    public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
-        return organizationAssignedIdentifier;
-    }
-
-    public void setOrganizationAssignedIdentifier(
-                    OrganizationAssignedIdentifier organizationAssignedIdentifier) {
-        this.organizationAssignedIdentifier = organizationAssignedIdentifier;
-    }
 
     public StudyCoordinatingCenter getStudyCoordinatingCenter() {
         return studyCoordinatingCenter;
@@ -30,4 +20,7 @@ public class CoordinatingCenter {
         this.studyCoordinatingCenter = studyCoordinatingCenter;
     }
 
+    public StudyOrganization getStudyOrganization() {
+        return studyCoordinatingCenter;
+    }
 }

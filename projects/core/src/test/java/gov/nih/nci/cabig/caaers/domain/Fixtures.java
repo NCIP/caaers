@@ -249,4 +249,20 @@ public class Fixtures {
         treatmentAssignment.setDoseLevelOrder(Integer.valueOf(2));
         return treatmentAssignment;
     }
+
+    public static StudyFundingSponsor createStudyFundingSponsor(final Organization organization) {
+        StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
+        studyFundingSponsor.setOrganization(organization);
+        return studyFundingSponsor;
+
+    }
+
+    public static FundingSponsor createFundingSponsor(final Organization organization, final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+        FundingSponsor fundingSponsor = new FundingSponsor();
+
+        StudyFundingSponsor studyFundingSponsor = createStudyFundingSponsor(organization);
+        fundingSponsor.setOrganizationAssignedIdentifier(organizationAssignedIdentifier);
+        fundingSponsor.setStudyFundingSponsor(studyFundingSponsor);
+        return fundingSponsor;
+    }
 }

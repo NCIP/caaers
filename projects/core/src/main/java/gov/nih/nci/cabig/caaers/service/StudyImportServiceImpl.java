@@ -43,9 +43,8 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
 
         migrateDiseaseTerminology(study, xstreamStudy, studyImportOutcome);
 
-        migrateFundingSponsor(study, xstreamStudy, studyImportOutcome);
+        migrateFundingSponsorAndCoordinatingCenter(study, xstreamStudy, studyImportOutcome);
 
-        migrateCoordinatingCenter(study, xstreamStudy, studyImportOutcome);
 
         migrateIdentifiers(study, xstreamStudy, studyImportOutcome);
 
@@ -116,55 +115,56 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
     }
 
 
-    private void migrateFundingSponsor(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
+    private void migrateFundingSponsorAndCoordinatingCenter(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
 
 
         final FundingSponsor fundingSponsor = source.getFundingSponsor();
         if (fundingSponsor != null) {
-            OrganizationAssignedIdentifier organizationAssignedIdentifier = fundingSponsor.getOrganizationAssignedIdentifier();
-            StudyFundingSponsor studyFundingSponsor = fundingSponsor.getStudyFundingSponsor();
-
-            // Setup organizationAssignedIdentifier
-            Organization organization = getOrganization(studyFundingSponsor.getOrganization().getName());
-            studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in fundingSponsor is invalid");
-            organizationAssignedIdentifier.setOrganization(organization);
-            organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
-            organizationAssignedIdentifier.setPrimaryIndicator(false);
-            destination.getIdentifiers().add(organizationAssignedIdentifier);
-
-            // Setup fundingSponsor
-            studyFundingSponsor.setOrganization(organization);
-            //	Migrate Study investigators and Study Personnels
-            migrateStudyInvestigators(studyFundingSponsor, organization, studyImportOutcome);
-            migrateStudyPersonnels(studyFundingSponsor, organization, studyImportOutcome);
-            destination.addStudyFundingSponsor(studyFundingSponsor);
+            migrateAbstractSponsor(destination, studyImportOutcome, fundingSponsor);
         }
+        final CoordinatingCenter coordinatingCenter = source.getCoordinatingCenter();
+        if (coordinatingCenter != null) {
+            migrateAbstractSponsor(destination, studyImportOutcome, coordinatingCenter);
 
+        }
 
     }
 
-    private void migrateCoordinatingCenter(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
-        final CoordinatingCenter coordinatingCenter = source.getCoordinatingCenter();
-        if (coordinatingCenter != null) {
-            OrganizationAssignedIdentifier organizationAssignedIdentifier = coordinatingCenter.getOrganizationAssignedIdentifier();
-            StudyCoordinatingCenter studyCoordinatingCenter = coordinatingCenter.getStudyCoordinatingCenter();
+    private void migrateAbstractSponsor(final Study destination, final DomainObjectImportOutcome studyImportOutcome, final AbstractSponsor abstractSponsor) {
 
-            // Setup organizationAssignedIdentifier
-            Organization organization = getOrganization(studyCoordinatingCenter.getOrganization().getName());
+        OrganizationAssignedIdentifier organizationAssignedIdentifier = abstractSponsor.getOrganizationAssignedIdentifier();
+
+        StudyOrganization studyOrganization = abstractSponsor.getStudyOrganization();
+
+        // Setup organizationAssignedIdentifier
+        Organization organization = getOrganization(studyOrganization.getOrganization().getName());
+        if (studyOrganization instanceof StudyFundingSponsor) {
+            studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in fundingSponsor is invalid");
+            organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
+
+        } else if (studyOrganization instanceof StudyCoordinatingCenter) {
             studyImportOutcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in coordinatingCenter is invalid");
-            organizationAssignedIdentifier.setOrganization(organization);
             organizationAssignedIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
-            organizationAssignedIdentifier.setPrimaryIndicator(true);
-            destination.getIdentifiers().add(organizationAssignedIdentifier);
 
-            // Setup StudyCoordinatingCenter
-            studyCoordinatingCenter.setOrganization(organization);
-            //	Migrate Study investigators and Study Personnels
-            migrateStudyInvestigators(studyCoordinatingCenter, organization, studyImportOutcome);
-            migrateStudyPersonnels(studyCoordinatingCenter, organization, studyImportOutcome);
-
-            ((Study) destination).addStudyOrganization(studyCoordinatingCenter);
         }
+
+        organizationAssignedIdentifier.setOrganization(organization);
+        organizationAssignedIdentifier.setPrimaryIndicator(false);
+        destination.getIdentifiers().add(organizationAssignedIdentifier);
+
+        // Setup study organizations
+        studyOrganization.setOrganization(organization);
+
+        //	Migrate Study investigators and Study Personnels
+        migrateStudyInvestigators(studyOrganization, organization, studyImportOutcome);
+        migrateStudyPersonnels(studyOrganization, organization, studyImportOutcome);
+
+        if (studyOrganization instanceof StudyFundingSponsor) {
+            destination.addStudyFundingSponsor((StudyFundingSponsor) studyOrganization);
+        } else if (studyOrganization instanceof StudyCoordinatingCenter) {
+            destination.addStudyOrganization(studyOrganization);
+        }
+
     }
 
     private void migrateTreatmentAssignments(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
