@@ -4,17 +4,17 @@ This applicationContext contains the definition of the concrete services
 -->
 
 <beans
-    xmlns="http://www.springframework.org/schema/beans"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
-    default-lazy-init="true">
+        default-lazy-init="true">
 
-  <tx:annotation-driven proxy-target-class="true"/>
+    <tx:annotation-driven proxy-target-class="true"/>
 
-  <!-- ACTUAL SERVICE LAYER -->
+    <!-- ACTUAL SERVICE LAYER -->
     <bean id="participantImportService" class="gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl">
         <property name="organizationDao" ref="organizationDao"/>
         <property name="participantRepository" ref="participantRepository"/>
@@ -36,133 +36,146 @@ This applicationContext contains the definition of the concrete services
     </bean>
 
     <bean id="interoperationService" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
+          class="gov.nih.nci.cabig.caaers.service.InteroperationServiceImpl"/>
 
-  <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl" autowire="byName"/>
-  <bean id="passwordPolicyService"  class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
+    <bean id="passwordManagerService" class="gov.nih.nci.cabig.caaers.service.security.PasswordManagerServiceImpl"
+          autowire="byName"/>
+    <bean id="passwordPolicyService"
+          class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 
-  <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
-    <property name="mailSender" ref="mailer"/>
-    <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
-    <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-    <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-    <property name="userDao" ref="userDao"/>
-    <property name="researchStaffDao" ref="researchStaffDao"/>
-  </bean>
-
-
-  <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl" autowire="byType">
-    <property name="csmApplicationContextName" ref="csmApplicationContextName"/>
-    <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-    <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-    <property name="siteProtectionGroupId">
-      <!--id for site protection group-->
-      <value>-5</value>
-    </property>
-    <property name="siteAccessRoleId">
-      <value>-14</value>
-    </property>
-  </bean>
-
-  
-  <bean id="researchStaffRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ResearchStaffRepository" >
-    <property name="researchStaffDao" ref="researchStaffDao"/>
-    <property name="userService" ref="userService"/>
-    <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-  </bean>
-  
-  <bean id="delegatedCredentialProvider" class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider" />
-  
-  <bean id="messageBroadcastService" lazy-init="true"
-	class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
-    <property name="configuration" ref="configuration" />
-    <property name="messageTypesMapping">
-      <map>
-	<entry key="AENotification" value="SCHEDULE_MODIFICATION" />
-      </map>
-    </property>
-    <property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
-  </bean>
-
-<bean id="connectionFactory"
-		class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp://localhost:61616" />
-	</bean>
-
-	<bean id="sendQueueDestination"
-		class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg>
-			<value>adeers-ae-message.inputQueue</value>
-		</constructor-arg>
-	</bean>
-
-	<bean id="recvQueueDestination"
-		class="org.apache.activemq.command.ActiveMQQueue">
-		<constructor-arg>
-			<value>adeers-ae-message.outputQueue</value>
-		</constructor-arg>
-	</bean>
-
-	<bean id="messageBroadcaster"
-		class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl">
-		<property name="connectionFactory">
-			<ref bean="connectionFactory" />
-		</property>
-		<property name="sendQueue">
-			<ref bean="sendQueueDestination" />
-		</property>
-		<property name="recvQueue">
-			<ref bean="recvQueueDestination" />
-		</property>
-		<property name="messageConsumer">
-			<ref bean="esbMessageConsumer" />
-		</property>
-	</bean>
-	<bean id="esbMessageConsumer" class="gov.nih.nci.cabig.caaers.esb.client.ESBMessageConsumerImpl" autowire="byType"/>
-	
-	<bean id="messageNotificationService" class="gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService" autowire="byType"/>
-	
-	
-  <!-- XXX: may want to put this in a different app context -->
-  <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
-
-  <bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType"/>
-  
-  <bean id="routineAdverseEventReportServiceImpl" class="gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl" autowire="byType"/>
-
-  <!--  This bean that implements the service  -->
-  <bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">
-    <property name="scheduler">
-      <ref bean="schedulerFactory"/>
-    </property>
-
-    <!-- The mapping is used to identify the correct job class implementation -->
-    <property name="jobClassMapping">
-      <map>
-	<entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
-	       value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob"/>
-      </map>
-    </property>
-    <property name="reportScheduleDao">
-      <ref bean="reportDao"/>
-    </property>
-  </bean>
-
-  <bean id="mailer" class="gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender">
-    <property name="configuration" ref="configuration"/>
-  </bean>
+    <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
+        <property name="mailSender" ref="mailer"/>
+        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
 
 
-  <!-- this is a template message that we can pre-load with default state -->
-  <bean id="accountCreatedTemplateMessage" class="org.springframework.mail.SimpleMailMessage">
-    <property name="from" value="${outgoing.mail.from.address}"/>
-    <property name="subject" value="Account created in caAERS"/>
-  </bean>
+    <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl"
+          autowire="byType">
+        <property name="csmApplicationContextName" ref="csmApplicationContextName"/>
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="siteProtectionGroupId">
+            <!--id for site protection group-->
+            <value>-5</value>
+        </property>
+        <property name="siteAccessRoleId">
+            <value>-14</value>
+        </property>
+    </bean>
 
-  <bean id="buildInfo" class="gov.nih.nci.cabig.ctms.tools.BuildInfo">
-    <property name="applicationName"><value>caAERS</value></property>
-    <property name="versionNumber"><value>${project.version}</value></property>
-    <!-- provided by maven-buildnumber-plugin -->
-    <property name="timestamp"><value>${buildNumber}</value></property>
-  </bean>
+
+    <bean id="researchStaffRepository" lazy-init="true"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userService" ref="userService"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+    </bean>
+
+    <bean id="delegatedCredentialProvider"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
+
+    <bean id="messageBroadcastService" lazy-init="true"
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersCaXchangeMessageBroadcastServiceImpl">
+        <property name="configuration" ref="configuration"/>
+        <property name="messageTypesMapping">
+            <map>
+                <entry key="AENotification" value="SCHEDULE_MODIFICATION"/>
+            </map>
+        </property>
+        <property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
+    </bean>
+
+    <bean id="connectionFactory"
+          class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+
+    <bean id="sendQueueDestination"
+          class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>adeers-ae-message.inputQueue</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="recvQueueDestination"
+          class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>adeers-ae-message.outputQueue</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="messageBroadcaster"
+          class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl">
+        <property name="connectionFactory">
+            <ref bean="connectionFactory"/>
+        </property>
+        <property name="sendQueue">
+            <ref bean="sendQueueDestination"/>
+        </property>
+        <property name="recvQueue">
+            <ref bean="recvQueueDestination"/>
+        </property>
+        <property name="messageConsumer">
+            <ref bean="esbMessageConsumer"/>
+        </property>
+    </bean>
+    <bean id="esbMessageConsumer" class="gov.nih.nci.cabig.caaers.esb.client.ESBMessageConsumerImpl" autowire="byType"/>
+
+    <bean id="messageNotificationService" class="gov.nih.nci.cabig.caaers.esb.client.MessageNotificationService"
+          autowire="byType"/>
+
+
+    <!-- XXX: may want to put this in a different app context -->
+    <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
+
+    <bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType"/>
+
+    <bean id="routineAdverseEventReportServiceImpl"
+          class="gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl" autowire="byType"/>
+
+    <!--  This bean that implements the service  -->
+    <bean id="schedulerService" class="gov.nih.nci.cabig.caaers.service.SchedulerServiceImpl">
+        <property name="scheduler">
+            <ref bean="schedulerFactory"/>
+        </property>
+
+        <!-- The mapping is used to identify the correct job class implementation -->
+        <property name="jobClassMapping">
+            <map>
+                <entry key="gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification"
+                       value="gov.nih.nci.cabig.caaers.scheduler.runtime.job.ReminderEmailJob"/>
+            </map>
+        </property>
+        <property name="reportScheduleDao">
+            <ref bean="reportDao"/>
+        </property>
+    </bean>
+
+    <bean id="mailer" class="gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender">
+        <property name="configuration" ref="configuration"/>
+    </bean>
+
+
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="accountCreatedTemplateMessage" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="${outgoing.mail.from.address}"/>
+        <property name="subject" value="Account created in caAERS"/>
+    </bean>
+
+    <bean id="buildInfo" class="gov.nih.nci.cabig.ctms.tools.BuildInfo">
+        <property name="applicationName">
+            <value>caAERS</value>
+        </property>
+        <property name="versionNumber">
+            <value>${project.version}</value>
+        </property>
+        <!-- provided by maven-buildnumber-plugin -->
+        <property name="timestamp">
+            <value>${buildNumber}</value>
+        </property>
+    </bean>
 </beans>

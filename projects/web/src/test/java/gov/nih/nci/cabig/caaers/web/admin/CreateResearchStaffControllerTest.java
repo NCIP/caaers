@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import gov.nih.nci.cabig.caaers.service.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 /**
