@@ -32,20 +32,62 @@ public class StudyImportServiceTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         organizationDao = registerMockFor(OrganizationDao.class);
+        ctcDao = registerDaoMockFor(CtcDao.class);
+        meddraDao = registerMockFor(MedDRADao.class);
 
+        meddraVersionDao = registerDaoMockFor(MeddraVersionDao.class);
         studyImportService = new StudyImportServiceImpl();
         studyImportService.setOrganizationDao(organizationDao);
+        studyImportService.setCtcDao(ctcDao);
+        studyImportService.setMeddraDao(meddraDao);
+        studyImportService.setMeddraVersionDao(meddraVersionDao);
 
         xstreamStudy = Fixtures.createStudy("short title");
 
         organization = Fixtures.createOrganization("org ");
     }
 
+    public void testImportStudyForMigratingCtcTermTerminology() {
+
+        //first migrate for CtC
+
+        AeTerminology ctcV3Terminology = Fixtures.createCtcV3Terminology(xstreamStudy);
+
+        EasyMock.expect(ctcDao.getById(Integer.parseInt(ctcV3Terminology.getCtcVersion().getName()))).andReturn(ctcV3Terminology.getCtcVersion());
+        replayMocks();
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+        verifyMocks();
+        assertNotNull(studyDomainObjectImportOutcome.getImportedDomainObject().getAeTerminology().getCtcVersion());
+
+        validateOutcome(studyDomainObjectImportOutcome);
+
+    }
+
+    public void testImportStudyForMigratingMedDRATerminology() {
+
+        //first migrate for CtC
+
+        AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
+
+        EasyMock.expect(meddraVersionDao.getById(Integer.parseInt(medDRATerminology.getMeddraVersion().getName()))).andReturn(medDRATerminology.getMeddraVersion());
+        replayMocks();
+        DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
+        verifyMocks();
+        assertNotNull(studyDomainObjectImportOutcome.getImportedDomainObject().getAeTerminology().getMeddraVersion());
+
+        validateOutcome(studyDomainObjectImportOutcome);
+
+    }
 
     public void testImportStudyForBasicProperties() {
 
         DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
 
+        validateOutcome(studyDomainObjectImportOutcome);
+
+    }
+
+    private void validateOutcome(final DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome) {
         validate(xstreamStudy, studyDomainObjectImportOutcome);
         validateImportedObject(studyDomainObjectImportOutcome);
 
@@ -56,7 +98,6 @@ public class StudyImportServiceTest extends AbstractTestCase {
         assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
 
         assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
-
     }
 
     public void testImportStudyForMigratingTherapy() {
@@ -68,16 +109,7 @@ public class StudyImportServiceTest extends AbstractTestCase {
         DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
         assertEquals(2, studyDomainObjectImportOutcome.getImportedDomainObject().getStudyTherapies().size());
 
-        validate(xstreamStudy, studyDomainObjectImportOutcome);
-        validateImportedObject(studyDomainObjectImportOutcome);
-
-
-        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
-
-        assertEquals(2, messages.size());
-        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
-
-        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+        validateOutcome(studyDomainObjectImportOutcome);
 
     }
 
@@ -88,20 +120,17 @@ public class StudyImportServiceTest extends AbstractTestCase {
         studySite.setOrganization(organization);
         xstreamStudy.addStudyOrganization(studySite);
 
-        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        StudyFundingSponsor studyFundingSponsor = new StudyFundingSponsor();
+        studyFundingSponsor.setOrganization(organization);
+        xstreamStudy.addStudyFundingSponsor(studyFundingSponsor);
+
+        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization).anyTimes();
         replayMocks();
         DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
         verifyMocks();
-        validate(xstreamStudy, studyDomainObjectImportOutcome);
-        validateImportedObject(studyDomainObjectImportOutcome);
+        assertEquals(2, studyDomainObjectImportOutcome.getImportedDomainObject().getStudyOrganizations().size());
 
-
-        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
-
-        assertEquals(2, messages.size());
-        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
-
-        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+        validateOutcome(studyDomainObjectImportOutcome);
 
     }
 
@@ -111,16 +140,7 @@ public class StudyImportServiceTest extends AbstractTestCase {
 
         DomainObjectImportOutcome<Study> studyDomainObjectImportOutcome = studyImportService.importStudy(xstreamStudy);
 
-        validate(xstreamStudy, studyDomainObjectImportOutcome);
-        validateImportedObject(studyDomainObjectImportOutcome);
-
-
-        List<DomainObjectImportOutcome.Message> messages = studyDomainObjectImportOutcome.getMessages();
-
-        assertEquals(2, messages.size());
-        assertEquals("Disease Code Term is either Empty or Not Valid", messages.get(0).getMessage());
-
-        assertEquals("Identifiers are either Empty or Not Valid", messages.get(1).getMessage());
+        validateOutcome(studyDomainObjectImportOutcome);
 
     }
 
@@ -182,18 +202,40 @@ public class StudyImportServiceTest extends AbstractTestCase {
 
         }
         assertEquals(study.getStudyOrganizations().size(), xstreamStudy.getStudyOrganizations().size());
+
         if (!xstreamStudy.getStudyOrganizations().isEmpty()) {
 
-            assertEquals(1, study.getStudyOrganizations().size());
 
-            final StudyOrganization actualStudyOrganization = study.getStudyOrganizations().get(0);
-            final StudyOrganization expectedStudyOrganization = xstreamStudy.getStudyOrganizations().get(0);
+            StudyOrganization actualStudyOrganization = study.getStudyOrganizations().get(0);
+            StudyOrganization expectedStudyOrganization = xstreamStudy.getStudyOrganizations().get(0);
+
+            assertEquals(actualStudyOrganization.getOrganization(), expectedStudyOrganization.getOrganization());
+
+            assertEquals(study, actualStudyOrganization.getStudy());
+
+            actualStudyOrganization = study.getStudyOrganizations().get(1);
+            expectedStudyOrganization = xstreamStudy.getStudyOrganizations().get(1);
 
             assertEquals(actualStudyOrganization.getOrganization(), expectedStudyOrganization.getOrganization());
 
             assertEquals(study, actualStudyOrganization.getStudy());
 
         }
+        assertNotNull(study.getAeTerminology());
+
+        assertNotNull(xstreamStudy.getAeTerminology());
+
+        if (xstreamStudy.getAeTerminology().getCtcVersion() != null) {
+            assertEquals(study.getAeTerminology().getCtcVersion(), xstreamStudy.getAeTerminology().getCtcVersion());
+            assertEquals(study.getAeTerminology().getTerm(), xstreamStudy.getAeTerminology().getTerm());
+
+        }
+        if (xstreamStudy.getAeTerminology().getMeddraVersion() != null) {
+            assertEquals(study.getAeTerminology().getMeddraVersion(), xstreamStudy.getAeTerminology().getMeddraVersion());
+            assertEquals(study.getAeTerminology().getTerm(), xstreamStudy.getAeTerminology().getTerm());
+
+        }
+
 
     }
 

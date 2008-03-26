@@ -35,6 +35,40 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         Study study = new Study();
         DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();
 
+        migrateBasicProperties(xstreamStudy, study);
+
+        migrateTherapies(study, xstreamStudy, studyImportOutcome);
+
+        migrateTerminology(study, xstreamStudy, studyImportOutcome);
+
+        migrateDiseaseTerminology(study, xstreamStudy, studyImportOutcome);
+
+        migrateFundingSponsor(study, xstreamStudy, studyImportOutcome);
+
+        migrateCoordinatingCenter(study, xstreamStudy, studyImportOutcome);
+
+        migrateIdentifiers(study, xstreamStudy, studyImportOutcome);
+
+        migrateStudyOrganizations(study, xstreamStudy, studyImportOutcome);
+
+        migrateOrganizationAssignedIdentifier(study, xstreamStudy, studyImportOutcome);
+
+        migrateStudyAgents(study, xstreamStudy, studyImportOutcome);
+
+        migrateCtepStudyDiseases(study, xstreamStudy, studyImportOutcome);
+
+        migrateTreatmentAssignments(study, xstreamStudy, studyImportOutcome);
+
+        migrateMeddraStudyDiseases(study, xstreamStudy, studyImportOutcome);
+
+        studyImportOutcome.setImportedDomainObject(study);
+
+        studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
+
+        return studyImportOutcome;
+    }
+
+    private void migrateBasicProperties(final Study xstreamStudy, final Study study) {
         study.setShortTitle(StringUtils.isNotEmpty(xstreamStudy.getShortTitle()) ? xstreamStudy.getShortTitle() : "NA");
         study.setLongTitle(xstreamStudy.getLongTitle());
         study.setDescription(xstreamStudy.getDescription());
@@ -50,24 +84,6 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         study.setDeviceTherapyType(xstreamStudy.getDeviceTherapyType());
         study.setSurgeryTherapyType(xstreamStudy.getSurgeryTherapyType());
         study.setBehavioralTherapyType(xstreamStudy.getBehavioralTherapyType());
-
-        migrateTherapies(study, xstreamStudy, studyImportOutcome);
-        migrateTerminology(study, xstreamStudy, studyImportOutcome);
-        migrateDiseaseTerminology(study, xstreamStudy, studyImportOutcome);
-        migrateFundingSponsor(study, xstreamStudy, studyImportOutcome);
-        migrateCoordinatingCenter(study, xstreamStudy, studyImportOutcome);
-        migrateIdentifiers(study, xstreamStudy, studyImportOutcome);
-        migrateStudyOrganizations(study, xstreamStudy, studyImportOutcome);
-        migrateOrganizationAssignedIdentifier(study, xstreamStudy, studyImportOutcome);
-        migrateStudyAgents(study, xstreamStudy, studyImportOutcome);
-        migrateCtepStudyDiseases(study, xstreamStudy, studyImportOutcome);
-        migrateTreatmentAssignments(study, xstreamStudy, studyImportOutcome);
-        migrateMeddraStudyDiseases(study, xstreamStudy, studyImportOutcome);
-
-        studyImportOutcome.setImportedDomainObject(study);
-        studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
-
-        return studyImportOutcome;
     }
 
 
@@ -80,37 +96,22 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
      */
     private void migrateTherapies(Study destination, Study source, DomainObjectImportOutcome studyImportOutcome) {
         if (source.getDrugAdministrationTherapyType()) {
-            StudyTherapy drugAdministrationTherapy = new StudyTherapy();
-            drugAdministrationTherapy.setStudy(destination);
-            drugAdministrationTherapy.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
-            destination.getStudyTherapies().add(drugAdministrationTherapy);
+            destination.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
         }
 
         if (source.getDeviceTherapyType()) {
-            StudyTherapy deviceTherapy = new StudyTherapy();
-            deviceTherapy.setStudy(destination);
-            deviceTherapy.setStudyTherapyType(StudyTherapyType.DEVICE);
-            destination.getStudyTherapies().add(deviceTherapy);
+            destination.addStudyTherapy(StudyTherapyType.DEVICE);
         }
 
         if (source.getRadiationTherapyType()) {
-            StudyTherapy radiationTherapy = new StudyTherapy();
-            radiationTherapy.setStudy(destination);
-            radiationTherapy.setStudyTherapyType(StudyTherapyType.RADIATION);
-            destination.getStudyTherapies().add(radiationTherapy);
+            destination.addStudyTherapy(StudyTherapyType.RADIATION);
         }
         if (source.getSurgeryTherapyType()) {
-            StudyTherapy surgeryTherapy = new StudyTherapy();
-            surgeryTherapy.setStudy(destination);
-            surgeryTherapy.setStudyTherapyType(StudyTherapyType.SURGERY);
-            destination.getStudyTherapies().add(surgeryTherapy);
+            destination.addStudyTherapy(StudyTherapyType.SURGERY);
         }
 
         if (source.getBehavioralTherapyType()) {
-            StudyTherapy behavioralTherapy = new StudyTherapy();
-            behavioralTherapy.setStudy(destination);
-            behavioralTherapy.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
-            destination.getStudyTherapies().add(behavioralTherapy);
+            destination.addStudyTherapy(StudyTherapyType.BEHAVIORAL);
         }
     }
 
@@ -312,17 +313,17 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         if (source.getAeTerminology() != null) {
             if (source.getAeTerminology().getCtcVersion() != null) {
                 Ctc ctc = ctcDao.getById(Integer.parseInt(source.getAeTerminology().getCtcVersion().getName()));
-                AeTerminology t = destination.getAeTerminology();
-                t.setTerm(Term.CTC);
-                t.setCtcVersion(ctc);
+                AeTerminology aeTerminology = destination.getAeTerminology();
+                aeTerminology.setTerm(Term.CTC);
+                aeTerminology.setCtcVersion(ctc);
                 studyImportOutcome.ifNullObject(ctc, DomainObjectImportOutcome.Severity.ERROR, "CTC is either Empty or Not Valid");
 
             }
             if (source.getAeTerminology().getMeddraVersion() != null) {
                 MeddraVersion meddraVersion = meddraVersionDao.getById(Integer.parseInt(source.getAeTerminology().getMeddraVersion().getName()));
-                AeTerminology t = destination.getAeTerminology();
-                t.setTerm(Term.MEDDRA);
-                t.setMeddraVersion(meddraVersion);
+                AeTerminology aeTerminology = destination.getAeTerminology();
+                aeTerminology.setTerm(Term.MEDDRA);
+                aeTerminology.setMeddraVersion(meddraVersion);
                 studyImportOutcome.ifNullObject(meddraVersion, DomainObjectImportOutcome.Severity.ERROR, "MedDRA Version is either Empty or Not Valid");
             }
         }
@@ -432,7 +433,7 @@ public class StudyImportServiceImpl extends AbstractImportServiceImpl {
         }
     }
 
-    
+
     public void setAgentDao(final AgentDao agentDao) {
         this.agentDao = agentDao;
     }

@@ -141,6 +141,7 @@ public class Fixtures {
     public static AeTerminology createCtcV3Terminology(final Study s) {
         AeTerminology t = s.getAeTerminology();
         Ctc v3 = setId(3, new Ctc());
+        v3.setName(4 + "");
         t.setTerm(Term.CTC);
         t.setCtcVersion(v3);
         return t;
@@ -149,6 +150,10 @@ public class Fixtures {
     public static AeTerminology createMedDRATerminology(final Study s) {
         AeTerminology t = s.getAeTerminology();
         t.setTerm(Term.MEDDRA);
+        MeddraVersion meddraVersion = setId(4, new MeddraVersion());
+        meddraVersion.setName(5 + "");
+        t.setMeddraVersion(meddraVersion);
+
         return t;
     }
 
