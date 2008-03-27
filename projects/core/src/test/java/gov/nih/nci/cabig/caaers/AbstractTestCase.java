@@ -26,15 +26,15 @@ public class AbstractTestCase extends CoreTestCase {
 
     ////// MOCK REGISTRATION AND HANDLING
 
-    protected <T> T registerMockFor(Class<T> forClass) {
+    public <T> T registerMockFor(Class<T> forClass) {
         return registered(EasyMock.createMock(forClass));
     }
 
-    protected <T> T registerMockFor(Class<T> forClass, Method... methodsToMock) {
+    public <T> T registerMockFor(Class<T> forClass, Method... methodsToMock) {
         return registered(EasyMock.createMock(forClass, methodsToMock));
     }
 
-    protected <T extends CaaersDao<?>> T registerDaoMockFor(Class<T> forClass) {
+    public <T extends CaaersDao<?>> T registerDaoMockFor(Class<T> forClass) {
         List<Method> methods = new LinkedList<Method>(Arrays.asList(forClass.getMethods()));
         for (Iterator<Method> iterator = methods.iterator(); iterator.hasNext();) {
             Method method = iterator.next();
@@ -45,15 +45,15 @@ public class AbstractTestCase extends CoreTestCase {
         return registerMockFor(forClass, methods.toArray(new Method[methods.size()]));
     }
 
-    protected void replayMocks() {
+    public void replayMocks() {
         for (Object mock : mocks) EasyMock.replay(mock);
     }
 
-    protected void verifyMocks() {
+    public void verifyMocks() {
         for (Object mock : mocks) EasyMock.verify(mock);
     }
 
-    protected void resetMocks() {
+    public void resetMocks() {
         for (Object mock : mocks) EasyMock.reset(mock);
     }
 

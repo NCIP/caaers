@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
+
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -13,7 +14,6 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +53,7 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
         InputFieldGroup participantFieldGroup;
         InputFieldGroup siteFieldGroup;
-        RepeatingFieldGroupFactory rfgFactory;
+        RepeatingFieldGroupFactory repeatingFieldGroupFactory;
 
         siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
 
@@ -64,23 +64,16 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
             options.putAll(InputFieldFactory.collectOptions(organizations, "id", "fullName"));
         }
         siteFieldGroup.getFields().add(
-                        InputFieldFactory.createSelectField("organization", "Site", true, options));
+                InputFieldFactory.createSelectField("organization", "Site", true, options));
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
         participantFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("participant.firstName", "First Name",
-                                        true));
+                InputFieldFactory.createTextField("participant.firstName", "First Name",
+                        true));
 
-        participantFieldGroup.getFields()
-                        .add(
-                                        InputFieldFactory.createTextField("participant.lastName",
-                                                        "Last Name", true));
-        participantFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("participant.maidenName", "Maiden Name",
-                                        false));
-        participantFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("participant.middleName", "Middle Name",
-                                        false));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", true));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
 
         InputField dobYear = InputFieldFactory.createTextField("year", "Year", true);
         InputFieldAttributes.setSize(dobYear, 4);
@@ -89,51 +82,46 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
         InputField dobDay = InputFieldFactory.createTextField("day", "Day");
         InputFieldAttributes.setSize(dobDay, 2);
 
-        CompositeField dobField = new CompositeField("participant.dateOfBirth",
-                        new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear)
-                                        .addField(dobMonth).addField(dobDay));
+        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth")
+                .addField(dobYear)
+                .addField(dobMonth)
+                .addField(dobDay));
+
         dobField.setRequired(true);
-        dobField.getAttributes().put(InputField.HELP,
-                        "par.par_create_participant.participant.dateOfBirth");
+        dobField.getAttributes().put(InputField.HELP, "par.par_create_participant.participant.dateOfBirth");
+
         participantFieldGroup.getFields().add(dobField);
 
-        participantFieldGroup.getFields().add(
-                        InputFieldFactory.createSelectField("participant.gender", "Gender", true,
-                                        collectOptions(listValues.getParticipantGender())));
-        participantFieldGroup
-                        .getFields()
-                        .add(
-                                        InputFieldFactory
-                                                        .createSelectField(
-                                                                        "participant.ethnicity",
-                                                                        "Ethnicity",
-                                                                        true,
-                                                                        collectOptions(listValues
-                                                                                        .getParticipantEthnicity())));
+        participantFieldGroup.getFields().add(InputFieldFactory.createSelectField("participant.gender", "Gender", true,
+                collectOptions(listValues.getParticipantGender())));
 
         participantFieldGroup.getFields().add(
-                        InputFieldFactory.createSelectField("participant.race", "Race", true,
-                                        collectOptions(listValues.getParticipantRace())));
-        rfgFactory = new RepeatingFieldGroupFactory("main", "participant.identifiers");
-        rfgFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
+                InputFieldFactory.createSelectField("participant.ethnicity", "Ethnicity", true,
+                        collectOptions(listValues.getParticipantEthnicity())));
+
+        participantFieldGroup.getFields().add(
+                InputFieldFactory.createSelectField("participant.race", "Race", true,
+                        collectOptions(listValues.getParticipantRace())));
+        repeatingFieldGroupFactory = new RepeatingFieldGroupFactory("main", "participant.identifiers");
+        repeatingFieldGroupFactory.addField(InputFieldFactory.createTextField("value", "Identifier", true));
 
         options = new LinkedHashMap<Object, Object>();
         List<Lov> list = configurationProperty.getMap().get("participantIdentifiersType");
         options.put("", "Please select");
         options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
 
-        rfgFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
-                        options));
+        repeatingFieldGroupFactory.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true,
+                options));
 
-        rfgFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
-        rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
-                        "Organization Identifier", true));
-        rfgFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator",
-                        "Primary Indicator"));
+        repeatingFieldGroupFactory.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
+        repeatingFieldGroupFactory.addField(InputFieldFactory.createAutocompleterField("organization",
+                "Organization Identifier", true));
+        repeatingFieldGroupFactory.addField(InputFieldFactory.createCheckboxField("primaryIndicator",
+                "Primary Indicator"));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
-        map.addRepeatingFieldGroupFactory(rfgFactory, command.getParticipant().getIdentifiers()
-                        .size());
+        map.addRepeatingFieldGroupFactory(repeatingFieldGroupFactory, command.getParticipant().getIdentifiers()
+                .size());
         map.addInputFieldGroup(participantFieldGroup);
         map.addInputFieldGroup(siteFieldGroup);
         return map;
@@ -149,25 +137,21 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
 
     @Override
     public void postProcess(final HttpServletRequest request, final NewParticipantCommand command,
-                    final Errors errors) {
+                            final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeIdentifier".equals(action)) {
             NewParticipantCommand newParticipantCommand = command;
             newParticipantCommand.getParticipant().getIdentifiers().remove(
-                            Integer.parseInt(selected));
+                    Integer.parseInt(selected));
         }
     }
 
     @Override
     public void validate(final NewParticipantCommand command, final Errors errors) {
         boolean hasPrimaryID = false;
-        Calendar now = Calendar.getInstance();
         DateValue dob = command.getParticipant().getDateOfBirth();
-        if ((dob.getMonth() != null && (dob.getMonth() < 0 || dob.getMonth() > 12))
-                        || (dob.getDay() != null && (dob.getDay() < 0 || dob.getDay() > 31))
-                        || (dob.getYear() == null || dob.getYear() < 1900 || dob.getYear() > now
-                                        .get(Calendar.YEAR)) || now.after(dob.toDate())) {
+        if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
         }
 
@@ -176,9 +160,10 @@ public class CreateParticipantTab extends Tab<NewParticipantCommand> {
             if (hasPrimaryID) break;
         }
         if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED",
-                        "Please Include at least a single primary Identifier");
+                "Please Include at least a single primary Identifier");
 
     }
+
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
