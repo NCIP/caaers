@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Embeddable;
-import javax.persistence.Transient;
-
-import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 @Embeddable
 public class DateValue {
@@ -98,12 +96,21 @@ public class DateValue {
 
     public String toString() {
         return String.format(format, day == null ? 0 : day, month == null ? 0 : month,
-                        year == null ? 0 : year);
+                year == null ? 0 : year);
     }
 
     public Date toDate() {
         return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month,
-                        day == null ? 0 : day).getTime();
+                day == null ? 0 : day).getTime();
     }
 
+    public boolean checkIfDateIsInValid() {
+
+        Calendar now = Calendar.getInstance();
+
+        return (this.getMonth() != null && (this.getMonth() < 0 || this.getMonth() > 12))
+                || (this.getDay() != null && (this.getDay() < 0 || this.getDay() > 31))
+                || (this.getYear() == null || this.getYear() < 1900 || this.getYear() > now
+                .get(Calendar.YEAR)) || now.after(this.toDate());
+    }
 }
