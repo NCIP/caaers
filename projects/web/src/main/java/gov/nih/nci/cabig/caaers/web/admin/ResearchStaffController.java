@@ -4,16 +4,12 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.service.ResearchStaffRepository;
-import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -22,14 +18,17 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Base Controller class to handle the basic work flow in the Creation / Updation of a ResearchStaff
  * Design. This uses AbstractTabbedFlowFormController to implement tabbed workflow
- * 
+ *
  * @author Saurabh
  */
 public abstract class ResearchStaffController<C extends ResearchStaff> extends
-                AutomaticSaveFlowFormController<C, ResearchStaff, ResearchStaffDao> {
+        AutomaticSaveFlowFormController<C, ResearchStaff, ResearchStaffDao> {
 
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
 
@@ -72,7 +71,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
     @Override
     protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+                              final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
@@ -81,13 +80,13 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
+                                         final HttpServletResponse response, final Object command,
+                                         final BindException errors) throws Exception {
 
         ResearchStaff researchStaff = (ResearchStaff) command;
         researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
-                        .getScheme(), request.getServerName(), request.getServerPort(), request
-                        .getContextPath()));
+                .getScheme(), request.getServerName(), request.getServerPort(), request
+                .getContextPath()));
         if (!errors.hasErrors()) {
             request.setAttribute("statusMessage", "Research staff saved successfully.");
         }
@@ -101,7 +100,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
 
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors, int page) throws Exception {
+                                     BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
         webControllerValidator.validate(request, command, errors);
     }
