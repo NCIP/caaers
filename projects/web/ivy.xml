@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.4">
+	
+    	<info organisation="gov.nih.nci.cabig.caaers"
+          	module="caaers-web"
+          	status="integration"/>
+        
+        <configurations>
+        	<conf name="default" visibility="public" extends="publish,runtime" 
+        		description="Dependencies needed for default setting"  />
+        	<conf name="build" visibility="public"  extends="publish"
+        		description="Dependencies required for build time, all classpath should have this"/>
+        	<conf name="publish" visibility="public" 
+        		description="Dependencies along with this module is published in repository" />
+        	<conf name="distGrid" visibility="public"  extends="publish"
+        		description="Dependencies that are required in grid distribution of this module" />
+        	<conf name="dist" visibility="public"  extends="publish"
+        		description="Dependencies needed for standalone distribution" />
+        	<conf name="runtime" visibility="public"
+        		description="The dependencies that are needed for runtime" extends="build" />
+        	<conf name="test" visibility="public" 
+        		description="Dependencies needed for testing purposes"/>
+        </configurations>
+        
+         <publications>
+    		<artifact name="${ivy.module}" conf="publish" type="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
+    		<artifact name="caaers" type="war" conf="publish" />
+  		</publications>
+        
+        <!-- dependencies for the web module -->
+        <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
+        	
+			<!--  caAERS other modules -->
+	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
+				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
+				conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid"/>
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-rules" rev="latest.integration" 
+				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+        	
+        	<!--  Spring framework -->
+        	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
+        	<dependency org="org.springframework" name="spring-web.jar" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-webmvc.jar" rev="2.0.2" force="true" />
+        	<!--  
+        	Spring framework
+        	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
+        	<dependency org="org.springframework" name="spring-context" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-dao.jar" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-jdbc.jar" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-support.jar" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-remoting.jar" rev="2.0.2" force="true" />
+        	
+ 			-->        	
+        	<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.2.1" />
+			<dependency org="xpp3" name="xpp3" rev="1.1.3.4.O" />
+			
+			<!--  Apache Commons -->
+			<dependency org="commons-collections" name="commons-collections" rev="3.2" />
+        	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
+        	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
+        	<dependency org="commons-fileupload" name="commons-fileupload" rev="1.2" />
+			<dependency org="commons-validator" name="commons-validator" rev="1.1.4" />
+        	
+
+			<dependency org="org.directwebremoting" name="dwr" rev="2.0.rc2" />
+			<dependency org="org.extremecomponents" name="extremecomponents" rev="1.0.1" />
+			<dependency org="jdom" name="jdom" rev="1.0" />
+			
+			<dependency org="displaytag" name="displaytag" rev="1.1" />
+			<dependency org="opensymphony" name="sitemesh" rev="2.2.1" />
+			<dependency org="org.globus" name="cog-axis" rev="4.0.3-globus" />
+			<dependency org="wsdl4j" name="wsdl4j" rev="1.5.2" />
+			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="0.8"/>
+			
+			<!--  CTMS commons dependencies -->
+			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-web" rev="${ctms.version}"/>
+			
+			<!--  Standalone (dist) dependencies,which are not to be included in Grid distribution -->
+			<dependency org="org.globus" name="cog-jglobus" rev="1.2" conf="build;runtime;dist" />
+			
+			<!--  Build Only Dependencies -->
+			<dependency org="javax.servlet" name="jstl" rev="1.1.2" conf="build->default(*)" />
+			<dependency org="taglibs" name="standard" rev="1.1.2" conf="build->default(*)" />
+			
+			
+							
+			<!-- Testing dependencies -->
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
+			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" conf="test->default(*)" />        	
+        	<dependency org="edu.northwestern.bioinformatics" name="core-commons-testing" rev="77" conf="test->default(*)" />
+        	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
+        	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
+        </dependencies>
+</ivy-module>
