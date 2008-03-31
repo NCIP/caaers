@@ -19,7 +19,7 @@
     </bean>
 
     <bean id="jndiDataSource" lazy-init="true" class="gov.nih.nci.cabig.caaers.tools.JndiDataSourceFactoryBean">
-        <property name="databaseConfigurationName"><value>${databaseConfigurationName}</value></property>
+        <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
         <property name="jndiTemplate"><bean class="org.springframework.jndi.JndiTemplate"/></property>
     </bean>
 
