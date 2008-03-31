@@ -1,0 +1,9 @@
+<project name="caaers-rules" default="compile">
+	<property name="parent.dir" value="${basedir}/.." />
+	<property file="${parent.dir}/build.properties" />
+	<import file="${parent.dir}/common.xml" />
+	<target name="module-specific-flow" depends="generate-jaxb">
+		<echo>overwriting rules module flow...</echo>
+	</target>
+
+</project>
