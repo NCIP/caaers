@@ -171,11 +171,11 @@ This applicationContext contains the definition of the concrete services
             <value>caAERS</value>
         </property>
         <property name="versionNumber">
-            <value>${project.version}</value>
+            <value>@project.version@</value>
         </property>
         <!-- provided by maven-buildnumber-plugin -->
         <property name="timestamp">
-            <value>${buildNumber}</value>
+            <value>@buildNumber@</value>
         </property>
     </bean>
 </beans>
