@@ -1,0 +1,46 @@
+<ivysettings>
+	<settings defaultResolver="caaers-resolver" validate="false" />
+	<resolvers>
+		<chain name="caaers-resolver" returnFirst="true" dual="true">
+		<!--  Local Ivy repository -->
+		<filesystem name="caaers-local" local="true">
+			<ivy pattern="${local.repo.dir}/[organisation]/[module]/ivy-[revision].xml"/>
+      		<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+      		<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+		</filesystem>
+		<!--  Semanticbits shared repository -->
+		
+		<!-- 
+			<filesystem name="maven2-local" m2compatible="true"
+				changingPattern=".*SNAPSHOT">
+				<ivy
+					pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision].pom" />
+				<artifact
+					pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
+			</filesystem>
+		-->
+			<!--  Semanticbits shared repository [using sftp] -->
+		<sftp name="semanticbits-repo" user="caaers" userPassword="caaers" host="10.10.10.2">
+		  <ivy pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
+		  <artifact pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+		</sftp>
+				<!--  Northwestern RHLCCC Bioinformatics  -->
+			<ibiblio name="maven2-northwestern" m2compatible="true"
+				root="http://download.bioinformatics.northwestern.edu/maven2"
+				changingPattern=".*SNAPSHOT" />
+
+			<ibiblio name="maven2-http" m2compatible="true"
+				root="http://maven2.mirrors.skynet.be/pub/maven2"
+				changingPattern=".*SNAPSHOT" />
+			<!--  useful at least for javax.transaction.jta -->
+			<ibiblio name="maven2-codehaus-mule" m2compatible="true"
+				root="http://dist.codehaus.org/mule/dependencies/maven2"
+				changingPattern=".*SNAPSHOT" />
+			<ibiblio name="maven2-codehaus" m2compatible="true"
+				root="http://repository.codehaus.org" changingPattern=".*SNAPSHOT" />
+
+		</chain>
+		
+	</resolvers>
+</ivysettings>
+

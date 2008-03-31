@@ -1,0 +1,140 @@
+
+<project name="all"  xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property file="build.properties" />
+    <import file="${basedir}/common.xml"/>
+	
+	<!-- ==================================================================
+		target : buildlist
+	====================================================================== -->
+  	<target name="buildlist" depends="load-ivy" unless="buildlist.done" description="Will find the correct order of build dependency"> 
+    	<ivy:buildlist reference="build-path">
+      		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
+    		<fileset file="${basedir}/core/ivy-build.xml" />
+    		<fileset file="${basedir}/rules/ivy-build.xml" />
+    		<fileset file="${basedir}/web/ivy-build.xml" />
+    	</ivy:buildlist>
+  		<property name="buildlist.done" value="true" />
+  	</target>
+	
+	<!-- ==================================================================
+		target : publish-all
+	====================================================================== -->
+  	<target name="publish-all" depends="buildlist, clean-all" 
+  			description="compile, jar and publish all projects in the right order, publishes them into local repository">
+   		 <subant target="publish-local" buildpathref="build-path" />
+  	</target>
+	
+	<!-- ==================================================================
+		target : release-all
+	====================================================================== -->
+	<target name="release-all" depends="buildlist" 
+	  			description="compile, jar and publish all projects in the right order, then releases it to Shared Repository">
+	   	<subant target="publish" buildpathref="build-path" />
+	</target>
+	
+	<!-- ==================================================================
+		target : resolve-all
+	====================================================================== -->
+   <target name="resolve-all" depends="buildlist" 
+   		description="Will call the resolve target on each of the module">
+   		<subant target="resolve" buildpathref="build-path" />
+   </target>
+	
+	<!-- ==================================================================
+		target : clean-all
+	====================================================================== -->
+  <target name="clean-all" depends="buildlist" description="clean all projects">
+    <subant target="clean" buildpathref="build-path" />
+  </target>
+	
+	<!-- ==================================================================
+		target : clean
+	====================================================================== -->
+  <target name="clean" depends="clean-all, clean-repo" 
+  			description="clean delete repository, and all projects" />
+	
+	<target name="clean-repo" description="cleans the local repository">
+		<delete dir="${local.repo.dir}"/>
+	</target>
+	
+	<!-- ==================================================================
+		target : clean-cache
+	====================================================================== -->
+	<target name="clean-cache" depends="load-ivy" description="Cleans the ivy cache">
+		<ivy:cleancache/>
+	</target>
+	<!-- ==========================================================
+		target : migrate
+		This will delegate the call to caaers-core:migrate, this is added
+		to do migrate and build as a single job using hudson. 
+	=============================================================-->
+	<target name="migrate">
+		<subant target="migrate" buildpath="core/ivy-build.xml" />
+	</target>
+
+	<!-- ==========================================================
+			target : insert-csm-policy
+			This will delegate the call to caaers-insert-csm-policy
+		=============================================================-->
+	<target name="insert-csm-policy">
+		<subant target="insert-csm-policy" buildpath="core/ivy-build.xml" />
+	</target>
+	
+	<!--- =================================================================================
+		target : javadoc
+	======================================================================================= -->
+    <target name="javadoc" description="Compile the Javadoc API documentation to javadoc dir">
+        <mkdir dir="${javadoc.dir}"/>
+        <javadoc
+        	classpathref="lib.path.id"
+        	destdir="${javadoc.dir}"
+        	use="true"
+        	protected="true"
+        	version="true"
+        	windowtitle="caAERS API Documentation"
+        	Overview="${javadoc.dir}/package.html"
+        	doctitle="caAERS API Documentation"
+        	link="${sun.javadoc.link}">
+        	<packageset dir="${basedir}" defaultexcludes="yes" >
+   				<include name="**/main/java/**/*"/>
+		    </packageset>
+        </javadoc>
+
+
+    </target>
+	
+	<!-- =================================================================================== 
+	          target: runApt              
+	===================================================================================== -->
+	    <target name="runApt" description="This target is used to run the annotation processing tool APT">
+	    	
+	    	<path id="factorypath.id">
+	    		    	<pathelement location="C:\workspace\caaers-ivy-experimental\ctms.jar"/>
+	    		    	</path>
+	    		    	
+	    	<path id="apt.classpath">
+	    		<fileset dir="C:\apache-tomcat-5.5.25\webapps\caaers\WEB-INF\lib\">
+	    		        <include name="\*.jar"/>
+	    		 </fileset>
+	    		<fileset dir="C:\workspace\caaers-ivy-experimental\bootstrap\build\testlib\">
+	    			<include name="\*.jar"/>
+	    		</fileset>
+	    		
+	    		<path refid="factorypath.id"/>
+	    	
+	    	</path>
+	    	<property name="cp" refid="apt.classpath"/>
+	    	  <!--echo message="Classpath is ${cp}"/-->
+	    	<mkdir dir="${basedir}/temp"/>
+	    	 <apt srcdir="core/src/test/java/" 
+	    	     classpathref="apt.classpath"
+	    		 debug="on"
+	    	     compile="false"
+	    	     factory="gov.nih.nci.cabig.ctms.testing.uctrace.UseCaseTraceabilityAnnotationProcessorFactory"
+	    	     factorypathref="factorypath.id"
+	    	     preprocessdir="${basedir}/temp">
+	    	</apt>
+
+	    </target>
+	
+</project>
