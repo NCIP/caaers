@@ -103,38 +103,6 @@
 
     </target>
 	
-	<!-- =================================================================================== 
-	          target: runApt              
-	===================================================================================== -->
-	    <target name="runApt" description="This target is used to run the annotation processing tool APT">
-	    	
-	    	<path id="factorypath.id">
-	    		    	<pathelement location="C:\workspace\caaers-ivy-experimental\ctms.jar"/>
-	    		    	</path>
-	    		    	
-	    	<path id="apt.classpath">
-	    		<fileset dir="C:\apache-tomcat-5.5.25\webapps\caaers\WEB-INF\lib\">
-	    		        <include name="\*.jar"/>
-	    		 </fileset>
-	    		<fileset dir="C:\workspace\caaers-ivy-experimental\bootstrap\build\testlib\">
-	    			<include name="\*.jar"/>
-	    		</fileset>
-	    		
-	    		<path refid="factorypath.id"/>
-	    	
-	    	</path>
-	    	<property name="cp" refid="apt.classpath"/>
-	    	  <!--echo message="Classpath is ${cp}"/-->
-	    	<mkdir dir="${basedir}/temp"/>
-	    	 <apt srcdir="core/src/test/java/" 
-	    	     classpathref="apt.classpath"
-	    		 debug="on"
-	    	     compile="false"
-	    	     factory="gov.nih.nci.cabig.ctms.testing.uctrace.UseCaseTraceabilityAnnotationProcessorFactory"
-	    	     factorypathref="factorypath.id"
-	    	     preprocessdir="${basedir}/temp">
-	    	</apt>
 
-	    </target>
 	
 </project>

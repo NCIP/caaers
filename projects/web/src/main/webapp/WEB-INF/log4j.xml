@@ -11,15 +11,16 @@
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
         <param name="file" value="${catalina.home}/logs/caaers.log"/>
         <param name="maxFileSize" value="2048KB"/>
-        <param name="maxBackupIndex" value="4"/>
+        <param name="maxBackupIndex" value="8"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="conversionPattern" value="%d [%15t] %-5p %c %x: %m%n"/>
         </layout>
     </appender>
 	
-    <logger name="gov.nih.nci"><level value="debug"/></logger>
+    <logger name="gov.nih.nci"><level value="error"/></logger>
 	<logger name="org"><level value="warn"/></logger>
-	
+	<logger name="org.hibernate"><level value="error"/></logger>
+
     <root>
         <priority value="error"/>
         <appender-ref ref="stdout"/>
