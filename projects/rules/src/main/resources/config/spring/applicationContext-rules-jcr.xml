@@ -20,7 +20,7 @@
 			<bean
 				class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
 				<property name="databaseConfigurationName">
-					<value>datasource</value>
+					<value>@databaseConfigurationName@</value>
 				</property>
 			</bean>
 		</property>
