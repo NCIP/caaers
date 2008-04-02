@@ -20,7 +20,7 @@ import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentService;
 import gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.common.RuleUtil;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl;
 
 import java.io.IOException;

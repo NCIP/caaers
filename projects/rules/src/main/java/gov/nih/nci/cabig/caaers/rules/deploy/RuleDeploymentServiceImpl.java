@@ -7,9 +7,9 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.common.adapter.RuleAdapter;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
-import gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl;
+import gov.nih.nci.cabig.caaers.rules.runtime.RulesCache;
 
 import java.rmi.RemoteException;
 import java.util.HashMap;

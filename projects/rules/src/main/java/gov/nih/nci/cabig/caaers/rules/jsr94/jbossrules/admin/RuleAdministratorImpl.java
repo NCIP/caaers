@@ -16,7 +16,7 @@ package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.admin;
  * limitations under the License.
  */
 
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository.RuleExecutionSetRepository;
+import gov.nih.nci.cabig.caaers.rules.repository.RuleExecutionSetRepository;
 
 import java.util.Map;
 

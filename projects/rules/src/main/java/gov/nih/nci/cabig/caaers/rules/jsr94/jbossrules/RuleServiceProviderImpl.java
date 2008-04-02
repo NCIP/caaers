@@ -17,9 +17,9 @@ package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules;
  */
 
 import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.admin.RuleAdministratorImpl;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository.RuleExecutionSetRepository;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository.RuleExecutionSetRepositoryImpl;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RuleRuntimeImpl;
+import gov.nih.nci.cabig.caaers.rules.repository.RuleExecutionSetRepository;
+import gov.nih.nci.cabig.caaers.rules.repository.RuleExecutionSetRepositoryImpl;
+import gov.nih.nci.cabig.caaers.rules.runtime.RuleRuntimeImpl;
 
 import javax.rules.ConfigurationException;
 import javax.rules.RuleRuntime;

@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.repository;
 
 import gov.nih.nci.cabig.caaers.rules.common.RuleServiceContext;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
-import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
+import gov.nih.nci.cabig.caaers.rules.runtime.RulesCache;
 
 import java.util.ArrayList;
 import java.util.List;
