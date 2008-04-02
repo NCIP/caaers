@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.repository;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
 import gov.nih.nci.cabig.caaers.rules.brxml.MetaData;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 import gov.nih.nci.cabig.caaers.rules.repository.RulesRepositoryEx.RepositoryConfiguratorEx;
 import gov.nih.nci.cabig.caaers.rules.runtime.RulesCache;
 

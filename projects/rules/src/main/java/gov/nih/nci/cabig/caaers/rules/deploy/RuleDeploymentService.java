@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.deploy;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RepositoryConfiguration;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 
 import java.rmi.RemoteException;
 

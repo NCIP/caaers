@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.rules.common.adapter;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Column;
 import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

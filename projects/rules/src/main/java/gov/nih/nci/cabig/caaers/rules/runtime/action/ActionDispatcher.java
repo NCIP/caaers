@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.runtime.action;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Action;
 import gov.nih.nci.cabig.caaers.rules.brxml.Notification;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 import gov.nih.nci.cabig.caaers.rules.runtime.RuleContext;
 
 import java.util.logging.Level;

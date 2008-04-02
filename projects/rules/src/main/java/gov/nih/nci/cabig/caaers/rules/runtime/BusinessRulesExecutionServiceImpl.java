@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.runtime;
 
-import gov.nih.nci.cabig.caaers.rules.RuleException;
-import gov.nih.nci.cabig.caaers.rules.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
+import gov.nih.nci.cabig.caaers.rules.exception.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher;
 
 import java.rmi.RemoteException;
