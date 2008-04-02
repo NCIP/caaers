@@ -1,5 +1,6 @@
 <ivysettings>
 	<settings defaultResolver="caaers-resolver" validate="false" />
+
 	<resolvers>
 		<chain name="caaers-resolver" returnFirst="true" dual="true">
 		<!--  Local Ivy repository -->
@@ -8,6 +9,12 @@
       		<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
       		<artifact pattern="${local.repo.dir}/[organisation]/[module]/[revision]/[artifact].[ext]"/>
 		</filesystem>
+		
+		<!-- Local Ivy Cache -->
+		<filesystem name="ivy-cache" local="true" >
+              <ivy pattern="${user.home}/.ivy2/cache/[organisation]/[module]/ivy-[revision].xml"/>
+              <artifact pattern="${user.home}/.ivy2/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
+        </filesystem>
 		<!--  Semanticbits shared repository -->
 		
 		<!-- 
@@ -27,17 +34,20 @@
 				<!--  Northwestern RHLCCC Bioinformatics  -->
 			<ibiblio name="maven2-northwestern" m2compatible="true"
 				root="http://download.bioinformatics.northwestern.edu/maven2"
-				changingPattern=".*SNAPSHOT" />
+				changingPattern=".*SNAPSHOT" 
+				/>
 
 			<ibiblio name="maven2-http" m2compatible="true"
 				root="http://maven2.mirrors.skynet.be/pub/maven2"
-				changingPattern=".*SNAPSHOT" />
+				changingPattern=".*SNAPSHOT" 
+				/>
 			<!--  useful at least for javax.transaction.jta -->
 			<ibiblio name="maven2-codehaus-mule" m2compatible="true"
 				root="http://dist.codehaus.org/mule/dependencies/maven2"
-				changingPattern=".*SNAPSHOT" />
+				changingPattern=".*SNAPSHOT"
+				 />
 			<ibiblio name="maven2-codehaus" m2compatible="true"
-				root="http://repository.codehaus.org" changingPattern=".*SNAPSHOT" />
+				root="http://repository.codehaus.org" changingPattern=".*SNAPSHOT"/>
 
 		</chain>
 		
