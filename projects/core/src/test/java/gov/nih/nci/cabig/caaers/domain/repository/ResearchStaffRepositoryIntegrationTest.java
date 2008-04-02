@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -14,7 +15,7 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.test.AbstractTransactionalDataSourceSpringContextTests;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactionalDataSourceSpringContextTests {
+public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     private static Logger log = Logger.getLogger(ResearchStaffRepositoryIntegrationTest.class);
 
@@ -40,6 +41,7 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
     private Organization organization;
 
     private String name;
+    private JdbcTemplate jdbcTemplate;
 
     // public void testSearchStudy() throws Exception {
     // Study study = new Study();
@@ -57,49 +59,52 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
     //
     // }
 
+//    @Override
+//
+//    protected String[] getConfigLocations() {
+////        <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
+////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
+////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
+////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>
+////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
+//
+//        return new String[]{"classpath*:applicationContext-test.xml",
+//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-test-security.xml",
+//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
+//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"
+//                // "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
+//        };
+//
+//    }
+
     @Override
-
-    protected String[] getConfigLocations() {
-//        <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
-//            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
-//            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
-//            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-//            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>
-//            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
-
-        return new String[]{"classpath*:applicationContext-test.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-test-security.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"
-                // "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
-        };
-
-    }
-
-    @Override
-    protected void onSetUpInTransaction() throws Exception {
-        super.onSetUpInTransaction();
-
+    protected void setUp() throws Exception {
+        super.setUp();
         name = "" + Calendar.getInstance().getTime().getTime();
         name = name.substring(name.length() - 5, name.length() - 1);
 
         DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
 
+        organizationService= (OrganizationService) getApplicationContext().getBean("organizationService");
+        jdbcTemplate= (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
+        userProvisioningManager= (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
+        siteObjectIdGenerator= (CSMObjectIdGenerator) getApplicationContext().getBean("sitePrivilegeAndObjectIdGenerator");
         organization = Fixtures.createOrganization(name);
         organizationService.create(organization);
         assertNotNull(organization);
-
     }
 
     @Override
-    protected void onTearDownAfterTransaction() throws Exception {
-        super.onTearDownAfterTransaction();
+    protected void tearDown() throws Exception {
+        super.tearDown();    //To change body of overridden methods use File | Settings | File Templates.
         deleteCsmDetailsForCreatingNewOrganization(organization);
         DataAuditInfo.setLocal(null);
-        super.endTransaction();
+
     }
+
 
     public void testSaveOrganization() throws Exception {
 
@@ -259,18 +264,18 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
                 + "'");
 
         jdbcTemplate.execute("delete from csm_group where group_id=" + groupId);
-        setComplete();
-        endTransaction();
-        startNewTransaction();
+//        setComplete();
+//        endTransaction();
+//        startNewTransaction();
     }
 
     private void deleteCsmUser(final ResearchStaff researchStaff) {
 
         jdbcTemplate.execute("delete from csm_user_group where user_id=" + researchStaff.getLoginId());
         jdbcTemplate.execute("delete from csm_user where user_id=" + researchStaff.getLoginId());
-        setComplete();
-        endTransaction();
-        startNewTransaction();
+//        setComplete();
+//        endTransaction();
+//        startNewTransaction();
     }
 
     @Required
@@ -279,24 +284,6 @@ public class ResearchStaffRepositoryIntegrationTest extends AbstractTransactiona
         this.siteSecurityAfterInvocationCollectionFilteringProvider = siteSecurityAfterInvocationCollectionFilteringProvider;
     }
 
-    @Required
-    public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
-        this.userProvisioningManager = userProvisioningManager;
-    }
 
-    @Required
-    public void setOrganizationDao(final OrganizationService organizationService) {
-        this.organizationService = organizationService;
-    }
-
-    @Required
-    public void setSiteObjectIdGenerator(final CSMObjectIdGenerator siteObjectIdGenerator) {
-        this.siteObjectIdGenerator = siteObjectIdGenerator;
-    }
-
-    @Required
-    public void setResearchStaffRepository(final ResearchStaffRepository researchStaffRepository) {
-        this.researchStaffRepository = researchStaffRepository;
-    }
-
+ 
 }
