@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.domain.attribution.*;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import gov.nih.nci.cabig.caaers.domain.report.*;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public class ReportServiceTest extends AbstractTestCase {
+public class ReportServiceTest extends CaaersTestCase {
     private static final Attribution[] SUFFICIENT_ATTRIBUTIONS = new Attribution[]{
             Attribution.POSSIBLE, Attribution.PROBABLE, Attribution.DEFINITE};
 
