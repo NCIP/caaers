@@ -1,14 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
-import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -40,30 +34,31 @@ public class ViewReportTabTest extends AeTabTestCase {
         return tab;
     }
 
-    @SuppressWarnings( { "unchecked" })
-    public void testRefdataIncludesPerReportErrors() throws Exception {
-        ReportSubmittability r17Messages = new ReportSubmittability();
-        ReportSubmittability r23Messages = new ReportSubmittability();
-        r23Messages.addMissingField(ExpeditedReportSection.BASICS_SECTION, "Terrible, terrible",
-                        "75");
-        expect(
-                        evaluationService.validateReportingBusinessRules(command.getAeReport(),
-                                        ExpeditedReportSection.SUBMIT_REPORT_SECTION)).andReturn(
-                        new ValidationErrors()).anyTimes();
-        expect(evaluationService.isSubmittable(report17)).andReturn(r17Messages);
-        expect(evaluationService.isSubmittable(report23)).andReturn(r23Messages);
+//    @SuppressWarnings( { "unchecked" })
+//    public void testRefdataIncludesPerReportErrors() throws Exception {
+//        ReportSubmittability r17Messages = new ReportSubmittability();
+//        ReportSubmittability r23Messages = new ReportSubmittability();
+//        r23Messages.addMissingField(ExpeditedReportSection.BASICS_SECTION, "Terrible, terrible",
+//                        "75");
+//        expect(
+//                        evaluationService.validateReportingBusinessRules(command.getAeReport(),
+//                                        ExpeditedReportSection.SUBMIT_REPORT_SECTION)).andReturn(
+//                        new ValidationErrors()).anyTimes();
+//        expect(evaluationService.isSubmittable(report17)).andReturn(r17Messages);
+//        expect(evaluationService.isSubmittable(report23)).andReturn(r23Messages);
+//
+//        replayMocks();
+//        Map<String, Object> refdata = getTab().referenceData(command);
+//        verifyMocks();
+//
+//        assertTrue("Report messages map not present", refdata.containsKey("reportMessages"));
+//        assertTrue("Report messages map not a Map", refdata.get("reportMessages") instanceof Map);
+//        Map<Integer, ReportSubmittability> actual = (Map<Integer, ReportSubmittability>) refdata
+//                        .get("reportMessages");
+//        assertEquals("Should be one message collection per report", command.getAeReport()
+//                        .getReports().size(), actual.size());
+//        assertSame(actual.get(17), r17Messages);
+//        assertSame(actual.get(23), r23Messages);
+//    }
 
-        replayMocks();
-        Map<String, Object> refdata = getTab().referenceData(command);
-        verifyMocks();
-
-        assertTrue("Report messages map not present", refdata.containsKey("reportMessages"));
-        assertTrue("Report messages map not a Map", refdata.get("reportMessages") instanceof Map);
-        Map<Integer, ReportSubmittability> actual = (Map<Integer, ReportSubmittability>) refdata
-                        .get("reportMessages");
-        assertEquals("Should be one message collection per report", command.getAeReport()
-                        .getReports().size(), actual.size());
-        assertSame(actual.get(17), r17Messages);
-        assertSame(actual.get(23), r23Messages);
-    }
 }

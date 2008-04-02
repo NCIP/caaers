@@ -57,7 +57,7 @@ public class Fixtures {
      */
     public static StudyParticipantAssignment createAssignment() {
         return assignParticipant(createParticipant("D", "C"), createStudy("DC"),
-                createOrganization("N/A"));
+               SITE);
     }
 
     public static StudyParticipantAssignment assignParticipant(final Participant participant,

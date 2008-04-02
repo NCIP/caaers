@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -15,7 +15,7 @@ import java.util.Calendar;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC. Refactor into a shared library. */
-public abstract class WebTestCase extends AbstractTestCase {
+public abstract class WebTestCase extends CaaersTestCase {
     protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 
     protected MockHttpServletRequest request;

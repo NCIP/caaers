@@ -17,7 +17,7 @@ public class CreateResearchStaffControllerTest extends WebTestCase {
         super.setUp();
         researchStaffRepository = registerMockFor(ResearchStaffRepository.class);
 
-        controller.setResearchStaffRepository(researchStaffRepository);
+        //controller.setResearchStaffRepository(researchStaffRepository);
         // controller.setConfigurationProperty(new ConfigProperty());
         // controller.setListValues(new ListValues());
     }

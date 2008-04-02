@@ -1,39 +1,9 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.assignParticipant;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.createParticipant;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudy;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
-import static org.easymock.EasyMock.aryEq;
-import static org.easymock.EasyMock.eq;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.isNull;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcGrade;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.domain.*;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -43,17 +13,9 @@ import gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController;
 import gov.nih.nci.cabig.caaers.web.ae.EditExpeditedAdverseEventCommand;
 import gov.nih.nci.cabig.caaers.web.ae.ExpeditedAdverseEventInputCommand;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
+import static org.easymock.EasyMock.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.easymock.classextension.EasyMock;
+import java.util.*;
 
 /**
  * @author Rhett Sutphin
@@ -580,20 +542,20 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertNotMoved(command);
         assertEquals(0, actual.size());
     }
-
-    public void testDeleteSavesIfAlreadySaved() throws Exception {
-        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-        command.getAeReport().setId(17);
-        aeReportDao.save(command.getAeReport());
-        expect(aeReportDao.merge(command.getAeReport())).andReturn(command.getAeReport());
-        replayMocks();
-        List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 3).getChanges();
-        verifyMocks();
-
-        assertAdverseEventsIdOrder(command, 0, 1, 2);
-        assertEquals("Wrong changes: " + actual, 1, actual.size());
-        assertIndexChange(3, null, actual.get(0));
-    }
+//
+//    public void testDeleteSavesIfAlreadySaved() throws Exception {
+//        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
+//        command.getAeReport().setId(17);
+//        aeReportDao.save(command.getAeReport());
+//        expect(aeReportDao.merge(command.getAeReport())).andReturn(command.getAeReport());
+//        replayMocks();
+//        List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 3).getChanges();
+//        verifyMocks();
+//
+//        assertAdverseEventsIdOrder(command, 0, 1, 2);
+//        assertEquals("Wrong changes: " + actual, 1, actual.size());
+//        assertIndexChange(3, null, actual.get(0));
+//    }
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
                     IndexChange actual) {
