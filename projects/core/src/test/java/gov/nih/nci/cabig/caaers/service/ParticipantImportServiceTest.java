@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class ParticipantImportServiceTest extends AbstractTestCase {
+public class ParticipantImportServiceTest extends CaaersTestCase {
 
     private ParticipantImportServiceImpl participantImportService;
     private StudySiteDao studySiteDao;
@@ -44,6 +44,7 @@ public class ParticipantImportServiceTest extends AbstractTestCase {
         organization = Fixtures.createOrganization("org name");
         organizationAssignedIdentifier = Fixtures.createOrganizationAssignedIdentifier("org value", organization);
         study = Fixtures.createStudy("short study");
+        study.setId(1);
 
 
     }

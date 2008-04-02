@@ -16,6 +16,15 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public class Fixtures {
+
+    public static final Organization SITE = Fixtures.createOrganization("Round abouts here", 1);
+
+    public static Organization createOrganization(final String organizationName, final int organizationId) {
+        final Organization organization = createOrganization(organizationName);
+        organization.setId(organizationId);
+        return organization;
+    }
+
     public static <T extends DomainObject> T setId(final int id, final T target) {
         target.setId(id);
         return target;
@@ -54,7 +63,22 @@ public class Fixtures {
     public static StudyParticipantAssignment assignParticipant(final Participant participant,
                                                                final Study study, final Organization organization) {
         StudySite studySite = new StudySite();
-        studySite.setId(123);
+        studySite.setId(study.getId() != null ? study.getId() : organization.getId());
+        studySite.setOrganization(organization);
+        study.addStudySite(studySite);
+        organization.addStudySite(studySite);
+
+        StudyParticipantAssignment assignment = new StudyParticipantAssignment();
+        studySite.addAssignment(assignment);
+        participant.addAssignment(assignment);
+
+        return assignment;
+    }
+
+    public static StudyParticipantAssignment assignParticipant(final Participant participant,
+                                                               final Study study, final Organization organization, final Integer studySiteId) {
+        StudySite studySite = new StudySite();
+        studySite.setId(studySiteId);
         studySite.setOrganization(organization);
         study.addStudySite(studySite);
         organization.addStudySite(studySite);

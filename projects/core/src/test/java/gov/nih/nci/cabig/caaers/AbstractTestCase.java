@@ -18,7 +18,7 @@ import java.util.*;
 /**
  * @author Biju Joseph
  */
-public class AbstractTestCase extends CoreTestCase {
+public abstract class AbstractTestCase extends CoreTestCase {
 
     private static Log log = LogFactory.getLog(AbstractTestCase.class);
 

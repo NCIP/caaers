@@ -1,19 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Map;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Krikor Krumlian
@@ -136,7 +135,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
     public void testSummaryIncludesParticipant() throws Exception {
         Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
         assertEquals("Joe Shabadoo", summary.get("Participant"));
     }
@@ -146,7 +145,7 @@ public class RoutineAdverseEventReportTest extends CaaersTestCase {
         participant.addIdentifier(Identifier.createTemplate("MRN1138"));
         participant.getIdentifiers().get(0).setPrimaryIndicator(true);
         Study study = Fixtures.createStudy("El Study");
-        report.setAssignment(Fixtures.assignParticipant(participant, study, new Organization()));
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
         Map<String, String> summary = report.getSummary();
         assertEquals("Joe Shabadoo (MRN1138)", summary.get("Participant"));
     }
