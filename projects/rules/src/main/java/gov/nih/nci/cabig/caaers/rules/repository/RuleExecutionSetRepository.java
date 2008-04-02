@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.repository;
+package gov.nih.nci.cabig.caaers.rules.repository;
 
 import java.util.List;
 

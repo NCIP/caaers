@@ -1,4 +1,5 @@
-package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
+package gov.nih.nci.cabig.caaers.rules.repository;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

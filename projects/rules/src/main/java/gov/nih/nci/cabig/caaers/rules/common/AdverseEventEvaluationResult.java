@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.rules.domain;
+package gov.nih.nci.cabig.caaers.rules.common;
 
 public class AdverseEventEvaluationResult {
 

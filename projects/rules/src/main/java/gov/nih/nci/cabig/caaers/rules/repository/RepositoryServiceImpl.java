@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.rules.repository.jbossrules;
+package gov.nih.nci.cabig.caaers.rules.repository;
 
 import gov.nih.nci.cabig.caaers.rules.RuleException;
 import gov.nih.nci.cabig.caaers.rules.brxml.Category;
@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.runtime.RulesCache;
-import gov.nih.nci.cabig.caaers.rules.repository.RepositoryService;
+import gov.nih.nci.cabig.caaers.rules.repository.RulesRepositoryEx.RepositoryConfiguratorEx;
 
 import java.io.IOException;
 import java.io.InputStream;
