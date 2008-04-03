@@ -19,10 +19,12 @@ import java.util.*;
  * @author Biju Joseph
  */
 public abstract class AbstractTestCase extends CoreTestCase {
+	
 
     private static Log log = LogFactory.getLog(AbstractTestCase.class);
 
     protected Set<Object> mocks = new HashSet<Object>();
+    
 
     ////// MOCK REGISTRATION AND HANDLING
 

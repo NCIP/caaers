@@ -43,7 +43,9 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
 
     @Override
     public String[] getConfigLocations() {
-        return CaaersTestCase.getConfigLocations();
+    	return new String[] {
+                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
+            };
     }
 
     private void loadCtcVersion() throws SQLException, IOException, DatabaseUnitException {
@@ -51,12 +53,9 @@ public class DaoSecurityTest extends AbstractTransactionalSpringContextTests {
         DatabaseDataSourceConnection conn = null;
         try {
             conn = new DatabaseDataSourceConnection(dataSource);
-            FlatXmlDataSet data = new FlatXmlDataSet(
-                            Thread
-                                            .currentThread()
+            FlatXmlDataSet data = new FlatXmlDataSet(Thread.currentThread()
                                             .getContextClassLoader()
-                                            .getResourceAsStream(
-                                                            "gov/nih/nci/cabig/caaers/security/testdata/DaoSecurityTest.xml"));
+                                            .getResourceAsStream("gov/nih/nci/cabig/caaers/security/testdata/DaoSecurityTest.xml"));
             DatabaseOperation.CLEAN_INSERT.execute(conn, data);
         } finally {
             if (conn != null) {

@@ -6,9 +6,7 @@ package gov.nih.nci.cabig.caaers.security;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -20,30 +18,22 @@ import org.springframework.context.ApplicationContext;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class CSMTest extends TestCase {
+public class CSMTest extends CaaersTestCase {
     private UserProvisioningManager mgr;
 
     public CSMTest() {
     }
 
-    public CSMTest(String name) {
-        super(name);
-    }
+   
 
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
+        ApplicationContext ctx = getDeployedApplicationContext();
         mgr = (UserProvisioningManager) ctx.getBean("csmUserProvisioningManager");
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new CSMTest("testSuperUserPolicy"));
-        suite.addTest(new CSMTest("testStudyCoordinatorPolicy"));
-        suite.addTest(new CSMTest("testParticipantCoordinatorPolicy"));
-        return suite;
-    }
+
 
     public void testCSMLoad() {
 
@@ -54,7 +44,7 @@ public class CSMTest extends TestCase {
             Authentication auth = new TestingAuthenticationToken(userId, "ignored",
                             new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
 
-            ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
+            ApplicationContext ctx = getDeployedApplicationContext();
 
             BasicDataSource bds = (BasicDataSource) ctx.getBean("dataSource");
 

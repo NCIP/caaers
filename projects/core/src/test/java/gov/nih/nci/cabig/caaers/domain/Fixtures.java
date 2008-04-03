@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
@@ -217,7 +218,6 @@ public class Fixtures {
         for (UserGroupType userGroupType : userGroupTypes) {
             researchStaff.addUserGroupType(userGroupType);
         }
-
         researchStaff.setOrganization(organization);
         return researchStaff;
     }
@@ -297,10 +297,85 @@ public class Fixtures {
         coordinatingCenter.setStudyCoordinatingCenter(studyCoordinatingCenter);
         return coordinatingCenter;
     }
-
+    
+    public static DiseaseTerminology createDiseaseTerminology(Study s){
+    	DiseaseTerminology dTerminology = new DiseaseTerminology();
+    	dTerminology.setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+    	dTerminology.setGridId("xxxxx");
+    	dTerminology.setStudy(s);
+    	return dTerminology;
+    }
     private static StudyCoordinatingCenter createStudyCoordinatingCenter(final Organization organization) {
         StudyCoordinatingCenter studyCoordinatingCenter = new StudyCoordinatingCenter();
         studyCoordinatingCenter.setOrganization(organization);
         return studyCoordinatingCenter;
+    }
+    
+    private static Investigator createInvestigator(String name){
+    	Investigator inv = new Investigator();
+    	inv.setFirstName("FN" + name);
+    	inv.setLastName("LN" + name);
+    	inv.setEmailAddress("abc@kk.com");
+    	return inv;
+    }
+    
+    public static SiteInvestigator createSiteInvestigator(Organization org, Investigator inv){
+    	SiteInvestigator si = new SiteInvestigator();
+    	si.setInvestigator(inv);
+    	si.setOrganization(org);
+    	return si;
+    }
+    
+    public static StudyInvestigator createStudyInvestigator(String name, Organization org){
+    	Investigator inv = createInvestigator(name);
+    	SiteInvestigator si = createSiteInvestigator(org, inv);
+    	
+    	StudyInvestigator sti = new StudyInvestigator();
+    	sti.setRoleCode("role");
+    	sti.setSiteInvestigator(si);
+    	return sti;
+    }
+    
+    public static StudyPersonnel createStudyPersonnel(ResearchStaff staff){
+    	StudyPersonnel sp = new StudyPersonnel();
+    	sp.setResearchStaff(staff);
+    	sp.setRoleCode("role");
+    	sp.setStatusCode("code");
+    	return sp;
+    }
+    
+    public static Agent createAgent(String name, List<StudyAgent> studyAgents){
+    	Agent agent = new Agent();
+    	agent.setDescription("abcd");
+    	agent.setName(name);
+    	agent.setStudyAgents(studyAgents);
+    	for(StudyAgent sa : studyAgents) sa.setAgent(agent);
+    	return agent;
+    }
+    
+    public static StudyDisease createStudyDisease(Study s, DiseaseTerm term){
+    	StudyDisease sd = new StudyDisease();
+    	sd.setDiseaseTerm(term);
+    	sd.setStudy(s);
+    	sd.setLeadDisease(true);
+    	return sd;
+    }
+    
+    public static CtepStudyDisease createCtepStudyDisease(Study s, DiseaseTerm term){
+    	CtepStudyDisease d = new CtepStudyDisease();
+    	d.setDiseaseTerm(term);
+    	d.setStudy(s);
+    	s.addCtepStudyDisease(d);
+    	d.setLeadDisease(true);
+    	return d;
+    }
+    
+    public static MeddraStudyDisease createMeddraStudyDisease(Study s, LowLevelTerm lowLevelTerm){
+    	MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
+		meddraStudyDisease.setMeddraCode("medra");
+		meddraStudyDisease.setTerm(lowLevelTerm);
+		meddraStudyDisease.setStudy(s);
+		return meddraStudyDisease;
+		
     }
 }

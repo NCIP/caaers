@@ -24,6 +24,8 @@ public abstract class CaaersTestCase extends AbstractTestCase {
 
     private boolean authorizationOnByDefault;
     
+    
+    
     protected void setUpAuditing(){
     	DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
