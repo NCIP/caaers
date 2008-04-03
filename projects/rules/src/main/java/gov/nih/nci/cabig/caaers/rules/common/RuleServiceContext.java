@@ -23,7 +23,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class RuleServiceContext {
 
-    private static final String DEFAULT_RULE_SERVICE_PROVIDER = "gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl";
+    private static final String DEFAULT_RULE_SERVICE_PROVIDER = "gov.nih.nci.cabig.caaers.rules.runtime.RuleServiceProviderImpl";
 
     public RuleServiceProvider ruleServiceProvider;
 
