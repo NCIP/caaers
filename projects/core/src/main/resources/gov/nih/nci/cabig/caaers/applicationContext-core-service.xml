@@ -178,4 +178,41 @@ This applicationContext contains the definition of the concrete services
             <value>@buildNumber@</value>
         </property>
     </bean>
+    
+    <!--  Migrators -->
+    <bean id="identifierMigrator" class="gov.nih.nci.cabig.caaers.service.IdentifierMigrator">
+    	<property name="organizationDao" ref="organizationDao" />
+    </bean>
+    <bean id="studyTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyTherapyMigrator" />
+    <bean id="studyTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyTerminologyMigrator">
+    	<property name="meddraVersionDao" ref="meddraVersionDao" />
+    	<property name="ctcDao" ref="ctcDao" />
+    </bean>
+    <bean id="studyDiseaseTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyDiseaseTerminologyMigrator" />
+    <bean id="studyOrganizationMigrator" class="gov.nih.nci.cabig.caaers.service.StudyOrganizationMigrator">
+    	<property name="researchStaffDao" ref="researchStaffDao" />
+    	<property name="organizationDao" ref="organizationDao" />
+    	<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
+    </bean>
+    <bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.StudyAgentMigrator" />
+    <bean id="studyDiseaseMigrator" class="gov.nih.nci.cabig.caaers.service.StudyDiseaseMigrator">
+    	<property name="diseaseTermDao" ref="diseaseTermDao" />
+    	<property name="lowLevelTermDao" ref="lowLevelTermDao" />
+    </bean>
+    <bean id="studyTreatmentMigrator" class="gov.nih.nci.cabig.caaers.service.TreatmentAssignmentMigrator" />
+    <bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyMigrator">
+    	<constructor-arg>
+    		<list>
+    			<ref bean="studyTherapyMigrator"/>
+    			<ref bean="studyTerminologyMigrator"/>
+    			<ref bean="studyDiseaseTerminologyMigrator" />
+    			<ref bean="studyOrganizationMigrator" />
+    			<ref bean="identifierMigrator" />
+    			<ref bean="studyAgentMigrator"/>
+    			<ref bean="studyDiseaseMigrator" />
+    			<ref bean="studyTreatmentMigrator" />
+    		</list>
+    	</constructor-arg>
+    </bean>
+     
 </beans>
