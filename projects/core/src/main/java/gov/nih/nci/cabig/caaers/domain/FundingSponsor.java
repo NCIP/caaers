@@ -1,8 +1,33 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-public class FundingSponsor extends AbstractSponsor {
-
+/**
+ * This is a purely fabricated class for XML study import,decorates a {@link StudyFundingSponsor}. 
+ * @author Biju Joseph
+ * @author Krikor (orignial)
+ *
+ */
+public class FundingSponsor {
+	
     private StudyFundingSponsor studyFundingSponsor;
+    
+    private OrganizationAssignedIdentifier organizationAssignedIdentifier;
+    
+    public FundingSponsor(){
+    }
+    
+    public FundingSponsor(StudyFundingSponsor sponsor){
+    	this.studyFundingSponsor = sponsor;
+    }
+    
+    ///OBJECT METHODS
+    public OrganizationAssignedIdentifier getOrganizationAssignedIdentifier() {
+        return organizationAssignedIdentifier;
+    }
+
+    public void setOrganizationAssignedIdentifier(
+            OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+        this.organizationAssignedIdentifier = organizationAssignedIdentifier;
+    }
 
     public StudyFundingSponsor getStudyFundingSponsor() {
         return studyFundingSponsor;
@@ -12,7 +37,4 @@ public class FundingSponsor extends AbstractSponsor {
         this.studyFundingSponsor = studyFundingSponsor;
     }
 
-    public StudyOrganization getStudyOrganization() {
-        return studyFundingSponsor;
-    }
 }
