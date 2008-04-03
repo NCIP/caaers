@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 import gov.nih.nci.cabig.caaers.rules.repository.RulesRepositoryEx.RepositoryConfiguratorEx;
-import gov.nih.nci.cabig.caaers.rules.runtime.RulesCache;
+import gov.nih.nci.cabig.caaers.rules.runtime.cache.RulesCache;
 
 import java.io.IOException;
 import java.io.InputStream;
