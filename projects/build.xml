@@ -105,4 +105,15 @@
 	
 
 	
+	<!-- =======================================================
+		target : sync-classpath
+	============================================================ -->
+	<target name="sync-classpath" depends="buildlist">
+		<mkdir dir="${java.io.tmpdir}\ivylibs" />
+		<subant target="resolve" buildpathref="build-path">
+			<property name="resolve.confs" value="runtime,test" />
+			<property name="resolve.to.dir" value="${java.io.tmpdir}\ivylibs" />
+		</subant>
+	</target>
+	
 </project>

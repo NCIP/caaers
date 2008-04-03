@@ -60,6 +60,18 @@
 	        </jar>
 		</sequential>
 	</macrodef>
+	<!-- =============================================================================
+		ivyResolve : Will resolve the confs to the libDir
+	================================================================================= -->
+	<macrodef name="ivyResolve">
+		<attribute name="libDir"/>
+		<attribute name="confs"/>
+		<attribute name="resolveId"/>
+		<sequential>
+			<ivy:resolve file="${ivy.file}" conf="@{confs}" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+			<ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+		</sequential>
+	</macrodef>
 
 	
 	<!-- If present, will skip the execution of testcases -->
@@ -177,10 +189,15 @@
     	============================================================ -->
     <target name="resolve" depends="clean-lib, init, load-ivy" unless="already.resolved"
     	description="--> resolve and retrieve dependencies with ivy">
-    	<echo message="Executing ${ant.project.name} : resolve" />
-    	<!-- the call to resolve is not mandatory, retrieve makes an implicit call if we don't -->
-    	<ivy:resolve file="${ivy.file}" conf="default" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-    	<ivy:retrieve pattern="${lib.dir}/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+    	<condition property="configs" value="${resolve.confs}" else="default">
+    		<isset property="resolve.confs"/>
+    	</condition>
+    	<condition property="to.dir" value="${resolve.to.dir}" else="${lib.dir}">
+    		<isset property="resolve.to.dir"/>
+    	</condition>
+    	
+    	<echo message="Executing ${ant.project.name} : resolve with confs : ${configs}" />
+    	<ivyResolve confs="${configs}" libdir="${to.dir}" resolveid="[org]-[module]"/>
     	<property name="already.resolved" value="true"/>
     </target>
 
@@ -191,9 +208,7 @@
     <target name="resolve-test" depends="clean-lib-test, init, load-ivy" unless="already.resolved-test" 
     	description="--> resolve and retrieve 'test' dependencies with ivy">
     	<echo message="Executing ${ant.project.name} : resolve-test" />
-    	<!-- the call to resolve is not mandatory, retrieve makes an implicit call if we don't -->
-    	<ivy:resolve file="${ivy.file}" conf="test" resolveid="[org]-[module]-test" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-    	<ivy:retrieve pattern="${test.lib.dir}/[artifact]-[revision].[ext]" resolveid="[org]-[module]-test" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+    	<ivyResolve confs="test" libdir="${test.lib.dir}" resolveid="[org]-[module]-test"/>
     	<property name="already.resolved-test" value="true"/>
     </target>
   
