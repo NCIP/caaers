@@ -43,7 +43,7 @@ public class BusinessRulesExecutionServiceImpl implements BusinessRulesExecution
                             .registerRuleServiceProvider(
                                             RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER,
                                             Class
-                                                            .forName("gov.nih.nci.cabig.caaers.rules.jsr94.jbossrules.RuleServiceProviderImpl"));
+                                                            .forName("gov.nih.nci.cabig.caaers.rules.runtime.RuleServiceProviderImpl"));
 
             this.ruleServiceProvider = RuleServiceProviderManager
                             .getRuleServiceProvider(RuleExecutionServiceImpl.RULE_SERVICE_PROVIDER);
