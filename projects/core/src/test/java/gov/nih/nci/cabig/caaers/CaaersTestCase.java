@@ -23,38 +23,56 @@ public abstract class CaaersTestCase extends AbstractTestCase {
     private static ApplicationContext applicationContext = null;
 
     private boolean authorizationOnByDefault;
-
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-
-        DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
+    
+    protected void setUpAuditing(){
+    	DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
+    }
+    
+    protected void setUpTestAuthorization(){
+        
         // JAP: need this to ensure that security aspect
         // is initialized by Spring before it is applied
         // by AspectJ.
         // RMS: This is needed often enough that we'll
         // just do it everywhere.
-        ApplicationContext ctx = getDeployedApplicationContext();
-        // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
-        // SecurityTestUtils.insertCSMPolicy(dataSource);
-        authorizationOnByDefault = SecurityTestUtils.enableAuthorization(false, ctx);
-        SecurityTestUtils.switchToSuperuser();
+    	 ApplicationContext ctx = getDeployedApplicationContext();
+         // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
+         // SecurityTestUtils.insertCSMPolicy(dataSource);
+    	 authorizationOnByDefault = SecurityTestUtils.enableAuthorization(false, ctx);
+         SecurityTestUtils.switchToSuperuser();
     }
-
-
+    
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        setUpAuditing();
+        setUpTestAuthorization();
+    }
+    
+    /*
+     * AspectJ compiling is not required to test integration areas that don't
+     * involve testing of security aspects. 
+     */
+    protected void tearDownTestAuthorization(){
+    	 SecurityTestUtils.switchToNoUser();
+         ApplicationContext ctx = getDeployedApplicationContext();
+         SecurityTestUtils.enableAuthorization(authorizationOnByDefault, ctx);
+         // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
+         // SecurityTestUtils.deleteCSMPolicy(dataSource);
+    }
+    
+    protected void tearDownAuditing(){
+    	 DataAuditInfo.setLocal(null);
+    }
     @Override
     protected void tearDown() throws Exception {
-        SecurityTestUtils.switchToNoUser();
-        ApplicationContext ctx = getDeployedApplicationContext();
-        SecurityTestUtils.enableAuthorization(authorizationOnByDefault, ctx);
-        // DataSource dataSource = (DataSource) ctx.getBean("dataSource");
-        // SecurityTestUtils.deleteCSMPolicy(dataSource);
         super.tearDown();
-        DataAuditInfo.setLocal(null);
+        tearDownTestAuthorization();
+        tearDownAuditing();
     }
-
-    public synchronized static ApplicationContext getDeployedApplicationContext() {
+    
+    public synchronized  ApplicationContext getDeployedApplicationContext() {
         if (acLoadFailure == null && applicationContext == null) {
             // This might not be the right place for this
             try {
@@ -77,8 +95,12 @@ public abstract class CaaersTestCase extends AbstractTestCase {
         }
         return applicationContext;
     }
-
-    public static String[] getConfigLocations() {
+    
+    /**
+     * The sub classes(testclasses) can override the config locations at runtime. 
+     * @return
+     */
+    public  String[] getConfigLocations() {
         return new String[] {
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
         };
