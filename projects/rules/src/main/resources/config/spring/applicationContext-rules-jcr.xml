@@ -98,7 +98,7 @@
 
 
 	<bean id="jcrService"
-		class="gov.nih.nci.cabig.caaers.rules.repository.jbossrules.RepositoryServiceImpl"
+		class="gov.nih.nci.cabig.caaers.rules.repository.RepositoryServiceImpl"
 		autowire="byType">
 		<property name="template" ref="jcrTemplate" />
 	</bean>
