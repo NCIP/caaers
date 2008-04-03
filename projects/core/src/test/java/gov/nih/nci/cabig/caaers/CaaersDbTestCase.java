@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
@@ -19,10 +20,12 @@ import org.dbunit.dataset.datatype.DefaultDataTypeFactory;
 import org.dbunit.dataset.datatype.IDataTypeFactory;
 import org.dbunit.ext.oracle.OracleDataTypeFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
 
@@ -39,6 +42,9 @@ import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 /* TODO: much of this class is shared with PSC. Refactor into a shared library. */
 public abstract class CaaersDbTestCase extends DbTestCase {
     protected final Log log = LogFactory.getLog(getClass());
+    
+    private static RuntimeException acLoadFailure = null;
+    private static ApplicationContext applicationContext = null;
 
     protected WebRequest webRequest = new StubWebRequest();
 
@@ -47,24 +53,47 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo(
                     "dun", "127.1.2.7", DateUtils.createDate(2004, Calendar.NOVEMBER, 2),
                     "/studycalendar/zippo");
-
+    
+    
+    protected void setUpAuthorization() throws Exception {
+    	SecurityTestUtils.insertCSMPolicy(getDataSource());
+        SecurityTestUtils.switchToSuperuser();
+    }
+    
+    protected void setUpAuditing() {
+		DataAuditInfo.setLocal(INFO);
+	}
+    
+    protected void setUpSession(){
+    	beginSession();
+    }
+    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        SecurityTestUtils.insertCSMPolicy(getDataSource());
-        SecurityTestUtils.switchToSuperuser();
-        DataAuditInfo.setLocal(INFO);
-        beginSession();
+        setUpAuthorization();
+        setUpAuditing();
+        setUpSession();
+        
     }
-
+    
+    protected void tearDownSession(){
+    	endSession();
+    }
+    protected void tearDownAuthorization() throws Exception{
+    	SecurityTestUtils.switchToNoUser();
+        SecurityTestUtils.deleteCSMPolicy(getDataSource());	
+    }
+    protected void tearDownAuditing() {
+    	DataAuditInfo.setLocal(null);
+	}
+    
     @Override
     protected void tearDown() throws Exception {
-        endSession();
-        SecurityTestUtils.switchToNoUser();
-        SecurityTestUtils.deleteCSMPolicy(getDataSource());
-        DataAuditInfo.setLocal(null);
         super.tearDown();
-
+        tearDownSession();
+        tearDownAuthorization();
+        tearDownAuditing();
     }
 
     @Override
@@ -119,8 +148,8 @@ public abstract class CaaersDbTestCase extends DbTestCase {
         return (DataSource) getApplicationContext().getBean("dataSource");
     }
 
-    public static ApplicationContext getApplicationContext() {
-        return CaaersTestCase.getDeployedApplicationContext();
+    public  ApplicationContext getApplicationContext() {
+        return getDeployedApplicationContext();
     }
 
     @Override
@@ -180,6 +209,42 @@ public abstract class CaaersDbTestCase extends DbTestCase {
 
         System.out.print(dump);
     }
+    
+    
+    public synchronized  ApplicationContext getDeployedApplicationContext() {
+        if (acLoadFailure == null && applicationContext == null) {
+            // This might not be the right place for this
+            try {
+                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            } catch (NamingException e) {
+                throw new RuntimeException("", e);
+            }
+
+            try {
+                log.debug("Initializing test version of deployed application context");
+                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+            } catch (RuntimeException e) {
+                acLoadFailure = e;
+                throw e;
+            }
+        } else if (acLoadFailure != null) {
+            throw new CaaersSystemException(
+                "Application context loading already failed.  Will not retry.  " +
+                    "Original cause attached.", acLoadFailure);
+        }
+        return applicationContext;
+    }
+    
+    /**
+     * The sub classes(testclasses) can override the config locations at runtime. 
+     * @return
+     */
+    public  String[] getConfigLocations() {
+        return new String[] {
+            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml"
+        };
+    }
+
 
     private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
