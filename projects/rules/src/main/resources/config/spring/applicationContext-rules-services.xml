@@ -19,9 +19,9 @@
     <bean id="ruleDeploymentService" class="gov.nih.nci.cabig.caaers.rules.deploy.RuleDeploymentServiceImpl"/>
 
     <bean id="ruleExecutionService" class="gov.nih.nci.cabig.caaers.rules.runtime.RuleExecutionServiceImpl"/>
-
+<!--
     <bean id="emailService" class="gov.nih.nci.cabig.caaers.email.EmailServiceImpl"/>
-
+-->
     <bean id="ruleEngineService" autowire="byType" class="gov.nih.nci.cabig.caaers.rules.business.service.RulesEngineServiceImpl"/>
 
     <bean id="evaluationService" autowire="byType"
