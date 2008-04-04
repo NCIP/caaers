@@ -1,18 +1,17 @@
 package gov.nih.nci.cabig.caaers.service.security;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.service.UserServiceImpl;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.security.UserProvisioningManager;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 
 /**
  * @author Jared Flatow
@@ -25,7 +24,7 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
 
     private PasswordPolicyDao passwordPolicyDao;
 
-    private UserServiceImpl userService;
+    private CSMUserRepositoryImpl csmUserRepository;
 
     private UserDao userDao;
 
@@ -53,20 +52,20 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
         userProvisioningManager = registerMockFor(UserProvisioningManager.class);
         expect(userProvisioningManager.getUser(userName)).andReturn(csmUser).anyTimes();
 
-        userService = new UserServiceImpl();
-        userService.setUserDao(userDao);
-        userService.setUserProvisioningManager(userProvisioningManager);
+        csmUserRepository = new CSMUserRepositoryImpl();
+        csmUserRepository.setUserDao(userDao);
+        csmUserRepository.setUserProvisioningManager(userProvisioningManager);
 
         passwordPolicyDao = registerDaoMockFor(PasswordPolicyDao.class);
         expect(passwordPolicyDao.getById(1)).andReturn(Fixtures.createPasswordPolicy()).anyTimes();
 
         passwordPolicyService = new PasswordPolicyServiceImpl();
-        passwordPolicyService.setUserService(userService);
+        passwordPolicyService.setCsmUserRepository(csmUserRepository);
         passwordPolicyService.setPasswordPolicyDao(passwordPolicyDao);
 
         passwordManagerService = new PasswordManagerServiceImpl();
         passwordManagerService.setPasswordPolicyService(passwordPolicyService);
-        passwordManagerService.setUserService(userService);
+        passwordManagerService.setCsmUserRepository(csmUserRepository);
     }
 
     public void testRequestToken() throws Exception {

@@ -23,9 +23,9 @@ import java.util.Map;
 /**
  * @author Biju Joseph
  */
-public abstract class AbstratTabTest<T extends Tab, C extends Object> extends WebTestCase {
+public abstract class AbstractTabTest<T extends Tab, C extends Object> extends WebTestCase {
 
-    private static final Log log = LogFactory.getLog(AbstratTabTest.class);
+    private static final Log log = LogFactory.getLog(AbstractTabTest.class);
 
     private T tab;
     private C command;
@@ -72,7 +72,6 @@ public abstract class AbstratTabTest<T extends Tab, C extends Object> extends We
 
 
         listValues = new ListValues();
-
 
     }
 

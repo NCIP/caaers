@@ -22,5 +22,18 @@ public class ConfigPropertyHelper {
 
     }
 
+    public static ConfigProperty putPhaseCodeRefData(final ConfigProperty configProperty) {
+
+        configProperty.getMap().put("phaseCodeRefData", LovHelper.getPhaseCodeRefData());
+        return configProperty;
+
+    }
+
+    public static ConfigProperty putStatusRefData(final ConfigProperty configProperty) {
+
+        configProperty.getMap().put("statusRefData", LovHelper.getStatusRefData());
+        return configProperty;
+
+    }
 
 }

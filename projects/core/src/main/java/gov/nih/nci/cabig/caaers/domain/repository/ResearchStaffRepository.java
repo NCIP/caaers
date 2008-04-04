@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.service.UserService;
+import gov.nih.nci.cabig.caaers.repository.CSMUserRepository;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
@@ -26,7 +26,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ResearchStaffRepository {
 
-    private UserService userService;
+    private CSMUserRepository csmUserRepository;
 
     private ResearchStaffDao researchStaffDao;
 
@@ -47,7 +47,7 @@ public class ResearchStaffRepository {
      */
     @Transactional(readOnly = false)
     public void save(final ResearchStaff researchStaff, String changeURL) {
-        userService.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+        csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
     }
 
     public ResearchStaff getById(final int id) {
@@ -83,10 +83,12 @@ public class ResearchStaffRepository {
         this.researchStaffDao = researchStaffDao;
     }
 
+
     @Required
-    public void setUserService(final UserService userService) {
-        this.userService = userService;
+    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
     }
+
 
     @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {

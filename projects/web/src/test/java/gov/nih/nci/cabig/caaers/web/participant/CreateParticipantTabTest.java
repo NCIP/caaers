@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @author Biju Joseph
  */
-public class CreateParticipantTabTest extends AbstratTabTest<CreateParticipantTab, NewParticipantCommand> {
+public class CreateParticipantTabTest extends AbstractTabTest<CreateParticipantTab, NewParticipantCommand> {
 
     private CreateParticipantTab createParticipantTab;
 

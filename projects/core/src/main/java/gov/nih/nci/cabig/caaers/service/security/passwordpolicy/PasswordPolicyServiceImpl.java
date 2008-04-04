@@ -1,15 +1,12 @@
 package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.service.UserService;
-import gov.nih.nci.cabig.caaers.service.security.user.Credential;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.ValidationException;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordPolicyValidator;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyValidator;
-import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
-import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
-
+import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
+import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyValidator;
+import gov.nih.nci.cabig.caaers.service.security.user.Credential;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PasswordPolicyServiceImpl implements PasswordPolicyService {
@@ -20,7 +17,7 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
 
     PasswordPolicyDao passwordPolicyDao;
 
-    UserService userService;
+    CSMUserRepository csmUserRepository;
 
     public PasswordPolicyServiceImpl() {
         passwordCreationPolicyValidator = new PasswordCreationPolicyValidator();
@@ -44,7 +41,7 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     }
 
     public boolean validatePasswordAgainstCreationPolicy(Credential credential)
-                    throws CaaersSystemException {
+            throws CaaersSystemException {
         return passwordCreationPolicyValidator.validate(getPasswordPolicy(), credential);
     }
 
@@ -60,9 +57,12 @@ public class PasswordPolicyServiceImpl implements PasswordPolicyService {
     }
 
     @Required
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-        passwordCreationPolicyValidator.setUserService(userService);
-        loginPolicyValidator.setUserService(userService);
+    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
+        passwordCreationPolicyValidator.setCsmUserRepository(csmUserRepository);
+        loginPolicyValidator.setCsmUserRepository(csmUserRepository);
+
     }
+
+
 }
