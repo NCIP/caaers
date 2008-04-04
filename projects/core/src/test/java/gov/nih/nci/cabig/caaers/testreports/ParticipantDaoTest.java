@@ -44,7 +44,7 @@ public class ParticipantDaoTest extends DaoTestCase {
     public void testForReport() {
 
         try {
-            String outputFileName = "/Users/sakkala/tech/testreports/ParticipantTestReport.txt";
+            String outputFileName = "ParticipantTestReport.txt";
             // Create FileReader Object
             FileWriter outputFileReader = new FileWriter(outputFileName);
             PrintWriter outputStream = new PrintWriter(outputFileReader);
