@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
 import junit.framework.TestCase;
@@ -18,7 +19,7 @@ import org.springframework.context.ApplicationContext;
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  * 
  */
-public class CSMTest extends TestCase {
+public class CSMTest extends CaaersTestCase {
 
     /**
      * 
@@ -70,7 +71,7 @@ public class CSMTest extends TestCase {
             Authentication auth = new TestingAuthenticationToken(userId, "ignored",
                             new GrantedAuthority[] { new GrantedAuthorityImpl("ignored") });
 
-            ApplicationContext ctx = CaaersTestCase.getDeployedApplicationContext();
+            ApplicationContext ctx = getDeployedApplicationContext();
 
             // BasicDataSource bds = (BasicDataSource)ctx.getBean("dataSource");
 
