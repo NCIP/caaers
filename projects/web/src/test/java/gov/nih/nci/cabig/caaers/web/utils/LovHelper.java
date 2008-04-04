@@ -22,4 +22,24 @@ public class LovHelper {
         return lovs;
 
     }
+
+    public static List<Lov> getPhaseCodeRefData() {
+
+        List<Lov> lovs = new ArrayList<Lov>();
+        Lov lov1 = new Lov("I", "Phase I Trial");
+        Lov lov2 = new Lov("I/II", "Phase I/II Trial");
+        lovs.add(lov1);
+        lovs.add(lov2);
+        return lovs;
+
+    }
+
+    public static List<Lov> getStatusRefData() {
+
+        List<Lov> lovs = new ArrayList<Lov>();
+        Lov lov1 = new Lov("Active - Trial is open to accrual", "Active - Trial is open to accrual");
+        lovs.add(lov1);
+        return lovs;
+
+    }
 }
