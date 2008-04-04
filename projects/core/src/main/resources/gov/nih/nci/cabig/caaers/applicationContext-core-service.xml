@@ -180,27 +180,27 @@ This applicationContext contains the definition of the concrete services
     </bean>
     
     <!--  Migrators -->
-    <bean id="identifierMigrator" class="gov.nih.nci.cabig.caaers.service.IdentifierMigrator">
+    <bean id="identifierMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator">
     	<property name="organizationDao" ref="organizationDao" />
     </bean>
-    <bean id="studyTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyTherapyMigrator" />
-    <bean id="studyTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyTerminologyMigrator">
+    <bean id="studyTherapyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTherapyMigrator" />
+    <bean id="studyTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyTerminologyMigrator">
     	<property name="meddraVersionDao" ref="meddraVersionDao" />
     	<property name="ctcDao" ref="ctcDao" />
     </bean>
-    <bean id="studyDiseaseTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyDiseaseTerminologyMigrator" />
-    <bean id="studyOrganizationMigrator" class="gov.nih.nci.cabig.caaers.service.StudyOrganizationMigrator">
+    <bean id="studyDiseaseTerminologyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDiseaseTerminologyMigrator" />
+    <bean id="studyOrganizationMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyOrganizationMigrator">
     	<property name="researchStaffDao" ref="researchStaffDao" />
     	<property name="organizationDao" ref="organizationDao" />
     	<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
     </bean>
-    <bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.StudyAgentMigrator" />
-    <bean id="studyDiseaseMigrator" class="gov.nih.nci.cabig.caaers.service.StudyDiseaseMigrator">
+    <bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator" />
+    <bean id="studyDiseaseMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDiseaseMigrator">
     	<property name="diseaseTermDao" ref="diseaseTermDao" />
     	<property name="lowLevelTermDao" ref="lowLevelTermDao" />
     </bean>
-    <bean id="studyTreatmentMigrator" class="gov.nih.nci.cabig.caaers.service.TreatmentAssignmentMigrator" />
-    <bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.StudyMigrator">
+    <bean id="studyTreatmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.TreatmentAssignmentMigrator" />
+    <bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
     	<constructor-arg>
     		<list>
     			<ref bean="studyTherapyMigrator"/>
@@ -214,5 +214,15 @@ This applicationContext contains the definition of the concrete services
     		</list>
     	</constructor-arg>
     </bean>
-     
+    <bean id="studyParticipantAssignmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator">
+    	<property name="studySiteDao" ref="studySiteDao" />
+    </bean>
+    <bean id="participantMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator">
+    	<constructor-arg>
+    		<list>
+    			<ref bean="identifierMigrator" />
+    			<ref bean="studyParticipantAssignmentMigrator" />
+    		</list>
+    	</constructor-arg>
+    </bean>
 </beans>

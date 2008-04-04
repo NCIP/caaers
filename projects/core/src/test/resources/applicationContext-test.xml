@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Purpose : Testing in IDE (Eclipse/IDEA) has an issue, Default compilation in IDE will not 
+  replace @databaseConfiguration@ filter. To overcome this, all CaaersDBTestCase#getConfigLocations() and 
+  CaaersTestCase#getConfigLocations() method will include 
+  applicationContext-test.xml, as the last entry, will allow overriding of the following beans. 
+  	dataSource and mainPropertyConfigurer.
+  	
+ Note:- 
+ Since the name test is hardcoded in the properties file, it is mandatory that you have test.properties (read DATABASE.readme).
+ Also the ANT build, will skip this file, so that the original build, and test build will not conflict. 
+ -->
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
@@ -7,9 +20,9 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"       
-       xmlns:util="http://www.springframework.org/schema/util">
+       xmlns:util="http://www.springframework.org/schema/util" default-lazy-init="true">
 
-
+	
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName">
             <value>org.postgresql.Driver</value>
@@ -25,190 +38,19 @@
         </property>
     </bean>
 
-
-       
-<tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager"/>
-
-
-
-
-    <bean id="siteSecurityCollectionFilter"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider">
-        <property name="processConfigAttribute"
-                  value="CSM_AUTHN_CHECK"/>
-        <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-                  ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
-
-    </bean>
-
-    <bean id="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
-    </bean>
-
-
-    <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
-              map-class="java.util.LinkedHashMap">
-        <entry key="gov.nih.nci.cabig.caaers.domain.Study"
-               value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>
-    </util:map>
-
-
-    <bean id="csmGroupAuthorizationCheck"
-          class="gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck">
-        <property name="csmUserProvisioningManager"
-                  ref="csmUserProvisioningManager"/>
-        <property name="authorizationSwitch" ref="authorizationSwitch"/>
-    </bean>
-
-    <bean id="authorizationSwitch"
-          class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch">
-        <property name="on" ref="booleanFromString">
-        </property>
-    </bean>
-
-    <bean id="booleanFromString"
-          class="java.lang.Boolean">
-        <constructor-arg value="${authorizationSwitch}"/>
-    </bean>
-
-
-
-    <!--Should be in appContext-security and applied thru aop-->
-    <bean id="sitePrivilegeAndObjectIdGenerator"
-          class="gov.nih.nci.cabig.caaers.security.SitePrivilegeAndObjectIdGenerator">
-        <property name="accessPrivilege" value="ACCESS"/>
-        <property name="pathSeperator" value="."/>
-    </bean>
-
-
-    <!-- TODO: Remove the below mail settings after demo -->
-    <bean id="mailer" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-        <property name="host" value="smtp.1and1.com"/>
-        <property name="port" value="25"/>
-        <property name="username" value="saurabh"/>
-        <property name="password" value="agrawal"/>
-    </bean>
-
-    <!-- this is a template message that we can pre-load with default state -->
-    <bean id="accountCreatedTemplateMessage" class="org.springframework.mail.SimpleMailMessage">
-        <property name="from" value="${outgoing.mail.from.address}"/>
-        <property name="subject" value="Account created in caAERS"/>
-    </bean>
-
-
-    <bean id="csmAuthorizationDao"
-          class="gov.nih.nci.security.dao.DIAuthorizationDao"
-          init-method="init">
-        <property name="sessionFactory">
-            <bean
-                    class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-                <property name="dataSource" ref="dataSource"/>
-                <property name="mappingResources">
-                    <list>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/User.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml
-                        </value>
-                        <value>
-                            gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml
-                        </value>
-                    </list>
-                </property>
-                <property name="hibernateProperties">
-                    <bean
-                            class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
-
-
-                        <property name="properties">
-                            <props>
-                                <!--
-                                    <prop key="hibernate.show_sql">
-                                    true
-                                    </prop>
-                                    <prop key="hibernate.format_sql">
-                                    true
-                                    </prop>
-                                -->
-                                <prop
-                                        key="hibernate.connection.release_mode">
-                                    after_transaction
-                                </prop>
-
-                            </props>
-                        </property>
-                    </bean>
-                </property>
+	<bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>test</value></property>
             </bean>
         </property>
-        <property name="applicationContextName"
-                  ref="csmApplicationContextName"/>
+        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
+             at build time -->
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
     </bean>
-    <bean id="csmApplicationContextName" class="java.lang.String">
-        <constructor-arg value="caaers"/>
-    </bean>
-
-    <bean id="csmUserProvisioningManager"
-          class="gov.nih.nci.security.provisioning.UserProvisioningManagerImpl">
-        <property name="authorizationDAO" ref="csmAuthorizationDao"/>
-    </bean>
-
-     <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
-        <property name="mailSender" ref="mailer"/>
-        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-	<property name="userDao" ref="userDao"/>
-    </bean>
-
-    <bean id="researchStaffRepository" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ResearchStaffRepository" >
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="userService" ref="userService"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-   </bean>
+       
 	
-
-    <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl" autowire="byType">
-        <property name="csmApplicationContextName" ref="csmApplicationContextName"/>
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="siteProtectionGroupId">
-            <!--id for site protection group-->
-            <value>-5</value>
-        </property>
-        <property name="siteAccessRoleId">
-            <value>-14</value>
-        </property>
-    </bean>
     
 </beans>

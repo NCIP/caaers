@@ -8,6 +8,10 @@ import gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
+ * This class is used to import the study into caAERS system. 
+ * The study from XML is parsed into the domain object {@link Study}, and then it
+ * is enriched (using {@link StudyMigrator}). 
+ * 
  * @author Biju Joseph
  */
 public class StudyImportServiceImpl{
@@ -31,7 +35,13 @@ public class StudyImportServiceImpl{
 
         return studyImportOutcome;
     }
-    
+    /**
+     * This method will check if already a study with the same identifier exist.
+     * Incase if there exists one, then it will populate an error messge. 
+     * @param study
+     * @param studyImportOutcome
+     * @param severity
+     */
     private void studyUniquenessCheck(Study study, DomainObjectImportOutcome<Study> studyImportOutcome, DomainObjectImportOutcome.Severity severity) {
     	
         for (Identifier identifier : study.getIdentifiers()) {

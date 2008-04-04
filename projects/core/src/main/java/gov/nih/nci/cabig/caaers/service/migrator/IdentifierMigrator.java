@@ -11,14 +11,14 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 
-class IdentifierMigrator implements Migrator<AbstractIdentifiableDomainObject>{
+public class IdentifierMigrator<E extends AbstractIdentifiableDomainObject> implements Migrator<E>{
 	private OrganizationDao organizationDao;
 	
 	/**
 	 * Will migrate the identifiers from source to destination
 	 */
-	public void migrate(AbstractIdentifiableDomainObject src,  AbstractIdentifiableDomainObject dest,
-			DomainObjectImportOutcome<AbstractIdentifiableDomainObject> outcome) {
+	public void migrate(E src,  E dest,
+			DomainObjectImportOutcome<E> outcome) {
 
         // Identifiers
         for (Identifier identifier : src.getIdentifiers()) {
