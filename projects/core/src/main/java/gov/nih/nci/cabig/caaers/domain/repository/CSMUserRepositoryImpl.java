@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.repository;
+package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
@@ -37,9 +37,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
         /* this should be done by a validator */
-        if (researchStaff.getEmailAddress() == null) throw new CaaersSystemException("Email address is required");
-        if (researchStaff.getId() == null) csmUser = createCSMUserForResearchStaff(researchStaff, changeURL);
-        else csmUser = updateCSMUserForResearchStaff(researchStaff);
+        if (researchStaff.getEmailAddress() == null) {
+            throw new CaaersSystemException("Email address is required");
+        } else if (researchStaff.getId() == null) {
+            csmUser = createCSMUserForResearchStaff(researchStaff, changeURL);
+        } else {
+            csmUser = updateCSMUserForResearchStaff(researchStaff);
+        }
         /* not sure why this gets done here */
         researchStaff.setLoginId(csmUser.getUserId().toString());
         createCSMUserGroupsForResearchStaff(researchStaff);

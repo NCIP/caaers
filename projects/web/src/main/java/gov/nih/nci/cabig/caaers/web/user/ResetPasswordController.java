@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
-import gov.nih.nci.cabig.caaers.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;

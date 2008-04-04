@@ -1,11 +1,11 @@
-package gov.nih.nci.cabig.caaers.service;
+package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.security.UserProvisioningManager;
 import static org.easymock.EasyMock.expect;
 
@@ -80,7 +80,7 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
          * expect(userDao.getByEmailAddress(userName)).andReturn(user).times(2);
          * expect(userProvisioningManager.getUser(userName)).andReturn(csmUser).times(2);
          * expect(csmUser.getPassword()).andReturn("password").times(2);
-         * 
+         *
          * replayMocks(); assertEquals(true, csmUserRepository.userHasPassword(userName, "password"));
          * assertEquals(false, csmUserRepository.userHasPassword(userName, "not_password"));
          * verifyMocks();

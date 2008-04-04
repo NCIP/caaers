@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.repository;
+package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.User;

@@ -7,7 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.repository.CSMUserRepositoryImpl;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.security.UserProvisioningManager;
 import static org.easymock.EasyMock.expect;

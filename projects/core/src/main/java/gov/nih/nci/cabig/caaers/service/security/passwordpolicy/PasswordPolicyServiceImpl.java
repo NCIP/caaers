@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.service.security.passwordpolicy;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
-import gov.nih.nci.cabig.caaers.repository.CSMUserRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.LoginPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.validators.PasswordCreationPolicyValidator;
 import gov.nih.nci.cabig.caaers.service.security.user.Credential;
