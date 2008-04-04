@@ -26,7 +26,7 @@ import org.easymock.classextension.EasyMock;
 /**
  * @author Biju Joseph
  */
-public class ParticipantImportServiceTest extends CaaersTestCase {
+public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
 
     private ParticipantImportServiceImpl participantImportService;
     private StudySiteDao studySiteDao;
