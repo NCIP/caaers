@@ -18,20 +18,11 @@ This applicationContext contains the definition of the concrete services
     <bean id="participantImportService" class="gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl">
         <property name="organizationDao" ref="organizationDao"/>
         <property name="participantRepository" ref="participantRepository"/>
-        <property name="studySiteDao" ref="studySiteDao"/>
+        <property name="participantMigrator" ref="participantMigrator"/>
     </bean>
 
     <bean id="studyImportService" class="gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl">
-        <property name="organizationDao" ref="organizationDao"/>
-        <property name="agentDao" ref="agentDao"/>
-        <property name="ctcDao" ref="ctcDao"/>
-        <property name="diseaseTermDao" ref="diseaseTermDao"/>
-        <property name="investigationalNewDrugDao" ref="investigationalNewDrugDao"/>
-        <property name="lowLevelTermDao" ref="lowLevelTermDao"/>
-        <property name="meddraDao" ref="medDRADao"/>
-        <property name="meddraVersionDao" ref="meddraVersionDao"/>
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="siteInvestigatorDao" ref="siteInvestigatorDao"/>
+        <property name="studyMigrator" ref="studyMigrator"/>
         <property name="studyDao" ref="studyDao"/>
     </bean>
 
@@ -43,7 +34,7 @@ This applicationContext contains the definition of the concrete services
     <bean id="passwordPolicyService"
           class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 
-    <bean id="userService" class="gov.nih.nci.cabig.caaers.service.UserServiceImpl" lazy-init="true" autowire="byType">
+    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl" lazy-init="true" autowire="byType">
         <property name="mailSender" ref="mailer"/>
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
@@ -71,7 +62,7 @@ This applicationContext contains the definition of the concrete services
     <bean id="researchStaffRepository" lazy-init="true"
           class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
         <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="userService" ref="userService"/>
+        <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     </bean>
 
