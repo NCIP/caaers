@@ -28,13 +28,7 @@ public class CSMTest extends CaaersTestCase {
         // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @param arg0
-     */
-    public CSMTest(String arg0) {
-        super(arg0);
-        // TODO Auto-generated constructor stub
-    }
+
 
     public void testCSMLoad() {
 
