@@ -1,25 +1,14 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+import org.easymock.classextension.EasyMock;
 
 
-public class StudyParticipantAssignmentMigratorTest extends gov.nih.nci.cabig.caaers.AbstractTestCase {
+public class StudyParticipantAssignmentMigratorTest extends CaaersTestCase {
 	private Participant xstreamParticipant;
 	Participant participant;
 	DomainObjectImportOutcome<Participant> outcome = new DomainObjectImportOutcome<Participant>();
