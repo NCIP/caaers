@@ -36,7 +36,10 @@
 			<filter token="project.version" value="${caaers.version}" />
 			<filter token="buildNumber" value="${today}" />
 			<copy todir="@{dest}" filtering="@{filter}">
-				<fileset dir="@{src}" includes="**/*.*" excludes=".svn" />
+				<fileset dir="@{src}" includes="**/*.*">
+					<exclude name=".svn"/>
+					<exclude name="applicationContext-test.xml"/>
+				</fileset>
 			</copy>
 		</sequential>
 	</macrodef>
