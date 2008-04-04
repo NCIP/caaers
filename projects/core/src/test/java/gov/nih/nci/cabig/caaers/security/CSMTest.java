@@ -3,15 +3,14 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
+import com.mchange.v2.c3p0.DriverManagerDataSource;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.providers.TestingAuthenticationToken;
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -46,12 +45,11 @@ public class CSMTest extends CaaersTestCase {
 
             ApplicationContext ctx = getDeployedApplicationContext();
 
-            BasicDataSource bds = (BasicDataSource) ctx.getBean("dataSource");
 
             CSMAuthorizationCheck check = (CSMAuthorizationCheck) ctx
                             .getBean("testCsmGroupAuthorizationCheck");
             for (int i = 0; i < 500; i++) {
-                printStats(bds);
+              //  printStats(bds);
                 check.checkAuthorizationForObjectId(auth, privilege, objectId);
             }
         } catch (Exception ex) {
@@ -61,11 +59,11 @@ public class CSMTest extends CaaersTestCase {
 
     }
 
-    private void printStats(BasicDataSource bds) {
+    private void printStats(DriverManagerDataSource bds) {
         System.out.println("##########################################");
-        System.out.println("numActive: " + bds.getNumActive());
-        System.out.println("numIdle: " + bds.getNumIdle());
-        System.out.println("##########################################");
+//        System.out.println("numActive: " + bds.getgetNumActive());
+//        System.out.println("numIdle: " + bds.getNumIdle());
+//        System.out.println("##########################################");
     }
 
     public void testSuperUserPolicy() {
