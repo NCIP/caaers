@@ -15,17 +15,7 @@
               <ivy pattern="${user.home}/.ivy2/cache/[organisation]/[module]/ivy-[revision].xml"/>
               <artifact pattern="${user.home}/.ivy2/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
-		<!--  Semanticbits shared repository -->
-		
-		<!-- 
-			<filesystem name="maven2-local" m2compatible="true"
-				changingPattern=".*SNAPSHOT">
-				<ivy
-					pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision].pom" />
-				<artifact
-					pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[artifact]-[revision](-[classifier]).[ext]" />
-			</filesystem>
-		-->
+
 			<!--  Semanticbits shared repository [using sftp] -->
 		<sftp name="semanticbits-repo" user="caaers" userPassword="caaers" host="10.10.10.2">
 		  <ivy pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>

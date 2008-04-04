@@ -464,18 +464,21 @@
 	<!-- ============================================================== 
 		target: test                                                
 	============================================================== -->
-	<target name="test" if="run.test"  description="Runs the testcases">
+	<condition property="testPattern" value="**/${test}.class" else="gov/nih/nci/cabig/**/*Test.class">
+		<isset property="test"/>
+	</condition>
+	<target name="test" if="run.test" depends="clean-test-results" description="Runs the testcases">
 		<echo message="Executing in ${ant.project.name}" />
-		<echo message="Test results dir: ${test.results.dir}" />
+		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
 		<mkdir dir="${test.results.dir}" />
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
-			showoutput="true" fork="true" forkmode="once" timeout="600000">
+			showoutput="true" fork="true" forkmode="once" timeout="600000" >
 			<classpath refid="test.run.classpath" />
 			<formatter type="plain"/>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${test.results.dir}">
 				<fileset dir="${test.classes.dir}">
-					<include name="gov/nih/nci/cabig/**/*Test.class" />
+					<include name="${testPattern}" />
 				</fileset>
 			</batchtest>
 		</junit>
