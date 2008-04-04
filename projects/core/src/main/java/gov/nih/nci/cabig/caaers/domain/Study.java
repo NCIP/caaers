@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.apache.commons.collections15.functors.InstantiateFactory;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
@@ -826,5 +827,35 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         studyTherapy.setStudy(this);
         studyTherapy.setStudyTherapyType(studyTherapyType);
         this.addStudyTherapy(studyTherapy);
+    }
+
+    @Transient
+    public List<String> findEmailsOfResearchStaff(String personnelRole) {
+        List<String> emails = new ArrayList<String>();
+        String email = null;
+        for (StudyOrganization studyOrganization : this.getStudyOrganizations()) {
+            for (StudyPersonnel personnel : studyOrganization.getStudyPersonnels()) {
+                if (StringUtils.equals(personnel.getRoleCode(), personnelRole)) {
+                    email = personnel.getResearchStaff().getEmailAddress();
+                    if (StringUtils.isNotEmpty(email)) emails.add(email);
+                }
+            }
+        }
+        return emails;
+    }
+
+    @Transient
+    public List<String> findEmailsOfSiteInvestigators(String investigatorRole) {
+        List<String> emails = new ArrayList<String>();
+        String email = null;
+        for (StudyOrganization studyOrganization : this.getStudyOrganizations()) {
+            for (StudyInvestigator studyInvestigator : studyOrganization.getStudyInvestigators()) {
+                if (StringUtils.equals(studyInvestigator.getRoleCode(), investigatorRole)) {
+                    email = studyInvestigator.getSiteInvestigator().getInvestigator().getEmailAddress();
+                    if (StringUtils.isNotEmpty(email)) emails.add(email);
+                }
+            }
+        }
+        return emails;
     }
 }

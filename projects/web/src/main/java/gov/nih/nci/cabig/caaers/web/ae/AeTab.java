@@ -5,26 +5,19 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import gov.nih.nci.cabig.caaers.web.fields.BasePropertyInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.validation.Errors;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -35,7 +28,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
 
     private ExpeditedReportTree expeditedReportTree;
 
-    protected ReportService reportService;
+    protected ReportRepository reportRepository;
 
     protected EvaluationService evaluationService;
 
@@ -154,8 +147,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         this.expeditedReportTree = expeditedReportTree;
     }
 
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
     }
 
     public void setEvaluationService(EvaluationService evaluationService) {

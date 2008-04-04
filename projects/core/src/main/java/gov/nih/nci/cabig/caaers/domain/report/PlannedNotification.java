@@ -2,32 +2,21 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represent the details that which is to be used while creating the actual
  * ScheduledNotification.
- * 
+ *
  * @author Biju Joseph
  */
 @Entity
@@ -35,15 +24,19 @@ import org.hibernate.annotations.Parameter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("dtype")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_planned_notifications_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_planned_notifications_id")})
 public abstract class PlannedNotification extends AbstractMutableDomainObject implements
-                Serializable {
+        Serializable {
 
-    /** The actual mark selected on the time scale */
+    /**
+     * The actual mark selected on the time scale
+     */
     @Column(name = "index_on_time_scale")
     private int indexOnTimeScale;
 
-    /** The recipients of this content */
+    /**
+     * The recipients of this content
+     */
     private List<Recipient> recipients;
 
     private NotificationBodyContent bodyContent;
@@ -72,7 +65,7 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
 
     @OneToMany
     @JoinColumn(name = "plnf_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<Recipient> getRecipients() {
 
         return recipients;
@@ -87,14 +80,13 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
      */
     @OneToMany
     @JoinColumn(name = "plnf_id", nullable = false)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<NotificationAttachment> getAttachments() {
         return attachments;
     }
 
     /**
-     * @param attachments
-     *                the attachments to set
+     * @param attachments the attachments to set
      */
     public void setAttachments(List<NotificationAttachment> attachments) {
         this.attachments = attachments;
@@ -108,11 +100,26 @@ public abstract class PlannedNotification extends AbstractMutableDomainObject im
     @Transient
     public List<ContactMechanismBasedRecipient> getContactMechanismBasedRecipients() {
         return new ProjectedList<ContactMechanismBasedRecipient>(recipients,
-                        ContactMechanismBasedRecipient.class);
+                ContactMechanismBasedRecipient.class);
     }
 
     public void addRecipient(Recipient rr) {
         getRecipients().add(rr);
     }
 
+    @Transient
+    public List<String> findToAddressesForReport(Report report) {
+        assert this != null : "PlannedNotification should not be null";
+        List<String> toAddressList = new ArrayList<String>();
+        for (Recipient recipient : getRecipients()) {
+            if (recipient instanceof ContactMechanismBasedRecipient) {
+                if (StringUtils.isNotEmpty(recipient.getContact())) toAddressList.add(recipient.getContact());
+            } else if (recipient instanceof RoleBasedRecipient && this instanceof PlannedEmailNotification) {
+                toAddressList.addAll(report.getAeReport().findEmailAddress(recipient.getContact()));
+            }
+
+        }//for each r
+
+        return toAddressList;
+    }
 }

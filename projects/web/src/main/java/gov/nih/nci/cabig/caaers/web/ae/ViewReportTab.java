@@ -98,7 +98,7 @@ public class ViewReportTab extends AeTab {
                 if (report.getId().equals(selected)
                                 && !report.getLastVersion().getReportStatus().equals(
                                                 ReportStatus.COMPLETED)) {
-                    reportService.withdrawLastReportVersion(report);
+                    reportRepository.withdrawLastReportVersion(report);
                     break;
                 }
             }

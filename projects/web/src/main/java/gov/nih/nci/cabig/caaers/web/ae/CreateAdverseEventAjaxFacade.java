@@ -9,8 +9,8 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
@@ -70,7 +70,7 @@ public class CreateAdverseEventAjaxFacade {
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private ExpeditedReportTree expeditedReportTree;
     private ConfigProperty configProperty;
-    private ReportService reportService;
+    private ReportRepository reportRepository;
     private LabCategoryDao labCategoryDao;
     private LabTermDao labTermDao;
     private ChemoAgentDao chemoAgentDao;
@@ -509,7 +509,7 @@ public class CreateAdverseEventAjaxFacade {
         ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
         for (Report report : aeReport.getReports()) {
             if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-                reportService.withdrawLastReportVersion(report);
+                reportRepository.withdrawLastReportVersion(report);
                 break;
             }
         }
@@ -903,8 +903,8 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     @Required
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
     }
 
     @Required

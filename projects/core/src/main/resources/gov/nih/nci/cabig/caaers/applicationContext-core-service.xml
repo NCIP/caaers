@@ -34,14 +34,6 @@ This applicationContext contains the definition of the concrete services
     <bean id="passwordPolicyService"
           class="gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl" autowire="byName"/>
 
-    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl" lazy-init="true" autowire="byType">
-        <property name="mailSender" ref="mailer"/>
-        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="userDao" ref="userDao"/>
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-    </bean>
 
 
     <bean id="organizationService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.OrganizationServiceImpl"
@@ -57,15 +49,7 @@ This applicationContext contains the definition of the concrete services
             <value>-14</value>
         </property>
     </bean>
-
-
-    <bean id="researchStaffRepository" lazy-init="true"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="csmUserRepository" ref="csmUserRepository"/>
-        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
-    </bean>
-
+    
     <bean id="delegatedCredentialProvider"
           class="gov.nih.nci.cabig.caaers.accesscontrol.SecurityContextCredentialProvider"/>
 
@@ -123,7 +107,6 @@ This applicationContext contains the definition of the concrete services
     <!-- XXX: may want to put this in a different app context -->
     <bean id="nowFactory" class="gov.nih.nci.cabig.ctms.lang.NowFactory"/>
 
-    <bean id="reportService" class="gov.nih.nci.cabig.caaers.service.ReportServiceImpl" autowire="byType"/>
 
     <bean id="routineAdverseEventReportServiceImpl"
           class="gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl" autowire="byType"/>

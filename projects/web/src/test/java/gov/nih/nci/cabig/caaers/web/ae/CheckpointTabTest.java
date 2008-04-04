@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createReportDefinition;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
-import static org.easymock.EasyMock.expect;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
+import static org.easymock.EasyMock.expect;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +23,12 @@ public class CheckpointTabTest extends AeTabTestCase {
 
     private EvaluationService evaluationService;
 
-    private ReportService reportService;
+    private ReportRepository reportRepository;
 
     @Override
     protected void setUp() throws Exception {
         evaluationService = registerMockFor(EvaluationService.class);
-        reportService = registerMockFor(ReportService.class);
+        reportRepository = registerMockFor(ReportRepository.class);
         super.setUp();
 
         r1 = setId(1, createReportDefinition("R1"));
@@ -40,7 +40,7 @@ public class CheckpointTabTest extends AeTabTestCase {
     protected AeTab createTab() {
         CheckpointTab tab = new CheckpointTab();
         tab.setEvaluationService(evaluationService);
-        tab.setReportService(reportService);
+        tab.setReportRepository(reportRepository);
         tab.setNumber(4);
         return tab;
     }
@@ -72,7 +72,7 @@ public class CheckpointTabTest extends AeTabTestCase {
         command.getOptionalReportDefinitionsMap().put(r2, Boolean.TRUE);
         command.getOptionalReportDefinitionsMap().put(r3, Boolean.FALSE);
 
-        expect(reportService.createReport(r2, command.getAeReport())).andReturn(null); // DC
+        expect(reportRepository.createReport(r2, command.getAeReport())).andReturn(null); // DC
         getTab().postProcess(request, command, errors);
 
         List<Report> actualReports = command.getAeReport().getReports();

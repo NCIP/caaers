@@ -10,23 +10,15 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.*;
 
 @Transactional(readOnly = true)
 public class EvaluationServiceImpl implements EvaluationService {
@@ -38,7 +30,7 @@ public class EvaluationServiceImpl implements EvaluationService {
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-    private ReportService reportService;
+    private ReportRepository reportRepository;
 
     /**
      * @return true if the given adverse event is severe in the context of the provided study, site,
@@ -166,7 +158,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
                     List<ReportDefinition> reportDefs) {
         for (ReportDefinition def : reportDefs) {
-            reportService.createReport(def, expeditedData);
+            reportRepository.createReport(def, expeditedData);
         }
         expeditedAdverseEventReportDao.save(expeditedData);
     }
@@ -242,7 +234,7 @@ public class EvaluationServiceImpl implements EvaluationService {
     // return type based on the method name, is misleading,need to find a better name.
     public ReportSubmittability isSubmittable(Report report) {
 
-        return reportService.validate(report);
+        return reportRepository.validate(report);
 
         /*
          * -- commented based on the new biz rule try { return reportService.validate(report,
@@ -273,8 +265,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
     }
 
     public void setAdverseEventEvaluationService(

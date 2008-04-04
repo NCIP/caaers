@@ -15,8 +15,9 @@ import org.springframework.beans.factory.annotation.Required;
  * @author Biju Joseph
  */
 public class StudyImportServiceImpl{
-	
-	private StudyMigrator studyMigrator;
+
+
+    private StudyMigrator studyMigrator;
 	private StudyDao studyDao;
 	
     /**

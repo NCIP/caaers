@@ -7,17 +7,15 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.collections15.ListUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -171,7 +169,7 @@ public class CheckpointTab extends AeTab {
         for (Report report : reports) {
             if (report.getStatus() == ReportStatus.WITHDRAWN) continue;
             if (!reportSelected(command, report.getReportDefinition())) {
-                reportService.deleteReport(report);
+                reportRepository.deleteReport(report);
             }
         }
     }

@@ -8,15 +8,11 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
-import gov.nih.nci.cabig.caaers.service.ReportService;
 import static org.easymock.EasyMock.expect;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EvaluationServiceTest extends CaaersTestCase {
 
@@ -26,7 +22,7 @@ public class EvaluationServiceTest extends CaaersTestCase {
 
     ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-    ReportService reportService;
+    ReportRepository reportRepository;
 
     OrganizationDao organizationDao;
 
@@ -40,14 +36,14 @@ public class EvaluationServiceTest extends CaaersTestCase {
         organizationDao = registerDaoMockFor(OrganizationDao.class);
 
         adverseEventEvaluationService = registerMockFor(AdverseEventEvaluationService.class);
-        reportService = registerMockFor(ReportService.class);
+        reportRepository = registerMockFor(ReportRepository.class);
 
         service = new EvaluationServiceImpl();
 
         service.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
         service.setReportDefinitionDao(reportDefinitionDao);
 
-        service.setReportService(reportService);
+        service.setReportRepository(reportRepository);
         service.setAdverseEventEvaluationService(adverseEventEvaluationService);
 
     }
@@ -93,7 +89,7 @@ public class EvaluationServiceTest extends CaaersTestCase {
         aeReport.addReport(report);
         expect(adverseEventEvaluationService.mandatorySectionsForReport(report)).andReturn(
                         mandatorySections);
-        expect(reportService.validate(report, mandatorySections)).andReturn(messages);
+        expect(reportRepository.validate(report, mandatorySections)).andReturn(messages);
         replayMocks();
         ReportSubmittability msgs = service.isSubmittable(report);
         verifyMocks();

@@ -9,15 +9,15 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collection;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * A mock implementation of {@link gov.nih.nci.cabig.caaers.service.EvaluationService}, suitable
@@ -33,7 +33,7 @@ public class MockEvaluationService implements EvaluationService {
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-    private ReportService reportService;
+    private ReportRepository reportRepository;
 
     /**
      * Mock implementation returns true for all grade 5 AEs.
@@ -56,7 +56,7 @@ public class MockEvaluationService implements EvaluationService {
         ReportDefinition def = allDefs.get(0);
         Report report = existingReportWithDef(expeditedData, def);
         if (report == null) {
-            report = reportService.createReport(def, expeditedData);
+            report = reportRepository.createReport(def, expeditedData);
         }
         report.setRequired(true);
 
@@ -129,7 +129,7 @@ public class MockEvaluationService implements EvaluationService {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
-    public void setReportService(ReportService reportService) {
-        this.reportService = reportService;
+    public void setReportRepository(ReportRepository reportRepository) {
+        this.reportRepository = reportRepository;
     }
 }

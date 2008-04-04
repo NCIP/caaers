@@ -4,30 +4,14 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * A report sending schedule for an adverse event. The RuleExecutionService, evaluates pre-defined
@@ -311,4 +295,29 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.submissionUrl = submissionUrl;
     }
 
+    @Transient
+    public Map<Object, Object> getContextVariables() {
+        //TODO : properly populate the following....
+        //TODO: add appropriate null-checks
+        Map<Object, Object> map = new HashMap<Object, Object>();
+
+        String primaryIdentifier = getAeReport().getAssignment().getParticipant().getPrimaryIdentifierValue();
+        map.put("patientId", primaryIdentifier == null ? "xxxx" : primaryIdentifier);//Patient ID
+        map.put("reportId", getAeReport().getId());//Report ID
+        map.put("reportURL", "caaers/pages/ae/edit?aeReport=" + getAeReport().getId());//URL To Report
+        map.put("report", this);
+        map.put("study", getAeReport().getStudy());
+        return map;
+    }
+
+    @Transient
+    public List<String> getMandatoryFieldList() {
+        List<String> fields = new LinkedList<String>();
+        if (getReportDefinition().getMandatoryFields() != null) {
+            for (ReportMandatoryFieldDefinition field : getReportDefinition().getMandatoryFields()) {
+                if (field.getMandatory()) fields.add(field.getFieldPath());
+            }
+        }
+        return fields;
+    }
 }
