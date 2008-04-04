@@ -34,7 +34,7 @@ public class CSMTest extends CaaersTestCase {
 
 
 
-    public void testCSMLoad() {
+ /*   public void testCSMLoad() {
 
         try {
             String userId = "study_cd1";
@@ -57,7 +57,7 @@ public class CSMTest extends CaaersTestCase {
             fail("Error encountered: " + ex.getMessage());
         }
 
-    }
+    }*/
 
     private void printStats(DriverManagerDataSource bds) {
         System.out.println("##########################################");
