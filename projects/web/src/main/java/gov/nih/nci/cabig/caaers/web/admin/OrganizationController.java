@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.service.OrganizationService;
+import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -36,7 +36,7 @@ public abstract class OrganizationController<C extends Organization> extends
 
     protected OrganizationDao organizationDao;
 
-    protected OrganizationService organizationService;
+    protected OrganizationRepository organizationRepository;
 
     protected WebControllerValidator webControllerValidator;
 
@@ -101,7 +101,7 @@ public abstract class OrganizationController<C extends Organization> extends
                     final BindException errors) throws Exception {
 
         Organization organization = (Organization) command;
-        organizationService.createOrUpdate(organization);
+        organizationRepository.createOrUpdate(organization);
         ModelAndView modelAndView = new ModelAndView("admin/organization_confirmation");
         modelAndView.addAllObjects(errors.getModel());
         return modelAndView;
@@ -115,8 +115,8 @@ public abstract class OrganizationController<C extends Organization> extends
     }
 
     @Required
-    public void setOrganizationService(OrganizationService organizationService) {
-        this.organizationService = organizationService;
+    public void setOrganizationRepository(OrganizationRepository organizationRepository) {
+        this.organizationRepository = organizationRepository;
     }
 
     @Required

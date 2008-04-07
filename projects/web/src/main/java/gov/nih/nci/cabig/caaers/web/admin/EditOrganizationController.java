@@ -44,7 +44,7 @@ public class EditOrganizationController extends OrganizationController<Organizat
         if (errors.hasErrors()) {
             return organization;
         }
-        organizationService.createOrUpdate(organization);
+        organizationRepository.createOrUpdate(organization);
         return organization;
     }
 

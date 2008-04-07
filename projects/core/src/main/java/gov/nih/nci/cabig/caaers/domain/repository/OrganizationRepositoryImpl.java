@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.service;
+package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Transactional
-public class OrganizationServiceImpl implements OrganizationService {
+public class OrganizationRepositoryImpl implements OrganizationRepository {
     private Logger log = Logger.getLogger(getClass());
 
     private UserProvisioningManager userProvisioningManager;

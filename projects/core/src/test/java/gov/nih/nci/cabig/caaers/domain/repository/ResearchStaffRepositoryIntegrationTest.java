@@ -6,7 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.service.OrganizationService;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
@@ -34,7 +33,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     private SiteSecurityAfterInvocationCollectionFilteringProvider siteSecurityAfterInvocationCollectionFilteringProvider;
 
-    private OrganizationService organizationService;
+    private OrganizationRepository organizationRepository;
 
     private UserProvisioningManager userProvisioningManager;
 
@@ -88,12 +87,12 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
 
-        organizationService= (OrganizationService) getApplicationContext().getBean("organizationService");
+        organizationRepository= (OrganizationRepository) getApplicationContext().getBean("organizationRepository");
         jdbcTemplate= (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
         userProvisioningManager= (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
         siteObjectIdGenerator= (CSMObjectIdGenerator) getApplicationContext().getBean("sitePrivilegeAndObjectIdGenerator");
         organization = Fixtures.createOrganization(name);
-        organizationService.create(organization);
+        organizationRepository.create(organization);
         assertNotNull(organization);
     }
 
