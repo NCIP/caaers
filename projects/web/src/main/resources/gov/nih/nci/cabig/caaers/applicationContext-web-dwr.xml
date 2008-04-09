@@ -8,8 +8,10 @@
     >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean id="createAeAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade"/>
+    <bean id="createAeAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
+        <property name="reportRepository" ref="reportRepository"/>
+    </bean>
     <bean id="studyAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
           
