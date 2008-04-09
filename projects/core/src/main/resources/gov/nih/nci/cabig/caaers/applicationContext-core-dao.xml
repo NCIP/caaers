@@ -4,403 +4,431 @@ This applicationContext contains the definition of the DAOs
 -->
 
 <beans
-    xmlns="http://www.springframework.org/schema/beans"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
-    >
-  
-  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
-  
-  <bean id="medDRADao" class="gov.nih.nci.cabig.caaers.dao.MedDRADao">
-    <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-  </bean>
-  
-  <!-- HIBERNATE CONFIGURATION -->
-  
-  <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
-    <property name="mappingLocations">
-      <list>
-	<value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
-      </list>
-    </property>
-    <property name="namingStrategy">
-      <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
-    </property>
-    <property name="annotatedClasses">
-      <list>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Participant</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Study</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Organization</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
-	<value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Lab</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Agent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Participation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Notification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Person</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Physician</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Submitter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
-	<value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
-	<value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
-	<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
-	<value>gov.nih.nci.cabig.ctms.tools.configuration.DefaultConfigurationEntry</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MeddraVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>        
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value> 
-      </list>
-    </property>
-    
-    <property name="entityInterceptor">
-      <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
-	   </bean>-->
-      
-      
-      <ref local="chainedInterceptor"/>
-    </property> 
-    
-  </bean>
-  
-  <!-- Auditing related beans definition start here-->
-  <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
-    <property name="mappingLocations">
-      <list>
-	<value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
-      </list>
-    </property>
-    <property name="namingStrategy">
-      <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
-    </property>
-    <property name="annotatedClasses">
-      <list>
-	<value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue</value>
-	<value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent</value>            
-      </list>
-    </property>
-  </bean>
-  
-  <bean id="chainedInterceptor" class="gov.nih.nci.cabig.ctms.audit.ChainedInterceptor" autowire="byType">
-    <property name="interceptors">
-      <list>
-	<ref local="gridIdentifierInterceptor"/>
-	<ref local="auditInterceptor" />
-      </list>
-    </property>
-  </bean>
+        >
 
-  <bean id="auditInterceptor" class="gov.nih.nci.cabig.ctms.audit.AuditInterceptorImpl" autowire="byType">
-    <property name="dataAuditRepository" ref="dataAuditRepository"></property>
-    <property name="auditableEntities">
-	<list>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Participant</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Study</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Organization</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
-	<value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Lab</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Agent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Participation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Notification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Person</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Physician</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Submitter</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
-	<value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
-	<value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
-	<value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
-	<value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.MeddraVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
-	<value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>        
-	<value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
-	<value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>                
-	<value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
-	<value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
-	<value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
-	<value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
-	<value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
-	<value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value> 
-	<value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>             
-	</list>
-	</property> 
-	<!-- 
-    <property name="auditAll"><value>true</value></property>
-    -->
-  </bean>
-  
-  <bean name="dataAuditRepository" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
-    <property name="sessionFactory">
-      <ref local="auditSessionFactory" />
-    </property>
-  </bean>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
+
+    <bean id="medDRADao" class="gov.nih.nci.cabig.caaers.dao.MedDRADao">
+        <property name="jdbcTemplate">
+            <ref bean="jdbcTemplate"/>
+        </property>
+    </bean>
+
+    <!-- HIBERNATE CONFIGURATION -->
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          autowire="byName">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy">
+            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Participant</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Study</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Person</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Submitter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AeTerminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
+                <value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
+                <value>gov.nih.nci.cabig.ctms.tools.configuration.DefaultConfigurationEntry</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MeddraVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>
+            </list>
+        </property>
+
+        <property name="entityInterceptor">
+            <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
+          </bean>-->
+
+
+            <ref local="chainedInterceptor"/>
+        </property>
+
+    </bean>
+
+    <!-- Auditing related beans definition start here-->
+    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          autowire="byName">
+        <property name="mappingLocations">
+            <list>
+                <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+            </list>
+        </property>
+        <property name="namingStrategy">
+            <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
+        </property>
+        <property name="annotatedClasses">
+            <list>
+                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue</value>
+                <value>gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="chainedInterceptor" class="gov.nih.nci.cabig.ctms.audit.ChainedInterceptor" autowire="byType">
+        <property name="interceptors">
+            <list>
+                <ref local="gridIdentifierInterceptor"/>
+                <ref local="auditInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="auditInterceptor" class="gov.nih.nci.cabig.ctms.audit.AuditInterceptorImpl" autowire="byType">
+        <property name="dataAuditRepository" ref="dataAuditRepository"></property>
+        <property name="auditableEntities">
+            <list>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Participant</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Study</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Ctc</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtcGrade</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CtepStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Person</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Submitter</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AnatomicSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ParticipantHistory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyPersonnel</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ConcomitantMedication</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.CourseAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OtherCause</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.PreExistingCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SurgeryIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.RadiationIntervention</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdditionalInformation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MedicalDevice</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Terminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerminology</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug</value>
+                <value>gov.nih.nci.cabig.caaers.domain.INDHolder</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InvestigatorHeldIND</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.AbstractMeddraDomainObject</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.SystemOrganClass</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelGroupTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.HighLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.PreferredTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.MeddraVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Report</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.Recipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ContactMechanismBasedRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportDelivery</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyTherapy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.TreatmentAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Outcome</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ChemoAgent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabVersion</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabCategory</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
+                <value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>
+            </list>
+        </property>
+        <!--
+        <property name="auditAll"><value>true</value></property>
+        -->
+    </bean>
+
+    <bean name="dataAuditRepository" class="gov.nih.nci.cabig.ctms.audit.dao.DataAuditRepository">
+        <property name="sessionFactory">
+            <ref local="auditSessionFactory"/>
+        </property>
+    </bean>
     <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
-            <property name="sessionFactory" ref="auditSessionFactory"></property>
-   </bean>
-  
-  
-  <!-- auditing beans definition end here -->
-  
-  <bean id="gridIdentifierInterceptor" class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
-  
-  <!-- 
-       
-       <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.CaBigGridIdentifierCreator"> 
-       <property name="handleRepositoryDir"><value>cabig</value></property>
-       <property name="context"><value>urn://cabig</value></property>
-       </bean>
-  -->
-  <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
-  
-  <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
-    <property name="dialectName"><value>s[hibernate.dialect]</value>  
-    <!-- <value>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</value> -->
-    </property>
-    <property name="properties">
-      <props>
-	<prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
-	<prop key="hibernate.jdbc.batch_size">30</prop>
-      </props>
-    </property>
-  </bean>
-  
-  <bean id="openSessionInViewInterceptor" class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" autowire="byName">
-    <property name="singleSession"><value>true</value></property>
-    <property name="flushModeName"><value>FLUSH_NEVER</value></property>
-  </bean>
-  
-  <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" autowire="byName"/>
+        <property name="sessionFactory" ref="auditSessionFactory"></property>
+    </bean>
 
-  <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" autowire="byType" >
-   </bean>
-  
-  <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
-    <property name="checkWriteOperations"><value>false</value></property>
-    <property name="sessionFactory"><ref bean="sessionFactory"/></property>
-  </bean>
-  
-  <bean id="daoTemplate" abstract="true">
-    <property name="hibernateTemplate"><ref local="hibernateTemplate"/></property>
-  </bean>
-  
-  <bean id="configuration" parent="daoTemplate"
-	class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration"/>
-  
-  <!--- ACTUAL DAOS -->
-  
-  <tx:annotation-driven proxy-target-class="true"/>
-  
-  <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
-  <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
-  <bean id="routineAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
-  <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
-  <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
-  <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
-  <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
-  <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
-  <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
-  <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
-  <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
-  <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
-  <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
-  <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
-  <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
-  <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
-  <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
-  <bean id="interventionSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InterventionSiteDao"/>
-  
-  
-  <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
-  <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
-  <bean id="ctcCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcCategoryDao"/>
-  <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
-  
-  
-  <bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
-  <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
-  <bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
-  <bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
-  <bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
-  <bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
-  <bean id="meddraStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao"/>
-  
-  <bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
-  <bean id="preExistingConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
-  <bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
-  <bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao" /> 
-  <bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao" /> 
-  <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao" />
-  <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao" />
-  <!--Rules/Scheduler/Notification DAOs-->
-  <bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao" />
-  <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao" />
-  <bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao" />
-  <bean id="reportDeliveryDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"  />
-  <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao" />
-  
 
-   <!-- validator beans starts here-->
+    <!-- auditing beans definition end here -->
+
+    <bean id="gridIdentifierInterceptor" class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor"
+          autowire="byName"/>
+
+    <!--
+
+         <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.CaBigGridIdentifierCreator">
+         <property name="handleRepositoryDir"><value>cabig</value></property>
+         <property name="context"><value>urn://cabig</value></property>
+         </bean>
+    -->
+    <bean id="gridIdentifierCreator" class="gov.nih.nci.cabig.caaers.utils.LocalGridIdentifierCreator"/>
+
+    <bean id="hibernateProperties" class="gov.nih.nci.cabig.ctms.tools.spring.HibernatePropertiesFactoryBean">
+        <property name="dialectName">
+            <value>s[hibernate.dialect]</value>
+            <!-- <value>gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect</value> -->
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
+                <prop key="hibernate.jdbc.batch_size">30</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="openSessionInViewInterceptor"
+          class="org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor" autowire="byName">
+        <property name="singleSession">
+            <value>true</value>
+        </property>
+        <property name="flushModeName">
+            <value>FLUSH_NEVER</value>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+          autowire="byName"/>
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
+          autowire="byType">
+    </bean>
+
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="checkWriteOperations">
+            <value>false</value>
+        </property>
+        <property name="sessionFactory">
+            <ref bean="sessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="daoTemplate" abstract="true">
+        <property name="hibernateTemplate">
+            <ref local="hibernateTemplate"/>
+        </property>
+    </bean>
+
+    <bean id="configuration" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.tools.configuration.Configuration"/>
+
+    <!--- ACTUAL DAOS -->
+
+    <tx:annotation-driven proxy-target-class="true"/>
+
+    <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
+    <bean id="expeditedAdverseEventReportDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
+    <bean id="routineAdverseEventReportDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
+    <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
+    <bean id="studyParticipantAssignmentDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
+    <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
+    <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
+    <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
+    <bean id="agentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AgentDao"/>
+    <bean id="diseaseCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao"/>
+    <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
+    <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
+    <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
+    <bean id="passwordPolicyDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
+    <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
+    <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
+    <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
+    <bean id="interventionSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InterventionSiteDao"/>
+
+
+    <bean id="ctcDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcDao"/>
+    <bean id="ctcTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcTermDao"/>
+    <bean id="ctcCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtcCategoryDao"/>
+    <bean id="notificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.NotificationDao"/>
+
+
+    <bean id="investigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigatorDao"/>
+    <bean id="siteInvestigatorDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao"/>
+    <bean id="reporterDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ReporterDao"/>
+    <bean id="anatomicSiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao"/>
+    <bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
+    <bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
+    <bean id="meddraStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao"/>
+
+    <bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
+    <bean id="preExistingConditionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
+    <bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
+    <bean id="investigationalNewDrugDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao"/>
+    <bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao"/>
+    <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao"/>
+    <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao"/>
+    <!--Rules/Scheduler/Notification DAOs-->
+    <bean id="reportDefinitionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao"/>
+    <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao"/>
+    <bean id="scheduledNotificationDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao"/>
+    <bean id="reportDeliveryDefinitionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"/>
+    <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao"/>
+
+
+    <!-- validator beans starts here-->
     <bean id="webControllerValidator"
           class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
 
@@ -422,19 +450,56 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollectionValidator"/>
 
     <bean id="uniqueIdentifierForStudyValidator"
-    	class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator" >
-    	<property name="studyDao" ref="studyDao" />
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator">
+        <property name="studyDao" ref="studyDao"/>
     </bean>
     <!-- validator beans end here-->
 
-    <!-- Repository beans end here-->
+    <!-- Repository beans starts here-->
     <bean id="participantRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository">
         <property name="participantDao" ref="participantDao"></property>
     </bean>
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
-           <property name="studyDao" ref="studyDao"></property>
-       </bean>
+        <property name="studyDao" ref="studyDao"></property>
+    </bean>
+    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
+          lazy-init="true" autowire="byType">
+        <property name="mailSender" ref="mailer"/>
+        <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
+        <property name="userDao" ref="userDao"/>
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
+
+
+    <bean id="researchStaffRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="csmUserRepository" ref="csmUserRepository"/>
+        <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+    </bean>
+
+    <bean id="reportRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
+        <property name="nowFactory" ref="nowFactory"/>
+        <property name="expeditedReportTree" ref="expeditedReportTree"/>
+        <property name="reportDao" ref="reportDao"/>
+        <property name="reportFactory" ref="reportFactory"/>
+        <property name="schedulerService" ref="schedulerService"/>
+    </bean>
 
     <!-- Repository beans end here-->
+
+
+    <!-- Factor beans starts here-->
+    <bean id="reportFactory" class="gov.nih.nci.cabig.caaers.domain.factory.ReportFactory">
+        <property name="nowFactory" ref="nowFactory"></property>
+    </bean>
+
+    <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory">
+    </bean>
+
+    <!-- Factory beans end here-->
 
 </beans>
