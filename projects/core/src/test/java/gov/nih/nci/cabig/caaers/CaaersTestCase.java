@@ -104,6 +104,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
      */
     public  String[] getConfigLocations() {
         return new String[] {
+        	"classpath*:config/spring/applicationContext-rules-*.xml",
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
             "classpath*:applicationContext-test.xml"
         };
