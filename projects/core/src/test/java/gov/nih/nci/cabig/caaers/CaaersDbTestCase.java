@@ -241,6 +241,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
      */
     public  String[] getConfigLocations() {
         return new String[] {
+        	"classpath*:config/spring/applicationContext-rules-*.xml",
             "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml", 
             "classpath*:applicationContext-test.xml"
         };
