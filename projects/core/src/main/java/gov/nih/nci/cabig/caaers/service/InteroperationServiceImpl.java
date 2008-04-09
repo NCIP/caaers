@@ -1,20 +1,19 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-
 import com.semanticbits.aenotification.AENotification;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory;
 import gov.nih.nci.cabig.caaers.esb.client.MessageBroadcastService;
 import gov.nih.nci.cabig.caaers.utils.XMLUtil;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
- * 
  * @author Sujith Vellat Thayyilthodi
  */
 public class InteroperationServiceImpl implements InteroperationService {
@@ -22,27 +21,18 @@ public class InteroperationServiceImpl implements InteroperationService {
     private MessageBroadcastService messageBroadcastService;
 
     private String certificateLocation = "/sample.txt";
+    private AENotificationFactory aeNotificationFactory;
 
     public void pushToStudyCalendar(ExpeditedAdverseEventReport aeReport)
-                    throws CaaersSystemException {
-        AENotification aeNotification = new AENotification();
-        aeNotification.setRegistrationGridId(aeReport.getAssignment().getGridId());
-        Date detectionDate = aeReport.getAdverseEvents().get(0).getStartDate();
-        if (detectionDate == null) detectionDate = aeReport.getCreatedAt();
-        aeNotification.setDetectionDate(new java.sql.Date(detectionDate.getTime()));
-        aeNotification.setDescription(aeReport.getNotificationMessage());
+            throws CaaersSystemException {
+        AENotification aeNotification = aeNotificationFactory.createAENotificationForExpeditedAdverseEventReport(aeReport);
         // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
         getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
     }
 
     public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
-                    throws CaaersSystemException {
-        AENotification aeNotification = new AENotification();
-        aeNotification.setRegistrationGridId(roReport.getAssignment().getGridId());
-        Date detectionDate = roReport.getAdverseEvents().get(0).getStartDate();
-        if (detectionDate == null) detectionDate = roReport.getStartDate();
-        aeNotification.setDetectionDate(new java.sql.Date(detectionDate.getTime()));
-        aeNotification.setDescription(roReport.getNotificationMessage());
+            throws CaaersSystemException {
+        AENotification aeNotification = aeNotificationFactory.createAENotificationForRoutineAdverseEventReport(roReport);
         // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
         getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
     }
@@ -71,7 +61,7 @@ public class InteroperationServiceImpl implements InteroperationService {
     private String getCertificate() {
         StringBuffer certificate = new StringBuffer();
         InputStream inputStream = InteroperationServiceImpl.class
-                        .getResourceAsStream(getCertificateLocation());
+                .getResourceAsStream(getCertificateLocation());
         DataInputStream dataInputStream = new DataInputStream(inputStream);
         String line = "";
         try {
@@ -92,6 +82,11 @@ public class InteroperationServiceImpl implements InteroperationService {
 
     }
 
+    @Required
+    public void setAeNotificationFactory(final AENotificationFactory aeNotificationFactory) {
+        this.aeNotificationFactory = aeNotificationFactory;
+    }
+
     public String getCertificateLocation() {
         return certificateLocation;
     }
@@ -99,5 +94,6 @@ public class InteroperationServiceImpl implements InteroperationService {
     public void setCertificateLocation(String certificateLocation) {
         this.certificateLocation = certificateLocation;
     }
+
 
 }
