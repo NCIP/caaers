@@ -5,6 +5,8 @@ import org.drools.event.ActivationCancelledEvent;
 import org.drools.event.ActivationCreatedEvent;
 import org.drools.event.AfterActivationFiredEvent;
 import org.drools.event.AgendaEventListener;
+import org.drools.event.AgendaGroupPoppedEvent;
+import org.drools.event.AgendaGroupPushedEvent;
 import org.drools.event.BeforeActivationFiredEvent;
 
 public class RuleFiringListener implements AgendaEventListener {
@@ -61,5 +63,15 @@ public class RuleFiringListener implements AgendaEventListener {
         // Name:"+beforeActivationFiredEvent.getActivation().getRule().getName()+"| before Firing
         // the rule"+beforeActivationFiredEvent.getActivation().getRule().getPackage().toString());
     }
+
+	public void agendaGroupPopped(AgendaGroupPoppedEvent arg0, WorkingMemory arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void agendaGroupPushed(AgendaGroupPushedEvent arg0, WorkingMemory arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

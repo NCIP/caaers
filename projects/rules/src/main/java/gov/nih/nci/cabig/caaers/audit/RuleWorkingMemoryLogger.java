@@ -24,7 +24,11 @@ import org.drools.common.InternalFactHandle;
 import org.drools.event.ActivationCancelledEvent;
 import org.drools.event.ActivationCreatedEvent;
 import org.drools.event.AfterActivationFiredEvent;
+import org.drools.event.AgendaGroupPoppedEvent;
+import org.drools.event.AgendaGroupPushedEvent;
 import org.drools.event.BeforeActivationFiredEvent;
+import org.drools.event.ObjectInsertedEvent;
+import org.drools.event.ObjectUpdatedEvent;
 
 import org.drools.event.ActivationCreatedEvent;
 
@@ -34,9 +38,9 @@ import org.drools.event.AgendaEventListener;
 
 import org.drools.event.BeforeActivationFiredEvent;
 
-import org.drools.event.ObjectAssertedEvent;
+import org.drools.event.ObjectInsertedEvent;
 
-import org.drools.event.ObjectModifiedEvent;
+import org.drools.event.ObjectUpdatedEvent;
 
 import org.drools.event.ObjectRetractedEvent;
 
@@ -199,7 +203,7 @@ AgendaEventListener {
      * 
      */
 
-    public void objectAsserted(final ObjectAssertedEvent event) {
+    public void objectAsserted(final ObjectInsertedEvent event) {
 
         // filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_ASSERTED, ((InternalFactHandle)
         // event.getFactHandle()).getId(),event.getObject().toString()));
@@ -214,7 +218,7 @@ AgendaEventListener {
      * 
      */
 
-    public void objectModified(final ObjectModifiedEvent event) {
+    public void objectModified(final ObjectUpdatedEvent event) {
 
         // filterLogEvent(new ObjectLogEvent(LogEvent.OBJECT_MODIFIED,((InternalFactHandle)
         // event.getFactHandle()).getId(),event.getObject().toString()));
@@ -336,7 +340,7 @@ AgendaEventListener {
 
                 }
 
-                final Object value = declaration.getValue(this.workingMemory.getObject(handle));
+                final Object value = null;//////declaration.getValue(this.workingMemory.getObject(handle));
 
                 result.append(declaration.getIdentifier());
 
@@ -453,5 +457,25 @@ AgendaEventListener {
         logger.logMessage(logRecord);
 
     }
+
+	public void objectInserted(ObjectInsertedEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void objectUpdated(ObjectUpdatedEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void agendaGroupPopped(AgendaGroupPoppedEvent arg0, WorkingMemory arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void agendaGroupPushed(AgendaGroupPushedEvent arg0, WorkingMemory arg1) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
