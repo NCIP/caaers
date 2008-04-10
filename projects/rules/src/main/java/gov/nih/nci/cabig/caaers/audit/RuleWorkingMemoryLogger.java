@@ -1,56 +1,26 @@
 package gov.nih.nci.cabig.caaers.audit;
 
 import java.util.ArrayList;
-
-import java.util.Iterator;
-
 import java.util.List;
 
 import org.drools.FactHandle;
 import org.drools.WorkingMemory;
-
-import org.drools.WorkingMemory;
-
-import org.drools.audit.event.ActivationLogEvent;
-
 import org.drools.audit.event.ILogEventFilter;
-
 import org.drools.audit.event.LogEvent;
-
-import org.drools.audit.event.ObjectLogEvent;
-
 import org.drools.common.InternalFactHandle;
-
 import org.drools.event.ActivationCancelledEvent;
 import org.drools.event.ActivationCreatedEvent;
 import org.drools.event.AfterActivationFiredEvent;
+import org.drools.event.AgendaEventListener;
 import org.drools.event.AgendaGroupPoppedEvent;
 import org.drools.event.AgendaGroupPushedEvent;
 import org.drools.event.BeforeActivationFiredEvent;
 import org.drools.event.ObjectInsertedEvent;
-import org.drools.event.ObjectUpdatedEvent;
-
-import org.drools.event.ActivationCreatedEvent;
-
-import org.drools.event.AfterActivationFiredEvent;
-
-import org.drools.event.AgendaEventListener;
-
-import org.drools.event.BeforeActivationFiredEvent;
-
-import org.drools.event.ObjectInsertedEvent;
-
-import org.drools.event.ObjectUpdatedEvent;
-
 import org.drools.event.ObjectRetractedEvent;
-
+import org.drools.event.ObjectUpdatedEvent;
 import org.drools.event.WorkingMemoryEventListener;
-
 import org.drools.rule.Declaration;
-import org.drools.rule.Rule;
-
 import org.drools.spi.Activation;
-
 import org.drools.spi.Tuple;
 
 public class RuleWorkingMemoryLogger
