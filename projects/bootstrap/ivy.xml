@@ -8,7 +8,7 @@
         <configurations>
         	<conf name="default" visibility="public" extends="publish,runtime" 
         		description="Dependencies needed for default setting"  />
-        	<conf name="build" visibility="public" extends="publish"
+        	<conf name="build" visibility="public"
         		description="Dependencies required for build time, all classpath should have this"/>
         	<conf name="publish" visibility="public" 
         		description="Dependencies along with this module is published in repository" />
