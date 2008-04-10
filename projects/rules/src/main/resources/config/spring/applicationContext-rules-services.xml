@@ -33,7 +33,9 @@
     </bean>
     
     <bean id="businessRulesExecutionService" class="gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionServiceImpl" autowire="byName" />
+    <!--
     <bean id="rulesLoader" class="gov.nih.nci.cabig.caaers.rules.deploy.SystemRulesDeployer">
     	<constructor-arg ref="ruleDeploymentService" />
     </bean>
+    -->
 </beans>
