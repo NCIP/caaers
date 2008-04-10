@@ -15,7 +15,7 @@
 <pattern identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"/>
 <pattern identifier="factResolver" object-type="gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver"/>
 <pattern identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study"/>
-<pattern identifier="adverseEventEvaluationResult" object-type="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult"/>
+<pattern identifier="adverseEventEvaluationResult" object-type="gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult"/>
 <eval>factResolver.assertFact(adverseEvent,"gov.nih.nci.cabig.caaers.domain.Grade","code","3","&gt;=") == true 
 							</eval>
 <eval>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","name","Cancer Therapy Evaluation Program","==") == true 
