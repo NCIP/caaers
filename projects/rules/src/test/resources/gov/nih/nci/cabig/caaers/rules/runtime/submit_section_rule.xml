@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_submit_report_section"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_submit_report_section"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
 
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
@@ -17,8 +18,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR1_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!(aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY))</eval>
 			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION)</eval>
 			
@@ -44,8 +45,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR2_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!(aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY))</eval>
 			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
 			
@@ -72,8 +73,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR3_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!(aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY))</eval>
 			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
 			<eval>( 
@@ -95,8 +96,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR4_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION) &amp;&amp; aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
 			<eval>aeReport.getRadiationInterventions().size()  &lt; 1</eval>
 			<eval>aeReport.getSurgeryInterventions().size() &lt; 1</eval>	
@@ -120,8 +121,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR50_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.SURGERY)</eval>
 			<eval>aeReport.getSurgeryInterventions().size() &gt; 0</eval>	
 		</lhs>
@@ -138,8 +139,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR51_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.RADIATION)</eval>
 			<eval>aeReport.getRadiationInterventions().size() &gt; 0</eval>	
 		</lhs>
@@ -156,8 +157,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR52_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION)</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") != null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") != null</eval>
@@ -178,8 +179,8 @@
 	============================================================================= -->
 	<rule name="SEC_BR53_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>!aeReport.getStudy().hasTherapyOfType(StudyTherapyType.DEVICE)</eval>
 			<eval>aeReport.getMedicalDevices().size() &gt; 0</eval>	
 		</lhs>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section"  xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
 
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
 	<import name="gov.nih.nci.cabig.caaers.validation.*" />
@@ -23,8 +24,8 @@
 	<rule name="SEC_BR5A_CHK">
 	<rule-attribute name="no-loop" value="true" />
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") != null
 			 || NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") != null
 			 || NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.number") != null
@@ -46,8 +47,8 @@
 	<rule name="SEC_BR5B_CHK">
 	<rule-attribute name="no-loop" value="true" />
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate") == null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date") == null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.number") == null</eval>
@@ -67,8 +68,8 @@
 	============================================================================= -->
 	<rule name="TAI_BR2_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentAssignment") != null</eval>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.treatmentDescription") != null</eval>
 		</lhs>
@@ -86,8 +87,8 @@
 	============================================================================= -->
 	<rule name="CIN_BR1_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NumberUtil.compare(NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.adverseEventCourse.number"), 
 				      NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.totalCourses")) &lt; 0</eval>
 		</lhs>
@@ -106,8 +107,8 @@
 	============================================================================= -->
 	<rule name="PAG_BR1A_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator(){
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						TreatmentInformation ti = aeReport.getTreatmentInformation();
@@ -137,8 +138,8 @@
 	============================================================================= -->
 	<rule name="PAG_BR1B_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator(){
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						TreatmentInformation ti = aeReport.getTreatmentInformation();
@@ -168,8 +169,8 @@
 	============================================================================= -->
 	<rule name="PAG_BR3_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator(){
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						TreatmentInformation ti = aeReport.getTreatmentInformation();
@@ -198,8 +199,8 @@
 	============================================================================= -->
 	<rule name="PAG_UK_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator(){
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						TreatmentInformation ti = aeReport.getTreatmentInformation();
@@ -229,8 +230,8 @@
 	============================================================================= -->
 	<rule name="PAG_BR2B_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>new ExpeditedAdverseEventValidator(){
 					public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
 						TreatmentInformation ti = aeReport.getTreatmentInformation();

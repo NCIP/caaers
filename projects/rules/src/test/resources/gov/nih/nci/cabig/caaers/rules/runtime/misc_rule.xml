@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 
-	<package xmlns="http://drools.org/drools-3.0" xmlns:drools="http://drools.org/drools-3.0" xmlns:rules="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd" name="gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules">
+	<package xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd"
+	name="gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules">
 
 		<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
 		<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
@@ -10,10 +12,10 @@
 
 		<rule name="Rule-1">
 <lhs>
-<column identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"/>
-<column identifier="factResolver" object-type="gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver"/>
-<column identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study"/>
-<column identifier="adverseEventEvaluationResult" object-type="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult"/>
+<pattern identifier="adverseEvent" object-type="gov.nih.nci.cabig.caaers.domain.AdverseEvent"/>
+<pattern identifier="factResolver" object-type="gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver"/>
+<pattern identifier="studySDO" object-type="gov.nih.nci.cabig.caaers.domain.Study"/>
+<pattern identifier="adverseEventEvaluationResult" object-type="gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult"/>
 <eval>factResolver.assertFact(adverseEvent,"gov.nih.nci.cabig.caaers.domain.Grade","code","3","&gt;=") == true 
 							</eval>
 <eval>factResolver.assertFact(studySDO,"gov.nih.nci.cabig.caaers.domain.Organization","name","Cancer Therapy Evaluation Program","==") == true 
