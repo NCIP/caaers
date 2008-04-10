@@ -271,7 +271,7 @@
     	<echo message="Executing in ${ant.project.name}" />
 		<tstamp>
 			<format property="now" pattern="yyyyMMddHHmmss"/>
-			<format property="today" pattern="yyyy-MM-dd hh:mm:ss" />
+			<format property="today" pattern="yyyy-MM-dd hh:mm:ss.mmm" />
 		</tstamp>
         <property name="ivy.new.revision" value="${caaers.version}-local-${now}"/>
     </target>
