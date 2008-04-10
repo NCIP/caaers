@@ -29,7 +29,9 @@
         
         <!-- dependencies for the rules module -->
         <dependencies defaultconfmapping="build->master(*);runtime->master(*),runtime(*);dist->default(*);distGrid->default(*)">
-
+        	<exclude org="org.codehaus.mvel" name="mvel" rev="1.2.24-java1.4"/>
+			<exclude org="org.mvel" name="mvel" rev="1.2.24-java1.4"/>
+			
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
@@ -70,16 +72,23 @@
 			
 			<!--  Rules Compiler -->
 			<dependency org="org.eclipse.jdt" name="core" rev="3.2.0.666" conf="runtime,dist,distGrid->default(*)"/>
+
+<!--  JBoss  Drools -->
+			<dependency org="org.drools" name="drools-core" rev="4.0.6" />
+			<dependency org="org.drools" name="drools-compiler" rev="4.0.6"/>
+			<dependency org="org.drools" name="drools-jsr94" rev="4.0.6" />
+			<dependency org="org.drools" name="drools-decisiontables" rev="4.0.6"/>
+			<dependency org="org.drools" name="drools-repository" rev="4.0.6"/>
 			
-			<!--  JBoss  Drools -->
-			<dependency org="org.drools" name="drools-core" rev="3.1.0" />
-			<dependency org="org.drools" name="drools-compiler" rev="3.1.0"/>
-			<dependency org="org.drools" name="drools-jsr94" rev="3.1.0" />
-			<dependency org="org.drools" name="drools-decisiontables" rev="3.1.0"/>
-			<dependency org="org.drools" name="drools-repository" rev="3.1.0"/>
-			
+			<!--
 			<dependency org="org.antlr" name="antlr" rev="3.0b5"  />
 			<dependency org="antlr" name="antlr" rev="2.7.6"  />
+			-->
+			
+			<!-- mvel -->
+			<dependency name="mvel" org="org.mvel" rev="1.2.22-java1.5" />
+			
+			
 			
 			<!--  Jackrabbit -->
 			<dependency org="javax.jcr" name="jcr" rev="1.0" />
