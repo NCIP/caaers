@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-3.0" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-3.0 drools-3.0.xsd">
-
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_description_section" xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
+	
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.RuleContext" identifier="ruleContext"/>
 	<global type="gov.nih.nci.cabig.caaers.rules.runtime.action.ActionDispatcher" identifier="actionDispatcher"/>
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>
@@ -19,8 +20,8 @@
 	============================================================================= -->
 	<rule name="DSC_BR1A_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>aeReport.getResponseDescription().getRecoveryDate() == null</eval>
 			<or>
 				<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
@@ -46,8 +47,8 @@
 	<rule name="DSC_BR1B_CHK">
 	<rule-attribute name="no-loop" value="true" />
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			
 			<eval>aeReport.getResponseDescription().getRecoveryDate() != null</eval>
  			<and>
@@ -70,8 +71,8 @@
 	============================================================================= -->
 	<rule name="DSC_BR2_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 		    <eval>!ObjectUtils.equals(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.retreated"), Boolean.FALSE)</eval>
 		</lhs>
@@ -89,8 +90,8 @@
 	============================================================================= -->
 	<rule name="DSC_BR3_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>ObjectUtils.equals(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"), null)</eval>
 		</lhs>
@@ -107,8 +108,8 @@
 	============================================================================= -->
 	<rule name="DSC_BR5_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>			
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 			<eval>DateUtil.compare(NullSafeFieldExtractor.extractField(aeReport,"responseDescription.dateRemovedFromProtocol"),
 					NullSafeFieldExtractor.extractField(aeReport,"responseDescription.recoveryDate")) &lt; 0</eval>
