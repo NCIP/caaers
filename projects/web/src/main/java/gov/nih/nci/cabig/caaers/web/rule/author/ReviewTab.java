@@ -47,7 +47,7 @@ public class ReviewTab extends DefaultTab {
                                     && !column
                                                     .getObjectType()
                                                     .equals(
-                                                                    "gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult")
+                                                                    "gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult")
                                     && !column.isMarkedDelete()) {
                         line.add("	" + RuleUtil.readableColumn(column));
                         line.add("AND");
