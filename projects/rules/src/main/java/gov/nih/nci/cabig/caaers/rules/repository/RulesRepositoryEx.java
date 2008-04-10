@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.repository;
 
 
+
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -28,9 +30,10 @@ import org.apache.jackrabbit.core.nodetype.NodeTypeDef;
 import org.apache.jackrabbit.core.nodetype.NodeTypeManagerImpl;
 import org.apache.jackrabbit.core.nodetype.NodeTypeRegistry;
 import org.apache.jackrabbit.core.nodetype.compact.CompactNodeTypeDefReader;
-import org.drools.repository.RepositoryConfigurator;
+import org.drools.repository.JackrabbitRepositoryConfigurator;
 import org.drools.repository.RulesRepository;
 import org.drools.repository.RulesRepositoryException;
+import org.drools.repository.StateItem;
 
 /**
  * 
@@ -104,6 +107,24 @@ public class RulesRepositoryEx extends RulesRepository {
     }
 
     private Node getAreaNode(String areaName) throws RulesRepositoryException {
+    	
+    	try {
+			Iterator it = session.getRootNode().getNodes();
+			while (it.hasNext()){
+				Node n = (Node)it.next();
+				System.out.println(n.getPath());
+				Iterator it2 = n.getNodes();
+				
+				while (it2.hasNext()) {
+					Node n1 = (Node)it2.next();
+					System.out.println("-" +n1.getPath());
+				}
+			}
+		} catch (RepositoryException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
         if (areaNodeCache.containsKey(areaName)) {
             return (Node) areaNodeCache.get(areaName);
         } else {
@@ -112,16 +133,12 @@ public class RulesRepositoryEx extends RulesRepository {
             while (folderNode == null && tries < 2) {
                 try {
                     tries++;
-                    folderNode = this.session.getRootNode().getNode(
-                                    RULES_REPOSITORY_NAME + "/" + areaName);
+                    folderNode = this.session.getRootNode().getNode(RULES_REPOSITORY_NAME + "/" + areaName);
                 } catch (PathNotFoundException e) {
                     if (tries == 1) {
                         // hmm..repository must have gotten screwed up. set it up again
-                        log
-                                        .log(Level.WARNING,
-                                                        "The repository appears to have become corrupted. It will be re-setup now.");
-                        throw new RulesRepositoryException(
-                                        "Unable to get the main rule repo node. Repository is not setup correctly.",
+                        log.log(Level.WARNING,"The repository appears to have become corrupted. It will be re-setup now.");
+                        throw new RulesRepositoryException("Unable to get the main rule repo node. Repository is not setup correctly.",
                                         e);
                     } else {
                         log.log(Level.SEVERE, "Unable to correct repository corruption");
@@ -197,110 +214,120 @@ public class RulesRepositoryEx extends RulesRepository {
 
     }
 
-    static class RepositoryConfiguratorEx extends RepositoryConfigurator {
-
-        private static final Logger log = Logger.getLogger(RepositoryConfigurator.class.getName());
-
-        public void setupRulesRepository(Session session) throws RulesRepositoryException {
-
-            super.setupRulesRepository(session);
-
+    static class RepositoryConfiguratorEx extends JackrabbitRepositoryConfigurator {
+    	public void setupRulesRepository(Session session) throws RulesRepositoryException {
+            System.out.println("Setting up the repository, registering node types etc.");
             try {
                 Node root = session.getRootNode();
                 Workspace ws = session.getWorkspace();
 
-                // no need to set it up again, skip it if it has.
-                boolean registered = false;
-                String uris[] = ws.getNamespaceRegistry().getURIs();
-                for (int i = 0; i < uris.length; i++) {
-                    if (RulesRepositoryEx.DROOLS_EXTENSION_URI.equals(uris[i])) {
-                        registered = true;
-                    }
-                }
+                //no need to set it up again, skip it if it has.
+                boolean registered = false ;//RulesRepositoryAdministrator.isNamespaceRegistered( session );
 
                 if (!registered) {
+                    ws.getNamespaceRegistry().registerNamespace("drools", RulesRepository.DROOLS_URI);
                     ws.getNamespaceRegistry().registerNamespace("droolsex",
-                                    RulesRepositoryEx.DROOLS_EXTENSION_URI);
-                    // Note, the order in which they are registered actually
-                    // does
-                    // matter !
+                            RulesRepositoryEx.DROOLS_EXTENSION_URI);
+                    
+                    //Note, the order in which they are registered actually does matter !
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/tag_node_type.cnd", ws);
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/state_node_type.cnd", ws);
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/versionable_node_type.cnd", ws);
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/versionable_asset_folder_node_type.cnd", ws);
+                    
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/rule_node_type.cnd", ws);
+                    this.registerNodeTypesFromCndFile("/node_type_definitions/rulepackage_node_type.cnd", ws);
+                    
                     this.registerNodeTypesFromCndFile(
-                                    "/node_type_definitions/compiled_state_node_type.cnd", ws);
-                    this
-                                    .registerNodeTypesFromCndFile(
-                                                    "/node_type_definitions/compiled_versionable_node_type.cnd",
-                                                    ws);
-                    this
-                                    .registerNodeTypesFromCndFile(
-                                                    "/node_type_definitions/compiled_versionable_asset_folder_node_type.cnd",
-                                                    ws);
-                    this
-                                    .registerNodeTypesFromCndFile(
-                                                    "/node_type_definitions/compiled_rulepackage_node_type.cnd",
-                                                    ws);
+                            "/node_type_definitions/compiled_state_node_type.cnd", ws);
+            this
+                            .registerNodeTypesFromCndFile(
+                                            "/node_type_definitions/compiled_versionable_node_type.cnd",
+                                            ws);
+            this
+                            .registerNodeTypesFromCndFile(
+                                            "/node_type_definitions/compiled_versionable_asset_folder_node_type.cnd",
+                                            ws);
+            this
+                            .registerNodeTypesFromCndFile(
+                                            "/node_type_definitions/compiled_rulepackage_node_type.cnd",
+                                            ws);
+                 
                 }
+                
+                // Setup the rule repository node
+                Node repositoryNode = RulesRepository.addNodeIfNew(root, RulesRepository.RULES_REPOSITORY_NAME, "nt:folder");
+                        
 
-                Node repositoryNode = session.getRootNode().getNode(
-                                RulesRepository.RULES_REPOSITORY_NAME);
-                // Setup the RulePackageItem area
-                RulesRepository.addNodeIfNew(repositoryNode,
-                                RulesRepositoryEx.COMPILED_RULE_PACKAGE_AREA, "nt:folder");
-
-                session.save();
-            } catch (Exception e) {
-                log.log(Level.SEVERE, "Caught Exception", e);
+                
+                // Setup the RulePackageItem area        
+                RulesRepository.addNodeIfNew(repositoryNode, RulesRepository.RULE_PACKAGE_AREA, "nt:folder");
+                
+                // Setup the Snapshot area        
+                RulesRepository.addNodeIfNew(repositoryNode, RulesRepository.PACKAGE_SNAPSHOT_AREA, "nt:folder");
+                            
+                //Setup the Cateogry area                
+                RulesRepository.addNodeIfNew(repositoryNode, RulesRepository.TAG_AREA, "nt:folder");
+                
+                //Setup the State area                
+                RulesRepository.addNodeIfNew(repositoryNode, RulesRepository.STATE_AREA, "nt:folder");
+                
+                RulesRepository.addNodeIfNew(repositoryNode, COMPILED_RULE_PACKAGE_AREA, "nt:folder");
+                
+                RulesRepository.addNodeIfNew(repositoryNode, COMPILED_RULE_AREA, "nt:folder");
+                
+                //and we need the "Draft" state
+                RulesRepository.addNodeIfNew( repositoryNode.getNode( RulesRepository.STATE_AREA ), StateItem.DRAFT_STATE_NAME, StateItem.STATE_NODE_TYPE_NAME );
+                
+                session.save();                        
+            }
+            catch(Exception e) {
+                //log.error("Caught Exception", e);
                 System.err.println(e.getMessage());
                 throw new RulesRepositoryException(e);
             }
-
         }
 
-        private void registerNodeTypesFromCndFile(String cndFileName, Workspace ws)
-                        throws RulesRepositoryException, InvalidNodeTypeDefException {
-            try {
-                // Read in the CND file
-                Reader in = new InputStreamReader(this.getClass().getResourceAsStream(cndFileName));
-
-                // Create a CompactNodeTypeDefReader
-                CompactNodeTypeDefReader cndReader = new CompactNodeTypeDefReader(in, cndFileName);
-
-                // Get the List of NodeTypeDef objects
-                List ntdList = cndReader.getNodeTypeDefs();
-
-                // Get the NodeTypeManager from the Workspace.
-                // Note that it must be cast from the generic JCR NodeTypeManager to the
-                // Jackrabbit-specific implementation.
-                NodeTypeManagerImpl ntmgr = (NodeTypeManagerImpl) ws.getNodeTypeManager();
-
-                // Acquire the NodeTypeRegistry
-                NodeTypeRegistry ntreg = ntmgr.getNodeTypeRegistry();
-
-                // Loop through the prepared NodeTypeDefs
-                for (Iterator i = ntdList.iterator(); i.hasNext();) {
-                    // Get the NodeTypeDef...
-                    NodeTypeDef ntd = (NodeTypeDef) i.next();
-
-                    log.log(Level.WARNING, "Attempting to regsiter node type named: "
-                                    + ntd.getName());
-
-                    // ...and register it
-                    ntreg.registerNodeType(ntd);
-                }
-            } catch (InvalidNodeTypeDefException e) {
-                log
-                                .log(
-                                                Level.WARNING,
-                                                "InvalidNodeTypeDefinitionException caught when trying to add node from CND file: "
-                                                                + cndFileName
-                                                                + ". This will happen if the node type was already registered. "
-                                                                + e);
-                throw e;
-            } catch (Exception e) {
-                log.log(Level.SEVERE, "Caught Exception", e);
-                throw new RulesRepositoryException(e);
-            }
-        }
-
+    	 private void registerNodeTypesFromCndFile(String cndFileName, Workspace ws) throws RulesRepositoryException, InvalidNodeTypeDefException {
+    	        try {
+    	            //Read in the CND file
+    	            Reader in = new InputStreamReader(this.getClass().getResourceAsStream( cndFileName ));
+    	            
+    	            // Create a CompactNodeTypeDefReader
+    	            CompactNodeTypeDefReader cndReader = new CompactNodeTypeDefReader(in, cndFileName);
+    	            
+    	            // Get the List of NodeTypeDef objects
+    	            List ntdList = cndReader.getNodeTypeDefs();
+    	            
+    	            // Get the NodeTypeManager from the Workspace.
+    	            // Note that it must be cast from the generic JCR NodeTypeManager to the
+    	            // Jackrabbit-specific implementation.
+    	            NodeTypeManagerImpl ntmgr = (NodeTypeManagerImpl)ws.getNodeTypeManager();
+    	            
+    	            // Acquire the NodeTypeRegistry
+    	            NodeTypeRegistry ntreg = ntmgr.getNodeTypeRegistry();
+    	            
+    	            // Loop through the prepared NodeTypeDefs
+    	            for(Iterator i = ntdList.iterator(); i.hasNext();) {                               
+    	                // Get the NodeTypeDef...
+    	                NodeTypeDef ntd = (NodeTypeDef)i.next();                                        
+    	                
+    	                //log.debug("Attempting to regsiter node type named: " + ntd.getName());
+    	                
+    	                // ...and register it            
+    	                ntreg.registerNodeType(ntd);
+    	            }
+    	        }
+    	        catch(InvalidNodeTypeDefException e) {
+    	            //log.warn("InvalidNodeTypeDefinitionException caught when trying to add node from CND file: " + cndFileName + ". This will happen if the node type was already registered. " + e);
+    	            throw e;
+    	        }
+    	        catch(Exception e) {
+    	            //log.error("Caught Exception", e);
+    	            throw new RulesRepositoryException(e);
+    	        }
+    	    }    
+    
     }
 
 }

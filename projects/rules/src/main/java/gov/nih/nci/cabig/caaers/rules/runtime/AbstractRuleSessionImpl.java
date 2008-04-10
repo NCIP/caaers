@@ -95,7 +95,7 @@ abstract class AbstractRuleSessionImpl implements RuleSession {
      * @see WorkingMemory#setApplicationData(String, Object)
      */
     protected WorkingMemory newWorkingMemory() {
-        final WorkingMemory newWorkingMemory = this.getRuleExecutionSet().newWorkingMemory();
+        final WorkingMemory newWorkingMemory = this.getRuleExecutionSet().newStatefulSession(true);//newStatefulSession();//newWorkingMemory();
 
         final Map props = this.getProperties();
         if (props != null) {

@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.rules.brxml.RuleSet;
 import gov.nih.nci.cabig.caaers.rules.common.XMLUtil;
 import gov.nih.nci.cabig.caaers.rules.deploy.sxml.RuleSetInfo;
 import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
-import gov.nih.nci.cabig.caaers.rules.repository.RulesRepositoryEx.RepositoryConfiguratorEx;
 import gov.nih.nci.cabig.caaers.rules.runtime.cache.RulesCache;
 
 import java.io.IOException;
@@ -21,11 +20,8 @@ import javax.jcr.LoginException;
 import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.SimpleCredentials;
 import javax.jcr.UnsupportedRepositoryOperationException;
-import javax.jcr.lock.LockException;
-import javax.jcr.nodetype.ConstraintViolationException;
-import javax.jcr.version.VersionException;
-import javax.rules.admin.RuleExecutionSet;
 
 import org.apache.log4j.Logger;
 import org.drools.repository.AssetItem;
@@ -340,7 +336,7 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
     public void setRepository(Repository repository) {
         this.repository = repository;
     }
-
+    private static ThreadLocal repo = new ThreadLocal();
     /*
      * REVISIT: Change this to private
      */
@@ -348,7 +344,19 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
 
         Session session = null;// getSession();
         if (rulesRepository == null) {
+        	
+        	try {
+				session = this.getRepository().login(new SimpleCredentials("username","password".toCharArray()));
+			} catch (LoginException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RepositoryException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
             RulesRepositoryEx.RepositoryConfiguratorEx repositoryConfigurator = new RulesRepositoryEx.RepositoryConfiguratorEx();
+            /*
             try {
                 session = (repositoryConfigurator.login(getRepository()));
             } catch (LoginException e) {
@@ -358,11 +366,13 @@ public class RepositoryServiceImpl extends JcrDaoSupport implements RepositorySe
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+            */
             repositoryConfigurator.setupRulesRepository(session);
             rulesRepository = new RulesRepositoryEx(session);
+            repo.set( rulesRepository );  
         }
 
-        return rulesRepository;
+         return rulesRepository; 
     }
 
     // THIS METHOD IS NOT BEING USED

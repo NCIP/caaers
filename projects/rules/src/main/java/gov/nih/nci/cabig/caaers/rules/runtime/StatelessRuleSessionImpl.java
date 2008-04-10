@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 import gov.nih.nci.cabig.caaers.audit.RuleWorkingMemoryLogger;
 import gov.nih.nci.cabig.caaers.rules.repository.RuleExecutionSetRepository;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +117,9 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
 
         try {
             for (final Iterator objectIter = objects.iterator(); objectIter.hasNext();) {
-                workingMemory.assertObject(objectIter.next());
+        //        workingMemory.assertObject(objectIter.next());
+//            	//4.0.6
+            	workingMemory.insert(objectIter.next());
             }
 
             workingMemory.fireAllRules();
@@ -124,9 +127,14 @@ public class StatelessRuleSessionImpl extends AbstractRuleSessionImpl implements
             throw new InvalidRuleSessionException(e.getMessage(), e);
         }
 
-        final List results = workingMemory.getObjects();
+        final List results = new ArrayList();
+        Iterator itr = workingMemory.iterateObjects((org.drools.ObjectFilter) filter);//getObjects();
 
-        this.applyFilter(results, filter);
+        //this.applyFilter(results, filter);
+        
+        while (itr.hasNext()) {
+        	results.add(itr.next());
+        }
 
         try {
 

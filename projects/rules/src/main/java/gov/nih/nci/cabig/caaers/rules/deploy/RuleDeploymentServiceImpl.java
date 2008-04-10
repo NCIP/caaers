@@ -15,6 +15,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.rules.admin.RuleAdministrator;
 import javax.rules.admin.RuleExecutionSet;
 import javax.rules.admin.RuleExecutionSetCreateException;
 import javax.rules.admin.RuleExecutionSetRegisterException;
@@ -94,12 +95,14 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
         try {
             RuleAdapter ruleAdapter = null;
             ruleAdapter = (RuleAdapter) Class
-                            .forName(
-                                            "gov.nih.nci.cabig.caaers.rules.common.adapter.CaAERSJBossXSLTRuleAdapter")
+                            .forName("gov.nih.nci.cabig.caaers.rules.common.adapter.CaAERSJBossXSLTRuleAdapter")
                             .newInstance();
 
             Object ruleSetObj = ruleAdapter.adapt(ruleSet);
             registerPackage(bindUri, ruleSetObj);
+            
+            
+            
 
         } catch (Exception e) {
             log.info("Error while registering ruleSet, with name :" + ruleSetName + ", bindUri :"
@@ -143,8 +146,10 @@ public class RuleDeploymentServiceImpl implements java.rmi.Remote, RuleDeploymen
         // Since we still use drools implementation of LocalRuleExecutionSetProvider
         final RuleExecutionSet ruleExecutionSet = RuleServiceContext.getInstance().ruleSetProvider
                         .createRuleExecutionSet(rulePackage, properties);
-        RuleServiceContext.getInstance().ruleAdministrator.registerRuleExecutionSet(bindUri,
-                        ruleExecutionSet, properties);
+        
+        
+        RuleAdministrator ra = RuleServiceContext.getInstance().ruleAdministrator;
+        ra.registerRuleExecutionSet(bindUri,ruleExecutionSet, properties);
 
     }
 
