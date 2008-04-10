@@ -1,39 +1,24 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
-import gov.nih.nci.cabig.caaers.rules.brxml.Rule;
 import gov.nih.nci.cabig.caaers.rules.exception.RuleException;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.namespace.QName;
 
-/*import org.jibx.runtime.BindingDirectory;
- import org.jibx.runtime.IBindingFactory;
- import org.jibx.runtime.IMarshallingContext;
- import org.jibx.runtime.IUnmarshallingContext;
- import org.jibx.runtime.JiBXException;
-
- import com.thoughtworks.xstream.XStream;
- import com.thoughtworks.xstream.io.xml.DomDriver;*/
-
-/**
- * 
- * @author Sujith Vellat Thayyilthodi
- * */
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.drools.compiler.PackageBuilder;
 import org.drools.compiler.PackageBuilderConfiguration;
+import org.drools.lang.descr.PackageDescr;
 import org.drools.rule.Package;
+import org.drools.rule.builder.dialect.java.JavaDialectConfiguration;
+import org.drools.xml.XmlPackageReader;
 
 public class XMLUtil {
     private static final Log log = LogFactory.getLog(XMLUtil.class);
@@ -69,24 +54,68 @@ public class XMLUtil {
      * @return
      */
     public static Package unmarshalToPackage(String xml) {
-        PackageBuilderConfiguration conf = new PackageBuilderConfiguration();
-        conf.setCompiler(PackageBuilderConfiguration.ECLIPSE);
-        conf.setJavaLanguageLevel("1.5");
+    	//System.out.println(xml);
+    	//Properties properties = new Properties();
+    	//properties.setProperty( "drools.dialect.java.compiler","ECLIPSE" );
+    	PackageBuilderConfiguration cfg = new PackageBuilderConfiguration( );
+    	JavaDialectConfiguration javaConf = (JavaDialectConfiguration) cfg.getDialectConfiguration( "java" );
+    	javaConf.setCompiler( JavaDialectConfiguration.ECLIPSE );
+        javaConf.setJavaLanguageLevel("1.5");
+    	
+    	Reader ruleReader;
+    	PackageBuilder packageBuilder = new PackageBuilder(cfg);
+		try {
+			ruleReader = new StringReader(xml);
+			final XmlPackageReader xmlPackageReader = new XmlPackageReader();
+	    	PackageDescr pd = xmlPackageReader.read(ruleReader);
+	    	
+	    	packageBuilder.addPackage(pd);
+	    	
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return packageBuilder.getPackage();
+		
+		
+		
+		
+		
+    	
+    	//Package droolsPackage = new Package();
+    	/*
+    	
+    	Properties properties = new Properties();
+    	properties.setProperty( "drools.dialect.java.compiler","JANINO" );
+    	PackageBuilderConfiguration conf = new PackageBuilderConfiguration(properties);
+        
+       // JavaDialectConfiguration javaConf = (JavaDialectConfiguration) conf.getDialectConfiguration( "java" );
+
+        //javaConf.setCompiler( JavaDialectConfiguration.ECLIPSE );
+        //javaConf.setJavaLanguageLevel("1.5");
+        
+        
+ //       conf.setCompiler(PackageBuilderConfiguration.ECLIPSE);
+  //      conf.setJavaLanguageLevel("1.5");
         Package droolsPackage = new Package();
 
         // merge the rule xml into the package
         try {
             Reader ruleReader = null;
-            ruleReader = new StringReader(xml);
-            PackageBuilder packageBuilder = new PackageBuilder(conf);
+            //ruleReader = new StringReader(xml);
+            ruleReader = new FileReader("/Users/sakkala/temp/temp.xml");
+            PackageBuilder packageBuilder = new PackageBuilder();
+            //packageBuilder.addPackageFromXml( new InputStreamReader( getClass().getResourceAsStream( "/Users/sakkala/temp/temp.xml" ) ) );
             packageBuilder.addPackageFromXml(ruleReader);
             droolsPackage = packageBuilder.getPackage();
+            //System.out.print("XXXXXX" + xml);
         } catch (Exception e) {
             log.error("Error while converting xml form of rules into package\r\n XML rules :\r\n"
                             + xml, e);
             throw new RuleException(e.getMessage(), e);
         }
-        return droolsPackage;
+        */
+        
     }
 
     /*
