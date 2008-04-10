@@ -36,7 +36,7 @@ public class CaAERSJBossXSLTRuleAdapter implements RuleAdapter {
         for (Rule r : rules) {
             Column column_fixed = new Column();
             column_fixed
-                            .setObjectType("gov.nih.nci.cabig.caaers.rules.domain.AdverseEventEvaluationResult");
+                            .setObjectType("gov.nih.nci.cabig.caaers.rules.common.AdverseEventEvaluationResult");
             column_fixed.setIdentifier("adverseEventEvaluationResult");
             r.getCondition().getColumn().add(column_fixed);
 
