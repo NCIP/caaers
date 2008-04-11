@@ -307,6 +307,11 @@ public abstract class BusinessRulesExecutionServiceHelper extends RulesTestCase 
 
     public void registerRule() throws Exception {
         String ruleXml = getFileContext(getRuleFile());
+        try {
+        	deploymetService.deregisterRuleSet(getBindUri());
+        } catch (Exception e) {
+        	System.out.println("registering for first time");
+        }
         deploymetService.registerRuleXml(getBindUri(), ruleXml);
         assertTrue("Rule deployed", true);
     }
