@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -8,7 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import junit.framework.TestCase;
 
-public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
+public class AdverseEventEvaluationServiceTest extends TestCase {
     AdverseEventEvaluationServiceImpl service;
 
     RulesEngineService rulesEngineService;
@@ -16,7 +15,7 @@ public class AdverseEventEvaluationServiceTest extends CaaersTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         service = new AdverseEventEvaluationServiceImpl();
-        rulesEngineService = registerMockFor(RulesEngineService.class);
+        rulesEngineService = new RulesEngineServiceImpl();
         service.setRulesEngineService(rulesEngineService);
     }
 
