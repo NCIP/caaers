@@ -23,11 +23,11 @@
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<eval>aeReport.getResponseDescription().getRecoveryDate() == null</eval>
-			<or>
+			<or-conditional-element>
 				<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 				<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved without Sequelae")</eval>
 				<eval>NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved with Sequelae")</eval>
-			</or>
+			</or-conditional-element>
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
@@ -51,11 +51,11 @@
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			
 			<eval>aeReport.getResponseDescription().getRecoveryDate() != null</eval>
- 			<and>
+ 			<and-conditional-element>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Fatal/Died")</eval>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved without Sequelae")</eval>
 				<eval>!NullSafeFieldExtractor.extractField(aeReport,"responseDescription.presentStatus.displayName").equals("Recovered/Resolved with Sequelae")</eval>
-			</and>
+			</and-conditional-element>
 		
 		</lhs>
 		<rhs>
