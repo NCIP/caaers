@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.rules;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.rules.repository.RepositoryCleaner;
 import gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean;
 
@@ -12,7 +11,7 @@ import junit.framework.TestCase;
 
 import org.springframework.core.io.ClassPathResource;
 
-public abstract class RulesTestCase extends CaaersTestCase {
+public abstract class RulesTestCase extends TestCase {
     CaaersDataSourcePropertiesFactoryBean propertiesBean;
 
     @Override
@@ -23,7 +22,7 @@ public abstract class RulesTestCase extends CaaersTestCase {
         new RepositoryCleaner(url);
     }
 
-    public abstract Class<? extends RulesTestCase> getTestClass();
+    public abstract Class<? extends TestCase> getTestClass();
 
     public String getFileContext(String fileName) throws Exception {
         File testFile = new ClassPathResource(fileName, getTestClass()).getFile();
