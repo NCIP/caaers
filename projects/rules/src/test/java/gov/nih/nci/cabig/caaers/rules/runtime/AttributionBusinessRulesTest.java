@@ -6,7 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class AttributionBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
+public class AttributionBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
     @Override
     public String getBindUri() {
         // TODO Auto-generated method stub

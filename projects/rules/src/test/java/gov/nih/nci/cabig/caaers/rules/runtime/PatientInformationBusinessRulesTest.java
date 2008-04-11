@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.NullSafeFieldExtractor;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class PatientInformationBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
+public class PatientInformationBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_medical_info_section";
 

@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class BusinessRulesExecutionServiceHelper extends RulesTestCase {
+public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCase {
 
     protected RuleDeploymentServiceImpl deploymetService;
 
@@ -55,8 +55,8 @@ public abstract class BusinessRulesExecutionServiceHelper extends RulesTestCase 
     public abstract String getRuleFile();
 
     @Override
-    public Class<BusinessRulesExecutionServiceHelper> getTestClass() {
-        return BusinessRulesExecutionServiceHelper.class;
+    public Class<AbstractBusinessRulesExecutionTestCase> getTestClass() {
+        return AbstractBusinessRulesExecutionTestCase.class;
     }
 
     protected void setUp() throws Exception {

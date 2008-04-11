@@ -9,7 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class LabBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
+public class LabBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
     public String getBindUri() {

@@ -5,7 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class MedicalDeviceBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
+public class MedicalDeviceBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
     public String getBindUri() {

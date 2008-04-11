@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class PreExistingConditionBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
+public class PreExistingConditionBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
     public String getBindUri() {

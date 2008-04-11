@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.rules.runtime;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 
-public class MiscRuleTest extends BusinessRulesExecutionServiceHelper {
+public class MiscRuleTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
     public String getBindUri() {
