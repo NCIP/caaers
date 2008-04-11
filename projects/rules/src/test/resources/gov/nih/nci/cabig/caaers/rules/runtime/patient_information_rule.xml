@@ -22,12 +22,12 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<or>
+			<or-conditional-element>
 				<eval>StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
 				"Solid tumor, NOS")</eval>
 				<eval>StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
 				"Hematopoietic malignancy, NOS")</eval>
-			</or>
+			</or-conditional-element>
 		    <eval>NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDisease") == null</eval>
 		</lhs>
 		<rhs>
