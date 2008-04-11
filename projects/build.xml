@@ -8,9 +8,11 @@
 	====================================================================== -->
   	<target name="buildlist" depends="load-ivy" unless="buildlist.done" description="Will find the correct order of build dependency"> 
     	<ivy:buildlist reference="build-path">
+ 			
       		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
     		<fileset file="${basedir}/rules/ivy-build.xml" />
+    		
     		<fileset file="${basedir}/web/ivy-build.xml" />
     	</ivy:buildlist>
   		<property name="buildlist.done" value="true" />
@@ -110,22 +112,25 @@
 		target : sync-classpath
 	============================================================ -->
 	<target name="sync-classpath" depends="buildlist">
-		<!--
-		<mkdir dir="${java.io.tmpdir}\ivylibs" />
+		<mkdir dir="${java.io.tmpdir}/ivylibs" />
 		<subant target="resolve" buildpathref="build-path">
 			<property name="resolve.confs" value="runtime,test" />
 			<property name="resolve.to.dir" value="${java.io.tmpdir}\ivylibs" />
 		</subant>
-		-->
 		<taskdef name="eclipseClasspath" classname="com.semanticbits.ctms.ant.BuildPathGenerator">
 		  <classpath>
-		  	<path location="C:\devtools\ivy-workspace\SBAntTasks\bin"></path>
-		  </classpath>
-		</taskdef>
+		  	<path>
+		  			<fileset dir="${java.io.tmpdir}/ivylibs">
+		  				<include name="*.jar"/>
+		  			</fileset>
+		  	</path>
+		  </classpath> 
+		</taskdef> 
+		
 		<eclipseClasspath templatefile=".classpath.tmpl" destinationfile=".classpath" 
-			srcpattern="src/main/java,src/main/resources,src/test/java,src/test/resources,build/generated-sources/xjc" modules="build-path"
+			srcpattern="src/main/java,src/main/resources,src/test/java,src/test/resources,build/generated-sources/xjc" 
 			excludes="**/*caaers-*.jar" ivylibdir="${java.io.tmpdir}\ivylibs"
-			>
+			modulerefs="build-path"	>
 		</eclipseClasspath>
 		
 	</target>
