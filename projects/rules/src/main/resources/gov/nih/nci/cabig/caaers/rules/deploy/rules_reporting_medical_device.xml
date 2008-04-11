@@ -61,16 +61,16 @@
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
 			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<or>
-			 <and>
+			<or-conditional-element>
+			 <and-conditional-element>
 				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
 				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") == null</eval>
-			 </and>
-			 <and>
+			 </and-conditional-element>
+			 <and-conditional-element>
 				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; !NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].deviceOperator.displayName").equals(DeviceOperator.OTHER.getDisplayName())</eval>
 				<eval>!aeReport.getMedicalDevices().isEmpty() &amp;&amp; NullSafeFieldExtractor.extractField(aeReport,"medicalDevices[0].otherDeviceOperator") != null</eval>
-			 </and>
-			</or>
+			 </and-conditional-element>
+			</or-conditional-element>
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
