@@ -58,7 +58,9 @@ public abstract class BusinessRulesExecutionServiceTest extends RulesTestCase {
     public Class<BusinessRulesExecutionServiceTest> getTestClass() {
         return BusinessRulesExecutionServiceTest.class;
     }
-
+    public void testUtil() {
+    	System.out.println("This is a utility class , no test cases here");
+    }
     protected void setUp() throws Exception {
         super.setUp();
         deploymetService = new RuleDeploymentServiceImpl();
