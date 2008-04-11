@@ -14,6 +14,7 @@ import org.springframework.core.io.ClassPathResource;
 public abstract class RulesTestCase extends TestCase {
     CaaersDataSourcePropertiesFactoryBean propertiesBean;
 
+    
     @Override
     protected void setUp() throws Exception {
         super.setUp();
