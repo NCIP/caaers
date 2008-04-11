@@ -4,18 +4,17 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputField.COLS;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.DETAILS;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.OPTIONS;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.SIZE;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.InputField.Category;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
-import junit.framework.TestCase;
-
 /**
  * @author Rhett Sutphin
  */
-public class InputFieldAttributesTest extends TestCase {
+public class InputFieldAttributesTest extends AbstractTestCase {
     private InputField field = InputFieldFactory.createInputField(Category.TEXT);
 
     public void testSetOptions() throws Exception {

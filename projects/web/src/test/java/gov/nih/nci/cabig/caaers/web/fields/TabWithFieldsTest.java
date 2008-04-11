@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.reportMatcher;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 import java.util.Map;
@@ -14,7 +15,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  */
-public class TabWithFieldsTest extends CaaersTestCase {
+public class TabWithFieldsTest extends AbstractTestCase {
     private TestBean command;
 
     private TabWithFields<TestBean> tab;

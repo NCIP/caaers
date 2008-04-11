@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -17,7 +17,7 @@ import org.easymock.classextension.EasyMock;
  * @author Rhett Sutphin
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
-public class ListAdverseEventsCommandTest extends CaaersTestCase {
+public class ListAdverseEventsCommandTest extends AbstractTestCase {
     private ListAdverseEventsCommand command;
 
     private StudyDao studyDao;

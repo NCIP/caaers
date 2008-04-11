@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 import java.util.Collections;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
-public class RepeatingFieldGroupFactoryTest extends CaaersTestCase {
+public class RepeatingFieldGroupFactoryTest extends AbstractTestCase {
     private RepeatingFieldGroupFactory factory = new RepeatingFieldGroupFactory("start",
                     "root.list");
 

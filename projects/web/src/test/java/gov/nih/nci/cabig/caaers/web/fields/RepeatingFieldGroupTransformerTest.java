@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class RepeatingFieldGroupTransformerTest extends CaaersTestCase {
+public class RepeatingFieldGroupTransformerTest extends AbstractTestCase {
     private RepeatingFieldGroupTransformer transformer;
 
     private static final InputField.Category FACTORY_0_FIELD_0_CATEGORY = InputField.Category.TEXT;

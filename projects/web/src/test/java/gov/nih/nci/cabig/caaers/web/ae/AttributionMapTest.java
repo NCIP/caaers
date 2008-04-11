@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.assignParticipant;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createOrganization;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createParticipant;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudy;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
@@ -23,7 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
  * @author Rhett Sutphin
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
-public class AttributionMapTest extends CaaersTestCase {
+public class AttributionMapTest extends AbstractTestCase {
     private static final CourseAgent COURSE_AGENT_0 = new CourseAgent();
 
     private static final ConcomitantMedication CON_MED_0 = new ConcomitantMedication();

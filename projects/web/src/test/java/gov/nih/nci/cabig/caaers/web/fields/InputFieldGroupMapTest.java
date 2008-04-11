@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class InputFieldGroupMapTest extends CaaersTestCase {
+public class InputFieldGroupMapTest extends AbstractTestCase {
     @SuppressWarnings( { "MismatchedQueryAndUpdateOfCollection" })
     private InputFieldGroupMap map = new InputFieldGroupMap();
 

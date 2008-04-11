@@ -1,19 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Collection;
 import java.util.Arrays;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
  */
-public class InputFieldFactoryTest extends CaaersTestCase {
+public class InputFieldFactoryTest extends AbstractTestCase {
     public void testOptionsStoredAsAttribute() throws Exception {
         Map<Object, Object> expectedOptions = new HashMap<Object, Object>();
         InputField field = InputFieldFactory.createSelectField("pn", "P N", false, expectedOptions);

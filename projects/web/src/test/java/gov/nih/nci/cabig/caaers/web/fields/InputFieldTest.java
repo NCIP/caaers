@@ -1,10 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.validation.Errors;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 /**
@@ -13,7 +14,7 @@ import org.springframework.validation.FieldError;
  * 
  * @author Rhett Sutphin
  */
-public class InputFieldTest extends CaaersTestCase {
+public class InputFieldTest extends AbstractTestCase {
     private AbstractInputField field;
 
     private TestBean bean;

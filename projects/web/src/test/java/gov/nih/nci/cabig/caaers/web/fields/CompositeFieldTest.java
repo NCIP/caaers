@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Rhett Sutphin
  */
-public class CompositeFieldTest extends CaaersTestCase {
+public class CompositeFieldTest extends AbstractTestCase {
     private DefaultInputFieldGroup group;
 
     private CompositeField field;

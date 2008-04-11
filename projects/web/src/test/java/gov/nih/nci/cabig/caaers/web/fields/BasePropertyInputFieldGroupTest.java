@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 
 import java.util.List;
 
 /**
  * @author Rhett Sutphin
  */
-public class BasePropertyInputFieldGroupTest extends CaaersTestCase {
+public class BasePropertyInputFieldGroupTest extends AbstractTestCase {
     private BasePropertyInputFieldGroup group;
 
     @Override
