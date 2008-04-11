@@ -22,11 +22,11 @@
 			
 			<eval>aeReport.getResponseDescription().getPresentStatus() != null</eval>
 		
-			<or>
+			<or-conditional-element>
 				<eval>aeReport.getResponseDescription().getPresentStatus().getDisplayName() == "Fatal/Died"</eval>
 				<eval>aeReport.getResponseDescription().getPresentStatus().getDisplayName() == "Recovered/Resolved without Sequelae"</eval>
 				<eval>aeReport.getResponseDescription().getPresentStatus().getDisplayName() == "Recovered/Resolved with Sequelae"</eval>
-			</or>
+			</or-conditional-element>
 			<eval>aeReport.getResponseDescription().getRecoveryDate() == null</eval>
 		
 		</lhs>
