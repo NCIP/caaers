@@ -19,25 +19,7 @@ public class RuleDeploymentServiceTest extends RulesTestCase {
         super.tearDown();
     }
 
-    public void testLogin() {
-        fail("Not yet implemented");
-    }
 
-    public void testConfigureRepository() {
-        fail("Not yet implemented");
-    }
-
-    public void testRegisterRuleSet() {
-        fail("Not yet implemented");
-    }
-
-    public void testDeregisterRuleSet() {
-        fail("Not yet implemented");
-    }
-
-    public void testListRegistrations() {
-        fail("Not yet implemented");
-    }
 
     public void testRegisterRuleXml() throws Exception {
         String xml = getFileContext("test_rule.xml");
