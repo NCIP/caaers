@@ -20,8 +20,8 @@
 	============================================================================= -->
 	<rule name="PAT_BR2A_CHK">
 		<lhs>
-			<column identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<column identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
 			<or>
 				<eval>StringUtils.equals(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.abstractStudyDisease.termName"),
 				"Solid tumor, NOS")</eval>
