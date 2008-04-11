@@ -13,7 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class TreatmentInformationBusinessRulesTest extends BusinessRulesExecutionServiceTest {
+public class TreatmentInformationBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
     String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_treatment_info_section";
 
     public String getBindUri() {

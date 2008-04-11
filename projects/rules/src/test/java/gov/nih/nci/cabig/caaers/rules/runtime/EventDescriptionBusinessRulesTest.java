@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class EventDescriptionBusinessRulesTest extends BusinessRulesExecutionServiceTest {
+public class EventDescriptionBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
     String bindUri = "gov.nih.nci.cabig.caaers.rules.reporting_description_section";
 
     public String getBindUri() {

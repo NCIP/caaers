@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class PriorTherapyBusinessRulesTest extends BusinessRulesExecutionServiceTest {
+public class PriorTherapyBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
 
     @Override
     public String getBindUri() {

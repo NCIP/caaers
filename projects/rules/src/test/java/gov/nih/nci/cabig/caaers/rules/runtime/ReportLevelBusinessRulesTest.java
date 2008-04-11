@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class ReportLevelBusinessRulesTest extends BusinessRulesExecutionServiceTest {
+public class ReportLevelBusinessRulesTest extends BusinessRulesExecutionServiceHelper {
 
     @Override
     public String getBindUri() {
