@@ -72,7 +72,7 @@
 			<!--  Rules Compiler -->
 			<dependency org="org.eclipse.jdt" name="core" rev="3.2.0.666" conf="runtime,dist,distGrid->default(*)"/>
 
-<!--  JBoss  Drools -->
+			<!--  JBoss  Drools -->
 			<dependency org="org.drools" name="drools-core" rev="4.0.6" />
 			<dependency org="org.drools" name="drools-compiler" rev="4.0.6"/>
 			<dependency org="org.drools" name="drools-jsr94" rev="4.0.6" />
@@ -85,7 +85,7 @@
 			-->
 			
 			<!-- mvel -->
-			<dependency name="mvel" org="org.mvel" rev="1.2.22-java1.5" />
+			<dependency name="mvel" org="org.mvel" rev="1.2.22-java1.5" force="true"/>
 			
 			
 			
