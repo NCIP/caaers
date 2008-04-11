@@ -1,14 +1,14 @@
 package gov.nih.nci.cabig.caaers.tools;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
-
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
+
+import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class ObjectToolsTest extends CaaersTestCase {
+public class ObjectToolsTest extends TestCase {
     public void testBuildReduced() throws Exception {
         Bean src = new Bean("A", 1, 14L, (byte) 2);
         Bean reduced = ObjectTools.reduce(src, "string", "primitiveLong");

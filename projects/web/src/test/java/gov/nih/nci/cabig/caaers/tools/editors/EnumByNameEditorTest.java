@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class EnumByNameEditorTest extends CaaersTestCase {
+public class EnumByNameEditorTest extends TestCase {
     private EnumByNameEditor<TestEnum> editor = new EnumByNameEditor<TestEnum>(TestEnum.class);
 
     public void testSetAsText() throws Exception {
