@@ -12,6 +12,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 
 /**
  * @author Rhett Sutphin
@@ -34,7 +35,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
      * Subclasses should override this to initialize all the components of the command they might
      * use. E.g., if the tab being tested generates fields for a collection, put an object in that
      * collection.
-     * 
+     *
      * Subclasses need not repeat things which are added as part of the minimally valid command.
      */
     protected void fillInUsedProperties(ExpeditedAdverseEventInputCommand cmd) {
