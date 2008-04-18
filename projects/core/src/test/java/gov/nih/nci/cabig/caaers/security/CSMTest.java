@@ -10,7 +10,9 @@ import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.acegisecurity.providers.TestingAuthenticationToken;
+import org.aspectj.lang.Aspects;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -30,6 +32,9 @@ public class CSMTest extends CaaersTestCase {
         super.setUp();
         ApplicationContext ctx = getDeployedApplicationContext();
         mgr = (UserProvisioningManager) ctx.getBean("csmUserProvisioningManager");
+        AspectJSecurityInterceptor interceptor = (AspectJSecurityInterceptor) ctx.getBean("daoSecurity");
+        StudyParticipantAssignmentAspect aspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
+        aspect.setSecurityInterceptor(interceptor);
     }
 
 
