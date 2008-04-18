@@ -4,7 +4,11 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
+
+import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.acegisecurity.intercept.web.FilterInvocation;
+import org.aspectj.lang.Aspects;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -29,10 +33,12 @@ public class TaskAuthorizationTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        ApplicationContext parent = getDeployedApplicationContext();
+        
+        
+        /*ApplicationContext parent = getDeployedApplicationContext();
 
         String[] locations = new String[] { "WEB-INF/pages-servlet.xml",
-                "WEB-INF/applicationContext-acegi-security.xml" };
+                							"WEB-INF/applicationContext-acegi-security.xml" };
 
         String webappDir = "file:"
                         + getModuleRelativeFile(getClass(), "src/main/webapp").getAbsolutePath();
@@ -43,9 +49,15 @@ public class TaskAuthorizationTest extends CaaersTestCase {
         context.setServletContext(servletContext);
         context.setConfigLocations(locations);
 
-        //context.refresh();
+        context.refresh();
         this.ctx = context;
+        
+        AspectJSecurityInterceptor interceptor = (AspectJSecurityInterceptor) ctx.getBean("daoSecurity");
+        StudyParticipantAssignmentAspect aspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
+        aspect.setSecurityInterceptor(interceptor);
+*/        
     }
+    
 
     public void testAllTasksCovered() {
 //        TaskPrivilegeAndObjectIdGenerator taskGen = (TaskPrivilegeAndObjectIdGenerator) this.ctx
