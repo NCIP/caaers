@@ -1,0 +1,28 @@
+<project name="AdverseEventConsumerService" basedir=".">
+	<property name="parent.dir" value="${basedir}/../../.." />
+	<property file="${parent.dir}/build.properties" />
+	<import file="${parent.dir}/common.xml"/>
+	
+	<target name="publish-local" depends="clean,resolve" description="-->Will build and deploy the AdverseEventConsumer">
+		
+		<!-- call existing build/deployTomcat -->
+		<ant antfile="${basedir}/build.xml" target="deployTomcat" inheritall="true" inheritrefs="true" dir="${basedir}"/>
+		
+	</target>
+	<target name="publish" depends="clean,resolve" description="--> Will build and deploy the AdverseEventConsumer">
+		<!-- call existing build/deployTomcat -->
+		<ant antfile="${basedir}/build.xml" target="deployTomcat" inheritall="true" inheritrefs="true" dir="${basedir}"/>
+		
+	</target>
+	
+	<target name="resolve" depends="load-ivy" description="Will resolve the dependencies">
+		<!-- resolve the dependencies -->
+		<ivyResolve confs="build" libdir="${basedir}/ext/lib" resolveid="[org]-[module]"/>
+	</target>
+	
+	<target name="clean" description="Will clean using the existing build:clean task">
+		<!-- Clean-->
+		<ant antfile="${basedir}/build.xml" target="clean" />
+	</target>
+	
+</project>
