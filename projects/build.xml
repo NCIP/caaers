@@ -8,12 +8,15 @@
 	====================================================================== -->
   	<target name="buildlist" depends="load-ivy" unless="buildlist.done" description="Will find the correct order of build dependency"> 
     	<ivy:buildlist reference="build-path">
- 			
-      		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
+    		<fileset file="${basedir}/bootstrap/ivy-build.xml" />
     		<fileset file="${basedir}/core/ivy-build.xml" />
     		<fileset file="${basedir}/rules/ivy-build.xml" />
-    		
     		<fileset file="${basedir}/web/ivy-build.xml" />
+    		
+    		<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
+    		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
+    		<fileset file="${basedir}/grid/introduce/AdverseEventConsumerService/ivy-build.xml" />
+    		
     	</ivy:buildlist>
   		<property name="buildlist.done" value="true" />
   		<echo message="buildList : ${build-path}" />

@@ -364,7 +364,7 @@
     		description="--> publish this project in the ivy repository">
     	<echo message="Executing in ${ant.project.name}" />
     	<ivy:publish artifactspattern="${dist.dir}/[artifact].[ext]" 
-    		resolver="semanticbits-repo"
+    		resolver="semanticbits-repo-sftp"
     		pubrevision="${version}" 
     		status="release"
     		forcedeliver="true"
