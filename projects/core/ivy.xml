@@ -36,7 +36,8 @@
 			<!-- caAERS module dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
-
+			
+			<!--  Spring and Spring Modules -->
         	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
         	<dependency org="org.springframework" name="spring-context" rev="2.0.2" force="true" />
         	<dependency org="org.springframework" name="spring-dao" rev="2.0.2" force="true" />
@@ -45,18 +46,17 @@
         	<dependency org="org.springframework" name="spring-remoting" rev="2.0.2" force="true" />
         	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
         	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
+			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3" />
 
+			<!--  Commons Jar (Apache/NW) -->
         	<dependency org="commons-collections" name="commons-collections" rev="3.2" />
         	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
         	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
 			<dependency org="net.sourceforge.collections" name="collections-generic" rev="4.01" />
+			<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" />
 			<dependency org="edu.northwestern.bioinformatics" name="core-commons" rev="77" />
 			
-			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3" />
-        	<dependency org="castor" name="castor" rev="0.9.9"/>
-        	<dependency org="jdom" name="jdom" rev="1.0" />
-        	<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93" />
-        	<dependency org="commons-beanutils" name="commons-beanutils" rev="1.7.0" />
+        	<!--  Hibernate/Supporting Jars -->
         	<dependency org="org.hibernate" name="hibernate" rev="3.2.1.ga">
         		<exclude conf="*" name="cglib" />
         		<exclude conf="*" name="asm" />
@@ -64,14 +64,24 @@
         	</dependency>
  			<dependency  org="cglib" name="cglib-nodep" rev="2.1_3" />
  			<dependency org="org.hibernate" name="hibernate-annotations" rev="3.2.1.ga" />
+			
+			<!--  XML supporting JARS -->
 			<dependency org="org.jibx"  name="jibx-run" rev="1.0.1" />
         	<dependency org="org.jibx"  name="jibx-bind" rev="1.0.1" />
         	<dependency org="org.jibx" name="xsd2jibx" rev="0.2a-hack"/>
+        	<dependency org="castor" name="castor" rev="0.9.9"/>
+        	<dependency org="jdom" name="jdom" rev="1.0" />
+        	<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93" />
+        	        	
+        	
         	<dependency org="org.apache.geronimo.specs"  name="geronimo-jms_1.1_spec" rev="1.1" />
         	<dependency org="jboss"  name="jboss-jsr77" rev="3.2.3" />
         	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1" conf="build;runtime;dist" />
         	<dependency org="freemarker" name="freemarker" rev="2.3.4" />
+        	
+        	<!--  Quartz modules -->
         	<dependency org="opensymphony" name="quartz-all" rev="1.6.0" />
+        	
         	<!-- TODO: Check if Grid -->
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-common" rev="1.0" /> 
         	<dependency org="gov.nih.nci.caxchange" name="caXchangeRequestProcessor-stubs" rev="1.0" />
@@ -82,7 +92,8 @@
         	<dependency org="gov.nih.nci.cagrid" name="cagrid-cds-stubs" rev="1.2" />
         	<dependency org="gov.nih.nci.cagrid" name="cagrid-casclient" rev="2.0.11" />
         	<!-- TODO : Check if Grid END-->
-        	
+
+			<!--  DB related supporting JARS -->        	
         	<dependency org="commons-dbcp" name="commons-dbcp" rev="1.2.1" >
         		<exclude name="xml-apis" conf="*"/>
         		<exclude name="xerces" conf="*"/>
