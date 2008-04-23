@@ -57,7 +57,10 @@
 	<bean id="repository"
 		class="org.springmodules.jcr.jackrabbit.TransientRepositoryFactoryBean" depends-on="repositoryCleaner">
 		<property name="configuration"
+		    value="s[rules.dbfile]"/>
+		    <!--
 			value="classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-postgresql.xml" />
+			-->
 		<property name="homeDir" value="s[rules.repository]" />
 	</bean>
 
