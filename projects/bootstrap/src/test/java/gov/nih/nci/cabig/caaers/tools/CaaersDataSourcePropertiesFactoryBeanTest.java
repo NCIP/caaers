@@ -63,4 +63,9 @@ public class CaaersDataSourcePropertiesFactoryBeanTest extends TestCase {
         }
         // assertTrue("datasource.properties has wrong configuation", false);
     }
+    
+    public void testSelectRulesDBConfig() throws Exception {
+    	Properties props = getActualProperties();
+    	assertEquals(props.get("rules.dbfile"), "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-database.xml");
+    }
 }

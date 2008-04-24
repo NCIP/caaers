@@ -36,6 +36,8 @@ public class CaaersDataSourcePropertiesFactoryBean extends
     public static final String GRID_STUDYCONSUMER_ROLLBACK_INTERVAL = "grid.studyconsumer.rollbackInterval";
 
     public static final String GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL = "grid.registrationconsumer.rollbackInterval";
+    
+    public static final String RULES_DB_FILE = "rules.dbfile";
 
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
@@ -67,6 +69,8 @@ public class CaaersDataSourcePropertiesFactoryBean extends
                         .setProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL, "1");
         if (properties.getProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL) == null) properties
                         .setProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL, "1");
+        
+        if(properties.getProperty(RULES_DB_FILE) == null) properties.setProperty(RULES_DB_FILE, selectRulesDBConfiguration());
     }
 
     /**
@@ -79,16 +83,22 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         String defaultClass = "org.quartz.impl.jdbcjobstore.StdJDBCDelegate";
         String postgresClass = "org.quartz.impl.jdbcjobstore.PostgreSQLDelegate";
         String oracleClass = "org.quartz.impl.jdbcjobstore.oracle.OracleDelegate";
-        String rdbms = properties.getProperty(RDBMS_PROPERTY_NAME);
-        String driver = properties.getProperty(DRIVER_PROPERTY_NAME);
 
-        String db = (rdbms != null) ? rdbms : driver;
+        String db = selectSchema();
         if (db != null) {
-            if (db.toLowerCase().contains("postgres")) return postgresClass;
-            if (db.toLowerCase().contains("oracle")) return oracleClass;
+            if (db.contains("postgresql")) return postgresClass;
+            if (db.contains("oracle")) return oracleClass;
         }
         return defaultClass;
 
+    }
+    
+    private String selectRulesDBConfiguration(){
+    	String db = selectSchema();
+        if (db != null && db.contains("oracle")) {
+        	return "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-oracle.xml";
+        }
+    	return "classpath:gov/nih/nci/cabig/caaers/jackrabbit-repo-database.xml";
     }
 
     /**
