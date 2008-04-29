@@ -85,9 +85,7 @@ This applicationContext contains the definition of the concrete services
 
     <bean id="messageBroadcaster"
           class="gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl">
-        <property name="connectionFactory">
-            <ref bean="connectionFactory"/>
-        </property>
+        <property name="configuration" ref="configuration"/>
         <property name="sendQueue">
             <ref bean="sendQueueDestination"/>
         </property>
