@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.esb.client.impl;
 
 import gov.nih.nci.cabig.caaers.esb.client.BroadcastException;
 import gov.nih.nci.cabig.caaers.esb.client.ESBMessageConsumer;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.util.Vector;
 
@@ -15,6 +16,8 @@ import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 /**
  * Code taken from c3pr. Needs refactoring
@@ -39,6 +42,8 @@ public class JmsServiceImpl implements MessageListener {
     private MessageProducer producer = null;
 
     private ESBMessageConsumer messageConsumer;
+    
+    protected Configuration configuration;
 
     public void setMessageConsumer(ESBMessageConsumer messageConsumer) {
         this.messageConsumer = messageConsumer;
@@ -121,7 +126,14 @@ public class JmsServiceImpl implements MessageListener {
         System.out.println("initializing esb jms client....");
 
         if (connectionFactory == null) {
-            throw new BroadcastException("JMS Connection Factory not provided..");
+        	//Monish Dombla CAAERS-145
+        	String esbURL = configuration.get(Configuration.ESB_URL);
+        	if("".equals(esbURL) || esbURL == null){
+        		throw new BroadcastException("ESB URL not specified");
+        	}
+        	ActiveMQConnectionFactory mqConnectionFactory = new ActiveMQConnectionFactory();
+            mqConnectionFactory.setBrokerURL(configuration.get(Configuration.ESB_URL));
+            this.connectionFactory = mqConnectionFactory;
         }
         try {
             System.out.println("creating connection and session....");
