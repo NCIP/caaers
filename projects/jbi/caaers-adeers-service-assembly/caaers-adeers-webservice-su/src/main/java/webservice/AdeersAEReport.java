@@ -41,7 +41,11 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
     
     private static final Log log = LogFactory.getLog(AdeersAEReport.class); 
     private AdeersWebService adeersWebService;
-
+    private String caaersAeReportId = "";
+    private String reportId = "";
+    private String submitterEmail = "";
+    private StringBuilder exceptionXmlBuilder = null;
+    
     public void setAdeersWebService(AdeersWebService adeersWebService) {
 		this.adeersWebService = adeersWebService;
 	}
@@ -81,8 +85,9 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		try {
 			aeReportJobInfoStr = this.adeersWebService.callWebService(inXml);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//CAAERS-101 - Monish Dombla
+			log.error("--Exception While Invoking adEERS WebService--", e);			
+			aeReportJobInfoStr = constructCommunicationExceptionXml(inXml,e);
 		}
 		
 
@@ -91,5 +96,50 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
         exchange.setMessage(response, "out");
         System.out.println("sending reply...");
         send(exchange);
+    }
+    
+    /**This method constructs an xml message similar to adEERS response xml.
+     * Used to handle the Webservice communication exception flow. 
+     * CAAERS-101 - Monish Dombla
+     * @param inXml
+     * @param e
+     * @return String
+     */
+    private String constructCommunicationExceptionXml(String inXml,Exception e){
+    	
+    	int si = inXml.indexOf("<CAEERS_AEREPORT_ID>");
+		int ei = inXml.indexOf("</CAEERS_AEREPORT_ID>");
+		caaersAeReportId = inXml.substring(si+20, ei);
+		
+		si = inXml.indexOf("<REPORT_ID>");
+		ei = inXml.indexOf("</REPORT_ID>");
+		reportId = inXml.substring(si+11, ei);
+		
+		si = inXml.indexOf("<SUBMITTER_EMAIL>");
+		ei = inXml.indexOf("</SUBMITTER_EMAIL>");
+		submitterEmail = inXml.substring(si+17, ei);
+    	
+		exceptionXmlBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"utf-8\"?>").append("\n");
+		exceptionXmlBuilder.append("<soapenv:Envelope xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\"").append("\n");
+							exceptionXmlBuilder.append("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"").append("\n");
+							exceptionXmlBuilder.append("xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">").append("\n");
+		exceptionXmlBuilder.append("<soapenv:Body>").append("\n");
+		exceptionXmlBuilder.append("<submitAEDataXMLAsAttachmentResponse xmlns=\"\">").append("\n");		
+		exceptionXmlBuilder.append("<ns1:AEReportJobInfo xmlns:ns1=\"http://localhost:8080/AdEERSWSMap/services/AEReportXMLService\">").append("\n");
+		exceptionXmlBuilder.append("<jobExceptions>").append("\n");
+			exceptionXmlBuilder.append("<code>").append("caAERS-adEERS : COMM_ERR").append("</code>").append("\n");
+			exceptionXmlBuilder.append("<description>").append("adEERS WebService Communication Failure").append("</description>").append("\n");
+		exceptionXmlBuilder.append("</jobExceptions>").append("\n");
+			exceptionXmlBuilder.append("<reportStatus>").append("ERROR").append("</reportStatus>").append("\n");
+			exceptionXmlBuilder.append("<comments>").append(e.toString()).append("</comments>").append("\n");			
+			exceptionXmlBuilder.append("<REPORT_ID>").append(reportId).append("</REPORT_ID>").append("\n");
+			exceptionXmlBuilder.append("<CAEERS_AEREPORT_ID>").append(caaersAeReportId).append("</CAEERS_AEREPORT_ID>").append("\n");
+			exceptionXmlBuilder.append("<SUBMITTER_EMAIL>").append(submitterEmail).append("</SUBMITTER_EMAIL>").append("\n");
+		exceptionXmlBuilder.append("</ns1:AEReportJobInfo>").append("\n");		
+		exceptionXmlBuilder.append("</submitAEDataXMLAsAttachmentResponse>").append("\n");
+		exceptionXmlBuilder.append("</soapenv:Body>").append("\n");
+		exceptionXmlBuilder.append("</soapenv:Envelope>");
+		log.info("-------Exception XML---- ::: " + exceptionXmlBuilder.toString());
+		return  exceptionXmlBuilder.toString();    	
     }
 }
