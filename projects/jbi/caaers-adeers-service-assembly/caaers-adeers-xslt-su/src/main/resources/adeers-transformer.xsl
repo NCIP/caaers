@@ -506,13 +506,15 @@
 
         </DESCRIPTION_OF_EVENT>
         <PATIENT_INFORMATION>
-            <xsl:attribute name="PATIENT_ID">
+            <xsl:attribute name="PATIENT_ID"><xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/></xsl:attribute>
+            	
+            	<!--
                 <xsl:for-each select="StudyParticipantAssignment/Participant/Identifier">
                     <xsl:if test="primaryIndicator='true'">
                         <xsl:value-of select="value"/>
                     </xsl:if>
                 </xsl:for-each>
-            </xsl:attribute>
+                -->
             <BIRTH_DATE>
                 <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/year"
                     />-<xsl:if
@@ -934,52 +936,57 @@
                         <xsl:value-of select="other"/>
                     </OTHER_LAB>
                 </xsl:if>
-
-                <BASELINE_DATE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date" select="baseline/date"/>
-                    </xsl:call-template>
-                </BASELINE_DATE>
-                <BASELINE_VALUE>
-                    <xsl:value-of select="baseline/value"/>
-                </BASELINE_VALUE>
-                <BASELINE_UOM>
-                    <xsl:value-of select="units"/>
-                </BASELINE_UOM>
-                <RECOVERY_LATEST_DATE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date" select="recovery/date"/>
-                    </xsl:call-template>
-                </RECOVERY_LATEST_DATE>
-                <RECOVERY_LATEST_VALUE>
-                    <xsl:value-of select="recovery/value"/>
-                </RECOVERY_LATEST_VALUE>
-                <RECOVERY_LATEST_UOM>
-                    <xsl:value-of select="units"/>
-                </RECOVERY_LATEST_UOM>
-                <WORST_DATE>
-                    <xsl:call-template name="standard_date">
-                        <xsl:with-param name="date" select="nadir/date"/>
-                    </xsl:call-template>
-                </WORST_DATE>
-                <WORST_VALUE>
-                    <xsl:value-of select="nadir/value"/>
-                </WORST_VALUE>
-                <WORST_UOM>
-                    <xsl:value-of select="units"/>
-                </WORST_UOM>
-
-                <!-- 
-                <MICROBIOLOGY_SITE>
-                    <xsl:value-of select="name"/>
-                </MICROBIOLOGY_SITE>
-                <MICROBIOLOGY_DATE>
-                    <xsl:value-of select="name"/>
-                </MICROBIOLOGY_DATE>
-                <INFECTIOUS_AGENT>
-                    <xsl:value-of select="name"/>
-                </INFECTIOUS_AGENT>
-                no -->
+				<xsl:if test="baseline/date != ''">
+	                <BASELINE_DATE>
+	                    <xsl:call-template name="standard_date">
+	                        <xsl:with-param name="date" select="baseline/date"/>
+	                    </xsl:call-template>
+	                </BASELINE_DATE>
+	            </xsl:if>
+	            <xsl:if test="baseline/value != ''">
+	                <BASELINE_VALUE>
+	                    <xsl:value-of select="baseline/value"/>
+	                </BASELINE_VALUE>
+	            </xsl:if>
+	            <xsl:if test="units != ''">
+	                <BASELINE_UOM>
+	                    <xsl:value-of select="units"/>
+	                </BASELINE_UOM>
+	            </xsl:if>
+	            <xsl:if test="recovery/date != ''">    
+	                <RECOVERY_LATEST_DATE>
+	                    <xsl:call-template name="standard_date">
+	                        <xsl:with-param name="date" select="recovery/date"/>
+	                    </xsl:call-template>
+	                </RECOVERY_LATEST_DATE>
+	            </xsl:if>
+	            <xsl:if test="recovery/value != ''">
+	                <RECOVERY_LATEST_VALUE>
+	                    <xsl:value-of select="recovery/value"/>
+	                </RECOVERY_LATEST_VALUE>
+	            </xsl:if>
+	           <xsl:if test="units != ''">
+	                <RECOVERY_LATEST_UOM>
+	                    <xsl:value-of select="units"/>
+	                </RECOVERY_LATEST_UOM>
+	           </xsl:if>
+	           <xsl:if test="nadir/date != ''">
+	                <WORST_DATE>
+	                    <xsl:call-template name="standard_date">
+	                        <xsl:with-param name="date" select="nadir/date"/>
+	                    </xsl:call-template>
+	                </WORST_DATE>
+	           </xsl:if>
+	           <xsl:if test="nadir/value != ''">
+	                <WORST_VALUE>
+	                    <xsl:value-of select="nadir/value"/>
+	                </WORST_VALUE>
+	           </xsl:if>
+	           <xsl:if test="units != ''">
+	                <WORST_UOM>
+	                    <xsl:value-of select="units"/>
+	                </WORST_UOM>
+	           </xsl:if>
             </LAB_RESULT>
         </xsl:for-each>
         
