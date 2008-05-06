@@ -53,4 +53,23 @@ public class StudySiteDao extends CaaersDao<StudySite> {
                         params.toArray());
         return studySites.size() == 1 ? studySites.get(0) : null;
     }
+    
+    /*
+     * @See ParticipantService
+     */
+    public StudySite findByStudyAndOrganization(final Integer studyId,
+                    final Integer orgId) {
+
+           StringBuilder queryBuf = new StringBuilder(" select distinct ss from StudySite ss " +
+        		"where ss.organization.id=? and ss.study.id=? ");
+
+
+        log.debug("findByStudyAndOrganization : " + queryBuf.toString());
+        getHibernateTemplate().setMaxResults(5);
+        List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
+        		new Object[]{orgId,studyId});
+        
+        
+        return studySites.size() == 1 ? studySites.get(0) : null;
+    }
 }
