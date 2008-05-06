@@ -75,7 +75,8 @@ public class ExpeditedAdverseEventReportDao extends
                 log.debug("Reporter not savable; skipping cascade");
             }
         } catch (LazyInitializationException lie) {
-            log.debug("Reporter not initialized, skipping cascade");
+            log.debug("Reporter not initialized, skipping cascade", lie);
+            lie.printStackTrace();
         }
         try {
             if (report.getPhysician().isSavable()) {
@@ -84,13 +85,15 @@ public class ExpeditedAdverseEventReportDao extends
                 log.debug("Physican not savable; skipping cascade");
             }
         } catch (LazyInitializationException lie) {
-            log.debug("Physician not initialized, skipping cascade");
+            log.debug("Physician not initialized, skipping cascade", lie);
+            lie.printStackTrace();
         }
-        // since we can't cascade SAVE_UPDATE, we have to do this instead
-        // TODO : Review this and delete
-        // for (Report r : report.getReports()) {
-        // reportDao.save(r);
-        // }
+        
+        // delegate to ReportDao to save reports so that it can control transactionality
+        for (Report r : report.getReports()) {
+            reportDao.save(r);
+        }
+
     }
 
     /**
@@ -103,10 +106,11 @@ public class ExpeditedAdverseEventReportDao extends
     @Transactional(propagation = Propagation.SUPPORTS)
     public void reassociate(final ExpeditedAdverseEventReport report) {
         super.reassociate(report);
+        
         if (report.getReporter().isTransient()) {
             log.debug("Reporter unsaved; skipping reassociate cascade");
         } else {
-            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
+           getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
         }
         if (report.getPhysician().isTransient()) {
             log.debug("Physican unsaved; skipping reassociate cascade");
