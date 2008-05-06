@@ -447,6 +447,8 @@ public class AdverseEventReportSerializer {
 		    	studyParticipantAssignment.setDateOfEnrollment(spa.getDateOfEnrollment());
 	
 		    	studyParticipantAssignment.setStudySite(getStudySite(spa.getStudySite()));
+		    	studyParticipantAssignment.setStudySubjectIdentifier(spa.getStudySubjectIdentifier());
+
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getStudyParticipantAssignment() "+e.getMessage() , e);
 	    	}
