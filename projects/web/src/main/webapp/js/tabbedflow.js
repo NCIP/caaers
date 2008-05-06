@@ -20,11 +20,13 @@ AE.tabbedFlowSelectAndSubmit = function(click) {
 
 AE.tabbedFlowDisableTarget = function(click) {
 	//click.target.disble() - the event submission process stops in case of IE7,so using hide().
+	/*
 	var btn = $(click.target);
 	if(btn.type == 'submit' || btn.type == 'button'){
-	 btn.hide();
+	 btn.disable();
 	 AE.clickSrc=btn;
 	}
+	*/
 }
 
 Event.observe(window, "load", function() {

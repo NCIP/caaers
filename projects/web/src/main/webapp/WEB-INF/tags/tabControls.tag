@@ -5,6 +5,7 @@
 <%@attribute name="tabNumber"%>
 <%@attribute name="isLast"%>
 <%@attribute name="willSave"%>
+<%@attribute name="saveButtonLabel" required="false"%>
 <%@attribute name="localButtons" fragment="true" %>
 <c:set var="tabNumber" value="${empty tabNumber ? tab.number : tabNumber}"/>
 <c:set var="isLast" value="${empty isLast ? not (tab.number < flow.tabCount - 1) : isLast}"/>
@@ -23,8 +24,8 @@
             <c:if test="${not isLast  and willSave}">
                 <input type="submit" id="flow-update" class="tab${tabNumber}" value="Save"/>
             </c:if>
-
-            <c:set var="continueLabel" value="${isLast || willSave ? 'Save' : ''}"/>
+			<c:set var="saveText" value="${not empty saveButtonLabel ? saveButtonLabel : 'Save'}" />
+            <c:set var="continueLabel" value="${isLast || willSave ? saveText : ''}"/>
             <c:if test="${not empty continueLabel && not isLast}">
                 <c:set var="continueLabel" value="${continueLabel} &amp; "/>
             </c:if>

@@ -9,16 +9,36 @@
 <ae:fieldGroupDivision fieldGroupFactoryName="metastatic" index="${index}" style="${style}">
     <tags:errors path="aeReport.diseaseHistory.metastaticDiseaseSites[${index}]"/>
     <tags:renderRow field="${fieldGroup.fields[0]}"
-                    extraParams="<a id=\"showAll${index}\" href=\"javascript:showDiseaseSiteTable('metastaticDiseaseSitesTable${index}')\">Show All</a>" >
+                    extraParams="<a id=\"showAll${index}\" href=\"javascript:showDiseaseSiteTable('metastaticDiseaseSitesTable${index}','metastaticDiseaseSitesTable${index}-outer')\">Show All</a>" >
         <jsp:attribute name="label">
             <label>
                 ${fieldGroup.fields[0].displayName}
             </label>
         </jsp:attribute>
     </tags:renderRow>
-    <div id="metastaticDiseaseSitesTable${index}"
-         style="position: absolute; display: block; left: 640px; width:400px; z-index:99;">
-    </div>
+
+<div id="metastaticDiseaseSitesTable${index}-outer"
+                 style="position: absolute; display: none; left: 640px; width:400px; z-index:99;">
+<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
+<tbody>
+<tr class="titleRow">
+  <td align="left" class="title">Select a metastatic disease site :</td><td width="20px"><a href="javascript:hideShowAllTable('metastaticDiseaseSitesTable${index}-outer')">
+       <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
+      </a></td>
+</tr>
+<tr>
+<td colspan="2">
+        <div id="metastaticDiseaseSitesTable${index}"  />
+        
+</td>
+</tr>
+</tbody>
+</table>
+     
+</div>
+
+
+
 
     <tags:renderRow field="${fieldGroup.fields[1]}" style="display: none">
         <jsp:attribute name="label">

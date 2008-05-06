@@ -164,9 +164,9 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         keyMap.put("Labs - Recovery", "LABS_SECTION~Labs~Recovery");
         keyMap.put("Prior Therapys", "PRIOR_THERAPIES_SECTION~Prior Therapys");
         keyMap.put("Pre-Existing Condictions",
-                        "PRE_EXISTING_CONDITION_SECTION~SAEReportPreExistingConditions");
+                        "PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions");
         keyMap.put("Concomitant Medications",
-                        "CONCOMITANT_MEDICATION_SECTION~ConcomitantMedications");
+                        "CONCOMITANT_MEDICATION_SECTION~Medications");
         keyMap.put("Other contributing causes", "OTHER_CAUSE_SECTION~OtherCausess");
 
         for (String key : keyMap.keySet()) {

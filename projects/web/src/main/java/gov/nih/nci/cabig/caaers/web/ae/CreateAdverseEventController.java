@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class CreateAdverseEventController extends AbstractAdverseEventInputController {
 	

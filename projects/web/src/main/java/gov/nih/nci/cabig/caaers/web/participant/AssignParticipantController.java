@@ -23,7 +23,7 @@ public class AssignParticipantController extends AssignParticipantStudyControlle
 	
 	public AssignParticipantController() {
         setCommandClass(AssignParticipantStudyCommand.class);
-        Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Participant to Study");
+        Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
         flow.addTab(new AssignParticipantTab());
         flow.addTab(new AssignStudyTab());
         flow.addTab(new AssignStudySubjectIdentifierTab());

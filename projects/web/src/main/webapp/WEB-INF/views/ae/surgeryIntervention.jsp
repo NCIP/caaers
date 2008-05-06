@@ -40,8 +40,8 @@
                 AE.createStandardAutocompleter(
                     this.interventionSiteProperty, this.termPopulator.bind(this),
                     function(interventionSiteCondition) { return interventionSiteCondition.name })
-
-            },
+                    initSearchField()
+                },
 
             termPopulator: function(autocompleter, text) {
                 createAE.matchInterventionSites(text, function(values) {

@@ -26,7 +26,7 @@ function submitPage(s){
 </head>
 <body>
 <p id="instructions">
-   Please review the information and press Save to assign the Participant <b>${command.participants[0].lastName}, ${command.participants[0].firstName}</b>
+   Please review the information and press Save to assign the Subject <b>${command.participants[0].lastName}, ${command.participants[0].firstName}</b>
    to Study <b>${command.studySites[0].study.shortTitle}</b>
 </p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="${command.participants[0].lastName}, ${command.participants[0].firstName}" >

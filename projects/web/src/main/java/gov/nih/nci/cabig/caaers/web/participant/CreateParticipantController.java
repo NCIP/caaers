@@ -84,8 +84,9 @@ public class CreateParticipantController extends ParticipantController<NewPartic
         if (participantCommand.getStudySiteArray() != null) {
             Set<String> studySiteIdSet = new java.util.HashSet<String>(java.util.Arrays
                             .asList(participantCommand.getStudySiteArray()));
-            for (String siteId : studySiteIdSet) {
-                StudySite studySite = studySiteDao.getById(Integer.parseInt(siteId));
+            for (String studyId : studySiteIdSet) {
+                StudySite studySite = studySiteDao.findByStudyAndOrganization(Integer.parseInt(studyId),
+                		participantCommand.getOrganization().getId());
                 studySites.add(studySite);
 
             }

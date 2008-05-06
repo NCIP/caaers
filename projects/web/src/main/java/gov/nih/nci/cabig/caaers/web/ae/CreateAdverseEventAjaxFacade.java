@@ -90,13 +90,14 @@ public class CreateAdverseEventAjaxFacade {
             TableModel model = getTableModel(parameterMap, request);
             List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
 
-            String onInvokeAction = "showDiseaseSiteTable('" + tableId + "')";
+            String onInvokeAction = "showDiseaseSiteTable('" + tableId + "','" + tableId + "-outer' )";
             addTableAndRowToModel(model, tableId, anatomicSites, onInvokeAction);
 
             Column columnTerm = model.getColumnInstance();
             columnTerm.setProperty("name");
             columnTerm.setTitle("Primary site of disease");
-            columnTerm.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
+            columnTerm
+					.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
             model.addColumn(columnTerm);
 
 
@@ -152,7 +153,7 @@ public class CreateAdverseEventAjaxFacade {
             List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
             TableModel model = getTableModel(parameterMap, request);
 
-            String onInvokeAction = "showChemoAgentsTable('" + tableId + "')";
+            String onInvokeAction = "showChemoAgentsTable('" + tableId + "','" + tableId + "-outer')";
 
             addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
 
@@ -185,7 +186,7 @@ public class CreateAdverseEventAjaxFacade {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
-
+    
     public Integer getDiseaseFromStudyDisease(String studyDiseaseId) {
     	CtepStudyDisease ctepStudyDisease= ctepStudyDiseaseDao.getById(Integer.parseInt(studyDiseaseId));
         return ctepStudyDisease.getTerm().getId();

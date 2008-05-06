@@ -66,10 +66,15 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void save() {
         reportDao.save(getAeReport());
     }
-
+    
     @Override
     public void reassociate() {
         super.reassociate();
         assignmentDao.reassociate(getAssignment());
+    }
+    
+    @Override
+    public void flush() {
+    	reportDao.flush();
     }
 }

@@ -10,7 +10,8 @@
         </label>
     </c:when>
     <c:otherwise>
-        <form:label path="${field.propertyName}">
+         <form:label path="${field.propertyName}">
+            <tags:putSpecialRequiredIndicator field="${field}" />
             <c:if test="${field.required or field.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;${field.displayName}
         </form:label>
     </c:otherwise>

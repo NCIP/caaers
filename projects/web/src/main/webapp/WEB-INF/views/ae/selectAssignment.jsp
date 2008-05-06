@@ -7,9 +7,19 @@
 <head>
     <title>${pageTitle}</title>
     <style type="text/css">
-        .autocomplete {
-            width: 75%
+        input.autocomplete {
+            width: 75%;
+            font-style: normal;
+            background-color: #CCE6FF;
         }
+
+        input.pending-search {
+            width: 75%;
+            color: gray;
+            font-style: italic;
+            background-color: #CCE6FF;
+        }
+
     </style>
     <c:if test="${empty tab}">
         <tags:stylesheetLink name="tabbedflow"/>
@@ -81,6 +91,7 @@
             acCreate(studyAutocompleterProps)
             updateSelectedDisplay(participantAutocompleterProps)
             updateSelectedDisplay(studyAutocompleterProps)
+            initSearchField()
         })
     </script>
     </head>
@@ -91,7 +102,7 @@
         <form:form method="post" cssClass="standard autoclear">
             <tags:tabFields tab="${tab}"/>
             <div class="autoclear">
-                <chrome:box title="Select participant" id="participant-entry" cssClass="paired" autopad="true">
+                <chrome:box title="Select subject" id="participant-entry" cssClass="paired" autopad="true">
                     <p>Enter a portion of a subject's name or another registered identifier.</p>
                     <form:hidden path="participant"/>
                     <tags:requiredIndicator/>

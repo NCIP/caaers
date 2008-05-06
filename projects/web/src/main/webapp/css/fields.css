@@ -50,8 +50,15 @@ div.autocomplete ul li {
     cursor: pointer;
 }
 input.autocomplete{
-	background-color: #CCE6FF;
+    font-style: normal;
+    background-color: #CCE6FF;
 }
+input.pending-search {
+    color: gray;
+    font-style: italic;
+    background-color: #CCE6FF;
+}
+
 /*
     SELECT-equivalent groups of radio buttons
  */

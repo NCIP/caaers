@@ -193,9 +193,7 @@ public abstract class AbstractAdverseEventInputController
                 AeTab aeTab = (AeTab) tab;
                 sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
                 sb.append(",")
-                                .append(
-                                                aeTab.hasEmptyMandatoryFields(cmd) ? tab
-                                                                .getShortTitle() : "");
+                  .append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
             }
         }
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());

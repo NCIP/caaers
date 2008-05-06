@@ -99,6 +99,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements
     public abstract Study getStudy();
 
     public abstract void save();
+    public abstract void flush();
 
     public void reassociate() {
         for (ReportDefinition definition : getOptionalReportDefinitionsMap().keySet()) {

@@ -30,8 +30,8 @@
         name: '${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}'
         </c:if>
     }
-    
-    
+
+
    function findBSA(){
    	  var ht = $F('aeReport.participantHistory.height.quantity');
    	  var htUOM = $F('aeReport.participantHistory.height.unit');
@@ -41,7 +41,7 @@
    	    if(bsa > 0) Element.update($('bsa-value'), bsa.toFixed(2));
    	  });
    }
-    
+
      function chooseDiseaseOrOther(other) {
         var term = '';
         if($('aeReport.diseaseHistory.ctepStudyDisease')){
@@ -53,7 +53,7 @@
     			}else{
         		 $('aeReport.diseaseHistory.otherPrimaryDisease').value = ''
        		 	 AE.slideAndHide("aeReport.diseaseHistory.otherPrimaryDisease-row")
-    		} }); 
+    		} });
    	  	   }
         }
     }
@@ -66,7 +66,7 @@
         }else{
         	AE.slideAndHide("aeReport.diseaseHistory.otherPrimaryDiseaseSite-row")
         }
-       
+
     }
 
 
@@ -90,7 +90,7 @@
                 	 	   var cmProperty = "aeReport.diseaseHistory.metastaticDiseaseSites[" + index + "]";
             			   var anatomicSiteProperty = cmProperty + ".codedSite"
             			   var otherProperty = cmProperty + ".otherSite"
-                	 	   
+
                 		   $(anatomicSiteProperty).value = selectedChoice.id
                 		    if (selectedChoice.id == '110'){
         						AE.slideAndShow(otherProperty + "-row")
@@ -99,12 +99,14 @@
         						AE.slideAndHide(otherProperty + "-row")
 
         					}
-               }	
+               }
                })
 
             this.initializeAnatomicOrOther()
+            initSearchField()
+
         },
-        
+
         termPopulator: function(autocompleter, text) {
             createAE.matchAnatomicSite(text, function(values) {
                 autocompleter.setChoices(values)
@@ -114,7 +116,7 @@
         	if ($F(this.anatomicSiteProperty) == '110'){
         		AE.slideAndShow(this.otherProperty + "-row")
         	}else{
-        		AE.slideAndHide(this.otherProperty + "-row")	
+        		AE.slideAndHide(this.otherProperty + "-row")
         	}
         }
     })
@@ -160,7 +162,7 @@
             },
             deletable: true
         }, 'aeReport.diseaseHistory.metastaticDiseaseSites')
-		
+
 		if($('aeReport.diseaseHistory.ctepStudyDisease')){
         	$('aeReport.diseaseHistory.ctepStudyDisease').observe("change", function() {
             	chooseDiseaseOrOther($('aeReport.diseaseHistory.otherPrimaryDisease').value);
@@ -179,31 +181,41 @@
    	    Event.observe('aeReport.participantHistory.height.unit','change',findBSA);
    	    Event.observe('aeReport.participantHistory.weight.quantity','blur',findBSA);
    	    Event.observe('aeReport.participantHistory.weight.unit','change',findBSA);
-       
+
+        initSearchField()
         findBSA();
     })
 
-    function showDiseaseSiteTable(tableId) {
+    function showDiseaseSiteTable(tableId, outerTableId) {
         var parameterMap = getParameterMap('command');
         createAE.buildAnatomicSiteTable(parameterMap,tableId,showPopUpTable);
         function showPopUpTable(table) {
-            var testDiv = $(tableId)
-            testDiv.innerHTML = table;
-            testDiv.show();
+                var testDiv = $(tableId);
+                var testOuterDiv = $(outerTableId);
+                testDiv.innerHTML = table;
+                testDiv.show();
+                testOuterDiv.show();
         }
 
     }
 
+            function hideShowAllTable(popupTable) {
+               var popupTableDiv = $(popupTable);
+                popupTableDiv.hide();
+            }
+
+
     function fillDiseaseSiteAutoCompletor(diseaseSiteId,tableId) {
 
 
-        var div = $(tableId)
+        var div = $(tableId + '-outer')
         div.hide()
         createAE.getAnatomicSiteById(diseaseSiteId, function(values) {
             if (tableId == 'primarySiteOfDiseaseTable')
             {
                 var ctcTerm = $('aeReport.diseaseHistory.codedPrimaryDiseaseSite-input')
                 ctcTerm.value = primarySiteValueSelector(values)
+                ctcTerm.className='autocomplete'
                 $('aeReport.diseaseHistory.codedPrimaryDiseaseSite').value = diseaseSiteId
             }else{
                 var index = tableId.substring(tableId.length - 1, tableId.length)
@@ -211,6 +223,8 @@
                 var ctcTerm = $('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite-input')
                 ctcTerm.value = primarySiteValueSelector(values)
                 $('aeReport.diseaseHistory.metastaticDiseaseSites[' + index + '].codedSite').value = diseaseSiteId
+                ctcTerm.className='autocomplete'
+
             }
 
         });
@@ -265,16 +279,31 @@
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Disease information" id="diseaseInfo">
-            
+
             <tags:renderRow field="${fieldGroups['disease'].fields[0]}"/>
 			<tags:renderRow field="${fieldGroups['disease'].fields[1]}" style="display: none" />
 
            <tags:renderRow field="${fieldGroups['disease'].fields[2]}"
-                             extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable')\">Show All</a>" />
-           <div id="primarySiteOfDiseaseTable"
-                      style="position: absolute; display:block; left: 640px; width:400px; z-index:99;" >
-           </div>
+                             extraParams="<a href=\"javascript:showDiseaseSiteTable('primarySiteOfDiseaseTable', 'primarySiteOfDiseaseTable-outer')\">Show All</a>" />
+			<div id="primarySiteOfDiseaseTable-outer"
+			                 style="position: absolute; display: none; left: 640px; width:400px; z-index:99;">
+			<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
+			<tbody>
+			<tr class="titleRow">
+			  <td align="left" class="title">Select the primary site of disease:</td><td width="20px"><a href="javascript:hideShowAllTable('primarySiteOfDiseaseTable-outer')">
+			       <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
+			      </a></td>
+			</tr>
+			<tr>
+			<td colspan="2">
+			        <div id="primarySiteOfDiseaseTable"  />
 
+			</td>
+			</tr>
+			</tbody>
+			</table>
+
+			</div>
 			<tags:renderRow field="${fieldGroups['disease'].fields[3]}" style="display: none"/>
 			<tags:renderRow field="${fieldGroups['disease'].fields[4]}"/>
 

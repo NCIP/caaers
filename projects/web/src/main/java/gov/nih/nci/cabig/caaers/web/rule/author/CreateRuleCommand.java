@@ -5,7 +5,9 @@ import gov.nih.nci.cabig.caaers.dao.NotificationDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -600,7 +602,7 @@ public class CreateRuleCommand implements RuleInputCommand {
         }
 
     }
-
+/*
     public List<CtcCategory> getCategories() {
         List<CtcCategory> categories = ctcDao.getById(3).getCategories();
         // cut down objects for serialization
@@ -609,7 +611,28 @@ public class CreateRuleCommand implements RuleInputCommand {
         }
         return categories;
     }
-
+*/
+    
+    public List<CtcCategory> getCategories() {
+    	
+    	List<CtcCategory> categories;
+    	
+    	if (!getCategoryIdentifier().equals("") ) {
+    		Study s = getStudyDao().getByShortTitle(getCategoryIdentifier());
+        	Ctc ctc = s.getAeTerminology().getCtcVersion();
+        	categories = ctc.getCategories();
+    	} else {
+    		//return an emply list
+    		categories = new ArrayList<CtcCategory>();
+    	}
+    	
+         // cut down objects for serialization
+        for (CtcCategory category : categories) {
+            category.setTerms(null);
+        }
+        return categories;
+    }
+    
     public ExpeditedReportSection[] getReportSectionNames() {
         ExpeditedReportSection[] expeditedReportSections = ExpeditedReportSection.values();
         /*

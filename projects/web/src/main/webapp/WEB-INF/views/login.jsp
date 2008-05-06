@@ -51,7 +51,7 @@
                 <a href="/caaers/public/user/resetPassword">Forgot Password?</a>
             </div>
             <div class="submit">
-                <input type="submit" value="Log in" name="login"/>
+                <input type="submit" value="Log in"/>
             </div>
         </div>
     </form>

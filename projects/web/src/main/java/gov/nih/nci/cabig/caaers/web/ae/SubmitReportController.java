@@ -85,11 +85,23 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         // generate report and send ...
         AdeersReportGenerator aegen = (AdeersReportGenerator) getApplicationContext().getBean(
                         "adeersReportGenerator");
-        // command.save();
-
+        
+       
+        
         AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
         String xml = aeser.serialize(aeReport);
-
+        
+        report.setStatus(status);
+        report.setSubmissionUrl(url);
+        report.setSubmissionMessage(message);
+        report.setSubmittedOn(date);
+        report.getLastVersion().setReportStatus(status);
+        report.getLastVersion().setSubmissionUrl(url);
+        report.getLastVersion().setSubmissionMessage(message);
+        report.getLastVersion().setSubmittedOn(date);
+        
+        command.save();
+        command.flush();
         try {
             aegen.generateAndNotify(aeReport.getId() + "", report, xml);
         } catch (Exception e) {
@@ -98,18 +110,12 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             status = ReportStatus.FAILED;
             message = "Problem communicating with ESB <br> Please try to resubmit the report <br>"
                             + e.getMessage();
+            
+            report.getLastVersion().setReportStatus(status);
+            report.getLastVersion().setSubmissionMessage(message);
+            command.save();
         }
-        report.setStatus(status);
-        report.setSubmissionUrl(url);
-        report.setSubmissionMessage(message);
-        report.setSubmittedOn(date);
-
-        report.getLastVersion().setReportStatus(status);
-        report.getLastVersion().setSubmissionUrl(url);
-        report.getLastVersion().setSubmissionMessage(message);
-        report.getLastVersion().setSubmittedOn(date);
-
-        command.save();
+       
 
         ModelAndView modelAndView;
         if (command.getFrom() != null && command.getFrom().equals("list")) {

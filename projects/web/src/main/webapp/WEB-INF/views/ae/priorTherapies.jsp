@@ -63,6 +63,7 @@
                     function(agent) {
                         return agent.name
                     })
+                initSearchField()
             },
 
             termPopulator: function(autocompleter, text) {
@@ -108,21 +109,28 @@
             }, 'aeReport.saeReportPriorTherapies')
         })
         
-        function showChemoAgentsTable(tableId) {
+        function showChemoAgentsTable(tableId, outerTableId) {
                var parameterMap = getParameterMap('command');
-               createAE.buildChemoAgentsTable(parameterMap,tableId,showPopUpTable);
+               createAE.buildChemoAgentsTable(parameterMap, tableId, showPopUpTable);
                function showPopUpTable(table) {
                    var testDiv = $(tableId);
+                   var outerTestDiv = $(outerTableId);
                    testDiv.innerHTML = table;
                    testDiv.show();
+                   outerTestDiv.show();
 
                }
 
            }
 
+            function hideShowAllTable(popupTable) {
+               var popupTableDiv = $(popupTable);
+                popupTableDiv.hide();
+            }
+
         function fillChemoAgentAutoCompletor(chemoAgentId, tableId) {
-            var div = $(tableId)
-            div.hide()
+            var divWindow = $(tableId + '-outer');
+            divWindow.hide()
             createAE.getChemoAgentById(chemoAgentId, function(values) {
 
                 var parentIndex = tableId.substring(tableId.indexOf('parent') + 6, tableId.indexOf('index'))
@@ -131,6 +139,7 @@
                 var autoCompleterFileId = 'aeReport.saeReportPriorTherapies[' + parentIndex + '].priorTherapyAgents[' + index + '].chemoAgent'
                 var ctcTerm = $(autoCompleterFileId + '-input')
                 ctcTerm.value = values.name
+                ctcTerm.className='autocomplete'
                 $(autoCompleterFileId).value = chemoAgentId
 
             });

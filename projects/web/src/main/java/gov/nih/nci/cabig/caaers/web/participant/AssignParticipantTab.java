@@ -21,7 +21,7 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
     private ParticipantRepository participantRepository;
    
     public AssignParticipantTab() {
-        super("Choose Study", "Search Subject", "par/reg_participant_search");
+        super("Search for subject", "Search Subject", "par/reg_participant_search");
     }
 
     @Override

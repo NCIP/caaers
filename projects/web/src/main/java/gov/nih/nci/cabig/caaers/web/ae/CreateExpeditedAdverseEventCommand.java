@@ -67,6 +67,11 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         getAssignment().addReport(getAeReport());
         reportDao.save(getAeReport());
     }
+    
+    @Override
+    public void flush() {
+    	reportDao.flush();
+    }
 
     @Override
     public void reassociate() {
@@ -109,4 +114,5 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         // }
         updateReportAssignmentLink();
     }
+    
 }

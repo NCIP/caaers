@@ -15,6 +15,7 @@
 <%@attribute name="singleFields" fragment="true" %>
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
+<%@attribute name="saveButtonLabel" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
 <c:if test="${not empty pageHelpAnchor}"><c:set var="pageHelp"><tags:pageHelp anchor="${pageHelpAnchor}"/></c:set></c:if>
@@ -28,6 +29,6 @@
             <jsp:invoke fragment="singleFields"/>
         </chrome:division>
         <jsp:invoke fragment="repeatingFields"/>
-        <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}"/>
+        <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
     </form:form>
 </chrome:box>

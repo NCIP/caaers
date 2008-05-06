@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -45,8 +46,21 @@ class InvestigatorsTab extends StudyTab {
         String prevSiteIndex = request.getParameter("_prevSite");
         int selectedIndex = study.getStudySiteIndex();
         if ("removeInv".equals(action) && selectedIndex >= 0) {
-            study.getStudyOrganizations().get(selectedIndex).getStudyInvestigators().remove(
-                            Integer.parseInt(selectedInvestigator));
+        	
+         StudyOrganization studyOrg = study.getStudyOrganizations().get(selectedIndex);
+	         if(studyOrg != null){
+	        	 StudyInvestigator rmStudyInvestigator = studyOrg.getStudyInvestigators().remove(
+	                     Integer.parseInt(selectedInvestigator));
+	        	 if(rmStudyInvestigator != null){
+	        		 rmStudyInvestigator.setStudyOrganization(null);
+	        		 SiteInvestigator siteInvestigator = rmStudyInvestigator.getSiteInvestigator();
+	        		 if(siteInvestigator != null){
+	        			 siteInvestigator.getStudyInvestigators().remove(rmStudyInvestigator);
+	        	         rmStudyInvestigator.setSiteInvestigator(null);
+	        		 }
+	        	 }
+	         }
+         
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
             study.setStudySiteIndex(siteIndex);

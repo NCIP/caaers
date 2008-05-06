@@ -28,14 +28,10 @@
 
 		 <jsp:attribute name="singleFields">
         <chrome:division>
-
             <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
         </chrome:division>
-
-
-
      </jsp:attribute>
 
 

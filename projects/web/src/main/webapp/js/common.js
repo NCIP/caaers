@@ -279,7 +279,13 @@ Object.extend(ListEditor.prototype, {
         this.reorder(original, target)
     },
 
+    
+    
     remove: function(evt) {
+    
+      if(!confirm ("Are you sure you want to delete this?"))
+        return;
+        
         Event.stop(evt);
         var div = Event.element(evt).up("div." + this.divisionClass)
         if (!div) {
@@ -332,7 +338,9 @@ Object.extend(ListEditor.prototype, {
 
         removeFn.apply(this, delArgs)
     },
+    
 
+    
     reorder: function(original, target) {
         if (!this.collectionProperty) {
             alert("collectionProperty must be specified for reordering to work")
@@ -362,6 +370,7 @@ Object.extend(ListEditor.prototype, {
             var container = divs[0].parentNode
             var toMove = divs[original];
             // console.log("Trying to move %o from %i to %i", toMove, original, target)
+            
             container.removeChild(toMove)
             if (target != divs.length - 1) {
                 if (target < original) {
@@ -387,6 +396,11 @@ Object.extend(ListEditor.prototype, {
             this.applyIndexChanges(ajaxOutput.changes)
             
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
+            
+            // Following 3 lines ensure that asterisk appears of primary AE and disappears on  
+            // secondary AE when we swap secondary and primary AEs( ie when we move secondary AE up).
+            if (this.options.reorderCallback) this.options.reorderCallback(original, target);
+              
         }.bind(this)])
     },
 
@@ -472,3 +486,55 @@ function copyValues(select,prop){
 	 	}
 	 }
 }
+
+/////  autocompleter search fields
+function initSearchField() {
+
+    $$("input[type=text].autocomplete").each(function(theInput)
+    {
+        addEventHandlersForAutoCompleter(theInput)
+    });
+
+     $$("input[type=text][class='autocomplete validate-NOTEMPTY']").each(function(theInput)
+    {
+            addEventHandlersForAutoCompleter(theInput)
+    });
+
+}
+function addEventHandlersForAutoCompleter(theInput){
+
+        var message = '(Begin typing here)';
+
+          /* Add event handlers */
+        Event.observe(theInput, 'focus', clearDefaultText);
+        Event.observe(theInput, 'blur', replaceDefaultText);
+        /* Save the current value */
+        if (theInput.value == '') {
+            theInput.defaultText = message;
+            theInput.className = 'pending-search';
+            theInput.value = message;
+        }
+}
+function clearDefaultText(e) {
+    var target = window.event ? window.event.srcElement : e ? e.target : null;
+    if (!target) return;
+
+    if (target.value == '(Begin typing here)') {
+        target.value = '';
+        target.className = 'autocomplete';
+
+    }
+
+}
+
+function replaceDefaultText(e) {
+    var target = window.event ? window.event.srcElement : e ? e.target : null;
+    if (!target) return;
+
+    if (target.value == '' ) {
+        target.value = '(Begin typing here)';
+        target.className = 'pending-search';
+    }
+
+}
+

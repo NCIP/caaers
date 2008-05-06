@@ -16,7 +16,7 @@
     </script>
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation" saveButtonLabel="Submit">
     
     
     <jsp:attribute name="singleFields">
