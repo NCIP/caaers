@@ -32,13 +32,14 @@ import javax.persistence.Transient;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class represents the Adverse Event domain object associated with the Adverse event report.
  * 
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 
 @Entity
@@ -376,9 +377,26 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     }
 
     /**
-     * This method will return a list consisting of all the attributions.
+     * Will return all the attributions.
+     * @param event
+     * @return
+     */
+    @Transient
+    public List<AdverseEventAttribution<?>> getAdverseEventAttributions() {
+        List<AdverseEventAttribution<?>> attributions = new LinkedList<AdverseEventAttribution<?>>();
+        attributions.addAll(getDiseaseAttributions());
+        attributions.addAll(getConcomitantMedicationAttributions());
+        attributions.addAll(getCourseAgentAttributions());
+        attributions.addAll(getOtherCauseAttributions());
+        attributions.addAll(getRadiationAttributions());
+        attributions.addAll(getSurgeryAttributions());
+        attributions.addAll(getDeviceAttributions());
+        return attributions;
+    }
+    
+    /**
+     * This method will tell if the specified attributions exists
      * 
-     * @return List consisting of AdverseEventAttribution objects
      */
     @Transient
     public boolean isAttributedWith(Attribution... attributions) {
@@ -402,18 +420,5 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             }
         }
         return false;
-    }
-
-    @Transient
-    public List<AdverseEventAttribution<?>> getRequiredAttributions() {
-        List<AdverseEventAttribution<?>> attributions = new LinkedList<AdverseEventAttribution<?>>();
-        attributions.addAll(getDiseaseAttributions());
-        attributions.addAll(getConcomitantMedicationAttributions());
-        attributions.addAll(getCourseAgentAttributions());
-        attributions.addAll(getOtherCauseAttributions());
-        attributions.addAll(getRadiationAttributions());
-        attributions.addAll(getSurgeryAttributions());
-        attributions.addAll(getDeviceAttributions());
-        return attributions;
     }
 }
