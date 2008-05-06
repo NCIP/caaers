@@ -1483,13 +1483,28 @@
 							  				<xsl:value-of select="other"/>
 							  		</fo:block>      							
 	      						</fo:table-cell>
+	      						
+	      						<!--
 	      						<fo:table-cell>
 	      							<xsl:for-each select="PriorTherapyAgent">
 							  			<fo:block xsl:use-attribute-sets="normal" > 
 							  				<xsl:value-of select="ChemoAgent/name"/>
 							  			</fo:block> 
 							  		</xsl:for-each>     							
-	      						</fo:table-cell>      						      						      						      						
+	      						</fo:table-cell>    
+	      						-->
+	      						
+	      						<xsl:if test="PriorTherapyAgent">
+		      						<fo:table-cell>
+		      							<xsl:for-each select="PriorTherapyAgent">
+								  			<fo:block xsl:use-attribute-sets="normal" > 
+								  				<xsl:value-of select="ChemoAgent/name"/>
+								  			</fo:block> 
+								  		</xsl:for-each>     							
+		      						</fo:table-cell> 
+	      						</xsl:if>  
+	      						
+	      						  						      						      						      						
 			  			    </fo:table-row> 
 		  			    </xsl:for-each>  			  
  					
