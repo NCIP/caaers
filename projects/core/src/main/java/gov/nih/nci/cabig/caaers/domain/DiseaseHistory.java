@@ -15,6 +15,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
 /**
@@ -127,6 +129,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @Transient
+    @UniqueObjectInCollection(message="Duplicate metastatic disease site")
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSites() {
         return listHelper.getLazyList(MetastaticDiseaseSite.class);
     }

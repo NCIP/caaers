@@ -50,7 +50,7 @@ public class ReportFactory {
         if (reportDefinition.getDeliveryDefinitions() != null) {
             for (ReportDeliveryDefinition reportDeliveryDefinition : reportDefinition.getDeliveryDefinitions()) {
                 //fetch the contact mechanism for role based entities.
-                if (reportDeliveryDefinition.getEndPointType().equals(ReportDeliveryDefinition.ENTITY_TYPE_ROLE)) {
+                if (reportDeliveryDefinition.getEntityType() == ReportDeliveryDefinition.ENTITY_TYPE_ROLE) {
                     List<String> addresses = aeReport.findEmailAddress(reportDeliveryDefinition.getEndPoint());
                     for (String address : addresses) {
                         if (StringUtils.isNotEmpty(address)) {

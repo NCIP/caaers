@@ -41,4 +41,44 @@ public class MetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
     public void setCodedSite(AnatomicSite codedSite) {
         this.codedSite = codedSite;
     }
+
+
+	
+    ///OBJECT METHODS
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final MetastaticDiseaseSite other = (MetastaticDiseaseSite) obj;
+		if (codedSite == null) {
+			if (other.codedSite != null)
+				return false;
+		} else if (!codedSite.equals(other.codedSite))
+			return false;
+		if (otherSite == null) {
+			if (other.otherSite != null)
+				return false;
+		} else if (!otherSite.equals(other.otherSite))
+			return false;
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((codedSite == null) ? 0 : codedSite.hashCode());
+		result = prime * result
+				+ ((otherSite == null) ? 0 : otherSite.hashCode());
+		return result;
+	}
+	
+    
+
+    
 }

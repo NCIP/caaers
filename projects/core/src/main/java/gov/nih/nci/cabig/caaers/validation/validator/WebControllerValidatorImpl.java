@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.InvalidPropertyException;
@@ -27,7 +28,23 @@ import org.springframework.validation.BindException;
  */
 public class WebControllerValidatorImpl implements ApplicationContextAware, WebControllerValidator {
    private static final Log logger = LogFactory.getLog(WebControllerValidatorImpl.class);
-
+   
+   /**
+    * This checks if the property is readable ?
+    * Will prevent the exception from being thrown. 
+    * @param beanWrapper - BeanWarapper, wrapping the command object
+    * @param propertyName - The property name to evaluate
+    * @return - false, in case of exception, otherwise will delegate to BeanWrapper.
+    */
+   	public static boolean isReadableProperty(BeanWrapper beanWrapper , String propertyName){
+   		try{
+   			return beanWrapper.isReadableProperty(propertyName);
+   		}catch(RuntimeException e){
+   			logger.warn("error while reading property[" + propertyName + "]", e);
+   		}
+   		return false;
+   	}
+   	
     public void validate(final HttpServletRequest request, final Object command, final BindException errors) {
 
         if (request != null && command != null && errors != null) {
@@ -39,13 +56,13 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             
             while (propertyNames.hasMoreElements()) {
                 String propertyName = propertyNames.nextElement();
-                if (beanWrapperImpl.isReadableProperty(propertyName))
+                if (isReadableProperty(beanWrapperImpl,propertyName))
                     validateProperty(propertyName, beanWrapperImpl, propertyName, errors, propertyName);
 
                 //now check for collection properties
                 String collectionPropertyName = PropertyUtil.getColletionPropertyName(propertyName);
 
-                if (collectionPropertyName != null && beanWrapperImpl.isReadableProperty(collectionPropertyName) && propertyMap.get(propertyName) == null) {
+                if (collectionPropertyName != null && isReadableProperty(beanWrapperImpl,collectionPropertyName) && propertyMap.get(propertyName) == null) {
                 	//individual properties (items in collection)
                     propertyMap.put(collectionPropertyName, propertyName);
                     //collection properties.

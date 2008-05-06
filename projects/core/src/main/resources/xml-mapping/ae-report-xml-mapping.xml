@@ -1114,6 +1114,9 @@
     <field name="participant" type="gov.nih.nci.cabig.caaers.domain.Participant">
       <bind-xml name="Participant"/>
     </field>
+    <field name="studySubjectIdentifier" type="string">
+      <bind-xml name="studySubjectIdentifier" node="element"/>
+    </field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Participant">

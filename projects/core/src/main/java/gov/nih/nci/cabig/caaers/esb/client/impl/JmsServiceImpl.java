@@ -125,7 +125,7 @@ public class JmsServiceImpl implements MessageListener {
         }
         System.out.println("initializing esb jms client....");
 
-        if (connectionFactory == null) {
+        if (connectionFactory == null) {        	
         	//Monish Dombla CAAERS-145
         	String esbURL = configuration.get(Configuration.ESB_URL);
         	if("".equals(esbURL) || esbURL == null){
@@ -133,7 +133,7 @@ public class JmsServiceImpl implements MessageListener {
         	}
         	ActiveMQConnectionFactory mqConnectionFactory = new ActiveMQConnectionFactory();
             mqConnectionFactory.setBrokerURL(configuration.get(Configuration.ESB_URL));
-            this.connectionFactory = mqConnectionFactory;
+            this.connectionFactory = mqConnectionFactory;            
         }
         try {
             System.out.println("creating connection and session....");

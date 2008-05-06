@@ -24,7 +24,9 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ABSTRACT_BASE")
 // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_report_people_id") })
+@GenericGenerator(name = "id-generator",strategy = "native",parameters = {
+		@Parameter(name = "sequence", value = "seq_ae_report_people_id") 
+})
 public abstract class ReportPerson extends PersonContact {
 
     private ExpeditedAdverseEventReport expeditedReport;

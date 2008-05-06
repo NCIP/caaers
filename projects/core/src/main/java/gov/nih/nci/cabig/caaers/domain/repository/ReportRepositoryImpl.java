@@ -102,24 +102,26 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
 
         //biz rule - Attribution validation should be done if the ReportDefinition says that it is attributable
-        if (report.getReportDefinition().getAttributionRequired()) {
-            for (AdverseEvent ae : report.getAeReport().getAdverseEvents()) {
-                Attribution max = null;
-                for (AdverseEventAttribution<?> attribution : ae.getRequiredAttributions()) {
-                    if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
-                        max = attribution.getAttribution();
-                    }
-                }
-                if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
-                    messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
-                            String.format(
-                                    "The adverse event, '%s, ' is not attributed to a cause. " +
-                                            "An attribution of possible or higher must be selected for at least one of the causes.",
-                                    ae.getAdverseEventTerm().getUniversalTerm()));
-                }
-            }
-        }
-        return messages;
+        if( report.getReportDefinition().getAttributionRequired()){
+		    	   ExpeditedAdverseEventReport aeReport = report.getAeReport();
+		    	   for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+		    		   Attribution max = null;
+		    		   for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
+		    			   if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
+		    				   max = attribution.getAttribution();
+		    			   }
+
+		    		   }
+		    		   if (max == null || max.getCode() < Attribution.POSSIBLE.getCode()) {
+		    			   messages.addValidityMessage(ExpeditedReportSection.ATTRIBUTION_SECTION,
+		    					   String.format(
+		    							   "The adverse event, '%s, ' is not attributed to a cause. " +
+		    							   "An attribution of possible or higher must be selected for at least one of the causes.",
+		    							   ae.getAdverseEventTerm().getUniversalTerm()));
+		    		   }
+		    	   }
+		       }
+       return messages;
     }
 
     public ReportSubmittability validate(Report report) {

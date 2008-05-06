@@ -53,5 +53,44 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
     public void setOther(String other) {
         this.other = other;
     }
+    
+    
+    ///OBJECT METHODS
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((other == null) ? 0 : other.hashCode());
+		result = prime
+				* result
+				+ ((preExistingCondition == null) ? 0 : preExistingCondition
+						.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final SAEReportPreExistingCondition other = (SAEReportPreExistingCondition) obj;
+		if (this.other == null) {
+			if (other.other != null)
+				return false;
+		} else if (!this.other.equals(other.other))
+			return false;
+		if (preExistingCondition == null) {
+			if (other.preExistingCondition != null)
+				return false;
+		} else if (!preExistingCondition.equals(other.preExistingCondition))
+			return false;
+		return true;
+	}
+    
+
+    
 
 }

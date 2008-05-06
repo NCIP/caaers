@@ -244,12 +244,12 @@ public class ExpeditedReportTree extends PropertylessNode {
                                                         property("chemoAgent", "Agent")))),
                         section(PRE_EXISTING_CONDITION_SECTION, list(
                                         "saeReportPreExistingConditions",
-                                        "SAEReportPreExistingCondition", codedOrOther(
+                                        "Pre-existing condition", codedOrOther(
                                                         "preExistingCondition",
                                                         "Pre-existing condition", "other",
                                                         "Other (pre-existing)"))),
                         section(CONCOMITANT_MEDICATION_SECTION, list("concomitantMedications",
-                                        "ConcomitantMedication",
+                                        "Medication",
                                         property("agentName", "Medication"))), section(
                                         OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
                                                         property("text", "Cause"))),

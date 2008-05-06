@@ -62,5 +62,58 @@ public class PreExistingCondition extends AbstractImmutableDomainObject {
     public void setMeddraLlt(String meddraLlt) {
         this.meddraLlt = meddraLlt;
     }
+    
+    
+    ///OBJECT METHODS
+    
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((meddraHlgt == null) ? 0 : meddraHlgt.hashCode());
+		result = prime * result
+				+ ((meddraLlt == null) ? 0 : meddraLlt.hashCode());
+		result = prime * result
+				+ ((meddraLltCode == null) ? 0 : meddraLltCode.hashCode());
+		result = prime * result + ((text == null) ? 0 : text.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		final PreExistingCondition other = (PreExistingCondition) obj;
+		if (meddraHlgt == null) {
+			if (other.meddraHlgt != null)
+				return false;
+		} else if (!meddraHlgt.equals(other.meddraHlgt))
+			return false;
+		if (meddraLlt == null) {
+			if (other.meddraLlt != null)
+				return false;
+		} else if (!meddraLlt.equals(other.meddraLlt))
+			return false;
+		if (meddraLltCode == null) {
+			if (other.meddraLltCode != null)
+				return false;
+		} else if (!meddraLltCode.equals(other.meddraLltCode))
+			return false;
+		if (text == null) {
+			if (other.text != null)
+				return false;
+		} else if (!text.equals(other.text))
+			return false;
+		return true;
+	}
+    
+
+    
+    
 
 }

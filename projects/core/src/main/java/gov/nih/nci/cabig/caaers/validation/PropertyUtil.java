@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.validation;
 
 /**
- * @Biju Joseph
+ * @author Biju Joseph
  */
 public class PropertyUtil {
 

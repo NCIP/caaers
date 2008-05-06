@@ -1,37 +1,48 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 
-import javax.persistence.Entity;
-import javax.persistence.*;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 /**
  * This class represents the ExpeditedAdverseEventReport domain object.
- *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "ae_reports")
-@GenericGenerator(name = "id-generator", strategy = "native",
-        parameters = {
-        @Parameter(name = "sequence", value = "seq_ae_reports_id")
-                }
+@GenericGenerator(name="id-generator", strategy = "native",
+    parameters = {
+        @Parameter(name="sequence", value="seq_ae_reports_id")
+    }
 )
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private StudyParticipantAssignment assignment;
@@ -280,10 +291,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (sAEReportPreExistingCondition != null) sAEReportPreExistingCondition.setReport(this);
     }
 
-    /**
-     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
-     */
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
+    @UniqueObjectInCollection(message="Duplicate pre existing condition")
     public List<SAEReportPreExistingCondition> getSaeReportPreExistingConditions() {
         return lazyListHelper.getLazyList(SAEReportPreExistingCondition.class);
     }
@@ -293,23 +303,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (saeReportPriorTherapy != null) saeReportPriorTherapy.setReport(this);
     }
 
-    /**
-     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
-     */
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
-    @UniqueObjectInCollection(message = "Duplicate prior therapy")
+    @UniqueObjectInCollection(message="Duplicate prior therapy")
     public List<SAEReportPriorTherapy> getSaeReportPriorTherapies() {
         return lazyListHelper.getLazyList(SAEReportPriorTherapy.class);
     }
-
+    
     public void addOutcomes(Outcome outcome) {
         getOutcomesInternal().add(outcome);
         if (outcome != null) outcome.setReport(this);
     }
 
-    /**
-     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
-     */
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<Outcome> getOutcomes() {
         return lazyListHelper.getLazyList(Outcome.class);
@@ -320,15 +326,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (otherCause != null) otherCause.setReport(this);
     }
 
-    /**
-     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
-     */
+    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
     public List<OtherCause> getOtherCauses() {
         return lazyListHelper.getLazyList(OtherCause.class);
     }
+    
 
     ////// BEAN PROPERTIES
+
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -525,7 +531,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")
-    @Cascade(value = {CascadeType.MERGE, CascadeType.EVICT})
+    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
         if (reporter == null) setReporter(new Reporter());
         return reporter;
@@ -538,7 +544,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")
-    @Cascade(value = {CascadeType.MERGE, CascadeType.EVICT})
+    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE })
     public Physician getPhysician() {
         if (physician == null) setPhysician(new Physician());
         return physician;
@@ -575,8 +581,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @OrderBy("dueOn")
-    @Cascade(value = {CascadeType.EVICT, CascadeType.LOCK})
-    // Manually manage update-style reassociates and saves
+    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, 
+    				   CascadeType.LOCK, CascadeType.REMOVE }) // Manually manage update-style reassociates and saves
     public List<Report> getReports() {
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
