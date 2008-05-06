@@ -186,7 +186,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("SEC_BR53_ERR","Medical Device information must not be provided for must not be provided since the study you selected does not involve a DEVICE");
+			errors.addValidationError("SEC_BR53_ERR","Medical Device information must not be provided since the study you selected does not involve a DEVICE");
        	</rhs>
 	</rule>		
 			

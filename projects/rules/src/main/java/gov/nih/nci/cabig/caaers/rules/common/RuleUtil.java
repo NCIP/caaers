@@ -360,6 +360,7 @@ public class RuleUtil {
         _str = _str.replace("(", "_");
         _str = _str.replace(")", "_");
         _str = _str.replace("'", "_");
+        _str = _str.replace("/", "_");
 
         return _str;
     }

@@ -34,6 +34,6 @@ public class NullSafeFieldExtractor {
             Collection<?> c = (Collection<?>) o;
             return c.size();
         }
-        return -1;
+        return 0;
     }
 }

@@ -43,4 +43,41 @@
 			<!-- Already Populated Error Message-->
        	</rhs>
 	</rule>
+	
+	
+	<!-- ==========================================================================
+	RuleName : ATT_BR1_CHK
+	Logic : ATTRIBUTION_FOR_AE  to all possible causes not provided
+	Error Code : ATT_BR1_ERR
+	Error Message : AE must be attributed to all CAUSAL factors on report
+	============================================================================= -->
+	<rule name="ATT_BR1_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>new ExpeditedAdverseEventValidator() {
+				public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+				int i = 0;
+				for(AdverseEvent ae : aeReport.getAdverseEvents()){
+					i++;
+					if( (NullSafeFieldExtractor.extractFieldLength(aeReport,"concomitantMedications") != NullSafeFieldExtractor.extractFieldLength(ae,"concomitantMedicationAttributions"))
+					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"treatmentInformation.courseAgents") != NullSafeFieldExtractor.extractFieldLength(ae,"courseAgentAttributions"))
+					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"medicalDevices") != NullSafeFieldExtractor.extractFieldLength(ae,"deviceAttributions"))
+					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"radiationInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"radiationAttributions"))
+					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"surgeryInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"surgeryAttributions"))
+					   ||(1 != NullSafeFieldExtractor.extractFieldLength(ae,"diseaseAttributions"))
+					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"otherCauses") != NullSafeFieldExtractor.extractFieldLength(ae,"otherCauseAttributions"))){
+					   
+					   errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report",i,ae.getAdverseEventTerm().getUniversalTerm());
+					}
+    				  
+				}
+				return errors.getErrorCount() > 0 ? FAIL : SUCCESS;
+			}
+		}.validate(aeReport, errors)</eval>
+		</lhs>
+		<rhs>
+			<!-- Already Populated Error Message-->
+       	</rhs>
+	</rule>		
 </package>

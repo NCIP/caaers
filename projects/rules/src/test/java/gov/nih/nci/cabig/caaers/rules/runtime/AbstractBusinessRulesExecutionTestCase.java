@@ -102,6 +102,23 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         assertEquals("Number of errors should same," + message, n, errors.getErrorCount());
     }
 
+    public void assertHasErrorsHavingCode(ValidationErrors errors, String errCode){
+
+        assertHasErrors(errors, "Must have errors");
+        for (int i = 0; i < errors.getErrorCount(); i++) {
+           if(errors.getErrorAt(i).getCode().equals(errCode)) return;
+        }
+        fail("At least one error with the code:" + errCode + " should exist");
+    }
+
+    public void assertNoErrorsHavingCode(ValidationErrors errors, String errCode){
+    	if(errors.hasErrors()){
+    		for (int i = 0; i < errors.getErrorCount(); i++) {
+    	           if(errors.getErrorAt(i).getCode().equals(errCode)) fail("No error with error code :" + errCode + ", should exist");
+    	    }
+    	}
+    }
+
     public ExpeditedAdverseEventReport createAEReport() {
         Participant p = Fixtures.createParticipant("Biju", "Joseph");
         Study s = Fixtures.createStudy("Test");
@@ -262,6 +279,7 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
 
         return aeReport;
     }
+
 
     public ValidationErrors retrieveValidationErrors(List<Object> list) {
         for (Object o : list)
