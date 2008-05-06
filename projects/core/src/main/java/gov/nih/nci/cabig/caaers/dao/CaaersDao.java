@@ -264,6 +264,14 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     public T merge(T o) {
         return (T) getHibernateTemplate().merge(o);
     }
+    
+    /**
+     * Will flush the hibernate session. 
+     */
+    @Transactional(readOnly = false)
+    public void flush(){
+    	getHibernateTemplate().flush();
+    }
 
     /**
      * Detaches the passed-in instance (probably a domain object or a collection of domain objects)
