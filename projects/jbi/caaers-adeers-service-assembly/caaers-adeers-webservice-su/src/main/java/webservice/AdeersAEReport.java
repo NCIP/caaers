@@ -20,7 +20,12 @@ package webservice;
 import java.io.IOException;
 import java.io.StringReader;
 
+import javax.annotation.Resource;
+import javax.jbi.messaging.DeliveryChannel;
+import javax.jbi.messaging.ExchangeStatus;
+import javax.jbi.messaging.InOnly;
 import javax.jbi.messaging.MessageExchange;
+import javax.jbi.messaging.MessageExchangeFactory;
 import javax.jbi.messaging.MessagingException;
 import javax.jbi.messaging.NormalizedMessage;
 import javax.xml.namespace.QName;
@@ -35,11 +40,9 @@ import org.apache.servicemix.components.util.ComponentSupport;
 import org.apache.servicemix.jbi.jaxp.SourceTransformer;
 import org.xml.sax.SAXException;
 
-import caaers.client.AEReportJobInfo;
-
 public class AdeersAEReport extends ComponentSupport implements MessageExchangeListener {
     
-    private static final Log log = LogFactory.getLog(AdeersAEReport.class); 
+	private static final Log log = LogFactory.getLog(AdeersAEReport.class); 
     private AdeersWebService adeersWebService;
     private String caaersAeReportId = "";
     private String reportId = "";
@@ -55,14 +58,28 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
     }
     
     public void onMessageExchange(MessageExchange exchange) throws MessagingException {
-    	System.out.println("recieved request");
-        processInputRequest(exchange);
+    		
+    		log.debug("Received Request");
+    		log.debug("Status :: ["+ exchange.getStatus()+"]");
+    		log.debug("Active :: ["+ exchange.getStatus()== ExchangeStatus.ACTIVE + "]");
+    		log.debug("Done   :: ["+ exchange.getStatus()== ExchangeStatus.DONE + "]");
+    		
+    		if(exchange.getStatus() == ExchangeStatus.ACTIVE){    			
+    			log.info("Current Status  :: "+ exchange.getStatus());
+    			processInputRequest(exchange);
+    		}else{
+    			//Exchange Already Processed    			
+    			log.debug("Current Status  :: "+ exchange.getStatus());
+    		}
     }
 
     private void processInputRequest(MessageExchange exchange) throws MessagingException{
     	String inXml="";
     	try {
     		inXml=new SourceTransformer().contentToString(exchange.getMessage("in"));
+    		log.debug("------XML to be processed  Begin--------- ");
+    		log.debug( inXml);
+    		log.debug("------XML to be processed End--------- "); 
 		} catch (TransformerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,7 +93,7 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	//System.out.println("XML to be processed: "+inXML);
+    	
 		
 		//String outXml=this.adeersWebService.callWebService(inXml);
 		
@@ -84,18 +101,19 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		
 		try {
 			aeReportJobInfoStr = this.adeersWebService.callWebService(inXml);
+			log.debug("------------Response From Adeers Begin---------");
+			log.debug(aeReportJobInfoStr);
+			log.debug("------------Response From Adeers End---------");
 		} catch (Exception e) {
 			//CAAERS-101 - Monish Dombla
 			log.error("--Exception While Invoking adEERS WebService--", e);			
 			aeReportJobInfoStr = constructCommunicationExceptionXml(inXml,e);
-		}
-		
-
+		}				
     	NormalizedMessage response = exchange.createMessage();
         response.setContent(new StreamSource(new StringReader(aeReportJobInfoStr)));
-        exchange.setMessage(response, "out");
-        System.out.println("sending reply...");
-        send(exchange);
+        exchange.setMessage(response, "out");        
+        log.debug("Sending Reply....");
+        send(exchange);               
     }
     
     /**This method constructs an xml message similar to adEERS response xml.
@@ -139,7 +157,9 @@ public class AdeersAEReport extends ComponentSupport implements MessageExchangeL
 		exceptionXmlBuilder.append("</submitAEDataXMLAsAttachmentResponse>").append("\n");
 		exceptionXmlBuilder.append("</soapenv:Body>").append("\n");
 		exceptionXmlBuilder.append("</soapenv:Envelope>");
-		log.info("-------Exception XML---- ::: " + exceptionXmlBuilder.toString());
+		log.debug("-------Exception XML Start--------------");
+		log.debug(exceptionXmlBuilder.toString());
+		log.debug("-------Exception XML End----------------");		
 		return  exceptionXmlBuilder.toString();    	
     }
 }
