@@ -176,15 +176,24 @@
         Note:- Forced to load only once, as I observed that in this task is getting called in every
         	subant invoke.    
 		=======================================================-->
-	<target name="load-ivy" depends="download-ivy,download-jsch" unless="ivy.loaded">
+	<target name="load-online-settings" unless="offline">
 		<path id="ivy.lib.path">
 			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
 		</path>
-	   	<taskdef resource="org/apache/ivy/ant/antlib.xml"
-	   	         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path" />
+		<taskdef resource="org/apache/ivy/ant/antlib.xml"
+		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
 		<ivy:settings file="${proj.root.dir}/ivysettings.xml" id="caaers.ivy.instance" />
-		<property name="ivy.loaded" location="true"/>
-
+	</target>
+	<target name="load-offline-settings" if="offline">
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml"
+		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
+		<ivy:settings file="${proj.root.dir}/ivysettings-offline.xml" id="caaers.ivy.instance" />
+	</target>
+	<target name="load-ivy" depends="download-ivy,download-jsch, load-online-settings, load-offline-settings" unless="ivy.loaded">
+				<property name="ivy.loaded" location="true"/>
 	</target>
 	
     <!-- ======================================================== 
