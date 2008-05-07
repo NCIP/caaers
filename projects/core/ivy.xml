@@ -77,6 +77,7 @@
         	<dependency org="org.apache.geronimo.specs"  name="geronimo-jms_1.1_spec" rev="1.1" />
         	<dependency org="jboss"  name="jboss-jsr77" rev="3.2.3" />
         	<dependency org="org.apache.activemq" name="activemq-core" rev="4.1.1" conf="build;runtime;dist" />
+        	<dependency org="backport-util-concurrent" name="backport-util-concurrent" rev="2.1" force="true" /> 
         	<dependency org="freemarker" name="freemarker" rev="2.3.4" />
         	
         	<!--  Quartz modules -->
