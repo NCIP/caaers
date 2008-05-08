@@ -137,5 +137,11 @@
 		</eclipseClasspath>
 		
 	</target>
-	
+	<!-- ================================= 
+          target: report-all              
+         ================================= -->
+    <target name="report-all" depends="buildlist" description="--> Generate report of all the project dependencies">
+    	<subant target="report" buildpathref="build-path" />
+    </target>
+
 </project>
