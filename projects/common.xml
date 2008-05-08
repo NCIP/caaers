@@ -229,7 +229,8 @@
     	============================================================ -->
     <target name="report" depends="resolve" description="--> generates a report of dependencies">
     	<echo message="Executing in ${ant.project.name}" />
-        <ivy:report todir="${build.dir}"/>
+    	<mkdir dir="${build.dir}/dependency-reports"/>
+        <ivy:report todir="${build.dir}/dependency-reports"/>
     </target>
     
     <!-- =============================================================== 
@@ -549,5 +550,7 @@
     		</classpath>
     	</useCaseTraceabilityReport>
     </target>
+
+
 
 </project>
