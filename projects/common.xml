@@ -532,41 +532,7 @@
          ================================= -->
     <target name="testing" depends="load-ivy" 
     		description="--> this target is for ant build file development. Should not be called for performing usual tasks" />
-	<!-- ================================= 
-          target: uctrace-report-temp            
-         ================================= -->
-    <target name="uctrace-report-temp" depends="load-ivy, resolve" description="--> Tracebility matrix report">
-    	<ivy:retrieve organisation="log4j" module="log4j" revision="1.2.12" inline="true" pattern="${lib.dir}/log4j-1.2.14.jar" sync="true"/>
-    	<taskdef name="useCaseTraceabilityReport" classname="gov.nih.nci.cabig.caaers.ant.UseCaseTraceabilityReportTask">
-    	            <classpath>
-    	                <pathelement location="C:\temp\usecase-report.jar"/>
-    	            	<fileset dir="${lib.dir}">
-    	            	  <include name="*.jar"/>
-    	            	</fileset>
-    	            </classpath>
-    	        </taskdef>
-    	<useCaseTraceabilityReport
-    	                        destDir="${build.dir}/uctrace"
-    	                        srcDir="${test.src}"
-    	                        useCasesAnnotationClassName="gov.nih.nci.cabig.caaers.CaaersUseCases">
-
-    	                    <classpath>
-    	                    	<pathelement location="C:\temp\usecase-report.jar"/>
-    	                    	<!--pathelement location="C:\Documents and Settings\Jojo Singh\.m2\repository\gov\nih\nci\cabig\ctms\ctms-commons-testing-uctrace\0.9-SNAPSHOT\ctms-commons-testing-uctrace-0.9-SNAPSHOT.jar"/-->
-    	                    	<!--	<pathelement location="C:\Documents and Settings\Jojo Singh\.m2\repository\gov\nih\nci\cabig\ctms\ctms-commons-base\0.9-SNAPSHOT\ctms-commons-base-0.9-SNAPSHOT.jar"/>
-    	                    	<pathelement location="C:\Documents and Settings\Jojo Singh\.ivy2\cache\ant\ant\jars\ant-1.6.5.jar"/> -->
-    	                    	<fileset dir="${lib.dir}">
-    	                            <include name="*.jar"/>
-    	                        </fileset>
-    	                    	<fileset dir="${test.lib.dir}">
-    	                    	 	<include name="*.jar"/>
-    	                    	  </fileset>
-    	                    	<pathelement path="${test.classes.dir}"/>
-    	                    	<pathelement path="${classes.dir}"/>
-    	                    </classpath>
-
-    	                </useCaseTraceabilityReport>
-    </target>
+	
 <!-- ================================= 
           target: uctrace-report              
          ================================= -->
