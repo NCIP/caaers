@@ -499,6 +499,7 @@
 			cobertura-check=net.sourceforge.cobertura.ant.CheckTask
 			-->
 			<mkdir dir="${cobertura.report.dir}" />
+			<mkdir dir="${cobertura.report.dir}/xmlreport" />
 			<taskdef  resource="tasks.properties">
 				<classpath>
 					<fileset dir="${test.lib.dir}">
@@ -547,6 +548,7 @@
 	============================================================== -->
 	<target name="cobertura-report" description="-> Will create the corbetura coverage report">
 		<cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
+		<cobertura-report format="xml" destdir="${cobertura.report.dir}/xmlreport" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 	</target>
 	
 	<!-- ============================================================== 
