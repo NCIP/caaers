@@ -20,12 +20,9 @@ package webservice;
 import java.io.IOException;
 import java.io.StringReader;
 
-import javax.annotation.Resource;
-import javax.jbi.messaging.DeliveryChannel;
+
 import javax.jbi.messaging.ExchangeStatus;
-import javax.jbi.messaging.InOnly;
 import javax.jbi.messaging.MessageExchange;
-import javax.jbi.messaging.MessageExchangeFactory;
 import javax.jbi.messaging.MessagingException;
 import javax.jbi.messaging.NormalizedMessage;
 import javax.xml.namespace.QName;
