@@ -143,5 +143,24 @@
     <target name="report-all" depends="buildlist" description="--> Generate report of all the project dependencies">
     	<subant target="report" buildpathref="build-path" />
     </target>
+	
+    <target name="coverage-report" depends="clean-cobertura-dir,load-ivy" description="--> Generates a combined Code coverage report">
+    	<ivy:resolve inline="true" organisation="cobertura" module="cobertura" revision="1.8" />
+    	<ivy:cachepath organisation="cobertura" module="cobertura" revision="1.8" inline="true" pathid="cobertura.classpath"/>
+    	<mkdir dir="${cobertura.report.dir}" />
+    	<taskdef  resource="tasks.properties" classpathref="cobertura.classpath" />
+    	<cobertura-merge datafile="${cobertura.report.dir}/cobertura.ser">
+    		<fileset dir="." includes="**/cobertura.ser" />
+		</cobertura-merge>
+    	<echo>================================================================</echo>
+    	<echo>Code Coverage Report available at </echo>
+    	<echo>${cobertura.report.dir}/index.html</echo>
+    	<echo>================================================================</echo>
+    	<cobertura-report format="html" destdir="${cobertura.report.dir}"  datafile="${cobertura.report.dir}/cobertura.ser" >
+    	    <fileset dir=".">
+    	        <include name="**/src/main/java/**/*.java" />
+    	    </fileset>
+    	</cobertura-report>
+	</target>
 
 </project>
