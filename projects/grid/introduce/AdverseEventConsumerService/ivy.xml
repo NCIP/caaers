@@ -25,7 +25,8 @@
         
         <dependencies defaultconfmapping="build->master(*);runtime->master(*),runtime(*);dist->default(*);distGrid->default(*)">
 
-			
+			<!--  ant-contrib -->
+			<dependency org="ant-contrib" name="ant-contrib" rev="1.0b2" />
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
 				conf="build->publish;runtime->runtime,publish;dist->dist;distGrid->distGrid"/>

@@ -66,7 +66,7 @@
 
     <taskdef resource="net/sf/antcontrib/antlib.xml">
         <classpath>
-            <pathelement location="${lib.dir}/ant-contrib.jar" />
+            <pathelement location="${basedir}/ext/lib/ant-contrib-1.0b2.jar" />
         </classpath>
     </taskdef>
 

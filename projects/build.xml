@@ -15,7 +15,7 @@
     		
     		<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
-    		<!--<fileset file="${basedir}/grid/introduce/AdverseEventConsumerService/ivy-build.xml" />-->
+    		<fileset file="${basedir}/grid/introduce/AdverseEventConsumerService/ivy-build.xml" />
     		
     	</ivy:buildlist>
   		<property name="buildlist.done" value="true" />
