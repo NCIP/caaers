@@ -66,5 +66,14 @@
 			<echo message="Executing jar in ${ant.project.name}" />
 	</target>
 	<target name="clean" depends="common.clean, clean-war"></target>
+	
+	<target name="catmango" depends="war">
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/classes" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
+		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes"  filter="false" />
+		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib"  filter="false" />
+	</target>
 
 </project>
