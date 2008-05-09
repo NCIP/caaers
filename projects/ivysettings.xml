@@ -15,12 +15,15 @@
               <ivy pattern="${user.home}/.ivy2/cache/[organisation]/[module]/ivy-[revision].xml"/>
               <artifact pattern="${user.home}/.ivy2/cache/[organisation]/[module]/[type]s/[artifact]-[revision].[ext]"/>
         </filesystem>
-			<!--  Semanticbits shared repository [using http] -->
-			<url name="semanticbits-repo-http">
+        
+        
+		<!--  Semanticbits shared repository [using http] -->
+		<url name="semanticbits-repo-http">
 			<ivy pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
   			<artifact pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
-			</url>
-			<!--  Semanticbits shared repository [using sftp] -->
+		</url>
+		
+		<!--  Semanticbits shared repository [using sftp] -->
 		<sftp name="semanticbits-repo-sftp" user="caaers" userPassword="caaers" host="10.10.10.2">
 		  <ivy pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
 		  <artifact pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>

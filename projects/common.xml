@@ -23,7 +23,6 @@
 		<available file="${ivy.jar.dir}/jsch-0.1.31.jar" />
 	</condition>
 	
-	
 	<!-- ===================================================================
 		copy-resources : This task, copy files from source to destination, with filtering on
 	======================================================================= -->
@@ -146,8 +145,10 @@
 		<mkdir dir="${test.lib.dir}"/>
 		<mkdir dir="${classes.dir}" />
 		<mkdir dir="${test.classes.dir}" />
+		<mkdir dir="${instrumented.classes.dir}"/>
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${generated.src.dir}" />
+		<mkdir dir="${cobertura.report.dir}" />
 		<property name="no.init" value="true" />
 	</target>
 	
@@ -465,25 +466,72 @@
 		<delete includeemptydirs="true" dir="${test.reports.dir}" />
 	</target>
 	
+	<!-- ================================= 
+	          target: clean-cobertura-dir             
+	         ================================= -->	
+		<target name="clean-cobertura-dir" description="--> clean the cobertura report dir">
+			<echo message="Executing in ${ant.project.name}" />
+			<delete includeemptydirs="true" dir="${cobertura.report.dir}" />
+		</target>
+	<!-- ================================================================
+	    target : clean-cobertura-instruments
+	===================================================================-->
+	<target name="clean-cobertura-instruments" description="--> clean the cobertura instruments classes dir">
+				<echo message="Executing in ${ant.project.name}" />
+				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
+	</target>
     <!-- ================================= 
           target: clean              
          ================================= -->
-    <target name="clean" depends="clean-classes, clean-classes-test, clean-generated-src, clean-dist, clean-lib, clean-lib-test, clean-test-results, clean-test-reports" 
+    <target name="clean" depends="clean-classes, clean-classes-test, clean-generated-src, clean-dist, clean-lib, 
+    			clean-lib-test, clean-test-results, clean-test-reports,clean-cobertura-instruments,clean-cobertura-dir" 
     	description="--> clean the project" />
 	
+	<!-- ============================================================== 
+		target: corbetura-init                                                
+	============================================================== -->
+		
+	<target name="corbetura-init" depends="clean-cobertura-dir">
+			<!--
+			cobertura-instrument=net.sourceforge.cobertura.ant.InstrumentTask
+			cobertura-merge=net.sourceforge.cobertura.ant.MergeTask
+			cobertura-report=net.sourceforge.cobertura.ant.ReportTask
+			cobertura-check=net.sourceforge.cobertura.ant.CheckTask
+			-->
+			<mkdir dir="${cobertura.report.dir}" />
+			<taskdef  resource="tasks.properties">
+				<classpath>
+					<fileset dir="${test.lib.dir}">
+						<include name="**/*.jar" />
+					</fileset>
+				</classpath>
+			</taskdef>
+			<cobertura-instrument todir="${instrumented.classes.dir}" datafile="${cobertura.report.dir}/cobertura.ser">
+			    <fileset dir="${classes.dir}">
+			        <include name="**/*.class"/>
+			    </fileset>
+			</cobertura-instrument>
+	</target>
+		
 	<!-- ============================================================== 
 		target: test                                                
 	============================================================== -->
 	<condition property="testPattern" value="**/${test}.class" else="gov/nih/nci/cabig/**/*Test.class">
 		<isset property="test"/>
 	</condition>
-	<target name="test" if="run.test" depends="clean-test-results" description="Runs the testcases">
+	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
 		<echo message="Executing in ${ant.project.name}" />
 		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
 		<mkdir dir="${test.results.dir}" />
+		
 		<junit printsummary="yes" errorproperty="test.failed" failureproperty="test.failed" 
 			showoutput="true" fork="true" forkmode="once" timeout="600000" >
+			
+			<classpath location="${instrumented.classes.dir}" />
 			<classpath refid="test.run.classpath" />
+			
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${cobertura.report.dir}/cobertura.ser" />
+			
 			<formatter type="plain"/>
 			<formatter type="xml" />
 			<batchtest fork="yes" todir="${test.results.dir}">
@@ -493,11 +541,18 @@
 			</batchtest>
 		</junit>
 	</target>
+
+ 	<!-- ============================================================== 
+			target: cobertura-report                                                
+	============================================================== -->
+	<target name="cobertura-report" description="-> Will create the corbetura coverage report">
+		<cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
+	</target>
 	
 	<!-- ============================================================== 
 		target: test-report                                                
 	============================================================== -->
-	<target name="test-report" if="run.test" depends="test">
+	<target name="test-report" if="run.test" depends="test,cobertura-report">
 		<echo message="Executing in ${ant.project.name}" />
 		<mkdir dir="${test.reports.dir}"/>
         <junitreport todir="${test.reports.dir}">
@@ -509,6 +564,8 @@
 		<fail message="Tests failed! ${ant.project.name} , Check test reports in ${test.reports.dir} for more details." 
 					if="test.failed" />
 	</target>
+	
+	
 	
 	<!-- ==========================================================
 		target: debug-info

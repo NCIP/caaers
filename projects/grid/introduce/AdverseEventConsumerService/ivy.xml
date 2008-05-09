@@ -90,6 +90,6 @@
 			<dependency org="dbunit" name="dbunit" rev="2.1" conf="test->default"/>
 			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />
         	<dependency org="xmlunit" name="xmlunit" rev="1.0" conf="test->default" />
-        	
+        	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
         </dependencies>
 </ivy-module>
