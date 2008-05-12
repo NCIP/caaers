@@ -169,6 +169,13 @@
 		<echo message="Downloading IVY....." />
 		<get src="${ivy.jar.location}" dest="${ivy.jar.file}" usetimestamp="true"/>
 	</target>
+	
+	<property name="offline" value="${env.offline}" />
+	<condition property="online">
+		<isfalse value="${offline}"/>
+	</condition>
+
+	
 	<!-- ====================================================
 		target: load-ivy         
             This target is not necessary if you put ivy.jar in your ant lib directory
@@ -177,15 +184,18 @@
         Note:- Forced to load only once, as I observed that in this task is getting called in every
         	subant invoke.    
 		=======================================================-->
-	<target name="load-online-settings" unless="offline">
+	<target name="load-online-settings" if="online">
+		<echo message="Going for online settings" />
 		<path id="ivy.lib.path">
 			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
 		</path>
 		<taskdef resource="org/apache/ivy/ant/antlib.xml"
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
 		<ivy:settings file="${proj.root.dir}/ivysettings.xml" id="caaers.ivy.instance" />
+		<property name="loaded.ivy.settings" value="true" />
 	</target>
-	<target name="load-offline-settings" if="offline">
+	<target name="load-offline-settings" unless="loaded.ivy.settings">
+		<echo message="Going for offline settings" />
 		<path id="ivy.lib.path">
 			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
 		</path>
@@ -585,6 +595,8 @@
 			<echo message="${ant.file.common}" />
 			<echo message="db = ${db}" />
 			<echo message="databaseConfigurationName = ${databaseConfigurationName}" />
+			<echo message="offline : ${offline}" />
+			<echo message="online :${online}" />
 	</target>
 	
 	<!-- ================================= 
