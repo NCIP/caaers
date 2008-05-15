@@ -269,6 +269,8 @@ public abstract class BaseResourceBase implements Resource, ResourceProperties {
 	
 		loadServiceMetadataFromFile();
 	
+		loadDomainModelFromFile();
+	
 	}
 
 
@@ -279,6 +281,18 @@ public abstract class BaseResourceBase implements Resource, ResourceProperties {
 					+ getConfiguration().getServiceMetadataFile());
 			this.serviceMetadataValue = (gov.nih.nci.cagrid.metadata.ServiceMetadata) Utils.deserializeDocument(dataFile.getAbsolutePath(),
 				gov.nih.nci.cagrid.metadata.ServiceMetadata.class);
+		} catch (Exception e) {
+			logger.error("ERROR: problem populating metadata from file: " + e.getMessage(), e);
+		}
+	}		
+	
+	
+	private void loadDomainModelFromFile() {
+		try {
+			File dataFile = new File(ContainerConfig.getBaseDirectory() + File.separator
+					+ getConfiguration().getDomainModelFile());
+			this.domainModelValue = (gov.nih.nci.cagrid.metadata.dataservice.DomainModel) Utils.deserializeDocument(dataFile.getAbsolutePath(),
+				gov.nih.nci.cagrid.metadata.dataservice.DomainModel.class);
 		} catch (Exception e) {
 			logger.error("ERROR: problem populating metadata from file: " + e.getMessage(), e);
 		}

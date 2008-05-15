@@ -14,6 +14,7 @@ public class ResourceConfiguration {
 	private String registrationTemplateFile;
 	private boolean performRegistration;
 	private String serviceMetadataFile;
+	private String domainModelFile;
 
 
 
@@ -45,6 +46,17 @@ public class ResourceConfiguration {
 	
 	public void setServiceMetadataFile(String serviceMetadataFile) {
 		this.serviceMetadataFile = serviceMetadataFile;
+	}
+	
+	
+	
+	public String getDomainModelFile() {
+		return domainModelFile;
+	}
+	
+	
+	public void setDomainModelFile(String domainModelFile) {
+		this.domainModelFile = domainModelFile;
 	}
 		
 }
