@@ -22,6 +22,11 @@
           <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the serviceMetadata extract -->
           <value>ETC-PATH/serviceMetadata.xml</value>
         </parameter>
+        <parameter>
+          <name>domainModelFile</name>
+          <!-- Set this to the relative path (from the container root, e.g GLOBUS_LOCATION for globus container) of the domainModel extract -->
+          <value>ETC-PATH/domainModel.xml</value>
+        </parameter>
       </resourceParams>
     </resource>
     <resource name="serviceconfiguration" type="gov.nih.nci.cagrid.caaers.service.ServiceConfiguration">
