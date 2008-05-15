@@ -5,7 +5,7 @@
     This applicationContext contains configuration for Spring itself
 -->
 
-<beans>
+<beans default-lazy-init="true">
     <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
         <property name="properties">
             <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
