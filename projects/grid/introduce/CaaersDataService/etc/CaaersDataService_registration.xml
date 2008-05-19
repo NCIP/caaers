@@ -6,10 +6,10 @@
   xmlns="http://mds.globus.org/servicegroup/client">
   <!-- The ServiceGroupEPR defines the servicegroup to which registrations will be made -->
   <ServiceGroupEPR>
-    <wsa:Address>http://index.training.cagrid.org:8080/wsrf/services/DefaultIndexService</wsa:Address>
+    <wsa:Address>INDEX_SERVICE_URL</wsa:Address>
   </ServiceGroupEPR>
   <!-- Specifies that the registration will be renewed every 10 minutes -->
-  <RefreshIntervalSecs>10</RefreshIntervalSecs>
+  <RefreshIntervalSecs>REGISTRATION_REFRESH</RefreshIntervalSecs>
   <Content xsi:type="agg:AggregatorContent" xmlns:agg="http://mds.globus.org/aggregator/types">
     <agg:AggregatorConfig xsi:type="agg:AggregatorConfig">
       <agg:GetMultipleResourcePropertiesPollType
