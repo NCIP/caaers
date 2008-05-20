@@ -79,7 +79,13 @@ public class InputFieldFactory {
         return createInputField(AUTOCOMPLETER, propertyName, displayName, required);
     }
     
+    public static InputField createInplaceTextEditorField(String propertyName, String displayName, boolean required){
+    	return createInputField(INPLACE_TEXT, propertyName, displayName, required);
+    }
     
+    public static InputField createInplaceTextEditorField(String propertyName, String displayName, FieldValidator... validators){
+    	return createInputField(INPLACE_TEXT, propertyName, displayName, validators);
+    }
 
     public static InputField createSelectField(String propertyName, String displayName,
                     Map<Object, Object> options, FieldValidator... validators) {
