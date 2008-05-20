@@ -73,7 +73,6 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             }
         }
 
-        System.out.println("END POINT URL .. " + endPointUrl);
 
         if (!endPointUrl) {
             // TODO: take out
