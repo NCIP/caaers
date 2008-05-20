@@ -120,10 +120,15 @@ public class CheckpointTab extends AeTab {
     @SuppressWarnings("deprecation")
     @Override
     /**
-     * We do the following things here 1. Find the newly checked report definitions 2. Remove the
-     * unselected report definitions 3. Create the reports (by calling evaluation service) 4. Save
-     * the AEReport 5. Fetch the mandatorySections based on the reports selected 6. Pre-instantiate
-     * the mandatory section's repeating fields (biz rule) 7. Refresh the mandatory fields map.
+     * We do the following things here 
+     * 	1. Find the newly checked report definitions 
+     *  2. Remove the
+     * unselected report definitions
+     *  3. Create the reports (by calling evaluation service)
+     *  4. Save the AEReport
+     *  5. Fetch the mandatorySections based on the reports selected 
+     *  6. Pre-instantiate the mandatory section's repeating fields (biz rule) 
+     *  7. Refresh the mandatory fields map.
      */
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
                     Errors errors) {
