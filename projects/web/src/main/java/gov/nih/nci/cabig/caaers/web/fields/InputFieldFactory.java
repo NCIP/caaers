@@ -5,7 +5,7 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.DATE;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.LONGSELECT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.SELECT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXTAREA;
+import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.Collection;
@@ -29,46 +29,57 @@ public class InputFieldFactory {
 
     private InputFieldFactory() {
     }
+    
+    public static InputField createInputField(InputField.Category category, String propertyName, String displayName,
+            FieldValidator... validators) {
+    	return new DefaultInputField(category, propertyName, displayName, validators);
+    }
+    public static InputField createInputField(InputField.Category category, String propertyName, String displayName,
+            boolean required) {
+    	return new DefaultInputField(category, propertyName, displayName, required);
+    }
 
     public static InputField createTextField(String propertyName, String displayName,
                     FieldValidator... validators) {
-        return new DefaultInputField(TEXT, propertyName, displayName, validators);
+        return createInputField(TEXT, propertyName, displayName, validators);
     }
 
     public static InputField createTextField(String propertyName, String displayName,
                     boolean required) {
-        return new DefaultInputField(TEXT, propertyName, displayName, required);
+        return  createInputField(TEXT, propertyName, displayName, required);
     }
 
     public static InputField createDateField(String propertyName, String displayName,
                     FieldValidator... validators) {
-        return new DefaultInputField(DATE, propertyName, displayName, validators);
+        return createInputField(DATE, propertyName, displayName, validators);
     }
 
     public static InputField createDateField(String propertyName, String displayName,
                     boolean required) {
-        return new DefaultInputField(DATE, propertyName, displayName, required);
+        return createInputField(DATE, propertyName, displayName, required);
     }
 
     public static InputField createTextArea(String propertyName, String displayName,
                     FieldValidator... validators) {
-        return new DefaultInputField(TEXTAREA, propertyName, displayName, validators);
+        return createInputField(TEXTAREA, propertyName, displayName, validators);
     }
 
     public static InputField createTextArea(String propertyName, String displayName,
                     boolean required) {
-        return new DefaultInputField(TEXTAREA, propertyName, displayName, required);
+        return createInputField(TEXTAREA, propertyName, displayName, required);
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName,
                     FieldValidator... validators) {
-        return new DefaultInputField(AUTOCOMPLETER, propertyName, displayName, validators);
+        return createInputField(AUTOCOMPLETER, propertyName, displayName, validators);
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName,
                     boolean required) {
-        return new DefaultInputField(AUTOCOMPLETER, propertyName, displayName, required);
+        return createInputField(AUTOCOMPLETER, propertyName, displayName, required);
     }
+    
+    
 
     public static InputField createSelectField(String propertyName, String displayName,
                     Map<Object, Object> options, FieldValidator... validators) {
