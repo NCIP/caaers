@@ -37,13 +37,12 @@
             <value>s[datasource.password]</value>
         </property>
     </bean>
-
-	<bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
-        <property name="properties">
-            <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
                 <property name="databaseConfigurationName"><value>test</value></property>
-            </bean>
-        </property>
+    </bean>
+	<bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="caaersDatasourceFactoryBean" />
+           
         <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
              at build time -->
         <property name="placeholderPrefix"><value>s[</value></property>
