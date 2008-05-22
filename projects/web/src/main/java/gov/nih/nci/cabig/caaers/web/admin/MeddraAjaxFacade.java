@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.dao.meddra.SystemOrganClassDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
@@ -38,8 +37,6 @@ public class MeddraAjaxFacade {
     private MedDRADao meddraDao;
 
     private LowLevelTermDao lltDao;
-    
-    private SystemOrganClassDao systemOrganClassDao;
     
     private TransactionTemplate txTemplate;
     
@@ -258,14 +255,6 @@ public class MeddraAjaxFacade {
     
     public void setMeddraVersion(MeddraVersion meddraVersion){
     	this.meddraVersion = meddraVersion;
-    }
-    
-    public SystemOrganClassDao getSystemOrganClassDao(){
-    	return systemOrganClassDao;
-    }
-    
-    public void setSystemOrganClassDao(SystemOrganClassDao systemOrganClassDao){
-    	this.systemOrganClassDao = systemOrganClassDao;
     }
     
     /*public void setDsTransactionManager(DataSourceTransactionManager dsTransactionManager){
