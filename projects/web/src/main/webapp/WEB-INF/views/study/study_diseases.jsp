@@ -240,9 +240,10 @@
            </c:if>
            
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
+            var meddraVersionId = ${meddraVersionId};
             AE.createStandardAutocompleter('diseaseLlt',
 			function(autocompleter, text) {
-					createAE.matchLowLevelTermsByCode(text, function(values) {
+					createAE.matchLowLevelTermsByCode(meddraVersionId, text, function(values) {
 													autocompleter.setChoices(values)
 												})
 				},

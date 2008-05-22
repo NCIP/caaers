@@ -29,7 +29,7 @@
 	Event.observe(window, "load", function() {
 
 		Event.observe("aeTerminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })
-
+		
 		showMeddraTerms()
 		function showCtcTerms(){
 				if ($('aeTerminology.term').options[0].selected ){
@@ -45,6 +45,17 @@
 				}else{
 					$('aeTerminology.meddraVersion-row').style.display="none"
 				}
+		}
+		
+		Event.observe("diseaseTerminology.diseaseCodeTerm", "change", function(){ showDiseaseMeddraTerms(); })
+		
+		function showDiseaseMeddraTerms(){
+			var row = document.getElementById('diseaseMeddraOption');
+			if($('diseaseTerminology.diseaseCodeTerm').options[0].selected){
+				row.style.display = 'none';
+			}else{
+				row.style.display = '';
+			}
 		}
 
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
@@ -109,9 +120,14 @@
     </chrome:division>
     
     <chrome:division title="Disease coding terminology" >
-		 <c:forEach items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
-		  <tags:renderRow field="${field}"  />
-		 </c:forEach>
+    	 <c:forEach begin="0" end="0" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+    	 	<tags:renderRow field="${field}"  />
+    	 </c:forEach>
+    	 <div id="diseaseMeddraOption" style="display:none">
+    	 	<c:forEach begin="1" end="1" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
+    	 		<tags:renderRow field="${field}"  />
+    	 	</c:forEach>
+    	 </div>
     </chrome:division>
     
      <chrome:division title="Study method details" >
