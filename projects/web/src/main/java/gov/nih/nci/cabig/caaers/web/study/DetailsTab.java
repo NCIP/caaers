@@ -174,6 +174,9 @@ public class DetailsTab extends StudyTab {
                                             true, InputFieldFactory.collectOptions(Arrays
                                                             .asList(DiseaseCodeTerm.values()),
                                                             null, "displayName")));
+            fields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion",
+            				"MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
+            								"id", "name")));
         }
 
         if (dcpCodeFieldGroup == null) {
@@ -213,6 +216,14 @@ public class DetailsTab extends StudyTab {
             InputField field = fieldGroups.get("scFieldGroup").getFields().get(0);
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
                             + field.getDisplayName());
+        }
+        
+        // This is to validate if meddra version is selected incase the disease term is of type meddra
+        if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA
+        				&& command.getDiseaseTerminology().getMeddraVersion() == null) {
+        	InputField field = fieldGroups.get("sdcFieldGroup").getFields().get(1);
+        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
+        					+ field.getDisplayName());
         }
     }
 
