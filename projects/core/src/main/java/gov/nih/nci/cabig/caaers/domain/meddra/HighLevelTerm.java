@@ -1,39 +1,29 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "meddra_hlt")
 public class HighLevelTerm extends AbstractMeddraDomainObject {
 
-    private List<PreferredTerm> preferredTerms;
+    private HighLevelGroupTerm highLevelGroupTerms;
 
-    private List<HighLevelGroupTerm> highLevelGroupTerms;
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "highlevelterms")
-    public List<HighLevelGroupTerm> getHighLevelGroupTerms() {
+    @ManyToOne
+    @JoinTable(name = "meddra_hlgt_hlt", joinColumns = { @JoinColumn(name = "meddra_hlt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlgt_id") })
+    @Cascade(value = { CascadeType.LOCK })
+    public HighLevelGroupTerm getHighLevelGroupTerms() {
         return highLevelGroupTerms;
     }
 
-    public void setHighLevelGroupTerms(List<HighLevelGroupTerm> highLevelGroupTerms) {
+    public void setHighLevelGroupTerms(HighLevelGroupTerm highLevelGroupTerms) {
         this.highLevelGroupTerms = highLevelGroupTerms;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "meddra_hlt_pt", joinColumns = { @JoinColumn(name = "meddra_hlt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_pt_id") })
-    public List<PreferredTerm> getPreferredTerms() {
-        return preferredTerms;
-    }
-
-    public void setPreferredTerms(List<PreferredTerm> preferredTerms) {
-        this.preferredTerms = preferredTerms;
     }
 
     /*

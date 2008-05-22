@@ -1,39 +1,29 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
-import java.util.List;
-
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
 import javax.persistence.JoinTable;
-import javax.persistence.CascadeType;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "meddra_hlgt")
 public class HighLevelGroupTerm extends AbstractMeddraDomainObject {
 
-    private List<SystemOrganClass> systemOrganClasses;
+    private SystemOrganClass systemOrganClasses;
 
-    private List<HighLevelTerm> highlevelterms;
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "highLevelGroupTerms")
-    public List<SystemOrganClass> getSystemOrganClasses() {
+    @ManyToOne
+    @JoinTable(name = "meddra_soc_hlgt", joinColumns = { @JoinColumn(name = "meddra_hlgt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_soc_id") })
+    @Cascade(value = { CascadeType.LOCK })
+    public SystemOrganClass getSystemOrganClasses() {
         return systemOrganClasses;
     }
 
-    public void setSystemOrganClasses(List<SystemOrganClass> systemOrganClasses) {
+    public void setSystemOrganClasses(SystemOrganClass systemOrganClasses) {
         this.systemOrganClasses = systemOrganClasses;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "meddra_hlgt_hlt", joinColumns = { @JoinColumn(name = "meddra_hlgt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlt_id") })
-    public List<HighLevelTerm> getHighlevelterms() {
-        return highlevelterms;
-    }
-
-    public void setHighlevelterms(List<HighLevelTerm> highlevelterms) {
-        this.highlevelterms = highlevelterms;
     }
 
     /*

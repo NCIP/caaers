@@ -4,26 +4,17 @@ import java.util.List;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.JoinTable;
-import javax.persistence.CascadeType;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "meddra_soc")
 public class SystemOrganClass extends AbstractMeddraDomainObject {
-
-    private List<HighLevelGroupTerm> highLevelGroupTerms;
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    @JoinTable(name = "meddra_soc_hlgt", joinColumns = { @JoinColumn(name = "meddra_soc_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlgt_id") })
-    public List<HighLevelGroupTerm> getHighLevelGroupTerms() {
-        return highLevelGroupTerms;
-    }
-
-    public void setHighLevelGroupTerms(List<HighLevelGroupTerm> highLevelGroupTerms) {
-        this.highLevelGroupTerms = highLevelGroupTerms;
-    }
 
     /*
      * public boolean equals(Object o) { if (this == o) return true; if (o == null || getClass() !=

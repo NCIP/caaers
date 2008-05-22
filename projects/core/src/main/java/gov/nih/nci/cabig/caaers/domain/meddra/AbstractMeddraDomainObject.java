@@ -1,10 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
+import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * @author Krikor Krumlian
@@ -32,7 +38,9 @@ public class AbstractMeddraDomainObject implements DomainObject {
     private String icd9CmCode;
 
     private String jartCode;
-
+    
+    private MeddraVersion meddraVersion;
+    
     @Id
     public Integer getId() {
         return id;
@@ -121,5 +129,16 @@ public class AbstractMeddraDomainObject implements DomainObject {
 
     public void setWhoArtCode(String whoArtCode) {
         this.whoArtCode = whoArtCode;
+    }
+    
+    @ManyToOne
+    @JoinColumn(name="version_id")
+    @Cascade(value = { CascadeType.LOCK })
+    public MeddraVersion getMeddraVersion(){
+    	return meddraVersion;
+    }
+    
+    public void setMeddraVersion(MeddraVersion meddraVersion){
+    	this.meddraVersion = meddraVersion;
     }
 }

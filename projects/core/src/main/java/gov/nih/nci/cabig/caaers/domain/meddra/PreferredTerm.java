@@ -1,38 +1,28 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "meddra_pt")
 public class PreferredTerm extends AbstractMeddraDomainObject {
 
-    private List<LowLevelTerm> lowLevelTerms;
+    private HighLevelTerm highLevelTerms;
 
-    private List<HighLevelTerm> highLevelTerms;
-
-    @OneToMany
-    @JoinColumn(name = "meddra_pt_id")
-    public List<LowLevelTerm> getLowLevelTerms() {
-        return lowLevelTerms;
-    }
-
-    public void setLowLevelTerms(List<LowLevelTerm> lowLevelTerms) {
-        this.lowLevelTerms = lowLevelTerms;
-    }
-
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "preferredTerms")
-    public List<HighLevelTerm> getHighLevelTerms() {
+    @ManyToOne
+    @JoinTable(name = "meddra_hlt_pt", joinColumns = { @JoinColumn(name = "meddra_pt_id") }, inverseJoinColumns = { @JoinColumn(name = "meddra_hlt_id") })
+    @Cascade(value = { CascadeType.LOCK })
+    public HighLevelTerm getHighLevelTerms() {
         return highLevelTerms;
     }
 
-    public void setHighLevelTerms(List<HighLevelTerm> highLevelTerms) {
+    public void setHighLevelTerms(HighLevelTerm highLevelTerms) {
         this.highLevelTerms = highLevelTerms;
     }
 
