@@ -7,7 +7,18 @@ public abstract class JdbcDaoTestCase<D> extends CaaersDbTestCase {
     protected D getDao() {
         return (D) getApplicationContext().getBean(getDaoBeanName());
     }
-
+    
+    
+	@Override
+	public String[] getConfigLocations() {
+		// TODO Auto-generated method stub
+		  return new String[] {
+		            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
+		            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
+		            "classpath*:applicationContext-test.xml"
+		        };
+	}
+	
     /**
      * Defaults to the name of the class, less "Test", first letter in lowercase.
      */
