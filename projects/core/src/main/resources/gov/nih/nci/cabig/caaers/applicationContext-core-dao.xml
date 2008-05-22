@@ -11,8 +11,7 @@ This applicationContext contains the definition of the DAOs
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
-			default-lazy-init="true"
-        >
+			default-lazy-init="true">
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
 
@@ -20,6 +19,7 @@ This applicationContext contains the definition of the DAOs
         <property name="jdbcTemplate">
             <ref bean="jdbcTemplate"/>
         </property>
+        <property name="properties" ref="caaersDatasourceFactoryBean"/>
     </bean>
 
     <!-- HIBERNATE CONFIGURATION -->
@@ -345,7 +345,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
           autowire="byName"/>
 
-    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
+	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
           autowire="byType">
     </bean>
 
