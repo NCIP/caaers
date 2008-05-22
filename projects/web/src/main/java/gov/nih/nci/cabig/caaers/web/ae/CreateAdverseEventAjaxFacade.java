@@ -133,8 +133,9 @@ public class CreateAdverseEventAjaxFacade {
         return preExistingConditionDao.getBySubnames(extractSubnames(text));
     }
 
-    public List<LowLevelTerm> matchLowLevelTermsByCode(String text) {
-        return lowLevelTermDao.getBySubnames(extractSubnames(text));
+    public List<LowLevelTerm> matchLowLevelTermsByCode(int version_id, String text) {
+    	List<LowLevelTerm> terms= lowLevelTermDao.getByVersionSubnames(version_id, extractSubnames(text));
+    	return ObjectTools.reduceAll(terms, "id", "meddraCode", "meddraTerm");
     }
 
     public List<ChemoAgent> matchChemoAgents(String text) {
