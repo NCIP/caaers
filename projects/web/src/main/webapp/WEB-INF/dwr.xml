@@ -1,6 +1,6 @@
 <!DOCTYPE dwr
-    PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
-    "http://www.getahead.ltd.uk/dwr/dwr20.dtd">
+        PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 2.0//EN"
+        "http://www.getahead.ltd.uk/dwr/dwr20.dtd">
 <dwr>
     <allow>
         <create creator="spring" javascript="createAE">
@@ -14,41 +14,44 @@
         <create creator="spring" javascript="createStudy">
             <param name="beanName" value="studyAjaxFacade"/>
         </create>
-        
+
         <create creator="spring" javascript="createParticipant">
             <param name="beanName" value="participantAjaxFacade"/>
         </create>
-        
+
         <create creator="spring" javascript="createInvestigator">
             <param name="beanName" value="investigatorAjaxFacade"/>
         </create>
-        
-        	
-         <create creator="spring" javascript="searchStudy">
-            <param name="beanName" value="searchStudyAjaxFacade"/>            
-        </create> 
-        
-        <create creator="spring" javascript="search">
-            <param name="beanName" value="searchAjaxFacade"/>            
+
+
+        <create creator="spring" javascript="searchStudy">
+            <param name="beanName" value="searchStudyAjaxFacade"/>
         </create>
-            
+
+        <create creator="spring" javascript="search">
+            <param name="beanName" value="searchAjaxFacade"/>
+        </create>
+
         <create creator="spring" javascript="authorRule">
             <param name="beanName" value="ruleAjaxFacade"/>
         </create>
-        
+
         <create creator="spring" javascript="importMeddra">
             <param name="beanName" value="meddraAjaxFacade"/>
         </create>
-       <create creator="spring" javascript="reportDef">
+        <create creator="spring" javascript="reportDef">
             <param name="beanName" value="reportAjaxFacade"/>
-        </create>   
+        </create>
         <create creator="spring" javascript="createIND">
             <param name="beanName" value="indAjaxFacade"/>
         </create>
         <create creator="spring" javascript="importRoutineAe">
             <param name="beanName" value="importAjaxFacade"/>
         </create>
-               
+        <create creator="spring" javascript="adverseEventHistory">
+            <param name="beanName" value="adverseEventHistoryAjaxFacade"/>
+        </create>
+
         <create creator="new" javascript="date">
             <param name="class" value="java.util.Date"/>
         </create>

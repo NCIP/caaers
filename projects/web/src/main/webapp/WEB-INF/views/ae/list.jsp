@@ -3,11 +3,14 @@
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <html>
 <head>
     <title>AEs for ${command.participant.fullName} on ${command.study.shortTitle}</title>
     <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    <tags:dwrJavascriptLink objects="adverseEventHistory"/>
+
     <style type="text/css">
         .notify-unit.success {
             color: #090;
@@ -16,37 +19,37 @@
         .notify-unit.failure {
             color: #900;
         }
-        
-        
+
+
     </style>
     <script type="text/javascript">
-    
+
     	function toggleImage(id){
 			imageStr=document.getElementById(id).src;
 			//	alert(imageStr);
 			if(imageStr.indexOf('plus')==-1)
 				document.getElementById(id).src=imageStr.replace('minus','plus');
 			else
-				document.getElementById(id).src=imageStr.replace('plus','minus');	
+				document.getElementById(id).src=imageStr.replace('plus','minus');
 			//	alert(document.getElementById(id).src)
 		}
-		
+
 		function withdraw(aeReportId,reportId) {
             AE.showIndicator("notify-indicator-" + aeReportId)
             createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
                 AE.hideIndicator("notify-indicator-" + aeReportId)
                  var status = $("status"+reportId)
          		 var statusData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
-          
+
           		var action = $("action"+reportId)
           		actionData = $("amend"+reportId).innerHTML;
-          
+
           		Element.update(status, statusData)
           		Element.update(action, actionData)
             })
         }
-    
-    
+
+
         function notifyPsc(aeReportId) {
             AE.showIndicator("notify-indicator-" + aeReportId)
             createAE.pushAdverseEventToStudyCalendar(aeReportId, function(result) {
@@ -61,7 +64,7 @@
                 }
             })
         }
-		
+
 
 		function notifyPscRoutineEvent(aeReportId) {
 
@@ -78,9 +81,9 @@
                 }
             })
         }
-        
+
         function executeAction(aeReportId,url){
-			
+
 			var actions = $("actions-"+aeReportId)
 			 for ( i=0; i < actions.length; i++)
                {
@@ -90,9 +93,9 @@
                }
         }
 
-		
+
         Event.observe(window, "load", function() {
-            
+
             $$("a.notify").each(function(a) {
                 Event.observe(a, "click", function(e) {
                     Event.stop(e);
@@ -109,12 +112,12 @@
                 })
             })
         })
-        
+
 
             function showTable2(t) {
                 //$('indicator').className = 'indicator'
-                
-                var testDiv = $(t);               
+
+                var testDiv = $(t);
                 testDiv.show();
             }
             function hideTable2(t) {
@@ -123,8 +126,20 @@
                var testDiv = $(t);
                 testDiv.hide();
             }
-        
-        
+
+    function showAeHistory(adverseEventId) {
+               var parameterMap =  null;
+                       //getParameterMap('command');
+               adverseEventHistory.getAdeverseEventHistory(parameterMap, adverseEventId, showAeHistoryDiv);
+               function showAeHistoryDiv(table) {
+                   var testDiv = $('historyTable');
+                   testDiv.innerHTML = table;
+                   testDiv.show();
+
+               }
+
+           }
+
     </script>
 </head>
 <body>
@@ -161,7 +176,7 @@
 				<c:set var="documentLocation" value="${url}?participant=${subjectId }&resumeFlow=true&_page=1&_target3=3&studySite=" />
 			</c:when>
 			<c:otherwise>
-				<c:set var="documentLocation" value="${url}?studySiteId=" />	
+				<c:set var="documentLocation" value="${url}?studySiteId=" />
 			</c:otherwise>
 		</c:choose>
 		--%>
@@ -192,7 +207,7 @@
 												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             								</c:if>
 											* ${adverseEvent.adverseEventTerm.universalTerm}<br />
-											<c:if test="${report.areAllReportsSubmitted == false}">	
+											<c:if test="${report.areAllReportsSubmitted == false}">
             									</a>
             								</c:if>
 										</td>
@@ -206,23 +221,23 @@
 												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
             								</c:if>
 												${adverseEvent.adverseEventTerm.universalTerm}<br />
-											<c:if test="${report.areAllReportsSubmitted == false}">	
+											<c:if test="${report.areAllReportsSubmitted == false}">
             									</a>
-            								</c:if>	
+            								</c:if>
 										</td>
 										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >&nbsp;&nbsp;grade  ${adverseEvent.grade.code}</td>
 										</tr>
 									</c:otherwise>
 									</c:choose>
     							</c:forEach>
-                				
+
                 		</table>
 			</td>
-			
+
 			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
-			
+
 			<td width="20%">
-					
+
 					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.id}'/>')">
      					<OPTION selected label="none" value="none">None</OPTION>
      					<c:if test="${command.study.caaersXMLType}">
@@ -244,16 +259,16 @@
      						<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
      					</c:if>
  					</SELECT>
-					
+
 					|
-					
+
 					<c:if test="${report.notificationMessagePossible}">
                 		<span class="notify-unit" id="notify-unit-${report.id}">
                     	<a id="notify-${report.id}" class="notify" href="#">notify PSC</a>
                     	<tags:indicator id="notify-indicator-${report.id}"/>
                 		</span>
            			</c:if>
-					
+
 					<%--
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=pdf"/>">AdEERS PDF</a> <br/>
            			<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=medwatchpdf"/>">MedWatch PDF</a> <br/>
@@ -261,7 +276,7 @@
                    	<a href="<c:url value="/pages/ae/generateExpeditedfPdf?aeReport=${report.id}&format=xml"/>">caAERS XML</a>
            			--%>
 			</td>
-			
+
 		</tr>
 		<c:if test="${fn:length(report.nonWithdrawnReports) > 0}">
 			<tr id="studySites-table-${statusReport.index }" style="display:none;">
@@ -283,9 +298,9 @@
 						<c:forEach items="${report.nonWithdrawnReports}" var="theReport" varStatus="siteIndex">
 						<% String currClassJ=j%2==0? "odd":"even"; %>
 							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
-									onMouseOut="this.className='<%= currClass %>'" 
+									onMouseOut="this.className='<%= currClass %>'"
 									>
-									
+
 								<td width="20%">${theReport.reportDefinition.name}</td>
 								<td width="10%">${theReport.lastVersion.reportVersionId}</td>
 								<td width="20%">${fn:length(theReport.reportVersions) -1}</td>
@@ -295,7 +310,7 @@
 									</c:if>
 									<c:if test="${not command.reportsSubmittable[theReport.id]}" >
 										Incomplete
-									</c:if>	
+									</c:if>
 									</i>
 								</td>
 								<td width="20%" id="status${theReport.id}">
@@ -324,17 +339,17 @@
             									</a>
             								</c:if>
             							</span>
-            							
+
             							<div id="table${theReport.id}"
              								style="position: absolute; display: none;width:400px; left: 520px;  ">
-             								
+
              								<table class="tableRegion" width="100%">
              									<tr align="right">
              										<td><a href="javascript:hideTable2('table${theReport.id}')">
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>
-             									
+
              									<tr>
              										<td>${fn:replace(theReport.lastVersion.submissionMessage,".","<br>")}</td>
              									</tr>
@@ -355,14 +370,14 @@
             							</span>
             							<div id="table${theReport.id}"
              								style="position: absolute; display: none;width:400px; left: 520px;  ">
-             								
+
              								<table class="tableRegion" width="100%">
              									<tr align="right">
              										<td><a href="javascript:hideTable2('table${theReport.id}')">
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>
-             									
+
              									<tr>
              										<td><font color="red">${fn:replace(theReport.lastVersion.submissionMessage,".","<br>")}</font></td>
              									</tr>
@@ -375,18 +390,18 @@
 									<c:if test="${command.reportsSubmittable[theReport.id]}" >
 										<c:if test="${(theReport.lastVersion.reportStatus == 'PENDING') or (theReport.lastVersion.reportStatus == 'FAILED')}" >
 											<center>
-												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |	
+												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |
 												<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
 											</center>
 										</c:if>
-										
+
 										<c:if test="${ theReport.reportDefinition.amendable and ((theReport.lastVersion.reportStatus == 'WITHDRAWN') or (theReport.lastVersion.reportStatus == 'COMPLETED') )}" >
 											<center>
 												<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
 											</center>
 										</c:if>
-										
-										
+
+
             						</c:if>
 								</td>
 							</tr>
@@ -423,7 +438,7 @@
                 <c:when test="${not empty report.adverseEvents[0].adverseEventTerm}">
                     <c:forEach items="${report.adverseEvents}" var="adverseEvent">
                 		${adverseEvent.adverseEventTerm.universalTerm}<br />
-                
+
     				</c:forEach>
                 </c:when>
                 <c:when test="${not empty report.labs}">
@@ -483,17 +498,18 @@
                 			</a>
                 			</c:if>
                 		</td>
- 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td></tr>
- 						</table>	
+ 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td>
+                        <td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' ><a href="javascript:showAeHistory(${adverseEvent.id})">Show history</a></td></tr>
+                        </table>
     				</c:forEach>
-                    
+
                 </c:when>
                 <c:otherwise>
                     [Incomplete AE]
                 </c:otherwise>
             </c:choose>
             <% ind++; %>
-            
+
         </ec:column>
         <ec:column property="startDate" title="Start date">
             <tags:formatDate value="${routineReport.startDate}"/>
@@ -516,5 +532,6 @@
         </ec:column>
     </ec:row>
 </ec:table>
+<div id="historyTable"></div>
 </body>
 </html>
