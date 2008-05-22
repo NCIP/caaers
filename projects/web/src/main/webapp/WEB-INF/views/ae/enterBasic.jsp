@@ -39,6 +39,7 @@
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         var ctcVersion = ${command.assignment.studySite.study.ctcVersion.id}
+        var meddraVersion = ${command.assignment.studySite.study.aeTerminology.meddraVersion.id}
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
             <c:if test="${not empty ae.adverseEventCtcTerm.ctcTerm}">
@@ -95,7 +96,7 @@
                 
                 AE.createStandardAutocompleter(this._detailsForOtherLltId(),
 					function(autocompleter, text) {
-						createAE.matchLowLevelTermsByCode(text, function(values) {
+						createAE.matchLowLevelTermsByCode(meddraVersion,text, function(values) {
 													autocompleter.setChoices(values)})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
