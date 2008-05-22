@@ -24,8 +24,10 @@ public class LowLevelTermDao extends CaaersDao<LowLevelTerm> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("meddraCode",
                     "meddraTerm");
-
+    
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
+    
+    private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
 
     /**
      * Get the list of all low level meddra terms.
@@ -61,4 +63,18 @@ public class LowLevelTermDao extends CaaersDao<LowLevelTerm> {
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
+    /**
+     * Get the list of low level meddra terms of correct version matching the name fragments.
+     * 
+     * @params version_id
+     * @params subnames
+     * 				 the name fragments to search on.
+     * @return List of matchin low level meddra terms.
+     * @author Sameer Sawant
+     */	
+    public List<LowLevelTerm> getByVersionSubnames(int version_id, String[] subnames) {
+    	return findBySubname(subnames, "o.meddraVersion.id = " + version_id, EXTRA_PARAMS,
+    			SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
 }
