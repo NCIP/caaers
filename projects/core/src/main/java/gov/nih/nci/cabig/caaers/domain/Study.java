@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Domain object representing Study(Protocol)
@@ -123,6 +124,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     // DCP specific properties
     private Design design;
+    
+    private Set<Epoch> epochs;
 
     public Study() {
 
@@ -858,4 +861,22 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         }
         return emails;
     }
+    @Transient
+	public Set<Epoch> getEpochs() {
+		return epochs;
+	}
+    @Transient
+	public void setEpochs(Set<Epoch> epochs) {
+		this.epochs = epochs;
+	}
+	
+	public boolean addEpoch(Epoch epoch){
+		  return epochs.add(epoch);
+	}	
+		
+	public boolean removeEpoch(Epoch epoch){
+		  return epochs.remove(epoch);
+	}	
+		
+	
 }
