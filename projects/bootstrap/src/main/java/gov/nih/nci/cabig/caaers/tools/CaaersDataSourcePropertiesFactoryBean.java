@@ -38,6 +38,8 @@ public class CaaersDataSourcePropertiesFactoryBean extends
     public static final String GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL = "grid.registrationconsumer.rollbackInterval";
     
     public static final String RULES_DB_FILE = "rules.dbfile";
+    
+    public static final String DB_NAME  = "databaseName";
 
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
@@ -71,6 +73,7 @@ public class CaaersDataSourcePropertiesFactoryBean extends
                         .setProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL, "1");
         
         if(properties.getProperty(RULES_DB_FILE) == null) properties.setProperty(RULES_DB_FILE, selectRulesDBConfiguration());
+        if(properties.getProperty(DB_NAME) == null) properties.setProperty(DB_NAME, dbName());
     }
 
     /**
@@ -91,6 +94,19 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         }
         return defaultClass;
 
+    }
+    
+    /**
+     * This method sets the DB_NAME property
+     * @return String 
+     */
+    private String dbName(){
+    	String db = selectSchema();
+    	if(db != null) {
+    		if(db.contains("oracle")) return "oracle";
+    		else if (db.contains("postgresql")) return "postgres";
+    	}
+    	return null;
     }
     
     private String selectRulesDBConfiguration(){
