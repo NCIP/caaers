@@ -28,6 +28,10 @@ public class DiseaseTerminology extends AbstractMutableDomainObject {
     // In the future include versions something like this perhaps
     // private Ctep ctepVersion
     // private MeddraVersion meddraVersion;
+    
+    // This is included to hold the correct meddra_version.
+    private MeddraVersion meddraVersion;
+    
     private Study study;
 
     // //// BEAN PROPERTIES
@@ -41,14 +45,17 @@ public class DiseaseTerminology extends AbstractMutableDomainObject {
     public void setDiseaseCodeTerm(DiseaseCodeTerm diseaseCodeTerm) {
         this.diseaseCodeTerm = diseaseCodeTerm;
     }
+    
+    
+    @OneToOne
+    @JoinColumn(name = "meddra_version_id")
+    public MeddraVersion getMeddraVersion() {
+        return meddraVersion;
+    }
 
-    /*
-     * @OneToOne @JoinColumn(name = "meddra_version_id") public MeddraVersion getMeddraVersion() {
-     * return meddraVersion; }
-     * 
-     * public void setMeddraVersion(MeddraVersion meddraVersion) { this.meddraVersion =
-     * meddraVersion; }
-     */
+    public void setMeddraVersion(MeddraVersion meddraVersion) {
+        this.meddraVersion = meddraVersion;
+    }
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
