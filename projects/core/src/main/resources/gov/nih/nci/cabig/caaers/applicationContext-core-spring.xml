@@ -6,6 +6,9 @@
 -->
 
 <beans default-lazy-init="true">
+	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
+    </bean>
     <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
         <property name="properties">
             <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
