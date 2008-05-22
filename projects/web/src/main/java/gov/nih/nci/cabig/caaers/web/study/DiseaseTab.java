@@ -101,6 +101,8 @@ public class DiseaseTab extends StudyTab {
                         .put("diseaseTerminology", command.getDiseaseTerminology()
                                         .getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP ? "CTEP"
                                         : "MEDDRA");
+        if(command.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA))
+        	refdata.put("meddraVersionId", command.getDiseaseTerminology().getMeddraVersion().getId());
         return refdata;
     }
 
