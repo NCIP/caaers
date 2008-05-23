@@ -31,65 +31,65 @@ public class AdverseEventHistoryAjaxFacade {
 
         try {
 
-            if (adverseEventId != null && StringUtils.isNumeric(adverseEventId)) {
-
-                List<DataAuditEvent> auditHistories = auditHistoryRepository.getAuditDetailsForEntity(AdverseEvent.class, Integer.parseInt(adverseEventId));
-
-                TableModel model = getTableModel(null, request);
-
-
-                addTableAndRowToModel(model, "historyTable", auditHistories, null);
-
-                Column userColumn = model.getColumnInstance();
-                userColumn.setTitle("User Name");
-                userColumn.setProperty("info.username");
-                userColumn.setSortable(false);
-                model.addColumn(userColumn);
-
-                Column dataAndTimeColumn = model.getColumnInstance();
-                dataAndTimeColumn.setTitle("Date & Time");
-                dataAndTimeColumn.setProperty("info.time");
-                dataAndTimeColumn.setSortable(false);
-                model.addColumn(dataAndTimeColumn);
-
-
-                Column gradeColumn = model.getColumnInstance();
-                gradeColumn.setTitle("Grade");
-                //you need to set this property..though its not used while getting cell value
-                gradeColumn.setProperty("operation");
-                gradeColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.GradeDisplayHistoryCell");
-                model.addColumn(gradeColumn);
-
-                Column atributionColumn = model.getColumnInstance();
-                atributionColumn.setTitle("Attribution");
-                //you need to set this property..though its not used while getting cell value
-                atributionColumn.setProperty("operation");
-                atributionColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.AttributionDisplayHistoryCell");
-                model.addColumn(atributionColumn);
-
-                Column hospitalizationColumn = model.getColumnInstance();
-                hospitalizationColumn.setTitle("Hospitalization");
-                //you need to set this property..though its not used while getting cell value
-                hospitalizationColumn.setProperty("operation");
-                hospitalizationColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.HospitalizationDisplayHistoryCell");
-                model.addColumn(hospitalizationColumn);
-
-                Column expected = model.getColumnInstance();
-                expected.setTitle("Expected");
-                //you need to set this property..though its not used while getting cell value
-                expected.setProperty("operation");
-                expected.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.ExpectedDisplayHistoryCell");
-                model.addColumn(expected);
-
-                Column operationColumn = model.getColumnInstance();
-                operationColumn.setTitle("Operation");
-                operationColumn.setProperty("operation");
-                operationColumn.setSortable(false);
-                model.addColumn(operationColumn);
-
-
-                return model.assemble().toString();
-
+//            if (adverseEventId != null && StringUtils.isNumeric(adverseEventId)) {
+//
+//                List<DataAuditEvent> auditHistories = auditHistoryRepository.getAuditDetailsForEntity(AdverseEvent.class, Integer.parseInt(adverseEventId));
+//
+//                TableModel model = getTableModel(null, request);
+//
+//
+//                addTableAndRowToModel(model, "historyTable", auditHistories, null);
+//
+//                Column userColumn = model.getColumnInstance();
+//                userColumn.setTitle("User Name");
+//                userColumn.setProperty("info.username");
+//                userColumn.setSortable(false);
+//                model.addColumn(userColumn);
+//
+//                Column dataAndTimeColumn = model.getColumnInstance();
+//                dataAndTimeColumn.setTitle("Date & Time");
+//                dataAndTimeColumn.setProperty("info.time");
+//                dataAndTimeColumn.setSortable(false);
+//                model.addColumn(dataAndTimeColumn);
+//
+//
+//                Column gradeColumn = model.getColumnInstance();
+//                gradeColumn.setTitle("Grade");
+//                //you need to set this property..though its not used while getting cell value
+//                gradeColumn.setProperty("operation");
+//                gradeColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.GradeDisplayHistoryCell");
+//                model.addColumn(gradeColumn);
+//
+//                Column atributionColumn = model.getColumnInstance();
+//                atributionColumn.setTitle("Attribution");
+//                //you need to set this property..though its not used while getting cell value
+//                atributionColumn.setProperty("operation");
+//                atributionColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.AttributionDisplayHistoryCell");
+//                model.addColumn(atributionColumn);
+//
+//                Column hospitalizationColumn = model.getColumnInstance();
+//                hospitalizationColumn.setTitle("Hospitalization");
+//                //you need to set this property..though its not used while getting cell value
+//                hospitalizationColumn.setProperty("operation");
+//                hospitalizationColumn.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.HospitalizationDisplayHistoryCell");
+//                model.addColumn(hospitalizationColumn);
+//
+//                Column expected = model.getColumnInstance();
+//                expected.setTitle("Expected");
+//                //you need to set this property..though its not used while getting cell value
+//                expected.setProperty("operation");
+//                expected.setCell("gov.nih.nci.cabig.caaers.web.ae.cell.ExpectedDisplayHistoryCell");
+//                model.addColumn(expected);
+//
+//                Column operationColumn = model.getColumnInstance();
+//                operationColumn.setTitle("Operation");
+//                operationColumn.setProperty("operation");
+//                operationColumn.setSortable(false);
+//                model.addColumn(operationColumn);
+//
+//
+//                return model.assemble().toString();
+return "";
             } else {
                 log.error("request does not have adeverse event id or adverse event id is not numeric:" + adverseEventId);
 
