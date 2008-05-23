@@ -8,7 +8,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 public class StudyDiseaseTerminologyMigrator implements Migrator<Study> {
 	
 	/**
-	 * Will copy the {@link StudyDisease} terminology
 	 */
 	public void migrate(Study src, Study dest,
 			DomainObjectImportOutcome<Study> outcome) {
