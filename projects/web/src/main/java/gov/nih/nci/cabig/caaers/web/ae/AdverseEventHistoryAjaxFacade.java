@@ -29,7 +29,7 @@ public class AdverseEventHistoryAjaxFacade {
 
     public String getAdeverseEventHistory(HttpServletRequest request, String adverseEventId) throws Exception {
 
-        try {
+//        try {
 
 //            if (adverseEventId != null && StringUtils.isNumeric(adverseEventId)) {
 //
@@ -89,18 +89,18 @@ public class AdverseEventHistoryAjaxFacade {
 //
 //
 //                return model.assemble().toString();
-return "";
-            } else {
-                log.error("request does not have adeverse event id or adverse event id is not numeric:" + adverseEventId);
-
-            }
-
-
-        }
-        catch (Exception e) {
-            log.error("error while retriving the audit History" + e.toString() + " message" + e.getMessage());
-        }
-
+//return "";
+//            } else {
+//                log.error("request does not have adeverse event id or adverse event id is not numeric:" + adverseEventId);
+//
+//            }
+//
+//
+//        }
+//        catch (Exception e) {
+//            log.error("error while retriving the audit History" + e.toString() + " message" + e.getMessage());
+//        }
+//
         return "";
 
     }
