@@ -134,7 +134,7 @@
 		<mkdir dir="${java.io.tmpdir}/ivylibs" />
 		<subant target="resolve" buildpathref="build-path">
 			<property name="resolve.confs" value="runtime,test" />
-			<property name="resolve.to.dir" value="${java.io.tmpdir}\ivylibs" />
+			<property name="resolve.to.dir" value="${java.io.tmpdir}/ivylibs" />
 		</subant>
 		<taskdef name="eclipseClasspath" classname="com.semanticbits.ctms.ant.BuildPathGenerator">
 		  <classpath>
@@ -148,7 +148,7 @@
 		
 		<eclipseClasspath templatefile=".classpath.tmpl" destinationfile=".classpath" 
 			srcpattern="src/main/java,src/main/resources,src/test/java,src/test/resources,build/generated-sources/xjc" 
-			excludes="**/*caaers-*.jar" ivylibdir="${java.io.tmpdir}\ivylibs"
+			excludes="**/*caaers-*.jar" ivylibdir="${java.io.tmpdir}/ivylibs"
 			modulerefs="build-path"	>
 		</eclipseClasspath>
 		
