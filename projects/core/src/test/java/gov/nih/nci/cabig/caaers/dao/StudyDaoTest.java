@@ -8,13 +8,17 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.Arm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
@@ -23,6 +27,8 @@ import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.sql.ResultSet;
@@ -32,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -674,6 +681,123 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
 		assertNull("Study identified by id -3 must be null", study);
 	}
 
-	
+	public void testSaveSolicitedAdverseEvents()
+	{
+		
+		Integer studyId = null;
+		{ 
+		Study newStudy = Fixtures.createStudy("Arun Study 1");
+		newStudy.setShortTitle("ARUN Short Title Inserted");
+		newStudy.setLongTitle("ARUN Long Title Inserted");
+		newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
+		newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+		newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+		newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
+		newStudy.setAdeersReporting(Boolean.TRUE);
+		//getDao().save(newStudy);
+	//	assertNotNull("No ID for newly saved study", newStudy.getId());
+	//	Integer savedId = newStudy.getId();
+  	 //   System.out.println("Study created : " + savedId);
+	  	
+  	    
+  	    Epoch epoch1 = new Epoch("Epoch1","Arm 1","Arm 2");
+	    epoch1.setDescriptionText("Epoch 1 description");
+	    epoch1.setEpochOrder(1);
+	    
+	    
+	    Epoch epoch2 = new Epoch("Epoch2","Arm 3","Arm 4");
+  	    epoch2.setDescriptionText("Epoch 2 description");
+  	    epoch2.setEpochOrder(2);
+  	    
+  	    
+  	    SolicitedAdverseEvent sae11 = new SolicitedAdverseEvent();
+  	    CtcTerm ctcterm = new CtcTerm();
+  	    ctcterm.setId(-5);
+  	    sae11.setCtcterm(ctcterm);
+  	  
+  	    SolicitedAdverseEvent sae12 = new SolicitedAdverseEvent();
+	    
+  	    LowLevelTerm llt = new LowLevelTerm();
+  	    llt.setId(-7);
+  	    sae12.setLowLevelTerm(llt);
+  	    
+  	    SolicitedAdverseEvent sae31 = new SolicitedAdverseEvent();
+  	    CtcTerm ctcterm2 = new CtcTerm();
+  	    ctcterm2.setId(-51);
+  	    sae31.setCtcterm(ctcterm2);
+  	  
+  	    SolicitedAdverseEvent sae32 = new SolicitedAdverseEvent();
+  	    LowLevelTerm llt2 = new LowLevelTerm();
+  	    llt2.setId(-71);
+  	    sae32.setLowLevelTerm(llt2);
+  	    
+  	    List<SolicitedAdverseEvent> listOfSAE1 = new LinkedList<SolicitedAdverseEvent>();
+	    listOfSAE1.add(sae11);
+	    listOfSAE1.add(sae12);
+	    
+	    List<SolicitedAdverseEvent> listOfSAE2 = new LinkedList<SolicitedAdverseEvent>();
+	    listOfSAE2.add(sae31);
+	    listOfSAE2.add(sae32);
+	    
+	      	    
+  	    List<Arm> armlist1 = epoch1.getArms();
+  	    List<Arm> armlist2 = epoch2.getArms();
+  	    armlist1.get(0).setSolicitedAdverseEvents(listOfSAE1);
+  	    armlist2.get(0).setSolicitedAdverseEvents(listOfSAE2);
+    
+  	    List<Epoch> listOfEpochs = new LinkedList<Epoch>();
+  	    listOfEpochs.add(epoch1);
+  	    listOfEpochs.add(epoch2);
+    
+  	    newStudy.setEpochs(listOfEpochs);
+  	    getDao().save(newStudy);
+  	    
+  	    studyId = newStudy.getId();
+  		System.out.println("New Study ID:"+ studyId);
+  		System.out.println("1 New Study ID:"+ getDao().getById( studyId ));
+		}
+  		System.out.println("2 New Study ID:"+ getDao().getById( studyId ));
+//		interruptSession();
+  		System.out.println("3 New Study ID:"+ getDao().getById( studyId ));
+
+		{
+	  	System.out.println("4 New Study ID:"+ getDao().getById( studyId ));
+
+		  System.out.println("Testing Study ID:"+ studyId);	
+		  Study newStudy = getDao().getById( studyId );
+		  System.out.println("Testing newStudy:"+ newStudy);	
+		  
+		  List<Epoch> listOfEpochs = newStudy.getEpochs();
+		  
+		  assertTrue( listOfEpochs.size() == 2 );
+		  
+		  for(Epoch e : listOfEpochs)
+		  {
+			  assertTrue( e.getArms().size() == 2 );
+		  }
+		  
+		  Epoch epoch1 = listOfEpochs.get(0);
+		  assertEquals("Name of first epoch should be Epoch1",epoch1.getName(),"Epoch1");
+		  assertEquals("Order of first epoch should be 1",epoch1.getEpochOrder(), new Integer(1));
+		  
+		  List<Arm> armList1 = epoch1.getArms();
+		  assertEquals("There should be two arms in Epoch1",armList1.size(), 2);
+		  
+          for(int i = 1; i <= armList1.size(); i++)
+          {
+        	  Arm arm = armList1.get(i-1);
+        	  assertEquals("Epoch1 should contain arm"+i,arm.getName(), "Arm "+i);
+          }
+          
+          Arm arm1 = armList1.get(0);
+          
+          List<SolicitedAdverseEvent> saelist1 = arm1.getSolicitedAdverseEvents();
+          assertEquals("There should be two SAEs in Arm1 of Epoch1",saelist1.size(), 2);
+          
+		}
+  		assertNotNull("No ID for newly saved study", studyId);
+  		
+  	
+	}
 	
 }

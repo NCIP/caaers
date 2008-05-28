@@ -334,13 +334,21 @@
    		<investigational_new_drugs id = "-884" ind_number="-884"/>
    		 <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881" />
    		<ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882" />
-
-
+		<ctc_categories id="-6" name="abcd" version_id="3"/>
+     	<ctc_terms id="-5" category_id="-6" term="term1" ctep_term="term1" />
+     	
+        <meddra_llt id="-7" meddra_code="700m" version_id="4" />
+        
+     	<ctc_terms id="-51" category_id="-6" term="term1" ctep_term="term1" />
+     	
+        <meddra_llt id="-71" meddra_code="700m" version_id="4" />
+        
      	<!--  due to FK references -->
-     	<ctc_categories />
-     	<ctc_terms />
+     	
       	<ctc_grades/>
 
+      
+  
 
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />
@@ -348,4 +356,8 @@
 	<study_agent_inds />
 	<research_staffs />
 	<treatment_assignment />
+	<epochs />
+	<arms />
+	<solicited_events />
+	
 </dataset>
