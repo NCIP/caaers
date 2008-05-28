@@ -140,6 +140,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Epoch</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Arm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
             </list>
         </property>
 
@@ -150,7 +153,6 @@ This applicationContext contains the definition of the DAOs
 
             <ref local="chainedInterceptor"/>
         </property>
-
     </bean>
 
     <!-- Auditing related beans definition start here-->

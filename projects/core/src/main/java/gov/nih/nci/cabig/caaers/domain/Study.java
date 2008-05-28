@@ -8,7 +8,6 @@ import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.OrderBy;
@@ -16,8 +15,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-
 /**
  * Domain object representing Study(Protocol)
  *
@@ -125,7 +122,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // DCP specific properties
     private Design design;
     
-    private Set<Epoch> epochs;
+    private List<Epoch> epochs=new ArrayList<Epoch>();
 
     public Study() {
 
@@ -861,12 +858,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         }
         return emails;
     }
-    @Transient
-	public Set<Epoch> getEpochs() {
+    
+    @OneToMany(fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @JoinColumn(name="study_id", nullable = false)
+    public List<Epoch> getEpochs() {
 		return epochs;
 	}
-    @Transient
-	public void setEpochs(Set<Epoch> epochs) {
+    
+	public void setEpochs(List<Epoch> epochs) {
 		this.epochs = epochs;
 	}
 	

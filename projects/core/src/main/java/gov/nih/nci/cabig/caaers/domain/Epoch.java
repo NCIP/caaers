@@ -1,24 +1,45 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.hibernate.annotations.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+@Entity
+@Table(name = "epochs")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_epochs_id") })
 public class Epoch  extends AbstractMutableDomainObject {
 	
 	private String name;
 	
 	private String descriptionText;
 	
-	private Study study;
+//	private Study study;
 	
 	private Integer epochOrder;
 	
-	private Set<Arm> arms;
+	private List<Arm> arms=new ArrayList<Arm>();
 	
-	private Set<SolicitedAdverseEvent<DomainObject>> solicitedAdverseEvents;
+//	private List<SolicitedAdverseEvent> solicitedAdverseEvents;
 
+	public Epoch()
+	{}
 	public Epoch( String epochName, String... armNames)
 	{
 		setName(epochName);
@@ -32,22 +53,26 @@ public class Epoch  extends AbstractMutableDomainObject {
 		}
 
 	}
-	public Set<Arm> getArms() {
+	
+    @OneToMany(fetch = FetchType.LAZY)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @JoinColumn(name="epoch_id", nullable=false)
+	public List<Arm> getArms() {
 		return arms;
 	}
 
-	public void setArms(Set<Arm> arms) {
+	public void setArms(List<Arm> arms) {
 		this.arms = arms;
 	}
-
-	public Set<SolicitedAdverseEvent<DomainObject>> getSolicitedAdverseEvents() {
+/*    @Transient
+	public List<SolicitedAdverseEvent> getSolicitedAdverseEvents() {
 		return solicitedAdverseEvents;
 	}
 
-	public void setSolicitedAdverseEvents(Set<SolicitedAdverseEvent<DomainObject>> solicitedAdverseEvents) {
+	public void setSolicitedAdverseEvents(List<SolicitedAdverseEvent> solicitedAdverseEvents) {
 		this.solicitedAdverseEvents = solicitedAdverseEvents;
 	}
-	
+	*/
 	public boolean addArm(Arm arm)
 	{
 		return arms.add( arm );
@@ -55,26 +80,26 @@ public class Epoch  extends AbstractMutableDomainObject {
 
 	public boolean removeArm(Arm arm)
 	{
-		return arms.remove( arm );
+		if( arms != null && arms.size() != 0 )
+		  return arms.remove( arm );
+		return false;
 	}
+	@Column(name="name")
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
 	}
+	@Column(name="description")
 	public String getDescriptionText() {
 		return descriptionText;
 	}
 	public void setDescriptionText(String descriptionText) {
 		this.descriptionText = descriptionText;
 	}
-	public Study getStudy() {
-		return study;
-	}
-	public void setStudy(Study study) {
-		this.study = study;
-	}
+
+	@Column(name="order_no")
 	public Integer getEpochOrder() {
 		return epochOrder;
 	}
