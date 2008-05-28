@@ -93,16 +93,18 @@ public class DiseaseTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(Study command) {
         Map<String, Object> refdata = super.referenceData(command);
-        refdata.put("meddraVersion",
-                        command.getAeTerminology().getMeddraVersion() != null ? command
-                                        .getAeTerminology().getMeddraVersion().getName()
-                                        : meddraVersionDao.getAll().get(0).getName());
+        //refdata.put("meddraVersion",
+        //                command.getAeTerminology().getMeddraVersion() != null ? command
+        //                                .getAeTerminology().getMeddraVersion().getName()
+        //                                : meddraVersionDao.getAll().get(0).getName());
         refdata
                         .put("diseaseTerminology", command.getDiseaseTerminology()
                                         .getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP ? "CTEP"
                                         : "MEDDRA");
-        if(command.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA))
+        if(command.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)){
         	refdata.put("meddraVersionId", command.getDiseaseTerminology().getMeddraVersion().getId());
+        	refdata.put("meddraVersion", command.getDiseaseTerminology().getMeddraVersion().getName());
+        }
         return refdata;
     }
 
