@@ -1,5 +1,15 @@
 class AddMeddraVersionAssociation extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
+    
+    	//clean tables
+    	execute('DELETE FROM meddra_soc_hlgt where meddra_soc_id NOT IN (select id from meddra_soc)');
+    	execute('DELETE FROM meddra_soc_hlgt where meddra_hlgt_id NOT IN (select id from meddra_hlgt)');
+    	execute('DELETE FROM meddra_hlgt_hlt where meddra_hlgt_id NOT IN (select id from meddra_hlgt)');
+    	execute('DELETE FROM meddra_hlgt_hlt where meddra_hlt_id NOT IN (select id from meddra_hlt)');
+    	execute('DELETE FROM meddra_hlt_pt where meddra_hlt_id NOT IN (select id from meddra_hlt)');
+    	execute('DELETE FROM meddra_hlt_pt where meddra_pt_id NOT IN (select id from meddra_pt)');
+  		// done cleaning the tables
+  
        	execute('ALTER TABLE meddra_soc ADD CONSTRAINT fk_meddra_soc_ver FOREIGN KEY (version_id) REFERENCES meddra_versions');
     	execute('ALTER TABLE meddra_hlgt ADD CONSTRAINT fk_meddra_hlgt_ver FOREIGN KEY (version_id) REFERENCES meddra_versions');
     	execute('ALTER TABLE meddra_hlt ADD CONSTRAINT fk_meddra_hlt_ver FOREIGN KEY (version_id) REFERENCES meddra_versions');
