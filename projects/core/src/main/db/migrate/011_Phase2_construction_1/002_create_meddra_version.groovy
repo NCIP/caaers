@@ -20,7 +20,8 @@ class AddMeddraVersion extends edu.northwestern.bioinformatics.bering.Migration 
     	execute('update meddra_hlt_pt set version_id = 9');
     	
     	execute('CREATE SEQUENCE meddra_versions_id_seq START WITH 10');
-    	if (databaseMatches('postgresql')){  
+    	if (databaseMatches('postgresql')){
+    	 
     		execute('ALTER SEQUENCE meddra_soc_id_seq RESTART WITH 10100000');
     		execute('ALTER SEQUENCE meddra_hlgt_id_seq RESTART WITH 10100000');
     		execute('ALTER SEQUENCE meddra_hlt_id_seq RESTART WITH 10100000');
@@ -29,7 +30,27 @@ class AddMeddraVersion extends edu.northwestern.bioinformatics.bering.Migration 
     		execute('ALTER SEQUENCE meddra_soc_hlgt_id_seq RESTART WITH 100000');
     		execute('ALTER SEQUENCE meddra_hlgt_hlt_id_seq RESTART WITH 100000');
     		execute('ALTER SEQUENCE meddra_hlt_pt_id_seq RESTART WITH 100000');
-    	}  
+    		
+    	}else if(databaseMatches('oracle')){
+    	
+    		execute('DROP SEQUENCE seq_meddra_soc_id');
+    		execute('CREATE SEQUENCE seq_meddra_soc_id START WITH 10100000');
+    		execute('DROP SEQUENCE seq_meddra_hlgt_id');
+    		execute('CREATE SEQUENCE seq_meddra_hlgt_id START WITH 10100000');
+    		execute('DROP SEQUENCE seq_meddra_hlt_id');
+    		execute('CREATE SEQUENCE seq_meddra_hlt_id START WITH 10100000');
+    		execute('DROP SEQUENCE seq_meddra_pt_id');
+    		execute('CREATE SEQUENCE seq_meddra_pt_id START WITH 10100000');
+    		execute('DROP SEQUENCE seq_meddra_llt_id');
+    		execute('CREATE SEQUENCE seq_meddra_llt_id START WITH 10100000');
+    		execute('DROP SEQUENCE seq_meddra_soc_hlgt_id');
+    		execute('CREATE SEQUENCE seq_meddra_soc_hlgt_id START WITH 100000');
+    		execute('DROP SEQUENCE seq_meddra_hlgt_hlt_id');
+    		execute('CREATE SEQUENCE seq_meddra_hlgt_hlt_id START WITH 100000');
+    		execute('DROP SEQUENCE seq_meddra_hlt_pt_id');
+    		execute('CREATE SEQUENCE seq_meddra_hlt_pt_id START WITH 100000');
+    		
+    	} 
     }
     
     void down(){
