@@ -231,11 +231,7 @@
         short_title="That one"
         load_status="1"
         />
-	<DISEASE_TERMINOLOGIES
-    	id="-11"
-    	term_code="1"
-    	study_id="-1"
-    	/>  
+
     
 
          
@@ -366,7 +362,11 @@
         weight_unit="kg"
         baseline_performance_status="About here"
         />
-        
+        	<DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-1"
+    	/>  
 
 
     <!-- tables which an AE report will reference, but which are not otherwise
