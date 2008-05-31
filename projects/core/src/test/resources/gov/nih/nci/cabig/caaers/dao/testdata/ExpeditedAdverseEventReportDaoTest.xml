@@ -1,4 +1,13 @@
 <dataset>
+
+    <ORGANIZATIONS
+        id="-1001"
+        name="New Site"/>    
+   <ORGANIZATIONS
+        id="-1"
+        name="New Site"
+        grid_id="gridSite"/>
+            
     <ctc_versions
         id="3"
         name="CTCAE v3.0"
@@ -47,9 +56,7 @@
         type="SST"
         />
         
-    <ORGANIZATIONS
-        id="-1001"
-        name="New Site"/>    
+
 
     <PARTICIPANT_ASSIGNMENTS
         id="-14"
@@ -133,33 +140,8 @@
     	report_id="-1"
     	other_information="Hello"
     	/>    
-   
-        
-    <COURSE_AGENTS
-        id="-20"
-        treatment_id="-10"
-        list_index="1"
-        administration_delay_minutes="240"
-        dose_amount="17.4"
-        dose_units="mg"
-        dose_route="aural"
-        modified_dose_amount="10"
-        modified_dose_units="mg"
-        modified_dose_route="aural"
-        total_dose_this_course="7"
-        duration_and_schedule="8 times every third hour"
-        last_administered_date="2006-07-10"
-        />
-    <COURSE_AGENTS
-        id="-19"
-        treatment_id="-10"
-        list_index="0"
-        dose_amount=".33"
-        dose_units="kg"
-        dose_route="oral"
-        total_dose_this_course=".84"
-        duration_and_schedule="daily"
-        />
+    	
+  
 
     <OTHER_CAUSES
         id="-82"
@@ -243,18 +225,19 @@
         name="Ear"
         category="Head parts"
         />
-
+        
+    <STUDIES
+        id="-1"
+        short_title="That one"
+        load_status="1"
+        />
 	<DISEASE_TERMINOLOGIES
     	id="-11"
     	term_code="1"
     	study_id="-1"
     	/>  
     
-    <STUDIES
-        id="-1"
-        short_title="That one"
-        load_status="1"
-        />
+
          
     <TREATMENT_ASSIGNMENT
         id="-11"
@@ -275,14 +258,39 @@
   		comments="comments"
   		version="0"
   		grid_id="TAC333" />
-  	
-  	<TREATMENTS
+	<TREATMENTS
         id="-10"
         report_id="-1"
         first_course_date="2005-06-04"
         adverse_event_course_date="2006-07-09"
         adverse_event_course_number="8"
         treatment_assignment_id="-10"
+        /> 
+        
+    <COURSE_AGENTS
+        id="-20"
+        treatment_id="-10"
+        list_index="1"
+        administration_delay_minutes="240"
+        dose_amount="17.4"
+        dose_units="mg"
+        dose_route="aural"
+        modified_dose_amount="10"
+        modified_dose_units="mg"
+        modified_dose_route="aural"
+        total_dose_this_course="7"
+        duration_and_schedule="8 times every third hour"
+        last_administered_date="2006-07-10"
+        />
+    <COURSE_AGENTS
+        id="-19"
+        treatment_id="-10"
+        list_index="0"
+        dose_amount=".33"
+        dose_units="kg"
+        dose_route="oral"
+        total_dose_this_course=".84"
+        duration_and_schedule="daily"
         />
   		
      <TERMINOLOGIES
@@ -292,15 +300,8 @@
    		study_id="-1"
    		/> 		       
         
-    <IDENTIFIERS
-        id="-201"
-        stu_id="-1"
-        value="nci_test"
-        type="MRN"
-        organization_id="-1"
-        discriminator_column="1"/>  
-
-	 <PARTICIPANTS
+  
+ <PARTICIPANTS
         id="-101"
         instituitional_patient_number="P002"
         institution="Hospital"
@@ -315,6 +316,16 @@
         middle_name="m"
         maiden_name="m" 
         load_status="1" />
+        
+          <IDENTIFIERS
+        id="-201"
+        stu_id="-1"
+        value="nci_test"
+        type="MRN"
+        organization_id="-1"
+        discriminator_column="1"/>  
+
+	
     <IDENTIFIERS
         id="-200"
         participant_id="-101"
@@ -322,7 +333,6 @@
         type="MRN" 
         organization_id="-1"
         discriminator_column="1"/> 
-
     <STUDY_DISEASES
         id="-4"
         study_id="-1"
@@ -357,11 +367,7 @@
         baseline_performance_status="About here"
         />
         
-        <ORGANIZATIONS
-        id="-1"
-        name="New Site"
-        grid_id="gridSite"/>
-    
+
 
     <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->

@@ -36,7 +36,13 @@
         />
     <ctc_grades/> <!-- to delete in case of existing refs -->
     <agents id="-101"/>
-    
+            
+     <STUDIES
+        id="-1"
+        short_title="That one"
+        load_status="1"
+        /> 
+        
      <STUDY_ORGANIZATIONS
         id="-10"
         site_id="-1001"
@@ -55,6 +61,11 @@
         date_of_enrollment="2006-09-30"
         load_status="1"
         />
+        
+     <treatment_assignment
+     	id="-1"
+     	code="boston"
+     	study_id="-1" />           
         
     <AE_ROUTINE_REPORTS
         id="-1"
@@ -86,13 +97,7 @@
     	term_id="3007" 
     	term_type="ctep"
     	/>   
-        
-     <STUDIES
-        id="-1"
-        short_title="That one"
-        load_status="1"
-        /> 
-        
+
      <TERMINOLOGIES
    		id="-11"
    		term_code="1"
@@ -106,18 +111,8 @@
     	study_id="-1"
     	/>  		       
         
-    <IDENTIFIERS
-        id="-201"
-        stu_id="-1"
-        value="nci_test"
-        type="MRN"
-        organization_id="-1001"
-        discriminator_column="1"/> 
        
-     <treatment_assignment
-     	id="-1"
-     	code="boston"
-     	study_id="-1" />    
+ 
 
 	 <PARTICIPANTS
         id="-101"
@@ -134,6 +129,13 @@
         middle_name="m"
         maiden_name="m"
         load_status="1" />
+	<IDENTIFIERS
+        id="-201"
+        stu_id="-1"
+        value="nci_test"
+        type="MRN"
+        organization_id="-1001"
+        discriminator_column="1"/>        
     <IDENTIFIERS
         id="-200"
         participant_id="-101"
@@ -148,4 +150,5 @@
 	<treatment_assignment />
     <research_staffs />
     <treatments />
+    <ae_reports />
 </dataset>

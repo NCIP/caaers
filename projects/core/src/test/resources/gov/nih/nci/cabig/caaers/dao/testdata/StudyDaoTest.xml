@@ -9,6 +9,32 @@
             />
         <agents id="-990" name="abcd" description="biju" nsc="123"/>
         <agents id="-991" name="abcd" description="biju2" nsc="1223"/>
+        
+
+    <ORGANIZATIONS
+        id="-1001"
+        version="1"
+        name="National Cancer Institute"
+        description_text="NCI"
+        nci_institute_code="NCI"
+    />
+    <ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	name="CALGB"
+    	description_text="CALGB"
+    	nci_institute_code="DEFAULT"
+    />
+
+
+
+    <ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	name="Northwestern Univ Cancer Center"
+    	description_text="NUCC"
+    	nci_institute_code="WAKE" />
+        
     <STUDIES
         id="-2"
         multi_institution_indicator="0"
@@ -97,6 +123,21 @@
    		study_id="-5"
    		/>	
 
+    <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
         id="-15"
@@ -150,21 +191,6 @@
        	discriminator_column="1"/>   	
 
 
-    <PARTICIPANTS
-        id="-100"
-        instituitional_patient_number="P001"
-        institution="Hospital"
-        first_name="Dilbert"
-        last_name="Scott"
-        birth_day="02"
-        birth_month="01"
-        birth_year="2006"
-        gender="Female"
-        ethnicity="ethnicity"
-        race="race"
-        middle_name="m"
-        maiden_name="m"
-        load_status="1" />
     <IDENTIFIERS
         id="-200"
         participant_id="-100"
@@ -193,30 +219,6 @@
         study_site_id="-1000"
         load_status="1"
         />
-
-    <ORGANIZATIONS
-        id="-1001"
-        version="1"
-        name="National Cancer Institute"
-        description_text="NCI"
-        nci_institute_code="NCI"
-    />
-    <ORGANIZATIONS
-    	id="-1002"
-    	version="1"
-    	name="CALGB"
-    	description_text="CALGB"
-    	nci_institute_code="DEFAULT"
-    />
-
-
-
-    <ORGANIZATIONS
-    	id="-1003"
-    	version="1"
-    	name="Northwestern Univ Cancer Center"
-    	description_text="NUCC"
-    	nci_institute_code="WAKE" />
 
     
     <!--
