@@ -4,7 +4,7 @@
 	<import file="${parent.dir}/common.xml"/>
 	
 	
-	<target name="module-specific-flow" depends="resolve, generate-jibx, aspectj-compile ">
+	<target name="module-specific-flow" depends="resolve,generate-jibx,generate-jaxb,aspectj-compile ">
 		<mkdir dir="${classes.dir}/db" />
 		<copy-resources src="${main.src}/../db" dest="${classes.dir}/db" filter="true"/>
 	</target>
@@ -105,4 +105,21 @@
 	    </dbunit>
 	</target>
 	
+	<target name="generate-jaxb" description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
+		<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+	    	<classpath>
+	    		<path refid="main.classpath" />
+	        </classpath>	        		
+	    </taskdef>
+		
+		<mkdir dir="${generated.src.dir}"/>
+	    <xjc destdir="${generated.src.dir}" extension="true" >
+	    	<arg line="-npa
+	    			   -Xcollection-setter-injector"/>
+	    	<schema dir="${main.src.resources}/schema/integration">
+	        	<include name="*.xsd" />
+	        </schema>
+	        <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
+	    </xjc>
+    </target>
 </project>
