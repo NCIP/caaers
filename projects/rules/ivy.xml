@@ -104,5 +104,14 @@
         	<dependency org="org.easymock" name="easymockclassextension" rev="2.2.1" conf="test->default(*)" />
         	<dependency org="junit" name="junit" rev="3.8.1" conf="test->default(*)"/>
         	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
+        	
+        	<!-- Jaxb dependencies -->
+			
+			<dependency org="jaxb" name="jaxb-api" rev="2.0-SNAPSHOT"/>
+			<dependency org="jaxb" name="jaxb-impl" rev="2.0-SNAPSHOT"/>  
+			<dependency org="jaxb" name="jaxb-xjc" rev="2.0-SNAPSHOT"/>
+			
+			<dependency org="xjc-plugin" name="collection-setter-injector" rev="1.0"/>
+			
         </dependencies>
 </ivy-module>
