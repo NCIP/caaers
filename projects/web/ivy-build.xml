@@ -10,7 +10,9 @@
 	
 	<import file="${parent.dir}/common.xml"/>
 	
-	
+	<target name="module-specific-flow" depends="resolve, generate-jaxb">
+			
+	</target>
 
 	<!-- ==============================================================
 		target: resolve-dist
