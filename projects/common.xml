@@ -320,7 +320,6 @@
 		<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
 	    	<classpath>
 	    		<path refid="main.classpath" />
-	        	<fileset dir="lib" includes="**/*.jar"/>
 	        </classpath>	        		
 	    </taskdef>
 		
