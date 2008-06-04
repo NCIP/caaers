@@ -83,7 +83,7 @@ public class LocalHQLCoreQueryProcessor extends CQLQueryProcessor {
 
 
 		
-		
+		/*
 		String gridGrouperGroup=getConfiguredParameters().getProperty("gridGrouperGroup");
 		String gridGrouperUrl=getConfiguredParameters().getProperty("gridGrouperUrl");
 		
@@ -106,8 +106,8 @@ public class LocalHQLCoreQueryProcessor extends CQLQueryProcessor {
 		} else {
 			throw new QueryProcessingException( " Access restricted to  group - " + gridGrouperGroup);
 		}
-		
-		//results = process(cqlQuery);
+		*/
+		results = process(cqlQuery);
 		return results;
 	}
 	
