@@ -73,12 +73,13 @@ public class HibernateUtil {
     }
 	
 	public synchronized static ApplicationContext getApplicationContext() {
-            // This might not be the right place for this
+            /*
             try {
                 SimpleNamingContextBuilder.emptyActivatedContextBuilder();
             } catch (NamingException e) {
                 throw new RuntimeException("", e);
             }
+            */
 
             try {
 
