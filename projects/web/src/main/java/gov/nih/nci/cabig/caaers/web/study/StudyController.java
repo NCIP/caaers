@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Design;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -42,8 +43,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class StudyController<C extends Study> extends
-                AutomaticSaveFlowFormController<C, Study, StudyDao> {
+public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C,Study, StudyDao>
+                /*AutomaticSaveFlowFormController<C, Study, StudyDao>*/ {
     private static final Log log = LogFactory.getLog(StudyController.class);
 
     protected StudyDao studyDao;
