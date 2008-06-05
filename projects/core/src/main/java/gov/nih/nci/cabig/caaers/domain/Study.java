@@ -877,6 +877,12 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public boolean removeEpoch(Epoch epoch){
 		  return epochs.remove(epoch);
 	}	
-		
 	
+	//this method is added to satisfy the UI requirements, so to be moved to command classs
+	@Transient
+	public Integer getTermCode(){
+		return null;
+	}
+	//this method is added to satisfy the UI requirements, so to be moved to the command class
+	public void setTermCode(Integer ignore){}
 }

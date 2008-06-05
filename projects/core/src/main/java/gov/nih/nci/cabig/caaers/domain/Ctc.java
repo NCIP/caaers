@@ -20,6 +20,9 @@ import java.util.List;
 @Entity
 @Table(name = "ctc_versions")
 public class Ctc extends AbstractImmutableDomainObject {
+	public static int CTC_V2 = 2;
+	public static int CTC_V3 = 3;
+	
     private String name;
 
     private List<CtcCategory> categories;
