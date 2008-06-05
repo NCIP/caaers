@@ -106,6 +106,7 @@
     <treatment_assignment />
     <ae_reports />
     <ae_report_people />
+    <ae_radiation_interventions />
     <treatments />
      <contact_mechanisms />
      <study_amendments />

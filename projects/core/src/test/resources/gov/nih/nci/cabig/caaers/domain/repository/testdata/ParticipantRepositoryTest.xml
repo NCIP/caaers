@@ -94,4 +94,6 @@
     <investigational_new_drugs />
     <ind_holders />
 	<ae_reports />
+	<disease_terminologies />
+	<identifiers />
 </dataset>
