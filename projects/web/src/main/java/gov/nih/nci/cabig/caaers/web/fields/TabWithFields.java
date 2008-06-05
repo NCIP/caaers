@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import org.springframework.validation.Errors;
  * @see InputFieldGroup
  * @author Rhett Sutphin
  */
-public abstract class TabWithFields<C> extends Tab<C> {
+public abstract class TabWithFields<C> extends WorkFlowTab<C> {
     private boolean autoPopulateHelpKey;
 
     private List<String> helpExclusionList;
