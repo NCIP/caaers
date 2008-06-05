@@ -35,6 +35,7 @@ public class CreateStudyController extends StudyController<Study> {
         flow.addTab(new TreatmentAssignmentTab());
         flow.addTab(new DiseaseTab());
         flow.addTab(new SitesTab());
+        flow.addTab(new SolicitedAdverseEventTab());
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());
         flow.addTab(new IdentifiersTab());
