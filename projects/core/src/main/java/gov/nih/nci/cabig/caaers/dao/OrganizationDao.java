@@ -75,7 +75,20 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
                         name);
         return results.size() > 0 ? results.get(0) : null;
     }
-
+    
+    /**
+     * Get organization given organization name.
+     * 
+     * @param name
+     *                The name of the organization.
+     * @return The organization.
+     */
+    public Organization getByNCIcode(final String code) {
+        List<Organization> results = getHibernateTemplate().find("from Organization where nci_institute_code = ?",
+                        code);
+        return results.size() > 0 ? results.get(0) : null;
+    }
+    
     /**
      * Get the list of organizations matching the name fragments.
      * 

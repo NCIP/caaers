@@ -56,6 +56,20 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
     }
 
     /**
+     * Get the disease term object given the CTEP disease term name.
+     * 
+     * @param name
+     *                The CTEP disease term name.
+     * @return The disease term object.
+     */
+    @SuppressWarnings("unchecked")
+    public DiseaseTerm getByCTEPTermName(final String name) {
+        List<DiseaseTerm> results = getHibernateTemplate().find(
+                        "from " + domainClass().getName() + " where ctep_term= ?", name);
+        return results.size() > 0 ? results.get(0) : null;
+    }
+
+    /**
      * Get the disease term object given the meddra code.
      * 
      * @param name

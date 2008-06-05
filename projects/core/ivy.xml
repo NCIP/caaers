@@ -154,5 +154,8 @@
 			<dependency org="jaxb" name="jaxb-xjc" rev="2.0-SNAPSHOT"/>
 			
 			<dependency org="xjc-plugin" name="collection-setter-injector" rev="1.0"/>
+			
+			<!-- Apache POI dependencies -->
+			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>
         </dependencies>
 </ivy-module>

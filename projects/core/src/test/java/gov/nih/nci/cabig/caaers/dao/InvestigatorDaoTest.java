@@ -3,7 +3,10 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+
+import java.util.List;
 
 /**
  * @author Kulasekaran
@@ -42,4 +45,14 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
             assertEquals("Wrong lastname", "Someone", loaded.getLastName());
         }
     }
+    
+    public void testQueryInvestigatorByNCIIdentiferExactMatch() throws Exception {
+        InvestigatorQuery query = new InvestigatorQuery();
+        query.filterByNciIdentifierExactMatch("222");
+        List<Investigator> invList = getDao().searchInvestigator(query);
+        assertEquals("there should be one investigator", 1, invList.size());
+        query.filterByNciIdentifierExactMatch("2");
+        invList = getDao().searchInvestigator(query);
+        assertEquals("there should be no investigator", 0, invList.size());
+        }
 }
