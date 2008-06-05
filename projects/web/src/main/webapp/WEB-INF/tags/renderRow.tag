@@ -1,3 +1,6 @@
+<%-- 
+	Can render field or a 'label or value'. The preference is given to label, and value attributes, if they are present the field is kind of ignored.
+--%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -6,6 +9,7 @@
 <%@attribute name="style"%>
 <%@attribute name="extraParams"%>
 <%@attribute name="label" fragment="true" %>
+<%@attribute name="value" fragment="true" %>
 <%@attribute name="deleteParams" %>
 <div class="row ${cssClass}" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label">
@@ -14,7 +18,7 @@
             <c:otherwise><tags:renderLabel field="${field}"/></c:otherwise>
         </c:choose>
     </div>
-    <div class="value"><tags:renderInputs field="${field}"/>
+    <div class="value"><c:choose><c:when test="${not empty value}"><jsp:invoke fragment="value" /></c:when><c:otherwise><tags:renderInputs field="${field}"/></c:otherwise></c:choose>
     <c:if test="${field.attributes.enableDelete}"><input type="button" name="delete" value="Delete" onClick="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');" /></c:if>
         <c:if test="${not empty extraParams}">
             ${extraParams}
