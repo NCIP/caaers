@@ -291,6 +291,14 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     public void initialize(Collection<? extends DomainObject> proxy) {
         getHibernateTemplate().initialize(proxy);
     }
+    
+    /**
+     * The default implementation will save the domain object
+     * @param o
+     */
+    public void save(T o){
+    	getHibernateTemplate().save(o);
+    }
 
     /**
      * 
@@ -302,7 +310,8 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         return dateFormat.parse(date);
     }
-
+    
+    
     public DateValue stringToDateValue(String date) throws ParseException {
         String[] dateParts = date.split("/");
         int size = dateParts.length;

@@ -31,5 +31,15 @@ public class CtcCategoryDao extends CaaersDao<CtcCategory> {
     public List<CtcCategory> getAll() {
         return getHibernateTemplate().find("from CtcCategory");
     }
+    
+    /**
+     * Gets the list of CTC categories based on the ctcVersionId
+     * @param ctcVersionId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<CtcCategory> getByCtcVersion(Integer ctcVersionId){
+    	return getHibernateTemplate().find("from CtcCategory c where c.ctc.id = "  + ctcVersionId.intValue());
+    }
 
 }

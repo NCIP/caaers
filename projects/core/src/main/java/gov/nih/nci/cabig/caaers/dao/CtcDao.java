@@ -38,7 +38,7 @@ public class CtcDao extends CaaersDao<Ctc> {
      * @return
      */
     public Ctc getCtcV2() {
-        return getById(2);
+        return getById(Ctc.CTC_V2);
     }
 
     /**
@@ -47,6 +47,6 @@ public class CtcDao extends CaaersDao<Ctc> {
      * @return
      */
     public Ctc getCtcaeV3() {
-        return getById(3);
+        return getById(Ctc.CTC_V3);
     }
 }
