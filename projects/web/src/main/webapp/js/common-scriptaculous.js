@@ -176,3 +176,90 @@ function captureHelpControlEvents(){
 Event.observe(window, "load", function() {
 	captureHelpControlEvents();
 });
+
+/*
+ * In-Place Editor
+ */
+ 
+Ajax.InPlaceCollectionEditor.prototype.__createEditField = Ajax.InPlaceCollectionEditor.prototype.createEditField;
+Ajax.InPlaceCollectionEditor.prototype.__onSubmit = Ajax.InPlaceCollectionEditor.prototype.onSubmit;
+Object.extend(Ajax.InPlaceCollectionEditor.prototype, {
+    createEditField: function() {
+        if (this.options.callback) { var callbackSet = this.options.callback };
+        this.__createEditField();
+        if (callbackSet) { this.options.callback = callbackSet;    };
+    },
+    onSubmit: function(){
+		if(this.options.validations!=null){
+			this.editField.className=this.editField.className + " "+this.options.validations;
+			ValidationManager.removeError(this.editField);
+			var fields=new Array();
+			fields.push(this.editField);
+			ValidationManager.prepareField(fields[0]);
+			if(validateFields(fields)){
+				this.__onSubmit();
+		    }else{
+		    	arguments.length > 1?Event.stop(arguments[0]):null;
+		    	return false;
+		    }
+		}else{
+        	this.__onSubmit();
+        }
+    }
+    
+});
+
+//InPlaceEditor extension that adds a 'click to edit' text when the field is 
+//empty.
+Ajax.InPlaceEditor.prototype.__onSubmit = Ajax.InPlaceEditor.prototype.onSubmit;
+Ajax.InPlaceEditor.prototype = Object.extend(Ajax.InPlaceEditor.prototype, {
+    onSubmit: function(){
+		if(this.options.validations!=null){
+			this.editField.className=this.editField.className + " "+this.options.validations;
+			ValidationManager.removeError(this.editField);
+			var fields=new Array();
+			fields.push(this.editField);
+			ValidationManager.prepareField(fields[0]);
+			if(validateFields(fields)){
+				this.__onSubmit();
+		    }else{
+		    	arguments.length > 1?Event.stop(arguments[0]):null;
+		    	return false;
+		    }
+		}else{
+        	this.__onSubmit();
+        }
+    }
+});
+
+//InPlaceCollectionEditor extension that adds a cancel button .
+Ajax.InPlaceCollectionEditor.prototype.__createForm = Ajax.InPlaceCollectionEditor.prototype.createForm;
+Ajax.InPlaceCollectionEditor.prototype = Object.extend(Ajax.InPlaceCollectionEditor.prototype, {
+    createForm: function(){
+		this.__createForm();
+		if (this.options.cancelButton) {
+          cancelButton = document.createElement("input");
+	      cancelButton.type = "button";
+   	      cancelButton.onclick = this.onclickCancel.bind(this);
+	      cancelButton.value = this.options.cancelText;
+	      cancelButton.className = 'editor_ok_button';
+	      this.form.appendChild(cancelButton);
+        }
+    }
+});
+
+//InPlaceEditor extension that adds a cancel button .
+Ajax.InPlaceEditor.prototype.__createForm = Ajax.InPlaceEditor.prototype.createForm;
+Ajax.InPlaceEditor.prototype = Object.extend(Ajax.InPlaceEditor.prototype, {
+    createForm: function(){
+		this.__createForm();
+		if (this.options.cancelButton) {
+          cancelButton = document.createElement("input");
+	      cancelButton.type = "button";
+   	      cancelButton.onclick = this.onclickCancel.bind(this);
+	      cancelButton.value = this.options.cancelText;
+	      cancelButton.className = 'editor_ok_button';
+	      this.form.appendChild(cancelButton);
+        }
+    }
+});
