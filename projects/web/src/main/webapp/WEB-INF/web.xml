@@ -11,6 +11,10 @@
 			<taglib-uri>http://csm.ncicb.nci.nih.gov/authz</taglib-uri>
 			<taglib-location>/WEB-INF/csmauthz.tld</taglib-location>
 		</taglib>
+		<taglib>
+			<taglib-uri>>http://gforge.nci.nih.gov/projects/caaers/tags</taglib-uri>
+			<taglib-location>/WEB-INF/caaers-tags.tld</taglib-location>
+		</taglib>
 	</jsp-config>
 
     <context-param>
