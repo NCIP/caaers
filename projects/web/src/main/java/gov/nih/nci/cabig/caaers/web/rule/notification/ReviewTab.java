@@ -89,7 +89,7 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
     }
 
     @Override
-    public Map<String, Object> referenceData(ReportDefinitionCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
 
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         BeanWrapper wrappedCommand = new BeanWrapperImpl(command);

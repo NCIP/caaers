@@ -12,6 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -23,7 +25,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
     }
 
     @Override
-    public Map<String, Object> referenceData(ReportDefinitionCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("reportTree", expeditedReportTree);
         return refdata;
