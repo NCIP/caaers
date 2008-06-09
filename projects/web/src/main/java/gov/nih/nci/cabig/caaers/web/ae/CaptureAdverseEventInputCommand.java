@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
@@ -16,7 +16,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 
 	 
 	 
-	private ReportingPeriod reportingPeriod;
+	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
 	
 	 
@@ -76,12 +76,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.study = study;
 	}
 
-	public ReportingPeriod getReportingPeriod() {
-		return reportingPeriod;
+	public AdverseEventReportingPeriod getAdverseEventReportingPeriod() {
+		return adverseEventReportingPeriod;
 	}
 
-	public void setReportingPeriod(ReportingPeriod reportingPeriod) {
-		this.reportingPeriod = reportingPeriod;
+	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod) {
+		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 	}
 	
 	
