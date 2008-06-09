@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 
 import java.rmi.RemoteException;
 import java.util.List;
@@ -67,8 +68,13 @@ public class DefaultResearchStaffMigratorService implements
         }
         return rsList.get(0);
     }
-    
-	public void saveResearchStaff(ResearchStaffType researchStaffDto) throws RemoteException {
+    public void saveResearchStaff(Staff staff) throws RemoteException {
+    	List<ResearchStaffType> researchStaff = staff.getResearchStaff();
+    	for (ResearchStaffType researchStaffType:researchStaff) {
+    		saveResearchStaff(researchStaffType);
+    	}
+    }
+	public void saveResearchStaff(ResearchStaffType researchStaffDto) throws CaaersSystemException {
 
         try {
             logger.info("Begining of ResearchStaffMigrator : saveResearchStaff");
@@ -101,7 +107,7 @@ public class DefaultResearchStaffMigratorService implements
 
         } catch (Exception e) {
             logger.error("Error while creating research staff", e);
-            throw new RemoteException("Unable to create research staff", e);
+            throw new CaaersSystemException("Unable to create research staff", e);
         }	
         
 	}
