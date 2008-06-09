@@ -6,6 +6,7 @@
 <%@attribute name="version" required="true" type="java.lang.Integer" description="Will tell the version of ctc or meddra to use" %>
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="callbackFunctionName" required="true" description="The call back function in the parent page, that will be invoked with the selected terms"%>
+<%@attribute name="ignoreOtherSpecify" type="java.lang.Boolean" description="Must be true if we need to ignore other specify" %>
 <%@attribute name="title" required="false" %> 
 <tags:dwrJavascriptLink objects="createAE"/>
 <script type="text/javascript">
@@ -18,10 +19,11 @@
  	var catSel = null;
  	var CategorySelector = Class.create();
  	Object.extend(CategorySelector.prototype, {
-		initialize: function(meddra, ver) {
+		initialize: function(meddra, ver, ignoreOtherSpecify) {
 			this.win = null;
 			this.isMeddra = meddra;
 			this.version = ver;
+			this.ignoreOtherSpecify = ignoreOtherSpecify;
 		},
 		
 		showWindow:function(wUrl, wTitle, wWidth, wHeight){
@@ -126,7 +128,6 @@
 <chrome:box title="Find &amp; add adverse event term(s)">
  	<c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
     <c:if test="${empty instructions}"><p class="instructions">Enter the term in the autocompleter and click on add to add a single solicited adverse event term, click on query to add multiple.</p></c:if>
- 		isMeddra : ${isMeddra} , version : ${version}
  		<table id="fnd-0" class="query">
   			<tbody>
   				<tr>
