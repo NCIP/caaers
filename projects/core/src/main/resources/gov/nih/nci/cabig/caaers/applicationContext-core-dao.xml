@@ -51,6 +51,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Identifier</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
@@ -377,6 +378,10 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
     <bean id="routineAdverseEventReportDao" parent="daoTemplate"
           class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
+    <bean id="adverseEventReportingPeriodDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>      
+    <bean id="epochDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
     <bean id="studyParticipantAssignmentDao" parent="daoTemplate"
           class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
