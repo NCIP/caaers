@@ -9,7 +9,7 @@
 
 	<short-name>caaers</short-name>
 
-	<uri>http://gforge.nci.nih.gov/projects/caaers/tag</uri>
+	<uri>http://gforge.nci.nih.gov/projects/caaers/tags</uri>
 
 	<description>caAERS JSP Form Tag Library. Author: Biju Joseph</description>
 
@@ -17,7 +17,7 @@
 	<!-- <caaers:value/> -->
 	<tag>
 		<name>value</name>
-		<tag-class>gov.nih.nci.cabig.caaers.web.tag.ValueTag</tag-class>
+		<tag-class>gov.nih.nci.cabig.caaers.web.tags.ValueTag</tag-class>
 		<body-content>JSP</body-content>
 		<description>Renders a form field value as an HTML escaped text</description>
 
