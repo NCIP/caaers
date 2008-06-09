@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Krikor Krumlian
  */
@@ -29,7 +31,7 @@ public class RadiationInterventionTab extends AeTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refData = super.referenceData(command);
 
         String code = command.getAeReport().getTreatmentInformation().getTreatmentAssignment() != null ? command

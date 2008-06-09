@@ -4,6 +4,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -48,7 +50,7 @@ public class LabsTab extends AeTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("labCategories", labCategoryDao.getAll());
         return refdata;

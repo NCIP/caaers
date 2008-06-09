@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
@@ -24,7 +26,7 @@ public class CategoriesTab extends AeRoutTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(RoutineAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, RoutineAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData();
         refdata.put("ctcCats", getCategories(command));
         refdata.put("treatmentAssignments", command.getStudy().getTreatmentAssignments());

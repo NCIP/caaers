@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Rhett Sutphin
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
@@ -54,7 +56,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      * Will also update the InputField mandatory flag.
      */
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request , ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refData = super.referenceData(command);
         Object fieldGroups = refData.get("fieldGroups");
         populateMandatoryFlag(fieldGroups, command, refData);

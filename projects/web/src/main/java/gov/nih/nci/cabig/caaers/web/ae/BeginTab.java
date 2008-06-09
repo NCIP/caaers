@@ -4,12 +4,13 @@ import org.springframework.validation.Errors;
 
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 /**
  * @author Rhett Sutphin
  */
-public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
+public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T> {
 
     String instructions;
 
@@ -46,4 +47,6 @@ public class BeginTab<T extends AdverseEventInputCommand> extends Tab<T> {
             errors.reject("NO_ASSIGNMENT", "The selected ");
         }
     }
+    
+    
 }

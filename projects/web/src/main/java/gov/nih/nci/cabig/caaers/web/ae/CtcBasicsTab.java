@@ -13,6 +13,8 @@ import org.springframework.validation.Errors;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Rhett Sutphin
  */
@@ -29,7 +31,7 @@ public class CtcBasicsTab extends BasicsTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy()
                         .getAeTerminology().getCtcVersion().getCategories());

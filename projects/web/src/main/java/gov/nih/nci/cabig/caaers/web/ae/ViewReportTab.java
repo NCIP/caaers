@@ -39,7 +39,7 @@ public class ViewReportTab extends AeTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(ExpeditedAdverseEventInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
 
         if (command.getStudy().getReportFormat(ReportFormatType.ADEERSPDF) != null) {
             command.getStudy().setAdeersPDFType(Boolean.TRUE);
