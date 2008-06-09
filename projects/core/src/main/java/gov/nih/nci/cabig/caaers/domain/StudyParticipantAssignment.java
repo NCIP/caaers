@@ -40,6 +40,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     private String studySubjectIdentifier;
+    
+    private Date startDateOfFirstCourse;
 
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
@@ -122,6 +124,13 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setLoadStatus(Integer loadStatus) {
         this.loadStatus = loadStatus;
     }
+    @Column(name="first_course_date")
+    public Date getStartDateOfFirstCourse() {
+		return startDateOfFirstCourse;
+	}
+    public void setStartDateOfFirstCourse(Date startDateOfFirstCourse) {
+		this.startDateOfFirstCourse = startDateOfFirstCourse;
+	}
 
     // //// OBJECT METHODS
 
