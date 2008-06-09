@@ -80,6 +80,8 @@
 	==================================================================== -->
 	<target name="undeploy-caaers">
 		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml"/>
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
 	</target>
 
 	<!--=================================================================
