@@ -91,7 +91,7 @@ public class DiseaseTab extends StudyTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(Study command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, Study command) {
         Map<String, Object> refdata = super.referenceData(command);
         //refdata.put("meddraVersion",
         //                command.getAeTerminology().getMeddraVersion() != null ? command
