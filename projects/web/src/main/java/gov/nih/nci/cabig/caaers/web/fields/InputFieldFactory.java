@@ -86,6 +86,14 @@ public class InputFieldFactory {
     public static InputField createInplaceTextEditorField(String propertyName, String displayName, FieldValidator... validators){
     	return createInputField(INPLACE_TEXT, propertyName, displayName, validators);
     }
+    
+    public static InputField createLabelField(String propertyName, String displayName, boolean required){
+    	return createInputField(LABEL, propertyName, displayName, required);
+    }
+    
+    public static InputField createLabelField(String propertyName, String displayName, FieldValidator... validators){
+    	return createInputField(LABEL, propertyName, displayName, validators);
+    }
 
     public static InputField createSelectField(String propertyName, String displayName,
                     Map<Object, Object> options, FieldValidator... validators) {

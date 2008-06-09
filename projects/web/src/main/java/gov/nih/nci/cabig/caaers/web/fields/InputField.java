@@ -63,6 +63,6 @@ public interface InputField {
     Map<String, Object> getAttributes();
 
     enum Category {
-        TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT
+        TEXT, TEXTAREA, DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT,LABEL
     }
 }

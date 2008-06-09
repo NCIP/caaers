@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
@@ -42,8 +44,16 @@ public abstract class TabWithFields<C> extends WorkFlowTab<C> {
     public abstract Map<String, InputFieldGroup> createFieldGroups(C command);
 
     @Override
-    public Map<String, Object> referenceData(C command) {
-        Map<String, Object> refdata = referenceData();
+    public final Map<String, Object> referenceData(C command) {
+    	// TODO Auto-generated method stub
+    	return super.referenceData(command);
+    }
+    
+
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request, C command) {
+        Map<String, Object> refdata = super.referenceData(command);
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
         if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the
                                                                                 // help keys
