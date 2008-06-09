@@ -58,7 +58,12 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
                         new StudyAgentChildInstantiateFactory<StudyAgentINDAssociation>(this,
                                         StudyAgentINDAssociation.class));
     }
-
+    
+    public StudyAgent(Agent agent){
+        this();
+        this.agent = agent;
+        
+    }
     @ManyToOne
     @JoinColumn(name = "study_id")
     public Study getStudy() {
