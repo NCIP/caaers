@@ -8,31 +8,31 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.ReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.ReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, ReportingPeriod, ReportingPeriodDao> {
+public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
 	private StudyParticipantAssignmentDao assignmentDao;
 	
 	@Override
-	protected ReportingPeriodDao getDao() {
+	protected AdverseEventReportingPeriodDao getDao() {
 		return null;
 	}
 
 	@Override
-	protected ReportingPeriod getPrimaryDomainObject(CaptureAdverseEventInputCommand cmd) {
+	protected AdverseEventReportingPeriod getPrimaryDomainObject(CaptureAdverseEventInputCommand cmd) {
 		//TODO should be refined.
-		return new ReportingPeriod();
+		return new AdverseEventReportingPeriod();
 	}
 
 	@Override
