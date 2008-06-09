@@ -92,7 +92,9 @@
 	      p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+    
       </list>
+      
     </property>
   </bean>
 
@@ -412,7 +414,7 @@
   </bean>    
   
    <!--  AE   -->
-
+  
   <bean name="aeEditTask" id="aeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
   	  autowire="byType" p:displayName="Enter expedited report" p:linkName="editAdverseEventController"/>
   
@@ -423,7 +425,7 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
   
   <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>    
+	class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>    
 
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
@@ -438,14 +440,13 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.ViewRoutineAeController" >
   </bean>	   
   
-  
 
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   
   <bean name="/ae/generateExpeditedfPdf" id="generateExpeditedPdfController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.GenerateExpeditedPdfController"/>    
-
+	
   <bean name="/admin/configure" id="configurationController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
 
