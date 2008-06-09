@@ -12,6 +12,7 @@
     <c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MAXLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
     <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox path="${field.propertyName}" disabled="${disabled}"/></c:when>
     <c:when test="${field.categoryName == 'inplace_text'}"><tags:inplaceTextField field="${field}" /></c:when>
+    <c:when test="${field.categoryName == 'lable'}"><tags:value propertyName="${field.propertyName}" /></c:when>
     <c:when test="${field.categoryName == 'select'}" >
         <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}"/>
     </c:when>
