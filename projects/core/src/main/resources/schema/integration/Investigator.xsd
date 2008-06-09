@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+        xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+        xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+        elementFormDefault="unqualified">
+        
+    <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+        schemaLocation="caAERSCommonTypes.xsd"/>
+    
+    <xs:element name="staff">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="investigator" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="investigator" type="InvestigatorType"/>    
+    <xs:complexType name="InvestigatorType">
+        <xs:complexContent>
+            <xs:extension base="cct:InvestigatorType">
+                <xs:sequence>
+                    <xs:element ref="siteInvestigator" maxOccurs="unbounded" minOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <xs:element name="siteInvestigator" type="SiteInvestigatorType"/>
+    <xs:complexType name="SiteInvestigatorType">
+        <xs:complexContent>
+            <xs:extension base="cct:SiteInvestigatorType">
+                <xs:sequence>
+                    <xs:element ref="cct:organizationRef" minOccurs="1"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+    <!--
+    <xs:element name="investigator" type="investigatorType"/>
+    <xs:complexType name="investigatorType">
+            <xs:sequence>
+                <xs:element type="common:personType" name="person"/>
+                <xs:element type="common:customStringType" name="emailAddress"/>
+                <xs:element type="common:customStringType" name="phoneNumber"/>
+                <xs:element type="common:customStringType" name="faxNumber"/> 
+                <xs:element type="common:customStringType" name="nciIdentifier"/>
+                <xs:element ref="siteInvestigator" minOccurs="1"  maxOccurs="unbounded"></xs:element>
+            </xs:sequence>
+    </xs:complexType>
+
+    
+    <xs:element name="siteInvestigator" type="siteInvestigatorType"/>
+    <xs:complexType name="siteInvestigatorType">
+                <xs:sequence>
+                    <xs:element type="common:customStringType" name="emailAddress"/>
+                    <xs:element type="common:customStringType" name="statusCode"/>
+                    <xs:element type="common:customStringType" name="statusDate"/>
+                    <xs:element type="common:organizationType" name="organization"/>
+                </xs:sequence>
+    </xs:complexType>
+    -->
+</xs:schema>
