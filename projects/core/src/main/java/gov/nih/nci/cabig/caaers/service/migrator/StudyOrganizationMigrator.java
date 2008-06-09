@@ -42,20 +42,22 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		migrateCoordinatingCenter(source, destination, outcome);
 		
         //migrate studyOrganization.
-		for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
-			String orgName = studyOrganization.getOrganization().getName();
-	        Organization organization = organizationDao.getByName(orgName);
-	        studyOrganization.setOrganization(organization);
+		migrateStudySite(source, destination, outcome);
+	}
+	
+	private void migrateStudySite(Study source, Study destination,DomainObjectImportOutcome<Study> outcome) {
+		if(source.getStudyOrganizations() != null && source.getStudyOrganizations().size() > 0){
+			for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
+				String orgName = studyOrganization.getOrganization().getName();
+		        Organization organization = organizationDao.getByName(orgName);
+		        studyOrganization.setOrganization(organization);
 
-	        // Migrate Study investigators and Study Personnels
-	        migrateStudyInvestigators(studyOrganization, organization, outcome);
-	        migrateStudyPersonnels(studyOrganization, organization, outcome);
-
-	        if (studyOrganization instanceof StudySite) {
+		        // Migrate Study investigators and Study Personnels
+		        migrateStudyInvestigators(studyOrganization, organization, outcome);
+		        migrateStudyPersonnels(studyOrganization, organization, outcome);
 	        	destination.addStudySite((StudySite) studyOrganization);
-	        } else if (studyOrganization instanceof StudyFundingSponsor) {
-	            destination.addStudyFundingSponsor((StudyFundingSponsor) studyOrganization);
-	        }
+		   }
+	
 		}
 		
 	}
