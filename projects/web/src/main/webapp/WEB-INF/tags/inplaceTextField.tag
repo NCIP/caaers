@@ -1,4 +1,4 @@
-<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tag" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="size"%>
 <%@attribute name="validations"%>
