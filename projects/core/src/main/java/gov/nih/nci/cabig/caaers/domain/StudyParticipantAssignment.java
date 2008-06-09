@@ -36,6 +36,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private List<ExpeditedAdverseEventReport> aeReports;
 
     private List<RoutineAdverseEventReport> aeRoutineReports;
+    
+    private List<AdverseEventReportingPeriod> reportingPeriods;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
@@ -62,6 +64,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
         routineReport.setAssignment(this);
         getAeRoutineReports().add(routineReport);
+    }
+    
+    public void addReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
+    	//reportingPeriod.setAssignment(this);
+    	getReportingPeriods().add(reportingPeriod);
     }
 
     // //// BEAN PROPERTIES
@@ -115,6 +122,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
         this.aeRoutineReports = aeRoutineReports;
+    }
+    
+    @OneToMany(mappedBy = "assignment")
+    public List<AdverseEventReportingPeriod> getReportingPeriods() {
+    	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
+    	return reportingPeriods;
+    }
+    
+    public void setReportingPeriods(List<AdverseEventReportingPeriod> reportingPeriods) {
+    	this.reportingPeriods = reportingPeriods;
     }
 
     public Integer getLoadStatus() {

@@ -45,7 +45,7 @@ import java.util.List;
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_adverse_events_id") })
 public class AdverseEvent extends AbstractMutableDomainObject implements
-                ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
+                ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild{
     private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
@@ -84,6 +84,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private List<RadiationAttribution> radiationAttributions;
 
     private List<DeviceAttribution> deviceAttributions;
+    
+    private AdverseEventReportingPeriod reportingPeriod;
 
     // //// BOUND PROPERTIES
 
@@ -121,6 +123,15 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         this.routineReport = routineReport;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    public AdverseEventReportingPeriod getReportingPeriod() {
+    	return reportingPeriod;
+    }
+    
+    public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod){
+    	this.reportingPeriod = reportingPeriod;
+    }
+    
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
