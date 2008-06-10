@@ -24,11 +24,11 @@
 		</url>
 		
 		<!--  Semanticbits shared repository [using sftp] -->
-		<sftp name="semanticbits-repo-sftp" user="caaers" userPassword="caaers" host="10.10.10.2">
+	<!-- 	<sftp name="semanticbits-repo-sftp" user="caaers" userPassword="caaers" host="10.10.10.2">
 		  <ivy pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
 		  <artifact pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
 		</sftp>
-				<!--  Northwestern RHLCCC Bioinformatics  -->
+	 -->	<!--  Northwestern RHLCCC Bioinformatics  -->
 			<ibiblio name="maven2-northwestern" m2compatible="true"
 				root="http://download.bioinformatics.northwestern.edu/maven2"
 				changingPattern=".*SNAPSHOT" 
@@ -52,10 +52,10 @@
             <ibiblio name="openqa" m2compatible="true"
                             root="http://archiva.openqa.org/repository/releases/" changingPattern=".*SNAPSHOT"/>
 			
-			<ibiblio name="java.net" root="http://download.java.net/maven/1/"
-         				namespace="java.net" 
-         				pattern="[organization]/jars/[module]-[revision].[ext]" />
+			<ibiblio name="java.net" root="http://download.java.net/maven/1/" pattern="[organization]/jars/[module]-[revision].[ext]" />
 			
+			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT">
+			</ibiblio>
             
         </chain>
 		
