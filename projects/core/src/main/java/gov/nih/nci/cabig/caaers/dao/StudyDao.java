@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -136,6 +137,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 		HibernateTemplate ht = getHibernateTemplate();
 		ht.initialize(study.getIdentifiers());
 		ht.initialize(study.getStudyOrganizations());
+		if(study.getAeTerminology().getTerm().equals(Term.CTC)){
+			ht.initialize(study.getAeTerminology().getCtcVersion().getCategories());
+		}
 		for (StudyOrganization studyOrg : study.getStudyOrganizations()) {
 			if (studyOrg == null) {
 				continue;
