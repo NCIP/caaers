@@ -41,18 +41,9 @@
         	
         	<!--  Spring framework -->
         	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
-        	<dependency org="org.springframework" name="spring-web.jar" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-webmvc.jar" rev="2.0.2" force="true" />
-        	<!--  
-        	Spring framework
-        	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
-        	<dependency org="org.springframework" name="spring-context" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-dao.jar" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-jdbc.jar" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-support.jar" rev="2.0.2" force="true" />
-        	<dependency org="org.springframework" name="spring-remoting.jar" rev="2.0.2" force="true" />
-        	
- 			-->        	
+        	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
+			<dependency org="org.springframework.ws" name="spring-ws" rev="1.5.1" />      	
         	<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.2.1" />
 			<dependency org="xpp3" name="xpp3" rev="1.1.3.4.O" />
 			
