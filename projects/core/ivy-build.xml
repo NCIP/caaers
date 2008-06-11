@@ -113,13 +113,15 @@
 	    </taskdef>
 		
 		<mkdir dir="${generated.src.dir}"/>
-	    <xjc destdir="${generated.src.dir}" extension="true" >
+	    
+		<xjc destdir="${generated.src.dir}" extension="true" >
 	    	<arg line="-npa
 	    			   -Xcollection-setter-injector"/>
 	    	<schema dir="${main.src.resources}/schema/integration">
 	        	<include name="*.xsd" />
 	        </schema>
 	        <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
+			<binding dir="${main.src.resources}/schema/integration" includes="bindings.xjb"/>
 	    </xjc>
     </target>
 </project>
