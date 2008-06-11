@@ -63,8 +63,11 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		        studyOrganization.setOrganization(organization);
 
 		        // Migrate Study investigators and Study Personnels
-		        migrateStudyInvestigators(studyOrganization, organization, outcome);
-		        migrateStudyPersonnels(studyOrganization, organization, outcome);
+		        if(organization != null){
+		        	migrateStudyInvestigators(studyOrganization, organization, outcome);
+			        migrateStudyPersonnels(studyOrganization, organization, outcome);
+		        }
+		        
 	        	destination.addStudySite((StudySite) studyOrganization);
 		   }
 	
@@ -95,8 +98,10 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		orgIdentifier.setOrganization(organization);
         
         //	Migrate Study investigators and Study Personnels
-        migrateStudyInvestigators(studySponsor, organization, outcome);
-        migrateStudyPersonnels(studySponsor, organization, outcome);
+		if(organization != null){
+			migrateStudyInvestigators(studySponsor, organization, outcome);
+			migrateStudyPersonnels(studySponsor, organization, outcome);
+		}
         
         destination.getIdentifiers().add(orgIdentifier);
         destination.addStudyFundingSponsor(studySponsor);
@@ -124,8 +129,10 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		orgIdentifier.setOrganization(organization);
         
         //	Migrate Study investigators and Study Personnels
-        migrateStudyInvestigators(studyCoordinatingCenter, organization, outcome);
-        migrateStudyPersonnels(studyCoordinatingCenter, organization, outcome);
+		if(organization != null){
+			migrateStudyInvestigators(studyCoordinatingCenter, organization, outcome);
+			migrateStudyPersonnels(studyCoordinatingCenter, organization, outcome);
+		}
         
         destination.getIdentifiers().add(orgIdentifier);
         destination.addStudyOrganization(studyCoordinatingCenter);
