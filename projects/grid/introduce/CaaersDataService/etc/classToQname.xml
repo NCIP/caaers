@@ -62,4 +62,31 @@
  <ns60:mapping className="gov.nih.nci.cabig.caaers.domain.Investigator" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns60:classToQname" xmlns:ns60="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  <ns61:mapping className="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns61:classToQname" xmlns:ns61="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
  
+ <ns62:mapping className="gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns62:classToQname" xmlns:ns62="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns63:mapping className="gov.nih.nci.cabig.caaers.domain.AeTerminology" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns63:classToQname" xmlns:ns63="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns64:mapping className="gov.nih.nci.cabig.caaers.domain.CourseAgent" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns64:classToQname" xmlns:ns64="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns65:mapping className="gov.nih.nci.cabig.caaers.domain.CtcGrade" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns65:classToQname" xmlns:ns65="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns66:mapping className="gov.nih.nci.cabig.caaers.domain.DiseaseTerminology" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns66:classToQname" xmlns:ns66="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns67:mapping className="gov.nih.nci.cabig.caaers.domain.Identifier" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns67:classToQname" xmlns:ns67="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns68:mapping className="gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns68:classToQname" xmlns:ns68="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns69:mapping className="gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns69:classToQname" xmlns:ns69="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns70:mapping className="gov.nih.nci.cabig.caaers.domain.OrganizationHeldIND" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns70:classToQname" xmlns:ns70="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns71:mapping className="gov.nih.nci.cabig.caaers.domain.OtherCause" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns71:classToQname" xmlns:ns71="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns72:mapping className="gov.nih.nci.cabig.caaers.domain.Participation" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns72:classToQname" xmlns:ns72="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns73:mapping className="gov.nih.nci.cabig.caaers.domain.PriorTherapy" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns73:classToQname" xmlns:ns73="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns75:mapping className="gov.nih.nci.cabig.caaers.domain.ResearchStaff" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns75:classToQname" xmlns:ns75="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns76:mapping className="gov.nih.nci.cabig.caaers.domain.StudyAgent" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns76:classToQname" xmlns:ns76="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns77:mapping className="gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns77:classToQname" xmlns:ns77="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns78:mapping className="gov.nih.nci.cabig.caaers.domain.StudyPersonnel" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns78:classToQname" xmlns:ns78="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns79:mapping className="gov.nih.nci.cabig.caaers.domain.StudySite" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns79:classToQname" xmlns:ns79="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns80:mapping className="gov.nih.nci.cabig.caaers.domain.StudyTherapy" qname="{gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata}ServiceMetadata" xsi:type="ns80:classToQname" xmlns:ns80="http://gov.nih.nci.cagrid.data/ClassMappings" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 </ns1:ClassMappings>
