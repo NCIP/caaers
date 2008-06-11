@@ -162,6 +162,7 @@
         </xs:complexContent>
     </xs:complexType>
     
+    
     <xs:element name="studyCoordinatingCenter" type="StudyCoordinatingCenterType"/>
     <xs:complexType name="StudyCoordinatingCenterType">
         <xs:complexContent>
