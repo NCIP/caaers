@@ -119,7 +119,10 @@ This applicationContext contains the definition of the concrete services
 		<property name="organizationDao" ref="organizationDao" />
 		<property name="siteInvestigatorDao" ref="siteInvestigatorDao" />
 	</bean>
-	<bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator" />
+	<bean id="studyAgentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyAgentMigrator">
+		<property name="agentDao" ref="agentDao" />
+		<property name="investigationalNewDrugDao" ref="investigationalNewDrugDao" />
+	</bean>
 	<bean id="studyDiseaseMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyDiseaseMigrator">
 		<property name="diseaseTermDao" ref="diseaseTermDao" />
 		<property name="lowLevelTermDao" ref="lowLevelTermDao" />
@@ -150,4 +153,10 @@ This applicationContext contains the definition of the concrete services
 			</list>
 		</constructor-arg>
 	</bean>
+	<bean id="studyProcessor" class="gov.nih.nci.cabig.caaers.service.migrator.StudyProcessor">
+		<property name="studyImportService" ref="studyImportService" />
+		<property name="studyConverter" ref="studyConverter" />
+		<property name="studyDao" ref="studyDao" />
+	</bean>
+	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>
 </beans>
