@@ -311,6 +311,21 @@
 			</table>
 			<br>
 			</chrome:division>
+			
+	<chrome:division title="Solicited Adverse Events">
+	<table class="tablecontent" width="96%">
+	<tr>
+		<th scope="col">Term</th>
+		</tr>
+    	  <c:forEach var="epoch" items="${command.epochs}">
+    		<c:forEach var="arm" items="${epoch.arms}">
+    			<c:forEach var="solicitedEvent" items="${arm.solicitedAdverseEvents}">
+    			<tr><td>${solicitedEvent.ctcterm.term }</td></tr>
+    			</c:forEach>
+    		</c:forEach>
+    	</c:forEach>
+    	</table>
+    </chrome:division>
 
     </jsp:attribute>
 </tags:tabForm>
