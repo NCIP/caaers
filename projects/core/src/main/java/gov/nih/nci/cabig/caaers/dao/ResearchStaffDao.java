@@ -26,6 +26,8 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName",
                     "lastName");
+    
+    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("nci_identifier");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
@@ -95,5 +97,21 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
         return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    /**
+     * Get the list of research staffs matching the NciIdentifier and belonging to specified site.
+     * 
+     * @param subnames
+     *                the name fragments to search on.
+     * @param site
+     *                The organization ID of the site.
+     * @return List of matching research staffs.
+     */
+    public List<ResearchStaff> getByNciIdentifier(final String[] subnames, final int site) {
+
+        return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
+        		NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+  
 
 }
