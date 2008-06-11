@@ -14,6 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 /**
  * Domain object representing Study(Protocol)
@@ -885,4 +886,33 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	}
 	//this method is added to satisfy the UI requirements, so to be moved to the command class
 	public void setTermCode(Integer ignore){}
+	
+	public boolean containsSolicitedAE(Integer termID)
+	{
+        for(Epoch epoch : getEpochs())
+        {
+        	List<SolicitedAdverseEvent> listOfSolicitedAEs = epoch.getArms().get(0).getSolicitedAdverseEvents();
+        	
+        	for(SolicitedAdverseEvent solicitedAE : listOfSolicitedAEs)
+        	{
+        		if( solicitedAE.getCtcterm() != null)
+        		{
+        			
+        			if( solicitedAE.getCtcterm().getId().equals( termID) )
+        				return true;
+        		}
+        		else
+        		{
+        			if( solicitedAE.getLowLevelTerm().getId().equals( termID) )
+        				return true;
+        		}
+        		
+        	}
+        		
+        	
+        }
+		
+		return false;
+		
+	}
 }

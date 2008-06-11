@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
@@ -37,6 +38,7 @@ public class CreateStudyController extends StudyController<Study> {
         flow.addTab(new SitesTab());
         flow.addTab(new SolicitedAdverseEventTab());
         flow.addTab(new InvestigatorsTab());
+        flow.addTab(new SolicitedAdverseEventTab());
         flow.addTab(new PersonnelTab());
         flow.addTab(new IdentifiersTab());
         flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
@@ -64,7 +66,9 @@ public class CreateStudyController extends StudyController<Study> {
         ccIdentifier.setPrimaryIndicator(true);
         ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.addIdentifier(ccIdentifier);
-
+        study.addEpoch(new Epoch("Pre-treatment",0));
+        study.addEpoch(new Epoch("Treatment",1));
+        study.addEpoch(new Epoch("Post-treatment",2));
         return study;
     }
 

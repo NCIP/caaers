@@ -198,6 +198,18 @@ public class CreateStudyAjaxFacade {
         return diseaseTerms;
     }
 
+    public String addSolicitedAE(String listOfTermIDs[], String listOfTerms[]) {
+       
+        HttpServletRequest request = getHttpServletRequest();
+        request.setAttribute("listOfTermIDs", listOfTermIDs);
+        request.setAttribute("listOfTerms", listOfTerms);
+        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+        request.setAttribute(AJAX_SUBVIEW_PARAMETER, "addSolicitedAERows");
+        
+        String url = getCurrentPageContextRelative(WebContextFactory.get());
+        return getOutputFromJsp(url);
+    }
+
     public String addStudySite(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         getStudyCommand(request);

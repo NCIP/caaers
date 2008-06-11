@@ -3,6 +3,8 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 
 <html>
 <head>
@@ -87,9 +89,26 @@
   
   <script type="text/javascript">
   	function myCallback(selectedTerms){
-  		selectedTerms.each(function (selectedTerm) {
-  			alert(selectedTerm);
-  		});
+  	
+    var listOfTermIDs = new Array();
+    var listOfTerms = new Array();
+  	
+  		$H(selectedTerms).keys().each( function(termID) {
+  		
+  		var term = $H( selectedTerms ).get(termID);
+  		
+  		listOfTermIDs.push( termID );
+  		listOfTerms.push(term );
+
+  	   });
+  
+   	createStudy.addSolicitedAE(listOfTermIDs, listOfTerms, function(responseStr)
+   	{
+   	  new Insertion.Before('specialLastRow', responseStr);
+   	});
+   	
+   	
+ 
   	}
   </script>
 </head>
@@ -138,21 +157,10 @@
             		</th>
             		<th class="action"> </th>
     			</tr>
-    			<tr class="data" align="center">
-    				<td>Nausea</td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="button" value="Delete" /></td>
-    			</tr>
-    			<tr class="data" align="center">
-    				<td>Vomiting</td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="checkbox" /></td>
-    				<td><input type="button" value="Delete" /></td>
-    			</tr>    
-    			<tr class="bottom">
+    			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
+    			    <study:oneSolicitedAERow index="${status.index}" eachRow="${eachRow}" />
+    			 </c:forEach>
+    			<tr id="specialLastRow" class="bottom">
     				<td colspan="5"></td>
     			</tr>			
   			</tbody>

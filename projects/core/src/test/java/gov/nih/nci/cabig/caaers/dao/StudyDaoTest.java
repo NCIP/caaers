@@ -29,6 +29,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.sql.ResultSet;
@@ -700,12 +701,12 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
   	 //   System.out.println("Study created : " + savedId);
 	  	
   	    
-  	    Epoch epoch1 = new Epoch("Epoch1","Arm 1","Arm 2");
+  	    Epoch epoch1 = new Epoch("Epoch1",1,"Arm 1","Arm 2");
 	    epoch1.setDescriptionText("Epoch 1 description");
 	    epoch1.setEpochOrder(1);
 	    
 	    
-	    Epoch epoch2 = new Epoch("Epoch2","Arm 3","Arm 4");
+	    Epoch epoch2 = new Epoch("Epoch2",2,"Arm 3","Arm 4");
   	    epoch2.setDescriptionText("Epoch 2 description");
   	    epoch2.setEpochOrder(2);
   	    
@@ -799,5 +800,5 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
   		
   	
 	}
-	
+
 }
