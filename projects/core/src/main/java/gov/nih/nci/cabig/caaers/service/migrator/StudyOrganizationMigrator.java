@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
@@ -18,11 +19,12 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
+
 
 public class StudyOrganizationMigrator implements Migrator<Study>{
 	
@@ -48,8 +50,16 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 	private void migrateStudySite(Study source, Study destination,DomainObjectImportOutcome<Study> outcome) {
 		if(source.getStudyOrganizations() != null && source.getStudyOrganizations().size() > 0){
 			for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
-				String orgName = studyOrganization.getOrganization().getName();
-		        Organization organization = organizationDao.getByName(orgName);
+				Organization organization = null;
+				if(studyOrganization.getOrganization().getNciInstituteCode() != null && studyOrganization.getOrganization().getNciInstituteCode().length() > 0){
+					String nciInstituteCode = studyOrganization.getOrganization().getNciInstituteCode();
+			        organization = fetchOrganization(nciInstituteCode);
+				}else{
+					String orgName = studyOrganization.getOrganization().getName();
+			        organization = organizationDao.getByName(orgName);
+				}
+		        outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, 
+				"The organization specified in studySite is invalid");
 		        studyOrganization.setOrganization(organization);
 
 		        // Migrate Study investigators and Study Personnels
@@ -68,8 +78,14 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		
 		
 		StudyFundingSponsor studySponsor = sponsor.getStudyFundingSponsor();
-		String orgName = studySponsor.getOrganization().getName();
-		Organization organization = organizationDao.getByName(orgName);
+		Organization organization = null;
+		if(studySponsor.getOrganization().getNciInstituteCode() != null && studySponsor.getOrganization().getNciInstituteCode().length() > 0){
+			String nciInstituteCode = studySponsor.getOrganization().getNciInstituteCode();
+	        organization = fetchOrganization(nciInstituteCode);
+		}else{
+			String orgName = studySponsor.getOrganization().getName();
+			organization = organizationDao.getByName(orgName);
+		}
 		outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, 
 				"The organization specified in fundingSponsor is invalid");
 		studySponsor.setOrganization(organization);
@@ -92,8 +108,14 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		if(coCenter == null) return;
 		
 		StudyCoordinatingCenter studyCoordinatingCenter = coCenter.getStudyCoordinatingCenter();
-		String orgName = studyCoordinatingCenter.getOrganization().getName();
-		Organization organization = organizationDao.getByName(orgName);
+		Organization organization = null;
+		if(studyCoordinatingCenter.getOrganization().getNciInstituteCode() != null && studyCoordinatingCenter.getOrganization().getNciInstituteCode().length() > 0){
+			String nciInstituteCode = studyCoordinatingCenter.getOrganization().getNciInstituteCode();
+	        organization = fetchOrganization(nciInstituteCode);
+		}else{
+			String orgName = studyCoordinatingCenter.getOrganization().getName();
+			organization = organizationDao.getByName(orgName);
+		}
 		outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, "The organization specified in coordinatingCenter is invalid");
 		studyCoordinatingCenter.setOrganization(organization);
 		
@@ -116,14 +138,18 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
         for (StudyInvestigator studyInvestigator : studyOrganization.getStudyInvestigators()) {
 
             Investigator investigator = studyInvestigator.getSiteInvestigator().getInvestigator();
-            // TODO  : search should be done on something else too
-            String[] investigatorFirstAndLast = {investigator.getFirstName(), investigator.getLastName()};
-            List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(investigatorFirstAndLast, organization.getId());
+            List<SiteInvestigator> siteInvestigators = null;
+            if(investigator.getNciIdentifier() != null && investigator.getNciIdentifier().length() > 0){
+            	String[] nciIdentifier = {investigator.getNciIdentifier()};
+                siteInvestigators = siteInvestigatorDao.getByNciIdentifier(nciIdentifier, organization.getId());
+            }else{
+            	String[] investigatorFirstAndLast = {investigator.getFirstName(), investigator.getLastName()};
+                siteInvestigators = siteInvestigatorDao.getBySubnames(investigatorFirstAndLast, organization.getId());
+            }
             if (siteInvestigators.size() > 0) {
                 studyInvestigator.setSiteInvestigator(siteInvestigators.get(0));
                 studyInvestigator.setStudyOrganization(studyOrganization);
             } else {
-                //studyOrganization.getStudyInvestigators().remove(studyInvestigator);
                 studyImportOutcome.ifNullObject(null, DomainObjectImportOutcome.Severity.ERROR, "The selected investigator " +
                         investigator.getFirstName() + " " + investigator.getLastName() + " is not Valid ");
             }
@@ -136,10 +162,15 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 
         for (StudyPersonnel studyPersonnel : studyOrganization.getStudyPersonnels()) {
             ResearchStaff researchStaffer = studyPersonnel.getResearchStaff();
-            // TODO : search should be done on something else too
-            String[] investigatorFirstAndLast = {researchStaffer.getFirstName(), researchStaffer.getLastName()};
-            List<ResearchStaff> researchStaffs = researchStaffDao.getBySubnames(investigatorFirstAndLast, organization.getId());
-
+            List<ResearchStaff> researchStaffs = null;
+            
+            if(researchStaffer.getNciIdentifier() != null && researchStaffer.getNciIdentifier().length() > 0){
+            	String[] nciIdentifier = {researchStaffer.getNciIdentifier()};
+            	researchStaffs = researchStaffDao.getByNciIdentifier(nciIdentifier, organization.getId());
+            }else{
+            	String[] investigatorFirstAndLast = {researchStaffer.getFirstName(), researchStaffer.getLastName()};
+                researchStaffs = researchStaffDao.getBySubnames(investigatorFirstAndLast, organization.getId());
+            }
             if (researchStaffs.size() > 0) {
                 ResearchStaff researchStaff = researchStaffs.get(0);
                 studyPersonnel.setResearchStaff(researchStaff);
@@ -150,6 +181,33 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
             }
         }
     } 
+    
+    /**
+     * Fetches the organization from the DB
+     * 
+     * @param nciCode
+     * @return
+     */
+    private Organization fetchOrganization(String nciInstituteCode) {
+        OrganizationQuery orgQuery = new OrganizationQuery();
+
+        if (StringUtils.isNotEmpty(nciInstituteCode)) {
+            orgQuery.filterByNciCodeExactMatch(nciInstituteCode);
+        }
+
+        List<Organization> orgList = organizationDao.searchOrganization(orgQuery);
+
+        if (orgList == null || orgList.isEmpty()) {
+            return null;
+        }
+        if (orgList.size() > 1) {
+            //("Multiple organizations exist with same NCI Institute Code :" + nciInstituteCode);
+        }
+
+        return orgList.get(0);
+    }
+    
+    
     
     @Required
     public void setSiteInvestigatorDao(final SiteInvestigatorDao siteInvestigatorDao) {
