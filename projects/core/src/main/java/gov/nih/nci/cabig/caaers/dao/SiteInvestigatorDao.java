@@ -18,6 +18,8 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList(
                     "investigator.firstName", "investigator.lastName");
+    
+    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("investigator.nci_identifier");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
@@ -64,7 +66,7 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     }
 
     /**
-     * Get the list of site investigators matching the name fragments.
+     * Get the list of site investigators matching the name fragments and belonging to specified site..
      * 
      * @param subnames
      *                the name fragments to search on.
@@ -74,4 +76,18 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
         return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
                         SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
+    
+    
+    /**
+     * Get the list of site investigators matching the NciIdentifier and belonging to specified site..
+     * 
+     * @param subnames
+     *                the name fragments to search on.
+     * @return List of matching site investigators.
+     */
+    public List<SiteInvestigator> getByNciIdentifier(String[] subnames, int site) {
+        return findBySubname(subnames, "o.organization.id = '" + site + "'", EXTRA_PARAMS,
+                        NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
 }
