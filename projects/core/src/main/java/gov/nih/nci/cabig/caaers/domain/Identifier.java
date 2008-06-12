@@ -100,6 +100,7 @@ public class Identifier extends AbstractMutableDomainObject {
         result = prime * result + (getId() == null ? 0 : getId().hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
         result = prime * result + (value == null ? 0 : value.hashCode());
+        result = prime * result + (primaryIndicator == null ? 0 : primaryIndicator.hashCode());
         return result;
     }
 
