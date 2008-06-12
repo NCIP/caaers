@@ -92,6 +92,7 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (getId() == null ? 0 : getId().hashCode());
         result = prime * result + (code == null ? 0 : code.hashCode());
         result = prime * result + (comments == null ? 0 : comments.hashCode());
         result = prime * result + (description == null ? 0 : description.hashCode());
@@ -112,6 +113,13 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
             return false;
         }
         final TreatmentAssignment other = (TreatmentAssignment) obj;
+        if (getId() == null) {
+            if (other.getId() != null) {
+                return false;
+            }
+        } else if (!getId().equals(other.getId())) {
+            return false;
+        }
         if (code == null) {
             if (other.code != null) {
                 return false;
@@ -133,7 +141,13 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
         } else if (!description.equals(other.description)) {
             return false;
         }
-
+        if (doseLevelOrder == null) {
+            if (other.doseLevelOrder != null) {
+                return false;
+            }
+        } else if (!doseLevelOrder.equals(other.doseLevelOrder)) {
+            return false;
+        }
         if (study.getId() == null) {
             if (other.study.getId() != null) {
                 return false;
