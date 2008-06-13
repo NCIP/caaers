@@ -7,6 +7,7 @@ import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
@@ -23,6 +24,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.digester.SetPropertiesRule;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -35,6 +37,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	private static final String REPORTINGPERIOD_FIELD_GROUP = "ReportingPeriod";
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
+    private ParticipantDao participantDao;
     private StudyDao studyDao;
     private EpochDao epochDao;
     private InputFieldGroup reportingPeriodFieldGroup;
@@ -48,10 +51,15 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
 		String idString = request.getParameter("id");
-		if(idString == null)
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao);
+		String studyString = request.getParameter("studyId");
+		String participantString = request.getParameter("participantId");
+		if(idString != null)
+			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, idString);
+		else if(studyString != null && participantString != null)
+			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, studyString, participantString);
 		else
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, idString);
+			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao); 
+			
     }
 	
 	@Override
@@ -153,6 +161,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
     
     public void setEpochDao(EpochDao epochDao) {
 		this.epochDao = epochDao;
+	}
+    
+    public ParticipantDao getParticipantDao() {
+		return participantDao;
+	}
+    
+    public void setParticipantDao(ParticipantDao participantDao) {
+		this.participantDao = participantDao;
 	}
     
 }

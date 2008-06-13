@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
@@ -31,21 +32,35 @@ public class ReportingPeriodCommand {
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
     private StudyDao studyDao;
+    private ParticipantDao participantDao;
     
     public ReportingPeriodCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao,
-    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao){
+    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao){
     	this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
     	this.assignmentDao = assignmentDao;
     	this.studyDao = studyDao;
+    	this.participantDao = participantDao;
     	this.reportingPeriod = new AdverseEventReportingPeriod();
     }
     
     public ReportingPeriodCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao,
-    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, String idString){
+    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, String idString){
     	this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
     	this.assignmentDao = assignmentDao;
     	this.studyDao = studyDao;
+    	this.participantDao = participantDao;
     	this.reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(idString));
+    }
+    
+    public ReportingPeriodCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao,
+    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, String studyString, String participantString){
+    	this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+    	this.assignmentDao = assignmentDao;
+    	this.studyDao = studyDao;
+    	this.participantDao = participantDao;
+    	this.participant = participantDao.getById(Integer.parseInt(participantString));
+    	this.study = studyDao.getById(Integer.parseInt(studyString));
+    	this.reportingPeriod = new AdverseEventReportingPeriod();
     }
     
     public StudyParticipantAssignment getAssignment() {
@@ -85,7 +100,7 @@ public class ReportingPeriodCommand {
             study = assignment.getStudySite().getStudy();
         }
     	// Currently Hard-coded. Needs to be removed.
-    	study = studyDao.getById(9);
+    	//study = studyDao.getById(9);
     	return study;
     }
     
@@ -116,4 +131,12 @@ public class ReportingPeriodCommand {
     public void setStudyDao(StudyDao studyDao){
     	this.studyDao = studyDao;
     }
+    
+    public ParticipantDao getParticipantDao() {
+		return participantDao;
+	}
+    
+    public void setParticipantDao(ParticipantDao participantDao) {
+		this.participantDao = participantDao;
+	}
 }

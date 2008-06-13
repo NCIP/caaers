@@ -34,4 +34,13 @@ public class InputFieldGroupMap extends LazyMap<String, InputFieldGroup> {
         for (int i = 0; i < count; i++)
             addInputFieldGroup(groupFactory.createGroup(i));
     }
+    
+    public void addMultipleFieldGroupFactory(MultipleFieldGroupFactory groupFactory){
+    	int count = 0;
+    	if(groupFactory != null && groupFactory.getInputFieldGroup() != null)
+    		count = groupFactory.getInputFieldGroup().size();
+    	for(int i = 0; i < count; i++){
+    		addInputFieldGroup(groupFactory.getInputFieldGroup().get(i));
+    	}
+    }
 }

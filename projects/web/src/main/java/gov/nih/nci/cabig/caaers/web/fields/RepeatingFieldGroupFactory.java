@@ -7,13 +7,13 @@ import java.util.List;
  * @author Rhett Sutphin
  */
 public class RepeatingFieldGroupFactory {
-    private String basename;
+    protected String basename;
 
-    private String listPropertyName;
+    protected String listPropertyName;
 
-    private DisplayNameCreator displayNameCreator;
+    protected DisplayNameCreator displayNameCreator;
 
-    private List<InputField> baseFields = new LinkedList<InputField>();
+    protected List<InputField> baseFields = new LinkedList<InputField>();
 
     public RepeatingFieldGroupFactory(String basename, String listPropertyName) {
         this.basename = basename;
@@ -27,7 +27,7 @@ public class RepeatingFieldGroupFactory {
         return group;
     }
 
-    private String createName(int index) {
+    protected String createName(int index) {
         return basename + index;
     }
 

@@ -1,10 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Transient;
+
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
@@ -12,16 +21,46 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 private StudyParticipantAssignmentDao assignmentDao;
 	 private Participant participant; 
 	 private Study study;
+	 private String tacDescription;
 	 
+	 
+	 private AdverseEvent adverseEvent;
 	 
 	 
 	 
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
+	private List<SolicitedAdverseEvent> saeList; 
+	
+	
+	// Need to verify..
+	// Added to make the aeTermQuery.tag work.
+	//this method is added to satisfy the UI requirements, so to be moved to command classs
+	
+	private Ctc ctcVersion;
+	
+	public Ctc getCtcVersion() {
+		return ctcVersion;
+	}
+	
+	public void setCtcVersion(Ctc ctcVersion) {
+		this.ctcVersion = ctcVersion;
+	}
+	
+	@Transient
+	public Integer getTermCode(){
+		return null;
+	}
+	//this method is added to satisfy the UI requirements, so to be moved to the command class
+	public void setTermCode(Integer ignore){}
+	
+	// Till here.
 	
 	 
 	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao){
+		this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
+		this.adverseEvent = new AdverseEvent();
 	}
 	
     public StudyParticipantAssignment getAssignment() {
@@ -84,6 +123,27 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 	}
 	
+	public String getTacDescription() {
+		return tacDescription;
+	}
 	
-
+	public void setTacDescription(String tacDescription) {
+		this.tacDescription = tacDescription;
+	}
+	
+	public List<SolicitedAdverseEvent> getSaeList() {
+		return saeList;
+	}
+	
+	public void setSaeList(List<SolicitedAdverseEvent> saeList) {
+		this.saeList = saeList;
+	}
+	
+	public AdverseEvent getAdverseEvent() {
+		return adverseEvent;
+	}
+	
+	public void setAdverseEvent(AdverseEvent adverseEvent) {
+		this.adverseEvent = adverseEvent;
+	}
 }

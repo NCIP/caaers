@@ -34,7 +34,6 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @Table(name = "ae_reporting_periods")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_") })
 public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
-	
 	private String description;
 	
 	private Integer cycleNumber;
@@ -176,5 +175,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     
     public void setEpoch(Epoch epoch){
     	this.epoch = epoch;
+    }
+    
+    public String fetchName(){
+    	return startDate + "-" + endDate;
     }
 }
