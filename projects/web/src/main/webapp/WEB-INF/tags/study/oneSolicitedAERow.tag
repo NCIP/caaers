@@ -2,8 +2,10 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 
 <%@attribute name="eachRow" required="true" type="java.util.LinkedList"%>
-    			<tr class="data" align="center">
-    				<td><c:out value="${eachRow[1]}" /></td>
+    			<tr id="tr-${eachRow[0]}" class="data" align="center">
+    				<td><label id='name-${eachRow[0]}'>${eachRow[1]}</label>
+    				<input type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
+    				</td>
     			   <c:choose>
     			     <c:when  test="${eachRow[2] == true}">
     			        <c:set var="epoch1checked" value="checked" />
@@ -32,5 +34,5 @@
     				<td><input  id="ck1-${eachRow[0]}" name="epoch[1]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch1checked}" />/></td>
     				<td><input  id="ck2-${eachRow[0]}" name="epoch[2]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch2checked}" />/></td>
     				<td><input  id="ck3-${eachRow[0]}" name="epoch[3]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch3checked}" />/></td>
-    				<td><input  type="button" value="Delete" /></td>
+    				<td><input  id="button-${eachRow[0]}" class="eachRowDeleteButton" type="button" value="Delete" /></td>
     			</tr>

@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
+/**
+ * @author ArunKumarK
+ */
 
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -61,13 +60,5 @@ public class Arm  extends AbstractMutableDomainObject {
 	public void setSolicitedAdverseEvents(List<SolicitedAdverseEvent> solicitedAdverseEvents) {
 		this.solicitedAdverseEvents = solicitedAdverseEvents;
 	}
-//    @ManyToOne()
-//    @JoinColumn(name = "epoch_id")
-//	public Epoch getEpoch() {
-//		return epoch;
-//	}
-//	public void setEpoch(Epoch epoch) {
-//		this.epoch = epoch;
-//	}
 	
 }

@@ -13,10 +13,6 @@
   <tags:includeScriptaculous/>
   <tags:includePrototypeWindow />
   <tags:dwrJavascriptLink objects="createStudy"/>
-  
-  <script language="JavaScript" type="text/JavaScript">
-
-  </script>
   <tags:stylesheetLink name="pw_default" />
   <tags:stylesheetLink name="pw_alphacube" />
   
@@ -54,12 +50,18 @@
 	.sae th.term {
 		width: 22em;
 		height : 3em;
-		vertical-align: bottom;
-		text-align: left;
+		vertical-align: CENTER;
+	    horizontal-align: center;
 	}
 	.sae th.epoch {
 		width: 10em;
 		vertical-align: top;
+	}
+	.sae th.action {
+		border-width:1px 1px 1px 1px;
+		border-color:#6E81A6;
+	 	border-style:solid;
+	 	color: red;
 	}
   	tr.head th.epoch, .sae tr.data td {
 	 border-color:#6E81A6;
@@ -85,32 +87,126 @@
 		font-weight: normal;
 	}
 	
+	.sae .NoRows {
+		font-style: normal;
+		text-align: center;
+		padding-top: 2em;
+	    padding-bottom: 2em;
+		
+		color:red;
+		
+		
+	}
+	
   </style>
   
   <script type="text/javascript">
+   Event.observe(window, 'load', function() {
+     Event.observe('flow-prev', 'click', checkForm);
+     Event.observe('flow-next', 'click', checkForm);
+     Event.observe('flow-update', 'click', checkForm);
+     
+     var listOfTermIds = updateTermIds();
+     var termIDArray = $A(listOfTermIds);
+     termIDArray.each( registerDeleteButtons );
+   }); 
+    
+    function registerDeleteButtons(termID)
+    {
+      Event.observe("button-"+termID.value,'click',handleDelete);
+    }
+    
+    function updateTermIds()
+    {
+	     var listOfTermIds = $$('.eachRowTermID');
+	     if(listOfTermIds.length != 0){
+	       Element.hide('NoRows');
+	     }
+	     else
+	     {
+	       Element.show('NoRows');
+	     }
+	     return listOfTermIds;
+    
+    }
+    function handleDelete(event)
+    {
+                var buttonid = Event.element(event).id;
+             //   alert(buttonid);
+                var trid = buttonid.gsub(/button/,'tr');
+             //   alert(trid);
+             if(!confirm( "Are you sure you want to delete this?" ))
+                         return false;   
+                Element.remove(trid);
+                updateTermIds(); 
+    }
+    function checkForm(event)
+    {
+      alert(1);
+      var listOfTermIds = $$('.eachRowTermID');
+      for(var i = 0 ; i < listOfTermIds.length ; i++)
+      {
+        var ckbox1 = "ck1-"+listOfTermIds[i].value;
+        var ckbox2 = "ck2-"+listOfTermIds[i].value;
+        var ckbox3 = "ck3-"+listOfTermIds[i].value;
+        if( !$(ckbox1).checked && !$(ckbox2).checked && !$(ckbox3).checked )
+        {
+          $('err-section').innerHTML += '<li>Please select at least one checkbox for Solicited Adverse Event ' + $("name-"+listOfTermIds[i].value).innerHTML + '</li>';
+          Event.stop(event);
+        }
+      }
+    }
+
+    function isTermAgainAdded( termID )
+    {
+      var listOfTermIds = $$('.eachRowTermID');
+      for(var i = 0 ; i < listOfTermIds.length ; i++)
+      {
+        if( termID == listOfTermIds[i].value)
+        {
+          return true;
+        }      
+      } 
+      return false;
+    }
+    
   	function myCallback(selectedTerms){
   	
-    var listOfTermIDs = new Array();
-    var listOfTerms = new Array();
-  	
-  		$H(selectedTerms).keys().each( function(termID) {
-  		
-  		var term = $H( selectedTerms ).get(termID);
-  		
-  		listOfTermIDs.push( termID );
-  		listOfTerms.push(term );
+	    var listOfTermIDs = new Array();
+	    var listOfTerms = new Array();
+	  	
+	  		$H(selectedTerms).keys().each( function(termID) {
+	  		
+	  		var term = $H( selectedTerms ).get(termID);
+	  		if( !isTermAgainAdded(termID))
+	  		{
+	  		  listOfTermIDs.push( termID );
+	  		  listOfTerms.push(term );
+	        }
+	  	   });
+	  
+	   	createStudy.addSolicitedAE(listOfTermIDs, listOfTerms, function(responseStr)
+	   	{
+	   	
+   	      var listOfTermIds = $$('.eachRowTermID');
+          var termIDArray = $A(listOfTermIds);
+          termIDArray.each( unRegisterDeleteButtons );
+            new Insertion.Before('specialLastRow', responseStr);
+   	      listOfTermIds = updateTermIds();
+          termIDArray = $A(listOfTermIds);
+          termIDArray.each( registerDeleteButtons );
+		  
+	   	});
 
-  	   });
-  
-   	createStudy.addSolicitedAE(listOfTermIDs, listOfTerms, function(responseStr)
-   	{
-   	  new Insertion.Before('specialLastRow', responseStr);
-   	});
+    function unRegisterDeleteButtons(termID)
+    {
+      Event.stopObserving("button-"+termID.value,'click',handleDelete);
+    }
+    
    	
-   	
- 
-  	}
+   	}
   </script>
+  
 </head>
 <body>
  
@@ -127,6 +223,11 @@
   		<tags:hasErrorsMessage />
   		<p id="instructions">
 			&nbsp;&nbsp;Check the boxes under the epoch/treatment type, to associate the term to it.
+		</p>
+		<p>
+		  <ul id="err-section" class="errors">
+         </ul>
+		  
 		</p>
 		<input type="hidden" name="_action" value="">
   		<!--  start of body -->
@@ -155,13 +256,13 @@
                 		<div class="index">Post-treatment</div>
                 		<div class="inst">Instruction</div>
             		</th>
-            		<th class="action"> </th>
+            		<th class="action"> Delete the Adverse Event Term</th>
     			</tr>
     			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
     			    <study:oneSolicitedAERow index="${status.index}" eachRow="${eachRow}" />
     			 </c:forEach>
-    			<tr id="specialLastRow" class="bottom">
-    				<td colspan="5"></td>
+    			<tr id="specialLastRow" class="bottom" >
+    				<td colspan="5" align='center'><span id='NoRows' class='NoRows'>You have no solicited adverse events added in the list !</span></td>
     			</tr>			
   			</tbody>
   			
