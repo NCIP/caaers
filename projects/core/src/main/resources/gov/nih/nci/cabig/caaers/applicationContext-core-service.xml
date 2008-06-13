@@ -159,4 +159,7 @@ This applicationContext contains the definition of the concrete services
 		<property name="studyDao" ref="studyDao" />
 	</bean>
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>
+	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService"/>
+	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService"/>
+	
 </beans>
