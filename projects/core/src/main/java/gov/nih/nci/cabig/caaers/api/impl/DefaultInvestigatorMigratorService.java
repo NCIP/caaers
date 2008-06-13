@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -67,6 +68,12 @@ public class DefaultInvestigatorMigratorService implements InvestigatorMigratorS
         }
  
         return orgList.get(0);
+    }
+    public void saveInvestigator(Staff staff) throws RemoteException {
+    	List<InvestigatorType> investigator = staff.getInvestigator();
+    	for (InvestigatorType investigatorType:investigator) {
+    		saveInvestigator(investigatorType);
+    	}
     }
 	public void saveInvestigator(InvestigatorType investigatorDto) throws RemoteException {
 		try {
