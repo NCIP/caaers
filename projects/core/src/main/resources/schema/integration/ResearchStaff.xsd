@@ -1,9 +1,9 @@
-    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
-        xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
-        xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
-        elementFormDefault="unqualified">
-        
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
+    xmlns="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff"
+    xmlns:cct="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    elementFormDefault="unqualified">
+
     <xs:import namespace="http://schema.integration.caaers.cabig.nci.nih.gov/common"
         schemaLocation="caAERSCommonTypes.xsd"/>
 
