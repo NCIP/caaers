@@ -142,7 +142,6 @@
     }
     function checkForm(event)
     {
-      alert(1);
       var listOfTermIds = $$('.eachRowTermID');
       for(var i = 0 ; i < listOfTermIds.length ; i++)
       {
