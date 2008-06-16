@@ -27,7 +27,7 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName",
                     "lastName");
     
-    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("nci_identifier");
+    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("nciIdentifier");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
