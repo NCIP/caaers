@@ -19,7 +19,7 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList(
                     "investigator.firstName", "investigator.lastName");
     
-    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("investigator.nci_identifier");
+    private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("investigator.nciIdentifier");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
