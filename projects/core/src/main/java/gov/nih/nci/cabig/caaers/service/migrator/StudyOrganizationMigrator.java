@@ -50,25 +50,26 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 	private void migrateStudySite(Study source, Study destination,DomainObjectImportOutcome<Study> outcome) {
 		if(source.getStudyOrganizations() != null && source.getStudyOrganizations().size() > 0){
 			for (StudyOrganization studyOrganization : source.getStudyOrganizations()) {
-				Organization organization = null;
-				if(studyOrganization.getOrganization().getNciInstituteCode() != null && studyOrganization.getOrganization().getNciInstituteCode().length() > 0){
-					String nciInstituteCode = studyOrganization.getOrganization().getNciInstituteCode();
-			        organization = fetchOrganization(nciInstituteCode);
-				}else{
-					String orgName = studyOrganization.getOrganization().getName();
-			        organization = organizationDao.getByName(orgName);
-				}
-		        outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, 
-				"The organization specified in studySite is invalid");
-		        studyOrganization.setOrganization(organization);
-
-		        // Migrate Study investigators and Study Personnels
-		        if(organization != null){
-		        	migrateStudyInvestigators(studyOrganization, organization, outcome);
-			        migrateStudyPersonnels(studyOrganization, organization, outcome);
-		        }
-		        
-	        	destination.addStudySite((StudySite) studyOrganization);
+				if(studyOrganization instanceof StudySite){
+					Organization organization = null;
+					if(studyOrganization.getOrganization().getNciInstituteCode() != null && studyOrganization.getOrganization().getNciInstituteCode().length() > 0){
+						String nciInstituteCode = studyOrganization.getOrganization().getNciInstituteCode();
+				        organization = fetchOrganization(nciInstituteCode);
+					}else{
+						String orgName = studyOrganization.getOrganization().getName();
+				        organization = organizationDao.getByName(orgName);
+					}
+			        outcome.ifNullObject(organization, DomainObjectImportOutcome.Severity.ERROR, 
+					"The organization specified in studySite is invalid");
+			        studyOrganization.setOrganization(organization);
+	
+			        // Migrate Study investigators and Study Personnels
+			        if(organization != null){
+			        	migrateStudyInvestigators(studyOrganization, organization, outcome);
+				        migrateStudyPersonnels(studyOrganization, organization, outcome);
+			        }
+			        destination.addStudySite((StudySite) studyOrganization);
+		       }
 		   }
 	
 		}
