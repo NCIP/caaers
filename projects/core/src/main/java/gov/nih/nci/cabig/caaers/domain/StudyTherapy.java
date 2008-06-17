@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -28,6 +30,7 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
 
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
