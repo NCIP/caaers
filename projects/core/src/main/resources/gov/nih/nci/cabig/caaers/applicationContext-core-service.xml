@@ -153,12 +153,34 @@ This applicationContext contains the definition of the concrete services
 			</list>
 		</constructor-arg>
 	</bean>
+	
 	<bean id="studyProcessor" class="gov.nih.nci.cabig.caaers.service.migrator.StudyProcessor">
 		<property name="studyImportService" ref="studyImportService" />
 		<property name="studyConverter" ref="studyConverter" />
 		<property name="studyDao" ref="studyDao" />
+		<property name="studySynchronizer" ref="studySynchronizer" />
 	</bean>
-	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>
+	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>	
+	
+	<bean id="identifierSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.IdentifierSynchronizer"/>
+	<bean id="treatmentAssignmentSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.TreatmentAssignmentSynchronizer"/>
+	<bean id="studyDiseasesSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDiseasesSynchronizer"/>
+	<bean id="studyOrganizationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyOrganizationSynchronizer"/>
+	<bean id="studyTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyTherapySynchronizer"/>
+
+
+
+	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
+		<constructor-arg>
+			<list>
+				<ref bean="identifierSynchronizer"/>
+				<ref bean="treatmentAssignmentSynchronizer"/>
+				<ref bean="studyDiseasesSynchronizer"/>
+				<ref bean="studyOrganizationSynchronizer"/>
+				<ref bean="studyTherapySynchronizer"/>
+			</list>
+		</constructor-arg>
+	</bean>
 	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService"/>
 	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService"/>
 	
