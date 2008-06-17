@@ -9,6 +9,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -59,6 +61,7 @@ public class DiseaseTerminology extends AbstractMutableDomainObject {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
