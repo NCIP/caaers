@@ -38,6 +38,7 @@ public class StudyDisease extends AbstractMutableDomainObject {
 
     @ManyToOne
     @JoinColumn(name = "study_id")
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
