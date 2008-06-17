@@ -70,7 +70,7 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = { CascadeType.LOCK, CascadeType.EVICT })
     public Study getStudy() {
         return study;
     }
