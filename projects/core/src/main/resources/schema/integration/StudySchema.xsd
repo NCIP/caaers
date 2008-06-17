@@ -529,7 +529,7 @@
     
     <xs:simpleType name="RoleCodeType">
         <xs:restriction base="xs:string">
-            <xs:enumeration value="Site Principle Investigator"/>
+            <xs:enumeration value="Site Principal Investigator"/>
             <xs:enumeration value="Site Investigator"/>
             <xs:enumeration value="Principal Investigator"/>
         </xs:restriction>
