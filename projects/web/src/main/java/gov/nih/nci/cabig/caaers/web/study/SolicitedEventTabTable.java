@@ -27,8 +27,6 @@ public class SolicitedEventTabTable{
 		LinkedList<Object> eachRowOfSolicitedAE = null;
 		for(int i = 0 ; i < termIDs.length ; i++ )
 		{
-			if( isSolicitedAEAddedAgain( command, termIDs[i] ))
-				continue;
 			eachRowOfSolicitedAE = new LinkedList<Object>();
 			eachRowOfSolicitedAE.add(termIDs[i]);
 			eachRowOfSolicitedAE.add(terms[i]);

@@ -47,6 +47,12 @@
  		text-align: center;
  	}
  	
+ 	.sae .deletecol {
+		padding-left: 2em;
+	    padding-right: 2em;
+
+ 	}
+ 	
 	.sae th.term {
 		width: 22em;
 		height : 3em;
@@ -61,7 +67,7 @@
 		border-width:1px 1px 1px 1px;
 		border-color:#6E81A6;
 	 	border-style:solid;
-	 	color: red;
+	 	color: black;
 	}
   	tr.head th.epoch, .sae tr.data td {
 	 border-color:#6E81A6;
@@ -86,6 +92,7 @@
 		font-style: normal;
 		font-weight: normal;
 	}
+
 	
 	.sae .NoRows {
 		font-style: normal;
@@ -126,17 +133,16 @@
 	     {
 	       Element.show('NoRows');
 	     }
+	     $('err-section').innerHTML = "";
 	     return listOfTermIds;
     
     }
     function handleDelete(event)
     {
                 var buttonid = Event.element(event).id;
-             //   alert(buttonid);
                 var trid = buttonid.gsub(/button/,'tr');
-             //   alert(trid);
-             if(!confirm( "Are you sure you want to delete this?" ))
-                         return false;   
+                if(!confirm( "Are you sure you want to delete this?" ))
+                  return false;   
                 Element.remove(trid);
                 updateTermIds(); 
     }
@@ -255,7 +261,7 @@
                 		<div class="index">Post-treatment</div>
                 		<div class="inst">Instruction</div>
             		</th>
-            		<th class="action"> Delete the Adverse Event Term</th>
+            		<th class="action"> </th>
     			</tr>
     			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
     			    <study:oneSolicitedAERow index="${status.index}" eachRow="${eachRow}" />
