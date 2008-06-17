@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -41,6 +44,7 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends
     // @JoinColumn(insertable=false, updatable=false, nullable=false)
     @ManyToOne
     @JoinColumn(insertable = false, updatable = false)
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
