@@ -2,9 +2,11 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -23,6 +25,7 @@ public class StudyProcessor{
 	private StudyImportServiceImpl studyImportService;
 	private StudyDao studyDao;
 	private StudyConverter studyConverter;
+	private StudySynchronizer studySynchronizer;
 	
 	public void setStudyImportService(final StudyImportServiceImpl studyImportService) {
         this.studyImportService = studyImportService;
@@ -36,7 +39,15 @@ public class StudyProcessor{
 		this.studyConverter = studyConverter;
 	}
 	
-	public DomainObjectImportOutcome<Study> createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+	public StudySynchronizer getStudySynchronizer() {
+		return studySynchronizer;
+	}
+
+	public void setStudySynchronizer(StudySynchronizer studySynchronizer) {
+		this.studySynchronizer = studySynchronizer;
+	}
+	
+	public DomainObjectImportOutcome<Study> syncStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		logger.info("Entering createStudy() in StudyProcessor");
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
@@ -55,6 +66,12 @@ public class StudyProcessor{
 		if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			if(studyImportOutcome.isSavable()){
+				//Check if Study Exists
+				Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
+				if(dbStudy != null){
+					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
+					studyImportOutcome.setImportedDomainObject(dbStudy);
+				}
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
 			}
 		}else{
@@ -74,4 +91,22 @@ public class StudyProcessor{
 		logger.info("Leaving updateStudy() in StudyProcessor");
 		return null;
 	}
+	
+	/**
+	 * This method fetches a Study from the DB based identifiers.
+	 * @param importedStudy
+	 * @return
+	 */
+	private Study fetchStudy(Study importedStudy){
+		Study dbStudy = null;
+		for (Identifier identifier : importedStudy.getIdentifiers()) {
+            dbStudy = studyDao.getStudyDesignByIdentifier(identifier);
+            studyDao.evict(dbStudy);
+            if(dbStudy != null){
+            	break;
+            }
+        }
+		return dbStudy;
+	}
+
 }
