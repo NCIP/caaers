@@ -209,8 +209,8 @@ public class Fixtures {
     public static ResearchStaff createResearchStaff(final Organization organization,
                                                     final List<UserGroupType> userGroupTypes, final String name) {
         ResearchStaff researchStaff = new ResearchStaff();
-        researchStaff.setFirstName("Jeff");
-        researchStaff.setLastName("Someone");
+        researchStaff.setFirstName("FN"+name);
+        researchStaff.setLastName("LN"+name);
         researchStaff.setEmailAddress(name + "@def.com");
         researchStaff.setPhoneNumber("123-5-789");
         researchStaff.setNciIdentifier("nci id");
@@ -270,6 +270,15 @@ public class Fixtures {
         treatmentAssignment.setCode("code");
         treatmentAssignment.setComments("comments");
         treatmentAssignment.setDescription("description");
+        treatmentAssignment.setDoseLevelOrder(Integer.valueOf(2));
+        return treatmentAssignment;
+    }
+    
+    public static TreatmentAssignment createTreatmentAssignment(String arg) {
+        TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
+        treatmentAssignment.setCode(arg);
+        treatmentAssignment.setComments("comments_"+arg);
+        treatmentAssignment.setDescription("description_"+arg);
         treatmentAssignment.setDoseLevelOrder(Integer.valueOf(2));
         return treatmentAssignment;
     }
