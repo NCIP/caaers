@@ -67,6 +67,7 @@ public class AeTerminology extends AbstractMutableDomainObject {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
