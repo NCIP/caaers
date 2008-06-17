@@ -9,6 +9,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.validator.Length;
@@ -36,6 +38,7 @@ public class TreatmentAssignment extends AbstractMutableDomainObject implements 
 
     @ManyToOne
     @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
         return study;
     }
