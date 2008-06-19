@@ -7,7 +7,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
@@ -15,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -39,74 +43,81 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	
 	public AdverseEventCaptureTab() {
 		super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
+		addHelpKeyExclusion("ctcVersion");
 	}
 	
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand cmd) {
 		
 		InputFieldGroupMap map = new InputFieldGroupMap();
-		
+		MultipleFieldGroupFactory mainFieldFactory;
+		List<SolicitedAdverseEvent> saeList;
+
 		// Creating the field groups for the first section of the page
 		// which collects the general information from the user (eg., TAC, TAC Description, Start date of first course etc.
-		InputFieldGroup reportingPeriodFieldGroup = new DefaultInputFieldGroup("reportingPeriod");
+		InputFieldGroup reportingPeriodFieldGroup = new DefaultInputFieldGroup("reportingPeriodFG");
 		List<InputField> fields = reportingPeriodFieldGroup.getFields();
-		
 		InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Reporting period", true, fetchReportingPeriodsOptions(cmd));
-		InputField treatmentAssignmentField = InputFieldFactory.createSelectField("adverseEventReportingPeriod.treatmentAssignment", "Treatment assignment", true, fetchTreatmentAssignmentOptions(cmd));
-		InputField treatmentAssignmentDescField = InputFieldFactory.createTextArea("tacDescription", "Treatement description");
-		//startDateOfFirstCourse - TextField, if it is empty in assignment
-		InputField firstCourseDateField = null;
-		if(cmd.getAssignment().getStartDateOfFirstCourse() == null){
-			firstCourseDateField = InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true);
-		}else {
-			firstCourseDateField = InputFieldFactory.createLabelField("assignment.startDateOfFirstCourse", "Start date of first course");
-		}
 		fields.add(reportingPeriodsField);
-		fields.add(treatmentAssignmentField);
-		fields.add(treatmentAssignmentDescField);
-		fields.add(firstCourseDateField);
-		// add the reportingPeriodFieldGroup to the map.
 		map.addInputFieldGroup(reportingPeriodFieldGroup);
 		
-		// Creating the field groups for the solicited ae section of the page.
-		// This needs to be closely looked into.. needs to be modified.
-		// Am populating the reportingPeriod of command here .. 
-		// In practice it will be populated automatically once the user selects one in the dropdown.
-		// For the first time it will be autopopulated with the latest reportingPeriod.
-		List<AdverseEventReportingPeriod> rPeriodsList = cmd.getAssignment().getReportingPeriods();
-		cmd.setAdverseEventReportingPeriod(rPeriodsList.get(0));
-		List<Arm> armsList = cmd.getAdverseEventReportingPeriod().getEpoch().getArms();
-		Arm arm = armsList.get(0);
-		List<SolicitedAdverseEvent> saeList = arm.getSolicitedAdverseEvents();
-		cmd.setSaeList(saeList);
+		if(cmd.getAdverseEventReportingPeriod() != null){
+			InputFieldGroup treatmentAssignmentFieldGroup = new DefaultInputFieldGroup("treatmentAssignmentFG"); 
+			InputFieldGroup reportingPeriodDetailsFieldGroup = new DefaultInputFieldGroup("reportingPeriodDetailsFG");
+			
 		
-		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>(4);
-		AdverseEvent ae = new AdverseEvent();
-		aeList.add(ae);
-		aeList.add(ae);
-		aeList.add(ae);
-		aeList.add(ae);
-		aeList.add(ae);
-		cmd.getAdverseEventReportingPeriod().setAdverseEvents(aeList);
+			
+			InputField treatmentAssignmentField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.code", "Treatment assignment");
+			InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatement description");
+			//startDateOfFirstCourse - TextField, if it is empty in assignment
+			InputField firstCourseDateField = null;
+			if(cmd.getAssignment().getStartDateOfFirstCourse() == null){
+				firstCourseDateField = InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true);
+			}else {
+				firstCourseDateField = InputFieldFactory.createLabelField("assignment.startDateOfFirstCourse", "Start date of first course");
+			}
+
+			treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentField);
+			treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentDescField);
+			treatmentAssignmentFieldGroup.getFields().add(firstCourseDateField);
 		
-		// Till here the command object was created to help mocking up the screen. It needs to be refactored. 
+			// add reportingPeriod details group
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start Date:"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End Date:"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type:"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle Number:"));
+			// add the reportingPeriodFieldGroup to the map.
+			
+			map.addInputFieldGroup(treatmentAssignmentFieldGroup);
+			map.addInputFieldGroup(reportingPeriodDetailsFieldGroup);
 		
-		MultipleFieldGroupFactory mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEventReportingPeriod.adverseEvents");
-		for(int i = 0; i < saeList.size(); i++){
-			mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true,
-                    createGradeOptions(saeList.get(i))));
-			mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
-                    "Attribution to study", true, createAttributionOptions()));
-			mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
-                    "Hospitalization", true, createHospitalizationOptions()));
-			mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", true,
-                    createExpectedOptions()));
-			InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
-			mainFieldFactory.addFieldGroup(fieldGroup);
-			mainFieldFactory.clearFields();
 		
+			
+			mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEventReportingPeriod.adverseEvents");
+			// Check if the adverseEventReportingPeriod has any adverseEvents.
+			// If yes then display the solicited adverseEvents in the second section (Solicited Adverse Events)
+			if(cmd.getAdverseEventReportingPeriod().getAdverseEvents() != null){
+				for(int i = 0; i < cmd.getAdverseEventReportingPeriod().getAdverseEvents().size(); i++){
+					//check if the adverse
+					AdverseEvent ae = cmd.getAdverseEventReportingPeriod().getAdverseEvents().get(i);
+					
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
+								createGradeOptions(ae)));
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
+								"Attribution to study", false, createAttributionOptions()));
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
+								"Hospitalization", false, createHospitalizationOptions()));
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
+								createExpectedOptions()));
+						InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
+						mainFieldFactory.addFieldGroup(fieldGroup);
+						mainFieldFactory.clearFields();
+					
+				}
+				map.addMultipleFieldGroupFactory(mainFieldFactory);
+			}
 		}
-		map.addMultipleFieldGroupFactory(mainFieldFactory);
+		
 		return map;
 	}
 	
@@ -148,10 +159,50 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
         return attributionOptions;
     }
 	
-	private Map<Object, Object> createGradeOptions(SolicitedAdverseEvent sae) {
+	private Map<Object, Object> createGradeOptions(AdverseEvent sae) {
         Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
         gradeOptions.put("", "Please select");
-        gradeOptions.putAll(InputFieldFactory.collectOptions(sae.getCtcterm().getGrades(), "displayName", "code"));
+        gradeOptions.putAll(InputFieldFactory.collectOptions(sae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "displayName", "code"));
         return gradeOptions;
     }
+	
+	@Override
+    public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+		
+		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() == 0){
+			for(SolicitedAdverseEvent sae: command.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
+				AdverseEvent adverseEvent = new AdverseEvent();
+				if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
+					adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
+				else{
+					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+					aeCtcTerm.setCtcTerm(sae.getCtcterm());
+					adverseEvent.setAdverseEventTerm(aeCtcTerm);
+					adverseEvent.setSolicitedAdverseEvent(true);
+				}
+				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
+			}
+			
+			// Setup the categories list for aeTermQuery tag.
+			if(command.getCtcCategories().size() == 0)
+				command.setCtcCategories(command.getStudy().getAeTerminology().getCtcVersion().getCategories());
+		}
+		
+		Map<String, Object> refdata = super.referenceData(request, command);
+		
+		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() > 0){
+			// Put a flag in the map "hasObservedEvents". This will be used to determine whether the table headers should be displayed
+			// for observed events and displaying the existing observed events.
+			
+			boolean hasObservedEvents = false;
+			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+				if(!ae.isSolicitedAdverseEvent())
+					hasObservedEvents = true;
+			}
+			refdata.put("hasObservedEvent", hasObservedEvents);
+		}
+		
+		return refdata;
+	}
 }
+

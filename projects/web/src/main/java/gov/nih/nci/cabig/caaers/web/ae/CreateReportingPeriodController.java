@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.digester.SetPropertiesRule;
+import org.apache.derby.impl.sql.compile.SetTransactionIsolationNode;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -38,6 +39,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
+    private TreatmentAssignmentDao treatmentAssignmentDao;
     private StudyDao studyDao;
     private EpochDao epochDao;
     private InputFieldGroup reportingPeriodFieldGroup;
@@ -69,6 +71,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         ControllerTools.registerDomainObjectEditor(binder, epochDao);
+        ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
     }
 	
 	@SuppressWarnings("unchecked")
@@ -100,8 +103,15 @@ public class CreateReportingPeriodController extends SimpleFormController {
 								"reportingPeriod.description", "Description", false));
 		reportingPeriodFieldGroup.getFields().add(
 						InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", false));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.treatmentAssignment", "Treatment assignment", true, fetchTreatmentAssignmentOptions(command)));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatement description"));
 		
 		fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
+	}
+	
+	public Map<Object, Object> fetchTreatmentAssignmentOptions(final Object cmd) {
+		ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) cmd;
+		return InputFieldFactory.collectOptions(rpCommand.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
 	}
 	
 	protected Map<Object, Object> createEpochOptions(final Object command){
@@ -169,6 +179,15 @@ public class CreateReportingPeriodController extends SimpleFormController {
     
     public void setParticipantDao(ParticipantDao participantDao) {
 		this.participantDao = participantDao;
+	}
+    
+    public TreatmentAssignmentDao getTreatmentAssignmentDao() {
+		return treatmentAssignmentDao;
+	}
+    
+    public void setTreatmentAssignmentDao(
+			TreatmentAssignmentDao treatmentAssignmentDao) {
+		this.treatmentAssignmentDao = treatmentAssignmentDao;
 	}
     
 }

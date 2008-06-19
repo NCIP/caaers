@@ -48,9 +48,10 @@ import java.util.Map;
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventAjaxFacade {
+	public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
     private static Class<?>[] CONTROLLERS = {
-            CreateAdverseEventController.class, EditAdverseEventController.class
+    	CaptureAdverseEventController.class, CreateAdverseEventController.class, EditAdverseEventController.class 
     };
 
     private StudyDao studyDao;
@@ -801,6 +802,35 @@ public class CreateAdverseEventAjaxFacade {
             return page.substring(contextPath.length());
         }
     }
+    
+    public String addObservedAE(String listOfTermIDs[], String listOfTerms[]) {
+        
+        HttpServletRequest request = getHttpServletRequest();
+        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+        
+        // Get the command object
+        // Create the CTCTerms using listOfTerms and listOfIDs.
+        // Create AdverseEvents
+        // Set the CTCTerm
+        // Add the adverseEvents to adverseEvents list in adverseEventReportingPeriod. These will by default have
+        // isSolicitedEvent set to false.
+        Object cmd = extractCommand();
+        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) cmd;
+        int index = command.getAdverseEventReportingPeriod().getAdverseEvents().size();
+        request.setAttribute("index", index);
+        int lastIndex = index + listOfTermIDs.length - 1;
+        request.setAttribute("lastIndex", lastIndex);
+        for(String id: listOfTermIDs){
+        	CtcTerm term = ctcTermDao.getById(Integer.parseInt(id));
+        	AdverseEventCtcTerm aeTerm = new AdverseEventCtcTerm();
+        	aeTerm.setCtcTerm(term);
+        	AdverseEvent ae = new AdverseEvent();
+        	ae.setAdverseEventCtcTerm(aeTerm);
+        	command.getAdverseEventReportingPeriod().getAdverseEvents().add(ae);
+        }
+        String url = getCurrentPageContextRelative(WebContextFactory.get());
+        return renderIndexedAjaxView("observedAdverseEventSection", index, 0);
+    }
 
     // TODO: there's got to be a library version of this somewhere
     private String createQueryString(Map<String, String> params) {
@@ -957,7 +987,9 @@ public class CreateAdverseEventAjaxFacade {
 		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
 	}
 
-
+	private HttpServletRequest getHttpServletRequest() {
+        return WebContextFactory.get().getHttpServletRequest();
+    }
 
 
 

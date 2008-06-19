@@ -86,6 +86,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private List<DeviceAttribution> deviceAttributions;
     
     private AdverseEventReportingPeriod reportingPeriod;
+    
+    private boolean solicitedAdverseEvent;
 
     // //// BOUND PROPERTIES
 
@@ -432,4 +434,12 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         }
         return false;
     }
+    
+    public void setSolicitedAdverseEvent(boolean solicitedAdverseEvent) {
+		this.solicitedAdverseEvent = solicitedAdverseEvent;
+	}
+    
+    public boolean isSolicitedAdverseEvent() {
+		return solicitedAdverseEvent;
+	}
 }

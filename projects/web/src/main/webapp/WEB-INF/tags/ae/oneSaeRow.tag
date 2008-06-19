@@ -10,8 +10,8 @@
     
     	<tr class="division ae-section" id="ae-section-${index}" >
     		<td>
-            	<c:out value="${command.saeList[index].ctcterm.term}" />
-            </td> <br>
+            	<c:out value="${command.adverseEventReportingPeriod.adverseEvents[index].adverseEventTerm.term.term}" />
+            </td>
 	        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
     	        <td>
 					<tags:renderInputs field="${field}"/>

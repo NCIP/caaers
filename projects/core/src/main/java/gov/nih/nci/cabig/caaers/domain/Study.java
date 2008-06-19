@@ -80,6 +80,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
 
     private List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
+    
+    private List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
 
     // TODO move into Command Object
     private String[] diseaseTermIds;
@@ -914,5 +916,19 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 		
 		return false;
 		
+	}
+	
+	@Transient
+	public List<CtcCategory> getCtcCategories(){
+		if(ctcCategories.size() != 0)
+			return ctcCategories;
+		else
+			if(aeTerminology != null && aeTerminology.getCtcVersion() != null)
+				setCtcCategories(aeTerminology.getCtcVersion().getCategories());
+		return ctcCategories;
+	}
+	
+	public void setCtcCategories(List<CtcCategory> ctcCategories) {
+		this.ctcCategories = ctcCategories;
 	}
 }

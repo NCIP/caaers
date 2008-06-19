@@ -43,6 +43,14 @@
               <div class="label">Cycle number:</div>
               <div class="value">${command.reportingPeriod.cycleNumber}</div>
            </div>
+           <div class="row">
+              <div class="label">Treatment Assignment:</div>
+              <div class="value">${command.reportingPeriod.treatmentAssignment.code}</div>
+           </div>
+           <div class="row">
+              <div class="label">Treatment Description:</div>
+              <div class="value">${command.reportingPeriod.treatmentAssignment.description}</div>
+           </div>
            <div>
  			<img src="/caaers/images/chrome/spacer.gif" width="900" height="1" />
  		  </div>

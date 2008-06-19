@@ -8,6 +8,7 @@ import javax.persistence.Transient;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
@@ -17,26 +18,21 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
-	 private StudyParticipantAssignment assignment;
-	 private StudyParticipantAssignmentDao assignmentDao;
-	 private Participant participant; 
-	 private Study study;
-	 private String tacDescription;
-	 
-	 
-	 private AdverseEvent adverseEvent;
-	 
-	 
-	 
+	private StudyParticipantAssignment assignment;
+	private StudyParticipantAssignmentDao assignmentDao;
+	private Participant participant; 
+	private Study study;
+	  
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
-	private List<SolicitedAdverseEvent> saeList; 
+	private List<CtcCategory> ctcCategories;
+
 	
 	
 	// Need to verify..
 	// Added to make the aeTermQuery.tag work.
 	//this method is added to satisfy the UI requirements, so to be moved to command classs
-	
+
 	private Ctc ctcVersion;
 	
 	public Ctc getCtcVersion() {
@@ -58,9 +54,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	 
 	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao){
-		this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
+		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
-		this.adverseEvent = new AdverseEvent();
 	}
 	
     public StudyParticipantAssignment getAssignment() {
@@ -123,27 +118,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 	}
 	
-	public String getTacDescription() {
-		return tacDescription;
+	public void setCtcCategories(List<CtcCategory> ctcCategories) {
+		this.ctcCategories = ctcCategories;
 	}
 	
-	public void setTacDescription(String tacDescription) {
-		this.tacDescription = tacDescription;
-	}
-	
-	public List<SolicitedAdverseEvent> getSaeList() {
-		return saeList;
-	}
-	
-	public void setSaeList(List<SolicitedAdverseEvent> saeList) {
-		this.saeList = saeList;
-	}
-	
-	public AdverseEvent getAdverseEvent() {
-		return adverseEvent;
-	}
-	
-	public void setAdverseEvent(AdverseEvent adverseEvent) {
-		this.adverseEvent = adverseEvent;
+	public List<CtcCategory> getCtcCategories() {
+		if(ctcCategories == null)
+			setCtcCategories(adverseEventReportingPeriod.getAssignment().getStudySite().getStudy().getAeTerminology().getCtcVersion().getCategories());
+		return ctcCategories;
 	}
 }

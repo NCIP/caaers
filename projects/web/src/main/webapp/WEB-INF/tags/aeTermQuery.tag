@@ -156,7 +156,7 @@
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC categorie(s)</jsp:attribute>
 			<jsp:attribute name="value"><select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this);">
-				<c:forEach var="cat" items="${command.ctcVersion.categories}">
+				<c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				</c:forEach>
 			</select></jsp:attribute>

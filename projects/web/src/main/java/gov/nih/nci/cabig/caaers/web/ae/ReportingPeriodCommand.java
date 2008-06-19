@@ -61,6 +61,9 @@ public class ReportingPeriodCommand {
     	this.participant = participantDao.getById(Integer.parseInt(participantString));
     	this.study = studyDao.getById(Integer.parseInt(studyString));
     	this.reportingPeriod = new AdverseEventReportingPeriod();
+    	TreatmentAssignment treatmentAssignment = new TreatmentAssignment();
+    	treatmentAssignment.setStudy(this.study);
+    	this.reportingPeriod.setTreatmentAssignment(treatmentAssignment);
     }
     
     public StudyParticipantAssignment getAssignment() {

@@ -13,6 +13,25 @@
         }
     </style>
  <tags:includeScriptaculous/>
+ <script>
+ 	var descArray = new Array();
+ 	Event.observe(window, "load", function(){
+ 		//push the description into the array
+		<c:forEach items="${command.assignment.studySite.study.treatmentAssignments}" var="ta">
+        	descArray.push("${ta.escapedDescription}");
+        </c:forEach>			
+			
+		// treatment dropdown.
+		$('reportingPeriod.treatmentAssignment').observe("change", function(event){
+			selIndex = $('reportingPeriod.treatmentAssignment').selectedIndex;
+			if(selIndex > 0){
+				$('reportingPeriod.treatmentAssignment.description').value = descArray[selIndex-1];
+			}else{
+				$('reportingPeriod.treatmentAssignment.description').clear();
+			}
+		});
+ 	}
+ </script>
   </head>
  <body>
  <br>

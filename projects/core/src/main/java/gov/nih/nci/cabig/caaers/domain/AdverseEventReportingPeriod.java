@@ -116,6 +116,10 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     
     // BEAN PROPERTIES
     
+    public void addAdverseEvent(AdverseEvent adverseEvent){
+    	getAdverseEvents().add(adverseEvent);
+    }
+    
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {
         return assignment;
