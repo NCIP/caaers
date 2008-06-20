@@ -865,6 +865,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @OneToMany(fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name="study_id", nullable = false)
+    @OrderBy("epochOrder")
     public List<Epoch> getEpochs() {
 		return epochs;
 	}
