@@ -248,18 +248,3 @@ Ajax.InPlaceCollectionEditor.prototype = Object.extend(Ajax.InPlaceCollectionEdi
     }
 });
 
-//InPlaceEditor extension that adds a cancel button .
-Ajax.InPlaceEditor.prototype.__createForm = Ajax.InPlaceEditor.prototype.createForm;
-Ajax.InPlaceEditor.prototype = Object.extend(Ajax.InPlaceEditor.prototype, {
-    createForm: function(){
-		this.__createForm();
-		if (this.options.cancelButton) {
-          cancelButton = document.createElement("input");
-	      cancelButton.type = "button";
-   	      cancelButton.onclick = this.onclickCancel.bind(this);
-	      cancelButton.value = this.options.cancelText;
-	      cancelButton.className = 'editor_ok_button';
-	      this.form.appendChild(cancelButton);
-        }
-    }
-});
