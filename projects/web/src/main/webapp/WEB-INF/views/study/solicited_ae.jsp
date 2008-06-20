@@ -93,30 +93,103 @@
 		font-weight: normal;
 	}
 
-	
-	.sae .NoRows {
-		font-style: normal;
+	.lastRowValue {
+	 font-style: normal;
 		text-align: center;
-		padding-top: 2em;
-	    padding-bottom: 2em;
-		
-		color:red;
-		
-		
+		color:red; 
 	}
 	
   </style>
   
   <script type="text/javascript">
+  
+   var setOfWindowsOpened = new Array();
+  
    Event.observe(window, 'load', function() {
      Event.observe('flow-prev', 'click', checkForm);
      Event.observe('flow-next', 'click', checkForm);
      Event.observe('flow-update', 'click', checkForm);
      
+     Event.observe('epochs[0].descriptionText-id', 'click', editInstruction);
+     Event.observe('epochs[1].descriptionText-id', 'click', editInstruction);
+     Event.observe('epochs[2].descriptionText-id', 'click', editInstruction);
+     
+     Event.observe('ck1', 'click', selectAll);
+     Event.observe('ck2', 'click', selectAll);
+     Event.observe('ck3', 'click', selectAll);
+     
+    
      var listOfTermIds = updateTermIds();
      var termIDArray = $A(listOfTermIds);
      termIDArray.each( registerDeleteButtons );
    }); 
+    
+    function selectAll(event)
+    {
+       var selectall_ckbox = Event.element(event).id;
+       var all_ckboxes = $$('.'+selectall_ckbox);
+       for(var i = 0 ; i < all_ckboxes.length ; i++)
+       {
+         if( $(selectall_ckbox).checked )
+          $(all_ckboxes)[i].checked = true;
+         else
+          $(all_ckboxes)[i].checked = false;  
+       }   
+	     
+    }
+    function editInstruction(event)
+    {
+      var event_id = Event.element(event).id;
+      var div_id = event_id.gsub(/(\w+)-id/,'#{1}-div');
+      var window_id = "window-"+div_id;
+      
+      if( setOfWindowsOpened.indexOf(window_id) != -1 )
+      {
+        return;
+      }
+      else
+      {
+        setOfWindowsOpened.push( window_id );
+      }
+      
+      
+      var xtop = getX(event_id,event);
+      var xleft = getY(event_id,event);
+      
+      
+      var win = new Window({ id: window_id , className: "alphacube", closable : false, minimizable : false, maximizable : false, title: "Edit Instruction here", height:200, width: 450, top: xtop, left: xleft});
+      
+      win.setDestroyOnClose(); 
+      win.setContent( div_id );
+      Event.observe(div_id + "-button",'click',function(event){
+           
+           setOfWindowsOpened = setOfWindowsOpened.without("window-"+div_id);
+           Windows.close("window-"+div_id);
+      });
+      win.show();      
+    }
+    
+    function getX(event_id, event)
+    {
+      var xtop = Event.pointerY(event);
+      
+       return xtop + 30;
+    }
+    
+    function getY(event_id, event)
+    {
+      var xleft = Event.pointerX(event);
+      
+      if(event_id == 'epochs[0].descriptionText-id')
+           xleft = 50;
+      else if( event_id == 'epochs[1].descriptionText-id' )
+           xleft =  Event.pointerX(event) - 60;         
+      else if( event_id == 'epochs[2].descriptionText-id' )
+           xleft =  Event.pointerX(event) + 300;         
+       return xleft;
+    }
+    
+    
     
     function registerDeleteButtons(termID)
     {
@@ -127,11 +200,11 @@
     {
 	     var listOfTermIds = $$('.eachRowTermID');
 	     if(listOfTermIds.length != 0){
-	       Element.hide('NoRows');
+	      $('lastRowSpan').hide();
 	     }
 	     else
 	     {
-	       Element.show('NoRows');
+	       $('lastRowSpan').show();
 	     }
 	     $('err-section').innerHTML = "";
 	     return listOfTermIds;
@@ -238,7 +311,8 @@
   		<!--  start of body -->
   		
   		
-  		<table id="sae-0" class="sae">
+  		
+        <table id="sae-0" class="sae">
   			<col class="term"/>
     		<colgroup>
 		      <col class="epoch"/>
@@ -250,24 +324,31 @@
     			<tr class="head">
         			<th class="term">Adverse event term</th>
 		            <th class="epoch">
-		            	<div class="index">Pre-treatment</div>
-		            	<div class="inst">Instruction</div>
+		            	<div class="index"><tags:inplaceTextField propertyName="epochs[0].name" /></div>
+		            	<div class="inst"><a href="#jumphere" id="epochs[0].descriptionText-id">Edit Instruction</a></div>
+		            	<div><input id="ck1" type="checkbox" /></div>
+		            	<tags:popupEditInstruction propertyName="epochs[0].descriptionText"></tags:popupEditInstruction>
+  		                <a name="jumphere" />
             		</th>
             		<th class="epoch">
-                		<div class="index">Treatment</div>
-                		<div class="inst">Instruction</div>
-            		</th>
+                		<div class="index"><tags:inplaceTextField propertyName="epochs[1].name" /></div>
+                		<div class="inst"><a href="#jumphere" id="epochs[1].descriptionText-id">Edit Instruction</a></div>
+                		<div><input id="ck2" type="checkbox" /></div>
+		            	<tags:popupEditInstruction propertyName="epochs[1].descriptionText"></tags:popupEditInstruction>
+  		    		</th>
             		<th class="epoch">
-                		<div class="index">Post-treatment</div>
-                		<div class="inst">Instruction</div>
-            		</th>
+                		<div class="index"><tags:inplaceTextField propertyName="epochs[2].name" /></div>
+                		<div class="inst"><a href="#jumphere" id="epochs[2].descriptionText-id">Edit Instruction</a></div>
+                		<div><input id="ck3" type="checkbox" /></div>
+		            	<tags:popupEditInstruction propertyName="epochs[2].descriptionText"></tags:popupEditInstruction>
+  		    		</th>
             		<th class="action"> </th>
     			</tr>
     			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
     			    <study:oneSolicitedAERow index="${status.index}" eachRow="${eachRow}" />
     			 </c:forEach>
     			<tr id="specialLastRow" class="bottom" >
-    				<td colspan="5" align='center'><span id='NoRows' class='NoRows'>You have no solicited adverse events added in the list !</span></td>
+    				<td colspan="5" align='center'><span id='lastRowSpan' class='lastRowValue' style="display:none;">You have no solicited adverse events added in the list !</span></td>
     			</tr>			
   			</tbody>
   			
