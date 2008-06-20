@@ -21,7 +21,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  *
  */
 public class StudyProcessorTest extends CaaersTestCase {
-	
+	/*
 	private StudyProcessor studyProcessor = null;
 	
 	public void testProcessStudy(){
@@ -62,5 +62,6 @@ public class StudyProcessorTest extends CaaersTestCase {
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
+    */
 	
 }
