@@ -32,7 +32,7 @@ public class StudyImportServiceImpl{
         DomainObjectImportOutcome<Study> studyImportOutcome = new DomainObjectImportOutcome<Study>();
         studyMigrator.migrate(xstreamStudy, study, studyImportOutcome);
         studyImportOutcome.setImportedDomainObject(study);
-        studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
+        //studyUniquenessCheck(study, studyImportOutcome, DomainObjectImportOutcome.Severity.ERROR);
 
         return studyImportOutcome;
     }
