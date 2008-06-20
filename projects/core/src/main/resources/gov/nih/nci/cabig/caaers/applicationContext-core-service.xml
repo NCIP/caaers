@@ -154,12 +154,6 @@ This applicationContext contains the definition of the concrete services
 		</constructor-arg>
 	</bean>
 	
-	<bean id="studyProcessor" class="gov.nih.nci.cabig.caaers.service.migrator.StudyProcessor">
-		<property name="studyImportService" ref="studyImportService" />
-		<property name="studyConverter" ref="studyConverter" />
-		<property name="studyDao" ref="studyDao" />
-		<property name="studySynchronizer" ref="studySynchronizer" />
-	</bean>
 	<bean id="studyConverter" class="gov.nih.nci.cabig.caaers.service.migrator.StudyConverter"/>	
 	
 	<bean id="identifierSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.IdentifierSynchronizer"/>
@@ -167,8 +161,6 @@ This applicationContext contains the definition of the concrete services
 	<bean id="studyDiseasesSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyDiseasesSynchronizer"/>
 	<bean id="studyOrganizationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyOrganizationSynchronizer"/>
 	<bean id="studyTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyTherapySynchronizer"/>
-
-
 
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
 		<constructor-arg>
@@ -181,6 +173,15 @@ This applicationContext contains the definition of the concrete services
 			</list>
 		</constructor-arg>
 	</bean>
+	
+	<!-- caAERS Study WebService -->
+   <bean id="studyProcessorImpl" class="gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl">
+		<property name="studyImportService" ref="studyImportService" />
+		<property name="studyConverter" ref="studyConverter" />
+		<property name="studyDao" ref="studyDao" />
+		<property name="studySynchronizer" ref="studySynchronizer" />
+	</bean>	
+	
 	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService"/>
 	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService"/>
 	
