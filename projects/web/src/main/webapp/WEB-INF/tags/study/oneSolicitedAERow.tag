@@ -31,8 +31,8 @@
     			     </c:otherwise>   
     			   </c:choose>
     			   
-    				<td><input  id="ck1-${eachRow[0]}" name="epoch[1]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch1checked}" />/></td>
-    				<td><input  id="ck2-${eachRow[0]}" name="epoch[2]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch2checked}" />/></td>
-    				<td><input  id="ck3-${eachRow[0]}" name="epoch[3]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch3checked}" />/></td>
+    				<td><input  class="ck1" id="ck1-${eachRow[0]}" name="epoch[1]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch1checked}" />/></td>
+    				<td><input   class="ck2" id="ck2-${eachRow[0]}" name="epoch[2]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch2checked}" />/></td>
+    				<td><input   class="ck3" id="ck3-${eachRow[0]}" name="epoch[3]" value="${eachRow[0]}" type="checkbox" <c:out value="${epoch3checked}" />/></td>
     				<td class='deletecol'><input  id="button-${eachRow[0]}" class="eachRowDeleteButton" type="button" value="Delete" /></td>
     			</tr>
