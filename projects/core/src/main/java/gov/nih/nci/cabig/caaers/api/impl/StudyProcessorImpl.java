@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
-
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -13,13 +10,25 @@ import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
+import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
+
+import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
+import org.acegisecurity.GrantedAuthorityImpl;
+import org.acegisecurity.context.SecurityContextHolder;
+import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName="StudyService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
-public class StudyProcessorImpl implements StudyProcessor {
+public class StudyProcessorImpl implements StudyProcessor,ApplicationContextAware {
 	
 	
 private static Log logger = LogFactory.getLog(StudyProcessor.class);
@@ -29,6 +38,7 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 	private StudyDao studyDao;
 	private StudyConverter studyConverter;
 	private StudySynchronizer studySynchronizer;
+	private ApplicationContext applicationContext;
 	
 	public StudyImportServiceImpl getStudyImportService() {
 		return studyImportService;
@@ -103,6 +113,12 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 	}
 	
 	public void createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		boolean authorizationOnByDefault = enableAuthorization(false);
+		switchUser("test-default-user", "ROLE_caaers_super_user");		
+		System.out.println("Inside createStudy ");
+		System.out.println("Study Short Title --- " + studyDto.getShortTitle());
+		System.out.println("Study Long Title --- " + studyDto.getLongTitle());
+		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
 		
@@ -127,12 +143,19 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
 			}
 		}
-		
+		enableAuthorization(authorizationOnByDefault);
+		switchUser(null);		
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
 
 	}
 
 	public void updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		boolean authorizationOnByDefault = enableAuthorization(false);
+		switchUser("test-default-user", "ROLE_caaers_super_user");
+		System.out.println("Inside updateStudy ");
+		System.out.println("Study Short Title --- " + studyDto.getShortTitle());
+		System.out.println("Study Long Title --- " + studyDto.getLongTitle());
+		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
 		
@@ -158,6 +181,8 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 				}
 			}
 		}
+		enableAuthorization(authorizationOnByDefault);
+		switchUser(null);
 		logger.info("Leaving updateStudy() in StudyProcessor");
 	}
 	
@@ -176,6 +201,30 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
             }
         }
 		return dbStudy;
+	}
+	
+	private void switchUser(String userName, String... roles) {
+        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
+        for (int i = 0; i < roles.length; i++) {
+            authorities[i] = new GrantedAuthorityImpl(roles[i]);
+        }
+        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
+        auth.setAuthenticated(true);
+        SecurityContextHolder.getContext().setAuthentication(auth);
+    }
+	
+	private boolean enableAuthorization(boolean on) {
+        AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
+        if (sw == null) throw new RuntimeException("Authorization switch not found");
+        boolean current = sw.isOn();
+        sw.setOn(on);
+        return current;
+    }
+
+	public void setApplicationContext(ApplicationContext applicationContext)
+			throws BeansException {
+		this.applicationContext = applicationContext;
+		
 	}
 
 }
