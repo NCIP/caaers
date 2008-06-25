@@ -54,10 +54,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class XLstudyImporter {
 
-    /**
-     * @param
-     * @return void
-     */
     File inputFile;
 
     POIFSFileSystem poifs;
@@ -147,9 +143,8 @@ public class XLstudyImporter {
             File inputFile = new File(
                             "C:/Documents and Settings/Jojo Singh/Desktop/caaers/Mayo-22-protocols.xls");
             applicationContext = new ClassPathXmlApplicationContext(
-                            new String[] { "classpath*:gov/nih/nci/cabig/ctms/tools/applicationContext-XLStudyImport.xml" });
-            XLstudyImporter importerObject = (XLstudyImporter) applicationContext
-                            .getBean("XLstudyImporter");
+                            new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext*.xml" });
+            XLstudyImporter importerObject = (XLstudyImporter) applicationContext.getBean("XLstudyImporter");
             importerObject.setInputFile(inputFile);
 
             String identity = "ANONYMOUS";
@@ -172,7 +167,7 @@ public class XLstudyImporter {
     public void importXLstudy() throws Exception {
         bootstrap();
         syncInvestigators();
-        cleanStudies();
+        //cleanStudies();
         boolean hasMoreStudies = true;
 
         while (rowCount > 0) {
@@ -189,6 +184,7 @@ public class XLstudyImporter {
             rowCount--;
             System.out.println(rowCount);
         }
+        System.out.println("\n Study import finished.");
     }
 
     private void bootstrap() throws Exception {
@@ -197,13 +193,13 @@ public class XLstudyImporter {
 
         // create a workbook out of the input stream
         wb = new HSSFWorkbook(poifs);
-        studyInfoSheet = wb.getSheet(STUDY_SHEET_NAME);
-        agentInfoSheet = wb.getSheet(AGENT_SHEET_NAME);
-        diseaseInfoSheet = wb.getSheet(DISEASE_SHEET_NAME);
-        tacInfoSheet = wb.getSheet(TAC_SHEET_NAME);
-        orgInfoSheet = wb.getSheet(ORG_SHEET_NAME);
-        investigatorInfoSheet = wb.getSheet(INVESTIGATOR_SHEET_NAME);
-        therapyInfoSheet = wb.getSheet(THERAPY_SHEET_NAME);
+        studyInfoSheet = getSheet(STUDY_SHEET_NAME);
+        agentInfoSheet = getSheet(AGENT_SHEET_NAME);
+        diseaseInfoSheet = getSheet(DISEASE_SHEET_NAME);
+        tacInfoSheet = getSheet(TAC_SHEET_NAME);
+        orgInfoSheet = getSheet(ORG_SHEET_NAME);
+        investigatorInfoSheet = getSheet(INVESTIGATOR_SHEET_NAME);
+        therapyInfoSheet = getSheet(THERAPY_SHEET_NAME);
 
         // orgdao = (OrganizationDao)applicationContext.getBean("orgdao");
         rowCount = studyInfoSheet.getLastRowNum();
@@ -401,7 +397,7 @@ public class XLstudyImporter {
                 else {
                     StudySite ss = new StudySite();
                     ss.setOrganization(organization);
-                    study.addStudySite(ss);
+                    study.addStudyOrganization(ss);
                 }
 
             }
@@ -435,17 +431,22 @@ public class XLstudyImporter {
 
     private void validateStudy(Study study) {
         studyImportOutcome = studyImportService.importStudy(study);
-        List<DomainObjectImportOutcome.Message> messages = studyImportOutcome.getMessages();
-        for (Message message : messages) {
-            System.out.println("\n " + message.toString());
-
-        }
         // study = studyImportOutcome.getImportedDomainObject();
-        if (studyImportOutcome.isSavable()) saveStudy(studyImportOutcome.getImportedDomainObject());
+        if (studyImportOutcome.isSavable()) {
+            saveStudy(studyImportOutcome.getImportedDomainObject());
+        }
+        else{
+            List<DomainObjectImportOutcome.Message> messages = studyImportOutcome.getMessages();
+            System.out.println("Error: Unable to save study: "+study.getShortTitle()+" -- "+study.getLongTitle());
+            for (Message message : messages) {
+                System.out.println("Reason: " + message.toString());
+
+            }
+        }
     }
 
     private void saveStudy(Study study) {
-        System.out.println("\n saving study" + study.getLongTitle());
+        System.out.println("\n saving study: " + study.getShortTitle()+" -- "+study.getLongTitle());
         study.setDescription(study.getDescription() + "xxxx");
         studydao.save(study);
         /*
@@ -474,18 +475,24 @@ public class XLstudyImporter {
 
     // utility method to get contents of cell irrespective of cell type.
     public String getCellData(String sheetname, int rowNum, HSSFCell cell) {
+        if(cell==null) throw new 
+        CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "+sheetname+"\n Row: "+(rowNum+1));
+        
         int cellType = cell.getCellType(); 
         if(cellType == 0){ if(cell.getNumericCellValue()==0) throw new
-         CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "+sheetname+"\n Row: "+rowNum+"\n Cell: "+cell.getCellNum());
+         CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "+sheetname+"\n Row: "+(rowNum+1)+"\n Cell: "+((cell.getCellNum())+1));
          return Integer.toString((int)
          cell.getNumericCellValue());}
-         
+        else
         if (cellType == 1){ 
             if(cell.getStringCellValue().equals("")) throw new
-            CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "+sheetname+"\n Row: "+rowNum+"\n Cell: "+cell.getCellNum());
+            CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "+sheetname+"\n Row: "+(rowNum+1)+"\n Cell: "+((cell.getCellNum())+1));
             return cell.getStringCellValue();}
+        else { throw new
+            CaaersSystemException("Invalid data or Blank cell at following location: \n Sheet: "
+                            + sheetname + "\n Row: " + (rowNum+1) + "\n Cell: " + ((cell.getCellNum())+1));
+        }
 
-        return "";
 
     }
 
@@ -610,7 +617,15 @@ public class XLstudyImporter {
 
     }
 
-    // bringing back DB to original state to facilitate testing
+    private HSSFSheet getSheet(String sheetName){
+        HSSFSheet sheet = wb.getSheet(sheetName);
+        if (sheet==null)throw new
+        CaaersSystemException("\n Unable to find sheet named: "+sheetName+
+                        "\n Please fix the error and try again.");
+        else return sheet;
+        
+    }
+    /*// bringing back DB to original state to facilitate testing
     private void cleanStudies() {
         for (int i = 1; i < studyInfoSheet.getLastRowNum(); i++) {
             Study s = studydao.getByShortTitle(getCellData(STUDY_SHEET_NAME, i,(studyInfoSheet.getRow(i)
@@ -618,7 +633,7 @@ public class XLstudyImporter {
             if (s != null) studydao.delete(s);
         }
     }
-
+    */
     public void setStudydao(StudyDao studydao) {
         this.studydao = studydao;
     }
