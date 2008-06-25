@@ -87,6 +87,7 @@
 			<dependency org="org.codehaus.xfire" name="xfire-jaxb2" rev="1.2.6" force="true" />
 			<dependency org="org.codehaus.xfire" name="xfire-aegis" rev="1.2.6" force="true"/>
 			<dependency org="org.codehaus.xfire" name="xfire-core" rev="1.2.6"  force="true"/>
+			<dependency org="xfire" name="xfire-jsr181-api" rev="1.0-M1" force="true" />
 			
 			<!-- JSRs -->
 			<dependency org="jsr94" name="jsr94" rev="1.1" />
