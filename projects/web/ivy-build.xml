@@ -9,10 +9,6 @@
 	</condition>
 	
 	<import file="${parent.dir}/common.xml"/>
-	
-	<target name="resolve" depends="common.resolve">
-		<copy-resources src="${module.lib}/main/xfire" dest="${lib.dir}"  filter="false" />
-	</target>
 
 	<!-- ==============================================================
 		target: resolve-dist
@@ -22,7 +18,6 @@
 	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
 	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	 		<copy-resources src="${module.lib}/main/xfire" dest="${war.dir}/WEB-INF/lib"  filter="false" />
 	  </target>
 	
 	<!-- ==================================================================
@@ -33,8 +28,6 @@
 	 	<mkdir dir="${war.dir}/WEB-INF" />
 	 	<mkdir dir="${war.dir}/WEB-INF/lib"/>
 	 	<mkdir dir="${war.dir}/WEB-INF/classes" />
-	 	<mkdir dir="${war.dir}/WEB-INF/classes/META-INF" />
-		<mkdir dir="${war.dir}/WEB-INF/classes/META-INF/xfire" />
 	</target>
 	 	
 	<!-- =========================================================
@@ -50,19 +43,12 @@
 	 <target name="war" depends="clean-war, init-war, resolve-dist">
 		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
 	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
-	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
 	 	
 	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}"
 	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
 	 	</war>
 	 	
-	 	<!--
-		<war destfile="${dist.dir}/caaers.war"  basedir="${main.src}/../webapp" 
-			 webxml="${main.src}/../webapp/WEB-INF/web.xml">
-			<lib dir="${lib.dir}" />
-			<classes dir="${classes.dir}"  />
-		</war>
-		-->
+	 	
 	</target>
 	<!-- =================================================================
 		target : jar
