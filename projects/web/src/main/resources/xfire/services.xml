@@ -13,6 +13,24 @@
     <style>document</style>
   </service>
 
+  <service>
+    <serviceBean>#researchStaffMigratorService</serviceBean>
+    <serviceFactory>#jaxbServiceFactory</serviceFactory>
+    <schemas>
+      <schema>/schema/integration/ResearchStaff.xsd</schema>
+    </schemas>
+    <style>document</style>
+  </service>
+
+  <service>
+    <serviceBean>#investigatorMigratorService</serviceBean>
+    <serviceFactory>#jaxbServiceFactory</serviceFactory>
+    <schemas>
+      <schema>/schema/integration/Investigator.xsd</schema>
+    </schemas>
+    <style>document</style>
+  </service>
+    
   <bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
     <constructor-arg ref="xfire.transportManager"/>
   </bean>
