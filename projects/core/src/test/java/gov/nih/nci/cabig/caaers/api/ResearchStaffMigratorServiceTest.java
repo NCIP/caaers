@@ -16,12 +16,17 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 public class ResearchStaffMigratorServiceTest extends CaaersDbTestCase {
 
 
-	public void saveResearchStaff() {
+    public String getTestDataFileName() {
+        String fileName = "testdata/ResearchStaffMigratorServiceTest.xml";
+        return fileName;
+    }
+    
+	public void testSaveResearchStaff() {
 		ResearchStaffMigratorService svc = (ResearchStaffMigratorService) getApplicationContext()
-        .getBean("researchStaffMigratorServiceAPI");
+        .getBean("researchStaffMigratorService");
 		
 		try {
-			File xmlFile = getResources("/schema/integration/research-staff.xml")[0].getFile();
+			File xmlFile = new File ("/Users/sakkala/tech/caaers/ResearchStaffMigratorServiceTest.xml");//getResources("/schema/integration/investigator.xml")[0].getFile();
 			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
 			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 			Staff staff = (Staff)unmarshaller.unmarshal(xmlFile);
@@ -31,11 +36,13 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbTestCase {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
 		}
 	}
+	/*
 	private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);
         return resources;
-    }
+    }*/
 }
