@@ -92,6 +92,8 @@
 			<dependency org="org.codehaus.xfire" name="xfire-annotations" rev="1.2.6" force="true" />
 			<dependency org="org.codehaus.xfire" name="xfire-xmlbeans" rev="1.2.6" force="true" />
 			<dependency org="org.codehaus.xfire" name="xfire-java5" rev="1.2.6" force="true" />
+			<dependency org="org.apache.xbean" name="xbean-spring" rev="2.8" force="true" />
+			<dependency org="com.sun.xml.stream" name="sjsxp" rev="1.0.1" force="true" />
 			
 			<!-- JSRs -->
 			<dependency org="jsr94" name="jsr94" rev="1.1" />
