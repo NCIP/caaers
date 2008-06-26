@@ -182,9 +182,14 @@ This applicationContext contains the definition of the concrete services
 		<property name="studySynchronizer" ref="studySynchronizer" />
 	</bean>	
 	
-	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService"/>
-	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService"/>
-		
+	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
+		<property name="investigatorDao" ref="investigatorDao" />
+		<property name="organizationDao" ref="organizationDao" />
+	</bean>
+	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">
+		<property name="researchStaffDao" ref="researchStaffDao" />
+		<property name="organizationDao" ref="organizationDao" />	
+	</bean>		
 	
 	
 	<bean id="XLstudyImporter" class="gov.nih.nci.cabig.ctms.tools.XLstudyImporter">
