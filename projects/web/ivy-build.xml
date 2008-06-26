@@ -57,7 +57,9 @@
 	<target name="jar" depends="common.jar, war">
 			<echo message="Executing jar in ${ant.project.name}" />
 	</target>
-	<target name="clean" depends="common.clean, clean-war"></target>
+	<target name="clean" depends="common.clean, clean-war, undeploy-caaers">
+		
+	</target>
 	
 	<target name="copy-caaers-context">
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
