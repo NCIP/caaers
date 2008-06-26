@@ -81,6 +81,12 @@
 	<condition property="run.test">
 		<isfalse value="${skip.test}" />
 	</condition>
+
+	<!-- For Cobertura and PMD report -->
+	<property name="run.review.reports" value="${env.run.review.reports}" />
+	<condition property="skip.review.reports">
+		<isfalse value="${run.review.reports}" />
+	</condition>
 	
 	<!--Check for JDK version, we need to make sure that JDK 1.5 we use -->
 	<condition property="isJDK1.5">
@@ -486,7 +492,7 @@
 	<!-- ================================================================
 	    target : clean-cobertura-instruments
 	===================================================================-->
-	<target name="clean-cobertura-instruments" description="--> clean the cobertura instruments classes dir">
+	<target name="clean-cobertura-instruments" unless="skip.review.reports" description="--> clean the cobertura instruments classes dir">
 				<echo message="Executing in ${ant.project.name}" />
 				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
 	</target>
@@ -495,13 +501,16 @@
          ================================= -->
     <target name="clean" depends="clean-classes, clean-classes-test, clean-generated-src, clean-dist, clean-lib, 
     			clean-lib-test, clean-test-results, clean-test-reports,clean-cobertura-instruments,clean-cobertura-dir" 
-    	description="--> clean the project" />
+    	description="--> clean the project">
+    	<delete dir="${main.src}" includes="**/*.class" />
+		<delete dir="${test.src}" includes="**/*.class" />
+    </target>
 	
 	<!-- ============================================================== 
 		target: corbetura-init                                                
 	============================================================== -->
 		
-	<target name="corbetura-init" depends="clean-cobertura-dir">
+	<target name="corbetura-init" unless="skip.review.reports" depends="clean-cobertura-dir">
 			<!--
 			cobertura-instrument=net.sourceforge.cobertura.ant.InstrumentTask
 			cobertura-merge=net.sourceforge.cobertura.ant.MergeTask
@@ -556,7 +565,7 @@
  	<!-- ============================================================== 
 			target: cobertura-report                                                
 	============================================================== -->
-	<target name="cobertura-report" description="-> Will create the corbetura coverage report">
+	<target name="cobertura-report" unless="skip.review.reports" description="-> Will create the corbetura coverage report">
 		<cobertura-report format="html" destdir="${cobertura.report.dir}" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 		<cobertura-report format="xml" destdir="${cobertura.report.dir}/xmlreport" srcdir="${main.src}" datafile="${cobertura.report.dir}/cobertura.ser"/>
 	</target>
@@ -597,6 +606,8 @@
 			<echo message="databaseConfigurationName = ${databaseConfigurationName}" />
 			<echo message="offline : ${offline}" />
 			<echo message="online :${online}" />
+			<echo message="skip.review.reports : ${skip.review.reports}" />
+			<echo message="run.review.reports : ${run.review.reports}" />
 	</target>
 	
 	<!-- ================================= 
