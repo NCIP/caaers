@@ -3,30 +3,38 @@ package gov.nih.nci.cabig.caaers.api.impl;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.jws.WebService;
+import javax.jws.soap.SOAPBinding;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-public class DefaultInvestigatorMigratorService implements InvestigatorMigratorService {
+@WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService", serviceName="InvestigatorMigratorService")
+@SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
+public class DefaultInvestigatorMigratorService extends DefaultMigratorService implements InvestigatorMigratorService {
 	private static final Log logger = LogFactory.getLog(DefaultInvestigatorMigratorService.class);
-	private OrganizationDao organizationDao;
+	
 	private InvestigatorDao investigatorDao;
+	
+	private List<DomainObjectImportOutcome<Investigator>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+	private List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+	
 
 	/**
      * Fetches the research staff from the DB
@@ -47,37 +55,38 @@ public class DefaultInvestigatorMigratorService implements InvestigatorMigratorS
         return rsList.get(0);
     }
 
-	/**
-     * Fetches the organization from the DB
-     * 
-     * @param nciCode
-     * @return
-     */
-    Organization fetchOrganization(String nciCode) {
-        OrganizationQuery orgQuery = new OrganizationQuery();
-        if (StringUtils.isNotEmpty(nciCode)) {
-            orgQuery.filterByNciCodeExactMatch(nciCode);
-        }
-        List<Organization> orgList = organizationDao.searchOrganization(orgQuery);
-        if (orgList == null || orgList.isEmpty()) {
-            logger.error("No organization exists  nciCode :" + nciCode);
-            throw new CaaersSystemException("No organization exist with nciCode :" + nciCode);
-        }
-        if (orgList.size() > 1) {
-            logger.error("Multiple organizations exist with same NCI code :" + nciCode);
-        }
- 
-        return orgList.get(0);
-    }
+
     public void saveInvestigator(Staff staff) throws RemoteException {
-    	List<InvestigatorType> investigator = staff.getInvestigator();
-    	for (InvestigatorType investigatorType:investigator) {
-    		saveInvestigator(investigatorType);
+    	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
+    	Investigator investigator = null;
+    	getImportableInvestigators().clear();
+    	getNonImportableInvestigators().clear();
+    	
+    	for (InvestigatorType investigatorType:investigatorTypeList) {
+     		try {
+    			investigator = buildInvestigator(investigatorType);
+    			saveInvestigator(investigator);
+    			DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+    			investigatorImportOutcome.setImportedDomainObject(investigator);
+    			addImportableInvestigators(investigatorImportOutcome);
+    		} catch (CaaersSystemException e) {
+    			investigator = new Investigator();
+            	investigator.setNciIdentifier(investigatorType.getNciIdentifier());
+            	investigator.setFirstName(investigatorType.getFirstName());
+            	investigator.setLastName(investigatorType.getLastName());
+            	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+    			investigatorImportOutcome.setImportedDomainObject(investigator);
+    			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
+    			addNonImportableInvestigators(investigatorImportOutcome);
+            	
+    			//throw new RemoteException("Unable to import investigator", e);
+    		}
     	}
     }
-	public void saveInvestigator(InvestigatorType investigatorDto) throws RemoteException {
+    
+    private Investigator buildInvestigator(InvestigatorType investigatorDto) {
 		try {
-            logger.info("Begining of DefaultInvestigatorMigratorService : saveInvestigator");
+            logger.info("Begining of DefaultInvestigatorMigratorService : buildInvestigator");
              
            // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
             String nciIdentifier = investigatorDto.getNciIdentifier();
@@ -95,6 +104,7 @@ public class DefaultInvestigatorMigratorService implements InvestigatorMigratorS
             investigator.setPhoneNumber(investigatorDto.getPhoneNumber());
             
             //get site investigaor
+            
             List<SiteInvestigatorType> siteInvTypeList= investigatorDto.getSiteInvestigator();
             List<SiteInvestigator> siteInvList = new ArrayList<SiteInvestigator>();
             for (SiteInvestigatorType siteInvestigatorType : siteInvTypeList) {
@@ -102,18 +112,34 @@ public class DefaultInvestigatorMigratorService implements InvestigatorMigratorS
             	SiteInvestigator siteInvestigator = new SiteInvestigator();
             	siteInvestigator.setEmailAddress(siteInvestigatorType.getEmailAddress());
             	siteInvestigator.setStatusCode(siteInvestigatorType.getStatusCode().toString());
-            	siteInvestigator.setOrganization(fetchOrganization(siteInvestigatorType.getOrganizationRef().getNciInstituteCode()));
+            	
+            	Organization org = fetchOrganization(siteInvestigatorType.getOrganizationRef().getNciInstituteCode());
+            	siteInvestigator.setOrganization(org);
+            	siteInvestigator.setInvestigator(investigator);
             	// ????? siteInvestigator.setStatusDate(siteInvestigatorType.ggetStatusDate());
             	siteInvList.add(siteInvestigator);
             }
-            investigator.setSiteInvestigators(siteInvList);
+            investigator.getSiteInvestigatorsInternal().clear();
+            investigator.getSiteInvestigators().addAll(siteInvList);
+            
+            return investigator;
+
+        } catch (Exception e) {
+            logger.error("Error while building investigator", e);
+            throw new CaaersSystemException(e.getMessage(), e);
+        }   	
+    }
+	private void saveInvestigator(Investigator investigator) throws CaaersSystemException {
+		try {
+            logger.info("Begining of DefaultInvestigatorMigratorService : saveInvestigator");
+            investigatorDao.save(investigator);
 
             logger.info("Created the Investigator  :" + investigator.getId());
             logger.info("End of DefaultInvestigatorMigratorService : saveInvestigator");
-
-        } catch (Exception e) {
+            
+         } catch (Exception e) {
             logger.error("Error while creating investigator", e);
-            throw new RemoteException("Unable to create investigator", e);
+            throw new CaaersSystemException("Unable to create investigator", e);
         }	
 	}
 	
@@ -128,13 +154,21 @@ public class DefaultInvestigatorMigratorService implements InvestigatorMigratorS
 		this.investigatorDao = investigatorDao;
 	}
 
-	@Required
-	public OrganizationDao getOrganizationDao() {
-		return organizationDao;
+
+
+	public List<DomainObjectImportOutcome<Investigator>> getImportableInvestigators() {
+		return importableInvestigators;
 	}
 
-	@Required
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
+	public List<DomainObjectImportOutcome<Investigator>> getNonImportableInvestigators() {
+		return nonImportableInvestigators;
+	}
+	
+	private void addImportableInvestigators(DomainObjectImportOutcome<Investigator> domainObjectImportInvestigator) {
+			this.getImportableInvestigators().add(domainObjectImportInvestigator);
+	}
+	
+	private void addNonImportableInvestigators(DomainObjectImportOutcome<Investigator> domainObjectImportInvestigator) {
+		this.getNonImportableInvestigators().add(domainObjectImportInvestigator);
 	}
 }
