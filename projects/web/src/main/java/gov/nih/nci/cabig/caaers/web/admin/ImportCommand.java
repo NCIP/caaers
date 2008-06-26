@@ -1,12 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.List;
-import java.util.ArrayList;
-import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import org.springframework.web.multipart.MultipartFile;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author Krikor Krumlian
@@ -18,6 +22,10 @@ public class ImportCommand {
     private MultipartFile studyFile;
 
     private MultipartFile routineAdverseEventReportFile;
+    
+    private MultipartFile investigatorFile;
+    
+    private MultipartFile researchStaffFile;
 
     private String schemaValidationResult;
 
@@ -34,6 +42,17 @@ public class ImportCommand {
     private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> nonImportableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
 
     private List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports = new ArrayList<DomainObjectImportOutcome<RoutineAdverseEventReport>>();
+
+    private List<DomainObjectImportOutcome<Investigator>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+    
+    private List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+    
+    private List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
+    
+    private List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
+    
+    
+    //private List<DomainObjectImportOutcome<Study>> importableInvestigators = new ArrayList<DomainObjectImportOutcome<Study>>();
 
     public String getType() {
         return type;
@@ -154,4 +173,54 @@ public class ImportCommand {
     public void setSchemaValidationResult(String schemaValidationResult) {
         this.schemaValidationResult = schemaValidationResult;
     }
+
+	public MultipartFile getInvestigatorFile() {
+		return investigatorFile;
+	}
+
+	public void setInvestigatorFile(MultipartFile investigatorFile) {
+		this.investigatorFile = investigatorFile;
+	}
+
+	public List<DomainObjectImportOutcome<Investigator>> getImportableInvestigators() {
+		return importableInvestigators;
+	}
+
+	public void setImportableInvestigators(List<DomainObjectImportOutcome<Investigator>> importableInvestigators) {
+		this.importableInvestigators = importableInvestigators;
+	}
+
+	public List<DomainObjectImportOutcome<Investigator>> getNonImportableInvestigators() {
+		return nonImportableInvestigators;
+	}
+
+	public void setNonImportableInvestigators(List<DomainObjectImportOutcome<Investigator>> nonImportableInvestigators) {
+		this.nonImportableInvestigators = nonImportableInvestigators;
+	}
+
+	public List<DomainObjectImportOutcome<ResearchStaff>> getImportableResearchStaff() {
+		return importableResearchStaff;
+	}
+
+	public void setImportableResearchStaff(
+			List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff) {
+		this.importableResearchStaff = importableResearchStaff;
+	}
+
+	public List<DomainObjectImportOutcome<ResearchStaff>> getNonImportableResearchStaff() {
+		return nonImportableResearchStaff;
+	}
+
+	public void setNonImportableResearchStaff(
+			List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff) {
+		this.nonImportableResearchStaff = nonImportableResearchStaff;
+	}
+
+	public MultipartFile getResearchStaffFile() {
+		return researchStaffFile;
+	}
+
+	public void setResearchStaffFile(MultipartFile researchStaffFile) {
+		this.researchStaffFile = researchStaffFile;
+	}
 }
