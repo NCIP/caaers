@@ -32,6 +32,15 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 	
 	private void syncStudySite(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
+		if(xmlStudy.getStudySites() != null){
+			if(xmlStudy.getStudySites().size() == 0){
+				if(dbStudy.getStudySites() != null){
+					dbStudy.getStudySites().clear();
+				}
+				return;
+			}
+		}
+		
 		List<StudySite> newStudySiteList = new ArrayList<StudySite>();
 		List<StudySite> deleteStudySiteList = new ArrayList<StudySite>();
 		StudySite remStudySite = null;
@@ -151,6 +160,15 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
+		if(xmlStudyOrganization.getStudyInvestigators() != null){
+			if(xmlStudyOrganization.getStudyInvestigators().size() == 0){
+				if(dbStudyOrganization.getStudyInvestigators() != null){
+					dbStudyOrganization.getStudyInvestigators().clear();
+				}
+				return;
+			}
+		}
+		
 		List<StudyInvestigator> newStudyInvestigatorList = new ArrayList<StudyInvestigator>();
 		List<StudyInvestigator> deleteStudyInvestigatorList = new ArrayList<StudyInvestigator>();
 		StudyInvestigator remStudyInvestigator = null;
@@ -241,11 +259,18 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 										Organization organization, 
 										DomainObjectImportOutcome<Study> studyImportOutcome) {
 		
+		if(xmlStudyOrganization.getStudyPersonnels() != null){
+			if(xmlStudyOrganization.getStudyPersonnels().size() == 0){
+				if(dbStudyOrganization.getStudyPersonnels() != null){
+					dbStudyOrganization.getStudyPersonnels().clear();
+				}
+				return;
+			}
+		}
+		
 		List<StudyPersonnel> newStudyPersonnelList = new ArrayList<StudyPersonnel>();
 		List<StudyPersonnel> deleteStudyPersonnelList = new ArrayList<StudyPersonnel>();
 		StudyPersonnel remStudyPersonnel = null;
-		
-		
 		
 		//Identify newly added StudyPersonnel
 		for(StudyPersonnel xmlStudyPersonnel : xmlStudyOrganization.getStudyPersonnels()){
