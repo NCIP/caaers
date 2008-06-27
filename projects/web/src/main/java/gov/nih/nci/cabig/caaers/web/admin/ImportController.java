@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import com.thoughtworks.xstream.converters.basic.DateConverter;
 import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -32,6 +36,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.XMLConstants;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,6 +50,8 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import java.io.*;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,6 +79,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private CtcDao ctcDao;
 
    private StudyImportServiceImpl studyImportService;
+   
+   //added by Monish Dombla
+   private StudyProcessorImpl studyProcessorImpl;
 
     private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
@@ -193,7 +205,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     // helper
     private String getXSDLocation(String type) {
         if ("study".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/studyXSD.xsd";
+            //return "classpath:gov/nih/nci/cabig/caaers/studyXSD.xsd";
+        	return "classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd";
         }
         if ("participant".equals(type)) {
             return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
@@ -207,18 +220,19 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private void validateAgainstSchema(File xmlFile, ImportCommand command, String xsdUrl) {
         try {
             // parse an XML document into a DOM tree
-            DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        	DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        	documentBuilderFactory.setValidating(false);
+        	documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder parser = documentBuilderFactory.newDocumentBuilder();
             Document document = parser.parse(xmlFile);
-
             // create a SchemaFactory capable of understanding WXS schemas
-            SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // load a WXS schema, represented by a Schema instance
 
             // load a WXS schema, represented by a Schema instance
-            // Source schemaFile = new StreamSource(new
-            // File("/Users/krikor/Documents/RD/cabig/caAERS/svn/docs/import/0.8/routineAeXSD.xsd"));
-            Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl)
-                            .getFile());
-            Schema schema = factory.newSchema(schemaFile);
+            //Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl).getFile());
+            Source schemaFile = new StreamSource(getResources(xsdUrl)[0].getFile());
+            Schema schema = schemaFactory.newSchema(schemaFile);
 
             // create a Validator instance, which can be used to validate an instance document
             Validator validator = schema.newValidator();
@@ -331,20 +345,26 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                     migrateParticipant(xstreamParticipant, command);
                 }
             }
-
-            if (type.equals("study")) {
-                int totalNumberofRecords = 5000;
-                int currentNumber = 1;
-                // FileCopyUtils.copy(command.getStudyFile().getInputStream(),new
-                // FileOutputStream(xmlFile));
-                input = new BufferedReader(new FileReader(xmlFile));
-                ObjectInputStream in = xstream.createObjectInputStream(input);
-                while (true && currentNumber++ <= totalNumberofRecords
-                                && command.getSchemaValidationResult() == null) {
-                    Study xstreamStudy = (Study) in.readObject();
-                    migrateStudy(xstreamStudy, command);
-                }
+            
+            if((type.equals("study")) && (command.getSchemaValidationResult() == null)){
+            	processStudy(xmlFile,command);
             }
+            
+            
+
+//            if (type.equals("study")) {
+//                int totalNumberofRecords = 5000;
+//                int currentNumber = 1;
+//                // FileCopyUtils.copy(command.getStudyFile().getInputStream(),new
+//                // FileOutputStream(xmlFile));
+//                input = new BufferedReader(new FileReader(xmlFile));
+//                ObjectInputStream in = xstream.createObjectInputStream(input);
+//                while (true && currentNumber++ <= totalNumberofRecords
+//                                && command.getSchemaValidationResult() == null) {
+//                    Study xstreamStudy = (Study) in.readObject();
+//                    migrateStudy(xstreamStudy, command);
+//                }
+//            }
 
             if (type.equals("routineAeReport")) {
                 int maxNumberofRoutineReports = 1000;
@@ -379,6 +399,34 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             log.debug("Study List size " + command.getImportableStudies().size());
             log.debug("Participant List size " + command.getImportableParticipants().size());
         }
+    }
+    
+    
+    /**
+     * This method is added to test the create and update of Study 
+     * Monish Dombla
+     */
+    
+    private void processStudy(File xmlFile,ImportCommand command){
+    	gov.nih.nci.cabig.caaers.webservice.Studies studies;
+    	try {
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+				
+			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
+			if(studies != null){
+				for(gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()){
+					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.processStudy(studyDto);
+					if (studyImportOutcome.isSavable()) {
+			            command.addImportableStudy(studyImportOutcome);
+			        } else {
+			            command.addNonImportableStudy(studyImportOutcome);
+			        }
+				}
+			}
+		} catch (JAXBException e) {
+			throw new CaaersSystemException("There was an error converting study data transfer object to study domain object", e);
+		}
     }
 
     private void migrateStudy(Study xstreamStudy, ImportCommand command) {
@@ -540,5 +588,27 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     public void setParticipantImportService(final ParticipantImportServiceImpl participantImportService) {
         this.participantImportService = participantImportService;
+    }
+
+	public StudyProcessorImpl getStudyProcessorImpl() {
+		return studyProcessorImpl;
+	}
+
+	public void setStudyProcessorImpl(StudyProcessorImpl studyProcessorImpl) {
+		this.studyProcessorImpl = studyProcessorImpl;
+	}
+	
+	/**
+	 * This method fetches the specified resource pattern from classpath.
+	 * In this context used to fetch xsd files.
+	 * @param pattern
+	 * @return
+	 * @throws IOException
+	 */
+	private Resource[] getResources(String pattern) throws IOException {
+        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        if (logger.isDebugEnabled()) logger.debug("Looking for resources matching " + pattern);
+        Resource[] resources = resolver.getResources(pattern);
+        return resources;
     }
 }
