@@ -14,6 +14,15 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 			DomainObjectImportOutcome<Study> outcome) {
 		
 		
+		if(xmlStudy.getStudyTherapies() != null){
+			if(xmlStudy.getStudyTherapies().size() == 0){
+				if(dbStudy.getStudyTherapies() != null){
+					dbStudy.getStudyTherapies().clear();
+				}
+				return;
+			}
+		}
+		
 		List<StudyTherapy> newStudyTherapyList = new ArrayList<StudyTherapy>();
 		List<StudyTherapy> deleteStudyTherapyList = new ArrayList<StudyTherapy>();
 		StudyTherapy remStudyTherapy = null;
