@@ -21,6 +21,15 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 	
 	private void syncCtepDiseases(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome){
 		
+		if(xmlStudy.getCtepStudyDiseases() != null){
+			if(xmlStudy.getCtepStudyDiseases().size() == 0){
+				if(dbStudy.getCtepStudyDiseases() != null){
+					dbStudy.getCtepStudyDiseases().clear();
+				}
+				return;
+			}
+		}
+		
 		List<CtepStudyDisease> newCtepStudyDiseaseList = new ArrayList<CtepStudyDisease>();
 		List<CtepStudyDisease> deleteCtepStudyDiseaseList = new ArrayList<CtepStudyDisease>();
 		CtepStudyDisease remCtepStudyDisease = null;
@@ -66,6 +75,15 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 	}
 	
 	private void syncMeddraDiseases(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome){
+		
+		if(xmlStudy.getMeddraStudyDiseases() != null){
+			if(xmlStudy.getMeddraStudyDiseases().size() == 0){
+				if(dbStudy.getMeddraStudyDiseases() != null){
+					dbStudy.getMeddraStudyDiseases().clear();
+				}
+				return;
+			}
+		}
 		
 		List<MeddraStudyDisease> newMeddraStudyDiseaseList = new ArrayList<MeddraStudyDisease>();
 		List<MeddraStudyDisease> deleteMeddraStudyDiseaseList = new ArrayList<MeddraStudyDisease>();
