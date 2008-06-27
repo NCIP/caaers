@@ -240,7 +240,7 @@
                 <xs:sequence>
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -253,7 +253,7 @@
                 <xs:sequence>
                     <xs:element name="firstName" type="CustomStringType"/>
                     <xs:element name="lastName" type="CustomStringType"/>
-                    <xs:element name="nciIdentifier" type="CustomStringType"/>
+                    <xs:element name="nciIdentifier" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -265,7 +265,7 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="name" type="CustomStringType"/>
-                    <xs:element name="nciInstituteCode" type="CustomStringType"/>
+                    <xs:element name="nciInstituteCode" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -315,7 +315,7 @@
             <xs:extension base="MutableDomainObject">
                 <xs:choice>
                     <xs:element name="name" type="CustomStringType"/>
-                    <xs:element name="nscNumber" type="CustomStringType"/>
+                    <xs:element name="nscNumber" type="xs:string"/>
                 </xs:choice>
             </xs:extension>
         </xs:complexContent>
