@@ -499,6 +499,7 @@
           class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
         <property name="participantImportService" ref="participantImportService"/>
         <property name="studyImportService" ref="studyImportService"/>
+        <property name="studyProcessorImpl" ref="studyProcessorImpl"/>
     </bean>
   
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
