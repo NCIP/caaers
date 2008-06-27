@@ -141,44 +141,47 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 	 */
 	public Study getStudyDesignByIdentifier(final Identifier identifier) {
 		Study study = getByIdentifier(identifier);
-		initialize(study);
-
-		// now select the therapies types
-		if (study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
-			study.setDrugAdministrationTherapyType(Boolean.TRUE);
-		}
-		if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
-			study.setDeviceTherapyType(Boolean.TRUE);
-		}
-		if (study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
-			study.setRadiationTherapyType(Boolean.TRUE);
-		}
-		if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
-			study.setSurgeryTherapyType(Boolean.TRUE);
-		}
-		if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
-			study.setBehavioralTherapyType(Boolean.TRUE);
-		}
-		
-		
-		//select report formats
-		if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
-			study.setAdeersPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
-			study.setCaaersXMLType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
-			study.setCiomsPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
-			study.setCiomsSaePDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
-			study.setDcpSAEPDFType(Boolean.TRUE);
-		}
-		if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
-			study.setMedwatchPDFType(Boolean.TRUE);
+		if(study != null){
+	
+			initialize(study);
+	
+			// now select the therapies types
+			if (study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
+				study.setDrugAdministrationTherapyType(Boolean.TRUE);
+			}
+			if (study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
+				study.setDeviceTherapyType(Boolean.TRUE);
+			}
+			if (study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
+				study.setRadiationTherapyType(Boolean.TRUE);
+			}
+			if (study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
+				study.setSurgeryTherapyType(Boolean.TRUE);
+			}
+			if (study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
+				study.setBehavioralTherapyType(Boolean.TRUE);
+			}
+			
+			
+			//select report formats
+			if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
+				study.setAdeersPDFType(Boolean.TRUE);
+			}
+			if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
+				study.setCaaersXMLType(Boolean.TRUE);
+			}
+			if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
+				study.setCiomsPDFType(Boolean.TRUE);
+			}
+			if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
+				study.setCiomsSaePDFType(Boolean.TRUE);
+			}
+			if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
+				study.setDcpSAEPDFType(Boolean.TRUE);
+			}
+			if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
+				study.setMedwatchPDFType(Boolean.TRUE);
+			}
 		}
 		return study;
 	}
