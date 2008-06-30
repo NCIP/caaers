@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 /**
  * @author ArunKumarK
+ * @author Biju Joseph
  */
 
+import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,15 +29,18 @@ public class Arm  extends AbstractMutableDomainObject {
 	private List<SolicitedAdverseEvent> solicitedAdverseEvents;
 	
 	public Arm()
-	{}
+	{
+		this(null, null);
+	}
 	public Arm(String name)
 	{
-      	this.name = name;	
+      	this(name, null);
 	}
 	public Arm(String name, String descriptionText)
 	{
       	this.name = name;	
       	this.descriptionText = descriptionText;
+      	this.solicitedAdverseEvents = Collections.emptyList();
 	}
 	public String getName() {
 		return name;
@@ -43,10 +48,12 @@ public class Arm  extends AbstractMutableDomainObject {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	@Column(name="description")
 	public String getDescriptionText() {
 		return descriptionText;
 	}
+	
 	public void setDescriptionText(String descriptionText) {
 		this.descriptionText = descriptionText;
 	}
@@ -57,6 +64,7 @@ public class Arm  extends AbstractMutableDomainObject {
 	public List<SolicitedAdverseEvent> getSolicitedAdverseEvents() {
 		return solicitedAdverseEvents;
 	}
+    
 	public void setSolicitedAdverseEvents(List<SolicitedAdverseEvent> solicitedAdverseEvents) {
 		this.solicitedAdverseEvents = solicitedAdverseEvents;
 	}
