@@ -27,24 +27,29 @@
 	<script language="JavaScript">
 
 	Event.observe(window, "load", function() {
-
-		Event.observe("aeTerminology.term", "change", function() { showCtcTerms(); showMeddraTerms(); })
-		
-		showMeddraTerms()
-		function showCtcTerms(){
-				if ($('aeTerminology.term').options[0].selected ){
-					Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
-					Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
-				}
+	
+		if($('aeTerminology.term').options[0].selected){
+			$('aeTerminology.ctcVersion-row').style.display="";
+			$('aeTerminology.meddraVersion-row').style.display="none";
+			$('aeTerminology.meddraVersion').options.selectedIndex = 0;
+		}else{
+			$('aeTerminology.ctcVersion-row').style.display="none";
+			$('aeTerminology.meddraVersion-row').style.display="";
+			$('aeTerminology.ctcVersion').options.selectedIndex = 0;
 		}
-		function showMeddraTerms(){
-				if ($('aeTerminology.term').options[1].selected){
-					$('aeTerminology.ctcVersion').options[0].selected=true
-                        Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
-					Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
-				}else{
-					$('aeTerminology.meddraVersion-row').style.display="none"
-				}
+
+		Event.observe("aeTerminology.term", "change", function() { showTerms(); })
+		
+		function showTerms(){
+			$('aeTerminology.meddraVersion-row').style.display="none";
+			$('aeTerminology.ctcVersion-row').style.display="none";
+			if($('aeTerminology.term').options[0].selected){
+				Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
+				$('aeTerminology.meddraVersion').options.selectedIndex = 0;
+			}else{
+				Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
+				$('aeTerminology.ctcVersion').options.selectedIndex = 0;
+			}
 		}
 		
 		Event.observe("diseaseTerminology.diseaseCodeTerm", "change", function(){ showDiseaseMeddraTerms(); })
