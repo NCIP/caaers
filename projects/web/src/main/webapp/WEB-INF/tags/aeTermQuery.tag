@@ -39,12 +39,35 @@
 		initializeAutoCompleter: function() {
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
+        		
             			if(this.isMeddra){
             				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
-													autocompleter.setChoices(values)});
+            					if(catSel.ignoreOtherSpecify){
+                    				var vals = [];
+                    				values.each(function(aterm){
+                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
+                        					 vals.push(aterm);
+                    					}
+                        			});
+                    				autocompleter.setChoices(vals);
+                				}else{
+                					autocompleter.setChoices(values);
+                    			}								
+							});
             			}else{
             				createAE.matchTerms(text, this.version, '', 25 , function(values){
-            					autocompleter.setChoices(values)});
+                				if(catSel.ignoreOtherSpecify){
+                    				var vals = [];
+                    				values.each(function(aterm){
+                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
+                        					 vals.push(aterm);
+                    					}
+                        			});
+                    				autocompleter.setChoices(vals);
+                				}else{
+                					autocompleter.setChoices(values);
+                    			}
+            				});
             			}
             		},
             		function(aterm) {
@@ -91,7 +114,7 @@
 		show: function(){
 			
 		},
-		showTerms: function(el){
+		showTerms: function(el, ignoreOtherSpecify){
 			catIds = $(el).getValue();
 			var terms = $('terms');
 			terms.options.length=0;
@@ -101,11 +124,13 @@
 			catIds.each(function(catId){
 				 createAE.getTermsByCategory(catId, function(ctcTerms) {
 				 	ctcTerms.each(function(ctcTerm) {
-                       var opt = new Option(ctcTerm.fullName, ctcTerm.id)
-                       terms.options.add(opt);
+				 		if(!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify')  > 0) ){
+                       		var opt = new Option(ctcTerm.fullName, ctcTerm.id)
+                       		terms.options.add(opt);
+				 		}
                    })
 				 });		
-			} );
+			});
 			
 			
 		}
@@ -114,7 +139,7 @@
  	});
  	
  	Element.observe(window, "load", function() {
- 	 catSel = new CategorySelector(${isMeddra}, ${version});
+ 	 catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});
  	 catSel.initializeAutoCompleter();
  	});
  	
@@ -155,7 +180,7 @@
   	<chrome:box title="Choose CTC term(s):" autopad="true">
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC categorie(s)</jsp:attribute>
-			<jsp:attribute name="value"><select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this);">
+			<jsp:attribute name="value"><select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this, catSel.ignoreOtherSpecify);">
 				<c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				</c:forEach>
