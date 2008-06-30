@@ -38,8 +38,7 @@ public class DetailsTab extends StudyTab {
 
     private MeddraVersionDao meddraVersionDao;
 
-    InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, studyCodeFieldGroup,
-                    studyDiseaseCodeFieldGroup, coordinatingCenterFieldGroup, dcpCodeFieldGroup;
+    InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, coordinatingCenterFieldGroup, dcpCodeFieldGroup;
 
     public DetailsTab() {
         super("Basic Details", "Details", "study/study_details");
@@ -151,33 +150,32 @@ public class DetailsTab extends StudyTab {
                             "Coordinating center study identifier", true));
 
         }
-        if (studyCodeFieldGroup == null) {
-            studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
-            List<InputField> fields = studyCodeFieldGroup.getFields();
-            fields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology",
-                            true, InputFieldFactory.collectOptions(Arrays.asList(Term.values()),
-                                            null, "displayName")));
+        // Create fieldGroup for AeTerminology
+        InputFieldGroup studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
+        List<InputField> scFields = studyCodeFieldGroup.getFields();
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology",
+                         true, InputFieldFactory.collectOptions(Arrays.asList(Term.values()),
+                                         null, "displayName")));
 
-            // TODO: Add validation for when terminology.term = Term.CTC
-            fields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion",
-                            "CTC version", false, collectOptions(ctcDao.getAll(), "id", "name")));
-            fields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion",
-                            "MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
-                                            "id", "name")));
-        }
-
-        if (studyDiseaseCodeFieldGroup == null) {
-            studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
-            List<InputField> fields = studyDiseaseCodeFieldGroup.getFields();
-            fields.add(InputFieldFactory
-                            .createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology",
-                                            true, InputFieldFactory.collectOptions(Arrays
+        // TODO: Add validation for when terminology.term = Term.CTC
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion",
+                         "CTC version", false, collectOptions(ctcDao.getAll(), "id", "name")));
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion",
+                         "MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
+                                         "id", "name")));
+        
+        
+        // Create fieldGroup for DiseaseTerminology
+        InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
+        List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();
+        sdFields.add(InputFieldFactory
+                        .createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology",
+                                        true, InputFieldFactory.collectOptions(Arrays
                                                             .asList(DiseaseCodeTerm.values()),
                                                             null, "displayName")));
-            fields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion",
+            sdFields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion",
             				"MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
             								"id", "name")));
-        }
 
         if (dcpCodeFieldGroup == null) {
             dcpCodeFieldGroup = new DefaultInputFieldGroup("dcpFieldGroup");
