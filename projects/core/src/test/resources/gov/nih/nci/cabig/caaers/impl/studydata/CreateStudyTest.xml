@@ -113,14 +113,14 @@
       <p:treatmentAssignment>
         <code>theCode1</code>
         <doseLevelOrder>1</doseLevelOrder>
-        <description>Updateddescription1</description>
-        <comments>UpdatedComments1</comments>
+        <description>description1</description>
+        <comments>Comments1</comments>
       </p:treatmentAssignment>
       <p:treatmentAssignment>
         <code>theCode3</code>
         <doseLevelOrder>2</doseLevelOrder>
-        <description>Updateddescription3</description>
-        <comments>UpdatedComments3</comments>
+        <description>description3</description>
+        <comments>Comments3</comments>
       </p:treatmentAssignment>
     </treatmentAssignments>
     <studyAgents>
@@ -139,6 +139,14 @@
         </studyAgentINDAssociations>
       </p:studyAgent>
     </studyAgents>
+    
+    <meddraStudyDiseases>
+    	<p:meddraStudyDisease>
+  			<meddraCode>meddraCode</meddraCode>
+		</p:meddraStudyDisease>
+    </meddraStudyDiseases>
+    
+    
     <ctepStudyDiseases>
       <p:ctepStudyDisease>
         <p:diseaseTerm>
