@@ -295,12 +295,12 @@
   	<tags:aeTermQuery title="Choose CTC terms"  ignoreOtherSpecify="true" isMeddra="${not empty command.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" />
   	
   	<!--  Idea is copied from tabForm.tag -->
-  	<chrome:box title="${tab.shortTitle}" >
+  	<chrome:box title="Solicited adverse event(s)" >
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
   		<tags:hasErrorsMessage />
   		<p id="instructions">
-			&nbsp;&nbsp;Check the boxes under the epoch/treatment type, to associate the term to it.
+			&nbsp;&nbsp;Check the boxes under the treatment type, to associate the term to it.
 		</p>
 		<p>
 		  <ul id="err-section" class="errors">
