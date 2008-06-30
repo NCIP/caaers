@@ -26,14 +26,10 @@ public class Epoch  extends AbstractMutableDomainObject {
 	
 	private String descriptionText;
 	
-//	private Study study;
-	
 	private Integer epochOrder;
 	
 	private List<Arm> arms=new ArrayList<Arm>();
 	
-//	private List<SolicitedAdverseEvent> solicitedAdverseEvents;
-
 	public Epoch()
 	{}
 	public Epoch( String epochName, Integer epochOrder, String... armNames)

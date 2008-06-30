@@ -42,13 +42,9 @@ public class SolicitedEventTabTable{
 	public SolicitedEventTabTable( Study command )
 	{
 		listOfEpochs = command.getEpochs();
-		System.out.println("listOfEpochs.size():" + listOfEpochs.size());
 		for( Epoch epoch : listOfEpochs )
 			consolidatedListOfSolicitedAEsForAllEpochs.addAll( getSolicitedAEsForEpoch( epoch ));
 		
-		System.out.println( "Length of ConsolidatedListOfSolicitedAEsForAllEpochs : " + consolidatedListOfSolicitedAEsForAllEpochs.size() );
-		System.out.println( "ConsolidatedListOfSolicitedAEsForAllEpochs : " + consolidatedListOfSolicitedAEsForAllEpochs );
-         
 		for( SolicitedAdverseEvent solicitedAE : consolidatedListOfSolicitedAEsForAllEpochs )
 		{
 			LinkedList<Object> eachRowOfSolicitedAE = new LinkedList<Object>();
@@ -79,7 +75,9 @@ public class SolicitedEventTabTable{
 		List<SolicitedAdverseEvent> seList = new ArrayList<SolicitedAdverseEvent>();
 		for(Arm arm : epoch.getArms())
 		{
-			seList.addAll( arm.getSolicitedAdverseEvents() );
+		  	List<SolicitedAdverseEvent> listOfSolicitedAEsForArm = arm.getSolicitedAdverseEvents() ;
+		  	if( listOfSolicitedAEsForArm != null) 
+			  seList.addAll( listOfSolicitedAEsForArm );
 		}
 		return seList;
 	}
