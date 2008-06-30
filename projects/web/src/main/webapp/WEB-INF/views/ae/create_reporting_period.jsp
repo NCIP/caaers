@@ -4,17 +4,16 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <html>
  <head>
- <tags:stylesheetLink name="tabbedflow"/>
- 	 <style type="text/css">
-        div.content {
-            padding: 5px 15px;
-        }
-    </style>
+ <standard:head/>
  <tags:includeScriptaculous/>
  <script>
  	var descArray = new Array();
+ 	
+
+ 	
  	Event.observe(window, "load", function(){
  		//push the description into the array
 		<c:forEach items="${command.assignment.studySite.study.treatmentAssignments}" var="ta">
@@ -30,7 +29,7 @@
 				$('reportingPeriod.treatmentAssignment.description').clear();
 			}
 		});
- 	}
+ 	})
  </script>
   </head>
  <body>

@@ -10,10 +10,12 @@ class AddAEReportingPeriod extends edu.northwestern.bioinformatics.bering.Migrat
             t.addColumn("grid_id", "string", nullable: true)
             t.addColumn("treatment_assignment_id", "integer", nullable: true)
             t.addColumn("epoch_id", "integer", nullable:false)
+            t.addColumn("report_id", "integer", nullable:true)
         }
         execute('ALTER TABLE ae_reporting_periods ADD CONSTRAINT fk_assignment_id FOREIGN KEY (assignment_id) REFERENCES participant_assignments');
         execute('ALTER TABLE ae_reporting_periods ADD CONSTRAINT fk_treatment_id FOREIGN KEY (treatment_assignment_id) REFERENCES treatment_assignment');
         execute('ALTER TABLE ae_reporting_periods ADD CONSTRAINT fk_epoch_id FOREIGN KEY (epoch_id) REFERENCES epochs');
+        execute('ALTER TABLE ae_reporting_periods ADD CONSTRAINT fk_report_id FOREIGN KEY (report_id) REFERENCES ae_reports');
         
         // Add reporting_period_id and reporting_period_list_index to adverse events table
         addColumn("adverse_events", "reporting_period_id", "integer");

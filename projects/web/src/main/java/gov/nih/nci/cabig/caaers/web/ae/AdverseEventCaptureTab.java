@@ -9,6 +9,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.springframework.validation.Errors;
+
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -20,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -40,6 +45,8 @@ import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
 public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInputCommand>{
 	
 	private static final String MAIN_FIELD_GROUP = "main";
+	
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	public AdverseEventCaptureTab() {
 		super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
@@ -72,7 +79,7 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			//startDateOfFirstCourse - TextField, if it is empty in assignment
 			InputField firstCourseDateField = null;
 			if(cmd.getAssignment().getStartDateOfFirstCourse() == null){
-				firstCourseDateField = InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true);
+				firstCourseDateField = InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", false);
 			}else {
 				firstCourseDateField = InputFieldFactory.createLabelField("assignment.startDateOfFirstCourse", "Start date of first course");
 			}
@@ -96,8 +103,11 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEventReportingPeriod.adverseEvents");
 			// Check if the adverseEventReportingPeriod has any adverseEvents.
 			// If yes then display the solicited adverseEvents in the second section (Solicited Adverse Events)
+			// ******
 			if(cmd.getAdverseEventReportingPeriod().getAdverseEvents() != null){
 				for(int i = 0; i < cmd.getAdverseEventReportingPeriod().getAdverseEvents().size(); i++){
+			//if(cmd.getAdverseEventReportingPeriod() != null){
+			//	for(int i = 0; i < cmd.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents().size(); i++){
 					//check if the adverse
 					AdverseEvent ae = cmd.getAdverseEventReportingPeriod().getAdverseEvents().get(i);
 					
@@ -124,11 +134,11 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	public Map<Object, Object> fetchReportingPeriodsOptions(CaptureAdverseEventInputCommand cmd){
 		Map<Object,Object> map = new LinkedHashMap<Object, Object>();
 		map.put("", "Please select");
-		List<AdverseEventReportingPeriod> reportingPeriodList = cmd.getAssignment().getReportingPeriods();
+		List<AdverseEventReportingPeriod> reportingPeriodList = adverseEventReportingPeriodDao.getByAssignment(cmd.getAssignment()); 
 		for(AdverseEventReportingPeriod adverseEventReportingPeriod: reportingPeriodList){
-			map.put(adverseEventReportingPeriod.getId(), adverseEventReportingPeriod.fetchName());
+			map.put(adverseEventReportingPeriod.getId(), adverseEventReportingPeriod.getName());
 		}
-		return map;
+	    return map;
 	}
 	
 	public Map<Object, Object> fetchTreatmentAssignmentOptions(CaptureAdverseEventInputCommand cmd) {
@@ -159,19 +169,21 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
         return attributionOptions;
     }
 	
-	private Map<Object, Object> createGradeOptions(AdverseEvent sae) {
+	private Map<Object, Object> createGradeOptions(AdverseEvent ae) {
         Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
         gradeOptions.put("", "Please select");
-        gradeOptions.putAll(InputFieldFactory.collectOptions(sae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "displayName", "code"));
+        gradeOptions.putAll(InputFieldFactory.collectOptions(ae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "displayName", "code"));
         return gradeOptions;
     }
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
 		
+        
 		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() == 0){
 			for(SolicitedAdverseEvent sae: command.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
 				AdverseEvent adverseEvent = new AdverseEvent();
+				adverseEvent.setReportingPeriod(command.getAdverseEventReportingPeriod());
 				if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
 					adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
 				else{
@@ -182,7 +194,6 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 				}
 				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
 			}
-			
 			// Setup the categories list for aeTermQuery tag.
 			if(command.getCtcCategories().size() == 0)
 				command.setCtcCategories(command.getStudy().getAeTerminology().getCtcVersion().getCategories());
@@ -203,6 +214,28 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		}
 		
 		return refdata;
+	}
+	
+	/**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
+
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
+    
+    public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
+		return adverseEventReportingPeriodDao;
+	}
+    
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
 }
 

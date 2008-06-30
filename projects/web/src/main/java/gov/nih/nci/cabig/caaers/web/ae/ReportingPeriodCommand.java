@@ -44,11 +44,14 @@ public class ReportingPeriodCommand {
     }
     
     public ReportingPeriodCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao,
-    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, String idString){
+    		StudyParticipantAssignmentDao assignmentDao, StudyDao studyDao, ParticipantDao participantDao, String idString, String studyString,
+    			String participantString){
     	this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
     	this.assignmentDao = assignmentDao;
     	this.studyDao = studyDao;
     	this.participantDao = participantDao;
+    	this.study = studyDao.getById(Integer.parseInt(studyString));
+    	this.participant = participantDao.getById(Integer.parseInt(participantString));
     	this.reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(idString));
     }
     
@@ -71,12 +74,8 @@ public class ReportingPeriodCommand {
             return assignment;
         } else if (getParticipant() != null && getStudy() != null) {
             assignment = assignmentDao.getAssignment(getParticipant(), getStudy());
-            return assignment;
-        } else {
-        	// Currently hardcoded. Needs to be removed later.
-        	assignment = assignmentDao.getById(30); 
-            return assignment;
         }
+    	return assignment;
     }
     
     public Participant getParticipant(){
@@ -102,8 +101,6 @@ public class ReportingPeriodCommand {
         } else if (assignment != null) {
             study = assignment.getStudySite().getStudy();
         }
-    	// Currently Hard-coded. Needs to be removed.
-    	//study = studyDao.getById(9);
     	return study;
     }
     

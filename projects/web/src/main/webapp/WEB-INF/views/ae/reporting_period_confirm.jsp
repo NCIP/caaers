@@ -7,14 +7,22 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 
 <html>
 <head>
+ <standard:head/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Confirmation</title>
 <style type="text/css">
   #confirmbox {  width: 98%;}
 </style>
+<script>
+
+	function callParentWindow(){
+			window.parent.addedReportingPeriod(${command.reportingPeriod.id}, ${command.reportingPeriod.name});
+	}
+</script>
 </head>
 <body>
 <chrome:box title="Confirmation"  id="confirmbox">
@@ -51,10 +59,18 @@
               <div class="label">Treatment Description:</div>
               <div class="value">${command.reportingPeriod.treatmentAssignment.description}</div>
            </div>
+           <div class="content buttons autoclear">
+			  <div class="flow-buttons" id="confirm_ok">
+			   <span class="next">
+			  	<!--  reset and save buttons -->
+			  	<input type="submit" value="OK" onclick="callParentWindow()"/>
+			   </span>	
+			  </div>
+			</div>
            <div>
  			<img src="/caaers/images/chrome/spacer.gif" width="900" height="1" />
  		  </div>
-       </div>
+       </div>      
 </chrome:division>
 </chrome:box>
 </body>

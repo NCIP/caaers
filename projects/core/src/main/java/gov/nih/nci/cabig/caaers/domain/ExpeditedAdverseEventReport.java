@@ -58,6 +58,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private Physician physician;
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
+    private AdverseEventReportingPeriod reportingPeriod;
 
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
@@ -620,6 +621,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
+    
+    @OneToOne(mappedBy = "aeReport")
+    @Cascade(value = { CascadeType.LOCK })
+    public AdverseEventReportingPeriod getReportingPeriod() {
+		return reportingPeriod;
+	}
+    
+    public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
+		this.reportingPeriod = reportingPeriod;
+	}
 
 
     @Deprecated

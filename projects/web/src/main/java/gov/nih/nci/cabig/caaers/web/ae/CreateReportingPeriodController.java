@@ -56,7 +56,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		String studyString = request.getParameter("studyId");
 		String participantString = request.getParameter("participantId");
 		if(idString != null)
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, idString);
+			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, idString, studyString, participantString);
 		else if(studyString != null && participantString != null)
 			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, studyString, participantString);
 		else

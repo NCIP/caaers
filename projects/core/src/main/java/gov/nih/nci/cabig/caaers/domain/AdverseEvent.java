@@ -439,6 +439,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 		this.solicitedAdverseEvent = solicitedAdverseEvent;
 	}
     
+    @Transient
     public boolean isSolicitedAdverseEvent() {
 		return solicitedAdverseEvent;
 	}

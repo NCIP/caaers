@@ -5,14 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Transient;
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.BooleanUtils;
+import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
@@ -29,9 +35,11 @@ import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -51,10 +59,41 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 
 	
+	public CaptureAdverseEventController(){
+		setBindOnNewForm(true);
+	}
+	
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command,
+                    BindException errors, int page) throws Exception {
+    	String action = (String) findInRequest(request, "_action");
+		if(org.apache.commons.lang.StringUtils.isEmpty(action))
+			super.onBindAndValidate(request, command, errors, page);
+    }
 	
 	@Override
 	protected AdverseEventReportingPeriodDao getDao() {
 		return null;
+	}
+	
+	/**
+	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
+	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
+	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
+	 *  events will be bound to the command object.
+	 */
+	
+	@Override
+	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
+		ServletRequestDataBinder binder = super.createBinder(request, command);
+		String action = (String) findInRequest(request, "_action");
+		if(org.apache.commons.lang.StringUtils.isNotEmpty(action) && action.equals("selectReportingPeriod"))
+			binder.setAllowedFields(new String[]{"adverseEventReportingPeriod"});
+		else
+			binder.setAllowedFields(new String[]{"adverseEventReportingPeriod", "adverseEventReportingPeriod.adverseEvents", "study", "participant"});
+		prepareBinder(binder);
+		initBinder(request,binder);
+		return binder;
 	}
 
 	@Override
@@ -64,8 +103,15 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	}
 
 	@Override
-	protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, BindException arg3) throws Exception {
-		return null;
+	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException arg3) throws Exception {
+		String action = (String) findInRequest(request, "_action");
+		if(org.apache.commons.lang.StringUtils.isNotEmpty(action) && action.equals("selectReportingPeriod"))
+			return null;
+		else{
+			CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
+			adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+			return new ModelAndView("captureAdverseEventConfirmPage", null);
+		}
 	}
 	
 	@Override
@@ -76,10 +122,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         //ControllerTools.registerDomainObjectEditor(binder, "aeRoutineReport", routineReportDao);
         ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
-        //ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
-        //ControllerTools.registerDomainObjectEditor(binder, treatmentAssignmentDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -117,14 +161,15 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return true;
         }
-        return super.suppressValidation(request);
+        return true;
+        //return super.suppressValidation(request);
     }
 	
 	/**
      * Returns the value associated with the <code>attributeName</code>, if present in
      * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
      */
-    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
 
         Object attr = request.getParameter(attributName);
         if (attr == null) {

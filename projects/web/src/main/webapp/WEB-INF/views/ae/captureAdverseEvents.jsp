@@ -15,25 +15,39 @@
  <tags:stylesheetLink name="pw_alphacube" />
  <script>
  	var descArray = new Array();
- 	function displayReportingPeriodPopup(participantId, studyId, reportingPeriodId){
+ 	var win;
+ 	var index;
+ 	var selectElement;
+ 	
+ 	function addedReportingPeriod(periodId, periodName){
+ 		win.hide();
+ 		var length = selectElement.options.length;
+
+ 		// deteremine if a new reporting period was added
+ 		if(selectElement.options[selectElement.selectedIndex].value != periodId){
+ 			var index = selectElement.options.length;
+ 			selectElement.options[index-2] = new Option(periodName, periodId);
+			selectElement.selectedIndex = selectElement.options.length - 2;
+		}
+		loadReportingPeriod();	
+ 	}
+ 	
+ 	//function displayReportingPeriodPopup(participantId, studyId, reportingPeriodId){
+ 	function displayReportingPeriodPopup(reportingPeriodId){
  		var participantId = ${command.assignment.participant.id}
  		var studyId = ${command.assignment.studySite.study.id}
- 		var params = "?studyId=" + studyId + "&participantId=" + participantId;
- 		var url = "https://localhost:8443/caaers/pages/ae/createReportingPeriod" + params;
- 		//var repPeriodWindow = new Window({className: "alphacube",  width:500, height:400, 
-		// resizable: true, title: "Reporting period information", draggable: true, closable: true});
-		//repPeriodWindow.setAjaxContent(url,{method: 'get', type: 'html'}, true, true);
-		//repPeriodWindow.showCenter(true);
-		
-		win = new Window({className:"alphacube", destroyOnClose:true,title:"Reporting Period Information",  width:600,  height:500, 
-			onShow:window.show.bind(this),
-			onBeforeShow:this.beforeShow.bind(this)
-			});
-		this.win = win;
-		//win.setContent('chooseCategory');
-		win.setAjaxContent(url,{method: 'get', type: 'html'}, true, true);
+ 		var params = '';
+ 		if(reportingPeriodId == '')
+ 			params = "?studyId=" + studyId + "&participantId=" + participantId;
+ 		else
+ 			params = "?studyId=" + studyId + "&participantId=" + participantId + "&id=" + reportingPeriodId;
+ 		var url = "https://localhost:8443/caaers/pages/ae/createReportingPeriod" + params + "&subview=";
+ 		
+		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
+			url: url, top: 0, left: 300});
 		win.show(true);
 	}
+	
 	function isTermAgainAdded( termID )
     {
       var listOfTermIds = $$('.eachRowTermID');
@@ -46,8 +60,6 @@
       } 
       return false;
     }
-	
-	
 	
 	function myCallback(selectedTerms){
 		var listOfTermIDs = new Array();
@@ -69,17 +81,37 @@
 	  	   });
 	}
 	
-	Event.observe(window, "load", function(){
-		Event.observe("new_button","click",function() { 
-		var participantId = ${command.assignment.participant.id}
- 		var studyId = ${command.assignment.studySite.study.id}
- 		var reportingPeriodId = '';
-		displayReportingPeriodPopup(participantId, studyId, reportingPeriodId) })
-		
-		Event.observe("adverseEventReportingPeriod", "change", function(){
+	function loadReportingPeriod(){
+		if(selectElement.selectedIndex == selectElement.options.length - 1){
+			var reportingPeriodId = '';
+			displayReportingPeriodPopup(reportingPeriodId);
+		}else{
 			document.addRoutineAeForm._action.value = 'selectReportingPeriod';
 			document.addRoutineAeForm.submit();
+		}
+	}
+	
+	Event.observe(window, "load", function(){
+		selectElement = document.getElementById('adverseEventReportingPeriod');
+		var optn = document.createElement("OPTION");
+		optn.text = 'Create New';
+		optn.value = '-1';
+		selectElement.options.add(optn);
+		
+		//Event.observe("new_button","click",function() { 
+		//var reportingPeriodId = '';
+		//displayReportingPeriodPopup(reportingPeriodId) })
+		
+		if(${command.adverseEventReportingPeriod.id != null})
+			Event.observe("edit_button", "click", function() {
+			var reportingPeriodId = ${command.adverseEventReportingPeriod.id}
+			displayReportingPeriodPopup(reportingPeriodId);
+			 })
+		
+		Event.observe("adverseEventReportingPeriod", "change", function(){
+			loadReportingPeriod();
 		})
+
 })           
 
  </script>
@@ -91,14 +123,11 @@
         <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
       	
-      	
-  	    	
-      		
-    
       	<jsp:attribute name="singleFields">
       	<input type="hidden" name="_action" id="_action" value="">
       	
-		<input id="new_button" type="button" value="Add New Reporting Period" />
+      	
+		<%-- <input id="new_button" type="button" value="Add New Reporting Period" /> --%>
 		<c:forEach items="${fieldGroups.reportingPeriodFG.fields}" var="field">
       		<tags:renderRow field="${field}" />
       	</c:forEach>
@@ -128,11 +157,11 @@
         			<c:if test='${command.adverseEventReportingPeriod != null}'>
         				<table id="solicitedTable" width="100%" class="tablecontent">
     						<tr>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Term</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
+    							<th scope="col" align="left"><b>Term</b> </th>
+    							<th scope="col" align="left"><b>Grade</b> </th>
+    							<th scope="col" align="left"><b>Attribution</b> </th>
+    							<th scope="col" align="left"><b>Hospitalization</b> </th>
+    							<th scope="col" align="left"><b>Expected</b> </th>
     						</tr>
     						<tr id="solicitedBlankRow" />
     					
@@ -173,7 +202,8 @@
         		</c:if>
         	</chrome:division>
        </jsp:attribute>
-
+       
     </tags:tabForm>
+    
  </body>
 </html>

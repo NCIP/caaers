@@ -1,8 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +45,14 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
         //for (AdverseEvent ae : reportingPeriod.getAdverseEvents()) {
         //    getHibernateTemplate().saveOrUpdate(ae);
         //}
+    }
+    
+    /**
+     * Get the list of AdverseEventReportingPeriods based on the Assignment.
+     * This is needed to rightly update the dropdown on addition of a new reporting period.
+     */
+    public List<AdverseEventReportingPeriod> getByAssignment(StudyParticipantAssignment assignment) {
+        List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ?", assignment.getId());
+        return results;
     }
 }

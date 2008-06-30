@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -52,7 +53,14 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	private List<AdverseEvent> adverseEvents;
 	
+	private ExpeditedAdverseEventReport aeReport;
+	
+	private String name;
+	
+	private SimpleDateFormat formatter;
+	
 	public AdverseEventReportingPeriod() {
+		formatter = new SimpleDateFormat("MM/dd/yy");
     }
     
     @Transient
@@ -163,7 +171,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     public void setDescription(String description){
     	this.description = description;
     }
-    
+
     public Integer getCycleNumber() {
 		return cycleNumber;
 	}
@@ -181,7 +189,30 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	this.epoch = epoch;
     }
     
-    public String fetchName(){
-    	return startDate + "-" + endDate;
-    }
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "report_id")
+    @Cascade(value = { CascadeType.LOCK })
+    public ExpeditedAdverseEventReport getAeReport() {
+		return aeReport;
+	}
+    
+    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
+		this.aeReport = aeReport;
+	}
+    
+    @Transient
+    public String getName() {
+		if(name == null || name.equals("")){
+			name = formatter.format(startDate) + " - " + formatter.format(endDate);
+			name.concat(", " + getEpoch().getName());
+			if(cycleNumber != null)
+				name.concat(", " + getCycleNumber());
+ 		}
+		
+		return name;
+	}
+    
+    public void setName(String name) {
+		this.name = name;
+	}
 }
