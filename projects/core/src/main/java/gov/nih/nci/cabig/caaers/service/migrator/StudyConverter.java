@@ -213,12 +213,6 @@ public class StudyConverter {
 			}
 			if(DiseaseCodeType.MEDDRA.equals(studyDto.getDiseaseTerminology().getDiseaseCodeTerm())){
 				diseaseTerminology.setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
-				if(studyDto.getDiseaseTerminology().getMeddraVersion() != null){
-					MeddraVersion meddraVersion = new MeddraVersion();
-					meddraVersion.setName(studyDto.getDiseaseTerminology().getMeddraVersion().getName());
-					diseaseTerminology.setMeddraVersion(meddraVersion);
-				}
-				
 			}
 		}
 		
