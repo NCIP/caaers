@@ -91,6 +91,8 @@
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		  p:displayName="Document Reporting Period AEs" p:linkName="captureAdverseEventController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
     
       </list>
@@ -236,7 +238,9 @@
 		    p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Document routine AEs" p:linkName="createRoutineAdverseEventController"/>
-	    </list>
+		  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		    p:displayName="Document Reporting Period AEs" p:linkName="captureAdverseEventController"/>  
+		</list>
 	  </property>
 	</bean>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
@@ -425,8 +429,14 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventController"/>
   
   <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>    
-
+	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>
+	
+  <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>	    
+	
+  <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType"
+  	class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
+	
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>
   
@@ -440,7 +450,6 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.ViewRoutineAeController" >
   </bean>	   
   
-
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>
   
