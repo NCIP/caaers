@@ -30,7 +30,9 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
 import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
@@ -211,6 +213,12 @@ public class StudyConverter {
 			}
 			if(DiseaseCodeType.MEDDRA.equals(studyDto.getDiseaseTerminology().getDiseaseCodeTerm())){
 				diseaseTerminology.setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
+				if(studyDto.getDiseaseTerminology().getMeddraVersion() != null){
+					MeddraVersion meddraVersion = new MeddraVersion();
+					meddraVersion.setName(studyDto.getDiseaseTerminology().getMeddraVersion().getName());
+					diseaseTerminology.setMeddraVersion(meddraVersion);
+				}
+				
 			}
 		}
 		
