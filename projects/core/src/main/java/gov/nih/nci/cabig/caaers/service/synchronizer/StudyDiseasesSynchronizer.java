@@ -39,6 +39,7 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 			for(CtepStudyDisease dbCtepStudyDisease : dbStudy.getCtepStudyDiseases()){
 				xmlCtepStudyDisease.setId(dbCtepStudyDisease.getId());
 				if(xmlCtepStudyDisease.getDiseaseTerm().equals(dbCtepStudyDisease.getDiseaseTerm())){
+					dbCtepStudyDisease.setLeadDisease(xmlCtepStudyDisease.getLeadDisease());
 					break;
 				}else{
 					xmlCtepStudyDisease.setId(null);
