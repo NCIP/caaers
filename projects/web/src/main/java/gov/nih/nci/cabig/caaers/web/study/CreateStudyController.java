@@ -66,7 +66,7 @@ public class CreateStudyController extends StudyController<Study> {
         ccIdentifier.setPrimaryIndicator(true);
         ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.addIdentifier(ccIdentifier);
-        study.addEpoch(new Epoch("Pre-treatment",0));
+        study.addEpoch(new Epoch("Baseline",0));
         study.addEpoch(new Epoch("Treatment",1));
         study.addEpoch(new Epoch("Post-treatment",2));
         return study;

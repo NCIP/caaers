@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -14,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -42,8 +44,13 @@ public class EditStudyController extends StudyController<Study> {
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
         request.getSession().removeAttribute(CreateStudyAjaxFacade.CREATE_STUDY_FORM_NAME);
 
-        Study study = studyDao
-                        .getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
+        Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
+        //to support backward compatability, epochs has to be preinitalized
+        if(study.getEpochs() == null || study.getEpochs().isEmpty()){
+        	study.addEpoch(new Epoch("Baseline",0));
+            study.addEpoch(new Epoch("Treatment",1));
+            study.addEpoch(new Epoch("Post-treatment",2));
+        }
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Study :" + String.valueOf(study));
