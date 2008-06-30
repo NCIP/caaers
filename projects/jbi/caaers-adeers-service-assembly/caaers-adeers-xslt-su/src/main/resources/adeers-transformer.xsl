@@ -169,40 +169,31 @@
             <RADIATION_INTERVENTION>
                 <xsl:choose>
                     <xsl:when test="RadiationIntervention/administration = 'BT_HDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        HDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy HDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_LDR' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        LDR</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy LDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'BT_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy
-                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_NOS' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam
-                        NOS</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam NOS</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_2D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        2D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 2D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_3D' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        3D</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, 3D</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_IMRT' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, IMRT</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'EB_PROTON' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam,
-                        Proton</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>External Beam, Proton</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:when test="RadiationIntervention/administration = 'SYSTEMIC_RADIOTHERAPY' ">
-                        <TYPE_OF_RADIATION_ADMINISTRATION>Systemic
-                        radiotherapy</TYPE_OF_RADIATION_ADMINISTRATION>
+                        <TYPE_OF_RADIATION_ADMINISTRATION>Systemic radiotherapy</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
                     <xsl:otherwise>
                         <TYPE_OF_RADIATION_ADMINISTRATION>
@@ -506,9 +497,11 @@
 
         </DESCRIPTION_OF_EVENT>
         <PATIENT_INFORMATION>
-            <xsl:attribute name="PATIENT_ID"><xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/></xsl:attribute>
-            	
-            	<!--
+            <xsl:attribute name="PATIENT_ID">
+                <xsl:value-of select="StudyParticipantAssignment/studySubjectIdentifier"/>
+            </xsl:attribute>
+
+            <!--
                 <xsl:for-each select="StudyParticipantAssignment/Participant/Identifier">
                     <xsl:if test="primaryIndicator='true'">
                         <xsl:value-of select="value"/>
@@ -936,108 +929,130 @@
                         <xsl:value-of select="other"/>
                     </OTHER_LAB>
                 </xsl:if>
-				<xsl:if test="baseline/date != ''">
-	                <BASELINE_DATE>
-	                    <xsl:call-template name="standard_date">
-	                        <xsl:with-param name="date" select="baseline/date"/>
-	                    </xsl:call-template>
-	                </BASELINE_DATE>
-	            </xsl:if>
-	            <xsl:if test="baseline/value != ''">
-	                <BASELINE_VALUE>
-	                    <xsl:value-of select="baseline/value"/>
-	                </BASELINE_VALUE>
-	            </xsl:if>
-	            <xsl:if test="units != ''">
-	                <BASELINE_UOM>
-	                    <xsl:value-of select="units"/>
-	                </BASELINE_UOM>
-	            </xsl:if>
-	            <xsl:if test="recovery/date != ''">    
-	                <RECOVERY_LATEST_DATE>
-	                    <xsl:call-template name="standard_date">
-	                        <xsl:with-param name="date" select="recovery/date"/>
-	                    </xsl:call-template>
-	                </RECOVERY_LATEST_DATE>
-	            </xsl:if>
-	            <xsl:if test="recovery/value != ''">
-	                <RECOVERY_LATEST_VALUE>
-	                    <xsl:value-of select="recovery/value"/>
-	                </RECOVERY_LATEST_VALUE>
-	            </xsl:if>
-	           <xsl:if test="units != ''">
-	                <RECOVERY_LATEST_UOM>
-	                    <xsl:value-of select="units"/>
-	                </RECOVERY_LATEST_UOM>
-	           </xsl:if>
-	           <xsl:if test="nadir/date != ''">
-	                <WORST_DATE>
-	                    <xsl:call-template name="standard_date">
-	                        <xsl:with-param name="date" select="nadir/date"/>
-	                    </xsl:call-template>
-	                </WORST_DATE>
-	           </xsl:if>
-	           <xsl:if test="nadir/value != ''">
-	                <WORST_VALUE>
-	                    <xsl:value-of select="nadir/value"/>
-	                </WORST_VALUE>
-	           </xsl:if>
-	           <xsl:if test="units != ''">
-	                <WORST_UOM>
-	                    <xsl:value-of select="units"/>
-	                </WORST_UOM>
-	           </xsl:if>
+                <xsl:if test="baseline/date != ''">
+                    <BASELINE_DATE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="baseline/date"/>
+                        </xsl:call-template>
+                    </BASELINE_DATE>
+                </xsl:if>
+                <xsl:if test="baseline/value != ''">
+                    <BASELINE_VALUE>
+                        <xsl:value-of select="baseline/value"/>
+                    </BASELINE_VALUE>
+                </xsl:if>
+                <xsl:if test="units != ''">
+                    <BASELINE_UOM>
+                        <xsl:value-of select="units"/>
+                    </BASELINE_UOM>
+                </xsl:if>
+                <xsl:if test="recovery/date != ''">
+                    <RECOVERY_LATEST_DATE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="recovery/date"/>
+                        </xsl:call-template>
+                    </RECOVERY_LATEST_DATE>
+                </xsl:if>
+                <xsl:if test="recovery/value != ''">
+                    <RECOVERY_LATEST_VALUE>
+                        <xsl:value-of select="recovery/value"/>
+                    </RECOVERY_LATEST_VALUE>
+                </xsl:if>
+                <xsl:if test="units != ''">
+                    <RECOVERY_LATEST_UOM>
+                        <xsl:value-of select="units"/>
+                    </RECOVERY_LATEST_UOM>
+                </xsl:if>
+                <xsl:if test="nadir/date != ''">
+                    <WORST_DATE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="nadir/date"/>
+                        </xsl:call-template>
+                    </WORST_DATE>
+                </xsl:if>
+                <xsl:if test="nadir/value != ''">
+                    <WORST_VALUE>
+                        <xsl:value-of select="nadir/value"/>
+                    </WORST_VALUE>
+                </xsl:if>
+                <xsl:if test="units != ''">
+                    <WORST_UOM>
+                        <xsl:value-of select="units"/>
+                    </WORST_UOM>
+                </xsl:if>
             </LAB_RESULT>
         </xsl:for-each>
-        
-            <xsl:if test="AdditionalInformation/autopsyReport = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Autopsy Report</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/consults = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Consults</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/dischargeSummary = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Discharge Summary</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/flowCharts = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Flow Sheets/Case Report Forms</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/labReports = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Laboratory Reports</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/obaForm = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>OBA Form</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <!--
+
+        <xsl:if test="AdditionalInformation/autopsyReport = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Autopsy Report</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/consults = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Consults</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/dischargeSummary = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Discharge Summary</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/flowCharts = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Flow Sheets/Case Report Forms</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/labReports = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Laboratory Reports</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/obaForm = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>OBA Form</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <!--
             <xsl:if test="AdditionalInformation/other = 'true'">
                 <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
             </xsl:if>
             -->
-            <xsl:if test="AdditionalInformation/pathologyReport = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Pathology Report</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/progressNotes = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Progress Notes</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/radiologyReports = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Radiology Reports</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/referralLetters = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Referral Letters</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
-            <xsl:if test="AdditionalInformation/irbReport = 'true'">
-                <ADDITIONAL_INFORMATION><ADDITIONAL_INFO_NAME>Summary Report Sent to IRB</ADDITIONAL_INFO_NAME></ADDITIONAL_INFORMATION>
-            </xsl:if>
+        <xsl:if test="AdditionalInformation/pathologyReport = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Pathology Report</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/progressNotes = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Progress Notes</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/radiologyReports = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Radiology Reports</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/referralLetters = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Referral Letters</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+        <xsl:if test="AdditionalInformation/irbReport = 'true'">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Summary Report Sent to IRB</ADDITIONAL_INFO_NAME>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
 
-            <xsl:if test="AdditionalInformation/otherInformation != ''">
-                <ADDITIONAL_INFORMATION>
-                    <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
-                    <ADDITIONAL_INFO_OTHER>
-                        <xsl:value-of select="AdditionalInformation/otherInformation"/>
-                    </ADDITIONAL_INFO_OTHER>
-                </ADDITIONAL_INFORMATION>
-            </xsl:if>
-        
+        <xsl:if test="AdditionalInformation/otherInformation != ''">
+            <ADDITIONAL_INFORMATION>
+                <ADDITIONAL_INFO_NAME>Other</ADDITIONAL_INFO_NAME>
+                <ADDITIONAL_INFO_OTHER>
+                    <xsl:value-of select="AdditionalInformation/otherInformation"/>
+                </ADDITIONAL_INFO_OTHER>
+            </ADDITIONAL_INFORMATION>
+        </xsl:if>
+
     </xsl:template>
 
     <xsl:template name="standard_date">
