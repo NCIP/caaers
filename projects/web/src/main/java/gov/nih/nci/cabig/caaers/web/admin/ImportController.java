@@ -1,36 +1,43 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
-import com.thoughtworks.xstream.converters.basic.DateConverter;
-import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
+import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
-import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.MedDRADao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
-import gov.nih.nci.cabig.caaers.service.*;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.util.FileCopyUtils;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -48,11 +55,27 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-import java.io.*;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
+import com.thoughtworks.xstream.converters.basic.DateConverter;
+import com.thoughtworks.xstream.converters.javabean.JavaBeanConverter;
 
 /**
  * @author Krikor Krumlian
@@ -113,13 +136,17 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                 boolean studyFile = command.getStudyFile().isEmpty();
                 boolean routineAdverseEventReportFile = command.getRoutineAdverseEventReportFile()
                                 .isEmpty();
+                boolean investigatorFile = command.getInvestigatorFile().isEmpty();
+                boolean researchStaffFile = command.getResearchStaffFile().isEmpty();
+                
                 log.debug("Are files empty : " + participantFile + ":" + studyFile + " : "
-                                + routineAdverseEventReportFile);
-                if (participantFile && studyFile && routineAdverseEventReportFile) errors
+                                + routineAdverseEventReportFile + " : " + investigatorFile + " : " + researchStaffFile);
+                if (participantFile && studyFile && routineAdverseEventReportFile && investigatorFile && researchStaffFile) errors
                                 .rejectValue("participantFile", "REQUIRED",
                                                 "Please choose either a study or a participant file.");
 
             }
+
 
             @Override
             public void postProcess(HttpServletRequest request, ImportCommand command, Errors errors) {
@@ -173,18 +200,28 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
         String redirectTo = "redirectToSearchInStudyTab";
         ImportCommand cObject = (ImportCommand) command;
-        if ("study".equals(cObject.getType())) {
+        
+        //System.out.println("T Y P E : " + cObject.getType());
+        if (cObject.getType().startsWith("study")) {
             redirectTo = "redirectToSearchInStudyTab";
         }
 
-        if ("participant".equals(cObject.getType())) {
+        if (cObject.getType().startsWith("participant")) {
             redirectTo = "redirectToSearchInParticipantTab";
         }
 
-        if ("routineAeReport".equals(cObject.getType())) {
+        if (cObject.getType().startsWith("routineAeReport")) {
             redirectTo = "redirectToAeList";
         }
+        
+        if (cObject.getType().startsWith("investigator")) {
+            redirectTo = "redirectToSearchInvestigatorTab";
+        }
 
+        if (cObject.getType().startsWith("researchStaff")) {
+            redirectTo = "redirectToSearchResearchStaffTab";
+        }
+        System.out.println("Redirecting to : " + redirectTo);
         return new ModelAndView(redirectTo);
     }
 
@@ -199,10 +236,16 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         if ("routineAeReport".equals(type)) {
             return command.getRoutineAdverseEventReportFile();
         }
+        if ("investigator".equals(type)) {
+        	return command.getInvestigatorFile();
+        }
+        if ("researchStaff".equals(type)) {
+        	return command.getResearchStaffFile();
+        }        
         return null;
     }
 
-    // helper
+
     private String getXSDLocation(String type) {
         if ("study".equals(type)) {
             //return "classpath:gov/nih/nci/cabig/caaers/studyXSD.xsd";
@@ -214,12 +257,20 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         if ("routineAeReport".equals(type)) {
             return "classpath:gov/nih/nci/cabig/caaers/routineAeXSD.xsd";
         }
+        if ("investigator".equals(type)) {
+            return "classpath:gov/nih/nci/cabig/caaers/Investigator.xsd";
+        }  
+        if ("researchStaff".equals(type)) {
+            return "classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd";
+        }        
         return null;
     }
 
-    private void validateAgainstSchema(File xmlFile, ImportCommand command, String xsdUrl) {
-        try {
+    private boolean validateAgainstSchema(File xmlFile, ImportCommand command, String xsdUrl) {
+    	boolean validXml = false;
+    	try {
             // parse an XML document into a DOM tree
+        	
         	DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         	documentBuilderFactory.setValidating(false);
         	documentBuilderFactory.setNamespaceAware(true);
@@ -240,6 +291,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             // validate the DOM tree
 
             validator.validate(new DOMSource(document));
+            validXml = true;
             // return xmlFile;
         } catch (FileNotFoundException ex) {
             throw new CaaersSystemException("File Not found Exception", ex);
@@ -255,10 +307,116 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         } catch (ParserConfigurationException pce) {
             throw new CaaersSystemException("Parser configuration exception ", pce);
         }
+        return validXml;
     }
+/*
+    public boolean  validateAgainstSchemaJaxb(File xmlFile, ImportCommand command,String xsdUrl) {
+		boolean validXml = false;
+        try {
+            // parse an XML document into a DOM tree
+        	DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        	documentBuilderFactory.setValidating(false);
+        	documentBuilderFactory.setNamespaceAware(true);
+            DocumentBuilder parser = documentBuilderFactory.newDocumentBuilder();
+            Document document = parser.parse(xmlFile);
+            // create a SchemaFactory capable of understanding WXS schemas
+            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            // load a WXS schema, represented by a Schema instance
+            StringBuffer sb = new StringBuffer("classpath:");
+            sb.append(xsdUrl);
+            //Source schemaFile = new StreamSource(new File(xsdUrl));
+            Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl)
+                    .getFile());
+            Schema schema = schemaFactory.newSchema(schemaFile);
+            // create a Validator instance, which can be used to validate an instance document
+            Validator validator = schema.newValidator();
+            // validate the DOM tree
+            validator.validate(new DOMSource(document));
+            validXml = true;
+            // return xmlFile;
+        } catch (FileNotFoundException ex) {
+            throw new CaaersSystemException("File Not found Exception", ex);
+        } catch (IOException ioe) {
+        	//logger.error(ioe.getMessage());
+        	command.setSchemaValidationResult(ioe.getMessage());
+            throw new CaaersSystemException(ioe);
+        } catch (SAXParseException spe) {
+            command.setSchemaValidationResult("Line : " + spe.getLineNumber() + " - "
+                    + spe.getMessage());
+        } catch (SAXException e) {
+        	command.setSchemaValidationResult(e.toString());
+            throw new CaaersSystemException(e);
+        } catch (ParserConfigurationException pce) {
+            throw new CaaersSystemException("Parser configuration exception ", pce);
+        }
+        return validXml;
+    }
+    */
+    private void handleStaffLoad(ImportCommand command, String type) {
+    	BufferedReader input = null;
+        try {
+            File xmlFile = File.createTempFile("file", "uploaded");
+            FileCopyUtils.copy(getMultipartFile(type, command).getInputStream(),
+                            new FileOutputStream(xmlFile));
+            command.setSchemaValidationResult(null);
+            boolean valid = 	validateAgainstSchema(xmlFile , command, getXSDLocation(type));
+            
+            if (!valid) {
+            	return;
+            }
+            
+            if ("investigator".equals(type)) {
+            	InvestigatorMigratorService svc = (InvestigatorMigratorService) getApplicationContext().getBean("investigatorMigratorService");
+            	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
+    			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    		    gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff )unmarshaller.unmarshal(xmlFile);
+    			
+    			svc.saveInvestigator(staff);
+    			command.setImportableInvestigators(svc.getImportableInvestigators());
+    			command.setNonImportableInvestigators(svc.getNonImportableInvestigators());
+            }
 
+            if ("researchStaff".equals(type)) {
+            	ResearchStaffMigratorService svc = (ResearchStaffMigratorService) getApplicationContext().getBean("researchStaffMigratorService");
+            	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
+    			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+    			gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff  staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff )unmarshaller.unmarshal(xmlFile);
+    			
+    			svc.saveResearchStaff(staff);
+    			command.setImportableResearchStaff(svc.getImportableResearchStaff());
+    			command.setNonImportableResearchStaff(svc.getNonImportableResearchStaff());
+            }
+        } catch (EOFException ex) {
+            System.out.println("EndOfFile Reached");       
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException("File Not found Exception", ex);
+        } catch (IOException ex) {
+            throw new RuntimeException("IO Exception", ex);
+        } catch (JAXBException e) {
+        	throw new RuntimeException("JAXB Exception", e);
+		} finally {
+            try {
+                if (input != null) {
+                    // flush and close both "input" and its underlying FileReader
+                    input.close();
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException("IO Exception", ex);
+            }
+
+            log.debug("Study List size " + command.getImportableStudies().size());
+            log.debug("Participant List size " + command.getImportableParticipants().size());
+        }   	
+    }
+    
     private void handleLoad(ImportCommand command, String type) {
 
+    	if ("investigator".equals(type) || "researchStaff".equals(type)) {    		
+    		handleStaffLoad(command , type);
+    		return;
+    	}
+    	
+    	
         XStream xstream = new XStream();
         xstream.registerConverter(new JavaBeanConverter(xstream.getMapper(), "class"), -20);
 
