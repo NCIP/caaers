@@ -84,7 +84,7 @@
 	
 	<!-- ==========================================================================
 	RuleName : DSC_BR3_CHK
-	Rule : 'Removed from Protocol Treatment' must be ‘Yes’ if 'Present Status' is ‘Fatal/Died’ 
+	Rule : 'Date Removed from Protocol Treatment' must be ‘Yes’ if 'Present Status' is ‘Fatal/Died’ 
 	Error Code : DSC_BR3_ERR
 	Error Message : REMOVED_FROM_PROTOCOL_TRT must be "Yes" if PRESENT_STATUS is ''Fatal/Died'
 	============================================================================= -->
@@ -97,7 +97,7 @@
 		</lhs>
 		<rhs>
 			<!-- Populate Error Message-->
-			errors.addValidationError("DSC_BR3_ERR","'Removed from Protocol Treatment' must be provided if 'Present Status' is 'Fatal/Died'");
+			errors.addValidationError("DSC_BR3_ERR","'Date Removed from Protocol Treatment' must be provided if 'Present Status' is 'Fatal/Died'");
 		</rhs>
 	</rule>
 	<!-- ==========================================================================

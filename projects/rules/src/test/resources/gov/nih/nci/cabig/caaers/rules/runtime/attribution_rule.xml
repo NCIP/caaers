@@ -14,7 +14,7 @@
 	
 	<!-- ==========================================================================
 	RuleName : AER_BR7_CHK
-	Logic : "At least one attribution with one of the following values should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’. AEs reported on the ‘DEATH’ Category are considered as an exception and are not required to meet this specification.
+	Logic : "At least one attribution with one of the following values should present for every AE entered on the report i.e. ‘Possible’, ‘Probable’ & ‘Definite’. AEs reported on the 'DEATH' category are considered as an exception and are not required to meet this specification.
 	Error Code : AER_BR7_ERR
 	Error Message : At least one ATTRIBUTION with one of the following values should present for every AE (except AEs reported on "DEATH" category) provided i.e. ‘Possible’, ‘Probable’ & ‘Definite’
 	============================================================================= -->
@@ -65,7 +65,7 @@
 					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"medicalDevices") != NullSafeFieldExtractor.extractFieldLength(ae,"deviceAttributions"))
 					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"radiationInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"radiationAttributions"))
 					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"surgeryInterventions") != NullSafeFieldExtractor.extractFieldLength(ae,"surgeryAttributions"))
-					   ||(1 != NullSafeFieldExtractor.extractFieldLength(ae,"diseaseAttributions"))
+   					   ||( ( (NullSafeFieldExtractor.extractFieldLength(aeReport.getStudy(),"ctepStudyDiseases") + NullSafeFieldExtractor.extractFieldLength(aeReport.getStudy(), "meddraStudyDiseases")) &gt; 0) &amp;&amp; (1 != NullSafeFieldExtractor.extractFieldLength(ae,"diseaseAttributions")))
 					   ||(NullSafeFieldExtractor.extractFieldLength(aeReport,"otherCauses") != NullSafeFieldExtractor.extractFieldLength(ae,"otherCauseAttributions"))){
 					   
 					   errors.addValidationError("ATT_BR1_ERR","AE must be attributed to all CAUSAL factors on report",i,ae.getAdverseEventTerm().getUniversalTerm());

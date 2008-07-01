@@ -23,7 +23,7 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testNoGrade_NoHospitalization() throws Exception {
@@ -39,7 +39,7 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testNoGrade_HospitalizationNONE() throws Exception {
@@ -55,7 +55,7 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testGradeMODERATE_HospitalizationNONE() throws Exception {
@@ -72,7 +72,7 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testGradeSEVERE_HospitalizationNONE() throws Exception {
@@ -90,49 +90,49 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testGradeSEVER_Hospitalization_HOSPITALIZATION() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (AdverseEvent ae : aeReport.getAdverseEvents()) {
             ae.setGrade(Grade.SEVERE);
-            ae.setHospitalization(Hospitalization.HOSPITALIZATION);
+            ae.setHospitalization(Hospitalization.YES);
         }
 
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When  grade is SEVERE and  hospitalization is HOSPITALIZATION");
+        assertNoErrors(errors, "When  grade is SEVERE and  hospitalization is YES");
 
     }
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testGradeDEATH_HospitalizationPROLONGED() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (AdverseEvent ae : aeReport.getAdverseEvents()) {
             ae.setGrade(Grade.DEATH);
-            ae.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+            ae.setHospitalization(Hospitalization.NO);
         }
 
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors,
-                        "When  grade is DEATH and  hospitalization is PROLONGED_HOSPITALIZATION");
+                        "When  grade is DEATH and  hospitalization is NO");
 
     }
 
     /**
      * RuleName : AER_BR3_CHK Logic : "'Hospitalization' must be provided if 'Grade' greater than 2"
-     * Error Code : AER_BR3_ERR Error Message : HOSPITALIZATION must be provided if GRADE is greater
+     * Error Code : AER_BR3_ERR Error Message : YES must be provided if GRADE is greater
      * than or equal to 3
      */
     public void testGradeSEVER_And_HospitalizationNONE_For_Second() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         AdverseEvent ae = aeReport.getAdverseEvents().get(0);
         ae.setGrade(Grade.SEVERE);
-        ae.setHospitalization(Hospitalization.HOSPITALIZATION);
+        ae.setHospitalization(Hospitalization.YES);
 
         ae = aeReport.getAdverseEvents().get(1);
         ae.setGrade(Grade.SEVERE);

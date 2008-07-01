@@ -224,9 +224,9 @@
 	</rule>	
 	<!-- ==========================================================================
 	RuleName : PAG_BR2B_CHK
-	Rule : "'Unit of measure'  must be provided if 'Duration of delay' is provided.
+	Rule : "'Unit of measure'  must be provided if 'Total dose administered this course' is provided.
 	Error Code : PAG_BR2B_ERR
-	Error Message : DELAY_UOM must be provided if the DELAY is provided
+	Error Message : DELAY_UOM must be provided if the 'Total dose administered this course' is provided
 	============================================================================= -->
 	<rule name="PAG_BR2B_CHK">
 		<lhs>
@@ -241,7 +241,7 @@
 						for(CourseAgent ca : ti.getCourseAgents()){
 							i++;
 							if(ca.getDose().getAmount() != null &amp;&amp; StringUtils.isEmpty(ca.getDose().getUnits()) ){
-								errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Duration of delay' is provided",i);
+								errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Total dose administered this course' is provided",i);
   							}
 						}
 						return errors.hasErrors() ? FAIL : SUCCESS;

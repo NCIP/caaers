@@ -60,7 +60,7 @@
 					int i = 0;
 					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
-						if(pt.getStartDate() == null &amp;&amp; pt.getEndDate() != null){
+						if(pt.getStartDate().getYear() == null &amp;&amp; pt.getEndDate().getYear() != null){
 						 errors.addValidationError("PTY_BR3_ERR","'Therapy End Date' must not be provided if 'Therapy Start Date' is not provided", i);
 						}
 					}
@@ -90,7 +90,7 @@
 					int i = 0;
 					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
-						if(pt.getEndDate() != null &amp;&amp; DateUtil.compare(pt.getStartDate(), pt.getEndDate()) &lt; 0){
+						if(pt.getEndDate() != null &amp;&amp; pt.getStartDate().compareTo(pt.getEndDate()) &gt; 0){
 						 errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start Date'", i);
 						}
 					}

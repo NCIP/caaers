@@ -21,8 +21,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Death” must be provided if “Present
-     * Status” has one of following values: Fatal/Died Recovered/Resolved without Sequelae
+     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Deathï¿½ must be provided if ï¿½Present
+     * Statusï¿½ has one of following values: Fatal/Died Recovered/Resolved without Sequelae
      * Recovered/Resolved with Sequelae" Error Code : DSC_BR1A_ERR Error Message :
      * DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
      */
@@ -42,8 +42,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Death” must be provided if “Present
-     * Status” has one of following values: Fatal/Died Recovered/Resolved without Sequelae
+     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Deathï¿½ must be provided if ï¿½Present
+     * Statusï¿½ has one of following values: Fatal/Died Recovered/Resolved without Sequelae
      * Recovered/Resolved with Sequelae" Error Code : DSC_BR1A_ERR Error Message :
      * DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
      */
@@ -70,8 +70,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Death” must be provided if “Present
-     * Status” has one of following values: Fatal/Died Recovered/Resolved without Sequelae
+     * RuleName : DSC_BR1A_CHK Rule : Date of Recovery or Deathï¿½ must be provided if ï¿½Present
+     * Statusï¿½ has one of following values: Fatal/Died Recovered/Resolved without Sequelae
      * Recovered/Resolved with Sequelae" Error Code : DSC_BR1A_ERR Error Message :
      * DATE_OF_RECOVERY_DEATH must be provided for the provided PRESENT_STATUS value.
      */
@@ -166,7 +166,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ‘No’ if 'Present Status' is ‘Fatal/Died’ "
+     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ï¿½Noï¿½ if 'Present Status' is ï¿½Fatal/Diedï¿½ "
      * Error Code : DSC_BR2_ERR Error Message : RETREATED must be "No" if PRESENT_STATUS is
      * ''Fatal/Died'
      */
@@ -182,7 +182,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ‘No’ if 'Present Status' is ‘Fatal/Died’ "
+     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ï¿½Noï¿½ if 'Present Status' is ï¿½Fatal/Diedï¿½ "
      * Error Code : DSC_BR2_ERR Error Message : RETREATED must be "No" if PRESENT_STATUS is
      * ''Fatal/Died'
      */
@@ -199,7 +199,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ‘No’ if 'Present Status' is ‘Fatal/Died’ "
+     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ï¿½Noï¿½ if 'Present Status' is ï¿½Fatal/Diedï¿½ "
      * Error Code : DSC_BR2_ERR Error Message : RETREATED must be "No" if PRESENT_STATUS is
      * ''Fatal/Died'
      */
@@ -216,7 +216,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ‘No’ if 'Present Status' is ‘Fatal/Died’ "
+     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ï¿½Noï¿½ if 'Present Status' is ï¿½Fatal/Diedï¿½ "
      * Error Code : DSC_BR2_ERR Error Message : RETREATED must be "No" if PRESENT_STATUS is
      * ''Fatal/Died'
      */
@@ -234,7 +234,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ‘No’ if 'Present Status' is ‘Fatal/Died’ "
+     * RuleName : DSC_BR2_CHK Rule : "'Retreated' must be ï¿½Noï¿½ if 'Present Status' is ï¿½Fatal/Diedï¿½ "
      * Error Code : DSC_BR2_ERR Error Message : RETREATED must be "No" if PRESENT_STATUS is
      * ''Fatal/Died'
      */
@@ -252,8 +252,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR3_CHK Rule : 'Removed from Protocol Treatment' must be ‘Yes’ if 'Present
-     * Status' is ‘Fatal/Died’ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
+     * RuleName : DSC_BR3_CHK Rule : 'Date Removed from Protocol Treatment' must be ï¿½Yesï¿½ if 'Present
+     * Status' is ï¿½Fatal/Diedï¿½ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
      * must be "Yes" if PRESENT_STATUS is ''Fatal/Died'
      */
     public void testDateRemovedFromProtocol_WhenPresentStatusIsDEAD() throws Exception {
@@ -268,8 +268,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR3_CHK Rule : 'Removed from Protocol Treatment' must be ‘Yes’ if 'Present
-     * Status' is ‘Fatal/Died’ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
+     * RuleName : DSC_BR3_CHK Rule : 'Date Removed from Protocol Treatment' must be ï¿½Yesï¿½ if 'Present
+     * Status' is ï¿½Fatal/Diedï¿½ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
      * must be "Yes" if PRESENT_STATUS is ''Fatal/Died'
      */
     public void testDateRemovedFromProtocolNull_WhenPresentStatusIsDEAD() throws Exception {
@@ -286,8 +286,8 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
     }
 
     /**
-     * RuleName : DSC_BR3_CHK Rule : 'Removed from Protocol Treatment' must be ‘Yes’ if 'Present
-     * Status' is ‘Fatal/Died’ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
+     * RuleName : DSC_BR3_CHK Rule : 'Removed from Protocol Treatment' must be Â‘YesÂ’ if 'Present
+     * Status' is Â‘Fatal/DiedÂ’ Error Code : DSC_BR3_ERR Error Message : REMOVED_FROM_PROTOCOL_TRT
      * must be "Yes" if PRESENT_STATUS is ''Fatal/Died'
      */
     public void testDateRemovedFromProtocolNull_WhenPresentStatusIsRECOVERING() throws Exception {

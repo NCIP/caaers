@@ -736,7 +736,7 @@ public class LogObjectFormatter {
         AdverseEvent ae = new AdverseEvent();
         ae.setGrade(Grade.SEVERE);
         ae.setId(67890);
-        ae.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+        ae.setHospitalization(Hospitalization.NO);
         ae.setAttributionSummary(Attribution.POSSIBLE);
         CtcTerm ctcTerm = new CtcTerm();
         ctcTerm.setTerm("Some term");
