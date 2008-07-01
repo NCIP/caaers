@@ -18,17 +18,6 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
 
 	public void migrate(Study dbStudy, Study xmlStudy,DomainObjectImportOutcome<Study> outcome) {
 		
-		if(xmlStudy.getTreatmentAssignments() != null){
-			if(xmlStudy.getTreatmentAssignments().size() == 0){
-				if(dbStudy.getTreatmentAssignments() != null){
-					for(TreatmentAssignment treatmentAssignment : dbStudy.getTreatmentAssignments()){
-						dbStudy.getTreatmentAssignments().remove(treatmentAssignment);
-					}
-				}
-				return;
-			}
-		}
-		
 		List<TreatmentAssignment> newTreatmentAssignmentList = new ArrayList<TreatmentAssignment>();
 		List<TreatmentAssignment> deleteTreatmentAssignmentList = new ArrayList<TreatmentAssignment>();
 		TreatmentAssignment remTreatmentAssignment = null;
