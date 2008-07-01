@@ -25,9 +25,7 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 		if(xmlStudy.getCtepStudyDiseases() != null){
 			if(xmlStudy.getCtepStudyDiseases().size() == 0){
 				if(dbStudy.getCtepStudyDiseases() != null){
-					for(CtepStudyDisease ctepStudyDisease : dbStudy.getCtepStudyDiseases()){
-						dbStudy.getCtepStudyDiseases().remove(ctepStudyDisease);
-					}
+					dbStudy.getCtepStudyDiseases().clear();
 				}
 				return;
 			}
@@ -83,9 +81,7 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 		if(xmlStudy.getMeddraStudyDiseases() != null){
 			if(xmlStudy.getMeddraStudyDiseases().size() == 0){
 				if(dbStudy.getMeddraStudyDiseases() != null){
-					for(MeddraStudyDisease meddraStudyDisease : dbStudy.getMeddraStudyDiseases()){
-						dbStudy.getMeddraStudyDiseases().remove(meddraStudyDisease);
-					}
+					dbStudy.getMeddraStudyDiseases().clear();
 				}
 				return;
 			}

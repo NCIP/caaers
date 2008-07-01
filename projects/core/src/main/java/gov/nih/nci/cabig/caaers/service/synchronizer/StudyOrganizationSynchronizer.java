@@ -35,8 +35,8 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 		if(xmlStudy.getStudySites() != null){
 			if(xmlStudy.getStudySites().size() == 0){
 				if(dbStudy.getStudySites() != null && !dbStudy.getStudySites().isEmpty()){
-					for(StudySite studySite : dbStudy.getStudySites()){
-						dbStudy.getStudySites().remove(studySite);
+					while(!dbStudy.getStudySites().isEmpty()){
+						dbStudy.getStudySites().remove(0);
 					}
 				}
 				return;
@@ -165,8 +165,8 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 		if(xmlStudyOrganization.getStudyInvestigators() != null){
 			if(xmlStudyOrganization.getStudyInvestigators().size() == 0){
 				if(dbStudyOrganization.getStudyInvestigators() != null){
-					for(StudyInvestigator studyInvestigator : dbStudyOrganization.getStudyInvestigators()){
-						dbStudyOrganization.getStudyInvestigators().remove(studyInvestigator);
+					while(!dbStudyOrganization.getStudyInvestigators().isEmpty()){
+						dbStudyOrganization.getStudyInvestigators().remove(0);
 					}
 				}
 				return;
@@ -266,8 +266,8 @@ public class StudyOrganizationSynchronizer implements Migrator<gov.nih.nci.cabig
 		if(xmlStudyOrganization.getStudyPersonnels() != null){
 			if(xmlStudyOrganization.getStudyPersonnels().size() == 0){
 				if(dbStudyOrganization.getStudyPersonnels() != null){
-					for(StudyPersonnel studyPersonnel : dbStudyOrganization.getStudyPersonnels()){
-						dbStudyOrganization.getStudyPersonnels().remove(studyPersonnel);
+					while(!dbStudyOrganization.getStudyPersonnels().isEmpty()){
+						dbStudyOrganization.getStudyPersonnels().remove(0);
 					}
 				}
 				return;

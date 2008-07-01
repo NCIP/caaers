@@ -22,7 +22,7 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 				return;
 			}
 		}
-		
+
 		List<StudyTherapy> newStudyTherapyList = new ArrayList<StudyTherapy>();
 		List<StudyTherapy> deleteStudyTherapyList = new ArrayList<StudyTherapy>();
 		StudyTherapy remStudyTherapy = null;
