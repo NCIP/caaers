@@ -466,8 +466,8 @@ public class StudyConverter {
 					for(MeddraStudyDiseaseType meddraStudyDiseaseType : meddraStudyDiseaseTypeList){
 						meddraStudyDisease = new MeddraStudyDisease();
 						meddraStudyDisease.setMeddraCode(meddraStudyDiseaseType.getMeddraCode());
+						meddraStudyDiseaseList.add(meddraStudyDisease);
 					}
-					meddraStudyDiseaseList.add(meddraStudyDisease);
 				}
 				study.setMeddraStudyDiseases(meddraStudyDiseaseList);
 			}
