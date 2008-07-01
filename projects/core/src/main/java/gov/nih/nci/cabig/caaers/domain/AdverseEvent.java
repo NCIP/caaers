@@ -87,7 +87,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     private AdverseEventReportingPeriod reportingPeriod;
     
-    private boolean solicitedAdverseEvent;
+    private boolean solicited;
 
     // //// BOUND PROPERTIES
 
@@ -435,12 +435,12 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         return false;
     }
     
-    public void setSolicitedAdverseEvent(boolean solicitedAdverseEvent) {
-		this.solicitedAdverseEvent = solicitedAdverseEvent;
+    public void setSolicited(boolean solicited) {
+		this.solicited = solicited;
 	}
     
     @Transient
-    public boolean isSolicitedAdverseEvent() {
-		return solicitedAdverseEvent;
+    public boolean isSolicited() {
+		return solicited;
 	}
 }

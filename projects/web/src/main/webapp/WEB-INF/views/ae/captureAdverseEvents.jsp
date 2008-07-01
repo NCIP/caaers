@@ -166,7 +166,7 @@
     						<tr id="solicitedBlankRow" />
     					
             				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            					<c:if test="${ae.solicitedAdverseEvent == true}">
+            					<c:if test="${ae.solicited == true}">
 	            					<ae:oneSaeRow index="${status.index}"/>
 	            				</c:if>
             				</c:forEach>
@@ -193,7 +193,7 @@
     						<tr id="observedBlankRow" />
     					
             				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            					<c:if test="${ae.solicitedAdverseEvent == false}">
+            					<c:if test="${ae.solicited == false}">
 	            					<ae:oneSaeRow index="${status.index}"/>
 	            				</c:if>
             				</c:forEach>

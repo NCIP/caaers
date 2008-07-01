@@ -190,7 +190,7 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
 					aeCtcTerm.setCtcTerm(sae.getCtcterm());
 					adverseEvent.setAdverseEventTerm(aeCtcTerm);
-					adverseEvent.setSolicitedAdverseEvent(true);
+					adverseEvent.setSolicited(true);
 				}
 				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
 			}
@@ -207,7 +207,7 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			
 			boolean hasObservedEvents = false;
 			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-				if(!ae.isSolicitedAdverseEvent())
+				if(!ae.isSolicited())
 					hasObservedEvents = true;
 			}
 			refdata.put("hasObservedEvent", hasObservedEvents);
@@ -238,4 +238,3 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
 }
-

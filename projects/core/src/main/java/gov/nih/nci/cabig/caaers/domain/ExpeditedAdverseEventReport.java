@@ -622,7 +622,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.createdAt = createdAt;
     }
     
-    @OneToOne(mappedBy = "aeReport")
+    @OneToOne
+    @JoinColumn(name = "reporting_period_id")
     @Cascade(value = { CascadeType.LOCK })
     public AdverseEventReportingPeriod getReportingPeriod() {
 		return reportingPeriod;

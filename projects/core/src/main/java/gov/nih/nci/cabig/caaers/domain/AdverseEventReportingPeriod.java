@@ -189,8 +189,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	this.epoch = epoch;
     }
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "report_id")
+    @OneToOne(mappedBy = "reportingPeriod")
     @Cascade(value = { CascadeType.LOCK })
     public ExpeditedAdverseEventReport getAeReport() {
 		return aeReport;
