@@ -17,9 +17,7 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 		if(xmlStudy.getStudyTherapies() != null){
 			if(xmlStudy.getStudyTherapies().size() == 0){
 				if(dbStudy.getStudyTherapies() != null){
-					for(StudyTherapy studyTherapy : dbStudy.getStudyTherapies()){
-						dbStudy.getStudyTherapies().remove(studyTherapy);
-					}
+					dbStudy.getStudyTherapies().clear();
 				}
 				return;
 			}
