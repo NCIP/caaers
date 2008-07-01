@@ -69,9 +69,9 @@ public class RadiationInterventionTab extends AeTab {
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions",
                         new SimpleNumericDisplayNameCreator("Radiation"), createSelectField(
                                         "administration", "Type of radiation administration",
-                                        false, statusOpts), createTextField("dosage", "Dosage",
-                                        false), doseUOMField, createDateField("lastTreatmentDate",
-                                        "Date of last treatment", false), fractionNumberField,
+                                        false, statusOpts), 
+                                        createTextField("dosage", "Dosage",false), 
+                                        doseUOMField, createDateField("lastTreatmentDate","Date of last treatment", false), fractionNumberField,
                         createTextField("daysElapsed", " Number of elapsed days", false),
                         // createTextField("adjustment", "Adjustment", false)
                         createSelectField("adjustment", "Adjustment", false, InputFieldFactory

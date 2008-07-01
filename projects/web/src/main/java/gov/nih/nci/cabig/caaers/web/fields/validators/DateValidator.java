@@ -1,15 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+
 import java.util.Date;
 
 public class DateValidator extends FieldValidator {
 
     @Override
     public boolean isValid(Object fieldValue) {
+        Date now = new Date();
         if (fieldValue instanceof Date) {
             Date date = (Date) fieldValue;
-            Date now = new Date();
             if (date.compareTo(now) > 0) return false;
+        }if(fieldValue instanceof DateValue){
+        	if(new DateValue(now).compareTo((DateValue)fieldValue) < 0) return false;
         }
         return true;
     }

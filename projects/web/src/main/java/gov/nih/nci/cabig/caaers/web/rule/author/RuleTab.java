@@ -309,7 +309,7 @@ public class RuleTab extends DefaultTab {
             createRuleCommand.setReportDefinitions(getReportDefinitions(org));
 
         } catch (Exception e) {
-            logger.error("Exception while retrieving the RuleSet", e);
+            logger.error("Exception while retrieving the Rule Set", e);
         }
 
         return super.referenceData(command);

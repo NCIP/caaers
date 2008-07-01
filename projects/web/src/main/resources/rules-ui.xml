@@ -27,24 +27,31 @@
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Grade','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Severity " postfix=""/>
 			</field>
-
-			<field name="hospitalization" display-uri="Hospitalization">
+			<field name="hospitalization" display-uri="Hospitalization or Prolonged Hospitalization">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
 						<method-name>fetchHospitalization</method-name>
 					</method-call>
-					<input-type>multiselect</input-type>
+					<input-type>select</input-type>
+					<!--<input-type>multiselect</input-type>-->
 				</field-value>
+				<!--
 				<valid-value value="0" display-uri="None" readable-text="none"/>
 				<valid-value value="1" display-uri="Hospitalization" readable-text="hospitalization"/>
 				<valid-value value="2" display-uri="Prolonged Hospitalization" readable-text="prolonged hospitalization "/>
-				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				-->
+				<valid-value value="1" display-uri="Yes" readable-text="Yes"/>
+				<!--
+				<valid-value value="2" display-uri="No" readable-text="No "/>
+				-->
+				<operator name="==" display-uri="Equal To" readable-text="is "/>				
 				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+				
 				<expression>factResolver.assertFact(adverseEvent,'gov.nih.nci.cabig.caaers.domain.Hospitalization','code','runTimeValue','runTimeOperator')</expression>		
-				<grammer prefix=" Hospitalization " postfix=""/>
+				<grammer prefix=" Hospitalization or Prolonged Hospitalization " postfix=""/>
 			</field>
-			<field name="expected" display-uri="Expected">
+			<field name="expectedness" display-uri="Expected">
 				<field-value>
 					<method-call>
 						<bean-name>aeDetails</bean-name>
@@ -56,7 +63,7 @@
 				<valid-value value="false" display-uri="No" readable-text="is not "/>
 				<operator name="==" display-uri="Equal To" readable-text=""/>
 				<!-- <operator name="!=" display-uri="Not Equal To" readable-text="is not "/> -->
-				<expression>factResolver.assertFact(adverseEvent,null,'expected','runTimeValue','runTimeOperator')</expression>	
+				<expression>factResolver.assertFact(adverseEvent,null,'expectedness','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Adverse Event " postfix="expected "/>	
 			</field>			
 						

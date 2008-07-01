@@ -19,7 +19,7 @@
     <tags:tabForm tab="${tab}" flow="${flow}" >
     	<jsp:attribute name="instructions">
     	  Select the fields of adverse event entry screen which are to be made mandatory, 
-    	  when <b>${command.reportDefinition.name}</b> report definition is associated to a adverse event report.
+    	  when <b>${command.reportDefinition.name}</b> definition is associated to an adverse event report.
     	  <i> <br/> <b>TODO:</b> need a better instruction...</i>
     	  <br> 
     	</jsp:attribute>
@@ -87,7 +87,7 @@
 			</table>
 		</chrome:division>
 		
-		<chrome:division title="Pre-existing condictions">
+		<chrome:division title="Pre-existing conditions">
 			<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions" />
 		</chrome:division>
 		

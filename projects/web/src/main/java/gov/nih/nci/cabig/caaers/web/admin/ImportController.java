@@ -618,8 +618,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         if (routineAdverseEventReportImportOutcome.isSavable()) {
             command.addImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
         } else {
-            command
-                            .addNonImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
+            command.addNonImportableRoutineAdverseEventReport(routineAdverseEventReportImportOutcome);
         }
     }
 

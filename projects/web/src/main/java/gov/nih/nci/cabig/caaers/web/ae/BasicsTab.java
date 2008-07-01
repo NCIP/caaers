@@ -62,7 +62,7 @@ public abstract class BasicsTab extends AeTab {
          * interventions.");
          */
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected",
-                        true);
+                        false);
         /*
          * InputFieldAttributes.setDetails(exField, "Specify whether the AE is expected or not.
          * &quot;Unexpected&quot; events " + "are those that differ in nature, severity or frequency
@@ -80,8 +80,8 @@ public abstract class BasicsTab extends AeTab {
                                         .collectOptions(EXPEDITED_GRADES, "name", null)),
                         InputFieldFactory.createDateField("startDate", "Start date"),
                         InputFieldFactory.createDateField("endDate", "End date"), attributionField,
-                        InputFieldFactory.createSelectField("hospitalization", "Hospitalization",
-                                        true, InputFieldFactory.collectOptions(Arrays
+                        InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",
+                                        false, InputFieldFactory.collectOptions(Arrays
                                                         .asList(Hospitalization.values()), "name",
                                                         "displayName")), exField, commentsField);
     }

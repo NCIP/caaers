@@ -43,8 +43,8 @@
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Term:</b> </th>
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Grade:</b> </th>
     				<th scope="col" align="left"><b> <tags:requiredIndicator/>Attribution:</b> </th>
-    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Hospitalization:</b> </th>
-    				<th scope="col" align="left"><b> <tags:requiredIndicator/>Expected:</b> </th>
+    				<th scope="col" align="left"><b>Hospitalization or prolongation of existing hospitalization?:</b> </th>
+    				<th scope="col" align="left"><b>Expected:</b> </th>
     				<th scope="col" align="left"> </th>
     			</tr>
     				
@@ -62,11 +62,11 @@
             		</td>
             		
             		<td>
-            			<c:out value="${ae.hospitalization}"/>
+            			<c:out value="${ae.hospitalization.code eq 0 ? '--' : ae.hospitalization.displayName}"/>
             		</td>
             		
             		<td>
-            			<c:out value="${ae.expected == true ? 'Yes' : 'No' }" />
+            			<c:out value="${ae.expected eq null ? '--' : ae.expected eq true ? 'Yes' : 'No' }" />
             		</td>
             		<td>
             			<c:if test="${ae.report == null }" >

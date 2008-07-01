@@ -51,7 +51,8 @@
             <tags:renderRow field="${field}"/>
         </c:forEach>
 
-		<chrome:division title="Details" >
+		
+		<chrome:division title="Details" style="${command.study.primaryFundingSponsorOrganization.nciInstituteCode eq 'CTEP' ? 'display:none' : ''}">
         <c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>

@@ -56,7 +56,7 @@ function buildTable(form) {
 <p>
   Search for subjects by choosing any of the listed criteria.
 </p>
-<chrome:box title="Study sriteria" cssClass="paired" autopad="true">
+<chrome:box title="Study criteria" cssClass="paired" autopad="true">
 		    <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>

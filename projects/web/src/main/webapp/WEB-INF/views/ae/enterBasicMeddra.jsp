@@ -20,8 +20,8 @@
             padding-left: 3.0em;
             text-indent: -2.5em;
         }
-        div.row div.label { width: 11em; } 
-		div.row div.value, div.row div.extra { margin-left: 12em; }
+        div.row div.label { width: 15em; } 
+		div.row div.value, div.row div.extra { margin-left: 16em; }
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>

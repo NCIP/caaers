@@ -84,7 +84,7 @@ public class ListValues {
         List<ListValues> col = new ArrayList<ListValues>();
         ListValues lov1 = new ListValues("", "---");
         ListValues lov2 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
-        ListValues lov3 = new ListValues("Non Hispanic or Latino", "Non Hispanic or Latino");
+        ListValues lov3 = new ListValues("Not Hispanic or Latino", "Not Hispanic or Latino");
         ListValues lov4 = new ListValues("Not Reported", "Not Reported");
         ListValues lov5 = new ListValues("Unknown", "Unknown");
         col.add(lov1);

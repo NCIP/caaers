@@ -26,7 +26,8 @@ public class DescriptionTab extends AeTab {
         setAutoPopulateHelpKey(true);
         addHelpKeyExclusion("presentStatus", "recoveryDate", "retreated");
     }
-
+    
+    
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator,
                     ExpeditedAdverseEventInputCommand command) {
@@ -35,12 +36,6 @@ public class DescriptionTab extends AeTab {
         InputField desc = createTextArea(baseProp + ".eventDescription", "Description", false);
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
-        /*
-         * InputFieldAttributes.setDetails(desc,"Type in a narrative describing the following: (1)
-         * presentation of the event, (2), clinical findings, (3) the treatment of the events, and
-         * (4) the timing of events related to agent administration or investigational
-         * intervention.");
-         */
 
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
@@ -49,47 +44,24 @@ public class DescriptionTab extends AeTab {
 
         InputField removedDateField = createDateField(baseProp + ".dateRemovedFromProtocol",
                         "Date removed from protocol", false);
-        /*
-         * InputFieldAttributes.setDetails(removedDateField, "If the participant was removed from
-         * the protocol, enter the date here. Otherwise, leave it blank.");
-         */
 
         creator.createFieldGroup("desc", desc, createSelectField(baseProp + ".presentStatus",
                         "Present status", false, statusOpts), createDateField(baseProp
                         + ".recoveryDate", "Date of recovery or death", false),
                         createBooleanSelectField(baseProp + ".retreated",
-                                        "Has the particpant been re-treated?", false),
+                                        "Has the participant been re-treated?", false),
                         removedDateField);
 
         InputField reducedDose = InputFieldFactory.createTextField(baseProp + ".reducedDose",
                         "If reduced, specify: New dose", false);
 
-        creator
-                        .createFieldGroup(
-                                        "DCP_INFO",
-                                        createSelectField(baseProp + ".blindBroken",
-                                                        "Was blind broken due to event?", false,
-                                                        createBooleanOptions()),
-                                        createSelectField(
-                                                        baseProp + ".studyDrugInterrupted",
-                                                        "Was Study Drug stopped/interrupted/reduced in response to event?",
-                                                        false, createBooleanOptions()),
+        creator.createFieldGroup("DCP_INFO",createSelectField(baseProp + ".blindBroken","Was blind broken due to event?", false,createBooleanOptions()),
+                                        createSelectField(baseProp + ".studyDrugInterrupted","Was Study Drug stopped/interrupted/reduced in response to event?",false, createBooleanOptions()),
                                         reducedDose,
-                                        createDateField(baseProp + ".reducedDate",
-                                                        "Date of recovery or death", false),
-                                        InputFieldFactory
-                                                        .createTextField(
-                                                                        baseProp + ".daysNotGiven",
-                                                                        "If interrupted, specify total number of days not given",
-                                                                        false),
-                                        createSelectField(
-                                                        baseProp + ".eventAbate",
-                                                        "Did event abate after study drug was stopped or dose reduced?",
-                                                        false, createBooleanOptions()),
-                                        createSelectField(
-                                                        baseProp + ".eventReappear",
-                                                        "Did event reappear after study drug was reintroduced?",
-                                                        false, createBooleanOptions()));
+                                        createDateField(baseProp + ".reducedDate","Date of recovery or death", false),
+                                        InputFieldFactory.createTextField(baseProp + ".daysNotGiven","If interrupted, specify total number of days not given",false),
+                                        createSelectField(baseProp + ".eventAbate","Did event abate after study drug was stopped or dose reduced?",false, createBooleanOptions()),
+                                        createSelectField(baseProp + ".eventReappear","Did event reappear after study drug was reintroduced?",false, createBooleanOptions()));
     }
 
     private Map<Object, Object> createBooleanOptions() {

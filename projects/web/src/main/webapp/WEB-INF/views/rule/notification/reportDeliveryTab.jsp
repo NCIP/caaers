@@ -88,7 +88,7 @@
 			<jsp:attribute name="repeatingFields">
 			<tags:section title="Email Recipients">
 				<jsp:attribute name="instructions">
-					Click on Add eMail or Add Role button to add an email address or role respectively.A PDF version
+					Click on Add eMail or Add Role button to add an email address or role respectively. A PDF version
 					of the final report will be delivered to the email address entered. 
 				</jsp:attribute>
 				<jsp:attribute name="singleFields">

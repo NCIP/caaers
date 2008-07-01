@@ -76,3 +76,9 @@ input.pending-search {
 .longselect label:hover {
     background-color: #D7E7ED;
 }
+/*
+ Added for split date fields
+*/
+table.split-date-wrap td label {
+	display:block;
+}

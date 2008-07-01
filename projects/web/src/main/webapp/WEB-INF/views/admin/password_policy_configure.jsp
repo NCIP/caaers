@@ -105,7 +105,7 @@
 	    </div>
 	  </div>
 	</div>  
-	
+	</chrome:division>
 	<chrome:division title="Complexity Requirement" style="margin-left: 20px;">	  
 	  
 	  <div class="nested_section">

@@ -433,7 +433,7 @@ public class SearchStudyAjaxFacade {
 
 		Column columnPrimaryAeTerm = model.getColumnInstance();
 		columnPrimaryAeTerm.setProperty("adverseEvents[0].ctcTerm.term");
-		columnPrimaryAeTerm.setTitle("Primary Ctc term");
+		columnPrimaryAeTerm.setTitle("Primary CTC term");
 		columnPrimaryAeTerm.setAlias("term");
 		model.addColumn(columnPrimaryAeTerm);
 

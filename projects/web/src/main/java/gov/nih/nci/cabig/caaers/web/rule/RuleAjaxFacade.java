@@ -536,7 +536,7 @@ public class RuleAjaxFacade {
             CtcTerm ctcTerm = adverseEvent.getAdverseEventCtcTerm().getCtcTerm();
             adverseEventSDO.setTerm(ctcTerm.getFullName());
 
-            // HOSPITALIZATION
+            // YES
             int hospitalization = adverseEvent.getHospitalization().getCode();
             Boolean isHospitalization = (hospitalization == Hospitalization.NONE.getCode()) ? Boolean.FALSE
                             : Boolean.TRUE;

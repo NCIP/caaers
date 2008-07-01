@@ -68,10 +68,10 @@ public class RoutineAeMeddraTab extends AeRoutTab {
                                         "Indicate the likelihood that this adverse event is attributable to any element of the study protocol.");
         mainFieldFactory.addField(attributionField);
         mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
-                        "Hospitalization", true, createHospitalizationOptions()));
+                        "Hospitalization or prolongation of existing hospitalization?", false, createHospitalizationOptions()));
         // mainFieldFactory.addField(InputFieldFactory.createBooleanSelectField(
         // "expected", "Expected", true));
-        mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", true,
+        mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
                         createExpectedOptions()));
 
         meddraTermFieldFactory = new RepeatingFieldGroupFactory(MEDDRA_TERM_FIELD_GROUP,
@@ -100,7 +100,6 @@ public class RoutineAeMeddraTab extends AeRoutTab {
 
     private Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.put("", "Please select");
         hospitalizationOptions.putAll(InputFieldFactory.collectOptions(Arrays
                         .asList(Hospitalization.values()), "name", "displayName"));
         return hospitalizationOptions;

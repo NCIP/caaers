@@ -130,7 +130,6 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
         private A createAeAttribution(int i) {
             A aeAttrib = accessor.createAttribution();
             aeAttrib.setAdverseEvent(adverseEvent);
-            aeAttrib.setAttribution(Attribution.UNRELATED);
             aeAttrib.setCause(accessor.findCause(i, adverseEvent.getReport()));
             return aeAttrib;
         }

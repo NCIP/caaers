@@ -270,8 +270,8 @@
     <xs:simpleType name="hospitalizationType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="NONE"/>
-            <xs:enumeration value="HOSPITALIZATION"/>
-            <xs:enumeration value="PROLONGED_HOSPITALIZATION"/>
+            <xs:enumeration value="YES"/>
+            <xs:enumeration value="NO"/>
         </xs:restriction>
     </xs:simpleType> 
     

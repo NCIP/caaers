@@ -1206,7 +1206,7 @@
 
 
 <p id="instructions">Rules can be added by using the Add Rule
-button. Rules created will belong to the selected RuleSet.</p>
+button. Rules created will belong to the selected Rule Set.</p>
 
 <chrome:division>
 
@@ -1220,7 +1220,7 @@ button. Rules created will belong to the selected RuleSet.</p>
 
 
 			<div class="row">
-			<div class="label"><label for="ruleSetName">RuleSet
+			<div class="label"><label for="ruleSetName">Rule Set
 			Name</label></div>
 			<div class="value"><form:input path="ruleSetName" size="40" readonly="readonly"/>
 			</div>

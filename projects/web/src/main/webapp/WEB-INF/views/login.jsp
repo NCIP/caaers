@@ -48,7 +48,8 @@
         </div>
         <div class="row">
 	    <div class="forgot">
-                <a href="/caaers/public/user/resetPassword">Forgot Password?</a>
+			
+                <a href='<c:url value="/public/user/resetPassword" />'>Forgot Password?</a>
             </div>
             <div class="submit">
                 <input type="submit" value="Log in"/>

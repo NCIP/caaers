@@ -39,8 +39,8 @@ public abstract class WebTestCase extends AbstractTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        StudyParticipantAssignmentAspect spaAspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
-        spaAspect.setSecurityInterceptor(new MockAspectJSecurityInterceptor());
+      //  StudyParticipantAssignmentAspect spaAspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
+      //  spaAspect.setSecurityInterceptor(new MockAspectJSecurityInterceptor());
         
         servletContext = new MockServletContext();
         session = new MockHttpSession(servletContext);

@@ -68,8 +68,10 @@ public class GenerateExpeditedPdfController extends AbstractCommandController {
     			if (format.equals("pdf")) {
     			
 	    			String pdfOutFile = "expeditedAdverseEventReport-"+reportId+".pdf";
-	    			
-	    			AdeersReportGenerator gen = new AdeersReportGenerator();
+	    	        // generate report and send ...
+	    	        AdeersReportGenerator gen = (AdeersReportGenerator) getApplicationContext().getBean(
+	    	                        "adeersReportGenerator");
+	    			//AdeersReportGenerator gen = new AdeersReportGenerator();
 	    			gen.generatePdf(xml,tempDir+File.separator+pdfOutFile);
 	    			
 	    			generateOutput(pdfOutFile,response,reportId);

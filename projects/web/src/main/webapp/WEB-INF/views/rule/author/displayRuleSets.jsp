@@ -48,7 +48,7 @@
 <body>
 
 <p id="instructions">
-        Select RuleSet name to Add or Modify the Rules. To create new RuleSet, click the "Create RuleSet" button.
+        Select Rule Set name to Add or Modify the Rules. To create new Rule Set, click the "Create Rule Set" button.
 </p>
 
 <chrome:division>
@@ -57,7 +57,7 @@
 		<jsp:attribute name="singleFields">
 
 		<div class="local-buttons">
-			<input type="button" id="createRuleSet" value="Create RuleSet" align="right"/>
+			<input type="button" id="createRuleSet" value="Create Rule Set" align="right"/>
 		</div>	
             <tags:errors path="*"/>
             
@@ -80,10 +80,10 @@
             </c:choose>
 
         <div class="row"  id="newRuleSetDiv" style="display:none">
-            <div class="label"><label for="newRuleSetName">RuleSet Name</label></div>
+            <div class="label"><label for="newRuleSetName">Rule Set Name</label></div>
             <div class="value">
                 <select id="newRuleSetName" onchange="setRuleSetName(this)">
-                    <option value="Please select a RuleSet Name">Please select a RuleSet Name</option>
+                    <option value="Please select a RuleSet Name">Please select a Rule Set Name</option>
                     <!--
                     
                     <c:if test="${command.level == 'Sponsor' || command.level == 'SponsorDefinedStudy'}">

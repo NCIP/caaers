@@ -21,13 +21,13 @@
     
     <jsp:attribute name="singleFields">
     	
-    	<p> The <b>${command.aeReport.reports[command.reportIndex].reportDefinition.name} </b> report will be sent to the following preconfigured recepients .<br /></p>
+    	<p> The <b>${command.aeReport.reports[command.reportIndex].reportDefinition.name} </b> will be sent to the following preconfigured recipient(s) .<br /></p>
     	
     	<table class="tablecontent">
     		
     	<tr>
     			
-    		<th scope="col" align="left"><b>Email / URL </b></th>
+    		<th scope="col" align="left"><b>Recipient(s)</b></th>
     	</tr>
     	
     	
@@ -35,7 +35,7 @@
     		
     		<tr>
     			
-    			<td><div class="label">${report.endPoint}</div></td>
+    			<td><div class="label">${report.reportDeliveryDefinition.entityType eq 1 ? report.reportDeliveryDefinition.entityName : report.endPoint}</div></td>
     		
     		</tr>
     	</c:forEach>

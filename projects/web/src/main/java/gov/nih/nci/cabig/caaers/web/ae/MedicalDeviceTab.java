@@ -108,9 +108,9 @@ public class MedicalDeviceTab extends AeTab {
                                         otherDeviceOperator,
 
                                         InputFieldFactory.createDateField("implantedDate",
-                                                        "If implanted give a date", false),
+                                                        "If implanted, enter a date", false),
                                         InputFieldFactory.createDateField("explantedDate",
-                                                        "IF explanted give a date", false),
+                                                        "IF explanted, enter a date", false),
 
                                         deviceReprocessedField,
 

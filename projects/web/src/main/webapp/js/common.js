@@ -91,6 +91,33 @@ AE.registerCalendarPopups = function(containerId) {
             }
         );
     })
+    
+    //for split-date
+    sel ="input.split-date"
+    if (containerId) sel = "#" + containerId + " " + sel
+    $$(sel).each(function(input) {
+    	var yearInputId = input.id
+		var baseInputId = input.id.substring(0, input.id.lastIndexOf('.yearString'))
+        var anchorId = baseInputId + "-calbutton"
+        var monthInputId = baseInputId + ".monthString"
+        var dayInputId = baseInputId + ".dayString"
+        
+        Calendar.setup(
+            {
+                'yearInputId' : yearInputId,
+                'monthInputId': monthInputId,
+                'dayInputId'  :dayInputId,
+                button        : anchorId,
+                ifFormat      : "%m/%d/%Y", // TODO: get this from the configuration
+                weekNumbers   : false,
+                onSelect      : function(cal){
+                	$(cal.params['dayInputId']).value = cal.date.print('%d')
+                	$(cal.params['monthInputId']).value = cal.date.print('%m')
+                	$(cal.params['yearInputId']).value =  cal.date.print('%Y')
+                }
+            }
+        );
+    })    
 }
 
 Element.observe(window, "load", function() {

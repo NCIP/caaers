@@ -149,8 +149,8 @@
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Term:</b> </th>
     				<th ><b><tags:requiredIndicator/>Grade:</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution:</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization:</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected:</b> </th>
+    				<th scope="col" align="left"><b>Hospitalization or prolongation of existing hospitalization?</b> </th>
+    				<th scope="col" align="left"><b>Expected:</b> </th>
     			</tr>
     			<tr id="koi" />
     			

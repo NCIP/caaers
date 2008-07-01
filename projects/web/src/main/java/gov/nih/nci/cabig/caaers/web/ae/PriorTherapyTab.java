@@ -47,9 +47,9 @@ public class PriorTherapyTab extends AeTab {
         //TODO: change the name of other to "comment"
         InputField otherField = InputFieldFactory.createTextArea("other", "Comments", false);
         InputFieldAttributes.setColumns(otherField, 65);
-        InputField startDateField = InputFieldFactory.createDateField("startDate", "Therapy start Date", false);
+        InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start Date", false, true, true, false);
         /*InputFieldAttributes.setDetails(startDateField, "If known, enter start date for prior therapy.");*/
-        InputField endDateField = InputFieldFactory.createDateField("endDate", "Therapy end date", false);
+        InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "Therapy end date", false, true, true, false);
         /*InputFieldAttributes.setDetails(endDateField, "If known, enter end date for prior therapy.");*/
 
         creator.createRepeatingFieldGroup("priorTherapy", "saeReportPriorTherapies",

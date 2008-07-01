@@ -96,7 +96,7 @@ public class MedicalInfoTab extends AeTab {
         InputField otherDiseaseField = InputFieldFactory.createTextField("otherPrimaryDisease", "Other (disease)");
         InputFieldAttributes.setSize(otherDiseaseField, 50);
         /*InputFieldAttributes.setDetails(otherDiseaseField, "If this is a prevention trial, and disease is not applicable, enter Disease Not Applicable.");*/
-        InputField diganosisDateField = InputFieldFactory.createDateField("diagnosisDate", "Date of initial diagnosis", false);
+        InputField diganosisDateField = InputFieldFactory.createSplitDateField("diagnosisDate", "Date of initial diagnosis", false, true, true, false);
         /*InputFieldAttributes.setDetails(diganosisDateField, "If known, enter the date of the initial diagnosis.");*/
 
         creator.createFieldGroup("disease", null, "diseaseHistory",

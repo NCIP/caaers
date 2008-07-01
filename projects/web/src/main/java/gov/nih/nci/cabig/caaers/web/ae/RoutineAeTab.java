@@ -109,15 +109,10 @@ public class RoutineAeTab extends AeRoutTab {
 				if (ae.getGrade() == null){
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].grade", "REQUIRED", "Missing Grade");
 		    	}
-				if (ae.getHospitalization() == null){
-		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].hospitalization", "REQUIRED", "Missing Hospitalization");
-		    	}
 				if (ae.getAttributionSummary() == null){
 		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].attributionSummary", "REQUIRED", "Missing Attribution");
 		    	}
-				if (ae.getExpected() == null){
-		    		errors.rejectValue("aeRoutineReport.adverseEvents["+ index +"].expected", "REQUIRED", "Missing Expected");
-		    	}
+
 				index++;
 			}
 		}

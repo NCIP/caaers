@@ -60,7 +60,7 @@
     <chrome:box title="Investigational New Drug Details">
 	<form:form>
 		<chrome:division id="single-fields">
-			<div class="instructions">You can add the details of an Investigational New Drug(IND)here.
+			<div class="instructions">You can add the details of an Investigational New Drug(IND) here.
 			<br /><br />
 			</div>
 			<tags:hasErrorsMessage hideErrorDetails="true"/>

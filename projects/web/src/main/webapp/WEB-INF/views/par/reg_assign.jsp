@@ -15,8 +15,7 @@
 </script>
 </head>
 <body>
-<p id="instructions">In order to assign a Subject to a Study ,
-you need to first search for either a subject or a study.</p>
+<p id="instructions">In order to assign a Subject to a Study, you need to first search for either a subject or a study.</p>
 <form:form id="searchForm" name="searchForm" action="/caaers/pages/participant/assignStudy" method="post" cssClass="standard">
 	<chrome:box autopad="true" cssClass="paired" title="Select Study"
 		id="study-search">

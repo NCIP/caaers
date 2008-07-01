@@ -55,7 +55,7 @@ public class ImportAjaxFacade {
 
     private StudyDao studyDao;
 
-    private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
+    private AdverseEventEvaluationService adverseEventEvaluationService;// = new AdverseEventEvaluationServiceImpl();
 
     private ImportCommand getImportCommandFromSession(final HttpServletRequest request) {
 
@@ -189,6 +189,9 @@ public class ImportAjaxFacade {
         log.debug("Checking for expedited AEs");
         Study study = raer.getStudy();
 
+        
+        studyDao.reassociate(study);
+        
         // Create the expedited Report
         ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         aeReport.setAssignment(raer.getAssignment());
@@ -289,5 +292,9 @@ public class ImportAjaxFacade {
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
+    
+    public void setAdverseEventEvaluationService(AdverseEventEvaluationService adverseEventEvaluationService) {
+		this.adverseEventEvaluationService = adverseEventEvaluationService;
+	}
 
 }

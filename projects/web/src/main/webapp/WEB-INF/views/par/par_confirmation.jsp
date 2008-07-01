@@ -39,7 +39,7 @@
                 <th scope="col">Study Primary ID</th>
                 <th scope="col">Study Short Title</th>
                 <th scope="col">Site</th>
-                <th scope="col">Study Subject Identifer</th>
+                <th scope="col">Study Subject Identifier</th>
             </tr>
             <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
                 <tr class="results">

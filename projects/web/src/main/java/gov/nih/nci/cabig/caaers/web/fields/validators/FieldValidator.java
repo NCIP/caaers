@@ -9,12 +9,15 @@ public abstract class FieldValidator {
     public static final FieldValidator PHONE_VALIDATOR;
 
     public static final FieldValidator DATE_VALIDATOR;
+    
+    public static final FieldValidator DATE_VALUE_VALIDATOR;
 
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
         EMAIL_VALIDATOR = new EmailValidator();
         PHONE_VALIDATOR = new PhoneNumberValidator();
         DATE_VALIDATOR = new DateValidator();
+        DATE_VALUE_VALIDATOR = new DateValueValidator();
     }
 
     /**

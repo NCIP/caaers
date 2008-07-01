@@ -59,6 +59,28 @@ public class InputFieldFactory {
         return createInputField(DATE, propertyName, displayName, required);
     }
 
+    
+    public static InputField createSplitDateField(String propertyName, String displayName,
+    		boolean dayRequired, boolean monthRequired, boolean yearRequired, boolean required){
+    	
+    	FieldValidator validators[] = null;
+    	if(required){
+    		validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+    	} else {
+    		validators = new FieldValidator[]{FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+    	}
+    	return createSplitDateField(propertyName, displayName, dayRequired, monthRequired, yearRequired, validators);
+    }
+    
+    public static InputField createSplitDateField(String propertyName, String displayName,boolean dayRequired, boolean monthRequired,boolean yearRequired,
+    		FieldValidator... validators){
+    	
+    	DefaultInputField field = new DefaultInputField(SPLIT_DATE, propertyName, displayName, validators);
+    	field.getAttributes().put(InputField.DAY_REQUIRED, dayRequired);
+    	field.getAttributes().put(InputField.MONTH_REQUIRED, monthRequired);
+    	field.getAttributes().put(InputField.YEAR_REQUIRED, yearRequired);
+    	return field;
+    }
     public static InputField createTextArea(String propertyName, String displayName,
                     FieldValidator... validators) {
         return createInputField(TEXTAREA, propertyName, displayName, validators);
@@ -132,6 +154,7 @@ public class InputFieldFactory {
         DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName,
                         validators);
         Map<Object, Object> opts = new LinkedHashMap<Object, Object>();
+        opts.put("", "Please select");
         opts.put(Boolean.FALSE, falseDisplay);
         opts.put(Boolean.TRUE, trueDisplay);
         InputFieldAttributes.setOptions(select, opts);
