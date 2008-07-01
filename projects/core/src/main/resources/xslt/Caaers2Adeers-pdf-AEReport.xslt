@@ -597,9 +597,15 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  		<!--
 									<xsl:call-template name="standard_date">
 									        <xsl:with-param name="date" select="AdverseEventReport/DiseaseHistory/diagnosisDate"/>
-			   						</xsl:call-template>							  		 
+			   						</xsl:call-template>	
+			   					-->
+			   						
+			   						<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/month"/>/
+									<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/year"/>					  		
+		
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -1741,7 +1747,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="label" > 
-						  			Hospitalization/ Comments Prolongation of Hospitalization 
+						  			Hospitalization or Prolongation of Hospitalization 
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>

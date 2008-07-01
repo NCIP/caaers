@@ -51,7 +51,8 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
      * Get the list of AdverseEventReportingPeriods based on the Assignment.
      * This is needed to rightly update the dropdown on addition of a new reporting period.
      */
-    public List<AdverseEventReportingPeriod> getByAssignment(StudyParticipantAssignment assignment) {
+    @SuppressWarnings("unchecked")
+	public List<AdverseEventReportingPeriod> getByAssignment(StudyParticipantAssignment assignment) {
         List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ?", assignment.getId());
         return results;
     }

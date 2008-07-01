@@ -62,6 +62,13 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
     }
+	
+	//LOGIC
+	public void addAdverseEvent(AdverseEvent adverseEvent){
+    	getAdverseEvents().add(adverseEvent);
+    }
+	
+	// BEAN PROPERTIES
     
     @Transient
     public Participant getParticipant() {
@@ -108,24 +115,18 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
         }
     }
    
-    
-    // @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
-    @Transient
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany(mappedBy = "reportingPeriod")
+    @JoinColumn(name = "reporting_period_id", nullable = true)
+    @IndexColumn(name = "routine_list_index")
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;
     }
 
-    @Transient
     public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
         this.adverseEvents = adverseEvents;
-    }
-    
-    // BEAN PROPERTIES
-    
-    public void addAdverseEvent(AdverseEvent adverseEvent){
-    	getAdverseEvents().add(adverseEvent);
     }
     
     @ManyToOne(fetch = FetchType.LAZY)

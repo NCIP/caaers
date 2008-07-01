@@ -83,13 +83,13 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
                 event0.setGrade(Grade.MILD);
                 event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
-                event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+                event0.setHospitalization(Hospitalization.NO);
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
                 event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event1.setExpected(Boolean.FALSE);
-                event1.setHospitalization(Hospitalization.HOSPITALIZATION);
+                event1.setHospitalization(Hospitalization.YES);
 
                 report.getAdverseEvents().clear();
                 report.addAdverseEvent(event0);
@@ -114,7 +114,7 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
                 assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
                 assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm()
                                 .getCtcTerm().getId());
-                assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION,
+                assertEquals("Wrong hospitalization", Hospitalization.NO,
                                 loadedEvent0.getHospitalization());
                 assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
                 assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));
@@ -130,13 +130,13 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
                 event0.setGrade(Grade.MILD);
                 event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
-                event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+                event0.setHospitalization(Hospitalization.NO);
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
                 event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event1.setExpected(Boolean.FALSE);
-                event1.setHospitalization(Hospitalization.HOSPITALIZATION);
+                event1.setHospitalization(Hospitalization.YES);
 
                 report.getAdverseEvents().clear();
                 report.addAdverseEvent(event0);
@@ -163,7 +163,7 @@ public class RoutineAdverseEventReportDaoTest extends DaoTestCase<RoutineAdverse
                 assertEquals("Wrong grade", Grade.MILD, loadedEvent0.getGrade());
                 assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm()
                                 .getCtcTerm().getId());
-                assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION,
+                assertEquals("Wrong hospitalization", Hospitalization.NO,
                                 loadedEvent0.getHospitalization());
                 assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
                 assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));

@@ -9,6 +9,10 @@ import org.hibernate.annotations.Parameter;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,15 +37,17 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
 
     private String other;
 
-    private Date startDate;
+    private DateValue startDate;
 
-    private Date endDate;
+    private DateValue endDate;
 
     private LazyListHelper lazyListHelper;
 
     public SAEReportPriorTherapy() {
         lazyListHelper = new LazyListHelper();
         addReportChildLazyList(PriorTherapyAgent.class);
+        this.startDate = new DateValue();
+        this.endDate = new DateValue();
     }
 
     private <T> void addReportChildLazyList(Class<T> klass) {
@@ -108,19 +114,33 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         lazyListHelper.setInternalList(PriorTherapyAgent.class, priorTherapyAgentsInternal);
     }
 
-    public Date getEndDate() {
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
+    })
+    public DateValue getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(DateValue endDate) {
         this.endDate = endDate;
     }
 
-    public Date getStartDate() {
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
+    })
+    public DateValue getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(DateValue startDate) {
         this.startDate = startDate;
     }
 

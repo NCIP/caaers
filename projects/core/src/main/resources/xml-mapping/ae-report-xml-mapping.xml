@@ -278,12 +278,21 @@
     <field name="other" type="string">
       <bind-xml name="other" node="element"/>
     </field>
+    <!--
     <field name="startDate" type="date">
       <bind-xml name="startDate" node="element"/>
     </field>
     <field name="endDate" type="date">
       <bind-xml name="endDate" node="element"/>
     </field>
+    -->
+    <field name="startDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="startDate"/>
+    </field>
+    <field name="endDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="endDate"/>
+    </field>   
+     
     <field name="priorTherapyAgents" type="gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent" collection="arraylist">
       <bind-xml name="PriorTherapyAgent"/>
     </field>
@@ -565,8 +574,13 @@
     <field name="otherPrimaryDiseaseSite" type="string">
       <bind-xml name="otherPrimaryDiseaseSite" node="element"/>
     </field>
+    <!--
     <field name="diagnosisDate" type="date">
       <bind-xml name="diagnosisDate" node="element"/>
+    </field>
+    -->
+    <field name="diagnosisDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="diagnosisDate"/>
     </field>
     <field name="ctepStudyDisease" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">
       <bind-xml name="CtepStudyDisease"/>
@@ -578,7 +592,6 @@
       type="gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite" collection="arraylist">
       <bind-xml name="MetastaticDiseaseSite"/>
     </field>
-
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">

@@ -10,7 +10,9 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServiceImpl;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -51,8 +53,10 @@ public class AdeersReportGenerator {
     protected ReportDao reportDao;
 
     protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-
+    
     protected final Log log = LogFactory.getLog(getClass());
+    
+    protected CaaersJavaMailSender caaersJavaMailSender;
 
     public AdeersReportGenerator() {
     };
@@ -146,7 +150,7 @@ public class AdeersReportGenerator {
                             .get(Configuration.SMTP_USER), configuration
                             .get(Configuration.SMTP_PASSWORD), configuration
                             .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]));
+                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT));
         }
     }
 
@@ -207,21 +211,24 @@ public class AdeersReportGenerator {
                             .get(Configuration.SMTP_USER), configuration
                             .get(Configuration.SMTP_PASSWORD), configuration
                             .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]));
+                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT));
         }
 
     }
 
     private void sendMail(String mailHost, String user, String pwd, String from, String attachment,
-                    String[] to) throws Exception {
+                    String[] to, int port) throws Exception {
         try {
-            JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        	
+            /* Dead code -- to be removed
+        	JavaMailSenderImpl sender = new JavaMailSenderImpl();
             // sender.setHost("smtp.comcast.net");
             sender.setUsername(user);
             sender.setPassword(pwd);
             sender.setHost(mailHost);
-            MimeMessage message = sender.createMimeMessage();
-            // message.setFrom(new InternetAddress(from));
+            sender.setPort(port);
+            */
+            MimeMessage message = caaersJavaMailSender.createMimeMessage();
             message.setSubject("Expedited Adverse Event Report");
             message.setFrom(new InternetAddress(from));
 
@@ -240,9 +247,9 @@ public class AdeersReportGenerator {
              * helper.addAttachment(file.getFilename(), file); }
              */
 
-            sender.send(message);
+            
+            caaersJavaMailSender.send(message);
 
-            System.out.println("sent . . ");
         } catch (Exception e) {
             throw new Exception(" Error in sending email , please check the confiuration " + e);
         }
@@ -261,7 +268,15 @@ public class AdeersReportGenerator {
     public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
     }
-
+    
+    public CaaersJavaMailSender getCaaersJavaMailSender() {
+		return caaersJavaMailSender;
+	}
+    
+    public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+		this.caaersJavaMailSender = caaersJavaMailSender;
+	}
+    
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         String str1 = "";

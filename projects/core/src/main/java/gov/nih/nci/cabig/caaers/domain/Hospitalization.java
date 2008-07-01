@@ -12,7 +12,8 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Rhett Sutphin
  */
 public enum Hospitalization implements CodedEnum<Integer> {
-    NONE(0), HOSPITALIZATION(1), PROLONGED_HOSPITALIZATION(2, "Prolonged hospitalization");
+	
+    NONE(0, "Please Select"), YES(1, "Yes"), NO(2, "No");
 
     private int code;
 

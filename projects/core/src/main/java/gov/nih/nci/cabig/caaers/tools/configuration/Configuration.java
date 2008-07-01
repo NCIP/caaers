@@ -38,6 +38,8 @@ public class Configuration extends DatabaseBackedConfiguration {
 
     public static final ConfigurationProperty<String> SMTP_PASSWORD = PROPERTIES
                     .add(new ConfigurationProperty.Text("smtpPassword"));
+    
+    public static final ConfigurationProperty<Boolean> SMTP_SSL_ENABLED = PROPERTIES.add(new ConfigurationProperty.Bool("smtpSSLEnabled"));
 
     public static final ConfigurationProperty<String> SYSTEM_FROM_EMAIL = PROPERTIES
                     .add(new ConfigurationProperty.Text("systemFromEmail"));

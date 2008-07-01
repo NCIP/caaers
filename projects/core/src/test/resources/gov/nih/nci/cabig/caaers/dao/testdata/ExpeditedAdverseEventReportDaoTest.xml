@@ -341,7 +341,9 @@
         report_id="-1"
         coded_primary_disease_site_id="-1"
         study_disease_id="-4"
-        diagnosis_date="2007-01-04"
+        diagnosis_year="2007"
+        diagnosis_month="01"
+        diagnosis_day="04"
         />
 
     <ANATOMIC_SITES id="-33" name="Rolling" category="Rock"/>

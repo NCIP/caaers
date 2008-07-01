@@ -44,7 +44,7 @@ public class AdverseEventHistoryTest extends AbstractTestCase {
 
         adverseEvent = new AdverseEvent();
         adverseEvent.setComments("comments1");
-        adverseEvent.setHospitalization(Hospitalization.HOSPITALIZATION);
+        adverseEvent.setHospitalization(Hospitalization.YES);
         adverseEvent.setDetailsForOther("details1");
         adverseEvent.setExpected(false);
         adverseEvent.setId(1);
@@ -54,7 +54,7 @@ public class AdverseEventHistoryTest extends AbstractTestCase {
 
         dataAuditEvent = new DataAuditEvent(adverseEvent, Operation.CREATE, dataAuditInfo);
 
-        DataAuditEventValue value1 = new DataAuditEventValue("hospitalization", null, Hospitalization.HOSPITALIZATION.toString());
+        DataAuditEventValue value1 = new DataAuditEventValue("hospitalization", null, Hospitalization.YES.toString());
         DataAuditEventValue value2 = new DataAuditEventValue("expected", null, "false");
         DataAuditEventValue value3 = new DataAuditEventValue("comments", null, "comments1");
         DataAuditEventValue value4 = new DataAuditEventValue("detailsForOther", null, "details1");

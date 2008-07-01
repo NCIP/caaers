@@ -372,9 +372,12 @@
             
             <xsl:if test="DiseaseHistory/diagnosisDate != ''">
             <DATE_OF_INITIAL_DIAGNOSIS>
+            	<!--
                 <xsl:call-template name="standard_date_yymm">
                     <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
                 </xsl:call-template>
+                -->
+                <xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/year"/>-<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/month"/>
                 <!--2002-09-->
             </DATE_OF_INITIAL_DIAGNOSIS>
             </xsl:if>

@@ -145,7 +145,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         newEvent.setGrade(Grade.MILD);
         newEvent.getAdverseEventCtcTerm().setCtcTerm(term);
         newEvent.setExpected(Boolean.FALSE);
-        newEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+        newEvent.setHospitalization(Hospitalization.NO);
         newEvent.setStartDate((new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
                         .getTime() + 600000)));
         ExpeditedAdverseEventReport newReport = Fixtures.createSavableExpeditedReport();

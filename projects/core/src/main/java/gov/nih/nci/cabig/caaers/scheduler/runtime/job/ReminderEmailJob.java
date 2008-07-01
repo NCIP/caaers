@@ -21,22 +21,17 @@ public class ReminderEmailJob extends ScheduledNotificationJobTemplate {
     public DeliveryStatus processNotification() {
         logger.debug("\n\r\n\r\nProceeding with emailing...[ \r\n\r\n" + String.valueOf(report)
                         + "\r\n]\r\n\r\n");
-        ScheduledEmailNotification sen = (ScheduledEmailNotification) notification;
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo(sen.getToAddress());
-        msg.setFrom(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
-        msg.setReplyTo(configuration.get(Configuration.SYSTEM_FROM_EMAIL));
-        msg.setSentDate(sen.getScheduledOn());
-        msg.setSubject(sen.getSubjectLine());
-        msg.setText(new String(sen.getBody()));
+        ScheduledEmailNotification scheduledNotification = (ScheduledEmailNotification) notification;
+        
+        SimpleMailMessage mailMsg = new SimpleMailMessage();
+        mailMsg.setTo(scheduledNotification.getToAddress());
+        mailMsg.setSentDate(scheduledNotification.getScheduledOn());
+        mailMsg.setSubject(scheduledNotification.getSubjectLine());
+        mailMsg.setText(new String(scheduledNotification.getBody()));
 
         try {
             JavaMailSenderImpl mailer = (JavaMailSenderImpl) applicationContext.getBean("mailer");
-            String username = configuration.get(Configuration.SMTP_USER);
-            if (StringUtils.isNotEmpty(username)) mailer.setUsername(username);
-            System.out.println("--- before send()");
-            mailer.send(msg);
-            System.out.println("---- after send ()");
+            mailer.send(mailMsg);
             return DeliveryStatus.DELIVERED;
         } catch (Exception ex) {
             ex.printStackTrace();

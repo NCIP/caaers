@@ -206,8 +206,9 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong primary disease site", -1, (int) actual.getCodedPrimaryDiseaseSite()
                         .getId());
         assertEquals("Wrong disease from study", -4, (int) actual.getMeddraStudyDisease().getId());
-        assertDayOfDate("Wrong diagnosis date", 2007, Calendar.JANUARY, 4, actual
-                        .getDiagnosisDate());
+        assertEquals("Wrong diagnosis date.DAY", new Integer(4), actual.getDiagnosisDate().getDay());
+        assertEquals("Wrong diagnosis date.Month", new Integer(1), actual.getDiagnosisDate().getMonth());
+        assertEquals("Wrong diagnosis date.Year", new Integer(2007), actual.getDiagnosisDate().getYear());
         assertEquals("Wrong number of metastatic disease sites", 1, actual
                         .getMetastaticDiseaseSites().size());
         assertEquals("Wrong metastatic disease site", -5, (int) actual.getMetastaticDiseaseSites()
@@ -233,7 +234,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 event0.setGrade(Grade.MILD);
                 event0.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event0.setExpected(Boolean.FALSE);
-                event0.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+                event0.setHospitalization(Hospitalization.NO);
                 event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
                                 .getTime() + 600000));
 
@@ -241,7 +242,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 event1.setGrade(Grade.SEVERE);
                 event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event1.setExpected(Boolean.FALSE);
-                event1.setHospitalization(Hospitalization.HOSPITALIZATION);
+                event1.setHospitalization(Hospitalization.YES);
 
                 report.getAdverseEvents().clear();
                 report.addAdverseEvent(event0);
@@ -260,7 +261,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 assertEquals("Wrong CTC term", 3012, (int) loadedEvent0.getAdverseEventCtcTerm()
                                 .getCtcTerm().getId());
                 assertNotNull("No report", loadedEvent0.getReport());
-                assertEquals("Wrong hospitalization", Hospitalization.PROLONGED_HOSPITALIZATION,
+                assertEquals("Wrong hospitalization", Hospitalization.NO,
                                 loadedEvent0.getHospitalization());
                 assertEquals("Wrong expectedness", Boolean.FALSE, loadedEvent0.getExpected());
                 assertNotNull("Second cascaded AE not found", loaded.getAdverseEvents().get(1));

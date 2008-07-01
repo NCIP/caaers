@@ -196,9 +196,10 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides({@AttributeOverride(name = "day", column = @Column(name = "birth_day")),
-    @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
-    @AttributeOverride(name = "year", column = @Column(name = "birth_year"))})
+    @AttributeOverrides( { @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "birth_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "birth_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "birth_zone")) })
     public DateValue getDateOfBirth() {
         return dateOfBirth;
     }

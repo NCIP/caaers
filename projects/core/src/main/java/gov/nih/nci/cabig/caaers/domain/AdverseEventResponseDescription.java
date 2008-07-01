@@ -43,6 +43,10 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Boolean eventAbate;
 
     private Boolean eventReappear;
+    
+    public AdverseEventResponseDescription() {
+    	retreated = Boolean.FALSE;
+    }
 
     // //// LOGIC
 

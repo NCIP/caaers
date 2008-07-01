@@ -370,6 +370,17 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public void setExpected(Boolean expected) {
         this.expected = expected;
     }
+    
+    /**
+     * This function is a purely fabricated one, which is used by Rules, to identify the expectedness. 
+     * 
+     * @return FALSE if null. Othwise the getExpected().
+     */
+    @Transient
+    public Boolean getExpectedness(){
+    	if(expected == null) return Boolean.FALSE;
+    	return expected;
+    }
 
     @Type(type = "attribution")
     @Column(name = "attribution_summary_code")
@@ -388,6 +399,9 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public void setComments(String comments) {
         this.comments = comments;
     }
+    
+    
+
 
     /**
      * Will return all the attributions.
@@ -434,6 +448,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         }
         return false;
     }
+
     
     public void setSolicited(boolean solicited) {
 		this.solicited = solicited;
@@ -443,4 +458,5 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public boolean isSolicited() {
 		return solicited;
 	}
+
 }

@@ -52,7 +52,7 @@ public class AdverseEventHistoryIntegrationTest extends CaaersDbTestCase {
         //now update the adverse event
         adverseEvent = adverseEventDao.getById(adverseEvent.getId());
         adverseEvent.setComments("comments2");
-        adverseEvent.setHospitalization(Hospitalization.PROLONGED_HOSPITALIZATION);
+        adverseEvent.setHospitalization(Hospitalization.YES);
         adverseEventDao.save(adverseEvent);
         interruptSession();
 

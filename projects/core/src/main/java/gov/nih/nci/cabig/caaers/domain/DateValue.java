@@ -1,12 +1,14 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 @Embeddable
-public class DateValue {
+public class DateValue implements Comparable<DateValue>{
     private String format = "%02d/%02d/%04d";
 
     private Integer day;
@@ -14,17 +16,19 @@ public class DateValue {
     private Integer month;
 
     private Integer year;
+    
+    private int zone = 0; //attribute kept to force Hibernate in instantiating this object
 
     public DateValue() {
-        this(0, 0, 2008);
+        this(null, null, null);
     }
 
     public DateValue(int year) {
-        this(0, 0, year);
+        this(null, null, year);
     }
 
     public DateValue(int month, int year) {
-        this(0, month, year);
+        this(null, month, year);
     }
 
     public DateValue(Integer day, Integer month, Integer year) {
@@ -65,7 +69,53 @@ public class DateValue {
     public void setYear(Integer year) {
         this.year = year;
     }
-
+    
+    public int getZone() {
+		return zone;
+	}
+    public void setZone(int zone) {
+		this.zone = zone;
+	}
+    
+    @Transient
+    public String getYearString(){
+    	if(year == null) return null;
+    	return String.format("%04d", year);
+    }
+    @Transient
+    public void setYearString(String year){
+    	if(year == null) 
+    		this.year = null;
+    	else
+    		this.year = new Integer(year);
+    }
+    
+    @Transient
+    public String getMonthString(){
+    	if(month == null) return null;
+    	return String.format("%02d", month);
+    }
+    @Transient
+    public void setMonthString(String month){
+    	if(month == null)
+    		this.month = null;
+    	else
+    		this.month = new Integer(month);
+    }
+    
+    @Transient
+    public String getDayString(){
+    	if(day == null) return null;
+    	return String.format("%02d", day);	
+    }
+    @Transient
+    public void setDayString(String day){
+    	if(day == null) 
+    		this.day = null;
+    	else
+    		this.day = new Integer(day);
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -93,15 +143,34 @@ public class DateValue {
         } else if (!year.equals(other.year)) return false;
         return true;
     }
+    
+    public int compareTo(DateValue o) {
+    	
+    	if(o == null) return 1;
+    	
+    	if(year == null && o.year != null) return -1;
+    	if(year != null && o.year == null) return 1;
+    	if((year != null && o.year != null) && (year.compareTo(o.year) != 0)) return year.compareTo(o.year);
+    	
+    	if(month == null && o.month != null) return -1;
+    	if(month != null && o.month == null) return 1;
+    	if( (month != null && o.month != null) && (month.compareTo(o.month) != 0)) return month.compareTo(o.month);
+    	
+    	if(day == null && o.day != null) return -1;
+    	if(day != null && o.day == null) return 1;
+    	if( (day != null && o.day != null) && (day.compareTo(o.day) != 0)) return day.compareTo(o.day);
+    	
+    	return 0;
+    }
 
     public String toString() {
-        return String.format(format, day == null ? 0 : day, month == null ? 0 : month,
-                year == null ? 0 : year);
+        return String.format(format, month == null ? 0 : month, day == null ? 0 : day,
+                        year == null ? 0 : year);
     }
 
     public Date toDate() {
         return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month,
-                day == null ? 0 : day).getTime();
+                        day == null ? 0 : day).getTime();
     }
 
     public boolean checkIfDateIsInValid() {
