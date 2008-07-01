@@ -140,13 +140,6 @@
       </p:studyAgent>
     </studyAgents>
     
-    <meddraStudyDiseases>
-    	<p:meddraStudyDisease>
-  			<meddraCode>meddraCode</meddraCode>
-		</p:meddraStudyDisease>
-    </meddraStudyDiseases>
-    
-    
     <ctepStudyDiseases>
       <p:ctepStudyDisease>
         <p:diseaseTerm>
