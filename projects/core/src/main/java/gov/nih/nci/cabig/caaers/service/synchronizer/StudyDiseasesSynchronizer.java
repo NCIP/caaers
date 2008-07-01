@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.synchronizer;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -24,7 +25,9 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 		if(xmlStudy.getCtepStudyDiseases() != null){
 			if(xmlStudy.getCtepStudyDiseases().size() == 0){
 				if(dbStudy.getCtepStudyDiseases() != null){
-					dbStudy.getCtepStudyDiseases().clear();
+					for(CtepStudyDisease ctepStudyDisease : dbStudy.getCtepStudyDiseases()){
+						dbStudy.getCtepStudyDiseases().remove(ctepStudyDisease);
+					}
 				}
 				return;
 			}
@@ -80,7 +83,9 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 		if(xmlStudy.getMeddraStudyDiseases() != null){
 			if(xmlStudy.getMeddraStudyDiseases().size() == 0){
 				if(dbStudy.getMeddraStudyDiseases() != null){
-					dbStudy.getMeddraStudyDiseases().clear();
+					for(MeddraStudyDisease meddraStudyDisease : dbStudy.getMeddraStudyDiseases()){
+						dbStudy.getMeddraStudyDiseases().remove(meddraStudyDisease);
+					}
 				}
 				return;
 			}

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service.synchronizer;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
@@ -13,11 +14,12 @@ public class StudyTherapySynchronizer implements Migrator<gov.nih.nci.cabig.caae
 	public void migrate(Study dbStudy, Study xmlStudy,
 			DomainObjectImportOutcome<Study> outcome) {
 		
-		
 		if(xmlStudy.getStudyTherapies() != null){
 			if(xmlStudy.getStudyTherapies().size() == 0){
 				if(dbStudy.getStudyTherapies() != null){
-					dbStudy.getStudyTherapies().clear();
+					for(StudyTherapy studyTherapy : dbStudy.getStudyTherapies()){
+						dbStudy.getStudyTherapies().remove(studyTherapy);
+					}
 				}
 				return;
 			}

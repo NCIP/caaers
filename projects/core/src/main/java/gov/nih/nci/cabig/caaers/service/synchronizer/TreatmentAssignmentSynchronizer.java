@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
@@ -20,7 +21,9 @@ public class TreatmentAssignmentSynchronizer implements Migrator<gov.nih.nci.cab
 		if(xmlStudy.getTreatmentAssignments() != null){
 			if(xmlStudy.getTreatmentAssignments().size() == 0){
 				if(dbStudy.getTreatmentAssignments() != null){
-					dbStudy.getTreatmentAssignments().clear();
+					for(TreatmentAssignment treatmentAssignment : dbStudy.getTreatmentAssignments()){
+						dbStudy.getTreatmentAssignments().remove(treatmentAssignment);
+					}
 				}
 				return;
 			}
