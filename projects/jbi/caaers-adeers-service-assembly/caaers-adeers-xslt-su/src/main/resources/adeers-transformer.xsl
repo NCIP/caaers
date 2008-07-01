@@ -167,7 +167,7 @@
 
         <xsl:if test="RadiationIntervention/administration != '' ">
             <RADIATION_INTERVENTION>
-                <xsl:choose>
+			  <xsl:choose>
                     <xsl:when test="RadiationIntervention/administration = 'BT_HDR' ">
                         <TYPE_OF_RADIATION_ADMINISTRATION>Brachytherapy HDR</TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:when>
@@ -201,7 +201,6 @@
                         </TYPE_OF_RADIATION_ADMINISTRATION>
                     </xsl:otherwise>
                 </xsl:choose>
-
 
                 <TOTAL_DOSE_TO_DATE>
                     <xsl:value-of select="RadiationIntervention/dosage"/>
@@ -563,9 +562,12 @@
 
             <xsl:if test="DiseaseHistory/diagnosisDate != ''">
                 <DATE_OF_INITIAL_DIAGNOSIS>
+                    <!--
                     <xsl:call-template name="standard_date_yymm">
                         <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
                     </xsl:call-template>
+                    -->
+                    <xsl:value-of select="DiseaseHistory/diagnosisDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="DiseaseHistory/diagnosisDate/month"/></xsl:call-template>
                     <!--2002-09-->
                 </DATE_OF_INITIAL_DIAGNOSIS>
             </xsl:if>
@@ -586,17 +588,25 @@
                 </xsl:if>
                 <xsl:if test="startDate != ''">
                     <THERAPY_START_DATE>
+                        <!--
                         <xsl:call-template name="standard_date_yymm">
                             <xsl:with-param name="date" select="startDate"/>
                         </xsl:call-template>
+                        -->
+                        <xsl:value-of select="startDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="startDate/month"/></xsl:call-template>
+                        
                         <!--2007-09-->
                     </THERAPY_START_DATE>
                 </xsl:if>
                 <xsl:if test="endDate != ''">
                     <THERAPY_END_DATE>
+                        <!--
                         <xsl:call-template name="standard_date_yymm">
                             <xsl:with-param name="date" select="endDate"/>
                         </xsl:call-template>
+                        -->
+                        <xsl:value-of select="endDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="endDate/month"/></xsl:call-template>
+                        
                         <!--2002-09-->
                     </THERAPY_END_DATE>
                 </xsl:if>
@@ -1077,6 +1087,17 @@
             <xsl:text>-</xsl:text>
             <!-- Month -->
             <xsl:value-of select="substring($date, 6, 2)"/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="date_padder">
+        <xsl:param name="num"/>
+        <xsl:if test="string-length($num) = 1">
+            <xsl:text>0</xsl:text>
+            <xsl:value-of select="$num"/>
+        </xsl:if>
+        <xsl:if test="string-length($num) > 1">
+            <xsl:value-of select="$num"/>
         </xsl:if>
     </xsl:template>
 </xsl:stylesheet>
