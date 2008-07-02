@@ -1,0 +1,253 @@
+<dataset>
+
+	<CTC_VERSIONS
+        id="2"
+        name="CTC v2.0"
+    />
+	<CTC_VERSIONS
+        id="3"
+        name="CTCAE v3.0"
+    />
+    <ORGANIZATIONS
+        id="-1001"
+        name="Cancer Therapy Evaluation Program"
+        grid_id="gridSite_1"/>
+        
+    <ORGANIZATIONS
+        id="-1002"
+        name="Wake Forest Comprehensive Cancer Center"
+        grid_id="gridSite_2"/>
+    	
+    <ORGANIZATIONS
+    id="-1003"
+    name="University of Jonathan Dean"
+    grid_id="gridSite_3"/>	
+    
+     <ORGANIZATIONS
+    id="-1004"
+    name="Sydney Hospital"
+    grid_id="gridSite_4"/>
+    
+    
+    <!-- Cancer Therapy Evaluation Program -->
+    <RESEARCH_STAFFS
+    	id="-2001"
+    	first_name="Mike"
+    	last_name="Conway"
+    	site_id="-1001"
+    	email_address="mike@ctep.com"
+    	phone_number="3013011111"/>
+    
+    <!-- University of Jonathan Dean -->	
+   <RESEARCH_STAFFS
+    	id="-2002"
+    	first_name="Allan"
+    	last_name="Border"
+    	site_id="-1003"
+    	email_address="allan.b@gmail.com"
+    	phone_number="3013011112"/>
+    	
+    <!-- University of Jonathan Dean -->	
+   <RESEARCH_STAFFS
+    	id="-2004"
+    	first_name="Roger"
+    	last_name="Keith"
+    	site_id="-1003"
+    	email_address="allan.b@gmail.com"
+    	phone_number="3013011113"/>
+    
+    <!-- Sydney Hospital -->	
+    <RESEARCH_STAFFS
+    	id="-2003"
+    	first_name="Monish"
+    	last_name="Dombla"
+    	site_id="-1004"
+    	email_address="monish.dombla@semanticbits.com"
+    	phone_number="3013011113"/>
+    
+    	
+    <INVESTIGATORS
+    	id="-3001"
+    	first_name="Gerry"
+    	last_name="Elbridge"
+    	email_address="ge@nci.com"
+    	phone_number="555-555-3333"/>
+    	
+    <INVESTIGATORS
+    	id="-3002"
+    	first_name="George"
+    	last_name="Clinton"
+    	email_address="gc@nci.com"
+    	phone_number="555-555-3333"/>
+    	
+    <INVESTIGATORS
+    	id="-3003"
+    	first_name="James"
+    	last_name="Madison"
+    	email_address="jm@testemail.com"
+    	phone_number="555-555-5555"/>
+    	
+    <INVESTIGATORS
+    	id="-3004"
+    	first_name="Aaron"
+    	last_name="Burr"
+    	email_address="ab@nci.com"
+    	phone_number="555-555-5555"/>
+    	
+    <INVESTIGATORS
+    	id="-3005"
+    	first_name="David"
+    	last_name="Algor"
+    	email_address="da@nci.com"
+    	phone_number="555-555-5555"/>
+   
+   <!--George  Clinton   to   Cancer Therapy Evaluation Program--> 	
+    <SITE_INVESTIGATORS
+    	id="-4001"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3002"/>
+    
+    <!--Gerry Elbridge   to  Cancer Therapy Evaluation Program-->	
+    <SITE_INVESTIGATORS
+    	id="-4002"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3001"/>
+    	
+    <!--David Algor   to  Cancer Therapy Evaluation Program-->	
+    <SITE_INVESTIGATORS
+    	id="-4005"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3005"/>
+    
+    <!--James Madison  to  Wake Forest Comprehensive Cancer Center -->	
+     <SITE_INVESTIGATORS
+    	id="-4003"
+    	status_code="ACT"
+    	site_id="-1002"
+    	investigator_id="-3003"/>
+    
+    
+    <!-- Aaron Burr   to  University of Jonathan Dean-->	
+    <SITE_INVESTIGATORS
+    	id="-4004"
+    	status_code="ACT"
+    	site_id="-1003"
+    	investigator_id="-3004"/> 
+    
+    
+    <DISEASE_CATEGORIES
+    	id="-5001"
+    	name="Bone Neoplasm"/>
+    
+    <DISEASE_CATEGORIES
+    	id="-5002"
+    	parent_id="-5001"
+    	name="Chondrosarcoma"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5003"
+    	parent_id=""
+    	name="CNS Neoplasm (Primary Tumor)"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5004"
+    	parent_id="-5003"
+    	name="Embryonal Tumors of the CNS"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5005"
+    	parent_id="-5001"
+    	name="Osteosarcoma"/>
+    	
+    <DISEASE_TERMS
+    	id="-6001"
+    	term="Chondrosarcoma"
+    	ctep_term="Chondrosarcoma"
+    	category_id="-5001"
+    	medra_code="10008737"/>
+    	
+    <DISEASE_TERMS
+    	id="-6002"
+    	term="Medulloblastoma"
+    	ctep_term="Medulloblastoma"
+    	category_id="-5004"
+    	medra_code="10027107"/>
+    	
+    <DISEASE_TERMS
+    	id="-6003"
+    	term="Osteosarcoma"
+    	ctep_term="Osteosarcoma"
+    	category_id="-5005"
+    	medra_code="10031291"/>
+    	
+    <MEDDRA_VERSIONS
+    	id="9"
+    	name="MedDRA v9"/>
+    	
+    <MEDDRA_LLT
+    	id="10000002"
+    	meddra_code="10000002"/>
+    	
+    <MEDDRA_LLT
+		id="10000003"
+		meddra_code="10000003"/>
+		
+    <MEDDRA_LLT
+		id="10000004"
+		meddra_code="10000004"/>
+		
+	<AGENTS
+		id="-7001"
+		name="1-Aminocyclopentane"
+		nsc="1026"/>
+		
+	<INVESTIGATIONAL_NEW_DRUGS
+		id="-8001"
+		ind_number="-111"
+		grid_id="IND111"/>
+		
+	<INVESTIGATIONAL_NEW_DRUGS
+		id="-8002"
+		ind_number="-222"
+		grid_id="IND222"/>
+		
+	<IND_HOLDERS 
+		id="-9001"
+		dtype="ORG" 
+		org_id="-1001"
+		drug_id="-8001" />
+   	
+   	<IND_HOLDERS
+   		 id="-9002"
+   		 dtype="ORG"
+   		 org_id="-1001"
+   		 drug_id="-8002" />
+   	
+   	
+   	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />
+    <ind_holders />
+	<study_agent_inds />
+	<research_staffs />
+	<disease_terminologies/>
+	<epochs/>
+	<identifiers/>
+	<report_format/>
+	<study_amendments/>
+	<study_therapy/>
+	<treatment_assignment/>
+	<ae_routine_reports/>
+	<arms/>
+	<treatments/>
+	<adverse_events/>
+	<course_agents/>
+	<solicited_events/>
+	<ae_attributions/>
+	<ae_terms/>
+	<studies/>
+   		 
+   
+</dataset>
