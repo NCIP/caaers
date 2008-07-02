@@ -34,16 +34,13 @@
  	
  	//function displayReportingPeriodPopup(participantId, studyId, reportingPeriodId){
  	function displayReportingPeriodPopup(reportingPeriodId){
- 		var participantId = ${command.assignment.participant.id}
- 		var studyId = ${command.assignment.studySite.study.id}
- 		var params = '';
+ 		var url='';
  		if(reportingPeriodId == '')
- 			params = "?studyId=" + studyId + "&participantId=" + participantId;
+ 			url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&subview="/>";
  		else
- 			params = "?studyId=" + studyId + "&participantId=" + participantId + "&id=" + reportingPeriodId;
- 		var url = "https://localhost:8443/caaers/pages/ae/createReportingPeriod" + params + "&subview=";
- 		
-		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
+ 			url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=${command.adverseEventReportingPeriod.id}&subview="/>";
+
+ 		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
 			url: url, top: 0, left: 300});
 		win.show(true);
 	}
