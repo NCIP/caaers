@@ -3,25 +3,18 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.service.migrator.IdentifierMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantMigrator;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyParticipantAssignmentMigrator;
+import static org.easymock.EasyMock.isA;
+import org.easymock.classextension.EasyMock;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.easymock.classextension.EasyMock;
 
 /**
  * @author Biju Joseph
@@ -55,7 +48,7 @@ public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
         migrators.add(idMigrator);
         migrators.add(spaMigrator);
         ParticipantMigrator migrator = new ParticipantMigrator(migrators);
-        
+
         spaMigrator.setStudySiteDao(studySiteDao);
         participantImportService.setParticipantRepository(participantRepository);
         idMigrator.setOrganizationDao(organizationDao);
@@ -91,7 +84,10 @@ public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
         xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
         xstreamParticipant.addIdentifier(systemAssignedIdentifier);
 
-        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        List<Organization> organizations = new ArrayList<Organization>();
+        organizations.add(organization);
+
+        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
         EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(true);
         replayMocks();
 
@@ -116,7 +112,10 @@ public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
         xstreamParticipant.addIdentifier(organizationAssignedIdentifier);
         xstreamParticipant.addIdentifier(systemAssignedIdentifier);
 
-        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        List<Organization> organizations = new ArrayList<Organization>();
+        organizations.add(organization);
+
+        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
         EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
         replayMocks();
 
@@ -160,7 +159,10 @@ public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
         EasyMock.expect(studySiteDao.matchByStudyAndOrg(organization.getName(), organizationAssignedIdentifier.getValue(),
                 organizationAssignedIdentifier.getType())).andReturn(studySite);
         EasyMock.expect(participantRepository.checkIfParticipantExistsForGivenIdentifiers(xstreamParticipant.getIdentifiers())).andReturn(false);
-        EasyMock.expect(organizationDao.getByName(organization.getName())).andReturn(organization);
+        List<Organization> organizations = new ArrayList<Organization>();
+        organizations.add(organization);
+
+        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
 
         replayMocks();
 
