@@ -31,7 +31,7 @@ import org.springframework.context.ApplicationContextAware;
 public class StudyProcessorImpl implements StudyProcessor,ApplicationContextAware {
 	
 	
-private static Log logger = LogFactory.getLog(StudyProcessor.class);
+private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	
 	//Injected through spring
 	private StudyImportServiceImpl studyImportService;
@@ -113,17 +113,20 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 	}
 	
 	public void createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		
 		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("test-default-user", "ROLE_caaers_super_user");		
-		System.out.println("Inside createStudy ");
-		System.out.println("Study Short Title --- " + studyDto.getShortTitle());
-		System.out.println("Study Long Title --- " + studyDto.getLongTitle());
+		switchUser("test-default-user", "ROLE_caaers_super_user");
+		logger.info("Swith User Done ");
+		logger.info("Inside createStudy ");
+		logger.info("Study Short Title --- " + studyDto.getShortTitle());
+		logger.info("Study Long Title --- " + studyDto.getLongTitle());
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
 		
 		//Convert JAXB StudyType to Domain Study
 		try{
+			logger.info("Converting StudyDto to Study");
 			studyConverter.convertStudyDtoToStudyDomain(studyDto, study);
 			logger.info("StudyDto converted to Study");
 		}catch(CaaersSystemException caEX){
@@ -135,12 +138,13 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 		if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			//Check if Study Exists
-			Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
-			if(dbStudy != null){
-				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-			}
+//			Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
+//			if(dbStudy != null){
+//				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
+//			}
 			if(studyImportOutcome.isSavable()){
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
+				logger.info("Study Created");
 			}
 		}
 		enableAuthorization(authorizationOnByDefault);
@@ -152,9 +156,9 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 	public void updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("test-default-user", "ROLE_caaers_super_user");
-		System.out.println("Inside updateStudy ");
-		System.out.println("Study Short Title --- " + studyDto.getShortTitle());
-		System.out.println("Study Long Title --- " + studyDto.getLongTitle());
+		logger.info("Inside updateStudy ");
+		logger.info("Study Short Title --- " + studyDto.getShortTitle());
+		logger.info("Study Long Title --- " + studyDto.getLongTitle());
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
@@ -178,6 +182,7 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
 					studyImportOutcome.setImportedDomainObject(dbStudy);
 					studyDao.save(studyImportOutcome.getImportedDomainObject());
+					logger.info("Study Updated");
 				}
 			}
 		}
@@ -195,8 +200,8 @@ private static Log logger = LogFactory.getLog(StudyProcessor.class);
 		Study dbStudy = null;
 		for (Identifier identifier : importedStudy.getIdentifiers()) {
             dbStudy = studyDao.getStudyDesignByIdentifier(identifier);
-            studyDao.evict(dbStudy);
             if(dbStudy != null){
+            	studyDao.evict(dbStudy);
             	break;
             }
         }
