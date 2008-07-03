@@ -37,7 +37,7 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 		super.setUp();
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
 		unmarshaller = jaxbContext.createUnmarshaller();
-		svc = (InvestigatorMigratorService)getDeployedApplicationContext().getBean("InvestigatorMigratorService");
+		svc = (InvestigatorMigratorService)getDeployedApplicationContext().getBean("investigatorMigratorService");
 		investigatorDao = (InvestigatorDao)getDeployedApplicationContext().getBean("investigatorDao");
 		/*
 		updatedInvestigator = fetchInvestigator("nci_identifier");
@@ -71,12 +71,14 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 	public void testInvestigatorSave(){
 		try {
 			//Create or update , whatever it is new data will be populated ..
-			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateInvestigatorTest.xml")[0].getFile();
+			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml");
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveInvestigator(staff);	
 			
 			//update with modified data ..
-			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/UpdateInvestigatorTest.xml")[0].getFile();
+			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/UpdateInvestigatorTest.xml");
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateInvestigatorTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveInvestigator(staff);
 			
