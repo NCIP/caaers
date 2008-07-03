@@ -1,0 +1,105 @@
+<dataset>
+	 <studies
+        id="1001"
+        short_title="That one"
+        load_status="1"
+        />
+        
+     <study_organizations
+        id="1003"
+        site_id="1002"
+        study_id="1001"
+        type="SST"
+        />
+        
+    <organizations
+        id="1002"
+        name="New Site"/> 
+        
+    <participants
+        id="1004"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+
+    <participant_assignments
+        id="-14"
+        study_site_id="1003"
+        participant_id="1004"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+        
+     <epochs
+     	id="-1010"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="1001"
+     	/>
+     	
+     <treatment_assignment
+     	id="1001"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="1001"
+     	/>
+     	 
+	<ae_reporting_periods
+		id="1001"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-14"
+		epoch_id="-1010"
+		/>
+		
+	 <ADVERSE_EVENTS
+        id="-70"
+        reporting_period_id="1001"
+        list_index="0"
+        />
+        
+    <ADVERSE_EVENTS
+        id="-11"
+        reporting_period_id="1001"
+        reporting_period_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-11"
+    	adverse_event_id="-70"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+    	
+     <AE_TERMS
+    	id="-12"
+    	adverse_event_id="-11"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>   
+		
+	 <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="1001"
+   		/>	
+   		
+   	<DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="1001"
+    	/>
+	 <ind_holders />
+</dataset>
