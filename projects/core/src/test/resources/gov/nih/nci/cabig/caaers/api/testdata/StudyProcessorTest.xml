@@ -3,21 +3,25 @@
     <ORGANIZATIONS
         id="-1001"
         name="Cancer Therapy Evaluation Program"
+        nci_institute_code="CTEP"
         grid_id="gridSite_1"/>
         
     <ORGANIZATIONS
         id="-1002"
         name="Wake Forest Comprehensive Cancer Center"
+        nci_institute_code="WAKE"
         grid_id="gridSite_2"/>
     	
     <ORGANIZATIONS
     id="-1003"
-    name="University of Jonathan Dean"
+    name="Duke University Comprehensive Cancer Center"
+    nci_institute_code="DUKE"
     grid_id="gridSite_3"/>	
     
      <ORGANIZATIONS
     id="-1004"
-    name="Sydney Hospital"
+    name="Division of Cancer Prevention"
+    nci_institute_code="DCP"
     grid_id="gridSite_4"/>
     
     
