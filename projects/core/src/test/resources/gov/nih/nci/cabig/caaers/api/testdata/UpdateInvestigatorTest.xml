@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns1:staff xmlns:ns1="http://schema.integration.caaers.cabig.nci.nih.gov/investigator"
+    xmlns:ns2="http://schema.integration.caaers.cabig.nci.nih.gov/common"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ns1:investigator>
+        <firstName>John</firstName>
+        <lastName>Doe</lastName>
+        <middleName>H</middleName>
+        <emailAddress>jd@nci.org</emailAddress>
+        <faxNumber>101-202-3333</faxNumber>
+        <nciIdentifier>sr-1</nciIdentifier>
+        <phoneNumber>908-098-0099</phoneNumber>
+
+        <ns1:siteInvestigator>
+            <emailAddress>jd@dcp.org</emailAddress>
+            <statusCode>Active</statusCode>
+            <statusDate>need to fix</statusDate>
+            <ns2:organizationRef>
+                <nciInstituteCode>DCP</nciInstituteCode>
+            </ns2:organizationRef>
+        </ns1:siteInvestigator>
+        <ns1:siteInvestigator>
+            <emailAddress>jb@nci.gov</emailAddress>
+            <statusCode>Active</statusCode>
+            <statusDate>statusDate2</statusDate>
+            <ns2:organizationRef>
+                <nciInstituteCode>NCI</nciInstituteCode>
+            </ns2:organizationRef>
+        </ns1:siteInvestigator>
+    </ns1:investigator>
+
+    <ns1:investigator>
+        <firstName>Kate</firstName>
+        <lastName>Hudson</lastName>
+        <middleName>H</middleName>
+        <emailAddress>kh@nci.org</emailAddress>
+        <faxNumber>870-098-0000</faxNumber>
+        <nciIdentifier>nci-id-2</nciIdentifier>
+        <phoneNumber>908-098-0000</phoneNumber>
+
+        <ns1:siteInvestigator>
+            <emailAddress>kh@dcp.org</emailAddress>
+            <statusCode>Active</statusCode>
+            <statusDate>need to fix</statusDate>
+            <ns2:organizationRef>
+                <nciInstituteCode>NCI</nciInstituteCode>
+            </ns2:organizationRef>
+        </ns1:siteInvestigator>
+        <ns1:siteInvestigator>
+            <emailAddress>khudson@nci.gov</emailAddress>
+            <statusCode>Active</statusCode>
+            <statusDate>statusDate2</statusDate>
+            <ns2:organizationRef>
+                <nciInstituteCode>DCP</nciInstituteCode>
+            </ns2:organizationRef>
+        </ns1:siteInvestigator>
+    </ns1:investigator>
+</ns1:staff>
