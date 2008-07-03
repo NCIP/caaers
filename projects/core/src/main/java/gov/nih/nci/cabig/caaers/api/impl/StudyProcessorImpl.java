@@ -115,7 +115,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	public void createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		
 		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("test-default-user", "ROLE_caaers_super_user");
+		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		logger.info("Swith User Done ");
 		logger.info("Inside createStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
@@ -138,10 +138,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			//Check if Study Exists
-//			Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
-//			if(dbStudy != null){
-//				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
-//			}
+			Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
+			if(dbStudy != null){
+				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
+			}
 			if(studyImportOutcome.isSavable()){
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
 				logger.info("Study Created");
@@ -155,7 +155,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 
 	public void updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
 		boolean authorizationOnByDefault = enableAuthorization(false);
-		switchUser("test-default-user", "ROLE_caaers_super_user");
+		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		logger.info("Inside updateStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
@@ -201,9 +201,9 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		for (Identifier identifier : importedStudy.getIdentifiers()) {
             dbStudy = studyDao.getStudyDesignByIdentifier(identifier);
             if(dbStudy != null){
-            	studyDao.evict(dbStudy);
             	break;
             }
+            studyDao.evict(dbStudy);
         }
 		return dbStudy;
 	}
