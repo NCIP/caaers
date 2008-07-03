@@ -32,7 +32,7 @@ public class SecurityTestUtils {
     }
 
     public static void switchToSuperuser() {
-        switchUser("test-default-user", "ROLE_caaers_super_user");
+        switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
     }
 
     public static void switchToNoUser() {
