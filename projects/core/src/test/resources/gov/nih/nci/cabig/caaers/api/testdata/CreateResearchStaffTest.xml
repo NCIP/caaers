@@ -26,42 +26,7 @@
             <nciInstituteCode>DCP</nciInstituteCode>
         </ns1:organizationRef>
     </ns2:researchStaff>
-    <ns2:researchStaff>
-        <firstName>Jack</firstName>
-        <lastName>Speed</lastName>
-        <middleName>F</middleName>
-        <emailAddress>js@test.edu</emailAddress>
-        <faxNumber>230-980-0983</faxNumber>
-        <nciIdentifier>NCI3</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>NCIs</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
-    <ns2:researchStaff>
-        <firstName>Ed</firstName>
-        <lastName>Nortan</lastName>
-        <middleName>F</middleName>
-        <emailAddress>js@test.edu</emailAddress>
-        <faxNumber>230-980-0983</faxNumber>
-        <nciIdentifier>NCI3</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>NCIs</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
-    <ns2:researchStaff>
-        <firstName>Peter</firstName>
-        <lastName>Parker</lastName>
-        <middleName>F</middleName>
-        <emailAddress>js@test.edu</emailAddress>
-        <faxNumber>230-980-0983</faxNumber>
-        <nciIdentifier>NCI3</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>NCIs</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
+
     <ns2:researchStaff>
         <firstName>Mary</firstName>
         <lastName>Jane</lastName>
