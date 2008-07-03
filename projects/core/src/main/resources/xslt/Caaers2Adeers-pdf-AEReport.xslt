@@ -402,9 +402,9 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>/
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>/
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>					  		
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>					  		
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -603,8 +603,7 @@
 			   						</xsl:call-template>	
 			   					-->
 			   						
-			   						<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/month"/>/
-									<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/year"/>					  		
+			   						<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>					  		
 		
 						  		</fo:block>      							
       						</fo:table-cell>
@@ -1472,16 +1471,23 @@
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
+									<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/dayString"/>/<xsl:value-of select="startDate/yearString"/>
+									<!--
 									<xsl:call-template name="standard_date">
 									        <xsl:with-param name="date" select="startDate"/>
 			   						</xsl:call-template>
+			   						-->
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		<!--
 									<xsl:call-template name="standard_date">
 									        <xsl:with-param name="date" select="endDate"/>
 			   						</xsl:call-template>
+			   						-->
+			   						<xsl:value-of select="endDate/monthString"/>/<xsl:value-of select="endDate/dayString"/>/<xsl:value-of select="endDate/yearString"/>
+			   						
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
