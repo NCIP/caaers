@@ -1,13 +1,5 @@
 <dataset>
-
-	<CTC_VERSIONS
-        id="2"
-        name="CTC v2.0"
-    />
-	<CTC_VERSIONS
-        id="3"
-        name="CTCAE v3.0"
-    />
+    
     <ORGANIZATIONS
         id="-1001"
         name="Cancer Therapy Evaluation Program"
@@ -247,7 +239,7 @@
 	<solicited_events/>
 	<ae_attributions/>
 	<ae_terms/>
-	<studies/>
-   		 
+
+    	 
    
 </dataset>

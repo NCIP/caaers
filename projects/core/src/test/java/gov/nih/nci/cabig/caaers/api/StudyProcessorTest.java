@@ -2,25 +2,8 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
@@ -29,6 +12,14 @@ import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Test case to test convrsion of jaxb study object to domain study object and call to studymigrator with study domain object.
@@ -54,7 +45,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 		super.setUp();
 		
 		authorizationOnByDefault = enableAuthorization(false);
-		switchUser("test-default-user", "ROLE_caaers_super_user");
+		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 		unmarshaller = jaxbContext.createUnmarshaller();
@@ -134,7 +125,8 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 			fail("Error running test: " + e.getMessage());
 		}finally{
 			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
+                log.error("Saurabh deleteing study");
+                studyDao.delete(updatedStudy);
 			}
 		}
 	}
