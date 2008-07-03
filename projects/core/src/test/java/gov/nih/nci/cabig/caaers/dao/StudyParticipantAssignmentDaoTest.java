@@ -22,6 +22,7 @@ public class StudyParticipantAssignmentDaoTest extends DaoTestCase<StudyParticip
         assertEquals("Wrong studySite", -10, (int) assignment.getStudySite().getId());
         assertEquals("Wrong participant", -5, (int) assignment.getParticipant().getId());
         assertEquals("Wrong number of AE reports", 2, assignment.getAeReports().size());
+        assertEquals("Wrong number of AE reporting periods", 2, assignment.getReportingPeriods().size());
     }
 
     public void testGetFromParticipantAndStudy() throws Exception {

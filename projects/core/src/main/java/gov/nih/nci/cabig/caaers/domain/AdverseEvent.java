@@ -125,7 +125,9 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         this.routineReport = routineReport;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "reporting_period_id", nullable = true)
+    @Cascade(value = { CascadeType.LOCK, CascadeType.EVICT })
     public AdverseEventReportingPeriod getReportingPeriod() {
     	return reportingPeriod;
     }

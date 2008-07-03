@@ -66,6 +66,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	//LOGIC
 	public void addAdverseEvent(AdverseEvent adverseEvent){
     	getAdverseEvents().add(adverseEvent);
+    	adverseEvent.setReportingPeriod(this);
     }
 	
 	// BEAN PROPERTIES
@@ -118,8 +119,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany(mappedBy = "reportingPeriod")
-    @JoinColumn(name = "reporting_period_id", nullable = true)
-    @IndexColumn(name = "routine_list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;

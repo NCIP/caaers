@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -66,6 +67,12 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
 
         assertEquals("Wrong con med attrib 1", -78, (int) loaded
                         .getConcomitantMedicationAttributions().get(1).getCause().getId());
+    }
+    
+    public void testLoadAdverseEventReportingPeriod() throws Exception {
+    	AdverseEvent loaded = getDao().getById(-2);
+    	AdverseEventReportingPeriod reportingPeriod = loaded.getReportingPeriod();
+    	assertEquals("Wrong ReportingPeriod", 1001, (int)reportingPeriod.getId());
     }
 
     public void testLoadOtherCauseAttributions() throws Exception {

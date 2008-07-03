@@ -18,6 +18,13 @@
    		ctc_id="3"
    		study_id="-4"
    		/> 		   
+    
+     <EPOCHS
+     	id="-1010"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="-4"
+     	/>
         
     <ORGANIZATIONS
         id="-1"
@@ -58,6 +65,14 @@
         date_of_enrollment="2004-09-30"
         load_status="0"
         />
+    <treatment_assignment
+     	id="-1003"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-4" />
+    <treatment_assignment
+     	id="-1004"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-4" />     	
     <AE_REPORTS
         id="-99"
         assignment_id="-13"
@@ -68,6 +83,24 @@
         assignment_id="-13"
         created_at="2004-12-31"
         />
+    <ae_reporting_periods
+		id="-1001"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object -1001"
+		treatment_assignment_id="-1003"
+		assignment_id="-13"
+		epoch_id="-1010"
+		/>
+	<ae_reporting_periods
+		id="-1002"
+		start_date="2008-05-25"
+		end_date="2008-05-27"
+		description="test object -1002"
+		treatment_assignment_id="-1004"
+		assignment_id="-13"
+		epoch_id="-1010"
+		/>
 
     <!-- Report's 1:1 dependent tables.  Ideally this wouldn't be necessary, since
         a report is never saved in the test, but hibernate's flushing one anyway. -->
