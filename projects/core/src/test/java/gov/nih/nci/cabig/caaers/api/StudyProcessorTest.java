@@ -45,7 +45,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 		super.setUp();
 		
 		authorizationOnByDefault = enableAuthorization(false);
-		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+		//switchUser("test-default-user", "ROLE_caaers_super_user");
 		
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 		unmarshaller = jaxbContext.createUnmarshaller();
@@ -64,7 +64,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         enableAuthorization(authorizationOnByDefault);
-		switchUser(null);
+		//switchUser(null);
     }
 	
 	
@@ -125,7 +125,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 			fail("Error running test: " + e.getMessage());
 		}finally{
 			if(updatedStudy != null){
-                log.error("Saurabh deleteing study");
                 studyDao.delete(updatedStudy);
 			}
 		}
