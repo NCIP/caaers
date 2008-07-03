@@ -70,12 +70,12 @@ public class ListValues {
         ListValues lov1 = new ListValues("", "---");
         ListValues lov2 = new ListValues("Male", "Male");
         ListValues lov3 = new ListValues("Female", "Female");
-        ListValues lov4 = new ListValues("Not Reported", "Not Reported");
+        //ListValues lov4 = new ListValues("Not Reported", "Not Reported");
         ListValues lov5 = new ListValues("Unknown", "Unknown");
         col.add(lov1);
         col.add(lov2);
         col.add(lov3);
-        col.add(lov4);
+        //col.add(lov4);
         col.add(lov5);
         return col;
     }

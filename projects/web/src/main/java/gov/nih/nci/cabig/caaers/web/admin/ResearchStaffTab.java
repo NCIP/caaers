@@ -112,11 +112,13 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone",
                         FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR);
         InputFieldAttributes.setSize(phoneNumberField, 30);
+        phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(phoneNumberField);
 
         InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
                         FieldValidator.PHONE_VALIDATOR);
         InputFieldAttributes.setSize(faxNumberField, 30);
+        faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(faxNumberField);
 
         InputFieldGroupMap map = new InputFieldGroupMap();

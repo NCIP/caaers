@@ -139,7 +139,7 @@
             <div class="row">
                 <div class="label">
                 	<input type="radio" id="description-type-default" value="default" name="treatmentDescriptionType" checked="checked"/>
-                    <tags:requiredIndicator/><tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
+                    <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
                 </div>
                 <div class="value">
                     <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[0]}" />
@@ -162,10 +162,13 @@
                    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[2]}"/>
                 </div>
             </div>
-            <tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
-            <tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
-            <tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>
-            <tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
+			<chrome:division title="Course information">
+				<tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
+            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
+            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>
+            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
+			</chrome:division>
+            
             
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">

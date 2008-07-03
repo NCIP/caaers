@@ -19,6 +19,7 @@
         </c:choose>
     </div>
     <div class="value"><c:choose><c:when test="${not empty value}"><jsp:invoke fragment="value" /></c:when><c:otherwise><tags:renderInputs field="${field}"/></c:otherwise></c:choose>
+	<tags:extraParams extraParam="${field.attributes.extraParams}" />
     <c:if test="${field.attributes.enableDelete}"><input type="button" name="delete" value="Delete" onClick="javascript:fireRowDelete(${deleteParams},'${id}','${cssClass}');" /></c:if>
         <c:if test="${not empty extraParams}">
             ${extraParams}

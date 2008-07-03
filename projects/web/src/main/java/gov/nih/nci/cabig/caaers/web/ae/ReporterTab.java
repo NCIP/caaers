@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -49,23 +50,28 @@ public class ReporterTab extends AeTab {
                         "Middle name", false);
         InputField lastNameField = InputFieldFactory.createTextField(base + "lastName",
                         "Last name", true);
-        InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", true);
+        InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", FieldValidator.NOT_NULL_VALIDATOR);
         InputFieldAttributes.setSize(emailField, 50);
 
+        
+        InputField phoneField =createContactField(base, ReportPerson.PHONE, FieldValidator.PHONE_VALIDATOR);
+        phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
+        InputField faxField = createContactField(base, ReportPerson.FAX, FieldValidator.PHONE_VALIDATOR);
+        faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
         creator.createFieldGroup(person, StringUtils.capitalize(person) + " details",
                         firstNameField, middleNameField, lastNameField, emailField,
-                        createContactField(base, ReportPerson.PHONE), createContactField(base,
-                                        ReportPerson.FAX));
+                        phoneField, faxField);
     }
 
-    private InputField createContactField(String base, String contactType) {
-        return createContactField(base, contactType, StringUtils.capitalize(contactType), false);
+    private InputField createContactField(String base, String contactType, FieldValidator... validators) {
+        return createContactField(base, contactType, StringUtils.capitalize(contactType));
     }
 
-    private InputField createContactField(String base, String contactType, String displayName,
-                    boolean required) {
+    private InputField createContactField(String base, String contactType, String displayName,FieldValidator... validators) {
         return InputFieldFactory.createTextField(base + "contactMechanisms[" + contactType + ']',
-                        displayName, required);
+                        displayName, validators);
     }
 
     @Override

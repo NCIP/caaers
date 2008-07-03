@@ -278,6 +278,9 @@ ul.tabs li {
   font-weight: bold;
 }
 
+span.phone-number{
+	 font-style: italic;
+}
 .error input {
   border-color: #c03;
 }
@@ -285,17 +288,25 @@ ul.tabs li {
   color: #c03;
 }
 
-ul.errors, p.errors {
+.errors {
+	color: #c03;
+}
+
+div.errors  {
   color: #c03;
+   font-size:11pt;
+   width: 800px;
+   border: 1px solid #c03;
+   margin: 40px;
+   padding: 0 0em 0.2em 1em;
 }
 ul.errors {
+	color: #c03;
     margin: 0; padding: 0 1em 0.2em 1em;
-
-    font-size:8pt;
-
 }
 ul.errors li {
   margin: 0 0.8em; padding: 0;
+  list-style-image: url('../images/redexclamation.gif'); 
 }
 
 /* The delete checkbox which may go in a box's h3s */

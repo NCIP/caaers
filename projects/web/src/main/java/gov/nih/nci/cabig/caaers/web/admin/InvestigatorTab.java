@@ -133,11 +133,13 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 
         InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone",
                         FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR);
+        phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         // InputFieldAttributes.setSize(phoneNumberField, 30);
         investigatorFieldGroup.getFields().add(phoneNumberField);
 
         InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
                         FieldValidator.PHONE_VALIDATOR);
+        faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
 

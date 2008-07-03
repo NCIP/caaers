@@ -63,8 +63,14 @@ public class SubmitterTab extends TabWithFields<ExpeditedAdverseEventInputComman
         group.getFields().add(
                         InputFieldFactory.createTextField(base + "lastName", "Last name", true));
         group.getFields().add(createContactField(base, ReportPerson.EMAIL, "E-mail address", true));
-        group.getFields().add(createContactField(base, ReportPerson.PHONE));
-        group.getFields().add(createContactField(base, ReportPerson.FAX));
+        InputField phoneField = createContactField(base, ReportPerson.PHONE);
+        phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        InputField faxField = createContactField(base, ReportPerson.FAX);
+        faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
+        
+        group.getFields().add(phoneField);
+        group.getFields().add(faxField);
+        
         return group;
     }
 

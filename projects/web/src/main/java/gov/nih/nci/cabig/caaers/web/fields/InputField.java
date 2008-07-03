@@ -45,6 +45,9 @@ public interface InputField {
     String DAY_REQUIRED = "ddRequired";
     String YEAR_REQUIRED = "yyRequired";
 
+    
+    String EXTRA_VALUE_PARAMS = "extraParams";
+    
     Category getCategory();
 
     /** @return the lowercased name of the value returned by {@link #getCategory} */
