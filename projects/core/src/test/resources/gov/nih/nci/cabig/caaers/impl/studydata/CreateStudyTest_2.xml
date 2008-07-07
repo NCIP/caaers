@@ -138,6 +138,20 @@
           </p:studyAgentINDAssociation>
         </studyAgentINDAssociations>
       </p:studyAgent>
+      <p:studyAgent>
+        <p:agent>
+          <name>17-Methyltestosterone</name>
+        </p:agent>
+        <indType>OTHER</indType>
+        <partOfLeadIND>false</partOfLeadIND>
+        <studyAgentINDAssociations>
+          <p:studyAgentINDAssociation>
+            <p:investigationalNewDrug>
+              <indNumber>111</indNumber>
+            </p:investigationalNewDrug>
+          </p:studyAgentINDAssociation>
+        </studyAgentINDAssociations>
+      </p:studyAgent>
     </studyAgents>
     
     <meddraStudyDiseases>
