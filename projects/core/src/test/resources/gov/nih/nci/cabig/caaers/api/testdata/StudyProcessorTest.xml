@@ -199,6 +199,11 @@
 		id="-7001"
 		name="1-Aminocyclopentane"
 		nsc="1026"/>
+	
+	<AGENTS
+		id="-7002"
+		name="17-Methyltestosterone"
+		nsc="9701"/>	
 		
 	<INVESTIGATIONAL_NEW_DRUGS
 		id="-8001"
