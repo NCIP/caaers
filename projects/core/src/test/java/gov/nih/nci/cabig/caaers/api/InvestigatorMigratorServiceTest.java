@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,35 +40,8 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 		unmarshaller = jaxbContext.createUnmarshaller();
 		svc = (InvestigatorMigratorService)getDeployedApplicationContext().getBean("investigatorMigratorService");
 		investigatorDao = (InvestigatorDao)getDeployedApplicationContext().getBean("investigatorDao");
-		/*
-		updatedInvestigator = fetchInvestigator("nci_identifier");
-		if(updatedInvestigator != null){
-			investigatorDao.delete(updatedInvestigator);
-		}
-		createInvestigator();
-		*/
 	}
 
-	/**
-     * Fetches the research staff from the DB
-     * 
-     * @param nciCode
-     * @return
-     */
-	Investigator fetchInvestigator(String nciIdentifier) {
-    	InvestigatorQuery invQuery = new InvestigatorQuery();
-        if (StringUtils.isNotEmpty(nciIdentifier)) {
-        	invQuery.filterByNciIdentifier(nciIdentifier);
-        	
-        }
-        List<Investigator> rsList = investigatorDao.searchInvestigator(invQuery);
-        
-        if (rsList == null || rsList.isEmpty()) {
-            return null;
-        }
-        return rsList.get(0);
-    }
-	
 	public void testInvestigatorSave(){
 		try {
 			//Create or update , whatever it is new data will be populated ..
@@ -96,6 +70,30 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 			assertEquals("870-098-0000", updatedInvestigator.getFaxNumber());
 			assertEquals("908-098-0000", updatedInvestigator.getPhoneNumber());
 			
+			//	update site investigators data ..
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/UpdateSiteInvestigatorsTest.xml")[0].getFile();
+			staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(xmlFile);
+			svc.saveInvestigator(staff);
+			
+			assertNotNull(updatedInvestigator);
+			updatedInvestigator = fetchInvestigator("sr-1");
+			
+			//get site investigators.
+			List<SiteInvestigator> siteInvestigators = updatedInvestigator.getSiteInvestigatorsInternal();
+			for (SiteInvestigator siteInvestigator:siteInvestigators) {
+				if (siteInvestigator.getEmailAddress().equals("jd@dcp.org")) {
+					assertEquals("NCI", siteInvestigator.getOrganization().getNciInstituteCode());
+				}
+				if (siteInvestigator.getEmailAddress().equals("jb@nci.gov")) {
+					assertEquals("CTEP", siteInvestigator.getOrganization().getNciInstituteCode());
+				}
+				//newly added site investigator
+				if (siteInvestigator.getEmailAddress().equals("new@nci.gov")) {
+					assertEquals("DCP", siteInvestigator.getOrganization().getNciInstituteCode());
+				}				
+			}
+						
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			fail("Error running test: " + e.getMessage());
@@ -104,6 +102,26 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 			fail("Error running test: " + e.getMessage());
 		}		
 	}
+
+	/**
+     * Fetches the research staff from the DB
+     * 
+     * @param nciCode
+     * @return
+     */
+	Investigator fetchInvestigator(String nciIdentifier) {
+    	InvestigatorQuery invQuery = new InvestigatorQuery();
+        if (StringUtils.isNotEmpty(nciIdentifier)) {
+        	invQuery.filterByNciIdentifier(nciIdentifier);
+        	
+        }
+        List<Investigator> rsList = investigatorDao.searchInvestigator(invQuery);
+        
+        if (rsList == null || rsList.isEmpty()) {
+            return null;
+        }
+        return rsList.get(0);
+    }
 	
 	private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
