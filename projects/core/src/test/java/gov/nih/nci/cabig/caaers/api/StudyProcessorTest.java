@@ -2,24 +2,28 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
  * Test case to test convrsion of jaxb study object to domain study object and call to studymigrator with study domain object.
@@ -45,7 +49,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 		super.setUp();
 		
 		authorizationOnByDefault = enableAuthorization(false);
-		//switchUser("test-default-user", "ROLE_caaers_super_user");
 		
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 		unmarshaller = jaxbContext.createUnmarshaller();
@@ -64,7 +67,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         enableAuthorization(authorizationOnByDefault);
-		//switchUser(null);
     }
 	
 	
@@ -978,6 +980,89 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 	}
 	
 	
+	/**
+	 * 1 StudyAgent "1-Aminocyclopentane" exists for Study "Study PSC" 
+	 * Tests the addition of an other StudyAgent "17-Methyltestosterone"
+	 */
+	public void testStudyUpdateOfStudyAgentAdd(){
+		
+		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+		
+		try {
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentAdd.xml")[0].getFile();
+			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
+			
+			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			
+			if(studyList!=null && !studyList.isEmpty()){
+				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+				while(iterator.hasNext()){
+					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+					studyProcessor.updateStudy(studyDto);
+				}
+			}
+			
+			updatedStudy = studyDao.getByShortTitle("Study_PCS");
+			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
+			
+			assertNotNull(updatedStudy);
+			assertEquals(2, updatedStudy.getStudyAgents().size());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		}finally{
+			if(updatedStudy != null){
+				studyDao.delete(updatedStudy);
+			}
+		}
+	}
+	
+	
+	/**
+	 * 2 StudyAgent "1-Aminocyclopentane" and "17-Methyltestosterone" exists for Study "Study PSC" 
+	 * Tests the removal of StudyAgent "17-Methyltestosterone"
+	 */
+	public void testStudyUpdateOfStudyAgentRemove(){
+		
+		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
+		
+		try {
+			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentRemove.xml")[0].getFile();
+			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
+			
+			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			
+			if(studyList!=null && !studyList.isEmpty()){
+				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+				while(iterator.hasNext()){
+					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+					studyProcessor.updateStudy(studyDto);
+				}
+			}
+			
+			updatedStudy = studyDao.getByShortTitle("Study_PCS");
+			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
+			
+			assertNotNull(updatedStudy);
+			assertEquals(1, updatedStudy.getStudyAgents().size());
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			fail("Error running test: " + e.getMessage());
+		}finally{
+			if(updatedStudy != null){
+				studyDao.delete(updatedStudy);
+			}
+		}
+	}
+	
 	private void createStudy(String studyXmlLocation){
 		
 		try {
@@ -1008,16 +1093,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);
         return resources;
-    }
-	
-	private void switchUser(String userName, String... roles) {
-        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            authorities[i] = new GrantedAuthorityImpl(roles[i]);
-        }
-        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
     }
 	
 	private boolean enableAuthorization(boolean on) {
