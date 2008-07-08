@@ -528,6 +528,9 @@
     <xs:simpleType name="StudyMeddraVersionType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="9"/>
+            <xs:enumeration value="10"/>
+            <xs:enumeration value="11"/>
+            <xs:enumeration value="12"/>
         </xs:restriction>
     </xs:simpleType>
     
@@ -587,5 +590,20 @@
            <xs:whiteSpace value="collapse"/> 
         </xs:restriction>
     </xs:simpleType>
+
+	
+	<xs:simpleType name="ResponseCodeType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+        </xs:restriction>    
+    </xs:simpleType>
+	
+    <xs:complexType name="StudyServiceResponse">
+    	<xs:sequence>
+    		<xs:element name="description" type="xs:string"></xs:element>
+    	</xs:sequence>
+    	<xs:attribute name="status" type="ResponseCodeType"></xs:attribute>
+    </xs:complexType>
     
 </xs:schema>
