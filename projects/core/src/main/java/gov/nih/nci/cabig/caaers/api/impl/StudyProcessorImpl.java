@@ -73,8 +73,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	}
 
 	/**
-	 * Method exisits only to be called from ImportController for testing
-	 * until the Webservice is up and running 
+	 * Method exisits only to be called from ImportController 
 	 * @param studyDto
 	 */
 	public DomainObjectImportOutcome<Study> processStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto){
