@@ -7,10 +7,14 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -25,6 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+
 
 @WebService(endpointInterface="gov.nih.nci.cabig.caaers.api.StudyProcessor", serviceName="StudyService")
 @SOAPBinding(parameterStyle=SOAPBinding.ParameterStyle.BARE)
@@ -111,8 +116,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return studyImportOutcome;
 	}
 	
-	public void createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
-		
+	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse studyServiceResponse = new gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		logger.info("Swith User Done ");
@@ -132,6 +137,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			studyImportOutcome = new DomainObjectImportOutcome<Study>();
 			logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
 			studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+			studyServiceResponse.setResponsecode("1");
+			studyServiceResponse.setDescription("StudyDto to StudyDomain Conversion Failed ");
 		}
 		
 		if(studyImportOutcome == null){
@@ -140,19 +147,32 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
 			if(dbStudy != null){
 				studyImportOutcome.addErrorMessage(study.getClass().getSimpleName() + " identifier already exists. ", Severity.ERROR);
+				studyServiceResponse.setResponsecode("1");
+				studyServiceResponse.setDescription("Study exists in caAERS, which is identifiable by one of the identifiers provided");
 			}
 			if(studyImportOutcome.isSavable()){
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
+				studyServiceResponse.setResponsecode("0");
+				studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 				logger.info("Study Created");
+			}else{
+				studyServiceResponse.setResponsecode("1");
+				studyServiceResponse.setDescription("Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
+				List<String> messages = new ArrayList<String>(); 
+				for(Message message : studyImportOutcome.getMessages()){
+					messages.add(message.getMessage());
+				}
+				studyServiceResponse.setMessage(messages);
 			}
 		}
 		enableAuthorization(authorizationOnByDefault);
 		switchUser(null);		
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
-
+		return studyServiceResponse;
 	}
 
-	public void updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse studyServiceResponse = new gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		logger.info("Inside updateStudy ");
@@ -170,24 +190,36 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			studyImportOutcome = new DomainObjectImportOutcome<Study>();
 			logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
 			studyImportOutcome.addErrorMessage("StudyDto to StudyDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+			studyServiceResponse.setResponsecode("1");
+			studyServiceResponse.setDescription("StudyDto to StudyDomain Conversion Failed ");
 		}
 		
 		if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
 			if(studyImportOutcome.isSavable()){
-				//Check if Study Exists
 				Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
 				if(dbStudy != null){
 					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
 					studyImportOutcome.setImportedDomainObject(dbStudy);
 					studyDao.save(studyImportOutcome.getImportedDomainObject());
+					studyServiceResponse.setResponsecode("0");
+					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
 					logger.info("Study Updated");
 				}
+			}else{
+				studyServiceResponse.setResponsecode("1");
+				studyServiceResponse.setDescription("Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be updated in caAERS");
+				List<String> messages = new ArrayList<String>(); 
+				for(Message message : studyImportOutcome.getMessages()){
+					messages.add(message.getMessage());
+				}
+				studyServiceResponse.setMessage(messages);
 			}
 		}
 		enableAuthorization(authorizationOnByDefault);
 		switchUser(null);
 		logger.info("Leaving updateStudy() in StudyProcessor");
+		return studyServiceResponse;
 	}
 	
 	/**
