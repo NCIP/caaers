@@ -99,14 +99,17 @@ public class ListValues {
         List<ListValues> col = new ArrayList<ListValues>();
         ListValues lov1 = new ListValues("", "---");
         ListValues lov2 = new ListValues("Asian", "Asian");
-        ListValues lov3 = new ListValues("White", "White");
-        ListValues lov4 = new ListValues("Black or African American", "Black or African American");
-        ListValues lov5 = new ListValues("American Indian or Alaska Native",
+        ListValues lov3 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
+        ListValues lov4 = new ListValues("White", "White");
+        ListValues lov5 = new ListValues("Black or African American", "Black or African American");
+        ListValues lov6 = new ListValues("American Indian or Alaska Native",
                         "American Indian or Alaska Native");
-        ListValues lov6 = new ListValues("Native Hawaiian or other Pacific Islander",
+        ListValues lov7 = new ListValues("Native Hawaiian or other Pacific Islander",
                         "Native Hawaiian or other Pacific Islander");
-        ListValues lov7 = new ListValues("Not Reported", "Not Reported");
-        ListValues lov8 = new ListValues("Unknown", "Unknown");
+        ListValues lov8 = new ListValues("Not Reported", "Not Reported");
+        ListValues lov9 = new ListValues("More than one race", "More than one race");
+        ListValues lov10 = new ListValues("Other", "Other");
+        ListValues lov11 = new ListValues("Unknown", "Unknown");
         col.add(lov1);
         col.add(lov2);
         col.add(lov3);
@@ -115,6 +118,9 @@ public class ListValues {
         col.add(lov6);
         col.add(lov7);
         col.add(lov8);
+        col.add(lov9);
+        col.add(lov10);
+        col.add(lov11);        
         return col;
     }
 
