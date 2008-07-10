@@ -508,11 +508,7 @@
                 </xsl:for-each>
                 -->
             <BIRTH_DATE>
-                <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/year"
-                    />-<xsl:if
-                    test="string-length(StudyParticipantAssignment/Participant/dateOfBirth/month) = 1"
-                    >0</xsl:if>
-                <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/month"/>
+                <xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>-<xsl:value-of select="StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>
                 <!--2002-09-->
             </BIRTH_DATE>
             <RACE>
@@ -567,7 +563,7 @@
                         <xsl:with-param name="date" select="DiseaseHistory/diagnosisDate"/>
                     </xsl:call-template>
                     -->
-                    <xsl:value-of select="DiseaseHistory/diagnosisDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="DiseaseHistory/diagnosisDate/month"/></xsl:call-template>
+                    <xsl:value-of select="DiseaseHistory/diagnosisDate/yearString"/>-<xsl:value-of select="DiseaseHistory/diagnosisDate/monthString"/>
                     <!--2002-09-->
                 </DATE_OF_INITIAL_DIAGNOSIS>
             </xsl:if>
@@ -593,7 +589,7 @@
                             <xsl:with-param name="date" select="startDate"/>
                         </xsl:call-template>
                         -->
-                        <xsl:value-of select="startDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="startDate/month"/></xsl:call-template>
+                        <xsl:value-of select="startDate/yearString"/>-<xsl:value-of select="startDate/monthString"/>
                         
                         <!--2007-09-->
                     </THERAPY_START_DATE>
@@ -605,7 +601,7 @@
                             <xsl:with-param name="date" select="endDate"/>
                         </xsl:call-template>
                         -->
-                        <xsl:value-of select="endDate/year"/>-<xsl:call-template name="date_padder"><xsl:with-param name="num" select="endDate/month"/></xsl:call-template>
+                        <xsl:value-of select="endDate/yearString"/>-<xsl:value-of select="endDate/monthString"/>
                         
                         <!--2002-09-->
                     </THERAPY_END_DATE>
