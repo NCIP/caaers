@@ -69,10 +69,10 @@ public class PatientInformationBusinessRulesTest extends AbstractBusinessRulesEx
 		aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite("OtherSite");
 		
 		System.out.println("b0: " + NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"));
-		System.out.println("b1" + StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other"));
+		System.out.println("b1" + StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other, specify"));
 		
 		System.out.println("a1 :"  + "null".equals(	NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite")));
-		System.out.println("a2 :" + StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other") );
+		System.out.println("a2 :" + StringUtils.equalsIgnoreCase(NullSafeFieldExtractor.extractStringField(aeReport,"diseaseHistory.codedPrimaryDiseaseSite.name"), "Other, specify") );
 		
 		System.out.println("Condition 2 :" + NullSafeFieldExtractor.extractField(aeReport,"diseaseHistory.otherPrimaryDiseaseSite")!= null);
 		
@@ -89,7 +89,7 @@ public class PatientInformationBusinessRulesTest extends AbstractBusinessRulesEx
 	public void testOtherPrimarySiteOfDisease_OtherCodedPrimaryDiseaseSite() throws Exception {
 		ExpeditedAdverseEventReport aeReport = createAEReport();
 		AnatomicSite site = new AnatomicSite();
-		site.setName("Other");
+		site.setName("Other, specify");
 		aeReport.getDiseaseHistory().setCodedPrimaryDiseaseSite(site);
 		aeReport.getDiseaseHistory().setOtherPrimaryDiseaseSite("OtherSite");
 		ValidationErrors errors = fireRules(aeReport);
@@ -311,7 +311,7 @@ public class PatientInformationBusinessRulesTest extends AbstractBusinessRulesEx
     public void testMetastaticDiseaseWithOnlySiteName_Is_Other() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         AnatomicSite diseaseSite = new AnatomicSite();
-        diseaseSite.setName("Other");
+        diseaseSite.setName("Other, specify");
         MetastaticDiseaseSite site = new MetastaticDiseaseSite();
         site.setCodedSite(diseaseSite);
         aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
@@ -330,8 +330,9 @@ public class PatientInformationBusinessRulesTest extends AbstractBusinessRulesEx
     public void testMetastaticDiseaseWithOnlySiteName_Is_OtherAndOtherSite() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         AnatomicSite diseaseSite = new AnatomicSite();
-        diseaseSite.setName("Other");
+        diseaseSite.setName("Other, specify");
         MetastaticDiseaseSite site = new MetastaticDiseaseSite();
+     
         site.setCodedSite(diseaseSite);
         site.setOtherSite("another");
         aeReport.getDiseaseHistory().addMetastaticDiseaseSite(site);
