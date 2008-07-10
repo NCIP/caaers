@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
@@ -124,6 +125,20 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 		super.onBindAndValidate(request, command, errors, page);
 		webControllerValidator.validate(request, command, errors);
 	}
+    
+    /**
+     * Supress validation, when we are on attribution page and is trying to go back.  
+     */
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request,Object command) {
+    	 if (super.suppressValidation(request, command)) return true;
+    	 EditExpeditedAdverseEventCommand aeCommand = (EditExpeditedAdverseEventCommand) command;
+    	  //special case, if it is attribution page, allow go back.
+         if(getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle().equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName())){
+        	 return super.getCurrentPage(request) > aeCommand.getNextPage();
+         }
+         return false;
+    }
     
     public Task getTask() {
         return task;

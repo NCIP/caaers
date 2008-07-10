@@ -27,7 +27,7 @@
     		width: 100%
 		}
 		.ctcCategoryValueDiv{width:660px; overflow:auto; height:40px; }
-		.ctcCategoryClass {  overflow:auto;	}
+		.ctcCategoryClass {  overflow:auto; width:620px;	}
 		 div.row div.label { width: 15em; } 
 		 div.row div.value, div.row div.extra { margin-left: 16em; }
 		 .help-content {

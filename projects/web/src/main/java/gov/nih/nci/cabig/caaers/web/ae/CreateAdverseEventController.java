@@ -1,14 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Rhett Sutphin
@@ -58,11 +59,19 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
     protected boolean displaySummary(int page) {
         return page != 0;
     }
-
+    /**
+     * Supress validation when :
+     *   - it is an ajax request
+     *   - report is not saved yet.
+     *   - attribution page, and is going back.
+     */
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         if (super.suppressValidation(request, command)) return true;
         CreateExpeditedAdverseEventCommand aeCommand = (CreateExpeditedAdverseEventCommand) command;
+        boolean attributionPage = getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle().equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName()); 
+        //special case, if it is attribution page, allow go back.
+        if(attributionPage) return  super.getCurrentPage(request) > aeCommand.getNextPage();
         if (aeCommand.getAeReport().getId() != null) return false;
         return super.getCurrentPage(request) > aeCommand.getNextPage();
     }

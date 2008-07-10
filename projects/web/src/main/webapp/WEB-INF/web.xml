@@ -215,5 +215,11 @@
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
+	
+	<!--  Session Timeout is set to 30 mts. -->
+	 <session-config>
+      <session-timeout>30</session-timeout> 
+    </session-config>
+	
 </web-app>
 	
