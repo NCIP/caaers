@@ -1178,7 +1178,7 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.DateValue">
     <map-to xml="DateValue"/>
-
+	<!--
     <field name="day" type="integer">
       <bind-xml name="day" node="element"/>
     </field>
@@ -1187,7 +1187,18 @@
     </field>
     <field name="year" type="integer">
       <bind-xml name="year" node="element"/>
-    </field>    
+    </field> 
+    -->
+    <field name="dayString" type="string">
+      <bind-xml name="dayString" node="element"/>
+    </field>
+    <field name="monthString" type="string">
+      <bind-xml name="monthString" node="element"/>
+    </field>
+    <field name="yearString" type="string">
+      <bind-xml name="yearString" node="element"/>
+    </field>     
+       
   </class>
   
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">

@@ -202,9 +202,9 @@
 								</fo:table-cell>
 								<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/month"/>/
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/day"/>/
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/year"/>					  		
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>					  		
 						  		</fo:block> 
 								</fo:table-cell>
 

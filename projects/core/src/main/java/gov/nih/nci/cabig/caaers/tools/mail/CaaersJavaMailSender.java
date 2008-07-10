@@ -31,7 +31,6 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     public void setHost(String host) {
         throw unsupported("host");
     }
-
     
    @Override
    public String getUsername() {
@@ -58,7 +57,6 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     public void setPassword(String password) {
         throw unsupported("password");
     }
-
     
     /**
      * We will check the configuration, and populate the propertes in the JavaMailSenderImpl bean.
@@ -80,7 +78,6 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
         if (!fromAddress.equals("")) message.setFrom(fromAddress);
         super.send(message);
     }
-
     
     @Override
     public void send(MimeMessage message) {
