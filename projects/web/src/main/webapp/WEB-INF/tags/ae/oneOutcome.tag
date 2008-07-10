@@ -15,22 +15,20 @@
       	disableCheckbox()
       	manageOtherOutcome()
       	manageDeathDate()
+    	 $('outcomes[3]1').observe("click" , function(e) { e.stop();})
       	Event.observe("outcomes[6]1", "change", function() { manageOtherOutcome() })
       	Event.observe("outcomes[1]1", "change", function() { manageDeathDate() })
       	
-      	new PeriodicalExecuter(checkOrUnCheckHospitalization, 3);
+      	$('aeReport.adverseEvents[0].hospitalization').observe("change" ,function(){checkOrUnCheckHospitalization();})
+      	checkOrUnCheckHospitalization();
 	  })   
 	  
 	  function checkOrUnCheckHospitalization(){
-	  	if ($('aeReport.adverseEvents[0].hospitalization').value == 'NONE' ){
-	  		$('outcomes[3]1').checked = false;
-	  	}else{
-	  		$('outcomes[3]1').checked = true;
-	  	}
+    	  $('outcomes[3]1').checked = $('aeReport.adverseEvents[0].hospitalization').value == 'YES';
 	  }
 	  
 	  function disableCheckbox(){
-      		$('outcomes[3]1').disabled="true";
+      		$('outcomes[3]1').disabled = true;
       }
       
       function manageDeathDate(){

@@ -146,9 +146,7 @@ public abstract class BasicsTab extends AeTab {
                         .getAeReport().getAdverseEvents().get(0).getHospitalization()
                         : null;
 
-        boolean isHospitalization = (hospitalization != null && hospitalization.getName().contains(
-                        OutcomeType.HOSPITALIZATION.getName())) ? true : false;
-
+        boolean isHospitalization = Hospitalization.YES.equals(hospitalization);
         command.getOutcomes().put("3", isHospitalization);
 
         ArrayList<String> codes = new ArrayList<String>();

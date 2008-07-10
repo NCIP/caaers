@@ -64,7 +64,8 @@ public class SubmitReportTab extends TabWithFields<ExpeditedAdverseEventInputCom
     }
 
     public boolean isEmailValid(String email) {
-        return EmailValidator.getInstance().isValid(email);
+    	String trimmedEmail = (email != null) ? email.trim() : email;
+        return EmailValidator.getInstance().isValid(trimmedEmail);
     }
 
 }
