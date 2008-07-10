@@ -38,6 +38,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private List<RoutineAdverseEventReport> aeRoutineReports;
     
     private List<AdverseEventReportingPeriod> reportingPeriods;
+    
+    private List<LabViewerLab> labViewerLabs;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
@@ -134,6 +136,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	this.reportingPeriods = reportingPeriods;
     }
 
+    @OneToMany(mappedBy = "assignment")
+	public List<LabViewerLab> getLabViewerLabs() {
+    	if(labViewerLabs == null) labViewerLabs = new ArrayList<LabViewerLab>();
+    	return labViewerLabs;
+	}
+
+	public void setLabViewerLabs(List<LabViewerLab> labViewerLabs) {
+		this.labViewerLabs = labViewerLabs;
+	}
+	
     public Integer getLoadStatus() {
         return loadStatus;
     }
@@ -183,5 +195,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
         this.studySubjectIdentifier = studySubjectIdentifier;
     }
+    
+
 
 }
