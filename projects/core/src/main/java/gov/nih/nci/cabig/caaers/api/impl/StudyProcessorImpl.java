@@ -205,6 +205,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 					studyServiceResponse.setResponsecode("0");
 					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" updated in caAERS");
 					logger.info("Study Updated");
+				}else{
+					studyServiceResponse.setResponsecode("1");
+					studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS");
+					studyImportOutcome.addErrorMessage("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" does not exist in caAERS" , DomainObjectImportOutcome.Severity.ERROR);
 				}
 			}else{
 				studyServiceResponse.setResponsecode("1");
