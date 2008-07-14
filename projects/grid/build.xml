@@ -1,97 +1,80 @@
-<project name="cptest" default="all">
+<project name="caaers-wsrf">
 
     <property environment="env"/>
-    <property name="globus.dir" value="${env.GLOBUS_LOCATION}"/>
-    <!--
-        <property name="cagrid.dir" value="${env.CAGRID_HOME}"/>
-    -->
-    <property name="cagrid.dir" value="/Users/joshua/dev/ew_cagrid_1_0/cagrid-1-0"/>
 
-    <patternset id="globus.jars">
+    <property name="war.dir" value="caaers-wsrf"/>
 
-        <include name="addressing-1.0.jar"/>
-        <include name="axis-url.jar"/>
-        <include name="axis.jar"/>
-        <include name="bootstrap.jar"/>
-        <include name="cog-axis.jar"/>
-        <include name="cog-jglobus.jar"/>
-        <include name="cog-tomcat.jar"/>
-        <include name="cog-url.jar"/>
-        <include name="commonj.jar"/>
-        <include name="commons-cli-2.0.jar"/>
-        <include name="commons-digester.jar"/>
-        <include name="commons-discovery.jar"/>
-        <include name="concurrent.jar"/>
-        <include name="cryptix-asn1.jar"/>
-        <include name="cryptix.jar"/>
-        <include name="cryptix32.jar"/>
-        <include name="globus_wsrf_mds_aggregator_stubs.jar"/>
-        <include name="globus_wsrf_mds_aggregator.jar"/>
-        <include name="globus_wsrf_servicegroup_stubs.jar"/>
-        <include name="globus_wsrf_servicegroup.jar"/>
-        <include name="jaxrpc.jar"/>
-        <include name="jce-jdk13-125.jar"/>
-        <include name="jgss.jar"/>
-        <include name="naming-java.jar"/>
-        <include name="puretls.jar"/>
-        <include name="saaj.jar"/>
-        <include name="wsdl4j.jar"/>
-        <include name="wsrf_core_stubs.jar"/>
-        <include name="wsrf_core.jar"/>
-        <include name="wss4j.jar"/>
-        <include name="xmlsec.jar"/>
+    <property name="deploy.lib.dir" value="${env.CATALINA_HOME}/webapps/wsrf/WEB-INF/lib"/>
 
-    </patternset>
-    
-    <target name="get-globus-jars">
-        <copy todir="lib/globus">
-            <fileset dir="${globus.dir}/lib">
-                <patternset refid="globus.jars"/>
+    <property name="psc-wsrf" value="psc-wsrf"/>
+
+    <target name="get-grid-war" depends="get-registration-consumer,get-study-consumer" description="creates a deployable WAR file of all PSC grid services">
+        <mkdir dir="${war.dir}"/>
+
+        <subant buildpath="${env.GLOBUS_LOCATION}" antfile="share/globus_wsrf_common/tomcat/tomcat.xml"
+                target="deployTomcat"
+                inheritAll="false">
+            <property name="tomcat.dir" value="${env.CATALINA_HOME}"></property>
+
+        </subant>
+
+        <copy todir="${war.dir}" overwrite="true">
+            <fileset dir="${env.CATALINA_HOME}/webapps/wsrf/">
             </fileset>
         </copy>
+
+        <property name="war-name" value="${psc-wsrf}.war"/>
+        <mkdir dir="dist"/>
+
+        <war basedir="${war.dir}" destfile="dist/${war-name}" webxml="${war.dir}/WEB-INF/web.xml">
+            <exclude name="WEB-INF/web.xml"/>
+            <metainf dir="dist">
+                <include name="context.xml"/>
+            </metainf>
+        </war>
+
     </target>
 
-    <target name="get-cagrid-jars">
-        <copy todir="lib/cagrid">
+    <target name="get-study-consumer">
 
-            <fileset dir="${cagrid.dir}/projects/authz/build">
-                <include name="caGrid-1.0-authz-common.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/authz/lib">
-                <include name="clm.jar"/>
-                <include name="csmapi.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/core/build/jars">
-                <include name="caGrid-1.0-core.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/gridgrouper/build/lib">
-                <include name="caGrid-1.0-gridgrouper-client.jar"/>
-                <include name="caGrid-1.0-gridgrouper-common.jar"/>
-                <include name="caGrid-1.0-gridgrouper-stubs.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/gridgrouper/lib">
-                <include name="grouper.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/metadata/build/lib">
-                <include name="caGrid-1.0-metadata-common.jar"/>
-                <include name="caGrid-1.0-metadata-security.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/projects/service-security-provider/build/lib">
-                <include name="caGrid-1.0-ServiceSecurityProvider-client.jar"/>
-                <include name="caGrid-1.0-ServiceSecurityProvider-common.jar"/>
-                <include name="caGrid-1.0-ServiceSecurityProvider-service.jar"/>
-                <include name="caGrid-1.0-ServiceSecurityProvider-stubs.jar"/>
-            </fileset>
-            <fileset dir="${cagrid.dir}/share/lib/mds">
-                <include name="globus_wsrf_mds_aggregator_stubs.jar"/>
-                <include name="globus_wsrf_mds_aggregator.jar"/>
-                <include name="globus_wsrf_servicegroup_stubs.jar"/>
-                <include name="globus_wsrf_servicegroup.jar"/>
-            </fileset>
-        </copy>
+        <subant buildpath="study-consumer" antfile="build.xml"
+                target="get-study-consumer"
+                inheritAll="false">
+
+        </subant>
+
     </target>
-    
-    <target name="get-jars" depends="get-globus-jars, get-cagrid-jars"/>
+<!--
+    <target name="get-ae">
 
-    <target name="all"/>
+        <subant buildpath="adverse-event-consumer" antfile="build.xml"
+                target="get-ae"
+                inheritAll="false">
+
+        </subant>
+
+    </target>
+-->
+
+    <target name="get-registration-consumer">
+
+        <subant buildpath="registration-consumer" antfile="build.xml"
+                target="get-registration-consumer"
+                inheritAll="false">
+
+        </subant>
+
+    </target>
+
+    <!--<target name="war" description="creates a deployable WAR file">-->
+        <!--<mkdir dir="dist"/>-->
+        <!--<property name="webapp.deploy-path" value="/${application-short-name}"/>-->
+        <!--<property name="webapp.context-file" value="dist/context.xml"/>-->
+        <!--<property name="webapp.context.docBase" value="${war-name}"/>-->
+        <!--<antcall target="webapp.create-context"/>-->
+        <!--<antcall target="webapp"/>-->
+
+    <!--</target>-->
+
+
 </project>
