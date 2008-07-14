@@ -120,7 +120,7 @@ public class ParticipantConverter {
 				identifier = new Identifier();
 				organization = new Organization();
 				
-				identifier.setType(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getType().name());
+				identifier.setType(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getType().value());
 				identifier.setValue(assignmentType.getStudySite().getStudy().getIdentifiers().getIdentifier().getValue());
 				study.addIdentifier(identifier);
 				
