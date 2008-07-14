@@ -55,13 +55,13 @@ public class ParticipantConverter {
 				}
 			}
 			if(participantDto.getGender() != null){
-				participant.setGender(participantDto.getGender().name());
+				participant.setGender(participantDto.getGender().value());
 			}
 			if(participantDto.getRace() != null){
-				participant.setRace(participantDto.getRace().name());
+				participant.setRace(participantDto.getRace().value());
 			}
 			if(participantDto.getEthnicity() != null){
-				participant.setEthnicity(participantDto.getEthnicity().name());
+				participant.setEthnicity(participantDto.getEthnicity().value());
 			}
 			
 			//Populate Identifiers
