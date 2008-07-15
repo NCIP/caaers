@@ -9,4 +9,6 @@ public interface CodedGrade {
     Integer getCode();
 
     String getDisplayName();
+    
+   String getName(); 
 }

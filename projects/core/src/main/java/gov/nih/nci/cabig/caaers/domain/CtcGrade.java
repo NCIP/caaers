@@ -62,4 +62,9 @@ public class CtcGrade extends AbstractImmutableDomainObject implements CodedGrad
     public void setText(String text) {
         this.text = text;
     }
+    
+    @Transient
+    public String getName(){
+    	return grade.getName();
+    }
 }
