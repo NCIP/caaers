@@ -1,0 +1,119 @@
+<dataset>
+
+	<ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	name="Duke University Comprehensive Cancer Center"
+    	description_text="DUKE"
+    	nci_institute_code="DEFAULT"/>
+
+    <ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	name="Northwestern University"
+    	description_text="NUCC"
+    	nci_institute_code="WAKE" />
+    	
+    <ORGANIZATIONS
+    	id="-1004"
+    	version="1"
+    	name="Mayo Clinic Hospital"
+    	description_text="MAYO"
+    	nci_institute_code="MAYO"/>
+	
+    <STUDIES
+        id="-1"
+        multi_institution_indicator="0"
+        short_title="Short Title"
+        long_title="Long Title"
+        description="Description"
+        grid_id=""
+        load_status="1"/>
+        
+    <STUDIES
+        id="-2"
+        multi_institution_indicator="0"
+        short_title="Shorter"
+        long_title="Lengthy Title" description="Different description"
+        grid_id=""
+        load_status="1"/>
+        
+    <IDENTIFIERS
+        id="-1"
+        stu_id="-1"
+        value="WFCCC001"
+        type="Coordinating Center Identifier"
+        organization_id="-1003"
+        discriminator_column="1"	/>
+        
+    <IDENTIFIERS
+        id="-2"
+        stu_id="-2"
+        value="E3200"
+        type="Coordinating Center Identifier"
+        organization_id="-1003"
+        discriminator_column="1"/>
+        
+    <STUDY_ORGANIZATIONS
+    	id="-1000"
+    	version="1"
+    	status_code="active"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-1"
+    	site_id="-1002"
+    	type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+    	id="-1001"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-1"
+    	site_id="-1003"
+    	type="SFS"/>
+    	
+    <STUDY_ORGANIZATIONS
+    	id="-1004"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-1"
+    	site_id="-1003"
+    	type="SCC"/>
+
+    <STUDY_ORGANIZATIONS
+    	id="-1002"
+    	version="1"
+    	status_code="active"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-2"
+    	site_id="-1003"
+    	type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+    	id="-1003"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-2"
+    	site_id="-1002"
+    	type="SFS"/>
+    	
+    <STUDY_ORGANIZATIONS
+    	id="-1005"
+    	version="1"
+    	status_code="inactive"
+    	start_date="01-01-2001"
+    	end_date="01-01-2002"
+    	study_id="-2"
+    	site_id="-1002"
+    	type="SCC"/>
+    	
+    <DISEASE_TERMINOLOGIES/>
+
+</dataset>
