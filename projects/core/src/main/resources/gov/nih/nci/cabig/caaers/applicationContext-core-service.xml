@@ -199,6 +199,10 @@ This applicationContext contains the definition of the concrete services
 	
 	<!-- caAERS Participant WebService -->
    <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
+   		<property name="participantImportServiceImpl" ref="participantImportService" />
+		<property name="participantConverter" ref="participantConverter" />
+		<property name="participantDao" ref="participantDao" />
+		<property name="participantSynchronizer" ref="participantSynchronizer" />
    </bean>	
 	
 	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
