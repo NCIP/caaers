@@ -103,6 +103,11 @@
         <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
         <url-pattern>/dwr/*</url-pattern>
     </filter-mapping>
+    
+        <filter-mapping>
+        <filter-name>OpenSessionInViewInterceptorFilter</filter-name>
+        <url-pattern>/services/*</url-pattern>
+    </filter-mapping>
 
     <filter>
         <filter-name>BeansInRequestFilter</filter-name>
