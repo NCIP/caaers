@@ -20,6 +20,7 @@ import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -33,6 +34,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -42,6 +44,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -56,20 +59,22 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private CtcTermDao ctcTermDao;
 	private CtcCategoryDao ctcCategoryDao;
 	private LowLevelTermDao lowLevelTermDao;
+	private AdverseEventDao adverseEventDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-
+	
 	
 	public CaptureAdverseEventController(){
 		setBindOnNewForm(true);
+		setCommandClass(CaptureAdverseEventInputCommand.class);
 	}
 	
-    @Override
+    /*@Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,
                     BindException errors, int page) throws Exception {
     	String action = (String) findInRequest(request, "_action");
 		if(org.apache.commons.lang.StringUtils.isEmpty(action))
 			super.onBindAndValidate(request, command, errors, page);
-    }
+    }*/
 	
 	@Override
 	protected AdverseEventReportingPeriodDao getDao() {
@@ -86,11 +91,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
 		ServletRequestDataBinder binder = super.createBinder(request, command);
-		String action = (String) findInRequest(request, "_action");
-		if(org.apache.commons.lang.StringUtils.isNotEmpty(action) && action.equals("selectReportingPeriod"))
-			binder.setAllowedFields(new String[]{"adverseEventReportingPeriod"});
-		else
-			binder.setAllowedFields(new String[]{"adverseEventReportingPeriod", "adverseEventReportingPeriod.adverseEvents", "study", "participant"});
+		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
 		initBinder(request,binder);
 		return binder;
@@ -103,15 +104,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	}
 
 	@Override
-	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException arg3) throws Exception {
-		String action = (String) findInRequest(request, "_action");
-		if(org.apache.commons.lang.StringUtils.isNotEmpty(action) && action.equals("selectReportingPeriod"))
-			return null;
-		else{
-			CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
-			adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
-			return new ModelAndView("captureAdverseEventConfirmPage", null);
-		}
+	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
+		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
+		adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+		
+		ModelAndView mv = new ModelAndView("forward:view?type=confirm", errors.getModel());
+
+        return mv;
 	}
 	
 	@Override
@@ -120,7 +119,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         //ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
         //ControllerTools.registerDomainObjectEditor(binder, "aeRoutineReport", routineReportDao);
-        ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
+        ControllerTools.registerDomainObjectEditor(binder, "adverseEvent", adverseEventDao);
+        //ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
@@ -145,6 +145,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("CaptureAdverseEventFlow");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());
+				//flow.addTab(new AdverseEventConfirmTab());
+				flow.addTab(new AdverseEventConfirmTab("Overview", "Overview", "ae/ae_reviewsummary"));
 				return flow;
 			}
 		};
@@ -257,5 +259,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+	
+	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
+		this.adverseEventDao = adverseEventDao;
+	}
+	
+	public AdverseEventDao getAdverseEventDao() {
+		return adverseEventDao;
 	}
 }

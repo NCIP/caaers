@@ -96,7 +96,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		reportingPeriodFieldGroup.getFields().add(
 						InputFieldFactory.createDateField(
 										"reportingPeriod.endDate", "To", true));
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Epoch", true,
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Reporting Period Type", true,
                 createEpochOptions(command)));
 		reportingPeriodFieldGroup.getFields().add(
 						InputFieldFactory.createTextField(

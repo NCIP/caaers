@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,12 +14,14 @@ import org.apache.commons.lang.BooleanUtils;
 import org.springframework.validation.Errors;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -47,6 +50,9 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	private static final String MAIN_FIELD_GROUP = "main";
 	
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private CtcTermDao ctcTermDao;
+	
+	private static final Collection<Grade> GRADES = new ArrayList<Grade>(5);
 	
 	public AdverseEventCaptureTab() {
 		super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
@@ -111,8 +117,12 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 					//check if the adverse
 					AdverseEvent ae = cmd.getAdverseEventReportingPeriod().getAdverseEvents().get(i);
 					
-						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
-								createGradeOptions(ae)));
+						if(cmd.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
+							mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
+								createGradeOptions(ae, "Meddra")));
+						else
+							mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
+									createGradeOptions(ae, "Ctc")));
 						mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
 								"Attribution to study", false, createAttributionOptions()));
 						mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
@@ -155,7 +165,6 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	
 	private Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.put("", "Please select");
         hospitalizationOptions.putAll(InputFieldFactory.collectOptions(Arrays
                         .asList(Hospitalization.values()), "name", "displayName"));
         return hospitalizationOptions;
@@ -169,17 +178,18 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
         return attributionOptions;
     }
 	
-	private Map<Object, Object> createGradeOptions(AdverseEvent ae) {
-        Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
+	private Map<Object, Object> createGradeOptions(AdverseEvent ae, String terminology) {
+		Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
         gradeOptions.put("", "Please select");
-        gradeOptions.putAll(InputFieldFactory.collectOptions(ae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "displayName", "code"));
+        if(terminology.equals("Ctc"))
+        	gradeOptions.putAll(InputFieldFactory.collectOptions(ae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "name", "displayName"));
+        else
+        	gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
         return gradeOptions;
     }
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-		
-        
 		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() == 0){
 			for(SolicitedAdverseEvent sae: command.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
 				AdverseEvent adverseEvent = new AdverseEvent();
@@ -190,10 +200,15 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
 					aeCtcTerm.setCtcTerm(sae.getCtcterm());
 					adverseEvent.setAdverseEventTerm(aeCtcTerm);
+					aeCtcTerm.setAdverseEvent(adverseEvent);
 					adverseEvent.setSolicited(true);
+					adverseEvent.setReportingPeriod(command.getAdverseEventReportingPeriod());
 				}
 				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
 			}
+			// Save the reportingPeriod here to persist the solicitedAdverseEvents.
+			adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+			
 			// Setup the categories list for aeTermQuery tag.
 			if(command.getCtcCategories().size() == 0)
 				command.setCtcCategories(command.getStudy().getAeTerminology().getCtcVersion().getCategories());
@@ -207,11 +222,13 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			
 			boolean hasObservedEvents = false;
 			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-				if(!ae.isSolicited())
+				if(!ae.getSolicited())
 					hasObservedEvents = true;
 			}
 			refdata.put("hasObservedEvent", hasObservedEvents);
 		}
+		
+		
 		
 		return refdata;
 	}
@@ -236,5 +253,13 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
     public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+    
+    public CtcTermDao getCtcTermDao() {
+		return ctcTermDao;
+	}
+    
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+		this.ctcTermDao = ctcTermDao;
 	}
 }
