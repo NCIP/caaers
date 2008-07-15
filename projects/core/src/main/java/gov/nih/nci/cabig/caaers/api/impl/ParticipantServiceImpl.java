@@ -48,8 +48,37 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 	 * Method exisits only to be called from ImportController 
 	 * @param participantDto
 	 */
-	public DomainObjectImportOutcome<Participant> processStudy(ParticipantType participantDto){
-		return null;
+	public DomainObjectImportOutcome<Participant> processParticipant(ParticipantType xmlParticipant){
+		logger.info("Entering processParticipant() in ParticipantServiceImpl");
+		
+		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
+		Participant participant = new Participant();
+		
+		try{
+        	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
+        }catch(CaaersSystemException caEX){
+        	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
+        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
+        	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
+        }
+        
+        if(participantImportOutcome == null){
+        	participantImportOutcome = participantImportServiceImpl.importParticipant(participant);
+        	if(participantImportOutcome.isSavable()){
+				//Check if Study Exists; If Exists then update
+        		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
+        		if(dbParticipant != null){
+        			logger.info("Participant Exists in caAERS trying to Update");
+        			participantSynchronizer.migrate(dbParticipant, participantImportOutcome.getImportedDomainObject(), participantImportOutcome);
+        			participantImportOutcome.setImportedDomainObject(dbParticipant);
+        			logger.info("Participant in caAERS Updated");
+        		}else{
+        			logger.info("New Participant to be Created");
+        		}
+        	}
+        }
+        logger.info("Leaving processParticipant() in ParticipantServiceImpl");
+		return participantImportOutcome;
 	}
 	
 	public ParticipantServiceResponse createParticipant(
@@ -237,7 +266,4 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 			ParticipantSynchronizer participantSynchronizer) {
 		this.participantSynchronizer = participantSynchronizer;
 	}
-
-
-
 }
