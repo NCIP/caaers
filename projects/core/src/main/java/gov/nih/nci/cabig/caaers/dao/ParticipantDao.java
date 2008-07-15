@@ -143,6 +143,19 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
     public Participant getByIdentifier(final Identifier identifier) {
         return findByIdentifier(identifier);
     }
+    
+    /**
+     * This method returns a Fully loaded Participant.
+     * @param identifier
+     * @return
+     */
+    public Participant getParticipantDesignByIdentifier(final Identifier identifier){
+    	Participant participant = getByIdentifier(identifier);
+    	if(participant != null){
+    		initialize(participant);
+    	}
+    	return participant;
+    }
 
     /**
      * TODO
