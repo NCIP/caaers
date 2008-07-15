@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
 import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
@@ -105,6 +106,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
    
    //added by Monish Dombla
    private StudyProcessorImpl studyProcessorImpl;
+   
+   private ParticipantServiceImpl participantServiceImpl;
 
     private RoutineAdverseEventReportServiceImpl routineAdverseEventReportServiceImpl;
 
@@ -252,7 +255,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         	return "classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd";
         }
         if ("participant".equals(type)) {
-            return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
+            //return "classpath:gov/nih/nci/cabig/caaers/participantXSD.xsd";
+        	return "classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd";
         }
         if ("routineAeReport".equals(type)) {
             return "classpath:gov/nih/nci/cabig/caaers/routineAeXSD.xsd";
@@ -490,18 +494,22 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                             new FileOutputStream(xmlFile));
             validateAgainstSchema(xmlFile, command, getXSDLocation(type));
 
-            if (type.equals("participant")) {
-                int totalNumberofRecords = 5000;
-                int currentNumber = 1;
-                // FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new
-                // FileOutputStream(xmlFile));
-                input = new BufferedReader(new FileReader(xmlFile));
-                ObjectInputStream in = xstream.createObjectInputStream(input);
-                while (true && currentNumber++ <= totalNumberofRecords
-                                && command.getSchemaValidationResult() == null) {
-                    Participant xstreamParticipant = (Participant) in.readObject();
-                    migrateParticipant(xstreamParticipant, command);
-                }
+//            if (type.equals("participant")) {
+//                int totalNumberofRecords = 5000;
+//                int currentNumber = 1;
+//                // FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new
+//                // FileOutputStream(xmlFile));
+//                input = new BufferedReader(new FileReader(xmlFile));
+//                ObjectInputStream in = xstream.createObjectInputStream(input);
+//                while (true && currentNumber++ <= totalNumberofRecords
+//                                && command.getSchemaValidationResult() == null) {
+//                    Participant xstreamParticipant = (Participant) in.readObject();
+//                    migrateParticipant(xstreamParticipant, command);
+//                }
+//            }
+            
+            if((type.equals("participant")) && (command.getSchemaValidationResult() == null)){
+            	processParticipant(xmlFile,command);
             }
             
             if((type.equals("study")) && (command.getSchemaValidationResult() == null)){
@@ -561,6 +569,34 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     
     
     /**
+     * This method is added to test the create and update of Participant 
+     * Monish Dombla
+     */
+    
+    private void processParticipant(File xmlFile,ImportCommand command){
+    	gov.nih.nci.cabig.caaers.webservice.participant.Participants participants;
+    	try {
+			JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice.participant");
+			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+				
+			participants = (gov.nih.nci.cabig.caaers.webservice.participant.Participants)unmarshaller.unmarshal(xmlFile);
+			if(participants != null){
+				for(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto : participants.getParticipant()){
+					DomainObjectImportOutcome<Participant> participantImportOutcome  = participantServiceImpl.processParticipant(participantDto);
+					if (participantImportOutcome.isSavable()) {
+			            command.addImportableParticipant(participantImportOutcome);
+			        } else {
+			            command.addNonImportableParticipant(participantImportOutcome);
+			        }
+				}
+			}
+		} catch (JAXBException e) {
+			throw new CaaersSystemException("There was an error converting participant data transfer object to participant domain object", e);
+		}
+    }
+    
+    
+    /**
      * This method is added to test the create and update of Study 
      * Monish Dombla
      */
@@ -587,27 +623,27 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		}
     }
 
-    private void migrateStudy(Study xstreamStudy, ImportCommand command) {
-
-        DomainObjectImportOutcome<Study> studyImportOutcome = studyImportService
-                        .importStudy(xstreamStudy);
-        if (studyImportOutcome.isSavable()) {
-            command.addImportableStudy(studyImportOutcome);
-        } else {
-            command.addNonImportableStudy(studyImportOutcome);
-        }
-    }
-
-    private void migrateParticipant(Participant xstreamParticipant, ImportCommand command) {
-
-        DomainObjectImportOutcome<Participant> participantImportOutcome = participantImportService
-                        .importParticipant(xstreamParticipant);
-        if (participantImportOutcome.isSavable()) {
-            command.addImportableParticipant(participantImportOutcome);
-        } else {
-            command.addNonImportableParticipant(participantImportOutcome);
-        }
-    }
+//    private void migrateStudy(Study xstreamStudy, ImportCommand command) {
+//
+//        DomainObjectImportOutcome<Study> studyImportOutcome = studyImportService
+//                        .importStudy(xstreamStudy);
+//        if (studyImportOutcome.isSavable()) {
+//            command.addImportableStudy(studyImportOutcome);
+//        } else {
+//            command.addNonImportableStudy(studyImportOutcome);
+//        }
+//    }
+//
+//    private void migrateParticipant(Participant xstreamParticipant, ImportCommand command) {
+//
+//        DomainObjectImportOutcome<Participant> participantImportOutcome = participantImportService
+//                        .importParticipant(xstreamParticipant);
+//        if (participantImportOutcome.isSavable()) {
+//            command.addImportableParticipant(participantImportOutcome);
+//        } else {
+//            command.addNonImportableParticipant(participantImportOutcome);
+//        }
+//    }
 
     private void migrateRoutineAdverseEventReport(
                     RoutineAdverseEventReport xstreamRoutineAdverseEventReport,
@@ -673,8 +709,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     public void setAgentDao(AgentDao agentDao) {
         this.agentDao = agentDao;
     }
-
-
 
     public MedDRADao getMeddraDao() {
         return meddraDao;
@@ -755,6 +789,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 		this.studyProcessorImpl = studyProcessorImpl;
 	}
 	
+	public ParticipantServiceImpl getParticipantServiceImpl() {
+		return participantServiceImpl;
+	}
+
+	public void setParticipantServiceImpl(
+			ParticipantServiceImpl participantServiceImpl) {
+		this.participantServiceImpl = participantServiceImpl;
+	}
+	
 	/**
 	 * This method fetches the specified resource pattern from classpath.
 	 * In this context used to fetch xsd files.
@@ -768,4 +811,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
+
+	
 }
