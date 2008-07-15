@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class StudyParticipantAssignmentSynchronizer implements Migrator<Participant>{
@@ -83,20 +84,17 @@ public class StudyParticipantAssignmentSynchronizer implements Migrator<Particip
 	}
 	
 	public boolean matchIdentifiers(List<Identifier> xmlIdentifiers ,List<Identifier> dbIdentifiers){
+		
 		boolean matchFound = false;
 		
 		for(Identifier xmlIdentifer : xmlIdentifiers){
 				for(Identifier dbIdentifer : dbIdentifiers){
-						xmlIdentifer.setId(dbIdentifer.getId());
 						if(xmlIdentifer.equals(dbIdentifer)){
 							matchFound = true;
 							return matchFound;
-						}else{
-							xmlIdentifer.setId(null);
 						}
 				}
 		}
 		return matchFound;
 	}
-
 }
