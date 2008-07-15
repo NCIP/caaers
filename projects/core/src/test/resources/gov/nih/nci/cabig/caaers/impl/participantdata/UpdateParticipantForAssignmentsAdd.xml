@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:participants xmlns:p="http://webservice.caaers.cabig.nci.nih.gov/participant" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://webservice.caaers.cabig.nci.nih.gov/participant ParticipantSchema.xsd ">
+  <p:participant>
+    <firstName>Richard Updated</firstName>
+    <lastName>Herd Updated</lastName>
+    <maidenName>MaidenName Updated</maidenName>
+    <middleName>Leing Updated</middleName>
+    <birthDate>1960-01-01</birthDate>
+    <gender>Not Reported</gender>
+    <race>Black or African American</race>
+    <ethnicity>Non Hispanic or Latino</ethnicity>
+    <identifiers>
+      <p:organizationAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza1</value>
+        <primaryIndicator>true</primaryIndicator>
+        <p:organization>
+          <name>Mayo Clinic Hospital</name>
+          <nciInstituteCode/>
+        </p:organization>
+      </p:organizationAssignedIdentifier>
+      <p:systemAssignedIdentifier>
+        <type>MRN</type>
+        <value>barboza2</value>
+        <primaryIndicator>false</primaryIndicator>
+        <systemName>Yarois</systemName>
+      </p:systemAssignedIdentifier>
+    </identifiers>
+    <assignments>
+      <p:assignment>
+        <p:studySite>
+          <p:study>
+            <identifiers>
+              <identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>WFCCC001</value>
+              </identifier>
+            </identifiers>
+          </p:study>
+          <p:organization>
+            <name>Duke University Comprehensive Cancer Center</name>
+            <nciInstituteCode/>
+          </p:organization>
+        </p:studySite>
+      </p:assignment>
+      <p:assignment>
+        <p:studySite>
+          <p:study>
+            <identifiers>
+              <identifier>
+                <type>Coordinating Center Identifier</type>
+                <value>E3200</value>
+              </identifier>
+            </identifiers>
+          </p:study>
+          <p:organization>
+            <name>Northwestern University</name>
+            <nciInstituteCode/>
+          </p:organization>
+        </p:studySite>
+      </p:assignment>
+    </assignments>
+  </p:participant>
+</p:participants>
