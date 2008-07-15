@@ -66,7 +66,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
         	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
-        	logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
+        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
         	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
         	participantServiceResponse.setResponsecode("1");
         	participantServiceResponse.setDescription("ParticipantDto to ParticipantDomain Conversion Failed ");
@@ -122,7 +122,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         	participantConverter.convertParticipantDtoToParticipantDomain(xmlParticipant, participant);
         }catch(CaaersSystemException caEX){
         	participantImportOutcome = new DomainObjectImportOutcome<Participant>();
-        	logger.error("StudyDto to StudyDomain Conversion Failed " , caEX);
+        	logger.error("ParticipantDto to ParticipantDomain Conversion Failed " , caEX);
         	participantImportOutcome.addErrorMessage("ParticipantDto to ParticipantDomain Conversion Failed " , DomainObjectImportOutcome.Severity.ERROR);
         	participantServiceResponse.setResponsecode("1");
         	participantServiceResponse.setDescription("ParticipantDto to ParticipantDomain Conversion Failed ");
@@ -142,7 +142,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         			participantImportOutcome.setImportedDomainObject(dbParticipant);
         			participantDao.save(participantImportOutcome.getImportedDomainObject());
             		participantServiceResponse.setResponsecode("0");
-            		sb.append("  Created in caAERS");
+            		sb.append("  Updated in caAERS");
             		participantServiceResponse.setDescription(sb.toString());
     				logger.info(sb.toString());
         		}else{
@@ -153,7 +153,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         		}
         	}else{
         		participantServiceResponse.setResponsecode("1");
-        		sb.append("  could not be created in caAERS");
+        		sb.append("  could not be updated in caAERS");
         		participantServiceResponse.setDescription(sb.toString());
 				logger.info(sb.toString());
 				List<String> messages = new ArrayList<String>(); 
