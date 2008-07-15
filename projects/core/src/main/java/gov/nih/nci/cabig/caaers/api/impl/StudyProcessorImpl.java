@@ -82,7 +82,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	 * @param studyDto
 	 */
 	public DomainObjectImportOutcome<Study> processStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto){
-		logger.info("Entering createStudy() in StudyProcessorImpl");
+		logger.info("Entering processStudy() in StudyProcessorImpl");
 		
 		DomainObjectImportOutcome<Study> studyImportOutcome = null;
 		Study study = new Study();
