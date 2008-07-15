@@ -509,6 +509,7 @@
         <property name="participantImportService" ref="participantImportService"/>
         <property name="studyImportService" ref="studyImportService"/>
         <property name="studyProcessorImpl" ref="studyProcessorImpl"/>
+        <property name="participantServiceImpl" ref="participantServiceImpl"/>
     </bean>
   
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
