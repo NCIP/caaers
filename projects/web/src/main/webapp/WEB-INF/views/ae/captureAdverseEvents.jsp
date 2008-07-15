@@ -6,41 +6,186 @@
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>"> -->
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
+<script type="text/javascript" src="/caaers/js/dropdown_menu.js"></script>
 <html>
  <head>
  <tags:includeScriptaculous />
  <tags:includePrototypeWindow />
+ <tags:stylesheetLink name="ae"/>
  <tags:dwrJavascriptLink objects="createAE,createStudy"/>
  <tags:stylesheetLink name="pw_default" />
  <tags:stylesheetLink name="pw_alphacube" />
+
+<style type="text/css"> 
+ .selectbox
+{	
+	width:200px;
+	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
+}
+</style>
+ 
  <script>
  	var descArray = new Array();
  	var win;
  	var index;
  	var selectElement;
  	
+ 	//from here for autopopulator
+ 	
+ 	var catSel = null;
+ 	var CategorySelector = Class.create();
+ 	Object.extend(CategorySelector.prototype, {
+		initialize: function(meddra, ver, ignoreOtherSpecify) {
+			this.win = null;
+			this.isMeddra = meddra;
+			this.version = ver;
+			this.ignoreOtherSpecify = ignoreOtherSpecify;
+			
+			Event.observe("edit_button", "click", function() {
+				var reportingPeriodId = document.getElementById('adverseEventReportingPeriod').value;
+				displayReportingPeriodPopup(reportingPeriodId);
+			 })
+		},
+		
+		showWindow:function(wUrl, wTitle, wWidth, wHeight){
+			win = new Window({className:"alphacube", destroyOnClose:true,title:wTitle,  width:wWidth,  height:wHeight, 
+			onShow:this.show.bind(this),
+			onBeforeShow:this.beforeShow.bind(this)
+			});
+			this.win = win;
+			win.setContent('chooseCategory');
+			win.show(true);
+			
+		},
+		initializeAutoCompleter: function() {
+			AE.createStandardAutocompleter('termCode', 
+            		function(autocompleter, text){
+        		
+            			if(this.isMeddra){
+            				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
+            					if(catSel.ignoreOtherSpecify){
+                    				var vals = [];
+                    				values.each(function(aterm){
+                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
+                        					 vals.push(aterm);
+                    					}
+                        			});
+                    				autocompleter.setChoices(vals);
+                				}else{
+                					autocompleter.setChoices(values);
+                    			}								
+							});
+            			}else{
+            				createAE.matchTerms(text, this.version, '', 25 , function(values){
+                				if(catSel.ignoreOtherSpecify){
+                    				var vals = [];
+                    				values.each(function(aterm){
+                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
+                        					 vals.push(aterm);
+                    					}
+                        			});
+                    				autocompleter.setChoices(vals);
+                				}else{
+                					autocompleter.setChoices(values);
+                    			}
+            				});
+            			}
+            		},
+            		function(aterm) {
+            			return aterm.fullName;
+            		}
+            	);
+		},
+		finishSingleTermSelection:function(){
+			var selTermMap = new Hash();
+			var termElement = $('termCode');
+			var termElementInput = $('termCode-input');
+			
+			var termId = termElement.getValue();
+			if(termId) selTermMap.set(termId, termElementInput.getValue());
+			
+			termElement.clear();
+			termElementInput.clear();
+			
+			//${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
+			myCallback(selTermMap);
+		},
+		finishMultiTermsSelection:function() {
+			var terms = $('terms');
+			var categories = $('categories');
+			
+			var opts = terms.options;
+			
+			var selTermMap = new Hash();
+			//each over iterator is not working, dont know why.
+			if(opts.length > 0) {
+				for(i = 0; i< opts.length; i++){
+					if(opts[i].selected) selTermMap.set(opts[i].value, opts[i].text);
+				}
+			}
+			Windows.close(this.win.getId());
+			//reset the category and terms
+			terms.options.length=0;
+			categories.selectedIndex = -1;
+			//call the call back
+			//${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
+			myCallback(selTermMap);
+		},
+		beforeShow : function(){
+			
+		},
+		show: function(){
+			
+		},
+		showTerms: function(el, ignoreOtherSpecify){
+			catIds = $(el).getValue();
+			var terms = $('terms');
+			terms.options.length=0;
+			
+			/* BiJu : Optimize this to make single call instead of multiple */
+			
+			catIds.each(function(catId){
+				 createAE.getTermsByCategory(catId, function(ctcTerms) {
+				 	ctcTerms.each(function(ctcTerm) {
+				 		if(!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify')  > 0) ){
+                       		var opt = new Option(ctcTerm.fullName, ctcTerm.id)
+                       		terms.options.add(opt);
+				 		}
+                   })
+				 });		
+			});
+		}
+				
+ 	});
+ 	
+ 	//till here for autopopulator
+ 	
  	function addedReportingPeriod(periodId, periodName){
  		win.hide();
  		var length = selectElement.options.length;
 
- 		// deteremine if a new reporting period was added
- 		if(selectElement.options[selectElement.selectedIndex].value != periodId){
- 			var index = selectElement.options.length;
- 			selectElement.options[index-2] = new Option(periodName, periodId);
+		if(selectElement.options[selectElement.selectedIndex].value != periodId){
+			var selElement = document.getElementById('adverseEventReportingPeriod');
+			var optionNew = document.createElement('option');
+			optionNew.text = periodName;
+			optionNew.value = periodId;
+			var optionOld = selElement.options[selectElement.options.length - 1];
+			selectElement.add(optionNew, optionOld);
 			selectElement.selectedIndex = selectElement.options.length - 2;
 		}
-		loadReportingPeriod();	
+		
+		loadReportingPeriod(true);	
  	}
  	
- 	//function displayReportingPeriodPopup(participantId, studyId, reportingPeriodId){
  	function displayReportingPeriodPopup(reportingPeriodId){
  		var url='';
  		if(reportingPeriodId == '')
  			url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&subview="/>";
- 		else
- 			url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=${command.adverseEventReportingPeriod.id}&subview="/>";
-
- 		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
+ 		else{
+ 			//url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=${command.adverseEventReportingPeriod.id}&subview="/>";
+ 			url="/caaers/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=" + reportingPeriodId + "&subview=";
+		}
+		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
 			url: url, top: 0, left: 300});
 		win.show(true);
 	}
@@ -78,15 +223,31 @@
 	  	   });
 	}
 	
-	function loadReportingPeriod(){
+	function loadReportingPeriod(updateReportingPeriodSelector){
 		if(selectElement.selectedIndex == selectElement.options.length - 1){
 			var reportingPeriodId = '';
 			displayReportingPeriodPopup(reportingPeriodId);
 		}else{
-			document.addRoutineAeForm._action.value = 'selectReportingPeriod';
-			document.addRoutineAeForm.submit();
+			var selectedId = document.getElementById('adverseEventReportingPeriod').value;
+			
+			createAE.displayDetailsSection(0, selectedId, function(str){
+				var detailElement = document.getElementById('detailSection');
+				detailElement.innerHTML = str;
+				new Effect.toggle('detailSection', 'slide', {afterFinish: function (obj) { new
+					Effect.Appear('detailSection') }})
+				AE.registerCalendarPopups('detailSection');
+				var isMeddra = ${not empty command.study.aeTerminology.meddraVersion};
+				var version = ${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id};	
+				catSel = new CategorySelector(isMeddra, version, true);
+ 	 			catSel.initializeAutoCompleter();
+ 	 			
+			});
 		}
 	}
+	
+	function showCategoryBox(){
+ 		catSel.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
+ 	}
 	
 	Event.observe(window, "load", function(){
 		selectElement = document.getElementById('adverseEventReportingPeriod');
@@ -95,10 +256,6 @@
 		optn.value = '-1';
 		selectElement.options.add(optn);
 		
-		//Event.observe("new_button","click",function() { 
-		//var reportingPeriodId = '';
-		//displayReportingPeriodPopup(reportingPeriodId) })
-		
 		if(${command.adverseEventReportingPeriod.id != null})
 			Event.observe("edit_button", "click", function() {
 			var reportingPeriodId = ${command.adverseEventReportingPeriod.id}
@@ -106,101 +263,32 @@
 			 })
 		
 		Event.observe("adverseEventReportingPeriod", "change", function(){
-			loadReportingPeriod();
+			loadReportingPeriod(false);
 		})
-
 })           
 
  </script>
  
- </head>
+</head>
  <body>
 	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm">
         <jsp:attribute name="instructions">
-        <tags:instructions code="instruction_ae_enterBasics" />
+    	    <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
       	
       	<jsp:attribute name="singleFields">
-      	<input type="hidden" name="_action" id="_action" value="">
-      	
-      	
-		<%-- <input id="new_button" type="button" value="Add New Reporting Period" /> --%>
-		<c:forEach items="${fieldGroups.reportingPeriodFG.fields}" var="field">
-      		<tags:renderRow field="${field}" />
-      	</c:forEach>
-      	<c:if test='${command.adverseEventReportingPeriod != null}'>
-      		<input id="edit_button" type="button" value="Edit Reporting Period"/>
-      	</c:if>
+      		<input type="hidden" name="_action" id="_action" value="">
       		
-		<div class="leftpanel">
-			<c:if test='${command.adverseEventReportingPeriod != null}'>
-				<c:forEach items="${fieldGroups.reportingPeriodDetailsFG.fields}" var="field">
+			
+			<div id="reportingPeriodSelector">      	
+      			<c:forEach items="${fieldGroups.reportingPeriodFG.fields}" var="field">
       				<tags:renderRow field="${field}" />
       			</c:forEach>
-			</c:if>
-		</div>
-		<div class="rightpanel">
-			<c:if test='${command.adverseEventReportingPeriod != null}'>
-				<c:forEach items="${fieldGroups.treatmentAssignmentFG.fields}" var="field">
-      				<tags:renderRow field="${field}" />
-      			</c:forEach>
-      		</c:if>	
-		</div>
-		</jsp:attribute>
-      
-        <jsp:attribute name="repeatingFields">
-        	<chrome:division title="Solicited adverse event(s)">
-        		<center>
-        			<c:if test='${command.adverseEventReportingPeriod != null}'>
-        				<table id="solicitedTable" width="100%" class="tablecontent">
-    						<tr>
-    							<th scope="col" align="left"><b>Term</b> </th>
-    							<th scope="col" align="left"><b>Grade</b> </th>
-    							<th scope="col" align="left"><b>Attribution</b> </th>
-    							<th scope="col" align="left"><b>Hospitalization</b> </th>
-    							<th scope="col" align="left"><b>Expected</b> </th>
-    						</tr>
-    						<tr id="solicitedBlankRow" />
-    					
-            				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            					<c:if test="${ae.solicited == true}">
-	            					<ae:oneSaeRow index="${status.index}"/>
-	            				</c:if>
-            				</c:forEach>
-            			</table>
-            		</c:if>	
-            	</center>
-            </chrome:division>
-            
-        
-        	
-        	<chrome:division title="Observed adverse event(s)">
-        		<c:if test='${command.adverseEventReportingPeriod != null}'>
-        			<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
-        			</tags:aeTermQuery>
-        			<%-- <c:if test='${hasObservedEvent == true}'> --%>
-        				<table id="observedTable" width="100%" class="tablecontent">
-    						<tr>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Term</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
-    							<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
-    						</tr>
-    						<tr id="observedBlankRow" />
-    					
-            				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            					<c:if test="${ae.solicited == false}">
-	            					<ae:oneSaeRow index="${status.index}"/>
-	            				</c:if>
-            				</c:forEach>
-            			</table>
-        			<%-- </c:if> --%>
-        		</c:if>
-        	</chrome:division>
+      		</div>
+      		
+      		<div style="display: none" id="detailSection">
+       		</div>
        </jsp:attribute>
-       
     </tags:tabForm>
-    
  </body>
 </html>

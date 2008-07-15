@@ -20,7 +20,7 @@
 <script>
 
 	function callParentWindow(){
-			window.parent.addedReportingPeriod(${command.reportingPeriod.id}, ${command.reportingPeriod.name});
+			window.parent.addedReportingPeriod(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');
 	}
 </script>
 </head>
@@ -28,37 +28,79 @@
 <chrome:box title="Confirmation"  id="confirmbox">
 <chrome:division id="single-fields" style="width:100%">
       <div class="content">
-           <div class="row">
-               <div>The following reporting period details was saved successfully</div>
-           </div>
+      <div><b>Reporting period details saved successfully</b></div>
+      <table>
             <div class="row">
-              <div class="label">Start date:</div>
+            <tr>
+            <td>
+              <div class="label"><b>Start date:</b></div>
+            </td>
+            <td>
               <div class="value">${command.reportingPeriod.startDate}</div>
+            </td>
+            </tr>  
            </div>
            <div class="row">
-              <div class="label">End date:</div>
+           <tr>
+           <td>
+              <div class="label"><b>End date:</b></div>
+           </td>
+           <td>
               <div class="value">${command.reportingPeriod.endDate}</div>
+			</td>
+			</tr>
            </div>
            <div class="row">
-              <div class="label">Epoch:</div>
+           <tr>
+           <td>
+              <div class="label"><b>Reporting Period Type:</b></div>
+            </td>
+            <td>
               <div class="value">${command.reportingPeriod.epoch.name}</div>
+            </td>
+            </tr>  
            </div>
            <div class="row">
-              <div class="label">Description:</div>
+           <tr>
+           <td>
+              <div class="label"><b>Description:</b></div>
+           </td>
+           <td>
               <div class="value">${command.reportingPeriod.description}</div>
+           </td>
+           </tr>
            </div>
            <div class="row">
-              <div class="label">Cycle number:</div>
+           <tr>
+           <td>
+              <div class="label"><b>Cycle number:</b></div>
+           </td>
+           <td>
               <div class="value">${command.reportingPeriod.cycleNumber}</div>
+           </td>
+           </tr>
            </div>
            <div class="row">
-              <div class="label">Treatment Assignment:</div>
+           <tr>
+           <td>
+              <div class="label"><b>Treatment Assignment:</b></div>
+           </td>
+           <td>
               <div class="value">${command.reportingPeriod.treatmentAssignment.code}</div>
+           </td>
+           </tr>
            </div>
            <div class="row">
-              <div class="label">Treatment Description:</div>
+           <tr>
+           <td>
+              <div class="label"><b>Treatment Description:</b></div>
+           </td>
+           <td>
               <div class="value">${command.reportingPeriod.treatmentAssignment.description}</div>
+           </td>
+           </tr>
            </div>
+       </table>
            <div class="content buttons autoclear">
 			  <div class="flow-buttons" id="confirm_ok">
 			   <span class="next">

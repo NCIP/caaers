@@ -5,6 +5,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="size"%>
+<%@attribute name="cssClass"%>
 <%@attribute name="disabled" type="java.lang.Boolean" %>
 <c:choose>
     <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MAXLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
@@ -15,7 +16,7 @@
     <c:when test="${field.categoryName == 'inplace_text'}"><tags:inplaceTextField propertyName="${field.propertyName}" /></c:when>
     <c:when test="${field.categoryName == 'label'}"><tags:value propertyName="${field.propertyName}" /></c:when>
     <c:when test="${field.categoryName == 'select'}" >
-        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}"/>
+        <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${cssClass} ${field.required ? 'validate-NOTEMPTY' : ''}"/>
     </c:when>
     <c:when test="${field.categoryName == 'composite'}">
         <c:forEach items="${field.attributes.subfields}" var="subfield">

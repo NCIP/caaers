@@ -13,8 +13,8 @@
             	<c:out value="${command.adverseEventReportingPeriod.adverseEvents[index].adverseEventTerm.term.term}" />
             </td>
 	        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-    	        <td>
-					<tags:renderInputs field="${field}"/>
+    	        <td width="20%">
+					<tags:renderInputs field="${field}" cssClass="selectbox"/>
            		</td>				
         	</c:forEach>
         </tr>
