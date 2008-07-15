@@ -22,7 +22,7 @@ public class ParticipantImportServiceImpl extends AbstractImportServiceImpl {
         participantMigrator.migrate(xstreamParticipant, participant, participantImportOutcome);
 
         participantImportOutcome.setImportedDomainObject(participant);
-        participantUniquenessCheck(participant, participantImportOutcome);
+       //participantUniquenessCheck(participant, participantImportOutcome);
 
         return participantImportOutcome;
     }
