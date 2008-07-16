@@ -20,7 +20,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "labviewer_labs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_labviewer_labs_id") })
-public class LabViewerLab extends AbstractExpeditedReportCollectionElementChild {
+public class LabViewerLab extends AbstractIdentifiableDomainObject {
  
 	private String name;
 
