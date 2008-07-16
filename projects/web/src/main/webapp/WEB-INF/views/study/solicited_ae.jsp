@@ -18,6 +18,11 @@
   
   <style type="text/css">
   	
+  	.close-button {
+        position:relative;
+        top:-20px;
+        
+    }
   	.sae, .query {
 		border-spacing: 0;
 		border-collapse: collapse;
@@ -48,18 +53,33 @@
  	}
  	
  	.sae .deletecol {
+ 	    
 		padding-left: 2em;
 	    padding-right: 2em;
-
+	    
+ 	}
+ 	
+	.sae .data{
+ 	    border-width:0px 1px 0px 1px;
+		border-color:#6E81A6;
+	 	border-style:solid;
  	}
  	
 	.sae th.term {
-		width: 22em;
+	    border-width:1px 1px 1px 1px;
+		border-color:#6E81A6;
+	 	border-style:solid;
+	 	width: 22em;
 		height : 3em;
 		vertical-align: CENTER;
 	    horizontal-align: center;
 	}
 	.sae th.epoch {
+		width: 10em;
+		vertical-align: center;
+	}
+
+	.sae th.reportingperiod {
 		width: 10em;
 		vertical-align: top;
 	}
@@ -68,22 +88,53 @@
 		border-color:#6E81A6;
 	 	border-style:solid;
 	 	color: black;
+	 	width: 90px;
 	}
-  	tr.head th.epoch, .sae tr.data td {
+	
+	.sae .lastLineOfTable
+	{
+		border-width:0px 0px 1px 0px;
+		border-color:#6E81A6;
+	 	border-style:solid;
+	
+	}
+	
+    th.reportingperiod, th.epoch {
+	 border-color:#6E81A6;
+	 border-style:solid;
+	 border-width:1px 1px 1px 1px;
+	 height : 2em;
+	}
+	
+	
+	
+    .sae td {
 	 border-color:#6E81A6;
 	 border-style:solid;
 	 border-width:0px 1px 0px 1px;
 	 height : 2em;
 	}
 	
-	tr.head {
-		border-width:1px 0px 1px 1px;
+	
+	tr.gap
+	{
+	    border : none;
+	 	height : 2em;
+	}
+	.sae tr.head {
+		border-width:1px 1px 1px 1px;
 		border-color:#6E81A6;
 	 	border-style:solid;
 	 	
 	}
-	tr.bottom {
+	.sae tr.bottom {
 		border-width:0px 1px 1px 1px;
+		border-color:#6E81A6;
+	 	border-style:solid;
+	 	
+	}
+	.sae tr.bottom td{
+		border-width: 0px 1px 1px 1px;
 		border-color:#6E81A6;
 	 	border-style:solid;
 	 	
@@ -92,7 +143,7 @@
 		font-style: normal;
 		font-weight: normal;
 	}
-
+    
 	.lastRowValue {
 	 font-style: normal;
 		text-align: center;
@@ -105,27 +156,185 @@
   
    var setOfWindowsOpened = new Array();
   
-   Event.observe(window, 'load', function() {
+   Event.observe(window, 'load', initializeAllEvents); 
+    
+    function initializeAllEvents()
+    {
      Event.observe('flow-prev', 'click', checkForm);
      Event.observe('flow-next', 'click', checkForm);
      Event.observe('flow-update', 'click', checkForm);
      
-     Event.observe('epochs[0].descriptionText-id', 'click', editInstruction);
-     Event.observe('epochs[1].descriptionText-id', 'click', editInstruction);
-     Event.observe('epochs[2].descriptionText-id', 'click', editInstruction);
+     registerAddInstructionLinks();
+    
+     registerSelectAllCheckBoxes();  
      
-     Event.observe('ck1', 'click', selectAll);
-     Event.observe('ck2', 'click', selectAll);
-     Event.observe('ck3', 'click', selectAll);
+     registerDeleteEpochIcons();   
      
+     registerAddEpochButton();  
     
      var listOfTermIds = updateTermIds();
      var termIDArray = $A(listOfTermIds);
      termIDArray.each( registerDeleteButtons );
-   }); 
+    
+    
+    }
+    
+    function uninitializeAllEvents()
+    {
+    
+     unRegisterAddInstructionLinks();
+    
+     unRegisterSelectAllCheckBoxes();  
+     
+     unRegisterDeleteEpochIcons();   
+     
+     unRegisterAddEpochButton();  
+    
+     var listOfTermIds = updateTermIds();
+     var termIDArray = $A(listOfTermIds);
+     termIDArray.each( unRegisterDeleteButtons );
+    
+    }
+    
+    function registerAddEpochButton()
+    {
+        Event.observe('AddEpoch', 'click', addEpoch);
+    } 
+    
+    function unRegisterAddEpochButton()
+    {
+        Event.stopObserving('AddEpoch', 'click', addEpoch);
+    } 
+    
+    function addEpoch( event ){
+        
+        createStudy.addEpoch(function( solicitedAETableContents )
+	   	{
+	         uninitializeAllEvents();   	
+	   	     
+	   	     $("SolicitedAETableArea").innerHTML = solicitedAETableContents; 
+             
+             initializeAllEvents();    	
+	   	});
+	   	
+    }
+    function registerSelectAllCheckBoxes()
+    {
+      var header_of_all_epochs = $$('.epoch');
+       
+      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      {
+        Event.observe('ck'+i, 'click', selectAll);
+      }
+    }
+    
+    function unRegisterSelectAllCheckBoxes()
+    {
+      var header_of_all_epochs = $$('.epoch');
+       
+      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      {
+        Event.stopObserving('ck'+i, 'click', selectAll);
+      }
+    }
+    
+    function registerAddInstructionLinks()
+    {
+      var header_of_all_epochs = $$('.epoch');
+       
+      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      {
+        Event.observe('epochs['+i+'].descriptionText-id', 'click', addInstructions);   
+      }
+    }
+    
+    function unRegisterAddInstructionLinks()
+    {
+      var header_of_all_epochs = $$('.epoch');
+       
+      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      {
+        Event.stopObserving('epochs['+i+'].descriptionText-id', 'click', addInstructions);   
+      }
+    }
+    
+    function registerDeleteEpochIcons()
+    {
+       var all_delete_epoch_links = $$('.'+'delete-epoch'); 
+       
+       for(var i = 0 ; i < all_delete_epoch_links.length; i++)
+       {
+         // img element do not have id -> which is target elment
+         // anchor element have id -> which is current target element
+         // but Event.element(event).id --> always refers to target elment which is img which do not have id
+         // bind function is used to interoperate with IE because event.currentTarget would not work in IE.
+         // event.currentTarget only works for all standard browsers.      
+         
+         // removing delete option for BaseLine Epoch
+         if( i == 0 )
+             $(all_delete_epoch_links[i]).hide();
+         else    
+             Event.observe($(all_delete_epoch_links[i]).id,'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
+       }
+    }
+    
+    function unRegisterDeleteEpochIcons()
+    {
+       var all_delete_epoch_links = $$('.'+'delete-epoch'); 
+       
+       for(var i = 0 ; i < all_delete_epoch_links.length; i++)
+       {
+         // img element do not have id -> which is target elment
+         // anchor element have id -> which is current target element
+         // but Event.element(event).id --> always refers to target elment which is img which do not have id
+         // bind function is used to interoperate with IE because event.currentTarget would not work in IE.
+         // event.currentTarget only works for all standard browsers.      
+         
+         // removing delete option for BaseLine Epoch
+         if( i == 0 )
+             $(all_delete_epoch_links[i]).hide();
+         else    
+             Event.stopObserving($(all_delete_epoch_links[i]).id,'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
+       }
+    }
+    
+    function callback_delete_epoch(event)
+    {
+       if(!event.currentTarget) event.currentTarget = this;
+       
+       var delete_epoch_icon_id = event.currentTarget.id;
+       var epoch_order = delete_epoch_icon_id.substring("delete-epoch-".length);
+       var all_cells_of_this_epoch_column = $$('.col-epoch-'+epoch_order);
+       
+       var header_of_all_epochs = $$('.epoch');
+       
+       
+       if(confirm("Do you really want to delete this treatment period ?"))
+       { 
+         deleteEpochFromBackEnd( epoch_order );
+         $('th-table1-'+epoch_order).remove();
+         $('th-col-epoch-'+epoch_order).remove();
+         for(var i = 0 ; i < all_cells_of_this_epoch_column.length ; i++)
+         {
+           all_cells_of_this_epoch_column[i].remove();
+         }
+       }
+       else
+         return false;
+    }
+    
+    function deleteEpochFromBackEnd( epoch_order )
+    {
+       createStudy.deleteEpoch( epoch_order , function(responseStr)
+	   	{
+             alert('deleted from backend : ' + responseStr);	   	
+	   	});
+    }
+    
     
     function selectAll(event)
     {
+      
        var selectall_ckbox = Event.element(event).id;
        var all_ckboxes = $$('.'+selectall_ckbox);
        for(var i = 0 ; i < all_ckboxes.length ; i++)
@@ -137,7 +346,7 @@
        }   
 	     
     }
-    function editInstruction(event)
+    function addInstructions(event)
     {
       var event_id = Event.element(event).id;
       var div_id = event_id.gsub(/(\w+)-id/,'#{1}-div');
@@ -157,7 +366,7 @@
       var xleft = getY(event_id,event);
       
       
-      var win = new Window({ id: window_id , className: "alphacube", closable : false, minimizable : false, maximizable : false, title: "Edit Instruction here", height:200, width: 450, top: xtop, left: xleft});
+      var win = new Window({ id: window_id , className: "alphacube", closable : false, minimizable : false, maximizable : false, title: "Add Instructions", height:200, width: 450, top: xtop, left: xleft});
       
       win.setDestroyOnClose(); 
       win.setContent( div_id );
@@ -200,11 +409,12 @@
     {
 	     var listOfTermIds = $$('.eachRowTermID');
 	     if(listOfTermIds.length != 0){
-	      $('lastRowSpan').hide();
+	      $('specialLastRow').hide();
 	     }
 	     else
 	     {
-	       $('lastRowSpan').show();
+	       $('specialLastRow').show();
+	       
 	     }
 	     $('err-section').innerHTML = "";
 	     return listOfTermIds;
@@ -221,15 +431,24 @@
     }
     function checkForm(event)
     {
+      $('err-section').innerHTML = "";
       var listOfTermIds = $$('.eachRowTermID');
       for(var i = 0 ; i < listOfTermIds.length ; i++)
       {
-        var ckbox1 = "ck1-"+listOfTermIds[i].value;
-        var ckbox2 = "ck2-"+listOfTermIds[i].value;
-        var ckbox3 = "ck3-"+listOfTermIds[i].value;
-        if( !$(ckbox1).checked && !$(ckbox2).checked && !$(ckbox3).checked )
+      
+      var header_of_all_epochs = $$('.epoch');
+       
+       var atleastOneCheckboxIsSelected = false;
+        for(var j = 0 ; j < header_of_all_epochs.length ; j++ )
         {
-          $('err-section').innerHTML += '<li>Please select at least one checkbox for Solicited Adverse Event ' + $("name-"+listOfTermIds[i].value).innerHTML + '</li>';
+          var ckbox = "ck" + j + "-" + listOfTermIds[i].value;
+          atleastOneCheckboxIsSelected = atleastOneCheckboxIsSelected || $(ckbox).checked;
+        }
+        
+        if( !atleastOneCheckboxIsSelected )
+        {
+          var aeText = $('name-'+listOfTermIds[i].value).innerHTML;
+          $('err-section').innerHTML += "<li>The Solicited Adverse Event \"" + aeText.substring(0,9)+'....' + "\" is not associated to a treatment period type. Select the appropriate check box(es) to associate it to a treatment period type or delete the solicited Adverse Event.</li>";
           Event.stop(event);
         }
       }
@@ -252,20 +471,22 @@
   	
 	    var listOfTermIDs = new Array();
 	    var listOfTerms = new Array();
-	  	
-	  		$H(selectedTerms).keys().each( function(termID) {
+	    
+	    	$H(selectedTerms).keys().each( function(termID) {
 	  		
 	  		var term = $H( selectedTerms ).get(termID);
 	  		if( !isTermAgainAdded(termID))
 	  		{
+	  		  alert('Pushing...'+termID + ' -- ' + term );
 	  		  listOfTermIDs.push( termID );
 	  		  listOfTerms.push(term );
 	        }
 	  	   });
 	  
+	    
 	   	createStudy.addSolicitedAE(listOfTermIDs, listOfTerms, function(responseStr)
 	   	{
-	   	
+	   	  alert('got response' + responseStr);
    	      var listOfTermIds = $$('.eachRowTermID');
           var termIDArray = $A(listOfTermIds);
           termIDArray.each( unRegisterDeleteButtons );
@@ -276,13 +497,15 @@
 		  
 	   	});
 
+   	
+   	}
+  
     function unRegisterDeleteButtons(termID)
     {
       Event.stopObserving("button-"+termID.value,'click',handleDelete);
     }
     
-   	
-   	}
+  
   </script>
   
 </head>
@@ -292,15 +515,17 @@
  
   <form:form name="solicitedAEForm">
   	
-  	<tags:aeTermQuery title="Choose CTC terms"  ignoreOtherSpecify="true" isMeddra="${not empty command.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" />
+  	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="true"/>
   	
   	<!--  Idea is copied from tabForm.tag -->
-  	<chrome:box title="Solicited adverse event(s)" >
+  	<chrome:box title="${tab.shortTitle}" >
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
   		<tags:hasErrorsMessage />
   		<p id="instructions">
-			&nbsp;&nbsp;Check the boxes under the treatment type, to associate the term to it.
+To associate the term to a treatment period type, select the appropriate check box(es). 
+Each term can be associated to multiple treatment period types. <br>To associate all terms to a treatment period type, select the check box directly under <b>Add Instructions</b>.
+<br>To add specific instructions for the reporting period type, click <b>Add Instructions</b>.
 		</p>
 		<p>
 		  <ul id="err-section" class="errors">
@@ -310,49 +535,9 @@
 		<input type="hidden" name="_action" value="">
   		<!--  start of body -->
   		
-  		
-  		
-        <table id="sae-0" class="sae">
-  			<col class="term"/>
-    		<colgroup>
-		      <col class="epoch"/>
-		      <col class="epoch"/>
-       		  <col class="epoch"/>
-    		</colgroup>
-    		<col class="action"/>
-    		<tbody>
-    			<tr class="head">
-        			<th class="term">Adverse event term</th>
-		            <th class="epoch">
-		            	<div class="index"><tags:inplaceTextField propertyName="epochs[0].name" /></div>
-		            	<div class="inst"><a href="#jumphere" id="epochs[0].descriptionText-id">Edit Instruction</a></div>
-		            	<div><input id="ck1" type="checkbox" /></div>
-		            	<tags:popupEditInstruction propertyName="epochs[0].descriptionText"></tags:popupEditInstruction>
-  		                <a name="jumphere" />
-            		</th>
-            		<th class="epoch">
-                		<div class="index"><tags:inplaceTextField propertyName="epochs[1].name" /></div>
-                		<div class="inst"><a href="#jumphere" id="epochs[1].descriptionText-id">Edit Instruction</a></div>
-                		<div><input id="ck2" type="checkbox" /></div>
-		            	<tags:popupEditInstruction propertyName="epochs[1].descriptionText"></tags:popupEditInstruction>
-  		    		</th>
-            		<th class="epoch">
-                		<div class="index"><tags:inplaceTextField propertyName="epochs[2].name" /></div>
-                		<div class="inst"><a href="#jumphere" id="epochs[2].descriptionText-id">Edit Instruction</a></div>
-                		<div><input id="ck3" type="checkbox" /></div>
-		            	<tags:popupEditInstruction propertyName="epochs[2].descriptionText"></tags:popupEditInstruction>
-  		    		</th>
-            		<th class="action"> </th>
-    			</tr>
-    			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
-    			    <study:oneSolicitedAERow index="${status.index}" eachRow="${eachRow}" />
-    			 </c:forEach>
-    			<tr id="specialLastRow" class="bottom" >
-    				<td colspan="5" align='center'><span id='lastRowSpan' class='lastRowValue' style="display:none;">You have no solicited adverse events added in the list !</span></td>
-    			</tr>			
-  			</tbody>
-  			
-  		</table>	
+  	  <span id="SolicitedAETableArea">	
+  		<study:solicitedAETable />
+      </span>
 	  		<!--  end of body  -->
   		<tags:tabControls tab="${tab}" flow="${flow}" />
   	</chrome:box>

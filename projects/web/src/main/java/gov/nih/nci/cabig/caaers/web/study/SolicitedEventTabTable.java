@@ -30,9 +30,10 @@ public class SolicitedEventTabTable{
 			eachRowOfSolicitedAE = new LinkedList<Object>();
 			eachRowOfSolicitedAE.add(termIDs[i]);
 			eachRowOfSolicitedAE.add(terms[i]);
-			eachRowOfSolicitedAE.add(false);
-			eachRowOfSolicitedAE.add(false);
-			eachRowOfSolicitedAE.add(false);
+			
+			int numberOfEpochs = command.getEpochs().size(); 
+			for( int e = 0 ; e < numberOfEpochs ; e++ )
+			  eachRowOfSolicitedAE.add(false);
 			numOfnewlyAddedRows++;
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
@@ -67,7 +68,13 @@ public class SolicitedEventTabTable{
 		
 	private boolean doEpochExpectSolicitedAE( Epoch epoch, SolicitedAdverseEvent solicitedAE )
 	{
-        	return epoch.getArms().get(0).getSolicitedAdverseEvents().contains( solicitedAE );			
+		List<SolicitedAdverseEvent> listOFSolicitedAEs = epoch.getArms().get(0).getSolicitedAdverseEvents();
+        
+		if( listOFSolicitedAEs == null )
+			return false;
+		else
+			return listOFSolicitedAEs.contains( solicitedAE );	
+		
 	}
 	
 	private List<SolicitedAdverseEvent> getSolicitedAEsForEpoch(Epoch epoch)

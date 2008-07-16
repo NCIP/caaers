@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -54,6 +55,8 @@ public class CreateStudyAjaxFacade {
     public static final String AJAX_INDEX_PARAMETER = "index";
 
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
+
+	public static final String AJAX_REQUEST_ADDEPOCH = "_addEpoch";
 
     public static final String CREATE_STUDY_FORM_NAME = CreateStudyController.class.getName()
                     + ".FORM.command";
@@ -199,7 +202,7 @@ public class CreateStudyAjaxFacade {
     }
 
     public String addSolicitedAE(String listOfTermIDs[], String listOfTerms[]) {
-       
+        
         HttpServletRequest request = getHttpServletRequest();
         request.setAttribute("listOfTermIDs", listOfTermIDs);
         request.setAttribute("listOfTerms", listOfTerms);
@@ -208,6 +211,64 @@ public class CreateStudyAjaxFacade {
         
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         return getOutputFromJsp(url);
+    }
+    private int generateNextEpochOrderNumber()
+    {
+    	Study study = getStudyCommand(getHttpServletRequest());
+        
+    	List<Epoch> listOfEpochs = study.getEpochs();
+    	
+    	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;  
+    	
+    	    	
+    }
+    public String addEpoch() {
+        
+    	Study study = getStudyCommand(getHttpServletRequest());
+        
+    	int newOrderNumber = generateNextEpochOrderNumber();
+    	
+    	System.out.println( newOrderNumber );
+    	
+    	Epoch newEpoch = new Epoch("Enter name here", newOrderNumber ); 
+    	
+    	study.addEpoch( newEpoch );
+
+        HttpServletRequest request = getHttpServletRequest();
+        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
+        request.setAttribute(AJAX_SUBVIEW_PARAMETER, "generateSolicitedAETable");
+        request.setAttribute(AJAX_REQUEST_ADDEPOCH, "true");
+        String url = getCurrentPageContextRelative(WebContextFactory.get());
+        return getOutputFromJsp(url);
+    }
+
+    public int deleteEpoch(String epoch_order) {
+        
+    	if( epoch_order != null ){
+        HttpServletRequest request = getHttpServletRequest();
+        
+        
+        Study study = getStudyCommand(getHttpServletRequest());
+        List<Epoch> listOfEpochs = study.getEpochs();
+        
+        java.util.Iterator<Epoch> epochsIterator = listOfEpochs.iterator();
+        
+        while( epochsIterator.hasNext() )
+        {
+        	Epoch epoch =  epochsIterator.next();
+        	
+        	if( String.valueOf(epoch.getEpochOrder()).equals(epoch_order))
+        	{
+        		epochsIterator.remove();
+        		break;
+        	}
+        	
+        }
+    	  study.setEpochs( listOfEpochs );
+    	  return listOfEpochs.size();
+    	} // end if
+      return -1; 
+    	
     }
 
     public String addStudySite(final int index) {
