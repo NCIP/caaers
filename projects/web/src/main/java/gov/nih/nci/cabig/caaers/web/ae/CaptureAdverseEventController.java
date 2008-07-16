@@ -142,10 +142,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public FlowFactory<CaptureAdverseEventInputCommand> getFlowFactory() {
 		return new FlowFactory<CaptureAdverseEventInputCommand>() {
 			public Flow<CaptureAdverseEventInputCommand> createFlow(CaptureAdverseEventInputCommand cmd) {
-				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("CaptureAdverseEventFlow");
+				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("Capture Adverse Event Flow");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());
-				//flow.addTab(new AdverseEventConfirmTab());
 				flow.addTab(new AdverseEventConfirmTab("Overview", "Overview", "ae/ae_reviewsummary"));
 				return flow;
 			}
