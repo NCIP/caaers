@@ -40,8 +40,7 @@ public class Arm  extends AbstractMutableDomainObject {
 	{
       	this.name = name;	
       	this.descriptionText = descriptionText;
-      	this.solicitedAdverseEvents = Collections.emptyList();
-	}
+    }
 	public String getName() {
 		return name;
 	}

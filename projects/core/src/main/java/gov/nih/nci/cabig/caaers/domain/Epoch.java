@@ -24,7 +24,7 @@ public class Epoch  extends AbstractMutableDomainObject {
 	
 	private String name;
 	
-	private String descriptionText;
+	private String descriptionText = "Add instructions here...";
 	
 	private Integer epochOrder;
 	
