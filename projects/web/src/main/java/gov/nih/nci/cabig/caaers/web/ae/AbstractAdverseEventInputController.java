@@ -128,6 +128,7 @@ public abstract class AbstractAdverseEventInputController
     @SuppressWarnings( { "unchecked" })
     protected void onBind(HttpServletRequest request, Object oCommand, BindException errors)
                     throws Exception {
+    	log.debug("In onBind");
         super.onBind(request, oCommand, errors);
         ((ExpeditedAdverseEventInputCommand) oCommand).setNextPage(getTargetPage(request,
                         getCurrentPage(request)));
@@ -166,6 +167,7 @@ public abstract class AbstractAdverseEventInputController
 
     @Override
     protected int getInitialPage(HttpServletRequest request) {
+    	log.debug("In gettInitialPage");
         boolean isActionAvailable = request.getParameter("action") != null ? true : false;
 
         if (isActionAvailable && request.getParameter("action").equals("reportSubmission")) {
@@ -184,6 +186,9 @@ public abstract class AbstractAdverseEventInputController
     @SuppressWarnings( { "unchecked", "RawUseOfParameterizedType" })
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
                     throws Exception {
+    	
+    	log.debug("In referenceData");
+    	
         ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand) oCommand;
         Map<String, Object> refdata = super.referenceData(request, cmd, errors, page);
         StringBuffer sb = new StringBuffer("notab");
@@ -206,13 +211,15 @@ public abstract class AbstractAdverseEventInputController
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
+        log.debug("In supressValidation");
+    	return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
     }
 
     @Override
     protected boolean shouldSave(HttpServletRequest request,
                     ExpeditedAdverseEventInputCommand command,
                     Tab<ExpeditedAdverseEventInputCommand> tab) {
+    	log.debug("In should save");
         return super.shouldSave(request, command, tab)
                         && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
@@ -226,12 +233,16 @@ public abstract class AbstractAdverseEventInputController
      */
     @Override
     protected String getViewName(HttpServletRequest request, Object command, int page) {
-        String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
+        log.debug("In getViewName");
+    	String subviewName = request.getParameter(AJAX_SUBVIEW_PARAMETER);
+        
         if (subviewName != null) {
+        	log.debug("Identified as Ajax view");
             // for side-effects:
             super.getViewName(request, command, page);
             return "ae/ajax/" + subviewName;
         } else {
+        	log.debug("Identified as non Ajax view");
             return super.getViewName(request, command, page);
         }
     }
@@ -239,8 +250,11 @@ public abstract class AbstractAdverseEventInputController
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand)
                     throws Exception {
+    	log.debug("In currentFormObject :" + oCommand );
         oCommand = super.currentFormObject(request, oCommand);
+        log.debug("After calling super class currentFormObject :" + oCommand);
         ((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
+        log.debug("After calling reassociate");
         return oCommand;
     }
 
@@ -248,11 +262,15 @@ public abstract class AbstractAdverseEventInputController
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
                     Object oCommand, BindException errors) throws Exception {
+    	log.debug("In processFinish");
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
         save(command, errors);
+        log.debug("After calling save on expedited report (report.version :" + command.getAeReport().getVersion() );
         Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
         model.put("study", command.getStudy().getId());
+        log.debug("Returning from processFinish");
         return new ModelAndView("redirectToAeList", model);
+       
     }
 
     @Override

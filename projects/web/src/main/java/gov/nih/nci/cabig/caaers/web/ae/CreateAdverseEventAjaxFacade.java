@@ -701,6 +701,11 @@ public class CreateAdverseEventAjaxFacade {
         cascaeDeleteToAttributions((DomainObject)removedObject, command.getAeReport());
         list.remove(indexToDelete);
 
+        if(removedObject instanceof ExpeditedAdverseEventReportChild){
+        	ExpeditedAdverseEventReportChild removedAEChild = (ExpeditedAdverseEventReportChild) removedObject;
+        	removedAEChild.setReport(null);
+        }
+        
         addDisplayNames(listProperty, changes);
         try{
         	saveIfAlreadyPersistent(command);

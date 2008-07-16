@@ -17,8 +17,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -26,6 +29,9 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {
 
+	
+	protected final Log log = LogFactory.getLog(getClass());
+	
     public SubmitReportController() {
         setCommandClass(SubmitExpeditedAdverseEventCommand.class);
         setBindOnNewForm(true);
@@ -38,6 +44,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+    	log.debug("In form backing object");
         SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
                         getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
         String reportId = request.getParameter("reportId");
@@ -46,15 +53,25 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         return command;
 
     }
+    
+    @Override
+    protected ExpeditedAdverseEventInputCommand save(
+    		ExpeditedAdverseEventInputCommand command, Errors errors) {
+    	log.debug("In overriden save");
+    	command.save();
+    	return null;
+    }
 
     @Override
     // @Transactional
     @SuppressWarnings("unchecked")
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
                     Object oCommand, BindException errors) throws Exception {
+    	log.debug("In processFinish");
         SubmitExpeditedAdverseEventCommand command = (SubmitExpeditedAdverseEventCommand) oCommand;
         Integer reportIndex = Integer.valueOf(command.getReportIndex());
 
+        log.debug("Report Index :" + reportIndex.intValue());
         ExpeditedAdverseEventReport aeReport = command.getAeReport();
         Report report = aeReport.getReports().get(((int) reportIndex));
 
@@ -98,14 +115,15 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         report.getLastVersion().setSubmissionUrl(url);
         report.getLastVersion().setSubmissionMessage(message);
         report.getLastVersion().setSubmittedOn(date);
-        
+        log.debug("About to call save");
         command.save();
         command.flush();
+        log.debug("Saved and flushed");
         try {
             aegen.generateAndNotify(aeReport.getId() + "", report, xml);
+            log.debug("sucessfully notified");
         } catch (Exception e) {
-            e.printStackTrace();
-            log.error("Error broadcasting message to ESB " + e.getMessage());
+            log.error("Error broadcasting message to ESB " ,e);
             status = ReportStatus.FAILED;
             message = "Problem communicating with ESB <br> Please try to resubmit the report <br>"
                             + e.getMessage();
@@ -113,6 +131,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             report.getLastVersion().setReportStatus(status);
             report.getLastVersion().setSubmissionMessage(message);
             command.save();
+            log.debug("Saved and updated the status as failed");
         }
        
 
@@ -128,6 +147,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
             modelAndView = new ModelAndView("redirectToExpeditedAeEdit", model);
         }
 
+        log.debug("Returning the viewname as :" + modelAndView.getViewName());
         return modelAndView;
     }
 

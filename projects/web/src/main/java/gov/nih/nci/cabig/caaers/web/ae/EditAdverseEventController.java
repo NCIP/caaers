@@ -140,6 +140,13 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
          return false;
     }
     
+    @Override
+    protected ExpeditedAdverseEventInputCommand save(
+    		ExpeditedAdverseEventInputCommand command, Errors errors) {
+    	command.save();
+    	return null;
+    }
+    
     public Task getTask() {
         return task;
     }
