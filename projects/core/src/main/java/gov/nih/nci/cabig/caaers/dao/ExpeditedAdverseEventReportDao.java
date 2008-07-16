@@ -12,6 +12,8 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.LockMode;
 import org.hibernate.LazyInitializationException;
 
@@ -26,6 +28,9 @@ import org.hibernate.LazyInitializationException;
 public class ExpeditedAdverseEventReportDao extends
                 GridIdentifiableDao<ExpeditedAdverseEventReport> implements
                 MutableDomainObjectDao<ExpeditedAdverseEventReport> {
+	
+	protected final Log log = LogFactory.getLog(getClass());
+	
     private static final String JOINS = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm "
                     + " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier "
                     + " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
@@ -64,6 +69,7 @@ public class ExpeditedAdverseEventReportDao extends
      */
     @Transactional(readOnly = false)
     public void save(final ExpeditedAdverseEventReport report) {
+    	log.debug("Saving ExpeditedAdverseEventReport..");
         getHibernateTemplate().saveOrUpdate(report);
         for (AdverseEvent ae : report.getAdverseEvents()) {
             getHibernateTemplate().saveOrUpdate(ae);
@@ -105,6 +111,7 @@ public class ExpeditedAdverseEventReportDao extends
     @Override
     @Transactional(propagation = Propagation.SUPPORTS)
     public void reassociate(final ExpeditedAdverseEventReport report) {
+    	log.debug("Reassociating ExpeditedAdverseEventReport...");
         super.reassociate(report);
         
         if (report.getReporter().isTransient()) {

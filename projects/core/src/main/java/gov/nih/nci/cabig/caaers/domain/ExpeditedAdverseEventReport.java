@@ -329,6 +329,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
     @Transient
+    @UniqueObjectInCollection(message="Duplicate other cause")
     public List<OtherCause> getOtherCauses() {
         return lazyListHelper.getLazyList(OtherCause.class);
     }
