@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
+import java.util.List;
+
 public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 	
 	private LabViewerLabDao labViewerLabDao;
@@ -40,8 +42,8 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 
 		LabViewerLab toCreate = new LabViewerLab();
 		//expectCreate(toCreate);
-		toCreate.setName("TEST NAME 3");
-		toCreate.setResult("100.2");
+		toCreate.setName("TEST NAME X");
+		toCreate.setResult("900.2");
 		toCreate.setUnits("cpq");
 		Identifier i = new Identifier();
 		i.setType("MRN");
@@ -67,5 +69,27 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
         //assertNotNull("report id is null", toCreate.getId());
         //assertNotNull("report version id is null", rs.getReportVersions().get(0).getId());
     }
+	
+	public void testSelect() {
+		Identifier i = new Identifier();
+		i.setType("MRN");
+		i.setValue("mrn001");
+
+		Identifier i2 = new Identifier();
+		i2.setType("Protocol Authority Identifier");
+		i2.setValue("RTOG-0330");
+		
+		Participant p = participantDao.getByIdentifier(i);
+        Study s = studyDao.getByIdentifier(i2);
+        
+        System.out.println(p.getFirstName());
+        System.out.println(s.getShortTitle());
+		
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(p,s);
+		List<LabViewerLab> l = labViewerLabDao.getByAssignment(assignment);
+		
+		System.out.println(l.size());
+		
+	}
 
 }
