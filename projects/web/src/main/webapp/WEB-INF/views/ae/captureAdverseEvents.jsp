@@ -15,12 +15,17 @@
  <tags:dwrJavascriptLink objects="createAE,createStudy"/>
  <tags:stylesheetLink name="pw_default" />
  <tags:stylesheetLink name="pw_alphacube" />
+  <tags:stylesheetLink name="aeTermQuery_box" />
 
 <style type="text/css"> 
  .selectbox
 {	
 	width:200px;
 	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
+}
+div.row div.value {
+font-weight:normal;
+	white-space: normal;
 }
 </style>
  
@@ -60,7 +65,6 @@
 		initializeAutoCompleter: function() {
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
-        		
             			if(this.isMeddra){
             				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
             					if(catSel.ignoreOtherSpecify){
@@ -239,7 +243,6 @@
 				var isMeddra = ${not empty command.study.aeTerminology.meddraVersion};
 				var version = ${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id};	
 				catSel = new CategorySelector(isMeddra, version, true);
- 	 			catSel.initializeAutoCompleter();
  	 			
 			});
 		}
@@ -278,12 +281,15 @@
       	
       	<jsp:attribute name="singleFields">
       		<input type="hidden" name="_action" id="_action" value="">
-      		
-			
 			<div id="reportingPeriodSelector">      	
-      			<c:forEach items="${fieldGroups.reportingPeriodFG.fields}" var="field">
-      				<tags:renderRow field="${field}" />
-      			</c:forEach>
+      				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
+						<jsp:attribute name="value">
+								<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />
+								<c:if test='${command.adverseEventReportingPeriod != null}'>
+    							<input id="edit_button" type="button" value="Edit"/>
+								</c:if>
+						</jsp:attribute>
+					</tags:renderRow>
       		</div>
       		
       		<div style="display: none" id="detailSection">
