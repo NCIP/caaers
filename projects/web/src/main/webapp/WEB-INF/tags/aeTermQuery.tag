@@ -38,10 +38,10 @@
 			
 		},
 		initializeAutoCompleter: function() {
+
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
-        		
-            			if(this.isMeddra){
+            			if(this.options.categorySelector.isMeddra){
             				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
             					if(catSel.ignoreOtherSpecify){
                     				var vals = [];
@@ -56,7 +56,7 @@
                     			}								
 							});
             			}else{
-            				createAE.matchTerms(text, this.version, '', 25 , function(values){
+            				createAE.matchTerms(text, this.options.categorySelector.version, '', 25 , function(values){
                 				if(catSel.ignoreOtherSpecify){
                     				var vals = [];
                     				values.each(function(aterm){
@@ -73,7 +73,8 @@
             		},
             		function(aterm) {
             			return aterm.fullName;
-            		}
+            		}, 
+            		{categorySelector:this}
             	);
 		},
 		finishSingleTermSelection:function(){
