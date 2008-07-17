@@ -30,6 +30,7 @@ import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -56,7 +57,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public abstract class AbstractAdverseEventInputController
                 extends
-                AutomaticSaveFlowFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao> {
+                AutomaticSaveAjaxableFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao> {
 
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
