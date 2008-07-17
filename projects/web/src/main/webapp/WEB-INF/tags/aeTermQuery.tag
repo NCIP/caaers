@@ -7,6 +7,7 @@
 <%@attribute name="instructions" fragment="true" %>
 <%@attribute name="callbackFunctionName" required="true" description="The call back function in the parent page, that will be invoked with the selected terms"%>
 <%@attribute name="ignoreOtherSpecify" type="java.lang.Boolean" description="Must be true if we need to ignore other specify" %>
+<%@attribute name="localButtons" fragment="true" description="Extra content to be display in the control area, by default an Add Terms button will be displayed"%>
 <%@attribute name="title" required="false" %> 
 <tags:dwrJavascriptLink objects="createAE"/>
 <script type="text/javascript">
@@ -108,6 +109,12 @@
 			//call the call back
 			${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
 		},
+		cancelTermsSelection:function(){
+			Windows.close(this.win.getId());
+			//reset the category and terms
+			terms.options.length=0;
+			categories.selectedIndex = -1;
+		},
 		beforeShow : function(){
 			
 		},
@@ -146,8 +153,34 @@
  	function showCategoryBox(){
  		catSel.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
  	}
+
+ 	function onDivScroll(selectBoxId)	{
+		if(basename == '') return ;
+		
+ 		var selectBox = $(selectBoxId);
+ 	    //a) On horizontal scrolling: To avoid vertical
+ 	    //b) On vertical scrolling: To view all the items in selectbox
+ 	    if (selectBox.options.length > 5)  	
+ 	 	    selectBox.size=selectBox.options.length;
+ 	    else 	
+ 	 	    selectBox.size=5;
+ 	}
  	
- 	
+ 	function onSelectFocus(selectBoxId)	{
+ 	 	var outerDiv = $(selectBoxId + '-div-id');
+ 	 	var selectBox = $(selectBoxId);
+ 	 	
+ 	    //adjust the scrolling position, so that the content (with less length) is visible
+
+ 	    if (outerDiv.scrollLeft != 0)   outerDiv.scrollLeft = 0;
+ 	   //Adjust the selected item, so that on pressing of downarrow key or uparrowkey,the selected item should also scroll up or down as expected.
+		if(selectBox.options.length > 5){
+			selectBox.focus();
+			selectBox.size = 5;
+		}
+ 	   
+ 	    
+ 	}
 </script>
 
 <chrome:box title="Find &amp; add adverse event term(s)">
@@ -180,19 +213,32 @@
   	<chrome:box title="Choose CTC term(s):" autopad="true">
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC categorie(s)</jsp:attribute>
-			<jsp:attribute name="value"><select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this, catSel.ignoreOtherSpecify);">
-				<c:forEach var="cat" items="${command.ctcCategories}">
+			<jsp:attribute name="value">
+			  <div id="categories-div-id" class="categories-div" onscroll="OnDivScroll('categories');">
+			    <select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this, catSel.ignoreOtherSpecify);" onfocus="onSelectFocus('categories');">
+				  <c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
-				</c:forEach>
-			</select></jsp:attribute>
+				  </c:forEach>
+			    </select>
+			  </div>
+			</jsp:attribute>
 		</tags:renderRow>
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
-			<jsp:attribute name="value"><select name="terms" id="terms" size="5" class="terms" multiple></select></jsp:attribute>
+			<jsp:attribute name="value">
+				<div id="terms-div-id" class="terms-div" onscroll="OnDivScroll('terms');">
+				  <select name="terms" id="terms" size="5" class="terms" multiple onfocus="onSelectFocus('terms');">
+					<option value=""> Please select a CTC term first </option>
+				  </select>
+				</div>
+			</jsp:attribute>
 		</tags:renderRow>
 		<hr />
-		<div>		
-		<input type="button" value="Ok" onclick="catSel.finishMultiTermsSelection();" />
+		<div class="aeTermQuery-buttons">
+			<c:if test="${empty localButtons}">
+			<input type="button" value="Add Terms" onclick="catSel.finishMultiTermsSelection();" />
+			</c:if>
+			 <jsp:invoke fragment="localButtons"/>
 		</div>		
 	</chrome:box>
 	</div>

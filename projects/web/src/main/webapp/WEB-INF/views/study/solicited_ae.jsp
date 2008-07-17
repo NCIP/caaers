@@ -15,7 +15,7 @@
   <tags:dwrJavascriptLink objects="createStudy"/>
   <tags:stylesheetLink name="pw_default" />
   <tags:stylesheetLink name="pw_alphacube" />
-  
+  <tags:stylesheetLink name="aeTermQuery_box" />
   <style type="text/css">
   	
   	.close-button {
@@ -327,7 +327,7 @@
     {
        createStudy.deleteEpoch( epoch_order , function(responseStr)
 	   	{
-             alert('deleted from backend : ' + responseStr);	   	
+            // alert('deleted from backend : ' + responseStr);	   	
 	   	});
     }
     
@@ -477,7 +477,6 @@
 	  		var term = $H( selectedTerms ).get(termID);
 	  		if( !isTermAgainAdded(termID))
 	  		{
-	  		  alert('Pushing...'+termID + ' -- ' + term );
 	  		  listOfTermIDs.push( termID );
 	  		  listOfTerms.push(term );
 	        }
@@ -486,7 +485,6 @@
 	    
 	   	createStudy.addSolicitedAE(listOfTermIDs, listOfTerms, function(responseStr)
 	   	{
-	   	  alert('got response' + responseStr);
    	      var listOfTermIds = $$('.eachRowTermID');
           var termIDArray = $A(listOfTermIds);
           termIDArray.each( unRegisterDeleteButtons );

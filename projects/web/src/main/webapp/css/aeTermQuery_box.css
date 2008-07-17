@@ -1,0 +1,6 @@
+/*
+  The css related to aeTermQuery tag. 
+*/
+ .categories-div{width:500px; overflow:auto;}
+ .terms-div{width:500px; overflow:auto;}
+ .aeTermQuery-buttons { text-align:center; }
