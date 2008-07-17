@@ -32,7 +32,7 @@ public class RadiationInterventionTab extends AeTab {
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refData = super.referenceData(command);
+        Map<String, Object> refData = super.referenceData(request, command);
 
         String code = command.getAeReport().getTreatmentInformation().getTreatmentAssignment() != null ? command
                         .getAeReport().getTreatmentInformation().getTreatmentAssignment().getCode()

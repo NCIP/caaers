@@ -60,7 +60,7 @@ public class ViewReportTab extends AeTab {
             command.getStudy().setMedwatchPDFType(Boolean.TRUE);
         }
 
-        Map<String, Object> refdata = super.referenceData(command);
+        Map<String, Object> refdata = super.referenceData(request,command);
         Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
 
         // evaluate business rules.

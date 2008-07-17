@@ -51,7 +51,7 @@ public class LabsTab extends AeTab {
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refdata = super.referenceData(command);
+        Map<String, Object> refdata = super.referenceData(request,command);
         refdata.put("labCategories", labCategoryDao.getAll());
         return refdata;
     }

@@ -32,7 +32,7 @@ public class CtcBasicsTab extends BasicsTab {
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refdata = super.referenceData(command);
+        Map<String, Object> refdata = super.referenceData(request,command);
         refdata.put("ctcCategories", command.getAssignment().getStudySite().getStudy()
                         .getAeTerminology().getCtcVersion().getCategories());
         return refdata;
