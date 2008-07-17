@@ -4,9 +4,7 @@
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 
 <tags:noform>
-	<c:if test='${command.adverseEventReportingPeriod != null}'>
-    	<input id="edit_button" type="button" value="Edit Reporting Period"/>
-	</c:if>
+
       		
 	<div class="leftpanel">
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
@@ -49,7 +47,9 @@
         
 	<chrome:division title="Observed adverse event(s)">
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
-        	<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
+        	<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  
+        		callbackFunctionName="myCallback" 
+        		version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
         	</tags:aeTermQuery>
         	<%-- <c:if test='${hasObservedEvent == true}'> --%>
         	<table id="observedTable" width="100%" class="tablecontent">
