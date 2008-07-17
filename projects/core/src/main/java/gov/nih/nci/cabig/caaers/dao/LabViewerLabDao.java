@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.LabViewerLab;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.util.List;
@@ -48,5 +49,30 @@ public class LabViewerLabDao extends GridIdentifiableDao<LabViewerLab>
 	public List<LabViewerLab> getByAssignment(StudyParticipantAssignment assignment) {
         List<LabViewerLab> results = getHibernateTemplate().find("from LabViewerLab where assignment_id= ?", assignment.getId());
         return results;
+    }
+    
+    /**
+     * Delete report from db.
+     * 
+     * @param rs
+     * The labViewerLab object to be deleted.
+     */
+    @Transactional(readOnly = false)
+    public void delete(LabViewerLab labViewerLab) {
+        getHibernateTemplate().delete(labViewerLab);
+    }
+    
+    /**
+     * Delete labViewerLab from db
+     * 
+     * @param id
+     *                The ID of the labViewerLab
+     * @return True if labViewerLab successfully deleted. False otherwise.
+     */
+    @Transactional(readOnly = false)
+    public boolean deleteById(int id) {
+        int count = getHibernateTemplate().bulkUpdate("delete LabViewerLab l where l.id=?",
+                        new Object[] { id });
+        return count >= 1;
     }
 }
