@@ -49,19 +49,17 @@ public class JmsServiceImpl implements MessageListener {
         this.messageConsumer = messageConsumer;
     }
 
+    /*
     public void sendJms(String xml) throws BroadcastException {
-        /*
-         * Create sender and text message.
-         */
-
+ 
         try {
             initialize();
             TextMessage message = session.createTextMessage();
             System.out.println("XML Payload....");
             message.setText(xml);
-            /*
-             * Send a non-text control message indicating end of messages.
-             */
+
+             //Send a non-text control message indicating end of messages.
+
             System.out.println("sending jms....");
             producer.send(message);
             System.out.println("jms sent....");
@@ -83,7 +81,25 @@ public class JmsServiceImpl implements MessageListener {
             throw new BroadcastException(e.getMessage(), e);
         }
     }
-
+    */
+	public void sendJms(String xml) throws BroadcastException{
+        
+         //Create sender and text message.
+         
+        try {
+            TextMessage message = session.createTextMessage();
+            System.out.println("XML Payload....");
+			message.setText(xml);
+            
+            //Send a non-text control message indicating end of messages.
+             
+			System.out.println("sending jms....");
+            producer.send(message);
+            System.out.println("jms sent....");
+        }catch(Exception e){
+        	throw new BroadcastException(e.getMessage(),e);
+        }
+	}
     public void close() throws BroadcastException {
         try {
             connection.close();
