@@ -47,7 +47,7 @@ public class LabViewerLabDao extends GridIdentifiableDao<LabViewerLab>
      */
     @SuppressWarnings("unchecked")
 	public List<LabViewerLab> getByAssignment(StudyParticipantAssignment assignment) {
-        List<LabViewerLab> results = getHibernateTemplate().find("from LabViewerLab where assignment_id= ?", assignment.getId());
+        List<LabViewerLab> results = getHibernateTemplate().find("from LabViewerLab where assignment_id= ? order by lab_date", assignment.getId());
         return results;
     }
     
