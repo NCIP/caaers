@@ -2,11 +2,10 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Where;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,9 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 /**
  * @author Krikor Krumlian
@@ -137,6 +140,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
 
     @OneToMany(mappedBy = "assignment")
+    @OrderBy(clause="lab_date desc")
 	public List<LabViewerLab> getLabViewerLabs() {
     	if(labViewerLabs == null) labViewerLabs = new ArrayList<LabViewerLab>();
     	return labViewerLabs;
