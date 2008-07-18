@@ -42,7 +42,7 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 
 		LabViewerLab toCreate = new LabViewerLab();
 		//expectCreate(toCreate);
-		toCreate.setName("TEST NAME X");
+		toCreate.setName("TEST NAME XYZ");
 		toCreate.setResult("900.2");
 		toCreate.setUnits("cpq");
 		Identifier i = new Identifier();
@@ -56,8 +56,8 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 		Participant p = participantDao.getByIdentifier(i);
         Study s = studyDao.getByIdentifier(i2);
         
-        System.out.println(p.getFirstName());
-        System.out.println(s.getShortTitle());
+       // System.out.println(p.getFirstName());
+        //System.out.println(s.getShortTitle());
 		
 		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(p,s);
 
@@ -66,8 +66,8 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 		
 		
 
-        //assertNotNull("report id is null", toCreate.getId());
-        //assertNotNull("report version id is null", rs.getReportVersions().get(0).getId());
+        assertNotNull("lab viewer id is null", toCreate.getId());
+        
     }
 	
 	public void testSelect() {
@@ -89,6 +89,9 @@ public class LabViewerLabDaoTest extends DaoTestCase<LabViewerLabDao> {
 		List<LabViewerLab> l = labViewerLabDao.getByAssignment(assignment);
 		
 		System.out.println(l.size());
+		for (LabViewerLab labViewerLab:l) {
+			System.out.println(labViewerLab.getName() + " :: " + labViewerLab.getLabDate());
+		}
 		
 	}
 
