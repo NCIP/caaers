@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+    "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-labViewerConsumer.xml"/>
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
+	
+	<!--
+	<bean id="labViewerConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabViewerConsumer">
+		<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
+		<property name="participantDao" ref="participantDao" />
+		<property name="labViewerLabRepository" ref="labViewerLabRepository" />
+		<property name="studyDao" ref="studyDao" />		
+		<property name="authorizationSwitch" ref="authorizationSwitch" />	
+	</bean>
+	-->
+	
+	<bean id="labViewerConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabViewerConsumer" autowire="byType"/>
+	 
+</beans>
