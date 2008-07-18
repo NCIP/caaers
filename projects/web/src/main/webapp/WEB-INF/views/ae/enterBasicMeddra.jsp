@@ -28,9 +28,6 @@
      <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 
-	  var meddraVersion = ${command.assignment.studySite.study.aeTerminology.meddraVersion.id}
-	  
-
         var LowLevelTerm = Class.create()
         Object.extend(LowLevelTerm.prototype, {
             initialize: function(index, lowLevelTermCode) {
@@ -50,7 +47,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-			    createAE.matchLowLevelTermsByCode(meddraVersion,text, function(values) {
+			    createAE.matchLowLevelTermsByCode(${command.assignment.studySite.study.aeTerminology.meddraVersion.id},text, function(values) {
                     autocompleter.setChoices(values);
                 })
             }
