@@ -57,7 +57,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      */
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request , ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refData = super.referenceData(command);
+        Map<String, Object> refData = super.referenceData( request,command);
         Object fieldGroups = refData.get("fieldGroups");
         populateMandatoryFlag(fieldGroups, command, refData);
         return refData;
