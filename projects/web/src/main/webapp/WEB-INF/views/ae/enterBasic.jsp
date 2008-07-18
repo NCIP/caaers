@@ -33,13 +33,11 @@
 		 .help-content {
 		 	width:550px;
 		 }
-    </style>
+    </style> 
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
-        var ctcVersion = ${command.assignment.studySite.study.ctcVersion.id}
-        var meddraVersion = ${command.assignment.studySite.study.aeTerminology.meddraVersion.id}
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
             <c:if test="${not empty ae.adverseEventCtcTerm.ctcTerm}">
@@ -96,7 +94,7 @@
                 
                 AE.createStandardAutocompleter(this._detailsForOtherLltId(),
 					function(autocompleter, text) {
-						createAE.matchLowLevelTermsByCode(meddraVersion,text, function(values) {
+						createAE.matchLowLevelTermsByCode(${command.assignment.studySite.study.aeTerminology.meddraVersion.id},text, function(values) {
 													autocompleter.setChoices(values)})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
@@ -256,7 +254,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, ctcVersion, $F(this._ctcCategoryId()), 25, function(values) {
+                createAE.matchTerms(text, ${command.assignment.studySite.study.ctcVersion.id}, $F(this._ctcCategoryId()), 25, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
