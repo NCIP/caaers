@@ -10,6 +10,9 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
+    
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    
     <script type="text/javascript">
       var completedDefs = new Array();
       Event.observe(window, "load", function() {

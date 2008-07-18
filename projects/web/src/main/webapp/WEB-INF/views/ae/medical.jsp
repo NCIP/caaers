@@ -12,6 +12,9 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    
     <style type="text/css">
         div.row div.label {
             width: 16em;

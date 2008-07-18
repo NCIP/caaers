@@ -36,6 +36,9 @@
     </style> 
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         var initialCtcTerm = [ ]

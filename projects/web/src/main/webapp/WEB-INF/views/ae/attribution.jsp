@@ -12,6 +12,7 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
     <style type="text/css">
         hr.attrib-divider {
             border: 2px solid #6E81A6;

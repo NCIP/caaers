@@ -23,6 +23,9 @@
     </style>
     <tags:includeScriptaculous/>
      <tags:dwrJavascriptLink objects="createAE"/>
+     
+     <tags:labs labs="${command.assignment.labViewerLabs}"/>
+     
     <script type="text/javascript">
     
     

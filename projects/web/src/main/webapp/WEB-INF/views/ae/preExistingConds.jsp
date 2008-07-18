@@ -10,6 +10,7 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
     <style type="text/css">
         /* This is intended to apply to the grade longselect only */
         .longselect {

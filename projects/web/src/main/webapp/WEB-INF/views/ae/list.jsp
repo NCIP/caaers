@@ -3,6 +3,8 @@
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
+
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <html>
 <head>
@@ -10,7 +12,8 @@
     <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <tags:dwrJavascriptLink objects="adverseEventHistory"/>
-
+	<tags:labs labs="${command.assignment.labViewerLabs}"/>
+	
     <style type="text/css">
         .notify-unit.success {
             color: #090;

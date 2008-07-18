@@ -7,6 +7,9 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
+    
+    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    
     <style type="text/css">
         
         div.row div.label { width: 18em;} 
