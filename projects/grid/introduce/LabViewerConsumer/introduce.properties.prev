@@ -1,0 +1,11 @@
+#Introduce Properties
+#Fri Jul 11 23:55:33 EDT 2008
+introduce.skeleton.services.list=LabViewerConsumer
+introduce.skeleton.extensions=cagrid_metadata
+introduce.skeleton.timestamp=1215834628451
+introduce.skeleton.service.name=LabViewerConsumer
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=/Users/sakkala/tech/caaers/lab-viewer/LabViewerConsumer
+introduce.skeleton.namespace.domain=http\://grid.ccts.nci.nih.gov/LabViewerConsumer
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.service -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.common
+introduce.soap.binding.excludes=\ 
