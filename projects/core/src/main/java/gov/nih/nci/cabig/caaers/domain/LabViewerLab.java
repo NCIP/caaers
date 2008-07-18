@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -20,7 +22,7 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name = "labviewer_labs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_labviewer_labs_id") })
-public class LabViewerLab extends AbstractIdentifiableDomainObject {
+public class LabViewerLab extends AbstractMutableDomainObject {
  
 	private String name;
 
