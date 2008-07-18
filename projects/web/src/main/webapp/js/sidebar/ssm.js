@@ -122,12 +122,10 @@ function buildMenu(n, headerName) {
     }
 
     if (NS6) {
-//        document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth + 2) + 'px" bgcolor="' + menuBGColor + '"><TR><TD>')
         document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth + 0) + 'px"><TR><TD>')
     }
     
     document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth) + 'px">');
-//    document.write('<table border="0" cellpadding="0" cellspacing="1" width="' + (menuWidth + barWidth) + 'px" bgcolor="' + menuBGColor + '">');
 
     // header
     document.write("<tr><td class=\"ssmItems\" style='background:url(../../images/sidebar/header.gif); padding-left:7px; border-right:1px " + menuBGColor + " solid; height:18px;'><b>" + headerName + "</b></td><tr>");
@@ -143,9 +141,10 @@ function buildMenu(n, headerName) {
 	
  	for (i = 0; i < ssmItems.length; i++){
 		document.write('<TR>')
-		for(j=0; j<5;j++){
+		for(j=0; j<4;j++){
 			document.write('<td bgcolor="' + hdrBGColor + '" HEIGHT="' + hdrHeight + 'px" ALIGN="' + hdrAlign + '" VALIGN="' + hdrVAlign + '" WIDTH="' + ssmItems[1][0] + '" COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + hdrFontFamily + '" Size="' + hdrFontSize + '" COLOR="' + hdrFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>')
 		}
+		document.write('<td align="left" valign="top"><a href="#"><img src="../../images/checkno.gif" border="0"></a></td>');
 		document.write('</TR>')
 	}
 
@@ -154,10 +153,6 @@ function buildMenu(n, headerName) {
     document.write('</td>');
     document.write('<td align="left" valign="top"><img src="../../images/sidebar/bar.gif"></td>');
     document.write('</table>');
-
-
-    //    ELEM</td><td>BARA</td></table>");
-
 
     if (NS6) {
         document.write('</TD></TR></TABLE>')
