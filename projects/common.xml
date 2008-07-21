@@ -74,6 +74,25 @@
 			<ivy:retrieve pattern="@{libDir}/[artifact]-[revision].[ext]" resolveid="@{resolveId}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
 		</sequential>
 	</macrodef>
+	
+	<!-- ==================================================================================
+		ivyPublish: Will publish the files to a repository
+	======================================================================================= -->
+	<macrodef name="ivyPublish">
+			<attribute name="artifactspattern"/>
+			<attribute name="resolver"/>
+			<attribute name="pubrevision"/>
+			<attribute name="status"/>
+			<sequential>
+				<ivy:publish artifactspattern="@{artifactspattern}" 
+						    		resolver="@{resolver}"
+						    		pubrevision="@{pubrevision}"
+						    		status="@{status}"
+						    		forcedeliver="true"
+						    		pubdate="${now}"
+						    		overwrite="true" settingsRef="caaers.ivy.instance"/>
+			</sequential>
+	</macrodef>
 
 	
 	<!-- If present, will skip the execution of testcases -->
@@ -390,12 +409,11 @@
     <target name="publish" depends="clean-dist, init, jar, jar-test, test-report" 
     		description="--> publish this project in the ivy repository">
     	<echo message="Executing in ${ant.project.name}" />
-    	<ivy:publish artifactspattern="${dist.dir}/[artifact].[ext]" 
+    	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]" 
     		resolver="semanticbits-repo-sftp"
     		pubrevision="${version}" 
     		status="release"
-    		forcedeliver="true"
-    		overwrite="true" settingsRef="caaers.ivy.instance"/>
+    		/>
         <echo message="project ${ant.project.name} released with version ${version}" />
     </target>
 
@@ -405,13 +423,11 @@
     <target name="publish-local" depends="clean-dist, init, local-version, jar, jar-test, debug-info,test-report" 
     	description="--> publish this project in the local ivy repository">
     	<echo message="Executing in ${ant.project.name}" />
-    	<ivy:publish artifactspattern="${dist.dir}/[artifact].[ext]" 
+    	<ivyPublish artifactspattern="${dist.dir}/[artifact].[ext]" 
     		resolver="caaers-local"
     		pubrevision="${version}"
     		status="integration"
-    		forcedeliver="true"
-    		pubdate="${now}"
-    		overwrite="true" settingsRef="caaers.ivy.instance"/>
+    		/>
         <echo message="project ${ant.project.name} published locally with version ${version}" />
     </target>
 
