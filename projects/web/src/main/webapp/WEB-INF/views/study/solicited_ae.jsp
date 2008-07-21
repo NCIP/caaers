@@ -21,6 +21,7 @@
   	.close-button {
         position:relative;
         top:-20px;
+        border:0;
         
     }
   	.sae, .query {
@@ -181,7 +182,7 @@
     
     function uninitializeAllEvents()
     {
-    
+    try{
      unRegisterAddInstructionLinks();
     
      unRegisterSelectAllCheckBoxes();  
@@ -193,7 +194,10 @@
      var listOfTermIds = updateTermIds();
      var termIDArray = $A(listOfTermIds);
      termIDArray.each( unRegisterDeleteButtons );
-    
+    }catch(ex)
+    {
+      //alert('exception');
+    }
     }
     
     function registerAddEpochButton()
@@ -208,17 +212,18 @@
     
     function addEpoch( event ){
         
-        createStudy.addEpoch(function( solicitedAETableContents )
-	   	{
-	         uninitializeAllEvents();   	
-	   	     
-	   	     $("SolicitedAETableArea").innerHTML = solicitedAETableContents; 
-             
-             initializeAllEvents();    	
-	   	});
-	   	
+       	    uninitializeAllEvents();
+        
+           <tags:tabMethod  method="addEpoch" 
+                         viewName="study/ajax/generateSolicitedAETable" 
+                         divElement="'SolicitedAETableArea'" 
+                         formName="'command'"
+                         onComplete="initializeAllEvents"/>
+	   	               
+                   
     }
-    function registerSelectAllCheckBoxes()
+   
+   function registerSelectAllCheckBoxes()
     {
       var header_of_all_epochs = $$('.epoch');
        
@@ -300,34 +305,43 @@
     
     function callback_delete_epoch(event)
     {
+    
+    
        if(!event.currentTarget) event.currentTarget = this;
        
        var delete_epoch_icon_id = event.currentTarget.id;
-       var epoch_order = delete_epoch_icon_id.substring("delete-epoch-".length);
-       var all_cells_of_this_epoch_column = $$('.col-epoch-'+epoch_order);
+       var epoch_index = delete_epoch_icon_id.substring("delete-epoch-".length);
+       var all_cells_of_this_epoch_column = $$('.col-epoch-'+epoch_index);
        
        var header_of_all_epochs = $$('.epoch');
        
        
        if(confirm("Do you really want to delete this treatment period ?"))
        { 
-         deleteEpochFromBackEnd( epoch_order );
-         $('th-table1-'+epoch_order).remove();
-         $('th-col-epoch-'+epoch_order).remove();
+     //    deleteEpoch( epoch_order );
+    
+     //    deleteEpochFromBackEnd( epoch_index )
+        
+         $('th-table1-'+epoch_index).remove();
+         $('th-col-epoch-'+epoch_index).remove();
          for(var i = 0 ; i < all_cells_of_this_epoch_column.length ; i++)
          {
            all_cells_of_this_epoch_column[i].remove();
          }
+         
+         
        }
        else
          return false;
+         
+        
     }
     
-    function deleteEpochFromBackEnd( epoch_order )
+    function deleteEpochFromBackEnd( epoch_index )
     {
-       createStudy.deleteEpoch( epoch_order , function(responseStr)
+       createStudy.deleteEpoch( epoch_index , function(responseStr)
 	   	{
-            // alert('deleted from backend : ' + responseStr);	   	
+             alert('deleted from backend : ' + responseStr);	   	
 	   	});
     }
     
@@ -433,16 +447,16 @@
     {
       $('err-section').innerHTML = "";
       var listOfTermIds = $$('.eachRowTermID');
+      
       for(var i = 0 ; i < listOfTermIds.length ; i++)
       {
       
-      var header_of_all_epochs = $$('.epoch');
+      var one_row_checkboxes = $$('.ck-'+listOfTermIds[i].value);
        
        var atleastOneCheckboxIsSelected = false;
-        for(var j = 0 ; j < header_of_all_epochs.length ; j++ )
+        for(var j = 0 ; j < one_row_checkboxes.length ; j++ )
         {
-          var ckbox = "ck" + j + "-" + listOfTermIds[i].value;
-          atleastOneCheckboxIsSelected = atleastOneCheckboxIsSelected || $(ckbox).checked;
+          atleastOneCheckboxIsSelected = atleastOneCheckboxIsSelected || one_row_checkboxes[j].checked;
         }
         
         if( !atleastOneCheckboxIsSelected )
@@ -516,15 +530,17 @@
   	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}"  callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="true"/>
   	
   	<!--  Idea is copied from tabForm.tag -->
-  	<chrome:box title="${tab.shortTitle}" >
+  	<chrome:box title="${tab.longTitle}" >
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
-  		<tags:hasErrorsMessage />
   		<p id="instructions">
 To associate the term to a treatment period type, select the appropriate check box(es). 
 Each term can be associated to multiple treatment period types. <br>To associate all terms to a treatment period type, select the check box directly under <b>Add Instructions</b>.
 <br>To add specific instructions for the reporting period type, click <b>Add Instructions</b>.
 		</p>
+	
+	    <tags:hasErrorsMessage />
+  	
 		<p>
 		  <ul id="err-section" class="errors">
          </ul>
