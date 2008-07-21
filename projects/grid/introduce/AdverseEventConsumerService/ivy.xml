@@ -2,7 +2,7 @@
 <ivy-module version="1.4">
 		
     	<info organisation="gov.nih.nci.cabig.caaers"
-          	module="caaers-grid-ae-consumer-service"
+          	module="AdverseEventConsumer"
           	status="integration" revision="${caaers.version}"/>
         
   
@@ -23,6 +23,15 @@
         		description="Dependencies needed for testing purposes"/>
         </configurations>
         
+         <!--  Items to be published  -->
+         <publications>
+    		<artifact name="${ivy.module}-client" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-common" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-service" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-stubs" conf="publish" type="jar" ext="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar" ext="jar"/>
+  		</publications>
+        
         <dependencies defaultconfmapping="build->master(*);runtime->master(*),runtime(*);dist->default(*);distGrid->default(*)">
 
 			<!--  ant-contrib -->
@@ -32,7 +41,7 @@
 				conf="build->publish;runtime->runtime,publish;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
-				
+				"core/ivy.xml"
         	<!--  C3PR registration stubs/skeltons -->
         	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer-client" rev="0.1"  />
         	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer-common" rev="0.1"  />
