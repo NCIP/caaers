@@ -56,8 +56,6 @@ public class CreateStudyAjaxFacade {
 
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
 
-	public static final String AJAX_REQUEST_ADDEPOCH = "_addEpoch";
-
     public static final String CREATE_STUDY_FORM_NAME = CreateStudyController.class.getName()
                     + ".FORM.command";
 
@@ -222,50 +220,20 @@ public class CreateStudyAjaxFacade {
     	
     	    	
     }
-    public String addEpoch() {
+    
+    /*
+     * For future use...
+     */
+    public int deleteEpoch(String epoch_index) {
         
-    	Study study = getStudyCommand(getHttpServletRequest());
-        
-    	int newOrderNumber = generateNextEpochOrderNumber();
-    	
-    	System.out.println( newOrderNumber );
-    	
-    	Epoch newEpoch = new Epoch("Enter name here", newOrderNumber ); 
-    	
-    	study.addEpoch( newEpoch );
-
+    	if( epoch_index != null ){
         HttpServletRequest request = getHttpServletRequest();
-        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-        request.setAttribute(AJAX_SUBVIEW_PARAMETER, "generateSolicitedAETable");
-        request.setAttribute(AJAX_REQUEST_ADDEPOCH, "true");
-        String url = getCurrentPageContextRelative(WebContextFactory.get());
-        return getOutputFromJsp(url);
-    }
-
-    public int deleteEpoch(String epoch_order) {
-        
-    	if( epoch_order != null ){
-        HttpServletRequest request = getHttpServletRequest();
-        
         
         Study study = getStudyCommand(getHttpServletRequest());
-        List<Epoch> listOfEpochs = study.getEpochs();
         
-        java.util.Iterator<Epoch> epochsIterator = listOfEpochs.iterator();
+        study.removeEpoch( study.getEpochs().get( Integer.parseInt(epoch_index) ) );
         
-        while( epochsIterator.hasNext() )
-        {
-        	Epoch epoch =  epochsIterator.next();
-        	
-        	if( String.valueOf(epoch.getEpochOrder()).equals(epoch_order))
-        	{
-        		epochsIterator.remove();
-        		break;
-        	}
-        	
-        }
-    	  study.setEpochs( listOfEpochs );
-    	  return listOfEpochs.size();
+        return study.getEpochs().size();
     	} // end if
       return -1; 
     	
