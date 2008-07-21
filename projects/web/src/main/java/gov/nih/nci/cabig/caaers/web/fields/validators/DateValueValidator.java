@@ -22,9 +22,10 @@ public class DateValueValidator extends FieldValidator {
 	 */
 	@Override
 	public boolean isValid(Object fieldValue) {
+		if(fieldValue == null) return true;
+		
 		if(fieldValue instanceof DateValue){
 			DateValue dateValue = (DateValue) fieldValue;
-			if(dateValue == null) return false;
 			Integer year = dateValue.getYear();
 			Integer month = dateValue.getMonth();
 			Integer day = dateValue.getDay();

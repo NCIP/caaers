@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -78,8 +79,8 @@ public abstract class BasicsTab extends AeTab {
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", InputFieldFactory
                         .createLongSelectField("grade", "Grade", true, InputFieldFactory
                                         .collectOptions(EXPEDITED_GRADES, "name", null)),
-                        InputFieldFactory.createDateField("startDate", "Start date"),
-                        InputFieldFactory.createDateField("endDate", "End date"), attributionField,
+                        InputFieldFactory.createDateField("startDate", "Start date", FieldValidator.DATE_VALIDATOR),
+                        InputFieldFactory.createDateField("endDate", "End date", FieldValidator.DATE_VALIDATOR), attributionField,
                         InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",
                                         false, InputFieldFactory.collectOptions(Arrays
                                                         .asList(Hospitalization.values()), "name",

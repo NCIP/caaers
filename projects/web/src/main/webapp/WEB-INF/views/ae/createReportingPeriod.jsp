@@ -7,14 +7,21 @@
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <html>
  <head>
- <standard:head/>
- <tags:includeScriptaculous/>
+ 	<standard:head/>
+	<tags:stylesheetLink name="standard-form" />
+	<style type="text/css">
+		/*override the basic styles */
+		body {background: none;}
+		div.row div.label {width: 12em;}
+	 	div.row div.value, div.row div.extra { margin-left: 13em; }
+	
+	</style>
  <script>
  	var descArray = new Array();
  	
 
  	
- 	Event.observe(window, "load", function(){
+ 	Event.observe(window, "close", function(){
  		//push the description into the array
 		<c:forEach items="${command.assignment.studySite.study.treatmentAssignments}" var="ta">
         	descArray.push("${ta.escapedDescription}");
@@ -33,33 +40,17 @@
  </script>
   </head>
  <body>
- <br>
-  <div class="content">
-    <chrome:box title="Reporting Period Details">
-	<form:form>
-		<div class="instructions">You can add the details of the Repoting Period here.
-		<br /><br />
-		</div>
-			<tags:hasErrorsMessage hideErrorDetails="true"/>
-			<!--  JSP body here -->
-			<div id="rpfields">
-				<c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-            	</c:forEach>
-			</div>
-			<div class="content buttons autoclear">
-			  <div class="flow-buttons">
-			   <span class="next">
-			  	<!--  reset and save buttons -->
-			  	<input type="submit" value="Save" />
-			   </span>	
-			  </div>
-			</div>
-	</form:form>
-  </chrome:box>
-  
-  </div>
-  
-  </div>
+	<tags:standardForm title="Reporting Period Details">
+		<jsp:attribute name="instructions">
+			<p>You can add the details of the Repoting Period here.</p>
+		</jsp:attribute>
+		<jsp:attribute name="singleFields">
+			<c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">
+               <tags:renderRow field="${field}"/>
+            </c:forEach>
+		</jsp:attribute>
+		<jsp:attribute name="navButtons"><input type="submit" value="Save" /></jsp:attribute>
+	</tags:standardForm>
+
  </body>
 </html>

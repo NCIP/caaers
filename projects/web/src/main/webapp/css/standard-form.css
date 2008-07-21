@@ -1,0 +1,9 @@
+
+/** flow specific buttons */
+
+.standard-buttons {
+  border-top: 1px solid #000;
+  clear: both;
+}
+
+.standard-nav-buttons{ text-align:center;}

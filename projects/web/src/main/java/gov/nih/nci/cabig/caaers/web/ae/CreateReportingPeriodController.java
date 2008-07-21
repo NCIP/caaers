@@ -1,10 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -14,7 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -22,12 +17,19 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.digester.SetPropertiesRule;
-import org.apache.derby.impl.sql.compile.SetTransactionIsolationNode;
+import org.apache.commons.lang.math.NumberUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
@@ -47,7 +49,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	
 	private static final String REPORTINGPERIOD_FIELD_GROUP = "ReportingPeriod";
     private InputFieldGroup reportingPeriodFieldGroup;
-    private InputFieldGroupMap fieldMap;
     
 	
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
@@ -59,20 +60,23 @@ public class CreateReportingPeriodController extends SimpleFormController {
     
 	public CreateReportingPeriodController() {
         setFormView("ae/createReportingPeriod");
-        setBindOnNewForm(true);
     }
 	
+	/**
+	 * Will return the ReportingPeriodCommand, after properly initializing {@link StudyParticipantAssignment}, {@link Study}, {@link AdverseEventReportingPeriod}
+	 */
 	@Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		String idString = request.getParameter("id");
-		String studyString = request.getParameter("studyId");
-		String participantString = request.getParameter("participantId");
-		if(idString != null)
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, idString, studyString, participantString);
-		else if(studyString != null && participantString != null)
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao, studyString, participantString);
-		else
-			return new ReportingPeriodCommand(adverseEventReportingPeriodDao, assignmentDao, studyDao, participantDao); 
+
+		//obtain assignmentId and  id from request parameters
+		int assignmentId = NumberUtils.toInt(request.getParameter("assignmentId"), 0);
+		int reportingPeriodId = NumberUtils.toInt(request.getParameter("id"), 0);
+		
+		//load assignment
+		StudyParticipantAssignment assignment = (assignmentId > 0) ? assignmentDao.getById(assignmentId) : null;
+		AdverseEventReportingPeriod reportingPeriod = (reportingPeriodId > 0) ? adverseEventReportingPeriodDao.getById(reportingPeriodId) :  null;
+		
+		return new ReportingPeriodCommand( assignment, reportingPeriod);
 			
     }
 	
@@ -92,8 +96,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                     final Errors errors) throws Exception {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
-        createFieldGroup(command);
-        refDataMap.put("fieldGroups", fieldMap);
+        refDataMap.put("fieldGroups", createFieldGroups(command) );
         return refDataMap;
     }
 	
@@ -101,12 +104,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	 * Creates the fields that are displayed.
 	 * @param command
 	 */
-	protected void createFieldGroup(Object command){
-		fieldMap = new InputFieldGroupMap();
+	protected  Map<String, InputFieldGroup> createFieldGroups(Object command){
+		InputFieldGroupMap fieldMap = new InputFieldGroupMap();
 		reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 		
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "From", true));
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "To", true));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "From", 
+				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "To", 
+				FieldValidator.NOT_NULL_VALIDATOR));
 		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Reporting Period Type", true,
                 createEpochOptions(command)));
 		
@@ -114,7 +119,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		InputFieldAttributes.setColumns(descriptionField, 60);
 		reportingPeriodFieldGroup.getFields().add(descriptionField);
 		
-		InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", false);
+		InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", 
+			FieldValidator.NUMBER_VALIDATOR);
 		InputFieldAttributes.setSize(cycleNumberField, 2);
 		reportingPeriodFieldGroup.getFields().add(cycleNumberField);
 
@@ -126,12 +132,20 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		reportingPeriodFieldGroup.getFields().add(tacDescriptionField);
 		
 		fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
+		return fieldMap;
 	}
 
 	
 	@Override
 	protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
 		super.onBindAndValidate(request, command, errors);
+		 BeanWrapper commandBean = new BeanWrapperImpl(command);
+	        Map<String, InputFieldGroup> fieldGroups = createFieldGroups(command);
+	        for (InputFieldGroup fieldGroup : fieldGroups.values()) {
+	            for (InputField field : fieldGroup.getFields()) {
+	                field.validate(commandBean, errors);
+	            }
+	        }
 	}
 	
 	/**
@@ -140,13 +154,16 @@ public class CreateReportingPeriodController extends SimpleFormController {
      */
     @SuppressWarnings("unchecked")
     @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                    Object cmd, BindException errors) throws Exception {
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object cmd, BindException errors) throws Exception {
     	ReportingPeriodCommand command = (ReportingPeriodCommand)cmd;
+    	
         AdverseEventReportingPeriod reportingPeriod = command.getReportingPeriod();
         reportingPeriod.setAssignment(command.getAssignment());
         adverseEventReportingPeriodDao.save(reportingPeriod);
+        
         Map map = new LinkedHashMap();
+        map.putAll(createFieldGroups(command));
+        
         map.putAll(errors.getModel());
         ModelAndView modelAndView = new ModelAndView("ae/confirmReportingPeriod", map);
         

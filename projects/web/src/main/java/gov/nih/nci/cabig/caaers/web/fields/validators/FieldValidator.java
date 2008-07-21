@@ -11,6 +11,8 @@ public abstract class FieldValidator {
     public static final FieldValidator DATE_VALIDATOR;
     
     public static final FieldValidator DATE_VALUE_VALIDATOR;
+    
+    public static final FieldValidator NUMBER_VALIDATOR;
 
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
@@ -18,6 +20,7 @@ public abstract class FieldValidator {
         PHONE_VALIDATOR = new PhoneNumberValidator();
         DATE_VALIDATOR = new DateValidator();
         DATE_VALUE_VALIDATOR = new DateValueValidator();
+        NUMBER_VALIDATOR = new NumberValidator();
     }
 
     /**

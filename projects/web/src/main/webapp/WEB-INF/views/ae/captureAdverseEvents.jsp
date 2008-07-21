@@ -23,6 +23,7 @@
 	width:200px;
 	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
 }
+/* Override basic styles */
 div.row div.value {
 font-weight:normal;
 	white-space: normal;
@@ -30,245 +31,95 @@ font-weight:normal;
 </style>
  
  <script>
- 	var descArray = new Array();
- 	var win;
- 	var index;
- 	var selectElement;
- 	
- 	//from here for autopopulator
- 	
- 	var catSel = null;
- 	var CategorySelector = Class.create();
- 	Object.extend(CategorySelector.prototype, {
-		initialize: function(meddra, ver, ignoreOtherSpecify) {
-			this.win = null;
-			this.isMeddra = meddra;
-			this.version = ver;
-			this.ignoreOtherSpecify = ignoreOtherSpecify;
+
+ 	var RPCreatorClass = Class.create();
+ 	Object.extend(RPCreatorClass.prototype, {
+ 	 	/*
+ 	 		rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
+ 	 		rpDetailsDiv - The DIV element where the content of selected reporting period is shown.
+ 	 	*/
+ 	 	initialize : function(rpCtrl,rpDetailsDiv,rpEditCtrl){
+ 	 	
+ 	 		this.win = null;
+ 	 		this.rpCtrl = $(rpCtrl);
+ 	 		this.rpEditCtrl = $(rpEditCtrl);
+ 	 		this.rpDetailsDiv = $(rpDetailsDiv);
+ 	 		
+			showOrHideEditRPCtrl(); //determine edit-button visiblility 
 			
-			Event.observe("edit_button", "click", function() {
-				var reportingPeriodId = document.getElementById('adverseEventReportingPeriod').value;
-				displayReportingPeriodPopup(reportingPeriodId);
-			 })
-		},
-		
-		showWindow:function(wUrl, wTitle, wWidth, wHeight){
-			win = new Window({className:"alphacube", destroyOnClose:true,title:wTitle,  width:wWidth,  height:wHeight, 
-			onShow:this.show.bind(this),
-			onBeforeShow:this.beforeShow.bind(this)
-			});
-			this.win = win;
-			win.setContent('chooseCategory');
-			win.show(true);
-			
-		},
-		initializeAutoCompleter: function() {
-			AE.createStandardAutocompleter('termCode', 
-            		function(autocompleter, text){
-            			if(this.isMeddra){
-            				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
-            					if(catSel.ignoreOtherSpecify){
-                    				var vals = [];
-                    				values.each(function(aterm){
-                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
-                        					 vals.push(aterm);
-                    					}
-                        			});
-                    				autocompleter.setChoices(vals);
-                				}else{
-                					autocompleter.setChoices(values);
-                    			}								
-							});
-            			}else{
-            				createAE.matchTerms(text, this.version, '', 25 , function(values){
-                				if(catSel.ignoreOtherSpecify){
-                    				var vals = [];
-                    				values.each(function(aterm){
-                        				if(aterm.fullName.indexOf('Other (Specify') < 0){
-                        					 vals.push(aterm);
-                    					}
-                        			});
-                    				autocompleter.setChoices(vals);
-                				}else{
-                					autocompleter.setChoices(values);
-                    			}
-            				});
-            			}
-            		},
-            		function(aterm) {
-            			return aterm.fullName;
-            		}
-            	);
-		},
-		finishSingleTermSelection:function(){
-			var selTermMap = new Hash();
-			var termElement = $('termCode');
-			var termElementInput = $('termCode-input');
-			
-			var termId = termElement.getValue();
-			if(termId) selTermMap.set(termId, termElementInput.getValue());
-			
-			termElement.clear();
-			termElementInput.clear();
-			
-			//${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
-			myCallback(selTermMap);
-		},
-		finishMultiTermsSelection:function() {
-			var terms = $('terms');
-			var categories = $('categories');
-			
-			var opts = terms.options;
-			
-			var selTermMap = new Hash();
-			//each over iterator is not working, dont know why.
-			if(opts.length > 0) {
-				for(i = 0; i< opts.length; i++){
-					if(opts[i].selected) selTermMap.set(opts[i].value, opts[i].text);
-				}
+ 	 	 	this.addOptionToSelectBox(this.rpCtrl, 'Create New' , '-1');//add Create New option.
+ 	 		Event.observe(this.rpCtrl, 'change', this.rpCtrlOnChange.bindAsEventListener(this));
+ 	 		Event.observe(this.rpEditCtrl, 'click', this.rpEditCtrlClick.bindAsEventListener(this));
+ 		},
+ 		displayRPPopup:function(){
+ 			//will show the reporting period creation popup
+ 	 		rpId = this.rpCtrl.value;
+ 	 		url = "createReportingPeriod?assignmentId=#{assignmentId}&id=#{id}&subview".interpolate({assignmentId:"${command.assignment.id}" , id:rpId});
+ 	 		this.win = new Window({className:"alphacube", 
+ 	 	 		destroyOnClose:true, 
+ 	 	 		title:"Reporting Period Information",  
+ 	 	 		width:700,  height:530, 
+ 				url: url, 
+ 				top: 30, left: 300});
+ 			this.win.show(true);
+ 		},
+ 		addOptionToSelectBox:function(selBox, optLabel, optValue, isSecondLast){
+ 			//adds the option to specified select box.
+ 	 		opt = new Option(optLabel, optValue);
+ 	 		len = selBox.options.length;
+			if(isSecondLast){
+ 	 			selBox.add(opt,selBox.options[len - 1]);
+			}else{
+				selBox.options.add(opt);
 			}
-			Windows.close(this.win.getId());
-			//reset the category and terms
-			terms.options.length=0;
-			categories.selectedIndex = -1;
-			//call the call back
-			//${callbackFunctionName}(selTermMap); //need to refactor, this is a rude way of calling a function
-			myCallback(selTermMap);
-		},
-		beforeShow : function(){
-			
-		},
-		show: function(){
-			
-		},
-		showTerms: function(el, ignoreOtherSpecify){
-			catIds = $(el).getValue();
-			var terms = $('terms');
-			terms.options.length=0;
-			
-			/* BiJu : Optimize this to make single call instead of multiple */
-			
-			catIds.each(function(catId){
-				 createAE.getTermsByCategory(catId, function(ctcTerms) {
-				 	ctcTerms.each(function(ctcTerm) {
-				 		if(!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify')  > 0) ){
-                       		var opt = new Option(ctcTerm.fullName, ctcTerm.id)
-                       		terms.options.add(opt);
-				 		}
-                   })
-				 });		
-			});
-		}
-				
+ 		},
+ 		rpCtrlOnChange : function(){
+ 	 		this.clearRPDetails(); //clear existing reporting period details
+ 	 		if(this.rpCtrl.value == -1){
+ 	 	 		this.displayRPPopup(); //create reporting period flow
+ 	 		}else if(this.rpCtrl.value){
+				this.showRPDetails(); //show the reporting period details and AEs	 	 	 		
+ 	 		}
+ 	 		
+ 		},
+ 		rpEditCtrlClick:function(){
+ 	 		if(this.rpCtrl.value > 0) this.displayRPPopup();
+ 	 	 			
+ 		},
+ 		showRPDetails:function(){
+ 	 		//shows reporting period details , solicited and observed adverse events
+ 	 		this.rpDetailsDiv.show().defer();
+ 		},
+ 		clearRPDetails :function() {
+ 	 		//will clear the content of details section & properly unregister events
+ 	 		this.rpDetailsDiv.hide();
+ 	 		this.rpDetailsDiv.innerHTML = 'Fetching data from server......';
+ 		},
+ 		loadNewlyCreatedRP:function(id, name){
+ 			Windows.close(this.win.getId()); //closes the window.
+ 	 		this.addOptionToSelectBox(this.rpCtrl, name, id, true);
+ 	 		this.rpCtrl.selectedIndex = this.rpCtrl.options.length - 2;
+ 	 		this.showRPDetails(); //show the selected reporting period details
+ 		},
+ 		showOrHideEditRPCtrl:fumction(){
+ 			//the edit reporting period button show/hide based on select box value
+ 	 		if(this.rpCtrl.value > 0){
+ 	 	 		 this.rpEditCtrl.show();
+ 	 	 	}else{
+ 	 	 	 	this.rpEditCtrl.hide();
+ 	 	 	}
+ 		}
+ 		
  	});
  	
- 	//till here for autopopulator
- 	
- 	function addedReportingPeriod(periodId, periodName){
- 		win.hide();
- 		var length = selectElement.options.length;
-
-		if(selectElement.options[selectElement.selectedIndex].value != periodId){
-			var selElement = document.getElementById('adverseEventReportingPeriod');
-			var optionNew = document.createElement('option');
-			optionNew.text = periodName;
-			optionNew.value = periodId;
-			var optionOld = selElement.options[selectElement.options.length - 1];
-			selectElement.add(optionNew, optionOld);
-			selectElement.selectedIndex = selectElement.options.length - 2;
-		}
-		
-		loadReportingPeriod(true);	
- 	}
- 	
- 	function displayReportingPeriodPopup(reportingPeriodId){
- 		var url='';
- 		if(reportingPeriodId == '')
- 			url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&subview="/>";
- 		else{
- 			//url = "<c:url value="/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=${command.adverseEventReportingPeriod.id}&subview="/>";
- 			url="/caaers/pages/ae/createReportingPeriod?studyId=${command.assignment.studySite.study.id}&participantId=${command.assignment.participant.id}&id=" + reportingPeriodId + "&subview=";
-		}
-		win = new Window({className:"alphacube", destroyOnClose:true, title:"Reporting Period Information",  width:700,  height:525, 
-			url: url, top: 0, left: 300});
-		win.show(true);
-	}
-	
-	function isTermAgainAdded( termID )
-    {
-      var listOfTermIds = $$('.eachRowTermID');
-      for(var i = 0 ; i < listOfTermIds.length ; i++)
-      {
-        if( termID == listOfTermIds[i].value)
-        {
-          return true;
-        }      
-      } 
-      return false;
-    }
-	
-	function myCallback(selectedTerms){
-		var listOfTermIDs = new Array();
-	    var listOfTerms = new Array();
-	  	
-	  		$H(selectedTerms).keys().each( function(termID) {
-	  		
-	  		var term = $H( selectedTerms ).get(termID);
-	  		if( !isTermAgainAdded(termID))
-	  		{
-	  		  listOfTermIDs.push( termID );
-	  		  listOfTerms.push(term );
-	        }
-	  	   });
-	  	   
-	  	   createAE.addObservedAE(listOfTermIDs, listOfTerms, function(responseStr)
-	  	   {
-	  	   	new Insertion.After('observedBlankRow', responseStr);
-	  	   });
-	}
-	
-	function loadReportingPeriod(updateReportingPeriodSelector){
-		if(selectElement.selectedIndex == selectElement.options.length - 1){
-			var reportingPeriodId = '';
-			displayReportingPeriodPopup(reportingPeriodId);
-		}else{
-			var selectedId = document.getElementById('adverseEventReportingPeriod').value;
-			
-			createAE.displayDetailsSection(0, selectedId, function(str){
-				var detailElement = document.getElementById('detailSection');
-				detailElement.innerHTML = str;
-				new Effect.toggle('detailSection', 'slide', {afterFinish: function (obj) { new
-					Effect.Appear('detailSection') }})
-				AE.registerCalendarPopups('detailSection');
-				var isMeddra = ${not empty command.study.aeTerminology.meddraVersion};
-				var version = ${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id};	
-				catSel = new CategorySelector(isMeddra, version, true);
- 	 			
-			});
-		}
-	}
-	
-	function showCategoryBox(){
- 		catSel.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
- 	}
-	
-	Event.observe(window, "load", function(){
-		selectElement = document.getElementById('adverseEventReportingPeriod');
-		var optn = document.createElement("OPTION");
-		optn.text = 'Create New';
-		optn.value = '-1';
-		selectElement.options.add(optn);
-		
-		if(${command.adverseEventReportingPeriod.id != null})
-			Event.observe("edit_button", "click", function() {
-			var reportingPeriodId = ${command.adverseEventReportingPeriod.id}
-			displayReportingPeriodPopup(reportingPeriodId);
-			 })
-		
-		Event.observe("adverseEventReportingPeriod", "change", function(){
-			loadReportingPeriod(false);
-		})
-})           
+ 	/*
+ 		Create an instance of the RPCreatorClass, by passing 'adverseEventReportingPeriod' which is the ID of Reporting Period select element.
+ 	*/
+ 	var rpCreator = null; 
+ 	Event.observe(window, "load", function(){
+ 		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button');
+ 		
+ 	});
 
  </script>
  
@@ -285,9 +136,7 @@ font-weight:normal;
       				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
 						<jsp:attribute name="value">
 								<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />
-								<c:if test='${command.adverseEventReportingPeriod != null}'>
-    							<input id="edit_button" type="button" value="Edit"/>
-								</c:if>
+    							<input id="edit_button" type="button" value="Edit" style="display:none;"/>
 						</jsp:attribute>
 					</tags:renderRow>
       		</div>
