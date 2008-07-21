@@ -16,7 +16,7 @@
 
  <style type="text/css">
   	#confirmbox {  width: 98%;}
-  	
+  	body {background: none;}
   	div.row div.label {width: 12em;}
 	div.row div.value, div.row div.extra { margin-left: 13em; }
 	div.row div.value { font-weight:normal;	white-space: normal; }
