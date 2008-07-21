@@ -3,11 +3,14 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +18,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This tab captures the solicited adverse event details in the study flow.
@@ -37,7 +43,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     private SolicitedEventTabTable table;
     
 	public SolicitedAdverseEventTab() {
-		 super("Solicited adverse events", "Solicted adverse events", "study/solicited_ae");
+		 super("Reporting period types and Solicted adverse events", "Solicted adverse events", "study/solicited_ae");
 	}
 
 	
@@ -72,17 +78,89 @@ public class SolicitedAdverseEventTab extends StudyTab {
         System.out.println("listOfSolicitedAERows:"+ table.getListOfSolicitedAERows());
     	return refdata;
     }
+    
+    
+    @Override
+    protected void validate(final Study command, final BeanWrapper commandBean,
+                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+       
+    	List<Epoch> listOfEpochs = command.getEpochs();
+    	
+    	List<String> listOfEpochNames = new ArrayList<String>();
+    	
+    	for( Epoch epoch : listOfEpochs )
+    	{
+    		if( epoch.getName().equalsIgnoreCase("Enter name here"))
+    			errors.reject("name","Each reporting period type must have a valid title. Type the title or delete the reporting period type.");
+    		listOfEpochNames.add(epoch.getName().toUpperCase());
+    	}
+    	
+    	java.util.Set<String> setOfEpochNames = new java.util.HashSet<String>();
+    	
+    	for( Epoch epoch : listOfEpochs )
+    	{
+    		setOfEpochNames.add(epoch.getName().toUpperCase());
+    	}
+    	
+    	if( setOfEpochNames.size() != listOfEpochNames.size())
+    		errors.reject("name","There is a duplicate reporting period type. Modify or delete the reporting period types so they are all unique.");
+    	
+    }
+
+    protected void retainOnlyTheseEpochsInStudy( Study command, String[] epoch_orders )
+    {
+    	try{
+    	ArrayList<String> unDeletedEpochs = new ArrayList<String>();
+    	
+    	for(String epoch_order : epoch_orders )
+    	{
+    		unDeletedEpochs.add( epoch_order );
+    		
+    	}
+    	
+    	List<Epoch> all_epochs = command.getEpochs();
+    	
+    	java.util.Iterator<Epoch> iterator =  all_epochs.iterator();
+    	while( iterator.hasNext() )
+    	{
+    		Epoch epoch = iterator.next();
+    		System.out.println("1:"+unDeletedEpochs.get(0).equals(String.valueOf(epoch.getEpochOrder())));	
+    		
+    	    
+    		if( !unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder())) )
+    		{
+    		   System.out.println("Deleting... : " + epoch.getId());    			
+               iterator.remove();
+    		}
+    	}
+    	
+    	}catch(Exception ex)
+    	{
+    		 ex.printStackTrace();
+    	}
+    	
+    }
+
+    
     @Override
     public void onBind(HttpServletRequest request, Study command, Errors errors) {
     	// TODO Auto-generated method stub
     	super.onBind(request, command, errors);
     	
-    	if( request.getParameter(AJAX_REQUEST_PARAMETER) != null || request.getAttribute(AJAX_REQUEST_PARAMETER) != null )
+    	if( request.getParameter("_ajaxInPlaceEditParam") != null || request.getParameter(AJAX_REQUEST_PARAMETER) != null || request.getAttribute(AJAX_REQUEST_PARAMETER) != null )
     		return;
-        
+        List<Epoch> listOfEpochs = command.getEpochs();
+    	
+   	    String[] epoch_ids = request.getParameterValues("epoch_id");
+    	
+    	System.out.println( epoch_ids.length );
+    	
+        int indexOfEpoch = 0;
+    	
     	for(Epoch e : command.getEpochs()){
     		List<SolicitedAdverseEvent> listOfSolicitedAEs = new ArrayList<SolicitedAdverseEvent>();
-    		String[] termIDs = request.getParameterValues("epoch["+e.getEpochOrder()+"]");
+    		String[] termIDs = request.getParameterValues( "epoch[" + indexOfEpoch + "]" );
+    		
     		Term term = command.getAeTerminology().getTerm();
     		if( termIDs != null )
 	    		for( String termID : termIDs )
@@ -103,12 +181,32 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	    		  }
 	    		}
     		e.getArms().get(0).setSolicitedAdverseEvents( listOfSolicitedAEs );
-    		
+    		indexOfEpoch++;
     	}	
+    	retainOnlyTheseEpochsInStudy( command, epoch_ids );
+
 
     }
     
-
+    /*
+     * 
+     * For future use...
+     */
+    public String[] getSortedTerms(String[] termIDs)
+    {
+    	ArrayList<Integer> listOfTermIDS = new ArrayList<Integer>();
+    	
+    	for( String termID : termIDs )
+    		listOfTermIDS.add( Integer.valueOf(termID) ); 
+    	
+    	java.util.Collections.sort( listOfTermIDS );
+    	
+    	for( int i = 0 ; i < termIDs.length ; i++)
+    		termIDs[i] = String.valueOf(listOfTermIDS.get(i)); 
+    	
+    	return termIDs;
+    }
+    
 	public CtcTermDao getCtcTermDao() {
 		return ctcTermDao;
 	}
@@ -125,4 +223,46 @@ public class SolicitedAdverseEventTab extends StudyTab {
 		this.lowLevelTermDao = lowLevelTermDao;
 	}
     
+	/*
+	 *  For future use
+	 */
+
+	private int generateNextEpochOrderNumber( Study study)
+    {
+    	List<Epoch> listOfEpochs = study.getEpochs();
+    	
+    	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;  
+    }
+    
+	public ModelAndView addEpoch(HttpServletRequest request, Object commandObj, Errors error) {        
+		Study study= (Study) commandObj;
+	 	int newOrderNumber = generateNextEpochOrderNumber(study);
+    	
+    	System.out.println( newOrderNumber );
+    	
+    	Epoch newEpoch = new Epoch("Enter name here", newOrderNumber ); 
+    	
+    	study.addEpoch( newEpoch );
+		
+    	return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());    
+	}
+
+/*
+ *  For future use
+ */
+	public ModelAndView deleteEpoch(HttpServletRequest request, Object commandObj, Errors error) {        
+		Study study= (Study) commandObj;
+	 	int newOrderNumber = generateNextEpochOrderNumber(study);
+    	
+    	System.out.println( newOrderNumber );
+    	
+    	Epoch newEpoch = new Epoch("Enter name here", newOrderNumber ); 
+    	
+    	study.addEpoch( newEpoch );
+		
+    	return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());    
+	}
+
+
+	
 }
