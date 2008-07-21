@@ -41,65 +41,6 @@
 				conf="build->publish;runtime->runtime,publish;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
-				"core/ivy.xml"
-        	<!--  C3PR registration stubs/skeltons -->
-        	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer-client" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer-common" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="RegistrationConsumer-stubs" rev="0.1"  />
         	
-        	<!-- CTMS commons dependencies -->
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-core" rev="${ctms.version}"  transitive="false"/>
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-csm" rev="${ctms.version}" transitive="true" />
-			<dependency org="gov.nih.nci.security.acegi" name="acegi-grid" rev="${ctms.version}" transitive="true" />
-			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-lang" rev="${ctms.version}" transitive="false" />
-			
-        	<!--  AXIS unofficial versions -->
-        	<dependency org="axis" name="axis" rev="1.4" />
-        	<dependency org="axis-unofficial" name="addressing" rev="1.0" />
-        	
-        	<!--  Apache Commons -->
-        	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
-        	<dependency org="commons-logging" name="commons-logging" rev="1.1" />
-        	
-        	<!-- Spring/ Spring Modules -->
-        	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
-        	<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3" />
-        	
-
-			<!-- caGRID related --> 			
- 			<dependency org="gov.nih.nci.security" name="csmapi" rev="3.2"/>
- 			<dependency org="gov.nih.nci.logging" name="clm" rev="3.2.0-cagrid1.0"/>
- 			<dependency org="gov.nih.nci.security" name="csmapi" rev="3.2"/>
- 			
-			<!--  Globus-caGRID  -->
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-mds-aggregator-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="globus-wsrf-servicegroup-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="wsrf-core-stubs" rev="4.0-cagrid1.0" />
-			<dependency org="org.globus" name="cog-jglobus" rev="1.2" />
-			<dependency org="org.globus" name="puretls" rev="4.0.3-globus" />
-			
-			<dependency org="edu.internet2.middleware.grouper" name="grouper" rev="1.0-cagrid1.0" />
-			<dependency org="cryptix" name="cryptix" rev="3.2-cagrid1.0" />
-			<dependency org="cryptix" name="cryptix-impl" rev="3.2-cagrid1.0" />
-			<dependency org="cryptix" name="cryptix-asn1" rev="3.2-cagrid1.0" />
-			<dependency org="bouncycastle" name="bouncycastle-jce-jdk13" rev="125-cagrid1.0" />
-			
-			
-		
-			<!--  Castor -->
-			<dependency org="castor" name="castor" rev="0.9.9"/>
-			
-			
-						
-			<!-- Test only dependencies -->
-			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
-			<dependency org="dbunit" name="dbunit" rev="2.1" conf="test->default"/>
-			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />
-        	<dependency org="xmlunit" name="xmlunit" rev="1.0" conf="test->default" />
-        	<dependency org="cobertura" name="cobertura" rev="1.8" conf="test->default(*)"/>
         </dependencies>
 </ivy-module>
