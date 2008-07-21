@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="1.4">
 		
-    	<info organisation="gov.nih.nci.cabig.caaers"
+    	<info organisation="gov.nih.nci.ccts.grid"
           	module="AdverseEventConsumer"
-          	status="integration" revision="${caaers.version}"/>
+          	status="integration" revision="${ae.consumer.version}"/>
         
   
         <configurations>
@@ -36,11 +36,23 @@
 
 			<!--  ant-contrib -->
 			<dependency org="ant-contrib" name="ant-contrib" rev="1.0b2" />
+			
 			<!--  caAERS other modules -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
 				conf="build->publish;runtime->runtime,publish;dist->dist;distGrid->distGrid"/>
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
+
+			<!-- caGRID related --> 			
+ 			<dependency org="caGrid" name="metadata"  rev="1.2">
+ 				<artifact name="security" />
+ 				<artifact name="common" />
+ 			</dependency>
+			<dependency org="caGrid" name="core" rev="1.2" />
+			<dependency org="caGrid" name="service-security-provider" rev="1.2">
+				<artifact name="ServiceSecurityProvider-client" />
+				<artifact name="ServiceSecurityProvider-common" />
+			</dependency> 			
         	
         </dependencies>
 </ivy-module>
