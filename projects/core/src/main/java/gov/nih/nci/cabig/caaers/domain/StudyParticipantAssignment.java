@@ -130,6 +130,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
     
     @OneToMany(mappedBy = "assignment")
+    @OrderBy(clause="startDate desc")
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
     	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
     	return reportingPeriods;
@@ -145,6 +146,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	if(labViewerLabs == null) labViewerLabs = new ArrayList<LabViewerLab>();
     	return labViewerLabs;
 	}
+    
 
 	public void setLabViewerLabs(List<LabViewerLab> labViewerLabs) {
 		this.labViewerLabs = labViewerLabs;
