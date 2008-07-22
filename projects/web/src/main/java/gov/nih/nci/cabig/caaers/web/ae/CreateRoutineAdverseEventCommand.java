@@ -131,7 +131,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         if (!aeReport.getAdverseEvents().isEmpty()) {
             reportDao.save(aeReport);
             List<ReportDefinition> reportDefs = evaluationService
-                            .findRequiredReportDefinitions(aeReport);
+                            .findRequiredReportDefinitions(aeReport, aeReport.getAdverseEvents(), this.getStudy());
             evaluationService.addOptionalReports(aeReport, reportDefs);
         }
 

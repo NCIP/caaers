@@ -119,7 +119,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
        //if there are SAEs, then save the aeReport,then identify mandatory report schedules
        if(!aeReport.getAdverseEvents().isEmpty()){
     	   reportDao.save(aeReport);
-    	   List<ReportDefinition> reportDefs = evaluationService.findRequiredReportDefinitions(aeReport);
+    	   List<ReportDefinition> reportDefs = evaluationService.findRequiredReportDefinitions(aeReport, aeReport.getAdverseEvents(), aeReport.getStudy());
     	   evaluationService.addOptionalReports(aeReport, reportDefs);
        }
        

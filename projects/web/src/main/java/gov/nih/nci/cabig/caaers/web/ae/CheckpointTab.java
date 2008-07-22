@@ -63,7 +63,7 @@ public class CheckpointTab extends AeTab {
         // identify the report definitions mandated by Rules engine
         if (command.getRequiredReportDeifnitions().isEmpty()) {
             command.setRequiredReportDefinition(evaluationService
-                            .findRequiredReportDefinitions(command.getAeReport()));
+                            .findRequiredReportDefinitions(command.getAeReport(), command.getAeReport().getAdverseEvents(), command.getStudy()));
         }
 
         // already AE report is saved.
