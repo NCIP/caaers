@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -86,7 +87,7 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public List<ReportDefinition> findRequiredReportDefinitions(
-                    ExpeditedAdverseEventReport expeditedData) {
+                    ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study) {
         // TODO Auto-generated method stub
         return null;
     }

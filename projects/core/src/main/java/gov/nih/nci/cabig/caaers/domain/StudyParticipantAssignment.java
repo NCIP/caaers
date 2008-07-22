@@ -130,7 +130,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
     
     @OneToMany(mappedBy = "assignment")
-    @OrderBy(clause="startDate desc")
+    @OrderBy(clause="start_date desc")
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
     	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
     	return reportingPeriods;

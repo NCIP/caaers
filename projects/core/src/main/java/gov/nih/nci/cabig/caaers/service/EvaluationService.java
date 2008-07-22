@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -41,7 +42,8 @@ public interface EvaluationService {
      *                The expedited adverse event report
      * @return - A list of {@link ReportDefinition} objects.
      */
-    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData);
+    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,
+    					Study study);
 
     /**
      * Evaluates the provided data and associates new {@link Report} instances with the given
