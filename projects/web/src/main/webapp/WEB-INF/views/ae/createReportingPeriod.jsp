@@ -17,23 +17,22 @@
 	
 	</style>
  <script>
+ 	
  	var descArray = new Array();
+ 	<c:forEach items="${command.study.treatmentAssignments}" var="ta">
+ 	descArray.push("${ta.escapedDescription}");
+ 	</c:forEach>
  	
-
  	
- 	Event.observe(window, "close", function(){
- 		//push the description into the array
-		<c:forEach items="${command.assignment.studySite.study.treatmentAssignments}" var="ta">
-        	descArray.push("${ta.escapedDescription}");
-        </c:forEach>			
-			
-		// treatment dropdown.
+ 	Event.observe(window, "load", function(){
+ 		$('reportingPeriod.treatmentAssignment.description').setAttribute('readOnly',true);
+ 		
+ 		// treatment dropdown.
 		$('reportingPeriod.treatmentAssignment').observe("change", function(event){
 			selIndex = $('reportingPeriod.treatmentAssignment').selectedIndex;
+			$('reportingPeriod.treatmentAssignment.description').clear();
 			if(selIndex > 0){
 				$('reportingPeriod.treatmentAssignment.description').value = descArray[selIndex-1];
-			}else{
-				$('reportingPeriod.treatmentAssignment.description').clear();
 			}
 		});
  	})
