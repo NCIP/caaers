@@ -12,13 +12,13 @@ import java.rmi.RemoteException;
  */
 public interface AdverseEventConsumerI {
 
-  public void register(aenotification.AENotificationType aeNotification) throws RemoteException ;
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
+
+  public void register(aenotification.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed ;
 
 }
 

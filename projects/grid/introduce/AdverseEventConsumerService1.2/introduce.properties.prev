@@ -1,11 +1,11 @@
 #Introduce Properties
-#Thu Jul 17 16:30:46 EDT 2008
+#Mon Jul 21 20:24:31 EDT 2008
 introduce.skeleton.services.list=AdverseEventConsumer
 introduce.skeleton.extensions=
-introduce.skeleton.timestamp=1216326434710
+introduce.skeleton.timestamp=1216326654610
 introduce.skeleton.service.name=AdverseEventConsumer
 introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
-introduce.skeleton.destination.dir=/Users/sakkala/tech/ccts/AdverseEventConsumerService
+introduce.skeleton.destination.dir=/Users/sakkala/tech-workspace/caaers12/grid/introduce/AdverseEventConsumerService1.2
 introduce.skeleton.namespace.domain=http\://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer
-introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security
 introduce.soap.binding.excludes=\ 
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security

@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.ctms.grid.ae.service;
 
-
-
 import java.rmi.RemoteException;
 import gov.nih.nci.cabig.ctms.grid.ae.common.AdverseEventConsumerI;
 
@@ -40,7 +38,7 @@ public class AdverseEventConsumerImpl extends AdverseEventConsumerImplBase {
         this.consumer = (AdverseEventConsumerI) ctx.getBean(bean);
     }
 	
-  public void register(aenotification.AENotificationType aeNotification) throws RemoteException {
+  public void register(aenotification.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
 	  this.consumer.register(aeNotification);
   }
 

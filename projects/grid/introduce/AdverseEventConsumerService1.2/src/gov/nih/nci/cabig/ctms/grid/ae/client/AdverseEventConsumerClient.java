@@ -76,17 +76,6 @@ public class AdverseEventConsumerClient extends AdverseEventConsumerClientBase i
 		}
 	}
 
-  public void register(aenotification.AENotificationType aeNotification) throws RemoteException {
-    synchronized(portTypeMutex){
-      configureStubSecurity((Stub)portType,"register");
-    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest();
-    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification aeNotificationContainer = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification();
-    aeNotificationContainer.setAeNotification(aeNotification);
-    params.setAeNotification(aeNotificationContainer);
-    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse boxedResult = portType.register(params);
-    }
-  }
-
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
@@ -105,6 +94,17 @@ public class AdverseEventConsumerClient extends AdverseEventConsumerClientBase i
     synchronized(portTypeMutex){
       configureStubSecurity((Stub)portType,"queryResourceProperties");
     return portType.queryResourceProperties(params);
+    }
+  }
+
+  public void register(aenotification.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"register");
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest();
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification aeNotificationContainer = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification();
+    aeNotificationContainer.setAeNotification(aeNotification);
+    params.setAeNotification(aeNotificationContainer);
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse boxedResult = portType.register(params);
     }
   }
 

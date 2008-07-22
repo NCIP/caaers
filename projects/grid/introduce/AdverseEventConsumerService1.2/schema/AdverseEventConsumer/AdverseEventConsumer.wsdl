@@ -48,6 +48,12 @@
   <message name="RegisterResponse">
     <part name="parameters" element="tns:RegisterResponse" />
   </message>
+  <message name="InvalidRegistrationFaultMessage">
+    <part name="fault" element="ns1:InvalidRegistration" />
+  </message>
+  <message name="RegistrationFailedFaultMessage">
+    <part name="fault" element="ns1:RegistrationFailed" />
+  </message>
   <!--============================================================
 
                        P O R T T Y P E
@@ -57,6 +63,8 @@
     <operation name="register">
       <input message="tns:RegisterRequest" wsa:Action="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/RegisterRequest" />
       <output message="tns:RegisterResponse" wsa:Action="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/RegisterResponse" />
+      <fault name="InvalidRegistration" message="tns:InvalidRegistrationFaultMessage" wsa:Action="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/InvalidRegistrationFaultMessage" />
+      <fault name="RegistrationFailed" message="tns:RegistrationFailedFaultMessage" wsa:Action="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/RegistrationFailedFaultMessage" />
     </operation>
     <wsdl:operation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="GetMultipleResourceProperties">
       <wsdl:input name="GetMultipleResourcePropertiesRequest" message="wsrpw:GetMultipleResourcePropertiesRequest" wsa:Action="http://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties/GetMultipleResourceProperties" />

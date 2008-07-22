@@ -53,6 +53,8 @@
   </ns2:Namespace>
   <ns2:Namespace location="./AdverseEventConsumerTypes.xsd" namespace="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types" packageName="gov.nih.nci.cabig.ctms.grid.ae.stubs.types" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AdverseEventConsumerReference" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="InvalidRegistration" xsi:type="ns2:SchemaElementType"/>
+   <ns2:SchemaElement type="RegistrationFailed" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace generateStubs="false" location="./xsd/cagrid/types/security/security.xsd" namespace="gme://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security" packageName="gov.nih.nci.cagrid.metadata.security" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="CommunicationMechanism" xsi:type="ns2:SchemaElementType"/>
@@ -99,7 +101,10 @@
       <ns4:Input qName="ns10:aeNotification" description="" isArray="false" name="aeNotification" xmlns:ns10="http://semanticbits.com/aeNotification"/>
      </ns4:Inputs>
      <ns4:Output qName="void" description="" isArray="false"/>
-     <ns4:Exceptions/>
+     <ns4:Exceptions>
+      <ns4:Exception description="" name="InvalidRegistration" qname="ns11:InvalidRegistration" xmlns:ns11="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types"/>
+      <ns4:Exception description="" name="RegistrationFailed" qname="ns12:RegistrationFailed" xmlns:ns12="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types"/>
+     </ns4:Exceptions>
     </ns4:Method>
    </ns4:Methods>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
@@ -110,5 +115,5 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns11:Extensions xsi:type="ns11:ExtensionsType" xmlns:ns11="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns13:Extensions xsi:type="ns13:ExtensionsType" xmlns:ns13="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
 </ns1:ServiceDescription>
