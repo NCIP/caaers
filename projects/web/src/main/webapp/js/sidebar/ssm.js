@@ -12,10 +12,10 @@ ssmItems = new Array();
 
 
 function dismissLab(labId){
-	
+
 	createAE.dismissLab(labId);
-	
 	var labsPresent = 0;
+
 	for (i = 0; i < ssmItems.length; i++){
 		if(ssmItems[i][4] == labId){
 			ssmItems[i][5] = "true"; 
@@ -23,9 +23,10 @@ function dismissLab(labId){
 	}
 	for (i = 0; i < ssmItems.length; i++){
 		if(ssmItems[i][5] == "false"){
-			labPresent = 1;
+			labsPresent = labsPresent + 1;
 		}
 	}
+
 	$('a'+labId).parentNode.parentNode.remove($('a'+labId).parentNode);
 	if(labsPresent == 0){
 		$('basessm').hide();
