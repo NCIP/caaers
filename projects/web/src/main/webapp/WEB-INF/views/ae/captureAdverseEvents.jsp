@@ -45,7 +45,7 @@ font-weight:normal;
  	 		this.rpEditCtrl = $(rpEditCtrl);
  	 		this.rpDetailsDiv = $(rpDetailsDiv);
  	 		
-			showOrHideEditRPCtrl(); //determine edit-button visiblility 
+			this.showOrHideEditRPCtrl(); //determine edit-button visiblility 
 			
  	 	 	this.addOptionToSelectBox(this.rpCtrl, 'Create New' , '-1');//add Create New option.
  	 		Event.observe(this.rpCtrl, 'change', this.rpCtrlOnChange.bindAsEventListener(this));
@@ -101,13 +101,16 @@ font-weight:normal;
  	 		this.rpCtrl.selectedIndex = this.rpCtrl.options.length - 2;
  	 		this.showRPDetails(); //show the selected reporting period details
  		},
- 		showOrHideEditRPCtrl:fumction(){
+ 		showOrHideEditRPCtrl:function(){
  			//the edit reporting period button show/hide based on select box value
  	 		if(this.rpCtrl.value > 0){
  	 	 		 this.rpEditCtrl.show();
  	 	 	}else{
  	 	 	 	this.rpEditCtrl.hide();
  	 	 	}
+ 		},
+ 		refreshRPCrlOptions:function(){
+ 	 		//will refresh the options of reporting period.
  		}
  		
  	});
