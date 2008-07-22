@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
@@ -231,6 +232,15 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		
 		
 		return refdata;
+	}
+	
+	@Override
+    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
+                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+		
+		InputField firstStartDateField = fieldGroups.get("main0").getFields().get(1);
+        errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
+                            firstStartDateField.getDisplayName() + " required for primary AE");
 	}
 	
 	/**

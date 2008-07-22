@@ -1,10 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Transient;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -22,6 +26,7 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
@@ -30,6 +35,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private StudyParticipantAssignmentDao assignmentDao;
 	private Participant participant; 
 	private Study study;
+	private EvaluationService evaluationService;
 	  
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
@@ -59,9 +65,30 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	// Till here.
 	
 	 
-	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao){
+	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService){
 		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
+		this.evaluationService = evaluationService;
+	}
+	
+	public Map<Integer, List<AdverseEvent>> applyRules(){
+		// check if the event reported is an SAE.
+		Map<Integer, List<AdverseEvent>> repDefnIdToAeListMap = new HashMap<Integer, List<AdverseEvent>>();
+		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+		for(AdverseEvent ae: this.adverseEventReportingPeriod.getAdverseEvents()){
+			List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
+			aeList.add(ae);
+			reportDefs = evaluationService.findRequiredReportDefinitions(null, aeList, this.getAdverseEventReportingPeriod().getStudy());
+			for(ReportDefinition reportDefn: reportDefs){
+				if(repDefnIdToAeListMap.containsKey(reportDefn.getId())){
+					repDefnIdToAeListMap.get(reportDefn.getId()).add(ae);
+				}else{
+					repDefnIdToAeListMap.put(reportDefn.getId(), aeList);
+				}
+			}
+		}
+		//System.out.println("repDefnIdToAeListMap = " + repDefnIdToAeListMap.toString());
+		return repDefnIdToAeListMap;
 	}
 	
     public StudyParticipantAssignment getAssignment() {
@@ -114,6 +141,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setStudy(Study study) {
 		this.study = study;
+		if(study != null){
+			this.study.getStudyFundingSponsors().size();
+			this.study.getStudyOrganizations().size();
+			this.study.getStudySites().size();
+		}
 	}
 
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod() {
@@ -122,6 +154,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
+		if(adverseEventReportingPeriod != null){
+			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
+			this.adverseEventReportingPeriod.getStudy().getStudyFundingSponsors().size();
+			this.adverseEventReportingPeriod.getStudy().getStudySites().size();
+		}
 	}
 	
 	public void setCtcCategories(List<CtcCategory> ctcCategories) {
@@ -133,4 +170,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			setCtcCategories(adverseEventReportingPeriod.getAssignment().getStudySite().getStudy().getAeTerminology().getCtcVersion().getCategories());
 		return ctcCategories;
 	}
+	
+    public EvaluationService getEvaluationService() {
+        return evaluationService;
+    }
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
 }

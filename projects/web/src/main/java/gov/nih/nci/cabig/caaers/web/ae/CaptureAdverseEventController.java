@@ -42,6 +42,7 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab;
@@ -61,6 +62,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private LowLevelTermDao lowLevelTermDao;
 	private AdverseEventDao adverseEventDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private EvaluationService evaluationService;
 	
 	
 	public CaptureAdverseEventController(){
@@ -133,7 +135,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(assignmentDao);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(assignmentDao, evaluationService);
 		
 		return cmd;
 	}
@@ -178,6 +180,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         }
         return attr;
     }
+    
     
     /**
      * Adds ajax sub-page view capability. TODO: factor this into main tabbed flow controller.
@@ -266,5 +269,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	public AdverseEventDao getAdverseEventDao() {
 		return adverseEventDao;
+	}
+	
+	public EvaluationService getEvaluationService() {
+		return evaluationService;
+	}
+	
+	public void setEvaluationService(EvaluationService evaluationService) {
+		this.evaluationService = evaluationService;
 	}
 }

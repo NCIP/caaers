@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -53,6 +55,16 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 		}
 		
 		return map;
-
     }
+	
+	
+	@Override
+    public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+		Map<String, Object> refdata = super.referenceData(request, command);
+		//Apply the rules.
+		Map<Integer, List<AdverseEvent>> serious_map = command.applyRules();
+		refdata.put("serious_aes", serious_map);
+		
+		return refdata;
+	}
 }
