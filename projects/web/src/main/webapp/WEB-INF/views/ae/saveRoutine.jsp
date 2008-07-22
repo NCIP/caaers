@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+	<tags:dwrJavascriptLink objects="createAE"/>
 	<tags:labs labs="${command.assignment.labViewerLabs}"/>
 	<tags:stylesheetLink name="ae"/>
 	<script>
