@@ -25,9 +25,10 @@
  	
  	
  	Event.observe(window, "load", function(){
+ 	 	//make the TAC description non editable
  		$('reportingPeriod.treatmentAssignment.description').setAttribute('readOnly',true);
  		
- 		// treatment dropdown.
+ 		//catch the events on treatment assignment dropdown.
 		$('reportingPeriod.treatmentAssignment').observe("change", function(event){
 			selIndex = $('reportingPeriod.treatmentAssignment').selectedIndex;
 			$('reportingPeriod.treatmentAssignment.description').clear();
