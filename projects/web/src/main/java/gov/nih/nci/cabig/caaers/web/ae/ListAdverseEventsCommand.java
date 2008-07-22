@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
+import gov.nih.nci.cabig.caaers.web.ae.AdverseEventInputCommand;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 /**
  * @author Rhett Sutphin
  */
-public class ListAdverseEventsCommand {
+public class ListAdverseEventsCommand implements AdverseEventInputCommand{
     // TODO: these should be collected with other known ID types centrally
     // package-level for testing
     static final String PROTOCOL_AUTHORITY_IDENTIFIER_TYPE = "Protocol Authority Identifier";
@@ -163,5 +164,20 @@ public class ListAdverseEventsCommand {
     public boolean getIgnoreCompletedStudy() {
         return false;
     }
+
+	public String getTreatmentDescriptionType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void save() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setTreatmentDescriptionType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
