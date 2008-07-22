@@ -1,5 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
@@ -146,6 +152,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	                field.validate(commandBean, errors);
 	            }
 	        }
+	        validateRepPeriodDates((ReportingPeriodCommand)command,fieldGroups,errors);
 	}
 	
 	/**
@@ -168,6 +175,77 @@ public class CreateReportingPeriodController extends SimpleFormController {
         ModelAndView modelAndView = new ModelAndView("ae/confirmReportingPeriod", map);
         
         return modelAndView;
+    }
+    
+    /**
+     * This method validates the dates of the reporting period created/edited.
+     * @param cmd
+     * @return
+     */
+    protected void validateRepPeriodDates(ReportingPeriodCommand command, Map<String, InputFieldGroup> groups, BindException errors){
+    	
+    	AdverseEventReportingPeriod rPeriod = command.getReportingPeriod();
+    	List<AdverseEventReportingPeriod> rPeriodList = command.getAssignment().getReportingPeriods();
+    	Date startDate = rPeriod.getStartDate();
+    	Date endDate = rPeriod.getEndDate();
+    	InputField field = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(1);
+        
+    	
+    	// Check if the start date is equal to or before the end date.
+    	if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
+            errors.rejectValue(field.getPropertyName(), "REQUIRED",
+                            "To cannot be earlier than From");
+        }
+    	
+    	// Check if the start date is equal to end date.
+    	// This is allowed only for Baseline reportingPeriods and not for other reporting periods.
+    	if (! rPeriod.getEpoch().getName().equals("Baseline")){
+    		if(startDate.equals(endDate)){
+    			errors.rejectValue(field.getPropertyName(), "REQUIRED",
+                "For Non-Baseline Reporting Period To cannot be equal to From");
+    		}
+    			
+    	}
+    	
+    	// Check if the start date - end date for the reporting Period overlaps with the
+    	// date range of an existing Reporting Period.
+    	for(AdverseEventReportingPeriod aerp: rPeriodList){
+    		if(!aerp.getId().equals(rPeriod.getId())){
+    			Date sDate = aerp.getStartDate();
+    			Date eDate = aerp.getEndDate();
+    			if(((sDate.getTime() - startDate.getTime() < 0) && startDate.getTime() - eDate.getTime() < 0) ||
+    				((sDate.getTime() - endDate.getTime() < 0 ) && (endDate.getTime() - eDate.getTime() < 0)) ||
+    				((startDate.getTime() - sDate.getTime() < 0)&& (eDate.getTime() - endDate.getTime() < 0)) ||
+    				(sDate.compareTo(startDate) == 0 && eDate.compareTo(endDate) == 0)){
+    				errors.rejectValue(field.getPropertyName(), "REQUIRED",
+                    "Reporting Period cannot overlap with an existing Reporting Period.");
+        			break;
+    			}
+    		}
+    	}
+    	
+    	// If the epoch of reportingPeriod is not - Baseline , then it cannot be earlier than a Baseline
+    	// reportingPeriod of 
+    	for(AdverseEventReportingPeriod aerp: rPeriodList){
+    		Date sDate = aerp.getStartDate();
+    		Date eDate = aerp.getEndDate();
+    		if(rPeriod.getEpoch().getName().equals("Baseline")){
+    			if(!aerp.getEpoch().getName().equals("Baseline")){
+    				if(sDate.getTime() - startDate.getTime() < 0){
+    					errors.rejectValue(field.getPropertyName(), "REQUIRED",
+    					"Baseline Reporting Period cannot start after an existing Non-Baseline Reporting Period.");
+    				}
+    			}
+    		}else{
+    			if(aerp.getEpoch().getName().equals("Baseline")){
+    				if(startDate.getTime() - sDate.getTime() < 0){
+    					errors.rejectValue(field.getPropertyName(), "REQUIRED",
+    					"Non-Baseline Reporting Period cannot start before an existing Baseline Reporting Period.");
+    				}
+    			}
+    		}
+    	}
+    	
     }
     
 	

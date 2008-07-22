@@ -47,6 +47,10 @@ public class ReportingPeriodCommand {
     	
     }
     
+    public void setAssignment(StudyParticipantAssignment assignment){
+    	this.assignment = assignment;
+    }
+    
     public StudyParticipantAssignment getAssignment() {
     	return assignment;
     }
