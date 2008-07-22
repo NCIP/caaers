@@ -83,18 +83,18 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return CAN_NOT_DETERMINED;
     }
 
-    public Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport)
-                    throws Exception {
+    public Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aes,
+    		Study study) throws Exception {
 
         Map<String, List<String>> map = new HashMap<String, List<String>>();
 
-        List<AdverseEvent> aes = aeReport.getAdverseEvents();
+        //List<AdverseEvent> aes = aeReport.getAdverseEvents();
         List<String> reportDefinitionsForSponsor = new ArrayList<String>();
 
         // boolean ignore = false ;
 
         for (AdverseEvent ae : aes) {
-            String message = evaluateSponsorTarget(ae, aeReport.getStudy(), null,
+            String message = evaluateSponsorTarget(ae, study, null,
                             RuleType.REPORT_SCHEDULING_RULES.getName(), aeReport);
 
             System.out.println("message is " + message);
@@ -113,10 +113,10 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             }
         }
 
-        map.put(aeReport.getStudy().getPrimaryFundingSponsorOrganization().getName(),
+        map.put(study.getPrimaryFundingSponsorOrganization().getName(),
                         reportDefinitionsForSponsor);
 
-        Study study = aeReport.getStudy();
+        //Study study = aeReport.getStudy();
 
         // TO-DO get orgs like FDA, CALGB and add to this list
 

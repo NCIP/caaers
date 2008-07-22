@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -61,12 +62,12 @@ public class EvaluationServiceImpl implements EvaluationService {
      * @return - The list of {@link ReportDefinition} objects, that are associated to this report.
      */
     public List<ReportDefinition> findRequiredReportDefinitions(
-                    ExpeditedAdverseEventReport expeditedData) {
+                    ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList, Study study) {
         Map<String, List<String>> map;
         List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
 
         try {
-            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData);
+            map = adverseEventEvaluationService.evaluateSAEReportSchedule(expeditedData, aeList, study);
         } catch (Exception e) {
             throw new CaaersSystemException(
                             "Could not determine the reports necessary for the given expedited adverse event data",
@@ -94,21 +95,25 @@ public class EvaluationServiceImpl implements EvaluationService {
                 defList.add(reportDefTreeSet.last());
             }
         }
-
-        // Bug fix - 12770
-        if (defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
-        // Will filter already instantiated reports.
+        
         List<ReportDefinition> filterdReportDefs = new ArrayList<ReportDefinition>();
-        for (Report report : expeditedData.getNonWithdrawnReports()) {
-            for (ReportDefinition def : defList) {
-                if (!def.getId().equals(report.getReportDefinition().getId())) {
-                    filterdReportDefs.add(def);
-                }
-            }
+    	
+        // Bug fix - 12770
+        if(expeditedData != null){
+        	if (defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
+        	// Will filter already instantiated reports.
+        	for (Report report : expeditedData.getNonWithdrawnReports()) {
+        		for (ReportDefinition def : defList) {
+        			if (!def.getId().equals(report.getReportDefinition().getId())) {
+        				filterdReportDefs.add(def);
+        			}
+        		}
 
+        	}
+        	return filterdReportDefs;
         }
 
-        return filterdReportDefs;
+        return defList;
     }
 
     /**

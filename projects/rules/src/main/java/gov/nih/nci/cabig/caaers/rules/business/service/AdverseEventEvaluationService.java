@@ -21,8 +21,8 @@ public interface AdverseEventEvaluationService {
 
     // public String identifyAdverseEventType()
 
-    Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport)
-                    throws Exception;
+    Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList,
+    		Study study) throws Exception;
 
     Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData)
                     throws Exception;
