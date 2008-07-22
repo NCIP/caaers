@@ -7,7 +7,7 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
-    
+    <tags:dwrJavascriptLink objects="createAE"/>
     <tags:labs labs="${command.assignment.labViewerLabs}"/>
     
     <style type="text/css">
