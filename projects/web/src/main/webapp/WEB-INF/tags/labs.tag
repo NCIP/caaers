@@ -13,6 +13,5 @@
     			</c:if>
 			</c:forEach>
 		</script>
-		<script src="<c:url value="/js/sidebar/ssmItems.js"/>"></script>
 		<tags:javascriptLink name="sidebar/ssmItems"/>
 	</c:if>
