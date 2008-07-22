@@ -10,6 +10,28 @@ tempBar = '';
 barBuilt = 0;
 ssmItems = new Array();
 
+
+function dismissLab(labId){
+	
+	createAE.dismissLab(labId);
+	
+	var labsPresent = 0;
+	for (i = 0; i < ssmItems.length; i++){
+		if(ssmItems[i][4] == labId){
+			ssmItems[i][5] = "true"; 
+		}
+	}
+	for (i = 0; i < ssmItems.length; i++){
+		if(ssmItems[i][5] == "false"){
+			labPresent = 1;
+		}
+	}
+	$('a'+labId).parentNode.parentNode.remove($('a'+labId).parentNode);
+	if(labsPresent == 0){
+		$('basessm').hide();
+	}
+}
+
 function truebody() {
     return (document.compatMode!="BackCompat")? document.documentElement : document.body
 }
@@ -111,62 +133,63 @@ function initSlide() {
 }
 
 function buildMenu(n, headerName) {
-
-    // n = n;
-    if (IE || NS6) {
-        document.write('<DIV ID="basessm" style="visibility:hidden;Position : Absolute ;Left : ' + XOffset + 'px ;Top : ' + YOffset + 'px ;Z-Index : 20;width:' + (menuWidth + barWidth + 10) + 'px"><DIV ID="thessm" style="Position : Absolute ;Left : ' + (-menuWidth) + 'px ;Top : 0 ;Z-Index : 20;" onmouseover="moveOut()" onmouseout="moveBack()">')
-    }
-
-    if (NS) {
-        document.write('<LAYER name="basessm1" top="' + YOffset + '" LEFT=' + XOffset + ' visibility="show"><ILAYER name="basessm2"><LAYER visibility="hide" name="thessm" bgcolor="' + menuBGColor + '" left="' + (-menuWidth) + '" onmouseover="moveOut()" onmouseout="moveBack()">')
-    }
-
-    if (NS6) {
-        document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth + 0) + 'px"><TR><TD>')
-    }
-    
-    document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth) + 'px">');
-
-    // header
-    document.write("<tr><td class=\"ssmItems\" style='background:url(../../images/sidebar/header.gif); padding-left:7px; border-right:1px " + menuBGColor + " solid; height:18px;'><b>" + headerName + "</b></td><tr>");
-    document.write("<tr><td bgcolor='" + linkBGColor + "' style='border:1px " + menuBGColor + " solid;' valign='top'>");
-
-    document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth-2) + '">');
-	document.write('<TR>')
-		document.write('<TD>Lab</TD>');
-		document.write('<TD>Date</TD>');
-		document.write('<TD>Value</TD>');
-		document.write('<TD>Unit</TD>');
-	document.write('</TR>')
+	if(ssmItems.length > 0){
+		// n = n;
+	    if (IE || NS6) {
+	        document.write('<DIV ID="basessm" style="visibility:hidden;Position : Absolute ;Left : ' + XOffset + 'px ;Top : ' + YOffset + 'px ;Z-Index : 20;width:' + (menuWidth + barWidth + 10) + 'px"><DIV ID="thessm" style="Position : Absolute ;Left : ' + (-menuWidth) + 'px ;Top : 0 ;Z-Index : 20;" onmouseover="moveOut()" onmouseout="moveBack()">')
+	    }
 	
- 	for (i = 0; i < ssmItems.length; i++){
+	    if (NS) {
+	        document.write('<LAYER name="basessm1" top="' + YOffset + '" LEFT=' + XOffset + ' visibility="show"><ILAYER name="basessm2"><LAYER visibility="hide" name="thessm" bgcolor="' + menuBGColor + '" left="' + (-menuWidth) + '" onmouseover="moveOut()" onmouseout="moveBack()">')
+	    }
+	
+	    if (NS6) {
+	        document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth + 0) + 'px"><TR><TD>')
+	    }
+	    
+	    document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth + barWidth) + 'px">');
+	
+	    // header
+	    document.write("<tr><td class=\"ssmItems\" style='background:url(../../images/sidebar/header.gif); padding-left:7px; border-right:1px " + menuBGColor + " solid; height:18px;'><b>" + headerName + "</b></td><tr>");
+	    document.write("<tr><td bgcolor='" + linkBGColor + "' style='border:1px " + menuBGColor + " solid;' valign='top'>");
+	
+	    document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth-2) + '">');
 		document.write('<TR>')
-		for(j=0; j<4;j++){
-			document.write('<td bgcolor="' + hdrBGColor + '" HEIGHT="' + hdrHeight + 'px" ALIGN="' + hdrAlign + '" VALIGN="' + hdrVAlign + '" WIDTH="' + ssmItems[1][0] + '" COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + hdrFontFamily + '" Size="' + hdrFontSize + '" COLOR="' + hdrFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>')
-		}
-		document.write('<td align="left" valign="top"><a href="#"><img src="../../images/checkno.gif" border="0"></a></td>');
+			document.write('<TD>Lab</TD>');
+			document.write('<TD>Date</TD>');
+			document.write('<TD>Value</TD>');
+			document.write('<TD>Unit</TD>');
 		document.write('</TR>')
+		
+	 	for (i = 0; i < ssmItems.length; i++){
+			document.write('<TR>')
+			for(j=0; j<4;j++){
+				document.write('<td bgcolor="' + hdrBGColor + '" HEIGHT="' + hdrHeight + 'px" ALIGN="' + hdrAlign + '" VALIGN="' + hdrVAlign + '" WIDTH="' + ssmItems[1][0] + '" COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + hdrFontFamily + '" Size="' + hdrFontSize + '" COLOR="' + hdrFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>')
+			}
+			document.write('<td align="left" valign="top"><a id="a'+ ssmItems[i][4] + '" href="#" onClick="dismissLab('+ssmItems[i][4]+')"><img src="../../images/checkno.gif" border="0"></a></td>');
+			document.write('</TR>')
+		}
+	
+	    document.write('</table>')
+	
+	    document.write('</td>');
+	    document.write('<td align="left" valign="top"><img src="../../images/sidebar/bar.gif"></td>');
+	    document.write('</table>');
+	
+	    if (NS6) {
+	        document.write('</TD></TR></TABLE>')
+	    }
+	
+	    if (IE || NS6) {
+	        document.write('</DIV></DIV>')
+	    }
+	
+	    if (NS) {
+	        document.write('</LAYER></ILAYER></LAYER>')
+	    }
+	
+	    theleft = -menuWidth;
+	    lastY = 0;
+	    setTimeout('initSlide();', 1)
 	}
-
-    document.write('</table>')
-
-    document.write('</td>');
-    document.write('<td align="left" valign="top"><img src="../../images/sidebar/bar.gif"></td>');
-    document.write('</table>');
-
-    if (NS6) {
-        document.write('</TD></TR></TABLE>')
-    }
-
-    if (IE || NS6) {
-        document.write('</DIV></DIV>')
-    }
-
-    if (NS) {
-        document.write('</LAYER></ILAYER></LAYER>')
-    }
-
-    theleft = -menuWidth;
-    lastY = 0;
-    setTimeout('initSlide();', 1)
 }
