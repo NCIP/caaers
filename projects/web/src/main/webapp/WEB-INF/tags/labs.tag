@@ -9,7 +9,7 @@
 		<script language="JavaScript1.2">
 			<c:forEach items="${labs}" var="alab" varStatus="status">
 				<c:if test="${alab.dismissed == false}">
-    				<c:out value='ssmItems[${status.count - 1}]=' />["<c:out value="${alab.name}"/>",'<tags:formatDate value="${alab.labDate}"/>' ,"<c:out value="${alab.result}"/>", "<c:out value="${alab.units}"/>","#", "${not empty mandatory ? 'mandatory' : ''}"]
+    				<c:out value='ssmItems[${status.count - 1}]=' />["<c:out value="${alab.name}"/>",'<tags:formatDate value="${alab.labDate}"/>' ,"<c:out value="${alab.result}"/>", "<c:out value="${alab.units}"/>",'${alab.id}', '${alab.dismissed}']
     			</c:if>
 			</c:forEach>
 		</script>
