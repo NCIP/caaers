@@ -41,6 +41,8 @@
     
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
+        var terminologyVersionId = ${empty command.assignment.studySite.study.aeTerminology.meddraVersion.id ? command.assignment.studySite.study.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id} 
+
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
             <c:if test="${not empty ae.adverseEventCtcTerm.ctcTerm}">
@@ -97,7 +99,7 @@
                 
                 AE.createStandardAutocompleter(this._detailsForOtherLltId(),
 					function(autocompleter, text) {
-						createAE.matchLowLevelTermsByCode(${command.assignment.studySite.study.aeTerminology.meddraVersion.id},text, function(values) {
+						createAE.matchLowLevelTermsByCode(terminologyVersionId,text, function(values) {
 													autocompleter.setChoices(values)})
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
@@ -257,7 +259,7 @@
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, ${command.assignment.studySite.study.ctcVersion.id}, $F(this._ctcCategoryId()), 25, function(values) {
+                createAE.matchTerms(text, terminologyVersionId, $F(this._ctcCategoryId()), 25, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
