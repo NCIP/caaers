@@ -17,6 +17,9 @@ public class AjaxOutput {
     private String errorMessage;
 
     private List<IndexChange> changes;
+    
+    private String htmlContent; //will be used by some pages
+    private Object objectContent; //will be used by some pages
 
     public AjaxOutput() {
         changes = Collections.emptyList();
@@ -31,8 +34,28 @@ public class AjaxOutput {
     public AjaxOutput(List<IndexChange> changes) {
         this.changes = changes;
     }
+    
+    public AjaxOutput(Object objContent){
+    	this.objectContent = objContent;
+    }
+    
+    public String getHtmlContent() {
+		return htmlContent;
+	}
 
-    public boolean getError() {
+	public void setHtmlContent(String htmlContent) {
+		this.htmlContent = htmlContent;
+	}
+
+	public Object getObjectContent() {
+		return objectContent;
+	}
+
+	public void setObjectContent(Object objectContent) {
+		this.objectContent = objectContent;
+	}
+
+	public boolean getError() {
         return error;
     }
 

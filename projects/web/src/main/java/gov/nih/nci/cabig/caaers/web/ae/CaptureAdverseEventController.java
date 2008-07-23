@@ -1,54 +1,35 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Transient;
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.lang.BooleanUtils;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.ServletRequestParameterPropertyValues;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.Date;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
 
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
@@ -83,26 +64,29 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return null;
 	}
 	
-	/**
-	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
-	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
-	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
-	 *  events will be bound to the command object.
-	 */
-	
-	@Override
-	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
-		ServletRequestDataBinder binder = super.createBinder(request, command);
-		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
-		prepareBinder(binder);
-		initBinder(request,binder);
-		return binder;
-	}
+//	/**
+//	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
+//	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
+//	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
+//	 *  events will be bound to the command object.
+//	 */
+//	
+//	@Override
+//	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
+//		ServletRequestDataBinder binder = super.createBinder(request, command);
+//		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+//		prepareBinder(binder);
+//		initBinder(request,binder);
+//		return binder;
+//	}
 
+	
+	/**
+	 * Will return the {@link AdverseEventReportingPeriod} 
+	 */
 	@Override
 	protected AdverseEventReportingPeriod getPrimaryDomainObject(CaptureAdverseEventInputCommand cmd) {
-		//TODO should be refined.
-		return new AdverseEventReportingPeriod();
+		return cmd.getAdverseEventReportingPeriod();
 	}
 
 	@Override
@@ -119,10 +103,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected void initBinder(HttpServletRequest request,ServletRequestDataBinder binder) throws Exception {
 		ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
-        //ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
-        //ControllerTools.registerDomainObjectEditor(binder, "aeRoutineReport", routineReportDao);
         ControllerTools.registerDomainObjectEditor(binder, "adverseEvent", adverseEventDao);
-        //ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);

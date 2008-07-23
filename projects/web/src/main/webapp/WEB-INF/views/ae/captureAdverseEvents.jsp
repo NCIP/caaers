@@ -63,22 +63,17 @@ font-weight:normal;
  				top: 30, left: 300});
  			this.win.show(true);
  		},
- 		addOptionToSelectBox:function(selBox, optLabel, optValue, isSecondLast){
+ 		addOptionToSelectBox:function(selBox, optLabel, optValue){
  			//adds the option to specified select box.
  	 		opt = new Option(optLabel, optValue);
- 	 		len = selBox.options.length;
-			if(isSecondLast){
- 	 			selBox.add(opt,selBox.options[len - 1]);
-			}else{
-				selBox.options.add(opt);
-			}
+			selBox.options.add(opt);
  		},
  		rpCtrlOnChange : function(){
  	 		this.clearRPDetails(); //clear existing reporting period details
  	 		if(this.rpCtrl.value == -1){
  	 	 		this.displayRPPopup(); //create reporting period flow
  	 		}else if(this.rpCtrl.value){
-				this.showRPDetails(); //show the reporting period details and AEs	 	 	 		
+				this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value); //show the reporting period details and AEs	 	 	 		
  	 		}
  	 		
  		},
@@ -86,20 +81,15 @@ font-weight:normal;
  	 		if(this.rpCtrl.value > 0) this.displayRPPopup();
  	 	 			
  		},
- 		showRPDetails:function(){
+ 		showRPDetails:function(rpDetails){
  	 		//shows reporting period details , solicited and observed adverse events
- 	 		this.rpDetailsDiv.show().defer();
+ 	 		Element.insert(this.rpDetailsDiv, rpDetails);
+ 	 		Effect.Appear(this.rpDetailsDiv);
+ 	 		
  		},
  		clearRPDetails :function() {
  	 		//will clear the content of details section & properly unregister events
  	 		this.rpDetailsDiv.hide();
- 	 		this.rpDetailsDiv.innerHTML = 'Fetching data from server......';
- 		},
- 		loadNewlyCreatedRP:function(id, name){
- 			Windows.close(this.win.getId()); //closes the window.
- 	 		this.addOptionToSelectBox(this.rpCtrl, name, id, true);
- 	 		this.rpCtrl.selectedIndex = this.rpCtrl.options.length - 2;
- 	 		this.showRPDetails(); //show the selected reporting period details
  		},
  		showOrHideEditRPCtrl:function(){
  			//the edit reporting period button show/hide based on select box value
@@ -109,11 +99,41 @@ font-weight:normal;
  	 	 	 	this.rpEditCtrl.hide();
  	 	 	}
  		},
- 		refreshRPCrlOptions:function(){
+ 		refreshRPCrlOptionsAndShowDetails:function(newRPId){
  	 		//will refresh the options of reporting period.
- 		}
- 		
+ 	 		createAE.refreshReportingPeriodAndGetDetails(newRPId, function(ajaxOutput){
+ 	 	 		this.rpCtrl.options.length = 1;
+ 	 	 		ajaxOutput.objectContent.each(function(rp){
+ 	 	 	 		 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
+ 	 	 	 		}.bind(this));
+ 	 	 		this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
+ 	 	 		this.rpCtrl.value = newRPId;
+ 	 	 		this.showRPDetails(ajaxOutput.htmlContent);
+ 	 		}.bind(this));
+ 		},
+ 		addAdverseEvents:function(selectedTerms){
+ 	 		//find the terms that are not already added in the page
+ 			var listOfTermIDs = new Array();
+ 		  	$H(selectedTerms).keys().each( function(termID) {
+ 		  		var term = $H( selectedTerms ).get(termID);
+ 		  		if( !this.isTermAgainAdded(termID)){
+ 		  		  listOfTermIDs.push( termID );
+ 		        }
+ 		  	});
+ 		  	//get the HTML to add from server   
+ 		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
+ 		  	   	new Insertion.After('observedBlankRow', responseStr);
+ 		  	});
+ 		},
+ 		isTermAgainAdded:function(termID){
+ 	 		//will tell wheter the term is already present
+ 			$$('.eachRowTermID').each(function(aTerm){
+ 	 			if(termID == aTerm.value()) return true;
+ 			});
+ 			return false;
+ 		} 		
  	});
+
  	
  	/*
  		Create an instance of the RPCreatorClass, by passing 'adverseEventReportingPeriod' which is the ID of Reporting Period select element.

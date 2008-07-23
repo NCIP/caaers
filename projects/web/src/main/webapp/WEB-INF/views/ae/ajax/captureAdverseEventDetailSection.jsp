@@ -48,7 +48,7 @@
 	<chrome:division title="Observed adverse event(s)">
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
         	<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  
-        		callbackFunctionName="myCallback" 
+        		callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
         		version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
         	</tags:aeTermQuery>
         	<%-- <c:if test='${hasObservedEvent == true}'> --%>

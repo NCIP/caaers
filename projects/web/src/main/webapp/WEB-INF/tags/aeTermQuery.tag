@@ -2,6 +2,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@attribute name="isAjaxable" type="java.lang.Boolean" description="Should be set to true, if this tag is included in the response of an AJAX call, this ensures that the javascript objects defined here are properly enabled" %>
 <%@attribute name="isMeddra" required="true" type="java.lang.Boolean" description="Will tell whether the autocompleter should look for MedDRA or CTC" %>
 <%@attribute name="version" required="true" type="java.lang.Integer" description="Will tell the version of ctc or meddra to use" %>
 <%@attribute name="instructions" fragment="true" %>
@@ -141,47 +142,85 @@
 			});
 			
 			
-		}
+		},
+		showCategoryBox:function(){
+	 		this.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
+	 	},
+	 	onDivScroll:function(selectBoxId)	{
+			if(basename == '') return ;
+			
+	 		var selectBox = $(selectBoxId);
+	 	    //a) On horizontal scrolling: To avoid vertical
+	 	    //b) On vertical scrolling: To view all the items in selectbox
+	 	    if (selectBox.options.length > 5)  	
+	 	 	    selectBox.size=selectBox.options.length;
+	 	    else 	
+	 	 	    selectBox.size=5;
+	 	},
+		
+	 	onSelectFocus:function(selectBoxId)	{
+	 	 	var outerDiv = $(selectBoxId + '-div-id');
+	 	 	var selectBox = $(selectBoxId);
+	 	 	
+	 	    //adjust the scrolling position, so that the content (with less length) is visible
+
+	 	    if (outerDiv.scrollLeft != 0)   outerDiv.scrollLeft = 0;
+	 	   //Adjust the selected item, so that on pressing of downarrow key or uparrowkey,the selected item should also scroll up or down as expected.
+			if(selectBox.options.length > 5){
+				selectBox.focus();
+				selectBox.size = 5;
+			}
+	 	   
+	 	    
+	 	}
+	 	
 		
 		
  	});
+	
+	function initalizeCategorySelector(){
+		//some pages add this tag, via ajax, so they are supposed to
+		//call this function directly.
+		catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});
+	 	catSel.initializeAutoCompleter();
+	 	//capture events on the buttons
+	 	Element.observe('addSingleTermBtn', 'click', function(){
+		 	this.finishSingleTermSelection();
+	 	}.bind(catSel));
+	 	Element.observe('addMultiTermBtn', 'click', function(){
+		 	this.showCategoryBox()
+	 	}.bind(catSel));
+		Element.observe('addTermsBtn','click',function(){
+			this.finishMultiTermsSelection();
+		}.bind(catSel));
+		
+	 	//capture the events on the divisions for scroll correction.
+	    Element.observe('categories-div-id','scroll', function(){
+			this.OnDivScroll('categories');
+	    }.bind(catSel));
+	    Element.observe('categories','change',function(){
+	    	this.showTerms('categories', catSel.ignoreOtherSpecify);
+		}.bind(catSel));
+	    Element.observe('categories','focus',function(){
+	    	this.onSelectFocus('categories');
+	    }.bind(catSel));
+		Element.observe('terms-div-id','scroll', function(){
+			  this.OnDivScroll('terms');
+		}.bind(catSel));
+		Element.observe('terms','focus',function(){
+			  this.onSelectFocus('terms');
+		}.bind(catSel));
+	}
  	
  	Element.observe(window, "load", function() {
- 	 catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});
- 	 catSel.initializeAutoCompleter();
+ 		initalizeCategorySelector();	
+ 	 
  	});
- 	
- 	function showCategoryBox(){
- 		catSel.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
- 	}
-
- 	function onDivScroll(selectBoxId)	{
-		if(basename == '') return ;
 		
- 		var selectBox = $(selectBoxId);
- 	    //a) On horizontal scrolling: To avoid vertical
- 	    //b) On vertical scrolling: To view all the items in selectbox
- 	    if (selectBox.options.length > 5)  	
- 	 	    selectBox.size=selectBox.options.length;
- 	    else 	
- 	 	    selectBox.size=5;
- 	}
- 	
- 	function onSelectFocus(selectBoxId)	{
- 	 	var outerDiv = $(selectBoxId + '-div-id');
- 	 	var selectBox = $(selectBoxId);
- 	 	
- 	    //adjust the scrolling position, so that the content (with less length) is visible
+ 	<c:if test="${isAjaxable}">
+ 		initalizeCategorySelector.defer();
+ 	</c:if>
 
- 	    if (outerDiv.scrollLeft != 0)   outerDiv.scrollLeft = 0;
- 	   //Adjust the selected item, so that on pressing of downarrow key or uparrowkey,the selected item should also scroll up or down as expected.
-		if(selectBox.options.length > 5){
-			selectBox.focus();
-			selectBox.size = 5;
-		}
- 	   
- 	    
- 	}
 </script>
 
 <chrome:box title="Find &amp; add adverse event term(s)">
@@ -192,7 +231,7 @@
   				<tr>
   					<td class="one">
   						<div>
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" /><input type="button" value="Add" onclick="catSel.finishSingleTermSelection()" />
+  							<tags:autocompleter displayName="abcd" propertyName="termCode" /><input id="addSingleTermBtn" type="button" value="Add"  />
   						</div>
   						<div class="local-buttons">
   							
@@ -200,7 +239,7 @@
   					</td>
   					<c:if test="${not isMeddra}">
   					<td class="two">OR</td>
-  					<td class="three"><input type="button" value="Add Multiple" onclick="showCategoryBox()" /></td>
+  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" /></td>
   					</c:if>
   					
   				</tr>
@@ -215,8 +254,8 @@
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC categorie(s)</jsp:attribute>
 			<jsp:attribute name="value">
-			  <div id="categories-div-id" class="categories-div" onscroll="OnDivScroll('categories');">
-			    <select name="categories" id="categories" size="5" class="categories" multiple onChange="catSel.showTerms(this, catSel.ignoreOtherSpecify);" onfocus="onSelectFocus('categories');">
+			  <div id="categories-div-id" class="categories-div" >
+			    <select name="categories" id="categories" size="5" class="categories" multiple >
 				  <c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				  </c:forEach>
@@ -227,8 +266,8 @@
 		<tags:renderRow>
 			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
 			<jsp:attribute name="value">
-				<div id="terms-div-id" class="terms-div" onscroll="OnDivScroll('terms');">
-				  <select name="terms" id="terms" size="5" class="terms" multiple onfocus="onSelectFocus('terms');">
+				<div id="terms-div-id" class="terms-div">
+				  <select name="terms" id="terms" size="5" class="terms" multiple >
 					<option value=""> Please select a CTC term first </option>
 				  </select>
 				</div>
@@ -237,7 +276,7 @@
 		<hr />
 		<div class="aeTermQuery-buttons">
 			<c:if test="${empty localButtons}">
-			<input type="button" value="Add Terms" onclick="catSel.finishMultiTermsSelection();" />
+			<input id="addTermsBtn" type="button" value="Add Terms" />
 			</c:if>
 			 <jsp:invoke fragment="localButtons"/>
 		</div>		

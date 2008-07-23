@@ -1,33 +1,22 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Transient;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.webservice.Study.StudyOrganizations;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
@@ -141,11 +130,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setStudy(Study study) {
 		this.study = study;
-		if(study != null){
-			this.study.getStudyFundingSponsors().size();
-			this.study.getStudyOrganizations().size();
-			this.study.getStudySites().size();
-		}
 	}
 
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod() {
@@ -154,11 +138,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
-		if(adverseEventReportingPeriod != null){
-			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
-			this.adverseEventReportingPeriod.getStudy().getStudyFundingSponsors().size();
-			this.adverseEventReportingPeriod.getStudy().getStudySites().size();
-		}
+		
 	}
 	
 	public void setCtcCategories(List<CtcCategory> ctcCategories) {
@@ -178,5 +158,32 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
     }
-
+    
+    /**
+     * This method will refresh the StudyParticipantAssignment and updates the {@link AdverseEventReportingPeriod}.
+     */
+    public void refreshAssignment(Integer reportingPeriodId){
+    	//reload assignmet
+    	assignmentDao.refresh(assignment);
+    	
+    	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
+    		if(reportingPeriod.getId().equals(reportingPeriodId)){
+    			this.adverseEventReportingPeriod = reportingPeriod;
+    			break;
+    		}
+    	}
+    	initialize();
+    }
+    
+    
+    /**
+     * This method will take care of initializing the lazy associations
+     */
+    public void initialize(){
+    	if(adverseEventReportingPeriod != null){
+			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
+			this.adverseEventReportingPeriod.getAdverseEvents().size();
+			this.adverseEventReportingPeriod.getAeReport();
+		}
+    }
 }

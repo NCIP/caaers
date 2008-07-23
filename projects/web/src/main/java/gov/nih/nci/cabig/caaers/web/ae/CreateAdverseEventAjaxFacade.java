@@ -813,6 +813,24 @@ public class CreateAdverseEventAjaxFacade {
         return renderAjaxView(viewName, aeReportId, params);
     }
     
+    
+    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
+    	command.refreshAssignment(reportingPeriodId);
+    	
+    	List<AdverseEventReportingPeriod> rpList = ObjectTools.reduceAll(command.getAssignment().getReportingPeriods(), "id", "startDate" , "endDate", "name");
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(rpList);
+    	
+    	//get the content for the below html section. 
+    	
+    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	getHttpServletRequest().setAttribute(AJAX_REQUEST_PARAMETER, "_isAjax");
+    	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
+    	output.setHtmlContent(html);
+    	return output;
+    }
+    
     /**
      * Returns the HTML for the details section of the CaptureAdverseEvents page.
      *
@@ -908,7 +926,7 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
     
-    public String addObservedAE(String listOfTermIDs[], String listOfTerms[]) {
+    public String addObservedAE(String listOfTermIDs[]) {
         
         HttpServletRequest request = getHttpServletRequest();
         request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");

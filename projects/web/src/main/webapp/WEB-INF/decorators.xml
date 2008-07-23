@@ -28,11 +28,15 @@
 		<pattern>/pages/rule/notification/edit</pattern>
         <pattern>/pages/admin/import</pattern>
     </decorator>
+    <decorator name="nullDecorator" page="nullDecorator.jsp"/>
 
     <excludes>
         <pattern>/*/image/*</pattern>
         <pattern>/*/js/*</pattern>
         <!-- exclude Ajax subview renderings -->
         <pattern>*subview*</pattern>
+        <pattern>*decorator*</pattern>
+        <pattern>*_asynchronous*</pattern>
+        <pattern>*_asyncMethodName*</pattern>
     </excludes>
 </decorators>

@@ -23,9 +23,11 @@
 </style>
 <script>
 	Event.observe(window, "load", function(){
-			$('ok-id').observe("click", function(){
-				window.parent.rpCreator.loadNewlyCreatedRP(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');		
-			});
+		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id});
+		
+		$('ok-id').observe("click", function(){
+			window.parent.Windows.close(window.parent.rpCreator.win.getId());			
+		});
 	});
 </script>
 
