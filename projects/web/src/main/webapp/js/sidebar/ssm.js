@@ -153,19 +153,21 @@ function buildMenu(n, headerName) {
 	    document.write("<tr><td bgcolor='" + linkBGColor + "' style='border:1px " + menuBGColor + " solid;' valign='top'>");
 	
 	    document.write('<table border="0" cellpadding="0" cellspacing="0" width="' + (menuWidth-2) + '">');
-		document.write('<TR>')
-			document.write('<TD>Lab</TD>');
-			document.write('<TD>Date</TD>');
-			document.write('<TD>Value</TD>');
-			document.write('<TD>Unit</TD>');
+		document.write('<TR bgcolor="' + hdrBGColor + '" height=' + hdrHeight + '>')
+			document.write('<TD><b>Lab</b></TD>');
+			document.write('<TD><b>Date</b></TD>');
+			document.write('<TD><b>Value</b></TD>');
+			document.write('<TD><b>Unit</b></TD>');
+			document.write('<TD></TD>');
 		document.write('</TR>')
 		
 	 	for (i = 0; i < ssmItems.length; i++){
 
             if (ssmItems[i][5] == "true") st = "style='display:none;'"; else st = "";
-            document.write('<TR ' + st + '>');
+            document.write('<TR ' + st + ' onMouseOver="bgColor=\'' + linkOverBGColor + '\'" onMouseOut="bgColor=\'' + linkBGColor + '\'" bgColor=\"' + linkBGColor + '\">');
 			for(j=0; j<4; j++){
-				document.write('<td bgcolor="' + hdrBGColor + '" HEIGHT="' + hdrHeight + 'px" ALIGN="' + hdrAlign + '" VALIGN="' + hdrVAlign + '" WIDTH="' + ssmItems[1][0] + '" COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + hdrFontFamily + '" Size="' + hdrFontSize + '" COLOR="' + hdrFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>')
+//				document.write('<td HEIGHT="' + hdrHeight + 'px" ' + 'ALIGN="' + hdrAlign + '" ' + 'VALIGN="' + hdrVAlign + '" ' + 'WIDTH="' + ssmItems[1][0] + '" ' + 'COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + linkFontFamily + '" Size="' + linkFontSize + '" ' + 'COLOR="' + linkFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>');
+				document.write('<td>&nbsp;<font size=' + linkFontSize + '>' + ssmItems[i][j] + '</font></td>');
 			}
 			document.write('<td align="left" valign="top"><a id="a'+ ssmItems[i][4] + '" href="#" onClick="dismissLab('+ssmItems[i][4]+')"><img src="../../images/checkno.gif" border="0"></a></td>');
 			document.write('</TR>')

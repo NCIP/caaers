@@ -16,17 +16,19 @@ menuCols = 2;
 hdrFontFamily = "verdana";
 hdrFontSize = "2";
 hdrFontColor = "white";
-hdrBGColor = "#658dbf";
+hdrBGColor = "#CCCCCC";
 hdrAlign = "left";
 hdrVAlign = "center";
-hdrHeight = "15";
+hdrHeight = "18";
+
 linkFontFamily = "Verdana";
 linkFontSize = "1";
 linkBGColor = "#eeeeee";
 linkBGColorSelected = "#417691";
-linkOverBGColor = "#417691";
+linkOverBGColor = "#DDDDDD";
 linkTarget = "";
 linkAlign = "Left";
+
 barBGColor = "#999999";
 barFontFamily = "Verdana";
 barFontSize = "2";
