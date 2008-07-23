@@ -19,7 +19,7 @@ public class LabConsumerServiceImpl extends LabConsumerServiceImplBase {
 	
 	private static final String SPRING_CLASSPATH_EXPRESSION = "springClasspathExpression";
 
-    private static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-labviewer.xml";
+    private static final String DEFAULT_SPRING_CLASSPATH_EXPRESSION = "classpath:applicationContext-lab.xml";
 
 	private static final String LAB_CONSUMER_BEAN_NAME = "labViewerConsumerBeanName";
 
