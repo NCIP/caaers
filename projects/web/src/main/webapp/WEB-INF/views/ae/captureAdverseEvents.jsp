@@ -85,11 +85,13 @@ font-weight:normal;
  	 		//shows reporting period details , solicited and observed adverse events
  	 		Element.insert(this.rpDetailsDiv, rpDetails);
  	 		Effect.Appear(this.rpDetailsDiv);
+ 	 		this.showOrHideEditRPCtrl();
  	 		
  		},
  		clearRPDetails :function() {
  	 		//will clear the content of details section & properly unregister events
  	 		this.rpDetailsDiv.hide();
+ 	 		this.showOrHideEditRPCtrl();
  		},
  		showOrHideEditRPCtrl:function(){
  			//the edit reporting period button show/hide based on select box value
