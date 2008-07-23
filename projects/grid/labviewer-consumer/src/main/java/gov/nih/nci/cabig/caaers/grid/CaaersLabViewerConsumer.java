@@ -72,7 +72,7 @@ public class CaaersLabViewerConsumer implements LabViewerConsumerI {
 			String participantId = studySubject.getParticipant().getII(0).getExtension();
 			//lookup participant.
 			Identifier i = new Identifier();
-			i.setType("MRN");
+			//i.setType("MRN");
 			i.setValue(participantId);
 
 			Participant p = participantDao.getByIdentifier(i);
@@ -86,10 +86,11 @@ public class CaaersLabViewerConsumer implements LabViewerConsumerI {
 			String studyId = studySubject.getPerformedStudy().getDocumentation(0).getII(0).getExtension();
 			//lookup study.
 			Identifier i2 = new Identifier();
-			i2.setType("Protocol Authority Identifier");
+			//i2.setType("Protocol Authority Identifier");
 			i2.setValue(studyId);
 
 			Study s = studyDao.getByIdentifier(i2);
+			
 
 			if (s == null) {
 				addError(services.ErrorCodes.InvalidStudyOrPatient,"Study "+studyId+" not found in caAERS");
