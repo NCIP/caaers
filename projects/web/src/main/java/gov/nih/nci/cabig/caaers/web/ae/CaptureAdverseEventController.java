@@ -64,21 +64,21 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return null;
 	}
 	
-//	/**
-//	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
-//	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
-//	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
-//	 *  events will be bound to the command object.
-//	 */
-//	
-//	@Override
-//	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
-//		ServletRequestDataBinder binder = super.createBinder(request, command);
-//		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
-//		prepareBinder(binder);
-//		initBinder(request,binder);
-//		return binder;
-//	}
+	/**
+	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
+	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
+	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
+	 *  events will be bound to the command object.
+	 */
+	
+	@Override
+	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
+		ServletRequestDataBinder binder = super.createBinder(request, command);
+		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+		prepareBinder(binder);
+		initBinder(request,binder);
+		return binder;
+	}
 
 	
 	/**
