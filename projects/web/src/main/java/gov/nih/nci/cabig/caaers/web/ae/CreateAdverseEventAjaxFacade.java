@@ -14,8 +14,8 @@ import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabLoadDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.LabViewerLabDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
@@ -42,8 +42,8 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.InterventionSite;
 import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.LabViewerLab;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -135,7 +135,7 @@ public class CreateAdverseEventAjaxFacade {
     private InterventionSiteDao interventionSiteDao;
     private CtepStudyDiseaseDao ctepStudyDiseaseDao;
     private AdverseEventReportingPeriodDao reportingPeriodDao;
-    private LabViewerLabDao labViewerLabDao;
+    private LabLoadDao labLoadDao;
 
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
@@ -972,10 +972,10 @@ public class CreateAdverseEventAjaxFacade {
     public void dismissLab(int labId){
     	Object oCommand = extractCommand();
     	AdverseEventInputCommand command = (AdverseEventInputCommand)oCommand;
-    	for(LabViewerLab lab : command.getAssignment().getLabViewerLabs()){
+    	for(LabLoad lab : command.getAssignment().getLabLoads()){
     		if(lab.getId().equals(labId)){
     			lab.setDismissed(Boolean.TRUE);
-    			labViewerLabDao.save(lab);
+    			labLoadDao.save(lab);
     		}
     	}
     }
@@ -1137,10 +1137,8 @@ public class CreateAdverseEventAjaxFacade {
 			AdverseEventReportingPeriodDao reportingPeriodDao) {
 		this.reportingPeriodDao = reportingPeriodDao;
 	}
-	public LabViewerLabDao getLabViewerLabDao() {
-		return labViewerLabDao;
-	}
-	public void setLabViewerLabDao(LabViewerLabDao labViewerLabDao) {
-		this.labViewerLabDao = labViewerLabDao;
+
+	public void setLabLoadDao(LabLoadDao labLoadDao) {
+		this.labLoadDao = labLoadDao;
 	}
 }
