@@ -25,10 +25,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Participant participant; 
 	private Study study;
 	private EvaluationService evaluationService;
-	  
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
-	
 	private List<CtcCategory> ctcCategories;
+	private Map<Integer, Boolean> selectedAesMap;
+	
+	
 
 	// Need to verify..
 	// Added to make the aeTermQuery.tag work.
@@ -58,25 +59,31 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
+		selectedAesMap = new HashMap<Integer, Boolean>();
 	}
 	
-	public Map<Integer, List<AdverseEvent>> applyRules(){
+	public Map<ReportDefinition, List<AdverseEvent>> applyRules(){
 		// check if the event reported is an SAE.
-		Map<Integer, List<AdverseEvent>> repDefnIdToAeListMap = new HashMap<Integer, List<AdverseEvent>>();
+		Map<ReportDefinition, List<AdverseEvent>> repDefnIdToAeListMap = new HashMap<ReportDefinition, List<AdverseEvent>>();
 		List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
 		for(AdverseEvent ae: this.adverseEventReportingPeriod.getAdverseEvents()){
 			List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
 			aeList.add(ae);
 			reportDefs = evaluationService.findRequiredReportDefinitions(null, aeList, this.getAdverseEventReportingPeriod().getStudy());
 			for(ReportDefinition reportDefn: reportDefs){
-				if(repDefnIdToAeListMap.containsKey(reportDefn.getId())){
-					repDefnIdToAeListMap.get(reportDefn.getId()).add(ae);
+				if(repDefnIdToAeListMap.containsKey(reportDefn)){
+					Map<AdverseEvent, Integer> aeMap = new HashMap<AdverseEvent, Integer>();
+					for(AdverseEvent aEvent: repDefnIdToAeListMap.get(reportDefn)){
+						if(!aeMap.containsKey(aEvent))
+							aeMap.put(aEvent, 1);
+					}
+					if(!aeMap.containsKey(ae))
+						repDefnIdToAeListMap.get(reportDefn).add(ae);
 				}else{
-					repDefnIdToAeListMap.put(reportDefn.getId(), aeList);
+					repDefnIdToAeListMap.put(reportDefn, aeList);
 				}
 			}
 		}
-		//System.out.println("repDefnIdToAeListMap = " + repDefnIdToAeListMap.toString());
 		return repDefnIdToAeListMap;
 	}
 	
@@ -185,5 +192,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReport();
 		}
+    }
+    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
+		this.selectedAesMap = selectedAesMap;
+	}
+    
+    public Map<Integer, Boolean> getSelectedAesMap(){
+   		return selectedAesMap;
     }
 }

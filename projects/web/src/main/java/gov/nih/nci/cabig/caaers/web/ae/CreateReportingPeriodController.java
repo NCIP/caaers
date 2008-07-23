@@ -190,6 +190,17 @@ public class CreateReportingPeriodController extends SimpleFormController {
     	Date endDate = rPeriod.getEndDate();
     	InputField field = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(1);
         
+    	// Check for duplicate baseline Reporting Periods.
+    	if(rPeriod.getEpoch().getName().equals("Baseline")){
+    		for(AdverseEventReportingPeriod aerp: rPeriodList){
+    			if(aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")){
+    				InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(2);
+    				errors.rejectValue(epochField.getPropertyName(), "REQUIRED",
+                    "A Baseline Reporting Period already exists");
+    				return;
+    			}
+    		}
+    	}
     	
     	// Check if the start date is equal to or before the end date.
     	if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
@@ -234,6 +245,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     				if(sDate.getTime() - startDate.getTime() < 0){
     					errors.rejectValue(field.getPropertyName(), "REQUIRED",
     					"Baseline Reporting Period cannot start after an existing Non-Baseline Reporting Period.");
+    					return;
     				}
     			}
     		}else{
@@ -241,6 +253,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     				if(startDate.getTime() - sDate.getTime() < 0){
     					errors.rejectValue(field.getPropertyName(), "REQUIRED",
     					"Non-Baseline Reporting Period cannot start before an existing Baseline Reporting Period.");
+    					return;
     				}
     			}
     		}
