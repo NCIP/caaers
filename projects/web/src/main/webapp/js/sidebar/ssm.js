@@ -159,7 +159,7 @@ function buildMenu(n, headerName) {
 			document.write('<TD><b>Value</b></TD>');
 			document.write('<TD><b>Unit</b></TD>');
 			document.write('<TD></TD>');
-		document.write('</TR>')
+		    document.write('</TR>');
 		
 	 	for (i = 0; i < ssmItems.length; i++){
 
@@ -170,10 +170,10 @@ function buildMenu(n, headerName) {
 				document.write('<td>&nbsp;<font size=' + linkFontSize + '>' + ssmItems[i][j] + '</font></td>');
 			}
 			document.write('<td align="left" valign="top"><a id="a'+ ssmItems[i][4] + '" href="#" onClick="dismissLab('+ssmItems[i][4]+')"><img src="../../images/checkno.gif" border="0"></a></td>');
-			document.write('</TR>')
+			document.write('</TR>');
 		}
 	
-	    document.write('</table>')
+	    document.write('</table>');
 	
 	    document.write('</td>');
 	    document.write('<td align="left" valign="top"><img src="../../images/sidebar/bar.gif"></td>');
