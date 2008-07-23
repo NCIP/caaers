@@ -4,12 +4,12 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LabViewerLab;
+import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.repository.LabViewerLabRepository;
-import gov.nih.nci.ccts.grid.common.LabViewerConsumerI;
+import gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository;
+import gov.nih.nci.ccts.grid.common.LabConsumerServiceI;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.rmi.RemoteException;
@@ -38,13 +38,13 @@ import services.StudySubject;
 import services.WsError;
 import services.WsErrors;
 
-public class CaaersLabViewerConsumer implements LabViewerConsumerI {
+public class CaaersLabConsumer implements LabConsumerServiceI {
 	
 	private List<WsError> errorList = null;
 	private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
-	private LabViewerLabRepository labViewerLabRepository;
+	private LabLoadRepository labLoadRepository;
 	private AuthorizationSwitch authorizationSwitch;
 	//private StudyParticipantAssignmentAspect assignmentAspect;
 	//private OpenSessionInViewInterceptor openSessionInViewInterceptor;
@@ -127,13 +127,13 @@ public class CaaersLabViewerConsumer implements LabViewerConsumerI {
 			}
 			System.out.println("name "+labName);
 			
-			LabViewerLab toCreate = new LabViewerLab();
+			LabLoad toCreate = new LabLoad();
 			toCreate.setName(labName);
 			toCreate.setResult(numericResult);
 			toCreate.setUnits(units);
 			toCreate.setAssignment(assignment);
 			toCreate.setLabDate(labDate);
-			labViewerLabRepository.save(toCreate);
+			labLoadRepository.save(toCreate);
 			System.out.println("saved ");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -187,9 +187,9 @@ public class CaaersLabViewerConsumer implements LabViewerConsumerI {
     }	
 
 
-	public void setLabViewerLabRepository(
-			LabViewerLabRepository labViewerLabRepository) {
-		this.labViewerLabRepository = labViewerLabRepository;
+	public void setLabLoadRepository(
+			LabLoadRepository labLoadRepository) {
+		this.labLoadRepository = labLoadRepository;
 	}
 
 	public void setParticipantDao(ParticipantDao participantDao) {

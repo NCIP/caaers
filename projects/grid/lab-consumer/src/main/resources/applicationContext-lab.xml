@@ -7,20 +7,12 @@
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-labViewerConsumer.xml"/>
+	<import resource="classpath*:gov/nih/nci/cabig/caaers/grid/applicationContext-labConsumer.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>	
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	
-	<!--
-	<bean id="labViewerConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabViewerConsumer">
-		<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao" />
-		<property name="participantDao" ref="participantDao" />
-		<property name="labViewerLabRepository" ref="labViewerLabRepository" />
-		<property name="studyDao" ref="studyDao" />		
-		<property name="authorizationSwitch" ref="authorizationSwitch" />	
-	</bean>
-	-->
+
 	
-	<bean id="labViewerConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabViewerConsumer" autowire="byType"/>
+	<bean id="labConsumer" class="gov.nih.nci.cabig.caaers.grid.CaaersLabConsumer" autowire="byType"/>
 	 
 </beans>
