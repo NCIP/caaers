@@ -9,7 +9,7 @@
 <html>
 <head>
 	<tags:dwrJavascriptLink objects="createAE"/>
-	<tags:labs labs="${command.assignment.labViewerLabs}"/>
+<!--	<tags:labs labs="${command.assignment.labViewerLabs}"/>-->
 	<tags:stylesheetLink name="ae"/>
 	<script>
 		function fireAction(action, selected){
