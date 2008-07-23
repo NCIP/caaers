@@ -42,7 +42,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     private List<AdverseEventReportingPeriod> reportingPeriods;
     
-    private List<LabViewerLab> labViewerLabs;
+    private List<LabLoad> labLoads;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
@@ -142,14 +142,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause="lab_date desc")
-	public List<LabViewerLab> getLabViewerLabs() {
-    	if(labViewerLabs == null) labViewerLabs = new ArrayList<LabViewerLab>();
-    	return labViewerLabs;
-	}
-    
+	public List<LabLoad> getLabLoads() {
 
-	public void setLabViewerLabs(List<LabViewerLab> labViewerLabs) {
-		this.labViewerLabs = labViewerLabs;
+    	if(labLoads == null) labLoads = new ArrayList<LabLoad>();
+
+		return labLoads;
+
+	}
+
+
+
+	public void setLabLoads(List<LabLoad> labLoads) {
+
+		this.labLoads = labLoads;
+
 	}
 	
     public Integer getLoadStatus() {
