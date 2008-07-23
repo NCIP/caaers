@@ -299,6 +299,10 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     public void save(T o){
     	getHibernateTemplate().save(o);
     }
+    
+    public void refresh(T o){
+    	getHibernateTemplate().refresh(o);
+    }
 
     /**
      * 
