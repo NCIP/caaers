@@ -12,7 +12,7 @@
     <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <tags:dwrJavascriptLink objects="adverseEventHistory"/>
-	<tags:labs labs="${command.assignment.labViewerLabs}"/>
+<!--	<tags:labs labs="${command.assignment.labViewerLabs}"/>-->
 	
     <style type="text/css">
         .notify-unit.success {
