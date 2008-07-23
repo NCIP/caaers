@@ -53,7 +53,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
-                <value>gov.nih.nci.cabig.caaers.domain.LabViewerLab</value>
+                <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyAgent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participation</value>
@@ -435,7 +435,7 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"/>
     <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao"/>
 
-    <bean id="labViewerLabDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabViewerLabDao"/>
+    <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
           
     <!-- validator beans starts here-->
     <bean id="webControllerValidator"
@@ -500,8 +500,8 @@ This applicationContext contains the definition of the DAOs
 
      
     
-    <bean id="labViewerLabRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabViewerLabRepository">
-        <property name="labViewerLabDao" ref="labViewerLabDao"></property>
+    <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
+        <property name="labLoadDao" ref="labLoadDao"></property>
     </bean>
     <!-- Repository beans end here-->
 
