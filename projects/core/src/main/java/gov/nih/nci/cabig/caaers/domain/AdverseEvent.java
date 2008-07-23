@@ -88,6 +88,10 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private AdverseEventReportingPeriod reportingPeriod;
     
     private Boolean solicited;
+    
+    public AdverseEvent(){
+    	solicited = Boolean.FALSE;
+    }
 
     // //// BOUND PROPERTIES
 
