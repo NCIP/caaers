@@ -1,0 +1,11 @@
+#Introduce Properties
+#Wed Jul 23 16:35:11 EDT 2008
+introduce.skeleton.services.list=LabConsumerService
+introduce.skeleton.extensions=
+introduce.skeleton.timestamp=1216845117520
+introduce.skeleton.service.name=LabConsumerService
+introduce.skeleton.resource.options=main,singleton,identifiable,resourcePropertyManagement
+introduce.skeleton.destination.dir=/Users/sakkala/tech/caaers/lab-viewer/LabConsumerService
+introduce.skeleton.namespace.domain=http\://grid.ccts.nci.nih.gov/LabConsumerService
+introduce.ns.excludes=\ -x gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security
+introduce.soap.binding.excludes=\ 
