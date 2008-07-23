@@ -6,12 +6,16 @@
 
 	<c:if test="${fn:length(labs) > 0}">
 		<tags:javascriptLink name="sidebar/ssm"/>
-		<script language="JavaScript1.2">
-			<c:forEach items="${labs}" var="alab" varStatus="status">
-				<c:if test="${alab.dismissed == false}">
-    				<c:out value='ssmItems[${status.count - 1}]=' />["<c:out value="${alab.name}"/>",'<tags:formatDate value="${alab.labDate}"/>' ,"<c:out value="${alab.result}"/>", "<c:out value="${alab.units}"/>",'${alab.id}', '${alab.dismissed}']
-    			</c:if>
+        <tags:javascriptLink name="sidebar/ssmItems"/>
+
+        <script language="JavaScript1.2">
+            vis = 0;
+            <c:forEach items="${labs}" var="alab" varStatus="status">
+				<c:if test="${alab.dismissed == false}">vis++;</c:if>
+        		<c:out value='ssmItems[${status.count - 1}]=' />["<c:out value="${alab.name}"/>",'<tags:formatDate value="${alab.labDate}"/>' ,"<c:out value="${alab.result}"/>", "<c:out value="${alab.units}"/>",'${alab.id}', '${alab.dismissed}']
 			</c:forEach>
-		</script>
-		<tags:javascriptLink name="sidebar/ssmItems"/>
+
+            buildMenu(0, "", vis);
+
+        </script>
 	</c:if>

@@ -14,21 +14,18 @@ ssmItems = new Array();
 function dismissLab(labId){
 
 	createAE.dismissLab(labId);
-	var labsPresent = 0;
 
-	for (i = 0; i < ssmItems.length; i++){
+    // update the JS array value
+    for (i = 0; i < ssmItems.length; i++){
 		if(ssmItems[i][4] == labId){
-			ssmItems[i][5] = "true"; 
+			ssmItems[i][5] = "true";
 		}
 	}
-	for (i = 0; i < ssmItems.length; i++){
-		if(ssmItems[i][5] == "false"){
-			labsPresent = labsPresent + 1;
-		}
-	}
+    
+    vis--;
+    $('a'+labId).parentNode.parentNode.style.display = "none";
 
-	$('a'+labId).parentNode.parentNode.remove($('a'+labId).parentNode);
-	if(labsPresent == 0){
+    if(vis == 0){
 		$('basessm').hide();
 	}
 }
@@ -134,8 +131,9 @@ function initSlide() {
 }
 
 function buildMenu(n, headerName) {
-	if(ssmItems.length > 0){
-		// n = n;
+    
+    if(vis > 0){
+        // n = n;
 	    if (IE || NS6) {
 	        document.write('<DIV ID="basessm" style="visibility:hidden;Position : Absolute ;Left : ' + XOffset + 'px ;Top : ' + YOffset + 'px ;Z-Index : 20;width:' + (menuWidth + barWidth + 10) + 'px"><DIV ID="thessm" style="Position : Absolute ;Left : ' + (-menuWidth) + 'px ;Top : 0 ;Z-Index : 20;" onmouseover="moveOut()" onmouseout="moveBack()">')
 	    }
@@ -163,8 +161,10 @@ function buildMenu(n, headerName) {
 		document.write('</TR>')
 		
 	 	for (i = 0; i < ssmItems.length; i++){
-			document.write('<TR>')
-			for(j=0; j<4;j++){
+
+            if (ssmItems[i][5] == "true") st = "style='display:none;'"; else st = "";
+            document.write('<TR ' + st + '>');
+			for(j=0; j<4; j++){
 				document.write('<td bgcolor="' + hdrBGColor + '" HEIGHT="' + hdrHeight + 'px" ALIGN="' + hdrAlign + '" VALIGN="' + hdrVAlign + '" WIDTH="' + ssmItems[1][0] + '" COLSPAN="' + ssmItems[1][0] + '">&nbsp;<font face="' + hdrFontFamily + '" Size="' + hdrFontSize + '" COLOR="' + hdrFontColor + '"><b>' + ssmItems[i][j] + '</b></font></td>')
 			}
 			document.write('<td align="left" valign="top"><a id="a'+ ssmItems[i][4] + '" href="#" onClick="dismissLab('+ssmItems[i][4]+')"><img src="../../images/checkno.gif" border="0"></a></td>');
