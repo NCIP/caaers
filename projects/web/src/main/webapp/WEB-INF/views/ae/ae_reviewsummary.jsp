@@ -23,6 +23,7 @@
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
     			<table id="solicitedTable" width="100%" class="tablecontent">
     				<tr>
+    					<th scope="col" align="left"><b>Select</b></th>
     					<th scope="col" align="left" width="30%"><b>Term</b> </th>
     					<th scope="col" align="left"><b>Grade</b> </th>
     					<th scope="col" align="left"><b>Attribution</b> </th>
@@ -42,6 +43,7 @@
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
         	<table id="observedTable" width="100%" class="tablecontent">
     			<tr>
+    				<th scope="col" align="left"><b>Select</b></th>
     				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
