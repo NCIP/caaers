@@ -4,6 +4,7 @@ package gov.nih.nci.cabig.caaers.domain;
  * @author Biju Joseph
  */
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.persistence.Column;
@@ -26,7 +27,7 @@ public class Arm  extends AbstractMutableDomainObject {
 	private String name;
 	private String descriptionText;
 //	private Epoch epoch;
-	private List<SolicitedAdverseEvent> solicitedAdverseEvents;
+	private List<SolicitedAdverseEvent> solicitedAdverseEvents=new ArrayList<SolicitedAdverseEvent>();
 	
 	public Arm()
 	{
