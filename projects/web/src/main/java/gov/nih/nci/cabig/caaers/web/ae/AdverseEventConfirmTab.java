@@ -25,6 +25,8 @@ import gov.nih.nci.cabig.caaers.web.study.StudyTab;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
+ * @author Sameer Sawant
  */
 public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInputCommand>{
 	
@@ -45,15 +47,12 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 					String key = MAIN_FIELD_GROUP + i;
 					final int j = i;
 					InputFieldGroup fieldGroup = new InputFieldGroup(){
-						@Override
 						public List<InputField> getFields() {
 							return createCustomFieldGroup(cmd,j);
 						}
-						@Override
 						public String getDisplayName() {
 							return "";
 						}
-						@Override
 						public String getName() {
 							return "";
 						}
