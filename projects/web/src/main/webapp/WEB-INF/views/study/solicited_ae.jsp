@@ -16,142 +16,8 @@
   <tags:stylesheetLink name="pw_default" />
   <tags:stylesheetLink name="pw_alphacube" />
   <tags:stylesheetLink name="aeTermQuery_box" />
-  <style type="text/css">
-  	
-  	.close-button {
-        position:relative;
-        top:-20px;
-        border:0;
-        
-    }
-  	.sae, .query {
-		border-spacing: 0;
-		border-collapse: collapse;
- 		margin: 1em 2em;
- 	}
- 	.query td.one {
- 		padding-right: 2em;
- 	}
- 	.query td.three {
- 	padding-left: 2em;
- 	}
- 	.query td.two {
- 	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:0px 1px 0px 1px;
-	 height : 1em;
-	 padding-left: 1em;
-	 padding-right: 1em;
-	 
- 	}
- 	
- 	.sae col.term {
- 		text-align: center;
- 	}
- 	
- 	.sae col.epoch {
- 		text-align: center;
- 	}
- 	
- 	.sae .deletecol {
- 	    
-		padding-left: 2em;
-	    padding-right: 2em;
-	    
- 	}
- 	
-	.sae .data{
- 	    border-width:0px 1px 0px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
- 	}
- 	
-	.sae th.term {
-	    border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	width: 22em;
-		height : 3em;
-		vertical-align: CENTER;
-	    horizontal-align: center;
-	}
-	.sae th.epoch {
-		width: 10em;
-		vertical-align: center;
-	}
 
-	.sae th.reportingperiod {
-		width: 10em;
-		vertical-align: top;
-	}
-	.sae th.action {
-		border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	color: black;
-	 	width: 90px;
-	}
-	
-	.sae .lastLineOfTable
-	{
-		border-width:0px 0px 1px 0px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	
-	}
-	
-    th.reportingperiod, th.epoch {
-	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:1px 1px 1px 1px;
-	 height : 2em;
-	}
-	
-	
-	
-    .sae td {
-	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:0px 1px 0px 1px;
-	 height : 2em;
-	}
-	
-	
-	tr.gap
-	{
-	    border : none;
-	 	height : 2em;
-	}
-	.sae tr.head {
-		border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae tr.bottom {
-		border-width:0px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae tr.bottom td{
-		border-width: 0px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae .inst {
-		font-style: normal;
-		font-weight: normal;
-	}
-    
-	.lastRowValue {
-	 font-style: normal;
-		text-align: center;
-		color:red; 
-	}
-	
-  </style>
+ <link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css" />
   
   <script type="text/javascript">
   
@@ -184,19 +50,13 @@
     {
     try{
      unRegisterAddInstructionLinks();
-    
      unRegisterSelectAllCheckBoxes();  
-     
      unRegisterDeleteEpochIcons();   
-     
      unRegisterAddEpochButton();  
     
-     var listOfTermIds = updateTermIds();
-     var termIDArray = $A(listOfTermIds);
-     termIDArray.each( unRegisterDeleteButtons );
     }catch(ex)
     {
-      //alert('exception');
+  //    alert('exception');
     }
     }
     
@@ -223,6 +83,17 @@
                    
     }
    
+    function deleteEpoch( epoch_index ){
+        
+       	 
+           <tags:tabMethod  method="deleteEpoch" 
+                         viewName="study/ajax/generateSolicitedAETable" 
+                         divElement="'SolicitedAETableArea'" 
+                         formName="'command'"
+                         onComplete="initializeAllEvents"/>
+                   
+    }
+   
    function registerSelectAllCheckBoxes()
     {
       var header_of_all_epochs = $$('.epoch');
@@ -230,9 +101,24 @@
       for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
       {
         Event.observe('ck'+i, 'click', selectAll);
+        
+        var all_ck_boxes_for_this_column = $$('.ck'+i);
+        for(var j = 0 ; j < all_ck_boxes_for_this_column.length ; j++ )
+        {
+          Event.observe(all_ck_boxes_for_this_column[j],'click', monitorCheckBoxes);
+        } 
       }
     }
     
+    function monitorCheckBoxes(event)
+    {
+      if( !$(Event.element(event).id).checked )
+      {
+        // if any check box is unselected, unselect appropriate selectAll checkBox
+        var selectAllCkBoxID = Event.element(event).id.gsub(/(\w+)-(\d+)/,'#{1}'); 
+        $(selectAllCkBoxID).checked = false;
+      }
+    }
     function unRegisterSelectAllCheckBoxes()
     {
       var header_of_all_epochs = $$('.epoch');
@@ -245,21 +131,21 @@
     
     function registerAddInstructionLinks()
     {
-      var header_of_all_epochs = $$('.epoch');
+      var all_instructionLinks = $$('.instructionLinks');
        
-      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      for(var i = 0 ; i < all_instructionLinks.length ; i++ )
       {
-        Event.observe('epochs['+i+'].descriptionText-id', 'click', addInstructions);   
+        Event.observe(all_instructionLinks[i], 'click', addInstructions);   
       }
     }
     
     function unRegisterAddInstructionLinks()
     {
-      var header_of_all_epochs = $$('.epoch');
+       var all_instructionLinks = $$('.instructionLinks');
        
-      for(var i = 0 ; i < header_of_all_epochs.length ; i++ )
+      for(var i = 0 ; i < all_instructionLinks.length ; i++ )
       {
-        Event.stopObserving('epochs['+i+'].descriptionText-id', 'click', addInstructions);   
+        Event.stopObserving(all_instructionLinks[i], 'click', addInstructions);   
       }
     }
     
@@ -318,9 +204,8 @@
        
        if(confirm("Do you really want to delete this treatment period ?"))
        { 
-     //    deleteEpoch( epoch_order );
-    
-     //    deleteEpochFromBackEnd( epoch_index )
+     
+         uninitializeAllEvents();
         
          $('th-table1-'+epoch_index).remove();
          $('th-col-epoch-'+epoch_index).remove();
@@ -329,22 +214,14 @@
            all_cells_of_this_epoch_column[i].remove();
          }
          
-         
+         deleteEpoch( epoch_index );
+        
        }
        else
          return false;
          
         
     }
-    
-    function deleteEpochFromBackEnd( epoch_index )
-    {
-       createStudy.deleteEpoch( epoch_index , function(responseStr)
-	   	{
-             alert('deleted from backend : ' + responseStr);	   	
-	   	});
-    }
-    
     
     function selectAll(event)
     {
@@ -405,10 +282,9 @@
       
       if(event_id == 'epochs[0].descriptionText-id')
            xleft = 50;
-      else if( event_id == 'epochs[1].descriptionText-id' )
+      else 
            xleft =  Event.pointerX(event) - 60;         
-      else if( event_id == 'epochs[2].descriptionText-id' )
-           xleft =  Event.pointerX(event) + 300;         
+      
        return xleft;
     }
     
@@ -550,7 +426,7 @@ Each term can be associated to multiple treatment period types. <br>To associate
   		<!--  start of body -->
   		
   	  <span id="SolicitedAETableArea">	
-  		<study:solicitedAETable />
+  		<study:solicitedAETable displayOnly="false" />
       </span>
 	  		<!--  end of body  -->
   		<tags:tabControls tab="${tab}" flow="${flow}" />
