@@ -17,7 +17,7 @@
 	</style>  
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,createStudy"/>
-    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    <tags:labs labs="${command.assignment.labLoads}"/>
     <script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
 

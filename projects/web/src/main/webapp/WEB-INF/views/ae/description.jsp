@@ -8,7 +8,7 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    <tags:labs labs="${command.assignment.labViewerLabs}"/>
+    <tags:labs labs="${command.assignment.labLoads}"/>
     
     <style type="text/css">
         
