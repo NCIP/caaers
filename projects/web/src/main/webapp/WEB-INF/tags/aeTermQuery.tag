@@ -43,7 +43,7 @@
 			AE.createStandardAutocompleter('termCode', 
             		function(autocompleter, text){
             			if(this.options.categorySelector.isMeddra){
-            				createAE.matchLowLevelTermsByCode(this.version,text, function(values) {
+            				createAE.matchLowLevelTermsByCode(this.options.categorySelector.version,text, function(values) {
             					if(catSel.ignoreOtherSpecify){
                     				var vals = [];
                     				values.each(function(aterm){
