@@ -146,7 +146,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     public void onBind(HttpServletRequest request, Study command, Errors errors) {
     	// TODO Auto-generated method stub
     	super.onBind(request, command, errors);
-    	
+    
     	if( request.getParameter("_ajaxInPlaceEditParam") != null || request.getParameter(AJAX_REQUEST_PARAMETER) != null || request.getAttribute(AJAX_REQUEST_PARAMETER) != null )
     		return;
         List<Epoch> listOfEpochs = command.getEpochs();
@@ -180,7 +180,10 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	                  listOfSolicitedAEs.add( solicitedAE );
 	    		  }
 	    		}
-    		e.getArms().get(0).setSolicitedAdverseEvents( listOfSolicitedAEs );
+    		
+    		List<SolicitedAdverseEvent> listOfOldSolicitedAEs = e.getArms().get(0).getSolicitedAdverseEvents();
+    		listOfOldSolicitedAEs.clear();
+    		listOfOldSolicitedAEs.addAll( listOfSolicitedAEs );
     		indexOfEpoch++;
     	}	
     	retainOnlyTheseEpochsInStudy( command, epoch_ids );
@@ -251,16 +254,17 @@ public class SolicitedAdverseEventTab extends StudyTab {
  *  For future use
  */
 	public ModelAndView deleteEpoch(HttpServletRequest request, Object commandObj, Errors error) {        
-		Study study= (Study) commandObj;
-	 	int newOrderNumber = generateNextEpochOrderNumber(study);
-    	
-    	System.out.println( newOrderNumber );
-    	
-    	Epoch newEpoch = new Epoch("Enter name here", newOrderNumber ); 
-    	
-    	study.addEpoch( newEpoch );
 		
-    	return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());    
+		Study study= (Study) commandObj;
+		
+        String[] epoch_ids = request.getParameterValues("epoch_id");
+    	
+    	System.out.println( epoch_ids.length );
+    	
+    	retainOnlyTheseEpochsInStudy( study, epoch_ids );
+    	    
+		return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());    
+	        
 	}
 
 
