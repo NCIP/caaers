@@ -35,7 +35,7 @@ public class LabConsumerServiceImpl extends LabConsumerServiceImplBase {
         consumer = (LabConsumerServiceI) ctx.getBean(bean);
 	}
 
-	public services.Acknowledgement loadLabs(services.LoadLabsRequest loadLabsRequest) throws RemoteException {
+  public gov.nih.nci.cabig.ccts.domain.Acknowledgement loadLabs(gov.nih.nci.cabig.ccts.domain.LoadLabsRequest loadLabsRequest) throws RemoteException {
 		//System.out.println("calling Implementation .....");
 		return consumer.loadLabs(loadLabsRequest);
 
