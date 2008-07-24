@@ -8,8 +8,11 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
+
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <style type="text/css">
@@ -313,18 +316,7 @@
 			</chrome:division>
 			
 	<chrome:division title="Solicited Adverse Events">
-	<table class="tablecontent" width="96%">
-	<tr>
-		<th scope="col">Term</th>
-		</tr>
-    	  <c:forEach var="epoch" items="${command.epochs}">
-    		<c:forEach var="arm" items="${epoch.arms}">
-    			<c:forEach var="solicitedEvent" items="${arm.solicitedAdverseEvents}">
-    			<tr><td>${solicitedEvent.ctcterm.term }</td></tr>
-    			</c:forEach>
-    		</c:forEach>
-    	</c:forEach>
-    	</table>
+  		<study:solicitedAETable displayOnly="true" />
     </chrome:division>
 
     </jsp:attribute>
