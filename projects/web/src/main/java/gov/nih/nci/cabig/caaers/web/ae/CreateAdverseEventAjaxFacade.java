@@ -970,13 +970,10 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public void dismissLab(int labId){
-    	Object oCommand = extractCommand();
-    	AdverseEventInputCommand command = (AdverseEventInputCommand)oCommand;
-    	for(LabLoad lab : command.getAssignment().getLabLoads()){
-    		if(lab.getId().equals(labId)){
-    			lab.setDismissed(Boolean.TRUE);
-    			labLoadDao.save(lab);
-    		}
+    	LabLoad labLoad = labLoadDao.getById(labId);
+    	if(labLoad != null){
+    		labLoad.setDismissed(Boolean.TRUE);
+    		labLoadDao.save(labLoad);
     	}
     }
 
