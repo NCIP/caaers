@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -158,8 +159,12 @@ public class DetailsTab extends StudyTab {
                                          null, "displayName")));
 
         // TODO: Add validation for when terminology.term = Term.CTC
+        List<Ctc> ctcList = ctcDao.getAll();
+        for(Ctc ctc : ctcList){
+        	ctc.getCategories().size();
+        }
         scFields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion",
-                         "CTC version", false, collectOptions(ctcDao.getAll(), "id", "name")));
+                         "CTC version", false, collectOptions(ctcList, "id", "name")));
         scFields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion",
                          "MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
                                          "id", "name")));
