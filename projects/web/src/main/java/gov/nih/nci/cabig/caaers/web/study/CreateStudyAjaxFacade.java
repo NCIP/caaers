@@ -221,24 +221,7 @@ public class CreateStudyAjaxFacade {
     	    	
     }
     
-    /*
-     * For future use...
-     */
-    public int deleteEpoch(String epoch_index) {
-        
-    	if( epoch_index != null ){
-        HttpServletRequest request = getHttpServletRequest();
-        
-        Study study = getStudyCommand(getHttpServletRequest());
-        
-        study.removeEpoch( study.getEpochs().get( Integer.parseInt(epoch_index) ) );
-        
-        return study.getEpochs().size();
-    	} // end if
-      return -1; 
-    	
-    }
-
+    
     public String addStudySite(final int index) {
         HttpServletRequest request = getHttpServletRequest();
         getStudyCommand(request);
