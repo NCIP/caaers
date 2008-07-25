@@ -7,6 +7,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="isSolicitedAE" type="java.lang.Boolean" required="true"  description="Should be set to true, when we are rendering the row for solicited adverse events"%>
 <%@attribute name="isAETermOtherSpecify" type="java.lang.Boolean" required="true" description="Should be true, when the CTC term is otherspecify" %>
+<%@attribute name="adverseEvent" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" required="true" description="The adverse event that is being rendered" %>
 
 <c:set var="mainGroup">main${index}</c:set>
     	<%--
@@ -43,12 +44,14 @@
 		<td>
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="aeTerm"/>
 			<div class="divNotes">
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[2]}" cssClass="aeNotes" />
+			${fieldGroups[mainGroup].fields[1].displayName}
+			<tags:renderInputs field="${fieldGroups[mainGroup].fields[1]}" cssClass="aeNotes" />
 			</div>
 		</td>
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="2">
 		<td><tags:renderInputs field="${field}" cssClass="selectbox"/></td>
 		</c:forEach>
 	</c:if>
+	<td><input id="${fieldGroups[mainGroup].fields[0].propertyName}-delete" type="image" name="${fieldGroups[mainGroup].fields[0].propertyName}-img" src="<chrome:imageUrl name="../checkno.gif" />" onClick="rpCreator.deleteAdverseEvent(${index})" /></td>
 </c:if>		
 </tr>

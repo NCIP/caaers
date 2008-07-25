@@ -3,6 +3,15 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 
+<%-- 
+
+
+Note: -
+   This should work on the orginal adverse event list, and not on the decorated list in command
+
+
+--%>
+
 <tags:noform>
 
   <div>    		
@@ -37,7 +46,7 @@
     				<tr id="solicitedBlankRow" />
        				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
        					<c:if test="${ae.solicited == true}">
-	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true"/>
+	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}"/>
 	       				</c:if>
        				</c:forEach>
        			</table>
@@ -59,11 +68,12 @@
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
     				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
+					<th scope="col" align="left"> </th>
     			</tr>
     			<tr id="observedBlankRow" />
     			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             		<c:if test="${ae.solicited == false}">
-	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}"/>
+	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}"/>
 	            	</c:if>
             	</c:forEach>
             </table>

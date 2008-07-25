@@ -13,15 +13,19 @@
  <tags:includePrototypeWindow />
  <tags:stylesheetLink name="ae"/>
  <tags:dwrJavascriptLink objects="createAE,createStudy"/>
- <tags:stylesheetLink name="pw_default" />
- <tags:stylesheetLink name="pw_alphacube" />
-  <tags:stylesheetLink name="aeTermQuery_box" />
+ <tags:stylesheetLink name="aeTermQuery_box" />
 
 <style type="text/css"> 
  .selectbox
 {	
 	width:200px;
 	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
+}
+.divNotes,.divOtherMeddra{
+	font-size:8pt;
+	 border-color:#6E81A6;
+	 border-style:solid;
+	 border-width:1px 0px 0px 0px;
 }
 /* Override basic styles */
 div.row div.value {
@@ -125,8 +129,9 @@ font-weight:normal;
  		  	}.bind(this));
  		  	//get the HTML to add from server   
  		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
- 		  	   	new Insertion.After('observedBlankRow', responseStr);
- 		  	});
+				$('observedBlankRow').insert({after:responseStr});
+				//this.initializeOtherMeddraAutoCompleters(listOfTermIDs).defer();
+ 		  	}.bind(this));
  		},
  		isTermAgainAdded:function(termID){
  	 		//will tell wheter the term is already present
@@ -134,7 +139,18 @@ font-weight:normal;
  	 			if(termID == aTerm.value()) return true;
  			});
  			return false;
- 		} 		
+ 		},
+ 		initializeOtherMeddraAutoCompleters: function(listOfTermIDs){
+ 	 		listOfTermIDs.each(function(aTermId){
+ 	 	 		var acEls = $$('f'+aTermId);
+ 	 	 		if(acEls) alert(acEls[0].id);
+ 	 		}.bind(this));
+ 		},
+ 		deleteAdverseEvent:function(indx){
+ 	 		alert(indx);
+ 	 		return;
+ 		}
+ 		 		
  	});
 
  	

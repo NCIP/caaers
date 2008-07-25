@@ -13,11 +13,10 @@
   <tags:includeScriptaculous/>
   <tags:includePrototypeWindow />
   <tags:dwrJavascriptLink objects="createStudy"/>
-  <tags:stylesheetLink name="pw_default" />
-  <tags:stylesheetLink name="pw_alphacube" />
-  <tags:stylesheetLink name="aeTermQuery_box" />
 
- <link rel="stylesheet" type="text/css" href="/caaers/css/solicited_ae.css" />
+  <tags:stylesheetLink name="aeTermQuery_box" />
+  <tags:stylesheetLink name="solicited_ae" />
+
   
   <script type="text/javascript">
   

@@ -134,20 +134,25 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		};
 	}
 	
+	/**
+	 * Supress the validation in the following cases.
+	 *   1 - When we go back
+	 *   2 - When it is an Ajax request, which dont has form submission
+	 */
+	
 	@Override
     protected boolean suppressValidation(final HttpServletRequest request) {
 
         Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
-            return true;
-        }
-        String action = (String) findInRequest(request, "_action");
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-            return true;
-        }
-        return true;
-        //return super.suppressValidation(request);
+        if (isAjax != null) return true;
+        
+        //check current page and next page
+        int currPage = getCurrentPage(request);
+    	int targetPage = getTargetPage(request, currPage);
+        return targetPage < currPage;
+
     }
+	
 	
 	/**
      * Returns the value associated with the <code>attributeName</code>, if present in
@@ -177,7 +182,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
             return super.getViewName(request, command, page);
         }
     }
-	
+    
+   
 	@Override
 	protected boolean shouldSave(HttpServletRequest request,CaptureAdverseEventInputCommand command,Tab<CaptureAdverseEventInputCommand> tab) {
 		return false;

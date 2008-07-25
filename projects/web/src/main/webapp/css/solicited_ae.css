@@ -4,26 +4,7 @@
         border:0;
         
     }
-  	.sae, .query {
-		border-spacing: 0;
-		border-collapse: collapse;
- 		margin: 1em 2em;
- 	}
- 	.query td.one {
- 		padding-right: 2em;
- 	}
- 	.query td.three {
- 	padding-left: 2em;
- 	}
- 	.query td.two {
- 	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:0px 1px 0px 1px;
-	 height : 1em;
-	 padding-left: 1em;
-	 padding-right: 1em;
-	 
- 	}
+  
  	
  	.sae col.term {
  		text-align: center;
