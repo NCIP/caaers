@@ -114,9 +114,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		InputFieldGroupMap fieldMap = new InputFieldGroupMap();
 		reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 		
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "From", 
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date", 
 				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR));
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "To", 
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date", 
 				FieldValidator.NOT_NULL_VALIDATOR));
 		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Reporting Period Type", true,
                 createEpochOptions(command)));
@@ -133,7 +133,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.treatmentAssignment", "Treatment assignment", true, 
 				fetchTreatmentAssignmentOptions(command)));
 		
-		InputField tacDescriptionField =  InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatement description");
+		InputField tacDescriptionField =  InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatment description");
 		InputFieldAttributes.setColumns(tacDescriptionField, 60);
 		reportingPeriodFieldGroup.getFields().add(tacDescriptionField);
 		

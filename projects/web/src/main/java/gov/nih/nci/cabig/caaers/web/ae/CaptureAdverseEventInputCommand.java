@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private List<CtcCategory> ctcCategories;
 	private Map<Integer, Boolean> selectedAesMap;
 	
+	private IndexFixedList<AdverseEvent> adverseEvents;
 	
 
 	// Need to verify..
@@ -145,6 +147,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod) {
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
+		initialize();
 		
 	}
 	
@@ -173,21 +176,27 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	//reload assignmet
     	assignmentDao.refresh(assignment);
     	
+    	//reset the adverse event report in the command
+    	setAdverseEventReportingPeriod(null);
     	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
     		if(reportingPeriod.getId().equals(reportingPeriodId)){
-    			this.adverseEventReportingPeriod = reportingPeriod;
+    			setAdverseEventReportingPeriod(reportingPeriod);
     			break;
     		}
     	}
-    	initialize();
     }
     
     
     /**
-     * This method will take care of initializing the lazy associations
+     * This method will take care of
+     *  - Updating the index fixed list for AdverseEvents, associated to the reporting period 
+     *  - initializing the lazy associations
      */
     public void initialize(){
+    	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
+    		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
+    		
 			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReport();

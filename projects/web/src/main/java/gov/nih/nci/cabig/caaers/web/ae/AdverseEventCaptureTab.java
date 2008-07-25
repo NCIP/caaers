@@ -120,7 +120,7 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			 * AdversEvent related field groups,
 			 *  the fields are different for Meddra study, Ctc study and Observed AEs
 			 */
-			mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEventReportingPeriod.adverseEvents");
+			mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEvents");
 			boolean isMeddraStudy = cmd.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 			if(cmd.getAdverseEventReportingPeriod().getAdverseEvents() != null){
 				int i = 0;
