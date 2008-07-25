@@ -73,7 +73,38 @@ public class EvaluationServiceImpl implements EvaluationService {
                             "Could not determine the reports necessary for the given expedited adverse event data",
                             e);
         }
-        // this comparator is used to find the highest ranked report definition
+        
+        defList = filterAmenableReportDefinitions(map);
+        List<ReportDefinition> filterdReportDefs = new ArrayList<ReportDefinition>();
+    	
+        // Bug fix - 12770
+        if(expeditedData != null){
+        	if (defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
+        	// Will filter already instantiated reports.
+        	for (Report report : expeditedData.getNonWithdrawnReports()) {
+        		for (ReportDefinition def : defList) {
+        			if (!def.getId().equals(report.getReportDefinition().getId())) {
+        				filterdReportDefs.add(def);
+        			}
+        		}
+
+        	}
+        	return filterdReportDefs;
+        }
+
+        return defList;
+    }
+    
+    /**
+     * This method received a map of the reportDefinitions that are triggered by the rules for aes provided.
+     * It in turns filters out the amenable reportDefinitions retaining the one with shortest time-frame.
+     * It returns a list of reportDefinitions.
+     * @params Map<String, List<String>>
+     * @return
+     */
+    public List<ReportDefinition> filterAmenableReportDefinitions(Map<String,List<String>> map){
+    	List<ReportDefinition> defList = new ArrayList<ReportDefinition>();
+    	// this comparator is used to find the highest ranked report definition
         Comparator<ReportDefinition> c = new ReportDefinitionComparator();
 
         Set<String> keys = map.keySet();
@@ -95,24 +126,6 @@ public class EvaluationServiceImpl implements EvaluationService {
                 defList.add(reportDefTreeSet.last());
             }
         }
-        
-        List<ReportDefinition> filterdReportDefs = new ArrayList<ReportDefinition>();
-    	
-        // Bug fix - 12770
-        if(expeditedData != null){
-        	if (defList.isEmpty() || expeditedData.getNonWithdrawnReports().isEmpty()) return defList;
-        	// Will filter already instantiated reports.
-        	for (Report report : expeditedData.getNonWithdrawnReports()) {
-        		for (ReportDefinition def : defList) {
-        			if (!def.getId().equals(report.getReportDefinition().getId())) {
-        				filterdReportDefs.add(def);
-        			}
-        		}
-
-        	}
-        	return filterdReportDefs;
-        }
-
         return defList;
     }
 
