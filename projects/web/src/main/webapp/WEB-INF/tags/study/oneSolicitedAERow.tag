@@ -3,7 +3,7 @@
 <%@attribute name="displayOnly" required="true" type="java.lang.Boolean" %>
 <%@attribute name="eachRow" required="true" type="java.util.LinkedList"%>
     			<tr id="tr-${eachRow[0]}" class="data" align="center">
-    				<td><label id='name-${eachRow[0]}'>${eachRow[1]}</label>
+    				<td align="left" style="padding-left:1em"><label  id='name-${eachRow[0]}'>${eachRow[1]}</label>
     				<input type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
     				</td>
     			   <c:forEach varStatus="status" var="eachCheckBox" items="${eachRow}" begin="2" >
