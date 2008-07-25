@@ -25,7 +25,12 @@ if(tempTargetVar!=null){
 	$("command")._target.name="notSubmitted";
 }
 
-new Ajax.Updater(${divElement},$("command").action+"&subview", 
+var symbol = '&';
+
+if( $("command").action.indexOf('?') == -1 )
+  symbol = '?';
+
+new Ajax.Updater(${divElement},$("command").action + symbol + "subview", 
 					{parameters:"decorator=nullDecorator&_asynchronous=true&_asyncMethodName=${method}&_asyncViewName=${viewName}&${params}&"+${empty javaScriptParam?"''":javaScriptParam}+"&"+Form.serialize('command'),
 					${callbackOpts} asynchronous:true, evalScripts:true});
 if(tempTargetVar!=null){
@@ -38,7 +43,12 @@ if(tempTargetVar!=null){
 	$(${formName})._target.name="notSubmitted";
 }
 
-new Ajax.Updater(${divElement},$(${formName}).action+"&subview", 
+var symbol = '&';
+
+if( $("command").action.indexOf('?') == -1 )
+  symbol = '?';
+
+new Ajax.Updater(${divElement},$(${formName}).action+ symbol + "subview", 
 					{parameters:"decorator=nullDecorator&_asynchronous=true&_asyncMethodName=${method}&_asyncViewName=${viewName}&${params}&"+${empty javaScriptParam?"''":javaScriptParam}+"&"+Form.serialize(${formName}),
 					${callbackOpts} asynchronous:true, evalScripts:true});
 if(tempTargetVar!=null){
