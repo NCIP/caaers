@@ -31,7 +31,7 @@
         <tags:indicator id="${field.propertyName}-indicator"/>
         <c:if test="${field.attributes.enableClear and not disabled}"><input type="button" id="${field.propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${field.propertyName}-input').clear();$('${field.propertyName}').clear();" /></c:if>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
-        <form:hidden path="${field.propertyName}"/>
+        <form:hidden path="${field.propertyName}" cssClass="${cssClass}"/>
     </c:when>
     <c:when test="${field.categoryName == 'longselect'}">
         <div class="longselect" id="${field.propertyName}-longselect">
