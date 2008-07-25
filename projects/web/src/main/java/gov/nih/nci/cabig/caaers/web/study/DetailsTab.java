@@ -168,6 +168,9 @@ public class DetailsTab extends StudyTab {
         scFields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion",
                          "MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
                                          "id", "name")));
+        scFields.add(InputFieldFactory.createSelectField("otherMeddra",
+        				 "Other MedDra Version", false, collectOptions(meddraVersionDao.getAll(),
+        						 		 "id", "name")));
         
         
         // Create fieldGroup for DiseaseTerminology
@@ -219,6 +222,14 @@ public class DetailsTab extends StudyTab {
             InputField field = fieldGroups.get("scFieldGroup").getFields().get(0);
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
                             + field.getDisplayName());
+        }
+        
+        if (command.getAeTerminology().getTerm() == Term.CTC
+        				&& command.getOtherMeddra() == null) {
+        	
+        	InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
+        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
+        					+ field.getDisplayName());
         }
         
         // This is to validate if meddra version is selected incase the disease term is of type meddra

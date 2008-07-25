@@ -30,10 +30,12 @@
 	
 		if($('aeTerminology.term').options[0].selected){
 			$('aeTerminology.ctcVersion-row').style.display="";
+			$('otherMeddra-row').style.display="";
 			$('aeTerminology.meddraVersion-row').style.display="none";
 			$('aeTerminology.meddraVersion').options.selectedIndex = 0;
 		}else{
 			$('aeTerminology.ctcVersion-row').style.display="none";
+			$('otherMeddra-row').style.display="none";
 			$('aeTerminology.meddraVersion-row').style.display="";
 			$('aeTerminology.ctcVersion').options.selectedIndex = 0;
 		}
@@ -43,12 +45,15 @@
 		function showTerms(){
 			$('aeTerminology.meddraVersion-row').style.display="none";
 			$('aeTerminology.ctcVersion-row').style.display="none";
+			$('otherMeddra-row').style.display="none";
 			if($('aeTerminology.term').options[0].selected){
 				Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
+				Effect.toggle($('otherMeddra-row'), 'slide');
 				$('aeTerminology.meddraVersion').options.selectedIndex = 0;
 			}else{
 				Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
 				$('aeTerminology.ctcVersion').options.selectedIndex = 0;
+				$('otherMeddra').options.selectedIndex = 0;
 			}
 		}
 		

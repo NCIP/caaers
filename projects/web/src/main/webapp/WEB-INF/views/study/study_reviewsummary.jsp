@@ -73,6 +73,12 @@
                 	<div class="label">Terminology Version</div>
                 	<div class="value">${command.aeTerminology.term eq 'CTC' ? command.aeTerminology.ctcVersion.name : command.aeTerminology.meddraVersion.name} </div>
             	</div>
+            	<c:if test="${command.aeTerminology.term eq 'CTC'}">
+            	<div class="row">
+	            	<div class="label">Other Meddra</div>
+	            	<div class="value">${command.otherMeddra.name}</div>
+	            </div>
+            	</c:if>
             	<div class="row">
                 	<div class="label">Multi institutional</div>
                 	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
