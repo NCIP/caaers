@@ -29,20 +29,19 @@
     {
      Event.observe('flow-prev', 'click', checkForm);
      Event.observe('flow-next', 'click', checkForm);
-     Event.observe('flow-update', 'click', checkForm);
+     
+     <c:if test="${param.studyId != null}">
+       Event.observe('flow-update', 'click', checkForm);
+     </c:if>
      
      registerAddInstructionLinks();
-    
      registerSelectAllCheckBoxes();  
-     
      registerDeleteEpochIcons();   
-     
      registerAddEpochButton();  
     
      var listOfTermIds = updateTermIds();
      var termIDArray = $A(listOfTermIds);
      termIDArray.each( registerDeleteButtons );
-    
     
     }
     
@@ -132,7 +131,7 @@
     function registerAddInstructionLinks()
     {
       var all_instructionLinks = $$('.instructionLinks');
-       
+      
       for(var i = 0 ; i < all_instructionLinks.length ; i++ )
       {
         Event.observe(all_instructionLinks[i], 'click', addInstructions);   
