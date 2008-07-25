@@ -30,7 +30,6 @@ import org.globus.gsi.GlobusCredential;
 import org.globus.wsrf.encoding.ObjectDeserializer;
 import org.xml.sax.InputSource;
 
-
 import java.io.FileInputStream;
 import java.rmi.RemoteException;
 

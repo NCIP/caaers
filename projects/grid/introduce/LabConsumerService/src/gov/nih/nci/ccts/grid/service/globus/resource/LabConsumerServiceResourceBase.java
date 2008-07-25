@@ -115,8 +115,6 @@ public abstract class LabConsumerServiceResourceBase extends ReflectionResource 
         // Call the super initialize on the ReflectionResource                  
 	    super.initialize(resourceBean,resourceElementQName,id);
 
-		// this loads the metadata from XML files if this is the main service
-		populateResourceProperties();
 
 		// register the service to the index service
 		refreshRegistration(true);
@@ -318,13 +316,6 @@ public abstract class LabConsumerServiceResourceBase extends ReflectionResource 
     }
     
     
-    
-    	private void populateResourceProperties() {
-	
-	}
-
-
-			
 
 
 

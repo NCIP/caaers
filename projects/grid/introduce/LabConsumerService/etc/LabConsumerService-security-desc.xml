@@ -20,10 +20,17 @@
       <none />
     </auth-method>
   </method>
+  <authz value="labconsumerservice:gov.nih.nci.ccts.grid.service.globus.LabConsumerServiceAuthorization" />
   <auth-method>
-    <none />
+    <GSITransport>
+      <protection-level>
+        <privacy />
+      </protection-level>
+    </GSITransport>
   </auth-method>
-  <authz value="none" />
+  <run-as>
+    <system-identity />
+  </run-as>
 </securityConfig>
 
 
