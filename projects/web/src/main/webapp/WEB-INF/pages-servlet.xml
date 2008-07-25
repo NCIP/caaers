@@ -51,10 +51,9 @@
     <property name="taskGroups">
       <list>
 	<ref bean="routineReportTaskGroup"/>
-	<ref bean="expeditedReportTaskGroup"/>
+	<ref bean="reportCalendarTaskGroup"/>
 	<ref bean="advanceSearchTaskGroup"/>
 	<ref bean="ruleTaskGroup"/>
-	<ref bean="reportCalendarTaskGroup"/>
 	<ref bean="userTaskGroup"/>
 	<ref bean="studyTaskGroup"/>
 	<ref bean="participantTaskGroup"/>
@@ -85,7 +84,7 @@
   </bean>
 
   <bean id="routineReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-	p:displayName="Routine Reports">
+	p:displayName="Adverse Events">
     <property name="taskList">
       <list>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
@@ -94,18 +93,6 @@
 		  p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>      
       </list>
       
-    </property>
-  </bean>
-
-  <bean id="expeditedReportTaskGroup" class="gov.nih.nci.cabig.caaers.web.task.TaskGroup"
-	p:displayName="Expedited Reports">
-    <property name="taskList">
-      <list>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Enter expedited report" p:linkName="createAdverseEventController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
-      </list>
     </property>
   </bean>
 

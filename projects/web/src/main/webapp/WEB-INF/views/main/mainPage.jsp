@@ -35,7 +35,7 @@
             </td>
 
             <td align="left" valign="top" width="30%">
-                <c:forEach begin="2" end="3" items="${taskgroups}" var="taskGroup">
+                <c:forEach begin="2" end="2" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
 
@@ -55,7 +55,7 @@
 
             </td>
             <td align="left" valign="top" width="30%">
-                <c:forEach begin="4" end="4" items="${taskgroups}" var="taskGroup">
+                <c:forEach begin="3" end="3" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
 
@@ -83,7 +83,7 @@
     <table id="test" width="100%" >
         <tr class="results">
             <td align="left"  valign="top" width="30%">
-                <c:forEach begin="5" end="6" items="${taskgroups}" var="taskGroup">
+                <c:forEach begin="4" end="5" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
 
@@ -104,7 +104,7 @@
             </td>
 
             <td align="left" valign="top" width="30%">
-                <c:forEach begin="7" end="8" items="${taskgroups}" var="taskGroup">
+                <c:forEach begin="6" end="7" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
                         <ul><chrome:division title="${taskGroup.displayName}">
@@ -122,7 +122,7 @@
 
             </td>
             <td align="left" valign="top" width="30%">
-                <c:forEach begin="9" end="10" items="${taskgroups}" var="taskGroup">
+                <c:forEach begin="8" end="9" items="${taskgroups}" var="taskGroup">
                     <csmauthz:accesscontrol domainObject="${taskGroup}"
                                             authorizationCheckName="taskGroupAuthorizationCheck">
                         <ul><chrome:division title="${taskGroup.displayName}">
