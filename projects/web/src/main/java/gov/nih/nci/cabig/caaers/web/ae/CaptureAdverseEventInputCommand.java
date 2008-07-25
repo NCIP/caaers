@@ -186,6 +186,20 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	}
     }
     
+    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
+		this.selectedAesMap = selectedAesMap;
+	}
+    
+    public Map<Integer, Boolean> getSelectedAesMap(){
+   		return selectedAesMap;
+    }
+    
+    public IndexFixedList<AdverseEvent> getAdverseEvents() {
+		return adverseEvents;
+	}
+    public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
+		this.adverseEvents = adverseEvents;
+	}
     
     /**
      * This method will take care of
@@ -202,11 +216,5 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			this.adverseEventReportingPeriod.getAeReport();
 		}
     }
-    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
-		this.selectedAesMap = selectedAesMap;
-	}
     
-    public Map<Integer, Boolean> getSelectedAesMap(){
-   		return selectedAesMap;
-    }
 }
