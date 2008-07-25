@@ -49,5 +49,11 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     public void setLowLevelTerm(LowLevelTerm lowlevelTerm) {
         super.setTerm(lowlevelTerm);
     }
+    @Override
+    @Transient
+    public boolean isOtherRequired() {
+    	//there is no other specify for MedDRA
+    	return false;
+    }
 
 }

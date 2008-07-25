@@ -49,7 +49,13 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
 
     @Transient
     public abstract String getUniversalTerm();
-
+    
+    /**
+     * Will tell whether the term is an Otherspecify
+     */
+    @Transient 
+    public abstract boolean isOtherRequired();
+    
     @Transient
     /*
      * this is only transient here -- subclasses need to override it and specify what it refers to
