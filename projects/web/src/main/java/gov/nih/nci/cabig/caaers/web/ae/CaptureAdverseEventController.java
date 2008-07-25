@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -44,6 +45,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private AdverseEventDao adverseEventDao;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private EvaluationService evaluationService;
+	private ReportDefinitionDao reportDefinitionDao;
 	
 	
 	public CaptureAdverseEventController(){
@@ -107,6 +109,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -264,5 +267,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	public void setEvaluationService(EvaluationService evaluationService) {
 		this.evaluationService = evaluationService;
+	}
+	
+	public ReportDefinitionDao getReportDefinitionDao() {
+		return reportDefinitionDao;
+	}
+	
+	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao){
+		this.reportDefinitionDao = reportDefinitionDao;
 	}
 }

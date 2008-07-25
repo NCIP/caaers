@@ -7,11 +7,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections15.ListUtils;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -31,6 +34,8 @@ import gov.nih.nci.cabig.caaers.web.study.StudyTab;
 public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInputCommand>{
 	
 	private static final String MAIN_FIELD_GROUP = "main";
+	
+	private EvaluationService evaluationService;
 	
 	public AdverseEventConfirmTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -61,7 +66,19 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 				}
 			}
 		}
-
+		
+		
+		InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
+        for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
+            optional.getFields().add(
+                            InputFieldFactory.createCheckboxField("optionalReportDefinitionsMap["
+                                            + reportDefinition.getId() + ']', reportDefinition
+                                            .getName()
+                                            + " ("
+                                            + reportDefinition.getOrganization().getName()
+                                            + ')'));
+        }
+        map.put(optional.getName(), optional);
 		return map;
     }
 	
@@ -89,6 +106,46 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 		
 		return refdata;
 	}
+	
+	@Override
+    public void onDisplay(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+
+        // evalutate available report definitions per session.
+        if (command.getAllReportDefinitions() == null
+                        || command.getAllReportDefinitions().isEmpty()) {
+            command.setAllReportDefinitions(evaluationService.applicableReportDefinitions(command
+                            .getAssignment()));
+        }
+
+        // identify the report definitions mandated by Rules engine
+        if (command.getRequiredReportDefinitions().isEmpty()) {
+        	//command.refreshAssignment(command.getAdverseEventReportingPeriod().getId());
+        	command.initialize();
+            command.setRequiredReportDefinition(evaluationService
+                            .findRequiredReportDefinitions(command.getAdverseEventReportingPeriod().getAeReport(),
+                            		command.getAdverseEventReportingPeriod().getAdverseEvents(), command.getAdverseEventReportingPeriod().getStudy()));
+        }
+
+        // already AE report is saved.
+        if (command.getAdverseEventReportingPeriod().getAeReport() != null) {
+            // set up selected reports
+            command.refreshSelectedReportDefinitionsMap(command.getInstantiatedReportDefinitions());
+            // set up the optional reports
+            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+        } else {
+            // set up the optional reports
+            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
+            // new, so no reports are associated with this yet.
+            command.setSelectedReportDefinitions(command.getRequiredReportDefinitions());
+        }
+    }
+	
+	private List<ReportDefinition> createOptionalReportDefinitionsList(CaptureAdverseEventInputCommand command) {
+		if (command.getSelectedReportDefinitions() == null) return command.getAllReportDefinitions();
+
+		return ListUtils.subtract(command.getAllReportDefinitions(), command.getSelectedReportDefinitions());
+}
+	
 	
 	/**
 	 * This method populates the SelectedAesMap member of the command object. The Aes that were selected when this page was accessed
@@ -120,4 +177,12 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 					command.getSelectedAesMap().put(ae.getAdverseEventTerm().getId(), Boolean.TRUE);
 		}
 	}
+	
+	public EvaluationService getEvaluationService() {
+        return evaluationService;
+    }
+
+    public void setEvaluationService(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
 }

@@ -6,18 +6,23 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Transient;
+
+import org.apache.commons.collections15.ListUtils;
 
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
@@ -31,6 +36,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Map<Integer, Boolean> selectedAesMap;
 	
 	private IndexFixedList<AdverseEvent> adverseEvents;
+	
+	// Added for Reporting Page.
+	private List<ReportDefinition> allReportDefinitions;
+	private List<ReportDefinition> requiredReportDefinitions;
+	private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
+	
 	
 
 	// Need to verify..
@@ -61,7 +72,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
-		selectedAesMap = new HashMap<Integer, Boolean>();
+		this.selectedAesMap = new HashMap<Integer, Boolean>();
+		this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
+        this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
 	}
 	
 	public Map<ReportDefinition, List<AdverseEvent>> applyRules(){
@@ -86,7 +99,64 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				}
 			}
 		}
+		
+		// Now we will filter out the amenable ReportDefinitions. 
+		// Prepare the Map needed for filterAmenableReportDefinitions method in EvaluationServiceImpl
+		Map<String, List<String>> repDefinitionNamesMap = new HashMap<String,List<String>>();
+		List<String> repDefnNames = new ArrayList<String>();
+		for(ReportDefinition rDef: repDefnIdToAeListMap.keySet()){
+			if(rDef != null)
+				repDefnNames.add(rDef.getName());
+		}
+		repDefinitionNamesMap.put("RepDefnNames", repDefnNames);
+		
+		// Call filterAmenableReportDefinitions in EvaluationServiceImpl passing repDefinitionNamesMap
+		// The List returned is a list of ReportDefinitions with the earliest amenable reportDefinition
+		List<ReportDefinition> amenableFilterRepDefn = evaluationService.filterAmenableReportDefinitions(repDefinitionNamesMap);
+		Map<ReportDefinition, List<AdverseEvent>> filteredRepDefnToAeMap = filterAmenableReportDefinition(repDefnIdToAeListMap, 
+				amenableFilterRepDefn);
+		System.out.println("Sameer : repDefnIdToAeListMap = " + repDefnIdToAeListMap);
 		return repDefnIdToAeListMap;
+	}
+	
+	/**
+	 * Filter the ReportDefinition - Ae Map so that only the earliest Amendabe ReportDefinition is retained in the map.
+	 * 
+	 * @param map, the initial ReportDefinition to AdverseEvent List Map.
+	 * @param repDefnList, the list containing the ReportDefinition to be retained.
+	 * @return map, the final ReportDefinition to AdverseEvent List Map which has only one (earliest) amendable ReportDefinition.
+	 */
+	public Map<ReportDefinition, List<AdverseEvent>>filterAmenableReportDefinition(Map<ReportDefinition, List<AdverseEvent>> map 
+						, List<ReportDefinition> repDefnList){
+		Map<ReportDefinition, Boolean> retainedDefns = new HashMap<ReportDefinition, Boolean>();
+		for(ReportDefinition rd: repDefnList){
+			retainedDefns.put(rd, Boolean.TRUE);
+		}
+		// Create a list of AdverseEvents that will be migrated to the only amenable reportDefinition retained in the result map
+		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
+		for(ReportDefinition rd: map.keySet()){
+			if(!retainedDefns.containsKey(rd)){
+				for(AdverseEvent ae: map.get(rd))
+					aeList.add(ae);
+				map.remove(rd);  // The ReportDefinition is removed once its aes are added to the aeList to be migrated to 
+								 // the retained amenable Report Definition.
+			}
+		}
+		
+		// Now the adverseEvents in aeList are appended to the list of adverseEvents associated to the only amenable ReportDefinition
+		// in the filteredMap 
+		Map<AdverseEvent, Boolean> existingAeMap = new HashMap<AdverseEvent, Boolean>();
+		for(ReportDefinition rd: map.keySet()){
+			if(rd.getAmendable()){
+				for(AdverseEvent ae: map.get(rd))
+					existingAeMap.put(ae, Boolean.TRUE);
+				// Now add the AdverseEvents from aeList to this list
+				for(AdverseEvent ae: aeList)
+					if(!existingAeMap.containsKey(ae))
+						map.get(rd).add(ae);
+			}
+		}
+		return map;
 	}
 	
     public StudyParticipantAssignment getAssignment() {
@@ -186,9 +256,50 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	}
     }
     
+    /**
+     * This method will return the {@link ReportDefinition} that are instantiated
+     */
+    public List<ReportDefinition> getInstantiatedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (Report report : adverseEventReportingPeriod.getAeReport().getReports()) {
+            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report
+                            .getReportDefinition());
+        }
+
+        return reportDefs;
+
+    }
     public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
 		this.selectedAesMap = selectedAesMap;
 	}
+    
+    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs) {
+        // deselect all previously selected report
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            entry.setValue(false);
+        }
+        setSelectedReportDefinitions(defs);
+    }
+    
+    public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, true);
+        }
+    }
+    
+    private String getReportDefinitionNames(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (ReportDefinition def : defs) {
+            sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
+        }
+        return sb.toString();
+    }
+    
+    public String getRequiredReportDefinitionNames() {
+        return getReportDefinitionNames(getRequiredReportDefinitions());
+    }
     
     public Map<Integer, Boolean> getSelectedAesMap(){
    		return selectedAesMap;
@@ -202,6 +313,19 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
     
     /**
+     * This method will return the ReportDefinition which are selected by user in the checkpoint
+     * page.
+     */
+    public List<ReportDefinition> getSelectedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            if (entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
+        }
+        return reportDefs;
+    }
+    
+    /**
+     * This method will take care of initializing the lazy associations
      * This method will take care of
      *  - Updating the index fixed list for AdverseEvents, associated to the reporting period 
      *  - initializing the lazy associations
@@ -217,4 +341,37 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
     }
     
+    
+    /**
+     * Returns all the {@link ReportDefinition} available to this AE
+     */
+    public List<ReportDefinition> getAllReportDefinitions() {
+        return allReportDefinitions;
+    }
+
+    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
+        this.allReportDefinitions = allReportDefinitions;
+    }
+    
+    public List<ReportDefinition> getRequiredReportDefinitions() {
+        return requiredReportDefinitions;
+    }
+
+    public void setRequiredReportDefinition(List<ReportDefinition> defs) {
+        if (defs != null) requiredReportDefinitions.addAll(defs);
+    }
+    
+    public Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap() {
+        return optionalReportDefinitionsMap;
+    }
+    
+    public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, false);
+        }
+        // Deliberately not removing entries from the map that aren't in defs.
+        // This is so that the user may still remove Reports whose ReportDefinitions
+        // are no longer associated with the study.
+    }
 }

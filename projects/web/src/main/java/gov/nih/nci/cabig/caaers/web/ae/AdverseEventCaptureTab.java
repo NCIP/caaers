@@ -257,10 +257,21 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	@Override
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
                     Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-		
-		InputField firstStartDateField = fieldGroups.get("main0").getFields().get(1);
-        errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
+		// firstStartDateField should be present for non-baseline reporting periods.
+		if((command.getAdverseEventReportingPeriod() != null) && (command.getAdverseEventReportingPeriod().getEpoch().getName().equals("Baseline"))){
+			InputField firstStartDateField = fieldGroups.get("main0").getFields().get(1);
+			errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
                             firstStartDateField.getDisplayName() + " required for primary AE");
+		}
+		
+		// test: if(grade == not evaluated), other fields shouldnt be entered.
+		if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() > 0){
+			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+				if(ae.getGrade() != null && ae.getGrade().getName().equals("Not Evaluated")){
+					// Check if other field values are entered. Incase they are, an error should be displayed.
+				}
+			}
+		}
 	}
 	
 	/**
