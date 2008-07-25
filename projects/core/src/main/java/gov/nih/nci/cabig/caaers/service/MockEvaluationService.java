@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A mock implementation of {@link gov.nih.nci.cabig.caaers.service.EvaluationService}, suitable
@@ -91,6 +92,11 @@ public class MockEvaluationService implements EvaluationService {
         // TODO Auto-generated method stub
         return null;
     }
+    
+    public List<ReportDefinition> filterAmenableReportDefinitions(Map<String, List<String>> map){
+    	return null;
+    }
+
 
     public Collection<ExpeditedReportSection> mandatorySections(
                     ExpeditedAdverseEventReport expeditedData) {

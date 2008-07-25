@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
 import java.util.List;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * This service interface is used to implement various caaers business rules.
@@ -44,6 +45,14 @@ public interface EvaluationService {
      */
     List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,
     					Study study);
+    
+    /**
+     * Will return a list of ReportDefinition retaining just the earliest amenable Report Definition
+     * 
+     * @param Map<String, List<String>> - Where the values are list of reportDefinitionNames
+     * @return - A list of {@link ReportDefinition} objects which has just one amenable ReportDefinition (the earliest)
+     */
+    List<ReportDefinition> filterAmenableReportDefinitions(Map<String, List<String>> map);
 
     /**
      * Evaluates the provided data and associates new {@link Report} instances with the given
