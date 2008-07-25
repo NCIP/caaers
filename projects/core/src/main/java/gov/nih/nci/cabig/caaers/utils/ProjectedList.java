@@ -36,8 +36,8 @@ import java.util.ListIterator;
  * @version %I%, %G%
  * @since 1.0
  */
-public class ProjectedList<E> implements List<E> {
-    /** LisObject ohat is decorated */
+public class ProjectedList<E> implements DecoratedList<E> {
+    /** LisObject that is decorated */
     private List<? super E> list;
 
     /** The class that is to be projected */
@@ -218,6 +218,14 @@ public class ProjectedList<E> implements List<E> {
             if (o == null || klass.equals(o.getClass())) newList.add((E) o);
         }
         return newList.toArray(a);
+    }
+    
+    public void setInternalList(List<E> list) {
+    	this.list = list;
+    }
+    @SuppressWarnings("unchecked")
+	public List<E> getInternalList() {
+    	return (List<E>)this.list;
     }
 
 }
