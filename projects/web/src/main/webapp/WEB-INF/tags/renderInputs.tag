@@ -27,11 +27,11 @@
         </c:forEach>
     </c:when>
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text" id="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${field.required ? 'validate-NOTEMPTY' : ''}"/>
+        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text" id="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${cssClass} ${field.required ? 'validate-NOTEMPTY' : ''}"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
         <c:if test="${field.attributes.enableClear and not disabled}"><input type="button" id="${field.propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${field.propertyName}-input').clear();$('${field.propertyName}').clear();" /></c:if>
         <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
-        <form:hidden path="${field.propertyName}" cssClass="${cssClass}"/>
+        <form:hidden path="${field.propertyName}"/>
     </c:when>
     <c:when test="${field.categoryName == 'longselect'}">
         <div class="longselect" id="${field.propertyName}-longselect">
