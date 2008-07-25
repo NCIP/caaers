@@ -4,7 +4,8 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <tags:noform>
-	<c:forEach begin="${index}" end="${fn:length(command.adverseEventReportingPeriod.adverseEvents) - 1}" varStatus="status">
-		<ae:oneSaeRow index="${status.index}"  style="display: none" />
+	<c:forEach begin="${param.index}" items="${command.adverseEventReportingPeriod.adverseEvents}" var="ae" varStatus="status">
+		<!--  Jank : ${ae.adverseEventTerm.otherRequired} -->
+		<ae:oneSaeRow index="${status.index}"  isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="${ae.solicited}"/>
 	</c:forEach>	
 </tags:noform>

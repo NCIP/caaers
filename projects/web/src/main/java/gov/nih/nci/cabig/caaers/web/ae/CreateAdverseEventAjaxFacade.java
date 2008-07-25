@@ -24,8 +24,10 @@ import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
@@ -58,6 +60,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -103,7 +106,6 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventAjaxFacade {
-	public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
 	public static final String CAPTURE_ADVERSE_EVENT_INPUT_COMMAND = CaptureAdverseEventController.class.getName()
     + ".FORM.command";
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
@@ -825,53 +827,12 @@ public class CreateAdverseEventAjaxFacade {
     	//get the content for the below html section. 
     	
     	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	getHttpServletRequest().setAttribute(AJAX_REQUEST_PARAMETER, "_isAjax");
     	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
     	output.setHtmlContent(html);
     	return output;
     }
     
-    /**
-     * Returns the HTML for the details section of the CaptureAdverseEvents page.
-     *
-     * @param index
-     * @return
-     */
-    public String displayDetailsSection(int reportId, int reportingPeriodId) {
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	Object oCommand = extractCommand();
-    	AdverseEventReportingPeriod reportingPeriod = reportingPeriodDao.getById(reportingPeriodId);
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
-    	command.setAdverseEventReportingPeriod(reportingPeriod);
-    	
-    	// Check if the reportingPeriod has adverseEvents created (for solicitedEvents). If not then create the adverseEvents.
-    	// NOTE: This has been used from the AdverseEventCaptureTab. It can be removed from there as this detail will only be
-    	// displayed on the page through ajax calls. TODO: remove it from the tab incase its not needed there.
-    	/*if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() == 0){
-			for(SolicitedAdverseEvent sae: command.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
-				AdverseEvent adverseEvent = new AdverseEvent();
-				adverseEvent.setReportingPeriod(command.getAdverseEventReportingPeriod());
-				if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
-					adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
-				else{
-					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-					aeCtcTerm.setCtcTerm(sae.getCtcterm());
-					adverseEvent.setAdverseEventTerm(aeCtcTerm);
-					adverseEvent.setSolicited(true);
-				}
-				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
-			}
-			
-			if(command.getCtcCategories().size() == 0)
-				command.setCtcCategories(command.getStudy().getAeTerminology().getCtcVersion().getCategories());
-    	}
-    	// Put the new command object into the session
-    	getHttpServletRequest().getSession().setAttribute(CAPTURE_ADVERSE_EVENT_INPUT_COMMAND, command);
-    	getHttpServletRequest().setAttribute(CAPTURE_ADVERSE_EVENT_INPUT_COMMAND, command);*/
-    	getHttpServletRequest().setAttribute(AJAX_REQUEST_PARAMETER, "_isAjax");
-    	return renderAjaxView("captureAdverseEventDetailSection", reportId, params);
-    }
-    
+   
     private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
 
@@ -926,36 +887,45 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
     
-    public String addObservedAE(String listOfTermIDs[]) {
+    
+    /**
+     * Create AdverseEvent objects corresponding to the terms(listOfTermIDs).
+     *  Add the following parameters to request :- 
+     *     1. "index" - corresponds to begin (of AE).
+     *     2. "ajaxView" - 'observedAdverseEventSection'
+     *  
+     * @param listOfTermIDs
+     * @return
+     */
+    public String addObservedAE(int[] listOfTermIDs) {
         
-        HttpServletRequest request = getHttpServletRequest();
-        request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
-        
-        // Get the command object
-        // Create the CTCTerms using listOfTerms and listOfIDs.
-        // Create AdverseEvents
-        // Set the CTCTerm
-        // Add the adverseEvents to adverseEvents list in adverseEventReportingPeriod. These will by default have
-        // isSolicitedEvent set to false.
-        
-        Object cmd = extractCommand();
-        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) cmd;
+        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
         int index = command.getAdverseEventReportingPeriod().getAdverseEvents().size();
-        request.setAttribute("index", index);
-        int lastIndex = index + listOfTermIDs.length - 1;
-        request.setAttribute("lastIndex", lastIndex);
-        for(String id: listOfTermIDs){
-        	CtcTerm term = ctcTermDao.getById(Integer.parseInt(id));
-        	AdverseEventCtcTerm aeTerm = new AdverseEventCtcTerm();
-        	aeTerm.setCtcTerm(term);
+
+        
+        boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+        for(int id: listOfTermIDs){
         	AdverseEvent ae = new AdverseEvent();
-        	ae.setSolicited(Boolean.FALSE);
-        	ae.setAdverseEventCtcTerm(aeTerm);
-        	aeTerm.setAdverseEvent(ae);
+        	
+        	if(isMeddra){
+        		//populate MedDRA term
+        		LowLevelTerm llt = lowLevelTermDao.getById(id);
+        		AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+        		aellt.setLowLevelTerm(llt);
+        		ae.setAdverseEventMeddraLowLevelTerm(aellt);
+        		aellt.setAdverseEvent(ae);
+        	}else{
+        		//properly set CTCterm
+        		CtcTerm ctc =ctcTermDao.getById(id);
+        		AdverseEventCtcTerm aeCtc = new AdverseEventCtcTerm();
+        		aeCtc.setCtcTerm(ctc);
+        		ae.setAdverseEventCtcTerm(aeCtc);
+        		aeCtc.setAdverseEvent(ae);
+        	}
+        	
         	ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
         	command.getAdverseEventReportingPeriod().getAdverseEvents().add(ae);
         }
-        String url = getCurrentPageContextRelative(WebContextFactory.get());
         return renderIndexedAjaxView("observedAdverseEventSection", index, 0);
     }
 

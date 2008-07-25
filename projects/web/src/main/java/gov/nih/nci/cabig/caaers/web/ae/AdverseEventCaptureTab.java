@@ -60,6 +60,14 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		addHelpKeyExclusion("ctcVersion");
 	}
 	
+	
+	/**
+	 * This method will create the fields to be displayed on the screen.
+	 * Notes<br>
+	 * 	1. For solicited adverse events, the "Notes/Verbatim", "Other Meddra" will added to the fields.
+	 * 	2. If Study is MedDRA, the "Other MedDRA", will not be added in the fields. 	 
+	 */
+	
 	@Override
 	public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand cmd) {
 		
@@ -75,14 +83,16 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		fields.add(reportingPeriodsField);
 		map.addInputFieldGroup(reportingPeriodFieldGroup);
 		
+		//create the fields, consisting of reporting period details.
 		if(cmd.getAdverseEventReportingPeriod() != null){
+			
 			InputFieldGroup treatmentAssignmentFieldGroup = new DefaultInputFieldGroup("treatmentAssignmentFG"); 
 			InputFieldGroup reportingPeriodDetailsFieldGroup = new DefaultInputFieldGroup("reportingPeriodDetailsFG");
 			
-		
-			
+			//TAC fields groups
 			InputField treatmentAssignmentField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.code", "Treatment assignment");
 			InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatement description");
+			
 			//startDateOfFirstCourse - TextField, if it is empty in assignment
 			InputField firstCourseDateField = null;
 			if(cmd.getAssignment().getStartDateOfFirstCourse() == null){
@@ -100,39 +110,49 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End Date:"));
 			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type:"));
 			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle Number:"));
-			// add the reportingPeriodFieldGroup to the map.
 			
+			// add the reportingPeriodFieldGroup to the map.
 			map.addInputFieldGroup(treatmentAssignmentFieldGroup);
 			map.addInputFieldGroup(reportingPeriodDetailsFieldGroup);
 		
-		
 			
+			/*
+			 * AdversEvent related field groups,
+			 *  the fields are different for Meddra study, Ctc study and Observed AEs
+			 */
 			mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEventReportingPeriod.adverseEvents");
-			// Check if the adverseEventReportingPeriod has any adverseEvents.
-			// If yes then display the solicited adverseEvents in the second section (Solicited Adverse Events)
-			// ******
+			boolean isMeddraStudy = cmd.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 			if(cmd.getAdverseEventReportingPeriod().getAdverseEvents() != null){
-				for(int i = 0; i < cmd.getAdverseEventReportingPeriod().getAdverseEvents().size(); i++){
-			//if(cmd.getAdverseEventReportingPeriod() != null){
-			//	for(int i = 0; i < cmd.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents().size(); i++){
-					//check if the adverse
-					AdverseEvent ae = cmd.getAdverseEventReportingPeriod().getAdverseEvents().get(i);
+				int i = 0;
+				for(AdverseEvent ae : cmd.getAdverseEventReportingPeriod().getAdverseEvents()){
+						
+					mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.term.term", "Term", true)); //Term
+					if(!ae.getSolicited()){
+						if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){ //only if other is requrired
+							mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
+						}
+						InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Notes/Verbatim");
+						InputFieldAttributes.setSize(notesField, 50);
+						mainFieldFactory.addField(notesField); //Notes
+					}
+					//grade	
+					if(isMeddraStudy){
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
+							createGradeOptions(ae, "Meddra")));
+					}else{
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
+								createGradeOptions(ae, "Ctc")));
+					}
 					
-						if(cmd.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
-							mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
-								createGradeOptions(ae, "Meddra")));
-						else
-							mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
-									createGradeOptions(ae, "Ctc")));
-						mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
-								"Attribution to study", false, createAttributionOptions()));
-						mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
-								"Hospitalization", false, createHospitalizationOptions()));
-						mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
-								createExpectedOptions()));
-						InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
-						mainFieldFactory.addFieldGroup(fieldGroup);
-						mainFieldFactory.clearFields();
+					mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
+							"Attribution to study", false, createAttributionOptions()));
+					mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
+							"Hospitalization", false, createHospitalizationOptions()));
+					mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
+							createExpectedOptions()));
+					InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i++);
+					mainFieldFactory.addFieldGroup(fieldGroup);
+					mainFieldFactory.clearFields();
 					
 				}
 				map.addMultipleFieldGroupFactory(mainFieldFactory);

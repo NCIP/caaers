@@ -91,6 +91,7 @@ font-weight:normal;
  		clearRPDetails :function() {
  	 		//will clear the content of details section & properly unregister events
  	 		this.rpDetailsDiv.hide();
+ 	 		this.rpDetailsDiv.innerHTML="";
  	 		this.showOrHideEditRPCtrl();
  		},
  		showOrHideEditRPCtrl:function(){
@@ -121,7 +122,7 @@ font-weight:normal;
  		  		if( !this.isTermAgainAdded(termID)){
  		  		  listOfTermIDs.push( termID );
  		        }
- 		  	});
+ 		  	}.bind(this));
  		  	//get the HTML to add from server   
  		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
  		  	   	new Insertion.After('observedBlankRow', responseStr);
