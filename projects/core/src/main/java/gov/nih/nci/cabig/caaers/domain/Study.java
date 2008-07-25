@@ -66,6 +66,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     // TODO: Remove
     private Integer targetAccrualNumber;
+    
+    private MeddraVersion otherMeddra;
 
     private List<StudyOrganization> studyOrganizations;
 
@@ -931,5 +933,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	
 	public void setCtcCategories(List<CtcCategory> ctcCategories) {
 		this.ctcCategories = ctcCategories;
+	}
+	
+	@OneToOne
+    @JoinColumn(name = "other_meddra_id")
+	public MeddraVersion getOtherMeddra() {
+		return otherMeddra;
+	}
+	
+	public void setOtherMeddra(MeddraVersion otherMeddra) {
+		this.otherMeddra = otherMeddra;
 	}
 }
