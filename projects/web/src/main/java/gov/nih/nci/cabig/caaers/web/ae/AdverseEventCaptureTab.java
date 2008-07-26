@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -54,6 +55,11 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	private CtcTermDao ctcTermDao;
 	
 	private static final Collection<Grade> GRADES = new ArrayList<Grade>(5);
+    static {
+    	GRADES.addAll(Arrays.asList(Grade.values()));
+        GRADES.remove(Grade.NORMAL);
+        GRADES.remove(Grade.NOT_EVALUATED);
+    }
 	
 	public AdverseEventCaptureTab() {
 		super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
@@ -204,10 +210,26 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 	private Map<Object, Object> createGradeOptions(AdverseEvent ae, String terminology) {
 		Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
         gradeOptions.put("", "Please select");
-        if(terminology.equals("Ctc"))
-        	gradeOptions.putAll(InputFieldFactory.collectOptions(ae.getAdverseEventCtcTerm().getCtcTerm().getGrades(), "name", "displayName"));
-        else
+        
+        //for solicited AEs always add NotEvaluated and Normal/Evaluated
+        if(ae.getSolicited()){
+        	gradeOptions.put(Grade.NOT_EVALUATED.getName(), Grade.NOT_EVALUATED.getDisplayName());
+        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getDisplayName());
+        }
+        if(terminology.equals("Ctc")){
+        	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+        	if(ctcGrades == null || ctcGrades.isEmpty()){
+        		//no- add grades (1-5)
+        		gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
+        	}else{
+        		//if contextual grades are there , add it
+        		gradeOptions.putAll(InputFieldFactory.collectOptions(ctcGrades, "name", "displayName"));
+        	}
+        }else{
+        	//always add the grades (1-5)
         	gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
+        }
+            	
         return gradeOptions;
     }
 	
