@@ -85,6 +85,7 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -816,22 +817,6 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     
-    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
-    	command.refreshAssignment(reportingPeriodId);
-    	
-    	List<AdverseEventReportingPeriod> rpList = ObjectTools.reduceAll(command.getAssignment().getReportingPeriods(), "id", "startDate" , "endDate", "name");
-    	AjaxOutput output = new AjaxOutput();
-    	output.setObjectContent(rpList);
-    	
-    	//get the content for the below html section. 
-    	
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
-    	output.setHtmlContent(html);
-    	return output;
-    }
-    
    
     private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
@@ -887,7 +872,56 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
     
+
+    // TODO: there's got to be a library version of this somewhere
+    private String createQueryString(Map<String, String> params) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sb.append(entry.getKey()).append('=').append(entry.getValue())
+                    .append('&');
+        }
+        return sb.toString().substring(0, sb.length() - 1);
+    }
     
+    //--------------- functionality added for Labviewr integration -------------------------
+    public void dismissLab(int labId){
+    	LabLoad labLoad = labLoadDao.getById(labId);
+    	if(labLoad != null){
+    		labLoad.setDismissed(Boolean.TRUE);
+    		labLoadDao.save(labLoad);
+    	}
+    }
+
+    
+    //--------------------- functionality added for Reporting period -----------------
+
+    /**
+     * This function is called to fetch the content associated to a reporting period
+     *   -  after we create a new reporting period
+     *   -  after we select a reporting period from the combo box.
+     *   
+     *   A little bit on the working, 
+     *     - Will refresh the assignment object, (to support newly added Reporting period ordering)
+     *     - Will fetch the content associated to the reporting period by calling captureAdverseEventDetailSection.jsp
+     * @param reportingPeriodId
+     * @return
+     */
+    
+    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
+    	command.refreshAssignment(reportingPeriodId);
+    	
+    	List<AdverseEventReportingPeriod> rpList = ObjectTools.reduceAll(command.getAssignment().getReportingPeriods(), "id", "startDate" , "endDate", "name");
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(rpList);
+    	
+    	//get the content for the below html section. 
+    	
+    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
+    	output.setHtmlContent(html);
+    	return output;
+    }
     /**
      * Create AdverseEvent objects corresponding to the terms(listOfTermIDs).
      *  Add the following parameters to request :- 
@@ -900,11 +934,22 @@ public class CreateAdverseEventAjaxFacade {
     public String addObservedAE(int[] listOfTermIDs) {
         
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-        int index = command.getAdverseEventReportingPeriod().getAdverseEvents().size();
-
+        int index = command.getAdverseEvents().size();
+        
+        List<Integer> filteredTermIDs = new ArrayList<Integer>();
+        //filter off the terms that are already present
+        for(int id : listOfTermIDs){
+        	filteredTermIDs.add(id);
+        }
+        //remove from filteredTermIds, the ones that are avaliable in AE
+        for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
+        	filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
+        }
+        
+        if(filteredTermIDs.isEmpty()) return "";
         
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
-        for(int id: listOfTermIDs){
+        for(int id: filteredTermIDs){
         	AdverseEvent ae = new AdverseEvent();
         	
         	if(isMeddra){
@@ -924,29 +969,17 @@ public class CreateAdverseEventAjaxFacade {
         	}
         	
         	ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
-        	command.getAdverseEventReportingPeriod().getAdverseEvents().add(ae);
+        	command.getAdverseEvents().add(ae);
         }
         return renderIndexedAjaxView("observedAdverseEventSection", index, 0);
     }
-
-    // TODO: there's got to be a library version of this somewhere
-    private String createQueryString(Map<String, String> params) {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : params.entrySet()) {
-            sb.append(entry.getKey()).append('=').append(entry.getValue())
-                    .append('&');
-        }
-        return sb.toString().substring(0, sb.length() - 1);
+    
+    public AjaxOutput deleteAdverseEvent(int index){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.getAdverseEvents().remove(index);
+    	return new AjaxOutput();
     }
     
-    public void dismissLab(int labId){
-    	LabLoad labLoad = labLoadDao.getById(labId);
-    	if(labLoad != null){
-    		labLoad.setDismissed(Boolean.TRUE);
-    		labLoadDao.save(labLoad);
-    	}
-    }
-
     ////// CONFIGURATION
 
     @Required

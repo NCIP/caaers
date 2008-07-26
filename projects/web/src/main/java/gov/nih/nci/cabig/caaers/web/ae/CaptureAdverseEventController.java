@@ -21,12 +21,14 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import java.beans.PropertyEditorSupport;
 import java.util.Date;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -35,6 +37,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
 	private static final String AJAX_SUBVIEW_PARAMETER = "subview";
+	
+	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
 	private StudyParticipantAssignmentDao assignmentDao;
@@ -75,10 +79,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
-		ServletRequestDataBinder binder = super.createBinder(request, command);
-		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+		CaptureAdverseEventInputCommand aeCommand = (CaptureAdverseEventInputCommand) command;
+		ServletRequestDataBinder binder = super.createBinder(request, aeCommand);
+		//binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
-		initBinder(request,binder);
+		initBinder(request,binder, aeCommand);
 		return binder;
 	}
 
@@ -101,8 +106,15 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         return mv;
 	}
 	
-	@Override
-	protected void initBinder(HttpServletRequest request,ServletRequestDataBinder binder) throws Exception {
+	/**
+	 * The binder for reporting period, should look in the command and fetch the object.
+	 * 
+	 * @param request
+	 * @param binder
+	 * @param command
+	 * @throws Exception
+	 */
+	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder, final CaptureAdverseEventInputCommand command) throws Exception {
 		ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "adverseEvent", adverseEventDao);
@@ -115,6 +127,26 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
+        
+        //special binder for AdverseEventReportingPeriod
+        final AdverseEventReportingPeriod aerp = command.getAdverseEventReportingPeriod();
+        binder.registerCustomEditor(AdverseEventReportingPeriod.class, new PropertyEditorSupport(){
+        	
+        	@Override
+        	public void setAsText(String text) throws IllegalArgumentException {
+        		if(StringUtils.isEmpty(text)){
+        			command.setAdverseEventReportingPeriod(null);
+        		}
+        		
+        	}
+        	@Override
+        	public String getAsText() {
+        		if(aerp != null && aerp.getId() != null) return aerp.getId().toString();
+        		return "";
+        		
+        	}
+        });
+        
 	}
 	
 	@Override
@@ -146,7 +178,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
     protected boolean suppressValidation(final HttpServletRequest request) {
 
-        Object isAjax = findInRequest(request, "_isAjax");
+        Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (isAjax != null) return true;
         
         //check current page and next page

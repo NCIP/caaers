@@ -52,6 +52,8 @@
 		<td><tags:renderInputs field="${field}" cssClass="selectbox"/></td>
 		</c:forEach>
 	</c:if>
-	<td><input id="${fieldGroups[mainGroup].fields[0].propertyName}-delete" type="image" name="${fieldGroups[mainGroup].fields[0].propertyName}-img" src="<chrome:imageUrl name="../checkno.gif" />" onClick="rpCreator.deleteAdverseEvent(${index})" /></td>
+	<td>
+		<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />" style="border:0" /></a>
+	</td>
 </c:if>		
 </tr>

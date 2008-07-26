@@ -32,6 +32,12 @@ div.row div.value {
 font-weight:normal;
 	white-space: normal;
 }
+
+/* division where reporting period combo box is shown */
+.reportingPeriodSelector{
+
+}
+
 </style>
  
  <script>
@@ -148,7 +154,12 @@ font-weight:normal;
  		},
  		deleteAdverseEvent:function(indx){
  	 		alert(indx);
- 	 		return;
+ 	 		
+ 	 		createAE.deleteAdverseEvent(indx, function(ajaxOutput){
+ 	 	 		alert("deleted :" + indx);
+ 	 	 		$('ae-section-' + indx).remove();
+ 	 		}.bind(this));
+ 	 	
  		}
  		 		
  	});

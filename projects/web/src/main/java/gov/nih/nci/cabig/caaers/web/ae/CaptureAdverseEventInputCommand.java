@@ -22,8 +22,6 @@ import java.util.Map;
 
 import javax.persistence.Transient;
 
-import org.apache.commons.collections15.ListUtils;
-
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
 	private StudyParticipantAssignment assignment;
