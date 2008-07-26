@@ -8,12 +8,20 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections15.ListUtils;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -31,11 +39,11 @@ import gov.nih.nci.cabig.caaers.web.study.StudyTab;
  * @author Biju Joseph
  * @author Sameer Sawant
  */
-public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInputCommand>{
+public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	private static final String MAIN_FIELD_GROUP = "main";
 	
-	private EvaluationService evaluationService;
+
 	
 	public AdverseEventConfirmTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -88,6 +96,7 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 			Integer id = command.getAdverseEventReportingPeriod().getAdverseEvents().get(i).getAdverseEventTerm().getId();
 			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + id + "]", "", null));
 		}
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.term.term", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].grade", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization", ""));
@@ -105,6 +114,77 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 		refdata.put("serious_aes", serious_map);
 		
 		return refdata;
+	}
+	
+	@Override
+    /**
+     * We do the following things here 
+     * 	1. Find the newly checked report definitions 
+     *  2. Remove the unselected report definitions
+     *  3. Create the reports (by calling evaluation service)
+     *  4. Save the AEReport
+     */
+    public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command,
+                    Errors errors) {
+
+            List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
+            removeUnselectedReports(command);
+            if(newlySelectedDefs.size() > 0){  // Only if there are new Reports to be created.
+            	// Check if the ExpeditedReport is already created. If not create one.
+            	if(command.getAdverseEventReportingPeriod().getAeReport() == null){
+            		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+            		aeReport.setReportingPeriod(command.getAdverseEventReportingPeriod());
+            		//Add the selected Aes to this aeReport object.
+            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+            			Integer aeId = ae.getId();
+            			if(command.getSelectedAesMap().containsKey(aeId))
+            				aeReport.addAdverseEvent(ae);
+            		}
+            		command.getAdverseEventReportingPeriod().setAeReport(aeReport);
+            	}
+            	else{
+            		// The expeditedReport already exists. Add newly selected Aes to this aeReport.
+            		Map<Integer, Boolean> aesInReportMap = new HashMap<Integer, Boolean>();
+            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAeReport().getAdverseEvents())
+            			if(!aesInReportMap.containsKey(ae.getId()))
+            				aesInReportMap.put(ae.getId(), Boolean.TRUE);
+            		// Now add the Aes in selectedAesMap to aeReport if its new
+            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+            			Integer aeId = ae.getId();
+            			if(command.getSelectedAesMap().containsKey(aeId) && !aesInReportMap.containsKey(aeId))
+            				command.getAdverseEventReportingPeriod().getAeReport().addAdverseEvent(ae);
+            		}
+            	}
+           		evaluationService.addOptionalReports(command.getAdverseEventReportingPeriod().getAeReport(), newlySelectedDefs);
+           		expeditedAdverseEventReportDao.save(command.getAdverseEventReportingPeriod().getAeReport());
+            }
+
+    }
+	
+	private List<ReportDefinition> newlySelectedReportDefinitions(
+							CaptureAdverseEventInputCommand command) {
+			List<ReportDefinition> selectedReportDefs = command.getSelectedReportDefinitions();
+			List<ReportDefinition> instantiatedReportDefs = command.getInstantiatedReportDefinitions();
+			List<ReportDefinition> difference = ListUtils.subtract(selectedReportDefs,
+							instantiatedReportDefs);
+			return difference;
+	}
+
+	private void removeUnselectedReports(CaptureAdverseEventInputCommand command) {
+			if(command.getAdverseEventReportingPeriod().getAeReport() != null){
+				List<Report> reports = command.getAdverseEventReportingPeriod().getAeReport().getReports();
+				for (Report report : reports) {
+					if (report.getStatus() == ReportStatus.WITHDRAWN) continue;
+					if (!reportSelected(command, report.getReportDefinition())) {
+						reportRepository.deleteReport(report);
+					}
+				}
+			}
+	}
+
+	private boolean reportSelected(CaptureAdverseEventInputCommand command, ReportDefinition def) {
+			Boolean val = command.getOptionalReportDefinitionsMap().get(def);
+			return val == null ? false : val;
 	}
 	
 	@Override
@@ -178,11 +258,5 @@ public class AdverseEventConfirmTab extends TabWithFields<CaptureAdverseEventInp
 		}
 	}
 	
-	public EvaluationService getEvaluationService() {
-        return evaluationService;
-    }
 
-    public void setEvaluationService(EvaluationService evaluationService) {
-        this.evaluationService = evaluationService;
-    }
 }

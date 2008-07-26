@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -99,11 +102,10 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
-		adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
 		
-		ModelAndView mv = new ModelAndView("forward:view?type=confirm", errors.getModel());
-
-        return mv;
+		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
+	    model.put("study", command.getStudy().getId());
+	    return new ModelAndView("redirectToAeList", model);
 	}
 	
 	/**
@@ -218,10 +220,21 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         }
     }
     
-   
-	@Override
+   @Override
 	protected boolean shouldSave(HttpServletRequest request,CaptureAdverseEventInputCommand command,Tab<CaptureAdverseEventInputCommand> tab) {
-		return false;
+		Object isAjax = findInRequest(request, "_isAjax");
+        if (isAjax != null) {
+            return false;
+        }
+        return super.shouldSave(request, command, tab);
+	}
+	
+	@Override
+	protected CaptureAdverseEventInputCommand save(final CaptureAdverseEventInputCommand command, final Errors errors){
+		if(!errors.hasErrors())
+			command.save();
+		
+		return command;
 	}
 
 	public ParticipantDao getParticipantDao() {

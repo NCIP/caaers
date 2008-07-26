@@ -52,6 +52,7 @@
 	
 		<jsp:attribute name="instructions">
 	 		<tags:instructions code="instruction_ae_checkpoint" />
+	 		<input type="hidden" name="_finish"/>
 		</jsp:attribute>
 		<jsp:attribute name="singleFields">
   	 <c:if test="${empty command.adverseEventReportingPeriod.aeReport}">
@@ -113,7 +114,7 @@
     				<tr id="solicitedBlankRow" />
        				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
        					<c:if test="${ae.solicited == true}">
-	       					<ae:oneSaeRow index="${status.index}"/>
+	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}"/>
 	       				</c:if>
        				</c:forEach>
        			</table>
@@ -133,7 +134,7 @@
     			<tr id="observedBlankRow" />
     			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
             		<c:if test="${ae.solicited == false}">
-	            		<ae:oneSaeRow index="${status.index}"/>
+	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}"/>
 	            	</c:if>
             	</c:forEach>
             </table>

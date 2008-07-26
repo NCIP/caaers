@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -30,6 +31,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Study study;
 	private EvaluationService evaluationService;
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private List<CtcCategory> ctcCategories;
 	private Map<Integer, Boolean> selectedAesMap;
 	
@@ -65,7 +67,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	// Till here.
 	
-	 
+	
 	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService){
 		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
 		this.assignmentDao = assignmentDao;
@@ -73,6 +75,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.selectedAesMap = new HashMap<Integer, Boolean>();
 		this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
         this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
+	}
+	
+	public void save() {
+		AdverseEventReportingPeriod mergedReportingPeriod;
+		if(this.getAdverseEventReportingPeriod() != null){
+			mergedReportingPeriod = adverseEventReportingPeriodDao.merge(this.getAdverseEventReportingPeriod());
+			this.setAdverseEventReportingPeriod(mergedReportingPeriod);
+		}
 	}
 	
 	public Map<ReportDefinition, List<AdverseEvent>> applyRules(){
@@ -189,11 +199,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	public String getTreatmentDescriptionType() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public void save() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void setTreatmentDescriptionType(String type) {
@@ -372,4 +377,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         // This is so that the user may still remove Reports whose ReportDefinitions
         // are no longer associated with the study.
     }
+    
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
 }

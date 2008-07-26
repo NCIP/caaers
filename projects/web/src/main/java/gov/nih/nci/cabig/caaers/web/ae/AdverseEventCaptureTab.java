@@ -47,19 +47,9 @@ import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
  * @author Biju Joseph
  *
  */
-public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInputCommand>{
+public class AdverseEventCaptureTab extends AdverseEventTab{
 	
 	private static final String MAIN_FIELD_GROUP = "main";
-	
-	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-	private CtcTermDao ctcTermDao;
-	
-	private static final Collection<Grade> GRADES = new ArrayList<Grade>(5);
-    static {
-    	GRADES.addAll(Arrays.asList(Grade.values()));
-        GRADES.remove(Grade.NORMAL);
-        GRADES.remove(Grade.NOT_EVALUATED);
-    }
 	
 	public AdverseEventCaptureTab() {
 		super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
@@ -170,68 +160,8 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 		return map;
 	}
 	
-	public Map<Object, Object> fetchReportingPeriodsOptions(CaptureAdverseEventInputCommand cmd){
-		Map<Object,Object> map = new LinkedHashMap<Object, Object>();
-		map.put("", "Please select");
-		List<AdverseEventReportingPeriod> reportingPeriodList = adverseEventReportingPeriodDao.getByAssignment(cmd.getAssignment()); 
-		for(AdverseEventReportingPeriod adverseEventReportingPeriod: reportingPeriodList){
-			map.put(adverseEventReportingPeriod.getId(), adverseEventReportingPeriod.getName());
-		}
-	    return map;
-	}
-	
-	public Map<Object, Object> fetchTreatmentAssignmentOptions(CaptureAdverseEventInputCommand cmd) {
-		return InputFieldFactory.collectOptions(cmd.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
-	}
-	
-	private Map<Object, Object> createExpectedOptions() {
-        Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
-        expectedOptions.put("", "Please select");
-        expectedOptions.put(Boolean.TRUE, "Yes");
-        expectedOptions.put(Boolean.FALSE, "No");
-        return expectedOptions;
-    }
-	
-	private Map<Object, Object> createHospitalizationOptions() {
-        Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.putAll(InputFieldFactory.collectOptions(Arrays
-                        .asList(Hospitalization.values()), "name", "displayName"));
-        return hospitalizationOptions;
-    }
-	
-	private Map<Object, Object> createAttributionOptions() {
-        Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
-        attributionOptions.put("", "Please select");
-        attributionOptions.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution
-                        .values()), "name", "displayName"));
-        return attributionOptions;
-    }
-	
-	private Map<Object, Object> createGradeOptions(AdverseEvent ae, String terminology) {
-		Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
-        gradeOptions.put("", "Please select");
-        
-        //for solicited AEs always add NotEvaluated and Normal/Evaluated
-        if(ae.getSolicited()){
-        	gradeOptions.put(Grade.NOT_EVALUATED.getName(), Grade.NOT_EVALUATED.getDisplayName());
-        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getDisplayName());
-        }
-        if(terminology.equals("Ctc")){
-        	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
-        	if(ctcGrades == null || ctcGrades.isEmpty()){
-        		//no- add grades (1-5)
-        		gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
-        	}else{
-        		//if contextual grades are there , add it
-        		gradeOptions.putAll(InputFieldFactory.collectOptions(ctcGrades, "name", "displayName"));
-        	}
-        }else{
-        	//always add the grades (1-5)
-        	gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
-        }
-            	
-        return gradeOptions;
-    }
+
+
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
@@ -297,35 +227,5 @@ public class AdverseEventCaptureTab extends TabWithFields<CaptureAdverseEventInp
 //				}
 //			}
 //		}
-	}
-	
-	/**
-     * Returns the value associated with the <code>attributeName</code>, if present in
-     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
-     */
-    protected Object findInRequest(final HttpServletRequest request, final String attributName) {
-
-        Object attr = request.getParameter(attributName);
-        if (attr == null) {
-            attr = request.getAttribute(attributName);
-        }
-        return attr;
-    }
-    
-    public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
-		return adverseEventReportingPeriodDao;
-	}
-    
-    public void setAdverseEventReportingPeriodDao(
-			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
-		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-	}
-    
-    public CtcTermDao getCtcTermDao() {
-		return ctcTermDao;
-	}
-    
-    public void setCtcTermDao(CtcTermDao ctcTermDao) {
-		this.ctcTermDao = ctcTermDao;
 	}
 }
