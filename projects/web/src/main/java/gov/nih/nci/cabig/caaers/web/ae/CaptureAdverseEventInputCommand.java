@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -266,10 +267,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     }
     
     /**
-     * This method will return the {@link ReportDefinition} that are instantiated
+     * This method will list the {@link ReportDefinition}s that are already associated to the {@link ExpeditedAdverseEventReport}
      */
     public List<ReportDefinition> getInstantiatedReportDefinitions() {
         List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        ExpeditedAdverseEventReport aeReport = adverseEventReportingPeriod.getAeReport();
+        
+        if(aeReport == null || aeReport.getReports() == null)	return reportDefs;
+        
         for (Report report : adverseEventReportingPeriod.getAeReport().getReports()) {
             if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report
                             .getReportDefinition());
