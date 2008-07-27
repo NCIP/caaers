@@ -8,6 +8,10 @@ import javax.persistence.Column;
 import javax.persistence.Transient;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
@@ -116,6 +120,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
     }
 
     @OneToMany(mappedBy = "term")
+    @Cascade(value={CascadeType.ALL})
     @OrderBy("grade")
     public List<CtcGrade> getContextualGrades() {
         return contextualGrades;

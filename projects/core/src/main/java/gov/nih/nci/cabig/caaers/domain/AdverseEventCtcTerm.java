@@ -6,6 +6,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 /**
  * This class represents the CTC terminology associated to the adverse event.
  * 
@@ -21,6 +24,7 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
      */
     @OneToOne
     @JoinColumn(name = "term_id")
+    @Cascade(value={CascadeType.LOCK})
     @Override
     public CtcTerm getTerm() {
         return super.getTerm();
