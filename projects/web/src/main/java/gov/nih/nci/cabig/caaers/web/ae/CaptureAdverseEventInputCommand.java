@@ -86,6 +86,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
 	}
 	
+	public void reassociate(){
+		if(this.adverseEventReportingPeriod != null)
+			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
+	}
+	
 	public Map<ReportDefinition, List<AdverseEvent>> applyRules(){
 		// check if the event reported is an SAE.
 		Map<ReportDefinition, List<AdverseEvent>> repDefnIdToAeListMap = new HashMap<ReportDefinition, List<AdverseEvent>>();

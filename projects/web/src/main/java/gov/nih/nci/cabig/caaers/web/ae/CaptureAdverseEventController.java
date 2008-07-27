@@ -241,9 +241,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return command;
 	}
 	
-	
-	
-	
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}
