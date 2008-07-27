@@ -24,6 +24,8 @@ import java.util.Map;
 
 import javax.persistence.Transient;
 
+import org.apache.commons.collections15.ListUtils;
+
 public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand {
 	
 	private StudyParticipantAssignment assignment;
@@ -42,8 +44,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private List<ReportDefinition> allReportDefinitions;
 	private List<ReportDefinition> requiredReportDefinitions;
 	private Map<ReportDefinition, Boolean> optionalReportDefinitionsMap;
-	
-	
 
 	// Need to verify..
 	// Added to make the aeTermQuery.tag work.
@@ -51,20 +51,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 
 	private Ctc ctcVersion;
 	
-	public Ctc getCtcVersion() {
-		return ctcVersion;
-	}
-	
-	public void setCtcVersion(Ctc ctcVersion) {
-		this.ctcVersion = ctcVersion;
-	}
-	
-	@Transient
-	public Integer getTermCode(){
-		return null;
-	}
-	//this method is added to satisfy the UI requirements, so to be moved to the command class
-	public void setTermCode(Integer ignore){}
 	
 	// Till here.
 	
@@ -174,6 +160,184 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		return map;
 	}
 	
+
+    /**
+     * This method will refresh the StudyParticipantAssignment and updates the {@link AdverseEventReportingPeriod}.
+     */
+    public void refreshAssignment(Integer reportingPeriodId){
+    	//reload assignmet
+    	assignmentDao.refresh(assignment);
+    	
+    	//reset the adverse event report in the command
+    	setAdverseEventReportingPeriod(null);
+    	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
+    		if(reportingPeriod.getId().equals(reportingPeriodId)){
+    			setAdverseEventReportingPeriod(reportingPeriod);
+    			break;
+    		}
+    	}
+    }
+ 
+
+    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs) {
+        // deselect all previously selected report
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            entry.setValue(false);
+        }
+        setSelectedReportDefinitions(defs);
+    }
+    
+    /**
+     * This method will take care of initializing the lazy associations
+     * This method will take care of
+     *  - Updating the index fixed list for AdverseEvents, associated to the reporting period 
+     *  - initializing the lazy associations
+     */
+    public void initialize(){
+    	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
+    	if(adverseEventReportingPeriod != null){
+    		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
+    		
+			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
+			this.adverseEventReportingPeriod.getAdverseEvents().size();
+			this.adverseEventReportingPeriod.getAeReport();
+		}
+    }
+    
+    /**
+     * This method will return the newly selected {@link ReportDefinition}s.
+     * Note : - [Selected Report Definitions] - [Already instatiated Report Definitions]
+     * @param command 
+     * @return
+     */
+    public List<ReportDefinition> newlySelectedReportDefinitions() {
+    	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
+    	List<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
+    	List<ReportDefinition> difference = ListUtils.subtract(selectedReportDefs,instantiatedReportDefs);
+    	return difference;
+    }
+
+    
+    /**
+     * This method will return the ReportDefinition which are selected by user in the checkpoint
+     * page.
+     */
+    public List<ReportDefinition> getSelectedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
+            if (entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
+        }
+        return reportDefs;
+    }
+    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
+		this.selectedAesMap = selectedAesMap;
+	}
+    
+    
+    /**
+     * This method will list the {@link ReportDefinition}s that are already associated to the {@link ExpeditedAdverseEventReport}
+     */
+    public List<ReportDefinition> getInstantiatedReportDefinitions() {
+        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+        ExpeditedAdverseEventReport aeReport = adverseEventReportingPeriod.getAeReport();
+        
+        if(aeReport == null || aeReport.getReports() == null)	return reportDefs;
+        
+        for (Report report : adverseEventReportingPeriod.getAeReport().getReports()) {
+            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report
+                            .getReportDefinition());
+        }
+
+        return reportDefs;
+
+    }
+    
+
+    
+    public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, true);
+        }
+    }
+    
+    private String getReportDefinitionNames(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return "";
+        StringBuilder sb = new StringBuilder();
+        for (ReportDefinition def : defs) {
+            sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
+        }
+        return sb.toString();
+    }
+    
+    public String getRequiredReportDefinitionNames() {
+        return getReportDefinitionNames(getRequiredReportDefinitions());
+    }
+    
+    public Map<Integer, Boolean> getSelectedAesMap(){
+   		return selectedAesMap;
+    }
+    
+    public IndexFixedList<AdverseEvent> getAdverseEvents() {
+		return adverseEvents;
+	}
+    public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
+		this.adverseEvents = adverseEvents;
+	}
+    /**
+     * Returns all the {@link ReportDefinition} available to this AE
+     */
+    public List<ReportDefinition> getAllReportDefinitions() {
+        return allReportDefinitions;
+    }
+
+    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
+        this.allReportDefinitions = allReportDefinitions;
+    }
+    
+    public List<ReportDefinition> getRequiredReportDefinitions() {
+        return requiredReportDefinitions;
+    }
+
+    public void setRequiredReportDefinition(List<ReportDefinition> defs) {
+        if (defs != null) requiredReportDefinitions.addAll(defs);
+    }
+    
+    public Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap() {
+        return optionalReportDefinitionsMap;
+    }
+    
+    public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
+        if (defs == null || defs.isEmpty()) return;
+        for (ReportDefinition def : defs) {
+            optionalReportDefinitionsMap.put(def, false);
+        }
+        // Deliberately not removing entries from the map that aren't in defs.
+        // This is so that the user may still remove Reports whose ReportDefinitions
+        // are no longer associated with the study.
+    }
+    
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+    
+
+	public Ctc getCtcVersion() {
+		return ctcVersion;
+	}
+	
+	public void setCtcVersion(Ctc ctcVersion) {
+		this.ctcVersion = ctcVersion;
+	}
+	
+	@Transient
+	public Integer getTermCode(){
+		return null;
+	}
+	//this method is added to satisfy the UI requirements, so to be moved to the command class
+	public void setTermCode(Integer ignore){}
+	
     public StudyParticipantAssignment getAssignment() {
         if(assignment != null) return assignment;
         
@@ -249,148 +413,4 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.evaluationService = evaluationService;
     }
     
-    /**
-     * This method will refresh the StudyParticipantAssignment and updates the {@link AdverseEventReportingPeriod}.
-     */
-    public void refreshAssignment(Integer reportingPeriodId){
-    	//reload assignmet
-    	assignmentDao.refresh(assignment);
-    	
-    	//reset the adverse event report in the command
-    	setAdverseEventReportingPeriod(null);
-    	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
-    		if(reportingPeriod.getId().equals(reportingPeriodId)){
-    			setAdverseEventReportingPeriod(reportingPeriod);
-    			break;
-    		}
-    	}
-    }
-    
-    /**
-     * This method will list the {@link ReportDefinition}s that are already associated to the {@link ExpeditedAdverseEventReport}
-     */
-    public List<ReportDefinition> getInstantiatedReportDefinitions() {
-        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-        ExpeditedAdverseEventReport aeReport = adverseEventReportingPeriod.getAeReport();
-        
-        if(aeReport == null || aeReport.getReports() == null)	return reportDefs;
-        
-        for (Report report : adverseEventReportingPeriod.getAeReport().getReports()) {
-            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report
-                            .getReportDefinition());
-        }
-
-        return reportDefs;
-
-    }
-    public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
-		this.selectedAesMap = selectedAesMap;
-	}
-    
-    public void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs) {
-        // deselect all previously selected report
-        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
-            entry.setValue(false);
-        }
-        setSelectedReportDefinitions(defs);
-    }
-    
-    public void setSelectedReportDefinitions(List<ReportDefinition> defs) {
-        if (defs == null || defs.isEmpty()) return;
-        for (ReportDefinition def : defs) {
-            optionalReportDefinitionsMap.put(def, true);
-        }
-    }
-    
-    private String getReportDefinitionNames(List<ReportDefinition> defs) {
-        if (defs == null || defs.isEmpty()) return "";
-        StringBuilder sb = new StringBuilder();
-        for (ReportDefinition def : defs) {
-            sb.append("optionalReportDefinitionsMap[" + def.getId() + "]").append(",");
-        }
-        return sb.toString();
-    }
-    
-    public String getRequiredReportDefinitionNames() {
-        return getReportDefinitionNames(getRequiredReportDefinitions());
-    }
-    
-    public Map<Integer, Boolean> getSelectedAesMap(){
-   		return selectedAesMap;
-    }
-    
-    public IndexFixedList<AdverseEvent> getAdverseEvents() {
-		return adverseEvents;
-	}
-    public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
-		this.adverseEvents = adverseEvents;
-	}
-    
-    /**
-     * This method will return the ReportDefinition which are selected by user in the checkpoint
-     * page.
-     */
-    public List<ReportDefinition> getSelectedReportDefinitions() {
-        List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
-        for (Map.Entry<ReportDefinition, Boolean> entry : optionalReportDefinitionsMap.entrySet()) {
-            if (entry.getValue() != null && entry.getValue()) reportDefs.add(entry.getKey());
-        }
-        return reportDefs;
-    }
-    
-    /**
-     * This method will take care of initializing the lazy associations
-     * This method will take care of
-     *  - Updating the index fixed list for AdverseEvents, associated to the reporting period 
-     *  - initializing the lazy associations
-     */
-    public void initialize(){
-    	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
-    	if(adverseEventReportingPeriod != null){
-    		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
-    		
-			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
-			this.adverseEventReportingPeriod.getAdverseEvents().size();
-			this.adverseEventReportingPeriod.getAeReport();
-		}
-    }
-    
-    
-    /**
-     * Returns all the {@link ReportDefinition} available to this AE
-     */
-    public List<ReportDefinition> getAllReportDefinitions() {
-        return allReportDefinitions;
-    }
-
-    public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
-        this.allReportDefinitions = allReportDefinitions;
-    }
-    
-    public List<ReportDefinition> getRequiredReportDefinitions() {
-        return requiredReportDefinitions;
-    }
-
-    public void setRequiredReportDefinition(List<ReportDefinition> defs) {
-        if (defs != null) requiredReportDefinitions.addAll(defs);
-    }
-    
-    public Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap() {
-        return optionalReportDefinitionsMap;
-    }
-    
-    public void setOptionalReportDefinitions(List<ReportDefinition> defs) {
-        if (defs == null || defs.isEmpty()) return;
-        for (ReportDefinition def : defs) {
-            optionalReportDefinitionsMap.put(def, false);
-        }
-        // Deliberately not removing entries from the map that aren't in defs.
-        // This is so that the user may still remove Reports whose ReportDefinitions
-        // are no longer associated with the study.
-    }
-    
-    public void setAdverseEventReportingPeriodDao(
-			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
-		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
-	}
 }
