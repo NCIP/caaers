@@ -116,6 +116,16 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		return refdata;
 	}
 	
+	/**
+	 * Reassociated the Reporting Period to the running Hibernate session
+	 */
+	@Override
+	public void beforeBind(HttpServletRequest request,
+			CaptureAdverseEventInputCommand command) {
+		// TODO Auto-generated method stub
+		super.beforeBind(request, command);
+	}
+	
 	@Override
     /**
      * We do the following things here 

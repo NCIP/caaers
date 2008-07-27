@@ -35,6 +35,7 @@ public abstract class BasicsTab extends AeTab {
     static {
         EXPEDITED_GRADES.addAll(Arrays.asList(Grade.values()));
         EXPEDITED_GRADES.remove(Grade.NORMAL);
+        EXPEDITED_GRADES.remove(Grade.NOT_EVALUATED);
     }
 
     public BasicsTab(String longTitle, String shortTitle, String viewName) {

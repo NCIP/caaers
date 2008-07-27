@@ -114,6 +114,10 @@ public class CtcBasicsTabTest extends AeTabTestCase {
                         .getName()));
         assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL
                         .toString()));
+        
+        assertFalse("Options should not contain grade -1", options.containsKey(Grade.NOT_EVALUATED.toString()));
+        assertFalse("Options should not contain grade -1", options.containsValue(Grade.NOT_EVALUATED.toString()));
+        
         assertEquals("Wrong number of options", 5, options.size());
 
         assertGradeOptionPresent(options, Grade.MILD);

@@ -99,9 +99,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return cmd.getAdverseEventReportingPeriod();
 	}
 
+	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
+		
+		getTab(command, getCurrentPage(request)).postProcess(request, command, errors);
+		
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
@@ -153,7 +157,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(assignmentDao, evaluationService);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService);
 		
 		return cmd;
 	}
@@ -222,11 +226,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
     
    @Override
 	protected boolean shouldSave(HttpServletRequest request,CaptureAdverseEventInputCommand command,Tab<CaptureAdverseEventInputCommand> tab) {
-		Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
+		Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+        if (isAjax != null || 1 != getCurrentPage(request)) {
             return false;
         }
-        return super.shouldSave(request, command, tab);
+       return true;
 	}
 	
 	@Override
@@ -236,7 +240,10 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		
 		return command;
 	}
-
+	
+	
+	
+	
 	public ParticipantDao getParticipantDao() {
 		return participantDao;
 	}

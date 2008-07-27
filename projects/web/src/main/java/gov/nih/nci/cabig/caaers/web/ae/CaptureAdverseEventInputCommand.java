@@ -68,8 +68,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	// Till here.
 	
 	
-	public CaptureAdverseEventInputCommand(StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService){
-		//this.adverseEventReportingPeriod = new AdverseEventReportingPeriod();
+	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
+				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService){
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
 		this.selectedAesMap = new HashMap<Integer, Boolean>();
