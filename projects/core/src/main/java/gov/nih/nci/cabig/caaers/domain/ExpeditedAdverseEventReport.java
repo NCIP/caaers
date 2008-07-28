@@ -341,7 +341,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     public StudyParticipantAssignment getAssignment() {
-        return assignment;
+        return reportingPeriod.getAssignment();
     }
 
     public void setAssignment(StudyParticipantAssignment assignment) {
