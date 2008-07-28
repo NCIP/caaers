@@ -1,39 +1,25 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections15.ListUtils;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
-import org.springframework.web.servlet.ModelAndView;
-
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory.RepeatingFieldGroup;
-import gov.nih.nci.cabig.caaers.web.study.StudyTab;
 
 /**
  * @author Biju Joseph
@@ -192,6 +178,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
         	// Check if the ExpeditedReport is already created. If not create one.
         	if(command.getAdverseEventReportingPeriod().getAeReport() == null){
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
         		aeReport.setReportingPeriod(command.getAdverseEventReportingPeriod());
         		
         		//Add the selected Aes to this aeReport object.

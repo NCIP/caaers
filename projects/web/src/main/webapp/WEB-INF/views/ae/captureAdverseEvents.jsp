@@ -140,7 +140,7 @@ div.row div.value {
  		  	//get the HTML to add from server   
  		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
 				$('observedBlankRow').insert({after:responseStr});
-				$('observedEmptyRow').remove();
+				if( $('observedEmptyRow')) $('observedEmptyRow').remove();
 				//this.initializeOtherMeddraAutoCompleters(listOfTermIDs).defer();
  		  	}.bind(this));
  		},

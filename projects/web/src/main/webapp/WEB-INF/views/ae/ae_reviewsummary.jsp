@@ -13,9 +13,12 @@
 <title>${tab.longTitle}</title>
 <tags:includeScriptaculous/>
 <script type="text/javascript">
+
+var reviewAESummaryClass = Class.create();
+Object.extend(reviewAESummaryClass.prototype, {
+});
+	
 	Event.observe(window, "load", function() {
-	
-	
 	
 		if($('manualselect2')){
       		 Event.observe('manualselect2', "click", function() {
@@ -77,6 +80,7 @@
   	 	 <c:when test="${not empty rpdSelectedTable}">
   	 	 	<p><strong>Reports Identified by caAERS</strong></p>
                <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
+				<div align="center">
               	<div id="report-list" class="report-list">
             	  <!-- required reports -->
 				<table class="tablecontent">
@@ -93,16 +97,7 @@
 					</tr>
 				</c:forEach>
 				</table>
-				<%--
-            	  <c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
-            	   <c:if test="${fn:contains(command.requiredReportDefinitionNames, field.propertyName)}">
-                   <div class="row">
-                    <div class="label"><tags:renderInputs field="${field}"/></div>
-                    <div class="value"><tags:renderLabel field="${field}"/></div>
-                   </div>
-                   </c:if>
-            	  </c:forEach>
-            	  --%>
+				</div>
         		</div> 
         		<p>
         		If you agree with this assessment and wish to proceed, click Continue. 

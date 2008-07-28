@@ -161,4 +161,12 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
     public void setReportRepository(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
+    
+    public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+		return expeditedAdverseEventReportDao;
+	}
+    public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
 }

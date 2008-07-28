@@ -972,7 +972,10 @@ public class CreateAdverseEventAjaxFacade {
         	ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
         	command.getAdverseEvents().add(ae);
         }
-        return renderIndexedAjaxView("observedAdverseEventSection", index, 0);
+        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
+    	 params.put("index", Integer.toString(index));
+        return renderAjaxView("observedAdverseEventSection", 0, params);
     }
     
     public AjaxOutput deleteAdverseEvent(int index){
