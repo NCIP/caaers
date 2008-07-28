@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
@@ -52,7 +53,29 @@ public class EvaluationServiceImpl implements EvaluationService {
 
         return isSevere;
     }
-
+    
+    /**
+     * This method will return a Map, whose keys are the {@link ReportDefinition} and values are the {@link AdverseEvent} that caused the {@link ReportDefinition}.
+     * Note:- For every AdverseEvent, the list of report definition is obtained. A map is created with ReportDefinition as key and AdverseEvent as value. 
+     * @param reportingPeriod
+     * @return
+     */
+    public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod){
+    	Map<ReportDefinition, List<AdverseEvent>> map = new HashMap<ReportDefinition, List<AdverseEvent>>();
+    		for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+    			List<ReportDefinition> reportDefs = findRequiredReportDefinitions(null, Arrays.asList(ae), reportingPeriod.getStudy());
+    			for(ReportDefinition reportDef : reportDefs){
+    				if(map.containsKey(reportDef)){
+    					map.get(reportDef).add(ae);
+    				}else {
+    					List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
+    					aeList.add(ae);
+    					map.put(reportDef, aeList);
+    				}
+    			}
+    		}
+    	return map;
+    }
     /**
      * The report definitions that are marked as mandatory at rules engine. Bug fix : 12770, will
      * filter already instantiated reports (that are not in WITHDRAWN) status.
@@ -174,7 +197,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     @Transactional(readOnly = false)
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    List<ReportDefinition> reportDefs) {
+                    Collection<ReportDefinition> reportDefs) {
         for (ReportDefinition def : reportDefs) {
             reportRepository.createReport(def, expeditedData);
         }
