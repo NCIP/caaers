@@ -337,9 +337,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     ////// BEAN PROPERTIES
 
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Transient
     public StudyParticipantAssignment getAssignment() {
         return reportingPeriod.getAssignment();
     }
