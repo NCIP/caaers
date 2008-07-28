@@ -40,7 +40,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
 	private static final String AJAX_SUBVIEW_PARAMETER = "subview";
-	
+	private static final int ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER = 2;
 	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
@@ -84,7 +84,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
 		CaptureAdverseEventInputCommand aeCommand = (CaptureAdverseEventInputCommand) command;
 		ServletRequestDataBinder binder = super.createBinder(request, aeCommand);
-		//binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
 		initBinder(request,binder, aeCommand);
 		return binder;
@@ -102,9 +102,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
+
+		//save the expdited report information
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
-		
-		getTab(command, getCurrentPage(request)).postProcess(request, command, errors);
+		AdverseEventConfirmTab tab = (AdverseEventConfirmTab) getFlow(command).getTab(ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER);
+		tab.saveExpeditedReport(request, command, errors);
 		
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
@@ -134,24 +136,27 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
         
-        //special binder for AdverseEventReportingPeriod
-        final AdverseEventReportingPeriod aerp = command.getAdverseEventReportingPeriod();
-        binder.registerCustomEditor(AdverseEventReportingPeriod.class, new PropertyEditorSupport(){
-        	
-        	@Override
-        	public void setAsText(String text) throws IllegalArgumentException {
-        		if(StringUtils.isEmpty(text)){
-        			command.setAdverseEventReportingPeriod(null);
-        		}
-        		
-        	}
-        	@Override
-        	public String getAsText() {
-        		if(aerp != null && aerp.getId() != null) return aerp.getId().toString();
-        		return "";
-        		
-        	}
-        });
+//        //special binder for AdverseEventReportingPeriod
+//        final AdverseEventReportingPeriod aerp = command.getAdverseEventReportingPeriod();
+//        binder.registerCustomEditor(AdverseEventReportingPeriod.class, new PropertyEditorSupport(){
+//        	
+//        	@Override
+//        	public void setAsText(String text) throws IllegalArgumentException {
+//        		if(StringUtils.isEmpty(text)){
+//        			command.setAdverseEventReportingPeriod(null);
+//        			setValue(null);
+//        		}
+//        		
+//        	}
+//        	@Override
+//        	public String getAsText() {
+//        		AdverseEventReportingPeriod aerp = (AdverseEventReportingPeriod)getValue();
+//        		if(aerp != null) 
+//        			return aerp.getId().toString();
+//        		else 
+//        			return null;
+//        	}
+//        });
         
 	}
 	

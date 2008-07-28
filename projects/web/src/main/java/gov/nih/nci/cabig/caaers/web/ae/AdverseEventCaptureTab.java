@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.drools.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -88,7 +89,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 			
 			//TAC fields groups
 			InputField treatmentAssignmentField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.code", "Treatment assignment");
-			InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatement description");
+			InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatment description");
 			
 			//startDateOfFirstCourse - TextField, if it is empty in assignment
 			InputField firstCourseDateField = null;
@@ -103,10 +104,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 			treatmentAssignmentFieldGroup.getFields().add(firstCourseDateField);
 		
 			// add reportingPeriod details group
-			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start Date:"));
-			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End Date:"));
-			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type:"));
-			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle Number:"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start date"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End date"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle number"));
+			reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.description", "Description"));
 			
 			// add the reportingPeriodFieldGroup to the map.
 			map.addInputFieldGroup(treatmentAssignmentFieldGroup);
@@ -206,6 +208,14 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 		
 		
 		return refdata;
+	}
+	
+	@Override
+	public void onBind(HttpServletRequest request,CaptureAdverseEventInputCommand command, Errors errors) {
+		String rpId = request.getParameter("adverseEventReportingPeriod");
+		if(StringUtils.isEmpty(rpId)) {
+			command.setAdverseEventReportingPeriod(null);
+		}
 	}
 	
 	@Override

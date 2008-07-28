@@ -29,10 +29,13 @@
 }
 /* Override basic styles */
 div.row div.value {
-font-weight:normal;
+	font-weight:normal;
 	white-space: normal;
+	margin-left: 13em;
 }
 
+ div.row div.label { width: 12em; } 
+		 
 /* division where reporting period combo box is shown */
 .reportingPeriodSelector{
 
@@ -48,10 +51,11 @@ font-weight:normal;
  	 		rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
  	 		rpDetailsDiv - The DIV element where the content of selected reporting period is shown.
  	 	*/
- 	 	initialize : function(rpCtrl,rpDetailsDiv,rpEditCtrl){
+ 	 	initialize : function(rpCtrl,rpDetailsDiv,rpEditCtrl,rpCtrlValue){
  	 	
  	 		this.win = null;
  	 		this.rpCtrl = $(rpCtrl);
+ 	 		this.rpCtrl.value = rpCtrlValue;
  	 		this.rpEditCtrl = $(rpEditCtrl);
  	 		this.rpDetailsDiv = $(rpDetailsDiv);
  	 		
@@ -136,6 +140,7 @@ font-weight:normal;
  		  	//get the HTML to add from server   
  		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
 				$('observedBlankRow').insert({after:responseStr});
+				$('observedEmptyRow').remove();
 				//this.initializeOtherMeddraAutoCompleters(listOfTermIDs).defer();
  		  	}.bind(this));
  		},
@@ -170,7 +175,7 @@ font-weight:normal;
  	*/
  	var rpCreator = null; 
  	Event.observe(window, "load", function(){
- 		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button');
+ 		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
  		
  	});
 
@@ -194,7 +199,10 @@ font-weight:normal;
 					</tags:renderRow>
       		</div>
       		
-      		<div style="display: none" id="detailSection">
+      		<div id="detailSection">
+				<c:if test="${not empty command.adverseEventReportingPeriod}">
+					<ae:reportingPeriodAEDetails />
+				</c:if>
        		</div>
        </jsp:attribute>
     </tags:tabForm>

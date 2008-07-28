@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,15 +36,15 @@ import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory.RepeatingF
 import gov.nih.nci.cabig.caaers.web.study.StudyTab;
 
 /**
- * @author Rhett Sutphin
  * @author Biju Joseph
  * @author Sameer Sawant
  */
 public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	private static final String MAIN_FIELD_GROUP = "main";
+	private static final String RPD_FIELD_GROUP = "rpd";
 	
-
+	
 	
 	public AdverseEventConfirmTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -51,52 +52,48 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	@Override
     public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand command) {
-		Map<String, InputFieldGroup> map = new HashMap<String, InputFieldGroup>();
-		final CaptureAdverseEventInputCommand cmd = command;
-
-		if(command.getAdverseEventReportingPeriod() != null){
-			if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null){
-				for(int i = 0; i < command.getAdverseEventReportingPeriod().getAdverseEvents().size(); i++){
-					String key = MAIN_FIELD_GROUP + i;
-					final int j = i;
-					InputFieldGroup fieldGroup = new InputFieldGroup(){
-						public List<InputField> getFields() {
-							return createCustomFieldGroup(cmd,j);
-						}
-						public String getDisplayName() {
-							return "";
-						}
-						public String getName() {
-							return "";
-						}
-					};
-					map.put(key, fieldGroup);
-				}
+		final boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+		InputFieldGroupMap map = new InputFieldGroupMap();
+		
+		//create fields for AEs
+		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getAdverseEvents();
+		if(adverseEvents != null){
+			int size = adverseEvents.size();
+			for(int i = 0; i < size; i++){
+				String key = MAIN_FIELD_GROUP + i;
+				final int j = i;
+				InputFieldGroup fieldGroup = new InputFieldGroup(){
+					public List<InputField> getFields() {
+						return createCustomFieldGroup(adverseEvents.get(j),j, isMeddraStudy);
+					}
+					public String getDisplayName() {
+						return "";
+					}
+					public String getName() {
+						return "";
+					}
+				};
+				map.put(key, fieldGroup);
 			}
 		}
 		
 		
-		InputFieldGroup optional = new DefaultInputFieldGroup("optionalReports");
-        for (ReportDefinition reportDefinition : command.getOptionalReportDefinitionsMap().keySet()) {
-            optional.getFields().add(
-                            InputFieldFactory.createCheckboxField("optionalReportDefinitionsMap["
-                                            + reportDefinition.getId() + ']', reportDefinition
-                                            .getName()
-                                            + " ("
-                                            + reportDefinition.getOrganization().getName()
-                                            + ')'));
-        }
-        map.put(optional.getName(), optional);
+		if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null){
+			
+		}
+		
+
 		return map;
     }
 	
-	public List<InputField> createCustomFieldGroup(CaptureAdverseEventInputCommand command, int i){
+	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy){
 		List<InputField> fields= new ArrayList<InputField>();
-		if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null){
-			Integer id = command.getAdverseEventReportingPeriod().getAdverseEvents().get(i).getAdverseEventTerm().getId();
-			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + id + "]", "", null));
-		}
+		fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.term.term", ""));
+		if(!ae.getSolicited()){
+			if(isMeddraStudy) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
+			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].detailsForOther", ""));
+		}
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].grade", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization", ""));
@@ -107,11 +104,58 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+		int i = 0;
+		
+		//do the setup stuff
+		
+		// evalutate available report definitions per session.
+		command.findAllReportDefintionNames();
+		
+		//find the required report definitions (the map is refreshed by this)
+		command.findRequiredReportDefinitions();
+		
+		//refresh the reportDefinition indicator map
+		command.refreshReportDefinitionRequiredIndicatorMap();
+		
+		//refresh the reportDefinition map.
+		command.refreshReportDefinitionMap();
+		
+		//refresh the status map.
+		command.refreshReportStatusMap();
+		
+		//refresh the selectedAEMap
+		command.refreshSelectedAesMap();
+		
+		
+		
+		//Call the super class referenceData, so that the createFieldGroup is executed
 		Map<String, Object> refdata = super.referenceData(request, command);
-		//Apply the rules.
-		Map<ReportDefinition, List<AdverseEvent>> serious_map = command.applyRules();
-		populateSelectedAesMap(command, serious_map);
-		refdata.put("serious_aes", serious_map);
+		
+		//create the 3 column display for all report definitions.
+		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
+		Map<String, ReportDefinitionDisplayTable> selectedReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
+		
+		for(ReportDefinition rpDef : command.getAllReportDefinitions()){
+			ReportDefinitionDisplayTable rdTable = new ReportDefinitionDisplayTable(command.getReportStatusMap().get(rpDef.getId()),
+					command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()), 
+					InputFieldFactory.createCheckboxField("reportDefinitionMap[" + rpDef.getId() + ']',
+                    		rpDef.getName() + " ("  + rpDef.getOrganization().getName()  + ')'));
+			
+			allReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable );
+			
+			//only add to selected map, if it is 'required' or 'selected'.
+			if(command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()) || command.getReportDefinitionMap().get(rpDef.getId())){
+				selectedReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable);
+			}
+			
+			i++;
+		}
+		refdata.put("rpdAllTable", allReportDefDisplayTableMap);
+		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
+		
+		
+		
+	
 		
 		return refdata;
 	}
@@ -125,146 +169,61 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	}
 	
 	@Override
+	public void postProcess(HttpServletRequest request,	CaptureAdverseEventInputCommand command, Errors errors) {
+		command.getRequiredReportDefinitionsMap().clear();
+	}
+
+	
     /**
      * We do the following things here 
      * 	1. Find the newly checked report definitions 
      *  2. Remove the unselected report definitions
      *  3. Create the reports (by calling evaluation service)
      *  4. Save the AEReport
+     *  Note:- We should avoid
      */
-    public void postProcess(HttpServletRequest request, CaptureAdverseEventInputCommand command,
-                    Errors errors) {
+	public void saveExpeditedReport(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors){
 
-            List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
-            removeUnselectedReports(command);
-            if(newlySelectedDefs.size() > 0){  // Only if there are new Reports to be created.
-            	// Check if the ExpeditedReport is already created. If not create one.
-            	if(command.getAdverseEventReportingPeriod().getAeReport() == null){
-            		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-            		aeReport.setReportingPeriod(command.getAdverseEventReportingPeriod());
-            		//Add the selected Aes to this aeReport object.
-            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-            			Integer aeId = ae.getId();
-            			if(command.getSelectedAesMap().containsKey(aeId))
-            				aeReport.addAdverseEvent(ae);
-            		}
-            		command.getAdverseEventReportingPeriod().setAeReport(aeReport);
-            	}
-            	else{
-            		// The expeditedReport already exists. Add newly selected Aes to this aeReport.
-            		Map<Integer, Boolean> aesInReportMap = new HashMap<Integer, Boolean>();
-            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAeReport().getAdverseEvents())
-            			if(!aesInReportMap.containsKey(ae.getId()))
-            				aesInReportMap.put(ae.getId(), Boolean.TRUE);
-            		// Now add the Aes in selectedAesMap to aeReport if its new
-            		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-            			Integer aeId = ae.getId();
-            			if(command.getSelectedAesMap().containsKey(aeId) && !aesInReportMap.containsKey(aeId))
-            				command.getAdverseEventReportingPeriod().getAeReport().addAdverseEvent(ae);
-            		}
-            	}
-           		evaluationService.addOptionalReports(command.getAdverseEventReportingPeriod().getAeReport(), newlySelectedDefs);
-           		expeditedAdverseEventReportDao.save(command.getAdverseEventReportingPeriod().getAeReport());
-            }
-
-    }
-	
-	private List<ReportDefinition> newlySelectedReportDefinitions(
-							CaptureAdverseEventInputCommand command) {
-			List<ReportDefinition> selectedReportDefs = command.getSelectedReportDefinitions();
-			List<ReportDefinition> instantiatedReportDefs = command.getInstantiatedReportDefinitions();
-			List<ReportDefinition> difference = ListUtils.subtract(selectedReportDefs,
-							instantiatedReportDefs);
-			return difference;
+        Collection<ReportDefinition> newlySelectedDefs = command.findNewlySelectedReportDefinitions();
+        
+        removeUnselectedReports(command);
+        
+        if(newlySelectedDefs.size() > 0){  // Only if there are new Reports to be created.
+        	// Check if the ExpeditedReport is already created. If not create one.
+        	if(command.getAdverseEventReportingPeriod().getAeReport() == null){
+        		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        		aeReport.setReportingPeriod(command.getAdverseEventReportingPeriod());
+        		
+        		//Add the selected Aes to this aeReport object.
+        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+        			Integer aeId = ae.getId();
+        			if(command.getSelectedAesMap().containsKey(aeId))
+        				aeReport.addAdverseEvent(ae);
+        		}
+        		command.getAdverseEventReportingPeriod().setAeReport(aeReport);
+        	}
+        	else{
+        		// The expeditedReport already exists. Add newly selected Aes to this aeReport.
+        		Map<Integer, Boolean> aesInReportMap = new HashMap<Integer, Boolean>();
+        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAeReport().getAdverseEvents())
+        			if(!aesInReportMap.containsKey(ae.getId()))
+        				aesInReportMap.put(ae.getId(), Boolean.TRUE);
+        		// Now add the Aes in selectedAesMap to aeReport if its new
+        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+        			Integer aeId = ae.getId();
+        			if(command.getSelectedAesMap().containsKey(aeId) && !aesInReportMap.containsKey(aeId))
+        				command.getAdverseEventReportingPeriod().getAeReport().addAdverseEvent(ae);
+        		}
+        	}
+       		evaluationService.addOptionalReports(command.getAdverseEventReportingPeriod().getAeReport(), newlySelectedDefs);
+       		expeditedAdverseEventReportDao.save(command.getAdverseEventReportingPeriod().getAeReport());
+        }
 	}
-
+	
 	private void removeUnselectedReports(CaptureAdverseEventInputCommand command) {
-			if(command.getAdverseEventReportingPeriod().getAeReport() != null){
-				List<Report> reports = command.getAdverseEventReportingPeriod().getAeReport().getReports();
-				for (Report report : reports) {
-					if (report.getStatus() == ReportStatus.WITHDRAWN) continue;
-					if (!reportSelected(command, report.getReportDefinition())) {
-						reportRepository.deleteReport(report);
-					}
-				}
-			}
+			
 	}
 
-	private boolean reportSelected(CaptureAdverseEventInputCommand command, ReportDefinition def) {
-			Boolean val = command.getOptionalReportDefinitionsMap().get(def);
-			return val == null ? false : val;
-	}
 	
-	@Override
-    public void onDisplay(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-
-        // evalutate available report definitions per session.
-        if (command.getAllReportDefinitions() == null
-                        || command.getAllReportDefinitions().isEmpty()) {
-            command.setAllReportDefinitions(evaluationService.applicableReportDefinitions(command
-                            .getAssignment()));
-        }
-
-        // identify the report definitions mandated by Rules engine
-        if (command.getRequiredReportDefinitions().isEmpty()) {
-        	//command.refreshAssignment(command.getAdverseEventReportingPeriod().getId());
-        	command.initialize();
-            command.setRequiredReportDefinition(evaluationService
-                            .findRequiredReportDefinitions(command.getAdverseEventReportingPeriod().getAeReport(),
-                            		command.getAdverseEventReportingPeriod().getAdverseEvents(), command.getAdverseEventReportingPeriod().getStudy()));
-        }
-
-        // already AE report is saved.
-        if (command.getAdverseEventReportingPeriod().getAeReport() != null) {
-            // set up selected reports
-            command.refreshSelectedReportDefinitionsMap(command.getInstantiatedReportDefinitions());
-            // set up the optional reports
-            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
-        } else {
-            // set up the optional reports
-            command.setOptionalReportDefinitions(createOptionalReportDefinitionsList(command));
-            // new, so no reports are associated with this yet.
-            command.setSelectedReportDefinitions(command.getRequiredReportDefinitions());
-        }
-    }
-	
-	private List<ReportDefinition> createOptionalReportDefinitionsList(CaptureAdverseEventInputCommand command) {
-		if (command.getSelectedReportDefinitions() == null) return command.getAllReportDefinitions();
-
-		return ListUtils.subtract(command.getAllReportDefinitions(), command.getSelectedReportDefinitions());
 }
-	
-	
-	/**
-	 * This method populates the SelectedAesMap member of the command object. The Aes that were selected when this page was accessed
-	 * the last time(through Report object) and the adverse events that were serious on triggering of the rules are set to true in this
-	 * Map. All the adverse events in the reporting period are keys in this map.
-	 * @param command
-	 */
-	public void populateSelectedAesMap(CaptureAdverseEventInputCommand command, Map<ReportDefinition, List<AdverseEvent>> serious_map){
-		//first put all the AEs in the reportingperiod as keys in the map.
-		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-			if(ae != null && !(command.getSelectedAesMap().containsKey(ae))){
-				Integer id = ae.getAdverseEventTerm().getId();
-				command.getSelectedAesMap().put(id, Boolean.FALSE);
-			}		
-		}
-		
-		//Now we need to update the the selected AEs to true by using the serious_map and report object
-		//Using Report object
-		if(command.getAdverseEventReportingPeriod().getAeReport() != null)
-			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAeReport().getAdverseEvents())
-				if(ae != null)
-					command.getSelectedAesMap().put(ae.getAdverseEventTerm().getId(), Boolean.TRUE);
-		
-		//Using serious_map
-		for(ReportDefinition repDefinition: serious_map.keySet()){
-			List<AdverseEvent> aeList = serious_map.get(repDefinition);
-			for(AdverseEvent ae: aeList)
-				if(ae != null)
-					command.getSelectedAesMap().put(ae.getAdverseEventTerm().getId(), Boolean.TRUE);
-		}
-	}
-	
 
-}

@@ -918,6 +918,7 @@ public class CreateAdverseEventAjaxFacade {
     	//get the content for the below html section. 
     	
     	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+    	params.put("adverseEventReportingPeriod", "" + reportingPeriodId);
     	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
     	output.setHtmlContent(html);
     	return output;

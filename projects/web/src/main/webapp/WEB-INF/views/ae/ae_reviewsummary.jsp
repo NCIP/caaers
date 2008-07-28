@@ -33,19 +33,36 @@
 	});
 	
 </script>
+<style type="text/css">
+.divNotes,.divOtherMeddra{
+	font-size:8pt;
+	 border-style:none;
+}
+
+.report-list{
+	text-align: center;
+	
+}
+</style>
 </head>
 <body>
 <div id="report-list-full" style="display:none;">
 	<tags:noform>
-		<c:if test="${(empty command.adverseEventReportingPeriod.aeReport && not empty command.requiredReportDefinitions) || 
-              (not empty command.selectedReportDefinitions && not empty command.adverseEventReportingPeriod.aeReport)}">
-			<c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
-   				<div class="row">
-    				<div class="label"><tags:renderInputs field="${field}"/></div>
-    				<div class="value"><tags:renderLabel field="${field}"/></div>
-    			</div>
-			</c:forEach>
-		</c:if>
+		<table class="tablecontent">
+		<tr>
+			<th>Required</th>
+			<th>Report</th>
+			<th>Status</th>
+		</tr>
+		<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
+			<tr>
+				<td>${rdTable.value.required}</td>
+				<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+				<td>${rdTable.value.status}</td>
+			</tr>
+		</c:forEach>
+		</table>
+	
 	</tags:noform>			
 </div>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
@@ -55,13 +72,28 @@
 	 		<input type="hidden" name="_finish"/>
 		</jsp:attribute>
 		<jsp:attribute name="singleFields">
-  	 <c:if test="${empty command.adverseEventReportingPeriod.aeReport}">
+  	 	<%--<c:if test="${empty command.adverseEventReportingPeriod.aeReport}"> --%>
   	 	<c:choose>
-  	 	 <c:when test="${not empty command.requiredReportDefinitions}">
+  	 	 <c:when test="${not empty rpdSelectedTable}">
   	 	 	<p><strong>Reports Identified by caAERS</strong></p>
                <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
               	<div id="report-list" class="report-list">
             	  <!-- required reports -->
+				<table class="tablecontent">
+					<tr>
+						<th>Required</th>
+						<th>Report</th>
+						<th>Status</th>
+					</tr>
+				<c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
+					<tr>
+						<td> ${rdTable.value.required} </td>
+						<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+						<td>${rdTable.value.status}</td>
+					</tr>
+				</c:forEach>
+				</table>
+				<%--
             	  <c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
             	   <c:if test="${fn:contains(command.requiredReportDefinitionNames, field.propertyName)}">
                    <div class="row">
@@ -70,6 +102,7 @@
                    </div>
                    </c:if>
             	  </c:forEach>
+            	  --%>
         		</div> 
         		<p>
         		If you agree with this assessment and wish to proceed, click Continue. 
@@ -88,17 +121,47 @@
             If you wish to override this decision, please choose the notification and reporting schedule below.</p>
             <div class="report-list">
             	<!-- optional reports -->
-            	<c:forEach items="${fieldGroups['optionalReports'].fields}" var="field">
-                 <div class="row">
-                    <div class="label"><tags:renderInputs field="${field}"/></div>
-                    <div class="value"><tags:renderLabel field="${field}"/></div>
-                 </div>
-				</c:forEach>
+			<table class="tablecontent">
+				<tr>
+					<th>Required</th>
+					<th>Report</th>
+					<th>Status</th>
+				</tr>
+			<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
+				<tr>
+					<td>${rdTable.value.required}</td>
+					<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+					<td>${rdTable.value.status}</td>
+				</tr>
+			</c:forEach>
+			</table>
+
         	</div>   
   	 	 </c:otherwise>
   	 	</c:choose>
-  	 </c:if>
-	
+  	 <%-- </c:if> --%>
+
+	<chrome:division title="Observed adverse event(s)">
+		<c:if test='${command.adverseEventReportingPeriod != null}'>
+        	<table id="observedTable" width="100%" class="tablecontent">
+    			<tr>
+    				<th scope="col" align="left"><b>Select</b></th>
+    				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
+    			</tr>
+    			<tr id="observedBlankRow" />
+    			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
+            		<c:if test="${ae.solicited == false}">
+	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+	            	</c:if>
+            	</c:forEach>
+            </table>
+        
+        </c:if> 
+	</chrome:division>
 	
 	<chrome:division title="Solicited adverse event(s)">
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
@@ -114,33 +177,13 @@
     				<tr id="solicitedBlankRow" />
        				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
        					<c:if test="${ae.solicited == true}">
-	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}"/>
+	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	       				</c:if>
        				</c:forEach>
        			</table>
        		</c:if>	
 	</chrome:division>
-	<chrome:division title="Observed adverse event(s)">
-		<c:if test='${command.adverseEventReportingPeriod != null}'>
-        	<table id="observedTable" width="100%" class="tablecontent">
-    			<tr>
-    				<th scope="col" align="left"><b>Select</b></th>
-    				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
-    			</tr>
-    			<tr id="observedBlankRow" />
-    			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            		<c:if test="${ae.solicited == false}">
-	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}"/>
-	            	</c:if>
-            	</c:forEach>
-            </table>
-        
-        </c:if> 
-	</chrome:division>
+	
 
   	</jsp:attribute>
 	
