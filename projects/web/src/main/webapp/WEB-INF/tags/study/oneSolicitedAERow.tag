@@ -4,7 +4,7 @@
 <%@attribute name="eachRow" required="true" type="java.util.LinkedList"%>
     			<tr id="tr-${eachRow[0]}" class="data" align="center">
     				<td align="left" style="padding-left:1em"><label  id='name-${eachRow[0]}'>${eachRow[1]}</label>
-    				<input type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
+    				<input name="eachRowTermID" type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
     				</td>
     			   <c:forEach varStatus="status" var="eachCheckBox" items="${eachRow}" begin="2" >
                      <td class="col-epoch-${status.index-2}"><input  ${displayOnly?'disabled':''} class="ck${status.index-2} ck-${eachRow[0]}" id="ck${status.index-2}-${eachRow[0]}" name="epoch[${status.index-2}]" value="${eachRow[0]}" type="checkbox" ${(eachRow[status.index] == true)?'checked':''}/></td>    			   

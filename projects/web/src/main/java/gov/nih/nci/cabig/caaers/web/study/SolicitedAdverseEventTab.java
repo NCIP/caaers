@@ -54,23 +54,22 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	
     	SolicitedEventTabTable table = null;
     	
-    	if( request.getParameter(AJAX_REQUEST_PARAMETER) == null && request.getAttribute(AJAX_REQUEST_PARAMETER) == null )
+    	if(request.getParameter( AJAX_REQUEST_ADDEPOCH ) != null)
     	{
-    		// Executes in Edit flow
-    	     table = new SolicitedEventTabTable( study );
+    		String[] termIDs = request.getParameterValues("eachRowTermID");
+    		table = new SolicitedEventTabTable( study , termIDs, ctcTermDao, lowLevelTermDao );
     	}
-    	else if ( request.getAttribute( AJAX_REQUEST_ADDEPOCH ) != null )
+    	else if( request.getParameter(AJAX_REQUEST_PARAMETER) == null && request.getAttribute(AJAX_REQUEST_PARAMETER) == null )
     	{
-    		// Executes when we try to add a column or epoch
-    		table = new SolicitedEventTabTable(study);
+    		    table = new SolicitedEventTabTable( study );
     	}
-    	else
+        else
     	{
     		// Executes when we try to add one or more rows
     		
     		String[] termIDs = (String[])request.getAttribute("listOfTermIDs");
     		String[] terms = (String[])request.getAttribute("listOfTerms");
-    		table = new SolicitedEventTabTable( study, termIDs, terms);
+    		table = new SolicitedEventTabTable( study, termIDs, terms );
     		refdata.put("numOfnewlyAddedRows", table.getNumOfnewlyAddedRows());
     	}	
     	System.out.println(table.getListOfSolicitedAERows());

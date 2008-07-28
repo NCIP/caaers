@@ -76,6 +76,7 @@
                          viewName="study/ajax/generateSolicitedAETable" 
                          divElement="'SolicitedAETableArea'" 
                          formName="'command'"
+                         params="_addEpoch=true"
                          onComplete="initializeAllEvents"/>
 	   	               
                    

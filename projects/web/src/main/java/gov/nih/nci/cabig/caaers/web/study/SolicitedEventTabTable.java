@@ -1,9 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.Arm;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet; 
@@ -37,15 +42,31 @@ public class SolicitedEventTabTable{
 			numOfnewlyAddedRows++;
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
-		
-		
+	  
 	}
+
+	public SolicitedEventTabTable( Study command, String[] termIDs, CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao )
+	{
+          listOfEpochs = command.getEpochs();
+		  
+		  buildConsolidatedListOfSolicitedAEsWithExtraTerms( command, termIDs, ctcTermDao, lowLevelTermDao);
+		  
+		  constructListOfSolicitedAErows();
+	}
+
+	
 	public SolicitedEventTabTable( Study command )
 	{
 		listOfEpochs = command.getEpochs();
-		for( Epoch epoch : listOfEpochs )
-			consolidatedListOfSolicitedAEsForAllEpochs.addAll( getSolicitedAEsForEpoch( epoch ));
 		
+		buildConsolidatedListOfSolicitedAEs( listOfEpochs );
+		
+		constructListOfSolicitedAErows();
+		
+	}
+	
+	private void constructListOfSolicitedAErows()
+	{
 		for( SolicitedAdverseEvent solicitedAE : consolidatedListOfSolicitedAEsForAllEpochs )
 		{
 			LinkedList<Object> eachRowOfSolicitedAE = new LinkedList<Object>();
@@ -65,7 +86,46 @@ public class SolicitedEventTabTable{
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
 	}
+   
+	/*
+	 * This will be used for Addition of Epochs
+	 */
+	private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEsWithExtraTerms( Study command, String[] termIDs , CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao )
+	{
+		Set<SolicitedAdverseEvent> listOfSolicitedAEs = new LinkedHashSet<SolicitedAdverseEvent>();
 		
+		Term term = command.getAeTerminology().getTerm();
+		if( termIDs != null )
+    		for( String termID : termIDs )
+    		{
+      		  if( term.equals( Term.CTC ) )
+    		  {
+    			  CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
+      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+      			  solicitedAE.setCtcterm( ctcterm );
+                  listOfSolicitedAEs.add( solicitedAE );
+    		  }
+      		  else
+    		  {
+      			  LowLevelTerm medraterm = lowLevelTermDao.getById(Integer.parseInt(termID));
+      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+      			  solicitedAE.setLowLevelTerm( medraterm );
+                  listOfSolicitedAEs.add( solicitedAE );
+    		  }
+    		}
+		
+		consolidatedListOfSolicitedAEsForAllEpochs.addAll( listOfSolicitedAEs );
+		return consolidatedListOfSolicitedAEsForAllEpochs;
+	}
+
+
+	private Set<SolicitedAdverseEvent> buildConsolidatedListOfSolicitedAEs( List<Epoch> listOfEpochs )
+	{
+		for( Epoch epoch : listOfEpochs )
+			consolidatedListOfSolicitedAEsForAllEpochs.addAll( getSolicitedAEsForEpoch( epoch ));
+		return consolidatedListOfSolicitedAEsForAllEpochs;
+	}
+
 	private boolean doEpochExpectSolicitedAE( Epoch epoch, SolicitedAdverseEvent solicitedAE )
 	{
 		List<SolicitedAdverseEvent> listOFSolicitedAEs = epoch.getArms().get(0).getSolicitedAdverseEvents();
