@@ -129,7 +129,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
-        ControllerTools.registerDomainObjectEditor(binder, reportDefinitionDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -162,7 +161,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao);
 		
 		return cmd;
 	}
