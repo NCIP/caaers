@@ -471,7 +471,7 @@
 --%>
 
 <br>
-<h2>Routine AEs
+<%--<h2>Routine AEs
 <c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value="/pages/ae/createRoutine?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a></c:if>
 </h2>
 <% int ind= 0; %>
@@ -532,6 +532,46 @@
 
          </c:if>
 
+        </ec:column>
+    </ec:row>
+</ec:table> --%>
+<h2>Reporting Period AEs
+</h2>
+<% int ind= 0; %>
+<ec:table
+    items="command.assignment.reportingPeriods"
+    var="reportingPeriod" imagePath="${ecImagePath}"
+    showPagination="false"
+    cellspacing="0" cellpadding="0" border="0" width="80%"
+    style="" styleClass=""
+    filterable="false">
+    <ec:row>
+    	<ec:column property="adverseEvents[0].adverseEventTerm.universalTerm" title="Term">
+            <c:choose>
+                <c:when test="${not empty reportingPeriod.adverseEvents[0].adverseEventTerm}">
+                	<c:forEach items="${reportingPeriod.adverseEvents}" var="adverseEvent">
+                		<table width="100%" class="tablecontent">
+                		<tr>
+                		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>
+                		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine"/>">
+                			${adverseEvent.adverseEventTerm.universalTerm}
+                		</a>
+                		</td>
+ 						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td>
+                        <td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' ><a href="javascript:showAeHistory(${adverseEvent.id})">Show history</a></td></tr>
+                        </table>
+    				</c:forEach>
+
+                </c:when>
+                <c:otherwise>
+                    [Incomplete AE]
+                </c:otherwise>
+            </c:choose>
+            <% ind++; %>
+
+        </ec:column>
+    	<ec:column property="name" title="Reporting Period">
+            ${reportingPeriod.name}
         </ec:column>
     </ec:row>
 </ec:table>
