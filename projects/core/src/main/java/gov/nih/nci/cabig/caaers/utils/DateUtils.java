@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,5 +32,10 @@ public class DateUtils {
         x = c1.get(Calendar.DATE);
         y = c2.get(Calendar.DATE);
         return x - y;
+    }
+    
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    public static String formatDate(Date d){
+    	return dateFormat.format(d);
     }
 }

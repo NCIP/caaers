@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -35,7 +36,13 @@ public interface EvaluationService {
      */
     // return type based on the method name, is misleading,need to find a better name.
     ReportSubmittability isSubmittable(Report report);
-
+    
+    /**
+     * Will return a Map consisting of {@link ReportDefinition} as key and List of {@link AdverseEvent} caused as values. 
+     * @param reportingPeriod
+     * @return
+     */
+    public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod);
     /**
      * Will return the ReportDefinition that are marked required at rules engine.
      * 
@@ -43,8 +50,7 @@ public interface EvaluationService {
      *                The expedited adverse event report
      * @return - A list of {@link ReportDefinition} objects.
      */
-    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,
-    					Study study);
+    List<ReportDefinition> findRequiredReportDefinitions(ExpeditedAdverseEventReport expeditedData, List<AdverseEvent> aeList,Study study);
     
     /**
      * Will return a list of ReportDefinition retaining just the earliest amenable Report Definition
@@ -78,7 +84,7 @@ public interface EvaluationService {
      *                A list of ReportDefinitions
      */
     void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    List<ReportDefinition> reportDefs);
+                    Collection<ReportDefinition> reportDefs);
 
     /**
      * 

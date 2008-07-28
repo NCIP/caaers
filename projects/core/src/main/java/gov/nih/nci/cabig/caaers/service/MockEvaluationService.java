@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -96,7 +97,11 @@ public class MockEvaluationService implements EvaluationService {
     public List<ReportDefinition> filterAmenableReportDefinitions(Map<String, List<String>> map){
     	return null;
     }
-
+    public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(
+    		AdverseEventReportingPeriod reportingPeriod) {
+    	// TODO Auto-generated method stub
+    	return null;
+    }
 
     public Collection<ExpeditedReportSection> mandatorySections(
                     ExpeditedAdverseEventReport expeditedData) {
@@ -104,7 +109,7 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    List<ReportDefinition> reportDefs) {
+                    Collection<ReportDefinition> reportDefs) {
         // TODO Auto-generated method stub
 
     }

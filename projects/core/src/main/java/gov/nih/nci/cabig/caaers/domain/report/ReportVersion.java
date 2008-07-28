@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
@@ -63,7 +64,21 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     private Report report;
 
     // ////Logic
-
+    @Transient
+    public String getStatusAsString(){
+    	if(reportStatus == ReportStatus.PENDING){
+    		if(dueOn != null)	return "Due on " + DateUtils.formatDate(dueOn);
+    		return "Amendment due";
+    	}
+    		
+    	if(reportStatus == ReportStatus.INPROCESS) return "Inprocess";
+    	if(reportStatus == ReportStatus.COMPLETED) return "Completed on " + DateUtils.formatDate(submittedOn);
+    	if(reportStatus == ReportStatus.WITHDRAWN) return "Withdrawn on " + DateUtils.formatDate(withdrawnOn);
+    	if(reportStatus == ReportStatus.COMPLETED) return "Failed";
+    	return "";
+    }
+    
+    ///Object properties
     @Column(name = "status_code")
     @Type(type = "reportStatus")
     public ReportStatus getReportStatus() {
