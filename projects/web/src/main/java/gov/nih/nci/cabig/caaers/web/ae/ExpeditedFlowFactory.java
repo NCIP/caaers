@@ -27,7 +27,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     protected void addPostBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new TreatmentTab());
         flow.addTab(new ReporterTab());
-        flow.addTab(new CheckpointTab());
+        //flow.addTab(new CheckpointTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
         flow.addTab(new PreExistingConditionsTab());
@@ -68,7 +68,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         }
         if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
                         && meddraFlow != null
-                        && (meddraFlow.getTabCount() == 18 || meddraFlow.getTabCount() == 17)) {
+                        && (meddraFlow.getTabCount() == 17 || meddraFlow.getTabCount() == 16)) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new MeddraBasicsOutcomeTab());
@@ -88,7 +88,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         }
         if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
                         && ctepFlow != null
-                        && (ctepFlow.getTabCount() == 18 || ctepFlow.getTabCount() == 17)) {
+                        && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
             ctepFlow = createEmptyFlow();
             addPreBasicTabs(ctepFlow);
             ctepFlow.addTab(new CtcBasicsOutcomeTab());

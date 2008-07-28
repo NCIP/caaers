@@ -152,15 +152,13 @@
 </p>
 </c:if>
 
-<h2>Expedited Reports<c:if test="${command.study.status ne 'Administratively Complete'}">
-<a href="<c:url value="/pages/ae/create?participant=${command.participant.id}&study=${command.study.id}&action=create"/>">( create )</a>
-</c:if>
+<h2>Expedited Reports
 </h2>
 <!-- STUDY SEARCH RESULTS START HERE -->
 <div id="test"></div>
 <div class="eXtremeTable" >
 <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
-	<c:if test="${fn:length(command.assignment.aeReports) > 0}">
+	<c:if test="${fn:length(command.assignment.reportingPeriods) > 0}">
 		<thead>
 		<tr align="center" class="label">
 			<td class="tableHeader"></td>
@@ -171,7 +169,7 @@
 		</thead>
 	</c:if>
 	<%int i=0; %>
-	<c:forEach items="${command.assignment.aeReports}" var="report" varStatus="statusReport">
+	<c:forEach items="${command.assignment.reportingPeriods}" var="reportingPeriod" varStatus="statusReportingPeriod">
 		<% String currClass=i%2==0? "odd":"even"; %>
 		<%--
 		<c:choose>
@@ -187,48 +185,48 @@
 				onMouseOut="this.className='<%= currClass %>'">
 			<td width="2%" onClick="
 				<c:choose>
-					<c:when test="${fn:length(report.nonWithdrawnReports) > 0}">
-						new Element.toggle('studySites-table-${statusReport.index }');
-							toggleImage('image-open-${statusReport.index }');
+					<c:when test="${fn:length(reportingPeriod.aeReport.nonWithdrawnReports) > 0}">
+						new Element.toggle('studySites-table-${statusReportingPeriod.index }');
+							toggleImage('image-open-${statusReportingPeriod.index }');
 					</c:when>
 					<c:otherwise>
 					</c:otherwise>
 				</c:choose>
 			">
-					<c:if test="${fn:length(report.nonWithdrawnReports) > 0}">
-						<img id="image-open-${statusReport.index }" src="<c:url value="/images/b-plus.gif"/>" border="0" alt="expand">
+					<c:if test="${fn:length(reportingPeriod.aeReport.nonWithdrawnReports) > 0}">
+						<img id="image-open-${statusReportingPeriod.index }" src="<c:url value="/images/b-plus.gif"/>" border="0" alt="expand">
 					</c:if>
 			</td>
 			<td align="left">
             			<table width="100%" class="tablecontent">
-                    			<c:forEach items="${report.adverseEvents}" var="adverseEvent" varStatus="termStatus">
+                    			<c:forEach items="${reportingPeriod.aeReport.adverseEvents}" var="adverseEvent" varStatus="termStatus">
                     				<c:choose>
 									<c:when test="${termStatus.index == 0}">
 										<tr>
-										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>
-											<c:if test="${report.areAllReportsSubmitted == false}">
-												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+										<td width="80%" class='${statusReportingPeriod.index % 2  == 0 ? "odd" : "even"}'>
+											<c:if test="${reportingPeriod.aeReport.areAllReportsSubmitted == false}">
+												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${reportingPeriod.aeReport.id}"/>">
             								</c:if>
 											* ${adverseEvent.adverseEventTerm.universalTerm}<br />
-											<c:if test="${report.areAllReportsSubmitted == false}">
+											<c:if test="${reportingPeriod.aeReport.areAllReportsSubmitted == false}">
             									</a>
             								</c:if>
 										</td>
-										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >* grade  ${adverseEvent.grade.code}</td>
+										<td class='${statusReportingPeriod.index % 2  == 0 ? "odd" : "even"}' >* grade  ${adverseEvent.grade.code}</td>
 										</tr>
 									</c:when>
 									<c:otherwise>
 										<tr>
-										<td width="80%" class='${statusReport.index % 2  == 0 ? "odd" : "even"}'>
-											<c:if test="${report.areAllReportsSubmitted == false}">
-												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.id}"/>">
+										<td width="80%" class='${statusReportingPeriod.index % 2  == 0 ? "odd" : "even"}'>
+											<c:if test="${reportingPeriod.aeReport.areAllReportsSubmitted == false}">
+												<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${reportingPeriod.aeReport.id}"/>">
             								</c:if>
 												${adverseEvent.adverseEventTerm.universalTerm}<br />
-											<c:if test="${report.areAllReportsSubmitted == false}">
+											<c:if test="${reportingPeriod.aeReport.areAllReportsSubmitted == false}">
             									</a>
             								</c:if>
 										</td>
-										<td class='${statusReport.index % 2  == 0 ? "odd" : "even"}' >&nbsp;&nbsp;grade  ${adverseEvent.grade.code}</td>
+										<td class='${statusReportingPeriod.index % 2  == 0 ? "odd" : "even"}' >&nbsp;&nbsp;grade  ${adverseEvent.grade.code}</td>
 										</tr>
 									</c:otherwise>
 									</c:choose>
@@ -237,11 +235,11 @@
                 		</table>
 			</td>
 
-			<td><tags:formatDate value="${report.adverseEvents[0].startDate}"/></td>
+			<td><tags:formatDate value="${reportingPeriod.aeReport.adverseEvents[0].startDate}"/></td>
 
 			<td width="20%">
 
-					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.id}'/>')">
+					<SELECT id="actions-${reportingPeriod.aeReport.id}" name="actions" onChange="executeAction(${reportingPeriod.aeReport.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${reportingPeriod.aeReport.id}'/>')">
      					<OPTION selected label="none" value="none">None</OPTION>
      					<c:if test="${command.study.caaersXMLType}">
      						<OPTION label="xml" value="xml">caAERS XML</OPTION>
@@ -265,10 +263,10 @@
 
 					|
 
-					<c:if test="${report.notificationMessagePossible}">
-                		<span class="notify-unit" id="notify-unit-${report.id}">
-                    	<a id="notify-${report.id}" class="notify" href="#">notify PSC</a>
-                    	<tags:indicator id="notify-indicator-${report.id}"/>
+					<c:if test="${reportingPeriod.aeReport.notificationMessagePossible}">
+                		<span class="notify-unit" id="notify-unit-${reportingPeriod.aeReport.id}">
+                    	<a id="notify-${reportingPeriod.aeReport.id}" class="notify" href="#">notify PSC</a>
+                    	<tags:indicator id="notify-indicator-${reportingPeriod.aeReport.id}"/>
                 		</span>
            			</c:if>
 
@@ -281,11 +279,11 @@
 			</td>
 
 		</tr>
-		<c:if test="${fn:length(report.nonWithdrawnReports) > 0}">
-			<tr id="studySites-table-${statusReport.index }" style="display:none;">
+		<c:if test="${fn:length(reportingPeriod.aeReport.nonWithdrawnReports) > 0}">
+			<tr id="studySites-table-${statusReportingPeriod.index }" style="display:none;">
 				<td colspan="1">&nbsp;</td>
 				<td colspan="5" height="0" class>
-					<div id="studySites-${statusReport.index }">
+					<div id="studySites-${statusReportingPeriod.index }">
 					<table width="75%" height="0" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
 						<thead>
 						<tr>
@@ -298,7 +296,7 @@
 						</tr>
 						</thead>
 						<%int j=i*100; %>
-						<c:forEach items="${report.nonWithdrawnReports}" var="theReport" varStatus="siteIndex">
+						<c:forEach items="${reportingPeriod.aeReport.nonWithdrawnReports}" var="theReport" varStatus="siteIndex">
 						<% String currClassJ=j%2==0? "odd":"even"; %>
 							<tr align="center" id="row<%= j++ %>" class="<%= currClassJ %>" onMouseOver="this.className='highlight'"
 									onMouseOut="this.className='<%= currClass %>'"
@@ -352,7 +350,6 @@
              										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
              										</a></td>
              									</tr>
-
              									<tr>
              										<td>${fn:replace(theReport.lastVersion.submissionMessage,".","<br>")}</td>
              									</tr>
@@ -393,14 +390,14 @@
 									<c:if test="${command.reportsSubmittable[theReport.id]}" >
 										<c:if test="${(theReport.lastVersion.reportStatus == 'PENDING') or (theReport.lastVersion.reportStatus == 'FAILED')}" >
 											<center>
-												<a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |
-												<a href="#" onClick="withdraw(${report.id},${theReport.id})">Withdraw</a>
+												<a href="<c:url value="/pages/ae/submitReport?aeReport=${reportingPeriod.aeReport.id}&reportId=${theReport.id}&from=list"/>">Submit</a> |
+												<a href="#" onClick="withdraw(${reportingPeriod.aeReport.id},${theReport.id})">Withdraw</a>
 											</center>
 										</c:if>
 
 										<c:if test="${ theReport.reportDefinition.amendable and ((theReport.lastVersion.reportStatus == 'WITHDRAWN') or (theReport.lastVersion.reportStatus == 'COMPLETED') )}" >
 											<center>
-												<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+												<a href="<c:url value="/pages/ae/edit?aeReport=${reportingPeriod.aeReport.id}&reportId=${theReport.id}"/>">Amend</a>
 											</center>
 										</c:if>
 
@@ -411,7 +408,7 @@
 							<!-- This is a hack a better way to pass this to javscript -->
 							<span id="amend${theReport.id}" style="display:none;">
 								<center>
-            						<a href="<c:url value="/pages/ae/edit?aeReport=${report.id}&reportId=${theReport.id}"/>">Amend</a>
+            						<a href="<c:url value="/pages/ae/edit?aeReport=${reportingPeriod.aeReport.id}&reportId=${theReport.id}"/>">Amend</a>
             					</center>
 							</span>
 						</c:forEach>
@@ -536,6 +533,7 @@
     </ec:row>
 </ec:table> --%>
 <h2>Reporting Period AEs
+<c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value="/pages/ae/captureRoutine"/>">( create )</a></c:if>
 </h2>
 <% int ind= 0; %>
 <ec:table
