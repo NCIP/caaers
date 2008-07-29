@@ -42,21 +42,28 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
      * @see RepeatingFieldGroupFactory
      */
     public abstract Map<String, InputFieldGroup> createFieldGroups(C command);
-
+    
+    /**
+     * Tabs should not override this anymore.
+     */
     @Override
-    public final Map<String, Object> referenceData(C command) {
-    	// TODO Auto-generated method stub
-    	return super.referenceData(command);
+    public final Map<String, Object> referenceData() {
+    	return super.referenceData();
     }
     
-
+    /**
+     * Tabs should not override this anymore.
+     */
+    @Override
+    public final Map<String,Object> referenceData(C command) { 
+    	return super.referenceData(command);
+    };
     
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, C command) {
-        Map<String, Object> refdata = super.referenceData(command);
+        Map<String, Object> refdata = this.referenceData(command);
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
-        if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the
-                                                                                // help keys
+        if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the help keys
         refdata.put("fieldGroups", groupMap);
         return refdata;
     }

@@ -38,7 +38,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ResearchStaff staff) {
-        Map<String, Object> refdata = super.referenceData(staff);
+        Map<String, Object> refdata = super.referenceData(request, staff);
         // populate information related to USER Groups
         for (UserGroupType type : ASSIGNABLE_USER_GROUP_TYPES) {
             refdata.put(type.name(), staff.isAssociatedToUserGroup(type));

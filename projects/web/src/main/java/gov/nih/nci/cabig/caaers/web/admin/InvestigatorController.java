@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
@@ -32,7 +33,7 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author Saurabh
  */
 public abstract class InvestigatorController<C extends Investigator> extends
-                AutomaticSaveFlowFormController<C, Investigator, InvestigatorDao> {
+	AutomaticSaveAjaxableFormController<C, Investigator, InvestigatorDao> {
 
     private static final Log log = LogFactory.getLog(InvestigatorController.class);
 

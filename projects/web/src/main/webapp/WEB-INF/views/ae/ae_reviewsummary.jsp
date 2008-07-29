@@ -14,11 +14,6 @@
 <tags:includeScriptaculous/>
 <script type="text/javascript">
 
-var aeSummary = {
-	eventHandler : function(e){
-		
-	}	
-};
 aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
 
 	Event.observe(window, "load", function() {

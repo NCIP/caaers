@@ -38,7 +38,7 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         }
         return super.handleRequestInternal(request, response);
     }
-
+    
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
                     throws Exception {

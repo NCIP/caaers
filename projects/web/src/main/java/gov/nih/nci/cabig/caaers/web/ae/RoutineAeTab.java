@@ -62,8 +62,8 @@ public class RoutineAeTab extends AeRoutTab {
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
+    public Map<String, Object> referenceData(HttpServletRequest request, RoutineAdverseEventInputCommand command) {
+        Map<String, Object> refdata = super.referenceData(request, command);
         refdata.put("ctcVersions", ctcDao.getAll());
         refdata.put("hospitalization", Hospitalization.values());
         refdata.put("attribution", Attribution.values());

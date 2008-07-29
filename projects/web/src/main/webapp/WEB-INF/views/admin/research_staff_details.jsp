@@ -31,21 +31,27 @@
     <script type="text/javascript">
     Event.observe(window, "load", function() {
        if('${command.organization.name}'){
-       	$('organization-input').value = '${command.organization.fullName}';
+    	   if($('organization')){
+    		   $('organization-input').value = '${command.organization.fullName}';
+    	   }
        }
+       
   	 //initialze the auto completer field.
-	 AE.createStandardAutocompleter('organization', 
-     	function(autocompleter, text) {
-    		createIND.matchOrganization(text, function(values) {
-      	 		autocompleter.setChoices(values)
-      		})
-    	},
-        function(organization) { 
-    		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
-            							 " ( " + organization.nciInstituteCode + " ) ";
-			   return organization.name + nciInstituteCode  
-    	}
-     );
+  	 if($('organization')){
+  		AE.createStandardAutocompleter('organization', 
+  		     	function(autocompleter, text) {
+  		    		createIND.matchOrganization(text, function(values) {
+  		      	 		autocompleter.setChoices(values)
+  		      		})
+  		    	},
+  		        function(organization) { 
+  		    		 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
+  		            							 " ( " + organization.nciInstituteCode + " ) ";
+  					   return organization.name + nciInstituteCode  
+  		    	}
+  		);
+  	 }
+	 
      
     }); 
 

@@ -49,8 +49,8 @@ public class DetailsTab extends StudyTab {
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
+    public Map<String, Object> referenceData(HttpServletRequest request, Study command) {
+        Map<String, Object> refdata = super.referenceData(request, command);
         // TODO : to be removed from reference data, as they are no longer used.
         refdata.put("ctcVersion", ctcDao.getAll()); // remove
         return refdata;

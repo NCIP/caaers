@@ -79,8 +79,8 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
+    public Map<String, Object> referenceData(HttpServletRequest request, Investigator command) {
+        Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
         refdata.put("sitesRefData", getOrganizations());
 

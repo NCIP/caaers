@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
@@ -28,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Saurabh
  */
 public abstract class ResearchStaffController<C extends ResearchStaff> extends
-        AutomaticSaveFlowFormController<C, ResearchStaff, ResearchStaffDao> {
+	AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
 

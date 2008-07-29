@@ -31,8 +31,8 @@ class PersonnelTab extends StudyTab {
     }
 
     @Override
-    public Map<String, Object> referenceData() {
-        Map<String, Object> refdata = super.referenceData();
+    public Map<String, Object> referenceData(HttpServletRequest request, Study study) {
+        Map<String, Object> refdata = super.referenceData(request, study);
         return refdata;
     }
 
