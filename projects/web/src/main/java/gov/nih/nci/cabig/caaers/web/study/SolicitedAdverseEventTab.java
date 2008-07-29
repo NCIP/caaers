@@ -34,6 +34,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
 	public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
 	public static final String AJAX_REQUEST_ADDEPOCH = "_addEpoch";
+	public static final String AJAX_REQUEST_DELETEEPOCH = "_deleteEpoch";
 
 	
     private CtcTermDao ctcTermDao;
@@ -54,7 +55,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	
     	SolicitedEventTabTable table = null;
     	
-    	if(request.getParameter( AJAX_REQUEST_ADDEPOCH ) != null)
+    	if(request.getParameter( AJAX_REQUEST_ADDEPOCH ) != null || request.getParameter( AJAX_REQUEST_DELETEEPOCH ) != null )
     	{
     		String[] termIDs = request.getParameterValues("eachRowTermID");
     		table = new SolicitedEventTabTable( study , termIDs, ctcTermDao, lowLevelTermDao );

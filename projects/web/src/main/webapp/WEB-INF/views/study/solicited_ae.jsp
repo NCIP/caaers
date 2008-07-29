@@ -89,6 +89,7 @@
                          viewName="study/ajax/generateSolicitedAETable" 
                          divElement="'SolicitedAETableArea'" 
                          formName="'command'"
+                         params="_deleteEpoch=true"
                          onComplete="initializeAllEvents"/>
                    
     }
