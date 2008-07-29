@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -104,6 +105,9 @@ public class AdverseEventReportSerializer {
 	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport ) throws Exception{
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
+		    AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+		    aer.setReportingPeriod(reportingPeriod);
+		    
 	    	aer.setCreatedAt(hibernateAdverseEventReport.getCreatedAt());
 	    	aer.setId(hibernateAdverseEventReport.getId());
 	    	

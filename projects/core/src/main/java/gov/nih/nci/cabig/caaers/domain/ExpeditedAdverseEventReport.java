@@ -45,7 +45,6 @@ import org.apache.commons.logging.LogFactory;
     }
 )
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
-    private StudyParticipantAssignment assignment;
     private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
@@ -343,7 +342,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     public void setAssignment(StudyParticipantAssignment assignment) {
-        this.assignment = assignment;
+        this.reportingPeriod.setAssignment(assignment);
     }
 
     // This is annotated this way so that the IndexColumn will work with
