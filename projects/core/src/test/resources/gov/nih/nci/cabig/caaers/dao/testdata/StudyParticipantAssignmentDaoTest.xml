@@ -72,18 +72,8 @@
     <treatment_assignment
      	id="-1004"
      	code="adverseEventReportingPeriodCode"
-     	study_id="-4" />     	
-    <AE_REPORTS
-        id="-99"
-        assignment_id="-13"
-        created_at="2004-12-31"
-        />
-    <AE_REPORTS
-        id="-100"
-        assignment_id="-13"
-        created_at="2004-12-31"
-        />
-    <ae_reporting_periods
+     	study_id="-4" />   
+     	 <ae_reporting_periods
 		id="-1001"
 		start_date="2008-05-23"
 		end_date="2008-05-25"
@@ -101,7 +91,18 @@
 		assignment_id="-13"
 		epoch_id="-1010"
 		/>
-
+     	  	
+    <AE_REPORTS
+        id="-99"
+        reporting_period_id="-14"
+        created_at="2004-12-31"
+        />
+    <AE_REPORTS
+        id="-100"
+         reporting_period_id="-14"
+        created_at="2004-12-31"
+        />
+   
     <!-- Report's 1:1 dependent tables.  Ideally this wouldn't be necessary, since
         a report is never saved in the test, but hibernate's flushing one anyway. -->
     <DISEASE_HISTORIES/>
