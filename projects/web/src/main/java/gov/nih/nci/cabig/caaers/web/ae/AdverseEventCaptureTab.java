@@ -127,7 +127,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 				AdverseEvent ae = cmd.getAdverseEvents().get(i);
 				if(ae == null) continue;
 				
-				mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.term.term", "Term", true)); //Term
+				mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
 				if(!ae.getSolicited()){
 					if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){ //only if other is requrired
 						mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));

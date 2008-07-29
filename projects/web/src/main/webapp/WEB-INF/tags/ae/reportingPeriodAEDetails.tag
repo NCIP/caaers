@@ -55,11 +55,11 @@ Note: -
        	</tags:aeTermQuery>
        	<table id="observedTable" width="100%" class="tablecontent">
    			<tr>
-   				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
+   				<th scope="col" align="left" width="30%"><b>Term</b> </th>
    				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-   				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
-   				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
-   				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
+   				<th scope="col" align="left"><b>Attribution</b> </th>
+   				<th scope="col" align="left"><b>Hospitalization</b> </th>
+   				<th scope="col" align="left"><b>Expected</b> </th>
 				<th scope="col" align="left"> </th>
    			</tr>
 			<c:set var="noObservedAE" value="true" scope="request"/>

@@ -75,9 +75,9 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy){
 		List<InputField> fields= new ArrayList<InputField>();
 		fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.term.term", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
 		if(!ae.getSolicited()){
-			if(isMeddraStudy) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
+			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
 			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].detailsForOther", ""));
 		}
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].grade", ""));
