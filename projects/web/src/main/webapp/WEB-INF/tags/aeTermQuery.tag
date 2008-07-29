@@ -101,7 +101,7 @@
 			//each over iterator is not working, dont know why.
 			if(opts.length > 0) {
 				for(i = 0; i< opts.length; i++){
-					if(opts[i].selected) selTermMap.set(opts[i].value, opts[i].text);
+					if(opts[i].selected) selTermMap.set(opts[i].value, opts[i].title);
 				}
 			}
 			Windows.close(this.win.getId());
@@ -134,7 +134,10 @@
 				 createAE.getTermsByCategory(catId, function(ctcTerms) {
 				 	ctcTerms.each(function(ctcTerm) {
 				 		if(!(ignoreOtherSpecify && ctcTerm.fullName.indexOf('Other (Specify')  > 0) ){
-                       		var opt = new Option(ctcTerm.fullName, ctcTerm.id)
+				 		
+				 		  var ctcFullName = (ctcTerm.fullName.length > 70 ? ctcTerm.fullName.substring(0,70)+"..." :ctcTerm.fullName );
+                       		var opt = new Option(ctcFullName , ctcTerm.id)
+                       		opt.title=ctcTerm.fullName;
                        		terms.options.add(opt);
 				 		}
                    })
@@ -252,7 +255,7 @@
 	<div id="chooseCategory">
   	<chrome:box title="Choose CTC term(s):" autopad="true">
 		<tags:renderRow>
-			<jsp:attribute name="label">CTC categorie(s)</jsp:attribute>
+			<jsp:attribute name="label">CTC category(s)</jsp:attribute>
 			<jsp:attribute name="value">
 			  <div id="categories-div-id" class="categories-div" >
 			    <select name="categories" id="categories" size="5" class="categories" multiple >
@@ -268,7 +271,7 @@
 			<jsp:attribute name="value">
 				<div id="terms-div-id" class="terms-div">
 				  <select name="terms" id="terms" size="5" class="terms" multiple >
-					<option value=""> Please select a CTC term first </option>
+					<option value="" > Please select a CTC term first </option>
 				  </select>
 				</div>
 			</jsp:attribute>
