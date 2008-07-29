@@ -19,7 +19,7 @@
     	--%>
 <tr class="division ae-section" id="ae-section-${index}" >
 <c:if test="${aeTermIndex gt 0}">
-	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id}"/></td>
+	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
 </c:if>	
 <c:if test="${isSolicitedAE}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpstatus" begin="${aeTermIndex}">

@@ -19,12 +19,14 @@ import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Transient;
 
@@ -43,7 +45,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private List<CtcCategory> ctcCategories;
-
+	private Integer primaryAdverseEventId;
 	
 	private IndexFixedList<AdverseEvent> adverseEvents;
 	
@@ -62,6 +64,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Map<Integer, Boolean> selectedAesMap;
 	
 	private Ctc ctcVersion;
+	
+	private Set<AdverseEvent> seriousAdverseEvents;
 		
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
@@ -79,6 +83,19 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
+        this.seriousAdverseEvents = new TreeSet<AdverseEvent>(new Comparator<AdverseEvent>(){
+        	public int compare(AdverseEvent o1, AdverseEvent o2) {
+        		if(o1 == null && o2 == null) return 0;
+        		if(o1 == null || o1.getGrade() == null) return 1;
+        		if(o2 == null || o2.getGrade() == null) return -1;
+        		
+        		if(o1.getGrade().getCode() > o2.getGrade().getCode()) return -1;
+        		if(o1.getGrade().getCode() < o2.getGrade().getCode()) return 1;
+        		
+        		return 0;
+        		
+        	}
+        });
 	}
 	
 	public void save() {
@@ -158,11 +175,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	//if already avaliable return that, as we will take care of clearing it when we quit this tab.
     	if(requiredReportDefinitionsMap.isEmpty()){
     		this.requiredReportDefinitionsMap = evaluationService.findRequiredReportDefinitions(this.adverseEventReportingPeriod);
+    		//refresh the serious AE list here
+    		refreshSeriousAdverseEvents();
     	}
     	return new ArrayList<ReportDefinition>(requiredReportDefinitionsMap.keySet());
     }
 
-    
 
     /**
      * This method will return the ReportDefinition which are selected by user
@@ -298,6 +316,29 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 	}
     
+	/**
+	 * The list of serious adverse events is refreshed here.
+	 */
+	public void refreshSeriousAdverseEvents(){
+		seriousAdverseEvents.clear();
+		for(List<AdverseEvent> aes : requiredReportDefinitionsMap.values()){
+			for(AdverseEvent ae : aes){
+				seriousAdverseEvents.add(ae);
+			}
+		}
+	}
+	
+	/**
+	 * Find primary adverse event.
+	 */
+	public void findPrimaryAdverseEvent(){
+		if(adverseEventReportingPeriod.getAeReport() == null){
+			if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
+		}else {
+			this.primaryAdverseEventId = adverseEventReportingPeriod.getAeReport().getAdverseEvents().get(0).getId();
+		}
+	}
+	
     public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
 		this.selectedAesMap = selectedAesMap;
 	}
@@ -438,4 +479,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setReportDefinitionMap(Map<Integer, Boolean> reportDefinitionMap) {
 		this.reportDefinitionMap = reportDefinitionMap;
 	}
+
+	public Integer getPrimaryAdverseEventId() {
+		return primaryAdverseEventId;
+	}
+
+	public void setPrimaryAdverseEventId(Integer primaryAdverseEventId) {
+		this.primaryAdverseEventId = primaryAdverseEventId;
+	}
+    
+    
 }

@@ -40,6 +40,8 @@ public interface InputField {
     String ENABLE_DELETE = "enableDelete"; // will put delete symbol near to the field(in
                                             // renderRow.tag).
     
+    String DEFAULT_VALUE = "defaultValue";
+    
     //Below fields are used for SPLIT_DATE kind of fields.
     String MONTH_REQUIRED = "mmRequired";
     String DAY_REQUIRED = "ddRequired";
@@ -71,6 +73,6 @@ public interface InputField {
     Map<String, Object> getAttributes();
 
     enum Category {
-        TEXT, TEXTAREA, DATE,SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT,LABEL
+        TEXT, TEXTAREA, DATE,SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT,LABEL, RADIO
     }
 }

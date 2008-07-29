@@ -185,7 +185,12 @@ public class InputFieldFactory {
         return new DefaultInputField(InputField.Category.CHECKBOX, propertyName, displayName,
                         validators);
     }
-
+    
+    public static InputField createRadioButtonField(String propertyName, String displayName, String value, FieldValidator... validators){
+    	DefaultInputField inputField = new DefaultInputField(InputField.Category.RADIO, propertyName, displayName, validators);
+    	inputField.getAttributes().put(InputField.DEFAULT_VALUE, value);
+    	return inputField;
+    }
     /**
      * Intended mainly for testing.
      */

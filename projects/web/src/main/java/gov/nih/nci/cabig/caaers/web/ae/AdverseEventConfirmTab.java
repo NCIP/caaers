@@ -84,6 +84,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].expected", ""));
+		fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
 		return fields;
 	}
 	
@@ -112,6 +113,8 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		//refresh the selectedAEMap
 		command.refreshSelectedAesMap();
 		
+		//find primary AE
+		command.findPrimaryAdverseEvent();
 		
 		
 		//Call the super class referenceData, so that the createFieldGroup is executed

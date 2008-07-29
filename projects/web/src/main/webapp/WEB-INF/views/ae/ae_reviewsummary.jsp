@@ -14,12 +14,17 @@
 <tags:includeScriptaculous/>
 <script type="text/javascript">
 
-var reviewAESummaryClass = Class.create();
-Object.extend(reviewAESummaryClass.prototype, {
-});
-	
+var aeSummary = {
+	eventHandler : function(e){
+		
+	}	
+};
+aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
+
 	Event.observe(window, "load", function() {
-	
+
+		Event.observe('single-fields', 'click', aeSummary.handler, true);
+		
 		if($('manualselect2')){
       		 Event.observe('manualselect2', "click", function() {
       	 		var answer = confirm('Are you sure you want to bypass the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
@@ -60,7 +65,7 @@ Object.extend(reviewAESummaryClass.prototype, {
 		<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 			<tr>
 				<td>${rdTable.value.required}</td>
-				<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+				<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 				<td>${rdTable.value.status}</td>
 			</tr>
 		</c:forEach>
@@ -92,7 +97,7 @@ Object.extend(reviewAESummaryClass.prototype, {
 				<c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
 					<tr>
 						<td> ${rdTable.value.required} </td>
-						<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+						<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 						<td>${rdTable.value.status}</td>
 					</tr>
 				</c:forEach>
@@ -109,7 +114,7 @@ Object.extend(reviewAESummaryClass.prototype, {
         		instead manually select from the list of all reports defined for this study the expedited 
         		reports you wish to complete and submit. To do so, click the Manually Select Reports button below.
         		</p>
-				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually select reports" /></div>
+				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually select reports"  class="manualSelectBtn"/></div>
   	 	 </c:when>
   	 	 <c:otherwise>
   	 	    <p>The AEs you have entered <strong>do not</strong> seem to require any expedited reporting. 
@@ -125,7 +130,7 @@ Object.extend(reviewAESummaryClass.prototype, {
 			<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 				<tr>
 					<td>${rdTable.value.required}</td>
-					<td><tags:renderInputs field="${rdTable.value.field}"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+					<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 					<td>${rdTable.value.status}</td>
 				</tr>
 			</c:forEach>
@@ -146,10 +151,11 @@ Object.extend(reviewAESummaryClass.prototype, {
     				<th scope="col" align="left"><b>Attribution</b> </th>
     				<th scope="col" align="left"><b>Hospitalization</b> </th>
     				<th scope="col" align="left"><b>Expected</b> </th>
+					<th scope="col" align="left"><b>Is primary?</b></th>
     			</tr>
     			<tr id="seriousBlankRow" />
     			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-    				<c:if test="${ae.serious == true}">
+    				<c:if test="${ae.serious}">
     					<ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
     				</c:if>
     			</c:forEach>
@@ -162,15 +168,16 @@ Object.extend(reviewAESummaryClass.prototype, {
         	<table id="observedTable" width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Select</b></th>
-    				<th scope="col" align="left" width="30%"><b>Term</b> </th>
-    				<th scope="col" align="left"><b>Grade</b> </th>
+    				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
+    				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
     				<th scope="col" align="left"><b>Attribution</b> </th>
     				<th scope="col" align="left"><b>Hospitalization</b> </th>
     				<th scope="col" align="left"><b>Expected</b> </th>
+					<th scope="col" align="left"><b>Is primary?</b></th>
     			</tr>
     			<tr id="observedBlankRow" />
     			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            		<c:if test="${(ae.solicited == false) and (ae.serious == false)}">
+            		<c:if test="${(not ae.solicited) and (not ae.serious)}">
 	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	            	</c:if>
             	</c:forEach>
@@ -189,10 +196,11 @@ Object.extend(reviewAESummaryClass.prototype, {
     					<th scope="col" align="left"><b>Attribution</b> </th>
    						<th scope="col" align="left"><b>Hospitalization</b> </th>
     					<th scope="col" align="left"><b>Expected</b> </th>
+						<th scope="col" align="left"><b>Is primary?</b></th>
     				</tr>
     				<tr id="solicitedBlankRow" />
        				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-       					<c:if test="${(ae.solicited == true) and (ae.serious == false)}">
+       					<c:if test="${(ae.solicited) and (not ae.serious)}">
 	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	       				</c:if>
        				</c:forEach>
