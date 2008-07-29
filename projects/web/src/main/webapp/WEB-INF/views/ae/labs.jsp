@@ -148,7 +148,7 @@
     <jsp:attribute name="instructions">
     	<tags:instructions code="instruction_ae_labs" />
     	<c:if test="${not empty configuration.map.labViewerBaseUrl}">
-			<p>View this person's details in the <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso">lab viewer</a>.</p>
+			<p>View this person's details in the <a href="${configuration.map.labViewerBaseUrl}/studysubject.do?studySubjectGridId=${command.assignment.gridId}" class="sso" target="labviewer">lab viewer</a>.</p>
 		</c:if>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
