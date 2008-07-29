@@ -23,5 +23,10 @@
 
 <tags:javascriptLink name="tigra-menu/tigra-menu" />
 <tags:javascriptLink name="tigra-menu/tigra-menu_tpl" />
-
 <tags:javascriptLink name="side-bar/side-bar" />
+
+<tags:javascriptLink name="ccts-hotlinks" />
+<script type="text/javascript">
+  CCTS.appShortName = 'caaers'
+</script>
+
