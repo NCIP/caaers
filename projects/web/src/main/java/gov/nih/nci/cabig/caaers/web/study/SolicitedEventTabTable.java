@@ -73,7 +73,7 @@ public class SolicitedEventTabTable{
 			//add ctc or medra id as 1st element
 			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getId() : solicitedAE.getLowLevelTerm().getId() );
 			// add ctdc or medra term as 2nd element
-			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getTerm() : solicitedAE.getLowLevelTerm().getMeddraTerm() );
+			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getFullName() : solicitedAE.getLowLevelTerm().getFullName());
 			
 			for( Epoch epoch : listOfEpochs )
 			{
