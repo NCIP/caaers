@@ -89,6 +89,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     private Boolean solicited;
     
+    private Boolean serious;
+    
     public AdverseEvent(){
     	solicited = Boolean.FALSE;
     }
@@ -463,5 +465,14 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public Boolean getSolicited() {
 		return solicited;
 	}
+    
+    public void setSerious(Boolean serious){
+    	this.serious = serious;
+    }
+    
+    @Transient
+    public Boolean getSerious(){
+    	return serious;
+    }
 
 }
