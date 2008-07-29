@@ -135,21 +135,42 @@ Object.extend(reviewAESummaryClass.prototype, {
   	 	 </c:otherwise>
   	 	</c:choose>
   	 <%-- </c:if> --%>
+  	 
+  	<chrome:division title="Serious adverse event(s)">
+  		<c:if test='${command.adverseEventReportingPeriod != null}'>
+  			<table id="seriousTable" width="100%" class="tablecontent">
+  				<tr>
+    				<th scope="col" align="left"><b>Select</b></th>
+    				<th scope="col" align="left" width="30%"><b>Term</b> </th>
+    				<th scope="col" align="left"><b>Grade</b> </th>
+    				<th scope="col" align="left"><b>Attribution</b> </th>
+    				<th scope="col" align="left"><b>Hospitalization</b> </th>
+    				<th scope="col" align="left"><b>Expected</b> </th>
+    			</tr>
+    			<tr id="seriousBlankRow" />
+    			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
+    				<c:if test="${ae.serious == true}">
+    					<ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+    				</c:if>
+    			</c:forEach>
+  			</table>
+  		</c:if>
+  	</chrome:division>
 
 	<chrome:division title="Observed adverse event(s)">
 		<c:if test='${command.adverseEventReportingPeriod != null}'>
         	<table id="observedTable" width="100%" class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Select</b></th>
-    				<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Attribution</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Hospitalization</b> </th>
-    				<th scope="col" align="left"><b><tags:requiredIndicator/>Expected</b> </th>
+    				<th scope="col" align="left" width="30%"><b>Term</b> </th>
+    				<th scope="col" align="left"><b>Grade</b> </th>
+    				<th scope="col" align="left"><b>Attribution</b> </th>
+    				<th scope="col" align="left"><b>Hospitalization</b> </th>
+    				<th scope="col" align="left"><b>Expected</b> </th>
     			</tr>
     			<tr id="observedBlankRow" />
     			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            		<c:if test="${ae.solicited == false}">
+            		<c:if test="${(ae.solicited == false) and (ae.serious == false)}">
 	            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	            	</c:if>
             	</c:forEach>
@@ -171,7 +192,7 @@ Object.extend(reviewAESummaryClass.prototype, {
     				</tr>
     				<tr id="solicitedBlankRow" />
        				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-       					<c:if test="${ae.solicited == true}">
+       					<c:if test="${(ae.solicited == true) and (ae.serious == false)}">
 	       					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	       				</c:if>
        				</c:forEach>

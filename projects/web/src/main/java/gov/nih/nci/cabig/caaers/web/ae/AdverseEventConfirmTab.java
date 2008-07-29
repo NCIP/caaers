@@ -184,7 +184,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
         		//Add the selected Aes to this aeReport object.
         		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
         			Integer aeId = ae.getId();
-        			if(command.getSelectedAesMap().containsKey(aeId))
+        			if(command.getSelectedAesMap().containsKey(aeId) && command.getSelectedAesMap().get(aeId).equals(Boolean.TRUE))
         				aeReport.addAdverseEvent(ae);
         		}
         		command.getAdverseEventReportingPeriod().setAeReport(aeReport);

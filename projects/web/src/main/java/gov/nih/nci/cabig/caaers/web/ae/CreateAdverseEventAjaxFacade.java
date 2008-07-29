@@ -111,7 +111,7 @@ public class CreateAdverseEventAjaxFacade {
     + ".FORM.command";
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
     private static Class<?>[] CONTROLLERS = {
-    	CreateAdverseEventController.class, EditAdverseEventController.class, CaptureAdverseEventController.class 
+    	CaptureAdverseEventController.class,CreateAdverseEventController.class, EditAdverseEventController.class 
     };
 
     private StudyDao studyDao;
