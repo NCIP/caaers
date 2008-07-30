@@ -35,7 +35,7 @@
                 </tr>
                 <c:forEach items="${labs}" var="alab" varStatus="status">
                 <c:if test="${!alab.dismissed}">
-                <tr id="LAB_${alab.id}" onMouseOver="bgColor='yellow'" onMouseOut="bgColor='#cccccc'">
+                <tr id="LAB_${alab.id}" onMouseOver="bgColor='yellow'" onMouseOut="bgColor='#eeeeee'">
                     <td>${alab.name}</td>
                     <td>${fn:substring(alab.labDate, 0, 10)}</td>
                     <td>${alab.result}</td>
