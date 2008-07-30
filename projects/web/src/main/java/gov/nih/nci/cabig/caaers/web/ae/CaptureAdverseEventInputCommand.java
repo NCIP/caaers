@@ -84,6 +84,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
+        
         this.seriousAdverseEvents = new TreeSet<AdverseEvent>(new Comparator<AdverseEvent>(){
         	public int compare(AdverseEvent o1, AdverseEvent o2) {
         		if(o1 == null && o2 == null) return 0;
@@ -108,13 +109,16 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public void reassociate(){
-		if(this.adverseEventReportingPeriod != null)
-			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
-		
+
 		//reassociate all report definitions
+		if(allReportDefinitions != null)
 		for(ReportDefinition repDef : allReportDefinitions){
 			reportDefinitionDao.reassociate(repDef);
 		}
+		
+		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null)
+			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
+		
 	}
 
 
@@ -279,12 +283,15 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      * @return
      */
     public List<AdverseEvent> findUnselectedAdverseEvents(){
-    	if(adverseEventReportingPeriod.getAeReport() == null){
-    		return new ArrayList<AdverseEvent>(1);
-    	}else {
-    		List<AdverseEvent> selectedAdverseEvents = findNewlySelectedAdverseEvents();
-    		return ListUtils.subtract(adverseEventReportingPeriod.getAeReport().getAdverseEvents(), selectedAdverseEvents);
+    	List<AdverseEvent> unselectedEvents = new ArrayList<AdverseEvent>();
+    	if(adverseEventReportingPeriod.getAeReport() != null){
+    		for(AdverseEvent ae : adverseEventReportingPeriod.getAeReport().getAdverseEvents()){
+    			if(!selectedAesMap.get(ae.getId())){
+    				unselectedEvents.add(ae);
+    			}
+    		}
     	}
+    	return unselectedEvents;	
     }
     
     /**
