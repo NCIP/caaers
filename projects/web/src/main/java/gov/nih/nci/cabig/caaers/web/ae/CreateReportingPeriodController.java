@@ -214,7 +214,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     	// Check for duplicate baseline Reporting Periods.
     	if(rPeriod.getEpoch().getName().equals("Baseline")){
     		for(AdverseEventReportingPeriod aerp: rPeriodList){
-    			if(aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")){
+    			if(!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")){
     				InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(2);
     				errors.rejectValue(epochField.getPropertyName(), "REQUIRED",
                     "A Baseline Reporting Period already exists");
