@@ -532,7 +532,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(mappedBy = "expeditedReport")
     @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
-        if (reporter == null) setReporter(new Reporter());
         return reporter;
     }
 
@@ -545,7 +544,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @OneToOne(mappedBy = "expeditedReport")
     @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE })
     public Physician getPhysician() {
-        if (physician == null) setPhysician(new Physician());
         return physician;
     }
 
