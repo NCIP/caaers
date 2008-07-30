@@ -952,6 +952,7 @@ public class CreateAdverseEventAjaxFacade {
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
         for(int id: filteredTermIDs){
         	AdverseEvent ae = new AdverseEvent();
+        	ae.setSolicited(false);
         	
         	if(isMeddra){
         		//populate MedDRA term
