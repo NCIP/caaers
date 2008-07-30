@@ -75,7 +75,7 @@ public class ExpeditedAdverseEventReportDao extends
             getHibernateTemplate().saveOrUpdate(ae);
         }
         try {
-            if (report.getReporter().isSavable()) {
+            if (report.getReporter() != null && report.getReporter().isSavable()) {
                 getHibernateTemplate().saveOrUpdate(report.getReporter());
             } else {
                 log.debug("Reporter not savable; skipping cascade");
@@ -85,7 +85,7 @@ public class ExpeditedAdverseEventReportDao extends
             lie.printStackTrace();
         }
         try {
-            if (report.getPhysician().isSavable()) {
+            if (report.getPhysician() != null && report.getPhysician().isSavable()) {
                 getHibernateTemplate().saveOrUpdate(report.getPhysician());
             } else {
                 log.debug("Physican not savable; skipping cascade");
@@ -114,12 +114,12 @@ public class ExpeditedAdverseEventReportDao extends
     	log.debug("Reassociating ExpeditedAdverseEventReport...");
         super.reassociate(report);
         
-        if (report.getReporter().isTransient()) {
+        if (report.getReporter() == null || report.getReporter().isTransient()) {
             log.debug("Reporter unsaved; skipping reassociate cascade");
         } else {
            getHibernateTemplate().lock(report.getReporter(), LockMode.NONE);
         }
-        if (report.getPhysician().isTransient()) {
+        if (report.getPhysician() == null || report.getPhysician().isTransient()) {
             log.debug("Physican unsaved; skipping reassociate cascade");
         } else {
             getHibernateTemplate().lock(report.getPhysician(), LockMode.NONE);
