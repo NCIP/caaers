@@ -162,7 +162,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 		return map;
 	}
 	
-
+	@Override
+	public void beforeBind(HttpServletRequest request,CaptureAdverseEventInputCommand command) {
+		super.beforeBind(request, command);
+	}
 
 	
 	@Override

@@ -73,6 +73,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		return null;
 	}
 	
+	@Override
+	protected void onBindOnNewForm(HttpServletRequest request, Object command,BindException errors) throws Exception {
+		super.onBindOnNewForm(request, command, errors);
+	}
+	
 	/**
 	 *  createBinder method is over-ridden. In this use-case, we need to bind only the adverseEventReportingPeriod to the command object
 	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 

@@ -1,7 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -77,6 +80,12 @@ public class ReporterTab extends AeTab {
     @Override
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         super.onDisplay(request, command);
+        
+        //We need to initialize reporter and physican, if they are null. 
+        ExpeditedAdverseEventReport aeReport = command.getAeReport();
+        if(aeReport.getReporter() == null) aeReport.setReporter(new Reporter());
+        if(aeReport.getPhysician() == null) aeReport.setPhysician(new Physician());
+        
         boolean severe = false;
         for (AdverseEvent event : command.getAeReport().getAdverseEvents()) {
             severe |= evaluationService.isSevere(command.getAssignment(), event);

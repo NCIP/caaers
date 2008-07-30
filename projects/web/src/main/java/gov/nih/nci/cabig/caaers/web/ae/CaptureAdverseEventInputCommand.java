@@ -112,7 +112,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 		//reassociate all report definitions
 		for(ReportDefinition repDef : allReportDefinitions){
-			reportDefinitionDao.reassociate(repDef);
+			reportDefinitionDao.merge(repDef);
 		}
 	}
 
@@ -451,8 +451,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public List<CtcCategory> getCtcCategories() {
-		if(ctcCategories == null)
-			setCtcCategories(study.getAeTerminology().getCtcVersion().getCategories());
+		if(ctcCategories == null){
+			if(adverseEventReportingPeriod != null)
+			setCtcCategories(adverseEventReportingPeriod.getStudy().getAeTerminology().getCtcVersion().getCategories());
+		}
+			
 		return ctcCategories;
 	}
 	
