@@ -37,6 +37,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	protected CtcTermDao ctcTermDao;
 	protected static final Collection<Grade> GRADES = new ArrayList<Grade>(5);
+	protected static final Collection<Hospitalization> HOSPITALIZATION = new ArrayList<Hospitalization>(2);
 	protected EvaluationService evaluationService;
 	protected ReportRepository reportRepository;
 	protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
@@ -46,6 +47,11 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         GRADES.remove(Grade.NORMAL);
         GRADES.remove(Grade.NOT_EVALUATED);
     }
+	
+	static {
+		HOSPITALIZATION.addAll(Arrays.asList(Hospitalization.values()));
+		HOSPITALIZATION.remove(Hospitalization.NONE);
+	}
 	
 	public AdverseEventTab(String longTitle, String shortTitle, String viewName){
 		super(longTitle, shortTitle, viewName);
@@ -81,8 +87,8 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	
 	protected Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.putAll(InputFieldFactory.collectOptions(Arrays
-                        .asList(Hospitalization.values()), "name", "displayName"));
+        hospitalizationOptions.put("", "Please Select");
+        hospitalizationOptions.putAll(InputFieldFactory.collectOptions(HOSPITALIZATION, "name", "displayName"));
         return hospitalizationOptions;
     }
 	
@@ -101,20 +107,20 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         //for solicited AEs always add NotEvaluated and Normal/Evaluated
         if(ae.getSolicited()){
         	gradeOptions.put(Grade.NOT_EVALUATED.getName(), Grade.NOT_EVALUATED.getDisplayName());
-        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getDisplayName());
+        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getCode() + "-" + Grade.NORMAL.getDisplayName());
         }
         if(terminology.equals("Ctc")){
         	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
         	if(ctcGrades == null || ctcGrades.isEmpty()){
         		//no- add grades (1-5)
-        		gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
+        		gradeOptions.putAll(InputFieldFactory.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
         	}else{
         		//if contextual grades are there , add it
-        		gradeOptions.putAll(InputFieldFactory.collectOptions(ctcGrades, "name", "displayName"));
+        		gradeOptions.putAll(InputFieldFactory.collectCustomOptions(ctcGrades, "name", "code", "displayName", "-"));
         	}
         }else{
         	//always add the grades (1-5)
-        	gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "displayName"));
+        	gradeOptions.putAll(InputFieldFactory.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
         }
             	
         return gradeOptions;

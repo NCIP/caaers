@@ -30,8 +30,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	private static final String MAIN_FIELD_GROUP = "main";
 	private static final String RPD_FIELD_GROUP = "rpd";
 	
-	
-	
 	public AdverseEventConfirmTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
     }
@@ -39,6 +37,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	@Override
     public Map<String, InputFieldGroup> createFieldGroups(CaptureAdverseEventInputCommand command) {
 		final boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+		final boolean isBaseline = command.getAdverseEventReportingPeriod().isBaselineReportingType();
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		
 		//create fields for AEs
@@ -50,7 +49,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 				final int j = i;
 				InputFieldGroup fieldGroup = new InputFieldGroup(){
 					public List<InputField> getFields() {
-						return createCustomFieldGroup(adverseEvents.get(j),j, isMeddraStudy);
+						return createCustomFieldGroup(adverseEvents.get(j),j, isMeddraStudy, isBaseline);
 					}
 					public String getDisplayName() {
 						return "";
@@ -72,9 +71,10 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		return map;
     }
 	
-	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy){
+	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy, boolean isBaseline){
 		List<InputField> fields= new ArrayList<InputField>();
-		fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
+		if(!isBaseline)
+			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
 		if(!ae.getSolicited()){
 			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
@@ -84,7 +84,8 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].expected", ""));
-		fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
+		if(!isBaseline)
+			fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
 		return fields;
 	}
 	
@@ -92,6 +93,12 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
 		int i = 0;
+		
+		//Call the super class referenceData, so that the createFieldGroup is executed
+		Map<String, Object> refdata = super.referenceData(request, command);
+		
+		if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
+			return refdata;
 		
 		//do the setup stuff
 		
@@ -117,8 +124,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		command.findPrimaryAdverseEvent();
 		
 		
-		//Call the super class referenceData, so that the createFieldGroup is executed
-		Map<String, Object> refdata = super.referenceData(request, command);
+		
 		
 		//create the 3 column display for all report definitions.
 		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
@@ -173,6 +179,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
      */
 	public void saveExpeditedReport(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors){
 
+		
         Collection<ReportDefinition> newlySelectedDefs = command.findNewlySelectedReportDefinitions();
         
         removeUnselectedReports(command);
