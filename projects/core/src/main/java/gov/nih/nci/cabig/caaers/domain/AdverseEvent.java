@@ -92,7 +92,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private Boolean serious;
     
     public AdverseEvent(){
-    	solicited = Boolean.FALSE;
     }
 
     // //// BOUND PROPERTIES
