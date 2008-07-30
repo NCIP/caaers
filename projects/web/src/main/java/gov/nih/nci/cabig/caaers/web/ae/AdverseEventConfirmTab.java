@@ -126,9 +126,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		//find primary AE
 		command.findPrimaryAdverseEvent();
 		
-		
-		
-		
 		//create the 3 column display for all report definitions.
 		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();
 		Map<String, ReportDefinitionDisplayTable> selectedReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();

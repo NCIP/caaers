@@ -143,7 +143,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
   	 		</c:choose>
   	 	
 	  	 	
-		  	<chrome:division title="Serious adverse event(s)">
+		  	<chrome:division id="div-saes" title="Serious adverse event(s)" collapsable="true">
   				<c:if test='${command.adverseEventReportingPeriod != null}'>
   					<table id="seriousTable" width="100%" class="tablecontent">
   						<tr>
@@ -165,7 +165,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
   				</c:if>
   			</chrome:division>
   	
-			<chrome:division title="Observed adverse event(s)">
+			<chrome:division id="div-oaes" title="Observed adverse event(s)" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -188,7 +188,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited adverse event(s)">
+			<chrome:division title="Solicited adverse event(s)" id="div-soaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>
@@ -215,7 +215,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
 		
 		<%-- This is for baseline reporting period --%> 
 		<c:if test="${reportingPeriodType == 'Baseline'}">
-			<chrome:division title="Observed adverse event(s)">
+			<chrome:division title="Observed adverse event(s)" id="div-oaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -236,7 +236,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited adverse event(s)">
+			<chrome:division title="Solicited adverse event(s)" id="div-soaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>

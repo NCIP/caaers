@@ -23,7 +23,7 @@
 </style>
 <script>
 	Event.observe(window, "load", function(){
-		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id});
+		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, ${command.editFlow});
 		
 		$('ok-id').observe("click", function(){
 			window.parent.Windows.close(window.parent.rpCreator.win.getId());			

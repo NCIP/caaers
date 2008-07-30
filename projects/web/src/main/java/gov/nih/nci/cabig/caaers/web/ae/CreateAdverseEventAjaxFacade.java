@@ -907,7 +907,7 @@ public class CreateAdverseEventAjaxFacade {
      * @return
      */
     
-    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId){
+    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId, boolean fetchOnlyDetails){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
     	command.refreshAssignment(reportingPeriodId);
     	

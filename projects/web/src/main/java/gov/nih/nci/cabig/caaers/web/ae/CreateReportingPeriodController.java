@@ -172,21 +172,22 @@ public class CreateReportingPeriodController extends SimpleFormController {
         reportingPeriod.setAssignment(command.getAssignment());
         
         //initialize the solicited AEs
-    	for(SolicitedAdverseEvent sae: reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
-			AdverseEvent adverseEvent = new AdverseEvent();
-			adverseEvent.setSolicited(true);
+        if(reportingPeriod.getAdverseEvents().isEmpty()){
+        	for(SolicitedAdverseEvent sae: reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
+        		AdverseEvent adverseEvent = new AdverseEvent();
+        		adverseEvent.setSolicited(true);
 			
-			if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
-				adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
-			else{
-				AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-				aeCtcTerm.setCtcTerm(sae.getCtcterm());
-				adverseEvent.setAdverseEventTerm(aeCtcTerm);
-				aeCtcTerm.setAdverseEvent(adverseEvent);
-			}
-			reportingPeriod.addAdverseEvent(adverseEvent);	
-		}
-        
+        		if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA){
+        			adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
+        		}else{
+        			AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+        			aeCtcTerm.setCtcTerm(sae.getCtcterm());
+        			adverseEvent.setAdverseEventTerm(aeCtcTerm);
+        			aeCtcTerm.setAdverseEvent(adverseEvent);
+        		}
+        		reportingPeriod.addAdverseEvent(adverseEvent);	
+        	}
+        }
         adverseEventReportingPeriodDao.save(reportingPeriod);
         
         Map map = new LinkedHashMap();

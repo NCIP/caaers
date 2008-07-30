@@ -18,6 +18,7 @@ public class ReportingPeriodCommand {
     private Participant participant;
     private Study study;
     private StudyParticipantAssignment assignment;
+    private boolean editFlow;
    
     
     /**
@@ -40,7 +41,8 @@ public class ReportingPeriodCommand {
         	treatmentAssignment.setStudy(this.study);
         	this.reportingPeriod.setTreatmentAssignment(treatmentAssignment);
     	}else {
-    		this.reportingPeriod = reportingPeriod; 
+    		this.reportingPeriod = reportingPeriod;
+    		this.editFlow = true;
     	}
     	
     	
@@ -68,5 +70,7 @@ public class ReportingPeriodCommand {
     	return study;
     }
     
-
+    public boolean isEditFlow() {
+		return editFlow;
+	}
 }

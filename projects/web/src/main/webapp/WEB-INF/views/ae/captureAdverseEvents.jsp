@@ -87,7 +87,7 @@ div.row div.value {
  	 		if(this.rpCtrl.value == -1){
  	 	 		this.displayRPPopup(); //create reporting period flow
  	 		}else if(this.rpCtrl.value){
-				this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value); //show the reporting period details and AEs	 	 	 		
+				this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value, false); //show the reporting period details and AEs	 	 	 		
  	 		}
  	 		
  		},
@@ -116,13 +116,14 @@ div.row div.value {
  	 	 	 	this.rpEditCtrl.hide();
  	 	 	}
  		},
- 		refreshRPCrlOptionsAndShowDetails:function(newRPId){
+ 		refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails){
  	 		//will refresh the options of reporting period.
- 	 		createAE.refreshReportingPeriodAndGetDetails(newRPId, function(ajaxOutput){
+ 	 		createAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput){
  	 	 		this.rpCtrl.options.length = 1;
  	 	 		ajaxOutput.objectContent.each(function(rp){
  	 	 	 		 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
  	 	 	 		}.bind(this));
+	 	 	 	if(fetchOnlyDetails) this.clearRPDetails();
  	 	 		this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
  	 	 		this.rpCtrl.value = newRPId;
  	 	 		this.showRPDetails(ajaxOutput.htmlContent);

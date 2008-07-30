@@ -7,19 +7,9 @@ Note: -
    This should work on the orginal adverse event list, and not on the decorated list in command
 --%>
 <c:if test='${not empty command.adverseEventReportingPeriod}'>
-<div>    		
-	<div class="leftpanel">
-		<c:forEach items="${fieldGroups.reportingPeriodDetailsFG.fields}" var="field">
-      		<tags:renderRow field="${field}" />
-      	</c:forEach>
-	</div>
-	
-	<div class="rightpanel">
-		<c:forEach items="${fieldGroups.treatmentAssignmentFG.fields}" var="field">
-     			<tags:renderRow field="${field}"/>
-     		</c:forEach>
-	</div>
-</div>
+<chrome:division id="rpd-div" title="Reporting period details">
+	<ae:reportingPeriodDetails />
+</chrome:division>
 
 <chrome:division title="Solicited adverse event(s)" collapsable="true" id="solicitatedID">
 	<center>
