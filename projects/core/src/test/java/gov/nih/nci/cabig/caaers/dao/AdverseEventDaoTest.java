@@ -23,6 +23,9 @@ import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.util.Calendar;
+import java.util.List;
+
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 /**
  * @author Rhett Sutphin
@@ -146,6 +149,15 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("This term is not LowLevelTerm", true,
                         loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
         assertEquals("Wrong Meddra Id", -11, (int) loaded.getAdverseEventTerm().getTerm().getId());
+    }
+    
+    public void findAll() throws Exception {
+    	
+    	List aeList = getDao().findAll(null);
+    	System.out.println(aeList);
+    	assertNotNull(aeList);
+    	assertTrue( aeList.size() > 0 );
+    	assertSame(2, aeList.size());
     }
 
 }
