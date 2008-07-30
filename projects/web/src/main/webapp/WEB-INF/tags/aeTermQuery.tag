@@ -226,9 +226,9 @@
 
 </script>
 
-<chrome:box title="Find &amp; add adverse event term(s)">
+<chrome:box title="Find &amp; Add Adverse Event (AE) Term(s)">
  	<c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
-    <c:if test="${empty instructions}"><p class="instructions">Enter the term in the autocompleter and click on add to add a single solicited adverse event term, click on query to add multiple.</p></c:if>
+    <c:if test="${empty instructions}"><p class="instructions">To enter AE terms individually, begin to enter the AE term below, select the appropriate term, and click "Add".</p></c:if>
  		<table id="fnd-0" class="query">
   			<tbody>
   				<tr>
@@ -242,7 +242,9 @@
   					</td>
   					<c:if test="${not isMeddra}">
   					<td class="two">OR</td>
-  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" /></td>
+  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" />
+  					 &nbsp;&nbsp;&nbsp;&nbsp;click on "Add Multiple" to add several AE terms at once.
+  					</td>
   					</c:if>
   					
   				</tr>
