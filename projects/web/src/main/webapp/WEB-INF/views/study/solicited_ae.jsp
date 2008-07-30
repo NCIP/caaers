@@ -257,7 +257,7 @@
       var xleft = getY(event_id,event);
       
       
-      var win = new Window({ id: window_id , className: "alphacube", closable : false, minimizable : false, maximizable : false, title: "Add Instructions", height:200, width: 450, top: xtop, left: xleft});
+      var win = new Window({ id: window_id , className: "alphacube", closable : false, minimizable : false, maximizable : false, title: "Edit Instructions", height:200, width: 450, top: xtop, left: xleft});
       
       win.setDestroyOnClose(); 
       win.setContent( div_id );
@@ -410,9 +410,7 @@
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
   		<p id="instructions">
-To associate the term to a treatment period type, select the appropriate check box(es). 
-Each term can be associated to multiple treatment period types. <br>To associate all terms to a treatment period type, select the check box directly under <b>Add Instructions</b>.
-<br>To add specific instructions for the reporting period type, click <b>Add Instructions</b>.
+  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add, remove, or edit the reporting period types required for this study.
 		</p>
 	
 	    <tags:hasErrorsMessage />
