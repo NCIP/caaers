@@ -353,7 +353,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     @Cascade(value = {
             // Manually-managing PERSIST cascades due to cascade ordering issue
             CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DELETE_ORPHAN})
+            CascadeType.REFRESH})
     protected List<AdverseEvent> getAdverseEventsInternal() {
         return lazyListHelper.getInternalList(AdverseEvent.class);
     }
