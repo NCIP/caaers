@@ -565,3 +565,32 @@ function replaceDefaultText(e) {
 
 }
 
+// COLLAPSABLE DIV ELEMENT
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function SwitchCollapsableState(contentElement, id) {
+
+        panelDiv = $(contentElement);
+        imageId= 'image-' + id;
+        imageSource = $(imageId).src;
+
+        if (panelDiv.style.display == 'none') {
+            OpenUp(panelDiv, arguments[1] || {});
+            document.getElementById(imageId).src=imageSource.replace('maximize','minimize');
+        } else {
+            CloseDown(panelDiv, arguments[1] || {});
+            document.getElementById(imageId).src=imageSource.replace('minimize','maximize');
+        }
+    }
+
+    function OpenUp(element) {
+        element = $(element);
+        new Effect.BlindDown(element, arguments[1] || {});
+    }
+
+    function CloseDown(element) {
+        element = $(element);
+        new Effect.BlindUp(element, arguments[1] || {});
+    }
+
+////////////////////////////////////////////////////////////////////////////////////////////////

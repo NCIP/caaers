@@ -20,10 +20,10 @@ Note: -
      		</c:forEach>
 	</div>
 </div>
-  
-<chrome:division title="Solicited adverse event(s)">
+
+<chrome:division title="Solicited adverse event(s)" collapsable="true" id="solicitatedID">
 	<center>
-			<table id="solicitedTable" width="100%" class="tablecontent">
+			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
 				<tr>
 					<th scope="col" align="left" width="30%"><b>Term</b> </th>
 					<th scope="col" align="left"><b>Grade</b> </th>
@@ -46,9 +46,9 @@ Note: -
    			</table>
    	</center>
  </chrome:division>
-           
+
        
-<chrome:division title="Observed adverse event(s)">
+<chrome:division title="Observed adverse event(s)" collapsable="true" id="observedID">
        	<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  
        		callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
        		version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
