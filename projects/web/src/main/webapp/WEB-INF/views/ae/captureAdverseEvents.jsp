@@ -141,7 +141,7 @@ div.row div.value {
  		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
 				$('observedBlankRow').insert({after:responseStr});
 				if( $('observedEmptyRow')) $('observedEmptyRow').remove();
-				//this.initializeOtherMeddraAutoCompleters(listOfTermIDs).defer();
+				this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
  		  	}.bind(this));
  		},
  		isTermAgainAdded:function(termID){
@@ -153,8 +153,8 @@ div.row div.value {
  		},
  		initializeOtherMeddraAutoCompleters: function(listOfTermIDs){
  	 		listOfTermIDs.each(function(aTermId){
- 	 	 		var acEls = $$('f'+aTermId);
- 	 	 		if(acEls) alert(acEls[0].id);
+ 	 	 		var acEls = $$('om'+aTermId);
+ 	 	 		alert(acEls);
  	 		}.bind(this));
  		},
  		deleteAdverseEvent:function(indx){

@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -112,7 +113,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 		//reassociate all report definitions
 		for(ReportDefinition repDef : allReportDefinitions){
-			reportDefinitionDao.merge(repDef);
+			reportDefinitionDao.reassociate(repDef);
 		}
 	}
 
@@ -249,7 +250,56 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	Set<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
     	return CollectionUtils.subtract(selectedReportDefs, instantiatedReportDefs);
     }
-
+    
+    /**
+     * This method will return the report definitions that are unselected 
+     * @return
+     */
+    public Collection<ReportDefinition> findUnselectedReportDefinitions(){
+    	Set<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
+    	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
+    	return CollectionUtils.subtract(instantiatedReportDefs, selectedReportDefs);
+    }
+    
+    /**
+     * This method will return the selected adverse events
+     * @return
+     */
+    public List<AdverseEvent> findNewlySelectedAdverseEvents(){
+    	List<AdverseEvent> selectedAdverseEvents = findSelectedAdverseEvents();
+    	if(adverseEventReportingPeriod.getAeReport() == null){
+    		return selectedAdverseEvents;
+    	}else {
+    		return ListUtils.subtract(selectedAdverseEvents, adverseEventReportingPeriod.getAeReport().getAdverseEvents());
+    	}
+    }
+    
+    /**
+     * This method will return all the report definitions that are unselected
+     * @return
+     */
+    public List<AdverseEvent> findUnselectedAdverseEvents(){
+    	if(adverseEventReportingPeriod.getAeReport() == null){
+    		return new ArrayList<AdverseEvent>(1);
+    	}else {
+    		List<AdverseEvent> selectedAdverseEvents = findNewlySelectedAdverseEvents();
+    		return ListUtils.subtract(adverseEventReportingPeriod.getAeReport().getAdverseEvents(), selectedAdverseEvents);
+    	}
+    }
+    
+    /**
+     * This method will return the adverse events that are selected (checked)
+     * @return
+     */
+    public List<AdverseEvent> findSelectedAdverseEvents(){
+    	List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
+    		if(selectedAesMap.get(ae.getId())){
+    			adverseEvents.add(ae);
+    		}
+    	}
+    	return adverseEvents;
+    }
     
     public void refreshReportStatusMap(){
     	reportStatusMap.clear();

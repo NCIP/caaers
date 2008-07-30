@@ -1,8 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -181,46 +184,60 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 
 		
         Collection<ReportDefinition> newlySelectedDefs = command.findNewlySelectedReportDefinitions();
+        Collection<ReportDefinition> removedReportDefs = command.findUnselectedReportDefinitions();
         
-        removeUnselectedReports(command);
+        List<AdverseEvent> newlySelectedAEs = command.findNewlySelectedAdverseEvents();
         
-        if(newlySelectedDefs.size() > 0){  // Only if there are new Reports to be created.
-        	// Check if the ExpeditedReport is already created. If not create one.
-        	if(command.getAdverseEventReportingPeriod().getAeReport() == null){
-        		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-        		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
-        		aeReport.setReportingPeriod(command.getAdverseEventReportingPeriod());
-        		
-        		//Add the selected Aes to this aeReport object.
-        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-        			Integer aeId = ae.getId();
-        			if(command.getSelectedAesMap().containsKey(aeId) && command.getSelectedAesMap().get(aeId).equals(Boolean.TRUE))
-        				aeReport.addAdverseEvent(ae);
-        		}
-        		command.getAdverseEventReportingPeriod().setAeReport(aeReport);
-        	}
-        	else{
-        		// The expeditedReport already exists. Add newly selected Aes to this aeReport.
-        		Map<Integer, Boolean> aesInReportMap = new HashMap<Integer, Boolean>();
-        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAeReport().getAdverseEvents())
-        			if(!aesInReportMap.containsKey(ae.getId()))
-        				aesInReportMap.put(ae.getId(), Boolean.TRUE);
-        		// Now add the Aes in selectedAesMap to aeReport if its new
-        		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-        			Integer aeId = ae.getId();
-        			if(command.getSelectedAesMap().containsKey(aeId) && !aesInReportMap.containsKey(aeId))
-        				command.getAdverseEventReportingPeriod().getAeReport().addAdverseEvent(ae);
-        		}
-        	}
-       		evaluationService.addOptionalReports(command.getAdverseEventReportingPeriod().getAeReport(), newlySelectedDefs);
-       		expeditedAdverseEventReportDao.save(command.getAdverseEventReportingPeriod().getAeReport());
+        AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
+        ExpeditedAdverseEventReport aeReport = reportingPeriod.getAeReport();
+        
+        if(aeReport == null){
+        	//create the report
+        	aeReport = new ExpeditedAdverseEventReport();
+    		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
+    		aeReport.setReportingPeriod(reportingPeriod);
+    		reportingPeriod.setAeReport(aeReport);
+        }else {
+        	//remove unselected AEs from the report
+        	List<AdverseEvent> removedAEs = command.findUnselectedAdverseEvents();
+        	aeReport.getAdverseEvents().removeAll(removedAEs);
         }
+
+		//add AEs to expedited report.
+		for(AdverseEvent ae : newlySelectedAEs){
+			aeReport.addAdverseEvent(ae);	
+		}
+        
+		
+		//add newly selected report definitions
+		if(!newlySelectedDefs.isEmpty())
+			evaluationService.addOptionalReports(aeReport, newlySelectedDefs);
+        
+        //remove unselected reports
+		if(!removedReportDefs.isEmpty())
+			removeUnselectedReports(aeReport, removedReportDefs);
+        
+        //save the expedited report
+        expeditedAdverseEventReportDao.save(aeReport);
+        
 	}
 	
-	private void removeUnselectedReports(CaptureAdverseEventInputCommand command) {
-			
+	/**
+	 * This will remove all unselected report definitions from the report, by calling delete on the repository 
+	 * @param aeReport
+	 * @param removedDefinitions
+	 */
+	private void removeUnselectedReports(ExpeditedAdverseEventReport aeReport , Collection<ReportDefinition> removedDefinitions) {
+		 List<Report> nonWitdrawnReports = aeReport.getNonWithdrawnReports();
+		 for(Report report : nonWitdrawnReports){
+			 for(ReportDefinition rpDef : removedDefinitions){
+				 if(report.getReportDefinition().getId().equals(rpDef.getId())){
+					 reportRepository.deleteReport(report); 
+				 }
+			 }
+			 
+		 }
 	}
-
 	
 }
 
