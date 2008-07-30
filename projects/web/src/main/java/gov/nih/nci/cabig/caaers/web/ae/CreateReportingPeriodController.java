@@ -12,10 +12,14 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -166,6 +170,23 @@ public class CreateReportingPeriodController extends SimpleFormController {
     	
         AdverseEventReportingPeriod reportingPeriod = command.getReportingPeriod();
         reportingPeriod.setAssignment(command.getAssignment());
+        
+        //initialize the solicited AEs
+    	for(SolicitedAdverseEvent sae: reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
+			AdverseEvent adverseEvent = new AdverseEvent();
+			adverseEvent.setSolicited(true);
+			
+			if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
+				adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
+			else{
+				AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
+				aeCtcTerm.setCtcTerm(sae.getCtcterm());
+				adverseEvent.setAdverseEventTerm(aeCtcTerm);
+				aeCtcTerm.setAdverseEvent(adverseEvent);
+			}
+			reportingPeriod.addAdverseEvent(adverseEvent);	
+		}
+        
         adverseEventReportingPeriodDao.save(reportingPeriod);
         
         Map map = new LinkedHashMap();

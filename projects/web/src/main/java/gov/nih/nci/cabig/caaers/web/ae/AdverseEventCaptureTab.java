@@ -167,47 +167,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
-		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() == 0){
-			for(SolicitedAdverseEvent sae: command.getAdverseEventReportingPeriod().getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
-				AdverseEvent adverseEvent = new AdverseEvent();
-				adverseEvent.setReportingPeriod(command.getAdverseEventReportingPeriod());
-				if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA)
-					adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());
-				else{
-					AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
-					aeCtcTerm.setCtcTerm(sae.getCtcterm());
-					adverseEvent.setAdverseEventTerm(aeCtcTerm);
-					aeCtcTerm.setAdverseEvent(adverseEvent);
-					adverseEvent.setSolicited(true);
-					adverseEvent.setReportingPeriod(command.getAdverseEventReportingPeriod());
-				}
-				command.getAdverseEventReportingPeriod().addAdverseEvent(adverseEvent);	
-			}
-			// Save the reportingPeriod here to persist the solicitedAdverseEvents.
-			adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
-			
-			// Setup the categories list for aeTermQuery tag.
-			if(command.getCtcCategories().size() == 0)
-				command.setCtcCategories(command.getStudy().getAeTerminology().getCtcVersion().getCategories());
-		}
+		// Setup the categories list for aeTermQuery tag.
+		command.getCtcCategories();
 		
-		Map<String, Object> refdata = super.referenceData(request, command);
+		return super.referenceData(request, command);
 		
-		if(command.getAdverseEventReportingPeriod() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() > 0){
-			// Put a flag in the map "hasObservedEvents". This will be used to determine whether the table headers should be displayed
-			// for observed events and displaying the existing observed events.
-			
-			boolean hasObservedEvents = false;
-			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-				if(!ae.getSolicited())
-					hasObservedEvents = true;
-			}
-			refdata.put("hasObservedEvent", hasObservedEvents);
-		}
-		
-		
-		
-		return refdata;
 	}
 	
 	@Override

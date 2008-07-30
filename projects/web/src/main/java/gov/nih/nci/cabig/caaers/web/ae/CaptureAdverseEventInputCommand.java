@@ -452,7 +452,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	public List<CtcCategory> getCtcCategories() {
 		if(ctcCategories == null)
-			setCtcCategories(adverseEventReportingPeriod.getAssignment().getStudySite().getStudy().getAeTerminology().getCtcVersion().getCategories());
+			setCtcCategories(study.getAeTerminology().getCtcVersion().getCategories());
 		return ctcCategories;
 	}
 	
