@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -63,6 +64,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod){
     	Map<ReportDefinition, List<AdverseEvent>> map = new HashMap<ReportDefinition, List<AdverseEvent>>();
     		for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
+    			if(ae.getGrade().equals(Grade.NORMAL) || ae.getGrade().equals(Grade.NOT_EVALUATED))
+    				continue;
     			List<ReportDefinition> reportDefs = findRequiredReportDefinitions(null, Arrays.asList(ae), reportingPeriod.getStudy());
     			for(ReportDefinition reportDef : reportDefs){
     				if(map.containsKey(reportDef)){
