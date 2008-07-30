@@ -75,7 +75,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testLoadAdverseEventReportingPeriod() throws Exception {
     	AdverseEvent loaded = getDao().getById(-2);
     	AdverseEventReportingPeriod reportingPeriod = loaded.getReportingPeriod();
-    	assertEquals("Wrong ReportingPeriod", 1001, (int)reportingPeriod.getId());
+    	assertEquals("Wrong ReportingPeriod", 1002, (int)reportingPeriod.getId());
     }
 
     public void testLoadOtherCauseAttributions() throws Exception {
@@ -151,7 +151,7 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong Meddra Id", -11, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
     
-    public void findAll() throws Exception {
+    public void testFindAll() throws Exception {
     	
     	List aeList = getDao().findAll(null);
     	System.out.println(aeList);
