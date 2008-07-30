@@ -15,7 +15,7 @@
 			</tr>
 			<tr class="bottom" >
 			<td align="center">
-			<input id="${propertyName}-div-button" type="button" value="Close" />
+			<input id="${propertyName}-div-button" type="button" value="Save" />
 			</td>
 			</tr>
 			</table>
