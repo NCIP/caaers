@@ -154,14 +154,10 @@ div.row div.value {
  		initializeOtherMeddraAutoCompleters: function(listOfTermIDs){
  	 		listOfTermIDs.each(function(aTermId){
  	 	 		var acEls = $$('om'+aTermId);
- 	 	 		alert(acEls);
  	 		}.bind(this));
  		},
  		deleteAdverseEvent:function(indx){
- 	 		alert(indx);
- 	 		
  	 		createAE.deleteAdverseEvent(indx, function(ajaxOutput){
- 	 	 		alert("deleted :" + indx);
  	 	 		$('ae-section-' + indx).remove();
  	 		}.bind(this));
  	 	
