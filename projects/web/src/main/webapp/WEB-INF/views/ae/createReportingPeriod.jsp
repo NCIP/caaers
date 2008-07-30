@@ -42,7 +42,7 @@
  <body>
 	<tags:standardForm title="Reporting Period Details">
 		<jsp:attribute name="instructions">
-			<p>You can add the details of the Repoting Period here.</p>
+			<p>You can add the details of the Reporting Period here.</p>
 		</jsp:attribute>
 		<jsp:attribute name="singleFields">
 			<c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">
