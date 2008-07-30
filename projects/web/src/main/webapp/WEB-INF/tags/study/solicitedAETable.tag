@@ -10,7 +10,7 @@
   		 
     		<tbody class="tablebody">
     		    <tr class="head">
-    		       <th class="term" >Reporting period type</td>
+    		       <th class="term" >Reporting Period Type</th>
     		       <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
         			<th id="th-table1-${statusVar.index}" class="reportingperiod">
 
@@ -29,7 +29,7 @@
 								                
 		              <c:if test="${!displayOnly}">
         			    &nbsp<a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='right' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img></a></div>
-		            	<div class="inst"><a href="#jumphere" class="instructionLinks" id="epochs[${statusVar.index}].descriptionText-id">Add Instructions</a></div>
+		            	<div class="inst"><a href="#jumphere" class="instructionLinks" id="epochs[${statusVar.index}].descriptionText-id">Edit Instructions</a></div>
 		            	<tags:popupEditInstruction propertyName="epochs[${statusVar.index}].descriptionText"></tags:popupEditInstruction>
   		                <a name="jumphere" />
   		              </c:if>  
@@ -41,9 +41,14 @@
        		  	   </c:if>  
     			</tr>
     		    <tr class="gap">
+    		      <c:if test="${!displayOnly}">
+        	        <td colspan="3" style="border-width:0px 0px 0px 0px;">
+    		           Check the appropriate boxes to associate the AE term to a reporting period type.
+    		        </td>
+    		      </c:if>
     		    </tr>
     			<tr class="head">
-        			<th class="term">Adverse event term</th>
+        			<th class="term">Adverse Event Term</th>
         			<c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
         			<th id="th-col-epoch-${statusVar.index}" class="epoch" >
 		            	<div><input id="ck${statusVar.index}" type="checkbox" ${displayOnly?'disabled':''}/></div>
