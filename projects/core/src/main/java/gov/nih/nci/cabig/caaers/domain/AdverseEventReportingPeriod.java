@@ -35,6 +35,8 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @Table(name = "ae_reporting_periods")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_") })
 public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
+	private static final String BASELINE_REPORTING_TYPE = "Baseline";
+	
 	private String description;
 	
 	private Integer cycleNumber;
@@ -58,6 +60,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	private String name;
 	
 	private SimpleDateFormat formatter;
+	
+	private boolean baselineReportingType;
 	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
@@ -216,4 +220,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     public void setName(String name) {
 		this.name = name;
 	}
+    
+    @Transient
+    public boolean isBaselineReportingType(){
+    	if(this.getEpoch() != null)
+    		return getEpoch().getName().equals(BASELINE_REPORTING_TYPE);
+    	return false;
+    }
 }
