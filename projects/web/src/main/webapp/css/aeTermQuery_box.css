@@ -1,8 +1,8 @@
 /*
   The css related to aeTermQuery tag. 
 */
- .categories-div{width:500px; overflow:auto;}
- .terms-div{width:500px; overflow:auto;}
+ .categories-div{width:500px; }
+ .terms-div{width:500px; }
  .aeTermQuery-buttons { text-align:center; }
  
  	.sae, .query {
