@@ -215,7 +215,9 @@ This applicationContext contains the definition of the concrete services
 		<property name="researchStaffRepository" ref="researchStaffRepository" />
 	</bean>	
 		
-
+	<bean id="adverseEventQueryService" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventQueryServiceImpl">
+		<property name="adverseEventDao" ref="adverseEventDao" />	
+	</bean>
 	
 	<bean id="XLstudyImporter" class="gov.nih.nci.cabig.ctms.tools.XLstudyImporter">
         <property name="orgdao" ref="organizationDao"/>
