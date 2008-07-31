@@ -13,46 +13,19 @@
 
         <ns1:siteInvestigator>
             <emailAddress>jd@dcp.org</emailAddress>
-            <statusCode>Active</statusCode>
-            
+            <statusCode>ACT</statusCode>
             <ns2:organizationRef>
                 <nciInstituteCode>DCP</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
         <ns1:siteInvestigator>
             <emailAddress>jb@nci.gov</emailAddress>
-            <statusCode>Active</statusCode>
-            <statusDate>statusDate2</statusDate>
+            <statusCode>ACT</statusCode>
             <ns2:organizationRef>
                 <nciInstituteCode>NCI</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
     </ns1:investigator>
 
-    <ns1:investigator>
-        <firstName>Kate</firstName>
-        <lastName>Hudson</lastName>
-        <middleName>H</middleName>
-        <emailAddress>kh@nci.org</emailAddress>
-        <faxNumber>870-098-0989</faxNumber>
-        <nciIdentifier>nci-id-2</nciIdentifier>
-        <phoneNumber>908-098-0099</phoneNumber>
-
-        <ns1:siteInvestigator>
-            <emailAddress>kh@dcp.org</emailAddress>
-            <statusCode>Active</statusCode>
-            
-            <ns2:organizationRef>
-                <nciInstituteCode>NCI</nciInstituteCode>
-            </ns2:organizationRef>
-        </ns1:siteInvestigator>
-        <ns1:siteInvestigator>
-            <emailAddress>khudson@nci.gov</emailAddress>
-            <statusCode>Active</statusCode>
-            <statusDate>statusDate2</statusDate>
-            <ns2:organizationRef>
-                <nciInstituteCode>DCP</nciInstituteCode>
-            </ns2:organizationRef>
-        </ns1:siteInvestigator>
-    </ns1:investigator>
+   
 </ns1:staff>
