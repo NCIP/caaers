@@ -19,8 +19,8 @@
                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                         <td width="100%">${title}</td>
-                        <c:if test="${deleteParams}"><td align="right"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="/caaers/images/checkno.gif" border="0" alt="delete"></a></td></c:if>
-                        <c:if test="${collapsable}"><td align="right"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-<c:out value="${id}" />', '<c:out value="${id}" />')"><img id="image-${id}" src="/caaers/images/chrome/minimize.gif" border="0" height="16"/></a></td></c:if>
+                        <c:if test="${deleteParams}"><td align="right"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="checkno.gif"/>" border="0" alt="delete"></a></td></c:if>
+                        <c:if test="${collapsable}"><td align="right"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<chrome:imageUrl name="minimize.gif" />" border="0" height="16"/></a></td></c:if>
                     </tr>
                 </table>
             </h3>
