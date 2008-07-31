@@ -97,7 +97,8 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		OrganizationAssignedIdentifier orgIdentifier = sponsor.getOrganizationAssignedIdentifier();
 		orgIdentifier.setType(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE);
 		orgIdentifier.setOrganization(organization);
-        
+		orgIdentifier.setPrimaryIndicator(Boolean.FALSE);
+		
         //	Migrate Study investigators and Study Personnels
 		if(organization != null){
 			migrateStudyInvestigators(studySponsor, organization, outcome);
@@ -128,7 +129,8 @@ public class StudyOrganizationMigrator implements Migrator<Study>{
 		OrganizationAssignedIdentifier orgIdentifier = coCenter.getOrganizationAssignedIdentifier();
 		orgIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
 		orgIdentifier.setOrganization(organization);
-        
+		orgIdentifier.setPrimaryIndicator(Boolean.TRUE);
+		
         //	Migrate Study investigators and Study Personnels
 		if(organization != null){
 			migrateStudyInvestigators(studyCoordinatingCenter, organization, outcome);
