@@ -125,11 +125,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               	// build new 
               	researchStaff = new ResearchStaff();
               	researchStaff.setNciIdentifier(nciIdentifier);
+              	researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
               } 
               researchStaff.setFirstName(researchStaffDto.getFirstName());
               researchStaff.setLastName(researchStaffDto.getLastName());
-              researchStaff.setMiddleName(researchStaffDto.getMiddleName());
-              researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
+              researchStaff.setMiddleName(researchStaffDto.getMiddleName());              
               researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
               researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
               researchStaff.getUserGroupTypes().clear();
