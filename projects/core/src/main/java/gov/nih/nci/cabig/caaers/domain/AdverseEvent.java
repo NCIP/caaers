@@ -91,6 +91,10 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     private Boolean serious;
     
+    private String displayGrade;
+    
+    private String displayExpected;
+    
     public AdverseEvent(){
     }
 
@@ -455,7 +459,45 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         }
         return false;
     }
-
+    
+    @Transient
+    public String getDisplayGrade(){
+    	if(displayGrade == null)
+    		if(lowLevelTerm == null){
+    			//CTC grade
+    			List<CtcGrade> ctc_grades = new ArrayList<CtcGrade>();
+    			if(this.getAdverseEventCtcTerm() != null)
+    				ctc_grades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
+    			if(ctc_grades.isEmpty()){
+    				setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
+    			}else{
+    				for(CtcGrade c: ctc_grades){
+    					if(c.getCode().equals(grade.getCode()))
+    						setDisplayGrade(c.getCode() + "-" + c.getDisplayName());
+    				}
+    			}
+    		}else{
+    			//Meddra grade
+    			if(grade != null)
+    				setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
+    		}
+    	return displayGrade;
+    }
+    
+    public void setDisplayGrade(String displayGrade){
+    	this.displayGrade = displayGrade;
+    }
+    
+    @Transient
+    public String getDisplayExpected(){
+    	displayExpected = "";
+    	displayExpected = expected.equals(Boolean.TRUE) ? "Yes" : "No";
+    	return displayExpected;
+    }
+    
+    public void setDisplayExpected(){
+    	this.displayExpected = displayExpected;
+    }
     
     public void setSolicited(Boolean solicited) {
 		this.solicited = solicited;
