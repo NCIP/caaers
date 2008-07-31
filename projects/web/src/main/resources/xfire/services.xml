@@ -3,7 +3,7 @@
 <!-- START SNIPPET: config -->
 
 <beans xmlns="">
-
+<!-- 
   <service>
     <serviceBean>#studyProcessorImpl</serviceBean>
     <serviceFactory>#jaxbServiceFactory</serviceFactory>
@@ -34,7 +34,7 @@
   <bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
     <constructor-arg ref="xfire.transportManager"/>
   </bean>
-
+ -->
 </beans>
 
 <!-- END SNIPPET: config -->
