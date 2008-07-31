@@ -72,6 +72,7 @@
         	<dependency org="castor" name="castor" rev="0.9.9"/>
         	<dependency org="jdom" name="jdom" rev="1.0" />
         	<dependency org="org.apache.xmlgraphics" name="fop" rev="0.93" />
+        	<dependency org="jaxen" name="jaxen" rev="1.1" />
         	
         	<!-- XStream dependencies -->
 			<dependency org="com.thoughtworks.xstream" name="xstream" rev="1.2.1" />
