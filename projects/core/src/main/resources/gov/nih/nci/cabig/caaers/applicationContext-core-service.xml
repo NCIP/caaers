@@ -212,8 +212,10 @@ This applicationContext contains the definition of the concrete services
 	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">
 		<property name="researchStaffDao" ref="researchStaffDao" />
 		<property name="organizationDao" ref="organizationDao" />	
-	</bean>		
-	
+		<property name="researchStaffRepository" ref="researchStaffRepository" />
+	</bean>	
+		
+
 	
 	<bean id="XLstudyImporter" class="gov.nih.nci.cabig.ctms.tools.XLstudyImporter">
         <property name="orgdao" ref="organizationDao"/>
