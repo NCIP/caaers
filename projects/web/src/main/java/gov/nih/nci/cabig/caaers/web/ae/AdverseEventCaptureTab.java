@@ -139,15 +139,22 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 				}
 				//grade	
 				if(isMeddraStudy){
-					mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
-						createGradeOptions(ae, "Meddra")));
+					// Make grade mandatory only for observed aes.
+					if(ae.getSolicited())
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Meddra")));
+					else
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true, createGradeOptions(ae, "Meddra")));
 				}else{
-					mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false,
-							createGradeOptions(ae, "Ctc")));
+					if(ae.getSolicited())
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Ctc")));
+					else
+						mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true, createGradeOptions(ae, "Ctc")));
 				}
 				
-				mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary",
-						"Attribution to study", false, createAttributionOptions()));
+				if(ae.getSolicited())
+					mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
+				else
+					mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", true, createAttributionOptions()));
 				mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
 						"Hospitalization", false, createHospitalizationOptions()));
 				mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
@@ -210,5 +217,13 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 //				}
 //			}
 //		}
+		
+		// If grade is greater than 2 then hospitalization cannot be null.
+		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+			if(!ae.getSolicited()){
+				if(ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
+					errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
+			}
+		}
 	}
 }
