@@ -77,6 +77,22 @@ public class EvaluationServiceImpl implements EvaluationService {
     				}
     			}
     		}
+    		
+    		// Now we will filter out the amenable ReportDefinitions. 
+    		// Prepare the Map needed for filterAmenableReportDefinitions method in EvaluationServiceImpl
+    		Map<String, List<String>> repDefinitionNamesMap = new HashMap<String,List<String>>();
+    		List<String> repDefnNames = new ArrayList<String>();
+    		for(ReportDefinition rDef: map.keySet()){
+    			if(rDef != null)
+    				repDefnNames.add(rDef.getName());
+    		}
+    		repDefinitionNamesMap.put("RepDefnNames", repDefnNames);
+    		
+    		// Call filterAmenableReportDefinitions in EvaluationServiceImpl passing repDefinitionNamesMap
+    		// The List returned is a list of ReportDefinitions with the earliest amenable reportDefinition
+    		List<ReportDefinition> amenableFilterRepDefn = filterAmenableReportDefinitions(repDefinitionNamesMap);
+    		Map<ReportDefinition, List<AdverseEvent>> filteredRepDefnToAeMap = updateReportDefnAesMap(map, 
+    				amenableFilterRepDefn);  
     	return map;
     }
     /**
@@ -154,6 +170,53 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
         return defList;
     }
+    
+    /**
+	 * Filter the ReportDefinition - Ae Map so that only the earliest Amendabe ReportDefinition is retained in the map.
+	 * 
+	 * @param map, the initial ReportDefinition to AdverseEvent List Map.
+	 * @param repDefnList, the list containing the ReportDefinition to be retained.
+	 * @return map, the final ReportDefinition to AdverseEvent List Map which has only one (earliest) amendable ReportDefinition.
+	 */
+	public Map<ReportDefinition, List<AdverseEvent>>updateReportDefnAesMap(Map<ReportDefinition, List<AdverseEvent>> map 
+						, List<ReportDefinition> repDefnList){
+		Map<ReportDefinition, Boolean> retainedDefns = new HashMap<ReportDefinition, Boolean>();
+		for(ReportDefinition rd: repDefnList){
+			retainedDefns.put(rd, Boolean.TRUE);
+		}
+		// Create a list of AdverseEvents that will be migrated to the only amenable reportDefinition retained in the result map
+		List<AdverseEvent> aeList = new ArrayList<AdverseEvent>();
+		List<ReportDefinition> removeRepDefn = new ArrayList<ReportDefinition>(); // This will have the list of reportDefinition 
+		// that are to be removed from the map.
+		
+		for(ReportDefinition rd: map.keySet()){
+			if(!retainedDefns.containsKey(rd)){
+				for(AdverseEvent ae: map.get(rd))
+					aeList.add(ae);
+				removeRepDefn.add(rd);
+			}
+		}
+		
+		// Now remove the ReportDefinitions in the list removeRepDefn from the map
+		for(ReportDefinition rd: removeRepDefn){
+			map.remove(rd);
+		}
+		
+		// Now the adverseEvents in aeList are appended to the list of adverseEvents associated to the only amenable ReportDefinition
+		// in the filteredMap 
+		Map<AdverseEvent, Boolean> existingAeMap = new HashMap<AdverseEvent, Boolean>();
+		for(ReportDefinition rd: map.keySet()){
+			if(rd.getAmendable()){
+				for(AdverseEvent ae: map.get(rd))
+					existingAeMap.put(ae, Boolean.TRUE);
+				// Now add the AdverseEvents from aeList to this list
+				for(AdverseEvent ae: aeList)
+					if(!existingAeMap.containsKey(ae))
+						map.get(rd).add(ae);
+			}
+		}
+		return map;
+	}
 
     /**
      * Evaluates the provided data and associates new {@link Report} instances with the given
