@@ -155,6 +155,11 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		return refdata;
 	}
 	
+	@Override
+	public void onDisplay(HttpServletRequest request,	CaptureAdverseEventInputCommand command) {
+		command.reassociate();
+	}
+	
 	/**
 	 * Reassociated the Reporting Period to the running Hibernate session
 	 */
@@ -205,6 +210,23 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			aeReport.addAdverseEvent(ae);	
 		}
         
+		//adjust primary AE
+		if(command.getPrimaryAdverseEventId() != null){
+			AdverseEvent primaryAE = null;
+			int i = 0;
+			for(AdverseEvent ae : aeReport.getAdverseEvents()){
+				if(ae.getId().equals(command.getPrimaryAdverseEventId())){
+					primaryAE = ae;
+					break;
+				}
+				i++;
+			}
+			
+			if(i > 0 && primaryAE != null){
+				aeReport.getAdverseEvents().remove(primaryAE);
+				aeReport.getAdverseEvents().add(0, primaryAE);
+			}
+		}
 		
 		//add newly selected report definitions
 		if(!newlySelectedDefs.isEmpty())

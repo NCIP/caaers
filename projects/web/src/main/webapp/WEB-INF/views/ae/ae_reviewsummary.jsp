@@ -14,11 +14,8 @@
 <tags:includeScriptaculous/>
 <script type="text/javascript">
 
-aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
-
 	Event.observe(window, "load", function() {
 
-		Event.observe('single-fields', 'click', aeSummary.handler, true);
 		
 		if($('manualselect2')){
       		 Event.observe('manualselect2', "click", function() {
@@ -44,7 +41,6 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
 
 .report-list{
 	text-align: center;
-	
 }
 </style>
 </head>
@@ -68,7 +64,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
 	
 	</tags:noform>			
 </div>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="review">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Save &amp; Manage Reports">
 	
 		<jsp:attribute name="instructions">
 		<input type="hidden" name="_finish"/>
@@ -83,7 +79,7 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
   		 	 <c:when test="${not empty rpdSelectedTable}">
   		 	 	<p><strong>Reports Identified by caAERS</strong></p>
     	        <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
-				<div align="center">
+				<div align="center" style="text-align: center;  width: 100%;">
               	<div id="report-list" class="report-list">
             	  <!-- required reports -->
 				<table class="tablecontent">
@@ -95,15 +91,13 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
 				<c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
 					<tr>
 						
-						<td> 
-							<c:if test="${rdTable.value.required == true}"> yes </c:if>
-							<c:if test="${rdTable.value.required == false}"> no </c:if>
-						</td>
+						<td> ${rdTable.value.required ? 'Yes' : 'No' }</td>
 						<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 						<td>${rdTable.value.status}</td>
 					</tr>
 				</c:forEach>
 				</table>
+				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually select reports"  class="manualSelectBtn"/></div>
 				</div>
         		</div> 
         		<p>
@@ -114,9 +108,10 @@ aeSummary.handler = aeSummary.eventHandler.bindAsEventListener(aeSummary);
         		<p>
         		At your discretion, you may elect to bypass the caAERS-based report selection above and 
         		instead manually select from the list of all reports defined for this study the expedited 
-        		reports you wish to complete and submit. To do so, click the Manually Select Reports button below.
+        		reports you wish to complete and submit. To do so, click the Manually Select Reports button above.
+
         		</p>
-				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually select reports"  class="manualSelectBtn"/></div>
+				
   	 	 	</c:when>
   	 	 	<c:otherwise>
   	 	    	<p>The AEs you have entered <strong>do not</strong> seem to require any expedited reporting. 
