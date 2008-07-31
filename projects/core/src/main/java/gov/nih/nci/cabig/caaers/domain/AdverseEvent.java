@@ -462,25 +462,28 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     @Transient
     public String getDisplayGrade(){
-    	if(displayGrade == null)
-    		if(lowLevelTerm == null){
-    			//CTC grade
-    			List<CtcGrade> ctc_grades = new ArrayList<CtcGrade>();
-    			if(this.getAdverseEventCtcTerm() != null)
-    				ctc_grades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
-    			if(ctc_grades.isEmpty()){
-    				setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
-    			}else{
-    				for(CtcGrade c: ctc_grades){
-    					if(c.getCode().equals(grade.getCode()))
-    						setDisplayGrade(c.getCode() + "-" + c.getDisplayName());
+    	if(displayGrade == null){
+    		displayGrade = "";
+    		if(grade != null)
+    			if(lowLevelTerm == null){
+    				//CTC grade
+    				List<CtcGrade> ctc_grades = new ArrayList<CtcGrade>();
+    				if(this.getAdverseEventCtcTerm() != null)
+    					ctc_grades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
+    				if(ctc_grades.isEmpty()){
+    					setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
+    				}else{
+    					for(CtcGrade c: ctc_grades){
+    						if(c.getCode().equals(grade.getCode()))
+    							setDisplayGrade(c.getCode() + "-" + c.getDisplayName());
+    					}
     				}
+    			}else{
+    				//Meddra grade
+    				if(grade != null)
+    					setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
     			}
-    		}else{
-    			//Meddra grade
-    			if(grade != null)
-    				setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
-    		}
+    	}
     	return displayGrade;
     }
     
