@@ -227,7 +227,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     	// Check if the start date is equal to or before the end date.
     	if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
             errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                            "To cannot be earlier than From");
+                            "Start date cannot be earlier than End date");
         }
     	
     	// Check if the start date is equal to end date.
@@ -235,7 +235,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     	if (! rPeriod.getEpoch().getName().equals("Baseline")){
     		if(startDate.equals(endDate)){
     			errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                "For Non-Baseline Reporting Period To cannot be equal to From");
+                "For Non-Baseline Reporting Period Start date cannot be equal to End date");
     		}
     			
     	}

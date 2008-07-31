@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -84,8 +85,8 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].detailsForOther", ""));
 		}
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].grade", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary", ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].attributionSummary.displayName", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].hospitalization.displayName", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].expected", ""));
 		if(!isBaseline)
 			fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
@@ -153,6 +154,36 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 		
 		return refdata;
+	}
+	
+	
+	@Override
+    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
+                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+		
+		// Check if there is a report selected with no aes selected.
+		if(command.getSelectedReportDefinitions().size() > 0){
+			//Iterate over the selectedAes map to check if atleast one is true. Otherwise throw an error.
+			Boolean noAeSelected = true;
+			for(Integer id: command.getSelectedAesMap().keySet()){
+				if(command.getSelectedAesMap().get(id))
+					noAeSelected = false;
+			}
+			if(noAeSelected)
+				errors.reject("AT_LEAST_ONE_AE","A report cannot be selected without selecting atleast one adverse event.");
+		}
+		
+		// Check if there are aes selected without selecting any report.
+		if(command.getSelectedReportDefinitions().isEmpty()){
+			Boolean aeSelected = false;
+			for(Integer id: command.getSelectedAesMap().keySet()){
+				if(command.getSelectedAesMap().get(id))
+					aeSelected = true;
+			}
+			if(aeSelected)
+				errors.reject("AT_LEAST_ONE_REPORT","Atleast one of the reports need to be selected in order to select an adverse event.");
+		}
+		
 	}
 	
 	@Override

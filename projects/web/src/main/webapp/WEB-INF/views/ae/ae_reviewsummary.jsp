@@ -93,7 +93,7 @@
 					</tr>
 				</c:forEach>
 				</table>
-				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually select reports"  class="manualSelectBtn"/></div>
+				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/></div>
 				</div>
         		</div> 
         		<p>
@@ -133,7 +133,7 @@
   	 		</c:choose>
   	 	
 	  	 	
-		  	<chrome:division id="div-saes" title="Serious adverse event(s)" collapsable="true">
+		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true">
   				<c:if test='${command.adverseEventReportingPeriod != null}'>
   					<table id="seriousTable" width="100%" class="tablecontent">
   						<tr>
@@ -155,7 +155,7 @@
   				</c:if>
   			</chrome:division>
   	
-			<chrome:division id="div-oaes" title="Observed adverse event(s)" collapsable="true">
+			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -178,7 +178,7 @@
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited adverse event(s)" id="div-soaes" collapsable="true">
+			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>
@@ -205,7 +205,7 @@
 		
 		<%-- This is for baseline reporting period --%> 
 		<c:if test="${reportingPeriodType == 'Baseline'}">
-			<chrome:division title="Observed adverse event(s)" id="div-oaes" collapsable="true">
+			<chrome:division title="Observed Adverse Event(s)" id="div-oaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -226,7 +226,7 @@
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited adverse event(s)" id="div-soaes" collapsable="true">
+			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>
