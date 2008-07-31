@@ -39,13 +39,10 @@
 	 border-style:none;
 }
 
-.report-list{
-	text-align: center;
-}
 </style>
 </head>
 <body>
-<div id="report-list-full" style="display:none;">
+<div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
 	<tags:noform>
 		<table class="tablecontent">
 		<tr>
@@ -55,8 +52,8 @@
 		</tr>
 		<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 			<tr>
-				<td>${rdTable.value.required}</td>
-				<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+				<td align="center">${rdTable.value.required}</td>
+				<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 				<td>${rdTable.value.status}</td>
 			</tr>
 		</c:forEach>
@@ -79,8 +76,8 @@
   		 	 <c:when test="${not empty rpdSelectedTable}">
   		 	 	<p><strong>Reports Identified by caAERS</strong></p>
     	        <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
-				<div align="center" style="text-align: center;  width: 100%;">
-              	<div id="report-list" class="report-list">
+				<div align="center">
+              	<div id="report-list" align="center" style="padding-bottom:5px;">
             	  <!-- required reports -->
 				<table class="tablecontent">
 					<tr>
@@ -90,9 +87,8 @@
 					</tr>
 				<c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
 					<tr>
-						
-						<td> ${rdTable.value.required ? 'Yes' : 'No' }</td>
-						<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+						<td align="center"> ${rdTable.value.required ? 'Yes' : 'No' }</td>
+						<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 						<td>${rdTable.value.status}</td>
 					</tr>
 				</c:forEach>
@@ -116,7 +112,7 @@
   	 	 	<c:otherwise>
   	 	    	<p>The AEs you have entered <strong>do not</strong> seem to require any expedited reporting. 
             	If you wish to override this decision, please choose the notification and reporting schedule below.</p>
-            	<div class="report-list">
+            	<div align="center" style="padding-bottom:5px;">
             	<!-- optional reports -->
 				<table class="tablecontent">
 					<tr>
@@ -126,13 +122,12 @@
 					</tr>
 					<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 					<tr>
-						<td>${rdTable.value.required}</td>
-						<td><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
+						<td align="center">${rdTable.value.required}</td>
+						<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 						<td>${rdTable.value.status}</td>
 					</tr>
 					</c:forEach>
 				</table>
-
         		</div>   
   	 		 </c:otherwise>
   	 		</c:choose>
