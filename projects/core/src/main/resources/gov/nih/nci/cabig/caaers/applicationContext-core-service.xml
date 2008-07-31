@@ -189,22 +189,6 @@ This applicationContext contains the definition of the concrete services
 		</constructor-arg>
 	</bean>
 	
-	<!-- caAERS Study WebService -->
-   <bean id="studyProcessorImpl" class="gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl">
-		<property name="studyImportService" ref="studyImportService" />
-		<property name="studyConverter" ref="studyConverter" />
-		<property name="studyDao" ref="studyDao" />
-		<property name="studySynchronizer" ref="studySynchronizer" />
-	</bean>	
-	
-	<!-- caAERS Participant WebService -->
-   <bean id="participantServiceImpl" class="gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl">
-   		<property name="participantImportServiceImpl" ref="participantImportService" />
-		<property name="participantConverter" ref="participantConverter" />
-		<property name="participantDao" ref="participantDao" />
-		<property name="participantSynchronizer" ref="participantSynchronizer" />
-   </bean>	
-	
 	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
 		<property name="investigatorDao" ref="investigatorDao" />
 		<property name="organizationDao" ref="organizationDao" />
