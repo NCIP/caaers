@@ -6,8 +6,14 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Role;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
@@ -41,6 +47,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	private static final Log logger = LogFactory.getLog(DefaultResearchStaffMigratorService.class);
 	private ResearchStaffDao researchStaffDao;
 	private ApplicationContext applicationContext;
+	protected ResearchStaffRepository researchStaffRepository;
 	
 	private List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
 	private List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
@@ -51,10 +58,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
      * @param nciCode
      * @return
      */
-    ResearchStaff fetchResearchStaff(String nciIdentifier) {
+    ResearchStaff fetchResearchStaff(String email) {//String nciIdentifier) {
     	ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-        if (StringUtils.isNotEmpty(nciIdentifier)) {
-        	rsQuery.filterByNciIdentifier(nciIdentifier);
+        if (StringUtils.isNotEmpty(email)) {
+        	//rsQuery.filterByNciIdentifier(nciIdentifier);
+        	rsQuery.filterByEmailAddress(email);
         }
         List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
@@ -63,11 +71,15 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         }
         return rsList.get(0);
     }
-    public void saveResearchStaff(Staff staff) throws RemoteException {
+    public ServiceResponse saveResearchStaff(Staff staff) throws RemoteException {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
     	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
     	getImportableResearchStaff().clear();
     	getNonImportableResearchStaff().clear();
+    	
+    	List<WsError> wsErrors = new ArrayList<WsError>();
+    	ServiceResponse response = new ServiceResponse();
+    	response.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (ResearchStaffType researchStaffType:researchStaffList) {
 
@@ -86,10 +98,19 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             	researchStaffImportOutcome.setImportedDomainObject(researchStaff);
             	researchStaffImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
             	addNonImportableResearchStaff(researchStaffImportOutcome);
-            	
+ 
+    			WsError err = new WsError();
+    			err.setErrorDesc("Failed to process ResearchStaff ::: nciIdentifier : "+researchStaffType.getNciIdentifier() + " ::: firstName : "+researchStaffType.getFirstName()+ " ::: lastName : "+researchStaffType.getLastName()) ;
+    			err.setException(e.getMessage());
+    			wsErrors.add(err);           	
     			//throw new RemoteException("Unable to import investigator", e);
     		}
     	}
+    	response.setWsError(wsErrors);
+    	if (wsErrors.size() == 0) {
+    		response.setStatus(Status.PROCESSED);
+    	}
+    	return response;
     }
     
     public ResearchStaff buildResearchStaff(ResearchStaffType researchStaffDto) throws CaaersSystemException {
@@ -98,7 +119,8 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
                
              // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
               String nciIdentifier = researchStaffDto.getNciIdentifier();
-              ResearchStaff researchStaff = fetchResearchStaff(nciIdentifier);
+              String email = researchStaffDto.getEmailAddress();
+              ResearchStaff researchStaff = fetchResearchStaff(email);
               if (researchStaff == null ) {
               	// build new 
               	researchStaff = new ResearchStaff();
@@ -110,6 +132,13 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
               researchStaff.setFaxNumber(researchStaffDto.getFaxNumber());
               researchStaff.setPhoneNumber(researchStaffDto.getPhoneNumber());
+              researchStaff.getUserGroupTypes().clear();
+              
+              List<Role> roles = researchStaffDto.getRole();
+              
+              for (Role role:roles) {
+            	  researchStaff.addUserGroupType(UserGroupType.valueOf(role.value()));
+              }
               
               //get Organizations 
               OrganizationRefType organizationRef = researchStaffDto.getOrganizationRef();
@@ -131,13 +160,13 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             logger.info("Begining of ResearchStaffMigrator : saveResearchStaff");             
             
             //save 
-            researchStaffDao.save(researchStaff);
+            researchStaffRepository.save(researchStaff,"URL");
             logger.info("Created the research staff :" + researchStaff.getId());
             logger.info("End of ResearchStaffMigrator : saveResearchStaff");
 
         } catch (Exception e) {
             logger.error("Error while creating research staff", e);
-            throw new CaaersSystemException("Unable to create research staff", e);
+            throw new CaaersSystemException("Unable to create research staff : "+ e.getMessage(), e);
         }	
         
 	}
@@ -192,6 +221,10 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 			throws BeansException {
 		this.applicationContext = applicationContext;
 		
+	}
+	public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
 	}
 
 }
