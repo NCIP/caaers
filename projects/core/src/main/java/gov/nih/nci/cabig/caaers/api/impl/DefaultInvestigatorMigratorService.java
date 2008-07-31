@@ -7,6 +7,9 @@ import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
+import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.SiteInvestigatorType;
 import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
@@ -56,11 +59,15 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     }
 
 
-    public void saveInvestigator(Staff staff) throws RemoteException {
+    public ServiceResponse saveInvestigator(Staff staff) throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
     	Investigator investigator = null;
     	getImportableInvestigators().clear();
     	getNonImportableInvestigators().clear();
+    	
+    	List<WsError> wsErrors = new ArrayList<WsError>();
+    	ServiceResponse response = new ServiceResponse();
+    	response.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (InvestigatorType investigatorType:investigatorTypeList) {
      		try {
@@ -78,10 +85,19 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     			investigatorImportOutcome.setImportedDomainObject(investigator);
     			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
     			addNonImportableInvestigators(investigatorImportOutcome);
-            	
+    			
+    			WsError err = new WsError();
+    			err.setErrorDesc("Failed to process Investigator ::: nciIdentifier : "+investigatorType.getNciIdentifier() + " ::: firstName : "+investigatorType.getFirstName()+ " ::: lastName : "+investigatorType.getLastName()) ;
+    			err.setException(e.getMessage());
+    			wsErrors.add(err);
     			//throw new RemoteException("Unable to import investigator", e);
     		}
     	}
+    	response.setWsError(wsErrors);
+    	if (wsErrors.size() == 0) {
+    		response.setStatus(Status.PROCESSED);
+    	}
+    	return response;
     }
     
     private Investigator buildInvestigator(InvestigatorType investigatorDto) {
