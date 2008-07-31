@@ -34,9 +34,9 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 	}
 
 
-	public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
-		return adverseEventDao.getByStudyParticipantAssignment(studyParticipantAssignment);
-	}
+	//public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
+		//return adverseEventDao.getByStudyParticipantAssignment(studyParticipantAssignment);
+	//}
 	
 	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
 		this.adverseEventDao = adverseEventDao;
