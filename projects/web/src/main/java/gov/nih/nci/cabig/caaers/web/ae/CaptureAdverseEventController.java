@@ -177,28 +177,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
         
-//        //special binder for AdverseEventReportingPeriod
-//        final AdverseEventReportingPeriod aerp = command.getAdverseEventReportingPeriod();
-//        binder.registerCustomEditor(AdverseEventReportingPeriod.class, new PropertyEditorSupport(){
-//        	
-//        	@Override
-//        	public void setAsText(String text) throws IllegalArgumentException {
-//        		if(StringUtils.isEmpty(text)){
-//        			command.setAdverseEventReportingPeriod(null);
-//        			setValue(null);
-//        		}
-//        		
-//        	}
-//        	@Override
-//        	public String getAsText() {
-//        		AdverseEventReportingPeriod aerp = (AdverseEventReportingPeriod)getValue();
-//        		if(aerp != null) 
-//        			return aerp.getId().toString();
-//        		else 
-//        			return null;
-//        	}
-//        });
-        
 	}
 	
 	@Override
