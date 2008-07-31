@@ -25,10 +25,37 @@
             <xs:extension base="cct:ResearchStaffType">
                 <xs:sequence>
                     <xs:element ref="cct:organizationRef" minOccurs="0"/>
+                    <xs:element name="role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+    
+    <xs:simpleType name="Role">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="caaers_participant_cd">
+            	<xs:annotation>
+					  <xs:documentation>Subject coordinator </xs:documentation>
+ 				</xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="caaers_study_cd">
+                <xs:annotation>
+					  <xs:documentation>Study coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+            <xs:enumeration value="caaers_ae_cd">
+                <xs:annotation>
+					  <xs:documentation>Adverse event coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+            <xs:enumeration value="caaers_site_cd">
+               <xs:annotation>
+					  <xs:documentation>Site coordinator </xs:documentation>
+ 				</xs:annotation>
+ 			</xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    
 </xs:schema>
 <!--
     <xs:complexType name="researchStaffType">
