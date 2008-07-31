@@ -24,6 +24,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +77,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected void onBindOnNewForm(HttpServletRequest request, Object command,BindException errors) throws Exception {
 		super.onBindOnNewForm(request, command, errors);
+		String rpId = request.getParameter("adverseEventReportingPeriod");
+		CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
+		if(!StringUtils.isEmpty(rpId)) {
+			cmd.refreshAssignment(Integer.decode(rpId));
+		}
 	}
 	
 	/**
@@ -94,6 +100,18 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		initBinder(request,binder, aeCommand);
 		return binder;
 	}
+	
+	@Override
+    @SuppressWarnings("unchecked")
+    protected boolean isFormSubmission(HttpServletRequest request) {
+        Set<String> paramNames = request.getParameterMap().keySet();
+        boolean fromListPage = false;
+        fromListPage = paramNames.contains("displayReportingPeriod");
+        if(fromListPage) 
+        	return true;
+        else
+        	return super.isFormSubmission(request);
+    }
 
 	
 	/**
@@ -196,6 +214,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
         if (isAjax != null) return true;
         
+        //Object isFromManageReport = findInRequest(request, "fromManageReport");
+        //if(isFromManageReport != null) return true;
         //check current page and next page
         int currPage = getCurrentPage(request);
     	int targetPage = getTargetPage(request, currPage);

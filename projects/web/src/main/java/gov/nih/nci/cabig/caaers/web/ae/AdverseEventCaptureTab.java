@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -183,6 +184,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 		if(StringUtils.isEmpty(rpId)) {
 			command.setAdverseEventReportingPeriod(null);
 		}
+		Set<String> paramNames = request.getParameterMap().keySet();
+		boolean fromListPage = false;
+        fromListPage = paramNames.contains("displayReportingPeriod");
+        if(fromListPage) 
+        	command.refreshAssignment(Integer.decode(rpId));
 	}
 	
 	@Override

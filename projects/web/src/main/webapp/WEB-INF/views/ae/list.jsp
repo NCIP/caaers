@@ -442,7 +442,7 @@
                 		<table width="100%" class="tablecontent">
                 		<tr>
                 		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>
-                		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine"/>">
+                		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page0=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true"/>">
                 			${adverseEvent.adverseEventTerm.universalTerm}
                 		</a>
                 		</td>
