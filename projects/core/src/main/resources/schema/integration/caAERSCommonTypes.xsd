@@ -271,5 +271,28 @@
             <xs:enumeration value="Coordinating Center Identifier"/>
         </xs:restriction>
     </xs:simpleType>
+    
+	
+	<xs:complexType name="WsError">
+		<xs:sequence>
+			<xs:element name="exception" type="xs:string"/>
+			<xs:element name="errorDesc" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:simpleType name="Status">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Processed"/>
+			<xs:enumeration value="Failed to Process"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+    <xs:complexType name="ServiceResponse">
+    	<xs:sequence>
+    		<xs:element name="status" type="Status"></xs:element>
+    		<xs:element name="wsError" type="WsError" minOccurs="0" maxOccurs="unbounded"></xs:element>
+    	</xs:sequence>
+    </xs:complexType>
+    
 
 </xs:schema>
