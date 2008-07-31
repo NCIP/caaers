@@ -6,51 +6,14 @@
         <firstName>John</firstName>
         <lastName>Chapman</lastName>
         <middleName>S</middleName>
-        <emailAddress>jc@test.edu</emailAddress>
-        <faxNumber>234-989-9999</faxNumber>
-        <nciIdentifier>NCI0</nciIdentifier>
-        <phoneNumber>657-093-7777</phoneNumber>
+        <emailAddress>jcss@test.edu</emailAddress>
+        <faxNumber>879--0983</faxNumber>
+        <nciIdentifier>NCI</nciIdentifier>
+        <phoneNumber>657-093-0098</phoneNumber>        
         <ns1:organizationRef>
             <nciInstituteCode>DCP</nciInstituteCode>
         </ns1:organizationRef>
+        <role>caaers_participant_cd</role>
     </ns2:researchStaff>
     
-    <ns2:researchStaff>
-        <firstName>Dave</firstName>
-        <lastName>Phenninghaus</lastName>
-        <middleName>L</middleName>
-        <emailAddress>dp@test.edu</emailAddress>
-        <faxNumber>234-980-0983</faxNumber>
-        <nciIdentifier>NCI1</nciIdentifier>
-        <phoneNumber>657-093-0090</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>DCP</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
-
-    <ns2:researchStaff>
-        <firstName>Mary</firstName>
-        <lastName>Jane</lastName>
-        <middleName>F</middleName>
-        <emailAddress>js@test.edu</emailAddress>
-        <faxNumber>230-980-0983</faxNumber>
-        <nciIdentifier>NCI4</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>NCI</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
-    
-    <ns2:researchStaff>
-        <firstName>Mary</firstName>
-        <lastName>Osbourne</lastName>
-        <middleName>F</middleName>
-        <emailAddress>js@test.edu</emailAddress>
-        <faxNumber>230-980-0983</faxNumber>
-        <nciIdentifier>NCI3</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>
-        <ns1:organizationRef>
-            <nciInstituteCode>DCP</nciInstituteCode>
-        </ns1:organizationRef>
-    </ns2:researchStaff>
 </ns2:staff>
