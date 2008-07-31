@@ -127,7 +127,8 @@ div.row div.value {
  	 	 		this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
  	 	 		this.rpCtrl.value = newRPId;
  	 	 		this.showRPDetails(ajaxOutput.htmlContent);
- 	 		}.bind(this));
+                AE.registerCalendarPopups("detailSection");
+              }.bind(this));
  		},
  		addAdverseEvents:function(selectedTerms){
  	 		//find the terms that are not already added in the page
