@@ -296,10 +296,11 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * The default implementation will save the domain object
      * @param o
      */
+    @Transactional(readOnly = false)
     public void save(T o){
     	getHibernateTemplate().save(o);
     }
-    
+    @Transactional(readOnly = false)
     public void refresh(T o){
     	getHibernateTemplate().refresh(o);
     }
