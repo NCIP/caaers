@@ -77,7 +77,8 @@
 			<dependency org="javax.servlet" name="jstl" rev="1.1.2" conf="build->default(*)" />
 			<dependency org="taglibs" name="standard" rev="1.1.2" conf="build->default(*)" />
 			
-			
+			<!-- Jaxen XPATH -->
+			<dependency org="jaxen" name="jaxen" rev="1.1" />
 							
 			<!-- Testing dependencies -->
 			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
