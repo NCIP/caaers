@@ -1,12 +1,18 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Example;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -177,6 +183,65 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
         getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
         return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
     }
+    public List<AdverseEvent> getByParticipant(Participant participant) {		
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.createCriteria("reportingPeriod").createCriteria("assignment")
+		.createCriteria("participant").add(getParticipantExample(participant));
+
+		//.createCriteria("identifiers").add(getIdentifierExample(participant));
+		return getHibernateTemplate().findByCriteria(criteria);	
+	}
+
+    public List<AdverseEvent> getByParticipant(Participant participant , AdverseEvent adverseEvent) {		
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").createCriteria("assignment")
+		.createCriteria("participant").add(getParticipantExample(participant));
+
+		return getHibernateTemplate().findByCriteria(criteria);	
+	}
     
+	public List<AdverseEvent> getByStudy(Study study) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.createCriteria("reportingPeriod").createCriteria("assignment").createCriteria("studySite")
+		.createCriteria("study").add(getStudyExample(study));
+
+		return getHibernateTemplate().findByCriteria(criteria);	
+	}
+
+	public List<AdverseEvent> getByStudy(Study study, AdverseEvent adverseEvent) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").createCriteria("assignment").createCriteria("studySite")
+		.createCriteria("study").add(getStudyExample(study));
+		//if (study.getIdentifiers().size() > 0) {
+			//criteria = criteria.createCriteria("identifiers").add(getIdentifierExample(study.getIdentifiers().get(0)));
+		//}
+		return getHibernateTemplate().findByCriteria(criteria);	
+	}
+/*
+	public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.createCriteria("reportingPeriod").createCriteria("assignment")
+		.add(Example.create(studyParticipantAssignment));
+		return getHibernateTemplate().findByCriteria(criteria);	
+	}
+*/	
+	private Example getParticipantExample(Participant participant) {
+		return addOptions(Example.create(participant));
+	}
+	private Example getStudyExample(Study study) {
+		return addOptions(Example.create(study));
+	}	
+	private Example getAdverseEventExample(AdverseEvent adverseEvent) {
+		return addOptions(Example.create(adverseEvent));
+	}
+	private Example getIdentifierExample(Identifier identifier) {
+		return addOptions(Example.create(identifier));
+	}
+	
+	private Example addOptions(Example example) {
+		example.enableLike();
+		example.ignoreCase();
+		return example;
+	}   
    
 }
