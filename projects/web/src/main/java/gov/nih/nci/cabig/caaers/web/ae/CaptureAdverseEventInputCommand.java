@@ -286,7 +286,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	List<AdverseEvent> unselectedEvents = new ArrayList<AdverseEvent>();
     	if(adverseEventReportingPeriod.getAeReport() != null){
     		for(AdverseEvent ae : adverseEventReportingPeriod.getAeReport().getAdverseEvents()){
-    			if(!selectedAesMap.get(ae.getId())){
+    			Boolean value = selectedAesMap.get(ae.getId());
+    			if(value == null || !value ){
     				unselectedEvents.add(ae);
     			}
     		}
@@ -301,7 +302,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public List<AdverseEvent> findSelectedAdverseEvents(){
     	List<AdverseEvent> adverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents()){
-    		if(selectedAesMap.get(ae.getId())){
+    		Boolean value = selectedAesMap.get(ae.getId());
+    		if(value != null && value){
     			adverseEvents.add(ae);
     		}
     	}
@@ -347,7 +349,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		selectedAesMap.clear();
 		//initialize all selected aes to false
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
-			Integer id = ae.getAdverseEventTerm().getId();
+			Integer id = ae.getId();
 			selectedAesMap.put(id, Boolean.FALSE);
 			ae.setSerious(Boolean.FALSE);
 		}

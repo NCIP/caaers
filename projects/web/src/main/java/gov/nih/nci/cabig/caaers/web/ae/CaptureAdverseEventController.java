@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -100,6 +101,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		initBinder(request,binder, aeCommand);
 		return binder;
 	}
+
 	
 	@Override
     @SuppressWarnings("unchecked")
@@ -113,6 +115,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	return super.isFormSubmission(request);
     }
 
+
+	
 	
 	/**
 	 * Will return the {@link AdverseEventReportingPeriod} 
@@ -121,7 +125,22 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected AdverseEventReportingPeriod getPrimaryDomainObject(CaptureAdverseEventInputCommand cmd) {
 		return cmd.getAdverseEventReportingPeriod();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Map referenceData(HttpServletRequest request, Object o,	Errors errors, int page) throws Exception {
+		CaptureAdverseEventInputCommand command  = (CaptureAdverseEventInputCommand) o;
+		Map referenceData =  super.referenceData(request, command, errors, page);
+		Map<String, String> summary = new LinkedHashMap<String, String>();
+        summary.put("Participant", (command.getParticipant() == null) ? "" : command.getParticipant().getFullName() );
+        summary.put("Study", (command.getStudy() == null) ? "" : command.getStudy().getLongTitle());
+        //put summary only if page is greater than 0
+        if(page > 0){
+        	referenceData.put("aesummary", summary);
+        }
+        
+		return referenceData;
+	}
 	
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
