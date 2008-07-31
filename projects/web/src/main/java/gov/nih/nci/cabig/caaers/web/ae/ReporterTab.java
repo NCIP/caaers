@@ -81,11 +81,6 @@ public class ReporterTab extends AeTab {
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         super.onDisplay(request, command);
         
-        //We need to initialize reporter and physican, if they are null. 
-        ExpeditedAdverseEventReport aeReport = command.getAeReport();
-        if(aeReport.getReporter() == null) aeReport.setReporter(new Reporter());
-        if(aeReport.getPhysician() == null) aeReport.setPhysician(new Physician());
-        
         boolean severe = false;
         for (AdverseEvent event : command.getAeReport().getAdverseEvents()) {
             severe |= evaluationService.isSevere(command.getAssignment(), event);

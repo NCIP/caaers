@@ -5,20 +5,19 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
-import gov.nih.nci.cabig.ctms.web.chrome.Task;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -50,12 +49,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
         EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(getDao(),
                         reportDefinitionDao, assignmentDao, expeditedReportTree);
-
-        /*
-         * TODO: make this work command.setAeReport(getDao().getById(
-         * ServletRequestUtils.getRequiredIntParameter(request, "aeReport")));
-         */
-
+        
         return command;
     }
 

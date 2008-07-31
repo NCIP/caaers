@@ -7,7 +7,9 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
@@ -140,6 +142,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements
         if (aeReport.getTreatmentInformation() == null) {
             aeReport.setTreatmentInformation(new TreatmentInformation());
         }
+        if(aeReport.getReporter() == null) aeReport.setReporter(new Reporter());
+        if(aeReport.getPhysician() == null) aeReport.setPhysician(new Physician());
         this.aeReport = aeReport;
         this.attributionMap = new AttributionMap(aeReport);
         updateOptionalReportDefinitionsMapFromAeReport();
