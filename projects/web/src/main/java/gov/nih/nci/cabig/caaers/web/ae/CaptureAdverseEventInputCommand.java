@@ -102,6 +102,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	public void save() {
 		AdverseEventReportingPeriod mergedReportingPeriod;
+	
 		if(this.getAdverseEventReportingPeriod() != null){
 			mergedReportingPeriod = adverseEventReportingPeriodDao.merge(this.getAdverseEventReportingPeriod());
 			this.setAdverseEventReportingPeriod(mergedReportingPeriod);
