@@ -44,8 +44,9 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 		String clientTrustStore = "caAERs-AdEERS";
 		String userDir = System.getProperty("user.home");
 		String fileSeparator = System.getProperty("file.separator");
-		String clientAbsoluteTrustStore = System.getenv("SERVICEMIX_HOME") + fileSeparator + clientTrustStore;
-		
+		//String clientAbsoluteTrustStore = System.getenv("SERVICEMIX_HOME") + fileSeparator + clientTrustStore;
+		String clientAbsoluteTrustStore = System.getProperty("user.home") + fileSeparator + clientTrustStore;
+
 		log.info("PATH " + clientAbsoluteTrustStore);
 		
     	//System.setProperty("javax.net.ssl.trustStore", "/home/caaers_dev/apache-servicemix-3.1.2/conf/caAERs-AdEERS");
