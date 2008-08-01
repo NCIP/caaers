@@ -7,14 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
-import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,9 +25,8 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
-public abstract class AbstractReportDefinitionController
-                extends
-                AutomaticSaveFlowFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
+public abstract class AbstractReportDefinitionController extends
+                AutomaticSaveAjaxableFormController<ReportDefinitionCommand, ReportDefinition, ReportDefinitionDao> {
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
     public static final String AJAX_REQUEST_PARAMETER = "isAjax";

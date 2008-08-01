@@ -13,6 +13,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -66,6 +68,14 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
     public BasicsTab() {
         this("Report Definition", "Basic Details", "rule/notification/basicsTab");
     }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,ReportDefinitionCommand command) {
+    	// TODO Auto-generated method stub
+    	return super.referenceData(request, command);
+    }
+    
+    
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ReportDefinitionCommand command) {

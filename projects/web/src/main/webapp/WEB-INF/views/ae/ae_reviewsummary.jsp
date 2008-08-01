@@ -52,7 +52,7 @@
 		</tr>
 		<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 			<tr>
-				<td align="center">${rdTable.value.required}</td>
+				<td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
 				<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 				<td>${rdTable.value.status}</td>
 			</tr>
@@ -122,7 +122,7 @@
 					</tr>
 					<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
 					<tr>
-						<td align="center">${rdTable.value.required}</td>
+						<td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
 						<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
 						<td>${rdTable.value.status}</td>
 					</tr>
