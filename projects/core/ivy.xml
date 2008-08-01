@@ -165,7 +165,7 @@
 			<dependency org="org.apache.poi" name="poi" rev="3.0-FINAL"/>
 			
 			<!-- Test/Runtime dependencies -->
-			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default"/>
+			<dependency org="dbunit" name="dbunit" rev="2.1" conf="build->default;test->default;dist->default(*)"/>
 						
 			<!-- Test only dependencies -->
 			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />        	
