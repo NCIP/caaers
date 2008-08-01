@@ -129,7 +129,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public void refreshAssignment(Integer reportingPeriodId){
     	//reload assignmet
-    	assignmentDao.refresh(assignment);
+    	assignmentDao.refresh(getAssignment());
     	
     	//reset the adverse event report in the command
     	setAdverseEventReportingPeriod(null);
