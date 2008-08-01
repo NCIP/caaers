@@ -26,7 +26,7 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
-        Map<String, Object> refdata = super.referenceData(command);
+        Map<String, Object> refdata = super.referenceData(request, command);
         refdata.put("reportTree", expeditedReportTree);
         return refdata;
     }
