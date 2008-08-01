@@ -494,7 +494,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @Transient
     public String getDisplayExpected(){
     	displayExpected = "";
-    	displayExpected = expected.equals(Boolean.TRUE) ? "Yes" : "No";
+    	if(expected != null)
+    		displayExpected = expected.equals(Boolean.TRUE) ? "Yes" : "No";
     	return displayExpected;
     }
     
