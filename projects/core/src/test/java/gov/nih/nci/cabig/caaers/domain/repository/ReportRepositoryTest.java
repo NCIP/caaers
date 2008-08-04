@@ -7,7 +7,6 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
-import gov.nih.nci.cabig.caaers.web.ae.ReportingPeriodCommand;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
