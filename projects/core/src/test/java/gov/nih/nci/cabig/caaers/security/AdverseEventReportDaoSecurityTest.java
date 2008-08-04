@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.security;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -29,8 +30,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
 
     CtcTermDao ctcTermDao;
 
-    StudyParticipantAssignmentDao assignmentDao;
-
+    AdverseEventReportingPeriodDao reportingPeriodDao;
     ExpeditedAdverseEventReportDao adverseEventReportDao;
 
     @Override
@@ -43,8 +43,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
         super.setUp();
         SecurityTestUtils.switchUser("user_1", "ROLE_that_does_not_exist");
         ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
-        assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext().getBean(
-                        "studyParticipantAssignmentDao");
+        reportingPeriodDao = (AdverseEventReportingPeriodDao) getApplicationContext().getBean("adverseEventReportingPeriodDao");
         adverseEventReportDao = (ExpeditedAdverseEventReportDao) getApplicationContext().getBean(
                         "expeditedAdverseEventReportDao");
     }
@@ -150,7 +149,7 @@ public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
                         .getTime() + 600000)));
         ExpeditedAdverseEventReport newReport = Fixtures.createSavableExpeditedReport();
         newReport.addAdverseEvent(newEvent);
-        newReport.setAssignment(assignmentDao.getById(-14));
+        newReport.setReportingPeriod(reportingPeriodDao.getById(-14));
 
         return newReport;
     }
