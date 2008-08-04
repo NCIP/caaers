@@ -1,6 +1,5 @@
 class CreateLabViewerLabs extends edu.northwestern.bioinformatics.bering.Migration {
     void up() {
-        execute('drop sequence seq_labviewer_labs_id');
         execute('drop TABLE labviewer_labs');
         
         createTable("labs") { t ->
