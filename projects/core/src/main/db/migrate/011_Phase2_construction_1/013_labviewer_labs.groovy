@@ -11,7 +11,6 @@ class CreateLabViewerLabs extends edu.northwestern.bioinformatics.bering.Migrati
             t.addColumn("grid_id" , "string" , nullable:true)
             
         }  
-        execute('create sequence seq_labviewer_labs_id increment by 1');
         execute('ALTER TABLE labviewer_labs ADD CONSTRAINT fk_sp_assignment_id FOREIGN KEY (assignment_id) REFERENCES participant_assignments');
       
     }
