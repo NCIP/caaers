@@ -73,7 +73,8 @@
      	id="-1004"
      	code="adverseEventReportingPeriodCode"
      	study_id="-4" />   
-     	 <ae_reporting_periods
+     	
+     <ae_reporting_periods
 		id="-1001"
 		start_date="2008-05-23"
 		end_date="2008-05-25"
@@ -94,12 +95,12 @@
      	  	
     <AE_REPORTS
         id="-99"
-        reporting_period_id="-14"
+        reporting_period_id="-1001"
         created_at="2004-12-31"
         />
     <AE_REPORTS
         id="-100"
-         reporting_period_id="-14"
+         reporting_period_id="-1002"
         created_at="2004-12-31"
         />
    

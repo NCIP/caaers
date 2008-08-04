@@ -387,4 +387,19 @@ public class Fixtures {
 		return meddraStudyDisease;
 		
     }
+    
+    public static AdverseEventReportingPeriod createReportingPeriod(){
+    	AdverseEventReportingPeriod rp = new AdverseEventReportingPeriod();
+    	Study s = createStudy("Test");
+    	Organization ctep = createOrganization("Ctep");
+    	StudySite ss = new StudySite();
+    	ss.setStudy(s);
+    	StudyFundingSponsor sponsor = createStudyFundingSponsor(ctep);
+    	s.addStudyOrganization(sponsor);
+    	
+    	StudyParticipantAssignment assignment = Fixtures.createAssignment();
+    	assignment.setStudySite(ss);
+    	rp.setAssignment(assignment);
+    	return rp;
+    }
 }

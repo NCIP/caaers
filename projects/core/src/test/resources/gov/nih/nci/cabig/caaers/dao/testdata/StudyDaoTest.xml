@@ -34,7 +34,7 @@
     	name="Northwestern Univ Cancer Center"
     	description_text="NUCC"
     	nci_institute_code="WAKE" />
-        
+    <STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->    
     <STUDIES
         id="-2"
         multi_institution_indicator="0"
@@ -138,6 +138,17 @@
         middle_name="m"
         maiden_name="m"
         load_status="1" />
+        
+    
+	 <!--  stu_id=-999 to overcome dbunit metatdata based on first row issue-->    
+    <IDENTIFIERS
+        id="-200"
+        participant_id="-100"
+        stu_id="-999"
+        value="13js77"
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"	/>    
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
         id="-15"
@@ -190,14 +201,6 @@
        	organization_id="-1003"
        	discriminator_column="1"/>   	
 
-
-    <IDENTIFIERS
-        id="-200"
-        participant_id="-100"
-        value="13js77"
-        type="MRN"
-        system_name="system name"
-        discriminator_column="2"	/>
         <!--
     <ORGANIZATIONS
         id="-1050"

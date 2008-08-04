@@ -46,9 +46,6 @@ import java.util.Map;
 public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdverseEventReportDao> {
     private CtcTermDao ctcTermDao = (CtcTermDao) getApplicationContext().getBean("ctcTermDao");
 
-    private StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext()
-                    .getBean("studyParticipantAssignmentDao");
-
     private AnatomicSiteDao anatomicSiteDao = (AnatomicSiteDao) getApplicationContext().getBean(
                     "anatomicSiteDao");
 
@@ -57,12 +54,14 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
     private ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao) getApplicationContext()
                     .getBean("reportDefinitionDao");
+    
+    private AdverseEventReportingPeriodDao reportingPeriodDao = (AdverseEventReportingPeriodDao) getApplicationContext().getBean("adverseEventReportingPeriodDao");
 
     public void testGet() throws Exception {
         ExpeditedAdverseEventReport loaded = getDao().getById(-1);
         assertEquals("Wrong AE 0", -70, (int) loaded.getAdverseEvents().get(0).getId());
         assertEquals("Wrong AE 1", -11, (int) loaded.getAdverseEvents().get(1).getId());
-        assertEquals("Wrong assignment", -14, (int) loaded.getAssignment().getId());
+        assertEquals("Wrong assignment", -14, (int) loaded.getReportingPeriod().getAssignment().getId());
         CoreTestCase.assertDayOfDate("Wrong created at (date)", 2004, Calendar.SEPTEMBER, 4, loaded
                         .getCreatedAt());
         CoreTestCase.assertTimeOfDate("Wrong created at (time)", 13, 15, 30, 0, loaded
@@ -237,17 +236,18 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
                 event0.setHospitalization(Hospitalization.NO);
                 event0.setStartDate(new Timestamp(DateUtils.createDate(2004, Calendar.APRIL, 25)
                                 .getTime() + 600000));
+                report.getReportingPeriod().addAdverseEvent(event0);
 
                 AdverseEvent event1 = new AdverseEvent();
                 event1.setGrade(Grade.SEVERE);
                 event1.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(event0, term));
                 event1.setExpected(Boolean.FALSE);
                 event1.setHospitalization(Hospitalization.YES);
+                report.getReportingPeriod().addAdverseEvent(event1);
 
                 report.getAdverseEvents().clear();
                 report.addAdverseEvent(event0);
                 report.addAdverseEvent(event1);
-                report.setAssignment(assignmentDao.getById(-14));
 
             }
 
@@ -448,8 +448,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertNull(loaded.getPhysician().getFirstName());
-                assertNull(loaded.getPhysician().getLastName());
+                assertNull(loaded.getPhysician());
             }
         });
     }
@@ -461,8 +460,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
             }
 
             public void assertCorrect(ExpeditedAdverseEventReport loaded) {
-                assertNull(loaded.getReporter().getFirstName());
-                assertNull(loaded.getReporter().getLastName());
+                assertNull(loaded.getReporter());
             }
         });
     }
@@ -603,6 +601,8 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         results = getDao().searchExpeditedReports(m);
         assertEquals("Wrong number of results", 1, results.size());
     }
+    
+  
 
     private void doSaveTest(SaveTester tester) {
         Integer savedId;
@@ -627,7 +627,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 
     private ExpeditedAdverseEventReport createMinimalAeReport() {
         ExpeditedAdverseEventReport report = Fixtures.createSavableExpeditedReport();
-        report.setAssignment(assignmentDao.getById(-14));
+        report.setReportingPeriod(reportingPeriodDao.getById(-14));
         report.getAdverseEvents().get(0).setAdverseEventCtcTerm(
                         Fixtures.createAdverseEventCtcTerm(report.getAdverseEvents().get(0),
                                         ctcTermDao.getById(3012)));

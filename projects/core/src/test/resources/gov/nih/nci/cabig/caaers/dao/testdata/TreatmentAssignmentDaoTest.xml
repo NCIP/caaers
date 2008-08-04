@@ -17,4 +17,10 @@
         <treatment_assignment id="-13"
         code="TAC-12347"
         study_id="-2" />
+        
+        <!--  Remove the referenced tables period -->
+        <epochs />
+        <ae_reporting_periods />
+		<ae_reports />
+		<adverse_events />
 </dataset>

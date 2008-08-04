@@ -56,6 +56,8 @@
      <ORGANIZATIONS
         id="-1001"
         name="New Site"/>
+        
+    <STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->    
     <STUDIES 
     	id="-2001" 
     	multi_institution_indicator="0"
@@ -125,9 +127,11 @@
         study_site_id="-3000" 
         load_status="0" />
         
+     <!-- stu_id="-999" to overcome metadata on first row issue -->
      <IDENTIFIERS
         id="-200"
         participant_id="-100"
+        stu_id="-999"
         value="13js77"
         type="MRN"
         system_name="system name"

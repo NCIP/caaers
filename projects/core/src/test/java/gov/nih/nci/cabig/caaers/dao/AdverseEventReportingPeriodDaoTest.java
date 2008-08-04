@@ -8,6 +8,8 @@ import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
@@ -47,8 +49,16 @@ public class AdverseEventReportingPeriodDaoTest extends DaoTestCase<AdverseEvent
     	reportingPeriod.setTreatmentAssignment(treatmentAssignmentDao.getById(1001));
     	reportingPeriod.setEpoch(epochDao.getById(-1010));
     	reportingPeriod.setAssignment(assignmentDao.getById(-14));
-    	reportingPeriod.addAdverseEvent(adverseEventDao.getById(-70));
-    	reportingPeriod.addAdverseEvent(adverseEventDao.getById(-11));
+    	
+    	AdverseEvent ae = new AdverseEvent();
+    	ae.setSolicited(true);
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3007);
+    	
+    	ae.setAdverseEventCtcTerm(Fixtures.createAdverseEventCtcTerm(ae, term));
+    	
+    	
+    	reportingPeriod.addAdverseEvent(ae);
     	getDao().save(reportingPeriod);
         assertNotNull("No ID for new report", reportingPeriod.getId());
         int saveId = reportingPeriod.getId();
@@ -57,7 +67,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoTestCase<AdverseEvent
         CoreTestCase.assertEquals("Save this reportingPeriod", p.getDescription());
         CoreTestCase.assertDayOfDate("Wrong start date", 2008, Calendar.MAY, 23, p.getStartDate());
         CoreTestCase.assertDayOfDate("Wrong end date", 2008, Calendar.MAY, 25, p.getEndDate());
-        CoreTestCase.assertEquals(2, p.getAdverseEvents().size());
+        CoreTestCase.assertEquals(1, p.getAdverseEvents().size());
     }
     
 }
