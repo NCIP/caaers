@@ -36,7 +36,7 @@
         />
     <ctc_grades/> <!-- to delete in case of existing refs -->
     <agents id="-101"/>
-	<STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->                
+
      <STUDIES
         id="-1"
         short_title="That one"
@@ -49,7 +49,7 @@
         study_id="-1"
         type="SST"
         />
-        
+	<STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->                        
     <ORGANIZATIONS
         id="-1001"
         name="New Site"/> 

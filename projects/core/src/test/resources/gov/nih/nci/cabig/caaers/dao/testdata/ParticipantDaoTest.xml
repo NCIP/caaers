@@ -57,7 +57,7 @@
         id="-1001"
         name="New Site"/>
         
-    <STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->    
+ 
     <STUDIES 
     	id="-2001" 
     	multi_institution_indicator="0"
@@ -75,7 +75,7 @@
     	description="Description" 
     	load_status="1"
     	/>
-    
+     <STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->    
      <DISEASE_TERMINOLOGIES
     	id="-11"
     	term_code="1"
