@@ -149,6 +149,7 @@
         value="13js77"
         type="MRN"
         system_name="system name"
+         organization_id="-1003"
         discriminator_column="2"	/>    
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
