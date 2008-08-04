@@ -45,7 +45,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         ctcTerm.setSelect("Select");
         ctcTerm.setOtherRequired(false);
         adverseEvent.getAdverseEventCtcTerm().setCtcTerm(this.ctcTerm);
-        report.setAssignment(Fixtures.createAssignment());
+        report.setReportingPeriod(Fixtures.createReportingPeriod());
         wrappedReport = new BeanWrapperImpl(report);
     }
 

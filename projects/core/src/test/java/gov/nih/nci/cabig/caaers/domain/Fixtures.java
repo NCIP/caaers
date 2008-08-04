@@ -392,8 +392,11 @@ public class Fixtures {
     	AdverseEventReportingPeriod rp = new AdverseEventReportingPeriod();
     	Study s = createStudy("Test");
     	Organization ctep = createOrganization("Ctep");
+    	Organization nci = createOrganization("NCI");
     	StudySite ss = new StudySite();
     	ss.setStudy(s);
+    	ss.setOrganization(nci);
+    	
     	StudyFundingSponsor sponsor = createStudyFundingSponsor(ctep);
     	s.addStudyOrganization(sponsor);
     	
