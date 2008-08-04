@@ -275,15 +275,16 @@ public class StudyOrganizationMigratorTest extends AbstractTestCase {
         srcSSite.addStudyPersonnel(sp);
 
         xstreamStudy.addStudyOrganization(srcSSite);
-
+        FundingSponsor fundingSponsor = Fixtures.createFundingSponsor(organization, organizationAssignedIdentifier);
         StudyFundingSponsor studyFundingSponsor = Fixtures.createStudyFundingSponsor(organization);
-        xstreamStudy.addStudyFundingSponsor(studyFundingSponsor);
+        fundingSponsor.setStudyFundingSponsor(studyFundingSponsor);
+        xstreamStudy.setFundingSponsor(fundingSponsor);
 
         List<Organization> organizations = new ArrayList<Organization>();
         organizations.add(organization);
 
         EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations).anyTimes();
-        EasyMock.expect(researchStaffDao.getBySubnames((String[]) EasyMock.anyObject(), EasyMock.anyInt())).andReturn(si1List);
+        EasyMock.expect(researchStaffDao.getByNciIdentifier((String[]) EasyMock.anyObject(), EasyMock.anyInt())).andReturn(si1List);
 
         replayMocks();
         migrator.migrate(xstreamStudy, dest, outcome);
@@ -315,15 +316,17 @@ public class StudyOrganizationMigratorTest extends AbstractTestCase {
         srcSSite.addStudyPersonnel(sp);
 
         xstreamStudy.addStudyOrganization(srcSSite);
-
+        
+        FundingSponsor fundingSponsor = Fixtures.createFundingSponsor(organization, organizationAssignedIdentifier);
         StudyFundingSponsor studyFundingSponsor = Fixtures.createStudyFundingSponsor(organization);
-        xstreamStudy.addStudyFundingSponsor(studyFundingSponsor);
+        fundingSponsor.setStudyFundingSponsor(studyFundingSponsor);
+        xstreamStudy.setFundingSponsor(fundingSponsor);
 
         List<Organization> organizations = new ArrayList<Organization>();
         organizations.add(organization);
 
-        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations);
-       // EasyMock.expect(researchStaffDao.getBySubnames((String[]) EasyMock.anyObject(), EasyMock.anyInt())).andReturn(si1List);
+        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations).anyTimes();
+        EasyMock.expect(researchStaffDao.getByNciIdentifier((String[]) EasyMock.anyObject(), EasyMock.anyInt())).andReturn(si1List);
 
         replayMocks();
         migrator.migrate(xstreamStudy, dest, outcome);
