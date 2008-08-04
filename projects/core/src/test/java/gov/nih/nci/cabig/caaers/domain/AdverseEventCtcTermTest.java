@@ -37,7 +37,8 @@ public class AdverseEventCtcTermTest extends TestCase {
     public void testUniversalTermForOtherReqTermWithOtherDetails() throws Exception {
         adverseEvent.setDetailsForOther("Arbit");
         term.setCtcTerm(coagOther);
-        assertEquals("Coagulation - Other: Arbit", term.getUniversalTerm());
+        String universalTerm = term.getUniversalTerm();
+        assertEquals("Coagulation - Other: Arbit", universalTerm);
     }
 
     public void testUniversalTermForOtherReqTermWithoutOtherDetails() throws Exception {
