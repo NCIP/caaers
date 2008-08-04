@@ -50,6 +50,8 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
             if (otherAt >= 0) {
                 sb.delete(otherAt + 5, sb.length());
             }
+            if (getAdverseEvent().getDetailsForOther() != null) sb.append(": ").append(
+                    getAdverseEvent().getDetailsForOther());
             if (getAdverseEvent().getLowLevelTerm() != null) sb.append(": ").append(
                             getAdverseEvent().getLowLevelTerm().getMeddraTerm());
             return sb.toString();
