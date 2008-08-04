@@ -1,9 +1,15 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import static org.easymock.EasyMock.isA;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.easymock.classextension.EasyMock;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
@@ -44,6 +50,7 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 		
 		organization = Fixtures.createOrganization(orgName);
 		orgIdentifier = Fixtures.createOrganizationAssignedIdentifier("111", organization);
+		orgIdentifier.getOrganization().setNciInstituteCode(null);
 		sysIdentifier1 = Fixtures.createSystemAssignedIdentifier("abcd");
 		sysIdentifier2 = Fixtures.createSystemAssignedIdentifier("mmmm");
 		src = Fixtures.createStudy("Test");
@@ -52,11 +59,17 @@ public class IdentifierMigratorTest extends AbstractTestCase {
 	public void testMigrate() {
 		
 		Study dest = new Study();
+		
 		src.addIdentifier(orgIdentifier);
 		src.addIdentifier(sysIdentifier1);
 		src.addIdentifier(sysIdentifier2);
 		
-		EasyMock.expect(organizationDao.getByName(orgName)).andReturn(organization);
+		List<Organization> organizations = new ArrayList<Organization>();
+        organizations.add(organization);
+        
+        EasyMock.expect(organizationDao.getByName(orgName)).andReturn(organization);
+        EasyMock.expect(organizationDao.searchOrganization(isA(OrganizationQuery.class))).andReturn(organizations).anyTimes();
+		
 		replayMocks();
 		migrator.migrate(src, dest, outcome);
 		verifyMocks();
