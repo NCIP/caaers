@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.service.synchronizer;
 import java.util.ArrayList;
 import java.util.List;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -14,7 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
-public class StudyParticipantAssignmentSynchronizerTest extends AbstractTestCase {
+public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecurityTestCase {
 	Participant dbParticipant,xmlParticipant;
 	StudyParticipantAssignmentSynchronizer studyParticipantAssignmentSynchronizer;
 	DomainObjectImportOutcome<Participant> outcome;

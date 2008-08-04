@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -16,7 +17,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.Migrator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParticipantSynchronizerIntegrationTest extends AbstractTestCase {
+public class ParticipantSynchronizerIntegrationTest extends AbstractNoSecurityTestCase {
 	
 	Participant dbParticipant,xmlParticipant;
 	StudyParticipantAssignmentSynchronizer studyParticipantAssignmentSynchronizer;
