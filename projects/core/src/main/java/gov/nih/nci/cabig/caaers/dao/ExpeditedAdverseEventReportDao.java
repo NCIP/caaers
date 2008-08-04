@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,7 @@ import org.hibernate.LazyInitializationException;
  * 
  * @author Rhett Sutphin
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 @Transactional(readOnly = true)
 public class ExpeditedAdverseEventReportDao extends
@@ -31,9 +33,16 @@ public class ExpeditedAdverseEventReportDao extends
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
-    private static final String JOINS = " join o.adverseEventsInternal as adverseEvents join adverseEvents.adverseEventTerm as aeTerm join aeTerm.term as ctcTerm "
-                    + " join o.assignment as assignment join assignment.participant as p join p.identifiers as pIdentifier "
-                    + " join assignment.studySite as ss join ss.study as s join s.identifiers as sIdentifier";
+    private static final String JOINS = " join o.adverseEventsInternal as adverseEvents " 
+    		        + " join adverseEvents.adverseEventTerm as aeTerm " 
+    		        + " join aeTerm.term as ctcTerm "
+                    + " join o.reportingPeriod as rp " 
+                    + " join rp.assignment as assignment " 
+                    + " join assignment.participant as p " 
+                    + " join p.identifiers as pIdentifier "
+                    + " join assignment.studySite as ss " 
+                    + " join ss.study as s " 
+                    + " join s.identifiers as sIdentifier";
 
     private ReportDao reportDao;
 
@@ -250,4 +259,6 @@ public class ExpeditedAdverseEventReportDao extends
     public void setReportDao(final ReportDao reportDao) {
         this.reportDao = reportDao;
     }
+    
+ 
 }
