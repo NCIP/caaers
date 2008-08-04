@@ -42,7 +42,7 @@ public class DateValueTest extends TestCase {
 		assertEquals(0, new DateValue(2002, 02,02).compareTo(new DateValue(2002,02,02)));
 		assertEquals(0, new DateValue(2002, 02).compareTo(new DateValue(2002,02)));
 		assertEquals(0,new DateValue().compareTo(new DateValue()));
-		assertEquals(-1, new DateValue().compareTo(new DateValue()));
+		assertEquals(0, new DateValue().compareTo(new DateValue()));
 	}
 
 	public void testToString() {
