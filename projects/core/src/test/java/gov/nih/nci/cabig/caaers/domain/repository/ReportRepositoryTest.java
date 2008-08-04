@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import gov.nih.nci.cabig.caaers.domain.report.*;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
+import gov.nih.nci.cabig.caaers.web.ae.ReportingPeriodCommand;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -119,7 +120,9 @@ public class ReportRepositoryTest extends CaaersTestCase {
         siteInvestigator.setInvestigator(investigator);
         studyInvestigator.setSiteInvestigator(siteInvestigator);
         site.addStudyInvestigators(studyInvestigator);
-        expeditedData.setAssignment(assignment);
+        AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+        reportingPeriod.setAssignment(assignment);
+        expeditedData.setReportingPeriod(reportingPeriod);
 
         PlannedEmailNotification penf = new PlannedEmailNotification();
         RoleBasedRecipient recipient = new RoleBasedRecipient();
@@ -161,8 +164,10 @@ public class ReportRepositoryTest extends CaaersTestCase {
         studyPersonnel.setResearchStaff(staff);
         site.addStudyPersonnel(studyPersonnel);
 
-        expeditedData.setAssignment(assignment);
-
+        AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+        reportingPeriod.setAssignment(assignment);
+        expeditedData.setReportingPeriod(reportingPeriod);
+        
         ReportRepository impl = (ReportRepository) reportRepository;
 //        List<String> addresses = expeditedData.findEmailAddress("SPI", impl);
 //        assertEquals(1, addresses.size());
@@ -207,8 +212,7 @@ public class ReportRepositoryTest extends CaaersTestCase {
                 .<ExpeditedReportSection>emptySet());
     }
 
-    private <C extends DomainObject, A extends AdverseEventAttribution<C>> A createAttribution(
-            C cause, Attribution level, Class<A> klass) throws IllegalAccessException,
+    private <C extends DomainObject, A extends AdverseEventAttribution<C>> A createAttribution(C cause, Attribution level, Class<A> klass) throws IllegalAccessException,
             InstantiationException {
         A attr = klass.newInstance();
         attr.setAttribution(level);
