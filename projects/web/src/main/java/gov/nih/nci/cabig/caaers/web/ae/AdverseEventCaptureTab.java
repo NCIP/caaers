@@ -225,5 +225,21 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 					errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
 			}
 		}
+		
+		// If grade = "Please Select" then other attributes cannot be modified. They should be "Please Select"
+		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
+			if(ae.getSolicited()){
+				if(ae.getGrade() == null || ae.getGrade().equals(Grade.NOT_EVALUATED)){
+					if(ae.getAttributionSummary() != null || ae.getHospitalization() != null || ae.getExpected() != null){
+						if(ae.getGrade() == null)
+							errors.reject("GRADE_NEEDED", "Attribution, Hospitalization or Expectedness cannot be selected when Grade is not selected.");
+						else
+							errors.reject("GRADE_NEEDED", "Attribution, Hospitalization or Expectedness cannot be selected when Grade is not evaluated.");
+					}
+						
+						
+				}
+			}
+		}
 	}
 }
