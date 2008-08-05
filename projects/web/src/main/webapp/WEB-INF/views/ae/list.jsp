@@ -447,7 +447,6 @@
                 		</a>
                 		</td>
  						<td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' >grade  ${adverseEvent.grade.code}</td>
-                        <td class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>' ><a href="javascript:showAeHistory(${adverseEvent.id})">Show history</a></td></tr>
                         </table>
     				</c:forEach>
 
