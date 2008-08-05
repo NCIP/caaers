@@ -8,8 +8,7 @@ public class RulesOracleDBFileSystem extends OracleFileSystem {
 
 	public RulesOracleDBFileSystem() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
-
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
         Properties props = b.getProperties();
 
         this.driver = props.getProperty("datasource.driver");

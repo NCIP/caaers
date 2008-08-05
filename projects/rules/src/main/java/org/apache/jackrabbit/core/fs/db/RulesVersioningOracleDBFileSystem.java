@@ -8,7 +8,7 @@ public class RulesVersioningOracleDBFileSystem extends OracleFileSystem {
 
 	public RulesVersioningOracleDBFileSystem() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 

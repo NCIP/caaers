@@ -50,7 +50,8 @@ public class RuleServiceContext {
              */
 
             this.applicationContext = new ClassPathXmlApplicationContext(
-                            new String[] { "classpath*:config/spring/applicationContext-rules-jcr.xml" });
+                            new String[] { "classpath*:config/spring/applicationContext-rules-jcr.xml" ,
+                            		  "classpath*:applicationContext-test.xml"});
 
             this.repositoryService = (RepositoryServiceImpl) applicationContext
                             .getBean("jcrService");

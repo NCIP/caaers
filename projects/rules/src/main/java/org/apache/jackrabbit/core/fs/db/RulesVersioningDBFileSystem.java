@@ -8,7 +8,7 @@ public class RulesVersioningDBFileSystem extends DbFileSystem {
 
     public RulesVersioningDBFileSystem() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 

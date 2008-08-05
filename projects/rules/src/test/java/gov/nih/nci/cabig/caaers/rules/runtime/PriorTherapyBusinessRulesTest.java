@@ -45,7 +45,8 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
         aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
-        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(new Date()));
+        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(org.apache.commons.lang.time.DateUtils.addDays(new Date(), -1)));
+        aeReport.getSaeReportPriorTherapies().get(0).setEndDate(new DateValue(new Date()));
         aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
         aeReport.getSaeReportPriorTherapies().get(1).setOther("Other1");
         ValidationErrors errors = fireRules(aeReport);
@@ -60,7 +61,8 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     public void testNoPriorTherapy_Without_OtherComments() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
-        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(new Date()));
+        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(org.apache.commons.lang.time.DateUtils.addDays(new Date(), -1)));
+        aeReport.getSaeReportPriorTherapies().get(0).setEndDate(new DateValue(new Date()));
         System.out.println(aeReport.getSaeReportPriorTherapies().get(0).getName());
         aeReport.getSaeReportPriorTherapies().get(0).setOther(null);
         aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
@@ -80,7 +82,8 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     public void testOneOutOfTwoPriorTherapy_IsWithout_OtherComments() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("Prior Therapy NOS");
-        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(new Date()));
+        aeReport.getSaeReportPriorTherapies().get(0).setStartDate(new DateValue(org.apache.commons.lang.time.DateUtils.addDays(new Date(), -1)));
+        aeReport.getSaeReportPriorTherapies().get(0).setEndDate(new DateValue(new Date()));
         aeReport.getSaeReportPriorTherapies().get(0).setOther("Other");
         aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("Prior Therapy NOS");
         aeReport.getSaeReportPriorTherapies().get(1).setOther(null);
@@ -250,6 +253,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
             aet.getPriorTherapy().setId(83);
             aet.setStartDate(new DateValue(new Date()));
+            aet.setEndDate(null);
         }
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors, "No errors when only startdate ");

@@ -8,7 +8,7 @@ public class RulesOracleDBPersistanceManager extends OraclePersistenceManager {
 
     public RulesOracleDBPersistanceManager() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 

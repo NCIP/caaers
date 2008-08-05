@@ -10,7 +10,7 @@ public class RulesVersioningDBPersistanceManager extends SimpleDbPersistenceMana
 
     public RulesVersioningDBPersistanceManager() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 

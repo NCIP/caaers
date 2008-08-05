@@ -10,7 +10,7 @@ public class RulesDBPersistanceManager extends SimpleDbPersistenceManager {
 
     public RulesDBPersistanceManager() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 

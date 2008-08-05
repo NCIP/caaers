@@ -10,7 +10,7 @@ public class RulesDBFileSystem extends DbFileSystem {
 
     public RulesDBFileSystem() {
 
-        CaaersDataSourcePropertiesFactoryBean b = new CaaersDataSourcePropertiesFactoryBean();
+        CaaersDataSourcePropertiesFactoryBean b = CaaersDataSourcePropertiesFactoryBean.getLoadedInstance();
 
         Properties props = b.getProperties();
 
