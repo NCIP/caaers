@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.tools;
 
+import org.springframework.beans.factory.InitializingBean;
+
 import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBean;
 
 /**
@@ -16,7 +18,7 @@ import gov.nih.nci.cabig.ctms.tools.DataSourceSelfDiscoveringPropertiesFactoryBe
  * @author Rhett Sutphin
  */
 public class CaaersDataSourcePropertiesFactoryBean extends
-                DataSourceSelfDiscoveringPropertiesFactoryBean {
+                DataSourceSelfDiscoveringPropertiesFactoryBean implements InitializingBean{
     public static final String QUARTZ_DELEGATE_PROPERTY_NAME = "jdbc.quartz.delegateClassName";
 
     public static final String SCHEMA_PROPERTY_NAME = "datasource.schema";
@@ -41,10 +43,20 @@ public class CaaersDataSourcePropertiesFactoryBean extends
     
     public static final String DB_NAME  = "databaseName";
 
+    private static CaaersDataSourcePropertiesFactoryBean theBean;
+    
     public CaaersDataSourcePropertiesFactoryBean() {
         setApplicationDirectoryName("caaers");
     }
-
+    
+    public void afterPropertiesSet() throws Exception {
+    	theBean = this;
+    }
+    
+    public static CaaersDataSourcePropertiesFactoryBean getLoadedInstance(){
+    	return theBean;
+    }
+    
     /**
      * Sets reasonable defaults for caAERS-specific properties
      */
