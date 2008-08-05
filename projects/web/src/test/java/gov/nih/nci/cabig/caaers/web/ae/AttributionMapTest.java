@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -41,6 +42,9 @@ public class AttributionMapTest extends AbstractTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         report = new ExpeditedAdverseEventReport();
+        AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+        reportingPeriod.setAeReport(report);
+        report.setReportingPeriod(reportingPeriod);
         report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"),
                         createOrganization("DC")));
         report.setTreatmentInformation(new TreatmentInformation());
@@ -157,11 +161,7 @@ public class AttributionMapTest extends AbstractTestCase {
         assertSame("Cause not set", OTHER_CAUSE_0, actualAeAttribution.getCause());
     }
 
-    public void testGetNonInitializedAttributionIsUnrelated() throws Exception {
-        assertAttributionsMatch(Attribution.UNRELATED,
-                        ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY,
-                        1, 0);
-    }
+
 
     public void testErrorToGetForNonExistentCause() throws Exception {
         try {

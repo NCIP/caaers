@@ -8,7 +8,9 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
@@ -31,7 +33,7 @@ public abstract class AeWebTestCase extends WebTestCase {
 
     protected StudyParticipantAssignmentDao assignmentDao;
 
-    protected CreateExpeditedAdverseEventCommand command;
+    protected EditExpeditedAdverseEventCommand command;
 
     protected ExpeditedAdverseEventReportDao reportDao;
 
@@ -40,6 +42,8 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected StudyDao studyDao;
 
     protected ParticipantDao participantDao;
+    
+    protected ExpeditedAdverseEventReportDao expeditedReportDao;
 
     protected Errors errors;
 
@@ -55,37 +59,33 @@ public abstract class AeWebTestCase extends WebTestCase {
         studyDao = registerMockFor(StudyDao.class);
         participantDao = registerMockFor(ParticipantDao.class);
         expeditedReportTree = new ExpeditedReportTree();
-
+        expeditedReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
         command = createCommand();
 
         errors = new BindException(command, "command");
     }
 
-    protected abstract CreateExpeditedAdverseEventCommand createCommand();
+    protected abstract EditExpeditedAdverseEventCommand createCommand();
 
-    protected final CreateExpeditedAdverseEventCommand createRealCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao,
-                        reportDefinitionDao, studyDao, participantDao, nowFactory,
-                        expeditedReportTree);
+    protected final EditExpeditedAdverseEventCommand createRealCommand() {
+    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, expeditedReportTree);
     }
 
-    protected final CreateExpeditedAdverseEventCommand createMockCommand() {
-        return new CreateExpeditedAdverseEventCommand(assignmentDao, reportDao,
-                        reportDefinitionDao, studyDao, participantDao, nowFactory,
-                        expeditedReportTree) {
-            @Override
-            public StudyParticipantAssignment getAssignment() {
-                return assignment;
-            }
-        };
+    protected final EditExpeditedAdverseEventCommand createMockCommand() {
+        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, expeditedReportTree);
     }
 
-    protected final CreateExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
-        CreateExpeditedAdverseEventCommand c = createMockCommand();
+    protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
+        EditExpeditedAdverseEventCommand c = createMockCommand();
         // initialize command as minimally valid
-        // BeginTab
-        c.setParticipant(assignment.getParticipant());
-        c.setStudy(assignment.getStudySite().getStudy());
+        AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+        reportingPeriod.setAssignment(assignment);
+        ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
+        aeReport.setReportingPeriod(reportingPeriod);
+        reportingPeriod.setAeReport(aeReport);
+        aeReport.setCreatedAt(nowFactory.getNowTimestamp());
+        c.setAeReport(aeReport);
+        
 
         // BasicsTab
         AdverseEvent event = c.getAeReport().getAdverseEvents().get(0);

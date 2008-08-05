@@ -47,7 +47,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
 
     @Override
-    protected CreateExpeditedAdverseEventCommand createCommand() {
+    protected EditExpeditedAdverseEventCommand createCommand() {
         return createMinimallyValidMockCommand();
     }
 

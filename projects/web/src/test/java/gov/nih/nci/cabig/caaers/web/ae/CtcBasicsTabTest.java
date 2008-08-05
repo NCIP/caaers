@@ -51,22 +51,20 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         CtcBasicsTab ctcBasicsTab = new CtcBasicsTab();
         EvaluationService evaluationServiceMock = registerMockFor(EvaluationService.class);
         ctcBasicsTab.setEvaluationService(evaluationServiceMock);
-        EasyMock.expect(
-                        evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),
-                                        ExpeditedReportSection.BASICS_SECTION)).andReturn(
-                        new ValidationErrors());
+        EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),
+                                        ExpeditedReportSection.BASICS_SECTION)).andReturn(new ValidationErrors()).anyTimes();
         return ctcBasicsTab;
     }
 
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
-        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(command).get(
+        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(request, command).get(
                         "ctcCategories");
         assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
     public void testRefDataIncludesFieldGroups() throws Exception {
-        assertTrue(getTab().referenceData(command).containsKey("fieldGroups"));
+        assertTrue(getTab().referenceData(request, command).containsKey("fieldGroups"));
     }
 
     public void testGradeRequired() throws Exception {
@@ -75,12 +73,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].grade", "Grade");
     }
 
-    public void testHospitalizationRequired() throws Exception {
-        ae0.setHospitalization(null);
-        doValidate();
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].hospitalization",
-                        "Hospitalization");
-    }
+   
 
     public void testCtcTermRequired() throws Exception {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);

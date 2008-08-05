@@ -281,7 +281,7 @@ public class AttributionTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     private List<AttributionTab.AttributionBlock> getBlocks() {
-        return (List<AttributionTab.AttributionBlock>) getTab().referenceData(command)
+        return (List<AttributionTab.AttributionBlock>) getTab().referenceData(request, command)
                         .get("blocks");
     }
 

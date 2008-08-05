@@ -30,13 +30,13 @@ public class ExpeditedFlowFactoryTest extends AbstractTestCase {
     }
 
     public void testTabCount() throws Exception {
-        assertEquals(17, factory.createFlow(command).getTabCount());
+        assertEquals(16, factory.createFlow(command).getTabCount());
     }
 
     public void testTabCountIfAdeersReportingNotRequiredCtc() throws Exception {
         study.setAdeersReporting(Boolean.FALSE);
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
-        assertEquals(17, flow.getTabCount());
+        assertEquals(16, flow.getTabCount());
         assertTrue("Wrong basics tab", flow.getTab(0) instanceof CtcBasicsOutcomeTab);
     }
 
@@ -44,7 +44,7 @@ public class ExpeditedFlowFactoryTest extends AbstractTestCase {
         study.getAeTerminology().setTerm(Term.MEDDRA);
         study.setAdeersReporting(Boolean.FALSE);
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
-        assertEquals(17, flow.getTabCount());
+        assertEquals(16, flow.getTabCount());
         assertTrue("Wrong basics tab", flow.getTab(0) instanceof MeddraBasicsOutcomeTab);
     }
 

@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
@@ -22,7 +23,7 @@ import org.springframework.mock.web.MockServletContext;
  * @author Rhett Sutphin
  */
 /* TODO: much of this class is shared with PSC. Refactor into a shared library. */
-public abstract class WebTestCase extends AbstractTestCase {
+public abstract class WebTestCase extends AbstractNoSecurityTestCase {
     protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 
     protected MockHttpServletRequest request;
