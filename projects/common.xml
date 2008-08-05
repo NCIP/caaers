@@ -508,7 +508,7 @@
 	<!-- ================================================================
 	    target : clean-cobertura-instruments
 	===================================================================-->
-	<target name="clean-cobertura-instruments" unless="skip.review.reports" description="--> clean the cobertura instruments classes dir">
+	<target name="clean-cobertura-instruments" description="--> clean the cobertura instruments classes dir">
 				<echo message="Executing in ${ant.project.name}" />
 				<delete includeemptydirs="true" dir="${instrumented.classes.dir}" />
 	</target>
