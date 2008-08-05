@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.ctms.tools;
 
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -13,7 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-public class XLstudyImporterTest extends  CaaersTestCase {
+public class XLstudyImporterTest extends  CaaersDbTestCase {
     
     XLstudyImporter xlsi;
     StudyDao studydao;
@@ -29,7 +30,7 @@ public class XLstudyImporterTest extends  CaaersTestCase {
     }
  
     public void testMissingData() throws Exception{
-        File xlFile = getResources("classpath*:/gov/nih/nci/cabig/caaers/ctms/tools/missingDataStudy.xls")[0].getFile();
+        File xlFile = getResources("classpath*:/gov/nih/nci/cabig/ctms/tools/missingDataStudy.xls")[0].getFile();
         
         xlsi.setInputFile(xlFile);
        
@@ -49,7 +50,7 @@ public class XLstudyImporterTest extends  CaaersTestCase {
     }
 
     public void testWrongSheetNames() throws Exception {
-       File xlFile = getResources("classpath*:/gov/nih/nci/cabig/caaers/ctms/tools/wrongSheetNamesStudy.xls")[0].getFile();
+       File xlFile = getResources("classpath*:/gov/nih/nci/cabig/ctms/tools/wrongSheetNamesStudy.xls")[0].getFile();
         xlsi.setInputFile(xlFile);
        
         try {
@@ -69,7 +70,7 @@ public class XLstudyImporterTest extends  CaaersTestCase {
     }
     
     public void testImportXLStudy() throws Exception {
-        File xlFile = getResources("classpath*:/gov/nih/nci/cabig/caaers/ctms/tools/validStudy.xls")[0].getFile();
+        File xlFile = getResources("classpath*:/gov/nih/nci/cabig/ctms/tools/validStudy.xls")[0].getFile();
                         
         xlsi.setInputFile(xlFile);
         xlsi.importXLstudy();
@@ -77,14 +78,7 @@ public class XLstudyImporterTest extends  CaaersTestCase {
         studydao.delete(study);
         
     }
-  /*  
-    public void testDuplicateStudy(){
-        
-    }
-    
-    public void testInvalidOrg(){
-        
-    }*/
+
     private static Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);

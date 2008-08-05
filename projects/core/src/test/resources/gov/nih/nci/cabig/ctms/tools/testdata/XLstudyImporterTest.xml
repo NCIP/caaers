@@ -1,0 +1,17 @@
+<dataset>
+	    <ORGANIZATIONS
+        id="-1002"
+        version="1"
+        name="University of Alabama at Birmingham"
+        description_text="NCIalbama"
+        nci_institute_code="AL002"
+    />
+        <ORGANIZATIONS
+        id="-1001"
+        version="1"
+        name="North Central Cancer Treatment Group"
+        description_text="NCI"
+        nci_institute_code="NCCTG"
+    />
+    <ORGANIZATIONS id="-2222" name="Cancer Therapy Evaluation Program" description_text="ctep org" nci_institute_code="CTEP" version="1"/>
+</dataset>

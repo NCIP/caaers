@@ -229,6 +229,7 @@
    	
    	
    	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+   	<studies />
     <investigational_new_drugs />
     <ind_holders />
 	<study_agent_inds />
