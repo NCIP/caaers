@@ -6,10 +6,10 @@
         <firstName>John</firstName>
         <lastName>Chapman</lastName>
         <middleName>S</middleName>
-        <emailAddress>jcss@test.edu</emailAddress>
-        <faxNumber>879--0983</faxNumber>
+        <emailAddress>jcss@duke.edu</emailAddress>
+        <faxNumber>879-345-0983</faxNumber>
         <nciIdentifier>NCI</nciIdentifier>
-        <phoneNumber>657-093-0098</phoneNumber>        
+        <phoneNumber>657-678-0098</phoneNumber>        
         <ns1:organizationRef>
             <nciInstituteCode>DCP</nciInstituteCode>
         </ns1:organizationRef>
