@@ -15,7 +15,7 @@
             <emailAddress>jd@dcp.org</emailAddress>
             <statusCode>ACT</statusCode>
             <ns2:organizationRef>
-                <nciInstituteCode>DCP</nciInstituteCode>
+                <nciInstituteCode>RTOG</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
     </ns1:investigator>
