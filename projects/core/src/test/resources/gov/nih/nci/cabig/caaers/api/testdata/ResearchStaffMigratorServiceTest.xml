@@ -10,9 +10,9 @@
         <ORGANIZATIONS
         id="-1002"
         version="1"
-        name="Radiation Therapy Oncology Group"
-        description_text="RTOG"
-        nci_institute_code="RTOG"
+        name="Division of Cancer Prevention"
+        description_text="DCP"
+        nci_institute_code="DCP"
         grid_id="gridSite_2"/>        
         
         <ORGANIZATIONS
