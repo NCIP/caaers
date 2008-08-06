@@ -43,6 +43,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     private List<AdverseEventReportingPeriod> reportingPeriods;
     
+    private List<StudyParticipantPreExistingCondition> preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
+    
     private List<LabLoad> labLoads;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
@@ -75,6 +77,10 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void addReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
     	//reportingPeriod.setAssignment(this);
     	getReportingPeriods().add(reportingPeriod);
+    }
+    
+    public void addPreExistingConditions(StudyParticipantPreExistingCondition preExistingCondition){
+    	getPreExistingConditions().add(preExistingCondition);
     }
 
     // //// BEAN PROPERTIES
@@ -143,7 +149,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setReportingPeriods(List<AdverseEventReportingPeriod> reportingPeriods) {
     	this.reportingPeriods = reportingPeriods;
     }
+    
+    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
+		return preExistingConditions;
+	}
 
+    public void setPreExistingConditions(List<StudyParticipantPreExistingCondition> preExistingConditions) {
+		this.preExistingConditions = preExistingConditions;
+	}
+        
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause="lab_date desc")
 	public List<LabLoad> getLabLoads() {
