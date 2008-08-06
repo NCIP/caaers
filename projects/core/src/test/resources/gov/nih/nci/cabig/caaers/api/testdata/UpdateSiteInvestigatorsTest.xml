@@ -27,14 +27,7 @@
                 <nciInstituteCode>CTEP</nciInstituteCode>
             </ns2:organizationRef>
         </ns1:siteInvestigator>
-        <ns1:siteInvestigator>
-            <emailAddress>new@nci.gov</emailAddress>
-            <statusCode>ACT</statusCode>
-      
-            <ns2:organizationRef>
-                <nciInstituteCode>DCP</nciInstituteCode>
-            </ns2:organizationRef>
-        </ns1:siteInvestigator>
+        
     </ns1:investigator>
 
   

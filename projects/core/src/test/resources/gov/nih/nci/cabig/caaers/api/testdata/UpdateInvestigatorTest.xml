@@ -12,7 +12,7 @@
         <phoneNumber>888-098-0099</phoneNumber>
 
         <ns1:siteInvestigator>
-            <emailAddress>jd@dcp.org</emailAddress>
+            <emailAddress>jd@rtog.org</emailAddress>
             <statusCode>ACT</statusCode>
             <ns2:organizationRef>
                 <nciInstituteCode>RTOG</nciInstituteCode>
