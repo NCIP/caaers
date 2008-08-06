@@ -11,13 +11,7 @@
         <nciIdentifier>sr-1</nciIdentifier>
         <phoneNumber>908-098-0099</phoneNumber>
 
-        <ns1:siteInvestigator>
-            <emailAddress>jd@dcp.org</emailAddress>
-            <statusCode>ACT</statusCode>
-            <ns2:organizationRef>
-                <nciInstituteCode>DCP</nciInstituteCode>
-            </ns2:organizationRef>
-        </ns1:siteInvestigator>
+
         <ns1:siteInvestigator>
             <emailAddress>jb@nci.gov</emailAddress>
             <statusCode>ACT</statusCode>
