@@ -86,7 +86,19 @@
 	<!--=================================================================
 		target :deploy-caaers
 	==================================================================== -->
-	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
+	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context"/>
 		
+<target name="TomStart">
+    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
+    </java>
+</target>
+
+<target name="TomStop">
+    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
+        <arg line="stop"/>
+    </java>
+</target>
 
 </project>
