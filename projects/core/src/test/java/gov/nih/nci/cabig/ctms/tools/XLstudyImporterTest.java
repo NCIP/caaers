@@ -10,11 +10,13 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import java.io.File;
 import java.io.IOException;
 
+import junit.framework.TestCase;
+
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
-public class XLstudyImporterTest extends  CaaersDbTestCase {
+public class XLstudyImporterTest extends  TestCase {
 //    
 //    XLstudyImporter xlsi;
 //    StudyDao studydao;
