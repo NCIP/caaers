@@ -1,1 +1,26 @@
-<dataset></dataset>
+<dataset>
+        <ORGANIZATIONS
+        id="-1001"
+        version="1"
+        name="National Cancer Institute"
+        description_text="NCI"
+        nci_institute_code="NCI"
+        grid_id="gridSite_1"/>
+        
+        <ORGANIZATIONS
+        id="-1002"
+        version="1"
+        name="Radiation Therapy Oncology Group"
+        description_text="RTOG"
+        nci_institute_code="RTOG"
+        grid_id="gridSite_2"/>        
+        
+        <ORGANIZATIONS
+        id="-1003"
+        version="1"
+        name="Cancer Therapy Evaluation Program"
+        description_text="CTEP"
+        nci_institute_code="CTEP"
+        grid_id="gridSite_3"/> 
+        
+</dataset>
