@@ -7,13 +7,7 @@
         nci_institute_code="NCI"
         grid_id="gridSite_1"/>
         
-        <ORGANIZATIONS
-        id="-1002"
-        version="1"
-        name="Division of Cancer Prevention"
-        description_text="DCP"
-        nci_institute_code="DCP"
-        grid_id="gridSite_2"/>        
+              
         
         <ORGANIZATIONS
         id="-1003"
@@ -22,5 +16,13 @@
         description_text="CTEP"
         nci_institute_code="CTEP"
         grid_id="gridSite_3"/> 
+        
+        <ORGANIZATIONS
+        id="-1004"
+        version="1"
+        name="Division of Cancer Prevention"
+        description_text="DCP"
+        nci_institute_code="DCP"
+        grid_id="gridSite_2"/>  
         
 </dataset>
