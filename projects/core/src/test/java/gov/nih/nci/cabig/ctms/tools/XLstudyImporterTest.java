@@ -84,7 +84,7 @@ public class XLstudyImporterTest extends  CaaersDbTestCase {
 //        Resource[] resources = resolver.getResources(pattern);
 //        return resources;
 //    }
-    
+     
     public void testTest(){
     	assertTrue(true);
     }
