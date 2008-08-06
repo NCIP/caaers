@@ -79,13 +79,11 @@ public class InvestigatorMigratorServiceTest extends CaaersDbTestCase {
 				if (siteInvestigator.getEmailAddress().equals("jd@dcp.org")) {
 					assertEquals("NCI", siteInvestigator.getOrganization().getNciInstituteCode());
 				}
+//				newly added site investigator
 				if (siteInvestigator.getEmailAddress().equals("jb@nci.gov")) {
 					assertEquals("CTEP", siteInvestigator.getOrganization().getNciInstituteCode());
 				}
-				//newly added site investigator
-				if (siteInvestigator.getEmailAddress().equals("new@nci.gov")) {
-					assertEquals("DCP", siteInvestigator.getOrganization().getNciInstituteCode());
-				}				
+				
 			}
 						
 			
