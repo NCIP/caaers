@@ -46,8 +46,13 @@ public interface AdverseEventQueryService {
 	 */	
 	public List<AdverseEvent> getByStudy(Study study, AdverseEvent adverseEvent);
 
+	/**
+	 * Convert result AEs to XML
+	 * @param adverseEvents
+	 * @return
+	 */
+	public String getXML(List<AdverseEvent> adverseEvents) throws Exception ;
 	
-
 	//public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment);
 		
 
