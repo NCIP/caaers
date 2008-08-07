@@ -235,8 +235,8 @@
 			target : recreate-db-postgres-hudson
 			This will recreate the db in hudson
 		=============================================================-->
-		<target name="recreate-db-postgres-hudson">
-			<subant target="recreate-db-postgres-hudson" buildpath="core/ivy-build.xml" />
+		<target name="recreate-db-hudson">
+			<subant target="recreate-db-hudson" buildpath="core/ivy-build.xml" />
 		</target>
 
 	
