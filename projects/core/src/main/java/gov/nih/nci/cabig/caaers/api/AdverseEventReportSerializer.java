@@ -562,7 +562,7 @@ public class AdverseEventReportSerializer {
 	    	
 	    	return organization;
 	    }
-	    private AdverseEvent getAdverseEvent(AdverseEvent ae , int seq) throws Exception {
+	    protected AdverseEvent getAdverseEvent(AdverseEvent ae , int seq) throws Exception {
 	    	AdverseEvent adverseEvent = new AdverseEvent();
 	    	try {
 		    	adverseEvent.setDetailsForOther(ae.getDetailsForOther());
