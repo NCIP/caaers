@@ -111,12 +111,24 @@
 	          <operation type="INSERT" src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" />
 	    </dbunit>
 	</target>
-	
+	<!-- ========================================================================
+		target: find-admin-datasource
+			Will check the datsource properties identified by -Ddb=xxx, in USER_HOME/.caaers/ 
+			if not available there, it will search in /etc/caaers/
+	============================================================================= -->
+	<target name="find-admin-datasource" unless="adminDsFile.loaded" description="Loads the admin datasource properties">
+		<echo message="databaseConfigurationName : ${databaseConfigurationName}-admin" /> 
+		<condition property="adminDsFile" value="${user.home}/.caaers/${databaseConfigurationName}-admin.properties" 
+				   else="/etc/caaers/${databaseConfigurationName}-admin.properties">
+			<available file="${user.home}/.caaers/${databaseConfigurationName}-admin.properties" />
+		</condition>
+		<property name="adminDsFile.loaded" value="true"/>
+	</target>	
 	<!-- ===============================================================================================
 		target : recreate-db-postgres-hudson
 	 ================================================================================================= -->
 	<target name="recreate-db-postgres-hudson" description="drop the database and create new database" depends="find-datasource">
-			<property file="${dsFile}-admin"/>    
+			<property file="${adminDsFile}"/>    
 			<echo message="${datasource.driver}"/>    
 			<echo message="${datasource.url}"/>    
 			<echo message="${datasource.username}"/>    
