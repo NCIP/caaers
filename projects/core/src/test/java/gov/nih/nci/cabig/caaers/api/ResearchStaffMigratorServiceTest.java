@@ -48,6 +48,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			//xmlFile = new File ("/Users/sakkala/tech-workspace/caaers12/core/src/test/resources/gov/nih/nci/cabig/caaers/api/testdata/CreateInvestigatorTest.xml");
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/api/testdata/CreateResearchStaffTest.xml")[0].getFile();
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
+			
 			svc.saveResearchStaff(staff);	
 			
 			//update with modified data ..
@@ -56,7 +57,7 @@ public class ResearchStaffMigratorServiceTest extends CaaersDbNoSecurityTestCase
 			staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(xmlFile);
 			svc.saveResearchStaff(staff);
 			
-			updatedResearchStaff = fetchResearchStaff("jcss@duke.edu");
+			updatedResearchStaff = fetchResearchStaff("caaers.app@gmail.com");
 			
 			assertNotNull(updatedResearchStaff);
 			

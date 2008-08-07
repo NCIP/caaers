@@ -722,9 +722,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
+			assertNotNull(updatedStudy);
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 			
-			assertNotNull(updatedStudy);
+		
 			
 			assertEquals(2, updatedStudy.getStudySites().size());
 			

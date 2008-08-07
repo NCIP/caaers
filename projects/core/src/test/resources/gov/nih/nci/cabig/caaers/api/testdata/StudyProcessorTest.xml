@@ -242,6 +242,7 @@
 	<study_therapy/>
 	<treatment_assignment/>
 	<ae_routine_reports/>
+	<ae_reporting_periods />
 	<arms/>
 	<treatments/>
 	<adverse_events/>
