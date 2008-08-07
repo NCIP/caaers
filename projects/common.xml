@@ -570,7 +570,7 @@
 			
 			<formatter type="plain"/>
 			<formatter type="xml" />
-			<batchtest fork="yes" todir="${test.results.dir}">
+			<batchtest fork="yes" todir="${test.results.dir}" >
 				<fileset dir="${test.classes.dir}">
 					<include name="${testPattern}" />
 				</fileset>
