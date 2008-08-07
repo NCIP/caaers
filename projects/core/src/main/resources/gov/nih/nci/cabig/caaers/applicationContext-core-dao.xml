@@ -39,6 +39,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participant</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
@@ -192,6 +193,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Participant</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Study</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Organization</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudySite</value>
