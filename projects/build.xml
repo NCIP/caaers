@@ -231,6 +231,13 @@
 			  </fileset>
 		</pmd>
 	</target>
-	
+	<!-- ==========================================================
+			target : recreate-db-postgres-hudson
+			This will recreate the db in hudson
+		=============================================================-->
+		<target name="recreate-db-postgres-hudson">
+			<subant target="migrate" buildpath="core/ivy-build.xml" />
+		</target>
+
 	
 </project>
