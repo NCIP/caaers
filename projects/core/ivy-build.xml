@@ -135,8 +135,8 @@
 			<echo message="${datasource.password}"/>  
 			<sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}" url="${datasource.url}"  
 				classpathref="main.classpath" onerror="abort" autocommit="true">
-				DROP DATABASE IF EXISTS ${datasource.schema} ;
-				CREATE DATABASE ${datasource.schema};
+				DROP DATABASE IF EXISTS "${datasource.schema}" ;
+				CREATE DATABASE "${datasource.schema}";
 			</sql>
 	</target>
 	
