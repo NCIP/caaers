@@ -127,7 +127,7 @@
 	<!-- ===============================================================================================
 		target : recreate-db-hudson
 	 ================================================================================================= -->
-	<target name="recreate-db-hudson" description="drop the database and create new database" depends="find-admin-datasource">
+	<target name="recreate-db-hudson" description="drop the database and create new database" depends="resolve, find-admin-datasource">
 			<property file="${adminDsFile}"/>    
 			<echo message="${datasource.driver}"/>    
 			<echo message="${datasource.url}"/>    
