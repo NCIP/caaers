@@ -40,6 +40,7 @@ public class XmlMarshaller {
             Marshaller marshaller = new Marshaller(stream);
             marshaller.setMapping(map);
             marshaller.setValidation(true);
+            marshaller.setSupressXMLDeclaration(true);
             marshaller.marshal(beanObject);
 
         } catch (Exception ex) {
