@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -30,7 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
 // TODO: this "flow" only has one tab in all its forms. It shouldn't use the complexity of a flow
 // controller
 public abstract class OrganizationController<C extends Organization> extends
-                AutomaticSaveFlowFormController<C, Organization, OrganizationDao> {
+                AutomaticSaveAjaxableFormController<C, Organization, OrganizationDao> {
 
     private static final Log log = LogFactory.getLog(OrganizationController.class);
 
@@ -78,13 +79,6 @@ public abstract class OrganizationController<C extends Organization> extends
 
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors, final int page) throws Exception {
-        Map<String, Object> refdata = super.referenceData(request, command, errors, page);
-        return refdata;
-    }
 
     /**
      * Override this in sub controller if summary is needed

@@ -43,16 +43,14 @@ public class CtcBasicsTab extends BasicsTab {
                     ExpeditedAdverseEventInputCommand command) {
         super.createFieldGroups(creator, command);
 
-        InputField ctcTermField = InputFieldFactory.createAutocompleterField(
-                        "adverseEventCtcTerm.ctcTerm", "CTC term", true);
+        InputField ctcTermField = InputFieldFactory.createAutocompleterField("adverseEventCtcTerm.ctcTerm", "CTC term", true);
         /*
          * InputFieldAttributes.setDetails(ctcTermField, "Type a portion of the CTC term you are
          * looking for. If you select a category, only terms in that category will be shown.");
          */
         creator.createRepeatingFieldGroup(CTC_TERM_FIELD_GROUP, "adverseEvents", ctcTermField);
 
-        InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther",
-                        "Other (verbatim)", false);
+        InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther","Other (verbatim)", false);
         InputFieldAttributes.setColumns(otherVerbatimField, 49);
         /*
          * InputFieldAttributes.setDetails(otherVerbatimField,"The CTC term chosen requires a MedDRA

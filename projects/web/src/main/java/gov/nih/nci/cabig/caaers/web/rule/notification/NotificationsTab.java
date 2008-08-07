@@ -143,7 +143,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
     public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
         command.setIndexToFetch(command.getPointOnScale());
         command.setLastPointOnScale(command.getPointOnScale());
-        Map<String, Object> refData = super.referenceData(command);
+        Map<String, Object> refData = super.referenceData(request, command);
         return refData;
     }
 
