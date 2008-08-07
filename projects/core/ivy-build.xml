@@ -95,6 +95,9 @@
 		<echo message="bering.dialect : ${bering.dialect}" />
 	</target>
 	
+	<!-- ==========================================================================================
+		target : insert-csm-policy
+	==============================================================================================-->
 
 	<target name="insert-csm-policy" depends="find-datasource">
     	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="main.classpath"/>
@@ -107,6 +110,22 @@
 				password="${datasource.password}">
 	          <operation type="INSERT" src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" />
 	    </dbunit>
+	</target>
+	
+	<!-- ===============================================================================================
+		target : recreate-db-postgres-hudson
+	 ================================================================================================= -->
+	<target name="recreate-db-postgres-hudson" description="drop the database and create new database" depends="find-datasource">
+			<property file="${dsFile}-admin"/>    
+			<echo message="${datasource.driver}"/>    
+			<echo message="${datasource.url}"/>    
+			<echo message="${datasource.username}"/>    
+			<echo message="${datasource.password}"/>  
+			<sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}" url="${datasource.url}"  
+				classpathref="main.classpath" onerror="abort" autocommit="true">
+				DROP DATABASE IF EXISTS ${datasource.schema} ;
+				CREATE DATABASE ${datasource.schema};
+			</sql>
 	</target>
 	
 	<target name="generate-jaxb" description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
