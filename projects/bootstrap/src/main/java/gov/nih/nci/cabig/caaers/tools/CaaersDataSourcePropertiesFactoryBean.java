@@ -70,15 +70,15 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         if (properties.getProperty(AUTH_MODE_PROPERTY_NAME) == null) properties.setProperty(
                         AUTH_MODE_PROPERTY_NAME, "local");
         if (properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(
-                        WEBSSO_BASE_URL, "http://dummyurl.com/url");
+                        WEBSSO_BASE_URL, "");
         if (properties.getProperty(WEBSSO_SERVER_TRUST_CERTIFICATE) == null) properties
-                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, "dummyTrustCerts");
+                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, "");
         if (properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(
-                        WEBSSO_HOST_CERTIFICATE, "dummyHostCert");
+                        WEBSSO_HOST_CERTIFICATE, "");
         if (properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(
-                        WEBSSO_HOST_KEY, "dummykey");
+                        WEBSSO_HOST_KEY, "");
         if (properties.getProperty(WEBSSO_CAS_ACEGI_SECURITY_URL) == null) properties.setProperty(
-                        WEBSSO_CAS_ACEGI_SECURITY_URL, "http://dummy.com/casurl/");
+                        WEBSSO_CAS_ACEGI_SECURITY_URL, "");
         if (properties.getProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL) == null) properties
                         .setProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL, "1");
         if (properties.getProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL) == null) properties
