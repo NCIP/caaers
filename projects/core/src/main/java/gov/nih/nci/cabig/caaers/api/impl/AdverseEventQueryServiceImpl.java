@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.api.impl;
 
 import gov.nih.nci.cabig.caaers.api.AdverseEventQueryService;
-import gov.nih.nci.cabig.caaers.api.SearchOptions;
+import gov.nih.nci.cabig.caaers.api.AdverseEventSerializer;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
 import java.util.List;
 
@@ -40,6 +39,19 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 	
 	public void setAdverseEventDao(AdverseEventDao adverseEventDao) {
 		this.adverseEventDao = adverseEventDao;
+	}
+
+	public String getXML(List<AdverseEvent> adverseEvents) throws Exception {
+		// TODO Auto-generated method stub
+		AdverseEventSerializer aes = new AdverseEventSerializer();
+		StringBuilder aeList = new StringBuilder();
+		aeList.append("<AdverseEvents>");
+		for (AdverseEvent ae:adverseEvents) {
+			System.out.println(ae.getId());
+			aeList.append(aes.serialize(ae));
+		}
+		aeList.append("</AdverseEvents>");
+		return aeList.toString();
 	}
 	
 }
