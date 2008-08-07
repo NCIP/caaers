@@ -127,7 +127,7 @@
 	<!-- ===============================================================================================
 		target : recreate-db-postgres-hudson
 	 ================================================================================================= -->
-	<target name="recreate-db-postgres-hudson" description="drop the database and create new database" depends="find-datasource">
+	<target name="recreate-db-postgres-hudson" description="drop the database and create new database" depends="find-admin-datasource">
 			<property file="${adminDsFile}"/>    
 			<echo message="${datasource.driver}"/>    
 			<echo message="${datasource.url}"/>    
