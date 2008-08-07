@@ -221,7 +221,7 @@
 		<property name="trustStore" value="s[webSSO.server.trustCert]"/>
 	</bean>
     <bean id="webSSOLogoutFilter"
-          class="org.acegisecurity.ui.logout.LogoutFilter">
+          class="org.acegisecurity.ui.logout.LogoutFilter" lazy-init="true">
         <constructor-arg value="s[webSSO.server.baseUrl]/logout"/>
         <constructor-arg>
             <list>
