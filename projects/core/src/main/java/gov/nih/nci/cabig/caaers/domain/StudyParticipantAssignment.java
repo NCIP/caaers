@@ -150,7 +150,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	this.reportingPeriods = reportingPeriods;
     }
     
-    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+  //  @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    @Transient
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
 		return preExistingConditions;
 	}

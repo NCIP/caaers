@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -10,8 +10,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
-import gov.nih.nci.cabig.caaers.security.stub.AspectJSecurityInterceptorStub;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.io.File;
@@ -23,7 +21,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.aspectj.lang.Aspects;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -33,7 +30,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  * @author Monish Dombla
  *
  */
-public class StudyProcessorTest extends CaaersDbTestCase {
+public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	
 	private StudyProcessor studyProcessor = null;
 	private JAXBContext jaxbContext = null;
@@ -50,15 +47,8 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		StudyParticipantAssignmentAspect aspect = null;
-		try{
-			aspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
-		}catch(Exception e){
-			aspect = new StudyParticipantAssignmentAspect();
-		}
-		AspectJSecurityInterceptorStub interceptorStub = new AspectJSecurityInterceptorStub();
-        aspect.setSecurityInterceptor(interceptorStub);
 		
+        
 		authorizationOnByDefault = enableAuthorization(false);
 		
 		jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
