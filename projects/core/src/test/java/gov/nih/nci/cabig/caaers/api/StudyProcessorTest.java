@@ -79,11 +79,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * BehavioralTherapyType
 	 * 
 	 */
-	public void testStudyUpdateOfInstanceAtt(){
+	public void testStudyUpdateOfInstanceAtt() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfInstanceAtt.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -119,18 +118,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			assertFalse(updatedStudy.getSurgeryTherapyType());
 			assertFalse(updatedStudy.getBehavioralTherapyType());
 			
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-                studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -139,11 +127,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * Tests Treatmentassignment updates. The attributes doseLevelOrder,description and comments 
 	 * are updated for 2 exisitng treatmentassignments.
 	 */
-	public void testStudyUpdateOfTreatmentAssignmentAttr(){
+	public void testStudyUpdateOfTreatmentAssignmentAttr() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAttr.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -178,17 +165,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			}
 			
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -198,11 +175,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * theCode1 and theCode3 are the existing treatment assignments.
 	 * theCode4 is the new treamentAssignment.
 	 */
-	public void testStudyUpdateOfTreatmentAssignmentAdd(){
+	public void testStudyUpdateOfTreatmentAssignmentAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -242,17 +218,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			}
 			
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -262,11 +228,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * theCode1 and theCode3 are the existing treatment assignments.
 	 * theCode3 is the treamentAssignment removed/deleted.
 	 */
-	public void testStudyUpdateOfTreatmentAssignmentRemove(){
+	public void testStudyUpdateOfTreatmentAssignmentRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -296,17 +261,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			}
 			
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+
 	}
 	
 	
@@ -314,11 +269,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 ctepStudyDiseases with term "Chondrosarcoma" and "Medulloblastoma" exists.
 	 * Tests the addition of an other ctepStudyDisease with term "Osteosarcoma"
 	 */
-	public void testStudyUpdateOfCtepStudyDiseasesAdd(){
+	public void testStudyUpdateOfCtepStudyDiseasesAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -350,18 +304,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 					assertTrue(ctepStudyDisease.getLeadDisease());
 				}
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -370,11 +313,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 ctepStudyDiseases with terms "Chondrosarcoma" and "Medulloblastoma" exists.
 	 * Tests the deletion of ctepStudyDisease with term "Chondrosarcoma"
 	 */
-	public void testStudyUpdateOfCtepStudyDiseasesRemove(){
+	public void testStudyUpdateOfCtepStudyDiseasesRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -405,17 +347,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			}
 			
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -428,11 +360,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * leadDisease = true for Chondrosarcoma
 	 * leadDisease = false for  Medulloblastoma
 	 */
-	public void testStudyUpdateOfCtepStudyDiseasesUpdate(){
+	public void testStudyUpdateOfCtepStudyDiseasesUpdate() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -462,18 +393,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 					assertFalse(ctepStudyDisease.getLeadDisease());
 				}
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -482,11 +402,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 meddraStudyDiseases with code "10000002" and "10000003" exists.
 	 * Tests the addition of an other meddraStudyDisease with code "10000004"
 	 */
-	public void testStudyUpdateOfMeddraStudyDiseasesAdd(){
+	public void testStudyUpdateOfMeddraStudyDiseasesAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -506,18 +425,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			assertNotNull(updatedStudy);
 			
 			assertEquals(3, updatedStudy.getMeddraStudyDiseases().size());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -525,11 +433,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 meddraStudyDiseases with code "10000002" and "10000003" exists.
 	 * Tests the deletion of meddraStudyDisease with code "10000003"
 	 */
-	public void testStudyUpdateOfMeddraStudyDiseasesRemove(){
+	public void testStudyUpdateOfMeddraStudyDiseasesRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -550,17 +457,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			
 			assertEquals(1, updatedStudy.getMeddraStudyDiseases().size());
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -568,11 +465,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 StudySites Cancer Therapy Evaluation Program and University of Jonathan Dean already exists 
 	 * Tests the addition of a third StudySite Sydney Hospital with one ResearchStaff
 	 */
-	public void testStudyUpdateOfStudySiteAdd(){
+	public void testStudyUpdateOfStudySiteAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -593,17 +489,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			
 			assertEquals(3, updatedStudy.getStudySites().size());
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 		
 	}
 	
@@ -612,11 +498,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 StudySites "Cancer Therapy Evaluation Program" and "University of Jonathan Dean" already exists 
 	 * Tests the deletion of StudySite University of Jonathan Dean with one ResearchStaff
 	 */
-	public void testStudyUpdateOfStudySiteRemove(){
+	public void testStudyUpdateOfStudySiteRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -636,18 +521,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			assertNotNull(updatedStudy);
 			
 			assertEquals(1, updatedStudy.getStudySites().size());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -655,11 +529,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 StudyInvestigators are on for Cancer Therapy Evaluation Program 
 	 * Tests the addition of a StudyInvestigator to Cancer Therapy Evaluation Program (David Algor added)
 	 */
-	public void testStudyUpdateOfStudySite_StudyInvestigatorAdd(){
+	public void testStudyUpdateOfStudySite_StudyInvestigatorAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -688,17 +561,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 				}
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -707,11 +570,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 StudyInvestigators are on for Cancer Therapy Evaluation Program 
 	 * Tests the removal of a StudyInvestigator from StudySite (George Clinton Removed)
 	 */
-	public void testStudyUpdateOfStudySite_StudyInvestigatorRemove(){
+	public void testStudyUpdateOfStudySite_StudyInvestigatorRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -740,17 +602,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 				}
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -760,11 +612,9 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * Tests the status update of a StudyInvestigator from "Active" to "Inactive" 
 	 * RoleCode updated from "Site Investigator" to "Site Principal Investigator" (George Clinton Status updated)
 	 */
-	public void testStudyUpdateOfStudySite_StudyInvestigatorUpdate(){
+	public void testStudyUpdateOfStudySite_StudyInvestigatorUpdate() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
-		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -805,17 +655,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 				}
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -823,11 +663,11 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 1 StudyPersonnel exists on for University of Jonathan Dean 
 	 * Tests the addition of a StudyPersonnel to University of Jonathan Dean (Roger Keith added)
 	 */
-	public void testStudyUpdateOfStudySite_StudyPersonnelAdd(){
+	public void testStudyUpdateOfStudySite_StudyPersonnelAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
+	
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -855,18 +695,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 					}
 				}
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -875,11 +704,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 1 StudyPersonnel exists on for University of Jonathan Dean 
 	 * Tests the removal of all StudyPersonnel from University of Jonathan Dean site
 	 */
-	public void testStudyUpdateOfStudySite_StudyPersonnelRemove(){
+	public void testStudyUpdateOfStudySite_StudyPersonnelRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
-		
-		try {
+
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -907,18 +735,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 					}
 				}
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -927,11 +744,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 1 StudyPersonnel exists on for University of Jonathan Dean 
 	 * Tests the updation of status and roleCode 
 	 */
-	public void testStudyUpdateOfStudySite_StudyPersonnelUpdate(){
+	public void testStudyUpdateOfStudySite_StudyPersonnelUpdate() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -967,17 +783,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 				}
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+		
 	}
 	
 	
@@ -985,11 +791,11 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 1 StudyAgent "1-Aminocyclopentane" exists for Study "Study PSC" 
 	 * Tests the addition of an other StudyAgent "17-Methyltestosterone"
 	 */
-	public void testStudyUpdateOfStudyAgentAdd(){
+	public void testStudyUpdateOfStudyAgentAdd() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 		
-		try {
+
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -1008,18 +814,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			
 			assertNotNull(updatedStudy);
 			assertEquals(2, updatedStudy.getStudyAgents().size());
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
+	
 	}
 	
 	
@@ -1027,11 +822,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 	 * 2 StudyAgent "1-Aminocyclopentane" and "17-Methyltestosterone" exists for Study "Study PSC" 
 	 * Tests the removal of StudyAgent "17-Methyltestosterone"
 	 */
-	public void testStudyUpdateOfStudyAgentRemove(){
+	public void testStudyUpdateOfStudyAgentRemove() throws Exception {
 		
 		createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
 		
-		try {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -1051,22 +845,10 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			assertNotNull(updatedStudy);
 			assertEquals(1, updatedStudy.getStudyAgents().size());
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}finally{
-			if(updatedStudy != null){
-				studyDao.delete(updatedStudy);
-			}
-		}
 	}
 	
-	private void createStudy(String studyXmlLocation){
+	private void createStudy(String studyXmlLocation) throws Exception{
 		
-		try {
 			xmlFile = getResources(studyXmlLocation)[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
@@ -1079,14 +861,7 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 					studyProcessor.createStudy(studyDto);
 				}
 			}
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			fail("Error running test: " + e.getMessage());
-		}
+		
 		
 	}
 	
