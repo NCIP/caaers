@@ -70,15 +70,15 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         if (properties.getProperty(AUTH_MODE_PROPERTY_NAME) == null) properties.setProperty(
                         AUTH_MODE_PROPERTY_NAME, "local");
         if (properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(
-                        WEBSSO_BASE_URL, "");
+                        WEBSSO_BASE_URL, null);
         if (properties.getProperty(WEBSSO_SERVER_TRUST_CERTIFICATE) == null) properties
-                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, "");
+                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, null);
         if (properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(
-                        WEBSSO_HOST_CERTIFICATE, "");
+                        WEBSSO_HOST_CERTIFICATE, null);
         if (properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(
-                        WEBSSO_HOST_KEY, "");
+                        WEBSSO_HOST_KEY, null);
         if (properties.getProperty(WEBSSO_CAS_ACEGI_SECURITY_URL) == null) properties.setProperty(
-                        WEBSSO_CAS_ACEGI_SECURITY_URL, "");
+                        WEBSSO_CAS_ACEGI_SECURITY_URL, null);
         if (properties.getProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL) == null) properties
                         .setProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL, "1");
         if (properties.getProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL) == null) properties
