@@ -125,9 +125,9 @@
 		<property name="adminDsFile.loaded" value="true"/>
 	</target>	
 	<!-- ===============================================================================================
-		target : recreate-db-postgres-hudson
+		target : recreate-db-hudson
 	 ================================================================================================= -->
-	<target name="recreate-db-postgres-hudson" description="drop the database and create new database" depends="find-admin-datasource">
+	<target name="recreate-db-hudson" description="drop the database and create new database" depends="find-admin-datasource">
 			<property file="${adminDsFile}"/>    
 			<echo message="${datasource.driver}"/>    
 			<echo message="${datasource.url}"/>    
@@ -135,8 +135,12 @@
 			<echo message="${datasource.password}"/>  
 			<sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}" url="${datasource.url}"  
 				classpathref="main.classpath" onerror="abort" autocommit="true">
-				DROP DATABASE IF EXISTS "${datasource.schema}" ;
-				CREATE DATABASE "${datasource.schema}";
+				${query1}
+				${query2}
+				${query3}
+				${query4}
+				${query5}
+				${query6}
 			</sql>
 	</target>
 	
