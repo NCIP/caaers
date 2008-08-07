@@ -25,10 +25,5 @@
         nci_institute_code="DCP"
         grid_id="gridSite_2"/>  
         
-        <configuration key="smtpAddress" vlaue="smtp.gmail.com" version="1"/>
-        <configuration key="smtpPassword" vlaue="caaers18" version="1"/>
-        <configuration key="smtpPort" vlaue="587" version="1"/>
-        <configuration key="smtpSSLEnabled" vlaue="true" version="1"/>
-        <configuration key="smtpUser" vlaue="caaers.app@gmail.com" version="1"/>
-        <configuration key="systemFromEmail" vlaue="caaers.app@gmail.com" version="1"/>
+      
 </dataset>
