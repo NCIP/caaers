@@ -44,6 +44,7 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 	public String getXML(List<AdverseEvent> adverseEvents) throws Exception {
 		// TODO Auto-generated method stub
 		AdverseEventSerializer aes = new AdverseEventSerializer();
+		
 		StringBuilder aeList = new StringBuilder();
 		aeList.append("<AdverseEvents>");
 		for (AdverseEvent ae:adverseEvents) {
