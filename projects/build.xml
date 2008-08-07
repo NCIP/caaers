@@ -232,7 +232,7 @@
 		</pmd>
 	</target>
 	<!-- ==========================================================
-			target : recreate-db-postgres-hudson
+			target : recreate-db-hudson
 			This will recreate the db in hudson
 		=============================================================-->
 		<target name="recreate-db-hudson">
