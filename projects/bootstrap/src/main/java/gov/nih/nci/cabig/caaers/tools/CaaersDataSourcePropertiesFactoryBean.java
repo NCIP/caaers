@@ -69,16 +69,16 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         if (schema != null) properties.setProperty(SCHEMA_PROPERTY_NAME, schema);
         if (properties.getProperty(AUTH_MODE_PROPERTY_NAME) == null) properties.setProperty(
                         AUTH_MODE_PROPERTY_NAME, "local");
-       /* if (properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(
-                        WEBSSO_BASE_URL, null);
+        if (properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(
+                        WEBSSO_BASE_URL, "http://dummyurl.com/url");
         if (properties.getProperty(WEBSSO_SERVER_TRUST_CERTIFICATE) == null) properties
-                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, null);
+                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, System.getProperty("java.home") + "/jre/lib/security/cacerts");
         if (properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(
-                        WEBSSO_HOST_CERTIFICATE, null);
+                        WEBSSO_HOST_CERTIFICATE, "dummyHostCert");
         if (properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(
-                        WEBSSO_HOST_KEY, null);
+                        WEBSSO_HOST_KEY, "dummykey");
         if (properties.getProperty(WEBSSO_CAS_ACEGI_SECURITY_URL) == null) properties.setProperty(
-                        WEBSSO_CAS_ACEGI_SECURITY_URL, null);*/
+                        WEBSSO_CAS_ACEGI_SECURITY_URL, "http://dummy.com/casurl/");
         if (properties.getProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL) == null) properties
                         .setProperty(GRID_STUDYCONSUMER_ROLLBACK_INTERVAL, "1");
         if (properties.getProperty(GRID_REGISTRATIONCONSUMER_ROLLBACK_INTERVAL) == null) properties
