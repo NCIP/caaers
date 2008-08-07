@@ -25,11 +25,4 @@
         nci_institute_code="DCP"
         grid_id="gridSite_2"/>  
         
-       
-        
-        <csm_user />
-        <csm_user_group />
-        <csm_user_group_role_pg />
-        <csm_user_pe />
-        <research_staffs />
 </dataset>
