@@ -1,0 +1,317 @@
+<dataset>
+    
+    <PARTICIPANTS
+        id="-4"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" />
+        
+   
+        
+    <ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories
+        id="301"
+        name="allergy/immunology"
+        version_id="3"
+        />
+    <ctc_categories
+        id="302"
+        name="auditory/ear"
+        version_id="3"
+        />
+    <ctc_categories
+        id="303"
+        name="blood/bone marrow"
+        version_id="3"
+        />
+    <ctc_terms
+        id="3007"
+        category_id="302"
+        term="Auditory/Ear - Other (Specify, __)"
+        ctep_term="Ear disorder"
+        ctep_code="10014004"
+        other_required="1"
+        />
+    <ctc_terms
+        category_id="302"
+        id="3012"
+        term="Tinnitus"
+        ctep_term="Tinnitus"
+        ctep_code="10043882"
+        other_required="0"
+        />
+    <ctc_grades/> 
+
+    <participant_assignments
+        id="-6"
+        participant_id="-4"
+        study_site_id="-4"
+        date_of_enrollment="2004-01-05"
+        load_status="1"
+        />
+    <agents id="-101"/>
+    <agents id="-102"/>
+    <studies id="-100" short_title="Min" 
+    load_status="1"/>
+    
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-100"
+   		/>
+   	
+   	<EPOCHS
+     	id="-1010"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="-100"
+     	/>
+     	
+    <TREATMENT_ASSIGNMENT
+     	id="1001"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-100"
+     	/> 	
+     	    
+    <AE_REPORTING_PERIODS
+		id="1001"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-6"
+		epoch_id="-1010"
+		/>
+   	 		   
+    <AE_REPORTING_PERIODS
+		id="1002"
+		start_date="2008-05-26"
+		end_date="2008-05-27"
+		description="test object 1002"
+		treatment_assignment_id="1001"
+		assignment_id="-6"
+		epoch_id="-1010"
+		/>
+		
+	<AE_REPORTS
+        id="-19"
+        reporting_period_id="1001"
+        created_at="2007-04-04 13:22:32.055"
+        />
+        
+    <TREATMENTS
+        id="-21"
+        report_id="-19"
+        />
+        
+	<ADVERSE_EVENTS
+        id="-3"
+        reporting_period_id="1001"
+        report_id="-19"
+        grade_code="5"
+        hospitalization_code="0"
+        attribution_summary_code="3"
+        expected="1"
+        comments="That was some big AE"
+        />
+    
+     <AE_TERMS
+        id="-9"
+        adverse_event_id="-3"
+        term_id="-11"
+        term_type="meddra"
+        />
+
+	<MEDDRA_LLT
+		id="-11"
+		meddra_code="2"
+		meddra_term="Hello World"
+		/>       
+
+
+
+    <AE_REPORTS
+        id="-17"
+        reporting_period_id="1002"
+        created_at="2007-04-04 13:22:32.055"
+        />
+    <TREATMENTS
+        id="-17"
+        report_id="-17"
+        />
+
+    <ADVERSE_EVENTS
+        id="-2"
+        report_id="-17"
+        grade_code="3"
+        hospitalization_code="1"
+        attribution_summary_code="3"
+        expected="1"
+        comments="That was some big AE"
+        start_date="2007-09-12 21:43:56.987"
+        end_date="2007-09-12 21:43:56.987"
+        reporting_period_id="1002"
+        />
+        
+        
+   <AE_TERMS
+        id="-8"
+        adverse_event_id="-2"
+        term_id="3012"
+        term_type="ctep"
+        />     
+
+    <COURSE_AGENTS
+        id="-23"
+        treatment_id="-17"
+        />
+    <COURSE_AGENTS
+        id="-27"
+        treatment_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-1"
+        cause_type="CA"
+        cause_id="-23"
+        attribution_code="3"
+        adverse_event_id="-2"
+        list_index="1"
+        />
+    <AE_ATTRIBUTIONS
+        id="-2"
+        cause_type="CA"
+        cause_id="-27"
+        attribution_code="1"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <CONCOMITANT_MEDICATIONS
+        id="-77"
+        report_id="-17"
+        />
+    <CONCOMITANT_MEDICATIONS
+        id="-78"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-7"
+        cause_type="CM"
+        cause_id="-77"
+        attribution_code="2"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-8"
+        cause_type="CM"
+        cause_id="-78"
+        attribution_code="5"
+        adverse_event_id="-2"
+        list_index="1"
+        />
+
+    <OTHER_CAUSES
+        id="-72"
+        report_id="-17"
+        />
+    <OTHER_CAUSES
+        id="-71"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-10"
+        cause_type="OC"
+        cause_id="-72"
+        attribution_code="4"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-11"
+        cause_type="OC"
+        cause_id="-71"
+        attribution_code="1"
+        adverse_event_id="-2"
+        list_index="1"
+        />
+
+    <DISEASE_HISTORIES
+        id="-88"
+        report_id="-17"
+        />
+    <AE_ATTRIBUTIONS
+        id="-17"
+        cause_id="-88"
+        cause_type="DH"
+        attribution_code="5"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <AE_SURGERY_INTERVENTIONS
+        id="-34"
+        report_id="-17"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-18"
+        cause_id="-34"
+        cause_type="SI"
+        attribution_code="3"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <AE_RADIATION_INTERVENTIONS
+        id="-37"
+        report_id="-17"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-19"
+        cause_id="-37"
+        cause_type="RI"
+        attribution_code="4"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+        
+    <AE_MEDICAL_DEVICES
+        id="-22"
+        report_id="-17"
+        list_index="0"
+        />
+    <AE_ATTRIBUTIONS
+        id="-20"
+        cause_id="-22"
+        cause_type="DV"
+        attribution_code="1"
+        adverse_event_id="-2"
+        list_index="0"
+        />
+
+    <ae_labs />    
+    <participant_histories />
+   
+    <ae_report_people />
+     <contact_mechanisms />
+     <study_amendments />
+     <prior_therapy_agents />
+     <ae_prior_therapies />
+     <additional_information />
+</dataset>
