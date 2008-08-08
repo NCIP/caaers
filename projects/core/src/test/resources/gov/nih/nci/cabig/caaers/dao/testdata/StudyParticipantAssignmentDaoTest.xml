@@ -159,6 +159,7 @@
     	assignment_id="-13"
     	diagnosis_zone="1"
     />
+    
     <SPA_CONCOMITANT_MEDICATIONS
     	id="-1"
     	assignment_id="-13"
@@ -198,7 +199,5 @@
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
     <ind_holders />
-    <spa_pre_existing_conds/>
-    <spa_concomitant_medications/>
-    <spa_prior_therapies/>		
+    
 </dataset>
