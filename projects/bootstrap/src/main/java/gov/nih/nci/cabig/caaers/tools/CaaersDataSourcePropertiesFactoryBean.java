@@ -72,7 +72,7 @@ public class CaaersDataSourcePropertiesFactoryBean extends
         if (properties.getProperty(WEBSSO_BASE_URL) == null) properties.setProperty(
                         WEBSSO_BASE_URL, "http://dummyurl.com/url");
         if (properties.getProperty(WEBSSO_SERVER_TRUST_CERTIFICATE) == null) properties
-                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, System.getProperty("java.home") + "/jre/lib/security/cacerts");
+                        .setProperty(WEBSSO_SERVER_TRUST_CERTIFICATE, System.getProperty("java.home") + "/lib/security/cacerts");
         if (properties.getProperty(WEBSSO_HOST_CERTIFICATE) == null) properties.setProperty(
                         WEBSSO_HOST_CERTIFICATE, "dummyHostCert");
         if (properties.getProperty(WEBSSO_HOST_KEY) == null) properties.setProperty(
