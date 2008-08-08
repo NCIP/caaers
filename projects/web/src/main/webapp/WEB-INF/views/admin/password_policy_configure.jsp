@@ -161,7 +161,6 @@
 	    </div>
 	  </div>
 	</chrome:division>
-      </chrome:division>
 
       <div class="row submit" style="float: right;">
 	<input type="submit" value="Save"/>
