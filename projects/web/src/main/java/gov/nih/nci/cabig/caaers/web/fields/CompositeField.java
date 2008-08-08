@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
@@ -52,8 +53,9 @@ public class CompositeField extends AbstractInputField {
 
     @Override
     public void validate(BeanWrapper commandBean, Errors errors) {
+        BeanWrapper bw = new BeanWrapperImpl(commandBean.getPropertyValue(getPropertyName()));
         for (InputField field : getGroup().getFields()) {
-            field.validate(commandBean, errors);
+            field.validate(bw, errors);
         }
     }
 
