@@ -137,8 +137,8 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="firstName" type="CustomStringType"/>
-                    <xs:element name="lastName" type="CustomStringType"/>
+                    <xs:element name="firstName" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="lastName" type="CustomStringType" minOccurs="1"/>
                     <xs:element name="middleName" type="CustomStringType"/>
                 </xs:sequence>
             </xs:extension>
@@ -157,10 +157,10 @@
         <xs:complexContent>
             <xs:extension base="PersonType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"/>
+                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
                     <xs:element name="faxNumber" type="CustomStringType"/>
                     <xs:element name="nciIdentifier" type="CustomStringType"/>
-                    <xs:element name="phoneNumber" type="CustomStringType"/>
+                    <xs:element name="phoneNumber" type="CustomStringType" minOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -171,8 +171,8 @@
         <xs:complexContent>
             <xs:extension base="DomainObjectType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"/>
-                    <xs:element name="statusCode" type="StatusCodeType"/>
+                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
+                    <xs:element name="statusCode" type="StatusCodeType" minOccurs="1"/>
                     
                 </xs:sequence>
             </xs:extension>
@@ -191,10 +191,10 @@
         <xs:complexContent>
             <xs:extension base="PersonType">
                 <xs:sequence>
-                    <xs:element name="emailAddress" type="CustomStringType"/>
+                    <xs:element name="emailAddress" type="CustomStringType" minOccurs="1"/>
                     <xs:element name="faxNumber" type="CustomStringType"/>
                     <xs:element name="nciIdentifier" type="CustomStringType"/>
-                    <xs:element name="phoneNumber" type="CustomStringType"/>
+                    <xs:element name="phoneNumber" type="CustomStringType" minOccurs="1"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>

@@ -25,7 +25,7 @@
             <xs:extension base="cct:ResearchStaffType">
                 <xs:sequence>
                     <xs:element ref="cct:organizationRef" minOccurs="0"/>
-                    <xs:element name="role" type="Role" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="role" type="Role" minOccurs="1" maxOccurs="unbounded"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
