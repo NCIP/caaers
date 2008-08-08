@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -45,6 +46,10 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     private List<StudyParticipantPreExistingCondition> preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
     
+    private List<StudyParticipantConcomitantMedication> concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
+    
+    private List<StudyParticipantPriorTherapy> priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
+    
     private List<LabLoad> labLoads;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
@@ -52,6 +57,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private String studySubjectIdentifier;
     
     private Date startDateOfFirstCourse;
+    
+    private StudyParticipantDiseaseHistory diseaseHistory;
 
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
@@ -79,8 +86,12 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	getReportingPeriods().add(reportingPeriod);
     }
     
-    public void addPreExistingConditions(StudyParticipantPreExistingCondition preExistingCondition){
+    public void addPreExistingCondition(StudyParticipantPreExistingCondition preExistingCondition){
     	getPreExistingConditions().add(preExistingCondition);
+    }
+    
+    public void addConcomitantMedication(StudyParticipantConcomitantMedication concomitantMedication){
+    	
     }
 
     // //// BEAN PROPERTIES
@@ -150,8 +161,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	this.reportingPeriods = reportingPeriods;
     }
     
-  //  @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
-    @Transient
+    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    //@Transient
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
 		return preExistingConditions;
 	}
@@ -159,6 +170,36 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setPreExistingConditions(List<StudyParticipantPreExistingCondition> preExistingConditions) {
 		this.preExistingConditions = preExistingConditions;
 	}
+    
+    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    public List<StudyParticipantConcomitantMedication> getConcomitantMedications(){
+    	return concomitantMedications;
+    }
+    
+    public void setConcomitantMedications(List<StudyParticipantConcomitantMedication> concomitantMedications){
+    	this.concomitantMedications = concomitantMedications;
+    }
+    
+    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    public List<StudyParticipantPriorTherapy> getPriorTherapies() {
+		return priorTherapies;
+	}
+    
+    public void setPriorTherapies(List<StudyParticipantPriorTherapy> priorTherapies) {
+		this.priorTherapies = priorTherapies;
+	}
+    
+    @OneToOne(mappedBy = "assignment")
+    @Cascade(value = {CascadeType.ALL})
+    public StudyParticipantDiseaseHistory getDiseaseHistory() {
+        if (diseaseHistory == null) setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        return diseaseHistory;
+    }
+
+    public void setDiseaseHistory(StudyParticipantDiseaseHistory diseaseHistory) {
+        this.diseaseHistory = diseaseHistory;
+        if (diseaseHistory != null) diseaseHistory.setAssignment(this);
+    }
         
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause="lab_date desc")

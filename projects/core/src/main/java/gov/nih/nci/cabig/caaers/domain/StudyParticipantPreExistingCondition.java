@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -19,7 +21,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "spa_pre_existing_conds")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_pre_existing_conds_id") })
-public class StudyParticipantPreExistingCondition extends AbstractExpeditedReportCollectionElementChild {
+public class StudyParticipantPreExistingCondition extends AbstractMutableDomainObject {
     private PreExistingCondition preExistingCondition;
     
     private StudyParticipantAssignment assignment;

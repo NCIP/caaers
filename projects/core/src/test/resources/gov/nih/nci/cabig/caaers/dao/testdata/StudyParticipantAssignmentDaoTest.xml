@@ -6,6 +6,7 @@
     <ctc_categories/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
     <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    
     <STUDIES
         id="-4"
         short_title="A history of ghosts"
@@ -58,12 +59,24 @@
         last_name="Tourmaline9"
         load_status="1"
         />
+          <PARTICIPANTS
+        id="-90"
+        last_name="Tourmaline9"
+        load_status="1"
+        />
     <PARTICIPANT_ASSIGNMENTS
         id="-18"
         study_site_id="-10"
         participant_id="-9"
         date_of_enrollment="2004-09-30"
         load_status="0"
+        />
+    <PARTICIPANT_ASSIGNMENTS
+        id="-15"
+        study_site_id="-10"
+        participant_id="-90"
+        date_of_enrollment="2004-09-30"
+        load_status="1"
         />
     <treatment_assignment
      	id="-1003"
@@ -103,7 +116,75 @@
          reporting_period_id="-1002"
         created_at="2004-12-31"
         />
-   
+    <ANATOMIC_SITES
+    	id="-1"
+    	name="sample name 1"
+    	category="sample category 1"
+    />
+    <PRIOR_THERAPIES
+    	id="-1"
+    	therapy_text="sample text -1"
+    />
+    <PRIOR_THERAPIES
+    	id="-2"
+    	therapy_text="sample text -2"
+    />
+    <PRE_EXISTING_CONDITIONS
+    	id="-1"
+    	condition_text="test condition -1"
+    	meddra_llt_code="test code -1"
+    	meddra_llt="test meddra -1"
+    />
+    <PRE_EXISTING_CONDITIONS
+    	id="-2"
+    	condition_text="test condition -2"
+    	meddra_llt_code="test code -2"
+    	meddra_llt="test meddra -2"
+    />
+    <SPA_PRE_EXISTING_CONDS
+    	id="-1"
+    	assignment_id="-13"
+    	pre_existing_condition_id="-1"
+    	other="other -1"
+    />
+    <SPA_PRE_EXISTING_CONDS
+    	id="-2"
+    	assignment_id="-13"
+    	pre_existing_condition_id="-2"
+    	other="other -2"
+    />
+    <SPA_DISEASE_HISTORIES
+    	id="-1"
+    	coded_primary_disease_site_id="-1"
+    	assignment_id="-13"
+    	diagnosis_zone="1"
+    />
+    <SPA_CONCOMITANT_MEDICATIONS
+    	id="-1"
+    	assignment_id="-13"
+    	agent_name="test agent name -1"
+    />
+    <SPA_CONCOMITANT_MEDICATIONS
+    	id="-2"
+    	assignment_id="-13"
+    	agent_name="test agent name -2"
+    />    
+    <SPA_CONCOMITANT_MEDICATIONS
+    	id="-3"
+    	assignment_id="-13"
+    	agent_name="test agent name -3"
+    />
+	<SPA_PRIOR_THERAPIES
+		id="-1"
+		assignment_id="-13"
+		prior_therapy_id="-1"
+	/>
+	<SPA_PRIOR_THERAPIES
+		id="-2"
+		assignment_id="-13"
+		prior_therapy_id="-2"
+	/>
+	
     <!-- Report's 1:1 dependent tables.  Ideally this wouldn't be necessary, since
         a report is never saved in the test, but hibernate's flushing one anyway. -->
     <DISEASE_HISTORIES/>
@@ -116,6 +197,8 @@
     <additional_information />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
     <investigational_new_drugs />    
-    <ind_holders />		
-    
+    <ind_holders />
+    <spa_pre_existing_conds/>
+    <spa_concomitant_medications/>
+    <spa_prior_therapies/>		
 </dataset>
