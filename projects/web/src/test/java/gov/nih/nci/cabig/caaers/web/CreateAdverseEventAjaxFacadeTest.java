@@ -542,20 +542,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertNotMoved(command);
         assertEquals(0, actual.size());
     }
-//
-//    public void testDeleteSavesIfAlreadySaved() throws Exception {
-//        EditExpeditedAdverseEventCommand command = createAeCommandAndExpectInSession();
-//        command.getAeReport().setId(17);
-//        aeReportDao.save(command.getAeReport());
-//        expect(aeReportDao.merge(command.getAeReport())).andReturn(command.getAeReport());
-//        replayMocks();
-//        List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 3).getChanges();
-//        verifyMocks();
-//
-//        assertAdverseEventsIdOrder(command, 0, 1, 2);
-//        assertEquals("Wrong changes: " + actual, 1, actual.size());
-//        assertIndexChange(3, null, actual.get(0));
-//    }
+
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
                     IndexChange actual) {

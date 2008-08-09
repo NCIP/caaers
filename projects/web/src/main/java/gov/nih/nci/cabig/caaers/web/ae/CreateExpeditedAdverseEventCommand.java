@@ -64,7 +64,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
     @Override
     public void save() {
-        getAssignment().addReport(getAeReport());
+       // getAssignment().addReport(getAeReport());
         reportDao.save(getAeReport());
     }
     
