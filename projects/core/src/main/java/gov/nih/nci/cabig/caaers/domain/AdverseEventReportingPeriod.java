@@ -30,10 +30,9 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
  *
  * @author Sameer Sawant
  */
-
 @Entity
 @Table(name = "ae_reporting_periods")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_reporting_periods_id") })
 public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
 	
