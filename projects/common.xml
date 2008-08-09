@@ -167,14 +167,23 @@
 		description="This target will contain the intiailziation">
 		<echo message="Executing ${ant.project.name} : init" />
 		<mkdir dir="${lib.dir}"/>
-		<mkdir dir="${test.lib.dir}"/>
 		<mkdir dir="${classes.dir}" />
-		<mkdir dir="${test.classes.dir}" />
 		<mkdir dir="${instrumented.classes.dir}"/>
 		<mkdir dir="${dist.dir}" />
 		<mkdir dir="${generated.src.dir}" />
-		<mkdir dir="${cobertura.report.dir}" />
 		<property name="no.init" value="true" />
+	</target>
+	
+	<!-- =========================================================
+		target :init.test
+		This target will initialize the test folders
+	==============================================================-->
+	<target name="init.test" unless="no.init.test" description="Will initialize the test directories">
+		<echo message="Executing ${ant.project.name} : init.test" />
+		<mkdir dir="${test.classes.dir}" />
+		<mkdir dir="${test.lib.dir}"/>
+		<mkdir dir="${cobertura.report.dir}" />
+		<property name="no.init.test" value="true" />	
 	</target>
 	
 	<!-- ==================================================
@@ -253,7 +262,7 @@
     <!-- ======================================================== 
           target: resolve-test              
     	============================================================ -->
-    <target name="resolve-test" depends="clean-lib-test, init, load-ivy" unless="already.resolved-test" 
+    <target name="resolve-test" depends="clean-lib-test, init.test, load-ivy" unless="already.resolved-test" 
     	description="--> resolve and retrieve 'test' dependencies with ivy">
     	<echo message="Executing ${ant.project.name} : resolve-test" />
     	<ivyResolve confs="test" libdir="${test.lib.dir}" resolveid="[org]-[module]-test"/>
@@ -283,12 +292,13 @@
 	<!-- ========================================================== 
           target: compile-test              
     =========================================================== -->
-    <target name="compile-test" depends="resolve-test" 
+    <target name="compile-test" depends="resolve-test" unless="no.compile-test"
     		description="--> compile the test classes of this project">
     	<echo message="Executing in ${ant.project.name}" />
     	<copy-resources src="${test.src.resources}" dest="${test.classes.dir}" filter="true"/>
         <javac srcdir="${test.src}" destdir="${test.classes.dir}" classpathref="test.classpath" 
         	   debug="true" source="1.5"  target="1.5" />
+    	<property name="no.compile-test" value="true" />
     </target>
     
 	<!-- =====================================================================
@@ -396,10 +406,11 @@
     <!-- ================================= 
           target: jar-test              
          ================================= -->
-    <target name="jar-test" depends="compile-test, version" 
+    <target name="jar-test" depends="compile-test, version" unless="no.jar-test"
     	description="--> make a jar file containing test classes of this project">
     	<echo message="Executing in ${ant.project.name}" />
     	<makeJar dir="${dist.dir}" dir.classes="${test.classes.dir}" file.name="${test.jar.file}"/>
+    	<property name="no.jar-test" value="true"/>
     </target>
 
 	
@@ -555,7 +566,7 @@
 	<condition property="testPattern" value="**/${test}.class" else="gov/nih/nci/cabig/**/*Test.class">
 		<isset property="test"/>
 	</condition>
-	<target name="test" if="run.test" depends="corbetura-init , clean-test-results" description="Runs the testcases">
+	<target name="test" if="run.test" depends="corbetura-init,clean-test-results, compile-test" description="Runs the testcases">
 		<echo message="Executing in ${ant.project.name}" />
 		<echo message="Test results dir: ${test.results.dir}, with pattern ${testPattern} and classes from ${test.classes.dir}" />
 		<mkdir dir="${test.results.dir}" />
