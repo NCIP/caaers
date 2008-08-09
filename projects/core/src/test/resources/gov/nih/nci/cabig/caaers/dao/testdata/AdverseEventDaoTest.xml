@@ -292,10 +292,17 @@
     <ae_labs />    
     <participant_histories />
    
-    <ae_report_people />
+     <ae_report_people />
      <contact_mechanisms />
      <study_amendments />
      <prior_therapy_agents />
      <ae_prior_therapies />
      <additional_information />
+     <disease_terminologies />
+     <ae_report_descriptions />
+     <spa_disease_histories />
+     <SPA_PRIOR_THERAPIES />
+     <SPA_CONCOMITANT_MEDICATIONS />
+     <SPA_PRE_EXISTING_CONDS />
+     
 </dataset>

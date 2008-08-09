@@ -356,16 +356,6 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         assertEquals("Wrong number of results", 1, results.size());
         assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
     }
-
-    public void testDeleteParticipant() {
-        Participant participant = getDao().getById(-100);
-        assertNotNull("Participant (-100) should not be null ", participant);
-        getDao().delete(participant);
-        interruptSession();
-        participant = getDao().getById(-100);
-        assertNull("Participant should be null", participant);
-    }
-
     public void testDeleteAssignments() {
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant (-100) should not be null ", participant);
@@ -382,5 +372,15 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         assertEquals("The size of the participant assignment should be one less", oldSize - 1,
                         newSize);
     }
+    public void testDeleteParticipant() {
+        Participant participant = getDao().getById(-100);
+        assertNotNull("Participant (-100) should not be null ", participant);
+        getDao().delete(participant);
+        interruptSession();
+        participant = getDao().getById(-100);
+        assertNull("Participant should be null", participant);
+    }
+
+
 
 }

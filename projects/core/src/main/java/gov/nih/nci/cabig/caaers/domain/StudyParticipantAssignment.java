@@ -42,14 +42,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     private List<RoutineAdverseEventReport> aeRoutineReports;
     
-    private List<AdverseEventReportingPeriod> reportingPeriods;
-    
-    private List<StudyParticipantPreExistingCondition> preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
-    
-    private List<StudyParticipantConcomitantMedication> concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
-    
-    private List<StudyParticipantPriorTherapy> priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
-    
     private List<LabLoad> labLoads;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
@@ -57,9 +49,14 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private String studySubjectIdentifier;
     
     private Date startDateOfFirstCourse;
-    
-    private StudyParticipantDiseaseHistory diseaseHistory;
 
+    private List<AdverseEventReportingPeriod> reportingPeriods;
+    
+    private List<StudyParticipantPreExistingCondition> preExistingConditions;
+    private List<StudyParticipantConcomitantMedication> concomitantMedications;
+    private List<StudyParticipantPriorTherapy> priorTherapies;
+    private StudyParticipantDiseaseHistory diseaseHistory;
+    
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
         this.studySite = studySite;
@@ -71,10 +68,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     // //// LOGIC
 
-    public void addReport(ExpeditedAdverseEventReport report) {
-        report.setAssignment(this);
-        getAeReports().add(report);
-    }
+ 
 
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
         routineReport.setAssignment(this);
@@ -82,16 +76,35 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
     
     public void addReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
-    	//reportingPeriod.setAssignment(this);
-    	getReportingPeriods().add(reportingPeriod);
+    	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
+    	if(reportingPeriod != null){
+    		reportingPeriod.setAssignment(this);
+    		reportingPeriods.add(reportingPeriod);
+    	}
     }
     
     public void addPreExistingCondition(StudyParticipantPreExistingCondition preExistingCondition){
-    	getPreExistingConditions().add(preExistingCondition);
+    	if(preExistingConditions == null) preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
+    	if(preExistingCondition != null){
+    		preExistingCondition.setAssignment(this);
+    		preExistingConditions.add(preExistingCondition);
+    	}
     }
     
     public void addConcomitantMedication(StudyParticipantConcomitantMedication concomitantMedication){
-    	
+    	if(concomitantMedications == null) concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
+    	if(concomitantMedication != null){
+    		concomitantMedication.setAssignment(this);
+    		concomitantMedications.add(concomitantMedication);
+    	}
+    }
+    
+    public void addPriorTherapy(StudyParticipantPriorTherapy priorTherapy){
+    	if(priorTherapies == null) priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
+    	if(priorTherapy != null){
+    		priorTherapy.setAssignment(this);
+    		priorTherapies.add(priorTherapy);
+    	}
     }
 
     // //// BEAN PROPERTIES
@@ -130,8 +143,10 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     @Transient
     public List<ExpeditedAdverseEventReport> getAeReports() {
     	ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
-    	for(AdverseEventReportingPeriod reportingPeriod : getReportingPeriods()){
-    		if(reportingPeriod.getAeReport() != null) aeReports.add(reportingPeriod.getAeReport());
+    	if(reportingPeriods != null){
+    		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
+    			if(reportingPeriod.getAeReport() != null) aeReports.add(reportingPeriod.getAeReport());
+    		}
     	}
         return aeReports;
     }
@@ -153,7 +168,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause="start_date desc")
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
-    	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
     	return reportingPeriods;
     }
     
@@ -161,8 +175,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	this.reportingPeriods = reportingPeriods;
     }
     
-    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
-    //@Transient
+    @OneToMany(mappedBy = "assignment")
+    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
 		return preExistingConditions;
 	}
@@ -171,7 +185,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 		this.preExistingConditions = preExistingConditions;
 	}
     
-    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    @OneToMany(mappedBy = "assignment")
+    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
     public List<StudyParticipantConcomitantMedication> getConcomitantMedications(){
     	return concomitantMedications;
     }
@@ -180,7 +195,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	this.concomitantMedications = concomitantMedications;
     }
     
-    @OneToMany(mappedBy = "assignment", cascade = {javax.persistence.CascadeType.ALL} )
+    @OneToMany(mappedBy = "assignment")
+    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
     public List<StudyParticipantPriorTherapy> getPriorTherapies() {
 		return priorTherapies;
 	}
@@ -190,15 +206,13 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 	}
     
     @OneToOne(mappedBy = "assignment")
-    @Cascade(value = {CascadeType.ALL})
+    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
     public StudyParticipantDiseaseHistory getDiseaseHistory() {
-        if (diseaseHistory == null) setDiseaseHistory(new StudyParticipantDiseaseHistory());
         return diseaseHistory;
     }
 
     public void setDiseaseHistory(StudyParticipantDiseaseHistory diseaseHistory) {
         this.diseaseHistory = diseaseHistory;
-        if (diseaseHistory != null) diseaseHistory.setAssignment(this);
     }
         
     @OneToMany(mappedBy = "assignment")
@@ -226,6 +240,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setLoadStatus(Integer loadStatus) {
         this.loadStatus = loadStatus;
     }
+
     @Column(name="first_course_date")
     public Date getStartDateOfFirstCourse() {
 		return startDateOfFirstCourse;

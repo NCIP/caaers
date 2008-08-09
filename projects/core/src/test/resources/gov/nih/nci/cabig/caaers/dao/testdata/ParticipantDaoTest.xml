@@ -173,4 +173,8 @@
     <ind_holders />
     <ae_reports />
 	<ae_radiation_interventions />    
+	 <spa_disease_histories />
+     <SPA_PRIOR_THERAPIES />
+     <SPA_CONCOMITANT_MEDICATIONS />
+     <SPA_PRE_EXISTING_CONDS />
 </dataset>

@@ -314,4 +314,8 @@
      <prior_therapy_agents />
      <ae_prior_therapies />
      <additional_information />
+      <spa_disease_histories />
+     <SPA_PRIOR_THERAPIES />
+     <SPA_CONCOMITANT_MEDICATIONS />
+     <SPA_PRE_EXISTING_CONDS />
 </dataset>
