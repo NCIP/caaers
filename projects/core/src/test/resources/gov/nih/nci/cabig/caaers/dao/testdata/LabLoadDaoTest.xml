@@ -320,8 +320,8 @@
         stu_id="-1"
         value="nci_test"
         type="MRN"
-        organization_id="-1"
-        discriminator_column="1"/>  
+        system_name="abc"
+        discriminator_column="2"/>  
 
 	
     <IDENTIFIERS
@@ -329,8 +329,8 @@
         participant_id="-101"
         value="13js77"
         type="MRN" 
-        organization_id="-1"
-        discriminator_column="1"/> 
+        system_name="abcx"
+        discriminator_column="2"/> 
     <STUDY_DISEASES
         id="-4"
         study_id="-1"
@@ -390,7 +390,7 @@
         <LABS
 			id="-1001"
 	        name="New Lab"
-	        result="900.2"
+	        result="900"
 	        units="cpq"
 	        dismissed="false"
 	        assignment_id="-14"
