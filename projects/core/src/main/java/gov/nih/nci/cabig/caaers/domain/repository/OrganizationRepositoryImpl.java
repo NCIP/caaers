@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.List;
 
 @Transactional
 public class OrganizationRepositoryImpl implements OrganizationRepository {
@@ -137,4 +138,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
         this.csmApplicationContextName = csmApplicationContextName;
     }
 
+    public List<Organization> getOrganizationsHavingStudySites() {
+        return organizationDao.getOrganizationsHavingStudySites();
+    }
 }

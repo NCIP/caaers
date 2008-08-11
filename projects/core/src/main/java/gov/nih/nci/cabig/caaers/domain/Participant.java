@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipant;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.hibernate.annotations.*;
@@ -58,6 +59,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
         // register with lazy list helper study site.
         lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
+        dateOfBirth = new DateValue();
 
     }
 
@@ -355,5 +357,13 @@ public class Participant extends AbstractIdentifiableDomainObject {
         return null;
     }
 
+    @Transient
+    public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
+        return new ProjectedList(this.getIdentifiers(), SystemAssignedIdentifier.class);
+    }                                
 
+    @Transient
+    public List<OrganizationAssignedIdentifier> getOrganizationIdentifiers() {
+        return new ProjectedList(this.getIdentifiers(), OrganizationAssignedIdentifier.class);  
+    }
 }

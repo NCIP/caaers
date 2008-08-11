@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +42,9 @@ public class StudyRepository {
     @Required
     public void setStudyDao(final StudyDao studyDao) {
         this.studyDao = studyDao;
+    }
+
+    public List<Study> find(final AbstractQuery query) {
+        return studyDao.find(query);
     }
 }
