@@ -26,6 +26,12 @@ public class StudyParticipantConcomitantMedication extends AbstractMutableDomain
     private String agentName;
     
     private StudyParticipantAssignment assignment;
+    
+    private DateValue startDate;
+
+    private DateValue endDate;
+    
+    private Boolean stillTakingMedications;
 
     // //// LOGIC
 
@@ -53,4 +59,28 @@ public class StudyParticipantConcomitantMedication extends AbstractMutableDomain
     public void setAssignment(StudyParticipantAssignment assignment) {
         this.assignment = assignment;
     }
+    
+    public DateValue getStartDate() {
+		return startDate;
+	}
+    
+    public void setStartDate(DateValue startDate) {
+		this.startDate = startDate;
+	}
+    
+    public DateValue getEndDate() {
+		return endDate;
+	}
+    
+    public void setEndDate(DateValue endDate) {
+		this.endDate = endDate;
+	}
+    
+    public Boolean getStillTakingMedications() {
+		return stillTakingMedications;
+	}
+    
+    public void setStillTakingMedications(Boolean stillTakingMedications) {
+		this.stillTakingMedications = stillTakingMedications;
+	}
 }
