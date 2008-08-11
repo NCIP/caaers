@@ -18,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "spa_prior_therapy_agents")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_pt_agents_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_prior_therapy_agent_id") })
 public class StudyParticipantPriorTherapyAgent extends AbstractMutableDomainObject {
     private StudyParticipantPriorTherapy priorTherapy;
 

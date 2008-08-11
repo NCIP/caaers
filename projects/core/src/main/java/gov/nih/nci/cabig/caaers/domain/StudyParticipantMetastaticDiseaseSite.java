@@ -15,7 +15,7 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name = "spa_metastatic_disease_sites")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_meta_dis_sites_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_metastatic_disease__id") })
 // TODO: this sort of class might be better as a component rather than another domain object
 public class StudyParticipantMetastaticDiseaseSite extends AbstractIdentifiableDomainObject {
     private String otherSite;
