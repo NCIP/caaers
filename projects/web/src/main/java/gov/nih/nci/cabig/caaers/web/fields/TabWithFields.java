@@ -56,7 +56,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
      * Tabs should not override this anymore.
      */
     @Override
-    public final Map<String,Object> referenceData(C command) {
+    public Map<String,Object> referenceData(C command) {
         Map<String, Object> refdata = super.referenceData(command);
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
         if (isAutoPopulateHelpKey()) populateHelpAttributeOnFields(groupMap); // to populate the help keys
