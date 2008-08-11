@@ -1,8 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
+
+import java.util.Date;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -121,6 +125,8 @@ public class StudyParticipantAssignmentDaoTest extends DaoTestCase<StudyParticip
     	StudyParticipantConcomitantMedication spcm = new StudyParticipantConcomitantMedication();
     	spcm.setAssignment(assignment);
     	spcm.setAgentName("sample Agent Name 1");
+    	spcm.setStartDate(new DateValue(new Date()));
+    	spcm.setEndDate(new DateValue(new Date()));
     	assignment.getConcomitantMedications().add(spcm);
     	getDao().save(assignment);
     	
