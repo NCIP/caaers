@@ -7,6 +7,10 @@ import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -60,6 +64,13 @@ public class StudyParticipantConcomitantMedication extends AbstractMutableDomain
         this.assignment = assignment;
     }
     
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
+    })
     public DateValue getStartDate() {
 		return startDate;
 	}
@@ -68,6 +79,13 @@ public class StudyParticipantConcomitantMedication extends AbstractMutableDomain
 		this.startDate = startDate;
 	}
     
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
+    })        
     public DateValue getEndDate() {
 		return endDate;
 	}
