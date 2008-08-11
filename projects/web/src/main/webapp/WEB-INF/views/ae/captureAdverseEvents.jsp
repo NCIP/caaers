@@ -173,6 +173,14 @@ div.row div.value {
  	*/
  	var rpCreator = null; 
  	Event.observe(window, "load", function(){
+ 		var url = document.addRoutineAeForm.action;
+ 		var stripped_url = '';
+ 		var index = -1;
+ 		index = url.indexOf("?");
+ 		if(index != -1){
+			stripped_url = url.substr(0,index);
+			document.addRoutineAeForm.action = stripped_url;
+		}
  		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
  		
  	});

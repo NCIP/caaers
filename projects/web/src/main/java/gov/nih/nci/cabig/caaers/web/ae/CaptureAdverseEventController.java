@@ -90,13 +90,23 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	 *  incase the submit occurs on change in the Select(reporting period) dropdown. So a hidden attribute "_action" is checked (which is 
 	 *  set in the onchange handler of the select dropdown. Incase the submit occurs due to "Save" then the entire form alongwith the adverse
 	 *  events will be bound to the command object.
+	 *  
+	 *  
+	 *  NOTE - There are 2 flows from where the Capture AE page can be reached. One is from "Enter AEs" and other is from "Manage reports"
+	 *  If we enter from "Manage Reports", the reportingPeriodId is passed as a parameter in the url and we have to bind it to the reporting
+	 *  Period in command. So we check for the parameter "addReportingPeriodBinder" which is passed in the url while coming from "Manage 
+	 *  reports" and allow/disallow AdverseEventReportingPeriod Binder based on its value.
 	 */
 	
 	@Override
 	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
 		CaptureAdverseEventInputCommand aeCommand = (CaptureAdverseEventInputCommand) command;
 		ServletRequestDataBinder binder = super.createBinder(request, aeCommand);
-		binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+		Set<String> paramNames = request.getParameterMap().keySet();
+        boolean addReportingPeriodBinder = false;
+        addReportingPeriodBinder = paramNames.contains("addReportingPeriodBinder");
+        if(!addReportingPeriodBinder)
+        	binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
 		initBinder(request,binder, aeCommand);
 		return binder;
@@ -115,8 +125,27 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	return super.isFormSubmission(request);
     }
 
-
+	/**
+	 * The Capture AE page can be entered from 2 flows. One is through "Enter AEs" and other is from "Manage Reports". If we enter from
+	 * the later, there is a possibility that the form object is not found in the session and an exception is thrown. So the controll goes 
+	 * to handleInvalidSubmit method. The default implementation in AbstractWizardFormController renders the first page of the flow. So we 
+	 * need to override that method. It creates the command object, binds the attributes in the url and calls processFormSubmission.
+	 */
 	
+	@Override
+	protected ModelAndView handleInvalidSubmit(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Set<String> paramNames = request.getParameterMap().keySet();
+        boolean fromListPage = false;
+        fromListPage = paramNames.contains("displayReportingPeriod");
+        if(fromListPage){
+        	Object command = formBackingObject(request);
+    		ServletRequestDataBinder binder = bindAndValidate(request, command);
+    		BindException errors = new BindException(binder.getBindingResult());
+    		return processFormSubmission(request, response, command, errors);
+        }
+        else
+        	return super.handleInvalidSubmit(request, response);
+	}
 	
 	/**
 	 * Will return the {@link AdverseEventReportingPeriod} 
@@ -171,6 +200,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
+        ControllerTools.registerDomainObjectEditor(binder, adverseEventReportingPeriodDao);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);

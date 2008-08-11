@@ -424,7 +424,7 @@
 
 
 <h2>Reporting Period AEs
-<c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value="/pages/ae/captureRoutine"/>">( create )</a></c:if>
+<c:if test="${command.study.status ne 'Administratively Complete'}"><a href="<c:url value='/pages/ae/captureRoutine?study=${command.study.id}&participant=${command.participant.id}&_page=0&_target1=1&displayReportingPeriod=true'/>">( create )</a></c:if>
 </h2>
 <% int ind= 0; %>
 <ec:table
@@ -442,7 +442,7 @@
                 		<table width="100%" class="tablecontent">
                 		<tr>
                 		<td width="90%" class='<% out.println(ind % 2 == 0 ? "odd" : "even");  %>'>
-                		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page0=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true"/>">
+                		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true"/>">
                 			${adverseEvent.adverseEventTerm.universalTerm}
                 		</a>
                 		</td>
