@@ -98,7 +98,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("id not copied", 3, (int) actualMatch.getId());
         assertEquals("first not copied", "Foo", actualMatch.getFirstName());
         assertEquals("last not copied", "B", actualMatch.getLastName());
-        assertNull("other field incorrectly copied", actualMatch.getDateOfBirth());
     }
 
     public void testMatchParticipantsMultipleSubnames() throws Exception {
