@@ -5,7 +5,31 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
+/**
+ * 
+ * Note:- Only one instance of IndexFixedList for a type should be created per flow. 
+ * For more details on how to achieve this, see {@link IndexFixedListHelper}
+ * 
+ * This is a Wrapper class. IndexFixedList will insert null at the place of a deleted/removed entry, there by keeping the index static. 
+ * 
+ * Eg:-
+ * 	 List<Object> objlist = new List<Object>();
+ * 	 objlist.add("One");
+ *   objlist.add("Two");
+ *   objlist.add("Three");
+ *   objlist.add("Four");
+ *   IndexFixedList<Object> indexFixedlist = new IndexFixedList<Object>(objlist);
+ *   indexFixedList.remove(1);
+ *   
+ *  Now indexFixedList will contain 
+ *     	[One, null, Three, Four]
+ *  The objList will contain
+ * 		[One, Three, Four]
+ *   
+ * @author Biju Joseph
+ *
+ * @param <E>
+ */
 public class IndexFixedList<E> implements DecoratedList<E>{
 	
 	List<E> internalList;
@@ -86,9 +110,12 @@ public class IndexFixedList<E> implements DecoratedList<E>{
 		return (E)o;
 	}
 
-	public boolean remove(Object arg0) {
-		if(true) throw new UnsupportedOperationException("Cannot remove this easily in this kind of list");
+	public boolean remove(Object o) {
+		int i = internalList.indexOf(o);
+		if(i > 0) 
+			return this.remove(i) != null;
 		return false;
+		
 	}
 
 	public boolean removeAll(Collection<?> arg0) {
