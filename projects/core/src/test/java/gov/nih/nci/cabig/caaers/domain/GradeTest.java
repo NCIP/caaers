@@ -6,12 +6,12 @@ import static gov.nih.nci.cabig.caaers.domain.Grade.MILD;
 import static gov.nih.nci.cabig.caaers.domain.Grade.MODERATE;
 import static gov.nih.nci.cabig.caaers.domain.Grade.SEVERE;
 import static gov.nih.nci.cabig.caaers.domain.Grade.getByCode;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class GradeTest extends CaaersTestCase {
+public class GradeTest extends TestCase {
     public void testToString() throws Exception {
         assertEquals("5: Death", DEATH.toString());
         assertEquals("4: Life-threatening or disabling", LIFE_THREATENING.toString());
@@ -26,5 +26,6 @@ public class GradeTest extends CaaersTestCase {
         assertEquals(SEVERE, getByCode(3));
         assertEquals(MODERATE, getByCode(2));
         assertEquals(MILD, getByCode(1));
+        assertNotNull(Grade.getByCode(0));
     }
 }

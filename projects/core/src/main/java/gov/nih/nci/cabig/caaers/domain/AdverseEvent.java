@@ -91,7 +91,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     private Boolean serious;
     
-    private String displayGrade;
     
     private String displayExpected;
     
@@ -462,33 +461,21 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     @Transient
     public String getDisplayGrade(){
-    	if(displayGrade == null){
-    		displayGrade = "";
-    		if(grade != null)
-    			if(lowLevelTerm == null){
-    				//CTC grade
-    				List<CtcGrade> ctc_grades = new ArrayList<CtcGrade>();
-    				if(this.getAdverseEventCtcTerm() != null)
-    					ctc_grades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
-    				if(ctc_grades.isEmpty()){
-    					setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
-    				}else{
-    					for(CtcGrade c: ctc_grades){
-    						if(c.getCode().equals(grade.getCode()))
-    							setDisplayGrade(c.getCode() + "-" + c.getDisplayName());
-    					}
-    				}
-    			}else{
-    				//Meddra grade
-    				if(grade != null)
-    					setDisplayGrade(grade.getCode() + "-" + grade.getDisplayName());
-    			}
+    	if(grade == null) return "";
+    	
+    	//MedDRA or CTC{not evaluated , normal}
+    	if(grade.getCode() <=0 || lowLevelTerm != null) return grade.getCode().intValue() + "-" + grade.getDisplayName();
+    	
+    	//CTC ( > Normal), so check contextual grades
+    	List<CtcGrade> contextualGrades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
+    	if(contextualGrades.isEmpty()) return grade.getCode().intValue() + "-" + grade.getDisplayName();
+    	
+    	//find the grade from contextual grades and return that. 
+    	for(CtcGrade contextualGrade : contextualGrades){
+    		if(contextualGrade.getCode().equals(grade.getCode())) return grade.getCode().intValue() + "-" + contextualGrade.getDisplayName();
     	}
-    	return displayGrade;
-    }
-    
-    public void setDisplayGrade(String displayGrade){
-    	this.displayGrade = displayGrade;
+    	
+    	return "";
     }
     
     @Transient

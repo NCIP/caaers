@@ -5,7 +5,7 @@
     "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="grade">
+    <typedef class="gov.nih.nci.cabig.caaers.tools.CodedEnumType" name="grade">
         <param name="enumClass">gov.nih.nci.cabig.caaers.domain.Grade</param>
     </typedef>
     <typedef class="gov.nih.nci.cabig.ctms.tools.hibernate.IntegerCodedEnumType" name="attribution">

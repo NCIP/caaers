@@ -20,7 +20,7 @@ public enum Grade implements CodedEnum<Integer>, CodedGrade {
         this(code, null);
     }
 
-    Grade(int code, String longName) {
+    Grade(Integer code, String longName) {
         this.code = code;
         this.displayName = longName;
         register(this);
