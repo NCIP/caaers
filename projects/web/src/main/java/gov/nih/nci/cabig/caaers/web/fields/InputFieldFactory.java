@@ -192,6 +192,14 @@ public class InputFieldFactory {
     	return inputField;
     }
     /**
+     * This field is used to display images on the screen. At present, this is more or less a kind of filler field, 
+     * which is used to act as a space holder. 
+     * @return
+     */
+    public static InputField createImageField(String properyName, String displayName, String imageName){
+    	return new DefaultInputField(InputField.Category.IMAGE, properyName, displayName);
+    }
+    /**
      * Intended mainly for testing.
      */
     public static InputField createInputField(InputField.Category category) {

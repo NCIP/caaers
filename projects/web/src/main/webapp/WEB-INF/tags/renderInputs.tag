@@ -15,6 +15,7 @@
     <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox path="${field.propertyName}" disabled="${disabled}" cssClass="${cssClass}"/></c:when>
     <c:when test="${field.categoryName == 'inplace_text'}"><tags:inplaceTextField propertyName="${field.propertyName}" /></c:when>
     <c:when test="${field.categoryName == 'label'}"><tags:value propertyName="${field.propertyName}" /></c:when>
+	<c:when test="${field.categoryName == 'image'}"><img src="<c:url value="/images/chrome/spacer.gif" />" /></c:when>
 	<c:when test="${field.categoryName == 'radio'}"><form:radiobutton path="${field.propertyName}" disabled="${disabled}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''} ${cssClass}" value="${field.attributes.defaultValue}"/></c:when>
     <c:when test="${field.categoryName == 'select'}" >
         <form:select path="${field.propertyName}" items="${field.attributes.options}" disabled="${disabled}" title="${field.displayName}" cssClass="${cssClass} ${field.required ? 'validate-NOTEMPTY' : ''}"/>

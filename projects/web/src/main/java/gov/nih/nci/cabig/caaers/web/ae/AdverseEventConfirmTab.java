@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -76,10 +77,17 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
     }
 	
 	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy, boolean isBaseline){
+		//only non-baseline, grade != NOT_EVALUATED is selectable, or can be opted as primary
+		boolean isModifiable = !isBaseline && ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
+		
 		List<InputField> fields= new ArrayList<InputField>();
-		if(!isBaseline)
+		if(isModifiable){
 			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
+		}else{
+			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
+		}
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
+		//other-specify for non-solicited CTC terms. 
 		if(!ae.getSolicited()){
 			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
 			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].detailsForOther", ""));
@@ -90,8 +98,11 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		String hospitalizationFieldName = (ae.getHospitalization() != null)? "hospitalization.displayName" : "hospitalization";
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "]." + hospitalizationFieldName, ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].displayExpected", ""));
-		if(!isBaseline)
+		if(isModifiable){
 			fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
+		}else{
+			fields.add(InputFieldFactory.createImageField("primaryAdverseEventId", "", ""));
+		}
 		return fields;
 	}
 	
