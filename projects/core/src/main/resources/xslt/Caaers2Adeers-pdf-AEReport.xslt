@@ -36,7 +36,7 @@
 	    
 		<fo:layout-master-set>
 		  	<fo:simple-page-master master-name="A4" margin-left="2mm" margin-top="2mm" margin-right="0.25in">
-		    	<fo:region-body margin-top="3in"/>
+		    	<fo:region-body margin-top="2.4in"/>
 		    	<fo:region-before extent="2in"/>
 		    	<fo:region-after extent="0.5in"/>
 		  	</fo:simple-page-master>
@@ -66,10 +66,7 @@
 				      <fo:block> 
 				      	<fo:external-graphic src="url(http://www.hhs.gov/images/system/hlogo.gif)" content-height="3em" content-width="3em"/>
 				      </fo:block>
-				      <fo:block font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left" display-align="left"> 
-				      	Run Date :   
-    					<xsl:value-of select="java:format(java:java.text.SimpleDateFormat.new ('MM/d/yyyy h:mm:ss a '), java:java.util.Date.new())"/>				      
-				      </fo:block>
+				      
 				    </fo:table-cell>
 				    
 				    <fo:table-cell>
@@ -78,8 +75,7 @@
 				      
 				      <fo:block space-before="5mm" font-weight="bold" font-size="10pt" font-family="arial" text-align-last="center" display-align="center">
 				      	(Site Reported)</fo:block>
-				      <fo:block font-weight="bold" font-size="14pt" font-family="arial" text-align-last="center" display-align="center">
-				      	Adverse Event Expedited Report</fo:block>
+				      
 				    </fo:table-cell>
 
 				    <fo:table-cell font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left" display-align="right">
@@ -88,6 +84,22 @@
 				      <fo:block>National Cancer Institute</fo:block>
 				      <fo:block>Bethesda, Maryland 20892</fo:block>
 				    </fo:table-cell>
+				  </fo:table-row>
+				  <fo:table-row>
+				    <fo:table-cell>
+				      <fo:block font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left" display-align="left"> 
+				      	Run Date :   
+    					<xsl:value-of select="java:format(java:java.text.SimpleDateFormat.new ('MM/d/yyyy h:mm:ss a '), java:java.util.Date.new())"/>				      
+				      </fo:block>
+				      
+				    </fo:table-cell>
+				    
+				    <fo:table-cell>
+				     <fo:block font-weight="bold" font-size="14pt" font-family="arial" text-align-last="center" display-align="center">
+				      	Adverse Event Expedited Report</fo:block>	      
+				    </fo:table-cell>
+
+				  
 				  </fo:table-row>
 				</fo:table-body>
 				
@@ -181,7 +193,7 @@
 		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		<fo:table>
 					<fo:table-column column-width="12%"/>
-					<fo:table-column column-width="33%"/>
+					<fo:table-column column-width="20%"/>
 					<fo:table-column column-width="5%"/>
 					<fo:table-column column-width="18%"/>
 					<fo:table-column column-width="7%"/>
@@ -536,8 +548,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>		
-						<fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+						 <fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell number-columns-spanned="3">
 						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
 						  			Baseline performance status at initiation of protocol - ECOG/Zubrod scale :  
