@@ -14,25 +14,18 @@
 <head>
     <tags:includeScriptaculous/>
     <tags:stylesheetLink name="participant"/>
-
-    <style type="text/css">
-        .leftpane {
-            width: 32em
-        }
-    </style>
-
 </head>
 <body>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false">
 
-		 <jsp:attribute name="singleFields">
-        <chrome:division>
-            <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
-                <tags:renderRow field="${field}"/>
-            </c:forEach>
-        </chrome:division>
-     </jsp:attribute>
+<jsp:attribute name="singleFields">
+    <chrome:division>
+        <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
+            <tags:renderRow field="${field}"/>
+        </c:forEach>
+    </chrome:division>
+</jsp:attribute>
 
 
 </tags:tabForm>

@@ -343,7 +343,7 @@
   	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType"
-	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
+	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController2" >
       <property name="webControllerValidator" ref="webControllerValidator"/> 
     </bean>
 
@@ -365,9 +365,19 @@
 	class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
   </bean>
 
-  <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName"
-	class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
+  <bean
+          name="/participant/assignParticipant"
+          id="assignParticipantController"
+          autowire="byName" 
+          class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
   </bean>
+  
+  <!--  For InPlaceEditor  -->
+<!--
+  <bean name="/study/inPlaceEdit" id="inPlaceEditController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.InPlaceEditorController">
+  </bean>
+-->
 
   <!--  STUDY   -->
 
@@ -378,6 +388,7 @@
 	class="gov.nih.nci.cabig.caaers.web.study.CreateStudyController">
   </bean>
   
+   
   <bean name="/study/view" id="viewStudyController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.study.ViewStudyController" >
   </bean>

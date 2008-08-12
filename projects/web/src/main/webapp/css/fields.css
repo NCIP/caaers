@@ -6,6 +6,11 @@ input[type=text], input[type=password], select, textarea {
   background-color: #f4f4f5;
   border: 1px inset #ccc;
   padding: 2px;
+
+    border-color : #809eba;
+    border-style : solid;
+    border-width : 1px;
+
 }
 input[disabled], select[disabled], textarea[disabled] {
   border-color: #ddc;

@@ -8,10 +8,10 @@
     >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean id="createAeAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
+    <bean id="createAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
         <property name="reportRepository" ref="reportRepository"/>
     </bean>
+    
     <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>
@@ -22,6 +22,9 @@
           
      <bean id="participantAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade"/>
+    
+     <bean id="assignParticipantFacade" autowire="byType" 
+          class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantAjaxFacade"/>
     
      <bean id="investigatorAjaxFacade" autowire="byType" 
           class="gov.nih.nci.cabig.caaers.web.admin.InvestigatorAjaxFacade"/>

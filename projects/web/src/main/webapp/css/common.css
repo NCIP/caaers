@@ -472,8 +472,17 @@ a.help img {
     color: #cc0033;
     text-align: center;
 }
-        
+
 .submittedOn {
     color: #66cc33;
     text-align: center;
+}
+
+.leftpane {
+    float: left;
+    padding: 5px;
+}
+
+.endpanes {
+    clear: both;
 }

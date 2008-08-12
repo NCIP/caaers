@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CreateParticipantController extends ParticipantController<NewParticipantCommand> {
+public class CreateParticipantController extends ParticipantController<ParticipantInputCommand> {
 
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
 
@@ -29,8 +29,8 @@ public class CreateParticipantController extends ParticipantController<NewPartic
     private ConfigProperty configurationProperty;
 
     @Override
-    protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
-        flow.addTab(new CreateParticipantTab());
+    protected void layoutTabs(final Flow<ParticipantInputCommand> flow) {
+        flow.addTab(new ParticipantTab());
         flow.addTab(new SelectStudyForParticipantTab());
         flow.addTab(new AssignStudySubjectIdentifierForNewParticipantTab());
         flow.addTab(new ReviewParticipantTab());
@@ -43,15 +43,13 @@ public class CreateParticipantController extends ParticipantController<NewPartic
         NewParticipantCommand participantCommand = new NewParticipantCommand();
         OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
         organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-        organizationAssignedIdentifier.setType(configurationProperty.getMap().get(
-                        "participantIdentifiersType").get(0).getCode());
+        organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
         participantCommand.getParticipant().addIdentifier(organizationAssignedIdentifier);
         return participantCommand;
     }
 
     @Override
-    protected void onBind(final HttpServletRequest request, final Object command,
-                    final BindException errors) throws Exception {
+    protected void onBind(final HttpServletRequest request, final Object command, final BindException errors) throws Exception {
         log.debug("Entering onBind...");
         NewParticipantCommand participantCommand = (NewParticipantCommand) command;
         String searchtext = participantCommand.getSearchText();

@@ -32,8 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 
  * @author Saurabh
  */
-public abstract class ParticipantController<C extends NewParticipantCommand> extends
-                AutomaticSaveFlowFormController<C, Participant, ParticipantDao> {
+public abstract class ParticipantController<C extends ParticipantInputCommand> extends AutomaticSaveFlowFormController<C, Participant, ParticipantDao> {
 
     private static Log log = LogFactory.getLog(CreateParticipantController.class);
 
@@ -53,8 +52,7 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
     }
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
@@ -62,9 +60,7 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
     }
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         log.debug("Entering Process Finish ...");
         NewParticipantCommand participantCommand = (NewParticipantCommand) command;
         Participant participant = participantCommand.getParticipant();
@@ -96,8 +92,7 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
     }
 
     @Override
-    protected String getViewName(final HttpServletRequest request, final Object command,
-                    final int page) {
+    protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
         Object subviewName = findInRequest(request, "_subview");
         if (subviewName != null) {
             return "par/ajax/" + subviewName;
@@ -134,14 +129,12 @@ public abstract class ParticipantController<C extends NewParticipantCommand> ext
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors, final int page) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         return refdata;
     }
 
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
         webControllerValidator.validate(request, command, errors);
     }

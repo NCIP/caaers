@@ -25,44 +25,28 @@ import org.springframework.web.servlet.mvc.BaseCommandController;
 public class CreateParticipantAjaxFacade {
 
     public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
-
     public static final String AJAX_INDEX_PARAMETER = "index";
-
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
-
-    public static final String CREATE_PARTICIPANT_FORM_NAME = CreateParticipantController.class
-                    .getName()
-                    + ".FORM.command";
-
-    public static final String EDIT_PARTICIPANT_FORM_NAME = EditParticipantController.class
-                    .getName()
-                    + ".FORM.command";
-
-    public static final String CREATE_PARTICIPANT_REPLACED_FORM_NAME = CREATE_PARTICIPANT_FORM_NAME
-                    + ".to-replace";
-
-    public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME
-                    + ".to-replace";
+    public static final String CREATE_PARTICIPANT_FORM_NAME = CreateParticipantController.class.getName() + ".FORM.command";
+    public static final String EDIT_PARTICIPANT_FORM_NAME = EditParticipantController.class.getName()+ ".FORM.command";
+    public static final String CREATE_PARTICIPANT_REPLACED_FORM_NAME = CREATE_PARTICIPANT_FORM_NAME + ".to-replace";
+    public static final String EDIT_PARTICIPANT_REPLACED_FORM_NAME = EDIT_PARTICIPANT_FORM_NAME + ".to-replace";
 
     private static final Log log = LogFactory.getLog(CreateParticipantAjaxFacade.class);
 
     private OrganizationDao organizationDao;
 
     private NewParticipantCommand getParticipantCommand(final HttpServletRequest request) {
-        NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession()
-                        .getAttribute(CREATE_PARTICIPANT_REPLACED_FORM_NAME);
+        NewParticipantCommand newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(CREATE_PARTICIPANT_REPLACED_FORM_NAME);
         if (newParticipantCommand == null) {
-            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-                            CREATE_PARTICIPANT_FORM_NAME);
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(CREATE_PARTICIPANT_FORM_NAME);
         }
         if (newParticipantCommand == null) {
-            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-                            EDIT_PARTICIPANT_REPLACED_FORM_NAME);
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(EDIT_PARTICIPANT_REPLACED_FORM_NAME);
         }
 
         if (newParticipantCommand == null) {
-            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(
-                            EDIT_PARTICIPANT_FORM_NAME);
+            newParticipantCommand = (NewParticipantCommand) request.getSession().getAttribute(EDIT_PARTICIPANT_FORM_NAME);
         }
 
         request.setAttribute(BaseCommandController.DEFAULT_COMMAND_NAME, newParticipantCommand);
@@ -83,15 +67,13 @@ public class CreateParticipantAjaxFacade {
         NewParticipantCommand newParticipantCommand = getParticipantCommand(request);
 
         if (type == 1) {
-            newParticipantCommand.getParticipant().getIdentifiers().add(
-                            new SystemAssignedIdentifier());
+            newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         } else if (type == 2) {
-            newParticipantCommand.getParticipant().getIdentifiers().add(
-                            new OrganizationAssignedIdentifier());
+            newParticipantCommand.getParticipant().getIdentifiers().add(new OrganizationAssignedIdentifier());
         }
+        
         request.setAttribute("listEditorIndex", index);
-        request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getParticipant()
-                        .getIdentifiers().size() - 1);
+        request.setAttribute(AJAX_INDEX_PARAMETER, newParticipantCommand.getParticipant().getIdentifiers().size() - 1);
         request.setAttribute("type", type);
         request.setAttribute(AJAX_SUBVIEW_PARAMETER, "newParticipantCommandIdentifierSection");
         request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
@@ -123,6 +105,7 @@ public class CreateParticipantAjaxFacade {
     private String getCurrentPageContextRelative(final WebContext webContext) {
         String contextPath = webContext.getHttpServletRequest().getContextPath();
         String page = webContext.getCurrentPage();
+        
         if (contextPath == null) {
             log.debug("context path not set");
             return page;

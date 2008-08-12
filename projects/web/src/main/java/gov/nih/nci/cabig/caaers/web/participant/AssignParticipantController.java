@@ -12,8 +12,7 @@ public class AssignParticipantController extends AssignParticipantStudyControlle
 	
 	@Override
 	@SuppressWarnings(value={"unchecked"})
-	protected Map referenceData(HttpServletRequest request, Object command,
-			Errors errors, int page) throws Exception {
+	protected Map referenceData(HttpServletRequest request, Object command, Errors errors, int page) throws Exception {
 		Map referenceData =  super.referenceData(request, command, errors, page);
 		referenceData.put("participantSearchType", listValues.getParticipantSearchType());
 		referenceData.put("studySearchType", listValues.getStudySearchType());
@@ -26,7 +25,7 @@ public class AssignParticipantController extends AssignParticipantStudyControlle
         Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
         flow.addTab(new AssignParticipantTab());
         flow.addTab(new AssignStudyTab());
-        flow.addTab(new AssignStudySubjectIdentifierTab());
+        flow.addTab(new SubjectMedHistoryTab());
         flow.addTab(new ReviewAssignmentTab());
         setFlow(flow);
     }

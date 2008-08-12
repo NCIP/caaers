@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,24 +25,32 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Saurbah Agrawal
  */
-public class EditParticipantController extends ParticipantController<ParticipantInputCommand> {
+public class EditParticipantController2 extends AbstractTabbedFlowFormController<ParticipantInputCommand> {
 
     private static final Log log = LogFactory.getLog(EditParticipantController.class);
 
     private Task task;
 
-    public EditParticipantController() {
+    public EditParticipantController2() {
+
+        Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Edit Participant 2");
+        flow.addTab(new ReviewParticipantTab());
+        flow.addTab(new ParticipantTab());
+
         setBindOnNewForm(true);
     }
 
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-        request.getSession().removeAttribute(
-                        CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
+        ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
+
+        return participantInputCommand;
+
+/*
+        request.getSession().removeAttribute(CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        Participant participant = participantDao.getParticipantById(Integer.parseInt(request
-                        .getParameter("participantId")));
+        Participant participant = participantDao.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Participant :" + String.valueOf(participant));
@@ -58,55 +67,65 @@ public class EditParticipantController extends ParticipantController<Participant
         participantCommand.setOrganization(participant.getAssignments().get(0).getStudySite()
                         .getOrganization());
         return participantCommand;
+*/
 
     }
 
 /*
     @Override
-    protected NewParticipantCommand save(final NewParticipantCommand newParticipantCommand,
-                    final Errors errors) {
+    protected ParticipantInputCommand save(final ParticipantInputCommand participantInputCommand, final Errors errors) {
 
         if (errors.hasErrors()) {
-            return newParticipantCommand;
+            return participantInputCommand;
         }
+        
+*/
+/*
         Participant participant = newParticipantCommand.getParticipant();
         Participant mergedParticipant = getDao().merge(participant);
         getDao().initialize(mergedParticipant);
         getDao().save(mergedParticipant);
         newParticipantCommand.setParticipant(mergedParticipant);
-        return newParticipantCommand;
+*/
+/*
+
+        return participantInputCommand;
     }
 */
 
+/*
     @Override
     protected boolean isSummaryEnabled() {
         return true;
     }
+*/
 
+/*
     @Override
-    protected void layoutTabs(final Flow<ParticipantInputCommand> flow) {
-//        flow.addTab(new ReviewParticipantTab());
-//        flow.addTab(new CreateParticipantTab());
+    protected void layoutTabs(final Flow<NewParticipantCommand> flow) {
+        flow.addTab(new ReviewParticipantTab());
+        flow.addTab(new ParticipantTab());
 
     }
+*/
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
-
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         NewParticipantCommand participantCommand = (NewParticipantCommand) command;
+
+/*
         Participant participant = participantCommand.getParticipant();
         participantDao.merge(participant);
         request.setAttribute("flashMessage", "Successfully updated the Participant");
+*/
+
         ModelAndView modelAndView = new ModelAndView("par/par_confirm");
         return modelAndView;
     }
 
 /*
     @Override
-    protected boolean shouldSave(final HttpServletRequest request,
-                    final NewParticipantCommand command, final Tab<NewParticipantCommand> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final NewParticipantCommand command, final Tab<NewParticipantCommand> tab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null) {

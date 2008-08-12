@@ -90,7 +90,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	
     	for( Epoch epoch : listOfEpochs )
     	{
-    		if( epoch.getName().equalsIgnoreCase("Enter name here"))
+    		if( epoch.getName()== null || epoch.getName().equalsIgnoreCase("Enter name here") )
     			errors.reject("name","Each reporting period type must have a valid title. Type the title or delete the reporting period type.");
     		listOfEpochNames.add(epoch.getName().toUpperCase());
     	}

@@ -4,15 +4,18 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="index" required="true" type="java.lang.Integer"%>
-<%@attribute name="identifier" required="true"
-	type="gov.nih.nci.cabig.caaers.domain.Identifier"%>
+<%@attribute name="identifier" required="true" type="gov.nih.nci.cabig.caaers.domain.Identifier"%>
 <%@attribute name="style"%>
 <%@attribute name="title"%>
 <%@attribute name="sectionClass" required="true"%>
 <%@attribute name="removeButtonAction"%>
 <%@attribute name="disableDelete" type="java.lang.Boolean"%>
+<%@attribute name="mainGroupName" required="true" %>
+
+
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
-<c:set var="mainGroup">main${index}</c:set>
+<c:set var="mainGroup">${mainGroupName}${index}</c:set>
+
 <tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}" >
  <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
 	<c:if test="${(fn:endsWith(field.propertyName, 'value'))}">

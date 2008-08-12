@@ -90,11 +90,7 @@
         </td>
         <td align="right">
             <div id="error-image-div">
-                <a href="javascript:
-			PanelCombo('error');
-				">
-                    <img id="error-image" src="/caaers/images/chrome/minimize.gif"/>
-                         </a>
+                <a href="javascript:PanelCombo('error');"><img id="error-image" src="/caaers/images/chrome/minimize.gif" border="0"/></a>
             </div>
         </td>
     </tr>
@@ -176,11 +172,12 @@
                 %>
                 <tr>
                   <td colspan="2">
-                  	   StackTrace :<br />
-                  	   <% 
-                  	   	exception.printStackTrace(new PrintWriter(out)); 
+                  	   <b>StackTrace :</b><br /><pre>
+                  	   <%
+                  	   	exception.printStackTrace(new PrintWriter(out));
                   	   %>
-                  	   
+                      </pre>
+
                   </td>
                 </tr>
             </table>
