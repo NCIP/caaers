@@ -26,12 +26,8 @@
                 <c:set var="row" value="even" />
                 <c:if test="${i.count % 2 == 1}"><c:set var="row" value="odd" /></c:if>
 
-<%--
-                onclick="$('studySiteArray${i.count}').checked = !($('studySiteArray${i.count}').checked)"
---%>                
-
             <tr class="${row}" onmouseover="this.className='highlight'" onmouseout="this.className='${row}'">
-                <td align="center"><input type="checkbox" id="studySiteArray${i.count}" name="studySiteArray" value="${study.id}"></td>
+                <td align="center"><input type="radio" id="studySiteArray${i.count}" name="studySiteArray" value="${study.id}"></td>
                 <td>${study.primaryIdentifier}</td>
                 <td>${study.shortTitle}</td>
                 <td>${study.primarySponsorCode}</td>
@@ -46,26 +42,3 @@
     <c:otherwise></c:otherwise>
 </c:choose>
 
-<%--
-<ec:table items="command.studies" var="study"
-    action="${pageContext.request.contextPath}/pages/newParticipant"
-    imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-    filterable="false"
-    showPagination="false" form="command"
-    cellspacing="0" cellpadding="0" border="0" width="80%" style=""
-    styleClass=""
-    autoIncludeParameters="false">
-    <ec:row highlightRow="true">
-        <ec:column property="transient0" style="width:10px" filterable="false"
-            sortable="false" title=" ">
-            <form:checkbox path="studySiteArray" value="${study.id}" />
-        </ec:column>
-         <ec:column property="primaryIdentifier" title="Primary ID" />
-        <ec:column property="shortTitle" title="Short Title" />
-        <ec:column property="primarySponsorCode" title="Funding Sponsor" />
-        <ec:column property="phaseCode" title="Phase" />
-        <ec:column property="status" title="Status" />
-    </ec:row>
-</ec:table>
-<input type="hidden" name="_action" value="" />
---%>

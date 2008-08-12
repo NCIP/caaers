@@ -92,35 +92,7 @@ function ajaxStudySearch(searchText, searchType) {
                 <tags:renderRow field="${field}"/>
             </c:forEach>
         </chrome:division>
-        
- <%--       <div id="searchResults__" style="width:100%; border: 2px green dotted; display:block;">
-        <chrome:division collapsable="true" id="OLD_RESULTS">
- <ec:table items="command.studies" var="study"
-    action="${pageContext.request.contextPath}/pages/newParticipant"
-    imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-    filterable="false"
-    showPagination="false" form="command"
-    cellspacing="0" cellpadding="0" border="0" width="80%" style=""
-    styleClass=""
-    autoIncludeParameters="false">
-    <ec:row highlightRow="true">
-        <ec:column property="transient0" style="width:10px" filterable="false"
-            sortable="false" title=" ">
-            <form:checkbox path="studySiteArray" value="${study.id}" />
-        </ec:column>
-         <ec:column property="primaryIdentifier" title="Primary ID" />
-        <ec:column property="shortTitle" title="Short Title" />
-        <ec:column property="primarySponsorCode" title="Funding Sponsor" />
-        <ec:column property="phaseCode" title="Phase" />
-        <ec:column property="status" title="Status" />
-    </ec:row>
-</ec:table>
-<input type="hidden" name="_action" value="" />
-        </chrome:division>
-            </div>
-
-        
---%>
+ 
     </jsp:attribute>
 </tags:tabForm>
 
