@@ -32,7 +32,7 @@ public class CreateParticipantController extends ParticipantController<Participa
     protected void layoutTabs(final Flow<ParticipantInputCommand> flow) {
         flow.addTab(new ParticipantTab());
         flow.addTab(new SelectStudyForParticipantTab());
-        flow.addTab(new AssignStudySubjectIdentifierForNewParticipantTab());
+//      flow.addTab(new AssignStudySubjectIdentifierForNewParticipantTab());
         flow.addTab(new ReviewParticipantTab());
 
     }
