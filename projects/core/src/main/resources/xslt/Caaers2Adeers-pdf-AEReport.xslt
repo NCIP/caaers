@@ -48,7 +48,7 @@
 			
 		<fo:static-content flow-name="xsl-region-after">
 
-				<fo:block font-size="8pt" font-family="arial" text-align-last="right" display-align="right"> 
+				<fo:block font-size="8pt" font-family="arial" text-align-last="right" > 
 						Page <fo:page-number/> of <fo:page-number-citation ref-id="content_terminator"/>
 				</fo:block>
 		</fo:static-content>
@@ -78,7 +78,7 @@
 				      
 				    </fo:table-cell>
 
-				    <fo:table-cell font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left" display-align="right">
+				    <fo:table-cell font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left">
 				      <fo:block>Public Health Service</fo:block>
 				      <fo:block>National Institutes of Health</fo:block>
 				      <fo:block>National Cancer Institute</fo:block>
@@ -87,7 +87,7 @@
 				  </fo:table-row>
 				  <fo:table-row>
 				    <fo:table-cell>
-				      <fo:block font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left" display-align="left"> 
+				      <fo:block font-weight="bold" font-size="8pt" font-family="arial" text-align-last="left"> 
 				      	Run Date :   
     					<xsl:value-of select="java:format(java:java.text.SimpleDateFormat.new ('MM/d/yyyy h:mm:ss a '), java:java.util.Date.new())"/>				      
 				      </fo:block>
