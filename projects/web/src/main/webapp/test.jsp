@@ -16,7 +16,16 @@
 
 TEST.JSP
 
-
+<script type="text/javascript">
+  var _collapsedELs = new Array();
+  Event.observe(window, "load", function() {
+        for (var i in _collapsedELs) {
+            if ($(i))
+                // alert('key is: ' + i + ', value is: ' + _collapsedELs[i]);
+                $(i).hide();
+        }
+  });
+</script>
 
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
@@ -36,12 +45,12 @@ TEST.JSP
         <td>Four
         <td>Five
     <tr id="_tr_1">
-        <td><chrome:collapsableElement targetID="_tr_2" />
-        <td>One
-        <td>Two
-        <td>Three
-        <td>Four
-        <td>Five
+        <td><chrome:collapsableElement targetID="_tr_2" collapsed="true"/>
+        <td>1
+        <td>2
+        <td>3
+        <td>4
+        <td>5
     <tr id="_tr_2">
         <td>
         <td colspan="5">
@@ -54,14 +63,14 @@ TEST.JSP
                                     <th>Four
                                     <th>Five
                                 <tr id="_tr_2_0">
-                                    <td><chrome:collapsableElement targetID="_tr_2_1" />
+                                    <td><chrome:collapsableElement targetID="_tr_2_1" collapsed="true"/>
                                     <td>One
                                     <td>Two
                                     <td>Three
                                     <td>Four
                                     <td>Five
                                 <tr id="_tr_2_1">
-                                    <td><chrome:collapsableElement targetID="_tr_2_2" />
+                                    <td><chrome:collapsableElement targetID="_tr_2_2" collapsed="true"/>
                                     <td>One
                                     <td>Two
                                     <td>Three
