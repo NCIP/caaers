@@ -42,4 +42,9 @@ public abstract class AjaxableTab<C> extends Tab<C> {
     protected String getAjaxViewParamName() {
         return "_asyncViewName";
     }
+    
+    protected String getAjaxRequestParamName() {
+        return "_asynchronous";
+    }
+    
 }

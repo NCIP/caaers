@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -28,11 +30,41 @@ public class ParticipantInputCommand {
     private String searchText;
 
     private String studySubjectIdentifier;
-
-    void init() {
+    
+    //fields for patient medical history
+    List<StudyParticipantPriorTherapy> priorTherapies;
+    
+    //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
+    private String currentItem;
+    
+    
+    /**
+     * This method will initialize the objects that we have to work in the flow.
+     * @param identifierType
+     */
+    void init(String identifierType) {
         this.participant = new Participant();
+        this.assignment = new StudyParticipantAssignment();
+        this.assignment.setParticipant(this.participant);
+        this.assignment.setPriorTherapies(new ArrayList<StudyParticipantPriorTherapy>());
+        this.assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        
+        OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
+        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
+        organizationAssignedIdentifier.setType(identifierType);
+        
+        this.participant.addIdentifier(organizationAssignedIdentifier);
     }
-
+    
+    /**
+     * This method initializes the IndexFixedList. 
+     */
+    public void refreshIndexFixedLists(){
+    	//update the prior therapy list
+    	priorTherapies = new IndexFixedList<StudyParticipantPriorTherapy>(assignment.getPriorTherapies());
+    	
+    }
+    
     public Participant getParticipant() {
         return participant;
     }
@@ -120,4 +152,18 @@ public class ParticipantInputCommand {
     public void setStudySites(List<StudySite> studySites) {
         this.studySites = studySites;
     }
+    /**
+     * Will tell which subitem that we are dealing with. 
+     * @return
+     */
+    public String getCurrentItem() {
+		return currentItem;
+	}
+    /**
+     * Which tell which subitem that we are dealing with. 
+     * @param currentItem
+     */
+    public void setCurrentItem(String currentItem) {
+		this.currentItem = currentItem;
+	}
 }

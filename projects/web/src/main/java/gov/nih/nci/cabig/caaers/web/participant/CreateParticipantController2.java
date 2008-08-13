@@ -61,7 +61,7 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
                 Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Create Participant 2");
                 flow.addTab(new ParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
-                // flow.addTab(new AssignStudySubjectIdentifierForNewParticipantTab());
+                flow.addTab(new SubjectMedHistoryTab());
                 flow.addTab(new ReviewParticipantTab());
                 return flow;
             }
@@ -74,14 +74,10 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
 
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws Exception {
+    	
         ParticipantInputCommand participantInputCommand = new ParticipantInputCommand();
-        participantInputCommand.setParticipant(new Participant());
+        participantInputCommand.init(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode()); //initialise the command
         
-        OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
-        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-        organizationAssignedIdentifier.setType(configurationProperty.getMap().get("participantIdentifiersType").get(0).getCode());
-        participantInputCommand.getParticipant().addIdentifier(organizationAssignedIdentifier);
-
         return participantInputCommand;
     }
 

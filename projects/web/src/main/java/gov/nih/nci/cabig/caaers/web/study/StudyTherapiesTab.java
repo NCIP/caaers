@@ -125,5 +125,26 @@ public class StudyTherapiesTab extends StudyTab {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
         }
     }
+    
+    @Override
+    public void beforeBind(HttpServletRequest request, Study command) {
+    	// TODO Auto-generated method stub
+    	super.beforeBind(request, command);
+    }
+    
+    @Override
+    public void onDisplay(HttpServletRequest request, Study command) {
+    	// TODO Auto-generated method stub
+    	super.onDisplay(request, command);
+    }
+    
+    @Override
+    public void postProcess(HttpServletRequest request, Study command,
+    		Errors errors) {
+    	// TODO Auto-generated method stub
+    	super.postProcess(request, command, errors);
+    }
+    
+    
 
 }

@@ -16,7 +16,6 @@
 
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>
-<tags:javascriptLink name="scriptaculous/effects"/>
 <tags:javascriptLink name="common"/>
 <tags:javascriptLink name="validation" />
 <tags:javascriptLink name="commons-validation" />

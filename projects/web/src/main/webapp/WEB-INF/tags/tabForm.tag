@@ -7,6 +7,7 @@
 <%@attribute name="willSave"%>
 <%@attribute name="title"%>
 <%@attribute name="formName"%>
+<%@attribute name="formId" %>
 <%@attribute name="enctype"%>
 <%@attribute name="boxId"%>
 <%@attribute name="boxClass" %>
@@ -21,7 +22,7 @@
 <c:if test="${not empty pageHelpAnchor}"><c:set var="pageHelp"><tags:pageHelp anchor="${pageHelpAnchor}"/></c:set></c:if>
 <chrome:box title="${pageHelp}${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
     <chrome:flashMessage/>
-    <form:form name="${formName}" enctype="${enctype}">
+    <form:form name="${formName}" enctype="${enctype}" id="${formId}">
         <tags:tabFields tab="${tab}"/>
         <chrome:division id="single-fields">
             <c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
