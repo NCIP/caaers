@@ -360,11 +360,29 @@
 	             								</table>
 	       									 </div>
 	            						</c:if>
-	            						<c:if test="${theReport.lastVersion.reportStatus == 'INPROCESS'}" >
-	            							<span class="dueOn" >
-	            								<i>Submission to AdEERS in process</i></b>
-	            							</span>
-	            						</c:if>
+									<c:if test="${theReport.lastVersion.reportStatus == 'INPROCESS'}" >
+            							<span class="dueOn" >            								
+            								<a href="javascript:showTable2('table${theReport.id}')"><font color="red"><i>Submission to AdEERS in process</i></font></a></b>
+            							</span>
+            							<div id="table${theReport.id}"
+             								style="position: absolute; display: none;width:400px; left: 520px;  ">
+             								
+             								<table class="tableRegion" width="100%">
+             									<tr align="right">
+             										<td><a href="javascript:hideTable2('table${theReport.id}')">
+             										<img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>
+             										</a></td>
+             									</tr>
+             									
+             									<tr>
+             										<td><font color="red">Refresh to update the Submission status. <br>
+             										    Please <a href="<c:url value="/pages/ae/submitReport?aeReport=${report.id}&reportId=${theReport.id}&from=list"/>">Re Submit</a> 
+             										    if submission is hung for more than few minutes </font></td>
+             									</tr>
+
+             								</table>
+       									 </div>
+            						</c:if>
 	            						<c:if test="${theReport.lastVersion.reportStatus == 'FAILED'}" >
 	            							<span class="dueOn" >
 	            								<a href="javascript:showTable2('table${theReport.id}')"><font color="red"><i>Submission to AdEERS failed</i></font></a></b>
