@@ -225,7 +225,7 @@
 		</path>
 		<taskdef resource="org/apache/ivy/ant/antlib.xml"
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
-		<ivy:settings file="${proj.root.dir}/ivysettings.xml" id="caaers.ivy.instance" />
+		<ivy:settings file="${proj.root.dir}/ivysettings.xml" id="caaers.ivy.instance" override="true"/>  
 		<property name="loaded.ivy.settings" value="true" />
 	</target>
 	<target name="load-offline-settings" unless="loaded.ivy.settings">
@@ -235,7 +235,7 @@
 		</path>
 		<taskdef resource="org/apache/ivy/ant/antlib.xml"
 		         uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"  />
-		<ivy:settings file="${proj.root.dir}/ivysettings-offline.xml" id="caaers.ivy.instance" />
+		<ivy:settings file="${proj.root.dir}/ivysettings-offline.xml" id="caaers.ivy.instance" />  
 	</target>
 	<target name="load-ivy" depends="download-ivy,download-jsch, load-online-settings, load-offline-settings" unless="ivy.loaded">
 				<property name="ivy.loaded" location="true"/>
@@ -287,7 +287,6 @@
     	<javac srcdir="${generated.src.dir}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5"/>
         <javac srcdir="${main.src}" destdir="${classes.dir}" classpathref="main.classpath" debug="true" source="1.5" target="1.5"/>
     </target>
-
     
 	<!-- ========================================================== 
           target: compile-test              
@@ -628,7 +627,7 @@
 			<echo message="main.src.resources=${main.src.resources}" />
 			<echo message="skip.test = ${skip.test}" />
 			<echo message="run.test = ${run.test}" />
-			<echo message="${ant.file.common}" />
+			<echo message="ant.file.common=${ant.file.common}" />
 			<echo message="db = ${db}" />
 			<echo message="databaseConfigurationName = ${databaseConfigurationName}" />
 			<echo message="offline : ${offline}" />
