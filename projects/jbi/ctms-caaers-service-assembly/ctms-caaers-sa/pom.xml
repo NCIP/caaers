@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><project>
+  <parent>
+    <artifactId>parent</artifactId>
+    <groupId>ctmscaaers</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>ctmscaaers</groupId>
+  <artifactId>ctms-caaers-sa</artifactId>
+  <packaging>jbi-service-assembly</packaging>
+  <name>CTMS-CAAERS :: SA</name>
+  <version>1.0-SNAPSHOT</version>
+  <url>http://www.myorganization.org</url>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.servicemix.tooling</groupId>
+        <artifactId>jbi-maven-plugin</artifactId>
+        <version>${servicemix-version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <type>service-assembly</type>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <repositories>
+    <repository>
+      <releases />
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>apache</id>
+      <name>Apache Repository</name>
+      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+    </repository>
+    <repository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>apache.snapshots</id>
+      <name>Apache Snapshots Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <releases />
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>apache</id>
+      <name>Apache Repository</name>
+      <url>http://people.apache.org/repo/m2-ibiblio-rsync-repository</url>
+    </pluginRepository>
+    <pluginRepository>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots />
+      <id>apache.snapshots</id>
+      <name>Apache Snapshots Repository</name>
+      <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+    </pluginRepository>
+  </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>ctmscaaers</groupId>
+      <artifactId>ctms-caaers-jms-su</artifactId>
+      <version>1.0-SNAPSHOT</version>      
+    </dependency>
+  </dependencies>
+  <properties>
+    <servicemix-version>3.2.1</servicemix-version>
+  </properties>
+</project>

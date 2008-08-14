@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
+<project name="ctms-caaers-sa" default="all" basedir=".">
+	
+	<property environment="env"/>
+    <!--build directories-->
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="comp.build.dir" value="${build.dir}/components"/>
+    <property name="su.build.dir" value="${build.dir}/serviceunits"/>
+    
+    
+    
+    <property name="bean.comp.build.dir" value="${comp.build.dir}/bean"/>
+    <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
+
+    <property name="servicemix.toolkit.dir" value="${env.SERVICEMIX_HOME}"/>
+	<property name="globus.dir" value="${env.GLOBUS_LOCATION}"/>
+
+    <!--sa archive -->
+    <property name="ctms-caaers.sa.build.dir" value="${build.dir}/assembly"/>
+    <property name="ctms-caaers.sa.archive" value="ctms-caaers-sa-3.1.2-incubating.zip"/>
+
+    <property name="src.resources.dir" value="src/main/resources"/>
+    <property name="src.java.dir" value="src/main/java"/>
+    <property name="sa.dir" value="ctms-caaers-sa"/>
+
+    <path id="build.classpath">
+        <pathelement path="${servicemix.toolkit.dir}/conf"/>
+    	
+        <fileset dir="${servicemix.toolkit.dir}/lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <fileset dir="${servicemix.toolkit.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="ctms-caaers-bean-su/lib">
+            <include name="*.jar"/>
+        </fileset>
+    	<fileset dir="${globus.dir}/lib">
+    	    <include name="*.jar"/>
+    	</fileset>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${ctms-caaers.sa.build.dir}"/>
+        <mkdir dir="${comp.build.dir}"/>
+        <mkdir dir="${bean.comp.build.dir}"/>
+        <mkdir dir="${jms.comp.build.dir}"/>
+        <mkdir dir="${bean.comp.build.dir}/META-INF"/>
+        <mkdir dir="${jms.comp.build.dir}/META-INF"/>
+        <mkdir dir="${su.build.dir}/META-INF"/>
+
+    </target>
+
+    <target name="build-su" depends="init" description="Build the service unit">
+    	
+        <copy todir="${jms.comp.build.dir}">
+            <fileset dir="ctms-caaers-jms-su/${src.resources.dir}"/>
+        </copy>
+        <zip destfile="${su.build.dir}/ctms-caaers-jms-su-3.1.2-incubating.zip">
+            <fileset dir="${jms.comp.build.dir}"/>
+        </zip>
+    </target>
+
+    <target name="build-sa" depends="build-su" description="Build the service assembly">
+        <copy file="${sa.dir}/jbi.xml" todir="${su.build.dir}/META-INF"/>
+        <zip destfile="${ctms-caaers.sa.build.dir}/${ctms-caaers.sa.archive}"
+            basedir="${su.build.dir}"> </zip>
+    </target>
+
+    <target name="all" depends="build-sa" description="Main target to build the project"> </target>
+
+</project>

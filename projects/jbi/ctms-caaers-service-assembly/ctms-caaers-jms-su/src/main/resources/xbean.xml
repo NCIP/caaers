@@ -1,0 +1,37 @@
+<beans xmlns:jms="http://servicemix.apache.org/jms/1.0"
+       xmlns:ctmscaaers="http://semanticbits.com/esb/ctmscaaers"
+       xmlns:amq="http://activemq.org/config/1.0">
+   <!--             
+    <jms:endpoint service="ctms-caaers:jms-ctms-caaers-input"
+              endpoint="endpoint"
+              targetService="ctmscaaers:processInboundService"
+              targetEndpoint="endpoint"
+              role="consumer" 
+              destinationStyle="queue"
+              jmsProviderDestinationName="ctms-caaers.inputQueue"
+              connectionFactory ="#connectionFactory"
+              defaultMep="http://www.w3.org/2004/08/wsdl/in-only" /> 
+     -->
+     
+     <jms:endpoint service="ctms-caaers:jms-ctms-caaers-input"
+              endpoint="endpoint"
+              destinationStyle="queue"
+              targetEndpoint="endpoint"
+              role="provider"
+              jmsProviderDestinationName="ctms-caaers.inputQueue"
+              connectionFactory ="#connectionFactory"
+              defaultMep="http://www.w3.org/2004/08/wsdl/in-only"/>
+              
+     <jms:endpoint service="ctms-caaers:jms-ctms-caaers-output"
+              endpoint="endpoint"
+              destinationStyle="queue"
+              targetEndpoint="endpoint"
+              role="provider"
+              jmsProviderDestinationName="ctms-caaers.outputQueue"
+              connectionFactory ="#connectionFactory"
+              defaultMep="http://www.w3.org/2004/08/wsdl/in-only"/>
+              
+    <amq:connectionFactory id="connectionFactory" brokerURL="tcp://localhost:61616?wireFormat.maxInactivityDuration=0" />
+
+</beans>
+
