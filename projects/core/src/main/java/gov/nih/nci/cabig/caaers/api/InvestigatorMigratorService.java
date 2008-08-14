@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.rmi.RemoteException;
@@ -16,7 +16,7 @@ import javax.jws.WebService;
 public interface InvestigatorMigratorService {
 	
 	@WebMethod
-	public ServiceResponse saveInvestigator(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff) throws RemoteException;
+	public CaaersServiceResponse saveInvestigator(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff) throws RemoteException;
 	
 	public List<DomainObjectImportOutcome<Investigator>> getImportableInvestigators();
 	

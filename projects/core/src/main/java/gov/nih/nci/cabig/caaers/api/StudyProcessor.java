@@ -20,7 +20,7 @@ public interface StudyProcessor {
 	 * @param xmlStudy
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse createStudy(@WebParam(name="Study") gov.nih.nci.cabig.caaers.webservice.Study xmlStudy);
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(@WebParam(name="Study") gov.nih.nci.cabig.caaers.webservice.Study xmlStudy);
 	
 	
 	
@@ -32,6 +32,6 @@ public interface StudyProcessor {
 	 * @param xmlStudy
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse updateStudy(@WebParam(name="Study") gov.nih.nci.cabig.caaers.webservice.Study xmlStudy);
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(@WebParam(name="Study") gov.nih.nci.cabig.caaers.webservice.Study xmlStudy);
 
 }
