@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
 
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
@@ -26,6 +27,7 @@ import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.ServletRequestDataBinder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -50,6 +53,8 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
 
     OrganizationRepository organizationRepository;
     StudyRepository studyRepository;
+    
+    protected PriorTherapyDao priorTherapyDao;
 
     public CreateParticipantController2() {
     }
@@ -84,6 +89,9 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
     protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(httpServletRequest, binder);
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     @Override
@@ -149,21 +157,14 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         // supress validation when target page is less than current page.
-        
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
 
         // supress for ajax and delete requests
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
-            return true;
-        }
-        String action = (String) findInRequest(request, "_action");
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-            return true;
-        }
-
+        if(isAjaxRequest(request)) return true;
+        
+        
         return super.suppressValidation(request, command);
     }
 
@@ -233,5 +234,10 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
     protected Participant getPrimaryDomainObject(ParticipantInputCommand command) {
         return command.getParticipant();
     }
-
+    
+    
+    @Required
+    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+		this.priorTherapyDao = priorTherapyDao;
+	}
 }

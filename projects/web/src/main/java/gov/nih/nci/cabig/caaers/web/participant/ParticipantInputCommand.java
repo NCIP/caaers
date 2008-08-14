@@ -34,9 +34,10 @@ public class ParticipantInputCommand {
     //fields for patient medical history
     List<StudyParticipantPriorTherapy> priorTherapies;
     
-    //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
-    private String currentItem;
-    
+   
+    private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
+    private String task; // will tell the action we perform on the current item.
+    private Integer index; //corresponds to the index of the item (eg: conmed[3])
     
     /**
      * This method will initialize the objects that we have to work in the flow.
@@ -152,6 +153,15 @@ public class ParticipantInputCommand {
     public void setStudySites(List<StudySite> studySites) {
         this.studySites = studySites;
     }
+    
+    public List<StudyParticipantPriorTherapy> getPriorTherapies() {
+		return priorTherapies;
+	}
+    public void setPriorTherapies(List<StudyParticipantPriorTherapy> priorTherapies) {
+		this.priorTherapies = priorTherapies;
+	}
+    
+    
     /**
      * Will tell which subitem that we are dealing with. 
      * @return
@@ -165,5 +175,19 @@ public class ParticipantInputCommand {
      */
     public void setCurrentItem(String currentItem) {
 		this.currentItem = currentItem;
+	}
+    
+    public String getTask() {
+		return task;
+	}
+    public void setTask(String task) {
+		this.task = task;
+	}
+    
+    public Integer getIndex() {
+		return index;
+	}
+    public void setIndex(Integer index) {
+		this.index = index;
 	}
 }

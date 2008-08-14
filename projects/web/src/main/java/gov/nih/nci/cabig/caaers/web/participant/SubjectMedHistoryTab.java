@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -11,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +25,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 /**
  * 
@@ -35,6 +39,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
 	private static final String PRIOR_THERAPY = "priorTherapy";
 	
     private static final Log log = LogFactory.getLog(SubjectMedHistoryTab.class);
+    Map<String, String> methodNameMap = new HashMap<String, String>();
 
 	
     private PriorTherapyDao priorTherapyDao;
@@ -44,6 +49,13 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     
 	public SubjectMedHistoryTab() {
         super("Subject Medical History", "Subject Medical History", "par/par_subject_med_history");
+        methodNameMap.put("create" + GENERAL, "createGeneral");
+        methodNameMap.put("edit" + GENERAL, "createGeneral");
+        methodNameMap.put("save" + GENERAL, "createGeneral");
+        
+        methodNameMap.put("create" + PRIOR_THERAPY,"createPriorTherapy");
+        methodNameMap.put("edit" + PRIOR_THERAPY,"editPriorTherapy");
+        methodNameMap.put("save" + PRIOR_THERAPY,"savePriorTherapy");
     }
 
     @Override
@@ -64,13 +76,26 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	map.put(GENERAL, generalFieldGroup);
     }
     
+    @Override
+    public String getMethodName(HttpServletRequest request) {
+    	String currentItem = request.getParameter("currentItem");
+    	String task = request.getParameter("task");
+    	return methodNameMap.get(task + currentItem);
+    }
+    
+    @Override
+    protected boolean methodInvocationRequest(HttpServletRequest request) {
+    	return WebUtils.hasSubmitParameter(request, "currentItem") && WebUtils.hasSubmitParameter(request, "task");
+    }
+    
+  
     /**
      * This method will create the field groups for the prior therapy screen.
      */
     private void initializePriorTherapyFieldGroup(ParticipantInputCommand command, InputFieldGroupMap map){
     	RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory(PRIOR_THERAPY, "priorTherapies");
     	
-        InputField priorTherapyField = InputFieldFactory.createSelectField("priorTherapy", "Prior therapy", false, fetchPriorTherapyOptions());
+        InputField priorTherapyField = InputFieldFactory.createSelectField("priorTherapy", "Prior therapy", true, fetchPriorTherapyOptions());
         InputField otherField = InputFieldFactory.createTextArea("other", "Comments", false);
         InputFieldAttributes.setColumns(otherField, 65);
         InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start Date", false, true, true, false);
@@ -84,8 +109,31 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
         map.addRepeatingFieldGroupFactory(rfgFactory, command.getAssignment().getPriorTherapies().size());
     }
     
-    public ModelAndView createPriorTherapy(HttpServletRequest request , ParticipantInputCommand command, Errors error) {
-		return null;
+    public ModelAndView createPriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+
+    	ModelAndView mv = new ModelAndView("par/ajax/priorTherapyFormSection");
+    	mv.getModel().put("index",command.getPriorTherapies().size());
+    	
+    	//create an empty therapy and add it
+    	StudyParticipantPriorTherapy priorTherapy = new StudyParticipantPriorTherapy();
+    	priorTherapy.setStartDate(new DateValue());
+    	priorTherapy.setEndDate(new DateValue());
+    	command.getPriorTherapies().add(priorTherapy);
+
+    	return mv;
+    	
+	}
+    
+    public ModelAndView savePriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
+ 		ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+
+	 	String view = (errors.hasErrors()) ? "par/ajax/priorTherapyFormSection" : "par/ajax/savedSucessfully";
+	 	
+	 	ModelAndView mv = new ModelAndView(view);
+	 	mv.getModel().put("index",command.getIndex());
+    	return mv;
+    	
 	}
     
     /**
