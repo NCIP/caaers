@@ -11,8 +11,9 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
-import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantServiceResponse;
+import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.webservice.participant.Response;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.util.ArrayList;
@@ -81,13 +82,14 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 		return participantImportOutcome;
 	}
 	
-	public ParticipantServiceResponse createParticipant(
+	public CaaersServiceResponse createParticipant(
 			ParticipantType xmlParticipant) {
 		
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
-		ParticipantServiceResponse participantServiceResponse = new ParticipantServiceResponse();
+		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+		Response participantServiceResponse = new Response();
 		Participant participant = new Participant();
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
         
@@ -133,18 +135,20 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         }
         enableAuthorization(authorizationOnByDefault);
 		switchUser(null);
-		
-		return participantServiceResponse;
+		caaersServiceResponse.setResponse(participantServiceResponse);
+		return caaersServiceResponse;
 	}
 
-	public ParticipantServiceResponse updateParticipant(
+	public CaaersServiceResponse updateParticipant(
 			ParticipantType xmlParticipant) {
 		
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
+		CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+		Response participantServiceResponse = new Response();
+		
 		DomainObjectImportOutcome<Participant> participantImportOutcome = null;
-		ParticipantServiceResponse participantServiceResponse = new ParticipantServiceResponse();
 		Participant participant = new Participant();
         
         try{
@@ -194,8 +198,8 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         }
         enableAuthorization(authorizationOnByDefault);
 		switchUser(null);
-		
-		return participantServiceResponse;
+		caaersServiceResponse.setResponse(participantServiceResponse);
+		return caaersServiceResponse;
 	}
 	
 	private Participant fetchParticipant(Participant participant){

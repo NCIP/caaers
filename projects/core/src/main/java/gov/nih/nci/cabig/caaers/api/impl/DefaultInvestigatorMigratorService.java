@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
 import gov.nih.nci.cabig.caaers.integration.schema.common.WsError;
@@ -59,15 +60,16 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     }
 
 
-    public ServiceResponse saveInvestigator(Staff staff) throws RemoteException {
+    public CaaersServiceResponse saveInvestigator(Staff staff) throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
     	Investigator investigator = null;
     	getImportableInvestigators().clear();
     	getNonImportableInvestigators().clear();
     	
     	List<WsError> wsErrors = new ArrayList<WsError>();
-    	ServiceResponse response = new ServiceResponse();
-    	response.setStatus(Status.FAILED_TO_PROCESS);
+    	CaaersServiceResponse caaersServiceresponse = new CaaersServiceResponse();
+    	ServiceResponse serviceResponse = new ServiceResponse();
+    	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (InvestigatorType investigatorType:investigatorTypeList) {
      		try {
@@ -93,11 +95,12 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     			//throw new RemoteException("Unable to import investigator", e);
     		}
     	}
-    	response.setWsError(wsErrors);
+    	serviceResponse.setWsError(wsErrors);
     	if (wsErrors.size() == 0) {
-    		response.setStatus(Status.PROCESSED);
+    		serviceResponse.setStatus(Status.PROCESSED);
     	}
-    	return response;
+    	caaersServiceresponse.setServiceResponse(serviceResponse);
+    	return caaersServiceresponse;
     }
     
     private Investigator buildInvestigator(InvestigatorType investigatorDto) {

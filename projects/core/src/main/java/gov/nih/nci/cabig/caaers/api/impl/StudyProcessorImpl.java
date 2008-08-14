@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
+import gov.nih.nci.cabig.caaers.webservice.Response;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.util.ArrayList;
@@ -116,10 +117,13 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return studyImportOutcome;
 	}
 	
-	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
-		gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse studyServiceResponse = new gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse();
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+		
+		Response studyServiceResponse = new Response();
+		
 		logger.info("Swith User Done ");
 		logger.info("Inside createStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
@@ -168,13 +172,17 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		enableAuthorization(authorizationOnByDefault);
 		switchUser(null);		
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
-		return studyServiceResponse;
+		caaersServiceResponse.setResponse(studyServiceResponse);
+		return caaersServiceResponse;
 	}
 
-	public gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
-		gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse studyServiceResponse = new gov.nih.nci.cabig.caaers.webservice.StudyServiceResponse();
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
+		
+		Response studyServiceResponse = new Response();
+		
 		logger.info("Inside updateStudy ");
 		logger.info("Study Short Title --- " + studyDto.getShortTitle());
 		logger.info("Study Long Title --- " + studyDto.getLongTitle());
@@ -223,7 +231,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		enableAuthorization(authorizationOnByDefault);
 		switchUser(null);
 		logger.info("Leaving updateStudy() in StudyProcessor");
-		return studyServiceResponse;
+		caaersServiceResponse.setResponse(studyServiceResponse);
+		return caaersServiceResponse;
 	}
 	
 	/**

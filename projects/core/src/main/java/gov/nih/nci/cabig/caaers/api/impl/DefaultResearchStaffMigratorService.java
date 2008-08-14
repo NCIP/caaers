@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
+import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.OrganizationRefType;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.Status;
@@ -71,15 +72,16 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         }
         return rsList.get(0);
     }
-    public ServiceResponse saveResearchStaff(Staff staff) throws RemoteException {
+    public CaaersServiceResponse saveResearchStaff(Staff staff) throws RemoteException {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
     	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
     	getImportableResearchStaff().clear();
     	getNonImportableResearchStaff().clear();
     	
     	List<WsError> wsErrors = new ArrayList<WsError>();
-    	ServiceResponse response = new ServiceResponse();
-    	response.setStatus(Status.FAILED_TO_PROCESS);
+    	CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
+    	ServiceResponse serviceResponse = new ServiceResponse();
+    	serviceResponse.setStatus(Status.FAILED_TO_PROCESS);
     	
     	for (ResearchStaffType researchStaffType:researchStaffList) {
 
@@ -106,11 +108,12 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			//throw new RemoteException("Unable to import investigator", e);
     		}
     	}
-    	response.setWsError(wsErrors);
+    	serviceResponse.setWsError(wsErrors);
     	if (wsErrors.size() == 0) {
-    		response.setStatus(Status.PROCESSED);
+    		serviceResponse.setStatus(Status.PROCESSED);
     	}
-    	return response;
+    	caaersServiceResponse.setServiceResponse(serviceResponse);
+    	return caaersServiceResponse;
     }
     
     public ResearchStaff buildResearchStaff(ResearchStaffType researchStaffDto) throws CaaersSystemException {
