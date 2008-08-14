@@ -173,7 +173,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 				validContent = XmlValidator.validateAgainstSchema(((TextMessage)message).getText(), "classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd", sb);
 			}
 			
-			if("CREATE_INVESTIGATOR".equals(messageType) || "UPDATE_NVESTIGATOR".equals(messageType)){
+			if("CREATE_INVESTIGATOR".equals(messageType) || "UPDATE_INVESTIGATOR".equals(messageType)){
 				validContent = XmlValidator.validateAgainstSchema(((TextMessage)message).getText(), "classpath:gov/nih/nci/cabig/caaers/Investigator.xsd", sb);
 			}
 			
@@ -200,7 +200,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 				responseXml = processStudy(message,messageType);
 			}else if("CREATE_PARTICIPANT".equals(messageType) || "UPDATE_PARTICIPANT".equals(messageType)){
 				responseXml = processParticipant(message,messageType);
-			}else if("CREATE_INVESTIGATOR".equals(messageType) || "UPDATE_NVESTIGATOR".equals(messageType)){
+			}else if("CREATE_INVESTIGATOR".equals(messageType) || "UPDATE_INVESTIGATOR".equals(messageType)){
 				responseXml = processInvestigator(message);
 			}else if("CREATE_RESEARCHSTAFF".equals(messageType) || "UPDATE_RESEARCHSTAFF".equals(messageType)){
 				responseXml = processResearchStaff(message);
@@ -285,9 +285,11 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
 			unmarshaller = jaxbContext.createUnmarshaller();
-			marshaller = jaxbContext.createMarshaller();
 			gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
 			investigatorServiceResponse = investigatorMigratorService.saveInvestigator(staff);
+			
+			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.common");
+			marshaller = jaxbContext.createMarshaller();
 			responseXml = responseAsString(investigatorServiceResponse,marshaller);
 		} catch (JAXBException e) {
 			logger.error("caught processParticipant",e);
@@ -312,9 +314,11 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
 			unmarshaller = jaxbContext.createUnmarshaller();
-			marshaller = jaxbContext.createMarshaller();
 			gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
 			researchStaffServiceResponse = researchStaffMigratorService.saveResearchStaff(staff);
+			
+			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.common");
+			marshaller = jaxbContext.createMarshaller();
 			responseXml = responseAsString(researchStaffServiceResponse,marshaller);
 		} catch (JAXBException e) {
 			logger.error("caught processParticipant",e);
