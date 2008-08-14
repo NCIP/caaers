@@ -24,6 +24,8 @@ import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -155,14 +157,18 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
     }
 
     @Override
-    protected boolean suppressValidation(HttpServletRequest request, Object command) {
+    protected boolean suppressValidation(HttpServletRequest request, Object cmd) {
+    	
+    	ParticipantInputCommand command = (ParticipantInputCommand) cmd;
+    	
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
-
+        
+        
         // supress for ajax and delete requests
-        if(isAjaxRequest(request)) return true;
+        if(isAjaxRequest(request) && !StringUtils.equals("save",command.getTask())) return true;
         
         
         return super.suppressValidation(request, command);
