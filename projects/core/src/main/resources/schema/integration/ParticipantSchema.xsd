@@ -241,12 +241,21 @@
         </xs:restriction>    
     </xs:simpleType>
 	
-    <xs:complexType name="ParticipantServiceResponse">
+	<xs:element name="Response" type="Response" />
+    <xs:complexType name="Response">
     	<xs:sequence>
     		<xs:element name="description" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
     		<xs:element name="message" type="xs:string" minOccurs="0" maxOccurs="unbounded"></xs:element>
     	</xs:sequence>
     	<xs:attribute name="responsecode" type="ResponseCodeType"></xs:attribute>
     </xs:complexType>
+    
+    <xs:element name="CaaersServiceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Response" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>
