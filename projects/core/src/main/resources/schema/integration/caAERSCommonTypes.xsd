@@ -295,6 +295,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 	
+	<xs:element name="ServiceResponse" type="ServiceResponse" />
     <xs:complexType name="ServiceResponse">
     	<xs:sequence>
     		<xs:element name="status" type="Status"></xs:element>
@@ -302,5 +303,12 @@
     	</xs:sequence>
     </xs:complexType>
     
+        <xs:element name="CaaersServiceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ServiceResponse" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
 
 </xs:schema>
