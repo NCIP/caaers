@@ -214,5 +214,27 @@ This applicationContext contains the definition of the concrete services
 		<property name="studyImportService" ref="studyImportService"/>
 		
     </bean>
+    
+    <bean id="ctmsCaaersResponseQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>ctms-caaers.outputQueue</value>
+		</constructor-arg>
+	</bean>
+	<bean id="ctmsCaaersRecvQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg>
+			<value>ctms-caaers.inputQueue</value>
+		</constructor-arg>
+	</bean>
+    
+    <bean id="ctmsCaaersMessageConsumer" class="gov.nih.nci.cabig.caaers.esb.client.impl.CtmsCaaersMessageConsumer" init-method="initialize">
+        <property name="connectionFactory" ref="connectionFactory"/>
+		<property name="ctmsCaaersRecvQueue" ref="ctmsCaaersRecvQueue"/>
+		<property name="ctmsCaaersResponseQueue" ref="ctmsCaaersResponseQueue"/>
+		<property name="studyProcessor" ref="studyProcessorImpl"/>
+		<property name="participantService" ref="participantServiceImpl"/>
+		<property name="investigatorMigratorService" ref="investigatorMigratorService"/>
+		<property name="researchStaffMigratorService" ref="researchStaffMigratorService"/>
+		<property name="configuration" ref="configuration"/>
+    </bean>
 
 </beans>
