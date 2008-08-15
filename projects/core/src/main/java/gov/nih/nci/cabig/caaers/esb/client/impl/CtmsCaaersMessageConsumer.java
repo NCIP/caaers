@@ -39,7 +39,7 @@ import org.xml.sax.InputSource;
 
 /**
  * This class listener class which listens for messages on the ctmsCaaersRecvQueue "ctms-caaers.inputQueue".
- * The JMS inrastructure is provided by ServiceMix. 
+ * The JMS infrastructure is provided by ServiceMix. 
  * The ctms-caaers-sa needs to be deployed on ServiceMix.
  * 
  * The Message received will be processed and the Response will be sent to the ctmsCaaersResponseQueue "ctms-caaers.outputQueue"
@@ -85,17 +85,24 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 * @throws Exception
 	 */
 	public void initialize() throws Exception{
-/*
-		mqConnectionFactory.setBrokerURL(configuration.get(Configuration.ESB_URL));
-        connectionFactory = mqConnectionFactory;
-        connection = connectionFactory.createConnection();
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		consumer = session.createConsumer(ctmsCaaersRecvQueue);
-        consumer.setMessageListener(this);
-        producer = session.createProducer(ctmsCaaersResponseQueue);
-        logger.debug("starting connection....");
-        connection.start();
-*/
+		String esbURL = configuration.get(Configuration.ESB_URL);
+    	if("".equals(esbURL) || esbURL == null){
+    		logger.error("Could not start CtmsCaaersMessageConsumer, ESB URL not specified");
+    		return;
+    	}
+    	try{
+    		mqConnectionFactory.setBrokerURL(esbURL);
+            connectionFactory = mqConnectionFactory;
+            connection = connectionFactory.createConnection();
+    		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+    		consumer = session.createConsumer(ctmsCaaersRecvQueue);
+            consumer.setMessageListener(this);
+            producer = session.createProducer(ctmsCaaersResponseQueue);
+            logger.debug("starting connection....");
+            connection.start();
+    	}catch(Exception e){
+    		logger.error("Error Initializing CtmsCaaersMessageConsumer" , e);
+    	}
 	}
 	
 	/**
