@@ -5,7 +5,7 @@
 <tags:includePrototypeWindow />
 <tags:dwrJavascriptLink objects="assignParticipant" />
 <tags:dwrJavascriptLink objects="createAE, createStudy" />
-
+<tags:stylesheetLink name="extremecomponents"/>
 
 <script type="text/javascript">
 	
@@ -43,7 +43,7 @@
 			
 			//create the popup window
 			this.initializePopup();
-			var url = $('baseCommand').action + "?subview";
+			var url = $('command').action + "?subview";
 			this.win.setAjaxContent(url, {parameters : paramHash.toQueryString()});
 			
 		},
@@ -56,19 +56,24 @@
 			this.populateDeafultParameters(itemType, paramHash); 
 			
 			var formParams = Form.serialize(formId); //attach the child window form contents aswell along with the default parameter list
-			var url = $('baseCommand').action + "?subview";
+			var url = $('command').action + "?subview";
 			this.win.setAjaxContent(url, {parameters : paramHash.toQueryString() + "&" + formParams});
 		},
-
-        closePopup : function (){
+		closePopup : function (){
 			//make an ajax call and refresh the currentItem display area
 			alert('closing');
-            
-            //this function will close the popup window
+			//this function will close the popup window
 			Windows.closeAll();
+			
+			
 		},
-        
-        populateDeafultParameters : function(itemType, paramHash){
+		insertContent : function(divId, formId, paramHash){
+			//helper method to insert content in a DIV
+			new Ajax.Updater($(divId), $(formId).action, {
+				parameters: paramHash.toQueryString() , insertion: Insertion.Top, evalScripts : true
+			});
+		},
+		populateDeafultParameters : function(itemType, paramHash){
 			//will populate the default parameters, to support ajax communication
 			var page = ${tab.number};
 			var target = '_target' + ${tab.number}; 
@@ -81,9 +86,9 @@
 		},
 		
 		beforeShow : function(){
+			
 		},
-
-        destroy : function() {
+		destroy : function() {
 
 			if(this.button) this.button.enable(); //enable the disabled button (ifany)
 			
@@ -102,7 +107,7 @@
 
 </head>
 <body>
-<tags:tabForm tab="${tab}" flow="${flow}" title="Medical History"	willSave="false" formId="baseCommand">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Medical History"	willSave="false" formId="command">
   <jsp:attribute name="singleFields">
 	<%-- 
 		Note : Do not remove the currentItem and action hidden params, they should be set to empty
@@ -112,35 +117,29 @@
 
 	<chrome:division title="Disease Information" collapsable="true"	id="mh-disease">
 	</chrome:division>
-
-
-
-    <chrome:division title="Metastatic Site" collapsable="true"	id="mh-meta">
+	<chrome:division title="Metastatic Site" collapsable="true"	id="mh-meta">
 	AAA
 	</chrome:division>
-
-
-    <chrome:division title="Pre-Existing Conditions" collapsable="true"	id="mh-pre">
+	<chrome:division title="Pre-Existing Conditions" collapsable="true"	id="mh-pre">
 	</chrome:division>
 
-
-
-    <chrome:division title="Con-Meds" collapsable="true" id="mh-conmeds">
+	<chrome:division title="Con-Meds" collapsable="true" id="mh-conmeds">
 	AAA
 	</chrome:division>
-
-
-
-    <chrome:division id="priorTherapies" collapsable="true" title="Prior Therapies">
-    <table width="100%" bgcolor="gray">
+	<chrome:section id="priorTherapySection-id">
+		<jsp:attribute name="header">
+			<table width="100%" bgcolor="gray">
 				<th>
 					<td>Prior Therapies</td>
 					<td>Info added </td>
-					<td><input type="button" value="Add" onclick="mHistory.showPopup(this, 'priorTherapy', -1);"/></td>
+					<td><input type="button" value="Add" onclick="mHistory.showPopup(this, 'priorTherapy');"/></td>
 				</th>
-    </table>
-    </chrome:division>
-      
+			</table>
+		</jsp:attribute>
+		<jsp:attribute name="content">
+		
+		</jsp:attribute>
+	</chrome:section>
   </jsp:attribute>
 </tags:tabForm>
 </body>

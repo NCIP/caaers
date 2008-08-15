@@ -3,8 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
-<c:set var="fieldGroupName">priorTherapy${index}</c:set>
-<c:set var="fieldGroup" value="${fieldGroups[fieldGroupName]}"/>
+
 
 <tags:errors path="priorTherapies[${index}]" />
 <tags:renderRow field="${fieldGroup.fields[0]}" />

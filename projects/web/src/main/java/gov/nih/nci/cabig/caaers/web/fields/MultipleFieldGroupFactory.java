@@ -29,4 +29,8 @@ public class MultipleFieldGroupFactory extends RepeatingFieldGroupFactory{
     public void setInputFieldGroup(List<InputFieldGroup> inputFieldGroup) {
 		this.inputFieldGroup = inputFieldGroup;
 	}
+    public void setUpFieldGroup(){
+    	addFieldGroup(super.createGroup(inputFieldGroup.size()));
+    	clearFields();
+    }
 }
