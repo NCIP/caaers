@@ -2,10 +2,49 @@
 
 body {
   margin: 0; padding: 0 0 35px 0;
-  background: url(../images/chrome/caBIG_footer.gif) no-repeat bottom right #eee;
+  background: url(../images/blue/bg.jpg) repeat-y center #314993;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 10pt;
   color: #000000;
+  text-align:center
+}
+
+#workflow-tabs{
+	width: 200px;
+	float: left;
+	margin-top: 140px;
+
+}
+#thirdlevelnav{
+	padding-top: 15px;
+	padding-right: 0px;
+	padding-bottom: 15px;
+	padding-left: 0px;
+}
+
+
+.hr{
+	background-color: #999999;
+	height: 1px;
+	margin-right: 4px;
+	margin-left: 15px;
+}
+
+a {outline:none;}
+a img{
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	vertical-align: middle;
+}
+
+#all {
+width:980px;
+margin:0px auto;
+text-align:left;
+background: #FFF;
+position:relative;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -27,25 +66,131 @@ p { margin: 1em 0; }
 /**** COMMON TEMPLATE ELEMENTS */
 
 #header {
-  background: url(../images/chrome/header_BG.gif) repeat-x top;
-  min-width: 770px;
+	width: 100%;
+	position: absolute;
+	height: 100px;
+	background-image: url(../images/blue/header_bg.jpg);
+	background-position: top;
 }
 
 #header .background-R {
   background: url(../images/chrome/header_BG_R.gif) no-repeat top right;
 }
 
-#logo { vertical-align: top; }
-
-#login-action {
-  position: absolute; top: 0; right: 0;
-  padding: 6px 10px 0 20px;
-  font-size: 0.85em;
+a#logo {
+	background-image: url(../images/blue/caAERSlogo.png);
+	height: 100px;
+	width: 242px;
+	position:absolute;
+	text-indent: -9999px;
+}
+a#logo:link {
+background-position: 0px
 }
 
-#login-action a { color: #FFFFFF; font-weight: bold; text-decoration: none; }
+a#logo:hover {
+background-position: 0px -100px;
+}
 
-#login-action a:hover { color: #FFFF00; }
+a#logo:active {
+background-position: 0px -200px;
+}
+
+#login-action {
+	background-image: url(../images/blue/logout_tab.png);
+	position: absolute;
+	height: 31px;
+	width: 148px;
+	top: 0px;
+	right: -9px;
+	padding-top: 2px;
+	padding-left: 15px;
+	background-repeat: no-repeat;
+}
+
+#login-action a {
+	color: #333366;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 0.85em;
+}
+
+#login-action a:hover {
+	text-decoration: underline;
+}
+
+/***
+The following are the rules for 1st level navigation tabs:
+firstlevelnav_listAdverseEventsController: Adverse Events
+firstlevelnav_searchStudyController: Studies
+3. Subjects
+4. Rules
+5. Administration
+6. Advanced Search
+
+*/
+
+a#firstlevelnav_listAdverseEventsController {
+	background-image: url(../images/blue/adverseEvents_btn.png);
+	height: 45px;
+	width: 148px;
+	text-indent: -9999px;
+	float: left;
+}
+a#firstlevelnav_listAdverseEventsController:link{background-position:0px;}
+a#firstlevelnav_listAdverseEventsController:hover{background-position:0px -45px;}
+a#firstlevelnav_listAdverseEventsController:active{background-position:0px -90px;}
+.selected a#firstlevelnav_listAdverseEventsController {background-image: url(../images/blue/adverseEvents_btn_selected.png);}
+
+a#firstlevelnav_searchStudyController {
+	background-image: url(../images/blue/studies_btn.png);
+	height: 45px;
+	width: 148px;
+	text-indent: -9999px;
+	float: left;
+}
+a#firstlevelnav_searchStudyController:link{background-position:0px;}
+a#firstlevelnav_searchStudyController:hover{background-position:0px -45px;}
+a#firstlevelnav_searchStudyController:active{background-position:0px -90px;}
+
+.selected a#firstlevelnav_searchStudyController {background-image: url(../images/blue/studies_btn_selected.png);}
+
+a#firstlevelnav_createParticipantController {
+	background-image: url(../images/blue/subjects_btn.png);
+	height: 45px;
+	width: 148px;
+	text-indent: -9999px;
+	float: left;
+}
+a#firstlevelnav_createParticipantController:link{background-position:0px;}
+a#firstlevelnav_createParticipantController:hover{background-position:0px -45px;}
+a#firstlevelnav_createParticipantController:active{background-position:0px -90px;}
+.selected a#firstlevelnav_createParticipantController {background-image: url(../images/blue/subjects_btn_selected.png);}
+
+a#firstlevelnav_createRuleController {
+	background-image: url(../images/blue/rules_btn.png);
+	height: 45px;
+	width: 148px;
+	text-indent: -9999px;
+	float: left;
+}
+a#firstlevelnav_createRuleController:link{background-position:0px;}
+a#firstlevelnav_createRuleController:hover{background-position:0px -45px;}
+a#firstlevelnav_createRuleController:active{background-position:0px -90px;}
+.selected a#firstlevelnav_createRuleController {background-image: url(../images/blue/rules_btn_selected.png);}
+
+a#firstlevelnav_studyController {
+	background-image: url(../images/blue/advancedSearch_btn.png);
+	height: 45px;
+	width: 148px;
+	text-indent: -9999px;
+	float: left;
+}
+a#firstlevelnav_studyController:link{background-position:0px;}
+a#firstlevelnav_studyController:hover{background-position:0px -45px;}
+a#firstlevelnav_studyController:active{background-position:0px -90px;}
+.selected a#firstlevelnav_studyController {background-image: url(../images/blue/advancedSearch_btn_selected.png);}
+
 
 #sso-form { display: none }
 
@@ -53,22 +198,23 @@ p { margin: 1em 0; }
     color: #666;
     font-size: 85%;
     padding: 3px;
-    position: relative;
-    bottom: 0;
+    position: absolute;
+    bottom: 0px;
     clear: both;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */
 
 ul.tabs {
-  margin: 0;
-  padding: 0;
-}
+	margin: 0;
+	float:none;
+	padding-left:0;
+	}
 
 ul.tabs li {
   display: block;
   list-style-type: none;
-  float: left;
+
   margin: 0;
   padding: 0;
 }
@@ -77,29 +223,16 @@ ul.tabs li {
 
 #sections {
   position: absolute;
-  top: 22px; left: 131px;
-  background: url(../images/chrome/section_L1.gif) no-repeat top left;
-  padding-left: 1px;
-  font-size: .85em;
+  top: 53px; left: 236px;
 }
 
-#sections li {
-  background: url(../images/chrome/section_BG.gif) no-repeat top right;
-}
 
+/*
 #sections li.selected {
   background-image: url(../images/chrome/section_BG_s.gif);
 }
 
-#sections li div {
-  background: url(../images/chrome/section_L.gif) no-repeat top left;
-  padding: 0 19px;
-  margin: 0;
-}
 
-#sections li.selected div {
-  background-image: url(../images/chrome/section_L_s.gif);
-}
 
 #sections a {
   line-height: 20px;
@@ -110,36 +243,54 @@ ul.tabs li {
 
 #sections a:hover { color: #efe; }
 #sections li.selected a:hover { color: #339; }
-
+*/
 /**** TASKS */
 
 #taskbar {
-  background: url(../images/chrome/taskbar_BG.gif) repeat-x top;
-  font-weight: bold;
-  padding: 6px 20px 0 12px;
-  height: 22px;
-  font-size: .85em;
+	background: url(../images/blue/taskbar_BG.png) repeat-x top;
+	height: 51px;
+	width: 970px;
+	font-size: 12pt;
+	position: absolute;
+	top: 98px;
+	padding-left: 10px;
+	color: #FFFFFF;
+	vertical-align: middle;
+	z-index: -0;
+
 }
 
 #taskbar a {
-  font-weight: normal;
-  padding: 0 0 0 12px;
-  color: #002EE2;
-  text-decoration: none;
+	color:#FFF;
+	text-decoration: none;
+	height: 43px;
+	width: 232px;
+	float:left;
+	padding-top: 8px;
+	font-weight: bold;
+}
+
+#taskbar a:hover {
+  color:#ffe9a5;
 }
 
 #taskbar a.selected{
-  font-weight: bold;
-  background: url(../images/arrow_icon.gif) repeat-y 6px;
+	background-image: url(../images/blue/secondlevelnav_selected.jpg);
+	background-repeat: no-repeat;
+
 }
 
 
 /**** PAGE CONTENT BOXES */
 
 #main {
-  margin: 0;
-  padding: 12px 18px 20px 18px;
-  clear: both;
+	padding-top: 12px;
+	padding-right: 18px;
+	padding-bottom: 20px;
+	padding-left: 18px;
+
+	position: relative;
+	top: 140px;
 }
 
 #flash-message {
@@ -167,35 +318,42 @@ ul.tabs li {
    if there's more than one in a page;
    the total should be something less than 100%. */
 .pane {
-  float: left;
+
   margin: 0 14px 12px 0;
 }
 
 /* Each pane will contain one or more "boxes" */
 .box {
-  background-color: #fff;
-  margin-bottom: 12px; 
+	background-color: #fff;
+	margin-bottom: 12px;
+	background-image: url(../images/blue/box_bg.jpg);
+	background-repeat: repeat-x;
+	float:left;
+
+
 }
 .box .header {
-  background: url(../images/chrome/boxheader_BG.gif) repeat-x top #1972C7;
 }
 .box .header h2 {
-  color: #FFFFFF;
-  margin: 0;
-  padding: 6px 20px 4px 8px;
+	color: #333366;
+	margin: 0;
+	padding: 6px 20px 4px 8px;
+	font-size: 13pt;
+	font-weight: 900;
+	text-transform: capitalize;
 }
-.box .header .background-L { background: url(../images/chrome/boxheader_BG_L.gif) no-repeat top left; }
-.box .header .background-R { background: url(../images/chrome/boxheader_BG_R.gif) no-repeat top right; }
+.box .header .background-L { background: url(../images/blue/box_header_bg_l.jpg) no-repeat top left; }
+.box .header .background-R { background: url(../images/blue/box_header_bg_r.jpg) no-repeat top right; }
 
 
-.border-T  { background: url(../images/chrome/box_T.gif)  repeat-x top; }
-.border-L  { background: url(../images/chrome/box_L.gif)  repeat-y left; }
-.border-R  { background: url(../images/chrome/box_R.gif)  repeat-y right; }
-.border-B  { background: url(../images/chrome/box_B.gif)  repeat-x bottom; }
-.border-TL { background: url(../images/chrome/box_TL.gif) no-repeat top left; }
-.border-TR { background: url(../images/chrome/box_TR.gif) no-repeat top right; }
-.border-BL { background: url(../images/chrome/box_BL.gif) no-repeat bottom left; }
-.border-BR { background: url(../images/chrome/box_BR.gif) no-repeat bottom right; }
+.border-T  {  }
+.border-L  { background: url(../images/blue/box_l.png)  repeat-y left; }
+.border-R  { background: url(../images/blue/box_r.png)  repeat-y right; }
+.border-B  { background: url(../images/blue/box_bottom.png)  repeat-x bottom; }
+.border-TL {}
+.border-TR { }
+.border-BL { background: url(../images/blue/box_bl.png) no-repeat bottom left; }
+.border-BR { background: url(../images/blue/box_br.png) no-repeat bottom right; }
 
 .box .interior {
   margin: 0 8px 0 7px;
@@ -258,7 +416,6 @@ ul.tabs li {
 
 /* two boxes with the additional class "paired" are displayed side-by-side */
 .box.paired {
-    float: left;
     width: 45%;
     margin: 1em;
 }

@@ -14,7 +14,7 @@
 
     <!-- header -->
     <div class="header"><div class="background-L"><div class="background-R">
-      <h2>${title}</h2>
+      <h2>${title}</h2><div class="hr"/>
     </div></div></div>
     <!-- end header -->
 

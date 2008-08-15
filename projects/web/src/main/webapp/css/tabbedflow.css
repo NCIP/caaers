@@ -5,10 +5,11 @@
 /* second-level tabs */
 
 #workflow-tabs {
-  background: #A2A2A2 url(../images/chrome/workflow-tab_R.gif) no-repeat center left;
-  padding-right: 12px;
-  min-height: 18px; font-size: .85em;
-  border-bottom: 1px solid #001779;
+background:#A2A2A2 url(../images/chrome/workflow-tab_R.gif) no-repeat scroll left center;
+border-bottom:1px solid #001779;
+font-size:0.85em;
+min-height:18px;
+padding-right:12px;
 }
 
 #workflow-tabs li {
