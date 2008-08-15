@@ -165,7 +165,7 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     public Date getEventApproximateTime() {
 		return eventApproximateTime;
 	}
-
+    @Transient
 	public void setEventApproximateTime(Date eventApproximateTime) {
 		this.eventApproximateTime = eventApproximateTime;
 	}
@@ -174,7 +174,7 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
 	public String getEventLocation() {
 		return eventLocation;
 	}
-
+	@Transient
 	public void setEventLocation(String eventLocation) {
 		this.eventLocation = eventLocation;
 	}
