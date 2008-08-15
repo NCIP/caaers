@@ -46,6 +46,10 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     private TreatmentAssignment treatmentAssignment;
 
     private String treatmentDescription;
+    
+    private String primaryTreatment;
+    
+    private Date primaryTreatmentApproximateTime;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -154,4 +158,26 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     public void setTreatmentAssignmentDescription(String desc) {
         // do nothing.
     }
+    
+    //  added by srini
+    @Transient
+	public String getPrimaryTreatment() {
+		return primaryTreatment;
+	}
+    
+    @Transient
+	public void setPrimaryTreatment(String primaryTreatment) {
+		this.primaryTreatment = primaryTreatment;
+	}
+    
+    @Transient
+	public Date getPrimaryTreatmentApproximateTime() {
+		return primaryTreatmentApproximateTime;
+	}
+    @Transient
+	public void setPrimaryTreatmentApproximateTime(
+			Date primaryTreatmentApproximateTime) {
+		this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
+	}
+    //  added by srini
 }
