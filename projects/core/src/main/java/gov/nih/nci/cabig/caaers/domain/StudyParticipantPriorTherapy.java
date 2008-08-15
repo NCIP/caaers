@@ -43,19 +43,15 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     private DateValue startDate;
 
     private DateValue endDate;
+    
+    private List<StudyParticipantPriorTherapyAgent> priorTherapyAgents;
 
-    private LazyListHelper lazyListHelper;
 
     public StudyParticipantPriorTherapy() {
-        lazyListHelper = new LazyListHelper();
-        addReportChildLazyList(StudyParticipantPriorTherapyAgent.class);
         this.startDate = new DateValue();
         this.endDate = new DateValue();
     }
 
-    private <T> void addReportChildLazyList(Class<T> klass) {
-        lazyListHelper.add(klass, new StudyParticipantPriorTherapyFactory<T>(klass, this));
-    }
 
     // //// LOGIC
 
@@ -90,7 +86,7 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     public void addPriorTherapyAgent(StudyParticipantPriorTherapyAgent priorTherapyAgent) {
-        getPriorTherapyAgentsInternal().add(priorTherapyAgent);
+    	getPriorTherapyAgents().add(priorTherapyAgent);
         if (priorTherapyAgent != null) priorTherapyAgent.setPriorTherapy(this);
     }
 
@@ -100,9 +96,13 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     @Transient
     @UniqueObjectInCollection(message="Duplicate prior therapy agents")
     public List<StudyParticipantPriorTherapyAgent> getPriorTherapyAgents() {
-        return lazyListHelper.getLazyList(StudyParticipantPriorTherapyAgent.class);
+        return priorTherapyAgents;
     }
-
+    
+    public void setPriorTherapyAgents(List<StudyParticipantPriorTherapyAgent> priorTherapyAgents) {
+		this.priorTherapyAgents = priorTherapyAgents;
+	}
+    
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
@@ -110,11 +110,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     @IndexColumn(name = "list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     protected List<StudyParticipantPriorTherapyAgent> getPriorTherapyAgentsInternal() {
-        return lazyListHelper.getInternalList(StudyParticipantPriorTherapyAgent.class);
+        return priorTherapyAgents;
     }
 
     protected void setPriorTherapyAgentsInternal(List<StudyParticipantPriorTherapyAgent> priorTherapyAgentsInternal) {
-        lazyListHelper.setInternalList(StudyParticipantPriorTherapyAgent.class, priorTherapyAgentsInternal);
+        this.priorTherapyAgents = priorTherapyAgentsInternal;
     }
 
     @Embedded
