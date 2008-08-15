@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -33,6 +34,10 @@ public class Agent extends AbstractMutableDomainObject {
     private String nscNumber;
 
     private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
+    
+    private String formulation;
+    private String lotNo;
+    
 
     @Column(name = "description")
     public String getDescription() {
@@ -92,4 +97,22 @@ public class Agent extends AbstractMutableDomainObject {
         return result;
     }
 
+    //srini
+    @Transient
+	public String getFormulation() {
+		return formulation;
+	}
+    @Transient
+	public void setFormulation(String formulation) {
+		this.formulation = formulation;
+	}
+    @Transient
+	public String getLotNo() {
+		return lotNo;
+	}
+    @Transient
+	public void setLotNo(String lotNo) {
+		this.lotNo = lotNo;
+	}
+	//srini
 }
