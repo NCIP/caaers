@@ -3,8 +3,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="tab" type="gov.nih.nci.cabig.ctms.web.tabs.Tab" required="true" %>
 <%@attribute name="flow" type="gov.nih.nci.cabig.ctms.web.tabs.Flow" required="true" %>
-<div class"workflow-tabs">
-<ul id="" class="tabs autoclear">
+<ul id="workflow-tabs" class="tabs autoclear">
 <c:set var="unfilledTabs">${UNFILLED_TABS}</c:set>
 <c:set var="mandatoryTabs">${MANDATORY_TABS}</c:set>
 <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
@@ -15,4 +14,3 @@
     </div></li>
 </c:forEach>
 </ul>
-</div>
