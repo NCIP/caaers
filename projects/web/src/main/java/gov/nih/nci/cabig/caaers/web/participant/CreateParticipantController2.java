@@ -54,8 +54,7 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
     protected WebControllerValidator webControllerValidator;
 
     OrganizationRepository organizationRepository;
-    StudyRepository studyRepository;
-    
+
     protected PriorTherapyDao priorTherapyDao;
 
     public CreateParticipantController2() {
@@ -92,60 +91,11 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
         super.initBinder(httpServletRequest, binder);
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyDao);
+        
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-    }
 
-    @Override
-    protected void onBind(final HttpServletRequest request, final Object command, final BindException errors) throws Exception {
-        ParticipantInputCommand participantCommand = (ParticipantInputCommand)command;
-
-        String searchtext = participantCommand.getSearchText();
-        String type = participantCommand.getSearchType();
-
-        List<StudySite> studySites = new ArrayList<StudySite>();
-        List<Study> studies = null;
-
-        // This will happen on page #2
-        if (searchtext != null && type != null && !searchtext.equals("")) {
-
-            // studySite.setOrganization(participantCommand.getOrganization());
-
-            participantCommand.setStudies(new ArrayList<Study>());
-            StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
-            query.filterByStudySiteName(participantCommand.getOrganization().getName());
-
-            if ("st".equals(type)) {
-                query.filterByStudyShortTile(searchtext);
-            } else if ("idtf".equals(type)) {
-                query.filterByIdentifierValue(searchtext);
-            }
-            
-            studies =  studyRepository.find(query); 
-            participantCommand.setStudies(studies);
-            participantCommand.setSearchTypeText("");
-            participantCommand.setSearchType("");
-
-        }
-
-        // This will happen every-time studySiteArray is populated
-        if (participantCommand.getStudySiteArray() != null) {
-            Set<String> studySiteIdSet = new java.util.HashSet<String>(java.util.Arrays.asList(participantCommand.getStudySiteArray()));
-            for (String studyId : studySiteIdSet) {
-                StudySite studySite = studySiteDao.findByStudyAndOrganization(Integer.parseInt(studyId),participantCommand.getOrganization().getId());
-                studySites.add(studySite);
-
-            }
-            Participant participant = participantCommand.getParticipant();
-            List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
-            for (int i = 0; i < studySites.size(); i++) {
-                final StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment(participant, studySites.get(i));
-                studyParticipantAssignment.setStudySubjectIdentifier(participantCommand.getStudySubjectIdentifier());
-                assignments.add(studyParticipantAssignment);
-            }
-            participant.setAssignments(assignments);
-            participantCommand.setStudySites(studySites);
-        }
     }
 
     protected Object findInRequest(final HttpServletRequest request, final String attributName) {
@@ -215,14 +165,6 @@ public class CreateParticipantController2 extends AutomaticSaveAjaxableFormContr
 
     public void setOrganizationRepository(OrganizationRepository organizationRepository) {
         this.organizationRepository = organizationRepository;
-    }
-
-    public StudyRepository getStudyRepository() {
-        return studyRepository;
-    }
-
-    public void setStudyRepository(StudyRepository studyRepository) {
-        this.studyRepository = studyRepository;
     }
 
     public ParticipantDao getParticipantDao() {

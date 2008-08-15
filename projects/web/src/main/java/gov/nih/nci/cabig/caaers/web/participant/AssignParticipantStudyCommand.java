@@ -11,11 +11,10 @@ import java.util.List;
  * @author Krikor Krumlian
  */
 
-public class AssignParticipantStudyCommand {
+public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
 
     private String instituitionalPatientNumber;
-
     private String institution;
 
     private String firstName;

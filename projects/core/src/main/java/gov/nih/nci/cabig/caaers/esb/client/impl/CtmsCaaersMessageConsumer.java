@@ -85,6 +85,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 * @throws Exception
 	 */
 	public void initialize() throws Exception{
+/*
 		mqConnectionFactory.setBrokerURL(configuration.get(Configuration.ESB_URL));
         connectionFactory = mqConnectionFactory;
         connection = connectionFactory.createConnection();
@@ -94,6 +95,7 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
         producer = session.createProducer(ctmsCaaersResponseQueue);
         logger.debug("starting connection....");
         connection.start();
+*/
 	}
 	
 	/**

@@ -30,8 +30,7 @@ public class AssignController extends SimpleFormController {
         this.listValues = listValues;
     }
 
-    protected Map<String, Object> referenceData(HttpServletRequest httpServletRequest)
-                    throws Exception {
+    protected Map<String, Object> referenceData(HttpServletRequest httpServletRequest) throws Exception {
         Map<String, Object> refdata = new HashMap<String, Object>();
 
         // The reason We are setting the following attributes in session is because AssignController
@@ -40,11 +39,8 @@ public class AssignController extends SimpleFormController {
         // wizard the following
         // attributes are put in sesssion. So since we do a POST to the wizard from the start we
         // create these here.
-        httpServletRequest.getSession().setAttribute(
-                        AssignStudyController.class.getName() + ".PAGE." + getCommandName(), 0);
-        httpServletRequest.getSession().setAttribute(
-                        AssignParticipantController.class.getName() + ".PAGE." + getCommandName(),
-                        0);
+        httpServletRequest.getSession().setAttribute(AssignStudyController.class.getName() + ".PAGE." + getCommandName(), 0);
+        httpServletRequest.getSession().setAttribute(AssignParticipantController.class.getName() + ".PAGE." + getCommandName(), 0);
         refdata.put("studySearchType", listValues.getStudySearchType());
         refdata.put("participantSearchType", listValues.getParticipantSearchType());
         return refdata;
@@ -56,8 +52,7 @@ public class AssignController extends SimpleFormController {
         setSuccessView("reg_protocol_search");
     }
 
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                    Object oCommand, BindException errors) throws Exception {
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         return null;
     }
 }

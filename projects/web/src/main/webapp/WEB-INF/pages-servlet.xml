@@ -245,7 +245,7 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Search Subjects" p:linkName="searchParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Assign Subjects to Studies" p:linkName="assignController"/>
+		    p:displayName="Assign Subjects to Studies" p:linkName="assignParticipantController"/>
 	    </list>
 	  </property>
 	</bean>
@@ -361,16 +361,8 @@
 	class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
   </bean>
   
-  <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName"
-	class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" >
-  </bean>
-
-  <bean
-          name="/participant/assignParticipant"
-          id="assignParticipantController"
-          autowire="byName" 
-          class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" >
-  </bean>
+  <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" ></bean>
+  <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" ></bean>
   
   <!--  For InPlaceEditor  -->
 <!--

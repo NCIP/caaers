@@ -7,7 +7,32 @@
 <%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
+<tags:noform>
 
+    <ec:table items="command.studies" var="study"
+                action="${pageContext.request.contextPath}/pages/newParticipant"
+                imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+                filterable="false"
+                showPagination="false" form="command"
+                cellspacing="0" cellpadding="2" border="0" width="100%" style=""
+                styleClass=""
+                autoIncludeParameters="false" >
+        <ec:row highlightRow="true">
+            <ec:column property="transient0" style="width:20px" filterable="false" sortable="false" title="&nbsp;">
+                <form:radiobutton path="study" value="${study.id}" onclick="if ($('ids')) $('ids').show();"/>
+            </ec:column>
+            <ec:column property="primaryIdentifier" title="Primary ID" />
+            <ec:column property="shortTitle" title="Short Title" />
+            <ec:column property="primarySponsorCode" title="Funding Sponsor" />
+            <ec:column property="phaseCode" title="Phase" />
+            <ec:column property="status" title="Status" />
+        </ec:row>
+    </ec:table>
+    <input type="hidden" name="_action" value="" />
+
+    </tags:noform>
+
+<%--
 <h3><c:out value="Found Items: ${fn:length(command.studies)}" /></h3>
 
 <c:choose>
@@ -41,4 +66,4 @@
 
     <c:otherwise></c:otherwise>
 </c:choose>
-
+--%>

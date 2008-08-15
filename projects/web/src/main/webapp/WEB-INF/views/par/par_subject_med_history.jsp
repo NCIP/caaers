@@ -59,15 +59,16 @@
 			var url = $('baseCommand').action + "?subview";
 			this.win.setAjaxContent(url, {parameters : paramHash.toQueryString() + "&" + formParams});
 		},
-		closePopup : function (){
+
+        closePopup : function (){
 			//make an ajax call and refresh the currentItem display area
 			alert('closing');
-			//this function will close the popup window
+            
+            //this function will close the popup window
 			Windows.closeAll();
-			
-			
 		},
-		populateDeafultParameters : function(itemType, paramHash){
+        
+        populateDeafultParameters : function(itemType, paramHash){
 			//will populate the default parameters, to support ajax communication
 			var page = ${tab.number};
 			var target = '_target' + ${tab.number}; 
@@ -80,9 +81,9 @@
 		},
 		
 		beforeShow : function(){
-			
 		},
-		destroy : function() {
+
+        destroy : function() {
 
 			if(this.button) this.button.enable(); //enable the disabled button (ifany)
 			
@@ -111,29 +112,35 @@
 
 	<chrome:division title="Disease Information" collapsable="true"	id="mh-disease">
 	</chrome:division>
-	<chrome:division title="Metastatic Site" collapsable="true"	id="mh-meta">
+
+
+
+    <chrome:division title="Metastatic Site" collapsable="true"	id="mh-meta">
 	AAA
-	</chrome:division>
-	<chrome:division title="Pre-Existing Conditions" collapsable="true"	id="mh-pre">
 	</chrome:division>
 
-	<chrome:division title="Con-Meds" collapsable="true" id="mh-conmeds">
+
+    <chrome:division title="Pre-Existing Conditions" collapsable="true"	id="mh-pre">
+	</chrome:division>
+
+
+
+    <chrome:division title="Con-Meds" collapsable="true" id="mh-conmeds">
 	AAA
 	</chrome:division>
-	<chrome:section id="priorTherapySection-id">
-		<jsp:attribute name="header">
-			<table width="100%" bgcolor="gray">
+
+
+
+    <chrome:division id="priorTherapies" collapsable="true" title="Prior Therapies">
+    <table width="100%" bgcolor="gray">
 				<th>
 					<td>Prior Therapies</td>
 					<td>Info added </td>
-					<td><input type="button" value="Add" onclick="mHistory.showPopup(this, 'priorTherapy');"/></td>
+					<td><input type="button" value="Add" onclick="mHistory.showPopup(this, 'priorTherapy', -1);"/></td>
 				</th>
-			</table>
-		</jsp:attribute>
-		<jsp:attribute name="content">
-		
-		</jsp:attribute>
-	</chrome:section>
+    </table>
+    </chrome:division>
+      
   </jsp:attribute>
 </tags:tabForm>
 </body>

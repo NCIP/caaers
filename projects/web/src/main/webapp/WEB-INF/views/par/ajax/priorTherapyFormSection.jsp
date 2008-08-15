@@ -3,11 +3,11 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <chrome:box title="Prior Therapy Details">
-<form:form>
+<form:form name="popupPriorTherapyForm" id="popupPriorTherapyForm">
   <par:onePriorTherapy index="${index}" />
   <hr />	
   <div>
-	<input type="button" value="Add" onclick="mHistory.savePopup('command', 'priorTherapy')" />
+	<input type="button" value="Add" onclick="mHistory.savePopup('popupPriorTherapyForm', 'priorTherapy')" />
   </div>
 </form:form>
 </chrome:box>

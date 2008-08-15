@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +33,7 @@ import org.springframework.web.util.WebUtils;
  * @author Biju Joseph
  *
  */
-public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand> {
+public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
 	
 	//the below static variables corresponds to the field group names
 	private static final String GENERAL = "general";
@@ -46,8 +47,12 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     
     //static options of dropdowns are cached at Tab level. 
     Map<Object,Object> priorTherapyOptions;
-    
-	public SubjectMedHistoryTab() {
+
+    public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public SubjectMedHistoryTab() {
         super("Subject Medical History", "Subject Medical History", "par/par_subject_med_history");
         methodNameMap.put("create" + GENERAL, "createGeneral");
         methodNameMap.put("edit" + GENERAL, "createGeneral");
@@ -59,7 +64,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(T command) {
     	InputFieldGroupMap map = new  InputFieldGroupMap();
 
     	//selectively add the fields
@@ -69,7 +74,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	
     	return map;
     }
-    
+
     private void initializeGeneralFieldGroup(ParticipantInputCommand command, InputFieldGroupMap map){
     	InputFieldGroup generalFieldGroup = new DefaultInputFieldGroup();
     	List<InputField> fields = generalFieldGroup.getFields();
@@ -113,7 +118,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
 
     	ModelAndView mv = new ModelAndView("par/ajax/priorTherapyFormSection");
-    	mv.getModel().put("index",command.getPriorTherapies().size());
+    	mv.getModel().put("index", command.getPriorTherapies().size());
     	
     	//create an empty therapy and add it
     	StudyParticipantPriorTherapy priorTherapy = new StudyParticipantPriorTherapy();
@@ -131,7 +136,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
 	 	String view = (errors.hasErrors()) ? "par/ajax/priorTherapyFormSection" : "par/ajax/savedSucessfully";
 	 	
 	 	ModelAndView mv = new ModelAndView(view);
-	 	mv.getModel().put("index",command.getIndex());
+	 	mv.getModel().put("index", command.getIndex());
     	return mv;
     	
 	}
@@ -154,6 +159,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
         return priorTherapyOptions;
     }
     
+/*
     //TAB methods
     @Override
     public void onDisplay(HttpServletRequest request,ParticipantInputCommand command) {
@@ -162,7 +168,8 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     		command.refreshIndexFixedLists();
     	}
     }
-    
+*/
+
     //OBJECT METHODS
     public PriorTherapyDao getPriorTherapyDao() {
 		return priorTherapyDao;

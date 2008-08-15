@@ -59,17 +59,29 @@ function ajaxStudySearch(searchText, searchType) {
 
     <form:form id="searchForm" method="post">
     	<div><input type="hidden" name="_action" value="go"></div>
-        <table border="0" cellspacing="0" cellpadding="0" class="search">
+
+
+        <table border="0" cellspacing="0" cellpadding="0" border=1 width="100%">
         <tr>
-            <td>
-                <tags:requiredIndicator />&nbsp;
-                <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
+            <td valign="top">
+                    <table border="0" cellspacing="0" cellpadding="0" class="search">
+                    <tr>
+                        <td>
+                            <tags:requiredIndicator />&nbsp;
+                            <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
+                        </td>
+                        <td><form:input path="searchText" size="25" /></td>
+                        <td><input type="button" value="Search" onclick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
+                    </tr>
+                    </table>
             </td>
-            <td><form:input path="searchText" size="25" /></td>
-            <td><input type="button" value="AJAX Search" onclick="ajaxStudySearch($('searchText').value, $('searchType').value);"> <input type="submit" value="Search" name="_target1" alt="SEARCH"></td>
-        </tr>
-        </table>
+            <td valign="top">
+            </td>
+            </tr>
+            </table>
     </form:form>
+
+
 </chrome:box>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false">
@@ -79,20 +91,19 @@ function ajaxStudySearch(searchText, searchType) {
 	 </c:if>
 	</jsp:attribute>
 
-
-
     <jsp:attribute name="singleFields">
         <div id="searchResults" style="width:100%; border: 0px red dotted;">
         </div>
 
-        <br />
-        
-        <chrome:division title="Study Identifiers">
-            <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
-                <tags:renderRow field="${field}"/>
-            </c:forEach>
-        </chrome:division>
- 
+        <div id="ids" style="display:none;">
+            <br />
+            <chrome:division title="Study Identifiers">
+                <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                </c:forEach>
+            </chrome:division>
+        </div>
+
     </jsp:attribute>
 </tags:tabForm>
 

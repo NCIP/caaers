@@ -4,6 +4,9 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -15,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
+public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
 
     private StudyRepository studyRepository;
@@ -60,6 +63,7 @@ public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
 
     }
 
+/*
     @Override
     public void validate(AssignParticipantStudyCommand command, Errors errors) {
         super.validate(command, errors);
@@ -68,6 +72,7 @@ public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
         if (command.getStudySiteId() == null) errors.rejectValue("studySiteId", "REQUIRED",
                         "Study Site not selected");
     }
+*/
 
     @Override
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command,
@@ -92,5 +97,10 @@ public class AssignStudyTab extends Tab<AssignParticipantStudyCommand> {
 
     public void setStudyRepository(final StudyRepository studyRepository) {
         this.studyRepository = studyRepository;
+    }
+
+    public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        return map;
     }
 }

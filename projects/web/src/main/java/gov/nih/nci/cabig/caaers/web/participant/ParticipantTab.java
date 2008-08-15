@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParticipantTab extends TabWithFields<ParticipantInputCommand> {
+public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
 
     public ParticipantTab() {
         super("Enter Subject Information", "Details", "par/par_create_participant");
@@ -100,7 +100,7 @@ public class ParticipantTab extends TabWithFields<ParticipantInputCommand> {
     }
 
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request, ParticipantInputCommand command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, T command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         refdata.put("action", "New");
         return refdata;

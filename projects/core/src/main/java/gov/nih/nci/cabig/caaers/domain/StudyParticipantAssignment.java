@@ -32,8 +32,8 @@ import org.hibernate.annotations.Where;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participant_assignments_id") })
 @Where(clause = "load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
+    
     private Participant participant;
-
     private StudySite studySite;
 
     private Date dateOfEnrollment;

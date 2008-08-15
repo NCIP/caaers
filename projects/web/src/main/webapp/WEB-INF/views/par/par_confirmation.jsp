@@ -34,27 +34,25 @@
             <input type="hidden" name="_finish" value="true"/>
         </c:if>
     <chrome:division title="Assigned to Studies">
-        <table class="tablecontent">
+        <table class="tablecontent" width="100%">
             <tr>
                 <th scope="col">Study Primary ID</th>
                 <th scope="col">Study Short Title</th>
                 <th scope="col">Site</th>
                 <th scope="col">Study Subject Identifier</th>
             </tr>
-            <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
-                <tr class="results">
-                    <td>${studySite.study.primaryIdentifier ne null ? studySite.study.primaryIdentifier.value : '' }</td>
-                    <td>${studySite.study.shortTitle}</td>
-                    <td>${studySite.organization.name}</td>
-                    <td>${command.studySubjectIdentifier}</td>
-                </tr>
-            </c:forEach>
+            <tr class="results">
+                <td>&nbsp;</td>
+                <td>${command.assignment.studySite.study.shortTitle}</td>
+                <td>${command.assignment.studySite.organization.name}</td>
+                <td>${command.assignment.studySubjectIdentifier}</td>
+            </tr>
         </table>
         <br>
     </chrome:division>
     <chrome:division title="Subject Details">
         <br>
-        <table id="test2" class="single-fields">
+        <table id="test2" class="single-fields" width="100%">
             <tr>
                 <td>
                     <div class="leftpane">

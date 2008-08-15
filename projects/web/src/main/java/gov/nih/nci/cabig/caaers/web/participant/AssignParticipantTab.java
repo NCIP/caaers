@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -13,8 +16,9 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
+public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCommand> {
 
     private static final Log log = LogFactory.getLog(AssignParticipantTab.class);
 
@@ -77,11 +81,18 @@ public class AssignParticipantTab extends Tab<AssignParticipantStudyCommand> {
         }
     }
 
+/*
     @Override
     public void validate(AssignParticipantStudyCommand command, Errors errors) {
         super.validate(command, errors);
         if (command.getParticipantId() == null) errors.rejectValue("participantId", "REQUIRED",
                         "Participant not selected");
+    }
+*/
+
+    public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
+        InputFieldGroupMap map = new InputFieldGroupMap();
+        return map;
     }
 
     @Required
