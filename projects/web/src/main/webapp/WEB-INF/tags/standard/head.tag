@@ -36,18 +36,18 @@
 <!-- SCRIPACULOUS END -->
 
 <tags:javascriptLink name="ccts-hotlinks" />
-<script type="text/javascript">
-        CCTS.appShortName = 'caaers'
-
-        // this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE
-        var _collapsedELs = new Array();
-        Event.observe(window, "load", function() {
-              for (var i in _collapsedELs) {
-                  if ($(i))
-                      // alert('key is: ' + i + ', value is: ' + _collapsedELs[i]);
-                      $(i).hide();
-              }
-        });
-
-</script>
+<!--<script type="text/javascript">-->
+<!--        CCTS.appShortName = 'caaers'-->
+<!---->
+<!--        // this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE-->
+<!--        var _collapsedELs = new Array();-->
+<!--        Event.observe(window, "load", function() {-->
+<!--              for (var i in _collapsedELs) {-->
+<!--                  if ($(i))-->
+<!--                      // alert('key is: ' + i + ', value is: ' + _collapsedELs[i]);-->
+<!--                      $(i).hide();-->
+<!--              }-->
+<!--        });-->
+<!---->
+<!--</script>-->
 
