@@ -44,7 +44,12 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
 
     private Boolean eventReappear;
     
-    public AdverseEventResponseDescription() {
+    private Date eventApproximateTime;
+    
+    private String eventLocation;
+    
+    
+	public AdverseEventResponseDescription() {
     	retreated = Boolean.FALSE;
     }
 
@@ -150,8 +155,29 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     public Integer getDaysNotGiven() {
         return daysNotGiven;
     }
-
+    
+    // added by srini begin
     public void setDaysNotGiven(Integer daysNotGiven) {
         this.daysNotGiven = daysNotGiven;
     }
+    
+    @Transient
+    public Date getEventApproximateTime() {
+		return eventApproximateTime;
+	}
+
+	public void setEventApproximateTime(Date eventApproximateTime) {
+		this.eventApproximateTime = eventApproximateTime;
+	}
+	
+	@Transient
+	public String getEventLocation() {
+		return eventLocation;
+	}
+
+	public void setEventLocation(String eventLocation) {
+		this.eventLocation = eventLocation;
+	}
+	// added by srini end
+
 }
