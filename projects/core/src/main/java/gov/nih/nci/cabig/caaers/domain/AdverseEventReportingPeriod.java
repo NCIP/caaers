@@ -22,6 +22,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -54,13 +55,25 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	private List<AdverseEvent> adverseEvents;
 	
-	private ExpeditedAdverseEventReport aeReport;
+	private List<ExpeditedAdverseEventReport> aeReports;
 	
 	private String name;
 	
 	private SimpleDateFormat formatter;
 	
 	private boolean baselineReportingType;
+	
+	// This holds the total number of reports within all the ExpeditedReport generated in this reporting period
+	private int numberOfReports;
+	
+	// This gives the number of Aes in the reporting Period.
+	private int numberOfAes;
+	
+	// This gives the Data Entry Status for ths reporing Period
+	private String dataEntryStatus;
+	
+	// This gives the Report Status for the reporting Period
+	private String reportStatus;
 	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
@@ -194,15 +207,20 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	this.epoch = epoch;
     }
     
-    @OneToOne(mappedBy = "reportingPeriod")
+    @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = { CascadeType.LOCK })
-    public ExpeditedAdverseEventReport getAeReport() {
-		return aeReport;
+    public List<ExpeditedAdverseEventReport> getAeReports() {
+		if(aeReports == null) aeReports = new ArrayList<ExpeditedAdverseEventReport>();
+		return aeReports;
 	}
     
-    public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-		this.aeReport = aeReport;
+    public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
+		this.aeReports = aeReports;
 	}
+    
+    public void addAeReport(ExpeditedAdverseEventReport aeReport){
+    	getAeReports().add(aeReport);
+    }
     
     @Transient
     public String getName() {
@@ -225,5 +243,45 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	if(this.getEpoch() != null)
     		return getEpoch().getName().equals(BASELINE_REPORTING_TYPE);
     	return false;
+    }
+    
+    @Transient
+    public int getNumberOfReports(){
+    	int count = 0;
+    	for(ExpeditedAdverseEventReport report: this.getAeReports()){
+    		count += report.getReports().size();
+    	}
+    	return count;
+    }
+    
+    @Transient
+    public int getNumberOfAes(){
+    	int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
+    	return count;
+    }
+    
+    @Transient
+    public String getDataEntryStatus(){
+    	return "In-process";
+    }
+    
+    @Transient
+    public String getReportStatus(){
+    	// If there are no reports then return a empty string
+    	if(this.getAeReports().size() == 0)
+    		return "";
+    	
+    	reportStatus = "Report(s) Completed";
+    	// If for any reports associated to all the Data Collection has status other than COMPLETED
+    	// or WITHDRAWN then return a status "Report(s) Due" or else return a status "Report(s) Completed"
+    	
+    	for(ExpeditedAdverseEventReport aeReport: this.getAeReports())
+    		for(Report report: aeReport.getReports()){
+    			if(report.getLastVersion().getReportStatus() == ReportStatus.PENDING ||
+    					report.getLastVersion().getReportStatus() == ReportStatus.INPROCESS ||
+    						report.getLastVersion().getReportStatus() == ReportStatus.FAILED)
+    				return "Report(s) Incomplete";
+    		}
+    	return reportStatus;
     }
 }

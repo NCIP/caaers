@@ -61,6 +61,12 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
+    
+    // This gives the number of Aes in the expeditedReport (Data Collection)
+    private int numberOfAes;
+    
+    // This gives the primary report in the expeditedReport (Data Collection)
+    private Report primaryReport;
 
     // TODO
     // private List<MedicalDevice> medicalDevices;
@@ -618,7 +624,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.createdAt = createdAt;
     }
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "reporting_period_id")
     @Cascade(value = { CascadeType.LOCK })
     public AdverseEventReportingPeriod getReportingPeriod() {
@@ -701,5 +707,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     List<String> findFaxNumbers(String role) {
         assert false : "Not implemented";
         return null;
+    }
+    
+    @Transient
+    public int getNumberOfAes(){
+    	int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
+    	return count;
+    }
+    
+    @Transient
+    public Report getPrimaryReport(){
+    	return getReports().get(0);
     }
 }

@@ -52,6 +52,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoTestCase<AdverseEvent
     	
     	AdverseEvent ae = new AdverseEvent();
     	ae.setSolicited(true);
+    	ae.setRequiresReporting(true);
     	CtcTerm term = new CtcTerm();
     	term.setId(3007);
     	
@@ -64,6 +65,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoTestCase<AdverseEvent
         int saveId = reportingPeriod.getId();
         interruptSession();
         AdverseEventReportingPeriod p = getDao().getById(saveId);
+        p.getAdverseEvents().size();
         CoreTestCase.assertEquals("Save this reportingPeriod", p.getDescription());
         CoreTestCase.assertDayOfDate("Wrong start date", 2008, Calendar.MAY, 23, p.getStartDate());
         CoreTestCase.assertDayOfDate("Wrong end date", 2008, Calendar.MAY, 25, p.getEndDate());

@@ -91,6 +91,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     private Boolean serious;
     
+    private Boolean requiresReporting;
     
     private String displayExpected;
     
@@ -496,6 +497,14 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     public Boolean getSolicited() {
 		return solicited;
+	}
+    
+    public Boolean getRequiresReporting() {
+		return requiresReporting;
+	}
+    
+    public void setRequiresReporting(Boolean requiresReporting) {
+		this.requiresReporting = requiresReporting;
 	}
     
     public void setSerious(Boolean serious){

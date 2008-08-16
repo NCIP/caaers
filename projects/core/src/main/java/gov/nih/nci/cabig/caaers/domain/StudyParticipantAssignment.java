@@ -145,7 +145,11 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
     	if(reportingPeriods != null){
     		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
-    			if(reportingPeriod.getAeReport() != null) aeReports.add(reportingPeriod.getAeReport());
+    			// This changed as ReportingPeriod and ExpeditedReport relationship is Many-To-One 
+    			// Needs to be looked into carefully.
+    			if(reportingPeriod.getAeReports() != null)
+    				for(ExpeditedAdverseEventReport report: reportingPeriod.getAeReports())
+    					aeReports.add(report);
     		}
     	}
         return aeReports;
