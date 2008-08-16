@@ -156,7 +156,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		
 			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
-			this.adverseEventReportingPeriod.getAeReport();
+			this.adverseEventReportingPeriod.getAeReports();
 		}
     }
     
@@ -206,11 +206,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public Set<ReportDefinition> getInstantiatedReportDefinitions() {
         Set<ReportDefinition> reportDefs = new HashSet<ReportDefinition>();
-        ExpeditedAdverseEventReport aeReport = adverseEventReportingPeriod.getAeReport();
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+        
+        ExpeditedAdverseEventReport aeReport = (adverseEventReportingPeriod.getAeReports().size() > 0) ? adverseEventReportingPeriod.getAeReports().get(0) : null;
         
         if(aeReport == null || aeReport.getReports() == null)	return reportDefs;
         
-        for (Report report : adverseEventReportingPeriod.getAeReport().getReports()) {
+        for (Report report : adverseEventReportingPeriod.getAeReports().get(0).getReports()) {
             if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report.getReportDefinition());
         }
 
@@ -230,8 +233,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		   reportDefinitionMap.put(rpDef.getId(), false);
 	   }
 	   
-	   //all reports selected in reporting Expedited Report should be selected aswell. 
-	   if(adverseEventReportingPeriod.getAeReport() != null){
+	   //all reports selected in reporting Expedited Report should be selected aswell.
+       // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+       // TODO: fix it when use case is ready.
+	   if(adverseEventReportingPeriod.getAeReports().size() > 0){
 		  for(ReportDefinition rpDef : getInstantiatedReportDefinitions()){
 			  reportDefinitionMap.put(rpDef.getId(), true);
 		  }
@@ -272,10 +277,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public List<AdverseEvent> findNewlySelectedAdverseEvents(){
     	List<AdverseEvent> selectedAdverseEvents = findSelectedAdverseEvents();
-    	if(adverseEventReportingPeriod.getAeReport() == null){
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+    	if(adverseEventReportingPeriod.getAeReports().size() == 0){
     		return selectedAdverseEvents;
     	}else {
-    		return ListUtils.subtract(selectedAdverseEvents, adverseEventReportingPeriod.getAeReport().getAdverseEvents());
+    		return ListUtils.subtract(selectedAdverseEvents, adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents());
     	}
     }
     
@@ -285,8 +292,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public List<AdverseEvent> findUnselectedAdverseEvents(){
     	List<AdverseEvent> unselectedEvents = new ArrayList<AdverseEvent>();
-    	if(adverseEventReportingPeriod.getAeReport() != null){
-    		for(AdverseEvent ae : adverseEventReportingPeriod.getAeReport().getAdverseEvents()){
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+    	if(adverseEventReportingPeriod.getAeReports().size() > 0){
+    		for(AdverseEvent ae : adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents()){
     			Boolean value = selectedAesMap.get(ae.getId());
     			if(value == null || !value ){
     				unselectedEvents.add(ae);
@@ -313,14 +322,16 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     public void refreshReportStatusMap(){
     	reportStatusMap.clear();
-    	if(this.adverseEventReportingPeriod.getAeReport() == null) return;
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+    	if(this.adverseEventReportingPeriod.getAeReports().size() == 0) return;
     	
     	//initialize every thing with empty
     	for(ReportDefinition rpDef : allReportDefinitions){
     		reportStatusMap.put(rpDef.getId(), "");
     	}
     	//update the once already instantiated , with correct status.
-    	List<Report> reports = adverseEventReportingPeriod.getAeReport().getNonWithdrawnReports();
+    	List<Report> reports = adverseEventReportingPeriod.getAeReports().get(0).getNonWithdrawnReports();
     	for(Report report : reports){
     		reportStatusMap.put(report.getReportDefinition().getId(), report.getLastVersion().getStatusAsString());
     	}
@@ -352,16 +363,16 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
 			Integer id = ae.getId();
 			selectedAesMap.put(id, Boolean.FALSE);
-			ae.setSerious(Boolean.FALSE);
+			ae.setRequiresReporting(Boolean.FALSE);
 		}
-		if(adverseEventReportingPeriod.getAeReport() != null){
-			for(AdverseEvent ae: adverseEventReportingPeriod.getAeReport().getAdverseEvents()){
+		if(adverseEventReportingPeriod.getAeReports().size() > 0){
+			for(AdverseEvent ae: adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents()){
 				Integer id = ae.getId();
 				selectedAesMap.put(id, Boolean.TRUE);
 			}
 			for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
 				for(AdverseEvent ae : entry.getValue()){
-					ae.setSerious(Boolean.TRUE);
+					ae.setRequiresReporting(Boolean.TRUE);
 				}
 			}
 		}else {
@@ -369,7 +380,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
 				for(AdverseEvent ae : entry.getValue()){
 					selectedAesMap.put(ae.getId(), true);
-					ae.setSerious(Boolean.TRUE);
+					ae.setRequiresReporting(Boolean.TRUE);
 				}
 			}
 		}
@@ -392,10 +403,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * Find primary adverse event.
 	 */
 	public void findPrimaryAdverseEvent(){
-		if(adverseEventReportingPeriod.getAeReport() == null){
+		if(adverseEventReportingPeriod.getAeReports().size() == 0){
 			if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
 		}else {
-			this.primaryAdverseEventId = adverseEventReportingPeriod.getAeReport().getAdverseEvents().get(0).getId();
+			this.primaryAdverseEventId = adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents().get(0).getId();
 		}
 	}
 	

@@ -235,30 +235,33 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
         List<AdverseEvent> newlySelectedAEs = command.findNewlySelectedAdverseEvents();
         
         AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
-        ExpeditedAdverseEventReport aeReport = reportingPeriod.getAeReport();
+        // Modified this part to support Many-to-One relationship between ReportingPeriod and ExpeditedReport
+        // This will change soon once the use-case related to CaptureAe is finalized.
+        List<ExpeditedAdverseEventReport> aeReports = reportingPeriod.getAeReports();
         
-        if(aeReport == null){
+        if(aeReports.size() == 0){
         	//create the report
-        	aeReport = new ExpeditedAdverseEventReport();
+        	ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
     		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
     		aeReport.setReportingPeriod(reportingPeriod);
-    		reportingPeriod.setAeReport(aeReport);
+    		//reportingPeriod.setAeReport(aeReport);
+    		reportingPeriod.addAeReport(aeReport);
         }else {
         	//remove unselected AEs from the report
         	List<AdverseEvent> removedAEs = command.findUnselectedAdverseEvents();
-        	aeReport.getAdverseEvents().removeAll(removedAEs);
+        	reportingPeriod.getAeReports().get(0).getAdverseEvents().removeAll(removedAEs);
         }
 
 		//add AEs to expedited report.
 		for(AdverseEvent ae : newlySelectedAEs){
-			aeReport.addAdverseEvent(ae);	
+			reportingPeriod.getAeReports().get(0).addAdverseEvent(ae);	
 		}
         
 		//adjust primary AE
 		if(command.getPrimaryAdverseEventId() != null){
 			AdverseEvent primaryAE = null;
 			int i = 0;
-			for(AdverseEvent ae : aeReport.getAdverseEvents()){
+			for(AdverseEvent ae : reportingPeriod.getAeReports().get(0).getAdverseEvents()){
 				if(ae.getId().equals(command.getPrimaryAdverseEventId())){
 					primaryAE = ae;
 					break;
@@ -267,21 +270,25 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			}
 			
 			if(i > 0 && primaryAE != null){
-				aeReport.getAdverseEvents().remove(primaryAE);
-				aeReport.getAdverseEvents().add(0, primaryAE);
+				reportingPeriod.getAeReports().get(0).getAdverseEvents().remove(primaryAE);
+				reportingPeriod.getAeReports().get(0).getAdverseEvents().add(0, primaryAE);
 			}
 		}
 		
 		//add newly selected report definitions
 		if(!newlySelectedDefs.isEmpty())
-			evaluationService.addOptionalReports(aeReport, newlySelectedDefs);
+			evaluationService.addOptionalReports(reportingPeriod.getAeReports().get(0), newlySelectedDefs);
         
         //remove unselected reports
 		if(!removedReportDefs.isEmpty())
-			removeUnselectedReports(aeReport, removedReportDefs);
+			removeUnselectedReports(reportingPeriod.getAeReports().get(0), removedReportDefs);
         
         //save the expedited report
-        expeditedAdverseEventReportDao.save(aeReport);
+        expeditedAdverseEventReportDao.save(reportingPeriod.getAeReports().get(0));
+        
+        //save the reporting period
+        //this is needed to persist the "requiredReporting" field on adverseEvents.
+        adverseEventReportingPeriodDao.save(reportingPeriod);
         
 	}
 	

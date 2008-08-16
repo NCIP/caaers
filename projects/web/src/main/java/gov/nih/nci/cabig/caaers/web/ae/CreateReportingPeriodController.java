@@ -176,6 +176,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         	for(SolicitedAdverseEvent sae: reportingPeriod.getEpoch().getArms().get(0).getSolicitedAdverseEvents()){
         		AdverseEvent adverseEvent = new AdverseEvent();
         		adverseEvent.setSolicited(true);
+        		adverseEvent.setRequiresReporting(false);
 			
         		if(command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA){
         			adverseEvent.setLowLevelTerm(sae.getLowLevelTerm());

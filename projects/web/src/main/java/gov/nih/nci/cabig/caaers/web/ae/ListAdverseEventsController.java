@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -99,11 +100,13 @@ public class ListAdverseEventsController extends SimpleFormController {
     @SuppressWarnings("unchecked")
     protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
                     throws Exception {
+    	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
         Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("pageTitle", "Manage AEs: Select Subject & Study");
         refdata.put("bodyTitle", "Manage AEs: Select Subject & Study");
         refdata.put("instructions",
                         "Select a subject and study to see all the AEs for that combination.");
+        
         return refdata;
     }
 

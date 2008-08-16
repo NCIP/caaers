@@ -953,6 +953,7 @@ public class CreateAdverseEventAjaxFacade {
         for(int id: filteredTermIDs){
         	AdverseEvent ae = new AdverseEvent();
         	ae.setSolicited(false);
+        	ae.setRequiresReporting(false);
         	
         	if(isMeddra){
         		//populate MedDRA term
