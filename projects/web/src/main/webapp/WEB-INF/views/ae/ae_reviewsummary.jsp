@@ -147,7 +147,7 @@
     					</tr>
     					<tr id="seriousBlankRow" />
     					<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-    						<c:if test="${ae.serious}">
+    						<c:if test="${ae.requiresReporting}">
     							<ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
     						</c:if>
     					</c:forEach>
@@ -169,7 +169,7 @@
     					</tr>
     					<tr id="observedBlankRow" />
     					<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${(not ae.solicited) and (not ae.serious)}">
+            				<c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
 	            				<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	            			</c:if>
             			</c:forEach>
@@ -192,7 +192,7 @@
     					</tr>
     					<tr id="solicitedBlankRow" />
        					<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-       						<c:if test="${(ae.solicited) and (not ae.serious)}">
+       						<c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
 	       						<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
 	       					</c:if>
        					</c:forEach>
