@@ -128,7 +128,7 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
         reportingPeriod.setAssignment(assignment);
         assignment.addReportingPeriod(reportingPeriod);
-        reportingPeriod.setAeReport(aeReport);
+        reportingPeriod.addAeReport(aeReport);
         aeReport.setReportingPeriod(reportingPeriod);
         aeReport.setId(-5);
         // update adverseEvents
