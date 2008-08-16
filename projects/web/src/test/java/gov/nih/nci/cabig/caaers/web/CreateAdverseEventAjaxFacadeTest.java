@@ -585,7 +585,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
         reportingPeriod.setAssignment(assignment);
         report.setReportingPeriod(reportingPeriod);
-        reportingPeriod.setAeReport(report);
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+        reportingPeriod.addAeReport(report);
 
         command.setAeReport(report);
         session.setAttribute(EditAdverseEventController.class.getName() + ".FORM.command", command);
