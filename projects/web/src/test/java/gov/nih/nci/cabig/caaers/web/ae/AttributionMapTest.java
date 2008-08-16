@@ -43,7 +43,9 @@ public class AttributionMapTest extends AbstractTestCase {
         super.setUp();
         report = new ExpeditedAdverseEventReport();
         AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
-        reportingPeriod.setAeReport(report);
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+        reportingPeriod.addAeReport(report);
         report.setReportingPeriod(reportingPeriod);
         report.setAssignment(assignParticipant(createParticipant("D", "C"), createStudy("DC"),
                         createOrganization("DC")));

@@ -82,7 +82,9 @@ public abstract class AeWebTestCase extends WebTestCase {
         reportingPeriod.setAssignment(assignment);
         ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         aeReport.setReportingPeriod(reportingPeriod);
-        reportingPeriod.setAeReport(aeReport);
+        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
+        // TODO: fix it when use case is ready.
+        reportingPeriod.addAeReport(aeReport);
         aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         c.setAeReport(aeReport);
         
