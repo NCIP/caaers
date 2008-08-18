@@ -93,6 +93,33 @@ function ajaxStudySearch(searchText, searchType) {
 
     <jsp:attribute name="singleFields">
         <div id="searchResults" style="width:100%; border: 0px red dotted;">
+            <c:if test="${fn:length(command.studies) > 0}">
+
+                <%--
+                    Display the previews results when the user hit BACK button either on the browser or in the page form.
+                --%>
+                    <ec:table items="command.studies" var="study"
+                                action="${pageContext.request.contextPath}/pages/newParticipant"
+                                imagePath="${pageContext.request.contextPath}/images/table/*.gif"
+                                filterable="false"
+                                showPagination="false" form="command"
+                                cellspacing="0" cellpadding="2" border="0" width="100%" style=""
+                                styleClass=""
+                                autoIncludeParameters="false" >
+                        <ec:row highlightRow="true">
+                            <ec:column property="transient0" style="width:20px" filterable="false" sortable="false" title="&nbsp;">
+                                <form:radiobutton path="study" value="${study.id}" onclick="if ($('ids')) $('ids').show();"/>
+                            </ec:column>
+                            <ec:column property="primaryIdentifier" title="Primary ID" />
+                            <ec:column property="shortTitle" title="Short Title" />
+                            <ec:column property="primarySponsorCode" title="Funding Sponsor" />
+                            <ec:column property="phaseCode" title="Phase" />
+                            <ec:column property="status" title="Status" />
+                        </ec:row>
+                    </ec:table>
+                    <input type="hidden" name="_action" value="" />
+
+            </c:if>
         </div>
 
         <div id="ids" style="display:none;">

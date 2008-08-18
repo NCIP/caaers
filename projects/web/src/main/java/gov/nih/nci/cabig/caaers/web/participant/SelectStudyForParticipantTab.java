@@ -43,23 +43,14 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public Map<String, Object> referenceData(T command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("searchType", listValues.getStudySearchType());
-        return refdata;
-    }
 
-    public void onBind(HttpServletRequest request, T command, Errors errors) {
-        super.onBind(request, command, errors);
 
+        // Search START
         ParticipantInputCommand participantCommand = (ParticipantInputCommand)command;
         String searchtext = participantCommand.getSearchText();
         String type = participantCommand.getSearchType();
-        // String action = participantCommand.get
-
-        // participantCommand. setAssignment(new StudyParticipantAssignment());
 
         if (searchtext != null && type != null && !searchtext.equals("")) {
-
-            // studySite.setOrganization(participantCommand.getOrganization());
-
             participantCommand.setStudies(new ArrayList<Study>());
             StudyHavingStudySiteQuery query = new StudyHavingStudySiteQuery();
             query.filterByStudySiteName(participantCommand.getOrganization().getName());
@@ -73,9 +64,14 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             participantCommand.setStudies(studyRepository.find(query));
             participantCommand.setSearchTypeText("");
             participantCommand.setSearchType("");
-
         }
+        // Search END
 
+        return refdata;
+    }
+
+    public void onBind(HttpServletRequest request, T command, Errors errors) {
+        super.onBind(request, command, errors);
     }
 
     public void postProcess(HttpServletRequest request, T command, Errors errors) {
