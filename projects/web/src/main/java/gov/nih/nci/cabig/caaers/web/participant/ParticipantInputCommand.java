@@ -39,6 +39,8 @@ public class ParticipantInputCommand {
     private String task; // will tell the action we perform on the current item.
     private Integer index; //corresponds to the index of the item (eg: conmed[3])
     
+    private AnatomicSite metastaticDiseaseSite;
+    
     /**
      * This method will initialize the objects that we have to work in the flow.
      * @param identifierType
@@ -190,4 +192,13 @@ public class ParticipantInputCommand {
     public void setIndex(Integer index) {
 		this.index = index;
 	}
+    
+    //-- for auto completer --
+    public AnatomicSite getMetastaticDiseaseSite() {
+		return metastaticDiseaseSite;
+	}
+    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
+		this.metastaticDiseaseSite = metastaticDiseaseSite;
+	}
+   
 }
