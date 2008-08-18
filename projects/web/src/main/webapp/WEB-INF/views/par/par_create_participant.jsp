@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <html>
 <head>
     
@@ -136,9 +136,15 @@
 <chrome:division  title="Site"  >
     
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
-    <c:forEach items="${fieldGroups.site.fields}" var="field">
-        <tags:renderRow field="${field}"  />
-    </c:forEach>
+	<ui:row path="${fieldGroups.site.fields[0].propertyName}">
+		<jsp:attribute name="label">
+			<ui:label path="${fieldGroups.site.fields[0].propertyName}" text="Site" />
+		</jsp:attribute>
+		<jsp:attribute name="value">
+			<ui:select options="${fieldGroups.site.fields[0].attributes.options}" path="${fieldGroups.site.fields[0].propertyName}" title="Site" required="true"/>
+		</jsp:attribute>
+	</ui:row>
+
 </c:if>
 
 <c:if test="${!(empty command.participant.id) and (command.participant.id gt 0)}">
@@ -153,9 +159,38 @@ ${command.organization}
 <table id="test2" class="single-fields" width="100%">
     <tr >
         <td>
-            <c:forEach begin="0" end="3" items="${fieldGroups.participant.fields}" var="field">
-            <tags:renderRow field="${field}"/>
-            </c:forEach>
+		    <ui:row path="participant.firstName">
+				<jsp:attribute name="label">
+					<ui:label path="participant.firstName" text="First Name" required="true" />
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:text path="participant.firstName" required="true" title="First name" />
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="participant.lastName">
+				<jsp:attribute name="label">
+					<ui:label path="participant.lastName" text="Last Name" required="true" />
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:text path="participant.lastName" required="true" title="Last name"/>
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="participant.maidenName">
+				<jsp:attribute name="label">
+					<ui:label path="participant.maidenName" text="Maiden Name" />
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:text path="participant.maidenName" title="Maiden name"/>
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="participant.middleName">
+				<jsp:attribute name="label">
+					<ui:label path="participant.middleName" text="Middle Name" />
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:text path="participant.middleName" title="Middle name" />
+				</jsp:attribute>
+			</ui:row>
         </td>
         <td>
             <div class="row" id="participant.dateOfBirth-row">

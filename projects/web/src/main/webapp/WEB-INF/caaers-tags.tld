@@ -37,4 +37,26 @@
 		
 		
 	</tag>
+	<tag>
+		<name>renderFilter</name>
+		<tag-class>gov.nih.nci.cabig.caaers.web.tags.RenderDecisionManagerTag</tag-class>
+		<body-content>JSP</body-content>
+		<description>Evaluates the body only if the RenderDecisionManager, identifies the elementID as renderable</description>
+
+		<attribute>
+			<name>uiType</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+			<description>The element type,Default value is 'FIELD'</description>
+		</attribute>
+		
+		<attribute>
+			<name>elementID</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>The prorpery of the element, which will used to query its renderability in the page</description>
+		</attribute>
+		
+		
+	</tag>
 </taglib>

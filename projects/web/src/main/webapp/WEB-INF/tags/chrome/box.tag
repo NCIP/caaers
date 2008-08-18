@@ -9,6 +9,7 @@
      Use it if the box will only need one content div -- i.e., it doesn't contain any
      chrome:divisions with titles. --%>
 <%@attribute name="autopad" required="false" %>
+<%@attribute name="collapsable" required="false" %>
 <div class="box ${cssClass}"
     <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
 

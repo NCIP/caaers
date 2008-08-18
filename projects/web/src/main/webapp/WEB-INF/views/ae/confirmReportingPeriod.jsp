@@ -1,6 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -40,12 +41,12 @@
 	<jsp:attribute name="singleFields">
 		<tags:renderRow field="${ReportingPeriod.fields[0]}">
    			  <jsp:attribute name="value">
-				<tags:value propertyName="${ReportingPeriod.fields[0].propertyName}" />
+				<ui:value propertyName="${ReportingPeriod.fields[0].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[1]}">
    			  <jsp:attribute name="value">
-				<tags:value propertyName="${ReportingPeriod.fields[1].propertyName}" />
+				<ui:value propertyName="${ReportingPeriod.fields[1].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[2]}">
@@ -55,12 +56,12 @@
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[3]}">
    			  <jsp:attribute name="value">
-				<tags:value propertyName="${ReportingPeriod.fields[3].propertyName}" />
+				<ui:value propertyName="${ReportingPeriod.fields[3].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[4]}">
    			  <jsp:attribute name="value">
-				<tags:value propertyName="${ReportingPeriod.fields[4].propertyName}" />
+				<ui:value propertyName="${ReportingPeriod.fields[4].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[5]}">
@@ -70,7 +71,7 @@
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[6]}">
    			  <jsp:attribute name="value">
-				<tags:value propertyName="${ReportingPeriod.fields[6].propertyName}" />
+				<ui:value propertyName="${ReportingPeriod.fields[6].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
 

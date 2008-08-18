@@ -198,9 +198,10 @@ a#firstlevelnav_studyController:active{background-position:0px -90px;}
     color: #666;
     font-size: 85%;
     padding: 3px;
-    position: absolute;
+    position: relative;
     bottom: 0px;
     clear: both;
+    float: left;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */

@@ -1,4 +1,5 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -20,7 +21,7 @@
 		                <div class="index">
 		                <c:choose>
 						  <c:when test='${statusVar.index != 0 && !displayOnly}' >
-						   <tags:inplaceTextField propertyName="epochs[${statusVar.index}].name" />
+						   <ui:inplaceTextField path="epochs[${statusVar.index}].name" />
 						  </c:when>
 						  <c:otherwise>
 						    <span id="epochs[${statusVar.index}].name-id"><caaers:value path="epochs[${statusVar.index}].name" /></span>
