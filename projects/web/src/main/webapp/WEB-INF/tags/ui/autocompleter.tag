@@ -35,11 +35,14 @@
 	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
 	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS});
     $('${path}-input').observe('focus', function() {
-        $('${path}-input').clear();
+		if($('${path}').value == ''){
+			 $('${path}-input').clear();
+		}
     });
     $('${path}-input').observe('blur', function() {
         if ($('${path}-input').value == '') {
             $('${path}-input').value = '${initialDisplayValue}';
+			$('${path}').clear();
         }
     });
     </c:if>
