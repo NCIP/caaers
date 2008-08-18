@@ -42,7 +42,7 @@ public class DiagnosticsController extends SimpleFormController{
     	boolean testResult = false;
 	    try {
 		    MimeMessage message = caaersJavaMailSender.createMimeMessage();
-		    message.setSubject("Test mail from caAERS Diagnosis");
+		    message.setSubject("Test mail from caAERS Diagnostics");
 		    message.setFrom(new InternetAddress("caaers.app@gmail.com"));
 		
 		    // use the true flag to indicate you need a multipart message
