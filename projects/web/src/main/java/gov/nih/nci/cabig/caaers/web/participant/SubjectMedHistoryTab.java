@@ -1,9 +1,35 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.WebUtils;
 
 /**
  * 
@@ -11,18 +37,7 @@ import java.util.Map;
  *
  */
 public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand> {
-	public SubjectMedHistoryTab() {
-		// TODO Auto-generated constructor stub
-		super("","","");
-	}
 	
-	@Override
-	public Map<String, InputFieldGroup> createFieldGroups(
-			ParticipantInputCommand command) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	/*
 	//the below static variables corresponds to the field group names
 	private static final String GENERAL = "general";
 	private static final String PRIOR_THERAPY = "priorTherapy";
@@ -74,9 +89,9 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     }
     
   
-    *//**
+    /**
      * This method will create the field groups for the prior therapy screen.
-     *//*
+     */
     private void initializePriorTherapyFieldGroup(ParticipantInputCommand command, InputFieldGroupMap map){
     	RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory(PRIOR_THERAPY, "priorTherapies");
     	
@@ -157,10 +172,10 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	return mv;
     }
     
-    *//**
+    /**
      * Will initialize the Priortherapy drop down options
      * @return
-     *//*
+     */
     private Map<Object, Object> fetchPriorTherapyOptions() {
     	if(priorTherapyOptions == null){
     		this.priorTherapyOptions = new LinkedHashMap<Object, Object>();
@@ -207,7 +222,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
 	}
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
 		this.priorTherapyDao = priorTherapyDao;
-	}*/
+	}
 
 }
 
