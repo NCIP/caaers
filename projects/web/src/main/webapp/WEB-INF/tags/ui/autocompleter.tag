@@ -33,8 +33,16 @@
 </jsp:attribute>
 <jsp:attribute name="embededJS">
 	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
-	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS});	
-	</c:if>
+	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS});
+    $('${path}-input').observe('focus', function() {
+        $('${path}-input').clear();
+    });
+    $('${path}-input').observe('blur', function() {
+        if ($('${path}-input').value == '') {
+            $('${path}-input').value = '${initialDisplayValue}';
+        }
+    });
+    </c:if>
 	${embededJS}
 </jsp:attribute>
 </ui:fieldWrapper>
