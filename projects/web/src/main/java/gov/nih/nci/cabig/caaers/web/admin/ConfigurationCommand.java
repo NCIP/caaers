@@ -10,7 +10,7 @@ import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
  * @author Rhett Sutphin
  */
 public class ConfigurationCommand {
-    private Configuration configuration;
+    protected Configuration configuration;
 
     private Map<String, BoundProperty<?>> conf;
 
