@@ -444,6 +444,13 @@
 	
   <bean name="/admin/configure" id="configurationController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.ConfigurationController"/>
+	
+  <bean name="/admin/happy	" id="diagnosticsController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.admin.DiagnosticsController">
+	
+	<property name="caaersJavaMailSender" ref="mailer"/>
+	
+  </bean>
 
   <bean name="/admin/passwordPolicyConfigure" id="passwordPolicyConfigurationController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.PasswordPolicyConfigurationController">
