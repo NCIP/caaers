@@ -60,7 +60,6 @@ public class EditExpeditedAdverseEventReportCommand extends AbstractExpeditedAdv
         return study;
     }
     
-    @Override
     public void save() {
         reportDao.save(getAeReport());
     }
