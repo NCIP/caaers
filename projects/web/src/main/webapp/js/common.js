@@ -254,7 +254,6 @@ Object.extend(ListEditor.prototype, {
         var nextIndex = $$(sel).length
         var args = [nextIndex].concat(this.options.addParameters).concat([
             function(html) {
-            	alert(html)
                 var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
                 new Insertion.After(after, html)
                 var newId = this.divisionClass + "-" + nextIndex;
