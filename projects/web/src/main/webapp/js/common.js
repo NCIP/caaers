@@ -253,18 +253,18 @@ Object.extend(ListEditor.prototype, {
         var sel = "." + this.divisionClass
         var nextIndex = $$(sel).length
         var args = [nextIndex].concat(this.options.addParameters).concat([
-//            function(html) {
-//            	alert(html)
-//                var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
-//                new Insertion.After(after, html)
-//                var newId = this.divisionClass + "-" + nextIndex;
-//                AE.slideAndShow(newId)
-//                this.updateFirstAndLast()
-//                this.createSingleItemControls(newId)
-//                if (this.options.addCallback) this.options.addCallback(nextIndex)
-//                if (this.options.addButton) this.options.addButton.enable()
-//                if (this.options.addIndicator) AE.hideIndicator(this.options.addIndicator)
-//            }.bind(this)
+            function(html) {
+            	alert(html)
+                var after = nextIndex == 0 ? this.options.addFirstAfter : $$(sel).last()
+                new Insertion.After(after, html)
+                var newId = this.divisionClass + "-" + nextIndex;
+                AE.slideAndShow(newId)
+                this.updateFirstAndLast()
+                this.createSingleItemControls(newId)
+                if (this.options.addCallback) this.options.addCallback(nextIndex)
+                if (this.options.addButton) this.options.addButton.enable()
+                if (this.options.addIndicator) AE.hideIndicator(this.options.addIndicator)
+            }.bind(this)
         ])
         addFn.apply(this, args)
     },
