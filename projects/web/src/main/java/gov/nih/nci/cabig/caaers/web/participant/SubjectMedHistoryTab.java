@@ -200,7 +200,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     public void onDisplay(HttpServletRequest request, T command) {
     	//for non-ajax request, refresh the index fixed lists.
     	if(!StringUtils.equalsIgnoreCase(request.getParameter(getAjaxRequestParamName()), "true")){
-    		command.refreshIndexFixedLists();
+//    		command.refreshIndexFixedLists();
     	}
     }
     

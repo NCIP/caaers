@@ -57,7 +57,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     @Override
     protected String getFormSessionAttributeName() {
         // the entry point to this flow is from AssignController
-        return AssignController.class.getName() + ".FORM." + getCommandName();
+        return AssignParticipantController.class.getName() + ".FORM." + getCommandName();
     }
 
     /**
