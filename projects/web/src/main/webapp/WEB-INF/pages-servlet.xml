@@ -318,11 +318,6 @@
     <property name="webControllerValidator" ref="webControllerValidator"/>
   </bean>
 
-  <!--<bean name="/participant/assign" id="assignController" autowire="byName"
-	class="gov.nih.nci.cabig.caaers.web.participant.AssignController" >
-    <property name="sessionForm"><value>true</value></property>
-  </bean>
--->
   <bean name="/participant/view" id="viewParticipantController" autowire="byName"
 	class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
   </bean>
