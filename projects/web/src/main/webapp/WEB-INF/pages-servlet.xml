@@ -322,7 +322,7 @@
 	class="gov.nih.nci.cabig.caaers.web.participant.ViewParticipantController" >
   </bean>
   
-  <bean name="/participant/assignStudy" id="assignStudyController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" ></bean>
+  <!--<bean name="/participant/assignStudy" id="assignStudyController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignStudyController" ></bean>-->
   <bean name="/participant/assignParticipant" id="assignParticipantController" autowire="byName" class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantController" ></bean>
   
   <!--  For InPlaceEditor  -->
