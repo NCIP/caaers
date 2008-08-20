@@ -7,6 +7,7 @@
 <tags:stylesheetLink name="ie"/>
 <![endif]-->
 
+<tags:stylesheetLink name="extremecomponents"/>
 <tags:stylesheetLink name="calendar/calendar-blue"/>
 <tags:stylesheetLink name="common-search"/>
 <tags:stylesheetLink name="hoverhelp"/>
@@ -38,7 +39,7 @@
 <tags:javascriptLink name="ccts-hotlinks" />
 <script type="text/javascript">
 
-        // hotlinking
+        // hotlinking                      \
         // https://wiki.nci.nih.gov/x/ygqG
         CCTS.appShortName = 'caaers'
 

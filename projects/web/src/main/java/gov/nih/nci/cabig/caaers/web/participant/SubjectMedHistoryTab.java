@@ -36,7 +36,7 @@ import org.springframework.web.util.WebUtils;
  * @author Biju Joseph
  *
  */
-public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand> {
+public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
 	
 	//the below static variables corresponds to the field group names
 	private static final String GENERAL = "general";
@@ -70,7 +70,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
+    public Map<String, InputFieldGroup> createFieldGroups(T command) {
     	InputFieldGroupMap map = new  InputFieldGroupMap();
 
     	//selectively add the fields
@@ -82,7 +82,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	return map;
     }
     
-    private void initializeGeneralFieldGroup(ParticipantInputCommand command, InputFieldGroupMap map){
+    private void initializeGeneralFieldGroup(T command, InputFieldGroupMap map){
     	InputFieldGroup generalFieldGroup = new DefaultInputFieldGroup();
     	List<InputField> fields = generalFieldGroup.getFields();
     	map.put(GENERAL, generalFieldGroup);
@@ -92,7 +92,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     /**
      * This method will create the field groups for the prior therapy screen.
      */
-    private void initializePriorTherapyFieldGroup(ParticipantInputCommand command, InputFieldGroupMap map){
+    private void initializePriorTherapyFieldGroup(T command, InputFieldGroupMap map){
     	RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory(PRIOR_THERAPY, "priorTherapies");
     	
         InputField priorTherapyField = InputFieldFactory.createSelectField("priorTherapy", "Prior therapy", true, fetchPriorTherapyOptions());
@@ -124,7 +124,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     //----- Create/Edit/Save/Delete operations (tasks) ----------------- 
     
     public ModelAndView createPriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
-    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	T command =(T)cmd;
 
     	ModelAndView mv = new ModelAndView("par/ajax/priorTherapyFormSection");
     	mv.getModel().put("index",command.getPriorTherapies().size());
@@ -136,7 +136,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     	StudyParticipantPriorTherapy priorTherapy = new StudyParticipantPriorTherapy();
     	priorTherapy.setStartDate(new DateValue());
     	priorTherapy.setEndDate(new DateValue());
-    	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
+//    	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
     	priorTherapy.setAssignment(command.getAssignment());
     	
     	command.getPriorTherapies().add(priorTherapy);
@@ -146,7 +146,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
 	}
     
     public ModelAndView savePriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
- 		ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+ 		T command =(T)cmd;
 
 	 	String view = (errors.hasErrors()) ? "par/ajax/priorTherapyFormSection" : "par/ajax/savedSucessfully";
 	 	
@@ -157,7 +157,7 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
 	}
     
     public ModelAndView createPriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors) {
- 		ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+ 		T command =(T)cmd;
  		
     	StudyParticipantPriorTherapy priorTherapy = command.getPriorTherapies().get(command.getIndex());
     	StudyParticipantPriorTherapyAgent priorTherapyAgent = new StudyParticipantPriorTherapyAgent();
@@ -191,13 +191,13 @@ public class SubjectMedHistoryTab extends TabWithFields<ParticipantInputCommand>
     }
     
     @Override
-    protected void validate(ParticipantInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
+    protected void validate(T command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
     	super.validate(command, commandBean, fieldGroups, errors);
     }
     
     //TAB methods
     @Override
-    public void onDisplay(HttpServletRequest request,ParticipantInputCommand command) {
+    public void onDisplay(HttpServletRequest request, T command) {
     	//for non-ajax request, refresh the index fixed lists.
     	if(!StringUtils.equalsIgnoreCase(request.getParameter(getAjaxRequestParamName()), "true")){
     		command.refreshIndexFixedLists();

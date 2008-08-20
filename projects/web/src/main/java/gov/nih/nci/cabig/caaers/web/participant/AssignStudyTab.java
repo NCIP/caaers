@@ -12,11 +12,17 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+/**
+ * @author Ion C. Olaru
+ */
 
 public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
@@ -31,37 +37,44 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public Map<String, Object> referenceData(AssignParticipantStudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("assignType", "study");
+
+        String searchType = command.getSearchType();
+        String searchText = command.getSearchText();
+
+        log.debug("Search text : " + searchText + "Type : " + searchType);
+        List<Study> studies = null;
+
+        if (searchText != null && searchType != null && !StringUtils.isEmpty(searchText) && searchText.trim().length() >= 2) {
+
+            Study exampleStudy = new Study();
+            if (StringUtils.equals("st", searchType)) {
+                exampleStudy.setShortTitle(searchText);
+            } else if (StringUtils.equals("lt", searchType)) {
+                exampleStudy.setLongTitle(searchText);
+            } else if (StringUtils.equals("idtf", searchType)) {
+                Identifier identifier = new Identifier();
+                identifier.setValue(searchText);
+                exampleStudy.addIdentifier(identifier);
+            }
+            try {
+                studies = studyRepository.search(exampleStudy);
+            } catch (Exception ex) {
+                log.error("Error in search: ", ex);
+            }
+
+            command.setSearchText("");
+            command.setStudies(studies);
+        }
+
+
         return refdata;
     }
 
-    @Override
-    public void onDisplay(HttpServletRequest request, AssignParticipantStudyCommand command) {
-        super.onDisplay(request, command);
-
-        String searchType = command.getStudyType();
-        String searchText = command.getStudyText();
-        log.debug("Search text : " + searchText + "Type : " + searchType);
-        List<Study> studies = null;
-        if (StringUtils.isEmpty(searchText)) return; // no search string.
-        Study exampleStudy = new Study();
-        if (StringUtils.equals("st", searchType)) {
-            exampleStudy.setShortTitle(searchText);
-        } else if (StringUtils.equals("lt", searchType)) {
-            exampleStudy.setLongTitle(searchText);
-        } else if (StringUtils.equals("idtf", searchType)) {
-            Identifier identifier = new Identifier();
-            identifier.setValue(searchText);
-            exampleStudy.addIdentifier(identifier);
-        }
-        try {
-            studies = studyRepository.search(exampleStudy);
-        } catch (Exception ex) {
-            log.error("Error in search", ex);
-        }
-        command.setStudies(studies);
-        command.setStudyText("");
-
+    public ModelAndView searchStudies(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        return new ModelAndView(getAjaxViewName(request), map);
     }
+
 
 /*
     @Override
@@ -73,27 +86,6 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
                         "Study Site not selected");
     }
 */
-
-    @Override
-    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command,
-                    Errors errors) {
-        super.postProcess(request, command, errors);
-        // identify the study site and keep it in the command.
-        ArrayList<StudySite> studySites = new ArrayList<StudySite>();
-        for (Study study : command.getStudies()) {
-            if (study.getId().equals(command.getStudyId())) {
-                for (StudySite studySite : study.getStudySites()) {
-                    if (studySite.getId().equals(command.getStudySiteId())) {
-                        studySites.add(studySite);
-                        command.setStudySites(studySites);
-                        break;
-                    }
-                }
-
-                break;
-            }
-        }
-    }
 
     public void setStudyRepository(final StudyRepository studyRepository) {
         this.studyRepository = studyRepository;

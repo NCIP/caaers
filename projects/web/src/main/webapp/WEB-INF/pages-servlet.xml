@@ -309,7 +309,7 @@
   	  autowire="byType" p:displayName="Enter Subject" p:linkName="editParticipantController"/>
 
     <bean name="/participant/create" id="createParticipantController" autowire="byType"
-	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController2" >
+	  class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantController" >
       <property name="webControllerValidator" ref="webControllerValidator"/> 
     </bean>
 

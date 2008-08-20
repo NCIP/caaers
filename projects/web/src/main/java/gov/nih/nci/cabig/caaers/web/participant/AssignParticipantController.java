@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.ListValues;
+import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
 
 import org.apache.commons.logging.Log;
@@ -12,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 
 import org.springframework.validation.BindException;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,15 +24,18 @@ import java.util.Date;
 import java.util.Map;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 /**
  * @author Krikor Krumlian
  */
 
-public class AssignParticipantController extends AbstractTabbedFlowFormController<AssignParticipantStudyCommand> {
+public class AssignParticipantController extends AutomaticSaveAjaxableFormController<AssignParticipantStudyCommand, Participant, ParticipantDao> {
 
-    private static Log log = LogFactory.getLog(AssignParticipantStudyController.class);
+    private static Log log = LogFactory.getLog(AssignParticipantController.class);
     private ParticipantDao participantDao;
+    private StudySiteDao studySiteDao;
     protected ListValues listValues;
 
     @Override
@@ -46,7 +53,7 @@ public class AssignParticipantController extends AbstractTabbedFlowFormControlle
         Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
         flow.addTab(new AssignParticipantTab());
         flow.addTab(new AssignStudyTab());
-        //flow.addTab(new SubjectMedHistoryTab());
+        flow.addTab(new SubjectMedHistoryTab());
         flow.addTab(new ReviewAssignmentTab());
         setFlow(flow);
     }
@@ -68,6 +75,11 @@ public class AssignParticipantController extends AbstractTabbedFlowFormControlle
         return (request.getParameter("studyType") != null) || (request.getParameter("participantType") != null) || (targetPage < curPage);
     }
 
+
+    protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {
+        ControllerTools.registerDomainObjectEditor(binder, participantDao);
+        ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
+    }
 
     @Override
     protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
@@ -94,6 +106,9 @@ public class AssignParticipantController extends AbstractTabbedFlowFormControlle
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         log.debug("Entering Process Finish ...");
+        System.out.println("Entering Process Finish ...");
+
+/*
         AssignParticipantStudyCommand assignParticipantStudyCommand = (AssignParticipantStudyCommand) command;
 
         StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
@@ -112,6 +127,7 @@ public class AssignParticipantController extends AbstractTabbedFlowFormControlle
         modelAndView.addObject("participant", participant);
         modelAndView.addAllObjects(errors.getModel());
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=confirm");
+*/
 
         return null;
     }
@@ -132,6 +148,26 @@ public class AssignParticipantController extends AbstractTabbedFlowFormControlle
         this.listValues = listValues;
     }
 
+    protected Participant getPrimaryDomainObject(AssignParticipantStudyCommand command) {
+        return command.getParticipant();
+    }
+
+    protected ParticipantDao getDao() {
+        return participantDao;
+    }
+
+    protected boolean shouldSave(HttpServletRequest request, AssignParticipantStudyCommand command, Tab<AssignParticipantStudyCommand> assignParticipantStudyCommandTab) {
+        return false;
+        // return super.shouldSave(request, command, assignParticipantStudyCommandTab);
+    }
+
+    public StudySiteDao getStudySiteDao() {
+        return studySiteDao;
+    }
+
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+        this.studySiteDao = studySiteDao;
+    }
 }
 
 

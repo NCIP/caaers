@@ -25,8 +25,8 @@ public class ParticipantInputCommand {
 
     private List<Study> studies = new ArrayList<Study>();
 
-    private String searchTypeText;
-    private String searchType;
+//    private String searchTypeText;
+    protected String searchType;
     private String searchText;
 
     private String studySubjectIdentifier;
@@ -57,15 +57,6 @@ public class ParticipantInputCommand {
         organizationAssignedIdentifier.setType(identifierType);
         
         this.participant.addIdentifier(organizationAssignedIdentifier);
-    }
-    
-    /**
-     * This method initializes the IndexFixedList. 
-     */
-    public void refreshIndexFixedLists(){
-    	//update the prior therapy list
-    	priorTherapies = new IndexFixedList<StudyParticipantPriorTherapy>(assignment.getPriorTherapies());
-    	
     }
     
     public Participant getParticipant() {
@@ -106,14 +97,6 @@ public class ParticipantInputCommand {
 
     public void setStudySiteArray(String[] studySiteArray) {
         this.studySiteArray = studySiteArray;
-    }
-
-    public String getSearchTypeText() {
-        return searchTypeText;
-    }
-
-    public void setSearchTypeText(String searchTypeText) {
-        this.searchTypeText = searchTypeText;
     }
 
     public String getSearchType() {

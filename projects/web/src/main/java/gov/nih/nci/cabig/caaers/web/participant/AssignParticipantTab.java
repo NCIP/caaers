@@ -6,79 +6,34 @@ import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCommand> {
 
     private static final Log log = LogFactory.getLog(AssignParticipantTab.class);
-
     private ParticipantRepository participantRepository;
-   
+    protected ListValues listValues;
+
     public AssignParticipantTab() {
-        super("Search for subject", "Search Subject", "par/reg_participant_search");
+        super("Search for subject", "Search Subject 2", "par/reg_participant_search");
     }
 
     @Override
-    public void onDisplay(HttpServletRequest request, AssignParticipantStudyCommand command) {
-        super.onDisplay(request, command);
-
-        String searchText = command.getParticipantText();
-        String searchType = command.getParticipantType();
-        log.debug("Search text : " + searchText + "Type : " + searchType);
-        if (StringUtils.isEmpty(searchText)) return; // no search keyword
-
-        ParticipantQuery participantQuery = new ParticipantQuery();
-        if ("fn".equals(searchType)) {
-            participantQuery.filterByFirstName(searchText);
-        } else if ("ln".equals(searchType)) {
-            participantQuery.filterByLastName(searchText);
-        } else if ("idtf".equals(searchType)) {
-            participantQuery.leftJoinFetchOnIdentifiers();
-            participantQuery.filterByIdentifierValue(searchText);
-        } else if ("g".equals(searchType)) {
-            participantQuery.excludeHavingGender(searchText);
-        } else if ("r".equals(searchType)) {
-            participantQuery.excludeHavingRace(searchText);
-        } else if ("e".equals(searchType)) {
-            participantQuery.excludeHavingEthnicity(searchText);
-
-        }
-
-        final Integer studySiteId = command.getStudySiteId();
-        participantQuery.filterByNotMachingStudySiteId(studySiteId);
-        List<Participant> participants = null;
-        try {
-            participants = participantRepository.searchParticipant(participantQuery);
-        } catch (Exception e) {
-            log.error("Error while searching participants", e);
-        }
-        command.setParticipantSearchResults(participants);
-        command.setParticipantText("");
-
-    }
-
-    @Override
-    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command,
-                    Errors errors) {
+    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        List<Participant> participants = new ArrayList<Participant>();
-        for (Participant participant : command.getParticipantSearchResults()) {
-            if (participant.getId().equals(command.getParticipantId())) {
-                participants.add(participant);
-                command.setParticipants(participants);
-                break;
-            }
-        }
+//        List<Participant> participants = new ArrayList<Participant>();
     }
 
 /*
@@ -98,5 +53,50 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
     @Required
     public void setParticipantRepository(final ParticipantRepository participantRepository) {
         this.participantRepository = participantRepository;
+    }
+
+    public ModelAndView searchSubjects(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        return new ModelAndView(getAjaxViewName(request), map);
+    }
+
+    public ListValues getListValues() {
+        return listValues;
+    }
+
+    public void setListValues(ListValues listValues) {
+        this.listValues = listValues;
+    }
+
+    public Map<String, Object> referenceData(HttpServletRequest request, AssignParticipantStudyCommand command) {
+
+        Map<String, Object> refdata = super.referenceData(command);
+
+        String searchText = command.getSearchText();
+        String searchType = command.getSearchType();
+
+        if (searchText != null && searchType != null && !searchText.trim().equals("") && searchText.trim().length() >=2) {
+
+                ParticipantQuery participantQuery = new ParticipantQuery();
+                if ("fn".equals(searchType)) {
+                    participantQuery.filterByFirstName(searchText);
+                } else if ("ln".equals(searchType)) {
+                    participantQuery.filterByLastName(searchText);
+                } else if ("idtf".equals(searchType)) {
+                    participantQuery.leftJoinFetchOnIdentifiers();
+                    participantQuery.filterByIdentifierValue(searchText);
+                }
+
+                try {
+                    command.setParticipantSearchResults(participantRepository.searchParticipant(participantQuery));
+                } catch (Exception e) {
+                    log.error("Error while searching participants", e);
+                }
+
+                command.setSearchText("");
+        }
+        
+        return refdata;
+        
     }
 }

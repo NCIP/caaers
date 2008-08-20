@@ -62,7 +62,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             }
 
             participantCommand.setStudies(studyRepository.find(query));
-            participantCommand.setSearchTypeText("");
+            participantCommand.setSearchText("");
             participantCommand.setSearchType("");
         }
         // Search END
