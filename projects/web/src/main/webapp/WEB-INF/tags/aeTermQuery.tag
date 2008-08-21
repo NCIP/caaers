@@ -234,7 +234,7 @@
   				<tr>
   					<td class="one">
   						<div>
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" /><input id="addSingleTermBtn" type="button" value="Add"  />
+  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30"/><input id="addSingleTermBtn" type="button" value="Add"  />
   						</div>
   						<div class="local-buttons">
   							

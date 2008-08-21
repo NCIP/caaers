@@ -18,7 +18,7 @@
 <style type="text/css"> 
  .selectbox
 {	
-	width:200px;
+	width:170px;
 	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
 }
 .divNotes,.divOtherMeddra{

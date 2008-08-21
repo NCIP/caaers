@@ -11,7 +11,7 @@
 <% String currClass=index%2==0? "odd":"even"; %>
 <tr align="center" id="${index}" class="<%= currClass %>" onMouseOver="this.className='highlight'"
 				onMouseOut="this.className='<%= currClass %>'">
-	<td><chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true"/></td>
+	<td><chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/></td>
 	<td width="15%">
 		<a style="text-decoration:none" href="<c:url value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true"/>">
 			${reportingPeriod.name}</td>
@@ -49,7 +49,7 @@
 								<% String repcurrClass=k%2==0? "odd":"even"; %>
 								<tr align="center" id="row<%= k++ %>" class="<%= repcurrClass %>" onMouseOver="this.className='highlight'"
 											onMouseOut="this.className='<%= repcurrClass %>'">
-									<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true"/></td>
+									<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 									<td width="15%">
 										<a style="text-decoration:none" href="<c:url value="/pages/ae/editExpeditedReport?aeReport=${aeReport.id}"/>">
 											${report.reportDefinition.name}

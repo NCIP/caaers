@@ -134,7 +134,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 						mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
 					}
 					InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Notes/Verbatim");
-					InputFieldAttributes.setSize(notesField, 50);
+					InputFieldAttributes.setSize(notesField, 20);
 					mainFieldFactory.addField(notesField); //Notes
 				}
 				//grade	
