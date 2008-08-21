@@ -56,6 +56,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private List<StudyParticipantConcomitantMedication> concomitantMedications;
     private List<StudyParticipantPriorTherapy> priorTherapies;
     private StudyParticipantDiseaseHistory diseaseHistory;
+    private String baselinePerformance;
     
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
@@ -229,8 +230,6 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
 	}
 
-
-
 	public void setLabLoads(List<LabLoad> labLoads) {
 
 		this.labLoads = labLoads;
@@ -251,6 +250,13 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 	}
     public void setStartDateOfFirstCourse(Date startDateOfFirstCourse) {
 		this.startDateOfFirstCourse = startDateOfFirstCourse;
+	}
+    
+    public String getBaselinePerformance() {
+		return baselinePerformance;
+	}
+    public void setBaselinePerformance(String baselinePerformance) {
+		this.baselinePerformance = baselinePerformance;
 	}
 
     // //// OBJECT METHODS
