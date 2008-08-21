@@ -240,10 +240,8 @@ td#linkPosition a img {
 	
 	</jsp:attribute>
 	<jsp:attribute name="localButtons">
-    <input type="button"
-			onClick="javascript:fireAction('addStudyAgent','0');"
-			name="AddStudyAgent" value="Add Study Agent">
-		<tags:indicator id="sa-add-indicator" />
+        <tags:indicator id="sa-add-indicator" />
+        <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" name="AddStudyAgent" value="Add Study Agent">
     </jsp:attribute>
 </tags:tabForm>
 </body>
