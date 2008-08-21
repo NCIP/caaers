@@ -14,6 +14,3 @@
 <img src="<c:url value="/images/arrow-down.gif" />" style="cursor:pointer;" onclick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">    
 </c:if>
 
-<div id="_content">
-    <jsp:body />
-</div>
