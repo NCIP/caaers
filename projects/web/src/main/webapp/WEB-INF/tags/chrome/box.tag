@@ -15,7 +15,7 @@
 
     <!-- header -->
     <div class="header"><div class="background-L"><div class="background-R">
-      <h2>${title}</h2>
+      <h2>${title}</h2><c:if test="${!empty title}"><div class="hr"></div></c:if>
     </div></div></div>
     <!-- end header -->
 

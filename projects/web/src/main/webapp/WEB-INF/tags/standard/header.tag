@@ -1,6 +1,7 @@
 <%@taglib prefix="blue" tagdir="/WEB-INF/tags/blue" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
 <div id="header">
 
     <div class="background-R">
@@ -26,9 +27,12 @@
 
         <div id="taskbar">
             <c:if test="${not empty currentSection.tasks}">
+				<c:set var="noOfTasks" value="${fn:length(currentSection.tasks)}" />
+				 <!-- test : ${noOfTasks} , ${fn:length(currentSection.tasks)}-->
                 <c:forEach items="${currentSection.tasks}" var="task">
+				<c:set var="lengthOfTask" value="${fn:length(task.displayName)}" />
                     <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                    	 <a class="${(task == currentTask) || (task.displayName == currentTask.displayName) ? 'selected' : ''}" id="secondlevelnav_${task.linkName}" href="<c:url value="${task.url}"/>"><img src="/caaers/images/blue/icons/${task.linkName}_icon.png"/>${task.displayName}</a> 
+                    	 <a class="${(task == currentTask) || (task.displayName == currentTask.displayName) ?  ( noOfTasks gt 4 ? 'selected gt4' : 'selected lte4') : ( noOfTasks gt 4 ? 'gt4' : 'lte4')} ${(lengthOfTask gt 18 ? 'gt18' : '')}" id="secondlevelnav_${task.linkName}"  href="<c:url value="${task.url}"/>"><img class="${(lengthOfTask gt 18 ? 'imagegt18' : '')}" src="/caaers/images/blue/icons/${task.linkName}_icon.png"/>${task.displayName}</a> 
                     </csmauthz:accesscontrol>
                 </c:forEach>
             </c:if>

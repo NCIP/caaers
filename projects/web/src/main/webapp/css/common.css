@@ -9,25 +9,51 @@ body {
   text-align:center
 }
 
-#workflow-tabs{
-	width: 200px;
-	float: left;
-	margin-top: 140px;
-
+.workflow-tabs{
+	position: relative;
+	top: 140px;
+	width:950px;
+	background-color: #666;
+	z-index: 0;
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	background-image: url(../images/blue/thirdlevelnav_grey_gradient.png);
+	background-repeat:repeat-x;
+	background-position:bottom;
 }
 #thirdlevelnav{
-	padding-top: 15px;
-	padding-right: 0px;
-	padding-bottom: 15px;
-	padding-left: 0px;
+	margin:5px;
 }
 
+#thirdlevelnav div{
+	background-image: url(../images/blue/thirdlevelarrow_grey.png);
+	background-repeat: no-repeat;
+	background-position:right;
+	padding-right: 20px;
+
+}
+#thirdlevelnav div a{
+	text-decoration:none;
+	color: #fff;
+}
+#thirdlevelnav div a:hover{text-decoration:underline}
+#thirdlevelnav div a:active{
+	color:#CCCCCC
+}
+
+#thirdlevelnav.last div{background-image:none;}
+#thirdlevelnav.selected div a{
+    color:#fff;
+	font-weight: bold;
+}
 
 .hr{
 	background-color: #999999;
-	height: 1px;
+	height: 2px;
 	margin-right: 4px;
-	margin-left: 15px;
+	margin-left: 20px;
 }
 
 a {outline:none;}
@@ -104,8 +130,9 @@ background-position: 0px -200px;
 	top: 0px;
 	right: -9px;
 	padding-top: 2px;
-	padding-left: 15px;
 	background-repeat: no-repeat;
+	text-align: center;
+	margin-right:15px;
 }
 
 #login-action a {
@@ -130,12 +157,14 @@ firstlevelnav_searchStudyController: Studies
 
 */
 
+
 a#firstlevelnav_listAdverseEventsController {
 	background-image: url(../images/blue/adverseEvents_btn.png);
 	height: 45px;
-	width: 148px;
+	width: 133px;
 	text-indent: -9999px;
 	float: left;
+	margin-right: -5px;
 }
 a#firstlevelnav_listAdverseEventsController:link{background-position:0px;}
 a#firstlevelnav_listAdverseEventsController:hover{background-position:0px -45px;}
@@ -145,9 +174,11 @@ a#firstlevelnav_listAdverseEventsController:active{background-position:0px -90px
 a#firstlevelnav_searchStudyController {
 	background-image: url(../images/blue/studies_btn.png);
 	height: 45px;
-	width: 148px;
+	width: 133px;
 	text-indent: -9999px;
 	float: left;
+margin-right: -5px;
+margin-left: -5px;
 }
 a#firstlevelnav_searchStudyController:link{background-position:0px;}
 a#firstlevelnav_searchStudyController:hover{background-position:0px -45px;}
@@ -158,9 +189,11 @@ a#firstlevelnav_searchStudyController:active{background-position:0px -90px;}
 a#firstlevelnav_createParticipantController {
 	background-image: url(../images/blue/subjects_btn.png);
 	height: 45px;
-	width: 148px;
+	width: 133px;
 	text-indent: -9999px;
 	float: left;
+	margin-right: -5px;
+margin-left: -5px;
 }
 a#firstlevelnav_createParticipantController:link{background-position:0px;}
 a#firstlevelnav_createParticipantController:hover{background-position:0px -45px;}
@@ -170,9 +203,11 @@ a#firstlevelnav_createParticipantController:active{background-position:0px -90px
 a#firstlevelnav_createRuleController {
 	background-image: url(../images/blue/rules_btn.png);
 	height: 45px;
-	width: 148px;
+	width: 133px;
 	text-indent: -9999px;
 	float: left;
+	margin-right: -5px;
+margin-left: -5px;
 }
 a#firstlevelnav_createRuleController:link{background-position:0px;}
 a#firstlevelnav_createRuleController:hover{background-position:0px -45px;}
@@ -182,26 +217,40 @@ a#firstlevelnav_createRuleController:active{background-position:0px -90px;}
 a#firstlevelnav_studyController {
 	background-image: url(../images/blue/advancedSearch_btn.png);
 	height: 45px;
-	width: 148px;
+	width: 133px;
 	text-indent: -9999px;
 	float: left;
+	margin-right: -5px;
+margin-left: -5px;
 }
 a#firstlevelnav_studyController:link{background-position:0px;}
 a#firstlevelnav_studyController:hover{background-position:0px -45px;}
 a#firstlevelnav_studyController:active{background-position:0px -90px;}
 .selected a#firstlevelnav_studyController {background-image: url(../images/blue/advancedSearch_btn_selected.png);}
 
+a#firstlevelnav_configurationController {
+	background-image: url(../images/blue/administration_btn.png);
+	height: 45px;
+	width: 133px;
+	text-indent: -9999px;
+	float: left;
+	margin-right: -5px;
+margin-left: -5px;
+}
+a#firstlevelnav_configurationController:link{background-position:0px;}
+a#firstlevelnav_configurationController:hover{background-position:0px -45px;}
+a#firstlevelnav_configurationController:active{background-position:0px -90px;}
+.selected a#firstlevelnav_configurationController {background-image: url(../images/blue/administration_btn_selected.png);}
 
 #sso-form { display: none }
 
 #build-name {
-    color: #666;
-    font-size: 85%;
-    padding: 3px;
-    position: relative;
-    bottom: 0px;
-    clear: both;
-    float: left;
+	color: #666;
+	font-size: 85%;
+	padding: 3px;
+	position: absolute;
+	bottom: -150px;
+	margin-left: 20px;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */
@@ -215,8 +264,7 @@ ul.tabs {
 ul.tabs li {
   display: block;
   list-style-type: none;
-
-  margin: 0;
+  float:left;
   padding: 0;
 }
 
@@ -257,11 +305,11 @@ ul.tabs li {
 	padding-left: 10px;
 	color: #FFFFFF;
 	vertical-align: middle;
-	z-index: -0;
+	z-index: 1;
 
 }
 
-#taskbar a {
+#taskbar a.lte4{
 	color:#FFF;
 	text-decoration: none;
 	height: 43px;
@@ -271,12 +319,46 @@ ul.tabs li {
 	font-weight: bold;
 }
 
+#taskbar a.gt4{
+	color:#FFF;
+	text-decoration: none;
+	height: 19px;
+	width: 232px;
+	float:left;
+	padding-top: 2px;
+	font-weight: bold;
+	font-size: 12px;
+	text-indent: 10px;
+	margin-top: 1px;
+	margin-right: 2px;
+}
+
+#taskbar a.lte4 img{
+margin-right:7px;
+margin-left:5px;
+}
+
 #taskbar a:hover {
   color:#ffe9a5;
 }
 
-#taskbar a.selected{
+#taskbar a.lte4 img.imagegt18{
+float:left;
+margin-top:6px;
+}
+
+#taskbar a.lte4.gt18{
+padding-top:2px;
+}
+
+#taskbar a.selected.lte4{
 	background-image: url(../images/blue/secondlevelnav_selected.jpg);
+	background-repeat: no-repeat;
+
+}
+
+#taskbar a.selected.gt4{
+	background-image: url(../images/blue/secondlevelnav_gt4_selected.png);
 	background-repeat: no-repeat;
 
 }
@@ -329,7 +411,7 @@ ul.tabs li {
 	margin-bottom: 12px;
 	background-image: url(../images/blue/box_bg.jpg);
 	background-repeat: repeat-x;
-	float:left;
+
 
 
 }
@@ -338,10 +420,12 @@ ul.tabs li {
 .box .header h2 {
 	color: #333366;
 	margin: 0;
-	padding: 6px 20px 4px 8px;
-	font-size: 13pt;
-	font-weight: 900;
-	text-transform: capitalize;
+	font-size: 1.7em;
+	padding-top: 6px;
+	padding-right: 20px;
+	padding-left: 20px;
+	font-weight:normal;
+
 }
 .box .header .background-L { background: url(../images/blue/box_header_bg_l.jpg) no-repeat top left; }
 .box .header .background-R { background: url(../images/blue/box_header_bg_r.jpg) no-repeat top right; }
@@ -371,10 +455,16 @@ ul.tabs li {
 }
 
 .box h3 {
-  position: relative;
-  border-top: solid 1px #000;
-  background: url(../images/chrome/boxsubhead_BG.png) repeat-x bottom #c9e3eb;
-  padding: 4px 8px;
+	position: relative;
+	padding-top: 4px;
+	padding-right: 8px;
+	padding-bottom: 1px;
+	padding-left: 8px;
+	font-size: 1em;
+	color: #2e3257;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #CCCCCC;
 }
 
 /**** TABS WITHIN A BOX */
@@ -419,6 +509,7 @@ ul.tabs li {
 .box.paired {
     width: 45%;
     margin: 1em;
+	float:left;
 }
 
 .division {
@@ -534,7 +625,7 @@ div.row div.label, div.row div.value {
   line-height: 1.5em;
 }
 div.row div.label {
-  font-weight: bold;
+  font-weight: normal;
   float: left;
   margin-left: 0.5em;
   text-align: right;

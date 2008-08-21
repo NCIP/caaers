@@ -1,1 +1,1 @@
-<span class="required-indicator">*</span>
+<span class="required-indicator"><img src="/caaers/images/blue/icons/flag.png" alt="Required" /></span>

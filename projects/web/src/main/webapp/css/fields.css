@@ -43,7 +43,10 @@ div.autocomplete ul {
     margin: 0;
     padding: 0;
 }
-div.autocomplete ul li.selected { background-color: #ffb;}
+div.autocomplete ul li.selected {
+	background-color: #314993;
+	color: #fff;
+}
 div.autocomplete ul li {
     list-style-type: none;
     display: block;
