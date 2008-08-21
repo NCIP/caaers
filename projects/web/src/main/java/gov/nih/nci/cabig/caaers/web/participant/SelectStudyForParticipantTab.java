@@ -34,7 +34,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     private StudySiteDao studySiteDao;
 
     public SelectStudyForParticipantTab() {
-        super("Choose Study", "Choose Study 2", "par/par_choose_study");
+        super("Choose Study", "Choose Study", "par/par_choose_study");
     }
 
     private ListValues listValues;
