@@ -1,7 +1,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<%@attribute name="id" required="true" %>
+<%@attribute name="id" required="false" %>
 <%@attribute name="targetID" required="true" %>
 <%@attribute name="collapsed" required="false" type="java.lang.Boolean" %>
 
