@@ -1,4 +1,4 @@
-che<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
