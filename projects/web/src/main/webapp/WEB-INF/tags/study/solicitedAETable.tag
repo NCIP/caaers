@@ -1,4 +1,4 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+che<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -49,16 +49,16 @@
     		      </c:if>
     		    </tr>
     			<tr class="head">
-        			<th class="term">Adverse Event Term</th>
-        			<c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
-        			<th id="th-col-epoch-${statusVar.index}" class="epoch" >
-		            	<div><input id="ck${statusVar.index}" type="checkbox" ${displayOnly?'disabled':''}/></div>
-		            </th>
-            		</c:forEach>
-            		   <c:if test="${!displayOnly}">
-        		     		<th class="action"> &nbsp </th>
-        		       </c:if>		
-    			</tr>
+                    <th class="term">Adverse Event Term</th>
+                    <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
+                        <th id="th-col-epoch-${statusVar.index}" class="epoch" align="center">
+                            <div><input id="ck${statusVar.index}" type="checkbox" ${displayOnly?'disabled':''}/></div>
+                        </th>
+                    </c:forEach>
+                    <c:if test="${!displayOnly}">
+                        <th class="action"> &nbsp</th>
+                    </c:if>
+                </tr>
     			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
     			    <study:oneSolicitedAERow displayOnly="${displayOnly}" index="${status.index}" eachRow="${eachRow}" />
     			 </c:forEach>
