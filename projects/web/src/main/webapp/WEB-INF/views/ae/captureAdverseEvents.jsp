@@ -204,7 +204,7 @@ div.row div.value {
 						</jsp:attribute>
 					</tags:renderRow>
       		</div>
-      		
+      		     
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
 					<ae:reportingPeriodAEDetails />

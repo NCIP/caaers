@@ -155,7 +155,7 @@
   				</c:if>
   			</chrome:division>
   	
-			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsable="true">
+			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsed="true" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -178,7 +178,7 @@
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
+			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsed="true" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>

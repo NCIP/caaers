@@ -576,10 +576,10 @@ function replaceDefaultText(e) {
 
         if (panelDiv.style.display == 'none') {
             OpenUp(panelDiv, arguments[1] || {});
-            document.getElementById(imageId).src=imageSource.replace('maximize','minimize');
+            document.getElementById(imageId).src=imageSource.replace('right','down');
         } else {
             CloseDown(panelDiv, arguments[1] || {});
-            document.getElementById(imageId).src=imageSource.replace('minimize','maximize');
+            document.getElementById(imageId).src=imageSource.replace('down','right');
         }
     }
 

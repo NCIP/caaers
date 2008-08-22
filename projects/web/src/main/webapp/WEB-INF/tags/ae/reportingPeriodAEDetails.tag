@@ -11,7 +11,37 @@ Note: -
 	<ae:reportingPeriodDetails />
 </chrome:division>
 
-<chrome:division title="Solicited adverse event(s)" collapsable="true" id="solicitatedID">
+<chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
+               <tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+                   callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
+                   version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
+               </tags:aeTermQuery>
+               <table id="observedTable" width="100%" class="tablecontent">
+                   <tr>
+                       <th scope="col" align="left" width="30%"><b>Term</b> </th>
+                       <th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
+                       <th scope="col" align="left"><b>Attribution</b> </th>
+                       <th scope="col" align="left"><b>Hospitalization</b> </th>
+                       <th scope="col" align="left"><b>Expected</b> </th>
+                    <th scope="col" align="left"> </th>
+                   </tr>
+                <c:set var="noObservedAE" value="true" scope="request"/>
+                   <tr id="observedBlankRow" />
+                   <c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
+                       <c:if test="${not ae.solicited}">
+                        <c:set var="noObservedAE" value="false" scope="request"/>
+                        <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0"/>
+                    </c:if>
+                   </c:forEach>
+                <c:if test="${noObservedAE}">
+                <tr id="observedEmptyRow">
+                        <td colspan="6">No observed adverse event added</td>
+                </tr>
+                </c:if>
+               </table>
+    </chrome:division>
+
+<chrome:division title="Solicited Adverse Event(s)" collapsable="true" id="solicitatedID">
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
 				<tr>
@@ -37,34 +67,5 @@ Note: -
    	</center>
  </chrome:division>
 
-       
-<chrome:division title="Observed adverse event(s)" collapsable="true" id="observedID">
-       	<tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"  
-       		callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
-       		version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
-       	</tags:aeTermQuery>
-       	<table id="observedTable" width="100%" class="tablecontent">
-   			<tr>
-   				<th scope="col" align="left" width="30%"><b>Term</b> </th>
-   				<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-   				<th scope="col" align="left"><b>Attribution</b> </th>
-   				<th scope="col" align="left"><b>Hospitalization</b> </th>
-   				<th scope="col" align="left"><b>Expected</b> </th>
-				<th scope="col" align="left"> </th>
-   			</tr>
-			<c:set var="noObservedAE" value="true" scope="request"/>
-   			<tr id="observedBlankRow" />
-   			<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
-           		<c:if test="${not ae.solicited}">
-					<c:set var="noObservedAE" value="false" scope="request"/>
-            		<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0"/>
-            	</c:if>
-           	</c:forEach>
-			<c:if test="${noObservedAE}">
-			<tr id="observedEmptyRow">
-					<td colspan="6">No observed adverse event added</td>
-			</tr>
-			</c:if>
-           </table>
-</chrome:division>
+
 </c:if>
