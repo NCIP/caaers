@@ -1,12 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <html>
