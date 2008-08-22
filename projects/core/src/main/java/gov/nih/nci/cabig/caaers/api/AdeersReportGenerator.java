@@ -251,7 +251,7 @@ public class AdeersReportGenerator {
             caaersJavaMailSender.send(message);
 
         } catch (Exception e) {
-            throw new Exception(" Error in sending email , please check the confiuration " + e);
+            throw new Exception(" Error in sending email , please check the confiuration " , e);
         }
 
     }
