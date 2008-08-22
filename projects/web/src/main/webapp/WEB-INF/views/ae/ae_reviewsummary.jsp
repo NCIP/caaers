@@ -96,10 +96,6 @@
 				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/></div>
 				</div>
         		</div> 
-        		<p>
-        		If you agree with this assessment and wish to proceed, click Continue. 
-        		Once you click this button, the report will be initiated and the countdown to the due date will begin.
-        		</p>		
         		
         		<p>
         		At your discretion, you may elect to bypass the caAERS-based report selection above and 
