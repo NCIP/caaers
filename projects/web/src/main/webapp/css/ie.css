@@ -1,7 +1,8 @@
 body {
-  /* Have to use _all_ relative units 
+	/* Have to use _all_ relative units 
      for the browser font setting to work on IE6. */
-  font-size: 80%; 
+  font-size: 80%;
+  background: url(../images/blue/bg_ie.jpg) repeat-y center #314993;
 }
 
 /* Force hasLayout */

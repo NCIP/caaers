@@ -1,12 +1,13 @@
 /**** GENERAL TAG STYLE OVERRIDES */
 
 body {
-  margin: 0; padding: 0 0 35px 0;
-  background: url(../images/blue/bg.jpg) repeat-y center #314993;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 10pt;
-  color: #000000;
-  text-align:center
+	background: url(../images/blue/bg.jpg) repeat-y center #314993;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 10pt;
+	color: #000000;
+	text-align:center;
+	margin: 0px;
+	padding: 0px;
 }
 
 .workflow-tabs{
@@ -45,8 +46,16 @@ body {
 
 #thirdlevelnav.last div{background-image:none;}
 #thirdlevelnav.selected div a{
-    color:#fff;
+	color:#333333;
 	font-weight: bold;
+	background-color: #FFFFCC;
+	padding-top: 2px;
+	padding-right: 7px;
+	padding-bottom: 2px;
+	padding-left: 7px;
+	background-image: url(../images/blue/taskbar_selected.png);
+	background-repeat: repeat-x;
+	background-position: bottom;
 }
 
 .hr{
@@ -519,7 +528,8 @@ padding-top:2px;
 /**** REUSABLE PAGE ELEMENTS/CLASSES */
 
 .required-indicator {
-  color: #a00; font-family: serif;
+	color: #a00;
+	font-family: serif;
 }
 
 .required-for-submit {
