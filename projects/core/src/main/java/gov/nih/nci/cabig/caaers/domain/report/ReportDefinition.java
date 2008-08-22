@@ -47,7 +47,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private static final Log log = LogFactory.getLog(ReportDefinition.class);
 
     private String name;
-
+    
+    private String label;
+    
     private String description;
 
     private Boolean amendable;
@@ -63,7 +65,9 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private List<ReportMandatoryFieldDefinition> mandatoryFields;
 
     private Boolean attributionRequired;
-
+    
+    private Boolean expedited;
+    
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
@@ -247,9 +251,27 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         this.attributionRequired = attributionRequired;
     }
 
+    public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public Boolean getExpedited() {
+		return expedited;
+	}
+
+	public void setExpedited(Boolean expedited) {
+		this.expedited = expedited;
+	}    
+    
+
     // //// OBJECT METHODS
 
-    @Override
+
+	@Override
     public String toString() {
         return new StringBuilder(getClass().getSimpleName()).append('[').append(getName()).append(
                         ", ").append(getOrganization()).append(']').toString();

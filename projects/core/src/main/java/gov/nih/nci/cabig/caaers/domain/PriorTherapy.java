@@ -1,11 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Transient;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
@@ -50,7 +52,17 @@ public class PriorTherapy extends AbstractImmutableDomainObject {
     public void setMeddraTerm(String meddraTerm) {
         this.meddraTerm = meddraTerm;
     }
-
+    
+    /**
+     * Will tell whether this prior therapy can have agents associated to it. 
+     * @return
+     */
+    @Transient
+    public boolean isAgentsPossible(){
+    	int[] agentsAllowedTherapyIds = {3,4,5,7,8,11};
+    	return ArrayUtils.contains(agentsAllowedTherapyIds, getId());
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
