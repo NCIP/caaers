@@ -650,6 +650,7 @@ div.row:after, .autoclear:after {
 div.row div.label, div.row div.value {
   line-height: 1.5em;
 }
+
 div.row div.label {
   font-weight: normal;
   float: left;
@@ -664,6 +665,7 @@ div.row div.value {
   margin-left: 11em;
   /* In Mac the Help (?) button is wrapping */
   white-space:nowrap;
+  text-align:left;
 }
 
 img.indicator {

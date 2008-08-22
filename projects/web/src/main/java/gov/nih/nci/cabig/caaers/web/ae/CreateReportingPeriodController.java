@@ -103,8 +103,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	
 	@SuppressWarnings("unchecked")
     @Override
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors) throws Exception {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
         refDataMap.put("fieldGroups", createFieldGroups(command) );
@@ -127,7 +126,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 createEpochOptions(command)));
 		
 		InputField descriptionField = InputFieldFactory.createTextArea("reportingPeriod.description", "Description", false);
-		InputFieldAttributes.setColumns(descriptionField, 60);
+		InputFieldAttributes.setColumns(descriptionField, 45);
 		reportingPeriodFieldGroup.getFields().add(descriptionField);
 		
 		InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", 
@@ -139,7 +138,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 				fetchTreatmentAssignmentOptions(command)));
 		
 		InputField tacDescriptionField =  InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatment description");
-		InputFieldAttributes.setColumns(tacDescriptionField, 60);
+		InputFieldAttributes.setColumns(tacDescriptionField, 45);
 		reportingPeriodFieldGroup.getFields().add(tacDescriptionField);
 		
 		fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
