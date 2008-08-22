@@ -214,10 +214,18 @@ td#linkPosition a img {
 
 </head>
 <body>
-<study:summary />
+Welcxome
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
-	<jsp:attribute name="instructions">
-	  Click on the Add Study Agent button below in order to add an agent to this study.
+
+    <jsp:attribute name="instructions">
+    Click on the Add Study Agent button below in order to add an agent to this study.
+
+        <div align=right>
+            <tags:indicator id="sa-add-indicator" />
+            <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" name="AddStudyAgent" value="Add Study Agent">
+        </div>
+
+      <study:summary />
 	</jsp:attribute>
 	<jsp:attribute name="singleFields">
 		<div>		
@@ -239,10 +247,8 @@ td#linkPosition a img {
     
 	
 	</jsp:attribute>
-	<jsp:attribute name="localButtons">
-        <tags:indicator id="sa-add-indicator" />
-        <input type="button" onClick="javascript:fireAction('addStudyAgent','0');" name="AddStudyAgent" value="Add Study Agent">
-    </jsp:attribute>
+	<jsp:attribute name="localButtons" />
+    
 </tags:tabForm>
 </body>
 </html>

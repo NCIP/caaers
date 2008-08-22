@@ -33,14 +33,11 @@ public class ViewParticipantController extends ParameterizableViewController {
         this.participantDao = participantDao;
     }
 
-    public ModelAndView handleRequestInternal(HttpServletRequest request,
-                    HttpServletResponse response) throws Exception {
+    public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // TODO: according to type go to a different view
         String type = request.getParameter("type");
         setViewName("par/par_confirm");
-        Participant participant = participantDao.getById(Integer.parseInt(request
-                        .getParameter("participantId")));
+        Participant participant = participantDao.getById(Integer.parseInt(request.getParameter("participantId")));
         ModelAndView mav = new ModelAndView("par/par_confirm", "participant", participant);
 
         return mav;

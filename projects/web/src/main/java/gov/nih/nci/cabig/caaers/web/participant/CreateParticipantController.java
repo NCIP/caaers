@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
@@ -54,6 +55,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected WebControllerValidator webControllerValidator;
 
     OrganizationRepository organizationRepository;
+    ParticipantRepository participantRepository;
 
     protected PriorTherapyDao priorTherapyDao;
 
@@ -74,8 +76,20 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         };
     }
 
-    protected ModelAndView processFinish(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, BindException e) throws Exception {
-        return null;  
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
+        log.debug("Entering Process Finish ...");
+
+        ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
+        Participant participant = participantCommand.getParticipant();
+        participantDao.save(participant);
+
+        ModelAndView modelAndView = new ModelAndView("par/par_confirm");
+        modelAndView.addObject("participant", participant);
+        modelAndView.addAllObjects(errors.getModel());
+
+        response.sendRedirect("view?participantId=" + participant.getId() + "&type=confirm");
+
+        return null;
     }
 
     @Override

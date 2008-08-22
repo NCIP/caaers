@@ -128,7 +128,7 @@
  				
  				</c:forEach>
  				<div>
- 				   <img src="/caaers/images/chrome/spacer.gif" width="1" height="150" />
+ 				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
  				</div>
  			</chrome:box>
 		</td>

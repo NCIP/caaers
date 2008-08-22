@@ -1,29 +1,20 @@
-<!-- TODO: This view is virtually identical to the last screen of the create
-participant flow. Factor out their commonalities. -->
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib uri="http://www.extremecomponents.org" prefix="ec" %>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <title>View Subject</title>
-    <tags:stylesheetLink name="participant"/>
-    <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+
     <style type="text/css">
         table.tablecontent {
-            width: 90%;
+            width: 100%;
         }
 
         table.single-fields {
-            width: 90%;
+            width: 100%;
         }
     </style>
+
     <script>
         function submitPage(s) {
             document.getElementById("nextView").value = s;
@@ -38,7 +29,7 @@ participant flow. Factor out their commonalities. -->
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}">
 
-    <chrome:division title="Assigned to Studies">
+    <chrome:division title="Assigned to Study">
         <table class="tablecontent">
             <tr>
                 <th scope="col">Study Short Title</th>
@@ -78,6 +69,7 @@ participant flow. Factor out their commonalities. -->
                             <div class="label">Middle name:</div>
                             <div class="value">${participant.middleName}</div>
                         </div>
+                    </div>
                 </td>
 
                 <td>
@@ -110,15 +102,12 @@ participant flow. Factor out their commonalities. -->
                     <th scope="col">Identifier Type</th>
                     <th scope="col">Identifier</th>
                 </tr>
-                <c:forEach items="${participant.identifiers}"
-                           var="identifier">
+                <c:forEach items="${participant.identifiers}" var="identifier">
                     <tr class="results">
-                        <c:if
-                                test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+                        <c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
                             <td>${identifier.organization}</td>
                         </c:if>
-                        <c:if
-                                test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+                        <c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
                             <td>${identifier.systemName}</td>
                         </c:if>
                         <td>${identifier.type}</td>
@@ -131,3 +120,4 @@ participant flow. Factor out their commonalities. -->
     </c:if>
 </chrome:box>
 </body>
+</html>
