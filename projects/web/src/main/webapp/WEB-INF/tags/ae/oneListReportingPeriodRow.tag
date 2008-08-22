@@ -51,7 +51,7 @@
 											onMouseOut="this.className='<%= repcurrClass %>'">
 									<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 									<td width="15%">
-										<a style="text-decoration:none" href="<c:url value="/pages/ae/editExpeditedReport?aeReport=${aeReport.id}"/>">
+										<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${aeReport.id}"/>">
 											${report.reportDefinition.name}
 										</a>	
 									</td>
