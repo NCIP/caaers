@@ -1,9 +1,5 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
  <head>
  	
@@ -47,14 +43,16 @@
  </head>
  <body>
  <div class="tabpane">
-  <ul id="workflow-tabs" class="tabs autoclear">
-    <li class="tab selected"><div>
+     <div class="workflow-tabs2">
+  <ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab selected"><div>
         <a href="#">Create IND#</a>
     </div></li>
-    <li class="tab"><div>
+    <li id="thirdlevelnav" class="tab"><div>
         <a href="searchIND">Search IND#</a>
     </div></li>
   </ul>
+         </div>
   <br />
   <div class="content">
     <chrome:box title="Investigational New Drug Details">

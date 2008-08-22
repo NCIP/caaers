@@ -1,14 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/extremecomponents.css"/>">
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
 <tags:stylesheetLink name="tabbedflow"/>
@@ -56,14 +47,19 @@ function buildTable(form) {
 </head>
 <body>
 <div class="tabpane">
- <ul id="workflow-tabs" class="tabs autoclear">
-    <li class="tab"><div>
+
+    <div class="workflow-tabs2">
+
+
+ <ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab"><div>
         <a href="createIND">Create IND#</a>
     </div></li>
-    <li class="tab selected"><div>
+    <li id="thirdlevelnav" class="tab selected"><div>
         <a href="#">Search IND#</a>
     </div></li>
  </ul>
+        </div>
  
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">

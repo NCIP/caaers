@@ -1,10 +1,4 @@
-
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
 <head>
@@ -59,14 +53,19 @@
 </head>
 <body>
 <div class="tabpane">
-<ul id="workflow-tabs" class="tabs autoclear">
-    <li class="tab selected">
+
+    <div class="workflow-tabs2">
+
+
+<ul id="" class="tabs autoclear">
+    <li id="thirdlevelnav" class="tab selected">
         <div><a href="createResearchStaff">Create Research Staff</a></div>
     </li>
-    <li class="tab">
+    <li id="thirdlevelnav" class="tab">
         <div><a href="searchResearchStaff">Search Research Staff</a></div>
     </li>
 </ul>
+        </div>
 <br/>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">

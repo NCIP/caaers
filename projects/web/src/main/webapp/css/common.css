@@ -24,6 +24,22 @@ body {
 	background-repeat:repeat-x;
 	background-position:bottom;
 }
+
+.workflow-tabs2{
+	position: relative;
+	width:950px;
+	background-color: #666;
+	z-index: 0;
+	padding-top: 15px;
+	padding-right: 15px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+	background-image: url(../images/blue/thirdlevelnav_grey_gradient.png);
+	background-repeat:repeat-x;
+	background-position:bottom;
+    top:-12px;
+    left:-18px;
+}
 #thirdlevelnav{
 	margin:5px;
 }
@@ -640,7 +656,7 @@ div.row div.label {
   margin-left: 0.5em;
   text-align: right;
   /* default width; pages might override */
-  width: 15em;
+  width: 10em;
 }
 div.row div.value {
   font-weight: normal;

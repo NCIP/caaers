@@ -7,6 +7,7 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ec" uri="http://www.extremecomponents.org"%>
+<%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
@@ -14,3 +15,4 @@
 
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
+<%@ taglib prefix="investigator" tagdir="/WEB-INF/tags/investigator"%>

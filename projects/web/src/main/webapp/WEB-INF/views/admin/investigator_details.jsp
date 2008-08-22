@@ -1,7 +1,4 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@ taglib prefix="investigator" tagdir="/WEB-INF/tags/investigator"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
 <head>
@@ -84,15 +81,21 @@ Event.observe(window, "load", function() {
 <body>
 
 <div class="tabpane">
-  <ul id="workflow-tabs" class="tabs autoclear">
-    <li class="tab selected"><div>
-        <a href="createInvestigator">Create/Edit Investigator</a>
-    </div></li>
-    <li class="tab"><div>
-        <a href="searchInvestigator">Search Investigator</a>
-    </div></li>
-  </ul>
- </div>
+    <div class="workflow-tabs2">
+        <ul id="" class="tabs autoclear">
+            <li id="thirdlevelnav" class="tab selected">
+                <div>
+                    <a href="createInvestigator">Create/Edit Investigator</a>
+                </div>
+            </li>
+            <li id="thirdlevelnav" class="tab">
+                <div>
+                    <a href="searchInvestigator">Search Investigator</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
   <br />
  
 
