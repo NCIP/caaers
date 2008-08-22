@@ -31,10 +31,12 @@ import org.springframework.web.servlet.ModelAndView;
  * workflow
  * 
  * @author Saurabh
+ * @author Ion
+ * @author Biju Joseph
  */
 public abstract class ParticipantController<C extends ParticipantInputCommand> extends AutomaticSaveFlowFormController<C, Participant, ParticipantDao> {
 
-    private static Log log = LogFactory.getLog(CreateParticipantController.class);
+    private static Log log = LogFactory.getLog(ParticipantController.class);
 
     protected WebControllerValidator webControllerValidator;
 
