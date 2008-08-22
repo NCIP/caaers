@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -238,6 +239,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
         // Modified this part to support Many-to-One relationship between ReportingPeriod and ExpeditedReport
         // This will change soon once the use-case related to CaptureAe is finalized.
         List<ExpeditedAdverseEventReport> aeReports = reportingPeriod.getAeReports();
+        List<ExpeditedAdverseEventReport> newExpeditedReportList = new ArrayList<ExpeditedAdverseEventReport>();
         
         if(aeReports.size() == 0){
         	//create the report
@@ -246,6 +248,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
     		aeReport.setReportingPeriod(reportingPeriod);
     		//reportingPeriod.setAeReport(aeReport);
     		reportingPeriod.addAeReport(aeReport);
+    		newExpeditedReportList.add(aeReport);
         }else {
         	//remove unselected AEs from the report
         	List<AdverseEvent> removedAEs = command.findUnselectedAdverseEvents();
@@ -283,6 +286,14 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		if(!removedReportDefs.isEmpty())
 			removeUnselectedReports(reportingPeriod.getAeReports().get(0), removedReportDefs);
         
+		//pre initialize Mandatory Repeating fields of each expedited AE repot 
+		for(ExpeditedAdverseEventReport aeReport : newExpeditedReportList){
+			Collection<ExpeditedReportSection> mandatorySections = evaluationService.mandatorySections(aeReport);
+			reportRepository.initializeMandatorySectionFields(aeReport, mandatorySections);
+			
+		}
+		
+		
         //save the expedited report
         expeditedAdverseEventReportDao.save(reportingPeriod.getAeReports().get(0));
         
