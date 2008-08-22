@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 //java imports
 
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
@@ -58,6 +60,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     ParticipantRepository participantRepository;
 
     protected PriorTherapyDao priorTherapyDao;
+    protected AnatomicSiteDao anatomicSiteDao;
+    protected PreExistingConditionDao preExistingConditionDao;
 
     public CreateParticipantController() {
     }
@@ -105,6 +109,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         super.initBinder(httpServletRequest, binder);
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
@@ -201,5 +207,14 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     @Required
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
 		this.priorTherapyDao = priorTherapyDao;
+	}
+    @Required
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+		this.anatomicSiteDao = anatomicSiteDao;
+	}
+    @Required
+    public void setPreExistingConditionDao(
+			PreExistingConditionDao preExistingConditionDao) {
+		this.preExistingConditionDao = preExistingConditionDao;
 	}
 }
