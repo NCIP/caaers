@@ -51,7 +51,13 @@ public interface ReportRepository {
      *
      * @return ErrorMessages, if any.
      */
-    ReportSubmittability validate(Report report,
-                                  Collection<ExpeditedReportSection> mandatorySections);
+    ReportSubmittability validate(Report report, Collection<ExpeditedReportSection> mandatorySections);
+    
+    /**
+     * Will intialize the mandatory fields
+     * @param aeReport
+     * @param mandatorySections
+     */
+    public void initializeMandatorySectionFields(ExpeditedAdverseEventReport aeReport, Collection<ExpeditedReportSection> mandatorySections);
 
 }
