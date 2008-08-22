@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.DeviceOperator;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -46,7 +47,7 @@ public class MedicalDeviceTab extends AeTab {
         InputFieldAttributes.setSize(manCity, 45);
 
         InputField manState = InputFieldFactory.createSelectField("manufacturerState",
-                        "Manufacturer state", false, InputFieldFactory.collectOptions(
+                        "Manufacturer state", false, WebUtils.collectOptions(
                                         configurationProperty.getMap().get("stateRefData"), "code",
                                         "desc", "Please Select"));
         InputFieldAttributes.setSize(manState, 45);
@@ -69,7 +70,7 @@ public class MedicalDeviceTab extends AeTab {
         InputFieldAttributes.setSize(reprocessorAddress, 45);
 
         InputField deviceReprocessedField = InputFieldFactory.createSelectField(
-                        "deviceReprocessed", "Device reprocessed", false, InputFieldFactory
+                        "deviceReprocessed", "Device reprocessed", false, WebUtils
                                         .collectOptions(Arrays.asList(Availability.values()), null,
                                                         "displayName"));
         deviceReprocessedField.getAttributes().put(InputField.HELP,
@@ -77,7 +78,7 @@ public class MedicalDeviceTab extends AeTab {
 
         InputField evaluationAvailabilityField = InputFieldFactory.createSelectField(
                         "evaluationAvailability", "Evaluation availability", false,
-                        InputFieldFactory.collectOptions(Arrays.asList(Availability.values()),
+                        WebUtils.collectOptions(Arrays.asList(Availability.values()),
                                         null, "displayName"));
         evaluationAvailabilityField.getAttributes().put(InputField.HELP,
                         "ae.medicalDevice.aeReport.medicalDevices.evaluationAvailability");
@@ -100,7 +101,7 @@ public class MedicalDeviceTab extends AeTab {
 
                                         InputFieldFactory.createSelectField("deviceOperator",
                                                         "Device operator", false,
-                                                        InputFieldFactory.collectOptions(Arrays
+                                                        WebUtils.collectOptions(Arrays
                                                                         .asList(DeviceOperator
                                                                                         .values()),
                                                                         null, "displayName")),

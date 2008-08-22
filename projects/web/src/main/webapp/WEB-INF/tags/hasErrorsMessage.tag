@@ -1,7 +1,8 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
-<form:errors path="*">
+<%@attribute name="path" description="The path of the error(s), if empty will use *" %>
+<form:errors path="${empty path ? '*' : path}">
 <div class="errors">
     <c:if test="${not empty messages}">
         <p>

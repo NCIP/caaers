@@ -17,6 +17,6 @@
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
 <jsp:attribute name="field">
-<form:checkbox path="${path}" disabled="${disabled}" cssClass="${cssClass} ${validationCss}"  title="${title}" />
+<form:checkbox id="${path}" path="${path}" disabled="${disabled}" cssClass="${cssClass} ${validationCss}"  title="${title}" />
 </jsp:attribute>
 </ui:fieldWrapper>

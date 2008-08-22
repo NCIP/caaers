@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -83,11 +84,11 @@ public class ReportDefinitionCommand {
     protected Map<Object, Object> collectRoleOptions() {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
                         "reportingRolesRefData"), "code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
                         "invRoleCodeRefData"), "code", "desc"));
-        options.putAll(InputFieldFactory.collectOptions(configurationProperty.getMap().get(
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
                         "studyPersonnelRoleRefData"), "code", "desc"));
 
         return options;

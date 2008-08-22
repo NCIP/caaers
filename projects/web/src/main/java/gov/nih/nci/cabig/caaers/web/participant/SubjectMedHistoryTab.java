@@ -1,19 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantMetastaticDiseaseSite;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +31,6 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.WebUtils;
 
 /**
  * 
@@ -43,6 +44,10 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 	private static final String PRIOR_THERAPY = "priorTherapy";
 	private static final String PRIOR_THERAPY_AGENT = "priorTherapyAgent";
 	
+	private static final String METASTATIC_DISEASE_SITE = "metastaticDiseaseSite";
+	private static final String PRE_EXISTING_CONDITION = "preExistingCondition";
+	private static final String CONCOMITANT_MEDICATION = "concomitantMedication";
+	
 	private int[] agentsPossiblePriorTherapies = {3,4,5,7,8,11};
 	
 	
@@ -51,159 +56,291 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
 	
     private PriorTherapyDao priorTherapyDao;
+    private PreExistingConditionDao preExistingConditionDao;
+    private ConfigProperty configurationProperty;
+    
     
     //static options of dropdowns are cached at Tab level. 
     Map<Object,Object> priorTherapyOptions;
+    Map<Object, Object> preExistingConditionOptions;
+    Map<Object, Object> baselinePerformanceOptions;
     
 	public SubjectMedHistoryTab() {
         super("Subject Medical History", "Subject Medical History", "par/par_subject_med_history");
-        methodNameMap.put("create" + GENERAL, "createGeneral");
-        methodNameMap.put("edit" + GENERAL, "createGeneral");
-        methodNameMap.put("save" + GENERAL, "createGeneral");
+        methodNameMap.put("add" + METASTATIC_DISEASE_SITE, "addMetastaticDiseaseSite");
+        methodNameMap.put("remove" + METASTATIC_DISEASE_SITE, "removeMetastaticDiseaseSite");
         
-        methodNameMap.put("create" + PRIOR_THERAPY,"createPriorTherapy");
-        methodNameMap.put("edit" + PRIOR_THERAPY,"editPriorTherapy");
-        methodNameMap.put("save" + PRIOR_THERAPY,"savePriorTherapy");
+        methodNameMap.put("add" + PRE_EXISTING_CONDITION, "addPreExistingCondition");
+        methodNameMap.put("remove" + PRE_EXISTING_CONDITION, "removePreExistingCondition");
         
-        methodNameMap.put("create" + PRIOR_THERAPY_AGENT,"createPriorTherapyAgent");
+        methodNameMap.put("add" + PRIOR_THERAPY, "addPriorTherapy");
+        methodNameMap.put("remove" + PRIOR_THERAPY, "removePriorTherapy");
         
+        methodNameMap.put("add" + PRIOR_THERAPY_AGENT, "addPriorTherapyAgent");
+        methodNameMap.put("remove" + PRIOR_THERAPY_AGENT, "removePriorTherapyAgent");
+        
+        methodNameMap.put("add" + CONCOMITANT_MEDICATION, "addConcomitantMedication");
+        methodNameMap.put("remove" + CONCOMITANT_MEDICATION, "removeConcomitantMedication");
     }
+	
+	@Override
+    public Map<String, InputFieldGroup> createFieldGroups(T command) {
+    	return new  InputFieldGroupMap();
+	}
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(T command) {
-    	InputFieldGroupMap map = new  InputFieldGroupMap();
-
-    	//selectively add the fields
-    	String currentItem = command.getCurrentItem();
-    	if(StringUtils.isEmpty(currentItem) || StringUtils.equals(currentItem, GENERAL)) initializeGeneralFieldGroup(command, map);
-    	if(StringUtils.isEmpty(currentItem) || StringUtils.equals(currentItem, PRIOR_THERAPY)) initializePriorTherapyFieldGroup(command, map);
-    	if(StringUtils.isEmpty(currentItem) || StringUtils.equals(currentItem, PRIOR_THERAPY_AGENT)) initializePriorTherapyFieldGroup(command, map);
+    public Map<String, Object> referenceData(HttpServletRequest request, T command) {
+    	Map<String, Object> refData = super.referenceData(request, command);
+    	refData.put("preExistingConditionOptions", initializePreExistingConditionOptions());
+    	refData.put("studyDiseasesOptions", command.getStudyDiseasesMap());
+    	refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
+    	refData.put("priorTherapyOptions", initializePriorTherapyOptions());
+    	return refData;
     	
-    	return map;
     }
     
-    private void initializeGeneralFieldGroup(T command, InputFieldGroupMap map){
-    	InputFieldGroup generalFieldGroup = new DefaultInputFieldGroup();
-    	List<InputField> fields = generalFieldGroup.getFields();
-    	map.put(GENERAL, generalFieldGroup);
-    }
-    
-  
-    /**
-     * This method will create the field groups for the prior therapy screen.
-     */
-    private void initializePriorTherapyFieldGroup(T command, InputFieldGroupMap map){
-    	RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory(PRIOR_THERAPY, "priorTherapies");
-    	
-        InputField priorTherapyField = InputFieldFactory.createSelectField("priorTherapy", "Prior therapy", true, fetchPriorTherapyOptions());
-        InputField otherField = InputFieldFactory.createTextArea("other", "Comments", false);
-        InputFieldAttributes.setColumns(otherField, 65);
-        InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start Date", false, true, true, false);
-        InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "Therapy end date", false, true, true, false);
-        rfgFactory.addField(priorTherapyField);
-        rfgFactory.addField(otherField);
-        rfgFactory.addField(startDateField);
-        rfgFactory.addField(endDateField);
-        
-        int i = 0; 
-        for(StudyParticipantPriorTherapy pt : command.getPriorTherapies()){
-            
-            //set up the agents
-            RepeatingFieldGroupFactory rfgAgentFactory = new RepeatingFieldGroupFactory(PRIOR_THERAPY_AGENT, "priorTherapies" + "[" + i +"].priorTherapyAgents"  );
-            InputField agentField = InputFieldFactory.createAutocompleterField("chemoAgent", "Agent", true);
-            rfgAgentFactory.addField(agentField);
-            map.addRepeatingFieldGroupFactory(rfgAgentFactory, pt.getPriorTherapyAgents().size());
-            i++;
-        }
-        
-        
-        map.addRepeatingFieldGroupFactory(rfgFactory, command.getAssignment().getPriorTherapies().size());
-    }
-    
+ 
     
     //----- Create/Edit/Save/Delete operations (tasks) ----------------- 
     
-    public ModelAndView createPriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
-    	T command =(T)cmd;
-
-    	ModelAndView mv = new ModelAndView("par/ajax/priorTherapyFormSection");
-    	mv.getModel().put("index",command.getPriorTherapies().size());
-    	command.setIndex(command.getPriorTherapies().size());
-    	mv.getModel().put("agentIndex", 0);
-    	mv.getModel().put("agentCount", -1);
+    public ModelAndView addMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/metastaticDiseaseSiteFormSection");
+    	List<StudyParticipantMetastaticDiseaseSite> sites = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
+    	modelAndView.getModel().put("metastaticDiseaseSites", sites);
+    	int size = sites.size();
+    	Integer[] indexes = new Integer[]{size};
+    	modelAndView.getModel().put("indexes", indexes);
     	
-    	//create an empty therapy and add it
+    	AnatomicSite site = command.getMetastaticDiseaseSite();
+    	StudyParticipantMetastaticDiseaseSite metastaticSite = new StudyParticipantMetastaticDiseaseSite();
+    	metastaticSite.setCodedSite(site);
+    	command.getAssignment().getDiseaseHistory().addMetastaticDiseaseSite(metastaticSite);
+    	command.setMetastaticDiseaseSite(null);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView removeMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/metastaticDiseaseSiteFormSection");
+    	List<StudyParticipantMetastaticDiseaseSite> sites = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
+    	sites.remove(sites.get(command.getIndex())); //remove the object from command. 
+    	
+    	//create the indexs to display in reverse order
+    	int size = sites.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+    	modelAndView.getModel().put("metastaticDiseaseSites", sites);
+    	modelAndView.getModel().put("indexes", indexes);
+    	return modelAndView;
+    }
+    
+    
+    public ModelAndView addPreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantPreExistingCondition> preConditions = command.getAssignment().getPreExistingConditions();
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/preExistingConditionFormSection");
+    	modelAndView.getModel().put("preExistingConditions", preConditions);
+    	int size = preConditions.size();
+    	Integer[] indexes = new Integer[]{size};
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	StudyParticipantPreExistingCondition preCondition = new StudyParticipantPreExistingCondition();
+    	preCondition.setPreExistingCondition(command.getPreExistingCondition());
+    	command.getAssignment().addPreExistingCondition(preCondition);
+    	command.setPreExistingCondition(null);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView removePreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantPreExistingCondition> preConditions = command.getAssignment().getPreExistingConditions();
+    	preConditions.remove(preConditions.get(command.getIndex())); //remove the element
+    	
+    	//create the indexes in reverse order
+    	int size = preConditions.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/preExistingConditionFormSection");
+    	modelAndView.getModel().put("preExistingConditions", preConditions);
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	return modelAndView;
+    }    
+
+    
+    
+    public ModelAndView addConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantConcomitantMedication> conmeds = command.getAssignment().getConcomitantMedications();
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/concomitantMedicationFormSection");
+    	modelAndView.getModel().put("concomitantMedications", conmeds);
+    	int size = conmeds.size();
+    	Integer[] indexes = new Integer[]{size};
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	StudyParticipantConcomitantMedication conmed = new StudyParticipantConcomitantMedication();
+    	conmed.setAgentName(command.getConcomitantMedication());
+    	conmed.setStartDate(new DateValue());
+    	conmed.setEndDate(new DateValue());
+    	command.getAssignment().addConcomitantMedication(conmed);
+    	command.setConcomitantMedication(null);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView removeConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantConcomitantMedication> conmeds = command.getAssignment().getConcomitantMedications();
+    	conmeds.remove(conmeds.get(command.getIndex())); //remove the element
+    	
+    	//create the indexes in reverse order
+    	int size = conmeds.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/concomitantMedicationFormSection");
+    	modelAndView.getModel().put("concomitantMedications", conmeds);
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	return modelAndView;
+    }
+    
+    
+    public ModelAndView addPriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantPriorTherapy> priorTherapies = command.getAssignment().getPriorTherapies();
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/priorTherapyFormSection");
+    	modelAndView.getModel().put("priorTherapies", priorTherapies);
+    	int size = priorTherapies.size();
+    	Integer[] indexes = new Integer[]{size};
+    	modelAndView.getModel().put("indexes", indexes);
+    	
     	StudyParticipantPriorTherapy priorTherapy = new StudyParticipantPriorTherapy();
+    	priorTherapy.setPriorTherapy(command.getPriorTherapy());
     	priorTherapy.setStartDate(new DateValue());
     	priorTherapy.setEndDate(new DateValue());
-//    	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
-    	priorTherapy.setAssignment(command.getAssignment());
+    	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
+    	command.getAssignment().addPriorTherapy(priorTherapy);
+    	command.setPriorTherapy(null);
     	
-    	command.getPriorTherapies().add(priorTherapy);
-
-    	return mv;
-    	
-	}
-    
-    public ModelAndView savePriorTherapy(HttpServletRequest request , Object cmd, Errors errors) {
- 		T command =(T)cmd;
-
-	 	String view = (errors.hasErrors()) ? "par/ajax/priorTherapyFormSection" : "par/ajax/savedSucessfully";
-	 	
-	 	ModelAndView mv = new ModelAndView(view);
-	 	mv.getModel().put("index",command.getIndex());
-    	return mv;
-    	
-	}
-    
-    public ModelAndView createPriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors) {
- 		T command =(T)cmd;
- 		
-    	StudyParticipantPriorTherapy priorTherapy = command.getPriorTherapies().get(command.getIndex());
-    	StudyParticipantPriorTherapyAgent priorTherapyAgent = new StudyParticipantPriorTherapyAgent();
-    	int size = priorTherapy.getPriorTherapyAgents().size();
-    	ModelAndView mv = new ModelAndView("par/ajax/priorTherapyAgentFormSection");
-    	mv.getModel().put("index",command.getIndex());
-    	mv.getModel().put("agentIndex", size);
-    	mv.getModel().put("agentCount", size + 1);
-    	
-    	priorTherapy.addPriorTherapyAgent(priorTherapyAgent);
-    	
-    	return mv;
+    	return modelAndView;
     }
+    
+    public ModelAndView removePriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	List<StudyParticipantPriorTherapy> priorTherapies = command.getAssignment().getPriorTherapies();
+    	priorTherapies.remove(priorTherapies.get(command.getIndex())); //remove the element
+    	
+    	//create the indexes in reverse order
+    	int size = priorTherapies.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/priorTherapyFormSection");
+    	modelAndView.getModel().put("priorTherapies", priorTherapies);
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView addPriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	StudyParticipantPriorTherapy priorTherapy = command.getAssignment().getPriorTherapies().get(command.getParentIndex());
+    	List<StudyParticipantPriorTherapyAgent> priorTherapyAgents = priorTherapy.getPriorTherapyAgents();
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/priorTherapyAgentFormSection");
+    	modelAndView.getModel().put("priorTherapyAgents", priorTherapyAgents);
+    	modelAndView.getModel().put("parentIndex", command.getParentIndex());
+    	int size = priorTherapyAgents.size();
+    	Integer[] indexes = new Integer[]{size};
+    	modelAndView.getModel().put("indexes", indexes);
+    	
+    	StudyParticipantPriorTherapyAgent agent = new StudyParticipantPriorTherapyAgent();
+    	agent.setChemoAgent(command.getChemoAgent());
+    	priorTherapy.addPriorTherapyAgent(agent);
+    	command.setChemoAgent(null);
+    	
+    	return modelAndView;
+    }
+    
+    public ModelAndView removePriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
+    	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+    	StudyParticipantPriorTherapy priorTherapy = command.getAssignment().getPriorTherapies().get(command.getParentIndex());
+    	List<StudyParticipantPriorTherapyAgent> priorTherapyAgents = priorTherapy.getPriorTherapyAgents();
+    	
+    	priorTherapyAgents.remove(priorTherapyAgents.get(command.getIndex())); //remove the element
+    	
+    	//create the indexes in reverse order
+    	int size = priorTherapyAgents.size();
+    	Integer[] indexes = new Integer[size];
+    	for(int i = 0 ; i < size ; i++){
+    		indexes[i] = size - (i + 1);
+    	}
+    	
+    	ModelAndView modelAndView = new ModelAndView("par/ajax/priorTherapyAgentFormSection");
+    	modelAndView.getModel().put("priorTherapyAgents", priorTherapyAgents);
+    	modelAndView.getModel().put("indexes", indexes);
+    	modelAndView.getModel().put("parentIndex", command.getParentIndex());
+    	
+    	return modelAndView;
+    }
+   
+  
     
     /**
      * Will initialize the Priortherapy drop down options
      * @return
      */
-    private Map<Object, Object> fetchPriorTherapyOptions() {
+    private Map<Object, Object> initializePriorTherapyOptions() {
     	if(priorTherapyOptions == null){
-    		this.priorTherapyOptions = new LinkedHashMap<Object, Object>();
-    		List<PriorTherapy> therapies = priorTherapyDao.getAll();
-    		priorTherapyOptions.put("", "Please select");
-    		if(therapies != null){
-        		for(PriorTherapy therapy : therapies ){
-        			priorTherapyOptions.put(therapy.getId(), therapy.getText());
-        		}
-        	}
+    		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAll(),"id", "text","Please select");
     	}
         return priorTherapyOptions;
     }
     
-    @Override
-    protected void validate(T command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
-    	super.validate(command, commandBean, fieldGroups, errors);
-    }
-    
-    //TAB methods
-    @Override
-    public void onDisplay(HttpServletRequest request, T command) {
-    	//for non-ajax request, refresh the index fixed lists.
-    	if(!StringUtils.equalsIgnoreCase(request.getParameter(getAjaxRequestParamName()), "true")){
-//    		command.refreshIndexFixedLists();
+    /**
+     * Will initialize the pre-existing condition options.
+     * @return
+     */
+    private Map<Object, Object> initializePreExistingConditionOptions(){
+    	if(preExistingConditionOptions == null){
+    		 List<PreExistingCondition> list = preExistingConditionDao.getAll();
+    	        if (list != null) {
+    	        	preExistingConditionOptions = new LinkedHashMap<Object, Object>();
+    	        	preExistingConditionOptions.put(" ", "Please select");
+    	        	preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
+    	        }
     	}
+    	return preExistingConditionOptions;
+    }
+    /**
+     * Will return the options for baseline performance
+     * @return
+     */
+    private Map<Object, Object> initializeBaselinePerformanceOptions() {
+    	if(baselinePerformanceOptions == null){
+    		baselinePerformanceOptions = WebUtils.collectOptions(configurationProperty.getMap().get("bpsRefData"), "code", "desc", "Please select");
+    	}
+    	return baselinePerformanceOptions;
     }
     
+  
+   
     @Override
     public String getMethodName(HttpServletRequest request) {
     	String currentItem = request.getParameter("currentItem");
@@ -213,7 +350,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     
     @Override
     protected boolean methodInvocationRequest(HttpServletRequest request) {
-    	return WebUtils.hasSubmitParameter(request, "currentItem") && WebUtils.hasSubmitParameter(request, "task");
+    	return org.springframework.web.util.WebUtils.hasSubmitParameter(request, "currentItem") && org.springframework.web.util.WebUtils.hasSubmitParameter(request, "task");
     }
     
     //OBJECT METHODS
@@ -223,6 +360,15 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
 		this.priorTherapyDao = priorTherapyDao;
 	}
-
+    public PreExistingConditionDao getPreExistingConditionDao() {
+		return preExistingConditionDao;
+	}
+    public void setPreExistingConditionDao(
+			PreExistingConditionDao preExistingConditionDao) {
+		this.preExistingConditionDao = preExistingConditionDao;
+	}
+    public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 }
 

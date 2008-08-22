@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -155,7 +156,7 @@ public class DetailsTab extends StudyTab {
         InputFieldGroup studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
         List<InputField> scFields = studyCodeFieldGroup.getFields();
         scFields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology",
-                         true, InputFieldFactory.collectOptions(Arrays.asList(Term.values()),
+                         true, WebUtils.collectOptions(Arrays.asList(Term.values()),
                                          null, "displayName")));
 
         // TODO: Add validation for when terminology.term = Term.CTC
@@ -178,7 +179,7 @@ public class DetailsTab extends StudyTab {
         List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();
         sdFields.add(InputFieldFactory
                         .createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology",
-                                        true, InputFieldFactory.collectOptions(Arrays
+                                        true, WebUtils.collectOptions(Arrays
                                                             .asList(DiseaseCodeTerm.values()),
                                                             null, "displayName")));
             sdFields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion",

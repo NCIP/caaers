@@ -9,6 +9,7 @@
 <%@attribute name="validationJSClass" description="The classes required for validation framework" %>
 <%@attribute name="populatorJS" description="The Javascript to be used as populator" %>
 <%@attribute name="selectorJS" description="The javascript to be used as selector" %>
+<%@attribute name="optionsJS" description="The javascript that will be sent in as the options to auto completer" %>
 <%@attribute name="embededJS" description="The javascript snippent , if specified will be embeded in this element" %>
 
 <%@attribute name="readonly" description="Specifies the readonly attribute" %>
@@ -20,6 +21,7 @@
 <%@attribute name="size" description="Specifies the display size of the text field" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
 <%@attribute name="enableClearButton" type="java.lang.Boolean" description="If true, will enable the clear button" %>
+
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}">
@@ -33,18 +35,28 @@
 </jsp:attribute>
 <jsp:attribute name="embededJS">
 	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
-	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS});
+	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
     $('${path}-input').observe('focus', function() {
 		if($('${path}').value == ''){
-			 $('${path}-input').clear();
+			 var el = $('${path}-input');
+			 el.clear();
+			 el.removeClassName('pending-search');
 		}
     });
     $('${path}-input').observe('blur', function() {
-        if ($('${path}-input').value == '') {
-            $('${path}-input').value = '${initialDisplayValue}';
+		var fn = function(){
+			var el = $('${path}-input');
+        	if (el.value == '') {
+            el.value = '${initialDisplayValue}';
+			el.addClassName('pending-search');
 			$('${path}').clear();
-        }
+        	} 
+		};
+		setTimeout(fn, 4000);
     });
+	if($('${path}').value == ''){
+		$('${path}-input').addClassName('pending-search');
+	}
     </c:if>
 	${embededJS}
 </jsp:attribute>

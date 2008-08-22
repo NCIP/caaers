@@ -26,6 +26,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 /**
  * 
@@ -74,7 +75,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	}
 	
 	public Map<Object, Object> fetchTreatmentAssignmentOptions(CaptureAdverseEventInputCommand cmd) {
-		return InputFieldFactory.collectOptions(cmd.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
+		return WebUtils.collectOptions(cmd.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
 	}
 	
 	protected Map<Object, Object> createExpectedOptions() {
@@ -88,14 +89,14 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	protected Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
         hospitalizationOptions.put("", "Please Select");
-        hospitalizationOptions.putAll(InputFieldFactory.collectOptions(HOSPITALIZATION, "name", "displayName"));
+        hospitalizationOptions.putAll(WebUtils.collectOptions(HOSPITALIZATION, "name", "displayName"));
         return hospitalizationOptions;
     }
 	
 	protected Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
-        attributionOptions.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution
+        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution
                         .values()), "name", "displayName"));
         return attributionOptions;
     }
@@ -113,14 +114,14 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
         	if(ctcGrades == null || ctcGrades.isEmpty()){
         		//no- add grades (1-5)
-        		gradeOptions.putAll(InputFieldFactory.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
+        		gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
         	}else{
         		//if contextual grades are there , add it
-        		gradeOptions.putAll(InputFieldFactory.collectCustomOptions(ctcGrades, "name", "code", "displayName", "-"));
+        		gradeOptions.putAll(WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", "-"));
         	}
         }else{
         	//always add the grades (1-5)
-        	gradeOptions.putAll(InputFieldFactory.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
+        	gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
         }
             	
         return gradeOptions;

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.collectOptions;
+import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createDateField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -58,7 +59,7 @@ public class RadiationInterventionTab extends AeTab {
                         "displayName"));
 
         InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit",
-                        "Unit of measure", false, InputFieldFactory.collectOptions(
+                        "Unit of measure", false, WebUtils.collectOptions(
                                         configurationProperty.getMap().get(
                                                         "radiationDoseUMORefData"), "code", "desc",
                                         "Please Select"));
@@ -74,7 +75,7 @@ public class RadiationInterventionTab extends AeTab {
                                         doseUOMField, createDateField("lastTreatmentDate","Date of last treatment", false), fractionNumberField,
                         createTextField("daysElapsed", " Number of elapsed days", false),
                         // createTextField("adjustment", "Adjustment", false)
-                        createSelectField("adjustment", "Adjustment", false, InputFieldFactory
+                        createSelectField("adjustment", "Adjustment", false, WebUtils
                                         .collectOptions(configurationProperty.getMap().get(
                                                         "radiationAdjustmentRefData"), "code",
                                                         "desc", "Please Select")));

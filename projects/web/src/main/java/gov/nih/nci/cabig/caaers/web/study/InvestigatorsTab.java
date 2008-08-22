@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -76,7 +77,7 @@ class InvestigatorsTab extends StudyTab {
         InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
         siteFieldGroup.getFields().add(
                         InputFieldFactory.createSelectField("studySiteIndex", "Site", true,
-                                        InputFieldFactory.collectOptions(
+                        		WebUtils.collectOptions(
                                                         collectStudyOrganizations(command), "code",
                                                         "desc")));
         map.addInputFieldGroup(siteFieldGroup);

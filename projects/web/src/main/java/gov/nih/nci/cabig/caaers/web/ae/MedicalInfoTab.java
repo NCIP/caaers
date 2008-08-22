@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class MedicalInfoTab extends AeTab {
     private Map<Object, Object> optionsFromConfigurationProperty(String propName, String blankValue) {
         List<Lov> lov = configurationProperty.getMap().get(propName);
         if (lov == null) throw new CaaersSystemException("No LOV for " + propName);
-        return InputFieldFactory.collectOptions(lov, "code", "desc", blankValue);
+        return WebUtils.collectOptions(lov, "code", "desc", blankValue);
     }
     
     private List<AbstractStudyDisease> optionsForStudyDiseases(Study study){
@@ -56,7 +57,7 @@ public class MedicalInfoTab extends AeTab {
     private Map<Object, Object> optionsForCtep(ExpeditedAdverseEventInputCommand command){
     	Map<Object, Object> ctepStudyDiseaseOptions = new LinkedHashMap<Object, Object>();
     	ctepStudyDiseaseOptions.put("","Please select");
-    	ctepStudyDiseaseOptions.putAll(InputFieldFactory.collectOptions(command.getStudy().getCtepStudyDiseases(),"id", "term.term"));
+    	ctepStudyDiseaseOptions.putAll(WebUtils.collectOptions(command.getStudy().getCtepStudyDiseases(),"id", "term.term"));
     	return ctepStudyDiseaseOptions;
     }
 
@@ -73,7 +74,7 @@ public class MedicalInfoTab extends AeTab {
 
         InputField studyDisease = null;
         // Business Rule default to CTEP , if MedDRA then return MedDRA
-        Map<Object, Object> ctepStudyDiseaseOptions = InputFieldFactory
+        Map<Object, Object> ctepStudyDiseaseOptions = WebUtils
 				.collectOptions(command.getStudy().getCtepStudyDiseases(),
 						"id", "term.term","");
 		studyDisease = InputFieldFactory.createSelectField("ctepStudyDisease",
@@ -81,7 +82,7 @@ public class MedicalInfoTab extends AeTab {
         
         if (((ExpeditedAdverseEventInputCommand)command).getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
     		
-        	 Map<Object, Object> meddraStudyDiseaseOptions = InputFieldFactory.collectOptions(
+        	 Map<Object, Object> meddraStudyDiseaseOptions = WebUtils.collectOptions(
              		command.getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "");
         	 studyDisease = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false,
                  meddraStudyDiseaseOptions);

@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -94,13 +95,13 @@ public class RoutineAeMeddraTab extends AeRoutTab {
     private Map<Object, Object> createGradeOptions() {
         Map<Object, Object> gradeOptions = new LinkedHashMap<Object, Object>();
         gradeOptions.put("", "Please select");
-        gradeOptions.putAll(InputFieldFactory.collectOptions(GRADES, "name", "code"));
+        gradeOptions.putAll(WebUtils.collectOptions(GRADES, "name", "code"));
         return gradeOptions;
     }
 
     private Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
-        hospitalizationOptions.putAll(InputFieldFactory.collectOptions(Arrays
+        hospitalizationOptions.putAll(WebUtils.collectOptions(Arrays
                         .asList(Hospitalization.values()), "name", "displayName"));
         return hospitalizationOptions;
     }
@@ -108,7 +109,7 @@ public class RoutineAeMeddraTab extends AeRoutTab {
     private Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
-        attributionOptions.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution
+        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution
                         .values()), "name", "displayName"));
         return attributionOptions;
     }

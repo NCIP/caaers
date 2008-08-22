@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
@@ -37,7 +38,7 @@ public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithF
         options.put("", "Please select");
         List<Organization> organizations = organizationRepository.getOrganizationsHavingStudySites();
         if (organizations != null) {
-            options.putAll(InputFieldFactory.collectOptions(organizations, "id", "fullName"));
+            options.putAll(WebUtils.collectOptions(organizations, "id", "fullName"));
         }
         siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("organization", "Site", true, options));
 
@@ -74,7 +75,7 @@ public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithF
         options = new LinkedHashMap<Object, Object>();
         List<Lov> list = configurationProperty.getMap().get("participantIdentifiersType");
         options.put("", "Please select");
-        options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
+        options.putAll(WebUtils.collectOptions(list, "code", "desc"));
 
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
         repeatingFieldGroupFactorySys.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
@@ -95,7 +96,7 @@ public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithF
 
     protected Map<Object, Object> collectOptions(final List<ListValues> list) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.putAll(InputFieldFactory.collectOptions(list, "code", "desc"));
+        options.putAll(WebUtils.collectOptions(list, "code", "desc"));
         return options;
     }
 

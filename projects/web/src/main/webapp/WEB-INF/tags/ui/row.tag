@@ -23,5 +23,6 @@
     <c:if test="${not empty extra}">
         <div class="extra">${extra}</div>
     </c:if>
+<c:if test="${not empty embededJS}"><script>${embededJS}</script></c:if>
 </div>
 

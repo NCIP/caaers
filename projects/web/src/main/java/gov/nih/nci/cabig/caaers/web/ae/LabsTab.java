@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 
@@ -75,7 +76,7 @@ public class LabsTab extends AeTab {
 
         creator.createRepeatingFieldGroup("lab", "labs", createNameCreator(), labNameField,
                         otherField, InputFieldFactory.createSelectField("units", "Units", false,
-                                        InputFieldFactory.collectOptions(configurationProperty
+                        		WebUtils.collectOptions(configurationProperty
                                                         .getMap().get("labUnitsRefData"), "code",
                                                         "desc", "Please select")),
                         createLabValueField("baseline", "Baseline"), createLabDateField("baseline",

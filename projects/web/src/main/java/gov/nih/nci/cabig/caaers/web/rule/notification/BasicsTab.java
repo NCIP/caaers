@@ -41,15 +41,23 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
                         true);
         InputFieldAttributes.setSize(nameField, 50);
         fields.add(nameField);
+        
+        InputField labelField = InputFieldFactory.createTextField("reportDefinition.label", "Display Name",
+                        true);
+        InputFieldAttributes.setSize(labelField, 50);
+        fields.add(labelField);
+        
         InputField descField = InputFieldFactory.createTextArea("reportDefinition.description",
                         "Description", false);
         InputFieldAttributes.setColumns(descField, 50);
         fields.add(descField);
 
-        InputField amendableField = InputFieldFactory.createBooleanSelectField(
-                        "reportDefinition.amendable", "Amendable?", true);
+        InputField amendableField = InputFieldFactory.createBooleanSelectField("reportDefinition.amendable", "Amendable?", true);
         fields.add(amendableField);
-
+        
+        InputField expeditedField = InputFieldFactory.createBooleanSelectField("reportDefinition.expedited", "Report is expedited?", true);
+        fields.add(expeditedField);
+        
         InputField attributionRequiredField = InputFieldFactory.createBooleanSelectField(
                         "reportDefinition.attributionRequired", "Attribution required?", true);
         fields.add(attributionRequiredField);

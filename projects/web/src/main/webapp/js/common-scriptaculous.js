@@ -146,6 +146,16 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
     )
 }
 
+AE.resetAutocompleter = function(propertyName){
+	var el = $(propertyName);
+	if(el){
+		el.value='';
+		var elInput = $(propertyName + '-input');
+		elInput.value="Begin typing here...";
+		elInput.addClassName('pending-search');
+	}
+}
+
 ////// INLINE HELP
 
 AE.helpToggle = function(field) {

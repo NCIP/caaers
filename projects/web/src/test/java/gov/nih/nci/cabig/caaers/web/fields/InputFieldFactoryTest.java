@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +23,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCollectedOptions() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", "name");
+        Map<Object, Object> actual = WebUtils.collectOptions(items, "code", "name");
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
@@ -33,7 +34,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCollectedOptionsMaintainsOrder() throws Exception {
         List<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", "name");
+        Map<Object, Object> actual = WebUtils.collectOptions(items, "code", "name");
 
         List<Object> actualKeys = new LinkedList<Object>(actual.keySet());
         assertEquals("Wrong number of options", items.size(), actualKeys.size());
@@ -44,7 +45,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCollectedOptionsNullValuePropNameUsesToString() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, null, "name");
+        Map<Object, Object> actual = WebUtils.collectOptions(items, null, "name");
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {
@@ -55,7 +56,7 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCollectedOptionsNullLabelPropNameUsesToString() throws Exception {
         Collection<Grade> items = Arrays.asList(Grade.values());
-        Map<Object, Object> actual = InputFieldFactory.collectOptions(items, "code", null);
+        Map<Object, Object> actual = WebUtils.collectOptions(items, "code", null);
 
         assertEquals("Wrong number of options", items.size(), actual.size());
         for (Grade grade : items) {

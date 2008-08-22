@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -74,13 +75,13 @@ public class TreatmentTab extends AeTab {
                         adverseEventCourse_dateField, eventCourseField, totalCourseField);
 
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent",
-                        false, InputFieldFactory.collectOptions(
+                        false, WebUtils.collectOptions(
                                         command.getStudy().getStudyAgents(), "id", "agentName"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount",
                         "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units",
-                        "Unit of measure", false, InputFieldFactory.collectOptions(
+                        "Unit of measure", false, WebUtils.collectOptions(
                                         configurationProperty.getMap().get("agentDoseUMORefData"),
                                         "code", "desc", "Please Select"));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,
@@ -89,7 +90,7 @@ public class TreatmentTab extends AeTab {
                         .addField(
                                         InputFieldFactory.createSelectField(
                                                         "administrationDelayUnits", "", false,
-                                                        InputFieldFactory.collectOptions(
+                                                        WebUtils.collectOptions(
                                                                         Arrays.asList(DelayUnits
                                                                                         .values()),
                                                                         null, "displayName"))));
@@ -111,7 +112,7 @@ public class TreatmentTab extends AeTab {
         DefaultInputFieldGroup group = new DefaultInputFieldGroup(null, displayName).addField(
                         InputFieldFactory.createTextField("amount", "", required)).addField(
                         InputFieldFactory.createSelectField("units", "units", false,
-                                        InputFieldFactory.collectOptions(configurationProperty
+                        		WebUtils.collectOptions(configurationProperty
                                                         .getMap().get("agentDoseUMORefData"),
                                                         "code", "desc", "Please Select")));
         if (!hideRoute) {

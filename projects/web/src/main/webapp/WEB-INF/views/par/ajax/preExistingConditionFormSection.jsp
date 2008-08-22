@@ -6,7 +6,7 @@
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
-	<c:set var="pt" value="${priorTherapies[index]}" />
-	<par:onePriorTherapy index="${index}" priorTherapy="${pt}" />
+	<c:set var="preCond" value="${preExistingConditions[index]}" />
+	<par:onePreExistingCondition index="${index}" preExistingCondition="${preCond.preExistingCondition}" />
 </c:forEach>
 </tags:noform>

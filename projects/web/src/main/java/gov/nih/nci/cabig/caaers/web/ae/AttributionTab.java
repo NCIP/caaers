@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class AttributionTab extends AeTab {
     private static Map<Object, Object> collectAttributionOptions() {
         Map<Object, Object> map = new LinkedHashMap<Object, Object>();
         map.put("", "Please select");
-        map.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution.values()), "name",
+        map.putAll(WebUtils.collectOptions(Arrays.asList(Attribution.values()), "name",
                         null));
         return map;
     }

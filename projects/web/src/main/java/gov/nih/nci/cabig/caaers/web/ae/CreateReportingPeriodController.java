@@ -28,6 +28,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -287,7 +288,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
 	
 	public Map<Object, Object> fetchTreatmentAssignmentOptions(final Object cmd) {
 		ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) cmd;
-		return InputFieldFactory.collectOptions(rpCommand.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
+		return WebUtils.collectOptions(rpCommand.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
 	}
 	
 	protected Map<Object, Object> createEpochOptions(final Object command){

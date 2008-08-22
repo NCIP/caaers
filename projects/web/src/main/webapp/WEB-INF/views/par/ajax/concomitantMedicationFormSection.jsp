@@ -6,7 +6,7 @@
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <tags:noform>
 <c:forEach items="${indexes}" var="index">
-	<c:set var="pt" value="${priorTherapies[index]}" />
-	<par:onePriorTherapy index="${index}" priorTherapy="${pt}" />
+	<c:set var="cMed" value="${concomitantMedications[index]}" />
+	<par:oneConcomitantMedication index="${index}" concomitantMedication="${cMed}" />
 </c:forEach>
 </tags:noform>

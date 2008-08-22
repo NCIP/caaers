@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -50,7 +51,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
                     String valueProperty, String... exclusionProperties) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        options.putAll(InputFieldFactory.collectOptions(list, nameProperty, valueProperty));
+        options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));
         for (String key : exclusionProperties) {
             options.remove(key);
         }

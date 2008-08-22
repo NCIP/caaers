@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -48,7 +49,7 @@ public abstract class BasicsTab extends AeTab {
     private Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
-        attributionOptions.putAll(InputFieldFactory.collectOptions(Arrays.asList(Attribution
+        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution
                         .values()), "name", null));
         return attributionOptions;
     }
@@ -78,12 +79,12 @@ public abstract class BasicsTab extends AeTab {
         InputFieldAttributes.setRows(commentsField, 5);
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", InputFieldFactory
-                        .createLongSelectField("grade", "Grade", true, InputFieldFactory
+                        .createLongSelectField("grade", "Grade", true, WebUtils
                                         .collectOptions(EXPEDITED_GRADES, "name", null)),
                         InputFieldFactory.createDateField("startDate", "Start date", FieldValidator.DATE_VALIDATOR),
                         InputFieldFactory.createDateField("endDate", "End date", FieldValidator.DATE_VALIDATOR), attributionField,
                         InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",
-                                        false, InputFieldFactory.collectOptions(Arrays
+                                        false, WebUtils.collectOptions(Arrays
                                                         .asList(Hospitalization.values()), "name",
                                                         "displayName")), exField, commentsField);
     }

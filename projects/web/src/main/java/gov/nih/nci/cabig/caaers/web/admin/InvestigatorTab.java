@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
                     final String valueProperty) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        options.putAll(InputFieldFactory.collectOptions(list, nameProperty, valueProperty));
+        options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));
         return options;
     }
 
@@ -101,7 +102,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         options.put("", "Please select");
         List<Organization> organizations = getOrganizations();
         if (organizations != null) {
-            options.putAll(InputFieldFactory.collectOptions(organizations, "id", "name"));
+            options.putAll(WebUtils.collectOptions(organizations, "id", "name"));
         }
 
         // rfgFactory.addField(InputFieldFactory.createSelectField("organization", "Organization",
