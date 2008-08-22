@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -20,6 +22,8 @@ import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,6 +159,59 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
     }
 
+    
+    
+
+    /**
+     * The repeating fields available in the mandatory sections will be pre-initialized here.
+     */
+
+    @SuppressWarnings("unchecked")
+    public void initializeMandatorySectionFields(ExpeditedAdverseEventReport aeReport, Collection<ExpeditedReportSection> mandatorySections) {
+        if (mandatorySections == null || mandatorySections.isEmpty()) {
+            log.info("No mandatory sections available, so no fields will be pre initialized");
+            return;
+        }
+
+        // pre-initialize lazy fields in mandatory sections.
+        BeanWrapper wrapper = new BeanWrapperImpl(aeReport);
+        for (ExpeditedReportSection section : mandatorySections) {
+            assert (section != null) : "A section is null in command.getManatorySections()";
+
+            TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
+            if (sectionNode == null) log.warn("Unable to fetch TreeNode for section"  + section.name());
+
+            assert (sectionNode != null) : section.toString()  + ", is not available in ExpeditedReportTree.";
+            if (sectionNode.getChildren() == null) continue;
+
+            for (TreeNode node : sectionNode.getChildren()) {
+                if (node.isList()) {
+                    log.info("Initialized '" + node.getPropertyName() + "' in section "  + section.name());
+                    wrapper.getPropertyValue(node.getPropertyName() + "[0]");
+                }
+            }
+
+            // special case, when TreatmentInformation (course&agents tab) is mandatory.
+            // All StudyAgents associated with lead IND should be pre-initialized.
+            if (ExpeditedReportSection.TREATMENT_INFO_SECTION.equals(section)) {
+                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper.getPropertyValue(sectionNode.getChildren().get(0).getPropertyName() + ".courseAgents");
+                if (courseAgents.size() <= 0) {
+                    // first time, the user did not override system pre selection.
+                    int i = 0;
+                    for (StudyAgent agent : aeReport.getStudy().getStudyAgents()) {
+                        if (agent.getPartOfLeadIND() != null && agent.getPartOfLeadIND()) {
+                            CourseAgent courseAgent = courseAgents.get(i);
+                            courseAgent.setStudyAgent(agent);
+                            i++;
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+    
     @Required
     public void setReportDao(final ReportDao reportDao) {
         this.reportDao = reportDao;
