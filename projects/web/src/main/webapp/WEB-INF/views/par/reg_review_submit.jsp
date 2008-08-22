@@ -21,7 +21,7 @@ function submitPage(s){
     <jsp:attribute name="singleFields">
         <input type="hidden" id="_finish" name="_finish"/>
 
-        <table cellpadding="0" border="1" cellspacing="4" width="100%">
+        <table cellpadding="0" border="0" cellspacing="4" width="100%">
 			<tr valign="top">
 				<td valign="top" width="50%" align="left">
 				<chrome:division title="Subject Details">
