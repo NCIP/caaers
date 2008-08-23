@@ -448,7 +448,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao"/>
 
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
-          
+    <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao" />
     <!-- validator beans starts here-->
     <bean id="webControllerValidator"
           class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
