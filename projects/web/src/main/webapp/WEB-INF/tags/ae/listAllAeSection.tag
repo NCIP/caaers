@@ -2,10 +2,6 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
-
-
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The reporting period that is being rendered" %>
 
 <div class="eXtremeTable">

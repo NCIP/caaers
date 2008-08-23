@@ -1,5 +1,4 @@
-
-
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="ae" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" required="true" description="The adverse event that is being rendered" %>
@@ -10,8 +9,7 @@
 			onMouseOut="this.className='<%= currClass %>'">
 	<td width="${width}">${ae.adverseEventTerm.universalTerm}</td>
 	<td width="${width}">${ae.grade.code}</td>
-	<td width="${width}">${ae.startDate}</td>
-	<c:if test="${ae.requiresReporting == true}">
+	<td width="${width}"><tags:formatDate value="${ae.startDate}" /></td>	<c:if test="${ae.requiresReporting == true}">
 		<td width="${width}"><img src="/caaers/images/redexclamation.gif" id="check-image"/></td>
 	</c:if>
 	<c:if test="${ae.requiresReporting == false}">
