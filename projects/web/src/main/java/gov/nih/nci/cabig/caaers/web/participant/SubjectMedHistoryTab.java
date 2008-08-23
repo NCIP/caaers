@@ -322,7 +322,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     		 List<PreExistingCondition> list = preExistingConditionDao.getAll();
     	        if (list != null) {
     	        	preExistingConditionOptions = new LinkedHashMap<Object, Object>();
-    	        	preExistingConditionOptions.put(" ", "Please select");
+    	        	preExistingConditionOptions.put(" ", " Please select                                    .");
     	        	preExistingConditionOptions.putAll(WebUtils.collectOptions(list, "id", "text", "Other, specify"));
     	        }
     	}
@@ -334,7 +334,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
      */
     private Map<Object, Object> initializeBaselinePerformanceOptions() {
     	if(baselinePerformanceOptions == null){
-    		baselinePerformanceOptions = WebUtils.collectOptions(configurationProperty.getMap().get("bpsRefData"), "code", "desc", "Please select");
+    		baselinePerformanceOptions = WebUtils.collectOptions(configurationProperty.getMap().get("bpsRefData"), "code", "desc", " Please select                                    .");
     	}
     	return baselinePerformanceOptions;
     }

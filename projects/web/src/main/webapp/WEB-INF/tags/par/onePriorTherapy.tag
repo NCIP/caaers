@@ -6,9 +6,10 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <%@attribute name="index" required="true" %>
+<%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
 <div>
- <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]">
+ <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true">
 
 	<ui:row path="assignment.priorTherapies[${index}].other">
 	 <jsp:attribute name="label">

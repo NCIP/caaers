@@ -12,6 +12,12 @@
 		}
 		 div.row div.label { width: 15em; } 
 		 div.row div.value, div.row div.extra { margin-left: 16em; }
+		 .tablecontent td {
+		 	border : 0px;
+		 }
+		 .tablecontent tr {
+		 	border : 1px solid;
+		 }
 	</style>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
@@ -131,7 +137,7 @@
    <form:form id="command">	
 	<tags:tabFields tab="${tab}" />
 
-	<blue:box id="assignment.general" title="General" collapsable="true">
+	<chrome:box id="assignment.general" title="General" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.baselinePerformance" />
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
@@ -144,9 +150,9 @@
 				</jsp:attribute>
 			</ui:row>
 		</div>
-	</blue:box>
+	</chrome:box>
 
-	<blue:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
+	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />
 		<a name="anchorDiseaseInfo" />
 		<div id="anchorDiseaseInfo">
@@ -240,12 +246,12 @@
 				</jsp:attribute>
 			</ui:row>
 		</div>
-	</blue:box>
+	</chrome:box>
 
 
-	<blue:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
+	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
-		<table class="tablecontent" width="95%">
+		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
 					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here...">
@@ -279,12 +285,12 @@
 				</td>
 			</tr>
 		</table>
-	</blue:box>
+	</chrome:box>
 
 
-	<blue:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
+	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
-		<table class="tablecontent" width="95%">
+		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
 					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition" ></ui:select>
@@ -307,15 +313,15 @@
 				</td>
 			</tr>
 		</table>
-	</blue:box>
+	</chrome:box>
 
 
-	<blue:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
+	<chrome:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
-		<table class="tablecontent" width="95%">
+		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
-					<ui:text path="concomitantMedication" />
+					<ui:text path="concomitantMedication" size="50"/>
 				</td>
 				<td width="10%">
 					<input id="concomitantMedication-btn" type="button" value="Add"/>
@@ -329,17 +335,17 @@
 						<c:forEach items="${command.assignment.concomitantMedications}" varStatus="status">
 							<c:set var="newIndex" value="${size - (status.index + 1)}" />
 							<c:set var="conMed" value="${command.assignment.concomitantMedications[newIndex]}" />
-							<par:oneConcomitantMedication index="${newIndex}" concomitantMedication="${conMed}" />
+							<par:oneConcomitantMedication index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
 						</c:forEach>
 					</div>
 				</td>
 			</tr>
 		</table>
-	</blue:box>
+	</chrome:box>
 
-	<blue:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
+	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
-		<table class="tablecontent" width="95%">
+		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
 					<ui:select options="${priorTherapyOptions}" path="priorTherapy" />
@@ -356,13 +362,13 @@
 						<c:forEach items="${command.assignment.priorTherapies}" varStatus="status">
 							<c:set var="newIndex" value="${size - (status.index + 1)}" />
 							<c:set var="ptherapy" value="${command.assignment.priorTherapies[newIndex]}" />
-							<par:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" />
+							<par:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
 						</c:forEach>
 					</div>
 				</td>
 			</tr>
 		</table>
-	</blue:box>
+	</chrome:box>
 	<tags:tabControls flow="${flow}" tab="${tab}" />
    </form:form>
   </body>

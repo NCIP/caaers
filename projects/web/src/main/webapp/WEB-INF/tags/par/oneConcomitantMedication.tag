@@ -4,8 +4,9 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <%@attribute name="index" required="true"%>
+<%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication" required="true" %>
-<chrome:division title="${concomitantMedication.agentName}" id="assignment.concomitantMedications[${index}]">
+<chrome:division title="${concomitantMedication.agentName}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}">
 
 	<ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">
 		<jsp:attribute name="label">

@@ -5,7 +5,7 @@
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <%@attribute name="index" required="true"%>
 <%@attribute name="preExistingCondition" type="gov.nih.nci.cabig.caaers.domain.PreExistingCondition"%>
-<div>
+<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
   				<td width="99%">

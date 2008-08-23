@@ -8,11 +8,11 @@
 <%@attribute name="index" required="true" %>
 <%@attribute name="parentIndex" required="true" %>
 <%@attribute name="style"%>
-<div>
+<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
 		<table width="100%">
  			<tr>
   				<td width="99%">
-					<ui:text path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}]" readonly="true"/>
+					<ui:text path="assignment.priorTherapies[${parentIndex}].priorTherapyAgents[${index}].name" readonly="true"/>
   				</td>
   				<td>
 					<a href="#anchorPriorTherapies[${parentIndex}].priorTherapyAgents" onClick="mHistory.removeDetails('priorTherapyAgent', ${index}, 'anchorPriorTherapies[${parentIndex}].priorTherapyAgents', {parentIndex : ${parentIndex} })">
