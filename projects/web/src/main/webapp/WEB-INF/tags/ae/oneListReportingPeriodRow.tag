@@ -7,7 +7,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The reporting period that is being rendered" %>
 
-<c:set var="currClass" value="${(index %2) gt 0 ? 'odd' : 'even'}" />
+<c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
 <c:set var="reportingPeriodPageURL" 
 	value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
 
@@ -30,7 +30,7 @@
 <tr>
 	<td></td>
 </tr>
-<tr id="table${reportingPeriod.id}" display="">
+<tr id="table${reportingPeriod.id}" style="display:none;">
 	<td></td>
 	<td></td>
 	<td colspan=5>

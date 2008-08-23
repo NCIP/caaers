@@ -18,7 +18,7 @@
 	</td>
 	<td width="20%"></td>
 </tr>
-<tr id="reptable${report.id}">
+<tr id="reptable${report.id}" style="display:none;">
 	<td/><td/>
 	<td colspan=4>
 		<div class="eXtremeTable">
