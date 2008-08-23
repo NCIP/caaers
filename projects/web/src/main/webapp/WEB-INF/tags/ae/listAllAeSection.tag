@@ -16,7 +16,7 @@
 				<td class="tableHeader" width="20%">Requires report</td>
 			</tr>
 		</thead>
-		<tr id="aetable${reportingPeriod.id}">
+		<tr id="aetable${reportingPeriod.id}" style="display:none;">
 			<td/><td/>
 			<td colspan=4>
 				<div class="eXtremeTable">
