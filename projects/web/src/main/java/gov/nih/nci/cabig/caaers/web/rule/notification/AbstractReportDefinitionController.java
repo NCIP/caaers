@@ -103,10 +103,10 @@ public abstract class AbstractReportDefinitionController extends
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
-        return isAjaxRequest(request) ? true : super.suppressValidation(request, command);
+        return isAjaxAddRequest(request) ? true : super.suppressValidation(request, command);
     }
 
-    protected boolean isAjaxRequest(HttpServletRequest request) {
+    protected boolean isAjaxAddRequest(HttpServletRequest request) {
         return findInRequest(request, AJAX_REQUEST_PARAMETER) != null;
     }
 

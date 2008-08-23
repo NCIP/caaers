@@ -52,7 +52,7 @@
 			$('${path}').clear();
         	} 
 		};
-		setTimeout(fn, 4000);
+		setTimeout(fn, 10000);
     });
 	if($('${path}').value == ''){
 		$('${path}-input').addClassName('pending-search');

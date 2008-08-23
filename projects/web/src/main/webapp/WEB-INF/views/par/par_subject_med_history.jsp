@@ -10,6 +10,8 @@
 	 		border-style:solid;
 	 		border-width:1px 0px 0px 0px;
 		}
+		 div.row div.label { width: 15em; } 
+		 div.row div.value, div.row div.extra { margin-left: 16em; }
 	</style>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
@@ -33,7 +35,7 @@
  	 	 		paramHash.set(itemType,val);
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('medicalHistoryForm').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action + "?subview"; //make the ajax request
 				this.insertContent(container, url, paramHash, function() {
 						src.enable();
 						});
@@ -56,7 +58,7 @@
  	 	 		}
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
- 	 	 		var url = $('medicalHistoryForm').action + "?subview"; //make the ajax request
+ 	 	 		var url = $('command').action + "?subview"; //make the ajax request
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
  	 	 		$(loc).innerHTML = '';
 				this.insertContent(container, url, paramHash.merge(sectionHash));				
@@ -126,7 +128,7 @@
 	</script>
   </head>
   <body>
-   <form:form id="medicalHistoryForm">	
+   <form:form id="command">	
 	<tags:tabFields tab="${tab}" />
 
 	<blue:box id="assignment.general" title="General" collapsable="true">
@@ -188,7 +190,8 @@
 					<ui:label path="assignment.diseaseHistory.codedPrimaryDiseaseSite" text="Primary site of disease" />
 				</jsp:attribute>
 				<jsp:attribute name="value">
-					<ui:autocompleter path="assignment.diseaseHistory.codedPrimaryDiseaseSite"  initialDisplayValue="Begin typing here...">
+					<ui:autocompleter path="assignment.diseaseHistory.codedPrimaryDiseaseSite"
+					  initialDisplayValue="${empty command.assignment.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.assignment.diseaseHistory.codedPrimaryDiseaseSite.name}">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text) {
                 				createAE.matchAnatomicSite(text, function(values) {
@@ -205,7 +208,7 @@
 							{
 								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
 									//show the otherPrimaryDiseaseSite box below, using javascript
-									inputElement.value = selectedChoice.id;
+									$('assignment.diseaseHistory.codedPrimaryDiseaseSite').value = selectedChoice.id
 									if(selectedChoice.id == '110'){
 										AE.slideAndShow("assignment.diseaseHistory.otherPrimaryDiseaseSite-row");
 									}else{

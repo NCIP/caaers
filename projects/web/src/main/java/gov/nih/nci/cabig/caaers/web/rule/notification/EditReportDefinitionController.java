@@ -38,7 +38,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
     @Override
     protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command,
                     Tab<ReportDefinitionCommand> tab) {
-        return !isAjaxRequest(request);
+        return !isAjaxAddRequest(request);
     }
 
     /**

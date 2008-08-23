@@ -147,9 +147,7 @@ public class CheckpointTab extends AeTab {
                 command.save();
             }
             // find the new mandatory sections
-            command
-                            .setMandatorySections(evaluationService.mandatorySections(command
-                                            .getAeReport()));
+            command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
 
             // pre-init the mandatory section fields
             command.initializeMandatorySectionFields(getExpeditedReportTree());
