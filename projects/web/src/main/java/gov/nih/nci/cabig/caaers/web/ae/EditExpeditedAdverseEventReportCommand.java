@@ -36,28 +36,7 @@ public class EditExpeditedAdverseEventReportCommand extends AbstractExpeditedAdv
     
     @Override
     public Study getStudy() {
-        Study study = getAssignment().getStudySite().getStudy();
-
-        if (study.getReportFormat(ReportFormatType.ADEERSPDF) != null) {
-            study.setAdeersPDFType(Boolean.TRUE);
-        }
-        if (study.getReportFormat(ReportFormatType.CAAERSXML) != null) {
-            study.setCaaersXMLType(Boolean.TRUE);
-        }
-        if (study.getReportFormat(ReportFormatType.CIOMSFORM) != null) {
-            study.setCiomsPDFType(Boolean.TRUE);
-        }
-        if (study.getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
-            study.setCiomsSaePDFType(Boolean.TRUE);
-        }
-        if (study.getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
-            study.setDcpSAEPDFType(Boolean.TRUE);
-        }
-        if (study.getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
-            study.setMedwatchPDFType(Boolean.TRUE);
-        }
-
-        return study;
+        return  getAssignment().getStudySite().getStudy();
     }
     
     public void save() {

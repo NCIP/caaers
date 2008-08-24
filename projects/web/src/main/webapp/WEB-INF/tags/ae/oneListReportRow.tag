@@ -4,6 +4,8 @@
 <%@attribute name="rpIndex" required="true" type="java.lang.Integer" description="The index of the Report"%>
 <%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.report.Report" description="The report that is printed by this row." %>
 <c:set var="repcurrClass" value="${rpIndex %2 gt 0 ? 'odd' : 'even'}" />
+<c:set var="lastVersion" value="${report.lastVersion}" />
+<c:set var="reportStatus" value="${lastVersion.reportStatus}" />
 <tr align="center" id="row${rpIndex}" class="${repcurrClass}" onMouseOver="this.className='highlight'"	onMouseOut="this.className='${repcurrClass}'">
 	<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 	<td width="15%">
@@ -12,11 +14,32 @@
 		</a>	
 	</td>
 	<td width="20%">${report.aeReport.numberOfAes}</td>
-	<td width="20%">${report.status.displayName}</td>
 	<td width="20%">
-		${report.lastVersion.statusAsString}
+		${command.reportsSubmittable[report.id] ? 'Complete' : 'Incomplete'}
+		<tags:indicator id="notify-indicator-${report.id}"/>
 	</td>
-	<td width="20%"></td>
+	<td width="20%" id="status${report.id}"><ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/></td>
+	<td width="20%" id="action${report.id}">
+		<c:if test="${command.reportsSubmittable[report.id]}">
+		  <center>
+			<c:choose>
+				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
+					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a>	
+					<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
+				</c:when>
+				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
+					<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a>
+				</c:when>
+				<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
+					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
+				</c:when>
+				<c:when test="${reportStatus eq 'INPROGRESS'}">
+					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
+				</c:when>
+			</c:choose>
+		  </center>
+		</c:if>
+	</td>
 </tr>
 <tr id="reptable${report.id}" style="display:none;">
 	<td/><td/>

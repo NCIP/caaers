@@ -35,6 +35,43 @@
         }
     </style>
     <script type="text/javascript">
+
+	function showDetails(elId){
+		$(elId).show();
+	}
+
+	function hideDetails(elId){
+		$(elId).hide();
+	}
+	
+	function doAction(action, aeReportId,reportId) {
+
+		if(action == 'withdraw'){
+			AE.showIndicator("notify-indicator-" + aeReportId)
+	        createAE.withdrawReportVersion(aeReportId, reportId, function(result) {
+	           	AE.hideIndicator("notify-indicator-" + aeReportId)
+	           	var statusColumn = $("status"+reportId)
+	     		var statusColumnData = "<span class='submittedOn' ><i>Withdrawn <\/i><\/span>";
+	      
+	      		var optionColumn = $("action"+reportId)
+	      		optionColumnData = $("amend"+reportId).innerHTML;
+	      
+	      		Element.update(statusColumn, statusColumnData)
+	      		Element.update(optionColumn, optionColumnData)
+	        });
+	        
+		}else if(action =='submit'){
+			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + 
+					  '&aeReport=' + aeReportId + '&reportId=' + reportId;
+			Window.location = url;
+			
+		}else if(action =='amend'){
+			var url = '<c:url value="/pages/ae/edit"/>' +
+			'?aeReport=' + aeReportId + '&reportId=' + reportId;
+			Window.location = url; 
+		}
+        
+    }  
     </script>
 </head>
 <body>

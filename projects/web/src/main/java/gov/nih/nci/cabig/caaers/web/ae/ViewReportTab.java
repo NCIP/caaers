@@ -41,25 +41,6 @@ public class ViewReportTab extends AeTab {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
 
-        if (command.getStudy().getReportFormat(ReportFormatType.ADEERSPDF) != null) {
-            command.getStudy().setAdeersPDFType(Boolean.TRUE);
-        }
-        if (command.getStudy().getReportFormat(ReportFormatType.CAAERSXML) != null) {
-            command.getStudy().setCaaersXMLType(Boolean.TRUE);
-        }
-        if (command.getStudy().getReportFormat(ReportFormatType.CIOMSFORM) != null) {
-            command.getStudy().setCiomsPDFType(Boolean.TRUE);
-        }
-        if (command.getStudy().getReportFormat(ReportFormatType.CIOMSSAEFORM) != null) {
-            command.getStudy().setCiomsSaePDFType(Boolean.TRUE);
-        }
-        if (command.getStudy().getReportFormat(ReportFormatType.DCPSAEFORM) != null) {
-            command.getStudy().setDcpSAEPDFType(Boolean.TRUE);
-        }
-        if (command.getStudy().getReportFormat(ReportFormatType.MEDWATCHPDF) != null) {
-            command.getStudy().setMedwatchPDFType(Boolean.TRUE);
-        }
-
         Map<String, Object> refdata = super.referenceData(request,command);
         Map<Integer, ReportSubmittability> reportMessages = new HashMap<Integer, ReportSubmittability>();
 

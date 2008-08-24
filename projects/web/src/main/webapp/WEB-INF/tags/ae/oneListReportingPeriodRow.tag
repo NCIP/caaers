@@ -23,7 +23,7 @@
 	<td width="10%">${reportingPeriod.numberOfReports}</td>
 	<td width="10%">${reportingPeriod.numberOfAes}</td>
 	<td>${reportingPeriod.dataEntryStatus}</td>
-	<td>${reportingPeriod.reportStatus}</td>
+	<td>${reportingPeriod.reportStatus eq 'PENDING' ? 'Report(s) Due' : reportingPeriod.reportStatus eq 'COMPLETED' ? 'Report(s) Completed' : ''}</td>
 	<td width="20%"></td>
 </tr>
 
@@ -64,7 +64,7 @@
 				<td width="100%">
 					<ae:listAllAeSection reportingPeriod="${reportingPeriod}"/>
 				</td>
-			</tr>
+			</tr><tags:indicator id="notify-indicator-${report.id}"/>
 		</table>			
 	</td>
 </tr>

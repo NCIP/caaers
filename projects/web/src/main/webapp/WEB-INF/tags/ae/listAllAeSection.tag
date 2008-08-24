@@ -2,8 +2,10 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The reporting period that is being rendered" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The reporting period that is being rendered" %>
+<c:if test="${fn:length(reportingPeriod.adverseEvents) gt 0}">
 <div class="eXtremeTable">
 	<table width="100%" border="0" cellspacing="0" class="rpTableRegion">
 		<thead>
@@ -31,4 +33,4 @@
 		</tr>
 	</table>
 </div>
-		
+</c:if>		
