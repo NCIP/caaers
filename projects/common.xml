@@ -445,7 +445,7 @@
 	<!-- ====================================================
           target: clean-lib              
     =======================================================-->
-    <target name="clean-lib" description="--> clean the project libraries directory (dependencies)">
+    <target name="clean-lib" unless="already.resolved" description="--> clean the project libraries directory (dependencies)">
     	<echo message="Executing in ${ant.project.name}" />
     	<echo message="Executing in ${ant.project.name}" />
         <delete includeemptydirs="true" dir="${lib.dir}"/>
