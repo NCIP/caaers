@@ -44,7 +44,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     private SolicitedEventTabTable table;
     
 	public SolicitedAdverseEventTab() {
-		 super("Reporting Period Types & Solicted Adverse Events", "Reporting Period Types", "study/solicited_ae");
+		 super("Evaluation Period Types & Solicted Adverse Events", "Evaluation Period Types", "study/solicited_ae");
 	}
 
 	
@@ -91,7 +91,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	for( Epoch epoch : listOfEpochs )
     	{
     		if( epoch.getName()== null || epoch.getName().equalsIgnoreCase("Enter name here") )
-    			errors.reject("name","Each reporting period type must have a valid title. Type the title or delete the reporting period type.");
+    			errors.reject("name","Each evaluation period type must have a valid title. Type the title or delete the evaluation period type.");
     		listOfEpochNames.add(epoch.getName().toUpperCase());
     	}
     	
@@ -103,7 +103,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	}
     	
     	if( setOfEpochNames.size() != listOfEpochNames.size())
-    		errors.reject("name","There is a duplicate reporting period type. Modify or delete the reporting period types so they are all unique.");
+    		errors.reject("name","There is a duplicate evaluation period type. Modify or delete the evaluation period types so they are all unique.");
     	
     }
 

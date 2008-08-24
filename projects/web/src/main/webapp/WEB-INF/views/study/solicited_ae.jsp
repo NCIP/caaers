@@ -410,7 +410,7 @@
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
   		<p id="instructions">
-  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add, remove, or edit the reporting period types required for this study.
+  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add, remove, or edit the evaluation period types required for this study.
 		</p>
 	
 	    <tags:hasErrorsMessage />

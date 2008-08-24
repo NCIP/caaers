@@ -321,7 +321,7 @@
 			<br>
 			</chrome:division>
 			
-	<chrome:division title="Reporting Period Types & Solicited Adverse Events">
+	<chrome:division title="Evaluation Period Types & Solicited Adverse Events">
   		<study:solicitedAETable displayOnly="true" />
     </chrome:division>
 

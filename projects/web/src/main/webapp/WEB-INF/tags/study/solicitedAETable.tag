@@ -11,7 +11,7 @@
   		 
     		<tbody class="tablebody">
     		    <tr class="head">
-    		       <th class="term" >Reporting Period Type</th>
+    		       <th class="term" >Evaluation Period Type</th>
     		       <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
         			<th id="th-table1-${statusVar.index}" class="reportingperiod">
 
@@ -44,7 +44,7 @@
     		    <tr class="gap">
     		      <c:if test="${!displayOnly}">
         	        <td colspan="3" style="border-width:0px 0px 0px 0px;">
-    		           Check the appropriate boxes to associate the AE term to a reporting period type.
+    		           Check the appropriate boxes to associate the AE term to a evaluation period type.
     		        </td>
     		      </c:if>
     		    </tr>

@@ -78,7 +78,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 		// which collects the general information from the user (eg., TAC, TAC Description, Start date of first course etc.
 		InputFieldGroup reportingPeriodFieldGroup = new DefaultInputFieldGroup("reportingPeriodFG");
 		List<InputField> fields = reportingPeriodFieldGroup.getFields();
-		InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Reporting period", true, fetchReportingPeriodsOptions(cmd));
+		InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Evaluation period", true, fetchReportingPeriodsOptions(cmd));
 		fields.add(reportingPeriodsField);
 		map.addInputFieldGroup(reportingPeriodFieldGroup);
 		

@@ -40,9 +40,9 @@
  </script>
   </head>
  <body>
-	<tags:standardForm title="Reporting Period Details">
+	<tags:standardForm title="Evaluation Period Details">
 		<jsp:attribute name="instructions">
-			<p>You can add the details of the Reporting Period here.</p>
+			<p>You can add the details of the Evaluation Period here.</p>
 		</jsp:attribute>
 		<jsp:attribute name="singleFields">
 			<c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">

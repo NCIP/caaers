@@ -17,7 +17,7 @@
 <script src="js/common-scriptaculous.js"></script>
 <html>
 <head>
-    <title>Manage AEs and Reporting Periods</title>
+    <title>Manage AEs and Evaluation Periods</title>
     <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <tags:dwrJavascriptLink objects="adverseEventHistory"/>
@@ -93,7 +93,7 @@
 					<thead>
 						<tr align="center" class="label">
 							<td width="5%" class="tableHeader"></td>
-							<td width="15%" class="tableHeader">Reporting Periods</td>
+							<td width="15%" class="tableHeader">Evaluation Periods</td>
 							<td width="16%" class="tableHeader"># of Reports</td>
 							<td width="16%" class="tableHeader"># of AEs</td>
 							<td width="16%" class="tableHeader">Data Entry Status</td>

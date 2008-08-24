@@ -7,7 +7,7 @@ Note: -
    This should work on the orginal adverse event list, and not on the decorated list in command
 --%>
 <c:if test='${not empty command.adverseEventReportingPeriod}'>
-<chrome:division id="rpd-div" title="Reporting period details">
+<chrome:division id="rpd-div" title="Evaluation period details">
 	<ae:reportingPeriodDetails />
 </chrome:division>
 

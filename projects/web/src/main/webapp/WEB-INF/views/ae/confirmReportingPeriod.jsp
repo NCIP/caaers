@@ -36,7 +36,7 @@
 <body>
 <tags:standardForm title="Confirmation">
 	<jsp:attribute name="flashMessage">
-			<div><b>Reporting period details saved successfully</b></div>
+			<div><b>Evaluation period details saved successfully</b></div>
 	</jsp:attribute>
 	<jsp:attribute name="singleFields">
 		<tags:renderRow field="${ReportingPeriod.fields[0]}">
