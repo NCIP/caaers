@@ -38,9 +38,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     private Date dateOfEnrollment;
 
-    private List<ExpeditedAdverseEventReport> aeReports;
 
-    private List<RoutineAdverseEventReport> aeRoutineReports;
+    //private List<RoutineAdverseEventReport> aeRoutineReports;
     
     private List<LabLoad> labLoads;
 
@@ -146,32 +145,28 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     	ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
     	if(reportingPeriods != null){
     		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
-    			// This changed as ReportingPeriod and ExpeditedReport relationship is Many-To-One 
-    			// Needs to be looked into carefully.
-    			if(reportingPeriod.getAeReports() != null)
-    				for(ExpeditedAdverseEventReport report: reportingPeriod.getAeReports())
-    					aeReports.add(report);
+    			for(ExpeditedAdverseEventReport aeReport: reportingPeriod.getAeReports()){
+    					aeReports.add(aeReport);
+    			}
     		}
     	}
         return aeReports;
     }
 
-    public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
-        this.aeReports = aeReports;
-    }
-
+    
     @OneToMany(mappedBy = "assignment")
     public List<RoutineAdverseEventReport> getAeRoutineReports() {
-        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
-        return aeRoutineReports;
+//        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
+        return new ArrayList<RoutineAdverseEventReport>();
     }
 
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
-        this.aeRoutineReports = aeRoutineReports;
+//        this.aeRoutineReports = aeRoutineReports;
     }
     
     @OneToMany(mappedBy = "assignment")
     @OrderBy(clause="start_date desc")
+    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
     	return reportingPeriods;
     }

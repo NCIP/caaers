@@ -636,24 +636,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 	}
 
 
-    @Deprecated
-    @Transient
-    public ReportStatus getStatus() {
-        //TODO: to be removed after compile/runtime
-        //dependency is resolved, by respective developer
-
-        //assert false : "Update your code";
-        return ReportStatus.PENDING;
-    }
-
-    @Deprecated
-    public void setStatus(ReportStatus status) {
-        //TODO: to be removed after compile/runtime
-        //dependency is resolved, by respective developer
-
-        //assert false : "Update your code";
-    }
-
     @Transient
     public String getPublicIdentifier() {
         String id = getAssignment().getStudySite().getOrganization().getNciInstituteCode() + "-" + getAssignment().getStudySite().getOrganization().getNciInstituteCode();

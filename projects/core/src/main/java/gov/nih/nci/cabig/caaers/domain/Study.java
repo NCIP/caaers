@@ -771,59 +771,72 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         }
         return null;
     }
-
+    
+    public void updateReportFormats(Boolean selected, ReportFormatType type){
+    	if(selected == null) return;
+    	ReportFormat reportFormat = getReportFormat(type);
+    	if(selected && reportFormat == null){
+    		ReportFormat adeersPDFReportFormat = new ReportFormat();
+            adeersPDFReportFormat.setStudy(this);
+            adeersPDFReportFormat.setReportFormatType(type);
+            getReportFormats().add(adeersPDFReportFormat);
+    	}else if(!selected && reportFormat != null){
+    		getReportFormats().remove(reportFormat);
+    	}
+    }
+    
     @Transient
     public Boolean getAdeersPDFType() {
-        return adeersPDFType;
+        return getReportFormat(ReportFormatType.ADEERSPDF) != null;
     }
 
-    public void setAdeersPDFType(final Boolean adeersPDFType) {
-        this.adeersPDFType = adeersPDFType;
+    public void setAdeersPDFType(final Boolean value) {
+        updateReportFormats(value, ReportFormatType.ADEERSPDF);
     }
 
     @Transient
     public Boolean getCaaersXMLType() {
-        return caaersXMLType;
+        return getReportFormat(ReportFormatType.CAAERSXML) != null;
     }
 
-    public void setCaaersXMLType(final Boolean caaersXMLType) {
-        this.caaersXMLType = caaersXMLType;
+    public void setCaaersXMLType(final Boolean value) {
+    	updateReportFormats(value, ReportFormatType.CAAERSXML);
     }
 
     @Transient
     public Boolean getCiomsPDFType() {
-        return ciomsPDFType;
+        return getReportFormat(ReportFormatType.CIOMSFORM) != null;
     }
 
-    public void setCiomsPDFType(final Boolean ciomsPDFType) {
-        this.ciomsPDFType = ciomsPDFType;
+    public void setCiomsPDFType(final Boolean value) {
+        updateReportFormats(value, ReportFormatType.CIOMSFORM);
     }
 
     @Transient
     public Boolean getCiomsSaePDFType() {
-        return ciomsSaePDFType;
+        return getReportFormat(ReportFormatType.CIOMSSAEFORM) != null;
     }
 
-    public void setCiomsSaePDFType(final Boolean ciomsSaePDFType) {
-        this.ciomsSaePDFType = ciomsSaePDFType;
+    public void setCiomsSaePDFType(final Boolean value) {
+        updateReportFormats(value, ReportFormatType.CIOMSSAEFORM);
     }
 
     @Transient
     public Boolean getDcpSAEPDFType() {
-        return dcpSAEPDFType;
+        return getReportFormat(ReportFormatType.DCPSAEFORM) != null;
     }
 
     public void setDcpSAEPDFType(final Boolean dcpSAEPDFType) {
-        this.dcpSAEPDFType = dcpSAEPDFType;
+        updateReportFormats(dcpSAEPDFType, ReportFormatType.DCPSAEFORM);
     }
 
     @Transient
     public Boolean getMedwatchPDFType() {
-        return medwatchPDFType;
+        return getReportFormat(ReportFormatType.MEDWATCHPDF) != null;
     }
 
     public void setMedwatchPDFType(final Boolean medwatchPDFType) {
-        this.medwatchPDFType = medwatchPDFType;
+        updateReportFormats(medwatchPDFType, ReportFormatType.MEDWATCHPDF);
     }
 
     @Transient

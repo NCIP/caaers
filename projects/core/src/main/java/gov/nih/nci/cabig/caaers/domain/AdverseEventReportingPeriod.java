@@ -23,6 +23,7 @@ import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
@@ -208,7 +209,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     }
     
     @OneToMany(mappedBy = "reportingPeriod")
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<ExpeditedAdverseEventReport> getAeReports() {
 		if(aeReports == null) aeReports = new ArrayList<ExpeditedAdverseEventReport>();
 		return aeReports;
@@ -265,23 +266,27 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	return "In-process";
     }
     
+    /**
+     * Will tell the combined submission status of individual expedited reports
+     * 
+     * @return {@link ReportStatus}.COMPLETED -When all reports are submitted sucessfully or (withdrawn), {@link ReportStatus}.PENDING when any of the report is pending,inprocess or failed.
+     */
     @Transient
-    public String getReportStatus(){
-    	// If there are no reports then return a empty string
-    	if(this.getAeReports().size() == 0)
-    		return "";
+    public ReportStatus getReportStatus(){
+    	if(getAeReports().isEmpty()) return null;
     	
-    	reportStatus = "Report(s) Completed";
     	// If for any reports associated to all the Data Collection has status other than COMPLETED
     	// or WITHDRAWN then return a status "Report(s) Due" or else return a status "Report(s) Completed"
     	
-    	for(ExpeditedAdverseEventReport aeReport: this.getAeReports())
+    	for(ExpeditedAdverseEventReport aeReport: this.getAeReports()){
     		for(Report report: aeReport.getReports()){
-    			if(report.getLastVersion().getReportStatus() == ReportStatus.PENDING ||
-    					report.getLastVersion().getReportStatus() == ReportStatus.INPROCESS ||
-    						report.getLastVersion().getReportStatus() == ReportStatus.FAILED)
-    				return "Report(s) Incomplete";
-    		}
-    	return reportStatus;
+    			ReportStatus status = report.getLastVersion().getReportStatus();
+    			if(status == ReportStatus.PENDING   || status == ReportStatus.INPROCESS || status == ReportStatus.FAILED){
+    				return ReportStatus.PENDING;
+    			}
+    		}	
+    	}
+    	
+    	return ReportStatus.COMPLETED;
     }
 }
