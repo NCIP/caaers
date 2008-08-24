@@ -29,23 +29,6 @@
 </p>
 <chrome:box title="${participant.lastName}, ${participant.firstName}">
 
-    <chrome:division title="Assigned to Study">
-        <table class="tablecontent">
-            <tr>
-                <th scope="col">Study Short Title</th>
-                <th scope="col">Site</th>
-                <th scope="col">Study Subject Identifier</th>
-            </tr>
-            <c:forEach var="assignment" items="${participant.assignments}" varStatus="status">
-                <tr class="results">
-                    <td>${assignment.studySite.study.shortTitle}</td>
-                    <td>${assignment.studySite.organization.name}</td>
-                    <td>${assignment.studySubjectIdentifier}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        <br>
-    </chrome:division>
     <chrome:division title="Subject Details">
         <table id="test2" class="single-fields">
             <tr>
@@ -118,6 +101,24 @@
             <br>
         </chrome:division>
     </c:if>
+    <chrome:division title="Assigned to Study">
+        <table class="tablecontent">
+            <tr>
+                <th scope="col">Study Short Title</th>
+                <th scope="col">Site</th>
+                <th scope="col">Study Subject Identifier</th>
+            </tr>
+            <c:forEach var="assignment" items="${participant.assignments}" varStatus="status">
+                <tr class="results">
+                    <td>${assignment.studySite.study.shortTitle}</td>
+                    <td>${assignment.studySite.organization.name}</td>
+                    <td>${assignment.studySubjectIdentifier}</td>
+                </tr>
+            </c:forEach>
+        </table>
+        <br>
+    </chrome:division>
+    
 </chrome:box>
 </body>
 </html>

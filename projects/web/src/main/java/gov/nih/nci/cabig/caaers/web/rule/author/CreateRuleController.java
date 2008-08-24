@@ -53,8 +53,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
     }
 
     @Override
-    protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1,
-                    Object oCommand, BindException arg3) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest arg0, HttpServletResponse arg1, Object oCommand, BindException arg3) throws Exception {
 
         CreateRuleCommand command = (CreateRuleCommand) oCommand;
         command.save();
@@ -66,8 +65,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) {
-        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao,
-                        rulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
+        return new CreateRuleCommand(ruleAuthoringService, studyDao, notificationDao, rulesEngineService, reportDefinitionDao, organizationDao, ctcDao);
     }
 
     @Override

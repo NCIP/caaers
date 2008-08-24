@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
@@ -26,6 +27,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import java.beans.PropertyEditor;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,7 +68,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public FlowFactory<ParticipantInputCommand> getFlowFactory() {
         return new FlowFactory<ParticipantInputCommand>() {
             public Flow<ParticipantInputCommand> createFlow(ParticipantInputCommand cmd) {
-                Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Create Participant");
+                Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Create Subject");
                 flow.addTab(new ParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
                 flow.addTab(new SubjectMedHistoryTab());
@@ -80,7 +82,11 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         log.debug("Entering Process Finish ...");
 
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
+
         Participant participant = participantCommand.getParticipant();
+        participantCommand.getAssignment().setParticipant(participant);
+        participant.addAssignment(participantCommand.getAssignment());
+
         participantDao.save(participant);
 
         ModelAndView modelAndView = new ModelAndView("par/par_confirm");

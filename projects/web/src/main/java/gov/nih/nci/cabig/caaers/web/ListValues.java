@@ -67,7 +67,7 @@ public class ListValues {
 
     public List<ListValues> getParticipantGender() {
         List<ListValues> col = new ArrayList<ListValues>();
-        ListValues lov1 = new ListValues("", "---");
+        ListValues lov1 = new ListValues("", "Please select");
         ListValues lov2 = new ListValues("Male", "Male");
         ListValues lov3 = new ListValues("Female", "Female");
         //ListValues lov4 = new ListValues("Not Reported", "Not Reported");
@@ -82,7 +82,7 @@ public class ListValues {
 
     public List<ListValues> getParticipantEthnicity() {
         List<ListValues> col = new ArrayList<ListValues>();
-        ListValues lov1 = new ListValues("", "---");
+        ListValues lov1 = new ListValues("", "Please select");
         ListValues lov2 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
         ListValues lov3 = new ListValues("Not Hispanic or Latino", "Not Hispanic or Latino");
         ListValues lov4 = new ListValues("Not Reported", "Not Reported");
@@ -97,15 +97,13 @@ public class ListValues {
 
     public List<ListValues> getParticipantRace() {
         List<ListValues> col = new ArrayList<ListValues>();
-        ListValues lov1 = new ListValues("", "---");
+        ListValues lov1 = new ListValues("", "Please select");
         ListValues lov2 = new ListValues("Asian", "Asian");
         ListValues lov3 = new ListValues("Hispanic or Latino", "Hispanic or Latino");
         ListValues lov4 = new ListValues("White", "White");
         ListValues lov5 = new ListValues("Black or African American", "Black or African American");
-        ListValues lov6 = new ListValues("American Indian or Alaska Native",
-                        "American Indian or Alaska Native");
-        ListValues lov7 = new ListValues("Native Hawaiian or other Pacific Islander",
-                        "Native Hawaiian or other Pacific Islander");
+        ListValues lov6 = new ListValues("American Indian or Alaska Native", "American Indian or Alaska Native");
+        ListValues lov7 = new ListValues("Native Hawaiian or other Pacific Islander", "Native Hawaiian or other Pacific Islander");
         ListValues lov8 = new ListValues("Not Reported", "Not Reported");
         ListValues lov9 = new ListValues("More than one race", "More than one race");
         ListValues lov10 = new ListValues("Other", "Other");

@@ -45,9 +45,7 @@ function ajaxStudySearch(searchText, searchType) {
 <!-- TOP NAVIGATION STARTS HERE -->
 
 <chrome:box autopad="true" title="Search...">
-  	<p class="instructions">
-  	  Choose the item, then type in a minimum of two characters then click <b>Go</b> for search
-  	</p>
+  	<p class="instructions">Choose the search criteria, type in a minimum of two characters and then click <b>Search</b></p>
 
     <form:form id="searchForm" method="post">
     	<div><input type="hidden" name="_action" value="go"></div>

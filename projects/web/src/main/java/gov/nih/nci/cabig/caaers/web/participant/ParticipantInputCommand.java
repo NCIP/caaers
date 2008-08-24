@@ -7,10 +7,7 @@ import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Ion C. Olaru
@@ -59,9 +56,12 @@ public class ParticipantInputCommand {
     void init(String identifierType) {
         this.participant = new Participant();
         this.assignment = new StudyParticipantAssignment();
+        this.assignment.setDateOfEnrollment(new Date());
         this.assignment.setParticipant(this.participant);
         this.assignment.setPriorTherapies(new ArrayList<StudyParticipantPriorTherapy>());
-        this.assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        StudyParticipantDiseaseHistory studyParticipantDiseaseHistory = new StudyParticipantDiseaseHistory();
+        studyParticipantDiseaseHistory.setAssignment(this.assignment);
+        this.assignment.setDiseaseHistory(studyParticipantDiseaseHistory);
         this.assignment.setPreExistingConditions(new ArrayList<StudyParticipantPreExistingCondition>());
         this.assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
         

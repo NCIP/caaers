@@ -99,7 +99,7 @@
 .dialog_title {
 	float:left;
 	height:14px;
-	font-family: Verdana, Tahoma, Arial, sans-serif;
+	font-family: Arial, Verdana, Tahoma, sans-serif;
 	font-size:12px;
 	text-align:center;
 	width:100%;
@@ -109,7 +109,7 @@
 .dialog_content {
 	overflow:auto;
 	color: #DDD;
-	font-family: Verdana, Tahoma, Arial, sans-serif;
+	font-family: Arial, Verdana, Tahoma, sans-serif;
 	font-size: 10px;
 	background-color:#123;
 }
