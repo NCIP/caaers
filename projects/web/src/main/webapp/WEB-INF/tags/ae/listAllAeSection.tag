@@ -22,10 +22,9 @@
 			<td/><td/>
 			<td colspan=4>
 				<div class="eXtremeTable">
-					<table width="100%" border="0" cellspacing="0" class="rpTableRegion">
-						<%int j=0; %>
+					<table width="100%" border="0" cellspacing="0" class="rpTableRegion" align="center">
 						<c:forEach items="${reportingPeriod.adverseEvents}" var="adverseEvent" varStatus="statusAdverseEvent">
-							<ae:oneListAeRow index="<%= j++ %>" ae="${adverseEvent}" width="25%"/>
+							<ae:oneListAeRow index="${statusAdverseEvent.index}" ae="${adverseEvent}" width="25%"/>
 						</c:forEach>
 					</table>
 				</div>		

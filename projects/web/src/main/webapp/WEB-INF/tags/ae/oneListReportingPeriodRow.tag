@@ -64,7 +64,7 @@
 				<td width="100%">
 					<ae:listAllAeSection reportingPeriod="${reportingPeriod}"/>
 				</td>
-			</tr><tags:indicator id="notify-indicator-${report.id}"/>
+			</tr>
 		</table>			
 	</td>
 </tr>

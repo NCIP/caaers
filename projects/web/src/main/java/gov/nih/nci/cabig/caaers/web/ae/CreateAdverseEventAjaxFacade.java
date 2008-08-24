@@ -574,11 +574,10 @@ public class CreateAdverseEventAjaxFacade {
         ExpeditedAdverseEventReport aeReport = aeReportDao.getById(aeReportId);
         for (Report report : aeReport.getReports()) {
             if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
-                reportRepository.withdrawLastReportVersion(report);
+                reportRepository.deleteReport(report);
                 break;
             }
         }
-        aeReportDao.save(aeReport);
         return "Success";
     }
 

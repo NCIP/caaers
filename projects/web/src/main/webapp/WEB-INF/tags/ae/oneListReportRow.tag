@@ -1,5 +1,6 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="rpIndex" required="true" type="java.lang.Integer" description="The index of the Report"%>
 <%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.report.Report" description="The report that is printed by this row." %>
@@ -16,15 +17,16 @@
 	<td width="20%">${report.aeReport.numberOfAes}</td>
 	<td width="20%">
 		${command.reportsSubmittable[report.id] ? 'Complete' : 'Incomplete'}
-		<tags:indicator id="notify-indicator-${report.id}"/>
 	</td>
-	<td width="20%" id="status${report.id}"><ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/></td>
+	<td width="20%" id="status${report.id}">
+		<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/>
+	</td>
 	<td width="20%" id="action${report.id}">
 		<c:if test="${command.reportsSubmittable[report.id]}">
 		  <center>
 			<c:choose>
 				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
-					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a>	
+					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a>	|
 					<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
 				</c:when>
 				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
