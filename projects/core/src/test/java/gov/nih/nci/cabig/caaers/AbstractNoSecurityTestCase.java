@@ -15,13 +15,13 @@ public class AbstractNoSecurityTestCase extends AbstractTestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		StudyParticipantAssignmentAspect aspect = null;
+		/*StudyParticipantAssignmentAspect aspect = null;
 		try{
 			aspect = Aspects.aspectOf(StudyParticipantAssignmentAspect.class);
 		}catch(Exception e){
 			aspect = new StudyParticipantAssignmentAspect();
 		}
 		AspectJSecurityInterceptorStub interceptorStub = new AspectJSecurityInterceptorStub();
-        aspect.setSecurityInterceptor(interceptorStub);
+        aspect.setSecurityInterceptor(interceptorStub);*/
 	}
 }

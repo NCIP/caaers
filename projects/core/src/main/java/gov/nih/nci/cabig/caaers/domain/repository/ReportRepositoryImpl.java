@@ -64,8 +64,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
         schedulerService.unScheduleNotification(report);
         report.setStatus(ReportStatus.WITHDRAWN);
-        ReportVersion reportVersion = report.getLastVersion();
-        if (reportVersion != null) reportVersion.setReportStatus(ReportStatus.WITHDRAWN);
+        withdrawLastReportVersion(report);
         reportDao.save(report);
     }
 
