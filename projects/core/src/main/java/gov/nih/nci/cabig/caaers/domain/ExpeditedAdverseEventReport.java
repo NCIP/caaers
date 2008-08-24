@@ -701,4 +701,24 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public Report getPrimaryReport(){
     	return getReports().get(0);
     }
+    
+    @Deprecated
+    @Transient
+    public ReportStatus getStatus() {
+        //TODO: to be removed after compile/runtime
+        //dependency is resolved, by respective developer
+
+        //assert false : "Update your code";
+        return ReportStatus.PENDING;
+    }
+
+    @Deprecated
+    public void setStatus(ReportStatus status) {
+        //TODO: to be removed after compile/runtime
+        //dependency is resolved, by respective developer
+
+        //assert false : "Update your code";
+    }
+
+
 }
