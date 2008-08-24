@@ -5,4 +5,4 @@
 # for some reason, running compile and war:inplace in the same maven session
 # sometimes results in not all the libs getting into the lib directory
 #mvn -o $1 compile && mvn -o war:inplace catman:go
-ant -f ivy-build.xml deploy-caaers -Doffline=true $1 $2
+ant -f ivy-build.xml deploy-caaers -Doffline=true -Dalready.resolved=true $1 $2
