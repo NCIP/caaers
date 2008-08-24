@@ -12,8 +12,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-        /* TODO: all these are temporary */
         .leftpanel { margin:1px 0px 5px;}
+		#build-name{
+			position: relative;
+			clear: left;
+		}        
 </style>
 
 <title>${tab.longTitle}</title>
