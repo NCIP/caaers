@@ -354,7 +354,16 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
-        List<CtcTerm> terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        List<CtcTerm> terms = null;//ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        
+        // from rules UI page , if user selects terms without category a fabricated Id 0 is passed.
+        // get all terms incase of this special condition -- srini
+        if (ctcCategoryId == 0) {
+        	terms =  ctcTermDao.getAll();
+        } else {
+        	terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+        }
+        
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
