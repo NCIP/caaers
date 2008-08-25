@@ -3,8 +3,10 @@ package gov.nih.nci.cabig.caaers.api;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
@@ -12,7 +14,6 @@ import gov.nih.nci.cabig.caaers.esb.client.impl.CaaersAdeersMessageBroadcastServ
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
-import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -26,7 +27,6 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class AdeersReportGenerator {
@@ -113,46 +113,7 @@ public class AdeersReportGenerator {
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
     }
 
-    @Deprecated
-    public void generateAndSendPdfReport(ExpeditedAdverseEventReport adverseEventReportDataObject,
-                    Integer reportIndex) throws Exception {
-
-        List<String> emails = new ArrayList<String>();
-
-        Report report = adverseEventReportDataObject.getReports().get(((int) reportIndex));
-
-        for (ReportDelivery delivery : report.getReportDeliveries()) {
-            if (delivery.getReportDeliveryDefinition().getEndPointType().equals(
-                            ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
-                String ep = delivery.getEndPoint();
-                emails.add(ep);
-            }
-        }
-
-        // CCs
-        String[] emailAddresses = report.getLastVersion().getEmailAsArray();
-        if (emailAddresses != null) {
-            for (String email : emailAddresses) {
-                emails.add(email.trim());
-            }
-        }
-
-        if (emails.size() > 0) {
-            AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-            String tempDir = System.getProperty("java.io.tmpdir");
-            pdfOutFile = tempDir + "/expeditedAdverseEventReport-"
-                            + adverseEventReportDataObject.getId() + ".pdf";
-            String xml = aeser.serialize(adverseEventReportDataObject);
-            System.out.println(xml);
-            generatePdf(xml);
-
-            sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration
-                            .get(Configuration.SMTP_USER), configuration
-                            .get(Configuration.SMTP_PASSWORD), configuration
-                            .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT));
-        }
-    }
+    
 
     public void generateAndNotify(String aeReportId, Report report, String xml) throws Exception {
         List<String> emails = new ArrayList<String>();
@@ -211,13 +172,13 @@ public class AdeersReportGenerator {
                             .get(Configuration.SMTP_USER), configuration
                             .get(Configuration.SMTP_PASSWORD), configuration
                             .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT));
+                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT),aeReportId);
         }
 
     }
 
     private void sendMail(String mailHost, String user, String pwd, String from, String attachment,
-                    String[] to, int port) throws Exception {
+                    String[] to, int port, String aeReportId) throws Exception {
         try {
         	
             /* Dead code -- to be removed
@@ -236,7 +197,32 @@ public class AdeersReportGenerator {
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
             helper.setTo(to);
 
-            helper.setText("report ... ");
+            //helper.setText("report ... ");
+            ExpeditedAdverseEventReport expeditedAdverseEventReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+            Participant participant = expeditedAdverseEventReport.getAssignment().getParticipant();
+            String firstName = participant.getLastFirst();
+            String lastName = participant.getLastName();
+            List<Identifier> pIds = participant.getIdentifiers();
+            String pid = "";
+            for (Identifier identifier:pIds) {
+            	if (identifier.getPrimaryIndicator()) {
+            		pid = identifier.getValue();
+            	}
+            }
+            
+            Study study = expeditedAdverseEventReport.getStudy();
+            String shortTitle = study.getShortTitle();
+            List<Identifier> sIds = study.getIdentifiers();
+            String sid = "";
+            for (Identifier identifier:sIds) {
+            	if (identifier.getPrimaryIndicator()) {
+            		sid = identifier.getValue();
+            	}
+            }
+            
+            String content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
+            helper.setText(content);
+          
             File f = new File(attachment);
             FileSystemResource file = new FileSystemResource(f);
             helper.addAttachment(file.getFilename(), file);
