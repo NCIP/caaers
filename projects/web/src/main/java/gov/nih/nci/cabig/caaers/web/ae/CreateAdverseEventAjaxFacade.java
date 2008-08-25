@@ -35,6 +35,7 @@ import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.CodedGrade;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
@@ -422,6 +423,21 @@ public class CreateAdverseEventAjaxFacade {
         return categories;
     }
 
+    public List<CtcCategory> getCategoriesWithStudyShortTitle(String studyShortTitle) {
+    	
+    	Study s = studyDao.getByShortTitle(studyShortTitle);
+    	Ctc ctc = s.getAeTerminology().getCtcVersion();
+    	
+    	
+        List<CtcCategory> categories = ctc.getCategories();
+        // cut down objects for serialization
+        for (CtcCategory category : categories) {
+            category.setTerms(null);
+        }
+        return categories;
+    }
+    
+    
     public List<? extends CodedGrade> getTermGrades(int ctcTermId) {
         List<CodedGrade> list = ctcTermDao.getById(ctcTermId).getGrades();
         // have to detect whether it's a collection of Grade or CtcGrade;
