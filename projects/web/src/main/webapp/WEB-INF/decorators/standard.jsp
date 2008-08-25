@@ -3,7 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="blue" tagdir="/WEB-INF/tags/blue" %>
+<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -19,10 +19,10 @@
 <standard:header/>
 
 <c:set var="__decorator_title"><decorator:title/></c:set>
-<blue:body title="${__decorator_title}">
-    <blue:flashMessage/>
+<chrome:body title="${__decorator_title}">
+    <chrome:flashMessage/>
     <decorator:body/>
-</blue:body>
+</chrome:body>
 
 <standard:footer/>
 </div>
