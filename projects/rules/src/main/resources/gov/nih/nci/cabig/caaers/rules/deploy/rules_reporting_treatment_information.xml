@@ -19,35 +19,6 @@
 		identifier="actionDispatcher"/>
 
 	<!-- ===== REPORT LEVEL RULE ====================================================
-	RuleName : SEC_BR5A_CHK
-	Rule : Protocol Agents must be provided if Course Information has been provided.
-	Error Code : SEC_BR5A_ERR
-	Error Message : PROTOCOL_AGENTS must be provided if COURSE_INFORMATION is provided
-	============================================================================= -->
-	<rule name="SEC_BR5A_CHK">
-		<rule-attribute name="no-loop" value="true"/>
-		<lhs>
-			<pattern identifier="aeReport"
-				object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors"
-				object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.firstCourseDate")
-				!= null ||
-				NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.date")
-				!= null ||
-				NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.adverseEventCourse.number")
-				!= null ||
-				NullSafeFieldExtractor.extractField(aeReport,"treatmentInformation.totalCourses") !=
-				null</eval>
-			<eval>NullSafeFieldExtractor.extractFieldLength(aeReport,"treatmentInformation.courseAgents")
-				&lt; 1</eval>
-		</lhs>
-		<rhs>
-			<!-- Populate Error Message--> errors.addValidationError("SEC_BR5A_ERR","Protocol Agents
-			must be provided if Course Information has been provided"); </rhs>
-	</rule>
-
-	<!-- ===== REPORT LEVEL RULE ====================================================
 	RuleName : SEC_BR5B_CHK
 	Rule : Protocol agents must be not be provided if Course Information has not been provided.
 	Error Code : SEC_BR5A_ERR

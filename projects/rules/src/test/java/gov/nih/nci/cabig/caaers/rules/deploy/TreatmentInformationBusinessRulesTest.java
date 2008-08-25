@@ -26,10 +26,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : SEC_BR5A_CHK Rule : Protocol Agents must be provided if Course Information has
-     * been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must be provided if
-     * COURSE_INFORMATION is provided
-     * 
+    * 
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
      * has not been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must not be
      * provided if COURSE_INFOMATION is not provided.
@@ -51,10 +48,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : SEC_BR5A_CHK Rule : Protocol Agents must be provided if Course Information has
-     * been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must be provided if
-     * COURSE_INFORMATION is provided
-     * 
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
      * has not been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must not be
      * provided if COURSE_INFOMATION is not provided.
@@ -66,21 +59,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertNoErrors(errors, "When there is Agents and Course Information available");
     }
 
-    /**
-     * RuleName : SEC_BR5A_CHK Rule : Protocol Agents must be provided if Course Information has
-     * been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must be provided if
-     * COURSE_INFORMATION is provided
-     */
-    public void testNoAgent_WithCourse() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        aeReport.getTreatmentInformation().setCourseAgentsInternal(new ArrayList<CourseAgent>());
-
-        ValidationErrors errors = fireRules(aeReport);
-
-        assertSameErrorCount(errors, 1,
-                        "When Couse information is provided without Agent information");
-        assertCorrectErrorCode(errors, "SEC_BR5A_ERR");
-    }
+   
 
     /**
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
@@ -103,8 +82,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only “Treatment Assignment Code” or “Describe
-     * Treatment Assignment” must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only ï¿½Treatment Assignment Codeï¿½ or ï¿½Describe
+     * Treatment Assignmentï¿½ must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      * 
      */
@@ -120,8 +99,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only “Treatment Assignment Code” or “Describe
-     * Treatment Assignment” must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only ï¿½Treatment Assignment Codeï¿½ or ï¿½Describe
+     * Treatment Assignmentï¿½ must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      * 
      */
@@ -138,8 +117,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only “Treatment Assignment Code” or “Describe
-     * Treatment Assignment” must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only ï¿½Treatment Assignment Codeï¿½ or ï¿½Describe
+     * Treatment Assignmentï¿½ must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      * 
      */
@@ -155,8 +134,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only “Treatment Assignment Code” or “Describe
-     * Treatment Assignment” must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only ï¿½Treatment Assignment Codeï¿½ or ï¿½Describe
+     * Treatment Assignmentï¿½ must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      * 
      */
@@ -172,8 +151,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-     * RuleName : TAI_BR2_CHK Rule : Either and only “Treatment Assignment Code” or “Describe
-     * Treatment Assignment” must be provided Error Code : TAI_BR2_ERR Error Message : Either and
+     * RuleName : TAI_BR2_CHK Rule : Either and only ï¿½Treatment Assignment Codeï¿½ or ï¿½Describe
+     * Treatment Assignmentï¿½ must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
      * 
      */
