@@ -39,6 +39,16 @@ function ajaxStudySearch(searchText, searchType) {
 }
 
 </script>
+    <style>
+        div.row div.label {
+            float : left;
+            font-weight: normal;
+            margin-left: 0.5em;
+            margin-right: 0.5em;
+            text-align: right;
+            width: 15em;
+        }
+    </style>
 </head>
 <body>
 <!-- TOP LOGOS END HERE -->
@@ -114,7 +124,7 @@ function ajaxStudySearch(searchText, searchType) {
 
         <div id="ids" style="display:none;">
             <br />
-            <chrome:division title="Study Identifiers">
+            <chrome:division title="Study Subject Identifier">
                 <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 </c:forEach>
