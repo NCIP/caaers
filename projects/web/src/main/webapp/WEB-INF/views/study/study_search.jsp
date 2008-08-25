@@ -63,7 +63,7 @@ function fireAction(action, selected){
         <div class="content">
    			 
         	<c:forEach items="${command.searchCriteria}" varStatus="status">
-            <div class="row" name="inputs">
+            <div class="row" name="inputs" style="float:left;">
             	<div class="label"> Search By: </div>
                 <div class="value">
                 	<form:select path="searchCriteria[${status.index}].searchType">
@@ -75,14 +75,14 @@ function fireAction(action, selected){
 			</div>
 		 	</c:forEach>
 
+            <input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
+            <tags:indicator id="indicator" />
         </div>
     </form:form>
 </chrome:box>
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
-	<tags:indicator id="indicator" />
 </div>
 
 <div class="endpanes" />

@@ -19,7 +19,7 @@
         	<h3>
                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
-                        <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.gif" />" border="0"/></a></td></c:if>
+                        <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.gif" />" border="0" style="padding-right:5px;"/></a></td></c:if>
                         <c:if test="${deleteParams}"><td align="left"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="checkno.gif"/>" border="0" alt="delete"></a></td></c:if>
                         <td width="100%">${title}</td>
                     </tr>
