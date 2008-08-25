@@ -364,7 +364,15 @@ margin-left:5px;
 }
 
 #taskbar a:hover {
-  color:#ffe9a5;
+	color:#ffe9a5;
+	background-image: url(../images/blue/secondlevelnav_hover.png);
+	background-repeat: no-repeat;
+}
+
+#taskbar a:active {
+	color:#752f00;
+	background-image: url(../images/blue/secondlevelnav_hover.png);
+	background-repeat: no-repeat;
 }
 
 #taskbar a.lte4 img.imagegt18{
