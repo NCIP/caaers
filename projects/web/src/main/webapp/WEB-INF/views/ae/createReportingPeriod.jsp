@@ -11,7 +11,7 @@
 	<tags:stylesheetLink name="standard-form" />
 	<style type="text/css">
 		/*override the basic styles */
-		body {background: none;}
+		body {background: none; text-align:left;}
 		div.row div.label {width: 12em;}
 	 	div.row div.value, div.row div.extra { margin-left: 13em; }
 	
@@ -41,9 +41,7 @@
   </head>
  <body>
 	<tags:standardForm title="Evaluation Period Details">
-		<jsp:attribute name="instructions">
-			<p>You can add the details of the Evaluation Period here.</p>
-		</jsp:attribute>
+		<jsp:attribute name="instructions" />
 		<jsp:attribute name="singleFields">
 			<c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">
                <tags:renderRow field="${field}"/>

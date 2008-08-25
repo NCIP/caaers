@@ -71,7 +71,7 @@ div.row div.value {
  	 		url = "createReportingPeriod?assignmentId=#{assignmentId}&id=#{id}&subview".interpolate({assignmentId:"${command.assignment.id}" , id:rpId});
  	 		this.win = new Window({className:"alphacube", 
  	 	 		destroyOnClose:true, 
- 	 	 		title:"Evaluation Period Information",
+ 	 	 		title:"",
  	 	 		width:700,  height:530, 
  				url: url, 
  				top: 30, left: 300});
