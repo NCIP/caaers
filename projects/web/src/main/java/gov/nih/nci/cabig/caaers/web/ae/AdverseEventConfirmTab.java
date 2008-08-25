@@ -110,6 +110,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
+	
 		int i = 0;
 		
 		//Call the super class referenceData, so that the createFieldGroup is executed
