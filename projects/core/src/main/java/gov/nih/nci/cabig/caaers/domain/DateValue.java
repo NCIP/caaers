@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Embeddable
-public class DateValue implements Comparable<DateValue>{
+public class DateValue implements Comparable<DateValue> {
     private String format = "%02d/%02d/%04d";
 
     private Integer day;
@@ -16,7 +16,7 @@ public class DateValue implements Comparable<DateValue>{
     private Integer month;
 
     private Integer year;
-    
+
     private int zone = 0; //attribute kept to force Hibernate in instantiating this object
 
     public DateValue() {
@@ -69,53 +69,57 @@ public class DateValue implements Comparable<DateValue>{
     public void setYear(Integer year) {
         this.year = year;
     }
-    
+
     public int getZone() {
-		return zone;
-	}
+        return zone;
+    }
+
     public void setZone(int zone) {
-		this.zone = zone;
-	}
-    
-    @Transient
-    public String getYearString(){
-    	if(year == null) return null;
-    	return String.format("%04d", year);
+        this.zone = zone;
     }
+
     @Transient
-    public void setYearString(String year){
-    	if(year == null) 
-    		this.year = null;
-    	else
-    		this.year = new Integer(year);
+    public String getYearString() {
+        if (year == null) return null;
+        return String.format("%04d", year);
     }
-    
+
     @Transient
-    public String getMonthString(){
-    	if(month == null) return null;
-    	return String.format("%02d", month);
+    public void setYearString(String year) {
+        if (year == null)
+            this.year = null;
+        else
+            this.year = new Integer(year);
     }
+
     @Transient
-    public void setMonthString(String month){
-    	if(month == null)
-    		this.month = null;
-    	else
-    		this.month = new Integer(month);
+    public String getMonthString() {
+        if (month == null) return null;
+        return String.format("%02d", month);
     }
-    
+
     @Transient
-    public String getDayString(){
-    	if(day == null) return null;
-    	return String.format("%02d", day);	
+    public void setMonthString(String month) {
+        if (month == null)
+            this.month = null;
+        else
+            this.month = new Integer(month);
     }
+
     @Transient
-    public void setDayString(String day){
-    	if(day == null) 
-    		this.day = null;
-    	else
-    		this.day = new Integer(day);
+    public String getDayString() {
+        if (day == null) return null;
+        return String.format("%02d", day);
     }
-    
+
+    @Transient
+    public void setDayString(String day) {
+        if (day == null)
+            this.day = null;
+        else
+            this.day = new Integer(day);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -143,34 +147,34 @@ public class DateValue implements Comparable<DateValue>{
         } else if (!year.equals(other.year)) return false;
         return true;
     }
-    
+
     public int compareTo(DateValue o) {
-    	
-    	if(o == null) return 1;
-    	
-    	if(year == null && o.year != null) return -1;
-    	if(year != null && o.year == null) return 1;
-    	if((year != null && o.year != null) && (year.compareTo(o.year) != 0)) return year.compareTo(o.year);
-    	
-    	if(month == null && o.month != null) return -1;
-    	if(month != null && o.month == null) return 1;
-    	if( (month != null && o.month != null) && (month.compareTo(o.month) != 0)) return month.compareTo(o.month);
-    	
-    	if(day == null && o.day != null) return -1;
-    	if(day != null && o.day == null) return 1;
-    	if( (day != null && o.day != null) && (day.compareTo(o.day) != 0)) return day.compareTo(o.day);
-    	
-    	return 0;
+
+        if (o == null) return 1;
+
+        if (year == null && o.year != null) return -1;
+        if (year != null && o.year == null) return 1;
+        if ((year != null && o.year != null) && (year.compareTo(o.year) != 0)) return year.compareTo(o.year);
+
+        if (month == null && o.month != null) return -1;
+        if (month != null && o.month == null) return 1;
+        if ((month != null && o.month != null) && (month.compareTo(o.month) != 0)) return month.compareTo(o.month);
+
+        if (day == null && o.day != null) return -1;
+        if (day != null && o.day == null) return 1;
+        if ((day != null && o.day != null) && (day.compareTo(o.day) != 0)) return day.compareTo(o.day);
+
+        return 0;
     }
 
     public String toString() {
         return String.format(format, month == null ? 0 : month, day == null ? 0 : day,
-                        year == null ? 0 : year);
+                year == null ? 0 : year);
     }
 
     public Date toDate() {
         return new GregorianCalendar(year == null ? 2008 : year, month == null ? 0 : month,
-                        day == null ? 0 : day).getTime();
+                day == null ? 0 : day).getTime();
     }
 
     public boolean checkIfDateIsInValid() {
@@ -181,5 +185,12 @@ public class DateValue implements Comparable<DateValue>{
                 || (this.getDay() != null && (this.getDay() < 0 || this.getDay() > 31))
                 || (this.getYear() == null || this.getYear() < 1900 || this.getYear() > now
                 .get(Calendar.YEAR)) || now.after(this.toDate());
+    }
+
+    @Transient
+    public boolean isNull() {
+
+
+        return (this.getMonth() == null && this.getDay() == null && this.getDay() == null);
     }
 }

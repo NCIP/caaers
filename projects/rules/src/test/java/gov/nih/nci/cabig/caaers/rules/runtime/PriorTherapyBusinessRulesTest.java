@@ -71,7 +71,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 2);
         assertEquals("Correct replacement variable value", 2, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
     }
 
     /**
@@ -91,7 +91,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 1);
         assertEquals("Correct replacement variable value", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
 
     }
 
@@ -130,7 +130,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertCorrectErrorCode(errors, "PTY_UK_ERR");
         assertSameErrorCount(errors, 1);
         assertEquals("Replacement variable incorrect", 3, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
     }
 
     /**
@@ -155,7 +155,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         }
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors,
-                        "when bone marrow transplant has priortherapy agents with chemo agents");
+                "when bone marrow transplant has priortherapy agents with chemo agents");
     }
 
     /**
@@ -184,7 +184,6 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      * agents systemic� �Chemotherapy single agent systemic� �Immunotherapy� �Hormonal Therapy�
      * Error Code : PTY_BR4B_ERR Error Message : CHEMO_AGENTS must be provided for the provided
      * PRIOR_THERAPY value.
-     * 
      */
 
     public void testXYZPriorTherapy_With_PriorTherapyAgents() throws Exception {
@@ -208,12 +207,11 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      * RuleName : PTY_BR3_CHK Logic : �Therapy End Date� must not be provided if �Therapy Start
      * Date� is not provided Error Code : PTY_BR3_ERR Error Message : THERAPY_END_DATE must be not
      * be provided if THERAPY_START_DATE is not provided.
-     * 
-     * 
+     * <p/>
+     * <p/>
      * RuleName : PTY_BR2_CHK Logic : 'Therapy End Date' must not be later than 'Therapy Start Date'
      * Error Code : PTY_BR2_ERR Error Message : THERAPY_END_DATE must be later than or equal
      * THERAPY_START_DATE
-     * 
      */
     public void testPriorTherapyNoStartDate_NoEndDate() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -228,7 +226,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      * RuleName : PTY_BR3_CHK Logic : �Therapy End Date� must not be provided if �Therapy Start
      * Date� is not provided Error Code : PTY_BR3_ERR Error Message : THERAPY_END_DATE must be not
      * be provided if THERAPY_START_DATE is not provided.
-     * 
+     *
      * @throws Exception
      */
     public void testPriorTherapyNoStartDate_ButEndDate() throws Exception {
@@ -249,6 +247,22 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      */
 
     public void testPriorTherapyStartOnly() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
+            aet.getPriorTherapy().setId(83);
+            aet.setStartDate(new DateValue(new Date()));
+        }
+        ValidationErrors errors = fireRules(aeReport);
+        assertNoErrors(errors, "No errors when only startdate ");
+    }
+
+    /**
+     * RuleName : PTY_BR2_CHK Logic : 'Therapy End Date' must not be later than 'Therapy Start Date'
+     * Error Code : PTY_BR2_ERR Error Message : THERAPY_END_DATE must be later than or equal
+     * THERAPY_START_DATE
+     */
+
+    public void testPriorTherapyStartOnlyAndEndDateIsNull() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
             aet.getPriorTherapy().setId(83);
@@ -317,7 +331,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertSameErrorCount(errors, 1);
         assertCorrectErrorCode(errors, "PTY_BR2_ERR");
         assertEquals("Incorrect replacement variable", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
 
     }
 

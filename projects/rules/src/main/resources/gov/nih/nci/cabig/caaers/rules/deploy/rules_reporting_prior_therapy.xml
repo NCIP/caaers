@@ -90,7 +90,7 @@
 					int i = 0;
 					for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
 						i++;
-						if(pt.getEndDate() != null &amp;&amp; pt.getStartDate().compareTo(pt.getEndDate()) &gt; 0){
+						if(pt.getEndDate() != null &amp;&amp;!pt.getEndDate().isNull() &amp;&amp; pt.getStartDate().compareTo(pt.getEndDate()) &gt; 0){
 						 errors.addValidationError("PTY_BR2_ERR","'Therapy End Date' must not be later than 'Therapy Start Date'", i);
 						}
 					}
