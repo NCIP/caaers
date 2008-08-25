@@ -548,8 +548,13 @@ padding-top:2px;
 	font-family: arial, serif;
 }
 
+#thirdlevelnav .required-indicator{
+	color: #f66;
+	font-family: arial, serif;
+}
+
 .required-for-submit {
-  color: #0a0; font-family: Arial, serif;
+  color: #6f6; font-family: Arial, serif;
   font-weight: bold;
 }
 
@@ -581,7 +586,7 @@ ul.errors {
 }
 ul.errors li {
   margin: 0 0.8em; padding: 0;
-  list-style-image: url('../images/redexclamation.gif'); 
+  list-style-image: url('../images/error.png'); 
 }
 
 /* The delete checkbox which may go in a box's h3s */
