@@ -211,7 +211,6 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<ExpeditedAdverseEventReport> getAeReports() {
-		if(aeReports == null) aeReports = new ArrayList<ExpeditedAdverseEventReport>();
 		return aeReports;
 	}
     
@@ -220,7 +219,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	}
     
     public void addAeReport(ExpeditedAdverseEventReport aeReport){
-    	getAeReports().add(aeReport);
+    	if(aeReport == null) return;
+    	if(this.aeReports == null) this.aeReports = new ArrayList<ExpeditedAdverseEventReport>();
+    	aeReport.setReportingPeriod(this);
+    	aeReports.add(aeReport);
+    	
     }
     
     @Transient

@@ -19,6 +19,10 @@ public class ExpeditedAdverseEventReportChildFactory<T extends ExpeditedAdverseE
     public T create() {
         T child = super.create();
         child.setReport(report);
+        
+        if(child instanceof AdverseEvent){
+        	((AdverseEvent)child).setReportingPeriod(report.getReportingPeriod());
+        }
         return child;
     }
 }

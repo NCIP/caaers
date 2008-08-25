@@ -153,8 +153,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         return aeReports;
     }
 
-    
-    @OneToMany(mappedBy = "assignment")
+    @Transient
     public List<RoutineAdverseEventReport> getAeRoutineReports() {
 //        if (aeRoutineReports == null) aeRoutineReports = new ArrayList<RoutineAdverseEventReport>();
         return new ArrayList<RoutineAdverseEventReport>();

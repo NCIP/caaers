@@ -143,7 +143,8 @@ public class RoutineAdverseEventReport extends AbstractMutableDomainObject {
 
     // //// BEAN PROPERTIES
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @Transient
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }
