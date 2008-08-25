@@ -247,7 +247,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
         	ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
     		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
     		aeReport.setReportingPeriod(reportingPeriod);
-    		//reportingPeriod.setAeReport(aeReport);
+    		//reportingPeriod.setAeReport(aeReport);saveExpeditedReport
     		reportingPeriod.addAeReport(aeReport);
     		newExpeditedReportList.add(aeReport);
         }else {
@@ -258,6 +258,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 
 		//add AEs to expedited report.
 		for(AdverseEvent ae : newlySelectedAEs){
+			command.updateRequiresReportingFlag(ae);
 			reportingPeriod.getAeReports().get(0).addAdverseEvent(ae);	
 		}
         

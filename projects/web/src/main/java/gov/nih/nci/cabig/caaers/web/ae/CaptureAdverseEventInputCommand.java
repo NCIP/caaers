@@ -410,6 +410,17 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
 	}
 	
+	
+	/**
+	 * Updates the requires reporting indicator of this AE.
+	 * @param selectedAesMap
+	 */
+	public void updateRequiresReportingFlag(AdverseEvent ae){
+		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty()) return;
+		ae.setRequiresReporting(seriousAdverseEvents.contains(ae));
+		
+	}
+	
     public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {
 		this.selectedAesMap = selectedAesMap;
 	}
