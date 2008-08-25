@@ -222,7 +222,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     public void addAeReport(ExpeditedAdverseEventReport aeReport){
     	if(aeReport == null) return;
     	aeReport.setReportingPeriod(this);
-    	aeReports.add(aeReport);
+    	getAeReports().add(aeReport);
     	
     }
     
