@@ -13,8 +13,10 @@ Note: -
 
 <chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
                <tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+                       noBackground="true"
                    callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
-                   version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" title="Choose CTC terms">
+                   version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
+                   title="Choose CTC terms">
                </tags:aeTermQuery>
                <table id="observedTable" width="100%" class="tablecontent">
                    <tr>

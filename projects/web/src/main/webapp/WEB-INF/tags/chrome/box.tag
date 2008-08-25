@@ -5,11 +5,33 @@
 <%@attribute name="id"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
+<%@attribute name="noBackground" required="false" %>
+
 <%-- If this attribute is true, the provided contents will be wrapped in a .content div.
      Use it if the box will only need one content div -- i.e., it doesn't contain any
      chrome:divisions with titles. --%>
 <%@attribute name="autopad" required="false" %>
 <%@attribute name="collapsable" required="false" %>
+
+
+<c:if test="${noBackground}">
+<div class=" ${cssClass}"
+    <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
+    <!-- inner border -->
+    <div>
+        <div class="interior">
+            <c:if test="${autopad}"><div class="content"></c:if>
+            <jsp:doBody/>
+            <c:if test="${autopad}"></div></c:if>
+        </div>
+    </div>
+    <!-- end inner border -->
+</div>
+<!-- end box -->
+</c:if>
+
+
+<c:if test="${!noBackground}">
 <div class="box ${cssClass}"
     <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
 
@@ -30,3 +52,4 @@
     <!-- end inner border -->
 </div>
 <!-- end box -->
+</c:if>

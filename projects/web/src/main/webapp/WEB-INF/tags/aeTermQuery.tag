@@ -10,6 +10,8 @@
 <%@attribute name="ignoreOtherSpecify" type="java.lang.Boolean" description="Must be true if we need to ignore other specify" %>
 <%@attribute name="localButtons" fragment="true" description="Extra content to be display in the control area, by default an Add Terms button will be displayed"%>
 <%@attribute name="title" required="false" %> 
+<%@attribute name="noBackground" required="false" type="java.lang.Boolean" %>
+
 <tags:dwrJavascriptLink objects="createAE"/>
 <script type="text/javascript">
   
@@ -226,7 +228,7 @@
 
 </script>
 
-<chrome:boxNoBackground title="Find &amp; Add AEs">
+<chrome:box title="Find &amp; Add AEs" noBackground="${noBackground}">
  	<c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
     <c:if test="${empty instructions}"><p class="instructions">To enter AE terms individually, begin to enter the AE term below, select the appropriate term, and click "Add".</p></c:if>
  		<table id="fnd-0" class="query">
@@ -250,7 +252,7 @@
   				</tr>
   			</tbody>
   		</table>
-  	</chrome:boxNoBackground>
+  	</chrome:box>
   	<!-- the hidden window for category popup -->
   	<div style="display:none">
 	<c:if test="${not isMeddra}">
