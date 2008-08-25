@@ -310,6 +310,15 @@ public class RuleTab extends DefaultTab {
 
         } catch (Exception e) {
             logger.error("Exception while retrieving the Rule Set", e);
+            if (ruleSet == null) {
+                ruleSet = new RuleSet();
+                ruleSet.setDescription(createRuleCommand.getRuleSetName());
+            }
+            createRuleCommand.setRuleSet(ruleSet);
+            Organization org = createRuleCommand.getOrganizationDao().getByName(
+                            createRuleCommand.getOrganizationName());
+
+            createRuleCommand.setReportDefinitions(getReportDefinitions(org));
         }
 
         return super.referenceData(command);
