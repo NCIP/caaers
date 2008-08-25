@@ -33,6 +33,19 @@
         .notify-unit.failure {
             color: #900;
         }
+        
+        .centerTableHeader {
+			background-color:#308DBB;
+			border-color:white;
+			border-right:1px solid white;
+			color:white;
+			font-family:Arial,verdana,helvetica,sans-serif;
+			font-size:11px;
+			font-weight:bold;
+			margin:0px;
+			padding:4px 3px;
+			text-align:center;
+		}
     </style>
     <script type="text/javascript">
 
@@ -92,9 +105,9 @@
 					<thead>
 						<tr align="center" class="label">
 							<td width="5%" class="tableHeader"></td>
-							<td width="15%" class="tableHeader">Evaluation Periods</td>
-							<td width="16%" class="tableHeader"># of Reports</td>
-							<td width="16%" class="tableHeader"># of AEs</td>
+							<td width="15%" class="tableHeader">Evaluation Period</td>
+							<td width="16%" class="centerTableHeader"># of Reports</td>
+							<td width="16%" class="centerTableHeader"># of AEs</td>
 							<td width="16%" class="tableHeader">Data Entry Status</td>
 							<td width="16%" class="tableHeader">Report Status</td>
 							<td width="16%" class="tableHeader">Options</td>

@@ -15,15 +15,15 @@
 	<td>
 		<chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/>
 	</td>
-	<td width="15%">
+	<td width="15%" align="left">
 		<a style="text-decoration:none" href="<c:url value="${reportingPeriodPageURL}"/>">
 			${reportingPeriod.name}
 		</a>
 	</td>
 	<td width="10%">${reportingPeriod.numberOfReports}</td>
 	<td width="10%">${reportingPeriod.numberOfAes}</td>
-	<td>${reportingPeriod.dataEntryStatus}</td>
-	<td>${reportingPeriod.reportStatus eq 'PENDING' ? 'Report(s) Due' : reportingPeriod.reportStatus eq 'COMPLETED' ? 'Report(s) Completed' : ''}</td>
+	<td align="left">${reportingPeriod.dataEntryStatus}</td>
+	<td align="left">${reportingPeriod.reportStatus}</td>
 	<td width="20%"></td>
 </tr>
 
@@ -44,7 +44,7 @@
 									<tr align="center" class="label">
 										<td width="5%"/>
 										<td class="tableHeader" width="15%">Report Type</td>
-										<td class="tableHeader" width="20%"># of AEs</td>
+										<td class="centerTableHeader" width="20%"># of AEs</td>
 										<td class="tableHeader" width="20%">Data Entry Status</td>
 										<td class="tableHeader" width="20%">Submission Status</td>
 										<td class="tableHeader" width="20%">Options</td>

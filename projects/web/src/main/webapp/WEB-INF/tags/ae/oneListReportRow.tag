@@ -9,19 +9,19 @@
 <c:set var="reportStatus" value="${lastVersion.reportStatus}" />
 <tr align="center" id="row${rpIndex}" class="${repcurrClass}" onMouseOver="this.className='highlight'"	onMouseOut="this.className='${repcurrClass}'">
 	<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
-	<td width="15%">
+	<td align="left" width="15%">
 		<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
 			${report.reportDefinition.name}
 		</a>	
 	</td>
 	<td width="20%">${report.aeReport.numberOfAes}</td>
-	<td width="20%">
-		${command.reportsSubmittable[report.id] ? 'Complete' : 'Incomplete'}
+	<td width="20%" align="left">
+		${command.reportsSubmittable[report.id] ? 'Complete' : 'In-progress'}
 	</td>
-	<td width="20%" id="status${report.id}">
+	<td width="20%" id="status${report.id}" align="left">
 		<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/>
 	</td>
-	<td width="20%" id="action${report.id}">
+	<td width="20%" id="action${report.id}" align="left">
 		<c:if test="${command.reportsSubmittable[report.id]}">
 		  <center>
 			<c:choose>
@@ -51,9 +51,9 @@
 				<thead>
 					<tr align="center" class="label">
 						<td class="tableHeader" width="25%">AE Term</td>
-						<td class="tableHeader" width="25%">Grade</td>
-						<td class="tableHeader" width="25%">Start of AE(Primary)</td>
-						<td class="tableHeader" width="25%">Requires report</td>
+						<td class="centerTableHeader" width="25%">Grade</td>
+						<td class="tableHeader" width="25%">AE Start Date</td>
+						<td class="tableHeader" width="25%">Requires Expedited Reporting?</td>
 					</tr>
 				</thead>
 						

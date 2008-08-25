@@ -7,9 +7,9 @@
 <% String currClass=index%2==0? "odd":"even"; %>
 <tr align="center"  class="<%= currClass %>" onMouseOver="this.className='highlight'"
 			onMouseOut="this.className='<%= currClass %>'">
-	<td width="${width}">${ae.adverseEventTerm.universalTerm}</td>
+	<td width="${width}" align="left">${ae.adverseEventTerm.universalTerm}</td>
 	<td width="${width}">${ae.grade.code}</td>
-	<td width="${width}"><tags:formatDate value="${ae.startDate}" /></td>	<td width="${width}">
+	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>	<td width="${width}" align="left">
 		<c:if test="${ae.requiresReporting == true}">
 			<img src="images/tick.gif"/>
 		</c:if>
