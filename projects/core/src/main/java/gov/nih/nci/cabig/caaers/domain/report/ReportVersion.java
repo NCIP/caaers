@@ -71,10 +71,10 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     		return "Amendment due";
     	}
     		
-    	if(reportStatus == ReportStatus.INPROCESS) return "Inprocess";
-    	if(reportStatus == ReportStatus.COMPLETED) return "Completed on " + DateUtils.formatDate(submittedOn);
+    	if(reportStatus == ReportStatus.INPROCESS) return "In-progress";
+    	if(reportStatus == ReportStatus.COMPLETED) return "Submitted on " + DateUtils.formatDate(submittedOn);
     	if(reportStatus == ReportStatus.WITHDRAWN) return "Withdrawn on " + DateUtils.formatDate(withdrawnOn);
-    	if(reportStatus == ReportStatus.FAILED) return "Failed";
+    	if(reportStatus == ReportStatus.FAILED) return "Submission Failed";
     	return "";
     }
     

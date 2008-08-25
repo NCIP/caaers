@@ -266,7 +266,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     
     @Transient
     public String getDataEntryStatus(){
-    	return "In-process";
+    	return "In-progress";
     }
     
     /**
@@ -275,8 +275,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
      * @return {@link ReportStatus}.COMPLETED -When all reports are submitted sucessfully or (withdrawn), {@link ReportStatus}.PENDING when any of the report is pending,inprocess or failed.
      */
     @Transient
-    public ReportStatus getReportStatus(){
-    	if(getAeReports().isEmpty()) return null;
+    public String getReportStatus(){
+    	if(getAeReports().isEmpty()) return "No Reports";
     	
     	// If for any reports associated to all the Data Collection has status other than COMPLETED
     	// or WITHDRAWN then return a status "Report(s) Due" or else return a status "Report(s) Completed"
@@ -285,11 +285,12 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     		for(Report report: aeReport.getReports()){
     			ReportStatus status = report.getLastVersion().getReportStatus();
     			if(status == ReportStatus.PENDING   || status == ReportStatus.INPROCESS || status == ReportStatus.FAILED){
-    				return ReportStatus.PENDING;
+    				return "Report(s) Due";
     			}
     		}	
     	}
     	
-    	return ReportStatus.COMPLETED;
+    	return "Report(s) Completed";
     }
+    
 }
