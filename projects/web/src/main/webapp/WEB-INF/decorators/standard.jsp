@@ -11,6 +11,7 @@
 <html>
 <head>
 <title>caAERS || <decorator:title/></title>
+<link rel="icon" href="../../images/caaers.ico"/> 
 <standard:head/>
 <decorator:head/>
 </head>

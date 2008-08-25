@@ -19,6 +19,7 @@
 <html>
 <head>
     <title>caAERS || ${flow.name} || ${tab.longTitle}</title>
+    <link rel="icon" href="../../images/caaers.ico"/> 
     <standard:head/>
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:javascriptLink name="tabbedflow"/>
