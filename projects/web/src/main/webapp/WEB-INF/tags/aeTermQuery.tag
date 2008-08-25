@@ -226,7 +226,7 @@
 
 </script>
 
-<chrome:box title="Find &amp; Add Adverse Event (AE) Term(s)">
+<chrome:boxNoBackground title="Find &amp; Add AEs">
  	<c:if test="${not empty instructions}"><p class="instructions"><jsp:invoke fragment="instructions"/></p></c:if>
     <c:if test="${empty instructions}"><p class="instructions">To enter AE terms individually, begin to enter the AE term below, select the appropriate term, and click "Add".</p></c:if>
  		<table id="fnd-0" class="query">
@@ -250,7 +250,7 @@
   				</tr>
   			</tbody>
   		</table>
-  	</chrome:box>
+  	</chrome:boxNoBackground>
   	<!-- the hidden window for category popup -->
   	<div style="display:none">
 	<c:if test="${not isMeddra}">

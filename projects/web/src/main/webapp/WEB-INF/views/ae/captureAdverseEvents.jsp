@@ -190,9 +190,6 @@ div.row div.value {
 </head>
  <body>
 	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm">
-        <jsp:attribute name="instructions">
-    	    <tags:instructions code="instruction_ae_enterBasics" />
-        </jsp:attribute>
       	
       	<jsp:attribute name="singleFields">
       		<input type="hidden" name="_action" id="_action" value="">
