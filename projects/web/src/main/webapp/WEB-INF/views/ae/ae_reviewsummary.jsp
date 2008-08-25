@@ -30,7 +30,13 @@
       	 	 	}	
       	 	 });
 		}
+		
+		Event.observe('manage-report-id', "click", function(){
+			var url = '<c:url value="/pages/ae/list"/>' +'?assignment=' + ${command.assignment.id};
+			window.location = url;
+		});
 	});
+	
 	
 </script>
 <style type="text/css">
@@ -61,7 +67,7 @@
 	
 	</tags:noform>			
 </div>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Save &amp; Manage Reports">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report">
 	
 		<jsp:attribute name="instructions">
 		<input type="hidden" name="_finish"/>
@@ -244,6 +250,20 @@
 		</c:if> 
 		
   	</jsp:attribute>
+  	<jsp:attribute name="tabControls">
+  		<div class="content buttons autoclear">
+    	<div class="flow-buttons">
+        <span class="prev">
+                <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
+        </span>
+        <span class="next">
+        	<input type="button" value="Manage Reports" id="manage-report-id"/>
+            <input type="submit" value="Create Report »" id="flow-next"/>
+        </span>
+    	</div>
+		</div>
+  	</jsp:attribute>
+
 	
 </tags:tabForm>
 </body>

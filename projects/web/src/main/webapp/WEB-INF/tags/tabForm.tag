@@ -16,6 +16,7 @@
 <%@attribute name="singleFields" fragment="true" %>
 <%@attribute name="repeatingFields" fragment="true" %>
 <%@attribute name="localButtons" fragment="true" %>
+<%@attribute name="tabControls" fragment="true" %>
 <%@attribute name="saveButtonLabel" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
@@ -30,6 +31,12 @@
             <jsp:invoke fragment="singleFields"/>
         </chrome:division>
         <jsp:invoke fragment="repeatingFields"/>
+	  <c:if test="${not empty tabControls}">
+		<jsp:invoke fragment="tabControls" />
+	  </c:if>
+	  <c:if  test="${empty tabControls}">
+
         <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+	  </c:if>
     </form:form>
 </chrome:box>

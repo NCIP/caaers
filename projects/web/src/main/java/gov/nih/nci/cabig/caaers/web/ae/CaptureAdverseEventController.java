@@ -182,7 +182,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
-	    return new ModelAndView("redirectToAeList", model);
+	    model.put("aeReport", command.getAdverseEventReportingPeriod().getAeReports().get(0).getId());
+	    return new ModelAndView("redirectToExpeditedAeEdit", model);
 	}
 	
 	/**

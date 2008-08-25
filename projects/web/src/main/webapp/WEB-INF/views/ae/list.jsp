@@ -62,7 +62,6 @@
 	        
 		}else if(action =='submit'){
 			var url = '<c:url value="/pages/ae/submitReport?from=list" />'  + '&aeReport=' + aeReportId + '&reportId=' + reportId;
-			  alert('here');
 			window.location = url;
 			
 		}else if(action =='amend'){
