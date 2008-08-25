@@ -31,7 +31,7 @@
 		<div class="row" id="rule-${ruleCount + 1}-columns">
 			<br/>
 			<c:forEach varStatus="conditionStatus" begin="0" items="${command.ruleSet.rule[ruleCount].condition.column}">
-				<div id="condition-${conditionStatus.index}" style="margin-left:200px;" class="lineitem">
+				<div id="condition-${conditionStatus.index}" style="margin-left:50px;" class="lineitem">
 					<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 					<c:choose>
 						<c:when test="${conditionStatus.index == 0}">
@@ -129,7 +129,7 @@
 			<div class="row">
 				<div  style="margin-left:50px;"><label for="action" class="label">Action</label></div>
 				<br/>
-				<div id="action-template"  style="margin-left:200px;">
+				<div id="action-template"  style="margin-left:50px;">
 					<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 					<select id="ruleSet.rule[${ruleCount}].action" name="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 						

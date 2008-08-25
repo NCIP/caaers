@@ -184,7 +184,7 @@
         You are creating Rules. You can create one or more rules at Sponsor, Institution or Study level.   
     </p>
 
-    <chrome:division>
+    <chrome:division >
 
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
 	<jsp:attribute name="singleFields">
@@ -228,7 +228,7 @@
 				<div class="label"><label for="sponsor-input">Select Sponsor</label></div>
 				<div class="value">
 					<form:hidden path="sponsorName"/>
-					<input type="text" id="sponsor-input" value="${command.sponsorName}" size="40"/>
+					<input type="text" id="sponsor-input" value="${command.sponsorName}" size="30"/>
                     			<input type="button" id="sponsor-clear" value="Clear"/>					
 					<tags:indicator id="sponsor-indicator"/>
 				</div>
@@ -243,7 +243,7 @@
 				<div class="label"><label for="institution-input">Select Instiution</label></div>
 				<div class="value">
 					<form:hidden path="institutionName"/>
-					<input type="text" id="institution-input" value="${command.institutionName}" size="40"/>
+					<input type="text" id="institution-input" value="${command.institutionName}" size="30"/>
 					<input type="button" id="institution-clear" value="Clear"/>
 					<tags:indicator id="institution-indicator"/>
 				</div>
@@ -256,7 +256,7 @@
 				<div class="label"><label for="study-input">Select Study</label></div>
 				<div class="value">
 					<form:hidden path="categoryIdentifier"/>
-					<input type="text" id="study-input" value="${command.categoryIdentifier}" size="40"/>
+					<input type="text" id="study-input" value="${command.categoryIdentifier}" size="30"/>
 					<input type="button" id="study-clear" value="Clear"/>
 					<tags:indicator id="study-indicator"/>
 				</div>

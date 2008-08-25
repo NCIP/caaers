@@ -1208,7 +1208,7 @@
 <p id="instructions">Rules can be added by using the Add Rule
 button. Rules created will belong to the selected Rule Set.</p>
 
-<chrome:division>
+<chrome:division >
 
 	<%--<form:form cssClass="standard">--%>
 	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
@@ -1266,7 +1266,7 @@ button. Rules created will belong to the selected Rule Set.</p>
 					<c:set var="columnCount" value="${columnStatus.index}" />
 
 					<div id="rule-${ruleCount}-column-${columnCount}"
-						style="margin-left:200px; 
+						style="margin-left:50px; 
 						
 						<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}">
 							visibility:hidden
@@ -1739,7 +1739,7 @@ button. Rules created will belong to the selected Rule Set.</p>
 				<div style="margin-left:50px;"><label for="action"
 					class="label">Action(s)</label></div>
 				<br />
-					<div id="action-template" style="margin-left:200px;"><img
+					<div id="action-template" style="margin-left:50px;"><img
 					src="/caaers/images/chrome/spacer.gif"
 					style="width:10px;height:10px" align="absmiddle" /> 
 				<form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
@@ -1780,7 +1780,7 @@ button. Rules created will belong to the selected Rule Set.</p>
 			</div>
 			<!-- closing allRules -->
 			<div class="local-buttons"><input type="button"
-				value="Add Rule" align="right" onclick="addRule()" /></div>
+				value="Add Rule" onclick="addRule()" /></div>
 			</div>
 		</jsp:attribute>
 	</tags:tabForm>

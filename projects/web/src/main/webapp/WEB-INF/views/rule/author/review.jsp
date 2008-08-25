@@ -25,7 +25,7 @@
 </head>
 <body>
     
-    <chrome:division>
+    <chrome:division style="width : 60%">
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="instructions">
     	Please review the details furnished below, then press save to persist the modifications.

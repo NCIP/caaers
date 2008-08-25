@@ -51,7 +51,7 @@
         Select Rule Set name to Add or Modify the Rules. To create new Rule Set, click the "Create Rule Set" button.
 </p>
 
-<chrome:division>
+<chrome:division style="width : 60%">
 
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
 		<jsp:attribute name="singleFields">

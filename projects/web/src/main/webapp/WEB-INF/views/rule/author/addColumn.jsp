@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 
-<div id="rule-${ruleCount}-column-${columnCount}" style="margin-left:200px; display:none" class="lineitem">
+<div id="rule-${ruleCount}-column-${columnCount}" style="margin-left:50px; display:none" class="lineitem">
 	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
 	<label for="AND">AND</label>		
 	<img src="<c:url value="/images/chrome/spacer.gif"/>" style="width:10px;height:10px" align="absmiddle" />
