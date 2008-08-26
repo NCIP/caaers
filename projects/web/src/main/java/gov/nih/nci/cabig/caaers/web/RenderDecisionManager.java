@@ -1,4 +1,8 @@
 package gov.nih.nci.cabig.caaers.web;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 
  * @author Biju Joseph
@@ -6,11 +10,11 @@ package gov.nih.nci.cabig.caaers.web;
  */
 public class RenderDecisionManager {
 	
-	public boolean canRenderSection(String sectionId){
+	public boolean canRenderSection(String sectionId, HttpServletRequest request, HttpServletResponse response){
 		return true;
 	}
 	
-	public boolean canRenderField(String fieldId){
+	public boolean canRenderField(String fieldId, HttpServletRequest request, HttpServletResponse response){
 		return true;
 	}
 	
