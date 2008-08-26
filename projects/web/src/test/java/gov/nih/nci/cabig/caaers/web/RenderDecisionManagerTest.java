@@ -2,9 +2,10 @@ package gov.nih.nci.cabig.caaers.web;
 
 import junit.framework.TestCase;
 
-public class RenderDecisionManagerTest extends TestCase {
+public class RenderDecisionManagerTest extends WebTestCase {
 
 	RenderDecisionManager mgr = null;
+	
 	@Override
 	protected void setUp() throws Exception {
 		// TODO Auto-generated method stub
@@ -12,11 +13,11 @@ public class RenderDecisionManagerTest extends TestCase {
 		mgr = new RenderDecisionManager();
 	}
 	public void testCanRenderSection() {
-		assertTrue(mgr.canRenderSection(""));
+		assertTrue(mgr.canRenderSection("", request, response));
 	}
 
 	public void testCanRenderField() {
-		assertTrue(mgr.canRenderField(""));
+		assertTrue(mgr.canRenderField("", request, response));
 	}
 
 	public void testFindActualName() {
