@@ -9,10 +9,6 @@
 			onMouseOut="this.className='<%= currClass %>'">
 	<td width="${width}" align="left">${ae.adverseEventTerm.universalTerm}</td>
 	<td width="${width}">${ae.grade.code}</td>
-	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>	<td width="${width}" align="left">
-		<c:if test="${ae.requiresReporting == true}">
-			<img src="images/tick.gif"/>
-		</c:if>
-	</td>
+	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>	<td width="${width}" align="left">${ae.requiresReporting ? 'Yes' : 'No'}</td>
 		
 </tr>
