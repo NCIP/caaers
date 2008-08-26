@@ -15,12 +15,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.Where;
 
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
@@ -67,14 +70,14 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	// This holds the total number of reports within all the ExpeditedReport generated in this reporting period
 	private int numberOfReports;
 	
-	// This gives the number of Aes in the reporting Period.
-	private int numberOfAes;
-	
 	// This gives the Data Entry Status for ths reporing Period
 	private String dataEntryStatus;
 	
 	// This gives the Report Status for the reporting Period
 	private String reportStatus;
+	
+	// Evaluated adverse Events
+	private List<AdverseEvent> evaluatedAdverseEvents;
 	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
@@ -137,6 +140,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany(mappedBy = "reportingPeriod")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy("grade desc")
     public List<AdverseEvent> getAdverseEvents() {
     	if (adverseEvents == null) adverseEvents = new ArrayList<AdverseEvent>();
         return adverseEvents;
@@ -144,6 +148,16 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 
     public void setAdverseEvents(final List<AdverseEvent> adverseEvents) {
         this.adverseEvents = adverseEvents;
+    }
+    
+    @Transient
+    public List<AdverseEvent> getEvaluatedAdverseEvents(){
+    	evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: this.getAdverseEvents()){
+    		if(ae.getGrade() != null)
+    			evaluatedAdverseEvents.add(ae);
+    	}
+    	return evaluatedAdverseEvents;
     }
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -259,12 +273,6 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     }
     
     @Transient
-    public int getNumberOfAes(){
-    	int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
-    	return count;
-    }
-    
-    @Transient
     public String getDataEntryStatus(){
     	return "In-progress";
     }
@@ -292,5 +300,6 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	
     	return "Report(s) Completed";
     }
+    
     
 }
