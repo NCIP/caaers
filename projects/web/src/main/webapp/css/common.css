@@ -358,6 +358,16 @@ ul.tabs li {
 	margin-right: 2px;
 }
 
+#taskbar a.gt4:hover{
+	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
+}
+
+#taskbar a.gt4:active{
+	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
+	background-repeat: no-repeat;
+}
+
 #taskbar a.lte4 img{
 margin-right:7px;
 margin-left:5px;
