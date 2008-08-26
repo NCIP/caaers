@@ -108,20 +108,20 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         //for solicited AEs always add NotEvaluated and Normal/Evaluated
         if(ae.getSolicited()){
         	gradeOptions.put(Grade.NOT_EVALUATED.getName(), Grade.NOT_EVALUATED.getDisplayName());
-        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getCode() + "-" + Grade.NORMAL.getDisplayName());
+        	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getCode() + ":  " + Grade.NORMAL.getDisplayName());
         }
         if(terminology.equals("Ctc")){
         	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
         	if(ctcGrades == null || ctcGrades.isEmpty()){
         		//no- add grades (1-5)
-        		gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
+        		gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", ":  "));
         	}else{
         		//if contextual grades are there , add it
-        		gradeOptions.putAll(WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", "-"));
+        		gradeOptions.putAll(WebUtils.collectCustomOptions(ctcGrades, "name", "code", "displayName", ":  "));
         	}
         }else{
         	//always add the grades (1-5)
-        	gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", "-"));
+        	gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", ":  "));
         }
             	
         return gradeOptions;

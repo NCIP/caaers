@@ -10,7 +10,7 @@
 <tr align="center" id="row${rpIndex}" class="${repcurrClass}" onMouseOver="this.className='highlight'"	onMouseOut="this.className='${repcurrClass}'">
 	<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 	<td align="left" width="15%">
-		<a style="text-decoration:none" href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+		<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
 			${report.reportDefinition.name}
 		</a>	
 	</td>
@@ -23,14 +23,15 @@
 	</td>
 	<td width="20%" id="action${report.id}" align="left">
 		<c:if test="${command.reportsSubmittable[report.id]}">
-		  <center>
+		  
 			<c:choose>
 				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
 					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a>	|
 					<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
 				</c:when>
 				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
-					<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a>
+					<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a> |
+					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
 				</c:when>
 				<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
 					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
@@ -39,7 +40,7 @@
 					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
 				</c:when>
 			</c:choose>
-		  </center>
+		  
 		</c:if>
 	</td>
 </tr>

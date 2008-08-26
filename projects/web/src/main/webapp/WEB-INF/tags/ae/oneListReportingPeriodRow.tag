@@ -16,12 +16,12 @@
 		<chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/>
 	</td>
 	<td width="15%" align="left">
-		<a style="text-decoration:none" href="<c:url value="${reportingPeriodPageURL}"/>">
+		<a href="<c:url value="${reportingPeriodPageURL}"/>">
 			${reportingPeriod.name}
 		</a>
 	</td>
 	<td width="10%">${reportingPeriod.numberOfReports}</td>
-	<td width="10%">${reportingPeriod.numberOfAes}</td>
+	<td width="10%">${fn:length(reportingPeriod.evaluatedAdverseEvents)}</td>
 	<td align="left">${reportingPeriod.dataEntryStatus}</td>
 	<td align="left">${reportingPeriod.reportStatus}</td>
 	<td width="20%"></td>
