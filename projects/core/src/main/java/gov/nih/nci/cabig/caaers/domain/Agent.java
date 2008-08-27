@@ -35,8 +35,6 @@ public class Agent extends AbstractMutableDomainObject {
 
     private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
     
-    private String formulation;
-    private String lotNo;
     
 
     @Column(name = "description")
@@ -97,22 +95,4 @@ public class Agent extends AbstractMutableDomainObject {
         return result;
     }
 
-    //srini
-    @Transient
-	public String getFormulation() {
-		return formulation;
-	}
-    @Transient
-	public void setFormulation(String formulation) {
-		this.formulation = formulation;
-	}
-    @Transient
-	public String getLotNo() {
-		return lotNo;
-	}
-    @Transient
-	public void setLotNo(String lotNo) {
-		this.lotNo = lotNo;
-	}
-	//srini
 }

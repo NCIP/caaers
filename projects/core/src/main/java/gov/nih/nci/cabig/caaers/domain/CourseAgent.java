@@ -46,6 +46,10 @@ public class CourseAgent extends AbstractMutableDomainObject {
     private BigDecimal totalDoseAdministeredThisCourse;
 
     private String comments;
+    
+    private String lotNumber;
+    private String formulation;
+    
 
     // //// LOGIC
 
@@ -199,4 +203,22 @@ public class CourseAgent extends AbstractMutableDomainObject {
     public void setComments(String comments) {
         this.comments = comments;
     }
+
+	public String getLotNumber() {
+		return lotNumber;
+	}
+
+	public void setLotNumber(String lotNumber) {
+		this.lotNumber = lotNumber;
+	}
+
+	public String getFormulation() {
+		return formulation;
+	}
+
+	public void setFormulation(String formulation) {
+		this.formulation = formulation;
+	}
+    
+    
 }

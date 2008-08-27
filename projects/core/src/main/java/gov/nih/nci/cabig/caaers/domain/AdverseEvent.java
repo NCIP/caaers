@@ -96,7 +96,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private String displayExpected;
     
     public AdverseEvent(){
-    	requiresReporting = false;
     	solicited = false;
     	serious = false;
     }

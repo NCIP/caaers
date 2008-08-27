@@ -2,6 +2,10 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import java.util.Date;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
@@ -19,9 +23,11 @@ import org.hibernate.annotations.Parameter;
 public class ConcomitantMedication extends AbstractExpeditedReportCollectionElementChild {
     private String agentName;
     
-    private Date startDate;
+    private DateValue startDate;
+
+    private DateValue endDate;
     
-    private Date endDate;
+    private Boolean stillTakingMedications;
 
     // //// LOGIC
 
@@ -41,22 +47,41 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
     public void setAgentName(String agentName) {
         this.agentName = agentName;
     }
-    // srini
-    @Transient
-    public Date getEndDate() {
-		return endDate;
-	}
-    @Transient
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-    @Transient
-	public Date getStartDate() {
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
+    })
+    public DateValue getStartDate() {
 		return startDate;
 	}
-    @Transient
-	public void setStartDate(Date startDate) {
+    
+    public void setStartDate(DateValue startDate) {
 		this.startDate = startDate;
 	}
-	//srini
+    
+    @Embedded
+    @AttributeOverrides({ 
+    	@AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
+        @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
+        @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
+        @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
+    })        
+    public DateValue getEndDate() {
+		return endDate;
+	}
+    
+    public void setEndDate(DateValue endDate) {
+		this.endDate = endDate;
+	}
+    
+    public Boolean getStillTakingMedications() {
+		return stillTakingMedications;
+	}
+    
+    public void setStillTakingMedications(Boolean stillTakingMedications) {
+		this.stillTakingMedications = stillTakingMedications;
+	}
 }

@@ -10,6 +10,8 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -158,26 +160,24 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     public void setTreatmentAssignmentDescription(String desc) {
         // do nothing.
     }
-    
-    //  added by srini
-    @Transient
+
 	public String getPrimaryTreatment() {
 		return primaryTreatment;
 	}
-    
-    @Transient
+
 	public void setPrimaryTreatment(String primaryTreatment) {
 		this.primaryTreatment = primaryTreatment;
 	}
-    
-    @Transient
+	
+	@Column(name="approximate_time")
+	@Temporal(value = TemporalType.TIMESTAMP)
 	public Date getPrimaryTreatmentApproximateTime() {
 		return primaryTreatmentApproximateTime;
 	}
-    @Transient
-	public void setPrimaryTreatmentApproximateTime(
-			Date primaryTreatmentApproximateTime) {
+
+	public void setPrimaryTreatmentApproximateTime(Date primaryTreatmentApproximateTime) {
 		this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
 	}
-    //  added by srini
+    
+   
 }

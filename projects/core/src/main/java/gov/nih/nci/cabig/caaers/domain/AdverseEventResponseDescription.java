@@ -7,6 +7,8 @@ import org.hibernate.annotations.Type;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 
@@ -47,6 +49,10 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Date eventApproximateTime;
     
     private String eventLocation;
+    
+    private Boolean autopsyPerformed;
+    
+    private String causeOfDeath;
     
     
 	public AdverseEventResponseDescription() {
@@ -156,28 +162,41 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
         return daysNotGiven;
     }
     
-    // added by srini begin
     public void setDaysNotGiven(Integer daysNotGiven) {
         this.daysNotGiven = daysNotGiven;
     }
     
-    @Transient
-    public Date getEventApproximateTime() {
+    @Temporal(value = TemporalType.TIMESTAMP)
+	public Date getEventApproximateTime() {
 		return eventApproximateTime;
 	}
-    @Transient
 	public void setEventApproximateTime(Date eventApproximateTime) {
 		this.eventApproximateTime = eventApproximateTime;
 	}
-	
-	@Transient
+
 	public String getEventLocation() {
 		return eventLocation;
 	}
-	@Transient
+
 	public void setEventLocation(String eventLocation) {
 		this.eventLocation = eventLocation;
 	}
-	// added by srini end
 
+	public Boolean getAutopsyPerformed() {
+		return autopsyPerformed;
+	}
+
+	public void setAutopsyPerformed(Boolean autopsyPerformed) {
+		this.autopsyPerformed = autopsyPerformed;
+	}
+
+	public String getCauseOfDeath() {
+		return causeOfDeath;
+	}
+
+	public void setCauseOfDeath(String causeOfDeath) {
+		this.causeOfDeath = causeOfDeath;
+	}
+    
+    
 }
