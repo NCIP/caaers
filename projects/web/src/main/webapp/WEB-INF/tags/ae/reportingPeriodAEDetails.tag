@@ -25,6 +25,7 @@ Note: -
                        <th scope="col" align="left"><b>Attribution</b> </th>
                        <th scope="col" align="left"><b>Hospitalization</b> </th>
                        <th scope="col" align="left"><b>Expected</b> </th>
+                       <th scope="col" align="left"><b>Serious</b> </th>
                     <th scope="col" align="left"> </th>
                    </tr>
                 <c:set var="noObservedAE" value="true" scope="request"/>
@@ -37,7 +38,7 @@ Note: -
                    </c:forEach>
                 <c:if test="${noObservedAE}">
                 <tr id="observedEmptyRow">
-                        <td colspan="6">No observed adverse event added</td>
+                        <td colspan="7">No observed adverse event added</td>
                 </tr>
                 </c:if>
                </table>
@@ -52,6 +53,7 @@ Note: -
 					<th scope="col" align="left"><b>Attribution</b> </th>
 					<th scope="col" align="left"><b>Hospitalization</b> </th>
 					<th scope="col" align="left"><b>Expected</b> </th>
+					<th scope="col" align="left"><b>Serious</b> </th>
 				</tr>
 				<c:set var="noSolictedAE" value="true" scope="request"/>
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
@@ -62,7 +64,7 @@ Note: -
    				</c:forEach>
 				<c:if test="${noSolictedAE}">
 				<tr id="solicitedBlankRow">
-					<td colspan="5">No solicited adverse event(s) associtated to this study</td>
+					<td colspan="6">No solicited adverse event(s) associtated to this study</td>
 				</tr>
 				</c:if>
    			</table>

@@ -159,6 +159,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 						"Hospitalization", false, createHospitalizationOptions()));
 				mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
 						createExpectedOptions()));
+				mainFieldFactory.addField(InputFieldFactory.createSelectField("serious", "Serious", false, createSeriousOptions()));
 				InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
 				mainFieldFactory.addFieldGroup(fieldGroup);
 				mainFieldFactory.clearFields();

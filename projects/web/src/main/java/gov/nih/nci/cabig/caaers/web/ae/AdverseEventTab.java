@@ -79,12 +79,20 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	}
 	
 	protected Map<Object, Object> createExpectedOptions() {
-        Map<Object, Object> expectedOptions = new LinkedHashMap<Object, Object>();
-        expectedOptions.put("", "Please select");
-        expectedOptions.put(Boolean.TRUE, "Yes");
-        expectedOptions.put(Boolean.FALSE, "No");
-        return expectedOptions;
+        return createYesNoOptions();
     }
+	
+	protected Map<Object, Object> createSeriousOptions() {
+		return createYesNoOptions();
+	}
+	
+	protected Map<Object, Object> createYesNoOptions(){
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.put(Boolean.TRUE, "Yes");
+        options.put(Boolean.FALSE, "No");
+        return options;
+	}
 	
 	protected Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();
