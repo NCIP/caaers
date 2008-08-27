@@ -468,15 +468,15 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     	if(grade == null) return "";
     	
     	//MedDRA or CTC{not evaluated , normal}
-    	if(grade.getCode() <=0 || lowLevelTerm != null) return grade.getCode().intValue() + "-" + grade.getDisplayName();
+    	if(grade.getCode() <=0 || lowLevelTerm != null) return grade.getCode().intValue() + ":  " + grade.getDisplayName();
     	
     	//CTC ( > Normal), so check contextual grades
     	List<CtcGrade> contextualGrades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
-    	if(contextualGrades.isEmpty()) return grade.getCode().intValue() + "-" + grade.getDisplayName();
+    	if(contextualGrades.isEmpty()) return grade.getCode().intValue() + ":  " + grade.getDisplayName();
     	
     	//find the grade from contextual grades and return that. 
     	for(CtcGrade contextualGrade : contextualGrades){
-    		if(contextualGrade.getCode().equals(grade.getCode())) return grade.getCode().intValue() + "-" + contextualGrade.getDisplayName();
+    		if(contextualGrade.getCode().equals(grade.getCode())) return grade.getCode().intValue() + ":  " + contextualGrade.getDisplayName();
     	}
     	
     	return "";
@@ -514,7 +514,6 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     	this.serious = serious;
     }
     
-    @Transient
     public Boolean getSerious(){
     	return serious;
     }
