@@ -2,12 +2,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="ctmsfn" uri="http://gforge.nci.nih.gov/projects/ctmscommons/taglibs/functions" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="size"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="disabled" type="java.lang.Boolean" %>
+<caaers:renderFilter elementID="${field.propertyName}">
 <c:choose>
     <c:when test="${field.categoryName == 'text'}"><form:input path="${field.propertyName}" disabled="${disabled}" size="${empty size ? field.attributes.size : size}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MAXLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
@@ -56,3 +58,4 @@
     </c:if>
 <tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>
+</caaers:renderFilter>

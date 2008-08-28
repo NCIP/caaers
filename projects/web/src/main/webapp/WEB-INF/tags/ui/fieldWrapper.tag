@@ -1,5 +1,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 
@@ -16,25 +17,25 @@
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
 
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
-
-
-<c:if test="${not readonly}">
-<c:set var="validationCss" scope="request">${required ? not empty validationJSClass ? 'validate-NOTEMPTY&&':'validate-NOTEMPTY' : not empty validationJSClass ? 'validate-': ''}${validationJSClass}</c:set>
-<jsp:invoke fragment="field" />
-<c:remove var="validationCss" scope="request" />
-</c:if>
-<c:if test="${readonly}">
-<c:set var="dNproperty" value="${empty displayNamePath ? path : displayNamePath}"  scope="request"/>
-<c:choose>
-	<c:when test="${readonlyDisplayFormat eq 'none'}"></c:when>
-	<c:when test="${readonlyDisplayFormat eq 'date'}"><tags:formatDate value="${dNproperty}" /></c:when>
-	<c:when test="${readonlyDisplayFormat eq 'split_date'}">yet to implement</c:when>
-	<c:otherwise><ui:value propertyName="${dNproperty}" cssClass="${cssClass}" /></c:otherwise>
-</c:choose>
-<c:remove var="dNproperty" scope="request"/>
-</c:if>
-
-<ui:helpLink path="${path}"/>	
-<tags:errors path="${path}"/>
-<tags:errors path="${path}.*"/>
-<c:if test="${not empty embededJS}"><script>${embededJS}</script></c:if>
+<caaers:renderFilter elementID="${path}">
+	<c:if test="${not readonly}">
+	<c:set var="validationCss" scope="request">${required ? not empty validationJSClass ? 'validate-NOTEMPTY&&':'validate-NOTEMPTY' : not empty validationJSClass ? 'validate-': ''}${validationJSClass}</c:set>
+	<jsp:invoke fragment="field" />
+	<c:remove var="validationCss" scope="request" />
+	</c:if>
+	<c:if test="${readonly}">
+	<c:set var="dNproperty" value="${empty displayNamePath ? path : displayNamePath}"  scope="request"/>
+	<c:choose>
+		<c:when test="${readonlyDisplayFormat eq 'none'}"></c:when>
+		<c:when test="${readonlyDisplayFormat eq 'date'}"><tags:formatDate value="${dNproperty}" /></c:when>
+		<c:when test="${readonlyDisplayFormat eq 'split_date'}">yet to implement</c:when>
+		<c:otherwise><ui:value propertyName="${dNproperty}" cssClass="${cssClass}" /></c:otherwise>
+	</c:choose>
+	<c:remove var="dNproperty" scope="request"/>
+	</c:if>
+	
+	<ui:helpLink path="${path}"/>	
+	<tags:errors path="${path}"/>
+	<tags:errors path="${path}.*"/>
+	<c:if test="${not empty embededJS}"><script>${embededJS}</script></c:if>
+</caaers:renderFilter>

@@ -10,12 +10,7 @@ public class RenderDecisionManagerTagTest extends TestCase {
 		tag = new RenderDecisionManagerTag();
 	}
 	
-	public void testDoStartTag() throws Exception {
-		tag.setElementID("x");
-		tag.setUiType("FIELD");
-		tag.doStartTag();
-		
-	}
+	
 	public void testDoStartTagValidationError() throws Exception {
 		tag.setUiType("junk");
 		tag.setElementID("x");

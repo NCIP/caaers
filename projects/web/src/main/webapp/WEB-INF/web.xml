@@ -51,6 +51,10 @@
     <listener>
         <listener-class>gov.nih.nci.cabig.caaers.web.rule.ContextListener</listener-class>
     </listener>
+    <listener>
+     <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    
 
     <filter>
         <filter-name>Sitemesh</filter-name>

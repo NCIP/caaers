@@ -1,9 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.tags;
 
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.Tag;
 import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 
 public class RenderDecisionManagerTag extends TagSupport{
@@ -13,13 +20,25 @@ public class RenderDecisionManagerTag extends TagSupport{
 	
 	private String uiType = UI_TYPE_FIELD; //defaulted to element FIELD
 	private String elementID;
-
+	
 	
 	@Override
 	public int doStartTag() throws JspException {
 		//validate parameters
 		validateParameters();
-		return EVAL_BODY_INCLUDE;
+		
+		ApplicationContext appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(pageContext.getServletContext());
+		RenderDecisionManager renderDecisionManager = (RenderDecisionManager) appContext.getBean("renderDecisionManager");
+		
+		boolean decision = false;
+		if(uiType.equals(UI_TYPE_DIVISION)) {
+			decision = renderDecisionManager.canRenderSection(elementID, (HttpServletRequest)pageContext.getRequest(), (HttpServletResponse)pageContext.getResponse());
+		}
+		if(uiType.equals(UI_TYPE_FIELD)){
+			decision = renderDecisionManager.canRenderField(elementID, (HttpServletRequest)pageContext.getRequest(), (HttpServletResponse)pageContext.getResponse());
+		}
+		
+		return (decision) ? Tag.EVAL_BODY_INCLUDE : Tag.SKIP_BODY;
 	}
 	
 	

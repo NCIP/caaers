@@ -100,6 +100,15 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         });
 	}
 	
+	/**
+	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
+	 * @return
+	 */
+	public boolean isDCPAdeersStudy(){
+		if(study == null) return false;
+		return study.getAdeersReporting() && study.getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
+	}
+	
 	public void save() {
 		AdverseEventReportingPeriod mergedReportingPeriod;
 	

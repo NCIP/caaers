@@ -1,7 +1,9 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+
 <%-- 
 Note: -
    This should work on the orginal adverse event list, and not on the decorated list in command
@@ -16,7 +18,7 @@ Note: -
                        noBackground="true"
                    callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
                    version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
-                   title="Choose CTC terms">
+                   title="">
                </tags:aeTermQuery>
                <table id="observedTable" width="100%" class="tablecontent">
                    <tr>
@@ -25,7 +27,7 @@ Note: -
                        <th scope="col" align="left"><b>Attribution</b> </th>
                        <th scope="col" align="left"><b>Hospitalization</b> </th>
                        <th scope="col" align="left"><b>Expected</b> </th>
-                       <th scope="col" align="left"><b>Serious</b> </th>
+                       <caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
                     <th scope="col" align="left"> </th>
                    </tr>
                 <c:set var="noObservedAE" value="true" scope="request"/>
@@ -53,7 +55,7 @@ Note: -
 					<th scope="col" align="left"><b>Attribution</b> </th>
 					<th scope="col" align="left"><b>Hospitalization</b> </th>
 					<th scope="col" align="left"><b>Expected</b> </th>
-					<th scope="col" align="left"><b>Serious</b> </th>
+					<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 				</tr>
 				<c:set var="noSolictedAE" value="true" scope="request"/>
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">

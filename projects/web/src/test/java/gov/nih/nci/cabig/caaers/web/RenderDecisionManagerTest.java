@@ -33,6 +33,9 @@ public class RenderDecisionManagerTest extends WebTestCase {
 		
 		newName = mgr.findActualName("biju.name[13]");
 		assertEquals("biju.name[]", newName);
+		
+		newName = mgr.findActualName("biju[6].joseph[7].name");
+		assertEquals("biju[].joseph[].name", newName);
 	}
 
 }

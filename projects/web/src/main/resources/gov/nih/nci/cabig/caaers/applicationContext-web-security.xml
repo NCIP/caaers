@@ -212,5 +212,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     
     <bean id="gridGrouperClientFactory" class="gov.nih.nci.security.acegi.grid.authorization.DefaultGridGrouperClientFactory"/>	
 
+  	
+<!--   The bean managing the rendering decision-->
+  	<bean id="renderDecisionManager" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManager"  scope="session"/>
+  	
 
 </beans>

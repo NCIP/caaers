@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -55,6 +56,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private EvaluationService evaluationService;
 	private ReportDefinitionDao reportDefinitionDao;
+	
+	private RenderDecisionManager renderDecisionManager;
+	
 	
 	
 	public CaptureAdverseEventController(){
@@ -168,6 +172,10 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	referenceData.put("aesummary", summary);
         }
         
+        //hide for non DCP-AdEERS reporting enabled study
+        if(!command.isDCPAdeersStudy()){
+        	renderDecisionManager.conceal("adverseEvents[].serious");
+        }
 		return referenceData;
 	}
 	
@@ -381,5 +389,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	public void setReportDefinitionDao(ReportDefinitionDao reportDefinitionDao){
 		this.reportDefinitionDao = reportDefinitionDao;
+	}
+	
+	public void setRenderDecisionManager(RenderDecisionManager renderDecisionManager) {
+		this.renderDecisionManager = renderDecisionManager;
 	}
 }
