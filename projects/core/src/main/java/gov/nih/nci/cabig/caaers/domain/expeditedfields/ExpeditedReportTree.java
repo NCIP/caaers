@@ -54,21 +54,24 @@ public class ExpeditedReportTree extends PropertylessNode {
                         // TODO: figure out how to handle the MedDRA alternative here
                                         list("adverseEvents",
                                                         new AdverseEventsDisplayNameCreator(),
-                                                        property("grade", "Grade"), property(
-                                                                        "startDate", "Start date"),
-                                                        property("endDate", "End date"), property(
-                                                                        "attributionSummary",
-                                                                        "Attribution to study"),
-                                                        property("hospitalization",
-                                                                        "Hospitalization"),
-                                                        property("expected", "Expected"), property(
-                                                                        "comments", "Comments"),
-                                                        property("adverseEventCtcTerm", property(
-                                                                        "term", "CTC term")),
-                                                        property("detailsForOther",
-                                                                        "Other (specify)"))),
-                        section(REPORTER_INFO_SECTION, createPersonBlock("reporter"),
-                                        createPersonBlock("physician")),
+                                                        property("grade", "Grade"),
+                                                        property("startDate", "Start date"),
+                                                        property("endDate", "End date"), 
+                                                        property("attributionSummary","Attribution to study"),
+                                                        property("hospitalization","Hospitalization"),
+                                                        property("expected", "Expected"), 
+                                                        property("comments", "Comments"),
+                                                        property("adverseEventCtcTerm", 
+                                                        		property("term", "CTC term")),
+                                                        property("eventLocation", "Where was the patient when the event occurred?"),
+                                                        property("eventApproximateTime","Time of event"),
+                                                        property("detailsForOther","Other (specify)")
+                                         )
+                        ),
+                        section(REPORTER_INFO_SECTION, 
+                        		createPersonBlock("reporter"),
+                                createPersonBlock("physician")
+                        ),
                         section(CHECKPOINT_SECTION), // so that ordering lines up
                         section(RADIATION_INTERVENTION_SECTION, list("radiationInterventions",
                                         "RadiationIntervention",
@@ -118,30 +121,23 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("evaluationAvailability",
                                                         "Evaluation availability"), property(
                                                         "returnedDate", "Returned date"))),
-                        section(
-                                        DESCRIPTION_SECTION,
-                                        property(
-                                                        "responseDescription",
-                                                        property("eventDescription", "Description"),
-                                                        property("presentStatus", "Present status"),
-                                                        property("recoveryDate",
-                                                                        "Date of recovery or death"),
-                                                        property("retreated",
-                                                                        "Has the participant been re-treated?"),
-                                                        property("blindBroken",
-                                                                        "Was blind broken due to event?"),
-                                                        property("studyDrugInterrupted",
-                                                                        "Was Study Drug stopped/interrupted/reduced in response to event?"),
-                                                        property("reducedDose",
-                                                                        "If reduced, specify: New dose"),
-                                                        property("reducedDate",
-                                                                        "Date of recovery or death"),
-                                                        property("daysNotGiven",
-                                                                        "If interrupted, specify total number of days not given"),
-                                                        property("eventAbate",
-                                                                        "Did event abate after study drug was stopped or dose reduced?"),
-                                                        property("eventReappear",
-                                                                        "Did event reappear after study drug was reintroduced?"))),
+                        section(DESCRIPTION_SECTION,
+                                property("responseDescription",
+                                        property("eventDescription", "Description"),
+                                        property("presentStatus", "Present status"),
+                                        property("recoveryDate","Date of recovery or death"),
+                                        property("retreated","Has the participant been re-treated?"),
+                                        property("blindBroken","Was blind broken due to event?"),
+                                        property("studyDrugInterrupted","Was Study Drug stopped/interrupted/reduced in response to event?"),
+                                        property("reducedDose","If reduced, specify: New dose"),
+                                        property("reducedDate","Date dose reduced"),
+                                        property("daysNotGiven","If interrupted, specify total number of days not given"),
+                                        property("autopsyPerformed", "Autopsy performed?"),
+                                        property("causeOfDeath", "Cause of death"),
+                                        property("eventAbate", "Did event abate after study drug was stopped or dose reduced?"),
+                                        property("eventReappear","Did event reappear after study drug was reintroduced?")
+                                )
+                        ),
                         section(
                                         MEDICAL_INFO_SECTION,
                                         property("participantHistory",
@@ -169,59 +165,41 @@ public class ExpeditedReportTree extends PropertylessNode {
                                                                                         "Site name",
                                                                                         "otherSite",
                                                                                         "Other(site of metastatic disease)")))),
-                        section(
-                                        TREATMENT_INFO_SECTION,
-                                        property(
-                                                        "treatmentInformation",
-                                                        property("treatmentAssignment",
-                                                                        "Treatment assignment code"),
-                                                        property("treatmentAssignmentDescription",
-                                                                        "Description of treatment assignment or dose level"),
-                                                        property("firstCourseDate",
-                                                                        "Start date of first course"),
-                                                        // TODO: these should be a component instead
-                                                        property(
-                                                                        "adverseEventCourse",
-                                                                        property("date",
-                                                                                        "Start date of course associated with expedited report"),
-                                                                        property("number",
-                                                                                        "Course number on which event occurred")),
-                                                        property("totalCourses",
-                                                                        "Total number of courses to date"),
-                                                        // TODO : Need a display name creator????
-                                                        list(
-                                                                        "courseAgents",
-                                                                        "Study Agent",
-                                                                        property("studyAgent",
-                                                                                        "Study Agent"),
-                                                                        property(
-                                                                                        "dose",
-                                                                                        property(
-                                                                                                        "amount",
-                                                                                                        "Total dose administered this course"),
-                                                                                        property(
-                                                                                                        "units",
-                                                                                                        "Unit of measure")),
-                                                                        // property("durationAndSchedule",
-                                                                        // "Duration and schedule"),
-                                                                        property(
-                                                                                        "lastAdministeredDate",
-                                                                                        "Date last administered"),
-                                                                        // dosage("dose", "Dose"),
-                                                                        // //old Dose
-                                                                        // TODO: this is a component
-                                                                        property(
-                                                                                        "administrationDelayAmount",
-                                                                                        "Administration Delay Amount"),
-                                                                        property(
-                                                                                        "administrationDelayUnits",
-                                                                                        "Administration Delay Units"),
-                                                                        property("comments",
-                                                                                        "Comments"),
-                                                                        dosage("modifiedDose",
-                                                                                        "Modified dose")
+                        section(TREATMENT_INFO_SECTION,
+                            property("treatmentInformation",
+                                property("treatmentAssignment","Treatment assignment code"),
+								property("treatmentAssignmentDescription","Description of treatment assignment or dose level"),
+								property("firstCourseDate","Start date of first course"),
+								property("primaryTreatmentApproximateTime","Treatment time"),
+								// TODO: these should be a component instead
+								property("adverseEventCourse",
+										property("date","Start date of course associated with expedited report"),
+										property("number","Course number on which event occurred")
+								),
+								property("totalCourses","Total number of courses to date"),
+								// TODO : Need a display name creator????
+								list("courseAgents","Study Agent",
+										property("studyAgent", "Study Agent"),
+										property("formulation","Formulation"),
+										property("lotNumber", "Lot # (if known)"),
+										property("dose",
+												property("amount","Total dose administered this course"),
+												property("units","Unit of measure")
+										),
+										// property("durationAndSchedule",
+										// "Duration and schedule"),
+										property("lastAdministeredDate","Date last administered"),
+										// dosage("dose", "Dose"),
+										// //old Dose
+										// TODO: this is a component
+										property("administrationDelayAmount","Administration Delay Amount"),
+										property("administrationDelayUnits","Administration Delay Units"),
+										property("comments", "Comments"),dosage("modifiedDose", "Modified dose")
 
-                                                        ))), section(LABS_SECTION, list("labs",
+								)
+							)
+						), 
+						section(LABS_SECTION, list("labs",
                                         new LabsDisplayNameCreator(),
                                         codedOrOther("labTerm", "Lab test name", "other",
                                                         "Other test name"), property("units",
@@ -230,28 +208,33 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         labValue("recovery", "Recovery"), property("site", "Site"),
                                         property("labDate", "date"), property("infectiousAgent",
                                                         "Infectious agent"))),
-                        section(PRIOR_THERAPIES_SECTION, list("saeReportPriorTherapies",
-                                        "Prior Therapy", property("priorTherapy", "Prior therapy"),
-                                        property("other", "Comments (prior therapy)"), // TODO:
-                                                                                        // change
-                                                                                        // the name
-                                                                                        // of other
-                                                                                        // to
-                                                                                        // "comments"
-                                        property("startDate", "Therapy start Date"), property(
-                                                        "endDate", "Therapy end Date"), list(
-                                                        "priorTherapyAgents", "PriorTherapyAgent",
-                                                        property("chemoAgent", "Agent")))),
+                        section(PRIOR_THERAPIES_SECTION, 
+                        	list("saeReportPriorTherapies","Prior Therapy", 
+                    				property("priorTherapy", "Prior therapy"),
+                                    property("other", "Comments (prior therapy)"), 
+                                    property("startDate", "Therapy start Date"), 
+                                    property("endDate", "Therapy end Date"), 
+                                    list("priorTherapyAgents", "PriorTherapyAgent",
+                                          property("chemoAgent", "Agent")
+                                    )
+                            )
+                        ),
                         section(PRE_EXISTING_CONDITION_SECTION, list(
                                         "saeReportPreExistingConditions",
                                         "Pre-existing condition", codedOrOther(
                                                         "preExistingCondition",
                                                         "Pre-existing condition", "other",
                                                         "Other (pre-existing)"))),
-                        section(CONCOMITANT_MEDICATION_SECTION, list("concomitantMedications",
-                                        "Medication",
-                                        property("agentName", "Medication"))), section(
-                                        OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
+                        section(CONCOMITANT_MEDICATION_SECTION, 
+                        		list("concomitantMedications","Medication",
+                                        property("agentName", "Medication"),
+                                        property("startDate","Start date"),
+                                        property("endDate","End date"),
+                                        property("stillTakingMedications","Continued ?")
+                                )
+                        ),
+                                        
+                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
                                                         property("text", "Cause"))),
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
                         section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
@@ -329,10 +312,19 @@ public class ExpeditedReportTree extends PropertylessNode {
     // //// TREE CONSTRUCTION HELPERS
 
     private static TreeNode createPersonBlock(String person) {
-        return property(person, StringUtils.capitalize(person) + " details", property("firstName",
-                        "First name"), property("middleName", "Middle name"), property("lastName",
-                        "Last name"), contactField(ReportPerson.EMAIL, "E-mail address"),
-                        contactField(ReportPerson.PHONE), contactField(ReportPerson.FAX));
+        return property(person, StringUtils.capitalize(person) + " details", 
+        		property("title", "Title"),
+        		property("firstName", "First name"), 
+        		property("middleName", "Middle name"), 
+        		property("lastName", "Last name"), 
+        		contactField(ReportPerson.EMAIL, "E-mail address"),
+        		contactField(ReportPerson.PHONE), 
+        		contactField(ReportPerson.FAX),
+        		property("address","Address",
+        				property("street", "Street"),
+        				property("city", "City"),
+        				property("state","State"),
+        				property("zip", "Zip")));
     }
 
     private static TreeNode contactField(String contactType) {

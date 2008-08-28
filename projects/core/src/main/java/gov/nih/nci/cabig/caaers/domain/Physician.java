@@ -9,4 +9,5 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("P")
 public class Physician extends ReportPerson {
+	
 }

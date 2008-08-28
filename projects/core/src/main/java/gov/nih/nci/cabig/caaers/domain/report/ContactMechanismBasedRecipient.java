@@ -1,6 +1,3 @@
-/*
- * Sematicbits Copyright message
- */
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import javax.persistence.Column;

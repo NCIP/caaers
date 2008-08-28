@@ -21,7 +21,10 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -94,6 +97,10 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private Boolean requiresReporting;
     
     private String displayExpected;
+    
+    private TimeValue eventApproximateTime;
+    
+    private String eventLocation;
     
     public AdverseEvent(){
     	solicited = false;
@@ -516,5 +523,28 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public Boolean getSerious(){
     	return serious;
     }
+    
+    @Embedded
+    @AttributeOverrides( {
+        @AttributeOverride(name = "hour", column = @Column(name = "event_time_hour")),
+        @AttributeOverride(name = "minute", column = @Column(name = "event_time_minute"))
+     })
+	public TimeValue getEventApproximateTime() {
+		return eventApproximateTime;
+	}
 
+	public void setEventApproximateTime(TimeValue eventApproximateTime) {
+		this.eventApproximateTime = eventApproximateTime;
+	}
+
+	public String getEventLocation() {
+		return eventLocation;
+	}
+
+	public void setEventLocation(String eventLocation) {
+		this.eventLocation = eventLocation;
+	}
+    
+    
+    
 }

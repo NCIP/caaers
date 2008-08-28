@@ -7,11 +7,14 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class Person extends AbstractIdentifiableDomainObject {
+	private String title;
+	
     private String firstName;
 
     private String middleName;
 
     private String lastName;
+    
 
     public String getFirstName() {
         return firstName;
@@ -36,4 +39,13 @@ public abstract class Person extends AbstractIdentifiableDomainObject {
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
 }

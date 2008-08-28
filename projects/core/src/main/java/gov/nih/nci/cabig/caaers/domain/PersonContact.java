@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
@@ -19,6 +20,9 @@ import org.hibernate.annotations.MapKey;
  */
 @MappedSuperclass
 public abstract class PersonContact extends Person {
+	
+	private Address address;
+	
     private Map<String, String> contactMechanisms = new HashMap<String, String>();
 
     // TODO: it may be more appropriate to locate these constants somewhere else
@@ -61,4 +65,12 @@ public abstract class PersonContact extends Person {
     public void setContactMechanisms(Map<String, String> contactMechanisms) {
         this.contactMechanisms = contactMechanisms;
     }
+    
+    @Embedded
+	public Address getAddress() {
+		return address;
+	}
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 }

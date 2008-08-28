@@ -19,8 +19,8 @@ class ModifyConcomitantMedications extends edu.northwestern.bioinformatics.berin
 		dropColumn("concomitant_medications", "start_date_month");
 		dropColumn("concomitant_medications", "start_date_year");
 		dropColumn("concomitant_medications", "start_date_zone");
-		dropColumn("concomitant_medications", "end_date_day");
 		
+		dropColumn("concomitant_medications", "end_date_day");
 		dropColumn("concomitant_medications", "end_date_month");
 		dropColumn("concomitant_medications", "end_date_year");
 		dropColumn("concomitant_medications", "end_date_zone");

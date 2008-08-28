@@ -45,11 +45,7 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Boolean eventAbate;
 
     private Boolean eventReappear;
-    
-    private Date eventApproximateTime;
-    
-    private String eventLocation;
-    
+        
     private Boolean autopsyPerformed;
     
     private String causeOfDeath;
@@ -166,21 +162,7 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
         this.daysNotGiven = daysNotGiven;
     }
     
-    @Temporal(value = TemporalType.TIMESTAMP)
-	public Date getEventApproximateTime() {
-		return eventApproximateTime;
-	}
-	public void setEventApproximateTime(Date eventApproximateTime) {
-		this.eventApproximateTime = eventApproximateTime;
-	}
 
-	public String getEventLocation() {
-		return eventLocation;
-	}
-
-	public void setEventLocation(String eventLocation) {
-		this.eventLocation = eventLocation;
-	}
 
 	public Boolean getAutopsyPerformed() {
 		return autopsyPerformed;
