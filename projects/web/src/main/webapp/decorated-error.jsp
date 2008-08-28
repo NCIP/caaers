@@ -21,8 +21,27 @@
 
 <html>
 <head>
+<style>
+	
+    div.row div.label{
+	font-size:36px;
+	margin-left:50px;
+	text-align:left;	
+	}
+	div.row div.error div.value{
+	position: absolute;
+	left: 152px;
+	top: 112px;	
+	}
+	div.row div.value{
+	position: absolute;
+	left: 152px;
+	top: 148px;	
+	}
+	
+    </style>
 	<tags:includeScriptaculous />
-    <title>Error Page</title>
+    <title>Error</title>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <script type="text/javascript" language="JavaScript">
         function PanelCombo(element) {
@@ -56,46 +75,46 @@
             }
         }
     </script>
+
 </head>
 
 <body>
 
-<chrome:box title="Error" autopad="true">
 
+    <img src="/caaers/images/blue/error.png" style="margin-left:100px; float:left;">
     <div class="row">
         <div class="error">
             <div class="label">
-                ERROR:
+                ERROR
             </div>
-        </div>
         <div class="value">
-            The system encountered an error. Please contact your system administrator
+            The system encountered an error. Please contact your system administrator.
         </div>
     </div>
 
     <div class="row">
         <div class="value">
-            <a href="<c:url value="/"/>">Return Home</a>
-        </div>
+            <a href="<c:url value="/"/>">Return Home</a>        </div>
     </div>
-</chrome:box>
 
 
-<div class="box">
+
+
+
 <!-- header -->
 <div class="header"><div class="background-L"><div class="background-R">
     <table width="100%"><tr>
-        <td>
+        <td style="border-bottom:solid 1px #ccc">
             <h2>Detailed Error</h2>
         </td>
-        <td align="right">
+        <td align="right" style="border-bottom:solid 1px #ccc">
             <div id="error-image-div">
                 <a href="javascript:PanelCombo('error');"><img id="error-image" src="/caaers/images/chrome/minimize.gif" border="0"/></a>
             </div>
         </td>
     </tr>
     </table>
-</div></div></div>
+</div></div>
 <!-- end header --><!-- end header -->
 
 <!-- inner border -->

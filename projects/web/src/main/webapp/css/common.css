@@ -374,13 +374,13 @@ margin-left:5px;
 }
 
 #taskbar a:hover {
-	color:#ffe9a5;
+	color:#fff;
 	background-image: url(../images/blue/secondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
 
 #taskbar a:active {
-	color:#752f00;
+	color:#ffe9a5;
 	background-image: url(../images/blue/secondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
@@ -716,17 +716,13 @@ img.indicator {
 */
 table.tablecontent {
     border-collapse: collapse;
-
-    border-width: 1px; 
-
-    border-style: solid;
-
-    border-color: #ddd;
 }
 
 .tablecontent td, .tablecontent th {
-    padding: 0.2em;
-    border: 1px solid #999;
+	padding: 0.2em;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #0066FF;
 }
 
 
@@ -743,19 +739,18 @@ table.tablecontent {
 
 .tablecontent th {
     text-align: left;
-    border-color: #444 #999;
-    background-color: #A2A2A2;
 }
 
 .tablecontent td {
-    border-color: #888 #ddd;
-    background-color: #fff;
+    border:none;
 }
 .tablecontent .highlight td {
 
 	background-color: #F5F5F5;
 
 }
+#contentOf-solicitatedID{background-color: #fcf;}
+#contentOf-observedID{background-color:#ccf;}
 
 
 a.help {

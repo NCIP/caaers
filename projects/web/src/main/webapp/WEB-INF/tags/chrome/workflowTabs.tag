@@ -7,6 +7,7 @@
 <ul id="" class="tabs autoclear">
 <c:set var="unfilledTabs">${UNFILLED_TABS}</c:set>
 <c:set var="mandatoryTabs">${MANDATORY_TABS}</c:set>
+
 <c:forEach items="${flow.tabs}" var="atab" varStatus="status">
     <c:set var="selected" value="${atab.number == tab.number}"/>
     <li class="tab ${selected ? 'selected' : ''} ${status.last ? 'last' : ''}" id="thirdlevelnav"><div>

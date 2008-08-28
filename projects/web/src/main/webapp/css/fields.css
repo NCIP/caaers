@@ -1,6 +1,7 @@
 input, label, select, textarea {
   vertical-align: middle;
   margin: 0; padding: 0;
+  outline-style:none;
 }
 input[type=text], input[type=password], select, textarea {
   background-color: #f4f4f5;
@@ -20,10 +21,22 @@ input[disabled], select[disabled], textarea[disabled] {
 input[type=button], input[type=submit], input[type=reset] {
   color: white;
   background-color: #3876C1;
-  border: 1px outset #3876C1;
+  background-image:url(/caaers/images/blue/button_bg.jpg);
+  border: 1px solid #3876c1;
+}
+input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
+	background-image:none;
+	background-color:#eee;
+	color:#000;
+	outline:none;
+	border: 1px solid #3876c1;
 }
 input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
-  border-style: inset;
+	background-image:none;
+	background-color:#333333;
+	color:#fff;
+	outline:none;
+	border: 1px solid #ccc;
 }
 
 /*
