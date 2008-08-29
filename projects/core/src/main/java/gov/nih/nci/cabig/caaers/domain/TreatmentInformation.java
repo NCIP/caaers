@@ -168,12 +168,15 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 	public void setPrimaryTreatment(String primaryTreatment) {
 		this.primaryTreatment = primaryTreatment;
 	}
+	
 	@Embedded
     @AttributeOverrides( {
         @AttributeOverride(name = "hour", column = @Column(name = "treatment_time_hour")),
-        @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute"))
+        @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute")),
+        @AttributeOverride(name = "zone", column = @Column(name = "treatment_time_zone"))
      })
 	public TimeValue getPrimaryTreatmentApproximateTime() {
+		if(primaryTreatmentApproximateTime == null) primaryTreatmentApproximateTime = new TimeValue();
 		return primaryTreatmentApproximateTime;
 	}
 	public void setPrimaryTreatmentApproximateTime(

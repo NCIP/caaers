@@ -68,6 +68,7 @@ public abstract class PersonContact extends Person {
     
     @Embedded
 	public Address getAddress() {
+    	if(address == null) address = new Address();
 		return address;
 	}
 	public void setAddress(Address address) {

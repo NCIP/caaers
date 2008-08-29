@@ -10,6 +10,7 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class Address {
 	
+	private int code; //to force hibernate to load the object
 	private int zip;
 	private String city;
 	private String state;

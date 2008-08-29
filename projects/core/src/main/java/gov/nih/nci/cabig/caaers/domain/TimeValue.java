@@ -5,8 +5,9 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class TimeValue {
 	
-	private int hour;
-	private int minute;
+	private Integer hour;
+	private Integer minute;
+	private int type = 0; // this is to force hibernate to instantiate it. 
 	
 	
 	public int getHour() {

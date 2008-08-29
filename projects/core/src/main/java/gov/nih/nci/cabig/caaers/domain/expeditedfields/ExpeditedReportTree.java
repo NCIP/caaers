@@ -52,77 +52,70 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(BASICS_SECTION),
                         section(ADVERSE_EVENT_SECTION,
                         // TODO: figure out how to handle the MedDRA alternative here
-                                        list("adverseEvents",
-                                                        new AdverseEventsDisplayNameCreator(),
-                                                        property("grade", "Grade"),
-                                                        property("startDate", "Start date"),
-                                                        property("endDate", "End date"), 
-                                                        property("attributionSummary","Attribution to study"),
-                                                        property("hospitalization","Hospitalization"),
-                                                        property("expected", "Expected"), 
-                                                        property("comments", "Comments"),
-                                                        property("adverseEventCtcTerm", 
-                                                        		property("term", "CTC term")),
-                                                        property("eventLocation", "Where was the patient when the event occurred?"),
-                                                        property("eventApproximateTime","Time of event"),
-                                                        property("detailsForOther","Other (specify)")
-                                         )
+                                list("adverseEvents",
+                                        new AdverseEventsDisplayNameCreator(),
+                                        property("grade", "Grade"),
+                                        property("startDate", "Start date"),
+                                        property("endDate", "End date"), 
+                                        property("attributionSummary","Attribution to study"),
+                                        property("hospitalization","Hospitalization"),
+                                        property("expected", "Expected"), 
+                                        property("comments", "Comments"),
+                                        property("adverseEventCtcTerm", property("term", "CTC term")),
+                                        property("eventLocation", "Where was the patient when the event occurred?"),
+                                        property("eventApproximateTime","Time of event"),
+                                        property("detailsForOther","Other (specify)")
+                                 )
                         ),
                         section(REPORTER_INFO_SECTION, 
                         		createPersonBlock("reporter"),
                                 createPersonBlock("physician")
                         ),
                         section(CHECKPOINT_SECTION), // so that ordering lines up
-                        section(RADIATION_INTERVENTION_SECTION, list("radiationInterventions",
-                                        "RadiationIntervention",
-                                        /*
-                                         * property("treatmentArm", "Treatment arm"),
-                                         * property("description", "Treatment arm description"),
-                                         */
-                                        property("administration",
-                                                        "Type of radiation administration"),
-
-                                        // TODO: these should be a component instead
-                                        property("dosage", "Dosage"), property("dosageUnit",
-                                                        "Dosage unit"),
-
-                                        property("lastTreatmentDate", "Last treatment date"),
-                                        property("fractionNumber", "Schedule number of fractions"),
-                                        property("daysElapsed", "Elapsed days"), property(
-                                                        "adjustment", "Adjustment"))),
-                        section(SURGERY_INTERVENTION_SECTION, list("surgeryInterventions",
+                        section(RADIATION_INTERVENTION_SECTION, list("radiationInterventions","RadiationIntervention",
+                                property("administration","Type of radiation administration"),
+                                // TODO: these should be a component instead
+                                property("dosage", "Dosage"), 
+                                property("dosageUnit","Dosage unit"),
+                                property("lastTreatmentDate", "Last treatment date"),
+                                property("fractionNumber", "Schedule number of fractions"),
+                                property("daysElapsed", "Elapsed days"), 
+                                property("adjustment", "Adjustment"))
+                        ),
+                        section(SURGERY_INTERVENTION_SECTION, 
+                        	list("surgeryInterventions",
                                         "SurgeryIntervention",
-                                        /*
-                                         * property("treatmentArm", "Treatment arm"),
-                                         * property("description", "Treatment arm description"),
-                                         */
                                         property("interventionSite", "Intervention site"),
-                                        property("interventionDate", "Intervention date"))),
-                        section(MEDICAL_DEVICE_SECTION, list("medicalDevices", "MedicalDevice",
-                                        property("brandName", "Brand name"), property("commonName",
-                                                        "Common name"), property("deviceType",
-                                                        "Device type"), property(
-                                                        "manufacturerName", "Manufacturer name"),
+                                        property("interventionDate", "Intervention date")
+                            )
+                        ),
+                        section(MEDICAL_DEVICE_SECTION, 
+                        	list("medicalDevices", "MedicalDevice",
+                                        property("brandName", "Brand name"), 
+                                        property("commonName", "Common name"), 
+                                        property("deviceType", "Device type"), 
+                                        property("manufacturerName", "Manufacturer name"),
                                         property("manufacturerCity", "Manufacturer city"),
                                         property("manufacturerState", "Manufacturer state"),
-                                        property("modelNumber", "Model number"), property(
-                                                        "lotNumber", "Lot number"), property(
-                                                        "catalogNumber", "Catalog number"),
-                                        property("expirationDate", "Expiration date"), property(
-                                                        "serialNumber", "Serial number"), property(
-                                                        "otherNumber", "Other number"), property(
-                                                        "deviceOperator", "Device operator"),
+                                        property("modelNumber", "Model number"), 
+                                        property("lotNumber", "Lot number"), 
+                                        property("catalogNumber", "Catalog number"),
+                                        property("expirationDate", "Expiration date"), 
+                                        property("serialNumber", "Serial number"), 
+                                        property("otherNumber", "Other number"), 
+                                        property("deviceOperator", "Device operator"),
                                         property("otherDeviceOperator", "Other device operator"),
                                         property("implantedDate", "If implanted, enter a date"),
                                         property("explantedDate", "IF explanted, enter a date"),
                                         property("deviceReprocessed", "Device reprocessed"),
                                         property("reprocessorName", "Reprocessor name"),
                                         property("reprocessorAddress", "Reprocessor address"),
-                                        property("evaluationAvailability",
-                                                        "Evaluation availability"), property(
-                                                        "returnedDate", "Returned date"))),
+                                        property("evaluationAvailability","Evaluation availability"), 
+                                        property("returnedDate", "Returned date")
+                            )
+                        ),
                         section(DESCRIPTION_SECTION,
-                                property("responseDescription",
+                            property("responseDescription",
                                         property("eventDescription", "Description"),
                                         property("presentStatus", "Present status"),
                                         property("recoveryDate","Date of recovery or death"),
@@ -136,16 +129,14 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("causeOfDeath", "Cause of death"),
                                         property("eventAbate", "Did event abate after study drug was stopped or dose reduced?"),
                                         property("eventReappear","Did event reappear after study drug was reintroduced?")
-                                )
+                            )
                         ),
-                        section(
-                                        MEDICAL_INFO_SECTION,
-                                        property("participantHistory",
-                                                        participantMeasure("height"),
-                                                        participantMeasure("weight"),
-                                                        property("baselinePerformanceStatus",
-                                                                        "Baseline performance")),
-                                        property(
+                        section(MEDICAL_INFO_SECTION,
+                            property("participantHistory",
+                                           participantMeasure("height"),
+                                           participantMeasure("weight"),
+                                           property("baselinePerformanceStatus","Baseline performance")),
+                                           property(
                                                         "diseaseHistory",
                                                         codedOrOther("ctepStudyDisease",
                                                                         "Disease name",
@@ -164,7 +155,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                                                                                         "codedSite",
                                                                                         "Site name",
                                                                                         "otherSite",
-                                                                                        "Other(site of metastatic disease)")))),
+                                                                                        "Other(site of metastatic disease)")))
+                                                    ),
                         section(TREATMENT_INFO_SECTION,
                             property("treatmentInformation",
                                 property("treatmentAssignment","Treatment assignment code"),
