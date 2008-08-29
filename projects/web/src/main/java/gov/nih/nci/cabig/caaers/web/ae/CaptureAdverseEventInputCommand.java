@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
@@ -67,7 +68,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Ctc ctcVersion;
 	
 	private Set<AdverseEvent> seriousAdverseEvents;
-		
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
 				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao){
@@ -169,8 +169,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
     }
     
- 
-    
     /**
      * This method will find all avaliable report definitions for all the StudyOrganizations. 
      */
@@ -187,7 +185,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     }
     
     public List<ReportDefinition> findRequiredReportDefinitions(){
-    	//if already avaliable return that, as we will take care of clearing it when we quit this tab.
+    	//if already available return that, as we will take care of clearing it when we quit this tab.
     	if(requiredReportDefinitionsMap.isEmpty()){
     		this.requiredReportDefinitionsMap = evaluationService.findRequiredReportDefinitions(this.adverseEventReportingPeriod);
     		//refresh the serious AE list here
@@ -210,28 +208,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         return reportDefs;
    }
     
-    /**
-     * This method will list the {@link ReportDefinition}s that are already associated to the {@link ExpeditedAdverseEventReport}
-     */
-    public Set<ReportDefinition> getInstantiatedReportDefinitions() {
-        Set<ReportDefinition> reportDefs = new HashSet<ReportDefinition>();
-        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
-        // TODO: fix it when use case is ready.
-        
-        ExpeditedAdverseEventReport aeReport = (adverseEventReportingPeriod.getAeReports().size() > 0) ? adverseEventReportingPeriod.getAeReports().get(0) : null;
-        
-        if(aeReport == null || aeReport.getReports() == null)	return reportDefs;
-        
-        for (Report report : adverseEventReportingPeriod.getAeReports().get(0).getReports()) {
-            if (!report.getStatus().equals(ReportStatus.WITHDRAWN)) reportDefs.add(report.getReportDefinition());
-        }
-
-        return reportDefs;
-
-    }
-    
-
-    
    /**
     * Will clear first the report definitions, then
     *  add all report definitions, with value false, and updates the the value to true for selected ones.  
@@ -242,77 +218,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		   reportDefinitionMap.put(rpDef.getId(), false);
 	   }
 	   
-	   //all reports selected in reporting Expedited Report should be selected aswell.
-       // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
-       // TODO: fix it when use case is ready.
-	   if(adverseEventReportingPeriod.getAeReports().size() > 0){
-		  for(ReportDefinition rpDef : getInstantiatedReportDefinitions()){
-			  reportDefinitionMap.put(rpDef.getId(), true);
-		  }
-	   }else {
-		   //rules engine said reports should be selected
-		   for(ReportDefinition rpDef : requiredReportDefinitionsMap.keySet()){
-			   reportDefinitionMap.put(rpDef.getId(), true);
-		   }
+	   //rules engine said reports should be selected
+	   for(ReportDefinition rpDef : requiredReportDefinitionsMap.keySet()){
+		   reportDefinitionMap.put(rpDef.getId(), true);
 	   }
-	   
    }
-    
-    /**
-     * This method will return the newly selected {@link ReportDefinition}s.
-     * Note : - [Selected Report Definitions] - [Already instatiated Report Definitions]
-     * @param command 
-     * @return
-     */
-    public Collection<ReportDefinition> findNewlySelectedReportDefinitions() {
-    	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
-    	Set<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
-    	return CollectionUtils.subtract(selectedReportDefs, instantiatedReportDefs);
-    }
-    
-    /**
-     * This method will return the report definitions that are unselected 
-     * @return
-     */
-    public Collection<ReportDefinition> findUnselectedReportDefinitions(){
-    	Set<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
-    	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
-    	return CollectionUtils.subtract(instantiatedReportDefs, selectedReportDefs);
-    }
-    
-    /**
-     * This method will return the selected adverse events
-     * @return
-     */
-    public List<AdverseEvent> findNewlySelectedAdverseEvents(){
-    	List<AdverseEvent> selectedAdverseEvents = findSelectedAdverseEvents();
-        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
-        // TODO: fix it when use case is ready.
-    	if(adverseEventReportingPeriod.getAeReports().size() == 0){
-    		return selectedAdverseEvents;
-    	}else {
-    		return ListUtils.subtract(selectedAdverseEvents, adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents());
-    	}
-    }
-    
-    /**
-     * This method will return all the report definitions that are unselected
-     * @return
-     */
-    public List<AdverseEvent> findUnselectedAdverseEvents(){
-    	List<AdverseEvent> unselectedEvents = new ArrayList<AdverseEvent>();
-        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
-        // TODO: fix it when use case is ready.
-    	if(adverseEventReportingPeriod.getAeReports().size() > 0){
-    		for(AdverseEvent ae : adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents()){
-    			Boolean value = selectedAesMap.get(ae.getId());
-    			if(value == null || !value ){
-    				unselectedEvents.add(ae);
-    			}
-    		}
-    	}
-    	return unselectedEvents;	
-    }
     
     /**
      * This method will return the adverse events that are selected (checked)
@@ -331,22 +241,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     public void refreshReportStatusMap(){
     	reportStatusMap.clear();
-        // This has changed to handle Many-To-One relationship between ReportingPeriod and ExpeditedReport
-        // TODO: fix it when use case is ready.
-    	if(this.adverseEventReportingPeriod.getAeReports().size() == 0) return;
-    	
+        
     	//initialize every thing with empty
     	for(ReportDefinition rpDef : allReportDefinitions){
-    		reportStatusMap.put(rpDef.getId(), "");
-    	}
-    	//update the once already instantiated , with correct status.
-    	List<Report> reports = adverseEventReportingPeriod.getAeReports().get(0).getNonWithdrawnReports();
-    	for(Report report : reports){
-    		reportStatusMap.put(report.getReportDefinition().getId(), report.getLastVersion().getStatusAsString());
+    		reportStatusMap.put(rpDef.getId(), rpDef.getExpectedDisplayDueDate());
     	}
     }
     
-	
 	public void refreshReportDefinitionRequiredIndicatorMap(){
 		this.requiredReportDefinitionIndicatorMap.clear();
 		for(ReportDefinition rpDef : allReportDefinitions){
@@ -361,8 +262,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	/**
 	 * All AEs associated with <b>selectedReportDefinitions</b> must be selected.
 	 * 
-	 * This method populates the SelectedAesMap member of the command object. The Aes that were selected when this page was accessed
-	 * the last time(through Report object) and the adverse events that were serious on triggering of the rules are set to true in this
+	 * This method populates the SelectedAesMap member of the command object. The adverse events that were serious on triggering of the rules are set to true in this
 	 * Map. All the adverse events in the reporting period are keys in this map.
 	 * @param command
 	 */
@@ -374,26 +274,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			selectedAesMap.put(id, Boolean.FALSE);
 			ae.setRequiresReporting(Boolean.FALSE);
 		}
-		if(adverseEventReportingPeriod.getAeReports().size() > 0){
-			for(AdverseEvent ae: adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents()){
-				Integer id = ae.getId();
-				selectedAesMap.put(id, Boolean.TRUE);
-			}
-			for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
-				for(AdverseEvent ae : entry.getValue()){
-					ae.setRequiresReporting(Boolean.TRUE);
-				}
-			}
-		}else {
-			//reset the ones that are available below with true
-			for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
-				for(AdverseEvent ae : entry.getValue()){
-					selectedAesMap.put(ae.getId(), true);
-					ae.setRequiresReporting(Boolean.TRUE);
-				}
+		//reset the ones that are available below with true
+		for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
+			for(AdverseEvent ae : entry.getValue()){
+				selectedAesMap.put(ae.getId(), true);
+				ae.setRequiresReporting(Boolean.TRUE);
 			}
 		}
-		
 	}
     
 	/**
@@ -412,11 +299,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * Find primary adverse event.
 	 */
 	public void findPrimaryAdverseEvent(){
-		if(adverseEventReportingPeriod.getAeReports().size() == 0){
+		if(adverseEventReportingPeriod.getAeReports().size() == 0)
 			if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
-		}else {
-			this.primaryAdverseEventId = adverseEventReportingPeriod.getAeReports().get(0).getAdverseEvents().get(0).getId();
-		}
 	}
 	
 	

@@ -23,8 +23,10 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.beans.PropertyEditorSupport;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -44,6 +46,11 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	private static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	private static final int ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER = 2;
+	private static final String REPORT_ID_PARAMETER = "aeReportId";
+	private static final String ACTION_PARAMETER = "action";
+	private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
+	private static final String AE_LIST_PARAMETER = "adverseEventList";
+	
 	
 	private ParticipantDao participantDao;
 	private StudyDao studyDao;
@@ -182,15 +189,36 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
 
-		//save the expdited report information
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
-		AdverseEventConfirmTab tab = (AdverseEventConfirmTab) getFlow(command).getTab(ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER);
-		tab.saveExpeditedReport(request, command, errors);
+		
+		String action = (String)findInRequest(request, "_action");
+		String reportIdString = (String)findInRequest(request, "_reportId");
+		Integer reportId = Integer.parseInt(reportIdString);
+		
+		List reportDefnIdList = new ArrayList<Integer>();
+		List adverseEventIdList = new ArrayList<Integer>();
+		
+		for(Integer id: command.getSelectedAesMap().keySet()){
+			if(command.getSelectedAesMap().get(id).equals(Boolean.TRUE))
+				adverseEventIdList.add(id);
+		}
+		
+		for(Integer id: command.getReportDefinitionMap().keySet()){
+			if(command.getReportDefinitionMap().get(id).equals(Boolean.TRUE))
+				reportDefnIdList.add(id);
+		}
+		
+		// Set the parameters in the session.
+		request.getSession().setAttribute(ACTION_PARAMETER, action);
+		if(reportId != null)
+			request.getSession().setAttribute(REPORT_ID_PARAMETER, reportId);
+		request.getSession().setAttribute(AE_LIST_PARAMETER, adverseEventIdList);
+		request.getSession().setAttribute(REPORT_DEFN_LIST_PARAMETER, reportDefnIdList);
+		
 		
 		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
-	    model.put("aeReport", command.getAdverseEventReportingPeriod().getAeReports().get(0).getId());
 	    return new ModelAndView("redirectToExpeditedAeEdit", model);
 	}
 	

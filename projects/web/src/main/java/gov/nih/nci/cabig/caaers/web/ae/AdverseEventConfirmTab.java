@@ -47,7 +47,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		InputFieldGroupMap map = new InputFieldGroupMap();
 		
 		//create fields for AEs
-		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getAdverseEvents();
+		final List<AdverseEvent> adverseEvents = command.getAdverseEventReportingPeriod().getReportableAdverseEvents();
 		if(adverseEvents != null){
 			int size = adverseEvents.size();
 			for(int i = 0; i < size; i++){
@@ -84,21 +84,22 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		List<InputField> fields= new ArrayList<InputField>();
 		if(isModifiable){
 			fields.add(InputFieldFactory.createCheckboxField("selectedAesMap[" + ae.getId() + "]", ""));
-		}else{
+		}else if(!isBaseline){
 			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
 		}
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
 		//other-specify for non-solicited CTC terms. 
 		if(!ae.getSolicited()){
-			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].lowLevelTerm", ""));
-			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].detailsForOther", ""));
+			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].lowLevelTerm", ""));
+			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].detailsForOther", ""));
 		}
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].displayGrade", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayGrade", ""));
 		String attributionFieldName = (ae.getAttributionSummary() != null)? "attributionSummary.displayName" : "attributionSummary";
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "]." + attributionFieldName, ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + attributionFieldName, ""));
 		String hospitalizationFieldName = (ae.getHospitalization() != null)? "hospitalization.displayName" : "hospitalization";
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "]." + hospitalizationFieldName, ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.adverseEvents[" + i + "].displayExpected", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + hospitalizationFieldName, ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayExpected", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displaySerious", ""));
 		if(isModifiable){
 			fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
 		}else{
@@ -165,8 +166,29 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
 		
 		
+		// Add some flags refdata (displaySeriousTable, displayObservedTable, displaySolicitedTable) to determine if to display
+		// these tables or statement saying no rows to render.
+		Boolean displaySeriousTable = false; // For Serious Adverse Events table
+		Boolean displayObservedTable = false; // For Observed Adverse Events table
+		Boolean displaySolicitedTable = false; // For Solicited Adverse Events table
 		
-	
+		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
+			if(ae.getRequiresReporting())
+				displaySeriousTable = true;
+		}
+		
+		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
+			if(!ae.getSolicited() && !ae.getRequiresReporting())
+				displayObservedTable = true;
+		}
+		
+		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
+			if(ae.getSolicited() && !ae.getRequiresReporting())
+				displaySolicitedTable = true;
+		}
+		refdata.put("displaySeriousTable", displaySeriousTable);
+		refdata.put("displayObservedTable", displayObservedTable);
+		refdata.put("displaySolicitedTable", displaySolicitedTable);
 		
 		return refdata;
 	}
@@ -220,92 +242,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	}
 
 	
-    /**
-     * We do the following things here 
-     * 	1. Find the newly checked report definitions 
-     *  2. Remove the unselected report definitions
-     *  3. Create the reports (by calling evaluation service)
-     *  4. Save the AEReport
-     *  Note:- We should avoid
-     */
-	public void saveExpeditedReport(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors){
-
-		
-        Collection<ReportDefinition> newlySelectedDefs = command.findNewlySelectedReportDefinitions();
-        Collection<ReportDefinition> removedReportDefs = command.findUnselectedReportDefinitions();
-        
-        List<AdverseEvent> newlySelectedAEs = command.findNewlySelectedAdverseEvents();
-        
-        AdverseEventReportingPeriod reportingPeriod = command.getAdverseEventReportingPeriod();
-        // Modified this part to support Many-to-One relationship between ReportingPeriod and ExpeditedReport
-        // This will change soon once the use-case related to CaptureAe is finalized.
-        List<ExpeditedAdverseEventReport> aeReports = reportingPeriod.getAeReports();
-        List<ExpeditedAdverseEventReport> newExpeditedReportList = new ArrayList<ExpeditedAdverseEventReport>();
-        
-        if(aeReports.size() == 0){
-        	//create the report
-        	ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
-    		aeReport.setCreatedAt(new Timestamp(new Date().getTime()));
-    		aeReport.setReportingPeriod(reportingPeriod);
-    		//reportingPeriod.setAeReport(aeReport);saveExpeditedReport
-    		reportingPeriod.addAeReport(aeReport);
-    		newExpeditedReportList.add(aeReport);
-        }else {
-        	//remove unselected AEs from the report
-        	List<AdverseEvent> removedAEs = command.findUnselectedAdverseEvents();
-        	reportingPeriod.getAeReports().get(0).getAdverseEvents().removeAll(removedAEs);
-        }
-
-		//add AEs to expedited report.
-		for(AdverseEvent ae : newlySelectedAEs){
-			command.updateRequiresReportingFlag(ae);
-			reportingPeriod.getAeReports().get(0).addAdverseEvent(ae);	
-		}
-        
-		//adjust primary AE
-		if(command.getPrimaryAdverseEventId() != null){
-			AdverseEvent primaryAE = null;
-			int i = 0;
-			for(AdverseEvent ae : reportingPeriod.getAeReports().get(0).getAdverseEvents()){
-				if(ae.getId().equals(command.getPrimaryAdverseEventId())){
-					primaryAE = ae;
-					break;
-				}
-				i++;
-			}
-			
-			if(i > 0 && primaryAE != null){
-				reportingPeriod.getAeReports().get(0).getAdverseEvents().remove(primaryAE);
-				reportingPeriod.getAeReports().get(0).getAdverseEvents().add(0, primaryAE);
-			}
-		}
-		
-		//add newly selected report definitions
-		if(!newlySelectedDefs.isEmpty())
-			evaluationService.addOptionalReports(reportingPeriod.getAeReports().get(0), newlySelectedDefs);
-        
-        //remove unselected reports
-		if(!removedReportDefs.isEmpty())
-			removeUnselectedReports(reportingPeriod.getAeReports().get(0), removedReportDefs);
-        
-		//pre initialize Mandatory Repeating fields of each expedited AE repot 
-		for(ExpeditedAdverseEventReport aeReport : newExpeditedReportList){
-			Collection<ExpeditedReportSection> mandatorySections = evaluationService.mandatorySections(aeReport);
-			reportRepository.initializeMandatorySectionFields(aeReport, mandatorySections);
-			
-		}
-		
-		
-        //save the expedited report
-        expeditedAdverseEventReportDao.save(reportingPeriod.getAeReports().get(0));
-        
-        //save the reporting period
-        //this is needed to persist the "requiredReporting" field on adverseEvents.
-        adverseEventReportingPeriodDao.save(reportingPeriod);
-        
-	}
-	
-	/**
+ 	/**
 	 * This will remove all unselected report definitions from the report, by calling delete on the repository 
 	 * @param aeReport
 	 * @param removedDefinitions
