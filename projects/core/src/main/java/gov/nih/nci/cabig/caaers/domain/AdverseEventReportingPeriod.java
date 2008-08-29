@@ -79,6 +79,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	// Evaluated adverse Events
 	private List<AdverseEvent> evaluatedAdverseEvents;
 	
+	// Reportable adverse Events (not associated to any report)
+	private List<AdverseEvent> reportableAdverseEvents;
+	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
     }
@@ -158,6 +161,16 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     			evaluatedAdverseEvents.add(ae);
     	}
     	return evaluatedAdverseEvents;
+    }
+    
+    @Transient
+    public List<AdverseEvent> getReportableAdverseEvents(){
+    	reportableAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae: getEvaluatedAdverseEvents()){
+    		if(ae.getReport() == null)
+    			reportableAdverseEvents.add(ae);
+    	}
+    	return reportableAdverseEvents;
     }
     
     @ManyToOne(fetch = FetchType.LAZY)

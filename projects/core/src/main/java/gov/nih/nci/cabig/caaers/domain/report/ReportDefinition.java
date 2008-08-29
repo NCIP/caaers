@@ -7,7 +7,10 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.lang.ComparisonTools;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -67,6 +70,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     private Boolean attributionRequired;
     
     private Boolean expedited;
+    
+    private String expectedDisplayDueDate;
     
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
@@ -333,6 +338,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         if (trace) log.debug("== by properties");
         return true;
+    }
+    
+    @Transient
+    public String getExpectedDisplayDueDate(){
+    	Calendar today = GregorianCalendar.getInstance();
+    	today.add(timeScaleUnitType.getCode(), duration);
+    	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
+    	return "Expected Due Date " + formatter.format(today.getTime());
     }
 
 }
