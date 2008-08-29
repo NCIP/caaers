@@ -1,3 +1,4 @@
+<!-- BEGIN views\login.jsp -->
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
@@ -34,6 +35,7 @@
 		color:#fff;
 		font-size:30px;
 		font-weight:normal;
+		margin-top:20px;
 		}
 		h1{visibility:hidden;}
 		#logo{
@@ -102,3 +104,4 @@ input{outline:none;}
 
 </body>
 </html>
+<!-- END views\login.jsp -->

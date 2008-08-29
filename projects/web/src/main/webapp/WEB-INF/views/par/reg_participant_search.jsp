@@ -1,3 +1,4 @@
+<!-- BEGIN views\par\reg_participant_search.jsp -->
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
@@ -50,23 +51,16 @@ function ajaxSubjectSearch(searchText, searchType) {
                 </td>
                 <td><form:input path="searchText" size="30" /></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-                <td width="100%"><input type="button" onclick="ajaxSubjectSearch();" value="Search" /></td>
+                <td width="100%"><input type="button" onClick="ajaxSubjectSearch();" value="Search" /></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
-                <td class="notation">^ Minimum two characters for search.</td>
+                <td class="notation">Minimum two characters for search.</td>
             </tr>
         </table>
     </form:form>
-</chrome:box>
-
-
-<p id="instructions">
-Please use the form above to search for a Subject and assign it to a Study <%--<b>${command.studySites[0].study.shortTitle}</b>--%> and then press Continue to proceed 
-</p>
-
-<tags:tabForm tab="${tab}" flow="${flow}" title="Subject search results" willSave="false">
+    <tags:tabForm tab="${tab}" flow="${flow}" title="Subject search results" willSave="false">
 <jsp:attribute name="singleFields">
 
     <div id="searchResults" style="width:100%; border: 0px red dotted;">
@@ -100,8 +94,8 @@ Please use the form above to search for a Subject and assign it to a Study <%--<
 
 </jsp:attribute>
 </tags:tabForm>
-
-
+</chrome:box>
 
 </body>
 </html>
+<!-- END views\par\reg_participant_search.jsp -->

@@ -1,3 +1,4 @@
+<!-- BEGIN tags\standard\head.tag -->
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <tags:stylesheetLink name="debug"/>
 <tags:stylesheetLink name="common"/>
@@ -55,3 +56,5 @@
 
 </script>
 
+<link rel="icon" href="../../images/caaers.ico"/>  
+<!-- END tags\standard\head.tag -->

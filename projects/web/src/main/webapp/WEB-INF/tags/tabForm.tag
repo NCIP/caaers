@@ -1,3 +1,4 @@
+<!-- BEGIN tags\tabForm.tag -->
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
@@ -35,8 +36,10 @@
 		<jsp:invoke fragment="tabControls" />
 	  </c:if>
 	  <c:if  test="${empty tabControls}">
-
-        <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+ <tags:tabControls tab="${tab}" flow="${flow}" localButtons="${localButtons}" willSave="${willSave}" saveButtonLabel="${saveButtonLabel}"/>
+       
 	  </c:if>
-    </form:form>
+    
+	</form:form>
 </chrome:box>
+<!-- END tags\tabForm.tag -->
