@@ -63,9 +63,7 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     public Map<ReportDefinition, List<AdverseEvent>> findRequiredReportDefinitions(AdverseEventReportingPeriod reportingPeriod){
     	Map<ReportDefinition, List<AdverseEvent>> map = new HashMap<ReportDefinition, List<AdverseEvent>>();
-    		for(AdverseEvent ae : reportingPeriod.getAdverseEvents()){
-    			if(ae.getGrade() == null || ae.getGrade().equals(Grade.NORMAL) || ae.getGrade().equals(Grade.NOT_EVALUATED))
-    				continue;
+    		for(AdverseEvent ae : reportingPeriod.getReportableAdverseEvents()){
     			List<ReportDefinition> reportDefs = findRequiredReportDefinitions(null, Arrays.asList(ae), reportingPeriod.getStudy());
     			for(ReportDefinition reportDef : reportDefs){
     				if(map.containsKey(reportDef)){
