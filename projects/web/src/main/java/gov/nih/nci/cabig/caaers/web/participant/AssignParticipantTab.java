@@ -27,7 +27,7 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
     protected ListValues listValues;
 
     public AssignParticipantTab() {
-        super("Search for subject", "Search Subject 2", "par/reg_participant_search");
+        super("Search for subject", "Search Subject", "par/reg_participant_search");
     }
 
     @Override

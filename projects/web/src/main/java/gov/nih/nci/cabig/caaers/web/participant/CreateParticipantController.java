@@ -10,24 +10,17 @@ import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
-import gov.nih.nci.cabig.caaers.rules.ui.DomainObject;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
-import gov.nih.nci.cabig.ctms.dao.AbstractDomainObjectDao;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
-import java.beans.PropertyEditor;
-import java.beans.PropertyEditorSupport;
 import java.util.Date;
-import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,7 +62,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         return new FlowFactory<ParticipantInputCommand>() {
             public Flow<ParticipantInputCommand> createFlow(ParticipantInputCommand cmd) {
                 Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Create Subject");
-                flow.addTab(new ParticipantTab());
+                flow.addTab(new CreateParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
                 flow.addTab(new SubjectMedHistoryTab());
                 flow.addTab(new ReviewParticipantTab());

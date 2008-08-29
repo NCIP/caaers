@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
-import org.easymock.classextension.EasyMock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,9 @@ import java.util.Map;
 /**
  * @author Biju Joseph
  */
-public class CreateParticipantTabTest extends AbstractTabTestCase<ParticipantTab, ParticipantInputCommand> {
+public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticipantTab, ParticipantInputCommand> {
 
-    private ParticipantTab createParticipantTab;
+    private CreateParticipantTab createParticipantTab;
 
     private ParticipantInputCommand newParticipantCommand;
     private OrganizationRepository organizationRepository;
@@ -36,8 +34,8 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<ParticipantTab
 
 
     @Override
-    protected ParticipantTab createTab() {
-        createParticipantTab = new ParticipantTab();
+    protected CreateParticipantTab createTab() {
+        createParticipantTab = new CreateParticipantTab();
         createParticipantTab.setOrganizationRepository(organizationRepository);
         createParticipantTab.setListValues(listValues);
         createParticipantTab.setConfigurationProperty(configProperty);

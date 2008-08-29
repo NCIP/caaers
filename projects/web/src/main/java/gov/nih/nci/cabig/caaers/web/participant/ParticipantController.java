@@ -4,8 +4,10 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.tools.editors.DateValueEditor;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -34,16 +36,15 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Ion
  * @author Biju Joseph
  */
-public abstract class ParticipantController<C extends ParticipantInputCommand> extends AutomaticSaveFlowFormController<C, Participant, ParticipantDao> {
+public abstract class ParticipantController<C extends ParticipantInputCommand> extends AutomaticSaveAjaxableFormController<C, Participant, ParticipantDao> {
 
     private static Log log = LogFactory.getLog(ParticipantController.class);
-
     protected WebControllerValidator webControllerValidator;
-
     private OrganizationDao organizationDao;
+    protected ParticipantRepository participantRepository;
 
     public ParticipantController() {
-        setCommandClass(NewParticipantCommand.class);
+        setCommandClass(ParticipantInputCommand.class);
         Flow<C> flow = new Flow<C>("Create Subject");
 
         layoutTabs(flow);
@@ -51,6 +52,11 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         setAllowDirtyBack(true);
         setAllowDirtyForward(false);
 
+    }
+
+    @Required
+    public void setParticipantRepository(final ParticipantRepository participantRepository) {
+        this.participantRepository = participantRepository;
     }
 
     @Override
@@ -64,7 +70,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         log.debug("Entering Process Finish ...");
-        NewParticipantCommand participantCommand = (NewParticipantCommand) command;
+        ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
         Participant participant = participantCommand.getParticipant();
         participantDao.save(participant);
 

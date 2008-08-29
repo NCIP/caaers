@@ -35,26 +35,26 @@
 </jsp:attribute>
 <jsp:attribute name="embededJS">
 	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
-	AE.createStandardAutocompleter('${path}',${populatorJS},${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
+	AE.createStandardAutocompleter('${path}', ${populatorJS}, ${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
+        
     $('${path}-input').observe('focus', function() {
-		if($('${path}').value == ''){
-			 var el = $('${path}-input');
-			 el.clear();
+        if($('${path}').value == ''){
+             var el = $('${path}-input');
 			 el.removeClassName('pending-search');
+             el.clear();
 		}
     });
+
     $('${path}-input').observe('blur', function() {
-		var fn = function(){
-			var el = $('${path}-input');
-        	if (el.value == '') {
-            el.value = '${initialDisplayValue}';
-			el.addClassName('pending-search');
-			$('${path}').clear();
-        	} 
-		};
-		setTimeout(fn, 10000);
+                var el = $('${path}-input');
+                if (el.value == '') {
+                el.value = '${initialDisplayValue}';
+                el.addClassName('pending-search');
+                el.clear();
+        };
     });
-	if($('${path}').value == ''){
+
+    if($('${path}').value == ''){
 		$('${path}-input').addClassName('pending-search');
 	}
     </c:if>

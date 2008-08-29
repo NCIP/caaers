@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.Map;
 
-public class ReviewParticipantTab extends TabWithFields<ParticipantInputCommand> {
+public class ReviewParticipantTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
 
     public ReviewParticipantTab() {
         super("Review and Submit", "Review", "par/par_confirmation");
@@ -20,7 +20,7 @@ public class ReviewParticipantTab extends TabWithFields<ParticipantInputCommand>
     }
 
     @Override
-    public Map<String, Object> referenceData(ParticipantInputCommand command) {
+    public Map<String, Object> referenceData(T command) {
         return super.referenceData(command);
     }
 

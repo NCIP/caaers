@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
-<%@taglib prefix="blue" tagdir="/WEB-INF/tags/chrome" %>
+
 <html>
   <head>
 	<style type="text/css">

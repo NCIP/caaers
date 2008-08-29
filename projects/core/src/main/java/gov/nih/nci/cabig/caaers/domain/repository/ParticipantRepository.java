@@ -61,4 +61,8 @@ public class ParticipantRepository {
     public void setParticipantDao(final ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
+
+    public Participant getParticipantById(int id) {
+        return participantDao.getParticipantById(id);
+    }
 }

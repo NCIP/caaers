@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -13,9 +15,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
+import org.springframework.validation.Errors;
+import org.springframework.beans.BeanWrapper;
 
-    public ParticipantTab() {
+public class CreateParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
+
+    public CreateParticipantTab() {
         super("Enter Subject Information", "Details", "par/par_create_participant");
     }
     
@@ -118,9 +123,8 @@ public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithF
         }
     }*/
 
-/*
     @Override
-    public void validate(final NewParticipantCommand command, final Errors errors) {
+    protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         boolean hasPrimaryID = false;
         DateValue dob = command.getParticipant().getDateOfBirth();
         if (dob.checkIfDateIsInValid()) {
@@ -131,11 +135,9 @@ public class ParticipantTab <T extends ParticipantInputCommand> extends TabWithF
             hasPrimaryID |= identifier.isPrimary();
             if (hasPrimaryID) break;
         }
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED",
-                "Please Include at least a single primary Identifier");
+        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
 
     }
-*/
 
     public OrganizationRepository getOrganizationRepository() {
         return organizationRepository;

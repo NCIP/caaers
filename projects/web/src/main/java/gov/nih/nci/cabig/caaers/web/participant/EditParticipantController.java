@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +21,12 @@ import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * @author Saurbah Agrawal
+ * @author Ion C. Olaru
  */
-public class EditParticipantController extends ParticipantController<ParticipantInputCommand> {
+
+public class EditParticipantController <T extends ParticipantInputCommand> extends ParticipantController<T> {
 
     private static final Log log = LogFactory.getLog(EditParticipantController.class);
-
     private Task task;
 
     public EditParticipantController() {
@@ -37,35 +36,34 @@ public class EditParticipantController extends ParticipantController<Participant
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
 
-        request.getSession().removeAttribute(
-                        CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
+        request.getSession().removeAttribute(CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        Participant participant = participantDao.getParticipantById(Integer.parseInt(request
-                        .getParameter("participantId")));
+        Participant participant = participantRepository.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved Participant :" + String.valueOf(participant));
         }
 
-        NewParticipantCommand participantCommand = new NewParticipantCommand(participant);
+        EditParticipantCommand cmd = new EditParticipantCommand(participant);
 
         List<StudyParticipantAssignment> assignments = participant.getAssignments();
+//        cmd.setAssignments(assignments);
+        
         List<StudySite> studySites = new ArrayList<StudySite>();
         for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
             studySites.add(studyParticipantAssignment.getStudySite());
         }
-        participantCommand.setStudySites(studySites);
-        participantCommand.setOrganization(participant.getAssignments().get(0).getStudySite()
-                        .getOrganization());
-        return participantCommand;
+        
+        cmd.setStudySites(studySites);
+        if (participant.getAssignments().size() > 0)
+            cmd.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
+        
+        return cmd;
 
     }
 
 /*
-    @Override
-    protected NewParticipantCommand save(final NewParticipantCommand newParticipantCommand,
-                    final Errors errors) {
-
+    protected NewParticipantCommand save(final ParticipantInputCommand newParticipantCommand,final Errors errors) {
         if (errors.hasErrors()) {
             return newParticipantCommand;
         }
@@ -84,18 +82,15 @@ public class EditParticipantController extends ParticipantController<Participant
     }
 
     @Override
-    protected void layoutTabs(final Flow<ParticipantInputCommand> flow) {
-//        flow.addTab(new ReviewParticipantTab());
-//        flow.addTab(new CreateParticipantTab());
-
+    protected void layoutTabs(final Flow<T> flow) {
+        flow.addTab(new ReviewParticipantTab());
+        flow.addTab(new EditParticipantTab());
+        flow.addTab(new SubjectMedHistoryTab());
     }
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
-
-        NewParticipantCommand participantCommand = (NewParticipantCommand) command;
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
+        ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
         Participant participant = participantCommand.getParticipant();
         participantDao.merge(participant);
         request.setAttribute("flashMessage", "Successfully updated the Participant");
@@ -125,8 +120,7 @@ public class EditParticipantController extends ParticipantController<Participant
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors, final int page) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("currentTask", task);
         return refdata;

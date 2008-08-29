@@ -16,9 +16,9 @@ import java.util.*;
 public class ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
 
-    private Participant participant;
+    protected Participant participant;
     private Study study;
-    private StudyParticipantAssignment assignment;
+    protected StudyParticipantAssignment assignment;
     private Organization organization;
     private String[] studySiteArray;
     private List<StudySite> studySites = new ArrayList<StudySite>();
@@ -48,7 +48,15 @@ public class ParticipantInputCommand {
     private List<? extends AbstractStudyDisease> studyDiseases;
     
     private DiseaseCodeTerm diseaseCodingTerm;
-    
+
+
+    public ParticipantInputCommand() {
+    }
+
+    public ParticipantInputCommand(Participant participant) {
+        this.participant = participant;
+    }
+
     /**
      * This method will initialize the objects that we have to work in the flow.
      * @param identifierType
@@ -109,6 +117,12 @@ public class ParticipantInputCommand {
 
     public StudyParticipantAssignment getAssignment() {
         return assignment;
+    }
+
+    public List<StudyParticipantAssignment> getAssignments() {
+        List<StudyParticipantAssignment> assignments = new ArrayList<StudyParticipantAssignment>();
+        assignments.add(assignment);
+        return assignments;
     }
 
     public void setAssignment(StudyParticipantAssignment assignment) {

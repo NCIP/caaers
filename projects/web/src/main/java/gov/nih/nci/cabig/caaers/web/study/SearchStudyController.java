@@ -47,8 +47,7 @@ public class SearchStudyController extends SimpleFormController {
         return refdata;
     }
 
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         Enumeration en = request.getParameterNames();
 
@@ -77,8 +76,7 @@ public class SearchStudyController extends SimpleFormController {
     }
 
     @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                    Object oCommand, BindException errors) throws Exception {
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         SearchStudyAjaxFacade studyFacade = new SearchStudyAjaxFacade();
         Context context = null;
         context = new HttpServletRequestContext(request);

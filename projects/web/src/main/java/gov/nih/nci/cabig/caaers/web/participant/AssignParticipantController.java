@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
@@ -19,6 +20,7 @@ import org.springframework.validation.Errors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Date;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -102,18 +104,16 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     @Override
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
         log.debug("Entering Process Finish ...");
-        System.out.println("Entering Process Finish ...");
 
-/*
         AssignParticipantStudyCommand assignParticipantStudyCommand = (AssignParticipantStudyCommand) command;
 
         StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
         studyParticipantAssignment.setDateOfEnrollment(new Date());
-        studyParticipantAssignment.setParticipant(assignParticipantStudyCommand.getParticipants().get(0));
-        studyParticipantAssignment.setStudySite(assignParticipantStudyCommand.getStudySites().get(0));
+        studyParticipantAssignment.setParticipant(assignParticipantStudyCommand.getParticipant());
+        studyParticipantAssignment.setStudySite(assignParticipantStudyCommand.getStudySite());
         studyParticipantAssignment.setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
 
-        Participant participant = assignParticipantStudyCommand.getParticipants().get(0);
+        Participant participant = assignParticipantStudyCommand.getParticipant();
         participantDao.reassociateUsingLock(participant);
 
         participant.addAssignment(studyParticipantAssignment);
@@ -123,7 +123,6 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         modelAndView.addObject("participant", participant);
         modelAndView.addAllObjects(errors.getModel());
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=confirm");
-*/
 
         return null;
     }

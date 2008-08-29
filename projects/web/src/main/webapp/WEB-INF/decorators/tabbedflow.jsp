@@ -6,20 +6,16 @@
         - flow: a gov.nih.nci.cabig.caaers.web.Flow instance describing the flow
         - tab: a gov.nih.nci.cabig.caaers.web.Tab instance for the current page
 --%>
-<!-- BEGIN decorators\tabbedflow.jsp -->
-<%@taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>	
-<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <!DOCTYPE html
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
     <title>caAERS || ${flow.name} || ${tab.longTitle}</title>
+    <link rel="icon" href="../../images/caaers.ico"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <standard:head/>
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:javascriptLink name="tabbedflow"/>

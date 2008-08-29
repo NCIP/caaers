@@ -213,19 +213,19 @@ ${command.organization}
     				<th  class="tableHeader"><tags:requiredIndicator />Organization</th>
     				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     			</tr>
-    			
-            	<c:forEach items="${command.participant.identifiers}" varStatus="status" var="idt">
-                    <c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-                        j=: [${status.index}]
+
+
+                <!-- ToDo treb de scanat numai cele de clasa respectiva.-->
+                
+                <c:forEach items="${command.participant.organizationIdentifiers}" varStatus="status" var="idt">
                         <par:parIdentifier
                                 title="Subject Identifier ${status.index + 1}"
-                                disableDelete="${fn:length(command.participant.identifiers) lt 2}"
+                                disableDelete="${fn:length(command.participant.organizationIdentifiers) lt 2}"
                                 sectionClass="organization-section-row"
                                 removeButtonAction="removeIdentifier"
                                 index="${status.index}"
-                                identifier="${command.participant.identifiers[status.index]}"
+                                identifier="${command.participant.organizationIdentifiers[status.index]}"
                                 mainGroupName="mainOrg"/>
-					</c:if>
 				</c:forEach>
             	
             	</table>
@@ -241,20 +241,16 @@ ${command.organization}
     				<th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     			</tr>
 
-            	<c:forEach items="${command.participant.identifiers}" varStatus="status" >
-            	<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-                    i=: [${status.index}]
-		
+            	<c:forEach items="${command.participant.systemAssignedIdentifiers}" varStatus="status" >
 					<par:parIdentifier
                             title="Subject Identifier ${status.index + 1}"
-                            disableDelete="${fn:length(command.participant.identifiers) lt 2}"
+                            disableDelete="${fn:length(command.participant.systemAssignedIdentifiers) lt 2}"
 					        sectionClass="system-section-row"
                             removeButtonAction="removeIdentifier"
 					        index="${status.index}"
-                            identifier="${command.participant.identifiers[status.index]}"
+                            identifier="${command.participant.systemAssignedIdentifiers[status.index]}"
                             mainGroupName="mainSys" />
-					
-					</c:if>
+
 						</c:forEach>
             	</table>
             	</chrome:division>
