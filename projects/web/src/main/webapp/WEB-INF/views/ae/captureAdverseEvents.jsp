@@ -12,7 +12,7 @@
  <tags:includeScriptaculous />
  <tags:includePrototypeWindow />
  <tags:stylesheetLink name="ae"/>
- <tags:dwrJavascriptLink objects="createAE,createStudy"/>
+ <tags:dwrJavascriptLink objects="captureAE,createStudy"/>
  <tags:stylesheetLink name="aeTermQuery_box" />
 
 <style type="text/css"> 
@@ -118,7 +118,7 @@ div.row div.value {
  		},
  		refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails){
  	 		//will refresh the options of reporting period.
- 	 		createAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput){
+ 	 		captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput){
  	 	 		this.rpCtrl.options.length = 1;
  	 	 		ajaxOutput.objectContent.each(function(rp){
  	 	 	 		 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
@@ -140,7 +140,7 @@ div.row div.value {
  		        }
  		  	}.bind(this));
  		  	//get the HTML to add from server   
- 		  	createAE.addObservedAE(listOfTermIDs, function(responseStr){
+ 		  	captureAE.addObservedAE(listOfTermIDs, function(responseStr){
 				$('observedBlankRow').insert({after:responseStr});
 				if( $('observedEmptyRow')) $('observedEmptyRow').remove();
 				this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
@@ -159,7 +159,7 @@ div.row div.value {
  	 		}.bind(this));
  		},
  		deleteAdverseEvent:function(indx){
- 	 		createAE.deleteAdverseEvent(indx, function(ajaxOutput){
+ 	 		captureAE.deleteAdverseEvent(indx, function(ajaxOutput){
  	 	 		$('ae-section-' + indx).remove();
  	 		}.bind(this));
  	 	
