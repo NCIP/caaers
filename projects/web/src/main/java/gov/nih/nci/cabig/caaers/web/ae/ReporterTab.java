@@ -1,16 +1,15 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +24,8 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
+    
+    private ConfigProperty configurationProperty;
 
     private EvaluationService evaluationService;
 
@@ -47,12 +48,11 @@ public class ReporterTab extends AeTab {
 
     private void createPersonGroup(AeInputFieldCreator creator, String person) {
         String base = person + '.';
-        InputField firstNameField = InputFieldFactory.createTextField(base + "firstName",
-                        "First name", true);
-        InputField middleNameField = InputFieldFactory.createTextField(base + "middleName",
-                        "Middle name", false);
-        InputField lastNameField = InputFieldFactory.createTextField(base + "lastName",
-                        "Last name", true);
+        InputField title = InputFieldFactory.createSelectField(base + "title", "Title",false,
+        		WebUtils.collectOptions(configurationProperty.getMap().get("titleType"), "code", "desc", "Please select"));
+        InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
+        InputField middleNameField = InputFieldFactory.createTextField(base + "middleName","Middle name", false);
+        InputField lastNameField = InputFieldFactory.createTextField(base + "lastName","Last name", true);
         InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", FieldValidator.NOT_NULL_VALIDATOR);
         InputFieldAttributes.setSize(emailField, 50);
 
@@ -63,9 +63,22 @@ public class ReporterTab extends AeTab {
         InputField faxField = createContactField(base, ReportPerson.FAX, FieldValidator.PHONE_VALIDATOR);
         faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         
+        
+        InputField streetField = InputFieldFactory.createTextField(base + "address.street", "Street");
+        InputFieldAttributes.setColumns(streetField,50);
+
+        InputField cityField = InputFieldFactory.createTextField(base + "address.city", "City");
+        InputFieldAttributes.setColumns(cityField,50);
+        
+        InputField stateField = InputFieldFactory.createTextField(base + "address.state", "State");
+        InputFieldAttributes.setColumns(stateField,50);
+        
+        InputField zipField = InputFieldFactory.createTextField(base + "address.zip", "Zip");
+        InputFieldAttributes.setColumns(zipField,5);
+        
+        
         creator.createFieldGroup(person, StringUtils.capitalize(person) + " details",
-                        firstNameField, middleNameField, lastNameField, emailField,
-                        phoneField, faxField);
+        		title,firstNameField, middleNameField,lastNameField, emailField, phoneField, faxField,  streetField, cityField, stateField, zipField);
     }
 
     private InputField createContactField(String base, String contactType, FieldValidator... validators) {
@@ -92,4 +105,9 @@ public class ReporterTab extends AeTab {
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
     }
+    
+    @Required
+    public void setConfigurationProperty(ConfigProperty configurationProperty) {
+		this.configurationProperty = configurationProperty;
+	}
 }

@@ -46,7 +46,6 @@
     <property name="servletName"><value>pages</value></property>
   </bean>
 
-
   <bean name="/task" id="taskController" class="gov.nih.nci.cabig.caaers.web.task.TaskController">
     <property name="taskGroups">
       <list>
@@ -600,8 +599,6 @@
   <bean name="/rule/deploy" id="deployRuleController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
   </bean>
-
-
 
 
 </beans>

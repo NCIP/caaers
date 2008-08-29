@@ -63,16 +63,17 @@ public class TreatmentTab extends AeTab {
                         "Start date of first course", false);
         firstCourseDateField.getAttributes().put(InputField.HELP,
                         "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
+        InputField treatmentTimeField = createTimeField("primaryTreatmentApproximateTime", "Treatment time");
+        treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
 
-        InputField adverseEventCourse_dateField = InputFieldFactory.createDateField(
-                        "adverseEventCourse.date",
+        InputField adverseEventCourse_dateField = InputFieldFactory.createDateField("adverseEventCourse.date",
                         "Start date of course associated with expedited report", false);
         adverseEventCourse_dateField.getAttributes().put(InputField.HELP,
                         "ae.treatment.aeReport.treatmentInformation.adverseEventCourse.date");
 
-        creator.createFieldGroup("treatmentInfo", null, "treatmentInformation", assignmentField,
-                        descField, newDescField, firstCourseDateField,
-                        adverseEventCourse_dateField, eventCourseField, totalCourseField);
+        creator.createFieldGroup("treatmentInfo", null, "treatmentInformation",
+        		assignmentField, descField, newDescField, firstCourseDateField,
+                        adverseEventCourse_dateField, treatmentTimeField, eventCourseField, totalCourseField);
 
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent",
                         false, WebUtils.collectOptions(
@@ -80,31 +81,31 @@ public class TreatmentTab extends AeTab {
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount",
                         "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
-        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units",
-                        "Unit of measure", false, WebUtils.collectOptions(
-                                        configurationProperty.getMap().get("agentDoseUMORefData"),
-                                        "code", "desc", "Please Select"));
-        CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,
-                        "Administration delay").addField(
-                        InputFieldFactory.createTextField("administrationDelayAmount", "", false))
-                        .addField(
-                                        InputFieldFactory.createSelectField(
-                                                        "administrationDelayUnits", "", false,
-                                                        WebUtils.collectOptions(
-                                                                        Arrays.asList(DelayUnits
-                                                                                        .values()),
-                                                                        null, "displayName"))));
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, 
+        		WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"));
+        CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay")
+        	.addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false))
+        	.addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,
+        			WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName")))
+        );
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
         InputFieldAttributes.setRows(commentsField, 4);
         InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
-        modifiedDoseField.getAttributes().put(InputField.HELP,
-                        "ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
-        creator.createRepeatingFieldGroup("courseAgent", "treatmentInformation.courseAgents",
-                        new SimpleNumericDisplayNameCreator("Study agent"), agentField,
-                        totalDoseField, totalUOMField, InputFieldFactory.createDateField(
-                                        "lastAdministeredDate", "Date last administered", false),
-                        adminDelayField, commentsField, modifiedDoseField);
+        modifiedDoseField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
+        
+        creator.createRepeatingFieldGroup("courseAgent", 
+        		"treatmentInformation.courseAgents", 
+        		new SimpleNumericDisplayNameCreator("Study agent"), 
+        		agentField,
+        		InputFieldFactory.createTextField("formulation", "Formulation"),
+        		InputFieldFactory.createTextField("lotNumber", "Lot # (if known)"),
+                totalDoseField, 
+                totalUOMField, 
+                InputFieldFactory.createDateField("lastAdministeredDate", "Date last administered", false),
+                adminDelayField, 
+                commentsField, 
+                modifiedDoseField);
     }
 
     private CompositeField createDoseField(String doseProperty, String displayName,

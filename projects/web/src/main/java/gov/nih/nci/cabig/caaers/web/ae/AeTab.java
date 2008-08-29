@@ -10,6 +10,8 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
@@ -137,6 +139,15 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
                 errors.reject(vError.getCode(), vError.getMessage());
             }
         }
+    }
+    
+    public CompositeField createTimeField(String baseProperty, String displayName){
+    	InputField hrField = InputFieldFactory.createTextField("hour", "HH");
+    	InputField mmField = InputFieldFactory.createTextField("minute","MM"); 
+    	InputFieldAttributes.setSize(hrField, 2);
+    	InputFieldAttributes.setSize(mmField, 2);
+    	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField));
+    	
     }
 
     // //// CONFIGURATION

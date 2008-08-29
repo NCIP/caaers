@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -8,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -49,44 +51,32 @@ public abstract class BasicsTab extends AeTab {
     private Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
-        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution
-                        .values()), "name", null));
+        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution.values()), "name", null));
         return attributionOptions;
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                    ExpeditedAdverseEventInputCommand command) {
-        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary",
-                        "Attribution to study", false, createAttributionOptions());
-        /*
-         * InputFieldAttributes.setDetails(attributionField, "Select from the list the most
-         * appropriate term describing the relationship of the event to the study interactions or
-         * interventions.");
-         */
-        InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected",
-                        false);
-        /*
-         * InputFieldAttributes.setDetails(exField, "Specify whether the AE is expected or not.
-         * &quot;Unexpected&quot; events " + "are those that differ in nature, severity or frequency
-         * from what is described in the investigator's " + "brochure or informed consent document.
-         * For agents under a CTEP IND, refer also to the AdEERS Agent Specific " + "Adverse Event
-         * List (ASAEL). For commercial agents or agents under a non-CTEP IND, refer also to the
-         * package insert.");
-         */
+    protected void createFieldGroups(AeInputFieldCreator creator,ExpeditedAdverseEventInputCommand command) {
+    	
+        InputField attributionField = InputFieldFactory.createSelectField("attributionSummary","Attribution to study", false, createAttributionOptions());
+        InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
+        InputField timeOfEventField =  createTimeField("eventApproximateTime", "Event time");
+        
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 80);
         InputFieldAttributes.setRows(commentsField, 5);
 
-        creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", InputFieldFactory
-                        .createLongSelectField("grade", "Grade", true, WebUtils
-                                        .collectOptions(EXPEDITED_GRADES, "name", null)),
-                        InputFieldFactory.createDateField("startDate", "Start date", FieldValidator.DATE_VALIDATOR),
-                        InputFieldFactory.createDateField("endDate", "End date", FieldValidator.DATE_VALIDATOR), attributionField,
-                        InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",
-                                        false, WebUtils.collectOptions(Arrays
-                                                        .asList(Hospitalization.values()), "name",
-                                                        "displayName")), exField, commentsField);
+        creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", 
+			InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
+            InputFieldFactory.createDateField("startDate", "Start date", FieldValidator.DATE_VALIDATOR),
+            InputFieldFactory.createDateField("endDate", "End date", FieldValidator.DATE_VALIDATOR),
+            timeOfEventField,
+            attributionField,
+            InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
+            InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",false, 
+            		WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")), 
+            exField, 
+            commentsField);
     }
 
     @Override

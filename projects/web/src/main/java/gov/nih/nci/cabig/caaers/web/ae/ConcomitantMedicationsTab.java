@@ -21,9 +21,14 @@ public class ConcomitantMedicationsTab extends AeTab {
         InputField agentNameField = InputFieldFactory.createTextField("agentName",
                         "Information about concomitant medication", false);
         InputFieldAttributes.setSize(agentNameField, 50);
+        
+        InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Start date", false, false, false, false);
+        InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "End date", false, false, false, false);
+        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Continued ?");
+        
 
-        creator.createRepeatingFieldGroup("conmed", "concomitantMedications",
-                        new SimpleNumericDisplayNameCreator("Medication"), agentNameField);
+        creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), 
+        		agentNameField, startDateField, endDateField, stillTakingMedicationField);
     }
 
     @Override
