@@ -12,6 +12,8 @@
         <property name="reportRepository" ref="reportRepository"/>
     </bean>
     
+    <bean id="captureAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade" />
+    
     <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>

@@ -69,7 +69,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setTreatmentAssignmentDao(treatmentAssignmentDao);
         facade.setInteroperationService(interoperationService);
         facade.setExpeditedReportTree(new ExpeditedReportTree());
-        facade.setRoutineAdverseEventReportDao(routineReportDao);
 
         ConfigProperty configProperty = new ConfigProperty();
         Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
@@ -273,15 +272,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         verifyMocks();
     }
 
-    public void testPushRoutineAEToPsc() throws Exception {
-        int expectedId = 50;
-        RoutineAdverseEventReport report = setId(expectedId, new RoutineAdverseEventReport());
-        expect(routineReportDao.getById(50)).andReturn(report);
-        interoperationService.pushToStudyCalendar(report);
-        replayMocks();
-        assertTrue(facade.pushRoutineAdverseEventToStudyCalendar(expectedId));
-        verifyMocks();
-    }
 
     public void testPushToPscAndFail() throws Exception {
         int expectedId = 510;
@@ -295,17 +285,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         verifyMocks();
     }
 
-    public void testPushRoutineAEToPscAndFail() throws Exception {
-        int expectedId = 50;
-        RoutineAdverseEventReport report = setId(expectedId, new RoutineAdverseEventReport());
-        expect(routineReportDao.getById(50)).andReturn(report);
-        interoperationService.pushToStudyCalendar(report);
-        expectLastCall().andThrow(new CaaersSystemException("Turbo bad"));
-
-        replayMocks();
-        assertFalse(facade.pushRoutineAdverseEventToStudyCalendar(expectedId));
-        verifyMocks();
-    }
 
     public void testPushToPscAndFailWithArbitraryException() throws Exception {
         int expectedId = 510;

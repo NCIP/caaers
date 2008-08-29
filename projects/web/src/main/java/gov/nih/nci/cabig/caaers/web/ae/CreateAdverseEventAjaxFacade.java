@@ -108,39 +108,39 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventAjaxFacade {
-	public static final String CAPTURE_ADVERSE_EVENT_INPUT_COMMAND = CaptureAdverseEventController.class.getName()
-    + ".FORM.command";
+
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
-    private static Class<?>[] CONTROLLERS = {
-    	CaptureAdverseEventController.class,CreateAdverseEventController.class, EditAdverseEventController.class 
-    };
+	private static Class<?>[] CONTROLLERS = { 	EditAdverseEventController.class };
 
-    private StudyDao studyDao;
-    private ParticipantDao participantDao;
-    private CtcTermDao ctcTermDao;
-    private CtcCategoryDao ctcCategoryDao;
-    private CtcDao ctcDao;
-    private LowLevelTermDao lowLevelTermDao;
-    private ExpeditedAdverseEventReportDao aeReportDao;
-    private RoutineAdverseEventReportDao roReportDao;
-    private ResearchStaffDao researchStaffDao;
-    private AnatomicSiteDao anatomicSiteDao;
-    private InteroperationService interoperationService;
-    private PriorTherapyDao priorTherapyDao;
-    private PreExistingConditionDao preExistingConditionDao;
-    private AgentDao agentDao;
-    private TreatmentAssignmentDao treatmentAssignmentDao;
-    private ExpeditedReportTree expeditedReportTree;
-    private ConfigProperty configProperty;
-    private ReportRepository reportRepository;
-    private LabCategoryDao labCategoryDao;
-    private LabTermDao labTermDao;
-    private ChemoAgentDao chemoAgentDao;
-    private InterventionSiteDao interventionSiteDao;
-    private CtepStudyDiseaseDao ctepStudyDiseaseDao;
-    private AdverseEventReportingPeriodDao reportingPeriodDao;
-    private LabLoadDao labLoadDao;
-
+	protected StudyDao studyDao;
+	protected ParticipantDao participantDao;
+	protected CtcTermDao ctcTermDao;
+	protected CtcCategoryDao ctcCategoryDao;
+    protected CtcDao ctcDao;
+    protected LowLevelTermDao lowLevelTermDao;
+    protected ExpeditedAdverseEventReportDao aeReportDao;
+    protected ResearchStaffDao researchStaffDao;
+    protected AnatomicSiteDao anatomicSiteDao;
+    protected InteroperationService interoperationService;
+    protected PriorTherapyDao priorTherapyDao;
+    protected PreExistingConditionDao preExistingConditionDao;
+    protected AgentDao agentDao;
+    protected TreatmentAssignmentDao treatmentAssignmentDao;
+    protected ExpeditedReportTree expeditedReportTree;
+    protected ConfigProperty configProperty;
+    protected ReportRepository reportRepository;
+    protected LabCategoryDao labCategoryDao;
+    protected LabTermDao labTermDao;
+    protected ChemoAgentDao chemoAgentDao;
+    protected InterventionSiteDao interventionSiteDao;
+    protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+    protected AdverseEventReportingPeriodDao reportingPeriodDao;
+    protected LabLoadDao labLoadDao;
+    
+    public Class<?>[] controllers(){
+    	return CONTROLLERS;
+    }
+    
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
     }
@@ -581,18 +581,9 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
-        RoutineAdverseEventReport report = roReportDao.getById(aeReportId);
-        try {
-            interoperationService.pushToStudyCalendar(report);
-            return true;
-        } catch (CaaersSystemException ex) {
-            log.warn("Interoperation Service, is not working properly", ex);
-            // this happens if the interoperationService isn't correctly configured
-            return false;
-        } catch (RuntimeException re) {
-            log.error("Unexpected error in communicating with study calendar", re);
-            return false;
-        }
+    	if(true)
+    		throw new UnsupportedOperationException("No more supported");
+    	return false;
     }
 
     public String withdrawReportVersion(int aeReportId, int reportId) {
@@ -829,11 +820,11 @@ public class CreateAdverseEventAjaxFacade {
         }
     }
 
-    private String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
+    protected String renderIndexedAjaxView(String viewName, int index, Integer aeReportId) {
         return renderIndexedAjaxView(viewName, index, null, aeReportId);
     }
 
-    private String renderIndexedAjaxView(String viewName, int index, Integer parentIndex, Integer aeReportId) {
+    protected String renderIndexedAjaxView(String viewName, int index, Integer parentIndex, Integer aeReportId) {
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
         params.put("index", Integer.toString(index));
         if (parentIndex != null) params.put("parentIndex", Integer.toString(parentIndex));
@@ -842,7 +833,7 @@ public class CreateAdverseEventAjaxFacade {
     
     
    
-    private String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
+    protected String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
 
         if (aeReportId != null) params.put("aeReport", aeReportId.toString());
@@ -861,11 +852,13 @@ public class CreateAdverseEventAjaxFacade {
             throw new CaaersSystemException(e);
         }
     }
+    
 
-    private Object extractCommand() {
+
+    protected Object extractCommand() {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
-        for (Class<?> controllerClass : CONTROLLERS) {
+        for (Class<?> controllerClass : controllers()) {
             String formSessionAttributeName = controllerClass.getName() + ".FORM.command";
             command = webContext.getSession().getAttribute(formSessionAttributeName);
             if (command == null) {
@@ -916,99 +909,7 @@ public class CreateAdverseEventAjaxFacade {
     	}
     }
 
-    
-    //--------------------- functionality added for Reporting period -----------------
-
-    /**
-     * This function is called to fetch the content associated to a reporting period
-     *   -  after we create a new reporting period
-     *   -  after we select a reporting period from the combo box.
-     *   
-     *   A little bit on the working, 
-     *     - Will refresh the assignment object, (to support newly added Reporting period ordering)
-     *     - Will fetch the content associated to the reporting period by calling captureAdverseEventDetailSection.jsp
-     * @param reportingPeriodId
-     * @return
-     */
-    
-    public AjaxOutput refreshReportingPeriodAndGetDetails(int reportingPeriodId, boolean fetchOnlyDetails){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand)extractCommand();
-    	command.refreshAssignment(reportingPeriodId);
-    	
-    	List<AdverseEventReportingPeriod> rpList = ObjectTools.reduceAll(command.getAssignment().getReportingPeriods(), "id", "startDate" , "endDate", "name");
-    	AjaxOutput output = new AjaxOutput();
-    	output.setObjectContent(rpList);
-    	
-    	//get the content for the below html section. 
-    	
-    	Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	params.put("adverseEventReportingPeriod", "" + reportingPeriodId);
-    	String html = renderAjaxView("captureAdverseEventDetailSection", 0, params);
-    	output.setHtmlContent(html);
-    	return output;
-    }
-    /**
-     * Create AdverseEvent objects corresponding to the terms(listOfTermIDs).
-     *  Add the following parameters to request :- 
-     *     1. "index" - corresponds to begin (of AE).
-     *     2. "ajaxView" - 'observedAdverseEventSection'
-     *  
-     * @param listOfTermIDs
-     * @return
-     */
-    public String addObservedAE(int[] listOfTermIDs) {
-        
-        CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-        int index = command.getAdverseEvents().size();
-        
-        List<Integer> filteredTermIDs = new ArrayList<Integer>();
-        //filter off the terms that are already present
-        for(int id : listOfTermIDs){
-        	filteredTermIDs.add(id);
-        }
-        //remove from filteredTermIds, the ones that are avaliable in AE
-        for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
-        	filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
-        }
-        
-        if(filteredTermIDs.isEmpty()) return "";
-        
-        boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
-        for(int id: filteredTermIDs){
-        	AdverseEvent ae = new AdverseEvent();
-        	ae.setSolicited(false);
-        	ae.setRequiresReporting(false);
-        	
-        	if(isMeddra){
-        		//populate MedDRA term
-        		LowLevelTerm llt = lowLevelTermDao.getById(id);
-        		AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
-        		aellt.setLowLevelTerm(llt);
-        		ae.setAdverseEventMeddraLowLevelTerm(aellt);
-        		aellt.setAdverseEvent(ae);
-        	}else{
-        		//properly set CTCterm
-        		CtcTerm ctc =ctcTermDao.getById(id);
-        		AdverseEventCtcTerm aeCtc = new AdverseEventCtcTerm();
-        		aeCtc.setCtcTerm(ctc);
-        		ae.setAdverseEventCtcTerm(aeCtc);
-        		aeCtc.setAdverseEvent(ae);
-        	}
-        	
-        	ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
-        	command.getAdverseEvents().add(ae);
-        }
-        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-    	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
-    	 params.put("index", Integer.toString(index));
-        return renderAjaxView("observedAdverseEventSection", 0, params);
-    }
-    
-    public AjaxOutput deleteAdverseEvent(int index){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.getAdverseEvents().remove(index);
-    	return new AjaxOutput();
-    }
+   
     
     ////// CONFIGURATION
 
@@ -1107,10 +1008,6 @@ public class CreateAdverseEventAjaxFacade {
         this.reportRepository = reportRepository;
     }
 
-    @Required
-    public void setRoutineAdverseEventReportDao(RoutineAdverseEventReportDao roReportDao) {
-        this.roReportDao = roReportDao;
-    }
 
     @Required
     public LabCategoryDao getLabCategoryDao() {
