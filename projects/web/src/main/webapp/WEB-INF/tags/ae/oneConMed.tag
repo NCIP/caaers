@@ -8,5 +8,8 @@
 
 <ae:fieldGroupDivision fieldGroupFactoryName="conmed" index="${index}" style="${style}">
     <tags:errors path="aeReport.concomitantMedications[${index}]"/>
-    <tags:renderRow field="${fieldGroup.fields[0]}" />
+	<c:forEach items="${fieldGroup.fields}" var="field">
+	<tags:renderRow field="${field}" />
+	</c:forEach>
+    
 </ae:fieldGroupDivision>
