@@ -4,6 +4,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
@@ -53,6 +54,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected AnatomicSiteDao anatomicSiteDao;
     protected PreExistingConditionDao preExistingConditionDao;
     protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
+    protected ChemoAgentDao chemoAgentDao;
 
     public CreateParticipantController() {
     }
@@ -112,6 +114,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
         
         
 
@@ -220,5 +223,9 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public void setAbstractStudyDiseaseDao(
 			AbstractStudyDiseaseDao abstractStudyDiseaseDao) {
 		this.abstractStudyDiseaseDao = abstractStudyDiseaseDao;
+	}
+    @Required
+    public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+		this.chemoAgentDao = chemoAgentDao;
 	}
 }
