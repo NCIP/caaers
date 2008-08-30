@@ -6,8 +6,8 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
 <tags:noform>
-<c:forEach items="${indexes}" var="index">
+<c:forEach items="${indexes}" var="index" varStatus="cmIdxSt">
 	<c:set var="cMed" value="${concomitantMedications[index]}" />
-	<par:oneConcomitantMedication index="${index}" concomitantMedication="${cMed}" collapsed="${fn:length(indexes) gt 0}"/>
+	<par:oneConcomitantMedication index="${index}" concomitantMedication="${cMed}" collapsed="${cmIdxSt.index gt 0}"/>
 </c:forEach>
 </tags:noform>
