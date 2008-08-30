@@ -58,8 +58,8 @@
  	 	 		paramHash.set('currentItem', itemType);
  	 	 		paramHash.set('index', index);
  	 	 		//add extra options to the parameter list
- 	 	 		if(options.parentIndex >= 0){
- 	 	 			paramHash.set('parentIndex', options.parentIndex);
+ 	 	 		if(options){
+ 	 	 	 		if(options.parentIndex >= 0) paramHash.set('parentIndex', options.parentIndex);
  	 	 		}
  	 	 		this.populateDeafultParameters(itemType, paramHash);
  	 	 		
