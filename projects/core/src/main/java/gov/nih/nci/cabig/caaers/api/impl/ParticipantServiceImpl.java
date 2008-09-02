@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
 import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import gov.nih.nci.cabig.caaers.webservice.participant.Response;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
@@ -83,8 +84,9 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 	}
 	
 	public CaaersServiceResponse createParticipant(
-			ParticipantType xmlParticipant) {
+			Participants xmlParticipants) {
 		
+		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		
@@ -140,8 +142,9 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 	}
 
 	public CaaersServiceResponse updateParticipant(
-			ParticipantType xmlParticipant) {
+			Participants xmlParticipants) {
 		
+		ParticipantType xmlParticipant = xmlParticipants.getParticipant().get(0);
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
 		

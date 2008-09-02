@@ -18,7 +18,7 @@ public interface ParticipantService {
 	 * @param xmlParticipant
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse createParticipant(@WebParam(name="ParticipantType") gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType xmlParticipant);
+	public gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse createParticipant(@WebParam(name="Participants") gov.nih.nci.cabig.caaers.webservice.participant.Participants xmlParticipants);
 	
 	
 	
@@ -27,6 +27,6 @@ public interface ParticipantService {
 	 * @param xmlParticipant
 	 */
 	@WebMethod
-	public gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse updateParticipant(@WebParam(name="ParticipantType") gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType xmlParticipant);
+	public gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse updateParticipant(@WebParam(name="Participants") gov.nih.nci.cabig.caaers.webservice.participant.Participants xmlParticipants);
 
 }
