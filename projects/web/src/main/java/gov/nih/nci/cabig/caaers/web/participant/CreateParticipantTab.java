@@ -85,8 +85,12 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
         repeatingFieldGroupFactorySys.addField(InputFieldFactory.createSelectField("type", "Identifier Type", true, options));
 
+
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createAutocompleterField("organization", "Organization Identifier", true));
+        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("systemName", "System Name", true));
+
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
+        repeatingFieldGroupFactorySys.addField(InputFieldFactory.createCheckboxField("primaryIndicator", "Primary Indicator"));
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         if (command.getParticipant() != null) {

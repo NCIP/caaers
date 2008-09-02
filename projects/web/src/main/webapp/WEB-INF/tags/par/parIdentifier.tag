@@ -22,17 +22,32 @@
 <tr id="${sectionClass}-${listEditorIndex}" class="${sectionClass}">
 
     <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
-        <td align="center">
+        <c:set var="_align" value="center" />
+        <c:choose>
+            <c:when test="${field.categoryName == 'autocompleter'}"><c:set var="_align" value="left" /></c:when>
+        </c:choose>
+        <td align="${_align}">
             <tags:renderInputs field="${field}"/>
             <c:if test="${field.categoryName == 'autocompleter'}">
+
+                <c:set var="x">
+                    <jsp:attribute name="value"><caaers:value path="${field.propertyName}" /></jsp:attribute>
+                </c:set>
+
+                <c:if test="${not empty x}">
+                    <c:set var="initValue" scope="page">
+                        <jsp:attribute name="value"><caaers:value path="${field.propertyName}.fullName" /></jsp:attribute>
+                    </c:set>
+                </c:if>
+                
                 <script>AE.createStandardAutocompleter('${field.propertyName}', function(autocompleter, text) {
                     createParticipant.matchOrganization(text, function(values) {
-                    autocompleter.setChoices(values)
-                })
-        }, function(organization) {
-            var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
-            return organization.name + nciInstituteCode
-        }, {initialInputValue:'${initialValue}'});</script>
+                        autocompleter.setChoices(values)
+                    })
+                }, function(organization) {
+                    var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+                    return organization.name + nciInstituteCode
+        }, {initialInputValue:'${initValue}'});</script>
             </c:if>
         </td>
     </c:forEach>
