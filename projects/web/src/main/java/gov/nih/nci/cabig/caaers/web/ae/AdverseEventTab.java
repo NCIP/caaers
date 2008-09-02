@@ -152,6 +152,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         }
         return attr;
     }
+    
 	
     public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
 		return adverseEventReportingPeriodDao;

@@ -4,6 +4,7 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="field" type="gov.nih.nci.cabig.caaers.web.fields.InputField"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
@@ -11,6 +12,7 @@
 <%@attribute name="label" fragment="true" %>
 <%@attribute name="value" fragment="true" %>
 <%@attribute name="deleteParams" %>
+<caaers:renderFilter elementID="${field.propertyName}">
 <div class="row ${cssClass}" id="${field.propertyName}-row" <c:if test="${not empty style}">style="${style}"</c:if>>
     <div class="label">
         <c:choose>
@@ -29,3 +31,4 @@
         <div class="extra">${field.attributes.details}</div>
     </c:if>
 </div>
+</caaers:renderFilter>

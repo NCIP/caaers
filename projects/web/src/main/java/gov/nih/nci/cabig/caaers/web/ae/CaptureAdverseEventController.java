@@ -181,7 +181,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         }
         
         //hide for non DCP-AdEERS reporting enabled study
-        if(!command.isDCPAdeersStudy()){
+        if(!command.isDCPNonAdeersStudy()){
         	renderDecisionManager.conceal("adverseEvents[].serious");
         }else{
         	renderDecisionManager.reveal("adverseEvents[].serious");

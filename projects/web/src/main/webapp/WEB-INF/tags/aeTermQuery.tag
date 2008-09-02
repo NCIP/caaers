@@ -1,5 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@attribute name="isAjaxable" type="java.lang.Boolean" description="Should be set to true, if this tag is included in the response of an AJAX call, this ensures that the javascript objects defined here are properly enabled" %>
@@ -258,7 +259,7 @@
 	<c:if test="${not isMeddra}">
 	<div id="chooseCategory">
   	<chrome:box title="Choose CTC term(s):" autopad="true">
-		<tags:renderRow>
+		<ui:row path="dummyPath">
 			<jsp:attribute name="label">CTC category(s)</jsp:attribute>
 			<jsp:attribute name="value">
 			  <div id="categories-div-id" class="categories-div" >
@@ -269,8 +270,8 @@
 			    </select>
 			  </div>
 			</jsp:attribute>
-		</tags:renderRow>
-		<tags:renderRow>
+		</ui:row>
+		<ui:row path="dummyPath2">
 			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
 			<jsp:attribute name="value">
 				<div id="terms-div-id" class="terms-div">
@@ -279,7 +280,7 @@
 				  </select>
 				</div>
 			</jsp:attribute>
-		</tags:renderRow>
+		</ui:row>
 		<hr />
 		<div class="aeTermQuery-buttons">
 			<c:if test="${empty localButtons}">

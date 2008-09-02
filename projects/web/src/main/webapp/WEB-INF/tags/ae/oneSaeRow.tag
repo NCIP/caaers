@@ -17,13 +17,13 @@
     			  : For Solicited AE, both Verbatim and Other specify will not be there.
     			  So the Term column will have 3 fields when the term is OtherSpecify (for observed AE)  
     	--%>
-<tr class="division ae-section" id="ae-section-${index}" >
+<tr class="ae-section ${index % 2 gt 0 ? 'odd' : 'even'}" id="ae-section-${index}" >
 <c:if test="${aeTermIndex gt 0}">
 	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
 </c:if>	
 <c:if test="${isSolicitedAE}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpstatus" begin="${aeTermIndex}">
-		<td><tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : 'selectbox'}"/></td>
+		<td><tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }"/></td>
 	</c:forEach>
 </c:if>		
 		
@@ -40,8 +40,8 @@
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 2]}" cssClass="aeNotes" />
 			</div>
 		</td>
-		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }">
-		<td><tags:renderInputs field="${field}" cssClass="selectbox"/></td>
+		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
+		<td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}"/></td>
 		</c:forEach>
 	</c:if>
 	<c:if test="${not isAETermOtherSpecify}">
@@ -52,8 +52,8 @@
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeNotes" />
 			</div>
 		</td>
-		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 2}">
-		<td><tags:renderInputs field="${field}" cssClass="selectbox"/></td>
+		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 2}" varStatus="lpIdx">
+		<td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}"/></td>
 		</c:forEach>
 	</c:if>
 	<c:if test="${not hideDeleteCtrl}">

@@ -19,6 +19,11 @@
 	width:170px;
 	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
 }
+.shortselectbox
+{	
+	width:80px;
+	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
+}
 .divNotes,.divOtherMeddra{
 	font-size:8pt;
 	 border-color:#6E81A6;
@@ -37,6 +42,9 @@ div.row div.value {
 /* division where reporting period combo box is shown */
 .reportingPeriodSelector{
 
+}
+.ae-section{
+	padding-top: 5px;
 }
 
 </style>
