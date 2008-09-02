@@ -205,11 +205,13 @@ public class AdverseEventReportSerializer {
 	    		aer.addOtherCause(getOtherCause(oc));
 	    	}
 	    	
+	    	/*
+			BJ:FIXME
 	    	List<Outcome> outcomes = hibernateAdverseEventReport.getOutcomes();
 	    	
 	    	for (Outcome oc: outcomes) {
 	    		aer.addOutcomes(getOutcome(oc));
-	    	}
+	    	}*/
 
 
 	    	return aer;
@@ -239,10 +241,12 @@ public class AdverseEventReportSerializer {
 	   
 	   private Outcome getOutcome(Outcome outcome) throws Exception {
 		   Outcome o = new Outcome();
-		   o.setId(outcome.getId());
+		 /* 
+		  * BJ : FIXME
+		  * o.setId(outcome.getId());
 		   o.setOther(outcome.getOther());
 		   o.setOutcomeType(outcome.getOutcomeType());
-		   o.setDate(outcome.getDate());
+		   o.setDate(outcome.getDate());*/
 		   
 		   return o;
 	   }

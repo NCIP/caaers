@@ -57,8 +57,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 
     private Hospitalization hospitalization;
 
-    private Boolean expected; // false assignment removed cause that is not default for Routine
-                                // AEs
+    private Boolean expected; // false assignment removed cause that is not default for RoutineAEs
 
     private Attribution attributionSummary;
 
@@ -88,11 +87,13 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 
     private List<DeviceAttribution> deviceAttributions;
     
+    private List<Outcome> outcomes;
+    
     private AdverseEventReportingPeriod reportingPeriod;
     
     private Boolean solicited;
     
-    private Boolean serious;
+    private OutcomeType serious;
     
     private Boolean requiresReporting;
     
@@ -104,7 +105,11 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     
     public AdverseEvent(){
     	solicited = false;
-    	serious = false;
+    }
+    
+    ///LOGIC
+    public void addOutcome(Outcome o){
+    	this.getOutcomes().add(o);
     }
 
     // //// BOUND PROPERTIES
@@ -500,6 +505,15 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     	this.displayExpected = displayExpected;
     }
     
+    @Transient
+    public String getDisplaySerious(){
+    	if(serious != null) return serious.getDisplayName();
+    	return "";
+    }
+    public void setDisplaySerious(String igonre){
+    	
+    }
+    
     public void setSolicited(Boolean solicited) {
 		this.solicited = solicited;
 	}
@@ -516,13 +530,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 		this.requiresReporting = requiresReporting;
 	}
     
-    public void setSerious(Boolean serious){
-    	this.serious = serious;
-    }
     
-    public Boolean getSerious(){
-    	return serious;
-    }
     
     @Embedded
     @AttributeOverrides( {
@@ -546,7 +554,27 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 	public void setEventLocation(String eventLocation) {
 		this.eventLocation = eventLocation;
 	}
+
+    //  This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name = "adverse_event_id")
+    @IndexColumn(name = "list_index")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    public List<Outcome> getOutcomes() {
+    	if(outcomes == null) outcomes = new ArrayList<Outcome>();
+		return outcomes;
+	}
+    public void setOutcomes(List<Outcome> outcomes) {
+		this.outcomes = outcomes;
+	}
     
+    @Transient
+    public OutcomeType getSerious() {
+		return serious;
+	}
     
-    
+    public void setSerious(OutcomeType serious) {
+		this.serious = serious;
+	}
 }

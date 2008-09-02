@@ -5,35 +5,33 @@ import static gov.nih.nci.cabig.ctms.domain.CodedEnumHelper.register;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 /**
- * This enumeration represents the Therapies.
+ * This enumeration represents the outcomes which are possible for seriousness indicator.
  * 
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 public enum OutcomeType implements CodedEnum<Integer> {
-    DEATH(1, "Death"), LIFE_THREATENING(2, "Life-threatening"), HOSPITALIZATION(3,
-                    "Hospitalization - initial or prolonged"), DISABILITY(4,
-                    "Disability or Permanent Damage"), CONGENITAL_ANOMALY(5,
-                    "Congenital Anomaly/Birth Defect"), OTHER_SERIOUS(6,
-                    "Other Serious (Important Medical Events)"), REQUIRED_INTERVENTION(7,
-                    "Required Intervention to Prevent Permanent Impairment/Damage (Devices)");
+	DEATH(1, "Death"), 
+	LIFE_THREATENING(2, "Life-threatening"), 
+	HOSPITALIZATION(3,"Hospitalization - initial or prolonged"), 
+	DISABILITY(4,"Disability or Permanent Damage"), 
+	CONGENITAL_ANOMALY(5,"Congenital Anomaly/Birth Defect"), 
+	OTHER_SERIOUS(6,"Other Serious (Important Medical Events)"), 
+	REQUIRED_INTERVENTION(7,"Required Intervention to Prevent Permanent Impairment/Damage (Devices)");
 
-    private String studyTherapyType;
+    private String displayName;
 
     private int code;
 
-    private OutcomeType(final int code, final String studyTherapyType) {
+    private OutcomeType(final int code, final String displayName) {
         this.code = code;
-        this.studyTherapyType = studyTherapyType;
+        this.displayName= displayName;
         register(this);
 
     }
 
-    public String getStudyTherapyType() {
-        return studyTherapyType;
-    }
-
     public String getDisplayName() {
-        return studyTherapyType;
+        return displayName;
     }
 
     public String getName() {
@@ -41,7 +39,7 @@ public enum OutcomeType implements CodedEnum<Integer> {
     }
 
     public Integer getCode() {
-        return code;
+    	return code;
     }
 
     public static OutcomeType getByCode(final int code) {

@@ -28,6 +28,12 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
     private DateValue endDate;
     
     private Boolean stillTakingMedications;
+    
+    public ConcomitantMedication() {
+		startDate = new DateValue();
+		endDate = new DateValue();
+		stillTakingMedications = false;
+	}
 
     // //// LOGIC
 

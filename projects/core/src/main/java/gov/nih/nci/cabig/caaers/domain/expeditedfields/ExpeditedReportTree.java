@@ -220,9 +220,10 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(CONCOMITANT_MEDICATION_SECTION, 
                         		list("concomitantMedications","Medication",
                                         property("agentName", "Medication"),
+                                        property("stillTakingMedications","Continued ?"),
                                         property("startDate","Start date"),
-                                        property("endDate","End date"),
-                                        property("stillTakingMedications","Continued ?")
+                                        property("endDate","End date")
+                                       
                                 )
                         ),
                                         

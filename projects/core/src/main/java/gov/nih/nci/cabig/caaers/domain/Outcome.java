@@ -22,7 +22,7 @@ import java.util.Date;
 @Entity
 @Table(name = "outcomes")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_outcome_id") })
-public class Outcome extends AbstractExpeditedReportCollectionElementChild {
+public class Outcome extends AbstractMutableDomainObject {
 
     private OutcomeType outcomeType;
 

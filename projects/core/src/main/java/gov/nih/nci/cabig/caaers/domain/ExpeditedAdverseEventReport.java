@@ -82,7 +82,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         addReportChildLazyList(OtherCause.class);
         addReportChildLazyList(SAEReportPriorTherapy.class);
         addReportChildLazyList(SAEReportPreExistingCondition.class);
-        addReportChildLazyList(Outcome.class);
     }
 
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
@@ -316,16 +315,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         return lazyListHelper.getLazyList(SAEReportPriorTherapy.class);
     }
     
-    public void addOutcomes(Outcome outcome) {
-        getOutcomesInternal().add(outcome);
-        if (outcome != null) outcome.setReport(this);
-    }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
-    @Transient
-    public List<Outcome> getOutcomes() {
-        return lazyListHelper.getLazyList(Outcome.class);
-    }
 
     public void addOtherCause(OtherCause otherCause) {
         getOtherCausesInternal().add(otherCause);
@@ -482,20 +472,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         lazyListHelper.setInternalList(SAEReportPriorTherapy.class, saeReportPriorTherapiesInternal);
     }
 
-    //  This is annotated this way so that the IndexColumn will work with
-    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
-    @OneToMany
-    @JoinColumn(name = "report_id", nullable = false)
-    @IndexColumn(name = "list_index")
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    public List<Outcome> getOutcomesInternal() {
-        return lazyListHelper.getInternalList(Outcome.class);
-    }
-
-    public void setOutcomesInternal(
-            List<Outcome> outcomesInternal) {
-        lazyListHelper.setInternalList(Outcome.class, outcomesInternal);
-    }
+   
 
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
