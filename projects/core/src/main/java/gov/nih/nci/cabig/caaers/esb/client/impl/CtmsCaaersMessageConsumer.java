@@ -7,8 +7,8 @@ import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
 import gov.nih.nci.cabig.caaers.webservice.Studies;
-import gov.nih.nci.cabig.caaers.webservice.Study;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
+import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
 
 import java.io.StringReader;
@@ -268,12 +268,13 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			
-			participantElement = (JAXBElement<ParticipantType>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
-			ParticipantType xmlParticipant = participantElement.getValue();
+			//participantElement = (JAXBElement<ParticipantType>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
+			Participants participants = (Participants)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
+			//ParticipantType xmlParticipant = participantElement.getValue();
 			if("CREATE_PARTICIPANT".equals(messageType)){
-				participantServiceResponse = participantService.createParticipant(xmlParticipant);
+				participantServiceResponse = participantService.createParticipant(participants);
 			}else if("UPDATE_PARTICIPANT".equals(messageType)){
-				participantServiceResponse = participantService.updateParticipant(xmlParticipant);
+				participantServiceResponse = participantService.updateParticipant(participants);
 			}
 			responseXml = responseAsString(participantServiceResponse,marshaller);
 		} catch (JAXBException e) {
