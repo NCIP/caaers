@@ -78,9 +78,9 @@
 	<AE_REPORTS id="-1" reporting_period_id="-15"
 		created_at="2004-09-04 13:15:30" />
 	<ADVERSE_EVENTS id="-11" report_id="-1"
-		reporting_period_id="-15" list_index="1" />
+		reporting_period_id="-15" list_index="1"  event_time_hour="10" event_time_minute="10" event_time_zone="0" event_location="office"/>
 	<ADVERSE_EVENTS id="-70" report_id="-1"
-		reporting_period_id="-15" list_index="0" />
+		reporting_period_id="-15" list_index="0" event_time_zone="0" event_location="home"/>
 	<AE_TERMS id="-11" adverse_event_id="-70" term_id="3007"
 		term_type="ctep" />
 	<AE_TERMS id="-12" adverse_event_id="-11" term_id="3007"
@@ -102,9 +102,9 @@
 	<ADDITIONAL_INFORMATION id="-100" report_id="-1"
 		other_information="Hello" />
 	<CONCOMITANT_MEDICATIONS id="-30" list_index="1"
-		report_id="-1" />
+		report_id="-1" start_date_day="10" start_date_month="10" start_date_year="2002" start_date_zone="0" end_date_day="10" end_month="10" end_year="2004" end_date_zone="0"/>
 	<CONCOMITANT_MEDICATIONS id="-31" list_index="0"
-		report_id="-1" agent_name="agent_name1" />
+		report_id="-1" agent_name="agent_name1" start_date_month="11" start_date_year="2003" start_date_zone="0" end_date_zone="0"/>
 	<OTHER_CAUSES id="-82" report_id="-1" list_index="2"
 		cause_text="Tire fire" />
 	<OTHER_CAUSES id="-81" report_id="-1" list_index="0"
@@ -113,23 +113,23 @@
 		cause_text="Crossed against light" />
 	<AE_REPORT_DESCRIPTIONS id="-10" report_id="-1"
 		present_status_code="3" event_description="It was real bad" retreated="0"
-		recovery_date="2012-03-04" />
+		recovery_date="2012-03-04" reduced_dose="43" reduced_date="2012-03-04" days_not_given="2" cause_of_death="Bleeding" />
 	<AE_REPORT_PEOPLE id="-100" report_id="-1" role="R"
-		first_name="Joe" last_name="DiMaggio" />
+		first_name="Joe" last_name="DiMaggio" title="Mr"  street="160 Laurelway" city="Herndon" state="VA" zip="20170"/>
 	<AE_REPORT_PEOPLE id="-101" report_id="-1" role="P"
-		first_name="Horatio" last_name="Sandpiper" />
+		first_name="Horatio" last_name="Sandpiper" title="Mrs"  street="160 Laurelway" city="Herndon" state="VA" zip="20170"/>
 	<TREATMENTS id="-10" report_id="-1" first_course_date="2005-06-04"
 		adverse_event_course_date="2006-07-09" adverse_event_course_number="8"
-		treatment_assignment_id="-10" />
+		treatment_assignment_id="-10" primary_treatment="some primary treatment" treatment_time_hour="11" treatment_time_minute="11" treatment_time_zone="0"/>
 	<COURSE_AGENTS id="-20" treatment_id="-10" list_index="1"
 		administration_delay_minutes="240" dose_amount="17.4" dose_units="mg"
 		dose_route="aural" modified_dose_amount="10" modified_dose_units="mg"
 		modified_dose_route="aural" total_dose_this_course="7"
 		duration_and_schedule="8 times every third hour"
-		last_administered_date="2006-07-10" />
+		last_administered_date="2006-07-10" lot_number="56ABC" formulation="my formulation"/>
 	<COURSE_AGENTS id="-19" treatment_id="-10" list_index="0"
 		dose_amount=".33" dose_units="kg" dose_route="oral"
-		total_dose_this_course=".84" duration_and_schedule="daily" />
+		total_dose_this_course=".84" duration_and_schedule="daily" formulation="dummy formulation" />
 	<DISEASE_HISTORIES id="-53" report_id="-1"
 		coded_primary_disease_site_id="-1" study_disease_id="-4"
 		diagnosis_year="2007" diagnosis_month="01" diagnosis_day="04" />
