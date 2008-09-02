@@ -16,7 +16,7 @@
 <%@attribute name="initialValue" %>
 <%@attribute name="mainGroupName" required="true" %>
 <%@attribute name="containerName" required="true" %>
-<%@attribute name="action" required="true" %>
+<%@attribute name="removeAction" required="true" %>
 
 <%--
     containerName: refreshing the <containerName> element when an item is deleted from the <items>, on remove action
@@ -61,7 +61,7 @@
     
     <c:if test="${not disableDelete}">
         <td align="right">
-            <a href="javascript:${action}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
+            <a href="javascript:${removeAction}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
         </td>
     </c:if>
     <c:if test="${disableDelete}">

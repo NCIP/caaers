@@ -12,6 +12,6 @@
     identifier="${command.participant.systemAssignedIdentifiers[status.index]}"
     mainGroupName="mainSys"
     containerName="addSystemIdentifierDiv"
-    action="removeSystemIdentifier"/>
+    removeAction="removeSystemIdentifier"/>
 </c:forEach>
 </tags:noform>

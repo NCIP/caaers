@@ -1,8 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -14,9 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.validation.Errors;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.web.servlet.ModelAndView;
 
 public class CreateParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
@@ -162,4 +162,82 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
         this.configurationProperty = configurationProperty;
     }
+
+    public ModelAndView addOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
+
+        // store the new index for the new Identifier
+        int size = list.size();
+        Integer[] indexes = new Integer[]{size};
+        modelAndView.getModel().put("indexes", indexes);
+
+        // store the new Identifier object into the command.participant
+        OrganizationAssignedIdentifier newIdentifier = new OrganizationAssignedIdentifier();
+        command.getParticipant().addIdentifier(newIdentifier);
+
+        return modelAndView;
+    }
+
+    public ModelAndView removeOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
+        list.remove(list.get(command.getIndex()));
+
+        // update the array of remainning indexes after deleting
+        int size = list.size();
+        Integer[] indexes = new Integer[size];
+        for(int i = 0 ; i < size ; i++){
+            indexes[i] = i;
+        }
+
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
+    public ModelAndView addSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
+
+        // store the new index for the new Identifier
+        int size = list.size();
+        Integer[] indexes = new Integer[]{size};
+        modelAndView.getModel().put("indexes", indexes);
+
+        // store the new Identifier object into the command.participant
+        SystemAssignedIdentifier newIdentifier = new SystemAssignedIdentifier();
+        command.getParticipant().addIdentifier(newIdentifier);
+
+        return modelAndView;
+    }
+
+    public ModelAndView removeSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
+        list.remove(list.get(command.getIndex()));
+
+        // update the array of remainning indexes after deleting
+        int size = list.size();
+        Integer[] indexes = new Integer[size];
+        for(int i = 0 ; i < size ; i++){
+            indexes[i] = i;
+        }
+
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
+    
 }

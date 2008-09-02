@@ -13,7 +13,7 @@
 function populateParameters(methodName, viewName) {
 
     var paramHash = new Hash();
-    
+
     paramHash.set('_asynchronous', true);
     paramHash.set('_asyncMethodName', methodName);
     paramHash.set('_asyncViewName', viewName);
@@ -194,7 +194,7 @@ ${command.organization}
                     identifier="${command.participant.organizationIdentifiers[status.index]}"
                     mainGroupName="mainOrg"
                     containerName="addOrganizationIdentifierDiv"
-                    action="removeOrganizationIdentifier"/>
+                    removeAction="removeOrganizationIdentifier"/>
     </c:forEach>
     </tbody>
 
@@ -221,7 +221,7 @@ ${command.organization}
                 identifier="${command.participant.systemAssignedIdentifiers[status.index]}"
                 mainGroupName="mainSys"
                 containerName="addSystemIdentifierDiv"
-                action="removeSystemIdentifier"/>
+                removeAction="removeSystemIdentifier"/>
     </c:forEach>
     <tbody>
 </table>

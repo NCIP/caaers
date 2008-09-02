@@ -12,7 +12,7 @@
     identifier="${command.participant.organizationIdentifiers[status.index]}"
     mainGroupName="mainOrg"
     containerName="addOrganizationIdentifierDiv"
-    action="removeOrganizationIdentifier"/>
+    removeAction="removeOrganizationIdentifier"/>
     
 </c:forEach>
 </tags:noform>
