@@ -241,12 +241,11 @@ public class AdverseEventReportSerializer {
 	   
 	   private Outcome getOutcome(Outcome outcome) throws Exception {
 		   Outcome o = new Outcome();
-		 /* 
-		  * BJ : FIXME
-		  * o.setId(outcome.getId());
+		   
+		   o.setId(outcome.getId());
 		   o.setOther(outcome.getOther());
 		   o.setOutcomeType(outcome.getOutcomeType());
-		   o.setDate(outcome.getDate());*/
+		   o.setDate(outcome.getDate());
 		   
 		   return o;
 	   }
@@ -297,6 +296,9 @@ public class AdverseEventReportSerializer {
 	   private ConcomitantMedication getConcomitantMedication (ConcomitantMedication concomitantMedication) throws Exception {
 		   ConcomitantMedication c = new ConcomitantMedication();
 		   c.setAgentName(concomitantMedication.getAgentName());
+		   c.setStartDate(concomitantMedication.getStartDate());
+		   c.setEndDate(concomitantMedication.getEndDate());
+		   c.setStillTakingMedications(concomitantMedication.getStillTakingMedications());
 		   return c;
 		   
 	   }
@@ -366,6 +368,8 @@ public class AdverseEventReportSerializer {
 	    	try {
 		    	reporter.setFirstName(rptr.getFirstName());
 		    	reporter.setLastName(rptr.getLastName());
+		    	reporter.setTitle(rptr.getTitle());
+		    	reporter.setAddress(rptr.getAddress());
 		    	reporter.setContactMechanisms(rptr.getContactMechanisms());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getReporter() "+e.getMessage() , e);
@@ -380,6 +384,8 @@ public class AdverseEventReportSerializer {
 	    	try {
 	    		physician.setFirstName(psn.getFirstName());
 	    		physician.setLastName(psn.getLastName());
+	    		physician.setTitle(psn.getTitle());
+	    		physician.setAddress(psn.getAddress());
 	    		physician.setContactMechanisms(psn.getContactMechanisms());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getPhysician() "+e.getMessage() , e);
@@ -418,6 +424,8 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setDaysNotGiven(aerd.getDaysNotGiven());
 		    	adverseEventResponseDescription.setEventAbate(aerd.getEventAbate());
 		    	adverseEventResponseDescription.setEventReappear(aerd.getEventReappear());
+		    	adverseEventResponseDescription.setAutopsyPerformed(aerd.getAutopsyPerformed());
+		    	adverseEventResponseDescription.setCauseOfDeath(aerd.getCauseOfDeath());
 		    	
 		    	
 	    	} catch (Exception e) {
@@ -610,7 +618,14 @@ public class AdverseEventReportSerializer {
 		    	} else {
 		    		adverseEvent.setGridId("PRN"+ae.getGridId());
 		    	}
+		    	adverseEvent.setEventApproximateTime(ae.getEventApproximateTime());
+		    	adverseEvent.setEventLocation(ae.getEventLocation());
+
+		    	List<Outcome> outcomes = ae.getOutcomes();
 		    	
+		    	for (Outcome oc: outcomes) {
+		    		adverseEvent.addOutcome(getOutcome(oc));
+		    	}
 		    	
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getAdverseEvent() "+e.getMessage() , e);
@@ -678,6 +693,9 @@ public class AdverseEventReportSerializer {
 		
 		    		treatmentInformation.addCourseAgent(ca1);
 		    	}
+		    	
+		    	treatmentInformation.setPrimaryTreatment(trtInf.getPrimaryTreatment());
+		    	treatmentInformation.setPrimaryTreatmentApproximateTime(trtInf.getPrimaryTreatmentApproximateTime());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getTreatmentInformation() "+e.getMessage() , e);
 	    	}
