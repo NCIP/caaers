@@ -93,11 +93,12 @@
     <field name="additionalInformation" type="gov.nih.nci.cabig.caaers.domain.AdditionalInformation">
       <bind-xml name="AdditionalInformation"/>
     </field>
+    <!--
     <field name="outcomes"
       type="gov.nih.nci.cabig.caaers.domain.Outcome" collection="arraylist">
       <bind-xml name="Outcome"/>
     </field>    
-    
+    -->
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Outcome">
@@ -239,8 +240,15 @@
     </field>
     <field name="eventReappear" type="boolean">
       <bind-xml name="eventReappear" node="element"/>
-    </field>   
-     
+    </field>  
+    
+    <field name="autopsyPerformed" type="boolean">
+      <bind-xml name="autopsyPerformed" node="element"/>
+    </field> 
+    <field name="causeOfDeath" type="string">
+      <bind-xml name="causeOfDeath" node="element"/>
+    </field> 
+         
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus" verify-constructable="false">
@@ -364,7 +372,21 @@
   </class>  
 -->
 
-
+  <class name="gov.nih.nci.cabig.caaers.domain.Address">
+    <map-to xml="Address"/>
+    <field name="city" type="string">
+      <bind-xml name="city" node="element"/>
+    </field>
+    <field name="state" type="string">
+      <bind-xml name="state" node="element"/>
+    </field>
+    <field name="street" type="string">
+      <bind-xml name="street" node="element"/>
+    </field>  
+    <field name="zip" type="integer">
+      <bind-xml name="zip" node="element"/>
+    </field>       
+  </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.PersonContact">
     <map-to xml="PersonContact"/>
@@ -378,6 +400,12 @@
     <field name="lastName" type="string">
       <bind-xml name="lastName" node="element"/>
     </field>
+    <field name="title" type="string">
+      <bind-xml name="title" node="element"/>
+    </field>    
+    <field name="address" type="gov.nih.nci.cabig.caaers.domain.Address">
+      <bind-xml name="address"/>
+    </field> 
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention">
@@ -552,6 +580,15 @@
     <field name="name" type="string">
       <bind-xml name="name" node="element"/>
     </field>
+    <field name="startDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="startDate"/>
+    </field>
+    <field name="endDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
+      <bind-xml name="endDate"/>
+    </field>
+    <field name="stillTakingMedications" type="boolean">
+      <bind-xml name="stillTakingMedications" node="element"/>
+    </field>            
     <!--  
     <field name="other" type="string">
       <bind-xml name="other" node="element" />
@@ -736,6 +773,19 @@
     <field name="hospitalization" type="gov.nih.nci.cabig.caaers.domain.Hospitalization">
       <bind-xml name="hospitalization"/>
     </field>
+    
+    <field name="eventApproximateTime" type="gov.nih.nci.cabig.caaers.domain.TimeValue">
+      <bind-xml name="eventApproximateTime"/>
+    </field>
+    <field name="eventLocation" type="string">
+      <bind-xml name="eventLocation" node="element"/>
+    </field>
+ 
+    <field name="outcomes"
+      type="gov.nih.nci.cabig.caaers.domain.Outcome" collection="arraylist">
+      <bind-xml name="Outcome"/>
+    </field> 
+       
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
@@ -925,6 +975,13 @@
       collection="arraylist">
       <bind-xml name="CourseAgent"/>
     </field>
+    
+    <field name="primaryTreatment" type="string">
+      <bind-xml name="primaryTreatment" node="element"/>
+    </field>
+    <field name="primaryTreatmentApproximateTime" type="gov.nih.nci.cabig.caaers.domain.TimeValue">
+      <bind-xml name="primaryTreatmentApproximateTime"/>
+    </field>        
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment">
@@ -1178,17 +1235,6 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.DateValue">
     <map-to xml="DateValue"/>
-	<!--
-    <field name="day" type="integer">
-      <bind-xml name="day" node="element"/>
-    </field>
-    <field name="month" type="integer">
-      <bind-xml name="month" node="element"/>
-    </field>
-    <field name="year" type="integer">
-      <bind-xml name="year" node="element"/>
-    </field> 
-    -->
     <field name="dayString" type="string">
       <bind-xml name="dayString" node="element"/>
     </field>
@@ -1197,10 +1243,19 @@
     </field>
     <field name="yearString" type="string">
       <bind-xml name="yearString" node="element"/>
-    </field>     
-       
+    </field>          
   </class>
-  
+
+  <class name="gov.nih.nci.cabig.caaers.domain.TimeValue">
+    <map-to xml="TimeValue"/>
+    <field name="hour" type="integer">
+      <bind-xml name="hour" node="element"/>
+    </field>
+    <field name="minute" type="integer">
+      <bind-xml name="minute" node="element"/>
+    </field>          
+  </class>
+    
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
     <map-to xml="StudySite"/>
     <field name="id" type="integer">
