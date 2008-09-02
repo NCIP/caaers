@@ -67,6 +67,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     
 	public SubjectMedHistoryTab() {
         super("Subject Medical History", "Subject Medical History", "par/par_subject_med_history");
+        
         methodNameMap.put("add" + METASTATIC_DISEASE_SITE, "addMetastaticDiseaseSite");
         methodNameMap.put("remove" + METASTATIC_DISEASE_SITE, "removeMetastaticDiseaseSite");
         

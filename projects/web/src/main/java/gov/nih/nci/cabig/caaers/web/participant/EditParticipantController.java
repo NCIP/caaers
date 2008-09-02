@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,25 +99,11 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         return modelAndView;
     }
 
-/*
     @Override
-    protected boolean shouldSave(final HttpServletRequest request,
-                    final NewParticipantCommand command, final Tab<NewParticipantCommand> tab) {
-        // supress for ajax and delete requests
-        Object isAjax = findInRequest(request, "_isAjax");
-        if (isAjax != null) {
-            return false;
-        }
-
-        String action = (String) super.findInRequest(request, "_action");
-        if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
-            return false;
-        }
-        return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont save if it
-                                                                                // is overview page
-
+    protected boolean shouldSave(HttpServletRequest request, T command, Tab<T> tTab) {
+        if (isAjaxRequest(request)) return false;
+        return super.shouldSave(request, command, tTab);
     }
-*/
 
     @Override
     @SuppressWarnings("unchecked")

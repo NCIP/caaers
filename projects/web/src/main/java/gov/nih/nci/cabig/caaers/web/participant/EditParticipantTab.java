@@ -12,12 +12,10 @@ import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.springframework.validation.Errors;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Iterator;
+import java.util.*;
 
 public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
@@ -185,9 +183,81 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         this.configurationProperty = configurationProperty;
     }
 
-    public void addOrganizationIdentifier() {
-        // ToDo
-        // add a new element in the command list of participant identifiers.
-        System.out.println("AJAX::addOrganizationIdentifier");
+    public ModelAndView addOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
+
+        // store the new index for the new Identifier
+        int size = list.size();
+        Integer[] indexes = new Integer[]{size};
+        modelAndView.getModel().put("indexes", indexes);
+
+        // store the new Identifier object into the command.participant
+        OrganizationAssignedIdentifier newIdentifier = new OrganizationAssignedIdentifier();
+        command.getParticipant().addIdentifier(newIdentifier);
+        
+        return modelAndView;
     }
+
+    public ModelAndView removeOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
+        list.remove(list.get(command.getIndex()));
+
+        // update the array of remainning indexes after deleting
+        int size = list.size();
+        Integer[] indexes = new Integer[size];
+        for(int i = 0 ; i < size ; i++){
+            indexes[i] = i;
+        }
+
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
+    public ModelAndView addSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
+
+        // store the new index for the new Identifier
+        int size = list.size();
+        Integer[] indexes = new Integer[]{size};
+        modelAndView.getModel().put("indexes", indexes);
+
+        // store the new Identifier object into the command.participant
+        SystemAssignedIdentifier newIdentifier = new SystemAssignedIdentifier();
+        command.getParticipant().addIdentifier(newIdentifier);
+
+        return modelAndView;
+    }
+
+    public ModelAndView removeSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        Map<String, Boolean> map = new HashMap<String, Boolean>();
+        ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
+
+        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
+        list.remove(list.get(command.getIndex()));
+
+        // update the array of remainning indexes after deleting
+        int size = list.size();
+        Integer[] indexes = new Integer[size];
+        for(int i = 0 ; i < size ; i++){
+            indexes[i] = i;
+        }
+
+        modelAndView.getModel().put("indexes", indexes);
+        return modelAndView;
+    }
+
+    
 }

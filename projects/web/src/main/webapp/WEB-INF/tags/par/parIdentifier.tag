@@ -15,6 +15,13 @@
 <%@attribute name="disableDelete" type="java.lang.Boolean" %>
 <%@attribute name="initialValue" %>
 <%@attribute name="mainGroupName" required="true" %>
+<%@attribute name="containerName" required="true" %>
+<%@attribute name="action" required="true" %>
+
+<%--
+    containerName: refreshing the <containerName> element when an item is deleted from the <items>, on remove action
+    action: the fired action when the user clicks the DELETE button
+--%>
 
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
 <c:set var="mainGroup">${mainGroupName}${index}</c:set>
@@ -54,8 +61,7 @@
     
     <c:if test="${not disableDelete}">
         <td align="right">
-            <c:set var="_action" value="${deleteParams}, '${sectionClass}-${index}', '${cssClass}'" />
-            <a href="javascript:fireAction(<c:out value="${_action}" />);"><img src="/caaers/images/checkno.gif" border="0" alt="delete" ></a>
+            <a href="javascript:${action}('${containerName}', '<c:out value="${index}" />');"><img src="<c:url value="/images/checkno.gif" />" border="0" alt="delete" ></a>
         </td>
     </c:if>
     <c:if test="${disableDelete}">

@@ -7,41 +7,86 @@
 <body>
 
 <script language="JavaScript">
-// ToDo adding code to replace the next methods, generating the necessary AJAX call, with correct parameters.  
+
 //---------------------------------------------------------------------------------------------------------------------
 
-function onAddOrganizationIdentifier() {
-    // alert("onAjaxStudySearch");
+function populateParameters(methodName, viewName) {
+
+    var paramHash = new Hash();
+    
+    paramHash.set('_asynchronous', true);
+    paramHash.set('_asyncMethodName', methodName);
+    paramHash.set('_asyncViewName', viewName);
+
+    return paramHash;
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 
-function addOrganizationIdentifier(searchText, searchType) {
-<tags:tabMethod
-       method="addOrganizationIdentifier"
-       viewName="par/ajax/par_addOrganizationIdentifier"
-       onComplete="onAddOrganizationIdentifier"
-       divElement="'addOrganizationIdentifierElement'"
-       formName="'dummyForm'"
-       params="" />
+function onAddOrganizationIdentifier() {
+//    alert("onAjaxStudySearch");
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+
+function addOrganizationIdentifier(container) {
+    var paramHash = populateParameters("addOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
+    var url = $('command').action + "&subview"
+
+    new Ajax.Updater(container, url, {
+        parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.After, evalScripts : true
+    });
+}
+
+function onRemoveOrganizationIdentifier() {
+//    alert("onAjaxStudySearch");
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+
+function removeOrganizationIdentifier(container, index) {
+    var paramHash = populateParameters("removeOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
+    paramHash.set("index", index);
+    var url = $('command').action + "&subview"
+
+    new Ajax.Updater(container, url, {
+        parameters: paramHash.toQueryString(), onComplete: onRemoveOrganizationIdentifier, evalScripts : true
+    });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 
 function onAddSystemIdentifier() {
-    // alert("onAjaxStudySearch");
+//    alert("onAjaxStudySearch");
 }
 
 //---------------------------------------------------------------------------------------------------------------------
 
-function addSystemIdentifier(searchText, searchType) {
-<tags:tabMethod
-       method="addSystemIdentifier"
-       viewName="par/ajax/par_addOrganizationIdentifier"
-       onComplete="onAddSystemIdentifier"
-       divElement="'addSystemIdentifierElement'"
-       formName="'editParticipantForm'"
-       params="" />
+function addSystemIdentifier(container) {
+    var paramHash = populateParameters("addSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
+    var url = $('command').action + "&subview"
+
+    new Ajax.Updater(container, url, {
+        parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.After, evalScripts : true
+    });
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+
+function onRemoveSystemIdentifier() {
+//    alert("onAjaxStudySearch");
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+
+function removeSystemIdentifier(container, index) {
+    var paramHash = populateParameters("removeSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
+    paramHash.set("index", index);
+    var url = $('command').action + "&subview"
+
+    new Ajax.Updater(container, url, {
+        parameters: paramHash.toQueryString(), onComplete: onRemoveSystemIdentifier, evalScripts : true
+    });
 }
 
 //---------------------------------------------------------------------------------------------------------------------
@@ -138,6 +183,7 @@ ${command.organization}
         <th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     </tr>
 
+    <tbody id="addOrganizationIdentifierDiv">
     <c:forEach items="${command.participant.organizationIdentifiers}" varStatus="status" var="idt">
             <par:parIdentifier
                     title="Subject Identifier ${status.index + 1}"
@@ -146,11 +192,14 @@ ${command.organization}
                     removeButtonAction="removeIdentifier"
                     index="${status.index}"
                     identifier="${command.participant.organizationIdentifiers[status.index]}"
-                    mainGroupName="mainOrg" />
+                    mainGroupName="mainOrg"
+                    containerName="addOrganizationIdentifierDiv"
+                    action="removeOrganizationIdentifier"/>
     </c:forEach>
+    </tbody>
 
-    </table>
-    </chrome:division>
+</table>
+</chrome:division>
 
 <chrome:division title="Subject ID Assigned by a System">
 <table id="test1" class="tablecontent" >
@@ -161,6 +210,7 @@ ${command.organization}
         <th  class="tableHeader"><tags:requiredIndicator />Primary indicator</th>
     </tr>
 
+    <tbody id="addSystemIdentifierDiv">
     <c:forEach items="${command.participant.systemAssignedIdentifiers}" varStatus="status" >
         <par:parIdentifier
                 title="Subject Identifier ${status.index + 1}"
@@ -169,19 +219,19 @@ ${command.organization}
                 removeButtonAction="removeIdentifier"
                 index="${status.index}"
                 identifier="${command.participant.systemAssignedIdentifiers[status.index]}"
-                mainGroupName="mainSys" />
-            </c:forEach>
-    <tr>
-        <div id="addOrganizationIdentifierElement" />
-    </tr>
+                mainGroupName="mainSys"
+                containerName="addSystemIdentifierDiv"
+                action="removeSystemIdentifier"/>
+    </c:forEach>
+    <tbody>
 </table>
 </chrome:division>
          
 </jsp:attribute>
 
 <jsp:attribute name="localButtons">
-    <input type=button value="Add System Identifier" id="system-button" onclick="addSystemIdentifier()">
-    <input type=button value="Add Organization Identifier" id="organization-button" onclick="addOrganizationIdentifier()">
+    <input type=button value="Add System Identifier" id="system-button" onclick="addSystemIdentifier('addSystemIdentifierDiv')">
+    <input type=button value="Add Organization Identifier" id="organization-button" onclick="addOrganizationIdentifier('addOrganizationIdentifierDiv')">
 </jsp:attribute>
      
 </tags:tabForm>
