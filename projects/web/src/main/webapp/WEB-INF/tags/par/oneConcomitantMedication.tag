@@ -38,7 +38,30 @@
 	<script>
 	 function initializeConMed_${index}(){
 		 $('assignment.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){
-				alert('write code to disable enddate');
+				//the code to clear end-date and make it a readonly field.
+				
+			 	
+			 	var edYrField = $('assignment.concomitantMedications[${index}].endDate.year')
+				if(edYrField){
+
+					var edDdField = $('assignment.concomitantMedications[${index}].endDate.day');
+					var edMmField = $('assignment.concomitantMedications[${index}].endDate.month');
+					if(evt.element().value){
+						edYrField.value = '';
+						edDdField.value = '';
+						edMmField.value = '';
+						edYrField.readonly = true;
+						edDdField.readonly = true;
+						edMmField.value =  true;
+					}else{
+						edYrField.readonly = false;
+						edDdField.readonly = false;
+						edMmField.value =  false;
+					}
+					
+				}
+
+				
 		  });	
 		 AE.registerCalendarPopups();
 	 }

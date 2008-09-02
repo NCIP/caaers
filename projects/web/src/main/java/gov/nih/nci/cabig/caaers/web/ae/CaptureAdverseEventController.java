@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -44,7 +45,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
 	
-	private static final String AJAX_SUBVIEW_PARAMETER = "subview";
+	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	private static final int ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER = 2;
 	private static final String REPORT_ID_PARAMETER = "aeReportId";
 	private static final String ACTION_PARAMETER = "action";
@@ -182,6 +183,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         //hide for non DCP-AdEERS reporting enabled study
         if(!command.isDCPAdeersStudy()){
         	renderDecisionManager.conceal("adverseEvents[].serious");
+        }else{
+        	renderDecisionManager.reveal("adverseEvents[].serious");
         }
 		return referenceData;
 	}
@@ -243,6 +246,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         ControllerTools.registerEnumEditor(binder, Grade.class);
         ControllerTools.registerEnumEditor(binder, Hospitalization.class);
         ControllerTools.registerEnumEditor(binder, Attribution.class);
+        ControllerTools.registerEnumEditor(binder, OutcomeType.class);
         
 	}
 	

@@ -4,15 +4,13 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>"> -->
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <script type="text/javascript" src="/caaers/js/dropdown_menu.js"></script>
 <html>
  <head>
- <tags:includeScriptaculous />
  <tags:includePrototypeWindow />
  <tags:stylesheetLink name="ae"/>
- <tags:dwrJavascriptLink objects="captureAE,createStudy"/>
+ <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
  <tags:stylesheetLink name="aeTermQuery_box" />
 
 <style type="text/css"> 
@@ -87,7 +85,7 @@ div.row div.value {
  	 		if(this.rpCtrl.value == -1){
  	 	 		this.displayRPPopup(); //create reporting period flow
  	 		}else if(this.rpCtrl.value){
-				this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value, false); //show the reporting period details and AEs	 	 	 		
+				this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value, true); //show the reporting period details and AEs	 	 	 		
  	 		}
  	 		
  		},
@@ -119,13 +117,18 @@ div.row div.value {
  		refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails){
  	 		//will refresh the options of reporting period.
  	 		captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput){
- 	 	 		this.rpCtrl.options.length = 1;
- 	 	 		ajaxOutput.objectContent.each(function(rp){
- 	 	 	 		 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
- 	 	 	 		}.bind(this));
-	 	 	 	if(fetchOnlyDetails) this.clearRPDetails();
- 	 	 		this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
- 	 	 		this.rpCtrl.value = newRPId;
+ 	 	 		if(!fetchOnlyDetails){
+ 	 	 	 		//update the reporting period dropdown
+ 	 	 			this.rpCtrl.options.length = 1;
+ 	 	 			ajaxOutput.objectContent.each(function(rp){
+ 	 	 	 	 		 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
+ 	 	 	 	 	}.bind(this));
+ 	 	 			this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
+ 	 	 			this.rpCtrl.value = newRPId;	
+ 	 	 		}
+ 	 	 		
+ 	 	 		
+	 	 	 	this.clearRPDetails();
  	 	 		this.showRPDetails(ajaxOutput.htmlContent);
                 AE.registerCalendarPopups("detailSection");
               }.bind(this));

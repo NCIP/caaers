@@ -13,6 +13,7 @@
 <%@attribute name="sectionClass" required="true" %>
 <%@attribute name="removeButtonAction" %>
 <%@attribute name="disableDelete" type="java.lang.Boolean" %>
+<%@attribute name="initialValue" %>
 <%@attribute name="mainGroupName" required="true" %>
 
 <c:set var="deleteParams">'${removeButtonAction}',${index}</c:set>
@@ -31,7 +32,7 @@
         }, function(organization) {
             var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
             return organization.name + nciInstituteCode
-        }, {initialInputValue:'<caaers:value path="${field.propertyName}.fullName" />'});</script>
+        }, {initialInputValue:'${initialValue}'});</script>
             </c:if>
         </td>
     </c:forEach>

@@ -8,6 +8,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -119,7 +123,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public void reassociate(){
-
 		//reassociate all report definitions
 		if(allReportDefinitions != null)
 		for(ReportDefinition repDef : allReportDefinitions){
@@ -128,7 +131,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null)
 			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
-		
 	}
 
 
@@ -139,7 +141,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void refreshAssignment(Integer reportingPeriodId){
     	//reload assignmet
     	assignmentDao.refresh(getAssignment());
-    	
+    	refreshReportingPeriod(reportingPeriodId);
+    }
+    
+    
+    public void refreshReportingPeriod(Integer reportingPeriodId){
+    	assignmentDao.reassociate(getAssignment());
     	//reset the adverse event report in the command
     	setAdverseEventReportingPeriod(null);
     	for(AdverseEventReportingPeriod reportingPeriod : assignment.getReportingPeriods()){
@@ -149,7 +156,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		}
     	}
     }
- 
 
   
     /**
@@ -312,6 +318,100 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty()) return;
 		ae.setRequiresReporting(seriousAdverseEvents.contains(ae));
 		
+	}
+	
+	/**
+	 * This method will set the seriousness (outcome) on every adverse event, by reading the non-hospitalization and non-death outcome indicators,
+	 * preference is given to the first satisfied one. (Note:- In Expedited flow, the user may select multiple outcome(s). 
+	 */
+	public void initializeOutcome(){
+		if(this.adverseEvents == null) return;
+		
+		for(AdverseEvent ae : adverseEvents.getInternalList()){
+			ae.setSerious(null);
+			for(Outcome o: ae.getOutcomes()){
+				if(o.getOutcomeType().equals(OutcomeType.HOSPITALIZATION) || o.getOutcomeType().equals(OutcomeType.DEATH)) continue;
+				ae.setSerious(o.getOutcomeType());
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * This method will synchronize the outcomes list associated with the adverse event. 
+	 *   If grade is 5, the outcome of type death is added, else removed(if present)
+	 *   If hospitalization is 'yes', the outcome of type hospitalization is added, else removed (if present)
+	 *   If the serious(outcome) not available in the outcomes list, it will be added.
+	 *   Remove all the other outcomes present in the list (means user deselected a previously selected one)
+	 */
+	public void synchronizeOutcome(){
+		for(AdverseEvent ae : adverseEvents.getInternalList()){
+			//if grade is 5 make sure we have OutcomeType.DEATH
+			if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)){
+				if(!isOutcomePresent(OutcomeType.DEATH, ae.getOutcomes())){
+					Outcome newOutcome = new Outcome();
+					newOutcome.setOutcomeType(OutcomeType.DEATH);
+					ae.addOutcome(newOutcome);
+				}
+			}else{
+				removeOutcomeIfPresent(OutcomeType.DEATH, ae.getOutcomes());
+			}
+			
+			//if hospitalized, make sure we have OutcomeType.HOSPITALIZATION 
+			if(ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)){
+				if(!isOutcomePresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes())){
+					Outcome newOutcome = new  Outcome();
+					newOutcome.setOutcomeType(OutcomeType.HOSPITALIZATION);
+					ae.addOutcome(newOutcome);
+				}
+			}else {
+				removeOutcomeIfPresent(OutcomeType.HOSPITALIZATION, ae.getOutcomes());
+			}
+			
+			//update the selected seriousness outcome 
+			if(ae.getSerious() != null){
+				if(!isOutcomePresent(ae.getSerious(), ae.getOutcomes())){
+					Outcome newOutcome = new Outcome();
+					newOutcome.setOutcomeType(ae.getSerious());
+					ae.addOutcome(newOutcome);
+				}
+			}
+			
+			//remove the rest of the outcomes
+			for(OutcomeType outcomeType : OutcomeType.values()){
+				if(outcomeType.equals(OutcomeType.HOSPITALIZATION) || outcomeType.equals(OutcomeType.DEATH)) continue;
+				if(ae.getSerious() != null && outcomeType.equals(ae.getSerious()) ) continue;
+				removeOutcomeIfPresent(outcomeType, ae.getOutcomes());
+			}
+			
+		}
+	}
+	
+	/**
+	 * Returns true, if an Outcome of a specific type is present in the list of outcomes
+	 */
+	private boolean isOutcomePresent(OutcomeType type, List<Outcome> outcomes){
+		if(outcomes == null || outcomes.isEmpty()) return false;
+		for(Outcome o : outcomes){
+			if(o.getOutcomeType() == type) return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Removes an outcome type, if it is present.  
+	 */
+	private boolean removeOutcomeIfPresent(OutcomeType type, List<Outcome> outcomes){
+		if(outcomes == null || outcomes.isEmpty()) return false;
+		Outcome obj = null;
+		for(Outcome o : outcomes){
+			if(o.getOutcomeType() == type){ 
+				obj =  o;
+				break;
+			}
+		}
+		if(obj == null) return false;
+		return outcomes.remove(obj);
 	}
 	
     public void setSelectedAesMap(Map<Integer, Boolean> selectedAesMap) {

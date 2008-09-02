@@ -216,7 +216,6 @@ ${command.organization}
     			
             	<c:forEach items="${command.participant.identifiers}" varStatus="status" var="idt">
                     <c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-                        j=: [${status.index}]
                         <par:parIdentifier
                                 title="Subject Identifier ${status.index + 1}"
                                 disableDelete="${fn:length(command.participant.identifiers) lt 2}"
@@ -224,6 +223,7 @@ ${command.organization}
                                 removeButtonAction="removeIdentifier"
                                 index="${status.index}"
                                 identifier="${command.participant.identifiers[status.index]}"
+								initialValue=""
                                 mainGroupName="mainOrg"/>
 					</c:if>
 				</c:forEach>
@@ -243,7 +243,6 @@ ${command.organization}
 
             	<c:forEach items="${command.participant.identifiers}" varStatus="status" >
             	<c:if test="${(command.participant.identifiers[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-                    i=: [${status.index}]
 		
 					<par:parIdentifier
                             title="Subject Identifier ${status.index + 1}"
@@ -252,6 +251,7 @@ ${command.organization}
                             removeButtonAction="removeIdentifier"
 					        index="${status.index}"
                             identifier="${command.participant.identifiers[status.index]}"
+							initialValue=""
                             mainGroupName="mainSys" />
 					
 					</c:if>

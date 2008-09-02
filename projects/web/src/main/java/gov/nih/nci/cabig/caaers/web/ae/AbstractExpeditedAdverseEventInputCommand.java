@@ -76,12 +76,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements
                                                                 // rules engine
 
     private int nextPage;
-
-    protected Map<String, Boolean> outcomes;
-
-    private Date outcomeDate;
-
-    private String otherOutcome;
+    
+    private List<Map<Integer, Boolean>> outcomes;
+    private List<String> outcomeOtherDetails; 
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao,
                     ReportDefinitionDao reportDefinitionDao, ExpeditedReportTree expeditedReportTree) {
@@ -90,7 +87,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements
         this.expeditedReportTree = expeditedReportTree;
         this.optionalReportDefinitionsMap = new LinkedHashMap<ReportDefinition, Boolean>();
         this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
-        this.outcomes = new LinkedHashMap<String, Boolean>();
+        this.outcomeOtherDetails = new ArrayList<String>();
+        this.outcomes = new ArrayList<Map<Integer,Boolean>>();
 
     }
 
@@ -372,64 +370,42 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements
         this.nextPage = page;
     }
 
-    public Map<String, Boolean> getOutcomes() {
-        return outcomes;
+    public List<String> getOutcomeOtherDetails() {
+    	return outcomeOtherDetails;
     }
-
-    public void setOutcomes(Map<String, Boolean> outcomes) {
-        this.outcomes = outcomes;
+    
+    public List<Map<Integer, Boolean>> getOutcomes() {
+    	return outcomes;
     }
-
+    
     public void updateOutcomes() {
-
-        // populate checkboxes with data from db
-        // not all checkboxes are populated from db - as we need to allow dynamic updates to
-        // support changes that might happen in the Primary Adverse event.
-        HashMap<String, Boolean> dbOutcomeHolder = new HashMap<String, Boolean>();
-        for (Outcome outcome : aeReport.getOutcomes()) {
-            if (outcome.getOutcomeType() != OutcomeType.HOSPITALIZATION) {
-                dbOutcomeHolder.put(outcome.getOutcomeType().getCode().toString(), Boolean.TRUE);
-            }
-            if (outcome.getOutcomeType() == OutcomeType.DEATH) {
-                this.outcomeDate = outcome.getDate();
-            }
-            if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS) {
-                this.otherOutcome = outcome.getOther();
-            }
-        }
-
-        Grade grade = aeReport.getAdverseEvents().size() > 0 ? aeReport.getAdverseEvents().get(0)
-                        .getGrade() : null;
-        Hospitalization hospitalization = aeReport.getAdverseEvents().size() > 0 ? aeReport
-                        .getAdverseEvents().get(0).getHospitalization() : null;
-
-        for (OutcomeType outcomeType : OutcomeType.values()) {
-            boolean choice = Boolean.FALSE;
-            if (hospitalization != null
-                            && hospitalization.getName().contains(outcomeType.getName())) {
-                choice = Boolean.TRUE;
-            }
-            if (dbOutcomeHolder.get(outcomeType.getCode().toString()) != null) {
-                choice = Boolean.TRUE;
-            }
-            outcomes.put(outcomeType.getCode().toString(), choice);
-        }
-    }
-
-    public Date getOutcomeDate() {
-        return outcomeDate;
-    }
-
-    public void setOutcomeDate(Date outcomeDate) {
-        this.outcomeDate = outcomeDate;
-    }
-
-    public String getOtherOutcome() {
-        return otherOutcome;
-    }
-
-    public void setOtherOutcome(String otherOutcome) {
-        this.otherOutcome = otherOutcome;
+    	outcomeOtherDetails.clear();
+    	outcomes.clear();
+    	int i = 0;
+    	//This method will populate the outcome map and the outcomeSerious details map.
+    	for(AdverseEvent ae : getAeReport().getAdverseEvents()){
+    		
+    		//update the command bounded variables with default values
+    		outcomeOtherDetails.add("");
+    		LinkedHashMap<Integer, Boolean> oneOutcomeMap = new LinkedHashMap<Integer, Boolean>();
+    		outcomes.add(oneOutcomeMap);
+    		
+        	//in this pass we will initialize all the outcomes to default 'FALSE' and other details to empty string.
+        	for(OutcomeType outcomeType : OutcomeType.values()){
+        		oneOutcomeMap.put(outcomeType.getCode(), Boolean.FALSE);
+        	}
+        	
+        	//in this pass we will update the outcome details based on the OUTCOME db values
+        	for(Outcome outcome : ae.getOutcomes()){
+        		oneOutcomeMap.put(outcome.getOutcomeType().getCode(), Boolean.TRUE);
+        		if(outcome.getOutcomeType().equals(OutcomeType.OTHER_SERIOUS)){
+        			outcomeOtherDetails.set(i, outcome.getOther());
+        		}
+        	}
+        	
+        	i++;
+    	}
+  
     }
 
     public Integer getZERO() {

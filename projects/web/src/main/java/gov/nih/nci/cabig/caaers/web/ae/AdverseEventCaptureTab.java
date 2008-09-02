@@ -182,8 +182,18 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 		// Setup the categories list for aeTermQuery tag.
 		command.getCtcCategories();
 		
+		//initalize the seriousness outcome indicators
+		command.initializeOutcome();
+		
 		return super.referenceData(request, command);
 		
+	}
+	
+	@Override
+	public void postProcess(HttpServletRequest request,	CaptureAdverseEventInputCommand command, Errors errors) {
+		if(findInRequest(request, CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER) != null) return ; //ignore if this is an ajax request
+		//sync the seriousness outcomes
+		command.synchronizeOutcome();
 	}
 	
 	@Override

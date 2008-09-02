@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -79,20 +80,24 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	}
 	
 	protected Map<Object, Object> createExpectedOptions() {
-        return createYesNoOptions();
-    }
-	
-	protected Map<Object, Object> createSeriousOptions() {
-		return createYesNoOptions();
-	}
-	
-	protected Map<Object, Object> createYesNoOptions(){
 		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
         options.put(Boolean.TRUE, "Yes");
         options.put(Boolean.FALSE, "No");
         return options;
+    }
+	
+	protected Map<Object, Object> createSeriousOptions() {
+		Map<Object, Object> options = new LinkedHashMap<Object, Object>();
+        options.put("", "Please select");
+        options.put(OutcomeType.CONGENITAL_ANOMALY.name(), OutcomeType.CONGENITAL_ANOMALY.getDisplayName());
+        options.put(OutcomeType.DISABILITY.name(), OutcomeType.DISABILITY.getDisplayName());
+        options.put(OutcomeType.LIFE_THREATENING.name(), OutcomeType.LIFE_THREATENING.getDisplayName());
+        options.put(OutcomeType.REQUIRED_INTERVENTION.name(), OutcomeType.REQUIRED_INTERVENTION.getDisplayName());
+        options.put(OutcomeType.OTHER_SERIOUS.name(), OutcomeType.OTHER_SERIOUS.getDisplayName());
+        return options;
 	}
+	
 	
 	protected Map<Object, Object> createHospitalizationOptions() {
         Map<Object, Object> hospitalizationOptions = new LinkedHashMap<Object, Object>();

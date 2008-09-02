@@ -250,6 +250,7 @@
 
 	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
+		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
@@ -289,6 +290,7 @@
 
 	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
+		<tags:hasErrorsMessage path="preExistingCondition" />
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
@@ -317,6 +319,7 @@
 
 	<chrome:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
+		<tags:hasErrorsMessage path="concomitantMedication" />
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
@@ -344,6 +347,9 @@
 
 	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
+		<tags:hasErrorsMessage path="chemoAgent" />
+		<tags:hasErrorsMessage path="priorTherapy" />
+	
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">

@@ -837,7 +837,7 @@ public class CreateAdverseEventAjaxFacade {
         WebContext webContext = WebContextFactory.get();
 
         if (aeReportId != null) params.put("aeReport", aeReportId.toString());
-        params.put(AbstractAdverseEventInputController.AJAX_SUBVIEW_PARAMETER, viewName);
+        params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, viewName);
 
         String url = String.format("%s?%s",
                 getCurrentPageContextRelative(webContext), createQueryString(params));

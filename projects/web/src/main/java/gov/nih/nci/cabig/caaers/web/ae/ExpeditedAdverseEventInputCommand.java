@@ -34,17 +34,10 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 
     ExpeditedAdverseEventReport getAeReport();
 
-    public Map<String, Boolean> getOutcomes();
-
-    public void setOutcomes(Map<String, Boolean> outcomes);
-
-    public void updateOutcomes();
-
-    public Date getOutcomeDate();
-
-    // public void setOutcomeDate(Date outcomeDate);
-    public String getOtherOutcome();
-
+    List<Map<Integer, Boolean>> getOutcomes();
+    List<String> getOutcomeOtherDetails();
+    void updateOutcomes();
+    
     /*
      * attributionMap[attributionKey][ae index][cause index]; indexes are the same as the equivs in
      * AdverseEventReport and AdverseEvent

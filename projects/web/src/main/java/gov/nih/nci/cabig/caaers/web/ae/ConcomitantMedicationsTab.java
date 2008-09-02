@@ -28,7 +28,7 @@ public class ConcomitantMedicationsTab extends AeTab {
         
 
         creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), 
-        		agentNameField, startDateField, endDateField, stillTakingMedicationField);
+        		agentNameField,stillTakingMedicationField, startDateField, endDateField);
     }
 
     @Override
