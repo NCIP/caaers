@@ -86,15 +86,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfInstanceAtt.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
 			
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -134,15 +136,18 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAttr.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+			
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -182,15 +187,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -235,15 +242,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -276,15 +285,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -320,15 +331,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -367,15 +380,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -409,15 +424,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -440,15 +457,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -472,15 +491,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -505,15 +526,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -536,15 +559,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -577,15 +602,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -618,15 +645,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -671,15 +700,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -711,15 +742,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			assertNotNull(updatedStudy);
@@ -752,15 +785,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -800,15 +835,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentAdd.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.updateStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -830,15 +867,15 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentRemove.xml")[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.updateStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			studyProcessor.updateStudy(studies);
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.updateStudy(studyDto);
+//				}
+//			}
 			
 			updatedStudy = studyDao.getByShortTitle("Study_PCS");
 			updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
@@ -853,15 +890,17 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
 			xmlFile = getResources(studyXmlLocation)[0].getFile();
 			studies = (gov.nih.nci.cabig.caaers.webservice.Studies)unmarshaller.unmarshal(xmlFile);
 			
-			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+			studyProcessor.createStudy(studies);
 			
-			if(studyList!=null && !studyList.isEmpty()){
-				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-				while(iterator.hasNext()){
-					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-					studyProcessor.createStudy(studyDto);
-				}
-			}
+//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
+//			
+//			if(studyList!=null && !studyList.isEmpty()){
+//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
+//				while(iterator.hasNext()){
+//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
+//					studyProcessor.createStudy(studyDto);
+//				}
+//			}
 		
 		
 	}
