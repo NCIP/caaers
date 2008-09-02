@@ -71,8 +71,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         participantFieldGroup.getFields().add(InputFieldFactory.createSelectField("participant.ethnicity", "Ethnicity", true, collectOptions(listValues.getParticipantEthnicity())));
         participantFieldGroup.getFields().add(InputFieldFactory.createSelectField("participant.race", "Race", true, collectOptions(listValues.getParticipantRace())));
 
-        repeatingFieldGroupFactoryOrg = new RepeatingFieldGroupFactory("mainOrg", "participant.identifiers");
-        repeatingFieldGroupFactorySys = new RepeatingFieldGroupFactory("mainSys", "participant.identifiers");
+        repeatingFieldGroupFactoryOrg = new RepeatingFieldGroupFactory("mainOrg", "participant.organizationIdentifiers");
+        repeatingFieldGroupFactorySys = new RepeatingFieldGroupFactory("mainSys", "participant.systemAssignedIdentifiers");
 
         repeatingFieldGroupFactoryOrg.addField(InputFieldFactory.createTextField("value", "Identifier", true));
         repeatingFieldGroupFactorySys.addField(InputFieldFactory.createTextField("value", "Identifier", true));
