@@ -7,6 +7,7 @@ import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.api.AdverseEventReportSerializer;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
@@ -602,7 +603,11 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
         assertEquals("Wrong number of results", 1, results.size());
     }
     
-  
+    public void testSerializeExpeditedAdverseEventReport() throws Exception {
+        ExpeditedAdverseEventReport loaded = getDao().getById(-1);
+        AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
+        aeser.serialize(loaded);
+    }  
 
     private void doSaveTest(SaveTester tester) {
         Integer savedId;
