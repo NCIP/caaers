@@ -46,6 +46,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private StudySynchronizer studySynchronizer;
 	private ApplicationContext applicationContext;
 	
+	public StudyProcessorImpl(){
+		
+	}
+	
 	public StudyImportServiceImpl getStudyImportService() {
 		return studyImportService;
 	}
@@ -117,7 +121,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return studyImportOutcome;
 	}
 	
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse createStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
+		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
@@ -176,7 +181,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		return caaersServiceResponse;
 	}
 
-	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Study studyDto) {
+	public gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse updateStudy(gov.nih.nci.cabig.caaers.webservice.Studies xmlStudies) {
+		gov.nih.nci.cabig.caaers.webservice.Study studyDto = xmlStudies.getStudy().get(0);
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse caaersServiceResponse = new gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse();
 		boolean authorizationOnByDefault = enableAuthorization(false);
 		switchUser("SYSTEM_ADMIN", "ROLE_caaers_super_user");
