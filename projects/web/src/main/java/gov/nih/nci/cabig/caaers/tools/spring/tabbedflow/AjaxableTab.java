@@ -26,8 +26,7 @@ public abstract class AjaxableTab<C> extends Tab<C> {
         super(longTitle, shortTitle, "");
     }
 
-    protected ModelAndView postProcessAsynchronous(HttpServletRequest request, C command,
-                    Errors error) throws Exception {
+    protected ModelAndView postProcessAsynchronous(HttpServletRequest request, C command, Errors error) throws Exception {
         return new ModelAndView(getAjaxViewName(request));
     }
 

@@ -184,4 +184,10 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
         this.configurationProperty = configurationProperty;
     }
+
+    public void addOrganizationIdentifier() {
+        // ToDo
+        // add a new element in the command list of participant identifiers.
+        System.out.println("AJAX::addOrganizationIdentifier");
+    }
 }

@@ -8,6 +8,7 @@
 <%@attribute name="onSuccess"%>
 <%@attribute name="onComplete"%>
 <%@attribute name="onFailure"%>
+<%@attribute name="insertion"%>
 
 <c:set var="callbackOpts" value=""></c:set>
 <c:if test="${! empty onComplete}">

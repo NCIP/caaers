@@ -80,8 +80,6 @@ function ajaxStudySearch(searchText, searchType) {
             </tr>
             </table>
     </form:form>
-
-
 </chrome:box>
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false">
