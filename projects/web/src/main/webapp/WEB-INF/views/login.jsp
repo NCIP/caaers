@@ -61,7 +61,7 @@ input{outline:none;}
     <link href="../images/caaers.ico" rel="icon"/>
 </head>
 <body>
-<img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Advers Event Reporting System">
+<img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System">
 <h2>Please Log in</h2>
     <form method="POST" id="login" action="<c:url value="/j_acegi_security_check"/>">
 
