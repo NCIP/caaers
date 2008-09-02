@@ -51,14 +51,16 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 		try {
 			xmlFile = getResources(fileLoc)[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.createParticipant(participantDto);
-				}
-			}
+			caaersServiceResponse = participantService.createParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+//			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.createParticipant(participantDto);
+//				}
+//			}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -77,12 +79,14 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 			
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForUpdateAttr.xml")[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.updateParticipant(participantDto);
+			caaersServiceResponse = participantService.updateParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+//			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.updateParticipant(participantDto);
 					assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
 					List<Participant> matches = participantDao.getBySubnames(new String[] { "Richard Updated" });
 					assertEquals(1, matches.size());
@@ -94,8 +98,8 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 					assertEquals("Not Reported", updatedParticipant.getGender());
 					assertEquals("Black or African American", updatedParticipant.getRace());
 					assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
-				}
-			}
+				//}
+			//}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -116,12 +120,14 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 			
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForIdentifierAdd.xml")[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.updateParticipant(participantDto);
+			caaersServiceResponse = participantService.updateParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+//			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.updateParticipant(participantDto);
 					assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
 					List<Participant> matches = participantDao.getBySubnames(new String[] { "Richard Updated" });
 					assertEquals(1, matches.size());
@@ -137,8 +143,8 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 					assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
 					
 					assertEquals(2, updatedParticipant.getIdentifiers().size());
-				}
-			}
+//				}
+//			}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -161,12 +167,14 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 			
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForIdentifierRemove.xml")[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.updateParticipant(participantDto);
+			caaersServiceResponse = participantService.updateParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.updateParticipant(participantDto);
 					assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
 					List<Participant> matches = participantDao.getBySubnames(new String[] { "Richard Updated" });
 					assertEquals(1, matches.size());
@@ -182,8 +190,8 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 					assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
 					
 					assertEquals(1, updatedParticipant.getIdentifiers().size());
-				}
-			}
+//				}
+//			}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -205,12 +213,14 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 			
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForAssignmentsAdd.xml")[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.updateParticipant(participantDto);
+			caaersServiceResponse = participantService.updateParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.updateParticipant(participantDto);
 					assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
 					List<Participant> matches = participantDao.getBySubnames(new String[] { "Richard Updated" });
 					assertEquals(1, matches.size());
@@ -226,8 +236,8 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 					assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
 					
 					assertEquals(2, updatedParticipant.getAssignments().size());
-				}
-			}
+//				}
+//			}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -249,12 +259,14 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 			
 			xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/participantdata/UpdateParticipantForAssignmentsRemove.xml")[0].getFile();
 			participants = (Participants)unmarshaller.unmarshal(xmlFile);
-
-			List<ParticipantType> participantList = participants.getParticipant();
 			
-			if(participantList!=null && !participantList.isEmpty()){
-				for(ParticipantType  participantDto : participantList){
-					caaersServiceResponse = participantService.updateParticipant(participantDto);
+			caaersServiceResponse = participantService.updateParticipant(participants);
+			
+//			List<ParticipantType> participantList = participants.getParticipant();
+//			
+//			if(participantList!=null && !participantList.isEmpty()){
+//				for(ParticipantType  participantDto : participantList){
+//					caaersServiceResponse = participantService.updateParticipant(participantDto);
 					assertEquals("0", caaersServiceResponse.getResponse().getResponsecode());
 					List<Participant> matches = participantDao.getBySubnames(new String[] { "Richard Updated" });
 					assertEquals(1, matches.size());
@@ -270,8 +282,8 @@ public class ParticipantServiceTest extends CaaersDbTestCase{
 					assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
 					
 					assertEquals(1, updatedParticipant.getAssignments().size());
-				}
-			}
+//				}
+//			}
 				
 		} catch (IOException e) {
 			e.printStackTrace();
