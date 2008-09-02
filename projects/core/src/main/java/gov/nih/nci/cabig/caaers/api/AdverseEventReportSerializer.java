@@ -555,7 +555,7 @@ public class AdverseEventReportSerializer {
 	    private StudyAgent getStudyAgent(StudyAgent sa) {
 	    	StudyAgent studyAgent = new StudyAgent();
 	    	studyAgent.setIndType(sa.getIndType());
-	    	
+	    	studyAgent.setAgent(sa.getAgent());
 	    	return studyAgent;
 	    }
 	    private Organization getOrganization(Organization org) {
