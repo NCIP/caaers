@@ -102,7 +102,7 @@
 	<ADDITIONAL_INFORMATION id="-100" report_id="-1"
 		other_information="Hello" />
 	<CONCOMITANT_MEDICATIONS id="-30" list_index="1"
-		report_id="-1" start_date_day="10" start_date_month="10" start_date_year="2002" start_date_zone="0" end_date_day="10" end_date_month="10" end_date_year="2004" end_date_zone="0"/>
+		report_id="-1" start_date_day="10" start_date_month="10" start_date_year="2002" start_date_zone="0" end_date_day="10" end_date_month="10" end_date_year="2004" end_date_zone="0" still_taking_medications="1"/>
 	<CONCOMITANT_MEDICATIONS id="-31" list_index="0"
 		report_id="-1" agent_name="agent_name1" start_date_month="11" start_date_year="2003" start_date_zone="0" end_date_zone="0"/>
 	<OTHER_CAUSES id="-82" report_id="-1" list_index="2"
@@ -113,7 +113,7 @@
 		cause_text="Crossed against light" />
 	<AE_REPORT_DESCRIPTIONS id="-10" report_id="-1"
 		present_status_code="3" event_description="It was real bad" retreated="0"
-		recovery_date="2012-03-04" reduced_dose="43" reduced_date="2012-03-04" days_not_given="2" cause_of_death="Bleeding" />
+		recovery_date="2012-03-04" reduced_dose="43" reduced_date="2012-03-04" days_not_given="2" cause_of_death="Bleeding" autopsy_performed="0"/>
 	<AE_REPORT_PEOPLE id="-100" report_id="-1" role="R"
 		first_name="Joe" last_name="DiMaggio" title="Mr"  street="160 Laurelway" city="Herndon" state="VA" zip="20170"/>
 	<AE_REPORT_PEOPLE id="-101" report_id="-1" role="P"
