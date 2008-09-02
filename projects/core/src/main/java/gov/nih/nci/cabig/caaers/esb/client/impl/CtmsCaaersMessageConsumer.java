@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.StudyProcessor;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.XmlValidator;
+import gov.nih.nci.cabig.caaers.webservice.Studies;
 import gov.nih.nci.cabig.caaers.webservice.Study;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
@@ -228,19 +229,20 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 	 */
 	private String processStudy(Message message,String messageType){
 		String responseXml = "";
-		JAXBElement<Study> studyElement;
+		//JAXBElement<Study> studyElement;
 		gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse studyServiceResponse = null;
 		try {
 			jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.webservice");
 			unmarshaller = jaxbContext.createUnmarshaller();
 			marshaller = jaxbContext.createMarshaller();
 			
-			studyElement = (JAXBElement<Study>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
-			Study xmlStudy = studyElement.getValue();
+			//studyElement = (JAXBElement<Study>)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
+			Studies studies = (Studies)unmarshaller.unmarshal(new InputSource(new StringReader(((TextMessage)message).getText())));
+			//Study xmlStudy = studyElement.getValue();
 			if("CREATE_STUDY".equals(messageType)){
-				studyServiceResponse = studyProcessor.createStudy(xmlStudy);
+				studyServiceResponse = studyProcessor.createStudy(studies);
 			}else if("UPDATE_STUDY".equals(messageType)){
-				studyServiceResponse = studyProcessor.updateStudy(xmlStudy);
+				studyServiceResponse = studyProcessor.updateStudy(studies);
 			}
 			responseXml = responseAsString(studyServiceResponse,marshaller);
 		} catch (JAXBException e) {
