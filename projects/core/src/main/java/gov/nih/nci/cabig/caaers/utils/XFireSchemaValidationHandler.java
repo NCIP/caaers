@@ -56,24 +56,25 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         
         Element payload = (Element)((Element) (body.getChildren().get(0))).getChildren().get(0);
         
-        if(payload.getName().equals("study")){
+        if(payload.getName().toLowerCase().equals("studies")){
         	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd")[0].getFile());
         	schema = factory.newSchema(ss);
-        }else if(payload.getName().equals("participant")){
+        }else if(payload.getName().toLowerCase().equals("participants")){
         	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd")[0].getFile());
         	schema = factory.newSchema(ss);
         }
         
         // dump the message for testing purposes
-//        XMLOutputter outputter = 
-//            new XMLOutputter(Format.getPrettyFormat());
-//        outputter.output(payload, System.out);
+        XMLOutputter outputter = 
+            new XMLOutputter(Format.getPrettyFormat());
+        outputter.output(payload, System.out);
         
         // create validation handler from the pre-complied schema
         ValidatorHandler vh = schema.newValidatorHandler();
         // the handler only works with SAX events, so we create 
         // SAX from JDom 
         SAXOutputter so = new SAXOutputter(vh);
+        
         // Validator will run as a SAX handler and throw an exception
         // if the validation fails.
         so.output(payload);
