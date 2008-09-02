@@ -93,7 +93,7 @@ function removeSystemIdentifier(container, index) {
 
 </script>
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="editParticipantForm" hideErrorDetails="false" willSave="false">
+<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" willSave="false">
 
 <jsp:attribute name="singleFields">
 <div>
@@ -105,22 +105,23 @@ function removeSystemIdentifier(container, index) {
 <jsp:attribute name="repeatingFields">
 
 
-<chrome:division  title="Site"  >
-    
-<c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
-	<ui:row path="${fieldGroups.site.fields[0].propertyName}">
-		<jsp:attribute name="label">
-			<ui:label path="${fieldGroups.site.fields[0].propertyName}" text="Site" />
-		</jsp:attribute>
-		<jsp:attribute name="value">
-			<ui:select options="${fieldGroups.site.fields[0].attributes.options}" path="${fieldGroups.site.fields[0].propertyName}" title="Site" required="true"/>
-		</jsp:attribute>
-	</ui:row>
-</c:if>
-
-<c:if test="${!(empty command.participant.id) and (command.participant.id gt 0)}">
-${command.organization}
-</c:if>
+<chrome:division  title="Sites"  >
+<table class="tablecontent" width="100%">
+    <tr>
+       <th scope="col" width="150px">Study Primary ID</th>
+       <th scope="col">Study Short Title</th>
+       <th scope="col">Site</th>
+       <th scope="col" width="150px">Study Subject Identifier</th>
+    </tr>
+  <c:forEach items="${command.participant.assignments}" var="assignment" varStatus="i">
+    <tr class="results">
+      <td><ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}</td>
+      <td>${assignment.studySite.study.shortTitle}</td>
+      <td>${assignment.studySite.organization.name}</td>
+      <td>${assignment.studySubjectIdentifier}</td>
+    </tr>
+  </c:forEach>
+</table>
 
 </chrome:division>
 

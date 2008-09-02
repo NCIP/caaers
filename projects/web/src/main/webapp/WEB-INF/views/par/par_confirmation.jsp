@@ -35,7 +35,7 @@
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                     <tr class="results">
                         <td>${study.primaryIdentifier}</td>
-                        <td>${study.shortTitle}</td>
+                        <td>${assignment.studySite.study.shortTitle}</td>
                         <td>${assignment.studySite.organization.name}</td>
                         <td>${assignment.studySubjectIdentifier}</td>
                     </tr>

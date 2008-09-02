@@ -2,8 +2,10 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.tools.editors.DateValueEditor;
@@ -42,6 +44,8 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected WebControllerValidator webControllerValidator;
     private OrganizationDao organizationDao;
     protected ParticipantRepository participantRepository;
+    protected ParticipantDao participantDao;
+    protected StudyParticipantAssignmentDao assignmentDao;
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
@@ -65,6 +69,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
+        ControllerTools.registerDomainObjectEditor(binder, assignmentDao);
     }
 
     @Override
@@ -122,7 +127,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         return attr;
     }
 
-    protected ParticipantDao participantDao;
+
 
     // /LOGIC
     @Override
@@ -173,5 +178,10 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     @Required
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
+    }
+    
+    @Required
+    public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
+        this.assignmentDao = assignmentDao;
     }
 }

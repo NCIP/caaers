@@ -62,6 +62,14 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         return cmd;
 
     }
+    
+    @Override
+    protected Object currentFormObject(HttpServletRequest request,Object command) throws Exception {
+    	EditParticipantCommand cmd = (EditParticipantCommand) super.currentFormObject(request, command);
+    	participantDao.reassociateUsingLock(cmd.getParticipant());
+    	return cmd;
+    	
+    }
 
 /*
     protected NewParticipantCommand save(final ParticipantInputCommand newParticipantCommand,final Errors errors) {

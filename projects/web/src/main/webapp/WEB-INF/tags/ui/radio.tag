@@ -20,6 +20,6 @@
 <form:radiobutton path="${path}" 
 	disabled="${disabled}" 
 	cssClass="${validationCss} ${cssClass}" 
-	value="${field.attributes.defaultValue}" title="${title}"/>
+	value="${value}" title="${title}"/>
 </jsp:attribute>
 </ui:fieldWrapper>

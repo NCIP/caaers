@@ -48,18 +48,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
     public Map<String, InputFieldGroup> createFieldGroups(final ParticipantInputCommand command) {
 
         InputFieldGroup participantFieldGroup;
-        InputFieldGroup siteFieldGroup;
-//        RepeatingFieldGroupFactory repeatingFieldGroupFactory;
-
-        siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
-
-        Map<Object, Object> options = new LinkedHashMap<Object, Object>();
-        options.put("", "Please select");
-        List<Organization> organizations = organizationDao.getOrganizationsHavingStudySites();
-        if (organizations != null) {
-            options.putAll(WebUtils.collectOptions(organizations, "id", "fullName"));
-        }
-        siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("organization", "Site", true, options));
+        Map<Object, Object> options = null;
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", true));
@@ -136,7 +125,6 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
   
         map.addInputFieldGroup(participantFieldGroup);
-        map.addInputFieldGroup(siteFieldGroup);
         
         return map;
     }
