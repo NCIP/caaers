@@ -25,7 +25,7 @@
 				<input type="button" value="Amend" id="amend-report"/>
 			</c:when>
 			<c:otherwise>
-				<input type="button" value="Edit" id="edit-report" onClick="editReport('${report.id}');"/>
+				<input type="button" value="Edit" id="edit-report" onClick="editReport('${report.aeReport.id}');"/>
 			</c:otherwise>
 		</c:choose>
 	</td>
