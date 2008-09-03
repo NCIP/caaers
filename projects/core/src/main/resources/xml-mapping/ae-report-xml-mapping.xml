@@ -908,6 +908,12 @@
     <field name="StudyAgent" type="gov.nih.nci.cabig.caaers.domain.StudyAgent">
       <bind-xml name="StudyAgent"/>
     </field>
+    <field name="lotNumber" type="string">
+      <bind-xml name="lotNumber" node="element"/>
+    </field>    
+    <field name="formulation" type="string">
+      <bind-xml name="formulation" node="element"/>
+    </field>
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.StudyAgent">
