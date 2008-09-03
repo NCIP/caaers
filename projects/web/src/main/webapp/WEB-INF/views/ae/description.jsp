@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+
 <html>
 <head>
     <title>${tab.longTitle}</title>
@@ -18,9 +19,11 @@
     
     <script language="JavaScript">
 		Event.observe(window, "load", function() {
-			Event.observe("aeReport.responseDescription.studyDrugInterrupted", "change", function() { viewSelection() })
+			if($("aeReport.responseDescription.studyDrugInterrupted")){
+				Event.observe("aeReport.responseDescription.studyDrugInterrupted", "change", function() { viewSelection() })
+				viewSelection();
+			}
 			
-			viewSelection();
 		});
 		
 		function viewSelection(){
@@ -54,12 +57,12 @@
             <tags:renderRow field="${field}"/>
         </c:forEach>
 
+		<chrome:division title="Details" path="aeReport.responseDescription.dcp">
+       	<c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
+           	<tags:renderRow field="${field}"/>
+       	</c:forEach>
+       	</chrome:division>	
 		
-		<chrome:division title="Details" style="${command.study.primaryFundingSponsorOrganization.nciInstituteCode eq 'CTEP' ? 'display:none' : ''}">
-        <c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
-            <tags:renderRow field="${field}"/>
-        </c:forEach>
-        </chrome:division>
     </jsp:attribute>
 </tags:tabForm>
 </body>

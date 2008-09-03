@@ -73,8 +73,8 @@ public abstract class BasicsTab extends AeTab {
 			InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
             InputFieldFactory.createDateField("startDate", "Start date", FieldValidator.DATE_VALIDATOR),
             InputFieldFactory.createDateField("endDate", "End date", FieldValidator.DATE_VALIDATOR),
-            timeOfEventField,
             attributionField,
+            timeOfEventField,
             InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
             InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?",false, 
             		WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")), 
@@ -98,11 +98,7 @@ public abstract class BasicsTab extends AeTab {
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
 
-        InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(1);
-        if (command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
-            errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
-                            firstStartDateField.getDisplayName() + " required for primary AE");
-        }
+        
     }
 
     protected void validateAdverseEvent(AdverseEvent ae, int index,

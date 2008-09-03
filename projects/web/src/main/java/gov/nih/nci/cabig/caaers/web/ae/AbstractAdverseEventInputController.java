@@ -33,6 +33,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -119,7 +120,9 @@ public abstract class AbstractAdverseEventInputController
     protected ExpeditedReportTree expeditedReportTree;
     
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
-
+	
+    protected RenderDecisionManager renderDecisionManager;
+	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
         setAllowDirtyForward(false);
@@ -210,6 +213,7 @@ public abstract class AbstractAdverseEventInputController
         if (displaySummary(page)) {
             refdata.put("aesummary", cmd.getAeReport().getSummary());
         }
+       
         return refdata;
     }
 
@@ -441,6 +445,11 @@ public abstract class AbstractAdverseEventInputController
     public void setReportingPeriodDao(
 			AdverseEventReportingPeriodDao reportingPeriodDao) {
 		this.reportingPeriodDao = reportingPeriodDao;
+	}
+    
+	
+	public void setRenderDecisionManager(RenderDecisionManager renderDecisionManager) {
+		this.renderDecisionManager = renderDecisionManager;
 	}
  
 }

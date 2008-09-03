@@ -318,13 +318,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         }
         return attr;
     }
-    @Override
     public void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions) {
     	this.selectedReportDefinitions.clear();
     	if(selectedReportDefinitions != null) this.selectedReportDefinitions.addAll(selectedReportDefinitions);
     }
     
-    @Override
     public List<ReportDefinition> getSelectedReportDefinitions() {
     	return selectedReportDefinitions;
     }

@@ -1,6 +1,8 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
+<%@attribute name="path" description="This path is used by the render decision manager to determinie the visibility" %>
 <%@attribute name="title"%>
 <%@attribute name="id"%>
 <%@attribute name="cssClass"%>
@@ -9,7 +11,7 @@
 <%@attribute name="deleteParams" %>
 <%@attribute name="collapsable" required="false" %>
 <%@attribute name="collapsed" required="false" %>
-
+<caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
 <div class="division ${cssClass}" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
 
     <div class="header">
@@ -39,3 +41,4 @@
         <jsp:doBody/>
     </div>
 </div>
+</caaers:renderFilter>

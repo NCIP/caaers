@@ -385,9 +385,6 @@
         <tags:instructions code="instruction_ae_enterBasicsNote" heading="Note: " />
         </jsp:attribute>
       
-      	<jsp:attribute name="singleFields">
-    		<ae:oneOutcome />
-		</jsp:attribute>
       
         <jsp:attribute name="repeatingFields">
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">

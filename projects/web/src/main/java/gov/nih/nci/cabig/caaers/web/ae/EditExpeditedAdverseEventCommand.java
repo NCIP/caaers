@@ -89,4 +89,13 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void flush() {
     	reportDao.flush();
     }
+    
+	/**
+	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
+	 * @return
+	 */
+	public boolean isDCPNonAdeersStudy(){
+		if(getStudy() == null) return false;
+		return (!getStudy().getAdeersReporting()) && getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
+	}
 }

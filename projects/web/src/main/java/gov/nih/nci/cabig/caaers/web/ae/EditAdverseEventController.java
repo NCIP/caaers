@@ -54,6 +54,64 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
                     throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
+        EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
+        
+        //hide for non DCP-AdEERS reporting enabled study
+        if(!command.isDCPNonAdeersStudy()){
+        	//sections to be concealed
+        	conceal("aeReport.responseDescription.dcp");
+        	//fields to be concealed
+        	conceal("aeReport.adverseEvents[].eventApproximateTime",
+        			"aeReport.adverseEvents[].eventApproximateTime.hour", 
+        			"aeReport.adverseEvents[].eventApproximateTime.minute",
+        			"aeReport.adverseEvents[].eventLocation",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.hour",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.minute",
+        			"aeReport.treatmentInformation.courseAgents[].formulation",
+        			"aeReport.treatmentInformation.courseAgents[].lotNumber",
+        			"aeReport.reporter.title",
+        			"aeReport.reporter.address.street",
+        			"aeReport.reporter.address.city",
+        			"aeReport.reporter.address.state",
+        			"aeReport.reporter.address.zip",
+        			"aeReport.physician.title",
+        			"aeReport.physician.address.street",
+        			"aeReport.physician.address.city",
+        			"aeReport.physician.address.state",
+        			"aeReport.physician.address.zip",
+        			"aeReport.concomitantMedications[].startDate",
+        			"aeReport.concomitantMedications[].endDate",
+        			"aeReport.concomitantMedications[].stillTakingMedications"
+        			);
+        }else{
+        	//sections to be revealed
+        	reveal("aeReport.responseDescription.dcp");
+        	//fields to be revealed
+        	reveal( "aeReport.adverseEvents[].eventApproximateTime",
+        			"aeReport.adverseEvents[].eventApproximateTime.hour", 
+        			"aeReport.adverseEvents[].eventApproximateTime.minute",
+        			"aeReport.adverseEvents[].eventLocation",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.hour",
+        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.minute",
+        			"aeReport.treatmentInformation.courseAgents[].formulation",
+        			"aeReport.treatmentInformation.courseAgents[].lotNumber",
+        			"aeReport.reporter.title",
+        			"aeReport.reporter.address.street",
+        			"aeReport.reporter.address.city",
+        			"aeReport.reporter.address.state",
+        			"aeReport.reporter.address.zip",
+        			"aeReport.physician.title",
+        			"aeReport.physician.address.street",
+        			"aeReport.physician.address.city",
+        			"aeReport.physician.address.state",
+        			"aeReport.physician.address.zip",
+        			"aeReport.concomitantMedications[].startDate",
+        			"aeReport.concomitantMedications[].endDate",
+        			"aeReport.concomitantMedications[].stillTakingMedications"
+        			);        	
+        }
         refdata.put("currentTask", task);
         return refdata;
     }
@@ -204,5 +262,17 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
             attr = request.getAttribute(attributName);
         }
         return attr;
+    }
+    
+    private void conceal(String...fieldPropertyNames){
+    	for(String property : fieldPropertyNames){
+    		renderDecisionManager.conceal(property);
+    	}
+    }
+    
+    private void reveal(String...fieldPropertyNames){
+    	for(String property : fieldPropertyNames){
+    		renderDecisionManager.reveal(property);
+    	}
     }
 }
