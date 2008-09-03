@@ -750,7 +750,7 @@ table.tablecontent {
 
 }
 #contentOf-solicitatedID{background-color: #fcf;}
-#contentOf-observedID{background-color:#ccf;}
+#contentOf-observedID{background-color:#ccf; position:relative;}
 
 
 a.help {

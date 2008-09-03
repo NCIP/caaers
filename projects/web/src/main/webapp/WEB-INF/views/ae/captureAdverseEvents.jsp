@@ -26,9 +26,8 @@
 }
 .divNotes,.divOtherMeddra{
 	font-size:8pt;
-	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:1px 0px 0px 0px;
+margin-top:5px;
+float:left;
 }
 /* Override basic styles */
 div.row div.value {
@@ -45,6 +44,84 @@ div.row div.value {
 }
 .ae-section{
 	padding-top: 5px;
+}
+#contentOf-observedID .even{
+background-color:#e8e8ff;
+}
+#contentOf-solicitatedID .odd{
+background-color:#ffe2ff;
+}
+.thterm{
+	position:absolute;
+	left: 10px;
+	top: 10px;
+	}
+#boxholder{
+position:relative;
+height:210px;
+width:100%;
+border-top:1px solid #0066ff;
+padding-top:10px;
+}
+#gradehead{
+position:absolute;
+left:10px;
+top:75px;
+}
+#attributionhead{
+position:absolute;
+left:350px;
+top:75px;
+}
+#hospitalizationhead{
+position:absolute;
+left:500px;
+top:75px;
+}
+#expectedhead{
+position:absolute;
+left:10px;
+top:145px;
+}
+#serioushead{
+position:absolute;
+left:180px;
+top:145px;
+}
+/*Grade*/
+.selectbox0{
+position:absolute;
+left:10px;
+top:95px;
+max-width:300px;
+}
+/*Attribution*/
+.selectbox1{
+position:absolute;
+left:350px;
+top:95px;
+}
+/*Hospitalization*/
+.selectbox2{
+position:absolute;
+left:500px;
+top:95px;
+}
+/*Expected*/
+.selectbox3{
+position:absolute;
+left:10px;
+top:165px;
+}
+/*Serious*/
+.selectbox4{
+position:absolute;
+left:180px;
+top:165px;
+}
+.delete{
+position:absolute;
+right:20px;
 }
 
 </style>

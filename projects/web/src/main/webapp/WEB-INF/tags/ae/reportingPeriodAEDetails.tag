@@ -21,15 +21,6 @@ Note: -
                    title="">
                </tags:aeTermQuery>
                <table id="observedTable" width="100%" class="tablecontent">
-                   <tr>
-                       <th scope="col" align="left" width="43%"><b>Term</b> </th>
-                       <th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-                       <th scope="col" align="left"><b>Attribution</b> </th>
-                       <th scope="col" align="left"><b>Hospitalization</b> </th>
-                       <th scope="col" align="left"><b>Expected</b> </th>
-                       <caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-                    <th scope="col" align="left"> </th>
-                   </tr>
                 <c:set var="noObservedAE" value="true" scope="request"/>
                    <tr id="observedBlankRow" />
                    <c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
@@ -49,14 +40,6 @@ Note: -
 <chrome:division title="Solicited Adverse Event(s)" collapsable="true" id="solicitatedID">
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
-				<tr>
-					<th scope="col" align="left" width="43%"><b>Term</b> </th>
-					<th scope="col" align="left"><b>Grade</b> </th>
-					<th scope="col" align="left"><b>Attribution</b> </th>
-					<th scope="col" align="left"><b>Hospitalization</b> </th>
-					<th scope="col" align="left"><b>Expected</b> </th>
-					<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-				</tr>
 				<c:set var="noSolictedAE" value="true" scope="request"/>
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
    					<c:if test="${ae.solicited}">
