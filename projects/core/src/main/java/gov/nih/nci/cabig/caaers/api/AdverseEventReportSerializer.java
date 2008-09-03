@@ -690,7 +690,8 @@ public class AdverseEventReportSerializer {
 		    		ca1.setModifiedDose(ca.getModifiedDose());
 		    		ca1.setStudyAgent(ca.getStudyAgent());
 		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
-		
+		    		ca1.setFormulation(ca.getFormulation());
+		    		ca1.setLotNumber(ca.getLotNumber());
 		    		treatmentInformation.addCourseAgent(ca1);
 		    	}
 		    	
