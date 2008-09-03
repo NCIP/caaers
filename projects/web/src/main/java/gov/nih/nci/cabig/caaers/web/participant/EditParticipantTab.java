@@ -131,12 +131,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
     @Override
     public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
-        String action = request.getParameter("_action");
-        String selected = request.getParameter("_selected");
-        if ("removeIdentifier".equals(action)) {
-            ParticipantInputCommand cmd = command;
-            cmd.getParticipant().getIdentifiers().remove(Integer.parseInt(selected));
-        }
+        command.setStudy(command.getAssignment().getStudySite().getStudy());
     }
 
     protected void validate(ParticipantInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {

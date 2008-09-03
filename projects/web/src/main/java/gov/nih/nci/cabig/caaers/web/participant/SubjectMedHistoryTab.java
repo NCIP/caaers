@@ -92,7 +92,10 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, T command) {
     	Map<String, Object> refData = super.referenceData(request, command);
-    	refData.put("preExistingConditionOptions", initializePreExistingConditionOptions());
+
+        command.refreshStudyDiseases();
+
+        refData.put("preExistingConditionOptions", initializePreExistingConditionOptions());
     	refData.put("studyDiseasesOptions", command.getStudyDiseasesMap());
     	refData.put("baselinePerformanceOptions", initializeBaselinePerformanceOptions());
     	refData.put("priorTherapyOptions", initializePriorTherapyOptions());
