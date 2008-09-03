@@ -54,8 +54,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />	
 		<entry key="/pages/ae/edit"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
-		<entry key="/pages/ae/editExpeditedReport"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />	
 		<entry key="/pages/ae/editRoutine"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list"
