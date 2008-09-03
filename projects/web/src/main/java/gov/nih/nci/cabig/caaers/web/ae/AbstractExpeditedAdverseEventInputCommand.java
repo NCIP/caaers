@@ -107,9 +107,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
-        if (aeReport.getAdverseEvents().size() == 0) {
-            aeReport.addAdverseEvent(new AdverseEvent());
-        }
         if (aeReport.getTreatmentInformation() == null) {
             aeReport.setTreatmentInformation(new TreatmentInformation());
         }
