@@ -343,9 +343,11 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     @Transient
     public String getExpectedDisplayDueDate(){
     	Calendar today = GregorianCalendar.getInstance();
-    	today.add(timeScaleUnitType.getCode(), duration);
+    	today.add(timeScaleUnitType.getCalendarTypeCode(), duration);
     	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
     	return "Expected Due Date " + formatter.format(today.getTime());
     }
+    
+    
 
 }
