@@ -64,6 +64,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     MandatoryProperties getMandatoryProperties();
 
     List<ReportDefinition> getInstantiatedReportDefinitions();
+
     void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
     List<ReportDefinition> getSelectedReportDefinitions();
 

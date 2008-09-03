@@ -62,14 +62,16 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         return cmd;
 
     }
-    
+
+/*
     @Override
     protected Object currentFormObject(HttpServletRequest request,Object command) throws Exception {
     	EditParticipantCommand cmd = (EditParticipantCommand) super.currentFormObject(request, command);
     	participantDao.reassociateUsingLock(cmd.getParticipant());
     	return cmd;
-    	
+
     }
+*/
 
 /*
     protected NewParticipantCommand save(final ParticipantInputCommand newParticipantCommand,final Errors errors) {
@@ -111,6 +113,13 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
     protected boolean shouldSave(HttpServletRequest request, T command, Tab<T> tTab) {
         if (isAjaxRequest(request)) return false;
         return super.shouldSave(request, command, tTab);
+    }
+
+    protected T save(T command, Errors errors) {
+        ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
+        participantDao.merge(participantCommand.getParticipant());
+
+        return command;
     }
 
     @Override

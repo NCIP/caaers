@@ -113,7 +113,8 @@ function removeSystemIdentifier(container, index) {
        <th scope="col">Site</th>
        <th scope="col" width="150px">Study Subject Identifier</th>
     </tr>
-  <c:forEach items="${command.participant.assignments}" var="assignment" varStatus="i">
+    <%--<b style="color: red;">[<c:out value="${command.participant.assignments == null}" />]</b>--%>
+  <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
     <tr class="results">
       <td><ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}</td>
       <td>${assignment.studySite.study.shortTitle}</td>
@@ -125,7 +126,7 @@ function removeSystemIdentifier(container, index) {
 
 </chrome:division>
 
-<chrome:division title="Demographic Information" collapsed="true" collapsable="true" id="DemoInfo">
+<chrome:division title="Demographic Information" collapsed="false" collapsable="false" id="DemoInfo">
 <table id="test2" class="single-fields" width="100%">
     <tr >
         <td>
