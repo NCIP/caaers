@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Rhett Sutphin
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
@@ -44,12 +46,6 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      */
     Map<String, List<List<Attribution>>> getAttributionMap();
 
-    Map<ReportDefinition, Boolean> getOptionalReportDefinitionsMap();
-
-    void setOptionalReportDefinitions(List<ReportDefinition> defs);
-
-    void refreshSelectedReportDefinitionsMap(List<ReportDefinition> defs);
-
     void reassociate();
 
     Collection<ExpeditedReportSection> getMandatorySections();
@@ -67,32 +63,9 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 
     MandatoryProperties getMandatoryProperties();
 
-    List<ReportDefinition> getAllReportDefinitions();
-
-    void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions);
-
-    List<ReportDefinition> getSelectedReportDefinitions();
-
-    void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
-
     List<ReportDefinition> getInstantiatedReportDefinitions();
-
-    void setSelectedReportDefinitionNames(String selectedNames);
-
-    List<ReportDefinition> getRequiredReportDeifnitions();
-
-    void setRequiredReportDefinition(List<ReportDefinition> def);
-
-    String getRequiredReportDefinitionNames();
-
-    String getSelectedReportDefinitionNames();
-
-    /**
-     * Reports which are already submitted.
-     * 
-     * @return
-     */
-    Collection<ReportDefinition> getSubmittedReportDefinitions();
+    void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
+    List<ReportDefinition> getSelectedReportDefinitions();
 
     void setNextPage(int page);
 

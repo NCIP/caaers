@@ -566,5 +566,18 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		this.primaryAdverseEventId = primaryAdverseEventId;
 	}
     
+    public List<AdverseEvent> getSelectedAesList() {
+		List selectedAesList = new ArrayList<AdverseEvent>();
+    	Map<Integer, AdverseEvent> aeObjectMap = new HashMap<Integer, AdverseEvent>();
+    	for(AdverseEvent ae: adverseEvents){
+    		if(!aeObjectMap.containsKey(ae.getId()))
+    			aeObjectMap.put(ae.getId(), ae);
+    	}
+    	for(Integer id: getSelectedAesMap().keySet()){
+			if(getSelectedAesMap().get(id).equals(Boolean.TRUE))
+				selectedAesList.add(aeObjectMap.get(id));
+		}
+    	return selectedAesList;
+	}
     
 }

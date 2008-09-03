@@ -46,7 +46,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	log.debug("In form backing object");
         SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
-                        getDao(), reportDefinitionDao, assignmentDao, expeditedReportTree);
+                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));

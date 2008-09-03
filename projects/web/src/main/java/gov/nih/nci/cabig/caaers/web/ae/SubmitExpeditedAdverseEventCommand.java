@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -24,8 +25,9 @@ public class SubmitExpeditedAdverseEventCommand extends EditExpeditedAdverseEven
     public SubmitExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
                     ReportDefinitionDao reportDefinitionDao,
                     StudyParticipantAssignmentDao assignmentDao,
+                    AdverseEventReportingPeriodDao reportingPeriodDao,
                     ExpeditedReportTree expeditedReportTree) {
-        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, expeditedReportTree);
+        super(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
     }
 
     @Override

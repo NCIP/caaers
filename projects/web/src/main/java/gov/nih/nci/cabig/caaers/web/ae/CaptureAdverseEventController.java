@@ -51,6 +51,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private static final String ACTION_PARAMETER = "action";
 	private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
 	private static final String AE_LIST_PARAMETER = "adverseEventList";
+	private static final String CREATE_NEW_TASK = "createNew";
+	private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
 	
 	
 	private ParticipantDao participantDao;
@@ -194,34 +196,25 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 
 		CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) oCommand;
 		
-		String action = (String)findInRequest(request, "_action");
-		String reportIdString = (String)findInRequest(request, "_reportId");
-		Integer reportId = Integer.parseInt(reportIdString);
-		
-		List reportDefnIdList = new ArrayList<Integer>();
-		List adverseEventIdList = new ArrayList<Integer>();
-		
-		for(Integer id: command.getSelectedAesMap().keySet()){
-			if(command.getSelectedAesMap().get(id).equals(Boolean.TRUE))
-				adverseEventIdList.add(id);
-		}
-		
-		for(Integer id: command.getReportDefinitionMap().keySet()){
-			if(command.getReportDefinitionMap().get(id).equals(Boolean.TRUE))
-				reportDefnIdList.add(id);
-		}
-		
-		// Set the parameters in the session.
-		request.getSession().setAttribute(ACTION_PARAMETER, action);
-		if(reportId != null)
-			request.getSession().setAttribute(REPORT_ID_PARAMETER, reportId);
-		request.getSession().setAttribute(AE_LIST_PARAMETER, adverseEventIdList);
-		request.getSession().setAttribute(REPORT_DEFN_LIST_PARAMETER, reportDefnIdList);
-		
-		
-		
 		Map<String, Object> model = new ModelMap("participant", command.getParticipant().getId());
 	    model.put("study", command.getStudy().getId());
+		
+		String action = (String)findInRequest(request, "_action");
+		String reportIdString = (String)findInRequest(request, "_reportId");
+		Integer reportId;
+		
+		// Set the parameters in the session.
+		if(!action.equals(CREATE_NEW_TASK)){
+			reportId = Integer.parseInt(reportIdString);
+			request.getSession().setAttribute(REPORT_ID_PARAMETER, reportId);
+			model.put("aeReport", reportId);
+		}
+		request.getSession().setAttribute(ACTION_PARAMETER, action);
+		request.getSession().setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());
+		request.getSession().setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
+		request.getSession().setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
+		
+		
 	    return new ModelAndView("redirectToExpeditedAeEdit", model);
 	}
 	

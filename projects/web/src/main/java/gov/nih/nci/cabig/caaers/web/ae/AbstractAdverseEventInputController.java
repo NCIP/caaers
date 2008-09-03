@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
 import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
@@ -116,6 +117,8 @@ public abstract class AbstractAdverseEventInputController
     protected ReportDefinitionDao reportDefinitionDao;
 
     protected ExpeditedReportTree expeditedReportTree;
+    
+    protected AdverseEventReportingPeriodDao reportingPeriodDao;
 
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -434,4 +437,10 @@ public abstract class AbstractAdverseEventInputController
     public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
         this.interventionSiteDao = interventionSiteDao;
     }
+    
+    public void setReportingPeriodDao(
+			AdverseEventReportingPeriodDao reportingPeriodDao) {
+		this.reportingPeriodDao = reportingPeriodDao;
+	}
+ 
 }

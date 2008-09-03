@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -33,6 +34,8 @@ public abstract class AeWebTestCase extends WebTestCase {
 
     protected StudyParticipantAssignmentDao assignmentDao;
 
+    protected AdverseEventReportingPeriodDao reportingPeriodDao;
+    
     protected EditExpeditedAdverseEventCommand command;
 
     protected ExpeditedAdverseEventReportDao reportDao;
@@ -60,6 +63,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         participantDao = registerMockFor(ParticipantDao.class);
         expeditedReportTree = new ExpeditedReportTree();
         expeditedReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
+        reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
         command = createCommand();
 
         errors = new BindException(command, "command");
@@ -68,11 +72,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract EditExpeditedAdverseEventCommand createCommand();
 
     protected final EditExpeditedAdverseEventCommand createRealCommand() {
-    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, expeditedReportTree);
+    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
     }
 
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, expeditedReportTree);
+        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
     }
 
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {
