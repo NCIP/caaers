@@ -236,7 +236,7 @@
 					<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			[  ]  Initial Event Report  
+						  			[ x ]  Initial Event Report  
 						  		</fo:block>      										  					
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
 						  			[  ]  Amendment  
