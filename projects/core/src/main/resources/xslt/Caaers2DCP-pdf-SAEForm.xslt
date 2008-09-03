@@ -1028,14 +1028,30 @@
 										5.	Outcome of Event (at time of report)
 									</fo:block>
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Resolved date (Month/Day/Year) : ___<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>    
-										[  ] Improved   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										 [  ] Unchanged   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										 [  ] Worse   <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
-										 [  ] Not available
+										[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='RECOVERED_WITH_SEQUELAE'">x </xsl:if>] Resolved-date : 
+										date (Month/Day/Year) : 
+										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='RECOVERED_WITH_SEQUELAE'">
+				                    		<xsl:call-template name="standard_date">
+				                        		<xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+				                    		</xsl:call-template>
+										</xsl:if>
+										
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+									  	[ <xsl:if test="Outcome/OutcomeType='RECOVERING'">x </xsl:if>] Improved  <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+									  	[ <xsl:if test="Outcome/OutcomeType='NOT_RECOVERED'">x </xsl:if>] Unchanged <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										
+										[ <xsl:if test="Outcome/OutcomeType='HOSPITALIZATION'">x </xsl:if>] Worse <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
+										[ <xsl:if test="Outcome/OutcomeType='HOSPITALIZATION'">x </xsl:if>] Not available <xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 							  		</fo:block>      
 									<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-										[  ] Fatal date of death (Month/Day/Year) :  ____<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>      
+										[ <xsl:if test="Outcome/OutcomeType='DEAD'">x </xsl:if>] Fatal-date of death (Month/Day/Year) :  
+										<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus='DEAD'">
+				                    		<xsl:call-template name="standard_date">
+				                        		<xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+				                    		</xsl:call-template>
+										</xsl:if>
+										
+										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>    
 										Autopsy performed?        
 										<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; </xsl:text>
 										[ <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed='true'">x</xsl:if>] Y        
