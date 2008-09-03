@@ -53,6 +53,14 @@ public interface AdverseEventQueryService {
 	 */
 	public String getXML(List<AdverseEvent> adverseEvents) throws Exception ;
 	
+	/**
+	 * transform from xml to plain text
+	 * @param xml
+	 * @return
+	 * @throws Exception
+	 */
+	public String getText(String xml) throws Exception ;
+	
 	//public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment);
 		
 
