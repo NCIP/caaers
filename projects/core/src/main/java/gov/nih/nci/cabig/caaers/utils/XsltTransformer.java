@@ -52,7 +52,28 @@ public class XsltTransformer {
 
         return outStr.toString();
     }
+    
+    public String toText(String inXml, String xsltFile) throws Exception {
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(
+                xsltFile);
 
+		Source xmlSource = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
+		// File xslt = new File(xsltFile);
+		
+		Source xsltSource = new StreamSource(stream);
+		
+		StringWriter outStr = new StringWriter();
+		StreamResult result = new StreamResult(outStr);
+		
+		// the factory pattern supports different XSLT processors
+		TransformerFactory transFact = TransformerFactory.newInstance();
+		Transformer trans = transFact.newTransformer(xsltSource);
+		
+		trans.transform(xmlSource, result);// transform(xmlSource, new StreamResult(System.out));
+		
+		return outStr.toString();
+    	
+    }
     /**
      * 
      * @param inXml
