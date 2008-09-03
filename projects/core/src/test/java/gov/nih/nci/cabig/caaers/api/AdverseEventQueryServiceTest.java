@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
 
@@ -18,11 +19,12 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		svc = (AdverseEventQueryService)getDeployedApplicationContext().getBean("adverseEventQueryService");
 	}
 	
-	public void testGetByParticipant() {
+	public void testGetByParticipant() throws Exception {
 		Participant participant = new Participant();
 		participant.setFirstName("Dilbert");
 		List<AdverseEvent> aes = svc.getByParticipant(participant);		
 		assertEquals(2, aes.size());
+		System.out.println(svc.getText(svc.getXML(aes)));
 		
 		participant = new Participant();
 		participant.setFirstName("John");
@@ -56,7 +58,9 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		aes = svc.getByParticipant(participant,ae);
 		assertEquals(0, aes.size());
 	}	
-/*
+	
+	
+
 	public void testGetByStudy() {
 		Study study = new Study();
 		study.setShortTitle("Short Title");
@@ -68,6 +72,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		aes = svc.getByStudy(study);	
 		assertEquals(0, aes.size());		
 	}
+	/*
 	public void atestGet() {
 		try {
 			
