@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.utils.XsltTransformer;
 
 import java.util.List;
 
@@ -53,6 +54,12 @@ public class AdverseEventQueryServiceImpl implements AdverseEventQueryService {
 		}
 		aeList.append("</AdverseEvents>");
 		return aeList.toString();
+	}
+	
+	public String getText(String xml) throws Exception  {
+		String xsltFile = "xslt/AdverseEvent-xml-text.xslt";
+		XsltTransformer xsltTransformer = new XsltTransformer();
+		return xsltTransformer.toText(xml, xsltFile);
 	}
 	
 }
