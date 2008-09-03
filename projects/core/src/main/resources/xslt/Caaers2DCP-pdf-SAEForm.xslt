@@ -331,7 +331,12 @@
 						<fo:table-row xsl:use-attribute-sets="tr-height-1" >
       						<fo:table-cell xsl:use-attribute-sets="small-cell">
 						  		<fo:block xsl:use-attribute-sets="normal" margin-left="2mm"> 
-						  			Event Occurred at: <xsl:value-of select="eventLocation"/>
+						  			Event Occurred at: 
+						  			<xsl:for-each select="AdverseEventReport/AdverseEvent">
+										<xsl:if test="substring(gridId,1,3) = 'PRY'">
+						  					<xsl:value-of select="eventLocation"/>
+						  				 </xsl:if>
+									</xsl:for-each>
 						  		</fo:block>      										  					
       						</fo:table-cell>
       					</fo:table-row>
@@ -343,11 +348,11 @@
       						</fo:table-cell>
       						<fo:table-cell xsl:use-attribute-sets="small-cell" number-columns-spanned="2">
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									Primary Treatment Approx. Time (A.M./P.M.): <xsl:value-of select="TreatmentInformation/primaryTreatmentApproximateTime/hour"/> : <xsl:value-of select="TreatmentInformation/primaryTreatmentApproximateTime/minute"/>														
+									Primary Treatment Approx. Time (A.M./P.M.): <xsl:value-of select="AdverseEventReport/TreatmentInformation/primaryTreatmentApproximateTime/hour"/> : <xsl:value-of select="AdverseEventReport/TreatmentInformation/primaryTreatmentApproximateTime/minute"/>														
 						  		</fo:block>    
 						  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>  							
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-									Primary Treatment of Event:	<xsl:value-of select="TreatmentInformation/primaryTreatment"/>	
+									Primary Treatment of Event:	<xsl:value-of select="AdverseEventReport/TreatmentInformation/primaryTreatment"/>	
 						  		</fo:block> 
       						</fo:table-cell>
       					</fo:table-row>      					
