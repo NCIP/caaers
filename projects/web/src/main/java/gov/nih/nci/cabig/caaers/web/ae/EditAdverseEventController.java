@@ -93,6 +93,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         if(StringUtils.equals("createNew", action)){
     		command.getAeReport().setReportingPeriod(reportingPeriod);
+    		command.reassociate();
         }else{
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         	command.refreshMandatoryProperties();
@@ -102,8 +103,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         request.getSession().removeAttribute(REPORT_ID_PARAMETER);
         request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);
         request.getSession().removeAttribute(REPORT_DEFN_LIST_PARAMETER);
-        
-        command.reassociate();
     }
 
     @Override

@@ -56,8 +56,6 @@
 		}
 		
 		function forwardControl(task, reportId){
-			alert('task = ' + task);
-			alert('reportId = ' + reportId);
 			var form = document.getElementById('command')
 			form._action.value=task;
 			form._reportId.value=reportId;
@@ -80,7 +78,7 @@
 				if(reportElements[i].checked)
 					selected = true;
 			if(!selected){
-				alert('Atleast one report should be selected');
+				alert('At least one report should be selected');
 			}
 			return selected;
 		}
@@ -92,7 +90,7 @@
 				if(aeElements[i].checked)
 					selected = true;
 			if(!selected){
-				alert('Atleast one adverse event should be selected');
+				alert('At least one adverse event should be selected');
 			}
 			return selected;
 		}
