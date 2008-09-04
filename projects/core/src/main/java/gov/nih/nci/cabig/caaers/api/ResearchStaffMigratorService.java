@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
-import java.rmi.RemoteException;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -16,7 +15,7 @@ public interface ResearchStaffMigratorService {
 	//public void createStudy(@WebParam(name="Study") gov.nih.nci.cabig.caaers.webservice.Study xmlStudy);
 	
 	@WebMethod
-	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff) throws RemoteException;
+	public CaaersServiceResponse saveResearchStaff(@WebParam(name="Staff") gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff staff) ;//throws RemoteException;
 	
 	public List<DomainObjectImportOutcome<ResearchStaff>> getImportableResearchStaff();
 	
