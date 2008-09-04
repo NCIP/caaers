@@ -20,7 +20,6 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +71,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
         }
         return rsList.get(0);
     }
-    public CaaersServiceResponse saveResearchStaff(Staff staff) throws RemoteException {
+    public CaaersServiceResponse saveResearchStaff(Staff staff) {//throws RemoteException {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
     	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
     	getImportableResearchStaff().clear();
