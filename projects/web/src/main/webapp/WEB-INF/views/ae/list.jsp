@@ -101,7 +101,7 @@
 	</c:if>
 		<div class="eXtremeTable" >
 			<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
-				<c:if test="${fn:length(command.assignment.reportingPeriods) gt 0}">
+				
 					<thead>
 						<tr align="center" class="label">
 							<td width="5%" class="tableHeader"></td>
@@ -113,11 +113,15 @@
 							<td width="16%" class="tableHeader">Options</td>
 						</tr>
 					</thead>
+				<c:if test="${fn:length(command.assignment.reportingPeriods) gt 0}">	
 				    <c:forEach items="${command.assignment.reportingPeriods}" var="reportingPeriod" varStatus="rpStatus">
 					    <ae:oneListReportingPeriodRow reportingPeriod="${reportingPeriod}" index="${rpStatus.index}"/>		
 				    </c:forEach>
 				</c:if>
 			</table>
+			<c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">
+				Evaluation period not created yet.
+			</c:if>
 		</div>
 </body>
 </html>
