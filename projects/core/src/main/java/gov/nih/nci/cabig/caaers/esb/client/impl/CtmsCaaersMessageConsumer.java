@@ -307,8 +307,8 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 			logger.error("caught processParticipant",e);
 		} catch (JMSException e) {
 			logger.error("caught processParticipant",e);
-		} catch (RemoteException e) {
-			logger.error("caught processParticipant",e);
+		//} catch (RemoteException e) {
+			//logger.error("caught processParticipant",e);
 		}
 		
 		return responseXml;
@@ -336,8 +336,8 @@ public class CtmsCaaersMessageConsumer implements MessageListener{
 			logger.error("caught processParticipant",e);
 		} catch (JMSException e) {
 			logger.error("caught processParticipant",e);
-		} catch (RemoteException e) {
-			logger.error("caught processParticipant",e);
+		//} catch (RemoteException e) {
+			//logger.error("caught processParticipant",e);
 		}
 		
 		return responseXml;
