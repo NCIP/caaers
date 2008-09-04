@@ -17,7 +17,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
     }
 
 
-    public CaaersServiceResponse saveInvestigator(Staff staff) throws RemoteException {
+    public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
     	Investigator investigator = null;
     	getImportableInvestigators().clear();
