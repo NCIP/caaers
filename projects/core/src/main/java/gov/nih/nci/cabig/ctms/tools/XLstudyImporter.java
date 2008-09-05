@@ -83,7 +83,6 @@ public class XLstudyImporter {
 
     int rowCount = 0;
 
-
     public final String STUDY_SHEET_NAME = "admin info";
 
     public final String AGENT_SHEET_NAME = "agent info";
@@ -107,7 +106,6 @@ public class XLstudyImporter {
     public void importXLstudy(File inputFile) throws Exception {
         bootstrap(inputFile);
         syncInvestigators();
-        // cleanStudies();
         boolean hasMoreStudies = true;
 
         while (rowCount > 0) {
@@ -120,7 +118,6 @@ public class XLstudyImporter {
             setStudyInvestigators(study);
             setStudyTherapies(study);
             validateStudy(study);
-            // saveStudy(study);
             rowCount--;
             System.out.println(rowCount);
         }
@@ -140,18 +137,14 @@ public class XLstudyImporter {
         orgInfoSheet = getSheet(ORG_SHEET_NAME);
         investigatorInfoSheet = getSheet(INVESTIGATOR_SHEET_NAME);
         therapyInfoSheet = getSheet(THERAPY_SHEET_NAME);
-
-        // orgdao = (OrganizationDao)applicationContext.getBean("orgdao");
         rowCount = studyInfoSheet.getLastRowNum();
         rowCount--;
 
     }
 
     private void initializeStudy(Study study) {
-        /*
-           * identifiers = new ArrayList<Identifier>();
-           */
-        primaryIdentifierString = getCellData(STUDY_SHEET_NAME, rowCount,
+
+    	primaryIdentifierString = getCellData(STUDY_SHEET_NAME, rowCount,
                 studyInfoSheet.getRow(rowCount).getCell((short) 0));
 
         localDocumentNumber = getCellData(STUDY_SHEET_NAME, rowCount,
@@ -160,27 +153,6 @@ public class XLstudyImporter {
                 .getRow(rowCount).getCell((short) 2));
         phaseCode = getCellData(STUDY_SHEET_NAME, rowCount, studyInfoSheet
                 .getRow(rowCount).getCell((short) 3));
-        /*
-           * primaryIdentifier = Identifier.createTemplate(
-           * OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE,
-           * primaryIdentifierString);
-           * primaryIdentifier.setPrimaryIndicator(Boolean.TRUE);
-           * identifiers.add(primaryIdentifier);
-           * identifiers.add(Identifier.createTemplate(
-           * OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE,
-           * localDocumentNumber)); // Funding Sponsor for all studies is CTEP
-           * primaryFundingSponsorOrganization = orgdao.getByName("Cancer Therapy
-           * Evaluation Program"); primaryStudyFundingSponsorOrganization = new
-           * StudyFundingSponsor();
-           * primaryStudyFundingSponsorOrganization.setOrganization(primaryFundingSponsorOrganization);
-           * primaryStudyFundingSponsorOrganization.setStudy(study);
-           * studyOrganizations = new ArrayList<StudyOrganization>();
-           * studyOrganizations.add(primaryStudyFundingSponsorOrganization);
-           * FundingSponsor fs = new FundingSponsor();
-           * fs.setStudyFundingSponsor(primaryStudyFundingSponsorOrganization);
-           * study.setFundingSponsor(fs); study.setIdentifiers(identifiers);
-           * study.setStudyOrganizations(studyOrganizations);
-           */
 
         FundingSponsor fs = new FundingSponsor();
         StudyFundingSponsor sfs = new StudyFundingSponsor();
@@ -198,7 +170,6 @@ public class XLstudyImporter {
         study.setShortTitle(localDocumentNumber);
         study.setLongTitle(studyTitle);
         aeTerminology = study.getAeTerminology();
-        // aeTerminology.setCtcVersion(getCtcdao().getCtcaeV3());
         Ctc ctc = new Ctc();
         ctc.setName(getCellData(STUDY_SHEET_NAME, rowCount, studyInfoSheet
                 .getRow(rowCount).getCell((short) 4)));
@@ -319,18 +290,6 @@ public class XLstudyImporter {
         boolean leadOrg;
         StudyOrganization studyOrganization;
         Organization organization;
-        /*
-           * for (int orgRow = 0; orgRow <= orgRows; orgRow++) { if
-           * (primaryIdentifierString.equalsIgnoreCase(getCellData(orgInfoSheet.getRow(orgRow)
-           * .getCell((short) 0)))) { leadOrg =
-           * getCellData(orgInfoSheet.getRow(orgRow).getCell((short) 1))
-           * .equalsIgnoreCase("Lead") ? true : false; organization =
-           * orgdao.getByNCIcode(formatNCIcode(getCellData(orgInfoSheet.getRow(
-           * orgRow).getCell((short) 3)))); if (leadOrg) { studyOrganization = new
-           * StudyCoordinatingCenter(); } else { studyOrganization = new
-           * StudySite(); } studyOrganization.setOrganization(organization);
-           * study.addStudyOrganization(studyOrganization); } }
-           */
 
         for (int orgRow = 1; orgRow <= orgRows; orgRow++) {
             if (primaryIdentifierString.equalsIgnoreCase(getCellData(
@@ -375,18 +334,10 @@ public class XLstudyImporter {
 
     private void setStudyTherapies(Study study) {
         int therapyRows = therapyInfoSheet.getLastRowNum();
-        // StudyTherapy studyTherapy;
         for (int therapyRow = 1; therapyRow <= therapyRows; therapyRow++) {
             if (primaryIdentifierString.equalsIgnoreCase(getCellData(
                     THERAPY_SHEET_NAME, therapyRow, therapyInfoSheet.getRow(
                             therapyRow).getCell((short) 0)))) {
-
-                // studyTherapy = new StudyTherapy();
-                // studyTherapy.setStudy(study);
-                // studyTherapy.setStudyTherapyType(getStudyTherapyType(getCellData(THERAPY_SHEET_NAME,
-                // therapyRow,
-                // therapyInfoSheet.getRow(therapyRow).getCell((short) 1))));
-                // study.addStudyTherapy(studyTherapy);
 
                 String therapyString = getCellData(THERAPY_SHEET_NAME,
                         therapyRow, therapyInfoSheet.getRow(therapyRow)
@@ -415,7 +366,6 @@ public class XLstudyImporter {
 
     private void validateStudy(Study study) {
         studyImportOutcome = studyImportService.importStudy(study);
-        // study = studyImportOutcome.getImportedDomainObject();
         if (studyImportOutcome.isSavable()) {
             saveStudy(studyImportOutcome.getImportedDomainObject());
         } else {
@@ -431,17 +381,16 @@ public class XLstudyImporter {
     }
 
     private void saveStudy(Study study) {
-        System.out.println("\n saving study: " + study.getShortTitle() + " -- "
-                + study.getLongTitle());
         study.setDescription(study.getDescription() + "xxxx");
-        studydao.save(study);
-        /*
-           * study = new Study(); study.setShortTitle("xxxx");
-           * study.setLongTitle("Long Title Inserted");
-           * study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-           * study.setMultiInstitutionIndicator(Boolean.FALSE);
-           * study.setAdeersReporting(Boolean.TRUE); studydao.save(study);
-           */
+        if(fetchStudy(study) == null){
+        	System.out.println("\n saving study: " + study.getShortTitle() + " -- "
+                    + study.getLongTitle());
+        	studydao.save(study);
+        }else{
+        	System.out.println("Warn: Study Exists in caAERS: "
+                    + study.getShortTitle() + " -- " + study.getLongTitle());
+        }
+        
     }
 
 
@@ -657,6 +606,23 @@ public class XLstudyImporter {
             return sheet;
 
     }
+    
+    /**
+	 * This method fetches a Study from the DB based identifiers.
+	 * @param importedStudy
+	 * @return
+	 */
+	private Study fetchStudy(Study importedStudy){
+		Study dbStudy = null;
+		for (Identifier identifier : importedStudy.getIdentifiers()) {
+            dbStudy = studydao.getStudyDesignByIdentifier(identifier);
+            if(dbStudy != null){
+            	break;
+            }
+            studydao.evict(dbStudy);
+        }
+		return dbStudy;
+	}
 
     /*
       * // bringing back DB to original state to facilitate testing private void
