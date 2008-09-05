@@ -1,86 +1,89 @@
 <project name="caaers-core" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
-	<property name="parent.dir" value="${basedir}/.." />
-	<property file="${parent.dir}/build.properties" />
-	<import file="${parent.dir}/common.xml"/>
+    <property name="parent.dir" value="${basedir}/.."/>
+    <property file="${parent.dir}/build.properties"/>
+    <import file="${parent.dir}/common.xml"/>
 
-<!-- Biju - To be removed	
-	<target name="resolve" depends="common.resolve">
-			<copy-resources src="${module.lib}/main/xfire" dest="${lib.dir}"  filter="false" />
-	</target>
--->	
-	<target name="module-specific-flow" depends="resolve,generate-jibx,generate-jaxb,aspectj-compile ">
-		<mkdir dir="${classes.dir}/db" />
-		<copy-resources src="${main.src}/../db" dest="${classes.dir}/db" filter="true"/>
-	</target>
-	
-	<!-- =========================================================================== 
-          target: load-ajc              
-    ============================================================================= -->
-    <target name="load-ajc" unless="loaded.ajc" description="--> define the ajc task">
-    	<ivy:retrieve organisation="org.aspectj" module="aspectjtools" inline="true" pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" sync="true"/> 
-    	<taskdef name="ajc" classname="org.aspectj.tools.ant.taskdefs.Ajc10">
-    		<classpath>
-    	 		<pathelement location="${ivy.jar.dir}/aspectjtools-1.5.4.jar"/>
-    		</classpath>
-    	</taskdef>    
-    	<property name="loaded.ajc" value="true" />
+    <!-- Biju - To be removed
+        <target name="resolve" depends="common.resolve">
+                <copy-resources src="${module.lib}/main/xfire" dest="${lib.dir}"  filter="false" />
+        </target>
+    -->
+    <target name="module-specific-flow" depends="resolve,generate-jibx,generate-jaxb,aspectj-compile ">
+        <mkdir dir="${classes.dir}/db"/>
+        <copy-resources src="${main.src}/../db" dest="${classes.dir}/db" filter="true"/>
     </target>
-	
-	
-	<!--  Passes the source files in core through the ajc -->
-	<target name="aspectj-compile" depends="load-ivy, load-ajc" description="Passes the source files in core through the ajc">
-		<ajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5">
-			<classpath>
-					<path refid="main.classpath"/>
-			        <pathelement path="${classes.dir}"/>
-			</classpath>
-		</ajc>
-		
-	</target>
-	
-	<!-- ========================================================================
-		target : jar-test
-			Will call aspectj-compile of test classes then delegates to common jar-test
-	============================================================================-->	
-	<target name="jar-test" depends="aspectj-compile-test, common.jar-test">
-		<!--<makeJar dir="${dist.dir}" dir.classes="${test.classes.dir}" file.name="${test.jar.file}"/> -->
-	</target>
-	
-	<!-- =============================================================================
-		target : aspectj-compile-test
-			Passes the test files in core through the ajc
-	================================================================================== -->
-	<target name="aspectj-compile-test" depends="load-ivy,load-ajc, resolve-test" description="Passes the test files in core through the ajc">
-			<ajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.5">
-			<classpath>
-					<path refid="test.classpath"/>
-			        <pathelement path="${test.classes.dir}"/>
-			</classpath>
-		</ajc>
-	</target>
 
-	<!-- ========================================================================
-		target: load-datasource
-			Will check the datsource properties identified by -Ddb=xxx, in USER_HOME/.caaers/ 
-			if not available there, it will search in /etc/caaers/
-	============================================================================= -->
-	<target name="find-datasource" unless="dsFile.loaded" description="Loads the datasource properties">
-		<echo message="databaseConfigurationName : ${databaseConfigurationName}" /> 
-		<condition property="dsFile" value="${user.home}/.caaers/${databaseConfigurationName}.properties" 
-				   else="/etc/caaers/${databaseConfigurationName}.properties">
-			<available file="${user.home}/.caaers/${databaseConfigurationName}.properties" />
-		</condition>
-		<property name="dsFile.loaded" value="true"/>
-	</target>
+    <!-- ===========================================================================
+         target: load-ajc
+   ============================================================================= -->
+    <target name="load-ajc" unless="loaded.ajc" description="--> define the ajc task">
+        <ivy:retrieve organisation="org.aspectj" module="aspectjtools" inline="true"
+                      pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" sync="true"/>
+        <taskdef name="ajc" classname="org.aspectj.tools.ant.taskdefs.Ajc10">
+            <classpath>
+                <pathelement location="${ivy.jar.dir}/aspectjtools-1.5.4.jar"/>
+            </classpath>
+        </taskdef>
+        <property name="loaded.ajc" value="true"/>
+    </target>
 
-	<!-- ========================================================================
-		target: migrate
-		 Will run the bering migration ..
-	============================================================================= -->
-	<target name="migrate" description="does bering migration" depends="resolve,find-datasource">
-		<echo message="Datasource File : ${dsFile}" />
-		<property file="${dsFile}"/>
-		<taskdef resource="edu/northwestern/bioinformatics/bering/antlib.xml" classpathref="main.classpath"/>
+
+    <!--  Passes the source files in core through the ajc -->
+    <target name="aspectj-compile" depends="load-ivy, load-ajc"
+            description="Passes the source files in core through the ajc">
+        <ajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5">
+            <classpath>
+                <path refid="main.classpath"/>
+                <pathelement path="${classes.dir}"/>
+            </classpath>
+        </ajc>
+
+    </target>
+
+    <!-- ========================================================================
+         target : jar-test
+             Will call aspectj-compile of test classes then delegates to common jar-test
+     ============================================================================-->
+    <target name="jar-test" depends="aspectj-compile-test, common.jar-test">
+        <!--<makeJar dir="${dist.dir}" dir.classes="${test.classes.dir}" file.name="${test.jar.file}"/> -->
+    </target>
+
+    <!-- =============================================================================
+         target : aspectj-compile-test
+             Passes the test files in core through the ajc
+     ================================================================================== -->
+    <target name="aspectj-compile-test" depends="load-ivy,load-ajc, resolve-test"
+            description="Passes the test files in core through the ajc">
+        <ajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.5">
+            <classpath>
+                <path refid="test.classpath"/>
+                <pathelement path="${test.classes.dir}"/>
+            </classpath>
+        </ajc>
+    </target>
+
+    <!-- ========================================================================
+         target: load-datasource
+             Will check the datsource properties identified by -Ddb=xxx, in USER_HOME/.caaers/
+             if not available there, it will search in /etc/caaers/
+     ============================================================================= -->
+    <target name="find-datasource" unless="dsFile.loaded" description="Loads the datasource properties">
+        <echo message="databaseConfigurationName : ${databaseConfigurationName}"/>
+        <condition property="dsFile" value="${user.home}/.caaers/${databaseConfigurationName}.properties"
+                   else="/etc/caaers/${databaseConfigurationName}.properties">
+            <available file="${user.home}/.caaers/${databaseConfigurationName}.properties"/>
+        </condition>
+        <property name="dsFile.loaded" value="true"/>
+    </target>
+
+    <!-- ========================================================================
+         target: migrate
+          Will run the bering migration ..
+     ============================================================================= -->
+    <target name="migrate" description="does bering migration" depends="resolve,find-datasource">
+        <echo message="Datasource File : ${dsFile}"/>
+        <property file="${dsFile}"/>
+        <taskdef resource="edu/northwestern/bioinformatics/bering/antlib.xml" classpathref="main.classpath"/>
         <property name="migrate.version" value=""/>
         <property name="bering.dialect" value=""/>
         <migrate classpathRef="main.classpath"
@@ -90,77 +93,107 @@
                  userid="${datasource.username}"
                  password="${datasource.password}"
                  targetVersion="${migrate.version}"
-        		 migrationsdir="${main.src}/../db/migrate" />
-		<echo message="migrate.version : ${migrate.version}" />
-		<echo message="bering.dialect : ${bering.dialect}" />
-	</target>
-	
-	<!-- ==========================================================================================
-		target : insert-csm-policy
-	==============================================================================================-->
-
-	<target name="insert-csm-policy" depends="find-datasource">
-    	<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="main.classpath"/>
-		<property file="${dsFile}"/>
-		<echo>Inserting test CSM users into ${datasource.url}</echo>
-		<dbunit classpathRef="main.classpath"
-				driver="${datasource.driver}" 
-				url="${datasource.url}" 
-				userid="${datasource.username}" 
-				password="${datasource.password}">
-	          <operation type="INSERT" src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml" />
-	    </dbunit>
-	</target>
-	<!-- ========================================================================
-		target: find-admin-datasource
-			Will check the datsource properties identified by -Ddb=xxx, in USER_HOME/.caaers/ 
-			if not available there, it will search in /etc/caaers/
-	============================================================================= -->
-	<target name="find-admin-datasource" unless="adminDsFile.loaded" description="Loads the admin datasource properties">
-		<echo message="databaseConfigurationName : ${databaseConfigurationName}-admin" /> 
-		<condition property="adminDsFile" value="${user.home}/.caaers/${databaseConfigurationName}-admin.properties" 
-				   else="/etc/caaers/${databaseConfigurationName}-admin.properties">
-			<available file="${user.home}/.caaers/${databaseConfigurationName}-admin.properties" />
-		</condition>
-		<property name="adminDsFile.loaded" value="true"/>
-	</target>	
-	<!-- ===============================================================================================
-		target : recreate-db-hudson
-	 ================================================================================================= -->
-	<target name="recreate-db-hudson" description="drop the database and create new database" depends="resolve, find-admin-datasource">
-			<property file="${adminDsFile}"/>    
-			<echo message="${datasource.driver}"/>    
-			<echo message="${datasource.url}"/>    
-			<echo message="${datasource.username}"/>    
-			<echo message="${datasource.password}"/>  
-			<sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}" url="${datasource.url}"  
-				classpathref="main.classpath" onerror="abort" autocommit="true">
-				${query1}
-				${query2}
-				${query3}
-				${query4}
-				${query5}
-				${query6}
-			</sql>
-	</target>
-	
-	<target name="generate-jaxb" description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
-		<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
-	    	<classpath>
-	    		<path refid="main.classpath" />
-	        </classpath>	        		
-	    </taskdef>
-		
-		<mkdir dir="${generated.src.dir}"/>
-	    
-		<xjc destdir="${generated.src.dir}" extension="true" >
-	    	<arg line="-npa
-	    			   -Xcollection-setter-injector"/>
-	    	<schema dir="${main.src.resources}/schema/integration">
-	        	<include name="*.xsd" />
-	        </schema>
-	        <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
-			
-	    </xjc>
+                 migrationsdir="${main.src}/../db/migrate"/>
+        <echo message="migrate.version : ${migrate.version}"/>
+        <echo message="bering.dialect : ${bering.dialect}"/>
     </target>
+
+    <!-- ==========================================================================================
+         target : insert-csm-policy
+     ==============================================================================================-->
+
+    <target name="insert-csm-policy" depends="find-datasource">
+        <taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask" classpathref="main.classpath"/>
+        <property file="${dsFile}"/>
+        <echo>Inserting test CSM users into ${datasource.url}</echo>
+        <dbunit classpathRef="main.classpath"
+                driver="${datasource.driver}"
+                url="${datasource.url}"
+                userid="${datasource.username}"
+                password="${datasource.password}">
+            <operation type="INSERT"
+                       src="src/test/resources/gov/nih/nci/cabig/caaers/security/testdata/CSM_policy.xml"/>
+        </dbunit>
+    </target>
+    <!-- ========================================================================
+         target: find-admin-datasource
+             Will check the datsource properties identified by -Ddb=xxx, in USER_HOME/.caaers/
+             if not available there, it will search in /etc/caaers/
+     ============================================================================= -->
+    <target name="find-admin-datasource" unless="adminDsFile.loaded"
+            description="Loads the admin datasource properties">
+        <echo message="databaseConfigurationName : ${databaseConfigurationName}-admin"/>
+        <condition property="adminDsFile" value="${user.home}/.caaers/${databaseConfigurationName}-admin.properties"
+                   else="/etc/caaers/${databaseConfigurationName}-admin.properties">
+            <available file="${user.home}/.caaers/${databaseConfigurationName}-admin.properties"/>
+        </condition>
+        <property name="adminDsFile.loaded" value="true"/>
+    </target>
+    <!-- ===============================================================================================
+         target : recreate-db-hudson
+      ================================================================================================= -->
+    <target name="recreate-db-hudson" description="drop the database and create new database"
+            depends="resolve, find-admin-datasource">
+        <property file="${adminDsFile}"/>
+        <echo message="${datasource.driver}"/>
+        <echo message="${datasource.url}"/>
+        <echo message="${datasource.username}"/>
+        <echo message="${datasource.password}"/>
+        <sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}"
+             url="${datasource.url}"
+             classpathref="main.classpath" onerror="abort" autocommit="true">
+            ${query1}
+            ${query2}
+            ${query3}
+            ${query4}
+            ${query5}
+            ${query6}
+        </sql>
+    </target>
+
+    <target name="generate-jaxb"
+            description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
+        <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+            <classpath>
+                <path refid="main.classpath"/>
+            </classpath>
+        </taskdef>
+
+        <mkdir dir="${generated.src.dir}"/>
+
+        <xjc destdir="${generated.src.dir}" extension="true">
+            <arg line="-npa
+	    			   -Xcollection-setter-injector"/>
+            <schema dir="${main.src.resources}/schema/integration">
+                <include name="*.xsd"/>
+            </schema>
+            <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
+
+        </xjc>
+    </target>
+
+    <target name="importexcel" description="" depends="compile,compile-test">
+        <echo message="File Name: ${filelocation}"/>
+        <path id="jars.cp">
+            <fileset dir="${lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+        <path id="test.jars.cp">
+            <fileset dir="${test.lib.dir}">
+                <include name="*.jar"/>
+            </fileset>
+        </path>
+        <java classname="gov.nih.nci.cabig.ctms.tools.XLstudyImporterTest">
+            <classpath>
+                <pathelement location="${classes.dir}"/>
+                <pathelement location="${test.classes.dir}"/>
+                <path refid="jars.cp"/>
+                <path refid="test.jars.cp"/>
+            </classpath>
+            <arg value="${filelocation}"/>
+        </java>
+    </target>
+
+
 </project>
