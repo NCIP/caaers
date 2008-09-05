@@ -43,7 +43,6 @@ public class XLstudyImporterTest extends AbstractTransactionalSpringContextTests
            * NOTE: These tests CANNOT be run in succession because it will cause the maximum number of connections to be exceeded.
            */
         suite.addTest(new XLstudyImporterTest("testImport"));
-        // suite.addTest(new PSCAdverseEventConsumerTest("testCreateNotificationLocal"));
         return suite;
     }
 
@@ -87,15 +86,9 @@ public class XLstudyImporterTest extends AbstractTransactionalSpringContextTests
 
     @Override
     public String[] getConfigLocations() {
-
-//        return new String[]{
-//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
-//                "classpath*:applicationContext-test.xml"
-//        };
         return new String[]{
                 "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
                 "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
-                //"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml",
                 "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
                 "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml",
                 "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
