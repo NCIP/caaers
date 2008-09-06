@@ -1,13 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.Embeddable;
+import org.springframework.beans.BeanUtils;
+
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 import java.math.BigDecimal;
 
 /**
  * This class represents the Dose domain object associated with the Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Embeddable
@@ -80,5 +82,13 @@ public class Dose {
         result = 31 * result + (units != null ? units.hashCode() : 0);
         result = 31 * result + (route != null ? route.hashCode() : 0);
         return result;
+    }
+
+
+    public Dose copy() {
+        Dose anotherDose = new Dose();
+        BeanUtils.copyProperties(this, anotherDose);
+        return anotherDose;
+
     }
 }

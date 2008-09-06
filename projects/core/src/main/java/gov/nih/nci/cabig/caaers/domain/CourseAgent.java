@@ -1,31 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Embedded;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-import javax.persistence.Column;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.AttributeOverride;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 /**
  * This class represents the CourseAgent domain object associated with the Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "course_agents")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_course_agents_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_course_agents_id")})
 public class CourseAgent extends AbstractMutableDomainObject {
     private TreatmentInformation treatmentInformation;
 
@@ -46,10 +37,10 @@ public class CourseAgent extends AbstractMutableDomainObject {
     private BigDecimal totalDoseAdministeredThisCourse;
 
     private String comments;
-    
+
     private String lotNumber;
     private String formulation;
-    
+
 
     // //// LOGIC
 
@@ -110,6 +101,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_id", insertable = false, updatable = false, nullable = false)
     public TreatmentInformation getTreatmentInformation() {
@@ -140,10 +132,10 @@ public class CourseAgent extends AbstractMutableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
             @AttributeOverride(name = "units", column = @Column(name = "modified_dose_units")),
-            @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route")) })
+            @AttributeOverride(name = "route", column = @Column(name = "modified_dose_route"))})
     public Dose getModifiedDose() {
         if (modifiedDose == null) modifiedDose = new Dose();
         return modifiedDose;
@@ -204,21 +196,33 @@ public class CourseAgent extends AbstractMutableDomainObject {
         this.comments = comments;
     }
 
-	public String getLotNumber() {
-		return lotNumber;
-	}
+    public String getLotNumber() {
+        return lotNumber;
+    }
 
-	public void setLotNumber(String lotNumber) {
-		this.lotNumber = lotNumber;
-	}
+    public void setLotNumber(String lotNumber) {
+        this.lotNumber = lotNumber;
+    }
 
-	public String getFormulation() {
-		return formulation;
-	}
+    public String getFormulation() {
+        return formulation;
+    }
 
-	public void setFormulation(String formulation) {
-		this.formulation = formulation;
-	}
-    
-    
+    public void setFormulation(String formulation) {
+        this.formulation = formulation;
+    }
+
+
+    public CourseAgent copy() {
+        CourseAgent courseAgent = new CourseAgent();
+        BeanUtils.copyProperties(this, courseAgent,
+                new String[]{"id", "gridId", "version",
+                        "primaryTreatmentApproximateTime", "adverseEventCourse", "courseAgentsInternal", "treatmentInformation"
+                        , "modifiedDose", "dose"});
+
+        courseAgent.setModifiedDose(getModifiedDose().copy());
+        courseAgent.setDose(getDose().copy());
+        return courseAgent;
+
+    }
 }

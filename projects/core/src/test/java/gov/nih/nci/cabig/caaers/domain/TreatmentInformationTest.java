@@ -1,15 +1,120 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
-public class TreatmentInformationTest extends CaaersTestCase {
-    private TreatmentInformation treatmentInformation = new TreatmentInformation();
+@CaaersUseCases({CREATE_EXPEDITED_REPORT})
+public class TreatmentInformationTest extends AbstractTestCase {
+    private TreatmentInformation treatmentInformation;
+    private TimeValue primaryTreatmentApproximateTime;
+
+
+    private CourseAgent courseAgent1, courseAgent2;
+    private Date firstCourseDate;
+
+    private CourseDate adverseEventCourse;
+
+    private Integer totalCourses;
+
+    private TreatmentAssignment treatmentAssignment;
+
+    private String treatmentDescription;
+
+    private ExpeditedAdverseEventReport report;
+    private String primaryTreatment;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        primaryTreatmentApproximateTime = new TimeValue();
+        primaryTreatmentApproximateTime.setHour(2);
+        primaryTreatment = "primaryTreatment";
+        treatmentDescription = "treatmentDescription";
+        totalCourses = 3;
+        firstCourseDate = new Date();
+        adverseEventCourse = new CourseDate(3);
+        adverseEventCourse.setDate(new Date());
+        report = new ExpeditedAdverseEventReport();
+
+        treatmentAssignment = new TreatmentAssignment();
+        treatmentAssignment.setCode("code");
+        courseAgent1 = new CourseAgent();
+        courseAgent1.setAdministrationDelay(new BigDecimal(4));
+
+        treatmentInformation = new TreatmentInformation();
+        treatmentInformation.setId(1);
+        treatmentInformation.setGridId("grid id");
+        treatmentInformation.setVersion(2);
+        treatmentInformation.setPrimaryTreatmentApproximateTime(primaryTreatmentApproximateTime);
+        treatmentInformation.setPrimaryTreatment(primaryTreatment);
+        treatmentInformation.setTreatmentDescription(treatmentDescription);
+        treatmentInformation.setTotalCourses(totalCourses);
+        treatmentInformation.setAdverseEventCourse(adverseEventCourse);
+        treatmentInformation.setFirstCourseDate(firstCourseDate);
+        treatmentInformation.setTreatmentAssignment(treatmentAssignment);
+        treatmentInformation.setReport(report);
+
+    }
+
+    public void testCopyCourseAgent() {
+        treatmentInformation.addCourseAgent(courseAgent1);
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+        assertNotSame("course agent must not be refer same objects", courseAgent1, copiedTreatmentInformation.getCourseAgents().get(0));
+        assertNotEquals("course agent must not be refer same objects", courseAgent1, copiedTreatmentInformation.getCourseAgents().get(0));
+
+        assertSame("treatment information must be same", copiedTreatmentInformation, copiedTreatmentInformation.getCourseAgents().get(0).getTreatmentInformation());
+
+
+    }
+
+    public void testCopyReport() {
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+        assertNotNull(treatmentInformation.getReport());
+        assertNull("report must be null", copiedTreatmentInformation.getReport());
+
+
+    }
+
+    public void testCopyTreatmentAssignment() {
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+        assertSame("treatmentAssignment must refer same objects", treatmentAssignment, copiedTreatmentInformation.getTreatmentAssignment());
+        assertEquals("treatmentAssignment must refer same object ", treatmentAssignment, copiedTreatmentInformation.getTreatmentAssignment());
+
+
+    }
+
+    public void testCopyAdverseEventCourse() {
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+
+
+        assertNotSame("adverseEventCourse must not be refer same objects", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
+
+        assertNotEquals("adverseEventCourse must not refer same object ", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
+        assertEquals("attributes of adverseEventCourse must be same", adverseEventCourse.getNumber(), copiedTreatmentInformation.getAdverseEventCourse().getNumber());
+        assertEquals("attributes ofadverseEventCourse must be same", adverseEventCourse.getDate(), copiedTreatmentInformation.getAdverseEventCourse().getDate());
+
+
+    }
+
+    public void testCopyForBasicProperties() {
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+        assertEquals("primaryTreatment must be same", primaryTreatment, copiedTreatmentInformation.getPrimaryTreatment());
+        assertEquals("treatmentDescription must be same", treatmentDescription, copiedTreatmentInformation.getTreatmentDescription());
+        assertEquals("totalCourses must be same", totalCourses, copiedTreatmentInformation.getTotalCourses());
+        assertEquals("firstCourseDate must be same", firstCourseDate, copiedTreatmentInformation.getFirstCourseDate());
+
+    }
 
     public void testInvestigationDrugUsedWhenUsed() throws Exception {
         treatmentInformation.addCourseAgent(createCourseAgent(true));
@@ -47,5 +152,34 @@ public class TreatmentInformationTest extends CaaersTestCase {
         ca.setStudyAgent(sa);
 
         return ca;
+    }
+
+    public void testMustNotCopyIdGridIdAndVersionNumber() {
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+
+        assertNotNull(treatmentInformation.getId());
+
+        assertNotNull(treatmentInformation.getGridId());
+        assertNotNull(treatmentInformation.getVersion());
+
+        assertNull(copiedTreatmentInformation.getId());
+        assertNull(copiedTreatmentInformation.getGridId());
+        assertNull("version number must be null", copiedTreatmentInformation.getVersion());
+    }
+
+
+    public void testCopyPrimaryTreatmentApproximateTime() {
+
+        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
+
+
+        assertNotSame("primaryTreatmentApproximateTime must not be refer same objects", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
+
+        assertNotEquals("primaryTreatmentApproximateTime must not refer same object ", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
+        assertEquals("primaryTreatmentApproximateTime must be same", primaryTreatmentApproximateTime.getMinute(), copiedTreatmentInformation.getPrimaryTreatmentApproximateTime().getMinute());
+        assertEquals("primaryTreatmentApproximateTime must be same", primaryTreatmentApproximateTime.getHour(), copiedTreatmentInformation.getPrimaryTreatmentApproximateTime().getHour());
+
+
     }
 }

@@ -1,39 +1,27 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.apache.commons.collections.list.LazyList;
 import org.apache.commons.collections.functors.InstantiateFactory;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Cascade;
+import org.apache.commons.collections.list.LazyList;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.JoinColumn;
-import javax.persistence.Embedded;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
 import javax.persistence.Table;
-import java.util.List;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class represents the TreatmentInformation domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "treatments")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_treatments_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_treatments_id")})
 public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     private List<CourseAgent> courseAgentsInternal;
 
@@ -48,9 +36,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     private TreatmentAssignment treatmentAssignment;
 
     private String treatmentDescription;
-    
+
     private String primaryTreatment;
-    
+
     private TimeValue primaryTreatmentApproximateTime;
 
     public TreatmentInformation() {
@@ -73,7 +61,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
         getCourseAgents().add(courseAgent);
     }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    /**
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
     @Transient
     public List<CourseAgent> getCourseAgents() {
         return courseAgents;
@@ -82,7 +72,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     @SuppressWarnings("unchecked")
     private void createLazyCourseAgents() {
         this.courseAgents = LazyList.decorate(getCourseAgentsInternal(), new InstantiateFactory(
-                        CourseAgent.class));
+                CourseAgent.class));
     }
 
     // //// BEAN PROPERTIES
@@ -96,9 +86,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     }
 
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "date", column = @Column(name = "adverse_event_course_date")),
-            @AttributeOverride(name = "number", column = @Column(name = "adverse_event_course_number")) })
+            @AttributeOverride(name = "number", column = @Column(name = "adverse_event_course_number"))})
     public CourseDate getAdverseEventCourse() {
         if (adverseEventCourse == null) adverseEventCourse = new CourseDate();
         return adverseEventCourse;
@@ -113,7 +103,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     @OneToMany
     @JoinColumn(name = "treatment_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<CourseAgent> getCourseAgentsInternal() {
         return courseAgentsInternal;
     }
@@ -125,7 +115,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "treatment_assignment_id")
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = {CascadeType.LOCK})
     public TreatmentAssignment getTreatmentAssignment() {
         return treatmentAssignment;
     }
@@ -161,28 +151,46 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
         // do nothing.
     }
 
-	public String getPrimaryTreatment() {
-		return primaryTreatment;
-	}
+    public String getPrimaryTreatment() {
+        return primaryTreatment;
+    }
 
-	public void setPrimaryTreatment(String primaryTreatment) {
-		this.primaryTreatment = primaryTreatment;
-	}
-	
-	@Embedded
-    @AttributeOverrides( {
-        @AttributeOverride(name = "hour", column = @Column(name = "treatment_time_hour")),
-        @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute")),
-        @AttributeOverride(name = "zone", column = @Column(name = "treatment_time_zone"))
-     })
-	public TimeValue getPrimaryTreatmentApproximateTime() {
-		if(primaryTreatmentApproximateTime == null) primaryTreatmentApproximateTime = new TimeValue();
-		return primaryTreatmentApproximateTime;
-	}
-	public void setPrimaryTreatmentApproximateTime(
-			TimeValue primaryTreatmentApproximateTime) {
-		this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
-	}
-    
-   
+    public void setPrimaryTreatment(String primaryTreatment) {
+        this.primaryTreatment = primaryTreatment;
+    }
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "hour", column = @Column(name = "treatment_time_hour")),
+            @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute")),
+            @AttributeOverride(name = "zone", column = @Column(name = "treatment_time_zone"))
+    })
+    public TimeValue getPrimaryTreatmentApproximateTime() {
+        if (primaryTreatmentApproximateTime == null) primaryTreatmentApproximateTime = new TimeValue();
+        return primaryTreatmentApproximateTime;
+    }
+
+    public void setPrimaryTreatmentApproximateTime(
+            TimeValue primaryTreatmentApproximateTime) {
+        this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
+    }
+
+
+    public TreatmentInformation copy() {
+        TreatmentInformation treatmentInformation = new TreatmentInformation();
+        BeanUtils.copyProperties(this, treatmentInformation,
+                new String[]{"id", "gridId", "version",
+                        "primaryTreatmentApproximateTime", "adverseEventCourse", "courseAgentsInternal", "report", "courseAgents"});
+
+
+        treatmentInformation.setPrimaryTreatmentApproximateTime(getPrimaryTreatmentApproximateTime().copy());
+
+        treatmentInformation.setAdverseEventCourse(getAdverseEventCourse().copy());
+
+        for (CourseAgent courseAgent : getCourseAgentsInternal()) {
+            treatmentInformation.addCourseAgent(courseAgent.copy());
+        }
+
+        return treatmentInformation;
+    }
 }

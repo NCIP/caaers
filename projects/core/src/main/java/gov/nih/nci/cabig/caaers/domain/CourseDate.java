@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Date;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Embeddable;
+import java.util.Date;
 
 /**
  * This class represents the CourseDate domain object associated with the Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Embeddable
@@ -36,5 +37,13 @@ public class CourseDate {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+
+    public CourseDate copy() {
+        CourseDate anotherCourseDate = new CourseDate();
+        BeanUtils.copyProperties(this, anotherCourseDate);
+        return anotherCourseDate;
+
     }
 }

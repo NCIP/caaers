@@ -559,7 +559,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public AdverseEvent copy() {
         AdverseEvent adverseEvent = new AdverseEvent();
         org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
-                new String[]{"id", "gridId", "outcomes", "version", "report",
+                new String[]{"id", "gridId", "outcomes", "version", "report", "eventApproximateTime",
                         "deviceAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
                         , "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
                         "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm"});
@@ -577,6 +577,8 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             copiedAbstractAdverseEventTerm.setAdverseEvent(adverseEvent);
             adverseEvent.setAdverseEventTerm(copiedAbstractAdverseEventTerm);
         }
+        adverseEvent.setEventApproximateTime(getEventApproximateTime().copy());
+
         return adverseEvent;
     }
 

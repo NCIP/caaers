@@ -1,17 +1,169 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
-public class CourseAgentTest extends CaaersTestCase {
-    private CourseAgent courseAgent = new CourseAgent();
+@CaaersUseCases({CREATE_EXPEDITED_REPORT})
+public class CourseAgentTest extends AbstractTestCase {
+    private CourseAgent courseAgent;
+
+    private TreatmentInformation treatmentInformation;
+
+    private StudyAgent studyAgent;
+
+    private Dose dose;
+
+    private String durationAndSchedule;
+
+    private BigDecimal administrationDelayAmount;
+
+    private DelayUnits administrationDelayUnits;
+
+    private Dose modifiedDose;
+
+    private Date lastAdministeredDate;
+
+    private BigDecimal totalDoseAdministeredThisCourse;
+
+    private String comments;
+
+    private String lotNumber;
+    private String formulation;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        courseAgent = new CourseAgent();
+        durationAndSchedule = "durationAndSchedule";
+        administrationDelayAmount = new BigDecimal(4);
+        administrationDelayUnits = DelayUnits.HOURS;
+        comments = "comments";
+        lotNumber = "lotNumber";
+        formulation = "formulation";
+
+        studyAgent = new StudyAgent();
+        studyAgent.setId(1);
+        modifiedDose = new Dose();
+        modifiedDose.setAmount(new BigDecimal(4));
+        modifiedDose.setRoute("route");
+        modifiedDose.setUnits("units");
+
+        dose = new Dose();
+        dose.setAmount(new BigDecimal(4));
+        dose.setRoute("route");
+        dose.setUnits("units");
+
+        treatmentInformation = new TreatmentInformation();
+        treatmentInformation.setId(2);
+
+        lastAdministeredDate = new Date();
+        totalDoseAdministeredThisCourse = new BigDecimal(6);
+
+        courseAgent.setDurationAndSchedule(durationAndSchedule);
+        courseAgent.setAdministrationDelay(administrationDelayAmount);
+        courseAgent.setAdministrationDelayUnits(administrationDelayUnits);
+        courseAgent.setLotNumber(lotNumber);
+        courseAgent.setFormulation(formulation);
+        courseAgent.setComments(comments);
+        courseAgent.setId(1);
+        courseAgent.setGridId("grid id");
+        courseAgent.setVersion(2);
+
+        courseAgent.setModifiedDose(modifiedDose);
+        courseAgent.setLastAdministeredDate(lastAdministeredDate);
+        courseAgent.setTotalDoseAdministeredThisCourse(totalDoseAdministeredThisCourse);
+        courseAgent.setStudyAgent(studyAgent);
+        courseAgent.setTreatmentInformation(treatmentInformation);
+
+        courseAgent.setDose(dose);
+
+
+    }
+
+
+    public void testCopyForBasicProperties() {
+
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+
+        assertEquals("durationAndSchedule must be same", durationAndSchedule, copiedCourseAgent.getDurationAndSchedule());
+
+        assertEquals("comments must be same", comments, copiedCourseAgent.getComments());
+        assertEquals("administrationDelayAmount must be same", administrationDelayAmount, copiedCourseAgent.getAdministrationDelayAmount());
+        assertEquals("lotNumber must be same", lotNumber, copiedCourseAgent.getLotNumber());
+        assertEquals("administration delay must be same", courseAgent.getAdministrationDelay(), copiedCourseAgent.getAdministrationDelay());
+        assertEquals("formulation must be same", formulation, copiedCourseAgent.getFormulation());
+        assertEquals("solicited must be same", lastAdministeredDate, copiedCourseAgent.getLastAdministeredDate());
+        assertEquals("totalDoseAdministeredThisCourse must be same", totalDoseAdministeredThisCourse, copiedCourseAgent.getTotalDoseAdministeredThisCourse());
+
+    }
+
+    public void testCopyTreatmentInformation() {
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+        assertNotNull(courseAgent.getTreatmentInformation());
+        assertNull("must not copy treatment information", copiedCourseAgent.getTreatmentInformation());
+
+
+    }
+
+    public void testCopyStudyAgent() {
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+        assertNotNull(courseAgent.getStudyAgent());
+        assertSame("study agents must refer to same objects", studyAgent, copiedCourseAgent.getStudyAgent());
+
+
+    }
+
+    public void testCopyModifiedDose() {
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+
+
+        assertNotSame("modifiedDose must not be refer same objects", modifiedDose, copiedCourseAgent.getModifiedDose());
+
+        assertEquals("attributes of modifiedDose must be same", modifiedDose.getAmount(), copiedCourseAgent.getModifiedDose().getAmount());
+        assertEquals("attributes of modifiedDose must be same", modifiedDose.getRoute(), copiedCourseAgent.getModifiedDose().getRoute());
+        assertEquals("attributes of modifiedDose must be same", modifiedDose.getUnits(), copiedCourseAgent.getModifiedDose().getUnits());
+
+
+    }
+
+    public void testCopyDose() {
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+
+
+        assertNotSame("modifiedDose must not be refer same objects", dose, copiedCourseAgent.getDose());
+
+        assertEquals("attributes of modifiedDose must be same", dose.getAmount(), copiedCourseAgent.getDose().getAmount());
+        assertEquals("attributes of modifiedDose must be same", dose.getRoute(), copiedCourseAgent.getDose().getRoute());
+        assertEquals("attributes of modifiedDose must be same", dose.getUnits(), copiedCourseAgent.getDose().getUnits());
+
+
+    }
+
+    public void testMustNotCopyIdGridIdAndVersionNumber() {
+
+        CourseAgent copiedCourseAgent = courseAgent.copy();
+
+        assertNotNull(courseAgent.getId());
+
+        assertNotNull(courseAgent.getGridId());
+        assertNotNull(courseAgent.getVersion());
+
+        assertNull(copiedCourseAgent.getId());
+        assertNull(copiedCourseAgent.getGridId());
+        assertNull("version number must be null", copiedCourseAgent.getVersion());
+    }
 
     public void testGetAdministrationDelayWithNoUnits() throws Exception {
         courseAgent.setAdministrationDelayAmount(new BigDecimal(14));
@@ -65,10 +217,13 @@ public class CourseAgentTest extends CaaersTestCase {
     }
 
     public void testGetDisplayNameWhenBlank() throws Exception {
+        courseAgent = new CourseAgent();
         assertEquals("[no agent]", courseAgent.getDisplayName());
     }
 
     public void testDisplayNameWithNoDose() throws Exception {
+        courseAgent = new CourseAgent();
+
         courseAgent.setStudyAgent(Fixtures.createStudyAgent("Witch hazel"));
         assertEquals("Witch hazel", courseAgent.getDisplayName());
     }
