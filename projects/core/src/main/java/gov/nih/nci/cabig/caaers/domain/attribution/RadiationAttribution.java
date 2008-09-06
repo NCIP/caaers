@@ -19,4 +19,9 @@ public class RadiationAttribution extends AdverseEventAttribution<RadiationInter
     public RadiationIntervention getCause() {
         return super.getCause();
     }
+
+    @Override
+    public RadiationAttribution copy() {
+        return super.copy();
+    }
 }

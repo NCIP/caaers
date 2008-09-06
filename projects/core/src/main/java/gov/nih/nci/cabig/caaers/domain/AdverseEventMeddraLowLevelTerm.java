@@ -2,16 +2,12 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * This class represents the AdverseEventMeddraLowLevelTerm domain object associated with the
  * Adverse event report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
@@ -49,11 +45,16 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     public void setLowLevelTerm(LowLevelTerm lowlevelTerm) {
         super.setTerm(lowlevelTerm);
     }
+
     @Override
     @Transient
     public boolean isOtherRequired() {
-    	//there is no other specify for MedDRA
-    	return false;
+        //there is no other specify for MedDRA
+        return false;
     }
 
+    @Override
+    public AdverseEventMeddraLowLevelTerm copy() {
+        return (AdverseEventMeddraLowLevelTerm) super.copy();
+    }
 }

@@ -19,4 +19,9 @@ public class CourseAgentAttribution extends AdverseEventAttribution<CourseAgent>
     public CourseAgent getCause() {
         return super.getCause();
     }
+
+    @Override
+    public CourseAgentAttribution copy() {
+        return super.copy();
+    }
 }

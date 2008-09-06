@@ -13,11 +13,16 @@ import javax.persistence.ManyToOne;
 @Entity
 @DiscriminatorValue("CM")
 public class ConcomitantMedicationAttribution extends
-                AdverseEventAttribution<ConcomitantMedication> {
+        AdverseEventAttribution<ConcomitantMedication> {
     @ManyToOne
     @JoinColumn(name = "cause_id", nullable = false)
     @Override
     public ConcomitantMedication getCause() {
         return super.getCause();
+    }
+
+    @Override
+    public ConcomitantMedicationAttribution copy() {
+        return super.copy();
     }
 }

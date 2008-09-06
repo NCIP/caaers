@@ -19,4 +19,10 @@ public class DiseaseAttribution extends AdverseEventAttribution<DiseaseHistory> 
     public DiseaseHistory getCause() {
         return super.getCause();
     }
+
+    @Override
+    public DiseaseAttribution copy() {
+        return super.copy();
+    }
+
 }

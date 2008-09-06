@@ -19,4 +19,9 @@ public class SurgeryAttribution extends AdverseEventAttribution<SurgeryIntervent
     public SurgeryIntervention getCause() {
         return super.getCause();
     }
+
+    @Override
+    public SurgeryAttribution copy() {
+        return super.copy();
+    }
 }

@@ -2,21 +2,11 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
+
+import javax.persistence.*;
 
 /**
  * @author Krikor Krumlian
@@ -28,9 +18,9 @@ import org.hibernate.annotations.Parameter;
 @DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ABSTRACT_TERM")
 // should be ignored
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_terms_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_terms_id")})
 public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
-                AbstractMutableDomainObject {
+        AbstractMutableDomainObject {
     private T term;
 
     private AdverseEvent adverseEvent;
@@ -49,13 +39,13 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
 
     @Transient
     public abstract String getUniversalTerm();
-    
+
     /**
      * Will tell whether the term is an Otherspecify
      */
-    @Transient 
+    @Transient
     public abstract boolean isOtherRequired();
-    
+
     @Transient
     /*
      * this is only transient here -- subclasses need to override it and specify what it refers to
@@ -67,5 +57,14 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
 
     public void setTerm(T term) {
         this.term = term;
+    }
+
+    public AbstractAdverseEventTerm copy() {
+        AbstractAdverseEventTerm abstractAdverseEventTerm = (AbstractAdverseEventTerm) BeanUtils.instantiateClass(getClass());
+        BeanUtils.copyProperties(this, abstractAdverseEventTerm,
+                new String[]{"id", "gridId", "version", "adverseEvent"});
+
+        return abstractAdverseEventTerm;
+
     }
 }

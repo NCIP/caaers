@@ -2,10 +2,10 @@ package gov.nih.nci.cabig.caaers.domain.attribution;
 
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
 
-import javax.persistence.Entity;
 import javax.persistence.DiscriminatorValue;
-import javax.persistence.ManyToOne;
+import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 /**
  * @author Rhett Sutphin
@@ -18,5 +18,10 @@ public class DeviceAttribution extends AdverseEventAttribution<MedicalDevice> {
     @Override
     public MedicalDevice getCause() {
         return super.getCause();
+    }
+
+    @Override
+    public DeviceAttribution copy() {
+        return super.copy();
     }
 }

@@ -19,4 +19,10 @@ public class OtherCauseAttribution extends AdverseEventAttribution<OtherCause> {
     public OtherCause getCause() {
         return super.getCause();
     }
+
+
+    @Override
+    public OtherCauseAttribution copy() {
+        return super.copy();
+    }
 }

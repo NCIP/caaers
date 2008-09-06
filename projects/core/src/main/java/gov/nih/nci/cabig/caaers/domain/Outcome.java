@@ -1,27 +1,24 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * This class represents the Outcome domain object associated with the Adverse event report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "outcomes")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_outcome_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_outcome_id")})
 public class Outcome extends AbstractMutableDomainObject {
 
     private OutcomeType outcomeType;
@@ -55,5 +52,11 @@ public class Outcome extends AbstractMutableDomainObject {
 
     public void setOther(String other) {
         this.other = other;
+    }
+
+    public Outcome copy() {
+        Outcome outcome = new Outcome();
+        BeanUtils.copyProperties(this, outcome, new String[]{"id", "gridId", "version"});
+        return outcome;
     }
 }

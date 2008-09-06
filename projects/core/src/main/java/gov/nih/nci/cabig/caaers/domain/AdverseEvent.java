@@ -1,38 +1,15 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
-import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-
-import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -40,15 +17,15 @@ import java.util.List;
 
 /**
  * This class represents the Adverse Event domain object associated with the Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
 
 @Entity
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_adverse_events_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
 public class AdverseEvent extends AbstractMutableDomainObject implements
-                ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild{
+        ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
     private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
@@ -86,30 +63,30 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private List<RadiationAttribution> radiationAttributions;
 
     private List<DeviceAttribution> deviceAttributions;
-    
+
     private List<Outcome> outcomes;
-    
+
     private AdverseEventReportingPeriod reportingPeriod;
-    
+
     private Boolean solicited;
-    
+
     private OutcomeType serious;
-    
+
     private Boolean requiresReporting;
-    
+
     private String displayExpected;
-    
+
     private TimeValue eventApproximateTime;
-    
+
     private String eventLocation;
-    
-    public AdverseEvent(){
-    	solicited = false;
+
+    public AdverseEvent() {
+        solicited = false;
     }
-    
+
     ///LOGIC
-    public void addOutcome(Outcome o){
-    	this.getOutcomes().add(o);
+    public void addOutcome(Outcome o) {
+        this.getOutcomes().add(o);
     }
 
     // //// BOUND PROPERTIES
@@ -150,19 +127,19 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 
     @ManyToOne
     @JoinColumn(name = "reporting_period_id", nullable = true)
-    @Cascade(value = { CascadeType.LOCK, CascadeType.EVICT })
+    @Cascade(value = {CascadeType.LOCK, CascadeType.EVICT})
     public AdverseEventReportingPeriod getReportingPeriod() {
-    	return reportingPeriod;
+        return reportingPeriod;
     }
-    
-    public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod){
-    	this.reportingPeriod = reportingPeriod;
+
+    public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
+        this.reportingPeriod = reportingPeriod;
     }
-    
+
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'CA'")
     // it is pretty lame that this is necessary
     public List<CourseAgentAttribution> getCourseAgentAttributions() {
@@ -177,7 +154,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'CM'")
     // it is pretty lame that this is necessary
     public List<ConcomitantMedicationAttribution> getConcomitantMedicationAttributions() {
@@ -188,14 +165,14 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     }
 
     public void setConcomitantMedicationAttributions(
-                    List<ConcomitantMedicationAttribution> concomitantMedicationAttributions) {
+            List<ConcomitantMedicationAttribution> concomitantMedicationAttributions) {
         this.concomitantMedicationAttributions = concomitantMedicationAttributions;
     }
 
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'OC'")
     // it is pretty lame that this is necessary
     public List<OtherCauseAttribution> getOtherCauseAttributions() {
@@ -212,7 +189,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'DH'")
     // it is pretty lame that this is necessary
     public List<DiseaseAttribution> getDiseaseAttributions() {
@@ -229,7 +206,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'SI'")
     // it is pretty lame that this is necessary
     public List<SurgeryAttribution> getSurgeryAttributions() {
@@ -246,7 +223,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'RI'")
     // it is pretty lame that this is necessary
     public List<RadiationAttribution> getRadiationAttributions() {
@@ -263,7 +240,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @OneToMany
     @JoinColumn(name = "adverse_event_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "cause_type = 'DV'")
     // it is pretty lame that this is necessary
     public List<DeviceAttribution> getDeviceAttributions() {
@@ -277,6 +254,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         this.deviceAttributions = deviceAttributions;
     }
 
+
     @Deprecated
     @Transient
     public CtcTerm getCtcTerm() {
@@ -286,7 +264,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             return getAdverseEventCtcTerm().getCtcTerm();
         } else {
             throw new CaaersSystemException(
-                            "Cannot Return a Ctc Term you are probably using a Terminology different than Ctc");
+                    "Cannot Return a Ctc Term you are probably using a Terminology different than Ctc");
         }
     }
 
@@ -302,7 +280,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             this.adverseEventTerm = new AdverseEventCtcTerm();
             adverseEventTerm.setAdverseEvent(this);
         } else if (!adverseEventTerm.getClass().getName().equals(
-                        "gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
+                "gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
             return new AdverseEventCtcTerm();
         }
 
@@ -321,7 +299,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm();
             adverseEventTerm.setAdverseEvent(this);
         } else if (!adverseEventTerm.getClass().getName().equals(
-                        "gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
+                "gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
             return new AdverseEventMeddraLowLevelTerm();
         }
         return (AdverseEventMeddraLowLevelTerm) adverseEventTerm;
@@ -329,13 +307,13 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 
     @Transient
     public void setAdverseEventMeddraLowLevelTerm(
-                    AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
+            AdverseEventMeddraLowLevelTerm adverseEventMeddraLowLevelTerm) {
         // this.adverseEventCtcTerm = adverseEventCtcTerm;
         setAdverseEventTerm(adverseEventMeddraLowLevelTerm);
     }
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "adverseEvent")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public AbstractAdverseEventTerm getAdverseEventTerm() {
         return adverseEventTerm;
     }
@@ -395,16 +373,16 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public void setExpected(Boolean expected) {
         this.expected = expected;
     }
-    
+
     /**
-     * This function is a purely fabricated one, which is used by Rules, to identify the expectedness. 
-     * 
+     * This function is a purely fabricated one, which is used by Rules, to identify the expectedness.
+     *
      * @return FALSE if null. Othwise the getExpected().
      */
     @Transient
-    public Boolean getExpectedness(){
-    	if(expected == null) return Boolean.FALSE;
-    	return expected;
+    public Boolean getExpectedness() {
+        if (expected == null) return Boolean.FALSE;
+        return expected;
     }
 
     @Type(type = "attribution")
@@ -424,13 +402,11 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     public void setComments(String comments) {
         this.comments = comments;
     }
-    
-    
 
 
     /**
      * Will return all the attributions.
-     * @param event
+     *
      * @return
      */
     @Transient
@@ -445,26 +421,25 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         attributions.addAll(getDeviceAttributions());
         return attributions;
     }
-    
+
     /**
      * This method will tell if the specified attributions exists
-     * 
      */
     @Transient
     public boolean isAttributedWith(Attribution... attributions) {
         return containsAttribution(courseAgentAttributions, attributions)
-                        || containsAttribution(concomitantMedicationAttributions, attributions)
-                        || containsAttribution(otherCauseAttributions, attributions)
-                        || containsAttribution(diseaseAttributions, attributions)
-                        || containsAttribution(surgeryAttributions, attributions)
-                        || containsAttribution(radiationAttributions, attributions)
-                        || containsAttribution(deviceAttributions, attributions);
+                || containsAttribution(concomitantMedicationAttributions, attributions)
+                || containsAttribution(otherCauseAttributions, attributions)
+                || containsAttribution(diseaseAttributions, attributions)
+                || containsAttribution(surgeryAttributions, attributions)
+                || containsAttribution(radiationAttributions, attributions)
+                || containsAttribution(deviceAttributions, attributions);
 
     }
 
     private boolean containsAttribution(
-                    List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
-                    Attribution... attributions) {
+            List<? extends AdverseEventAttribution<? extends DomainObject>> attributionList,
+            Attribution... attributions) {
         if (attributionList == null || attributionList.isEmpty()) return false;
         for (AdverseEventAttribution<? extends DomainObject> aea : attributionList) {
             for (Attribution att : attributions) {
@@ -473,87 +448,89 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         }
         return false;
     }
-    
+
     @Transient
-    public String getDisplayGrade(){
-    	if(grade == null) return "";
-    	
-    	//MedDRA or CTC{not evaluated , normal}
-    	if(grade.getCode() <=0 || lowLevelTerm != null) return grade.getCode().intValue() + ":  " + grade.getDisplayName();
-    	
-    	//CTC ( > Normal), so check contextual grades
-    	List<CtcGrade> contextualGrades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
-    	if(contextualGrades.isEmpty()) return grade.getCode().intValue() + ":  " + grade.getDisplayName();
-    	
-    	//find the grade from contextual grades and return that. 
-    	for(CtcGrade contextualGrade : contextualGrades){
-    		if(contextualGrade.getCode().equals(grade.getCode())) return grade.getCode().intValue() + ":  " + contextualGrade.getDisplayName();
-    	}
-    	
-    	return "";
+    public String getDisplayGrade() {
+        if (grade == null) return "";
+
+        //MedDRA or CTC{not evaluated , normal}
+        if (grade.getCode() <= 0 || lowLevelTerm != null)
+            return grade.getCode().intValue() + ":  " + grade.getDisplayName();
+
+        //CTC ( > Normal), so check contextual grades
+        List<CtcGrade> contextualGrades = this.getAdverseEventCtcTerm().getTerm().getContextualGrades();
+        if (contextualGrades.isEmpty()) return grade.getCode().intValue() + ":  " + grade.getDisplayName();
+
+        //find the grade from contextual grades and return that.
+        for (CtcGrade contextualGrade : contextualGrades) {
+            if (contextualGrade.getCode().equals(grade.getCode()))
+                return grade.getCode().intValue() + ":  " + contextualGrade.getDisplayName();
+        }
+
+        return "";
     }
-    
+
     @Transient
-    public String getDisplayExpected(){
-    	displayExpected = "";
-    	if(expected != null)
-    		displayExpected = expected.equals(Boolean.TRUE) ? "Yes" : "No";
-    	return displayExpected;
+    public String getDisplayExpected() {
+        displayExpected = "";
+        if (expected != null)
+            displayExpected = expected.equals(Boolean.TRUE) ? "Yes" : "No";
+        return displayExpected;
     }
-    
-    public void setDisplayExpected(){
-    	this.displayExpected = displayExpected;
+
+    public void setDisplayExpected() {
+        this.displayExpected = displayExpected;
     }
-    
+
     @Transient
-    public String getDisplaySerious(){
-    	if(serious != null) return serious.getDisplayName();
-    	return "";
+    public String getDisplaySerious() {
+        if (serious != null) return serious.getDisplayName();
+        return "";
     }
-    public void setDisplaySerious(String igonre){
-    	
+
+    public void setDisplaySerious(String igonre) {
+
     }
-    
+
     public void setSolicited(Boolean solicited) {
-		this.solicited = solicited;
-	}
-    
+        this.solicited = solicited;
+    }
+
     public Boolean getSolicited() {
-		return solicited;
-	}
-    
+        return solicited;
+    }
+
     public Boolean getRequiresReporting() {
-		return requiresReporting;
-	}
-    
+        return requiresReporting;
+    }
+
     public void setRequiresReporting(Boolean requiresReporting) {
-		this.requiresReporting = requiresReporting;
-	}
-    
-    
-    
+        this.requiresReporting = requiresReporting;
+    }
+
+
     @Embedded
-    @AttributeOverrides( {
-        @AttributeOverride(name = "hour", column = @Column(name = "event_time_hour")),
-        @AttributeOverride(name = "minute", column = @Column(name = "event_time_minute")),
-        @AttributeOverride(name = "zone", column = @Column(name = "event_time_zone"))
-     })
-	public TimeValue getEventApproximateTime() {
-    	if(eventApproximateTime == null) eventApproximateTime = new TimeValue();
-		return eventApproximateTime;
-	}
+    @AttributeOverrides({
+            @AttributeOverride(name = "hour", column = @Column(name = "event_time_hour")),
+            @AttributeOverride(name = "minute", column = @Column(name = "event_time_minute")),
+            @AttributeOverride(name = "zone", column = @Column(name = "event_time_zone"))
+    })
+    public TimeValue getEventApproximateTime() {
+        if (eventApproximateTime == null) eventApproximateTime = new TimeValue();
+        return eventApproximateTime;
+    }
 
-	public void setEventApproximateTime(TimeValue eventApproximateTime) {
-		this.eventApproximateTime = eventApproximateTime;
-	}
+    public void setEventApproximateTime(TimeValue eventApproximateTime) {
+        this.eventApproximateTime = eventApproximateTime;
+    }
 
-	public String getEventLocation() {
-		return eventLocation;
-	}
+    public String getEventLocation() {
+        return eventLocation;
+    }
 
-	public void setEventLocation(String eventLocation) {
-		this.eventLocation = eventLocation;
-	}
+    public void setEventLocation(String eventLocation) {
+        this.eventLocation = eventLocation;
+    }
 
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
@@ -562,19 +539,67 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<Outcome> getOutcomes() {
-    	if(outcomes == null) outcomes = new ArrayList<Outcome>();
-		return outcomes;
-	}
+        if (outcomes == null) outcomes = new ArrayList<Outcome>();
+        return outcomes;
+    }
+
     public void setOutcomes(List<Outcome> outcomes) {
-		this.outcomes = outcomes;
-	}
-    
+        this.outcomes = outcomes;
+    }
+
     @Transient
     public OutcomeType getSerious() {
-		return serious;
-	}
-    
+        return serious;
+    }
+
     public void setSerious(OutcomeType serious) {
-		this.serious = serious;
-	}
+        this.serious = serious;
+    }
+
+    public AdverseEvent copy() {
+        AdverseEvent adverseEvent = new AdverseEvent();
+        org.springframework.beans.BeanUtils.copyProperties(this, adverseEvent,
+                new String[]{"id", "gridId", "outcomes", "version", "report",
+                        "deviceAttributions", "otherCauseAttributions", "courseAgentAttributions", "diseaseAttributions"
+                        , "surgeryAttributions", "concomitantMedicationAttributions", "radiationAttributions",
+                        "adverseEventTerm", "adverseEventCtcTerm", "adverseEventMeddraLowLevelTerm", "ctcTerm"});
+
+        //outcomes object must not be same. i.e. they should refer to different objects;
+        for (Outcome outcome : getOutcomes()) {
+            adverseEvent.addOutcome(outcome.copy());
+        }
+
+        for (AdverseEventAttribution adverseEventAttribution : getAdverseEventAttributions()) {
+            adverseEvent.addAdverseEventAttribution(adverseEventAttribution.copy());
+        }
+        if (getAdverseEventTerm() != null) {
+            AbstractAdverseEventTerm copiedAbstractAdverseEventTerm = getAdverseEventTerm().copy();
+            copiedAbstractAdverseEventTerm.setAdverseEvent(adverseEvent);
+            adverseEvent.setAdverseEventTerm(copiedAbstractAdverseEventTerm);
+        }
+        return adverseEvent;
+    }
+
+
+    public void addAdverseEventAttribution(AdverseEventAttribution adverseEventAttribution) {
+        if (adverseEventAttribution != null) {
+
+            adverseEventAttribution.setAdverseEvent(this);
+            if (adverseEventAttribution instanceof RadiationAttribution) {
+                getRadiationAttributions().add((RadiationAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof DeviceAttribution) {
+                getDeviceAttributions().add((DeviceAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof SurgeryAttribution) {
+                getSurgeryAttributions().add((SurgeryAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof OtherCauseAttribution) {
+                getOtherCauseAttributions().add((OtherCauseAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof ConcomitantMedicationAttribution) {
+                getConcomitantMedicationAttributions().add((ConcomitantMedicationAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof DiseaseAttribution) {
+                getDiseaseAttributions().add((DiseaseAttribution) adverseEventAttribution);
+            } else if (adverseEventAttribution instanceof CourseAgentAttribution) {
+                getCourseAgentAttributions().add((CourseAgentAttribution) adverseEventAttribution);
+            }
+        }
+    }
 }
