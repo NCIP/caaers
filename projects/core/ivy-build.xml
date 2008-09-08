@@ -150,7 +150,34 @@
             ${query6}
         </sql>
     </target>
+	
+	<!-- ===============================================================================================
+	         target : drop-rules-tables
+	      ================================================================================================= -->
+	    
+	<target name="drop-rules-tables" description="drop the rules tables"
+	            depends="resolve, find-admin-datasource">
+	        <property file="${adminDsFile}"/>
+	        <echo message="${datasource.driver}"/>
+	        <echo message="${datasource.url}"/>
+	        <echo message="${datasource.username}"/>
+	        <echo message="${datasource.password}"/>
+	        <sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}"
+	             url="${datasource.url}"
+	             classpathref="main.classpath" onerror="abort" autocommit="true">
+	        	drop table rep_binval;
+	        	drop table rep_fsentry;
+	        	drop table rep_node;
+	        	drop table rep_prop;
+	        	drop table rep_refs;
+	        	drop table rep_ver_binval;
+	        	drop table rep_ver_fsentry;
+	        	drop table rep_ver_node;
+	        	drop table rep_ver_prop;
+	        	drop table rep_ver_refs;
 
+	        </sql>
+	    </target>
     <target name="generate-jaxb"
             description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
         <taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
