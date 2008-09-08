@@ -1,6 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
