@@ -113,10 +113,7 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
         if (helpExclusionList.contains(nameSubset[nameSubset.length - 1])) {
             return;
         }
-        field.getAttributes().put(
-                        InputField.HELP,
-                        helpKeyPrefix + "."
-                                        + field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
+        field.getAttributes().put(InputField.HELP, helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
     }
 
     // /BEAN PROPERTIES

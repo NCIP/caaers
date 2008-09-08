@@ -106,8 +106,7 @@ public abstract class BasicsTab extends AeTab {
     }
 
     protected void outcomeHelpKeyExclusion() {
-        addHelpKeyExclusion("outcomes[1]", "outcomes[2]", "outcomes[3]", "outcomes[4]",
-                        "outcomes[5]", "outcomes[6]", "outcomes[7]", "outcomeDate", "otherOutcome");
+        addHelpKeyExclusion("outcomes", "outcomeOtherDetails");
     }
 
     protected List<InputFieldGroup> getOutcomeInputFieldGroups(ExpeditedAdverseEventInputCommand command) {

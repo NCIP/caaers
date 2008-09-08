@@ -1,5 +1,6 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
@@ -76,6 +77,7 @@
     </div>
 
     <div id="main-fields-${index}" class="main-fields">
+		<ae:oneOutcome index="${index}" />
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>

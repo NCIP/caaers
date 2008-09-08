@@ -60,6 +60,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(!command.isDCPNonAdeersStudy()){
         	//sections to be concealed
         	conceal("aeReport.responseDescription.dcp");
+        	conceal("outcomes");
         	//fields to be concealed
         	conceal("aeReport.adverseEvents[].eventApproximateTime",
         			"aeReport.adverseEvents[].eventApproximateTime.hour", 
@@ -87,6 +88,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }else{
         	//sections to be revealed
         	reveal("aeReport.responseDescription.dcp");
+        	reveal("outcomes");
         	//fields to be revealed
         	reveal( "aeReport.adverseEvents[].eventApproximateTime",
         			"aeReport.adverseEvents[].eventApproximateTime.hour", 
