@@ -44,21 +44,16 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         
         Participant participant = participantRepository.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
 
-        if (log.isDebugEnabled()) {
-            log.debug("Retrieved Participant :" + String.valueOf(participant));
-        }
-
         EditParticipantCommand cmd = new EditParticipantCommand(participant);
-
         List<StudyParticipantAssignment> assignments = participant.getAssignments();
-//        cmd.setAssignments(assignments);
-        
+
+        // store StudySites from Participant object to Command object
         List<StudySite> studySites = new ArrayList<StudySite>();
         for (StudyParticipantAssignment studyParticipantAssignment : assignments) {
             studySites.add(studyParticipantAssignment.getStudySite());
         }
-        
         cmd.setStudySites(studySites);
+        
         if (participant.getAssignments().size() > 0)
             cmd.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
         
@@ -92,6 +87,12 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
     protected boolean shouldSave(HttpServletRequest request, T command, Tab<T> tTab) {
         if (isAjaxRequest(request)) return false;
         return super.shouldSave(request, command, tTab);
+    }
+
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+        ParticipantInputCommand cmd = (ParticipantInputCommand)oCommand;
+        participantDao.reassociate(cmd.getParticipant());
+        return super.currentFormObject(request, oCommand);
     }
 
     protected T save(T command, Errors errors) {

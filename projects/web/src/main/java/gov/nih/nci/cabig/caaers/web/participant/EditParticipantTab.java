@@ -147,7 +147,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
         if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
 
-        if (command.getAssignment() == null) errors.rejectValue("assignment", "REQUIRED", "Select one assignment please.");
+        if (command.getAssignment() == null) errors.rejectValue("assignment", "PT_002", "Select one assignment please.");
     }
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {

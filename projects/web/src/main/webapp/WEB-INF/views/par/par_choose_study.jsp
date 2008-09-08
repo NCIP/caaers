@@ -89,6 +89,15 @@ function ajaxStudySearch(searchText, searchType) {
 	</jsp:attribute>
 
     <jsp:attribute name="singleFields">
+        <div id="ids" style="display:none;">
+            <br />
+            <chrome:division title="Study Subject Identifier">
+                <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
+                    <tags:renderRow field="${field}"/>
+                </c:forEach>
+            </chrome:division>
+        </div>
+
         <div id="searchResults" style="width:100%; border: 0px red dotted;">
             <c:if test="${fn:length(command.studies) > 0}">
 
@@ -118,16 +127,6 @@ function ajaxStudySearch(searchText, searchType) {
 
             </c:if>
         </div>
-
-        <div id="ids" style="display:none;">
-            <br />
-            <chrome:division title="Study Subject Identifier">
-                <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
-                </c:forEach>
-            </chrome:division>
-        </div>
-
     </jsp:attribute>
 </tags:tabForm>
 

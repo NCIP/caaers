@@ -34,10 +34,10 @@
 
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                     <tr class="results">
-                        <td><%--${assignment.studySite.study.primaryIdentifier}--%></td>
+                        <td>${assignment.studySite.study.primaryIdentifier}</td>
                         <td>${assignment.studySite.study.shortTitle}</td>
                         <td>${assignment.studySite.organization.name}</td>
-                        <td><%--${assignment.studySubjectIdentifier}--%></td>
+                        <td>${assignment.studySubjectIdentifier}</td>
                     </tr>
             </c:forEach>
             

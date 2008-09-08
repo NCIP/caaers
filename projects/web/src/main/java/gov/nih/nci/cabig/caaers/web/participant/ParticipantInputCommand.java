@@ -95,8 +95,6 @@ public class ParticipantInputCommand {
     		studyDiseases = getStudy().getCtepStudyDiseases();
     		studyDiseasesMap = WebUtils.collectOptions(studyDiseases,"id", "term.term", "Please select");
     	}
-    	
-    	
     }
     
     public Participant getParticipant() {

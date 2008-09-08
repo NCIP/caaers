@@ -115,11 +115,12 @@ function removeSystemIdentifier(container, index) {
     </tr>
     <%--<b style="color: red;">[<c:out value="${command.participant.assignments == null}" />]</b>--%>
   <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
+    <c:set var="assign" value="assignments[${i.index}].studySubjectIdentifier" />
     <tr class="results">
-      <td><%--[id:${assignment.id}] <ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}--%></td>
+      <td><ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}</td>
       <td>${assignment.studySite.study.shortTitle}</td>
       <td>${assignment.studySite.organization.name}</td>
-      <td>${assignment.studySubjectIdentifier}</td>
+      <td><ui:text path="${assign}" /></td>
     </tr>
   </c:forEach>
 </table>
