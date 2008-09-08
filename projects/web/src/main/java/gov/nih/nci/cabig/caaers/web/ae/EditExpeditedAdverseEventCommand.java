@@ -25,9 +25,12 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
  */
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
+
+/*
     private static final String ACTION_PARAMETER = "action";
     private static final String AE_LIST_PARAMETER = "adverseEventList";
     private static final String REPORT_ID_PARAMETER = "aeReportId";
+*/
 
 
     // //// LOGIC

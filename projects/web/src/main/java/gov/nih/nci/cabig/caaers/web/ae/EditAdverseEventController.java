@@ -31,6 +31,7 @@ import org.springframework.web.util.WebUtils;
  * @author Rhett Sutphin
  */
 public class EditAdverseEventController extends AbstractAdverseEventInputController {
+
     private Task task;
 	//validator needs to be called in onBindAndValidate()
 	protected WebControllerValidator webControllerValidator;
@@ -51,8 +52,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
 
     @Override
-    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
-                    throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
         
@@ -198,8 +198,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
-                    Object oCommand, BindException errors) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
 
         // everything is saved as you move from page to page, so no action required here
@@ -211,8 +210,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
      * Will call the validate method on web controller.
      */
     @Override
-	protected void onBindAndValidate(HttpServletRequest request,
-			Object command, BindException errors, int page) throws Exception {
+	protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
 		super.onBindAndValidate(request, command, errors, page);
 		webControllerValidator.validate(request, command, errors);
 	}
@@ -232,8 +230,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     }
     
     @Override
-    protected ExpeditedAdverseEventInputCommand save(
-    		ExpeditedAdverseEventInputCommand command, Errors errors) {
+    protected ExpeditedAdverseEventInputCommand save(ExpeditedAdverseEventInputCommand command, Errors errors) {
     	command.save();
     	return null;
     }

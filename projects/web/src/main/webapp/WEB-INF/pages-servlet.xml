@@ -384,7 +384,7 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   
   <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/> 
+	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/>
 	
  <bean name="/ae/viewRoutine" id="viewRoutineAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ViewRoutineAeController" >
@@ -451,8 +451,7 @@
   </bean>
 
 
-    <bean name="/admin/import" id="importController" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
+    <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
         <property name="participantImportService" ref="participantImportService"/>
         <property name="studyImportService" ref="studyImportService"/>
         <property name="studyProcessorImpl" ref="studyProcessorImpl"/>

@@ -23,8 +23,7 @@ public class RoutineFlowFactory implements FlowFactory<RoutineAdverseEventInputC
     }
 
     public Flow<RoutineAdverseEventInputCommand> createFlow(RoutineAdverseEventInputCommand command) {
-        if (command.getStudy() != null
-                        && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+        if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
             return getMeddraFlow();
         } else {
             return getCtepFlow();

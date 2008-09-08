@@ -176,14 +176,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         summary.put("Study", summaryLine(getStudy()));
         summary.put("Report created at", getCreatedAt() == null ? null : getCreatedAt().toString());
         String primaryAeLine = null;
-        if (getAdverseEvents().size() > 0 &&
-                getAdverseEvents().get(0).getAdverseEventTerm() != null &&
-                getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
+        if (getAdverseEvents().size() > 0 && getAdverseEvents().get(0).getAdverseEventTerm() != null && getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm() != null) {
             primaryAeLine = getAdverseEvents().get(0).getAdverseEventTerm().getUniversalTerm();
         }
+
         summary.put("Primary AE", primaryAeLine);
         summary.put("AE count", Integer.toString(getAdverseEvents().size()));
         summary.put("Public identifier", getPublicIdentifier());
+
         // TODO: placeholders
         summary.put("Ticket number", null);
         summary.put("Next report due", null);

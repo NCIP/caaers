@@ -18,5 +18,5 @@
 <%@taglib prefix="investigator" tagdir="/WEB-INF/tags/investigator"%>
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
-
+<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="blue" tagdir="/WEB-INF/tags/chrome" %>

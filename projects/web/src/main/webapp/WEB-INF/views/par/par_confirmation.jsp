@@ -23,7 +23,7 @@
             <input type="hidden" name="_finish" value="true"/>
         </c:if>
 
-    <chrome:division title="Assigned to Studies">
+    <chrome:division title="Study Subject Assignments">
         <table class="tablecontent" width="100%">
             <tr>
                 <th scope="col" width="150px">Study Primary ID</th>
@@ -34,17 +34,17 @@
 
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                     <tr class="results">
-                        <td>${assignment.studySite.study.primaryIdentifier}</td>
+                        <td><%--${assignment.studySite.study.primaryIdentifier}--%></td>
                         <td>${assignment.studySite.study.shortTitle}</td>
                         <td>${assignment.studySite.organization.name}</td>
-                        <td>${assignment.studySubjectIdentifier}</td>
+                        <td><%--${assignment.studySubjectIdentifier}--%></td>
                     </tr>
             </c:forEach>
             
         </table>
         <br>
     </chrome:division>
-    <chrome:division title="Subject Details">
+    <chrome:division title="Demographic Information">
         <br>
         <table id="test2" class="single-fields" width="100%">
             <tr>

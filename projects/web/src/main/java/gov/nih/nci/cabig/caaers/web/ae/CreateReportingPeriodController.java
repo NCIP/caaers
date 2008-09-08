@@ -92,8 +92,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     }
 	
 	@Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
@@ -118,24 +117,19 @@ public class CreateReportingPeriodController extends SimpleFormController {
 		InputFieldGroupMap fieldMap = new InputFieldGroupMap();
 		reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 		
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date", 
-				FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR));
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date", 
-				FieldValidator.NOT_NULL_VALIDATOR));
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Evaluation Period Type", true,
-                createEpochOptions(command)));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date", FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date", FieldValidator.NOT_NULL_VALIDATOR));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Evaluation Period Type", true, createEpochOptions(command)));
 		
 		InputField descriptionField = InputFieldFactory.createTextArea("reportingPeriod.description", "Description", false);
 		InputFieldAttributes.setColumns(descriptionField, 45);
 		reportingPeriodFieldGroup.getFields().add(descriptionField);
 		
-		InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", 
-			FieldValidator.NUMBER_VALIDATOR);
+		InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", FieldValidator.NUMBER_VALIDATOR);
 		InputFieldAttributes.setSize(cycleNumberField, 2);
 		reportingPeriodFieldGroup.getFields().add(cycleNumberField);
 
-		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.treatmentAssignment", "Treatment assignment", true, 
-				fetchTreatmentAssignmentOptions(command)));
+		reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.treatmentAssignment", "Treatment assignment", true, fetchTreatmentAssignmentOptions(command)));
 		
 		InputField tacDescriptionField =  InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatment description");
 		InputFieldAttributes.setColumns(tacDescriptionField, 45);

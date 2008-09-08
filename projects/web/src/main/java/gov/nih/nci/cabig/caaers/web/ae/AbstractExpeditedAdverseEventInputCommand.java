@@ -48,12 +48,11 @@ import org.springframework.beans.BeanWrapperImpl;
 /**
  * @author Rhett Sutphin
  */
+
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
 
     private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
-    
-    private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
-
+//    private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
     private ExpeditedAdverseEventReport aeReport;
 
     private Map<String, List<List<Attribution>>> attributionMap;
@@ -74,8 +73,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private List<String> outcomeOtherDetails; 
     private List<ReportDefinition> selectedReportDefinitions;
 
-    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao,
-                    ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
+    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
@@ -86,11 +84,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
 
     public abstract StudyParticipantAssignment getAssignment();
-
     public abstract Participant getParticipant();
-
     public abstract Study getStudy();
-
     public abstract void save();
     public abstract void flush();
 

@@ -57,9 +57,7 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * @author Rhett Sutphin
  */
-public abstract class AbstractAdverseEventInputController
-                extends
-                AutomaticSaveAjaxableFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao> {
+public abstract class AbstractAdverseEventInputController extends AutomaticSaveAjaxableFormController<ExpeditedAdverseEventInputCommand, ExpeditedAdverseEventReport, ExpeditedAdverseEventReportDao> {
 
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 
@@ -133,17 +131,14 @@ public abstract class AbstractAdverseEventInputController
 
     @Override
     @SuppressWarnings( { "unchecked" })
-    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors)
-                    throws Exception {
+    protected void onBind(HttpServletRequest request, Object oCommand, BindException errors) throws Exception {
     	log.debug("In onBind");
         super.onBind(request, oCommand, errors);
-        ((ExpeditedAdverseEventInputCommand) oCommand).setNextPage(getTargetPage(request,
-                        getCurrentPage(request)));
+        ((ExpeditedAdverseEventInputCommand) oCommand).setNextPage(getTargetPage(request, getCurrentPage(request)));
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
@@ -224,12 +219,9 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request,
-                    ExpeditedAdverseEventInputCommand command,
-                    Tab<ExpeditedAdverseEventInputCommand> tab) {
+    protected boolean shouldSave(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Tab<ExpeditedAdverseEventInputCommand> tab) {
     	log.debug("In should save");
-        return super.shouldSave(request, command, tab)
-                        && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
+        return super.shouldSave(request, command, tab) && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
 
     protected boolean displaySummary(int page) {
@@ -256,8 +248,7 @@ public abstract class AbstractAdverseEventInputController
     }
 
     @Override
-    protected Object currentFormObject(HttpServletRequest request, Object oCommand)
-                    throws Exception {
+    protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
     	log.debug("In currentFormObject :" + oCommand );
         oCommand = super.currentFormObject(request, oCommand);
         log.debug("After calling super class currentFormObject :" + oCommand);

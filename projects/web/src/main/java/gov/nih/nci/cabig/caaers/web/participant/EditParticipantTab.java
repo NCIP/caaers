@@ -64,10 +64,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         InputField dobDay = InputFieldFactory.createTextField("day", "Day");
         InputFieldAttributes.setSize(dobDay, 2);
 
-        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth")
-                .addField(dobYear)
-                .addField(dobMonth)
-                .addField(dobDay));
+        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
 
         dobField.setRequired(true);
         dobField.getAttributes().put(InputField.HELP, "par.par_create_participant.participant.dateOfBirth");
@@ -134,10 +131,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         command.setStudy(command.getAssignment().getStudySite().getStudy());
     }
 
-    protected void validate(ParticipantInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    @Override
+    protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         boolean hasPrimaryID = false;
         DateValue dob = command.getParticipant().getDateOfBirth();
-        
+
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
         }
@@ -146,8 +144,10 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
             hasPrimaryID |= identifier.isPrimary();
             if (hasPrimaryID) break;
         }
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED",
-                "Please Include at least a single primary Identifier");
+
+        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
+
+        if (command.getAssignment() == null) errors.rejectValue("assignment", "REQUIRED", "Select one assignment please.");
     }
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {

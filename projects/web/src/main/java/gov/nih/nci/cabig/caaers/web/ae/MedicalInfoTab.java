@@ -31,8 +31,7 @@ public class MedicalInfoTab extends AeTab {
 
     public MedicalInfoTab() {
         super("Medical information", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/medical");
-        super.addHelpKeyExclusion("height","weight","quantity","unit","baselinePerformanceStatus",
-        		"otherPrimaryDiseaseSite","otherSite");
+        super.addHelpKeyExclusion("height","weight","quantity","unit","baselinePerformanceStatus", "otherPrimaryDiseaseSite","otherSite");
         super.setAutoPopulateHelpKey(true);
     }
 

@@ -14,17 +14,22 @@
 <html>
 <head>
     <title>caAERS || ${flow.name} || ${tab.longTitle}</title>
-    <link rel="icon" href="../../images/caaers.ico"/>
+    <link rel="icon" href="../../images/caaers.ico" />
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
     <standard:head/>
+
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:javascriptLink name="tabbedflow"/>
     <decorator:head/>
 </head>
 <body>
+
+<!-- ALL DIV start -->
+
 <div id="all">
 <standard:header/>
 <div class="tabpane">
+
     <chrome:workflowTabs tab="${tab}" flow="${flow}"/>
 
     <chrome:body title="${flow.name}: ${tab.longTitle}">
@@ -42,7 +47,8 @@
                 </chrome:box>
             </div>
         </c:if>
-		<!-- AE summary  -->
+
+        <!-- AE summary  -->
 		<c:if test="${not empty aesummary}">
 		<div> 
 			<div class="pane">
@@ -57,7 +63,8 @@
 			</div>
 		</div>
 		</c:if>
-		<!-- AE summary  -->
+        
+        <!-- AE summary  -->
 		<c:if test="${not empty routineAeSummary}">
 		<div> 
 			<div class="pane">
@@ -76,9 +83,13 @@
             <decorator:body/>
         </div>
     </chrome:body>
+
 </div>
 <standard:footer/>
 </div>
+
+<!-- ALL DIV end -->
+
 </body>
 </html>
 <!-- END decorators\tabbedflow.jsp -->

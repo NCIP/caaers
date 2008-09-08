@@ -105,7 +105,7 @@ function removeSystemIdentifier(container, index) {
 <jsp:attribute name="repeatingFields">
 
 
-<chrome:division  title="Sites"  >
+<chrome:division  title="Study Subject Assignments"  >
 <table class="tablecontent" width="100%">
     <tr>
        <th scope="col" width="150px">Study Primary ID</th>
@@ -116,7 +116,7 @@ function removeSystemIdentifier(container, index) {
     <%--<b style="color: red;">[<c:out value="${command.participant.assignments == null}" />]</b>--%>
   <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
     <tr class="results">
-      <td><ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}</td>
+      <td>[id:${assignment.studySite.study.id}] ${assignment.studySite.study.primaryIdentifier} <%--<ui:radio path="assignment" value="${assignment.id}"/>${assignment.studySite.study.primaryIdentifier}--%></td>
       <td>${assignment.studySite.study.shortTitle}</td>
       <td>${assignment.studySite.organization.name}</td>
       <td>${assignment.studySubjectIdentifier}</td>

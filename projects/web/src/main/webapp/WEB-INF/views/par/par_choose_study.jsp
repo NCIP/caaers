@@ -54,7 +54,7 @@ function ajaxStudySearch(searchText, searchType) {
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<chrome:box autopad="true" title="Search...">
+<chrome:box autopad="true" title="Search Criteria">
   	<p class="instructions">Choose the search criteria, type in a minimum of two characters and then click <b>Search</b></p>
 
     <form:form id="searchForm" method="post">
@@ -82,7 +82,7 @@ function ajaxStudySearch(searchText, searchType) {
     </form:form>
 </chrome:box>
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false" title="Results">
 	<jsp:attribute name="instructions">
 	 <c:if test="${fn:length(command.studies) gt 0}">
 	 	Please choose one or more study from the below listing.

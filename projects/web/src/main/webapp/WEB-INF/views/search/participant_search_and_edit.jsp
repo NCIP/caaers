@@ -92,7 +92,7 @@ function buildTable(form) {
 <form:form id="assembler" >
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
-	<chrome:box title="Subject Search Results">
+	<chrome:box title="Results">
      	<chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 

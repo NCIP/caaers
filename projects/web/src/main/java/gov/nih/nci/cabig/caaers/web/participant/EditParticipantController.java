@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -29,6 +30,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
     private static final Log log = LogFactory.getLog(EditParticipantController.class);
     private Task task;
+    private ConfigProperty configurationProperty;
 
     public EditParticipantController() {
         setBindOnNewForm(true);
@@ -39,6 +41,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
         request.getSession().removeAttribute(CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
+        
         Participant participant = participantRepository.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
 
         if (log.isDebugEnabled()) {
@@ -62,30 +65,6 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         return cmd;
 
     }
-
-/*
-    @Override
-    protected Object currentFormObject(HttpServletRequest request,Object command) throws Exception {
-    	EditParticipantCommand cmd = (EditParticipantCommand) super.currentFormObject(request, command);
-    	participantDao.reassociateUsingLock(cmd.getParticipant());
-    	return cmd;
-
-    }
-*/
-
-/*
-    protected NewParticipantCommand save(final ParticipantInputCommand newParticipantCommand,final Errors errors) {
-        if (errors.hasErrors()) {
-            return newParticipantCommand;
-        }
-        Participant participant = newParticipantCommand.getParticipant();
-        Participant mergedParticipant = getDao().merge(participant);
-        getDao().initialize(mergedParticipant);
-        getDao().save(mergedParticipant);
-        newParticipantCommand.setParticipant(mergedParticipant);
-        return newParticipantCommand;
-    }
-*/
 
     @Override
     protected boolean isSummaryEnabled() {
@@ -136,5 +115,13 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
     public void setTask(Task task) {
         this.task = task;
+    }
+
+    public ConfigProperty getConfigurationProperty() {
+        return configurationProperty;
+    }
+
+    public void setConfigurationProperty(ConfigProperty configurationProperty) {
+        this.configurationProperty = configurationProperty;
     }
 }

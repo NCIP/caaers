@@ -134,17 +134,11 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         lazyListHelper = new LazyListHelper();
 
         // register with lazy list helper study site.
-        lazyListHelper.add(StudySite.class, new StudyChildInstantiateFactory<StudySite>(this,
-                StudySite.class));
-        lazyListHelper.add(StudyFundingSponsor.class,
-                new StudyChildInstantiateFactory<StudyFundingSponsor>(this,
-                        StudyFundingSponsor.class));
+        lazyListHelper.add(StudySite.class, new StudyChildInstantiateFactory<StudySite>(this, StudySite.class));
+        lazyListHelper.add(StudyFundingSponsor.class, new StudyChildInstantiateFactory<StudyFundingSponsor>(this, StudyFundingSponsor.class));
         lazyListHelper.add(Identifier.class, new InstantiateFactory<Identifier>(Identifier.class));
-        lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this,
-                StudyAgent.class));
-
-        lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(
-                TreatmentAssignment.class));
+        lazyListHelper.add(StudyAgent.class, new StudyChildInstantiateFactory<StudyAgent>(this, StudyAgent.class));
+        lazyListHelper.add(TreatmentAssignment.class, new InstantiateFactory<TreatmentAssignment>(TreatmentAssignment.class));
 
         // mandatory, so that the lazy-projected list is created/managed properly.
         setStudyOrganizations(new ArrayList<StudyOrganization>());

@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
+
 public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
     protected String flowName;
 
@@ -27,6 +28,9 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     protected void addPostBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
         flow.addTab(new TreatmentTab());
         flow.addTab(new ReporterTab());
+
+        flow.addTab(new PatientDetailsTab());
+
         //flow.addTab(new CheckpointTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
@@ -44,10 +48,8 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         flow.addTab(new ViewReportTab());
     }
 
-    public Flow<ExpeditedAdverseEventInputCommand> createFlow(
-                    ExpeditedAdverseEventInputCommand command) {
-        if (command.getStudy() != null
-                        && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
+    public Flow<ExpeditedAdverseEventInputCommand> createFlow( ExpeditedAdverseEventInputCommand command) {
+        if (command.getStudy() != null && command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA) {
             return getMeddraFlow(command);
         } else {
             return getCtepFlow(command);
@@ -58,17 +60,14 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         return new Flow<ExpeditedAdverseEventInputCommand>(flowName);
     }
 
-    private Flow<ExpeditedAdverseEventInputCommand> getMeddraFlow(
-                    ExpeditedAdverseEventInputCommand command) {
+    private Flow<ExpeditedAdverseEventInputCommand> getMeddraFlow(ExpeditedAdverseEventInputCommand command) {
         if (meddraFlow == null || (meddraFlow != null && command.getStudy() == null)) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new MeddraBasicsTab());
             addPostBasicTabs(meddraFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
-                        && meddraFlow != null
-                        && (meddraFlow.getTabCount() == 17 || meddraFlow.getTabCount() == 16)) {
+        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && meddraFlow != null && (meddraFlow.getTabCount() == 17 || meddraFlow.getTabCount() == 16)) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new MeddraBasicsOutcomeTab());
@@ -77,8 +76,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
         return meddraFlow;
     }
 
-    private Flow<ExpeditedAdverseEventInputCommand> getCtepFlow(
-                    ExpeditedAdverseEventInputCommand command) {
+    private Flow<ExpeditedAdverseEventInputCommand> getCtepFlow(ExpeditedAdverseEventInputCommand command) {
 
         if (ctepFlow == null || (ctepFlow != null && command.getStudy() == null)) {
             ctepFlow = createEmptyFlow();
@@ -86,9 +84,7 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
             ctepFlow.addTab(new CtcBasicsTab());
             addPostBasicTabs(ctepFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting()
-                        && ctepFlow != null
-                        && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
+        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && ctepFlow != null && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
             ctepFlow = createEmptyFlow();
             addPreBasicTabs(ctepFlow);
             ctepFlow.addTab(new CtcBasicsOutcomeTab());

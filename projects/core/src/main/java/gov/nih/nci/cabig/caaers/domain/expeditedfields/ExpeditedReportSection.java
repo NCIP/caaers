@@ -19,7 +19,8 @@ public enum ExpeditedReportSection {
     ATTRIBUTION_SECTION("Attribution", true), 
     ADDITIONAL_INFO_SECTION("Attachments"), 
     SUBMIT_REPORT_SECTION("Submit", true), 
-    OUTCOME_SECTION("Outcome");
+    OUTCOME_SECTION("Outcome"),
+    PATIENT_DETAILS_SECTION("Patient Medical History");
 
     private String displayName;
 

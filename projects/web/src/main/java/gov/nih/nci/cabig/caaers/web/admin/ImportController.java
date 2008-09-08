@@ -173,8 +173,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(true));
     }
@@ -360,10 +359,9 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     	BufferedReader input = null;
         try {
             File xmlFile = File.createTempFile("file", "uploaded");
-            FileCopyUtils.copy(getMultipartFile(type, command).getInputStream(),
-                            new FileOutputStream(xmlFile));
+            FileCopyUtils.copy(getMultipartFile(type, command).getInputStream(), new FileOutputStream(xmlFile));
             command.setSchemaValidationResult(null);
-            boolean valid = 	validateAgainstSchema(xmlFile , command, getXSDLocation(type));
+            boolean valid = validateAgainstSchema(xmlFile , command, getXSDLocation(type));
             
             if (!valid) {
             	return;
