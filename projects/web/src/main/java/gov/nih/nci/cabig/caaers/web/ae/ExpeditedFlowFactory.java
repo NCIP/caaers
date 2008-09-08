@@ -67,12 +67,12 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
             meddraFlow.addTab(new MeddraBasicsTab());
             addPostBasicTabs(meddraFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && meddraFlow != null && (meddraFlow.getTabCount() == 17 || meddraFlow.getTabCount() == 16)) {
+        /*if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && meddraFlow != null && (meddraFlow.getTabCount() == 17 || meddraFlow.getTabCount() == 16)) {
             meddraFlow = createEmptyFlow();
             addPreBasicTabs(meddraFlow);
             meddraFlow.addTab(new MeddraBasicsOutcomeTab());
             addPostBasicTabs(meddraFlow);
-        }
+        }*/
         return meddraFlow;
     }
 
@@ -84,12 +84,12 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
             ctepFlow.addTab(new CtcBasicsTab());
             addPostBasicTabs(ctepFlow);
         }
-        if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && ctepFlow != null && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
+        /*if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && ctepFlow != null && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
             ctepFlow = createEmptyFlow();
             addPreBasicTabs(ctepFlow);
             ctepFlow.addTab(new CtcBasicsOutcomeTab());
             addPostBasicTabs(ctepFlow);
-        }
+        }*/
 
         return ctepFlow;
     }

@@ -8,6 +8,9 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
@@ -19,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author Rhett Sutphin
  */
 public class CtcBasicsTab extends BasicsTab {
+	 private static final Log log = LogFactory.getLog(CtcBasicsTab.class);
+	
     private static final String CTC_TERM_FIELD_GROUP = "ctcTerm";
 
     private static final String CTC_OTHER_FIELD_GROUP = "ctcOther";
@@ -63,6 +68,23 @@ public class CtcBasicsTab extends BasicsTab {
                         otherLowLevelTermField, otherVerbatimField
 
         );
+        //add the fields for outcomes
+        for(InputFieldGroup outcomeFieldGrp : getOutcomeInputFieldGroups(command)){
+        	creator.addUnprocessedFieldGroup(outcomeFieldGrp);
+        }
+    }
+    
+
+    @Override
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+        command.updateOutcomes();
+        log.debug("Outcome Map : " + command.getOutcomes().toString());
+        log.debug("Outcome otherDetails :" + command.getOutcomeOtherDetails().toString());
+    }
+    
+    @Override
+    public void postProcess(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command, Errors errors) {
+    	super.postProcessOutcomes(command);
     }
 
     @Override

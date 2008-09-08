@@ -1,32 +1,27 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory.RepeatingFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.DelayUnits;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
@@ -133,8 +128,53 @@ public abstract class BasicsTab extends AeTab {
     	
     	return outcomeGroups;
     }
-
+    
+    
+    protected void removeOutcomeIfExists(List<Outcome> outcomes, OutcomeType type){
+    	if(outcomes == null || outcomes.isEmpty()) return;
+    	Outcome o = null;
+    	for(Outcome outcome : outcomes){
+    		if(outcome.getOutcomeType() == type){
+    			o = outcome;
+    			break;
+    		}
+    	}
+    	if(o != null) outcomes.remove(type);
+    }
+    
+    protected void addOutcomeIfDontExist(List<Outcome> outcomes, OutcomeType type, String otherString){
+    	
+    	if(!outcomes.isEmpty()){
+    		for(Outcome outcome : outcomes){
+    			if(outcome.getOutcomeType() == type){
+    				if(type == OutcomeType.OTHER_SERIOUS) outcome.setOther(otherString);
+    				return;
+    			}
+    		}
+    	}
+    	
+    	Outcome o = new Outcome();
+        o.setOutcomeType(type);
+    	o.setOther(otherString);
+    	outcomes.add(o);
+    }
+    
     protected void postProcessOutcomes(ExpeditedAdverseEventInputCommand command) {
+    	int i = 0; 
+    	
+    	for(AdverseEvent ae : command.getAeReport().getAdverseEvents()){
+    		Map<Integer, Boolean> outcomeMap = command.getOutcomes().get(i);
+    		for (Map.Entry<Integer, Boolean> entry : outcomeMap.entrySet()){
+    			if(entry.getValue()){
+    				addOutcomeIfDontExist(ae.getOutcomes(), OutcomeType.getByCode(entry.getKey()), command.getOutcomeOtherDetails().get(i));
+    			}else{
+    				removeOutcomeIfExists(ae.getOutcomes(), OutcomeType.getByCode(entry.getKey()));
+    			}
+    		}
+    		
+    		i++;
+    	}
+    	
     	//BJ : FIXME
  /*       // override disabled checkboxes on the UI - better way to do this is using images. I prefer
         // not
