@@ -62,7 +62,7 @@
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
-<chrome:box autopad="true">
+<chrome:box autopad="true" title="Search Criteria">
     <form:form id="searchForm" method="post" cssClass="standard">
 
 <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
@@ -97,7 +97,7 @@
 </chrome:box>
 
 <p id="instructions">Please choose a Study and then press Continue to proceed</p>
-<tags:tabForm tab="${tab}" flow="${flow}" title="Study search results" willSave="false">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 
     <jsp:attribute name="singleFields">
         <div id="searchResults" style="width:100%; border: 0px red dotted;">

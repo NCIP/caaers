@@ -39,8 +39,9 @@ function ajaxSubjectSearch(searchText, searchType) {
 
 </head>
 <body>
-<chrome:box autopad="true">
-    <form:form id="searchForm" method="post" cssClass="standard">
+
+<chrome:box autopad="true" title="Search Criteria">
+    <form:form id="searchForm" method="post" cssClass="standard" title="ABC">
         <table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
             <tr>
                 <td class="searchType">Search for a subject</td>
@@ -60,9 +61,10 @@ function ajaxSubjectSearch(searchText, searchType) {
             </tr>
         </table>
     </form:form>
-    <tags:tabForm tab="${tab}" flow="${flow}" title="Subject search results" willSave="false">
-<jsp:attribute name="singleFields">
+</chrome:box>
 
+<tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
+<jsp:attribute name="singleFields">
     <div id="searchResults" style="width:100%; border: 0px red dotted;">
         <c:if test="${fn:length(command.participantSearchResults) > 0}">
 
@@ -91,11 +93,10 @@ function ajaxSubjectSearch(searchText, searchType) {
     </c:if>
 
     </div>
-
 </jsp:attribute>
 </tags:tabForm>
-</chrome:box>
 
 </body>
 </html>
+
 <!-- END views\par\reg_participant_search.jsp -->

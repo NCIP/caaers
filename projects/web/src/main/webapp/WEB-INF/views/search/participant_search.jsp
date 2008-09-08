@@ -126,7 +126,7 @@ function buildTable(form) {
 </div>
 
 
-<chrome:box title="Subject search results">
+<chrome:box title="Results">
      <chrome:division id="single-fields">
         <div id="tableDiv">
    			<c:out value="${assembler}" escapeXml="false"/> 
