@@ -37,7 +37,7 @@
 			<copy todir="@{dest}" filtering="@{filter}">
 				<fileset dir="@{src}" includes="**/*.*">
 					<exclude name=".svn"/>
-					<exclude name="applicationContext-test.xml"/>
+					<!-- <exclude name="applicationContext-test.xml"/> -->
 				</fileset>
 			</copy>
 		</sequential>
