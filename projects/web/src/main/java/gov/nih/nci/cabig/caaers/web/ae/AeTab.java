@@ -18,6 +18,7 @@ import org.springframework.validation.Errors;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,8 +141,13 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public CompositeField createTimeField(String baseProperty, String displayName){
     	InputField hrField = InputFieldFactory.createTextField("hour", "HH");
     	InputField mmField = InputFieldFactory.createTextField("minute","MM"); 
+    	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
+    	amPmOption.put("0", "AM");
+    	amPmOption.put("1", "PM");
+    	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
     	InputFieldAttributes.setSize(hrField, 2);
     	InputFieldAttributes.setSize(mmField, 2);
+    	
     	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField));
     	
     }
