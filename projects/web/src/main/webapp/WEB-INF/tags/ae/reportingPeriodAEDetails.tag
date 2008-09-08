@@ -27,7 +27,7 @@ Note: -
                        <th scope="col" align="left"><b>Attribution</b> </th>
                        <th scope="col" align="left"><b>Hospitalization</b> </th>
                        <th scope="col" align="left"><b>Expected</b> </th>
-                       <caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
+                       <th><caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </caaers:renderFilter></th>
                     <th scope="col" align="left"> </th>
                    </tr>
                 <c:set var="noObservedAE" value="true" scope="request"/>
@@ -55,7 +55,7 @@ Note: -
 					<th scope="col" align="left"><b>Attribution</b> </th>
 					<th scope="col" align="left"><b>Hospitalization</b> </th>
 					<th scope="col" align="left"><b>Expected</b> </th>
-					<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
+					<th><caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </caaers:renderFilter></th>
 				</tr>
 				<c:set var="noSolictedAE" value="true" scope="request"/>
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
