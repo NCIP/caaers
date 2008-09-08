@@ -479,6 +479,7 @@ public class XLstudyImporter {
         Organization org;
         String invNciId;
         String orgNciId;
+        String statusMessage;
         for (int invRow = 1; invRow <= invRows; invRow++) {
             iq = new InvestigatorQuery();
             invNciId = getCellData(INVESTIGATOR_SHEET_NAME, invRow,
@@ -489,6 +490,7 @@ public class XLstudyImporter {
             invList = investigatordao.searchInvestigator(iq);
 
             if (invList.size() == 0) {
+            	statusMessage="Creating new investigator.";
                 inv = new Investigator();
                 inv.setNciIdentifier(invNciId);
                 inv
@@ -522,6 +524,7 @@ public class XLstudyImporter {
                 inv.setFaxNumber(invFax);
 
             } else {
+            	statusMessage="This investigator exists in database. Only associated site investigators will be updated.";
                 inv = invList.get(0);
             }
 
@@ -536,8 +539,6 @@ public class XLstudyImporter {
                 if (orgNciId.equals(existingSiteInv.getOrganization().getNciInstituteCode())) {
                     addSiteInv = false;
                     break;
-                } else {
-                    addSiteInv = true;
                 }
             }
             if (addSiteInv) {
@@ -547,7 +548,8 @@ public class XLstudyImporter {
             }
             investigatordao.save(inv);
 
-            System.out.println("\n created inv:" + inv.getId());
+            System.out.println(statusMessage);
+            System.out.println(" Details: "+ inv.getLastFirst());
         }
 
     }
