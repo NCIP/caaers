@@ -81,7 +81,6 @@ body {
 	margin-left: 20px;
 }
 
-a {outline:none;}
 a img{
 	border-top-style: none;
 	border-right-style: none;
@@ -147,29 +146,51 @@ a#logo:active {
 background-position: 0px -200px;
 }
 
-#login-action {
+#logout {
 	background-image: url(../images/blue/logout_tab.png);
 	position: absolute;
-	height: 31px;
-	width: 148px;
+	height: 30px;
+	width: 75px;
 	top: 0px;
 	right: -9px;
 	padding-top: 2px;
 	background-repeat: no-repeat;
 	text-align: center;
 	margin-right:15px;
-}
-
-#login-action a {
 	color: #333366;
 	font-weight: bold;
 	text-decoration: none;
 	font-size: 0.85em;
 }
 
-#login-action a:hover {
+a#logout:hover {
 	text-decoration: underline;
 }
+#skipnav{
+text-indent:-9999px;
+position:absolute;
+}
+#help {
+	background-image: url(../images/blue/logout_tab.png);
+	position: absolute;
+	height: 30px;
+	width: 75px;
+	top: 0px;
+	right: 65px;
+	padding-top: 2px;
+	background-repeat: no-repeat;
+	text-align: center;
+	margin-right:15px;
+	color: #333366;
+	font-weight: bold;
+	text-decoration: none;
+	font-size: 0.85em;
+}
+
+a#help:hover {
+	text-decoration: underline;
+}
+
 
 /***
 The following are the rules for 1st level navigation tabs:

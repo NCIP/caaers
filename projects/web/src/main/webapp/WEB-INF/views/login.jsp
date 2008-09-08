@@ -48,12 +48,20 @@
 	height: 350px;
 	width: 350px;
 }
-		.login:hover{
+		.login:link{
 	background-image:url(/caaers/images/blue/power-btn.jpg);
+	height: 350px;
+	width: 350px;
+}
+		.login:visited{
+	background-image:url(/caaers/images/blue/power-btn.jpg);
+	height: 350px;
+	width: 350px;
+}
+		.login:hover{
 	background-position: 0px -350px;
 }
 		.login:active{
-	background-image:url(/caaers/images/blue/power-btn.jpg);
 	background-position: 0px -700px;
 }
 input{outline:none;}
