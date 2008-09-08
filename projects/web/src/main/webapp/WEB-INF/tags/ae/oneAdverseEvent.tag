@@ -77,7 +77,6 @@
     </div>
 
     <div id="main-fields-${index}" class="main-fields">
-		<ae:oneOutcome index="${index}" />
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
