@@ -138,8 +138,6 @@ public class XLstudyImporter {
         investigatorInfoSheet = getSheet(INVESTIGATOR_SHEET_NAME);
         therapyInfoSheet = getSheet(THERAPY_SHEET_NAME);
         rowCount = studyInfoSheet.getLastRowNum();
-        rowCount--;
-
     }
 
     private void initializeStudy(Study study) {
