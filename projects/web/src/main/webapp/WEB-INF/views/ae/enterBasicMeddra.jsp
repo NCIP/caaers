@@ -80,11 +80,6 @@
         <jsp:attribute name="instructions">
            <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
-        
-        <jsp:attribute name="singleFields">
-    		<ae:oneOutcome />
-		</jsp:attribute>
-
         <jsp:attribute name="repeatingFields">
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
                 <ae:oneAdverseEventMeddra index="${status.index}"/>

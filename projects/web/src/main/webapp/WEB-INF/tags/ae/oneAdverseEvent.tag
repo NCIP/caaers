@@ -3,6 +3,7 @@
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
@@ -77,8 +78,11 @@
     </div>
 
     <div id="main-fields-${index}" class="main-fields">
-        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field">
+		<c:set var="len" value="${fn:length(fieldGroups[mainGroup].fields)}" />
+        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="0" end="${len - 2}">
             <tags:renderRow field="${field}"/>
         </c:forEach>
+		<ae:oneOutcome index="${index}" />
+		<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
     </div>
 </chrome:division>
