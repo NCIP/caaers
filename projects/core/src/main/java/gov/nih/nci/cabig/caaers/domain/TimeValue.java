@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 
 @Embeddable
 public class TimeValue {
@@ -30,11 +31,27 @@ public class TimeValue {
     public void setMinute(Integer minute) {
         this.minute = minute;
     }
-
-
+    
+    
+    public void setType(int type) {
+		this.type = type;
+	}
+    
+    public int getType() {
+		return type;
+	}
+    @Transient
+    public boolean isAM(){
+    	return type == 0;
+    }
+    @Transient
+    public boolean isPM(){
+    	return type == 1;
+    }
+    
     @Override
     public String toString() {
-        return String.format("%02d:%02d", hour, minute);
+        return String.format("%02d:%02d %s", hour, minute, (type == 1 ? "PM" : "AM") );
     }
 
 

@@ -513,7 +513,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     @AttributeOverrides({
             @AttributeOverride(name = "hour", column = @Column(name = "event_time_hour")),
             @AttributeOverride(name = "minute", column = @Column(name = "event_time_minute")),
-            @AttributeOverride(name = "zone", column = @Column(name = "event_time_zone"))
+            @AttributeOverride(name = "type", column = @Column(name = "event_time_zone"))
     })
     public TimeValue getEventApproximateTime() {
         if (eventApproximateTime == null) eventApproximateTime = new TimeValue();

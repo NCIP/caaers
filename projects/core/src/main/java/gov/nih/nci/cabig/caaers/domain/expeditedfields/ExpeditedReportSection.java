@@ -4,7 +4,6 @@ public enum ExpeditedReportSection {
     BASICS_SECTION("Enter AEs", true), 
     ADVERSE_EVENT_SECTION("Adverse events"), 
     REPORTER_INFO_SECTION("Reporter"), 
-    CHECKPOINT_SECTION("Select Report"), 
     RADIATION_INTERVENTION_SECTION("Radiation"), 
     SURGERY_INTERVENTION_SECTION("Surgery"),
     MEDICAL_DEVICE_SECTION("Device", true), 
