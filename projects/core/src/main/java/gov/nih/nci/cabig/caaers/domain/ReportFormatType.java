@@ -14,7 +14,11 @@ public enum ReportFormatType implements CodedEnum<Integer> {
     private int code;
 
     private String displayName;
-
+    
+    ReportFormatType(int code) {
+        this(code, null);
+    }
+    
     ReportFormatType(int code, String displayName) {
         this.code = code;
         this.displayName = displayName;
