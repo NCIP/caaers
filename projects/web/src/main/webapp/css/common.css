@@ -49,8 +49,8 @@ body {
 	background-repeat: no-repeat;
 	background-position:right;
 	padding-right: 20px;
-
 }
+
 #thirdlevelnav div a{
 	text-decoration:none;
 	color: #fff;
@@ -785,7 +785,7 @@ a.help img {
 }
 
 .submittedOn {
-    color: #66cc33;
+    color:#009900;
     text-align: center;
 }
 

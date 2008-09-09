@@ -43,32 +43,40 @@
 	top:-135px;
 		}
 		.errors{color:#FFCC00;}
-		.login{
-	background-image:url(/caaers/images/blue/power-btn.jpg);
-	height: 350px;
-	width: 350px;
-}
-		.login:link{
-	background-image:url(/caaers/images/blue/power-btn.jpg);
-	height: 350px;
-	width: 350px;
-}
-		.login:visited{
-	background-image:url(/caaers/images/blue/power-btn.jpg);
-	height: 350px;
-	width: 350px;
-}
-		.login:hover{
-	background-position: 0px -350px;
-}
-		.login:active{
-	background-position: 0px -700px;
-}
 input{outline:none;}
     </style>
     <link href="../images/caaers.ico" rel="icon"/>
 </head>
 <body>
+ <SCRIPT language="JavaScript">
+upImage = new Image();
+upImage.src = "/caaers/images/blue/power-btn-up.jpg";
+downImage = new Image();
+downImage.src = "/caaers/images/blue/power-btn-down.jpg"
+hoverImage = new Image();
+hoverImage.src = "/caaers/images/blue/power-btn-hover.jpg";
+  var loginimg = document.getElementById("power_btn");
+function changeImage()
+{
+document.getElementById("power_btn").src= "/caaers/images/blue/power-btn-hover.jpg";
+return true;
+}
+function changeImageBack()
+{
+ document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-up.jpg";
+ return true;
+}
+function handleMDown()
+{
+ document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-down.jpg";
+ return true;
+}
+function handleMUp()
+{
+ changeImage();
+ return true;
+}
+</SCRIPT>
 <img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System">
 <h2>Please Log in</h2>
     <form method="POST" id="login" action="<c:url value="/j_acegi_security_check"/>">
@@ -101,7 +109,7 @@ input{outline:none;}
                 <a href='<c:url value="/public/user/resetPassword" />'>Forgot Password?</a>
             </div>
             <div class="submit">
-                <input type="image" src="/caaers/images/blue/icons/configurationController_icon.png" value="Log in" alt="Log in" class="login"/>
+                <input type="image" src="/caaers/images/blue/power-btn-up.jpg" value="Log in" alt="Log in" height="350px" width="350px" id="power_btn" onMouseOver="return changeImage()" onMouseOut= "return changeImageBack()" onMouseDown="return handleMDown()" onMouseUp="return handleMUp()"/>
             </div>
         </div>
     </form>

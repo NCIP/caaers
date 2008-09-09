@@ -7,7 +7,9 @@
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 
 <html>
-<head><title>Welcome to caAERS</title></head>
+<head><title>Welcome to caAERS</title>
+<link rel="icon" href="../images/caaers.ico"/>
+</head>
 <body><chrome:box title="Task">
 <chrome:division title="Regular Tasks">
     <table id="test" class="autoclear" width="100%">

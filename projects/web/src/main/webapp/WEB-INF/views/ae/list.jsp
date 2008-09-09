@@ -106,8 +106,8 @@
 						<tr align="center" class="label">
 							<td width="5%" class="tableHeader"></td>
 							<td width="15%" class="tableHeader">Evaluation Period</td>
-							<td width="16%" class="centerTableHeader"># of Reports</td>
-							<td width="16%" class="centerTableHeader"># of AEs</td>
+							<td width="16%" class="tableHeader"># of Reports</td>
+							<td width="16%" class="tableHeader"># of AEs</td>
 							<td width="16%" class="tableHeader">Data Entry Status</td>
 							<td width="16%" class="tableHeader">Report Status</td>
 							<td width="16%" class="tableHeader">Options</td>

@@ -14,7 +14,7 @@
 	border: 1px solid silver;
 	padding: 2px;
 	font-family: arial, verdana, helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 12px;
 	margin-top: 7px;
 }
 
@@ -66,10 +66,10 @@
 }
 
 .eXtremeTable .tableHeader {
-	background-color: #308dbb;
+	background-color: #2b4186;
 	color: white;
 	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
 	padding-right: 3px;
@@ -80,6 +80,9 @@
 	border-right-style: solid;
 	border-right-width: 1px;
 	border-color: white;
+	background-image: url(../images/blue/eXtableheader_bg.png);
+	background-repeat: repeat-x;
+	background-position: top;
 }
 
 .eXtremeTable .tableHeaderSort {
@@ -100,17 +103,27 @@
 
 .eXtremeTable .odd a, .even a {
 	color: Black;
-	font-size: 10px;
 }
 
 .eXtremeTable .odd td, .eXtremeTable .even td {
-	padding-top: 2px;
+	padding-top: 6px;
 	padding-right: 3px;
-	padding-bottom: 2px;
+	padding-bottom: 6px;
 	padding-left: 3px;
 	vertical-align: middle;
 	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 10px;
+	font-size: 13px;
+	font-weight: bold;
+}
+.eXtremeTable .eXtremeTable .odd td, .eXtremeTable .eXtremeTable .even td {
+	padding-top: 6px;
+	padding-right: 3px;
+	padding-bottom: 6px;
+	padding-left: 3px;
+	vertical-align: middle;
+	font-family: Arial, verdana, helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
 }
 
 .eXtremeTable .odd {
@@ -123,18 +136,30 @@
 
 .eXtremeTable .highlight td {
 	color: black;
-	font-size: 10px;
-	padding-top: 2px;
+	padding-top: 6px;
 	padding-right: 3px;
-	padding-bottom: 2px;
+	padding-bottom: 6px;
 	padding-left: 3px;
 	vertical-align: middle;
 	background-color: #fdecae;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.eXtremeTable .eXtremeTable .highlight td {
+	color: black;
+	padding-top: 6px;
+	padding-right: 3px;
+	padding-bottom: 6px;
+	padding-left: 3px;
+	vertical-align: middle;
+	background-color: #fdecae;
+	font-size: 12px;
+	font-weight: normal;
 }
 
 .eXtremeTable .highlight a, .highlight a {
 	color: black;
-	font-size: 10px;
 }
 
 .eXtremeTable .compactToolbar {
@@ -144,7 +169,7 @@
 .eXtremeTable .toolbar {
 	background-color: #F4F4F4;
 	font-family: arial, verdana, helvetica, sans-serif;
-	font-size: 9px;
+	font-size: 10px;
 	margin-right: 1px;
 	border-right: 1px solid silver;
 	border-left: 1px solid silver;
@@ -190,7 +215,6 @@
 .eXtremeTable .formButton {
 	cursor: pointer;
 	font-family: arial, verdana, helvetica, sans-serif;
-	font-size:10px;
 	font-weight: bold;
 	background-color: #308dbb;
 	color: white;
@@ -208,7 +232,6 @@
 	color: black;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-weight: bold;
-	font-size: 10px;
 }
 
 .eXtremeTable .calcResult {
