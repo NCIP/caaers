@@ -2,12 +2,15 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,8 +56,15 @@ public class ReportMandatoryFieldDefinitionTab extends TabWithFields<ReportDefin
             if (StringUtils.isEmpty(path)) return;
             int index = command.getMandatoryFieldMap().get(path);
             if (StringUtils.isEmpty(displayName)) displayName = node.getParent().getDisplayName();
-            fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["
-                            + index + "].mandatory", displayName));
+            //fields.add(InputFieldFactory.createCheckboxField("reportDefinition.mandatoryFields["
+              //              + index + "].mandatory", displayName));
+
+            fields.add(InputFieldFactory.createSelectField("reportDefinition.mandatoryFields["
+                            + index + "].mandatory", displayName, false, 
+                            WebUtils.collectOptions(Arrays.asList(Mandatory.values()), "name", "displayName")));
+            
+
+            		
         } else {
             // add children of this node in the map
             for (TreeNode n : node.getChildren())
