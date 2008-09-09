@@ -45,7 +45,25 @@ public interface AdverseEventQueryService {
 	 * @return
 	 */	
 	public List<AdverseEvent> getByStudy(Study study, AdverseEvent adverseEvent);
+	
 
+	/**
+	 * Search for Adverse Events based on a given Study , Participant
+	 * @param study
+	 * @parm participant
+	 * @return
+	 */	
+	public List<AdverseEvent> getByStudyParticipant(Study study , Participant participant);
+
+	/**
+	 * Search for Adverse Events based on a given Study , Participant and adverseEvent
+	 * @param study
+	 * @parm participant
+	 * @param adverseEvent
+	 * @return
+	 */	
+	public List<AdverseEvent> getByStudyParticipant(Study study , Participant participant, AdverseEvent adverseEvent);
+	
 	/**
 	 * Convert result AEs to XML
 	 * @param adverseEvents
