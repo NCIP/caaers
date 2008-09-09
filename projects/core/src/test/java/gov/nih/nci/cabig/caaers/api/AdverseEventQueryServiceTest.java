@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
 
 import java.util.List;
 
@@ -60,7 +59,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 	}	
 	
 	
-
+/*
 	public void testGetByStudy() {
 		Study study = new Study();
 		study.setShortTitle("Short Title");
@@ -72,7 +71,6 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		aes = svc.getByStudy(study);	
 		assertEquals(0, aes.size());		
 	}
-	/*
 	public void atestGet() {
 		try {
 			
