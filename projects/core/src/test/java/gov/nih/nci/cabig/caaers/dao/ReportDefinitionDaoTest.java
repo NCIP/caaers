@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationAttachment;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -113,8 +114,8 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         org.addReportDefinition(definition);
 
         // add new mandatory fields.
-        ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", false);
-        ReportMandatoryFieldDefinition mf2 = new ReportMandatoryFieldDefinition("biju.a2", true);
+        ReportMandatoryFieldDefinition mf1 = new ReportMandatoryFieldDefinition("biju.a1", Mandatory.OPTIONAL);
+        ReportMandatoryFieldDefinition mf2 = new ReportMandatoryFieldDefinition("biju.a2", Mandatory.MANDATORY);
         List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
         mandatoryFields.add(mf1);
         mandatoryFields.add(mf2);
@@ -153,7 +154,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 assertEquals("Mandatory fields size", 2, mfList.size());
                 ReportMandatoryFieldDefinition mfLoaded = mfList.get(1);
                 assertEquals("Path should be same", "biju.a2", mfLoaded.getFieldPath());
-                assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory());
+                assertTrue("Field biju.a2 must be mandatory", mfLoaded.getMandatory().equals(Mandatory.MANDATORY));
 
                 // update the values.
                 nf.setIndexOnTimeScale(4);
