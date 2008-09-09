@@ -129,7 +129,9 @@
 			 	priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
 		}
-		
+		function fireAction(type, index, loc, options, id){
+			mHistory.removeDetails(type, index, loc, options);
+		}
 	</script>
   </head>
   <body>
