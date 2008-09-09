@@ -7,6 +7,7 @@
 <body>
 
     <h1>PATIENT DETAILS (Patient Medical History)</h1>
-
+	<tags:tabForm flow="${flow}" tab="${tab}">
+	</tags:tabForm>
 </body>
 </html>
