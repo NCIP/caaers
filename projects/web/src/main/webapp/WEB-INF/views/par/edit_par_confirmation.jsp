@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>Review and Submit</title>
+    <title>Participant Review</title>
     <tags:stylesheetLink name="participant"/>
     <script>
         function submitPage(s) {

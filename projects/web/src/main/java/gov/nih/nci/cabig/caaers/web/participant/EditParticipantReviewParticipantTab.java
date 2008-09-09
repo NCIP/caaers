@@ -11,7 +11,7 @@ import java.util.Map;
 public class EditParticipantReviewParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
     public EditParticipantReviewParticipantTab() {
-        super("Review and Submit", "Review", "par/edit_par_confirmation");
+        super("Participant Review", "Review", "par/edit_par_confirmation");
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
