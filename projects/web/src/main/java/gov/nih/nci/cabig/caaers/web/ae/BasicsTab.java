@@ -172,50 +172,14 @@ public abstract class BasicsTab extends AeTab {
     			}
     		}
     		
+    		//special case, DEATH garde should select DEATH
+    		if(ae.getGrade() != null && ae.getGrade().equals(Grade.DEATH)) addOutcomeIfDontExist(ae.getOutcomes(), OutcomeType.DEATH, null);
+    		
+    		//special case HOSPITALIZATION 
+    		if(ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES)) addOutcomeIfDontExist(ae.getOutcomes(), OutcomeType.DEATH, null);
+    		
     		i++;
     	}
     	
-    	//BJ : FIXME
- /*       // override disabled checkboxes on the UI - better way to do this is using images. I prefer
-        // not
-        // to use JS manipulation as that would allow hacking if someone wants.
-        Hospitalization hospitalization = command.getAeReport().getAdverseEvents().size() > 0 ? command
-                        .getAeReport().getAdverseEvents().get(0).getHospitalization()
-                        : null;
-
-        boolean isHospitalization = Hospitalization.YES.equals(hospitalization);
-        command.getOutcomes().put("3", isHospitalization);
-
-        ArrayList<String> codes = new ArrayList<String>();
-        // remove
-        for (Iterator<Outcome> outcomes = command.getAeReport().getOutcomes().iterator(); outcomes
-                        .hasNext();) {
-            Outcome outcome = outcomes.next();
-            String code = outcome.getOutcomeType().getCode().toString();
-            codes.add(code);
-            boolean x = command.getOutcomes().get(code);
-            if (x == false) {
-                outcomes.remove();
-            }
-        }
-        // add
-        for (String code : command.getOutcomes().keySet()) {
-            if (!codes.contains(code) && command.getOutcomes().get(code) == true) {
-                Outcome outcome = new Outcome();
-                outcome.setOutcomeType(OutcomeType.getByCode(Integer.parseInt(code)));
-                command.getAeReport().addOutcomes(outcome);
-            }
-        }
-
-        // Add the date & other if exist
-        for (Outcome outcome : command.getAeReport().getOutcomes()) {
-            if (outcome.getOutcomeType() == OutcomeType.DEATH) {
-                outcome.setDate(command.getOutcomeDate());
-            }
-            if (outcome.getOutcomeType() == OutcomeType.OTHER_SERIOUS) {
-                outcome.setOther(command.getOtherOutcome());
-            }
-        }
-*/
     }
 }

@@ -55,9 +55,27 @@
 					});
 				</jsp:attribute>
 			</ui:checkbox>${fieldGroups[outcomeGroup].fields[len - 2].displayName}
-			<ui:text path="${fieldGroups[outcomeGroup].fields[len - 1].propertyName}"/>
+			<ui:text path="${fieldGroups[outcomeGroup].fields[len - 1].propertyName}">
+				<jsp:attribute name="embededJS">
+					var otherTxtBox = $('${fieldGroups[outcomeGroup].fields[len - 1].propertyName}');
+					if(otherTxtBox.value == ''){
+						otherTxtBox.readOnly = true;
+					}
+				</jsp:attribute>
+			</ui:text>
 		</div>
 	</div>
+	</jsp:attribute>
+	<jsp:attribute name="embededJS">
+		<%-- Script to tackle hospitalization --%>
+			$('aeReport.adverseEvents[${index}].hospitalization').observe('change', function(e){
+				if(e.element().value == 'YES'){
+					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = true;
+				}else {
+					$('${fieldGroups[outcomeGroup].fields[1].propertyName}').checked = false;
+				}
+			});
+		<%-- Script to tackle death  --%>	
 	</jsp:attribute>
 </ui:row>
 
