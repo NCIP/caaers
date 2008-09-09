@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
 import org.hibernate.annotations.*;
@@ -281,7 +282,29 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
 
 
-    public void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
+    public void synchronizeMedicalHistoryFromReportToAssignment(ExpeditedAdverseEventReport expeditedAdverseEventReport) {
+        if (expeditedAdverseEventReport == null) {
+            return;
+        }
+        boolean reportExists = false;
+        if (expeditedAdverseEventReport.getAssignment() != null && expeditedAdverseEventReport.getAssignment().getId().equals(this.getId())) {
+            reportExists = true;
+        }
+
+        if (!reportExists) {
+            throw new CaaersSystemException(String.format("Wrong uses of synchronizeMedicalHistoryFromReportToAssignment. " +
+                    "This report %s does not belong to this assigment %s ", expeditedAdverseEventReport.getId(), this.getParticipant().getFullName()));
+        }
+        //now synchronize from report to assignment
+        syncrhonizePriorTherapies(expeditedAdverseEventReport.getSaeReportPriorTherapies());
+        syncrhonizeConcomitantMedication(expeditedAdverseEventReport.getConcomitantMedications());
+        syncrhonizeDiseaseHistory(expeditedAdverseEventReport.getDiseaseHistory());
+        syncrhonizePreExistingCondition(expeditedAdverseEventReport.getSaeReportPreExistingConditions());
+
+
+    }
+
+    private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
 
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
             if (saeReportPriorTherapy.getId() == null) {
@@ -292,7 +315,34 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
 
-    public void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
+    private void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
+
+        for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
+            if (saeReportConcomitantMedication.getId() == null) {
+                StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(
+                        saeReportConcomitantMedication);
+                addConcomitantMedication(studyParticipantConcomitantMedication);
+            }
+        }
+
+    }
+
+    private void syncrhonizeDiseaseHistory(final DiseaseHistory saeReportDiseaseHistory) {
+
+        if (saeReportDiseaseHistory != null && getDiseaseHistory() != null) {
+            for (MetastaticDiseaseSite metastaticDiseaseSite : saeReportDiseaseHistory.getMetastaticDiseaseSites()) {
+                if (metastaticDiseaseSite.getId() == null) {
+                    StudyParticipantMetastaticDiseaseSite assignmentMetastaticDiseaseSite = StudyParticipantMetastaticDiseaseSite.
+                            createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite);
+                    getDiseaseHistory().addMetastaticDiseaseSite(assignmentMetastaticDiseaseSite);
+                }
+            }
+        }
+
+
+    }
+
+    private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
             if (saeReportPreExistingCondition.getId() == null) {
@@ -304,16 +354,5 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
 
-    public void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
-
-        for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
-            if (saeReportConcomitantMedication.getId() == null) {
-                StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(
-                        saeReportConcomitantMedication);
-                addConcomitantMedication(studyParticipantConcomitantMedication);
-            }
-        }
-
-    }
 
 }

@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -18,10 +18,10 @@ import java.util.Map;
 /**
  * @author Rhett Sutphin
  */
-@CaaersUseCases( { CREATE_EXPEDITED_REPORT })
-public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
+@CaaersUseCases({CREATE_EXPEDITED_REPORT})
+public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
     private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9,
-                    8, 7);
+            8, 7);
 
     private ExpeditedAdverseEventReport report;
 
@@ -30,6 +30,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     private CtcTerm ctcTerm;
 
     private AdverseEvent adverseEvent;
+    private StudyParticipantAssignment assignment;
+    private AdverseEventReportingPeriod reportingPeriod;
 
     @Override
     protected void setUp() throws Exception {
@@ -47,6 +49,73 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         adverseEvent.getAdverseEventCtcTerm().setCtcTerm(this.ctcTerm);
         report.setReportingPeriod(Fixtures.createReportingPeriod());
         wrappedReport = new BeanWrapperImpl(report);
+        assignment = new StudyParticipantAssignment();
+        assignment.addConcomitantMedication(new StudyParticipantConcomitantMedication());
+        assignment.addPriorTherapy(new StudyParticipantPriorTherapy());
+        assignment.addPreExistingCondition(new StudyParticipantPreExistingCondition());
+        StudyParticipantDiseaseHistory studyParticipantDiseaseHistory = new StudyParticipantDiseaseHistory();
+        studyParticipantDiseaseHistory.addMetastaticDiseaseSite(new StudyParticipantMetastaticDiseaseSite());
+        assignment.setDiseaseHistory(studyParticipantDiseaseHistory);
+
+        reportingPeriod = new AdverseEventReportingPeriod();
+        reportingPeriod.setAssignment(assignment);
+    }
+
+
+    public void testWrongUsesOfSyncrhonizeMethod() {
+        report.setAssignment(null);
+        String message = String.format("Must set assignment before calling synchronizeMedicalHistoryFromAssignmentToReport");
+        try {
+            report.synchronizeMedicalHistoryFromAssignmentToReport();
+            fail();
+
+        } catch (CaaersSystemException e) {
+            assertEquals(message, e.getMessage());
+        }
+
+    }
+
+    public void testSyncrhonizePriorTherapies() {
+        report.setReportingPeriod(reportingPeriod);
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must  copy the prior therapy", 1, report.getSaeReportPriorTherapies().size());
+
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must not copy  prior therapy twice", 1, report.getSaeReportPriorTherapies().size());
+
+
+    }
+
+    public void testSyncrhonizeDiseaseHistory() {
+        report.setReportingPeriod(reportingPeriod);
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertNotNull("must  copy the diseaseHistory", report.getDiseaseHistory());
+        assertEquals("must  copy the MetastaticDiseaseSite", 1, report.getDiseaseHistory().getMetastaticDiseaseSites().size());
+
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertNotNull("must not copy the diseaseHistory twice", report.getDiseaseHistory());
+        assertEquals("must  copy the MetastaticDiseaseSite twice", 1, report.getDiseaseHistory().getMetastaticDiseaseSites().size());
+
+    }
+
+    public void testSyncrhonizePreExistingCondition() {
+        report.setReportingPeriod(reportingPeriod);
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must copy the pre existing condition", 1, report.getSaeReportPreExistingConditions().size());
+
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must not copy the pre existing condition twice", 1, report.getSaeReportPreExistingConditions().size());
+
+    }
+
+    public void testSyncrhonizeConcomitantMedication() {
+        report.setReportingPeriod(reportingPeriod);
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must copy the concomitantMedication", 1, report.getConcomitantMedications().size());
+        report.synchronizeMedicalHistoryFromAssignmentToReport();
+        assertEquals("must not copy the concomitantMedication twice", 1, report.getConcomitantMedications().size());
+
+
     }
 
     public void testGetAdverseEventNeverThrowsIndexOutOfBounds() throws Exception {
@@ -57,8 +126,8 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 
     public void testSetAdverseEventsInternalReflectedInAdverseEvents() throws Exception {
         report.setAdverseEventsInternal(new ArrayList<AdverseEvent>(Arrays.asList(Fixtures.setId(
-                        10, new AdverseEvent()), Fixtures.setId(12, new AdverseEvent()), Fixtures
-                        .setId(14, new AdverseEvent()))));
+                10, new AdverseEvent()), Fixtures.setId(12, new AdverseEvent()), Fixtures
+                .setId(14, new AdverseEvent()))));
         assertEquals(10, (int) report.getAdverseEvents().get(0).getId());
         assertEquals(12, (int) report.getAdverseEvents().get(1).getId());
         assertEquals(14, (int) report.getAdverseEvents().get(2).getId());
@@ -77,7 +146,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 
     public void testSetLabsInternalReflectedInLabs() throws Exception {
         report.setLabsInternal(new ArrayList<Lab>(Arrays.asList(Fixtures.setId(10, new Lab()),
-                        Fixtures.setId(12, new Lab()), Fixtures.setId(14, new Lab()))));
+                Fixtures.setId(12, new Lab()), Fixtures.setId(14, new Lab()))));
         assertEquals(10, (int) report.getLabs().get(0).getId());
         assertEquals(12, (int) report.getLabs().get(1).getId());
         assertEquals(14, (int) report.getLabs().get(2).getId());
@@ -96,14 +165,14 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 
     public void testNotificationMessage() throws Exception {
         assertEquals("Grade 2 adverse event with term Term - Select", report
-                        .getNotificationMessage());
+                .getNotificationMessage());
     }
 
     public void testNotificationMessageWithOther() throws Exception {
         ctcTerm.setOtherRequired(true);
         adverseEvent.setDetailsForOther("other");
         assertEquals("Grade 2 adverse event with term Term - Select (other)", report
-                        .getNotificationMessage());
+                .getNotificationMessage());
     }
 
     public void testNotificationMessageExceptionForNoAe() throws Exception {
@@ -114,7 +183,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
             assertEquals("Cannot create notification message until primary AE is filled in", cse
-                            .getMessage());
+                    .getMessage());
         }
     }
 
@@ -126,7 +195,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
             assertEquals("Cannot create notification message until primary AE is filled in", cse
-                            .getMessage());
+                    .getMessage());
         }
     }
 
@@ -138,7 +207,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
             fail("Exception not thrown");
         } catch (CaaersSystemException cse) {
             assertEquals("Cannot create notification message until primary AE is filled in", cse
-                            .getMessage());
+                    .getMessage());
         }
     }
 
@@ -213,7 +282,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         assertNotNull(childProp + " null initially", wrappedReport.getPropertyValue(childProp));
         wrappedReport.setPropertyValue(childProp, null);
         ExpeditedAdverseEventReportChild actual = (ExpeditedAdverseEventReportChild) wrappedReport
-                        .getPropertyValue(childProp);
+                .getPropertyValue(childProp);
         assertNotNull(childProp + " not reinited after set null", actual);
         assertSame("Reverse link not set", report, actual.getReport());
     }

@@ -708,50 +708,75 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     }
 
+    /*
+   you should call this method only once
+    */
+    public void synchronizeMedicalHistoryFromAssignmentToReport() {
+        StudyParticipantAssignment assignment = getAssignment();
+        if (assignment == null) {
+            throw new CaaersSystemException("Must set assignment before calling synchronizeMedicalHistoryFromAssignmentToReport");
+        } else {
+            // synchronize from assignment to report
+            syncrhonizePriorTherapies();
+            syncrhonizePreExistingConditions();
+            syncrhonizeConcomitantMedications();
+            syncrhonizeDiseaseHistories();
 
-    public void syncrhonizePriorTherapies(final List<StudyParticipantPriorTherapy> studyParticipantPriorTherapies) {
+
+        }
+    }
+
+    /**
+     * synchronize prior therapies from assignment to report
+     */
+    private void syncrhonizePriorTherapies() {
 
         if (getSaeReportPriorTherapies().isEmpty()) {
             //copy only once
-            for (StudyParticipantPriorTherapy studyParticipantPriorTherapy : studyParticipantPriorTherapies) {
-                if (studyParticipantPriorTherapy.getId() == null) {
-                    SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
-                    addSaeReportPriorTherapies(priorTherapy);
-                }
+            for (StudyParticipantPriorTherapy studyParticipantPriorTherapy : getAssignment().getPriorTherapies()) {
+                SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
+                addSaeReportPriorTherapies(priorTherapy);
             }
         }
+
 
     }
 
 
-    public void syncrhonizePreExistingConditions(final List<StudyParticipantPreExistingCondition> studyParticipantPreExistingConditions) {
+    private void syncrhonizePreExistingConditions() {
 
         if (getSaeReportPreExistingConditions().isEmpty()) {
             //copy only once
-            for (StudyParticipantPreExistingCondition studyParticipantPreExistingCondition : studyParticipantPreExistingConditions) {
-                if (studyParticipantPreExistingCondition.getId() == null) {
-                    SAEReportPreExistingCondition saeReportPreExistingCondition = SAEReportPreExistingCondition.createSAEReportPreExistingCondition(studyParticipantPreExistingCondition);
-                    addSaeReportPreExistingCondition(saeReportPreExistingCondition);
-                }
+            for (StudyParticipantPreExistingCondition studyParticipantPreExistingCondition : getAssignment().getPreExistingConditions()) {
+                SAEReportPreExistingCondition saeReportPreExistingCondition = SAEReportPreExistingCondition.createSAEReportPreExistingCondition(studyParticipantPreExistingCondition);
+                addSaeReportPreExistingCondition(saeReportPreExistingCondition);
             }
         }
 
     }
 
 
-    public void syncrhonizeConcomitantMedications(final List<StudyParticipantConcomitantMedication> studyParticipantConcomitantMedications) {
+    private void syncrhonizeConcomitantMedications() {
 
         if (getConcomitantMedications().isEmpty()) {
             //copy only once
-            for (StudyParticipantConcomitantMedication studyParticipantConcomitantMedication : studyParticipantConcomitantMedications) {
-                if (studyParticipantConcomitantMedication.getId() == null) {
-                    ConcomitantMedication saeReportConcomitantMedication = ConcomitantMedication.createConcomitantMedication(studyParticipantConcomitantMedication);
-                    addConcomitantMedication(saeReportConcomitantMedication);
-                }
+            for (StudyParticipantConcomitantMedication studyParticipantConcomitantMedication : getAssignment().getConcomitantMedications()) {
+                ConcomitantMedication saeReportConcomitantMedication = ConcomitantMedication.createConcomitantMedication(studyParticipantConcomitantMedication);
+                addConcomitantMedication(saeReportConcomitantMedication);
             }
+
         }
 
     }
 
+    private void syncrhonizeDiseaseHistories() {
 
+        if ((getDiseaseHistory() == null) || (getDiseaseHistory() != null && getDiseaseHistory().getId() == null)) {
+            //copy only once
+            DiseaseHistory saeReportDiseaseHistory = DiseaseHistory.createDiseaseHistory(getAssignment().getDiseaseHistory());
+            setDiseaseHistory(saeReportDiseaseHistory);
+
+        }
+
+    }
 }

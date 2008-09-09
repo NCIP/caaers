@@ -1,37 +1,27 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * This class represents the DiseaseHistory domain object associated with the Adverse event report.
- * 
+ *
  * @author Kulasekaran
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
 @Entity
 @Table(name = "disease_histories")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_disease_histories_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_disease_histories_id")})
 public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     private String otherPrimaryDisease;
 
@@ -59,7 +49,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToOne
     @JoinColumn(name = "coded_primary_disease_site_id")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedPrimaryDiseaseSite() {
         return codedPrimaryDiseaseSite;
     }
@@ -68,7 +58,6 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         this.codedPrimaryDiseaseSite = codedPrimaryDiseaseSite;
     }
 
-    
 
     @Column(name = "other_primary_disease")
     public String getOtherPrimaryDisease() {
@@ -118,7 +107,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     @OneToOne
     @JoinColumn(name = "study_disease_id")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = {CascadeType.ALL})
     public AbstractStudyDisease getAbstractStudyDisease() {
         return abstractStudyDisease;
     }
@@ -128,14 +117,14 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @Transient
-    @UniqueObjectInCollection(message="Duplicate metastatic disease site")
+    @UniqueObjectInCollection(message = "Duplicate metastatic disease site")
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSites() {
         return listHelper.getLazyList(MetastaticDiseaseSite.class);
     }
 
     @OneToMany
     @JoinColumn(name = "disease_history_id")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<MetastaticDiseaseSite> getMetastaticDiseaseSitesInternal() {
         return listHelper.getInternalList(MetastaticDiseaseSite.class);
     }
@@ -143,28 +132,48 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     public void setMetastaticDiseaseSitesInternal(List<MetastaticDiseaseSite> metastaticDiseaseSite) {
         listHelper.setInternalList(MetastaticDiseaseSite.class, metastaticDiseaseSite);
     }
-    
+
     @Embedded
-    @AttributeOverrides({ 
-    	@AttributeOverride(name = "day", column = @Column(name = "diagnosis_day")),
-        @AttributeOverride(name = "month", column = @Column(name = "diagnosis_month")),
-        @AttributeOverride(name = "year", column = @Column(name = "diagnosis_year")),
-        @AttributeOverride(name = "zone", column = @Column(name = "diagnosis_zone"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "day", column = @Column(name = "diagnosis_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "diagnosis_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "diagnosis_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "diagnosis_zone"))
     })
     public DateValue getDiagnosisDate() {
-		return diagnosisDate;
-	}
+        return diagnosisDate;
+    }
+
     public void setDiagnosisDate(DateValue diagnosisDate) {
-		this.diagnosisDate = diagnosisDate;
-	}
-    
+        this.diagnosisDate = diagnosisDate;
+    }
+
     /**
      * The below function is added to minimize the code changes, due to changing of
      * diagnosisDate from Date to DateValue
+     *
      * @param diagnosisDate
      */
     @Transient
     public void setDiagnosisDate(Date diagnosisDate) {
-    	this.diagnosisDate = new DateValue(diagnosisDate);
+        this.diagnosisDate = new DateValue(diagnosisDate);
+    }
+
+    public static DiseaseHistory createDiseaseHistory(StudyParticipantDiseaseHistory studyParticipantDiseaseHistory) {
+        if (studyParticipantDiseaseHistory != null) {
+            DiseaseHistory saeReportDiseaseHistory = new DiseaseHistory();
+            BeanUtils.copyProperties(studyParticipantDiseaseHistory, saeReportDiseaseHistory, new String[]{"id", "gridId",
+                    "version", "report", "metastaticDiseaseSitesInternal", "metastaticDiseaseSites"
+                    , "meddraStudyDisease", "ctepStudyDisease"});
+
+            for (StudyParticipantMetastaticDiseaseSite metastaticDiseaseSite : studyParticipantDiseaseHistory.getMetastaticDiseaseSites()) {
+                saeReportDiseaseHistory.addMetastaticDiseaseSite(MetastaticDiseaseSite.
+                        createReportMetastaticDiseaseSite(metastaticDiseaseSite));
+            }
+
+            return saeReportDiseaseHistory;
+
+        }
+        return null;
     }
 }

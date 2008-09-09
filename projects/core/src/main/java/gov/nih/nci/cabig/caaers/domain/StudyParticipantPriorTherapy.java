@@ -31,7 +31,7 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
 
     private DateValue endDate;
 
-    private List<StudyParticipantPriorTherapyAgent> priorTherapyAgents;
+    private List<StudyParticipantPriorTherapyAgent> priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
 
 
     public StudyParticipantPriorTherapy() {
