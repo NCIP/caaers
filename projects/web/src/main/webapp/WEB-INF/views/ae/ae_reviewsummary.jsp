@@ -5,6 +5,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <html>
@@ -199,7 +200,10 @@
 					</tr>
 				</c:forEach>
 				</table>
-				<div class="autoclear" align="center" ><input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/></div>
+				<div class="autoclear" align="center" style="padding-top: 10px;">
+					<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+				</div>
+				
 				</div>
         		</div> 
         		
@@ -245,7 +249,7 @@
     						<th scope="col" align="left"><b>Attribution</b> </th>
     						<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
-    						<th scope="col" align="left"><b>Serious</b> </th>
+    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 							<th scope="col" align="left"><b>Is primary?</b></th>
     					</tr>
     					<tr id="seriousBlankRow" />
@@ -271,7 +275,7 @@
     						<th scope="col" align="left"><b>Attribution</b> </th>
     						<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
-    						<th scope="col" align="left"><b>Serious</b> </th>
+    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 							<th scope="col" align="left"><b>Is primary?</b></th>
     					</tr>
     					<tr id="observedBlankRow" />
@@ -297,7 +301,7 @@
     						<th scope="col" align="left"><b>Attribution</b> </th>
    							<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
-    						<th scope="col" align="left"><b>Serious</b> </th>
+    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 							<th scope="col" align="left"><b>Is primary?</b></th>
     					</tr>
     					<tr id="solicitedBlankRow" />
@@ -328,7 +332,7 @@
     						<th scope="col" align="left"><b>Attribution</b> </th>
     						<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
-    						<th scope="col" align="left"><b>Serious</b> </th>
+    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 						</tr>
     					<tr id="observedBlankRow" />
     					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
@@ -350,7 +354,7 @@
     						<th scope="col" align="left"><b>Attribution</b> </th>
    							<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
-    						<th scope="col" align="left"><b>Serious</b> </th>
+    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
 						</tr>
     					<tr id="solicitedBlankRow" />
        					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
