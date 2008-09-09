@@ -1,41 +1,28 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * This class represents the StudyParticipantPriorTherapy domain object associated with the StudyParticipantAssignment
- * 
+ *
  * @author Sameer Sawant
  */
 @Entity
 @Table(name = "spa_prior_therapies")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_spa_prior_therapies_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_spa_prior_therapies_id")})
 public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
-	private StudyParticipantAssignment assignment;
-	
+    private StudyParticipantAssignment assignment;
+
     private PriorTherapy priorTherapy;
 
     private String other;
@@ -43,7 +30,7 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     private DateValue startDate;
 
     private DateValue endDate;
-    
+
     private List<StudyParticipantPriorTherapyAgent> priorTherapyAgents;
 
 
@@ -86,7 +73,10 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     public void addPriorTherapyAgent(StudyParticipantPriorTherapyAgent priorTherapyAgent) {
-    	getPriorTherapyAgents().add(priorTherapyAgent);
+        if (getPriorTherapyAgents() == null) {
+            priorTherapyAgents = new ArrayList<StudyParticipantPriorTherapyAgent>();
+        }
+        getPriorTherapyAgents().add(priorTherapyAgent);
         if (priorTherapyAgent != null) priorTherapyAgent.setPriorTherapy(this);
     }
 
@@ -94,21 +84,21 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
-    @UniqueObjectInCollection(message="Duplicate prior therapy agents")
+    @UniqueObjectInCollection(message = "Duplicate prior therapy agents")
     public List<StudyParticipantPriorTherapyAgent> getPriorTherapyAgents() {
         return priorTherapyAgents;
     }
-    
+
     public void setPriorTherapyAgents(List<StudyParticipantPriorTherapyAgent> priorTherapyAgents) {
-		this.priorTherapyAgents = priorTherapyAgents;
-	}
-    
+        this.priorTherapyAgents = priorTherapyAgents;
+    }
+
     // This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping. See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
     @JoinColumn(name = "spa_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     protected List<StudyParticipantPriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return priorTherapyAgents;
     }
@@ -118,11 +108,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides({ 
-    	@AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
-        @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
-        @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
-        @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
     })
     public DateValue getEndDate() {
         return endDate;
@@ -133,11 +123,11 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     }
 
     @Embedded
-    @AttributeOverrides({ 
-    	@AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
-        @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
-        @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
-        @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
     })
     public DateValue getStartDate() {
         return startDate;
@@ -146,18 +136,18 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
     public void setStartDate(DateValue startDate) {
         this.startDate = startDate;
     }
-    
+
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(value={CascadeType.LOCK})
+    @Cascade(value = {CascadeType.LOCK})
     public StudyParticipantAssignment getAssignment() {
-		return assignment;
-	}
-    
+        return assignment;
+    }
+
     public void setAssignment(StudyParticipantAssignment assignment) {
-		this.assignment = assignment;
-	}
+        this.assignment = assignment;
+    }
 
     @Override
     public int hashCode() {
@@ -193,4 +183,22 @@ public class StudyParticipantPriorTherapy extends AbstractMutableDomainObject {
         return true;
     }
 
+    public static StudyParticipantPriorTherapy createAssignmentPriorTherapy(SAEReportPriorTherapy saeReportPriorTherapy) {
+
+        if (saeReportPriorTherapy != null) {
+            StudyParticipantPriorTherapy studyParticipantPriorTherapy = new StudyParticipantPriorTherapy();
+            BeanUtils.copyProperties(saeReportPriorTherapy, studyParticipantPriorTherapy, new String[]{"id", "gridId", "version"
+                    , "priorTherapyAgents", "assignment", "priorTherapyAgentsInternal"});
+
+            for (PriorTherapyAgent priorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgents()) {
+                studyParticipantPriorTherapy.addPriorTherapyAgent(StudyParticipantPriorTherapyAgent.createAssignmentPriorTherapyAgent(priorTherapyAgent));
+            }
+
+
+            return studyParticipantPriorTherapy;
+
+        }
+        return null;
+
+    }
 }

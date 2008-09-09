@@ -1,25 +1,21 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
 /**
  * This class represents the PriorTherapyAgent domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "prior_therapy_agents")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_prior_therapy_agents_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_prior_therapy_agents_id")})
 public class PriorTherapyAgent extends AbstractMutableDomainObject {
     private SAEReportPriorTherapy saeReportPriorTherapy;
 
@@ -65,7 +61,7 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
         final int prime = 31;
         int result = 1;
         result = prime * result
-                        + ((saeReportPriorTherapy == null) ? 0 : saeReportPriorTherapy.hashCode());
+                + ((saeReportPriorTherapy == null) ? 0 : saeReportPriorTherapy.hashCode());
         result = prime * result + ((chemoAgent == null) ? 0 : chemoAgent.hashCode());
         return result;
     }
@@ -87,4 +83,17 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
     // /OBJECT Methods
 
+    public static PriorTherapyAgent createSaeReportPriorTherapyAgent(StudyParticipantPriorTherapyAgent studyParticipantPriorTherapyAgent) {
+
+
+        if (studyParticipantPriorTherapyAgent != null) {
+            PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
+            BeanUtils.copyProperties(studyParticipantPriorTherapyAgent, priorTherapyAgent, new String[]{"id", "gridId",
+                    "version", "saeReportPriorTherapy"});
+
+            return priorTherapyAgent;
+        }
+        return null;
+
+    }
 }

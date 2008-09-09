@@ -2,37 +2,26 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OrderBy;
-import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Where;
 
 /**
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "participant_assignments")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_participant_assignments_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_participant_assignments_id")})
 @Where(clause = "load_status > 0")
 public class StudyParticipantAssignment extends AbstractMutableDomainObject {
-    
+
     private Participant participant;
     private StudySite studySite;
 
@@ -40,23 +29,23 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
 
     //private List<RoutineAdverseEventReport> aeRoutineReports;
-    
+
     private List<LabLoad> labLoads;
 
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     private String studySubjectIdentifier;
-    
+
     private Date startDateOfFirstCourse;
 
     private List<AdverseEventReportingPeriod> reportingPeriods;
-    
+
     private List<StudyParticipantPreExistingCondition> preExistingConditions;
     private List<StudyParticipantConcomitantMedication> concomitantMedications;
     private List<StudyParticipantPriorTherapy> priorTherapies;
     private StudyParticipantDiseaseHistory diseaseHistory;
     private String baselinePerformance;
-    
+
     public StudyParticipantAssignment(Participant participant, StudySite studySite) {
         this.participant = participant;
         this.studySite = studySite;
@@ -68,43 +57,44 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     // //// LOGIC
 
- 
 
     public void addRoutineReport(RoutineAdverseEventReport routineReport) {
         routineReport.setAssignment(this);
         getAeRoutineReports().add(routineReport);
     }
-    
+
     public void addReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
-    	if(reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
-    	if(reportingPeriod != null){
-    		reportingPeriod.setAssignment(this);
-    		reportingPeriods.add(reportingPeriod);
-    	}
+        if (reportingPeriods == null) reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
+        if (reportingPeriod != null) {
+            reportingPeriod.setAssignment(this);
+            reportingPeriods.add(reportingPeriod);
+        }
     }
-    
-    public void addPreExistingCondition(StudyParticipantPreExistingCondition preExistingCondition){
-    	if(preExistingConditions == null) preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
-    	if(preExistingCondition != null){
-    		preExistingCondition.setAssignment(this);
-    		preExistingConditions.add(preExistingCondition);
-    	}
+
+    public void addPreExistingCondition(StudyParticipantPreExistingCondition preExistingCondition) {
+        if (preExistingConditions == null)
+            preExistingConditions = new ArrayList<StudyParticipantPreExistingCondition>();
+        if (preExistingCondition != null) {
+            preExistingCondition.setAssignment(this);
+            preExistingConditions.add(preExistingCondition);
+        }
     }
-    
-    public void addConcomitantMedication(StudyParticipantConcomitantMedication concomitantMedication){
-    	if(concomitantMedications == null) concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
-    	if(concomitantMedication != null){
-    		concomitantMedication.setAssignment(this);
-    		concomitantMedications.add(concomitantMedication);
-    	}
+
+    public void addConcomitantMedication(StudyParticipantConcomitantMedication concomitantMedication) {
+        if (concomitantMedications == null)
+            concomitantMedications = new ArrayList<StudyParticipantConcomitantMedication>();
+        if (concomitantMedication != null) {
+            concomitantMedication.setAssignment(this);
+            concomitantMedications.add(concomitantMedication);
+        }
     }
-    
-    public void addPriorTherapy(StudyParticipantPriorTherapy priorTherapy){
-    	if(priorTherapies == null) priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
-    	if(priorTherapy != null){
-    		priorTherapy.setAssignment(this);
-    		priorTherapies.add(priorTherapy);
-    	}
+
+    public void addPriorTherapy(StudyParticipantPriorTherapy priorTherapy) {
+        if (priorTherapies == null) priorTherapies = new ArrayList<StudyParticipantPriorTherapy>();
+        if (priorTherapy != null) {
+            priorTherapy.setAssignment(this);
+            priorTherapies.add(priorTherapy);
+        }
     }
 
     // //// BEAN PROPERTIES
@@ -115,7 +105,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_site_id")
-    @Cascade( { CascadeType.LOCK })
+    @Cascade({CascadeType.LOCK})
     public StudySite getStudySite() {
         return studySite;
     }
@@ -126,7 +116,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "participant_id")
-    @Cascade( { CascadeType.LOCK })
+    @Cascade({CascadeType.LOCK})
     public Participant getParticipant() {
         return participant;
     }
@@ -142,14 +132,14 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     @Transient
     public List<ExpeditedAdverseEventReport> getAeReports() {
-    	ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
-    	if(reportingPeriods != null){
-    		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
-    			for(ExpeditedAdverseEventReport aeReport: reportingPeriod.getAeReports()){
-    					aeReports.add(aeReport);
-    			}
-    		}
-    	}
+        ArrayList<ExpeditedAdverseEventReport> aeReports = new ArrayList<ExpeditedAdverseEventReport>();
+        if (reportingPeriods != null) {
+            for (AdverseEventReportingPeriod reportingPeriod : reportingPeriods) {
+                for (ExpeditedAdverseEventReport aeReport : reportingPeriod.getAeReports()) {
+                    aeReports.add(aeReport);
+                }
+            }
+        }
         return aeReports;
     }
 
@@ -162,50 +152,50 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setAeRoutineReports(List<RoutineAdverseEventReport> aeRoutineReports) {
 //        this.aeRoutineReports = aeRoutineReports;
     }
-    
+
     @OneToMany(mappedBy = "assignment")
-    @OrderBy(clause="start_date desc")
-    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy(clause = "start_date desc")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<AdverseEventReportingPeriod> getReportingPeriods() {
-    	return reportingPeriods;
+        return reportingPeriods;
     }
-    
+
     public void setReportingPeriods(List<AdverseEventReportingPeriod> reportingPeriods) {
-    	this.reportingPeriods = reportingPeriods;
+        this.reportingPeriods = reportingPeriods;
     }
-    
+
     @OneToMany(mappedBy = "assignment")
-    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyParticipantPreExistingCondition> getPreExistingConditions() {
-		return preExistingConditions;
-	}
+        return preExistingConditions;
+    }
 
     public void setPreExistingConditions(List<StudyParticipantPreExistingCondition> preExistingConditions) {
-		this.preExistingConditions = preExistingConditions;
-	}
-    
-    @OneToMany(mappedBy = "assignment")
-    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
-    public List<StudyParticipantConcomitantMedication> getConcomitantMedications(){
-    	return concomitantMedications;
+        this.preExistingConditions = preExistingConditions;
     }
-    
-    public void setConcomitantMedications(List<StudyParticipantConcomitantMedication> concomitantMedications){
-    	this.concomitantMedications = concomitantMedications;
-    }
-    
+
     @OneToMany(mappedBy = "assignment")
-    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    public List<StudyParticipantConcomitantMedication> getConcomitantMedications() {
+        return concomitantMedications;
+    }
+
+    public void setConcomitantMedications(List<StudyParticipantConcomitantMedication> concomitantMedications) {
+        this.concomitantMedications = concomitantMedications;
+    }
+
+    @OneToMany(mappedBy = "assignment")
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<StudyParticipantPriorTherapy> getPriorTherapies() {
-		return priorTherapies;
-	}
-    
+        return priorTherapies;
+    }
+
     public void setPriorTherapies(List<StudyParticipantPriorTherapy> priorTherapies) {
-		this.priorTherapies = priorTherapies;
-	}
-    
+        this.priorTherapies = priorTherapies;
+    }
+
     @OneToOne(mappedBy = "assignment")
-    @Cascade( value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN} )
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public StudyParticipantDiseaseHistory getDiseaseHistory() {
         return diseaseHistory;
     }
@@ -213,23 +203,23 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setDiseaseHistory(StudyParticipantDiseaseHistory diseaseHistory) {
         this.diseaseHistory = diseaseHistory;
     }
-        
+
     @OneToMany(mappedBy = "assignment")
-    @OrderBy(clause="lab_date desc")
-	public List<LabLoad> getLabLoads() {
+    @OrderBy(clause = "lab_date desc")
+    public List<LabLoad> getLabLoads() {
 
-    	if(labLoads == null) labLoads = new ArrayList<LabLoad>();
+        if (labLoads == null) labLoads = new ArrayList<LabLoad>();
 
-		return labLoads;
+        return labLoads;
 
-	}
+    }
 
-	public void setLabLoads(List<LabLoad> labLoads) {
+    public void setLabLoads(List<LabLoad> labLoads) {
 
-		this.labLoads = labLoads;
+        this.labLoads = labLoads;
 
-	}
-	
+    }
+
     public Integer getLoadStatus() {
         return loadStatus;
     }
@@ -238,20 +228,22 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         this.loadStatus = loadStatus;
     }
 
-    @Column(name="first_course_date")
+    @Column(name = "first_course_date")
     public Date getStartDateOfFirstCourse() {
-		return startDateOfFirstCourse;
-	}
+        return startDateOfFirstCourse;
+    }
+
     public void setStartDateOfFirstCourse(Date startDateOfFirstCourse) {
-		this.startDateOfFirstCourse = startDateOfFirstCourse;
-	}
-    
+        this.startDateOfFirstCourse = startDateOfFirstCourse;
+    }
+
     public String getBaselinePerformance() {
-		return baselinePerformance;
-	}
+        return baselinePerformance;
+    }
+
     public void setBaselinePerformance(String baselinePerformance) {
-		this.baselinePerformance = baselinePerformance;
-	}
+        this.baselinePerformance = baselinePerformance;
+    }
 
     // //// OBJECT METHODS
 
@@ -263,7 +255,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         final StudyParticipantAssignment that = (StudyParticipantAssignment) o;
 
         if (dateOfEnrollment != null ? !dateOfEnrollment.equals(that.dateOfEnrollment)
-                        : that.dateOfEnrollment != null) return false;
+                : that.dateOfEnrollment != null) return false;
         if (studySite != null ? !studySite.equals(that.studySite) : that.studySite != null) return false;
         // Participant#equals calls this method, so we can't use it here
         if (!DomainObjectTools.equalById(participant, that.participant)) return false;
@@ -287,7 +279,17 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     public void setStudySubjectIdentifier(final String studySubjectIdentifier) {
         this.studySubjectIdentifier = studySubjectIdentifier;
     }
-    
 
+
+    public void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
+
+        for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
+            if (saeReportPriorTherapy.getId() == null) {
+                StudyParticipantPriorTherapy priorTherapy = StudyParticipantPriorTherapy.createAssignmentPriorTherapy(saeReportPriorTherapy);
+                addPriorTherapy(priorTherapy);
+            }
+        }
+
+    }
 
 }

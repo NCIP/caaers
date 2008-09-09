@@ -1,37 +1,25 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
-
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import java.util.Date;
 import java.util.List;
 
 /**
  * This class represents the SAEReportPriorTherapy domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_prior_therapies")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_prior_therapies_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_prior_therapies_id")})
 public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
     private PriorTherapy priorTherapy;
 
@@ -95,7 +83,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
      * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
      */
     @Transient
-    @UniqueObjectInCollection(message="Duplicate prior therapy agents")
+    @UniqueObjectInCollection(message = "Duplicate prior therapy agents")
     public List<PriorTherapyAgent> getPriorTherapyAgents() {
         return lazyListHelper.getLazyList(PriorTherapyAgent.class);
     }
@@ -105,7 +93,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     @OneToMany
     @JoinColumn(name = "ae_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     protected List<PriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return lazyListHelper.getInternalList(PriorTherapyAgent.class);
     }
@@ -115,11 +103,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     }
 
     @Embedded
-    @AttributeOverrides({ 
-    	@AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
-        @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
-        @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
-        @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "day", column = @Column(name = "end_date_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "end_date_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "end_date_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "end_date_zone"))
     })
     public DateValue getEndDate() {
         return endDate;
@@ -130,11 +118,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     }
 
     @Embedded
-    @AttributeOverrides({ 
-    	@AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
-        @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
-        @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
-        @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
+    @AttributeOverrides({
+            @AttributeOverride(name = "day", column = @Column(name = "start_date_day")),
+            @AttributeOverride(name = "month", column = @Column(name = "start_date_month")),
+            @AttributeOverride(name = "year", column = @Column(name = "start_date_year")),
+            @AttributeOverride(name = "zone", column = @Column(name = "start_date_zone"))
     })
     public DateValue getStartDate() {
         return startDate;
@@ -178,4 +166,23 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
         return true;
     }
 
+
+    public static SAEReportPriorTherapy createSAEReportPriorTherapy(StudyParticipantPriorTherapy studyParticipantPriorTherapy) {
+
+        if (studyParticipantPriorTherapy != null) {
+            SAEReportPriorTherapy saeReportPriorTherapy = new SAEReportPriorTherapy();
+            BeanUtils.copyProperties(studyParticipantPriorTherapy, saeReportPriorTherapy, new String[]{"id", "gridId",
+                    "version", "priorTherapyAgents", "report", "priorTherapyAgentsInternal"});
+
+            for (StudyParticipantPriorTherapyAgent priorTherapyAgent : studyParticipantPriorTherapy.getPriorTherapyAgents()) {
+                saeReportPriorTherapy.addPriorTherapyAgent(PriorTherapyAgent.createSaeReportPriorTherapyAgent(priorTherapyAgent));
+            }
+
+
+            return saeReportPriorTherapy;
+
+        }
+        return null;
+
+    }
 }
