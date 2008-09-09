@@ -20,12 +20,12 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
     }
 
     public void testIsMandatoryWithFalseMandatoryField() throws Exception {
-        def.setMandatory(false);
-        assertFalse(def.getMandatory());
+        def.setMandatory(Mandatory.OPTIONAL);
+        assertFalse(def.getMandatory().equals(Mandatory.MANDATORY));
     }
 
     public void testIsMandatoryWithTrueMandatoryField() throws Exception {
-        def.setMandatory(true);
-        assertTrue(def.getMandatory());
+        def.setMandatory(Mandatory.MANDATORY);
+        assertTrue(def.getMandatory().equals(Mandatory.MANDATORY));
     }
 }
