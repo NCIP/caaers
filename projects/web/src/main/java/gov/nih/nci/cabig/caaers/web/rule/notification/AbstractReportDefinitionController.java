@@ -2,7 +2,9 @@ package gov.nih.nci.cabig.caaers.web.rule.notification;
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
@@ -69,6 +71,8 @@ public abstract class AbstractReportDefinitionController extends
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerEnumEditor(binder, ReportFormat.class);
         ControllerTools.registerEnumEditor(binder, TimeScaleUnit.class);
+        ControllerTools.registerEnumEditor(binder, ReportFormatType.class);
+        ControllerTools.registerEnumEditor(binder, Mandatory.class);
     }
 
     @Override
