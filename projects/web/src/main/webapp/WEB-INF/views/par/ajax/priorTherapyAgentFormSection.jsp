@@ -1,6 +1,9 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="par" tagdir="/WEB-INF/tags/par"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <tags:noform>
-<par:onePriorTherapyAgent index="${agentIndex}" parentIndex="${index}" />
+<c:forEach items="${indexes}" var="index">
+	<par:onePriorTherapyAgent index="${index}" parentIndex="${parentIndex}" />
+</c:forEach>
 </tags:noform>
 

@@ -9,7 +9,8 @@
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
 <div>
- <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true">
+ <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true"
+  deleteParams="$'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
 	<ui:row path="assignment.priorTherapies[${index}].other">
 	 <jsp:attribute name="label">
@@ -41,10 +42,14 @@
 	</ui:row>
     
 	<c:if test="${priorTherapy.priorTherapy.agentsPossible}">
+    <ui:row path="assignment.priorTherapies[${index}]">
+	 <jsp:attribute name="label">
+	 </jsp:attribute>
+	 <jsp:attribute name="value">
 	   <table class="tablecontent" width="95%">
 			<tr>
 				<td width="90%">
-					<ui:autocompleter path="chemoAgent" >
+					<ui:autocompleter path="priorTherapyAgents[${index}]" >
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text){
 								createAE.matchChemoAgents(text, function(values) {
@@ -70,12 +75,14 @@
 						<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
 						<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status">
 							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<par:onePriorTherapyAgent index="{newIndex}" parentIndex="${index}" />
+							<par:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" />
 						</c:forEach>
 					</div>
 				</td>
 			</tr>
 	   </table>
+	 </jsp:attribute>
+	  </ui:row>
 	</c:if>
  </chrome:division>
 </div>
@@ -85,12 +92,12 @@ function initializePriorTherapy(){
 	if($('priortherapy[${index}].agent-btn')){
 		
 		Element.observe('priortherapy[${index}].agent-btn', 'click', function(evt){
-			var inField = $('chemoAgent');
+			var inField = $('priorTherapyAgents[${index}]');
 			if(inField.value == '') return;
 		 	mHistory.addDetails('priorTherapyAgent', evt.element(), inField.value, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
 		 	
 		 	//clear the fields
-		 	AE.resetAutocompleter('chemoAgent');
+		 	AE.resetAutocompleter('priorTherapyAgent[${index}]');
 	 	});	
 	 	
 	}

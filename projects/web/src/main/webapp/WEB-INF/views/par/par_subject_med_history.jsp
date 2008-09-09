@@ -349,7 +349,7 @@
 
 	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
-		<tags:hasErrorsMessage path="chemoAgent" />
+		<tags:hasErrorsMessage path="priorTherapyAgents" />
 		<tags:hasErrorsMessage path="priorTherapy" />
 	
 		<table class="tablecontent" width="80%">

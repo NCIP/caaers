@@ -3,7 +3,10 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.list.LazyList;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -41,7 +44,7 @@ public class ParticipantInputCommand {
     private AnatomicSite metastaticDiseaseSite;
     private PreExistingCondition preExistingCondition;
     private PriorTherapy priorTherapy;
-    private ChemoAgent chemoAgent;
+    private List<ChemoAgent> chemoAgents;
     private String concomitantMedication;
 
     private Map<Object, Object> studyDiseasesMap;
@@ -51,9 +54,11 @@ public class ParticipantInputCommand {
 
 
     public ParticipantInputCommand() {
+    	chemoAgents = new ArrayList<ChemoAgent>(); // new ArrayList<ChemoAgent>();
     }
 
     public ParticipantInputCommand(Participant participant) {
+    	this();
         this.participant = participant;
     }
 
@@ -255,11 +260,11 @@ public class ParticipantInputCommand {
     public void setPriorTherapy(PriorTherapy priorTherapy) {
 		this.priorTherapy = priorTherapy;
 	}
-    public ChemoAgent getChemoAgent() {
-		return chemoAgent;
+    public List<ChemoAgent> getPriorTherapyAgents() {
+		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
 	}
-    public void setChemoAgent(ChemoAgent chemoAgent) {
-		this.chemoAgent = chemoAgent;
+    public void setPriorTherapyAgent(List<ChemoAgent> chemoAgents) {
+		this.chemoAgents = chemoAgents;
 	}
     
     public String getConcomitantMedication() {

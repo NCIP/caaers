@@ -239,6 +239,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	priorTherapy.setPriorTherapyAgents(new ArrayList<StudyParticipantPriorTherapyAgent>());
     	command.getAssignment().addPriorTherapy(priorTherapy);
     	command.setPriorTherapy(null);
+    	command.getPriorTherapyAgents().add(null); //increment the element size
     	
     	return modelAndView;
     }
@@ -247,6 +248,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	ParticipantInputCommand command =(ParticipantInputCommand)cmd;
     	List<StudyParticipantPriorTherapy> priorTherapies = command.getAssignment().getPriorTherapies();
     	priorTherapies.remove(priorTherapies.get(command.getIndex())); //remove the element
+    	command.getPriorTherapyAgents().remove(command.getIndex()); //decrement the size of priortherapy agents by 1. 
     	
     	//create the indexes in reverse order
     	int size = priorTherapies.size();
@@ -275,9 +277,9 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	modelAndView.getModel().put("indexes", indexes);
     	
     	StudyParticipantPriorTherapyAgent agent = new StudyParticipantPriorTherapyAgent();
-    	agent.setChemoAgent(command.getChemoAgent());
+    	agent.setChemoAgent(command.getPriorTherapyAgents().get(0));
     	priorTherapy.addPriorTherapyAgent(agent);
-    	command.setChemoAgent(null);
+    	command.getPriorTherapyAgents().set(0, null);
     	
     	return modelAndView;
     }
