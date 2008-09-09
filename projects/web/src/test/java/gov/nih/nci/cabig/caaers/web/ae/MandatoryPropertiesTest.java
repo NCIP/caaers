@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import junit.framework.TestCase;
 
@@ -21,7 +22,7 @@ public class MandatoryPropertiesTest extends TestCase {
 
     public void testAddFieldFromDefinition() throws Exception {
         ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
-                        "participantHistory.baselinePerformanceStatus", true);
+                        "participantHistory.baselinePerformanceStatus", Mandatory.MANDATORY);
         mandatory.add(def);
         assertEquals(1, mandatory.getMandatoryNodes().size());
         assertSame(tree.find("participantHistory.baselinePerformanceStatus"), mandatory
@@ -30,7 +31,7 @@ public class MandatoryPropertiesTest extends TestCase {
 
     public void testAddFieldFromDefinitionWhenNotMandatory() throws Exception {
         ReportMandatoryFieldDefinition def = new ReportMandatoryFieldDefinition(
-                        "participantHistory.baselinePerformanceStatus", false);
+                        "participantHistory.baselinePerformanceStatus", Mandatory.OPTIONAL);
         mandatory.add(def);
         assertEquals(0, mandatory.getMandatoryNodes().size());
     }
