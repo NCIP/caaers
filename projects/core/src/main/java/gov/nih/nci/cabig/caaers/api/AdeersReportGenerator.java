@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PersonContact;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
@@ -28,6 +29,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
 
 public class AdeersReportGenerator {
 
@@ -164,9 +166,31 @@ public class AdeersReportGenerator {
 
         if (emails.size() > 0) {
             String tempDir = System.getProperty("java.io.tmpdir");
-            pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+            
+            
+            if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.ADEERSPDF)) {
+            	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+            	this.generatePdf(xml);
+            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.DCPSAEFORM)) {
+            	pdfOutFile = tempDir + "/dcpSAEForm-" + aeReportId + ".pdf";
+            	this.generateDcpSaeForm(xml, pdfOutFile);
+            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.MEDWATCHPDF)) {
+            	pdfOutFile = tempDir + "/medWatchReport-" + aeReportId + ".pdf";
+            	this.generateMedwatchPdf(xml);
+            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSFORM)) {
+            	pdfOutFile = tempDir + "/CIOMSForm-" + aeReportId + ".pdf";
+            	this.generateCIOMS(xml, pdfOutFile);
+            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSSAEFORM)) {
+            	pdfOutFile = tempDir + "/CIOMS-SAE-Form-" + aeReportId + ".pdf";
+            	this.generateCIOMSTypeForm(xml, pdfOutFile);
+            } else {
+            	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+            	generatePdf(xml);
+            }
+            
+            //pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
 
-            generatePdf(xml);
+            //generatePdf(xml);
 
             sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration
                             .get(Configuration.SMTP_USER), configuration
@@ -269,7 +293,7 @@ public class AdeersReportGenerator {
         try {
             AdeersReportGenerator aeg = new AdeersReportGenerator();
             FileReader input = new FileReader(
-                            "/Users/sakkala/Desktop/expeditedAdverseEventReport-52.xml");
+                            "/Users/sakkala/tech/caaers/dcp/ae.xml");
             BufferedReader bufRead = new BufferedReader(input);
             String line = bufRead.readLine();
 
@@ -279,7 +303,7 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generateCIOMS(str1, "/tmp/cioms.pdf");
+            aeg.generateDcpSaeForm(str1, "/Users/sakkala/tech/caaers/dcp/dcp.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
