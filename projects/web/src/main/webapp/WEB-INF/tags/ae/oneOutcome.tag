@@ -3,6 +3,8 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <%@attribute name="style"%>
 <%@attribute name="index" required="true" description="The index of the AE for which the outcome needs to be printed"%>
 <c:set var="outcomeGroup" value="outcomes${index}" />
@@ -11,10 +13,11 @@
 		Outcomes
 	</jsp:attribute>
 	<jsp:attribute name="value">
+	<div class="longselect" >
 		<div style="clear:right;">
 		<ui:checkbox path="${fieldGroups[outcomeGroup].fields[0].propertyName}">
 			<jsp:attribute name="embededJS">
-				$('${fieldGroups[outcomeGroup].fields[0].propertyName}' ,'click' , function(e){
+				$('${fieldGroups[outcomeGroup].fields[0].propertyName}').observe('click' , function(e){
 					Event.stop(e);
 				});
 			</jsp:attribute>
@@ -24,18 +27,37 @@
 		<div style="clear:right;">
 		<ui:checkbox path="${fieldGroups[outcomeGroup].fields[1].propertyName}">
 			<jsp:attribute name="embededJS">
-				$('${fieldGroups[outcomeGroup].fields[1].propertyName}' ,'click' , function(e){
+				$('${fieldGroups[outcomeGroup].fields[1].propertyName}').observe('click' , function(e){
 					Event.stop(e);
 				});
 			</jsp:attribute>
 		</ui:checkbox>
 		${fieldGroups[outcomeGroup].fields[1].displayName}
 		</div>
-		<c:forEach items="${fieldGroups[outcomeGroup].fields}" var="field" begin="2">
-			<div style="clear:right;">
-			<tags:renderInputs field="${field}" />${field.displayName}
-			</div>
+		<c:set var="len" value="${fn:length(fieldGroups[outcomeGroup].fields)}" />
+		<c:forEach items="${fieldGroups[outcomeGroup].fields}" var="field" begin="2" end="${len - 3}">
+		  <div style="clear:right;">
+			<ui:checkbox path="${field.propertyName}" />${field.displayName}
+		  </div>
 		</c:forEach>
+		<div style="clear:right;">
+			<ui:checkbox path="${fieldGroups[outcomeGroup].fields[len - 2].propertyName}">
+				<jsp:attribute name="embededJS">
+					$('${fieldGroups[outcomeGroup].fields[len - 2].propertyName}').observe('click' , function(e){
+						var otherTxtBox = $('${fieldGroups[outcomeGroup].fields[len - 1].propertyName}');
+						if(e.element().checked){
+						 	otherTxtBox.readOnly = false;
+						}
+						else {
+							otherTxtBox.readOnly = true;
+							otherTxtBox.value = '';
+						}
+					});
+				</jsp:attribute>
+			</ui:checkbox>${fieldGroups[outcomeGroup].fields[len - 2].displayName}
+			<ui:text path="${fieldGroups[outcomeGroup].fields[len - 1].propertyName}"/>
+		</div>
+	</div>
 	</jsp:attribute>
 </ui:row>
 
