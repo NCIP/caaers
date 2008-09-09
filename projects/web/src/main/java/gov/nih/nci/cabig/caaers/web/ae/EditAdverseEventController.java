@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -127,6 +129,15 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         		aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         		command.setAeReport(aeReport);
+        		
+        		// get report definitions and all the fileds , conceal NA fields 
+        		List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
+        		command.setSelectedReportDefinitions(rdList);
+        		for (ReportDefinition definition : rdList) {
+                    reportDefinitionDao.reassociate(definition);
+                }
+        		initializeNotApplicableFields(rdList);
+        		
         	}
         }
         return command;
@@ -142,6 +153,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
         
         
+        
         if(aeList != null){
         	for(AdverseEvent ae: aeList){
     			command.getAeReport().addAdverseEvent(ae);
@@ -149,6 +161,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }
         if(rdList != null){
         	command.setSelectedReportDefinitions(rdList);
+        	// get report definitions and all the fileds , conceal NA fields 
+        	for (ReportDefinition definition : rdList) {
+                reportDefinitionDao.reassociate(definition);
+            }
+            initializeNotApplicableFields(rdList);
         }
         
         if(StringUtils.equals("createNew", action)){
@@ -163,6 +180,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         request.getSession().removeAttribute(REPORT_ID_PARAMETER);
         request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);
         request.getSession().removeAttribute(REPORT_DEFN_LIST_PARAMETER);
+        
     }
 
     @Override
@@ -265,6 +283,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     
     private void conceal(String...fieldPropertyNames){
     	for(String property : fieldPropertyNames){
+    		//System.out.println("**********concealing ..." + property);
     		renderDecisionManager.conceal(property);
     	}
     }
@@ -274,4 +293,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     		renderDecisionManager.reveal(property);
     	}
     }
+    
+    public void initializeNotApplicableFields(List<ReportDefinition> reportDefs) {	    	
+		for (ReportDefinition reportDefinition : reportDefs) {
+			for (ReportMandatoryFieldDefinition mandatoryField : reportDefinition.getMandatoryFields()) {
+				if (mandatoryField.getMandatory().equals(Mandatory.NA)) {					
+					conceal("aeReport."+mandatoryField.getFieldPath());
+				} 
+			}
+		}		
+	}
 }
