@@ -78,7 +78,9 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 
         log.debug("query::" + query.toString());
         getHibernateTemplate().setMaxResults(30);
-        return getHibernateTemplate().find(query.toString(), params.toArray());
+        List<T> result =  getHibernateTemplate().find(query.toString(), params.toArray());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        return result;
     }
 
     private void buildSubQuery(String subname, StringBuilder query, List<Object> params,
@@ -135,7 +137,9 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         }
         getHibernateTemplate().setMaxResults(30);
         log.debug("query::" + query.toString());
-        return getHibernateTemplate().find(query.toString(), params.toArray());
+        List<T> result = getHibernateTemplate().find(query.toString(), params.toArray());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        return result;
     }
 
     private void buildSubnameQuery(String subname, StringBuilder query, List<Object> params,
@@ -363,7 +367,9 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
 
         log.debug("query::" + query.toString());
         getHibernateTemplate().setMaxResults(0);
-        return getHibernateTemplate().find(query.toString());
+        List<T> result =  getHibernateTemplate().find(query.toString());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        return result;
     }
 
 }

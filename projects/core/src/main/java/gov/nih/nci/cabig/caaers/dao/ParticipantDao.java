@@ -1,12 +1,9 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
@@ -20,7 +17,6 @@ import java.util.Map;
 
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -195,7 +191,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
         log.debug("matchParticipantByStudy : " + queryBuf.toString());
         getHibernateTemplate().setMaxResults(30);
-        return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+        List<Participant> result = getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        return result;
     }
 
     /**

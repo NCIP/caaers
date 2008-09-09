@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
 /**
  * This class implements the Data access related operations for the PriorTherapy domain object.
  * 
@@ -44,6 +46,7 @@ public class PriorTherapyDao extends CaaersDao<PriorTherapy> {
      * @return return the list of prior therapies.
      */
     public List<PriorTherapy> getAll() {
+    	HibernateTemplate template = getHibernateTemplate();
         return getHibernateTemplate().find("from PriorTherapy");
     }
 }

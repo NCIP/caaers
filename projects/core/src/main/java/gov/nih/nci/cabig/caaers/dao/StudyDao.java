@@ -266,7 +266,9 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
 		log.debug("matchStudyByParticipant : " + queryBuf.toString());
 		getHibernateTemplate().setMaxResults(30);
-		return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+		List<Study> result = getHibernateTemplate().find(queryBuf.toString(), params.toArray());
+		getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+		return result;
 	}
 	/**
 	 * Search for studies given search criteria.

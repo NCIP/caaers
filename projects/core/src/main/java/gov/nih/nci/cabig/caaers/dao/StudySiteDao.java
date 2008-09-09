@@ -51,6 +51,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
         getHibernateTemplate().setMaxResults(5);
         List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
                         params.toArray());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
     }
     
@@ -69,7 +70,7 @@ public class StudySiteDao extends CaaersDao<StudySite> {
         List<StudySite> studySites = getHibernateTemplate().find(queryBuf.toString(),
         		new Object[]{orgId,studyId});
         
-        
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
         return studySites.size() == 1 ? studySites.get(0) : null;
     }
 }
