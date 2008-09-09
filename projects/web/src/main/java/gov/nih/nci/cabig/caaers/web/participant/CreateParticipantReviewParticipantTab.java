@@ -8,10 +8,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 import java.util.Map;
 
-public class ReviewParticipantTab <T extends ParticipantInputCommand> extends TabWithFields<T> {
+public class CreateParticipantReviewParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
-    public ReviewParticipantTab() {
-        super("Review and Submit", "Review", "par/par_confirmation");
+    public CreateParticipantReviewParticipantTab() {
+        super("Review and Submit", "Review", "par/create_par_confirmation");
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {

@@ -67,7 +67,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
                 flow.addTab(new CreateParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
                 flow.addTab(new SubjectMedHistoryTab());
-                flow.addTab(new ReviewParticipantTab());
+                flow.addTab(new CreateParticipantReviewParticipantTab());
                 return flow;
             }
         };

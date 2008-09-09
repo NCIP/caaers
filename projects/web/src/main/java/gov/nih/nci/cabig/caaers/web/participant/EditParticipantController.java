@@ -68,7 +68,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
     @Override
     protected void layoutTabs(final Flow<T> flow) {
-        flow.addTab(new ReviewParticipantTab());
+        flow.addTab(new EditParticipantReviewParticipantTab());
         flow.addTab(new EditParticipantTab());
         flow.addTab(new SubjectMedHistoryTab());
     }
