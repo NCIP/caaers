@@ -304,4 +304,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
 
+    public void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
+
+        for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
+            if (saeReportConcomitantMedication.getId() == null) {
+                StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(
+                        saeReportConcomitantMedication);
+                addConcomitantMedication(studyParticipantConcomitantMedication);
+            }
+        }
+
+    }
+
 }

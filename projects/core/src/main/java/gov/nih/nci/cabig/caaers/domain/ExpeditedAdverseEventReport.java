@@ -738,4 +738,20 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     }
 
+
+    public void syncrhonizeConcomitantMedications(final List<StudyParticipantConcomitantMedication> studyParticipantConcomitantMedications) {
+
+        if (getConcomitantMedications().isEmpty()) {
+            //copy only once
+            for (StudyParticipantConcomitantMedication studyParticipantConcomitantMedication : studyParticipantConcomitantMedications) {
+                if (studyParticipantConcomitantMedication.getId() == null) {
+                    ConcomitantMedication saeReportConcomitantMedication = ConcomitantMedication.createConcomitantMedication(studyParticipantConcomitantMedication);
+                    addConcomitantMedication(saeReportConcomitantMedication);
+                }
+            }
+        }
+
+    }
+
+
 }
