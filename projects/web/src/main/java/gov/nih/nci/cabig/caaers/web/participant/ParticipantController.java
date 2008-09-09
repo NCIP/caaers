@@ -1,7 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -46,6 +52,12 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     protected ParticipantRepository participantRepository;
     protected ParticipantDao participantDao;
     protected StudyParticipantAssignmentDao assignmentDao;
+    protected PriorTherapyDao priorTherapyDao;
+    protected AnatomicSiteDao anatomicSiteDao;
+    protected PreExistingConditionDao preExistingConditionDao;
+    protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
+    protected ChemoAgentDao chemoAgentDao;
+    protected StudyDao studyDao;
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
@@ -70,6 +82,13 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
         ControllerTools.registerDomainObjectEditor(binder, assignmentDao);
+        ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
+        ControllerTools.registerDomainObjectEditor(binder, studyDao);
+        ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+        
     }
 
     @Override
@@ -161,7 +180,33 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         return false;
     }
 
-    @Required
+    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+		this.priorTherapyDao = priorTherapyDao;
+	}
+
+	public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+		this.anatomicSiteDao = anatomicSiteDao;
+	}
+
+	public void setPreExistingConditionDao(
+			PreExistingConditionDao preExistingConditionDao) {
+		this.preExistingConditionDao = preExistingConditionDao;
+	}
+
+	public void setAbstractStudyDiseaseDao(
+			AbstractStudyDiseaseDao abstractStudyDiseaseDao) {
+		this.abstractStudyDiseaseDao = abstractStudyDiseaseDao;
+	}
+
+	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+		this.chemoAgentDao = chemoAgentDao;
+	}
+
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+
+	@Required
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
@@ -184,4 +229,6 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
         this.assignmentDao = assignmentDao;
     }
+    
+    
 }

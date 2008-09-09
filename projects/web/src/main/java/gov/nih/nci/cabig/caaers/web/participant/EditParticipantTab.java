@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 //java imports
 
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
@@ -18,7 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
-
+	private StudySiteDao studySiteDao;
+	
     public EditParticipantTab() {
         super("Enter Subject Information", "Details", "par/par_edit_participant");
     }
@@ -125,10 +127,13 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         
         return map;
     }
-
+    
+   
     @Override
     public void postProcess(final HttpServletRequest request, final ParticipantInputCommand command, final Errors errors) {
-        command.setStudy(command.getAssignment().getStudySite().getStudy());
+    	if(errors.hasErrors()) return;
+    	StudySite site = studySiteDao.getById(command.getAssignment().getStudySite().getId());
+        command.setStudy(site.getStudy());
     }
 
     @Override
@@ -241,6 +246,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         modelAndView.getModel().put("indexes", indexes);
         return modelAndView;
     }
-
     
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+		this.studySiteDao = studySiteDao;
+	}
+    public StudySiteDao getStudySiteDao() {
+		return studySiteDao;
+	}
 }
