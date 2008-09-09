@@ -292,4 +292,16 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
     }
 
+    public void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
+
+        for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
+            if (saeReportPreExistingCondition.getId() == null) {
+                StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(
+                        saeReportPreExistingCondition);
+                addPreExistingCondition(studyParticipantPreExistingCondition);
+            }
+        }
+
+    }
+
 }

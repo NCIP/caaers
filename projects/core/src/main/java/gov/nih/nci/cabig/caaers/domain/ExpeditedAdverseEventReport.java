@@ -1,48 +1,38 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
-import org.hibernate.annotations.Parameter;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.CascadeType;
+import org.springframework.beans.BeanUtils;
+
+import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * This class represents the ExpeditedAdverseEventReport domain object.
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "ae_reports")
-@GenericGenerator(name="id-generator", strategy = "native",
-    parameters = {
-        @Parameter(name="sequence", value="seq_ae_reports_id")
-    }
+@GenericGenerator(name = "id-generator", strategy = "native",
+        parameters = {
+                @Parameter(name = "sequence", value = "seq_ae_reports_id")
+        }
 )
 public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private Timestamp createdAt;
@@ -61,10 +51,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
-    
+
     // This gives the number of Aes in the expeditedReport (Data Collection)
     private int numberOfAes;
-    
+
     // This gives the primary report in the expeditedReport (Data Collection)
     private Report primaryReport;
 
@@ -296,9 +286,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (sAEReportPreExistingCondition != null) sAEReportPreExistingCondition.setReport(this);
     }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    /**
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
     @Transient
-    @UniqueObjectInCollection(message="Duplicate pre existing condition")
+    @UniqueObjectInCollection(message = "Duplicate pre existing condition")
     public List<SAEReportPreExistingCondition> getSaeReportPreExistingConditions() {
         return lazyListHelper.getLazyList(SAEReportPreExistingCondition.class);
     }
@@ -308,13 +300,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (saeReportPriorTherapy != null) saeReportPriorTherapy.setReport(this);
     }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    /**
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
     @Transient
-    @UniqueObjectInCollection(message="Duplicate prior therapy")
+    @UniqueObjectInCollection(message = "Duplicate prior therapy")
     public List<SAEReportPriorTherapy> getSaeReportPriorTherapies() {
         return lazyListHelper.getLazyList(SAEReportPriorTherapy.class);
     }
-    
 
 
     public void addOtherCause(OtherCause otherCause) {
@@ -322,13 +315,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (otherCause != null) otherCause.setReport(this);
     }
 
-    /** @return a wrapped list which will never throw an {@link IndexOutOfBoundsException} */
+    /**
+     * @return a wrapped list which will never throw an {@link IndexOutOfBoundsException}
+     */
     @Transient
-    @UniqueObjectInCollection(message="Duplicate other cause")
+    @UniqueObjectInCollection(message = "Duplicate other cause")
     public List<OtherCause> getOtherCauses() {
         return lazyListHelper.getLazyList(OtherCause.class);
     }
-    
+
 
     ////// BEAN PROPERTIES
 
@@ -472,8 +467,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         lazyListHelper.setInternalList(SAEReportPriorTherapy.class, saeReportPriorTherapiesInternal);
     }
 
-   
-
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "report")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
@@ -513,7 +506,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")
-    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
         return reporter;
     }
@@ -525,7 +518,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport")
-    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE })
+    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Physician getPhysician() {
         return physician;
     }
@@ -561,8 +554,9 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "aeReport")
     @OrderBy("dueOn")
-    @Cascade(value = { CascadeType.DELETE, CascadeType.EVICT, 
-    				   CascadeType.LOCK, CascadeType.REMOVE }) // Manually manage update-style reassociates and saves
+    @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT,
+            CascadeType.LOCK, CascadeType.REMOVE})
+    // Manually manage update-style reassociates and saves
     public List<Report> getReports() {
         if (reports == null) reports = new ArrayList<Report>();
         return reports;
@@ -600,17 +594,17 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
-    
+
     @ManyToOne
     @JoinColumn(name = "reporting_period_id")
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = {CascadeType.LOCK})
     public AdverseEventReportingPeriod getReportingPeriod() {
-		return reportingPeriod;
-	}
-    
+        return reportingPeriod;
+    }
+
     public void setReportingPeriod(AdverseEventReportingPeriod reportingPeriod) {
-		this.reportingPeriod = reportingPeriod;
-	}
+        this.reportingPeriod = reportingPeriod;
+    }
 
 
     @Transient
@@ -667,18 +661,18 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         assert false : "Not implemented";
         return null;
     }
-    
+
     @Transient
-    public int getNumberOfAes(){
-    	int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
-    	return count;
+    public int getNumberOfAes() {
+        int count = (this.getAdverseEvents() != null) ? this.getAdverseEvents().size() : 0;
+        return count;
     }
-    
+
     @Transient
-    public Report getPrimaryReport(){
-    	return getReports().get(0);
+    public Report getPrimaryReport() {
+        return getReports().get(0);
     }
-    
+
     @Deprecated
     @Transient
     public ReportStatus getStatus() {
@@ -697,5 +691,51 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         //assert false : "Update your code";
     }
 
+    public ExpeditedAdverseEventReport copy() {
+        ExpeditedAdverseEventReport expeditedAdverseEventReport = new ExpeditedAdverseEventReport();
+        BeanUtils.copyProperties(this, expeditedAdverseEventReport,
+                new String[]{"id", "gridId", "version", "treatmentInformation", "assignment", "adverseEventsInternal"});
+
+        for (AdverseEvent adverseEvent : getAdverseEvents()) {
+            expeditedAdverseEventReport.addAdverseEvent(adverseEvent.copy());
+
+        }
+        if (getTreatmentInformation() != null) {
+            expeditedAdverseEventReport.setTreatmentInformation(getTreatmentInformation().copy());
+        }
+        return expeditedAdverseEventReport;
+
+
+    }
+
+
+    public void syncrhonizePriorTherapies(final List<StudyParticipantPriorTherapy> studyParticipantPriorTherapies) {
+
+        if (getSaeReportPriorTherapies().isEmpty()) {
+            //copy only once
+            for (StudyParticipantPriorTherapy studyParticipantPriorTherapy : studyParticipantPriorTherapies) {
+                if (studyParticipantPriorTherapy.getId() == null) {
+                    SAEReportPriorTherapy priorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
+                    addSaeReportPriorTherapies(priorTherapy);
+                }
+            }
+        }
+
+    }
+
+
+    public void syncrhonizePreExistingConditions(final List<StudyParticipantPreExistingCondition> studyParticipantPreExistingConditions) {
+
+        if (getSaeReportPreExistingConditions().isEmpty()) {
+            //copy only once
+            for (StudyParticipantPreExistingCondition studyParticipantPreExistingCondition : studyParticipantPreExistingConditions) {
+                if (studyParticipantPreExistingCondition.getId() == null) {
+                    SAEReportPreExistingCondition saeReportPreExistingCondition = SAEReportPreExistingCondition.createSAEReportPreExistingCondition(studyParticipantPreExistingCondition);
+                    addSaeReportPreExistingCondition(saeReportPreExistingCondition);
+                }
+            }
+        }
+
+    }
 
 }
