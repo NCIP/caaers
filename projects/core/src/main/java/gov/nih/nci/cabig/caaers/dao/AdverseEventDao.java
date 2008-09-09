@@ -217,6 +217,34 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		//}
 		return getHibernateTemplate().findByCriteria(criteria);	
 	}
+
+	public List<AdverseEvent> getByStudyParticipant(Study study, Participant participant, AdverseEvent adverseEvent) {
+		
+		StudyParticipantAssignmentDao studyParticipantAssignmentDao = null;
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
+		
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").createCriteria("assignment").add(getAssignmentExample(assignment));
+		//if (study.getIdentifiers().size() > 0) {
+			//criteria = criteria.createCriteria("identifiers").add(getIdentifierExample(study.getIdentifiers().get(0)));
+		//}
+		return getHibernateTemplate().findByCriteria(criteria);			
+	}
+	
+	public List<AdverseEvent> getByStudyParticipant(Study study, Participant participant) {
+		
+		StudyParticipantAssignmentDao studyParticipantAssignmentDao = null;
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
+		
+		
+		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
+		criteria.createCriteria("reportingPeriod").createCriteria("assignment").add(getAssignmentExample(assignment));
+		//if (study.getIdentifiers().size() > 0) {
+			//criteria = criteria.createCriteria("identifiers").add(getIdentifierExample(study.getIdentifiers().get(0)));
+		//}
+		return getHibernateTemplate().findByCriteria(criteria);			
+	}
 /*
 	public List<AdverseEvent> getByStudyParticipantAssignment(StudyParticipantAssignment studyParticipantAssignment) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
@@ -234,8 +262,8 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	private Example getAdverseEventExample(AdverseEvent adverseEvent) {
 		return addOptions(Example.create(adverseEvent));
 	}
-	private Example getIdentifierExample(Identifier identifier) {
-		return addOptions(Example.create(identifier));
+	private Example getAssignmentExample( StudyParticipantAssignment assignment) {
+		return addOptions(Example.create(assignment));
 	}
 	
 	private Example addOptions(Example example) {
