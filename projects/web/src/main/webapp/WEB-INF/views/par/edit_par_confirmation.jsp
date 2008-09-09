@@ -31,7 +31,6 @@
                 <th scope="col">Site</th>
                 <th scope="col" width="150px">Study Subject Identifier</th>
             </tr>
-
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                     <tr class="results">
                         <td>${assignment.studySite.study.primaryIdentifier}</td>

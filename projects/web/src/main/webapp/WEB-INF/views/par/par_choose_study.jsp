@@ -89,7 +89,7 @@ function ajaxStudySearch(searchText, searchType) {
 	</jsp:attribute>
 
     <jsp:attribute name="singleFields">
-        <div id="ids" style="display:none;">
+        <div id="ids" style="display: <c:if test="${fn:length(command.studies) == 0}">none</c:if>;">
             <br />
             <chrome:division title="Study Subject Identifier">
                 <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">

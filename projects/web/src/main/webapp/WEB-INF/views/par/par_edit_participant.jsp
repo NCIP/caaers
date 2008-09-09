@@ -176,7 +176,7 @@ function removeSystemIdentifier(container, index) {
     </tr>
 </table>
 </chrome:division>
-    
+
 <chrome:division title="Subject ID Assigned by Organization">
 <table id="test" class="tablecontent">
     <tr id="organization-section">
@@ -202,6 +202,7 @@ function removeSystemIdentifier(container, index) {
     </tbody>
 
 </table>
+
 </chrome:division>
 
 <chrome:division title="Subject ID Assigned by a System">
@@ -229,7 +230,41 @@ function removeSystemIdentifier(container, index) {
     <tbody>
 </table>
 </chrome:division>
-         
+
+<script language="JavaScript">
+    var sizeSys = 0<c:out value="${fn:length(command.participant.systemAssignedIdentifiers)}" />;
+    function sysSelect(id, i) {
+        if ($(id).checked) {
+            for (i=0; i<sizeSys; i++) {
+                _id = $("participant.systemAssignedIdentifiers[" + i + "].primaryIndicator1"); 
+                if ($(id) != _id) _id.checked = false;
+            }
+        }
+    }
+<c:forEach items="${command.participant.systemAssignedIdentifiers}" varStatus="status" var="i">
+    <c:set var="_id" value="participant.systemAssignedIdentifiers[${status.index}].primaryIndicator1" />
+    Event.observe("${_id}", "click", function() {sysSelect('${_id}', ${status.index})});
+</c:forEach>
+</script>
+
+
+
+<script language="JavaScript">
+    var sizeOrg = 0<c:out value="${fn:length(command.participant.organizationIdentifiers)}" />;
+    function orgSelect(id, i) {
+        if ($(id).checked) {
+            for (i=0; i<sizeOrg; i++) {
+                _id = $("participant.organizationIdentifiers[" + i + "].primaryIndicator1");
+                if ($(id) != _id) _id.checked = false;
+            }
+        }
+    }
+<c:forEach items="${command.participant.organizationIdentifiers}" varStatus="status" var="i">
+    <c:set var="_id" value="participant.organizationIdentifiers[${status.index}].primaryIndicator1" />
+    Event.observe("participant.organizationIdentifiers[${status.index}].primaryIndicator1", "click", function() {orgSelect('${_id}', ${status.index})});
+</c:forEach>
+</script>
+
 </jsp:attribute>
 
 <jsp:attribute name="localButtons">
