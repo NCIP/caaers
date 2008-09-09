@@ -315,7 +315,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         List<String> fields = new LinkedList<String>();
         if (getReportDefinition().getMandatoryFields() != null) {
             for (ReportMandatoryFieldDefinition field : getReportDefinition().getMandatoryFields()) {
-                if (field.getMandatory()) fields.add(field.getFieldPath());
+                if (field.getMandatory().equals(Mandatory.MANDATORY)) fields.add(field.getFieldPath());
             }
         }
         return fields;

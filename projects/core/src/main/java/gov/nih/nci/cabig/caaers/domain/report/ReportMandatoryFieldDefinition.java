@@ -19,17 +19,18 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 
     private String fieldPath;
 
-    private Boolean mandatory;
+    //private Boolean mandatory;
+    private Mandatory mandatory;
 
     public ReportMandatoryFieldDefinition() {
-        this("", Boolean.FALSE);
+        this("", Mandatory.OPTIONAL);
     }
 
     public ReportMandatoryFieldDefinition(String fieldPath) {
-        this(fieldPath, Boolean.FALSE);
+        this(fieldPath, Mandatory.OPTIONAL);
     }
 
-    public ReportMandatoryFieldDefinition(String fieldPath, Boolean mandatory) {
+    public ReportMandatoryFieldDefinition(String fieldPath, Mandatory mandatory) {
         this.mandatory = mandatory;
         this.fieldPath = fieldPath;
     }
@@ -47,11 +48,11 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
         this.fieldPath = fieldPath;
     }
 
-    public Boolean getMandatory() {
+    public Mandatory getMandatory() {
         return mandatory;
     }
 
-    public void setMandatory(Boolean mandatory) {
+    public void setMandatory(Mandatory mandatory) {
         this.mandatory = mandatory;
     }
 

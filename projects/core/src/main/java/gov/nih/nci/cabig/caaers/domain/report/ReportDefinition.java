@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -73,6 +74,8 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     
     private String expectedDisplayDueDate;
     
+    private ReportFormatType reportFormatType;
+    
     public ReportDefinition() {
         lazyListHelper = new LazyListHelper();
         lazyListHelper.add(ReportDeliveryDefinition.class,
@@ -144,7 +147,10 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         if (mandatoryFields == null) return false;
         for (ReportMandatoryFieldDefinition mandatoryField : mandatoryFields) {
             if (StringUtils.equals(fieldPath, mandatoryField.getFieldPath())) {
-                return mandatoryField.getMandatory();
+                if (mandatoryField.getMandatory().equals(Mandatory.MANDATORY)) {
+                	return true;
+                }
+            	//return mandatoryField.getMandatory();
             }
         }
 
@@ -272,7 +278,7 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
 		this.expedited = expedited;
 	}    
     
-
+	
     // //// OBJECT METHODS
 
 
@@ -349,5 +355,16 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     }
     
     
+    @Type(type = "reportFormatType")
+    @Column(name = "report_format_type")
+	public ReportFormatType getReportFormatType() {
+		return reportFormatType;
+	}
+
+	public void setReportFormatType(ReportFormatType reportFormatType) {
+		this.reportFormatType = reportFormatType;
+	}
+
+
 
 }
