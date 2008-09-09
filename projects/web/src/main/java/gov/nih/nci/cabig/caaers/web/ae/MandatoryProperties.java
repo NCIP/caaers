@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,7 +35,7 @@ public class MandatoryProperties {
     }
 
     public void add(ReportMandatoryFieldDefinition definition) {
-        if (definition.getMandatory()) {
+        if (definition.getMandatory().equals(Mandatory.MANDATORY)) {
             TreeNode node = tree.find(definition.getFieldPath());
             if (node != null) add(node);
         }
