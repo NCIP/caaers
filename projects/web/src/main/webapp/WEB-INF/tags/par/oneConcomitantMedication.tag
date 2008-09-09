@@ -6,11 +6,12 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication" required="true" %>
-<chrome:division title="${concomitantMedication.agentName}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}">
+<chrome:division title="${concomitantMedication.agentName}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
+ enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
 
 	<ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">
 		<jsp:attribute name="label">
-			<ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?" />
+			<ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?x" />
 		</jsp:attribute>
 		<jsp:attribute name="value">
 			<ui:checkbox path="assignment.concomitantMedications[${index}].stillTakingMedications" />
