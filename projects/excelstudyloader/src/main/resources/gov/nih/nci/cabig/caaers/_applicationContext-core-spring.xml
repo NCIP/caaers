@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+    This applicationContext contains configuration for Spring itself
+-->
+
+<beans default-lazy-init="true">
+	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
+    </bean>
+    <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
+        <property name="properties">
+            <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
+                <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
+            </bean>
+        </property>
+        <!-- have to use a separate prefix/suffix to avoid maven filtering in everything
+             at build time -->
+        <property name="placeholderPrefix"><value>s[</value></property>
+        <property name="placeholderSuffix"><value>]</value></property>
+        <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
+
+    <bean id="customEditorConfigurer" class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+                        <constructor-arg index="0">
+                            <bean class="java.text.SimpleDateFormat">
+                                <constructor-arg index="0"><value>yyyy-MM-dd HH:mm:ss.S</value></constructor-arg>
+                            </bean>
+                        </constructor-arg>
+                        <constructor-arg index="1"><value>false</value></constructor-arg>
+                    </bean>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

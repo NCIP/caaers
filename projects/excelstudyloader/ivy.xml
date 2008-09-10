@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-module version="1.4">
+	
+    	<info organisation="gov.nih.nci.cabig.caaers"
+          	module="excelimporter"
+          	status="integration"/>
+        
+        <configurations>
+        	<conf name="default" visibility="public" extends="publish,runtime" 
+        		description="Dependencies needed for default setting"  />
+        	<conf name="build" visibility="public" 
+        		description="Dependencies required for build time, all classpath should have this"/>
+        	<conf name="publish" visibility="public" 
+        		description="Dependencies along with this module is published in repository" />
+        	<conf name="distGrid" visibility="public"  extends="publish"
+        		description="Dependencies that are required in grid distribution of this module" />
+        	<conf name="dist" visibility="public"  extends="publish"
+        		description="Dependencies needed for standalone distribution" />
+        	<conf name="runtime" visibility="public"
+        		description="The dependencies that are needed for runtime" extends="build" />
+        	<conf name="test" visibility="public" 
+        		description="Dependencies needed for testing purposes"/>
+        </configurations>
+        
+         <publications>
+    		<artifact name="${ivy.module}" conf="publish" type="jar"/>
+    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
+    		<artifact name="caaers" type="war" conf="publish" />
+  		</publications>
+        
+        <!-- dependencies for the web module -->
+        <dependencies  defaultconfmapping="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)">
+        	
+			<!--  caAERS jars -->
+			
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" rev="latest.integration" 
+				conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid"/>
+	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
+				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+        	
+        	<!--  Spring framework -->
+        	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
+        	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
+        	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
+			
+        </dependencies>
+</ivy-module>
