@@ -377,6 +377,7 @@
 		</table>
 	</chrome:box>
 	<tags:tabControls flow="${flow}" tab="${tab}" />
+    <c:if test="${_finish}"><input type="hidden" name="_finish"/></c:if>
    </form:form>
   </body>
 </html>

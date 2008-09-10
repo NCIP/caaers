@@ -78,9 +78,15 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
         Participant participant = participantCommand.getParticipant();
         participantDao.merge(participant);
+
+/*
         request.setAttribute("flashMessage", "Successfully updated the Participant");
         ModelAndView modelAndView = new ModelAndView("par/par_confirm");
-        return modelAndView;
+*/
+
+        response.sendRedirect("view?participantId=" + participant.getId() + "&type=edit");
+
+        return null;
     }
 
     @Override
@@ -91,7 +97,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
         ParticipantInputCommand cmd = (ParticipantInputCommand)oCommand;
-        participantDao.reassociate(cmd.getParticipant());
+        participantDao.reassociateUsingLock(cmd.getParticipant());
         return super.currentFormObject(request, oCommand);
     }
 
@@ -107,6 +113,10 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
     protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
         refdata.put("currentTask", task);
+
+        if (getFlow().getTabCount() == page + 1) {
+            refdata.put("_finish", true);
+        }
         return refdata;
     }
 
