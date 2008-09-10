@@ -241,6 +241,10 @@
 	
 	<target name="drop-rules-tables" description="drop the rules tables">
 				<subant target="drop-rules-tables" buildpath="core/ivy-build.xml" />
-			</target>
+	</target>
+	
+	<target name="importexcel">
+		<subant target="importexcel" buildpath="excelstudyloader/ivy-build.xml" />
+	</target>
 	
 </project>
