@@ -32,16 +32,16 @@ public class RenderDecisionManager {
 	 * Will mark the field, identified by the name as conceled (not renderable).
 	 * @param fieldName
 	 */
-	public void conceal(String fieldName){
-		decisionCache.put(findActualName(fieldName), Boolean.FALSE);
+	public void conceal(String... fieldNames){
+		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.FALSE);
 	}
 	
 	/**
 	 * Will mark the field, identified by the name as renderable.
 	 * @param fieldName
 	 */
-	public void reveal(String fieldName){
-		decisionCache.put(findActualName(fieldName), Boolean.TRUE);
+	public void reveal(String... fieldNames){
+		for(String fieldName : fieldNames) decisionCache.put(findActualName(fieldName), Boolean.TRUE);
 	}
 	
 	

@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
@@ -57,14 +58,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
-        
+        RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         //hide for non DCP-AdEERS reporting enabled study
         if(!command.isDCPNonAdeersStudy()){
         	//sections to be concealed
-        	conceal("aeReport.responseDescription.dcp");
-        	conceal("outcomes");
-        	//fields to be concealed
-        	conceal("aeReport.adverseEvents[].eventApproximateTime",
+        	renderDecisionManager.conceal("aeReport.responseDescription.dcp");
+        	renderDecisionManager.conceal("outcomes");
+        	/*//fields to be concealed
+        	renderDecisionManager.conceal("aeReport.adverseEvents[].eventApproximateTime",
         			"aeReport.adverseEvents[].eventApproximateTime.hour", 
         			"aeReport.adverseEvents[].eventApproximateTime.minute",
         			"aeReport.adverseEvents[].eventLocation",
@@ -86,13 +87,13 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         			"aeReport.concomitantMedications[].startDate",
         			"aeReport.concomitantMedications[].endDate",
         			"aeReport.concomitantMedications[].stillTakingMedications"
-        			);
+        			);*/
         }else{
         	//sections to be revealed
-        	reveal("aeReport.responseDescription.dcp");
-        	reveal("outcomes");
-        	//fields to be revealed
-        	reveal( "aeReport.adverseEvents[].eventApproximateTime",
+        	renderDecisionManager.reveal("aeReport.responseDescription.dcp");
+        	renderDecisionManager.reveal("outcomes");
+        	/*//fields to be revealed
+        	renderDecisionManager.reveal( "aeReport.adverseEvents[].eventApproximateTime",
         			"aeReport.adverseEvents[].eventApproximateTime.hour", 
         			"aeReport.adverseEvents[].eventApproximateTime.minute",
         			"aeReport.adverseEvents[].eventLocation",
@@ -114,7 +115,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         			"aeReport.concomitantMedications[].startDate",
         			"aeReport.concomitantMedications[].endDate",
         			"aeReport.concomitantMedications[].stillTakingMedications"
-        			);        	
+        			);        	*/
         }
         refdata.put("currentTask", task);
         return refdata;
@@ -123,21 +124,17 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
-    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
+    	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
+    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
     	if(action != null){
         	if(action.equals("createNew")){
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         		aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         		command.setAeReport(aeReport);
-        		
-        		// get report definitions and all the fileds , conceal NA fields 
         		List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
-        		command.setSelectedReportDefinitions(rdList);
-        		for (ReportDefinition definition : rdList) {
-                    reportDefinitionDao.reassociate(definition);
+        		if(rdList != null){
+                	command.setSelectedReportDefinitions(rdList);
                 }
-        		initializeNotApplicableFields(rdList);
-        		
         	}
         }
         return command;
@@ -161,11 +158,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }
         if(rdList != null){
         	command.setSelectedReportDefinitions(rdList);
-        	// get report definitions and all the fileds , conceal NA fields 
-        	for (ReportDefinition definition : rdList) {
-                reportDefinitionDao.reassociate(definition);
-            }
-            initializeNotApplicableFields(rdList);
         }
         
         if(StringUtils.equals("createNew", action)){
@@ -281,26 +273,5 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return attr;
     }
     
-    private void conceal(String...fieldPropertyNames){
-    	for(String property : fieldPropertyNames){
-    		//System.out.println("**********concealing ..." + property);
-    		renderDecisionManager.conceal(property);
-    	}
-    }
-    
-    private void reveal(String...fieldPropertyNames){
-    	for(String property : fieldPropertyNames){
-    		renderDecisionManager.reveal(property);
-    	}
-    }
-    
-    public void initializeNotApplicableFields(List<ReportDefinition> reportDefs) {	    	
-		for (ReportDefinition reportDefinition : reportDefs) {
-			for (ReportMandatoryFieldDefinition mandatoryField : reportDefinition.getMandatoryFields()) {
-				if (mandatoryField.getMandatory().equals(Mandatory.NA)) {					
-					conceal("aeReport."+mandatoryField.getFieldPath());
-				} 
-			}
-		}		
-	}
+  
 }

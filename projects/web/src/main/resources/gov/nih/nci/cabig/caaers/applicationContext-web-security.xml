@@ -212,7 +212,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
   	
 <!--   The bean managing the rendering decision-->
-  	<bean id="renderDecisionManager" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManager"  scope="session" lazy-init="true" />
-  	
-
+  	<bean id="renderDecisionManagerBean" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManager" scope="session" lazy-init="true"/>
+    <bean id="renderDecisionManager" class="gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean" />
+	
 </beans>

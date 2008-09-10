@@ -19,6 +19,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -67,7 +68,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private EvaluationService evaluationService;
 	private ReportDefinitionDao reportDefinitionDao;
 	
-	private RenderDecisionManager renderDecisionManager;
+	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	
 	
 	
@@ -182,6 +183,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         	referenceData.put("aesummary", summary);
         }
         
+        RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         //hide for non DCP-AdEERS reporting enabled study
         if(!command.isDCPNonAdeersStudy()){
         	renderDecisionManager.conceal("adverseEvents[].serious");
@@ -418,7 +420,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
 	
-	public void setRenderDecisionManager(RenderDecisionManager renderDecisionManager) {
-		this.renderDecisionManager = renderDecisionManager;
+	public void setRenderDecisionManagerFactoryBean(RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean) {
+		this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
 	}
 }

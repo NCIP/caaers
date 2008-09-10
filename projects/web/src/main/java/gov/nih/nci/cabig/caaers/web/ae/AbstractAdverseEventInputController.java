@@ -34,6 +34,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
@@ -119,7 +120,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
 	
-    protected RenderDecisionManager renderDecisionManager;
+    protected RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+    
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -439,8 +441,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 	}
     
 	
-	public void setRenderDecisionManager(RenderDecisionManager renderDecisionManager) {
-		this.renderDecisionManager = renderDecisionManager;
+	public void setRenderDecisionManagerFactoryBean(RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean) {
+		this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
 	}
  
 }

@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import org.springframework.validation.BindException;
@@ -51,6 +52,7 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected Errors errors;
 
     protected ExpeditedReportTree expeditedReportTree;
+    protected RenderDecisionManager renderDecisionManager;
 
     @Override
     protected void setUp() throws Exception {
@@ -64,6 +66,7 @@ public abstract class AeWebTestCase extends WebTestCase {
         expeditedReportTree = new ExpeditedReportTree();
         expeditedReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
         reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
+        renderDecisionManager = registerMockFor(RenderDecisionManager.class);
         command = createCommand();
 
         errors = new BindException(command, "command");
@@ -72,11 +75,11 @@ public abstract class AeWebTestCase extends WebTestCase {
     protected abstract EditExpeditedAdverseEventCommand createCommand();
 
     protected final EditExpeditedAdverseEventCommand createRealCommand() {
-    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
+    	return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
     }
 
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
+        return new EditExpeditedAdverseEventCommand(expeditedReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
     }
 
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {

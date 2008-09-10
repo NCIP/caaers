@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
@@ -45,8 +46,9 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	log.debug("In form backing object");
+    	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
-                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree);
+                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));

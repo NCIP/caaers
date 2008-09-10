@@ -28,7 +28,7 @@ public class RenderDecisionManagerTag extends TagSupport{
 		validateParameters();
 		
 		ApplicationContext appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(pageContext.getServletContext());
-		RenderDecisionManager renderDecisionManager = (RenderDecisionManager) appContext.getBean("renderDecisionManager");
+		RenderDecisionManager renderDecisionManager = (RenderDecisionManager) appContext.getBean("renderDecisionManagerBean");
 		
 		boolean decision = false;
 		if(uiType.equals(UI_TYPE_DIVISION)) {
