@@ -45,8 +45,7 @@ public class DetailsTab extends StudyTab {
     public DetailsTab() {
         super("Basic Details", "Details", "study/study_details");
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("multiInstitutionIndicator", "adeersReporting", "term", "ctcVersion",
-                        "meddraVersion", "diseaseCodeTerm");
+        addHelpKeyExclusion("multiInstitutionIndicator", "adeersReporting", "term", "ctcVersion", "meddraVersion", "diseaseCodeTerm");
     }
 
     @Override
@@ -98,33 +97,27 @@ public class DetailsTab extends StudyTab {
             reportFormatFieldGroup = new DefaultInputFieldGroup("rfFieldGroup");
             List<InputField> fields = reportFormatFieldGroup.getFields();
 
-            InputField caaersXMLTypeField = InputFieldFactory.createCheckboxField("caaersXMLType",
-                            "caAERS XML");
+            InputField caaersXMLTypeField = InputFieldFactory.createCheckboxField("caaersXMLType", "caAERS XML");
             InputFieldAttributes.setSize(caaersXMLTypeField, 50);
             fields.add(caaersXMLTypeField);
 
-            InputField adeersPDFTypeField = InputFieldFactory.createCheckboxField("adeersPDFType",
-                            "AdEERS PDF");
+            InputField adeersPDFTypeField = InputFieldFactory.createCheckboxField("adeersPDFType", "AdEERS PDF");
             InputFieldAttributes.setSize(adeersPDFTypeField, 50);
             fields.add(adeersPDFTypeField);
 
-            InputField ciomsPDFTypeField = InputFieldFactory.createCheckboxField("ciomsPDFType",
-                            "CIOMS Form");
+            InputField ciomsPDFTypeField = InputFieldFactory.createCheckboxField("ciomsPDFType", "CIOMS Form");
             InputFieldAttributes.setSize(ciomsPDFTypeField, 50);
             fields.add(ciomsPDFTypeField);
 
-            InputField ciomsSaePDFTypeField = InputFieldFactory.createCheckboxField(
-                            "ciomsSaePDFType", "CIOMS SAE Form");
+            InputField ciomsSaePDFTypeField = InputFieldFactory.createCheckboxField("ciomsSaePDFType", "CIOMS SAE Form");
             InputFieldAttributes.setSize(ciomsSaePDFTypeField, 50);
             fields.add(ciomsSaePDFTypeField);
 
-            InputField dcpSAEPDFTypeField = InputFieldFactory.createCheckboxField("dcpSAEPDFType",
-                            "DCP SAE Form");
+            InputField dcpSAEPDFTypeField = InputFieldFactory.createCheckboxField("dcpSAEPDFType", "DCP SAE Form");
             InputFieldAttributes.setSize(dcpSAEPDFTypeField, 50);
             fields.add(dcpSAEPDFTypeField);
 
-            InputField medwatchPDFTypeField = InputFieldFactory.createCheckboxField(
-                            "medwatchPDFType", "MedWatch PDF");
+            InputField medwatchPDFTypeField = InputFieldFactory.createCheckboxField("medwatchPDFType", "MedWatch PDF");
             InputFieldAttributes.setSize(medwatchPDFTypeField, 50);
             fields.add(medwatchPDFTypeField);
         }
@@ -132,13 +125,11 @@ public class DetailsTab extends StudyTab {
         if (fundSponsorFieldGroup == null) {
             fundSponsorFieldGroup = new DefaultInputFieldGroup("fsFieldGroup");
             List<InputField> fields = fundSponsorFieldGroup.getFields();
-            InputField sponsorField = InputFieldFactory.createAutocompleterField(
-                            "primaryFundingSponsorOrganization", "Funding sponsor", true);
+            InputField sponsorField = InputFieldFactory.createAutocompleterField("primaryFundingSponsorOrganization", "Funding sponsor", true);
             // sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the sponsor
             // name you are looking for");
             fields.add(sponsorField);
-            InputField sponsorIdentiferField = InputFieldFactory.createTextField(
-                            "identifiers[0].value", "Funding sponsor study identifier", true);
+            InputField sponsorIdentiferField = InputFieldFactory.createTextField("identifiers[0].value", "Funding sponsor study identifier", true);
             fields.add(sponsorIdentiferField);
 
         }
@@ -146,33 +137,24 @@ public class DetailsTab extends StudyTab {
 
             coordinatingCenterFieldGroup = new DefaultInputFieldGroup("ccFieldGroup");
             List<InputField> fields = coordinatingCenterFieldGroup.getFields();
-            fields.add(InputFieldFactory.createAutocompleterField(
-                            "studyCoordinatingCenter.organization", "Coordinating center", true));
-            fields.add(InputFieldFactory.createTextField("identifiers[1].value",
-                            "Coordinating center study identifier", true));
+            fields.add(InputFieldFactory.createAutocompleterField("studyCoordinatingCenter.organization", "Coordinating center", true));
+            fields.add(InputFieldFactory.createTextField("identifiers[1].value", "Coordinating center study identifier", true));
 
         }
         // Create fieldGroup for AeTerminology
         InputFieldGroup studyCodeFieldGroup = new DefaultInputFieldGroup("scFieldGroup");
         List<InputField> scFields = studyCodeFieldGroup.getFields();
-        scFields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology",
-                         true, WebUtils.collectOptions(Arrays.asList(Term.values()),
-                                         null, "displayName")));
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.term", "Terminology", true, WebUtils.collectOptions(Arrays.asList(Term.values()), null, "displayName")));
 
         // TODO: Add validation for when terminology.term = Term.CTC
         List<Ctc> ctcList = ctcDao.getAll();
         for(Ctc ctc : ctcList){
         	ctc.getCategories().size();
         }
-        scFields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion",
-                         "CTC version", false, collectOptions(ctcList, "id", "name")));
-        scFields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion",
-                         "MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
-                                         "id", "name")));
-        scFields.add(InputFieldFactory.createSelectField("otherMeddra",
-        				 "Other MedDra Version", false, collectOptions(meddraVersionDao.getAll(),
-        						 		 "id", "name")));
-        
+
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.ctcVersion", "CTC version", false, collectOptions(ctcList, "id", "name")));
+        scFields.add(InputFieldFactory.createSelectField("aeTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
+        scFields.add(InputFieldFactory.createSelectField("otherMeddra", "Other MedDRA Version", false, collectOptions(meddraVersionDao.getAll(),"id", "name")));
         
         // Create fieldGroup for DiseaseTerminology
         InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");

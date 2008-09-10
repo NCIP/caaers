@@ -75,7 +75,7 @@
             	</div>
             	<c:if test="${command.aeTerminology.term eq 'CTC'}">
             	<div class="row">
-	            	<div class="label">Other Meddra</div>
+	            	<div class="label">Other MedDRA</div>
 	            	<div class="value">${command.otherMeddra.name}</div>
 	            </div>
             	</c:if>
@@ -279,7 +279,7 @@
             <br>
             <tr>
             	<th scope="col">Disease Term</th>
-                <th scope="col">Meddra Code</th>
+                <th scope="col">MedDRA Code</th>
             </tr>
 
             <c:forEach items="${command.meddraStudyDiseases}" var="studyDisease">

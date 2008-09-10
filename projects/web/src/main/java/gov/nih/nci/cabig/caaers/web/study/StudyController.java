@@ -92,8 +92,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
@@ -119,8 +118,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     }
 
     @Override
-    protected String getViewName(final HttpServletRequest request, final Object command,
-                    final int page) {
+    protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
         Object subviewName = findInRequest(request, "_subview");
         if (subviewName != null) {
             return "study/ajax/" + subviewName;
