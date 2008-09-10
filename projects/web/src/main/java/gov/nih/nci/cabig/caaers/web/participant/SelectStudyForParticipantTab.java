@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.springframework.validation.Errors;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.web.servlet.ModelAndView;
+import org.apache.commons.lang.StringUtils;
 
 import gov.nih.nci.cabig.caaers.dao.query.StudyHavingStudySiteQuery;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
@@ -90,13 +91,17 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
         if (studySiteArray) {
             errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
         }
+        
+        if (StringUtils.isEmpty(command.assignment.getStudySubjectIdentifier())) {
+            errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
+        }
     }
 
     @Override
     public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
-        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", true));
+        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", false));
         map.addInputFieldGroup(studySubjectIdentifierFieldGroup);
         return map;
     }
