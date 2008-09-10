@@ -70,5 +70,14 @@ public class PhysicanTest extends AbstractTestCase {
 
     public void testCopyContactMechanism() {
 
+        physician.getContactMechanisms().put("contact", "email");
+
+        Physician copiedPhysician = physician.copy();
+
+
+        assertEquals(1, copiedPhysician.getContactMechanisms().keySet().size());
+
+        assertEquals("email", copiedPhysician.getContactMechanisms().get("contact"));
+
     }
 }
