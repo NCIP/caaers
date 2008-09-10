@@ -24,9 +24,7 @@
     </script>
 </head>
 <body>
-<p id="instructions">
-    You have successfully created a new Subject
-</p>
+
 <chrome:box title="${participant.lastName}, ${participant.firstName}">
 
     <chrome:division title="Subject Details">

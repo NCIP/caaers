@@ -39,6 +39,7 @@ public class ViewParticipantController extends ParameterizableViewController {
         setViewName("par/par_confirm");
         Participant participant = participantDao.getById(Integer.parseInt(request.getParameter("participantId")));
         ModelAndView mav = new ModelAndView("par/par_confirm", "participant", participant);
+        mav.getModel().put("flashMessage", "You have successfully created a new Subject");
 
         return mav;
     }

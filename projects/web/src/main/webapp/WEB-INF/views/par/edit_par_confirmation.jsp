@@ -23,26 +23,6 @@
             <input type="hidden" name="_finish" value="true"/>
         </c:if>
 
-    <chrome:division title="Study Subject Assignments">
-        <table class="tablecontent" width="100%">
-            <tr>
-                <th scope="col" width="150px">Study Primary ID</th>
-                <th scope="col">Study Short Title</th>
-                <th scope="col">Site</th>
-                <th scope="col" width="150px">Study Subject Identifier</th>
-            </tr>
-            <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
-                    <tr class="results">
-                        <td>${assignment.studySite.study.primaryIdentifier}</td>
-                        <td>${assignment.studySite.study.shortTitle}</td>
-                        <td>${assignment.studySite.organization.name}</td>
-                        <td>${assignment.studySubjectIdentifier}</td>
-                    </tr>
-            </c:forEach>
-            
-        </table>
-        <br>
-    </chrome:division>
     <chrome:division title="Demographic Information">
         <br>
         <table id="test2" class="single-fields" width="100%">
@@ -97,31 +77,51 @@
         </table>
     </chrome:division>
 	
-		<c:if test="${not empty command.participant.identifiers}">
-            <chrome:division title="Identifiers">
-                <table class="tablecontent" width="100%">
-                    <tr>
-                        <th scope="col">Assigning Authority</th>
-                        <th scope="col">Identifier Type</th>
-                        <th scope="col">Identifier</th>
+    <c:if test="${not empty command.participant.identifiers}">
+        <chrome:division title="Identifiers">
+            <table class="tablecontent" width="100%">
+                <tr>
+                    <th scope="col">Assigning Authority</th>
+                    <th scope="col">Identifier Type</th>
+                    <th scope="col">Identifier</th>
+                </tr>
+                <c:forEach items="${command.participant.identifiers}" var="identifier">
+                    <tr class="results">
+                        <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+                            <td>${identifier.organization}</td>
+                        </c:if>
+                        <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+                            <td>${identifier.systemName}</td>
+                        </c:if>
+                        <td>${identifier.type}</td>
+                        <td>${identifier.value}</td>
                     </tr>
-                    <c:forEach items="${command.participant.identifiers}" var="identifier">
-                        <tr class="results">
-                            <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
-                                <td>${identifier.organization}</td>
-                            </c:if>
-                            <c:if test="${(identifier.class.name eq 'gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
-                                <td>${identifier.systemName}</td>
-                            </c:if>
-                            <td>${identifier.type}</td>
-                            <td>${identifier.value}</td>
-                        </tr>
-                    </c:forEach>
-                </table>
-                <br>
-            </chrome:division>
-        </c:if>
+                </c:forEach>
+            </table>
+            <br>
+        </chrome:division>
+    </c:if>
 		
+        <chrome:division title="Study Subject Assignments">
+            <table class="tablecontent" width="100%">
+                <tr>
+                    <th scope="col" width="150px">Study Primary ID</th>
+                    <th scope="col">Study Short Title</th>
+                    <th scope="col">Site</th>
+                    <th scope="col" width="150px">Study Subject Identifier</th>
+                </tr>
+                <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
+                        <tr class="results">
+                            <td>${assignment.studySite.study.primaryIdentifier}</td>
+                            <td>${assignment.studySite.study.shortTitle}</td>
+                            <td>${assignment.studySite.organization.name}</td>
+                            <td>${assignment.studySubjectIdentifier}</td>
+                        </tr>
+                </c:forEach>
+
+            </table>
+            <br>
+        </chrome:division>
 	        
     </jsp:attribute>
 </tags:tabForm>

@@ -315,7 +315,8 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     private Map<Object, Object> initializePriorTherapyOptions() {
     	if(priorTherapyOptions == null){
     		this.priorTherapyOptions = WebUtils.collectOptions(priorTherapyDao.getAll(),"id", "text","Please select");
-    	}
+            log.debug("Prior Therapies Found: " + this.priorTherapyOptions.size());
+        }
         return priorTherapyOptions;
     }
     
