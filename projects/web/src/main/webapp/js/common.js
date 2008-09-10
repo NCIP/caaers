@@ -223,7 +223,8 @@ Object.extend(ListEditor.prototype, {
         }
         if (this.options.deletable) {
             var deleteControl = Builder.node("a", { 'class': 'list-control delete-control', 'title': 'Delete', 'href': '#' })
-            deleteControl.innerHTML = "&times;"
+//            deleteControl.innerHTML = "<img src='/caaers/images/checkno.gif'>"
+            deleteControl.innerHTML = "<img src='../../images/checkno.gif'>"
             Event.observe(deleteControl, "click", this.remove.bindAsEventListener(this))
             controls.appendChild(deleteControl)
        }
