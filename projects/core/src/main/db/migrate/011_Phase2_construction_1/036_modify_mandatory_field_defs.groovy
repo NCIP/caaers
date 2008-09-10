@@ -2,7 +2,7 @@ class ModifyMandatoryFieldDefs extends edu.northwestern.bioinformatics.bering.Mi
 	void up() {
 		// add new mandatory column(integer) and drop existing mandatory (boolean)
 
-		if (databaseMatches('postgres')) {
+		if (databaseMatches('postgresql')) {
 			// rename existing boolean column to mandatory_temp
 			// not droping in postgres because we need the existing data to be migrated to new column
 			
@@ -17,7 +17,7 @@ class ModifyMandatoryFieldDefs extends edu.northwestern.bioinformatics.bering.Mi
 		
 		addColumn("mandatory_field_defs", "mandatory", "integer", nullable: false, defaultValue: 0);
 		
-		if (databaseMatches('postgres')) {
+		if (databaseMatches('postgresql')) {
 			// migrate old data and drop temp column
 			
 			execute("update mandatory_field_defs set mandatory = (case when (mandatory_temp = true) then 1 else 0 end)");
