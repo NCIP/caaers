@@ -694,15 +694,74 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public ExpeditedAdverseEventReport copy() {
         ExpeditedAdverseEventReport expeditedAdverseEventReport = new ExpeditedAdverseEventReport();
         BeanUtils.copyProperties(this, expeditedAdverseEventReport,
-                new String[]{"id", "gridId", "version", "treatmentInformation", "assignment", "adverseEventsInternal"});
+                new String[]{"id", "gridId", "version",
+                        "publicIdentifier", "status"
+                        , "treatmentInformation", "assignment",
+                        "adverseEventsInternal",
+                        "saeReportPriorTherapiesInternal", "saeReportPriorTherapies"
+                        , "medicalDevicesInternal", "medicalDevices",
+                        "labsInternal", "labs",
+                        "physician", "additionalInformation", "reporter",
+                        "radiationInterventionsInternal", "radiationInterventions",
+                        "surgeryInterventionsInternal", "surgeryInterventions",
+                        "otherCausesInternal", "otherCauses",
+                        "concomitantMedicationsInternal", "concomitantMedications",
+                        "saeReportPreExistingConditionsInternal", "saeReportPreExistingConditions",
+                        "responseDescription", "diseaseHistory", "participantHistory", "reports"});
 
         for (AdverseEvent adverseEvent : getAdverseEvents()) {
             expeditedAdverseEventReport.addAdverseEvent(adverseEvent.copy());
 
         }
+        for (SAEReportPriorTherapy saeReportPriorTherapy : getSaeReportPriorTherapies()) {
+            expeditedAdverseEventReport.addSaeReportPriorTherapies(saeReportPriorTherapy.copy());
+        }
         if (getTreatmentInformation() != null) {
             expeditedAdverseEventReport.setTreatmentInformation(getTreatmentInformation().copy());
         }
+        for (MedicalDevice medicalDevice : getMedicalDevices()) {
+            expeditedAdverseEventReport.addMedicalDevice(medicalDevice);
+        }
+        for (Lab lab : getLabs()) {
+            expeditedAdverseEventReport.addLab(lab.copy());
+        }
+        if (getPhysician() != null) {
+            expeditedAdverseEventReport.setPhysician(getPhysician().copy());
+        }
+        if (getReporter() != null) {
+            expeditedAdverseEventReport.setReporter(getReporter().copy());
+        }
+        if (getAdditionalInformation() != null) {
+            expeditedAdverseEventReport.setAdditionalInformation(getAdditionalInformation().copy());
+        }
+        for (RadiationIntervention radiationIntervention : getRadiationInterventions()) {
+            expeditedAdverseEventReport.addRadiationIntervention(radiationIntervention.copy());
+        }
+        for (SurgeryIntervention surgeryIntervention : getSurgeryInterventions()) {
+            expeditedAdverseEventReport.addSurgeryIntervention(surgeryIntervention.copy());
+        }
+        for (OtherCause otherCause : getOtherCauses()) {
+            expeditedAdverseEventReport.addOtherCause(otherCause.copy());
+        }
+
+        for (ConcomitantMedication concomitantMedication : getConcomitantMedications()) {
+            expeditedAdverseEventReport.addConcomitantMedication(concomitantMedication.copy());
+        }
+
+        for (SAEReportPreExistingCondition saeReportPreExistingCondition : getSaeReportPreExistingConditions()) {
+            expeditedAdverseEventReport.addSaeReportPreExistingCondition(saeReportPreExistingCondition.copy());
+        }
+
+        if (getResponseDescription() != null) {
+            expeditedAdverseEventReport.setResponseDescription(getResponseDescription().copy());
+        }
+        if (getDiseaseHistory() != null) {
+            expeditedAdverseEventReport.setDiseaseHistory(getDiseaseHistory().copy());
+        }
+        if (getParticipantHistory() != null) {
+            expeditedAdverseEventReport.setParticipantHistory(getParticipantHistory().copy());
+        }
+
         return expeditedAdverseEventReport;
 
 
