@@ -541,7 +541,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     @OneToOne(mappedBy = "report")
-    @Cascade(value = {CascadeType.ALL})
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public ParticipantHistory getParticipantHistory() {
         if (participantHistory == null) setParticipantHistory(new ParticipantHistory());
         return participantHistory;
