@@ -98,7 +98,10 @@
 			//--for metastatic diseases button 
 			Element.observe('metastatic-diseases-btn', 'click', function(e){
 				var inField = $('metastaticDiseaseSite');
-				if(inField.value == '') return;
+				if(inField.value == '') {
+                    alert('Select a value first.');
+                    return
+                };
 			 	this.addDetails('metastaticDiseaseSite', e.element(), inField.value, 'anchorMetastaticDiseases');
 
 			 	//clear the fields
@@ -108,7 +111,10 @@
 			//--for pre-existing condition button
 		 	Element.observe('pre-cond-btn', 'click', function(e){
 			 	var preCondField = $('preExistingCondition');
-			    if(preCondField.selectedIndex < 1) return; //ignore if selected option is please select
+			    if(preCondField.selectedIndex < 1) {
+                    alert('Select a value first.');
+                    return
+                }
 			    this.addDetails('preExistingCondition', e.element(), preCondField.value, 'anchorPreExistingCondition');
 			    preCondField.selectedIndex = 0;
 			 	
@@ -116,7 +122,10 @@
 		 	//-- for concomitant medication
 		 	Element.observe('concomitantMedication-btn', 'click', function(e){
 			 	var conMedField = $('concomitantMedication');
-			 	if(conMedField.value == '') return; //ignore if concomitantMedication is empty
+			 	if(conMedField.value == '') {
+                     alert('Type a value first.');
+                     return
+                 }
 			 	this.addDetails('concomitantMedication', e.element(), conMedField.value, 'anchorConcomitantMedication');
 			 	conMedField.value = '';
 		 	}.bind(mHistory));
@@ -124,7 +133,10 @@
 			//-- for prior therapy button
 		 	Element.observe('priortherapy-btn','click', function(e){
 			 	var priorTherapyField = $('priorTherapy');
-			 	if(priorTherapyField.selectedIndex < 1) return; //ignore if selected option is please select
+			 	if(priorTherapyField.selectedIndex < 1) {
+                     alert('Select a value first.');
+                     return
+                 }
 			 	this.addDetails('priorTherapy', e.element(), priorTherapyField.value, 'anchorPriorTherapy');
 			 	priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
@@ -255,8 +267,8 @@
 		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
 		<table class="tablecontent" width="80%">
 			<tr>
-				<td width="90%">
-					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here...">
+				<td>
+					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text) {
                 				createAE.matchAnatomicSite(text, function(values) {
@@ -270,8 +282,10 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-				</td>
-				<td width="10%"><input id="metastatic-diseases-btn" type="button" value="Add"/></td>
+                    &nbsp;
+                    <input id="metastatic-diseases-btn" type="button" value="Add"/>
+                </td>
+				<td></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -296,10 +310,12 @@
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
-					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition" ></ui:select>
-				</td>
+					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
+                    &nbsp;
+                    <input id="pre-cond-btn" type="button" value="Add"/>
+                </td>
 				<td width="10%">
-					<input id="pre-cond-btn" type="button" value="Add"/>
+
 				</td>
 			</tr>
 			<tr>
@@ -325,10 +341,12 @@
 		<table class="tablecontent" width="80%">
 			<tr>
 				<td width="90%">
-					<ui:text path="concomitantMedication" size="50"/>
-				</td>
+					<ui:text path="concomitantMedication" size="50" />
+                    &nbsp;
+                    <input id="concomitantMedication-btn" type="button" value="Add"/>
+                </td>
 				<td width="10%">
-					<input id="concomitantMedication-btn" type="button" value="Add"/>
+
 				</td>
 			</tr>
 			<tr>
@@ -356,9 +374,11 @@
 			<tr>
 				<td width="90%">
 					<ui:select options="${priorTherapyOptions}" path="priorTherapy" />
-				</td>
+                    &nbsp;
+                    <input id="priortherapy-btn" type="button" value="Add"/>
+                </td>
 				<td width="10%">
-					<input id="priortherapy-btn" type="button" value="Add"/>
+
 				</td>
 			</tr>
 			<tr>
