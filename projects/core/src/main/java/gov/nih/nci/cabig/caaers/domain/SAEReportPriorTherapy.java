@@ -170,9 +170,7 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     public static SAEReportPriorTherapy createSAEReportPriorTherapy(StudyParticipantPriorTherapy studyParticipantPriorTherapy) {
 
         if (studyParticipantPriorTherapy != null) {
-            SAEReportPriorTherapy saeReportPriorTherapy = new SAEReportPriorTherapy();
-            BeanUtils.copyProperties(studyParticipantPriorTherapy, saeReportPriorTherapy, new String[]{"id", "gridId",
-                    "version", "priorTherapyAgents", "report", "priorTherapyAgentsInternal"});
+            SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(studyParticipantPriorTherapy);
 
             for (StudyParticipantPriorTherapyAgent priorTherapyAgent : studyParticipantPriorTherapy.getPriorTherapyAgents()) {
                 saeReportPriorTherapy.addPriorTherapyAgent(PriorTherapyAgent.createSaeReportPriorTherapyAgent(priorTherapyAgent));
@@ -183,6 +181,23 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
 
         }
         return null;
+
+    }
+
+    private static SAEReportPriorTherapy copyBasicProperties(Object object) {
+        SAEReportPriorTherapy saeReportPriorTherapy = new SAEReportPriorTherapy();
+        BeanUtils.copyProperties(object, saeReportPriorTherapy, new String[]{"id", "gridId",
+                "version", "priorTherapyAgents", "report", "priorTherapyAgentsInternal"});
+        return saeReportPriorTherapy;
+    }
+
+    public SAEReportPriorTherapy copy() {
+        SAEReportPriorTherapy saeReportPriorTherapy = copyBasicProperties(this);
+        for (PriorTherapyAgent priorTherapyAgent : this.getPriorTherapyAgents()) {
+            saeReportPriorTherapy.addPriorTherapyAgent(priorTherapyAgent.copy());
+        }
+
+        return saeReportPriorTherapy;
 
     }
 }

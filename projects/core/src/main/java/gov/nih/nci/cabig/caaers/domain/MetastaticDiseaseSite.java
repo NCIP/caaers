@@ -82,13 +82,21 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
 
     public static MetastaticDiseaseSite createReportMetastaticDiseaseSite(StudyParticipantMetastaticDiseaseSite studyParticipantMetastaticDiseaseSite) {
         if (studyParticipantMetastaticDiseaseSite != null) {
-            MetastaticDiseaseSite metastaticDiseaseSite = new MetastaticDiseaseSite();
-            BeanUtils.copyProperties(studyParticipantMetastaticDiseaseSite, metastaticDiseaseSite, new String[]{"id", "gridId", "version"
-            });
+            MetastaticDiseaseSite metastaticDiseaseSite = copyBasicProperties(studyParticipantMetastaticDiseaseSite);
 
             return metastaticDiseaseSite;
         }
         return null;
 
+    }
+
+    private static MetastaticDiseaseSite copyBasicProperties(Object object) {
+        MetastaticDiseaseSite metastaticDiseaseSite = new MetastaticDiseaseSite();
+        BeanUtils.copyProperties(object, metastaticDiseaseSite, new String[]{"id", "gridId", "version"});
+        return metastaticDiseaseSite;
+    }
+
+    public MetastaticDiseaseSite copy() {
+        return copyBasicProperties(this);
     }
 }

@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import org.springframework.beans.BeanUtils;
-
 import javax.persistence.Embeddable;
 import java.util.Date;
 
@@ -40,10 +38,4 @@ public class CourseDate {
     }
 
 
-    public CourseDate copy() {
-        CourseDate anotherCourseDate = new CourseDate();
-        BeanUtils.copyProperties(this, anotherCourseDate);
-        return anotherCourseDate;
-
-    }
 }

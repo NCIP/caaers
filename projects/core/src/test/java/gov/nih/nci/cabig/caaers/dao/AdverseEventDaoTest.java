@@ -31,6 +31,9 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertEquals("Wrong expectedness", Boolean.TRUE, copiedAdverseEvent.getExpected());
         assertEquals("Wrong attrib summary", Attribution.POSSIBLE, copiedAdverseEvent.getAttributionSummary());
         assertEquals("Wrong comments", "That was some big AE", copiedAdverseEvent.getComments());
+        assertTrue("Wrong time zone", copiedAdverseEvent.getEventApproximateTime().isPM());
+        assertEquals("Wrong time", Integer.valueOf(3), copiedAdverseEvent.getEventApproximateTime().getMinute());
+        assertEquals("Wrong time", Integer.valueOf(12), copiedAdverseEvent.getEventApproximateTime().getHour());
 
 
     }

@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,12 +12,12 @@ import java.util.Date;
 
 /**
  * This class represents the MedicalDevice domain object associated with the Adverse event report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_medical_devices")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_medical_devices_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_medical_devices_id")})
 public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild {
 
     private String brandName;
@@ -239,4 +240,13 @@ public class MedicalDevice extends AbstractExpeditedReportCollectionElementChild
         this.otherDeviceOperator = otherDeviceOperator;
     }
 
+
+    public MedicalDevice copy() {
+        MedicalDevice medicalDevice = new MedicalDevice();
+        BeanUtils.copyProperties(this, medicalDevice, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return medicalDevice;
+
+    }
 }

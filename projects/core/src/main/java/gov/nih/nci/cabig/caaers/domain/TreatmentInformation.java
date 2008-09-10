@@ -179,13 +179,9 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     public TreatmentInformation copy() {
         TreatmentInformation treatmentInformation = new TreatmentInformation();
         BeanUtils.copyProperties(this, treatmentInformation,
-                new String[]{"id", "gridId", "version",
-                        "primaryTreatmentApproximateTime", "adverseEventCourse", "courseAgentsInternal", "report", "courseAgents"});
+                new String[]{"id", "gridId", "version"
+                        , "courseAgentsInternal", "report", "courseAgents"});
 
-
-        treatmentInformation.setPrimaryTreatmentApproximateTime(getPrimaryTreatmentApproximateTime().copy());
-
-        treatmentInformation.setAdverseEventCourse(getAdverseEventCourse().copy());
 
         for (CourseAgent courseAgent : getCourseAgentsInternal()) {
             treatmentInformation.addCourseAgent(courseAgent.copy());

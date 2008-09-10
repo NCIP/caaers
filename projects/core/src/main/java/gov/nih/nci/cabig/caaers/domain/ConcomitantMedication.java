@@ -89,11 +89,7 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
     public static ConcomitantMedication createConcomitantMedication(StudyParticipantConcomitantMedication studyParticipantConcomitantMedication) {
 
         if (studyParticipantConcomitantMedication != null) {
-            ConcomitantMedication saeReportConcomitantMedication = new ConcomitantMedication();
-            BeanUtils.copyProperties(studyParticipantConcomitantMedication, saeReportConcomitantMedication, new String[]{"id", "gridId",
-                    "version", "report"});
-
-
+            ConcomitantMedication saeReportConcomitantMedication = copy(studyParticipantConcomitantMedication);
             return saeReportConcomitantMedication;
 
         }
@@ -101,4 +97,16 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 
     }
 
+    private static ConcomitantMedication copy(Object source) {
+        ConcomitantMedication saeReportConcomitantMedication = new ConcomitantMedication();
+        BeanUtils.copyProperties(source, saeReportConcomitantMedication, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return saeReportConcomitantMedication;
+    }
+
+    public ConcomitantMedication copy() {
+        return copy(this);
+
+    }
 }

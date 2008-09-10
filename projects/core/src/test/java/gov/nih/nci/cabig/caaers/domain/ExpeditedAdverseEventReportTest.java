@@ -32,12 +32,15 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
     private AdverseEvent adverseEvent;
     private StudyParticipantAssignment assignment;
     private AdverseEventReportingPeriod reportingPeriod;
+    private String publicId;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         report = new ExpeditedAdverseEventReport();
         report.setCreatedAt(CREATED_AT);
+        publicId = "str id";
+        report.setPublicIdentifier(publicId);
         adverseEvent = new AdverseEvent();
         report.addAdverseEvent(adverseEvent);
         adverseEvent.setGrade(Grade.MODERATE);
@@ -61,6 +64,200 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         reportingPeriod.setAssignment(assignment);
     }
 
+    public void testCopyLab() {
+        report.addLab(new Lab());
+        assertFalse(report.getLabs().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getLabs().size());
+        for (Lab object : copiedReport.getLabs()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testAdverseEvents() {
+        assertFalse(report.getAdverseEvents().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getAdverseEvents().size(), copiedReport.getAdverseEvents().size());
+        for (AdverseEvent event : copiedReport.getAdverseEvents()) {
+            assertSame("must change reference", copiedReport, event.getReport());
+        }
+    }
+
+    public void testPriorTherapies() {
+        report.addSaeReportPriorTherapies(new SAEReportPriorTherapy());
+        assertFalse(report.getSaeReportPriorTherapies().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getSaeReportPriorTherapies().size(), copiedReport.getSaeReportPriorTherapies().size());
+        for (SAEReportPriorTherapy priorTherapy : copiedReport.getSaeReportPriorTherapies()) {
+            assertSame("must change reference", copiedReport, priorTherapy.getReport());
+        }
+    }
+
+    public void testTreatmentInformation() {
+
+        report.setTreatmentInformation(new TreatmentInformation());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getTreatmentInformation());
+        assertSame("must change reference", copiedReport, copiedReport.getTreatmentInformation().getReport());
+
+    }
+
+    public void testCopyPhysician() {
+
+        report.setPhysician(new Physician());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getPhysician());
+        assertSame("must change reference", copiedReport, copiedReport.getPhysician().getExpeditedReport());
+
+    }
+
+    public void testCopyReporter() {
+
+        report.setReporter(new Reporter());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getReporter());
+        assertSame("must change reference", copiedReport, copiedReport.getReporter().getExpeditedReport());
+
+    }
+
+    public void testCopyAdditionalInformation() {
+
+        report.setAdditionalInformation(new AdditionalInformation());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getAdditionalInformation());
+        assertSame("must change reference", copiedReport, copiedReport.getAdditionalInformation().getReport());
+
+    }
+
+    public void testCopyResponseDescription() {
+
+        report.setResponseDescription(new AdverseEventResponseDescription());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getResponseDescription());
+        assertSame("must change reference", copiedReport, copiedReport.getResponseDescription().getReport());
+
+    }
+
+    public void testCopyDiseaseHistory() {
+
+        report.setDiseaseHistory(new DiseaseHistory());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getDiseaseHistory());
+        assertSame("must change reference", copiedReport, copiedReport.getDiseaseHistory().getReport());
+
+    }
+
+    public void testCopyParticipantHistory() {
+
+        report.setParticipantHistory(new ParticipantHistory());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getParticipantHistory());
+        assertSame("must change reference", copiedReport, copiedReport.getParticipantHistory().getReport());
+
+    }
+
+    public void testCopyMedicalDevices() {
+        report.addMedicalDevice(new MedicalDevice());
+        assertFalse(report.getMedicalDevices().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getMedicalDevices().size());
+        for (MedicalDevice object : copiedReport.getMedicalDevices()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testCopyPreExistingConditions() {
+        report.addSaeReportPreExistingCondition(new SAEReportPreExistingCondition());
+        assertFalse(report.getSaeReportPreExistingConditions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getSaeReportPreExistingConditions().size());
+        for (SAEReportPreExistingCondition object : copiedReport.getSaeReportPreExistingConditions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testCopyOtherCauses() {
+        report.addOtherCause(new OtherCause());
+        assertFalse(report.getOtherCauses().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getOtherCauses().size());
+        for (OtherCause object : copiedReport.getOtherCauses()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testCopyRadiationIntervention() {
+        report.addRadiationIntervention(new RadiationIntervention());
+        assertFalse(report.getRadiationInterventions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getRadiationInterventions().size());
+        for (RadiationIntervention object : copiedReport.getRadiationInterventions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testCopySurgeryIntervention() {
+        report.addSurgeryIntervention(new SurgeryIntervention());
+        assertFalse(report.getSurgeryInterventions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getSurgeryInterventions().size(), copiedReport.getSurgeryInterventions().size());
+        for (SurgeryIntervention object : copiedReport.getSurgeryInterventions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
+    }
+
+    public void testCopyConMed() {
+        report.addConcomitantMedication(new ConcomitantMedication());
+        assertFalse(report.getConcomitantMedications().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getConcomitantMedications().size());
+        for (ConcomitantMedication concomitantMedication : copiedReport.getConcomitantMedications()) {
+            assertSame("must change reference", copiedReport, concomitantMedication.getReport());
+        }
+    }
+
+    public void testMustNotCopyReports() {
+        report.addReport(new Report());
+        assertFalse(report.getReports().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertTrue("must not copy report", copiedReport.getReports().isEmpty());
+
+    }
+
+    public void testCopyBasicProperties() {
+
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNull("must not copy id", copiedReport.getId());
+        assertNull("must not copy version ", copiedReport.getGridId());
+        assertNull("must not copy grid id", copiedReport.getVersion());
+        assertEquals(report.getReportingPeriod(), copiedReport.getReportingPeriod());
+        assertSame(report.getReportingPeriod(), copiedReport.getReportingPeriod());
+
+        assertEquals(report.getReportingPeriod().getAssignment(), copiedReport.getAssignment());
+        assertSame(report.getReportingPeriod().getAssignment(), copiedReport.getAssignment());
+
+        assertEquals(CREATED_AT, copiedReport.getCreatedAt());
+        assertEquals(report.getPublicIdentifier(), copiedReport.getPublicIdentifier());
+
+    }
 
     public void testWrongUsesOfSyncrhonizeMethod() {
         report.setAssignment(null);

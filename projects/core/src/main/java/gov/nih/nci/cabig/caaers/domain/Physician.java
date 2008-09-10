@@ -9,5 +9,8 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("P")
 public class Physician extends ReportPerson {
-	
+    @Override
+    public Physician copy() {
+        return (Physician) super.copy();    //To change body of overridden methods use File | Settings | File Templates.
+    }
 }

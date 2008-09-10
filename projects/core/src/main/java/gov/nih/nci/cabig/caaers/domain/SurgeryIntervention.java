@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -12,12 +13,12 @@ import java.util.Date;
 /**
  * This class represents the SurgeryIntervention domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_surgery_interventions")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_surgery_intervention_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_surgery_intervention_id")})
 public class SurgeryIntervention extends AbstractExpeditedReportCollectionElementChild {
 
     private String treatmentArm;
@@ -66,4 +67,15 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
     public void setInterventionSite(InterventionSite interventionSite) {
         this.interventionSite = interventionSite;
     }
+
+    public SurgeryIntervention copy() {
+        SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
+        BeanUtils.copyProperties(this, surgeryIntervention, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return surgeryIntervention;
+
+    }
+
+
 }

@@ -16,6 +16,9 @@ public class DiseaseHistoryTest extends AbstractTestCase {
     private String otherPrimaryDiseaseSite;
     private StudyParticipantMetastaticDiseaseSite studyParticipantMetastaticDiseaseSite;
 
+    private DiseaseHistory diseaseHistory;
+    private MetastaticDiseaseSite metastaticDiseaseSite;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -41,6 +44,73 @@ public class DiseaseHistoryTest extends AbstractTestCase {
 
         studyParticipantMetastaticDiseaseSite = new StudyParticipantMetastaticDiseaseSite();
         studyParticipantDiseaseHistory.addMetastaticDiseaseSite(studyParticipantMetastaticDiseaseSite);
+
+
+        diseaseHistory = new DiseaseHistory();
+        diseaseHistory.setId(1);
+        diseaseHistory.setGridId("grid id");
+        diseaseHistory.setVersion(2);
+        diseaseHistory.setDiagnosisDate(startDateValue);
+
+        diseaseHistory.setOtherPrimaryDisease(otherPrimaryDisease);
+
+        diseaseHistory.setMeddraStudyDisease(meddraStudyDisease);
+        diseaseHistory.setCodedPrimaryDiseaseSite(codedPrimaryDiseaseSite);
+        diseaseHistory.setOtherPrimaryDiseaseSite(otherPrimaryDiseaseSite);
+        diseaseHistory.setReport(new ExpeditedAdverseEventReport());
+
+
+        metastaticDiseaseSite = new MetastaticDiseaseSite();
+        diseaseHistory.addMetastaticDiseaseSite(metastaticDiseaseSite);
+
+    }
+
+
+    public void testCopyForBasicProperties() {
+
+        DiseaseHistory history = this.diseaseHistory.copy();
+
+        assertNotNull(history);
+
+        assertNull("must not copy id ", history.getId());
+        assertNull("must not copy grid id ", history.getGridId());
+        assertNull("must not copy version no ", history.getVersion());
+        assertNull("must not copy report ", history.getReport());
+
+        assertEquals(startDateValue, history.getDiagnosisDate());
+
+        assertEquals(meddraStudyDisease, history.getAbstractStudyDisease());
+        assertSame(meddraStudyDisease, history.getAbstractStudyDisease());
+
+        assertSame(codedPrimaryDiseaseSite, history.getCodedPrimaryDiseaseSite());
+
+
+        assertSame(meddraStudyDisease, history.getMeddraStudyDisease());
+        assertEquals(otherPrimaryDisease, history.getOtherPrimaryDisease());
+
+
+    }
+
+
+    public void testCopyForMetastaticDiseaseSites() {
+
+        DiseaseHistory history = diseaseHistory.copy();
+
+
+        assertNotNull(history.getMetastaticDiseaseSites().size());
+
+        assertEquals(diseaseHistory.getMetastaticDiseaseSites().size(), history.getMetastaticDiseaseSites().size());
+        assertEquals(diseaseHistory.getMetastaticDiseaseSites().size(), history.getMetastaticDiseaseSites().size());
+
+        assertFalse(history.getMetastaticDiseaseSites().isEmpty());
+        assertFalse(history.getMetastaticDiseaseSitesInternal().isEmpty());
+
+        for (MetastaticDiseaseSite metastaticDiseaseSite : history.getMetastaticDiseaseSites()) {
+            assertNotSame(diseaseHistory, metastaticDiseaseSite);
+        }
+        for (MetastaticDiseaseSite metastaticDiseaseSite : history.getMetastaticDiseaseSitesInternal()) {
+            assertNotSame(diseaseHistory, metastaticDiseaseSite);
+        }
 
     }
 
@@ -85,7 +155,7 @@ public class DiseaseHistoryTest extends AbstractTestCase {
         for (MetastaticDiseaseSite metastaticDiseaseSite : diseaseHistory.getMetastaticDiseaseSites()) {
             assertNotSame(studyParticipantMetastaticDiseaseSite, metastaticDiseaseSite);
         }
-        for (MetastaticDiseaseSite metastaticDiseaseSite : diseaseHistory.getMetastaticDiseaseSites()) {
+        for (MetastaticDiseaseSite metastaticDiseaseSite : diseaseHistory.getMetastaticDiseaseSitesInternal()) {
             assertNotSame(studyParticipantMetastaticDiseaseSite, metastaticDiseaseSite);
         }
 

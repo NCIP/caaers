@@ -278,11 +278,9 @@ public class AdverseEventTest extends AbstractTestCase {
         AdverseEvent copiedAdverseEvent = adverseEvent.copy();
 
 
-        assertNotSame("eventApproximateTime must not be refer same objects", eventApproximateTime, copiedAdverseEvent.getEventApproximateTime());
+        assertSame("eventApproximateTime must   refer same objects", eventApproximateTime, copiedAdverseEvent.getEventApproximateTime());
 
-        assertNotEquals("eventApproximateTime must not refer same object ", eventApproximateTime, copiedAdverseEvent.getEventApproximateTime());
-        assertEquals("eventApproximateTime must be same", eventApproximateTime.getMinute(), copiedAdverseEvent.getEventApproximateTime().getMinute());
-        assertEquals("eventApproximateTime must be same", eventApproximateTime.getHour(), copiedAdverseEvent.getEventApproximateTime().getHour());
+        assertEquals("eventApproximateTime must  refer same object ", eventApproximateTime, copiedAdverseEvent.getEventApproximateTime());
 
 
     }

@@ -98,11 +98,9 @@ public class TreatmentInformationTest extends AbstractTestCase {
         TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
 
 
-        assertNotSame("adverseEventCourse must not be refer same objects", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
+        assertSame("adverseEventCourse must  refer same objects", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
 
-        assertNotEquals("adverseEventCourse must not refer same object ", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
-        assertEquals("attributes of adverseEventCourse must be same", adverseEventCourse.getNumber(), copiedTreatmentInformation.getAdverseEventCourse().getNumber());
-        assertEquals("attributes ofadverseEventCourse must be same", adverseEventCourse.getDate(), copiedTreatmentInformation.getAdverseEventCourse().getDate());
+        assertEquals("adverseEventCourse must  refer same object ", adverseEventCourse, copiedTreatmentInformation.getAdverseEventCourse());
 
 
     }
@@ -174,11 +172,9 @@ public class TreatmentInformationTest extends AbstractTestCase {
         TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
 
 
-        assertNotSame("primaryTreatmentApproximateTime must not be refer same objects", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
+        assertSame("primaryTreatmentApproximateTime must  be refer same objects", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
 
-        assertNotEquals("primaryTreatmentApproximateTime must not refer same object ", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
-        assertEquals("primaryTreatmentApproximateTime must be same", primaryTreatmentApproximateTime.getMinute(), copiedTreatmentInformation.getPrimaryTreatmentApproximateTime().getMinute());
-        assertEquals("primaryTreatmentApproximateTime must be same", primaryTreatmentApproximateTime.getHour(), copiedTreatmentInformation.getPrimaryTreatmentApproximateTime().getHour());
+        assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
 
 
     }

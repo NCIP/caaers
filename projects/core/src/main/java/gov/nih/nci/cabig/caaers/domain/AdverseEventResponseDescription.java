@@ -3,24 +3,23 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import java.util.Date;
 
 /**
  * This class represents the AdverseEventResponseDescription domain object associated with the
  * Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "ae_report_descriptions")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_report_descriptions_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_report_descriptions_id")})
 public class AdverseEventResponseDescription extends AbstractExpeditedReportSingleChild {
     private String eventDescription;
 
@@ -45,14 +44,14 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Boolean eventAbate;
 
     private Boolean eventReappear;
-        
+
     private Boolean autopsyPerformed;
-    
+
     private String causeOfDeath;
-    
-    
-	public AdverseEventResponseDescription() {
-    	retreated = Boolean.FALSE;
+
+
+    public AdverseEventResponseDescription() {
+        retreated = Boolean.FALSE;
     }
 
     // //// LOGIC
@@ -157,28 +156,36 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     public Integer getDaysNotGiven() {
         return daysNotGiven;
     }
-    
+
     public void setDaysNotGiven(Integer daysNotGiven) {
         this.daysNotGiven = daysNotGiven;
     }
-    
 
 
-	public Boolean getAutopsyPerformed() {
-		return autopsyPerformed;
-	}
+    public Boolean getAutopsyPerformed() {
+        return autopsyPerformed;
+    }
 
-	public void setAutopsyPerformed(Boolean autopsyPerformed) {
-		this.autopsyPerformed = autopsyPerformed;
-	}
+    public void setAutopsyPerformed(Boolean autopsyPerformed) {
+        this.autopsyPerformed = autopsyPerformed;
+    }
 
-	public String getCauseOfDeath() {
-		return causeOfDeath;
-	}
+    public String getCauseOfDeath() {
+        return causeOfDeath;
+    }
 
-	public void setCauseOfDeath(String causeOfDeath) {
-		this.causeOfDeath = causeOfDeath;
-	}
-    
-    
+    public void setCauseOfDeath(String causeOfDeath) {
+        this.causeOfDeath = causeOfDeath;
+    }
+
+    public AdverseEventResponseDescription copy() {
+        AdverseEventResponseDescription adverseEventResponseDescription = new AdverseEventResponseDescription();
+        BeanUtils.copyProperties(this, adverseEventResponseDescription, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return adverseEventResponseDescription;
+
+    }
+
+
 }

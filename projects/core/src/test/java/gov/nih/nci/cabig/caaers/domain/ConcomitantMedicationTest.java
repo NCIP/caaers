@@ -17,6 +17,8 @@ public class ConcomitantMedicationTest extends AbstractTestCase {
     private DateValue endDate;
     private DateValue startDate;
 
+    ConcomitantMedication concomitantMedication;
+
 
     public void testNameWithAgent() throws Exception {
         medication.setAgentName("Jomocillin");
@@ -43,6 +45,18 @@ public class ConcomitantMedicationTest extends AbstractTestCase {
 
         studyParticipantConcomitantMedication.setAssignment(new StudyParticipantAssignment());
 
+
+        concomitantMedication = new ConcomitantMedication();
+        concomitantMedication.setId(1);
+        concomitantMedication.setGridId("grid id");
+        concomitantMedication.setVersion(2);
+        concomitantMedication.setAgentName(agentName);
+        concomitantMedication.setStillTakingMedications(Boolean.TRUE);
+        concomitantMedication.setEndDate(endDate);
+        concomitantMedication.setStartDate(startDate);
+
+        concomitantMedication.setReport(new ExpeditedAdverseEventReport());
+
     }
 
     public void testCreateConcomitantMedicationForBasicProperties() {
@@ -50,21 +64,33 @@ public class ConcomitantMedicationTest extends AbstractTestCase {
         ConcomitantMedication concomitantMedication = ConcomitantMedication.
                 createConcomitantMedication(studyParticipantConcomitantMedication);
 
-        assertNotNull(concomitantMedication);
-
-        assertNull("must not copy id ", concomitantMedication.getId());
-        assertNull("must not copy grid id ", concomitantMedication.getGridId());
-        assertNull("must not copy version no ", concomitantMedication.getVersion());
-        assertNull("must not copy report ", concomitantMedication.getReport());
-
-        assertEquals(startDate, concomitantMedication.getStartDate());
-        assertEquals(endDate, concomitantMedication.getEndDate());
-        assertTrue(concomitantMedication.getStillTakingMedications());
-        assertEquals(concomitantMedication.getName(), concomitantMedication.getName());
-        assertEquals(agentName, concomitantMedication.getAgentName());
+        validateConcomitantMedication(concomitantMedication);
 
 
     }
 
+    public void testCopy() {
+
+        ConcomitantMedication copiedConcomitantMedication = concomitantMedication.copy();
+
+        validateConcomitantMedication(copiedConcomitantMedication);
+
+
+    }
+
+    private void validateConcomitantMedication(ConcomitantMedication copiedConcomitantMedication) {
+        assertNotNull(copiedConcomitantMedication);
+
+        assertNull("must not copy id ", copiedConcomitantMedication.getId());
+        assertNull("must not copy grid id ", copiedConcomitantMedication.getGridId());
+        assertNull("must not copy version no ", copiedConcomitantMedication.getVersion());
+        assertNull("must not copy report ", copiedConcomitantMedication.getReport());
+
+        assertEquals(startDate, copiedConcomitantMedication.getStartDate());
+        assertEquals(endDate, copiedConcomitantMedication.getEndDate());
+        assertTrue(copiedConcomitantMedication.getStillTakingMedications());
+        assertEquals(copiedConcomitantMedication.getName(), copiedConcomitantMedication.getName());
+        assertEquals(agentName, copiedConcomitantMedication.getAgentName());
+    }
 
 }

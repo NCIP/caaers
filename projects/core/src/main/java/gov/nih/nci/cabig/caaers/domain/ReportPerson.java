@@ -1,19 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author Rhett Sutphin
@@ -24,8 +16,8 @@ import javax.persistence.Table;
 @DiscriminatorColumn(name = "role", discriminatorType = DiscriminatorType.STRING)
 @DiscriminatorValue("ABSTRACT_BASE")
 // should be ignored
-@GenericGenerator(name = "id-generator",strategy = "native",parameters = {
-		@Parameter(name = "sequence", value = "seq_ae_report_people_id") 
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {
+        @Parameter(name = "sequence", value = "seq_ae_report_people_id")
 })
 public abstract class ReportPerson extends PersonContact {
 
@@ -56,4 +48,14 @@ public abstract class ReportPerson extends PersonContact {
     public void setExpeditedReport(ExpeditedAdverseEventReport expeditedReport) {
         this.expeditedReport = expeditedReport;
     }
+
+    public ReportPerson copy() {
+        ReportPerson reportPerson = (ReportPerson) BeanUtils.instantiateClass(getClass());
+        BeanUtils.copyProperties(this, reportPerson, new String[]{"id", "gridId",
+                "version", "expeditedReport", "primaryIdentifierValue"});
+
+        return reportPerson;
+
+    }
+
 }

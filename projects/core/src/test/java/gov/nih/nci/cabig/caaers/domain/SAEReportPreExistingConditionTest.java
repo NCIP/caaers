@@ -11,6 +11,7 @@ public class SAEReportPreExistingConditionTest extends AbstractTestCase {
     private StudyParticipantPreExistingCondition studyParticipantPreExistingCondition;
     private PreExistingCondition preExistingCondition;
     private String other;
+    SAEReportPreExistingCondition reportPreExistingCondition;
 
     @Override
     protected void setUp() throws Exception {
@@ -25,6 +26,36 @@ public class SAEReportPreExistingConditionTest extends AbstractTestCase {
         other = "other";
         studyParticipantPreExistingCondition.setOther(other);
         studyParticipantPreExistingCondition.setAssignment(new StudyParticipantAssignment());
+
+
+        reportPreExistingCondition = new SAEReportPreExistingCondition();
+        reportPreExistingCondition.setId(1);
+        reportPreExistingCondition.setGridId("grid id");
+        reportPreExistingCondition.setVersion(2);
+        reportPreExistingCondition.setPreExistingCondition(preExistingCondition);
+        reportPreExistingCondition.setOther(other);
+        reportPreExistingCondition.setReport(new ExpeditedAdverseEventReport());
+
+    }
+
+    public void testCopyForBasicProperties() {
+
+        SAEReportPreExistingCondition saeReportPreExistingCondition = reportPreExistingCondition.copy();
+
+        assertNotNull(saeReportPreExistingCondition);
+
+        assertNull("must not copy id ", saeReportPreExistingCondition.getId());
+        assertNull("must not copy grid id ", saeReportPreExistingCondition.getGridId());
+        assertNull("must not copy version no ", saeReportPreExistingCondition.getVersion());
+        assertNull("must not copy report ", saeReportPreExistingCondition.getReport());
+
+
+        assertEquals(preExistingCondition, saeReportPreExistingCondition.getPreExistingCondition());
+
+        assertSame(preExistingCondition, saeReportPreExistingCondition.getPreExistingCondition());
+        assertEquals(reportPreExistingCondition.getName(), saeReportPreExistingCondition.getName());
+        assertEquals(other, saeReportPreExistingCondition.getOther());
+
 
     }
 
@@ -44,7 +75,7 @@ public class SAEReportPreExistingConditionTest extends AbstractTestCase {
         assertEquals(preExistingCondition, saeReportPreExistingCondition.getPreExistingCondition());
 
         assertSame(preExistingCondition, saeReportPreExistingCondition.getPreExistingCondition());
-        assertEquals(saeReportPreExistingCondition.getName(), saeReportPreExistingCondition.getName());
+        assertEquals(studyParticipantPreExistingCondition.getName(), saeReportPreExistingCondition.getName());
         assertEquals(other, saeReportPreExistingCondition.getOther());
 
 

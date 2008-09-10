@@ -87,13 +87,23 @@ public class PriorTherapyAgent extends AbstractMutableDomainObject {
 
 
         if (studyParticipantPriorTherapyAgent != null) {
-            PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
-            BeanUtils.copyProperties(studyParticipantPriorTherapyAgent, priorTherapyAgent, new String[]{"id", "gridId",
-                    "version", "saeReportPriorTherapy"});
+            PriorTherapyAgent priorTherapyAgent = copy(studyParticipantPriorTherapyAgent);
 
             return priorTherapyAgent;
         }
         return null;
+
+    }
+
+    private static PriorTherapyAgent copy(Object object) {
+        PriorTherapyAgent priorTherapyAgent = new PriorTherapyAgent();
+        BeanUtils.copyProperties(object, priorTherapyAgent, new String[]{"id", "gridId",
+                "version", "saeReportPriorTherapy"});
+        return priorTherapyAgent;
+    }
+
+    public PriorTherapyAgent copy() {
+        return copy(this);
 
     }
 }

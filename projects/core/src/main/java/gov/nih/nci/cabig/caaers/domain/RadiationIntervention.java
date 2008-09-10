@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,12 +14,12 @@ import java.util.Date;
 /**
  * This class represents the RadiationIntervention domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "ae_radiation_interventions")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_radiation_interventi_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_radiation_interventi_id")})
 public class RadiationIntervention extends AbstractExpeditedReportCollectionElementChild {
 
     private String treatmentArm;
@@ -119,5 +120,16 @@ public class RadiationIntervention extends AbstractExpeditedReportCollectionElem
     public void setAdministration(RadiationAdministration administration) {
         this.administration = administration;
     }
+
+
+    public RadiationIntervention copy() {
+        RadiationIntervention radiationIntervention = new RadiationIntervention();
+        BeanUtils.copyProperties(this, radiationIntervention, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return radiationIntervention;
+
+    }
+
 
 }

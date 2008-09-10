@@ -161,10 +161,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     public static DiseaseHistory createDiseaseHistory(StudyParticipantDiseaseHistory studyParticipantDiseaseHistory) {
         if (studyParticipantDiseaseHistory != null) {
-            DiseaseHistory saeReportDiseaseHistory = new DiseaseHistory();
-            BeanUtils.copyProperties(studyParticipantDiseaseHistory, saeReportDiseaseHistory, new String[]{"id", "gridId",
-                    "version", "report", "metastaticDiseaseSitesInternal", "metastaticDiseaseSites"
-                    , "meddraStudyDisease", "ctepStudyDisease"});
+            DiseaseHistory saeReportDiseaseHistory = copyBasicProperties(studyParticipantDiseaseHistory);
 
             for (StudyParticipantMetastaticDiseaseSite metastaticDiseaseSite : studyParticipantDiseaseHistory.getMetastaticDiseaseSites()) {
                 saeReportDiseaseHistory.addMetastaticDiseaseSite(MetastaticDiseaseSite.
@@ -175,5 +172,25 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
         }
         return null;
+    }
+
+    private static DiseaseHistory copyBasicProperties(Object object) {
+        DiseaseHistory saeReportDiseaseHistory = new DiseaseHistory();
+        BeanUtils.copyProperties(object, saeReportDiseaseHistory, new String[]{"id", "gridId",
+                "version", "report", "metastaticDiseaseSitesInternal", "metastaticDiseaseSites"
+                , "meddraStudyDisease", "ctepStudyDisease"});
+        return saeReportDiseaseHistory;
+    }
+
+    public DiseaseHistory copy() {
+
+        DiseaseHistory saeReportDiseaseHistory = copyBasicProperties(this);
+
+        for (MetastaticDiseaseSite metastaticDiseaseSite : this.getMetastaticDiseaseSites()) {
+            saeReportDiseaseHistory.addMetastaticDiseaseSite(metastaticDiseaseSite.
+                    copy());
+        }
+        return saeReportDiseaseHistory;
+
     }
 }

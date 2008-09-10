@@ -94,9 +94,7 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
     public static SAEReportPreExistingCondition createSAEReportPreExistingCondition(StudyParticipantPreExistingCondition studyParticipantPreExistingCondition) {
 
         if (studyParticipantPreExistingCondition != null) {
-            SAEReportPreExistingCondition saeReportPreExistingCondition = new SAEReportPreExistingCondition();
-            BeanUtils.copyProperties(studyParticipantPreExistingCondition, saeReportPreExistingCondition, new String[]{"id", "gridId",
-                    "version", "report"});
+            SAEReportPreExistingCondition saeReportPreExistingCondition = copy(studyParticipantPreExistingCondition);
 
 
             return saeReportPreExistingCondition;
@@ -106,5 +104,15 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
 
     }
 
+    private static SAEReportPreExistingCondition copy(Object object) {
+        SAEReportPreExistingCondition saeReportPreExistingCondition = new SAEReportPreExistingCondition();
+        BeanUtils.copyProperties(object, saeReportPreExistingCondition, new String[]{"id", "gridId",
+                "version", "report"});
+        return saeReportPreExistingCondition;
+    }
 
+
+    public SAEReportPreExistingCondition copy() {
+        return copy(this);
+    }
 }

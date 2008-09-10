@@ -1,34 +1,21 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
+import javax.persistence.*;
 import java.util.Date;
 
 /**
  * This class represents the Lab domain object associated with the Adverse event report.
- * 
+ *
  * @author Rhett Sutphin
  */
 @Entity
 @Table(name = "ae_labs")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_labs_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_labs_id")})
 public class Lab extends AbstractExpeditedReportCollectionElementChild {
     private LabTerm labTerm;
 
@@ -70,9 +57,9 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     }
 
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "baseline_value")),
-            @AttributeOverride(name = "date", column = @Column(name = "baseline_date")) })
+            @AttributeOverride(name = "date", column = @Column(name = "baseline_date"))})
     public LabValue getBaseline() {
         if (baseline == null) baseline = new LabValue();
         return baseline;
@@ -83,9 +70,9 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     }
 
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "nadir_value")),
-            @AttributeOverride(name = "date", column = @Column(name = "nadir_date")) })
+            @AttributeOverride(name = "date", column = @Column(name = "nadir_date"))})
     public LabValue getNadir() {
         if (nadir == null) nadir = new LabValue();
         return nadir;
@@ -96,9 +83,9 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
     }
 
     @Embedded
-    @AttributeOverrides( {
+    @AttributeOverrides({
             @AttributeOverride(name = "value", column = @Column(name = "recovery_value")),
-            @AttributeOverride(name = "date", column = @Column(name = "recovery_date")) })
+            @AttributeOverride(name = "date", column = @Column(name = "recovery_date"))})
     public LabValue getRecovery() {
         if (recovery == null) recovery = new LabValue();
         return recovery;
@@ -170,4 +157,16 @@ public class Lab extends AbstractExpeditedReportCollectionElementChild {
 
         return true;
     }
+
+
+    public Lab copy() {
+        Lab lab = new Lab();
+        BeanUtils.copyProperties(this, lab, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return lab;
+
+    }
+
+
 }

@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -21,8 +22,8 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     private Measure weight;
 
     @AttributeOverrides({
-    @AttributeOverride(name = "quantity", column = @Column(name = "height")),
-    @AttributeOverride(name = "unit", column = @Column(name = "height_unit"))})
+            @AttributeOverride(name = "quantity", column = @Column(name = "height")),
+            @AttributeOverride(name = "unit", column = @Column(name = "height_unit"))})
     public Measure getHeight() {
         if (height == null) setHeight(new Measure());
         return height;
@@ -33,8 +34,8 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @AttributeOverrides({
-    @AttributeOverride(name = "quantity", column = @Column(name = "weight")),
-    @AttributeOverride(name = "unit", column = @Column(name = "weight_unit"))})
+            @AttributeOverride(name = "quantity", column = @Column(name = "weight")),
+            @AttributeOverride(name = "unit", column = @Column(name = "weight_unit"))})
     public Measure getWeight() {
         if (weight == null) setWeight(new Measure());
         return weight;
@@ -63,6 +64,16 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
         double ht = (height.unit.equalsIgnoreCase("Inch")) ? height.quantity.doubleValue() * 2.54
                 : height.quantity.doubleValue();
         return Math.sqrt((wt * ht) / 3600);
+    }
+
+    public ParticipantHistory copy() {
+
+        ParticipantHistory participantHistory = new ParticipantHistory();
+        BeanUtils.copyProperties(this, participantHistory, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return participantHistory;
+
     }
 
     @Embeddable

@@ -14,6 +14,8 @@ public class SAEReportPriorTherapyTest extends AbstractTestCase {
     private String other;
     private DateValue startDateValue;
 
+    private SAEReportPriorTherapy saeReportPriorTherapy;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -32,6 +34,45 @@ public class SAEReportPriorTherapyTest extends AbstractTestCase {
         studyParticipantPriorTherapy.setOther(other);
         studyParticipantPriorTherapy.setAssignment(new StudyParticipantAssignment());
         studyParticipantPriorTherapy.addPriorTherapyAgent(new StudyParticipantPriorTherapyAgent());
+
+        saeReportPriorTherapy = new SAEReportPriorTherapy();
+        saeReportPriorTherapy.setId(1);
+        saeReportPriorTherapy.setGridId("grid id");
+        saeReportPriorTherapy.setVersion(2);
+        startDateValue = new DateValue(2008);
+        saeReportPriorTherapy.setStartDate(startDateValue);
+        endDateValue = new DateValue(2009);
+        saeReportPriorTherapy.setEndDate(endDateValue);
+        priorTherapy = new PriorTherapy();
+        saeReportPriorTherapy.setPriorTherapy(priorTherapy);
+        other = "other";
+        saeReportPriorTherapy.setOther(other);
+        saeReportPriorTherapy.setReport(new ExpeditedAdverseEventReport());
+        saeReportPriorTherapy.addPriorTherapyAgent(new PriorTherapyAgent());
+
+    }
+
+
+    public void testCopySAEReportPriorTherapyForBasicProperties() {
+
+        SAEReportPriorTherapy saeReportPriorTherapy = SAEReportPriorTherapy.createSAEReportPriorTherapy(studyParticipantPriorTherapy);
+
+        assertNotNull(saeReportPriorTherapy);
+
+        assertNull("must not copy id ", saeReportPriorTherapy.getId());
+        assertNull("must not copy grid id ", saeReportPriorTherapy.getGridId());
+        assertNull("must not copy version no ", saeReportPriorTherapy.getVersion());
+        assertNull("must not copy report ", saeReportPriorTherapy.getReport());
+
+        assertEquals(endDateValue, saeReportPriorTherapy.getEndDate());
+
+        assertEquals(priorTherapy, saeReportPriorTherapy.getPriorTherapy());
+
+        assertSame(priorTherapy, saeReportPriorTherapy.getPriorTherapy());
+        assertEquals(saeReportPriorTherapy.getName(), saeReportPriorTherapy.getName());
+        assertEquals(other, saeReportPriorTherapy.getOther());
+        assertEquals(startDateValue, saeReportPriorTherapy.getStartDate());
+
 
     }
 
@@ -73,6 +114,7 @@ public class SAEReportPriorTherapyTest extends AbstractTestCase {
         for (PriorTherapyAgent studyParticipantPriorTherapyAgent : saeReportPriorTherapy.getPriorTherapyAgentsInternal()) {
             assertSame(saeReportPriorTherapy, studyParticipantPriorTherapyAgent.getSaeReportPriorTherapy());
         }
+
 
     }
 }

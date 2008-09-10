@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.springframework.beans.BeanUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,12 +10,12 @@ import javax.persistence.Table;
 /**
  * This class represents the Additional Information domain object associated with the Adverse event
  * report.
- * 
+ *
  * @author Krikor Krumlian
  */
 @Entity
 @Table(name = "additional_information")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_additional_information_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_additional_information_id")})
 public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
     private Boolean autopsyReport = false;
@@ -49,7 +50,7 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
     /**
      * getter method for autopsy Report.
-     * 
+     *
      * @return autopsyReport
      */
     public Boolean getAutopsyReport() {
@@ -58,9 +59,8 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
 
     /**
      * setter method for autopsy Report.
-     * 
+     *
      * @param autopsyReport
-     * 
      */
     public void setAutopsyReport(Boolean autopsyReport) {
         this.autopsyReport = autopsyReport;
@@ -161,4 +161,16 @@ public class AdditionalInformation extends AbstractExpeditedReportSingleChild {
     public void setIrbReport(Boolean irbReport) {
         this.irbReport = irbReport;
     }
+
+
+    public AdditionalInformation copy() {
+        AdditionalInformation additionalInformation = new AdditionalInformation();
+        BeanUtils.copyProperties(this, additionalInformation, new String[]{"id", "gridId",
+                "version", "report"});
+
+        return additionalInformation;
+
+    }
+
+
 }
