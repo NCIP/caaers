@@ -1,112 +1,97 @@
 package gov.nih.nci.cabig.ctms.tools;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
+import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.INDType;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyAgent;
+import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+
 public class XLstudyImporter {
 
 
-    POIFSFileSystem poifs;
-
-    HSSFWorkbook wb;
-
-    HSSFSheet studyInfoSheet;
-
-    HSSFSheet agentInfoSheet;
-
-    HSSFSheet diseaseInfoSheet;
-
-    HSSFSheet tacInfoSheet;
-
-    HSSFSheet orgInfoSheet;
-
-    HSSFSheet investigatorInfoSheet;
-
-    HSSFSheet therapyInfoSheet;
-
+	private POIFSFileSystem poifs;
+	private HSSFWorkbook wb;
+	private HSSFSheet studyInfoSheet;
+	private HSSFSheet agentInfoSheet;
+	private HSSFSheet diseaseInfoSheet;
+	private HSSFSheet tacInfoSheet;
+	private HSSFSheet orgInfoSheet;
+	private HSSFSheet investigatorInfoSheet;
+	private HSSFSheet therapyInfoSheet;
     // Study related objects
-    Study study;
+	private Study study;
+	private OrganizationDao orgdao;
+	private CtcDao ctcdao;
+	private StudyDao studydao;
+	private AgentDao agentdao;
+	private InvestigationalNewDrugDao investigationalnewdrugdao;
+	private DiseaseTermDao diseasetermdao;
+	private InvestigatorDao investigatordao;
+	private StudyImportServiceImpl studyImportService;
+	private String primaryIdentifierString;
+	private String localDocumentNumber;
+	private String studyTitle;
+	private String phaseCode;
+	private DiseaseTerminology diseaseTerminology;
+	private AeTerminology aeTerminology;
+	private DomainObjectImportOutcome<Study> studyImportOutcome;
 
-    OrganizationDao orgdao;
-
-    CtcDao ctcdao;
-
-    StudyDao studydao;
-
-    AgentDao agentdao;
-
-    InvestigationalNewDrugDao investigationalnewdrugdao;
-
-    DiseaseTermDao diseasetermdao;
-
-    InvestigatorDao investigatordao;
-
-    StudyImportServiceImpl studyImportService;
-
-    Organization primaryFundingSponsorOrganization;
-
-    String primaryIdentifierString;
-
-    Identifier primaryIdentifier;
-
-    String localDocumentNumber;
-
-    String studyTitle;
-
-    String phaseCode;
-
-    List<Identifier> identifiers;
-
-    List<StudyOrganization> studyOrganizations;
-
-    StudyFundingSponsor primaryStudyFundingSponsorOrganization;
-
-    DiseaseTerminology diseaseTerminology;
-
-    AeTerminology aeTerminology;
-
-    DomainObjectImportOutcome<Study> studyImportOutcome;
-
-    int rowCount = 0;
-
-    public final String STUDY_SHEET_NAME = "admin info";
-
-    public final String AGENT_SHEET_NAME = "agent info";
-
-    public final String DISEASE_SHEET_NAME = "disease info";
-
-    public final String TAC_SHEET_NAME = "TAC info";
-
-    public final String ORG_SHEET_NAME = "organizations";
-
-    public final String INVESTIGATOR_SHEET_NAME = "investigators";
-
-    public final String THERAPY_SHEET_NAME = "therapies";
-
+    private int rowCount = 0;
+    private final String STUDY_SHEET_NAME = "admin info";
+    private final String AGENT_SHEET_NAME = "agent info";
+    private final String DISEASE_SHEET_NAME = "disease info";
+    private final String TAC_SHEET_NAME = "TAC info";
+    private final String ORG_SHEET_NAME = "organizations";
+    private final String INVESTIGATOR_SHEET_NAME = "investigators";
+    private final String THERAPY_SHEET_NAME = "therapies";
+    
     public XLstudyImporter() {
 
-
     }
-
 
     public void importXLstudy(File inputFile) throws Exception {
         bootstrap(inputFile);
         syncInvestigators();
-        boolean hasMoreStudies = true;
 
         while (rowCount > 0) {
             study = new Study();
@@ -119,9 +104,8 @@ public class XLstudyImporter {
             setStudyTherapies(study);
             validateStudy(study);
             rowCount--;
-            System.out.println(rowCount);
         }
-        System.out.println("\n Study import finished.");
+        System.out.println("\n Excel import Complete");
     }
 
     private void bootstrap(File inputFile) throws Exception {
@@ -381,14 +365,11 @@ public class XLstudyImporter {
     private void saveStudy(Study study) {
         study.setDescription(study.getDescription() + "xxxx");
         if(fetchStudy(study) == null){
-        	System.out.println("\n saving study: " + study.getShortTitle() + " -- "
-                    + study.getLongTitle());
+        	System.out.println("Study with Short Title " + study.getShortTitle() + " Created in caAERS ");
         	studydao.save(study);
         }else{
-        	System.out.println("Warn: Study Exists in caAERS: "
-                    + study.getShortTitle() + " -- " + study.getLongTitle());
+        	System.out.println("Study with Short Title " + study.getShortTitle() + " Exists in caAERS ");
         }
-        
     }
 
 
@@ -405,7 +386,7 @@ public class XLstudyImporter {
     }
 
     // utility method to get contents of cell irrespective of cell type.
-    public String getCellData(String sheetname, int rowNum, HSSFCell cell) {
+    private String getCellData(String sheetname, int rowNum, HSSFCell cell) {
         if (cell == null)
             throw new CaaersSystemException(
                     "Invalid data or Blank cell at following location: \n Sheet: "
@@ -483,7 +464,7 @@ public class XLstudyImporter {
             invNciId = getCellData(INVESTIGATOR_SHEET_NAME, invRow,
                     investigatorInfoSheet.getRow(invRow).getCell((short) 3));
             iq.filterByNciIdentifierExactMatch(invNciId);
-            System.out.println(getCellData(INVESTIGATOR_SHEET_NAME, invRow,
+            System.out.print(getCellData(INVESTIGATOR_SHEET_NAME, invRow,
                     investigatorInfoSheet.getRow(invRow).getCell((short) 3)));
             invList = investigatordao.searchInvestigator(iq);
 
@@ -522,7 +503,7 @@ public class XLstudyImporter {
                 inv.setFaxNumber(invFax);
 
             } else {
-            	statusMessage="This investigator exists in database. Only associated site investigators will be updated.";
+            	statusMessage=" exists in caAERS. Only associated site investigators will be updated.";
                 inv = invList.get(0);
             }
 
@@ -546,8 +527,7 @@ public class XLstudyImporter {
             }
             investigatordao.save(inv);
 
-            System.out.println(statusMessage);
-            System.out.println(" Details: "+ inv.getLastFirst());
+            System.out.println(" --- Investigator " + inv.getLastFirst() + statusMessage);
         }
 
     }
