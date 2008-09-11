@@ -32,8 +32,8 @@ public class ExcelImporter {
             DataAuditInfo.setLocal(new DataAuditInfo(identity,"localhost", new Date(), info));
             File inputFile = new File(args[0]);
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-            XLstudyImporter xLstudyImporter = (XLstudyImporter) applicationContext.getBean("XLstudyImporter");
-            xLstudyImporter.importXLstudy(inputFile);
+            ExcelImportHelper excelImportHelper = (ExcelImportHelper) applicationContext.getBean("excelImportHelper");
+            excelImportHelper.importXLstudy(inputFile);
         }
         catch (Exception ex) {
             System.out.println("\n Error occured: ");
@@ -70,13 +70,7 @@ public class ExcelImporter {
 	
     private static String[] getConfigLocations() {
         return new String[]{
-                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-configProperties.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-core-dao.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-core-spring.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-core-service.xml",
-                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-core-db.xml"
+                "classpath*:gov/nih/nci/cabig/caaers/_applicationContext-excelstudyloader.xml"
         };
-        
-     
     }
 }
