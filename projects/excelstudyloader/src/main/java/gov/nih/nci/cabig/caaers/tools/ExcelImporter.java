@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.tools;
 
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo;
-import gov.nih.nci.cabig.ctms.tools.XLstudyImporter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
@@ -54,7 +52,6 @@ public class ExcelImporter {
 	 * @throws Exception
 	 */
 	private static void checkDsPropertiesExistence() throws Exception{
-		Map<String,String> map = System.getenv();
 		String userHome = System.getenv().get("HOME");
 		String caaersDbTemplateDir = userHome + "/.caaers";
 		File file = new File(caaersDbTemplateDir+"/datasource.properties");
