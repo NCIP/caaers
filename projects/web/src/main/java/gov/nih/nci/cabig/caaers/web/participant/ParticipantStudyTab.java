@@ -8,8 +8,7 @@ import java.util.Map;
 public class ParticipantStudyTab extends gov.nih.nci.cabig.ctms.web.tabs.Tab<NewParticipantCommand> {
     private ListValues listValues;
 
-    public ParticipantStudyTab(final String longTitle, final String shortTitle,
-                    final String viewName, ListValues listValues) {
+    public ParticipantStudyTab(final String longTitle, final String shortTitle, final String viewName, ListValues listValues) {
         super(longTitle, shortTitle, viewName);
         this.listValues = listValues;
     }

@@ -17,11 +17,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -377,5 +373,46 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
+
+    @Override
+    protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+
+        // check PriorTherapies duplicates
+        List list = command.getAssignment().getPriorTherapies();
+        Set set = new HashSet();
+        for (Object object : list) {
+            StudyParticipantPriorTherapy pt = (StudyParticipantPriorTherapy)object;
+            if (pt != null) set.add(pt.getName());
+        }
+        if (list.size() > set.size()) errors.reject("PT_004", "No duplicate Prior Therapy Allowed.");
+
+
+        list = command.getAssignment().getPreExistingConditions();
+        set = new HashSet();
+        for (Object object : list) {
+            StudyParticipantPreExistingCondition pt = (StudyParticipantPreExistingCondition)object;
+            if (pt != null) set.add(pt.getName());
+        }
+        if (list.size() > set.size()) errors.reject("PT_005", "No Duplicate Preexisting Condition Allowed.");
+
+        
+        list = command.getAssignment().getConcomitantMedications();
+        set = new HashSet();
+        for (Object object : list) {
+            StudyParticipantConcomitantMedication pt = (StudyParticipantConcomitantMedication)object;
+            if (pt != null) set.add(pt.getName());
+        }
+        if (list.size() > set.size()) errors.reject("PT_006", "No Duplicate Concomitant Medication Allowed.");
+
+
+        list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
+        set = new HashSet();
+        for (Object object : list) {
+            StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
+            if (pt != null) set.add(pt.getCodedSite().getName());
+        }
+        if (list.size() > set.size()) errors.reject("PT_007", "No Duplicate Metastatic Disease Site Allowed.");
+
+    }
 }
 

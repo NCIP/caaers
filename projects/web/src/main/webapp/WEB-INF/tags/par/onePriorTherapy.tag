@@ -10,7 +10,7 @@
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy" %>
 <div>
  <chrome:division title="${priorTherapy.name}" id="assignment.priorTherapies[${index}]" collapsed="${collapsed}" collapsable="true"
-  deleteParams="$'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
+  deleteParams="'priorTherapy' ,${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 
 	<ui:row path="assignment.priorTherapies[${index}].other">
 	 <jsp:attribute name="label">
