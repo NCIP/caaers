@@ -94,15 +94,13 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
         if (readMethodName != null) {
 
             try {
-				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
-				        .getAnnotations();
+				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod().getAnnotations();
 				Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
 				validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
 			} catch (InvalidPropertyException e) {
 				logger.warn("Invalid property [readMethod:" + readMethodName + ", propertyName :" + propertyName + "]", e);
 			}
         }
-
     }
 
     /**
@@ -117,8 +115,7 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
         if (readMethodName != null) {
 
             try {
-				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod()
-				        .getAnnotations();
+				Annotation[] annotationsArray = beanWrapperImpl.getPropertyDescriptor(readMethodName).getReadMethod().getAnnotations();
 				Object objectToValidate = beanWrapperImpl.getPropertyValue(propertyName);
 				validate(annotationsArray, objectToValidate, propertyNameWhereErrorWillBeDisplayed, errors);
 			} catch (BeansException e) {
