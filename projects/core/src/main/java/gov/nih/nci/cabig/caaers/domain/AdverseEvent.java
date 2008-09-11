@@ -535,7 +535,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     //  This is annotated this way so that the IndexColumn will work with
     // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
     @OneToMany
-    @JoinColumn(name = "adverse_event_id")
+    @JoinColumn(name = "adverse_event_id", nullable=false)
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public List<Outcome> getOutcomes() {
