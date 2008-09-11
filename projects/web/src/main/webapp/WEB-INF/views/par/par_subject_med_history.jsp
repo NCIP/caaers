@@ -148,7 +148,9 @@
   </head>
   <body>
    <form:form id="command">	
-	<tags:tabFields tab="${tab}" />
+   <tags:hasErrorsMessage />
+   
+    <tags:tabFields tab="${tab}" />
 
 	<chrome:box id="assignment.general" title="General" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.baselinePerformance" />

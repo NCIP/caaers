@@ -382,36 +382,40 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         Set set = new HashSet();
         for (Object object : list) {
             StudyParticipantPriorTherapy pt = (StudyParticipantPriorTherapy)object;
-            if (pt != null) set.add(pt.getName());
+            if (pt != null)
+                if (!set.add(pt.getName())) errors.reject("PT_004", new Object[] {pt.getName()}, "Duplicate Prior Therapy Condition");;
+                set.add(pt.getName());
         }
-        if (list.size() > set.size()) errors.reject("PT_004", "No duplicate Prior Therapy Allowed.");
 
 
+        // check PreExistingConditions duplicates
         list = command.getAssignment().getPreExistingConditions();
         set = new HashSet();
         for (Object object : list) {
             StudyParticipantPreExistingCondition pt = (StudyParticipantPreExistingCondition)object;
-            if (pt != null) set.add(pt.getName());
+            if (pt != null)
+                if (!set.add(pt.getName())) errors.reject("PT_005", new Object[] {pt.getName()}, "Duplicate Preexisting Condition");
         }
-        if (list.size() > set.size()) errors.reject("PT_005", "No Duplicate Preexisting Condition Allowed.");
 
         
+        // check ConMeds duplicates
         list = command.getAssignment().getConcomitantMedications();
         set = new HashSet();
         for (Object object : list) {
             StudyParticipantConcomitantMedication pt = (StudyParticipantConcomitantMedication)object;
-            if (pt != null) set.add(pt.getName());
+            if (pt != null)
+                if (!set.add(pt.getName())) errors.reject("PT_006", new Object[] {pt.getName()}, "Duplicate Concomitant Medication");
         }
-        if (list.size() > set.size()) errors.reject("PT_006", "No Duplicate Concomitant Medication Allowed.");
 
 
+        // check MetaStaticDisease duplicates
         list = command.getAssignment().getDiseaseHistory().getMetastaticDiseaseSites();
         set = new HashSet();
         for (Object object : list) {
             StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
-            if (pt != null) set.add(pt.getCodedSite().getName());
+            if (pt != null)
+                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_006", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
         }
-        if (list.size() > set.size()) errors.reject("PT_007", "No Duplicate Metastatic Disease Site Allowed.");
 
     }
 }
