@@ -77,7 +77,12 @@
 							<c:forEach items="${section.value}" var="x">
 								<tr>
 									<td width="60%">${x.key}</td>
-									<td width="40%">${x.value eq true ? "Mandatory" : "Optional"}</td>
+									<td width="40%">
+									<c:if test="${x.value eq '0: Optional'}">Optional</c:if>
+									<c:if test="${x.value eq '1: Mandatory'}">Mandatory</c:if>
+									<c:if test="${x.value eq '-1: Not Applicable'}">Not Applicable</c:if>
+									</td>
+
 								</tr>
 							</c:forEach>
 						</table>
