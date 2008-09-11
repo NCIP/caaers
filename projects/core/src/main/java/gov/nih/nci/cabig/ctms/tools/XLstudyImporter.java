@@ -105,7 +105,14 @@ public class XLstudyImporter {
             validateStudy(study);
             rowCount--;
         }
-        System.out.println("\n Excel import Complete");
+        System.out.println("Excel import Complete");
+        System.out.println("");
+        System.out.println("Excel Import Summary");
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("Total Number of Investigators Processed	--->	"+investigatorInfoSheet.getLastRowNum());
+        System.out.println("Total Number of Studies Processed		--->	"+studyInfoSheet.getLastRowNum());
+        System.out.println("-----------------------------------------------------------");
+        
     }
 
     private void bootstrap(File inputFile) throws Exception {
@@ -464,12 +471,12 @@ public class XLstudyImporter {
             invNciId = getCellData(INVESTIGATOR_SHEET_NAME, invRow,
                     investigatorInfoSheet.getRow(invRow).getCell((short) 3));
             iq.filterByNciIdentifierExactMatch(invNciId);
-            System.out.print(getCellData(INVESTIGATOR_SHEET_NAME, invRow,
-                    investigatorInfoSheet.getRow(invRow).getCell((short) 3)));
+//            System.out.print(getCellData(INVESTIGATOR_SHEET_NAME, invRow,
+//                    investigatorInfoSheet.getRow(invRow).getCell((short) 3)));
             invList = investigatordao.searchInvestigator(iq);
 
             if (invList.size() == 0) {
-            	statusMessage="Creating new investigator.";
+            	statusMessage=" Created in caAERS.";
                 inv = new Investigator();
                 inv.setNciIdentifier(invNciId);
                 inv
@@ -527,7 +534,7 @@ public class XLstudyImporter {
             }
             investigatordao.save(inv);
 
-            System.out.println(" --- Investigator " + inv.getLastFirst() + statusMessage);
+            System.out.println("Investigator " + inv.getLastFirst() + statusMessage);
         }
 
     }
