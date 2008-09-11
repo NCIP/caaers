@@ -358,11 +358,15 @@ public class Participant extends AbstractIdentifiableDomainObject {
     }
 
     @Transient
+    @UniqueIdentifierForParticipant
+    @UniqueObjectInCollection
     public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), SystemAssignedIdentifier.class);
     }                                
 
     @Transient
+    @UniqueIdentifierForParticipant
+    @UniqueObjectInCollection
     public List<OrganizationAssignedIdentifier> getOrganizationIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), OrganizationAssignedIdentifier.class);  
     }
