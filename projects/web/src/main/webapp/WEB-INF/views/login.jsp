@@ -24,8 +24,10 @@
 		background-image:none;
 		color:#ccc;
 		}
+
 		#header{visibility:hidden}
-		
+		#taskbar{width:10px;}
+
 		#all{
 		background:none;
 		width:400px;
@@ -48,35 +50,38 @@ input{outline:none;}
     <link href="../images/caaers.ico" rel="icon"/>
 </head>
 <body>
- <SCRIPT language="JavaScript">
-upImage = new Image();
-upImage.src = "/caaers/images/blue/power-btn-up.jpg";
-downImage = new Image();
-downImage.src = "/caaers/images/blue/power-btn-down.jpg"
-hoverImage = new Image();
-hoverImage.src = "/caaers/images/blue/power-btn-hover.jpg";
-  var loginimg = document.getElementById("power_btn");
-function changeImage()
-{
-document.getElementById("power_btn").src= "/caaers/images/blue/power-btn-hover.jpg";
-return true;
-}
-function changeImageBack()
-{
- document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-up.jpg";
- return true;
-}
-function handleMDown()
-{
- document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-down.jpg";
- return true;
-}
-function handleMUp()
-{
- changeImage();
- return true;
-}
+
+<SCRIPT language="JavaScript">
+    upImage = new Image();
+    upImage.src = "/caaers/images/blue/power-btn-up.jpg";
+    downImage = new Image();
+    downImage.src = "/caaers/images/blue/power-btn-down.jpg"
+    hoverImage = new Image();
+    hoverImage.src = "/caaers/images/blue/power-btn-hover.jpg";
+    var loginimg = document.getElementById("power_btn");
+    
+    function changeImage()
+    {
+        document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-hover.jpg";
+        return true;
+    }
+    function changeImageBack()
+    {
+        document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-up.jpg";
+        return true;
+    }
+    function handleMDown()
+    {
+        document.getElementById("power_btn").src = "/caaers/images/blue/power-btn-down.jpg";
+        return true;
+    }
+    function handleMUp()
+    {
+        changeImage();
+        return true;
+    }
 </SCRIPT>
+
 <img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System">
 <h2>Please Log in</h2>
     <form method="POST" id="login" action="<c:url value="/j_acegi_security_check"/>">
@@ -113,10 +118,6 @@ function handleMUp()
             </div>
         </div>
     </form>
-
-
-
-
 
 </body>
 </html>

@@ -10,6 +10,8 @@ import org.apache.commons.logging.LogFactory;
 //Spring imports
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.RequestUtils;
+import org.springframework.web.bind.ServletRequestUtils;
 
 //java servlet imports
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +39,8 @@ public class ViewParticipantController extends ParameterizableViewController {
 
     public ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        String type = request.getParameter("type");
+        String type = ServletRequestUtils.getStringParameter(request, "type");
+//        request.getParameter("type");
         String msg = "You have successfully created a new subject.";
 
         setViewName("par/par_confirm");
