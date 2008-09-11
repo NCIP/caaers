@@ -9,7 +9,7 @@
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
 	<import resource="classpath*:gov/nih/nci/cabig/caaers/_applicationContext-core-db.xml"/>
 	
-	<bean id="excelImportHelper" class="gov.nih.nci.cabig.caaers.tools.ExcelImportHelper">
+	<bean id="excelProcessor" class="gov.nih.nci.cabig.caaers.tools.ExcelProcessor">
         <property name="orgdao" ref="organizationDao"/>
 		<property name="ctcdao" ref="ctcDao"/>
 		<property name="studydao" ref="studyDao"/>
