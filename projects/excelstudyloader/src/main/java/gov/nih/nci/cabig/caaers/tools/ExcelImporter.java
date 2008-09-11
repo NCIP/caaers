@@ -32,8 +32,8 @@ public class ExcelImporter {
             DataAuditInfo.setLocal(new DataAuditInfo(identity,"localhost", new Date(), info));
             File inputFile = new File(args[0]);
             ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-            ExcelImportHelper excelImportHelper = (ExcelImportHelper) applicationContext.getBean("excelImportHelper");
-            excelImportHelper.importXLstudy(inputFile);
+            ExcelProcessor excelProcessor = (ExcelProcessor) applicationContext.getBean("excelProcessor");
+            excelProcessor.processExcel(inputFile);
         }
         catch (Exception ex) {
             System.out.println("\n Error occured: ");
