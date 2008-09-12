@@ -106,25 +106,15 @@
 }
 
 .eXtremeTable .odd td, .eXtremeTable .even td {
-	padding-top: 6px;
+	padding-top: 3px;
 	padding-right: 3px;
-	padding-bottom: 6px;
+	padding-bottom: 3px;
 	padding-left: 3px;
 	vertical-align: middle;
 	font-family: Arial, verdana, helvetica, sans-serif;
 	font-size: 13px;
-	font-weight: bold;
 }
-.eXtremeTable .eXtremeTable .odd td, .eXtremeTable .eXtremeTable .even td {
-	padding-top: 6px;
-	padding-right: 3px;
-	padding-bottom: 6px;
-	padding-left: 3px;
-	vertical-align: middle;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: normal;
-}
+
 
 .eXtremeTable .odd {
 	background-color: #FFFFFF;
@@ -136,26 +126,13 @@
 
 .eXtremeTable .highlight td {
 	color: black;
-	padding-top: 6px;
+	padding-top: 3px;
 	padding-right: 3px;
-	padding-bottom: 6px;
+	padding-bottom: 3px;
 	padding-left: 3px;
 	vertical-align: middle;
-	background-color: #fdecae;
+	background-color: #F09B5D;
 	font-size: 13px;
-	font-weight: bold;
-}
-
-.eXtremeTable .eXtremeTable .highlight td {
-	color: black;
-	padding-top: 6px;
-	padding-right: 3px;
-	padding-bottom: 6px;
-	padding-left: 3px;
-	vertical-align: middle;
-	background-color: #fdecae;
-	font-size: 12px;
-	font-weight: normal;
 }
 
 .eXtremeTable .highlight a, .highlight a {

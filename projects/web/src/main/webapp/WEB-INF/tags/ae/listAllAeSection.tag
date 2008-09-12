@@ -7,10 +7,10 @@
 <%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The evaluation period that is being rendered" %>
 <c:if test="${fn:length(reportingPeriod.evaluatedAdverseEvents) gt 0}">
 <div class="eXtremeTable">
-	<table width="100%" border="0" cellspacing="0" class="rpTableRegion">
+	<table width="100%" border="0" cellspacing="0" class="allAEs rpTableRegion">
 		<thead>
 			<tr align="center" class="label">
-				<td width="40px"><chrome:collapsableElement targetID="aetable${reportingPeriod.id}" collapsed="true" id="ID_03"/></td>
+				<td width="5%"><chrome:collapsableElement targetID="aetable${reportingPeriod.id}" collapsed="true" id="ID_03"/></td>
 				<td class="tableHeader" width="10%">All AE's</td>
 				<td class="tableHeader" width="20%">AE Term</td>
 				<td class="tableHeader" width="20%">Grade</td>

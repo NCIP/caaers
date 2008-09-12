@@ -27,10 +27,7 @@
 	<td width="20%"></td>
 </tr>
 
-<tr>
-	<td></td>
-</tr>
-<tr id="table${reportingPeriod.id}" style="display:none;">
+<tr id="table${reportingPeriod.id}" style="display:none;" class="${currClass}">
 	<td></td>
 	<td></td>
 	<td colspan=5>
@@ -39,7 +36,8 @@
 				<td width="100%">
 					<div class="eXtremeTable">
 						<table width="100%" border="0" cellspacing="0" class="rpTableRegion">
-							<c:if test="${fn:length(reportingPeriod.aeReports) gt 0}">
+						  <c:choose>
+							<c:when test="${fn:length(reportingPeriod.aeReports) gt 0}">
 								<thead>
 									<tr align="center" class="label">
 										<td width="5%"/>
@@ -53,9 +51,9 @@
 								<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
 									<ae:oneListExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
 								</c:forEach>
-							</c:if>					
-							
-
+							</c:when>					
+							<c:otherwise>There are no reports for this reporting period.</c:otherwise>
+							</c:choose>
 						</table>
 					</div>
 				</td>

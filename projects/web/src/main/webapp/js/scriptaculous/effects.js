@@ -476,7 +476,7 @@ Effect.Highlight = Class.create(Effect.Base, {
   initialize: function(element) {
     this.element = $(element);
     if (!this.element) throw(Effect._elementDoesNotExistError);
-    var options = Object.extend({ startcolor: '#ffff99' }, arguments[1] || { });
+    var options = Object.extend({ startcolor: '#c8dcff' }, arguments[1] || { });
     this.start(options);
   },
   setup: function() {
