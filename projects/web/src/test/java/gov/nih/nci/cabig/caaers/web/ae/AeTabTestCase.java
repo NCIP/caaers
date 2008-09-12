@@ -42,6 +42,7 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
 
     public void testFieldPropertiesExist() {
+    	replayMocks();
         fillInUsedProperties(command);
         assertAllFieldPropertiesExist();
     }
