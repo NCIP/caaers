@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
 import gov.nih.nci.cabig.caaers.rules.author.RuleAuthoringService;
@@ -849,7 +850,7 @@ public class RulesEngineServiceImpl implements RulesEngineService {
 
         Rule r = rules.get(0);
         Category cat = r.getMetaData().getCategory().get(0);
-        System.out.println("Category Path:" + cat.getPath());
+        //System.out.println("Category Path:" + cat.getPath());
         String catPath = cat.getPath();
         int i = 0;
         String ruleSetName = ruleSet.getDescription();
@@ -937,20 +938,25 @@ public class RulesEngineServiceImpl implements RulesEngineService {
         Organization org = organizationDao.getByName(orgName);
         System.out.println(org.getId() + "," + org.getName());
         List<String> reportDefinitionsCreated = new ArrayList<String>();
-        if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName())) {
-
-            System.out.println("Size " + reportDefinitions.size());
+        
+        /**
+         * dont create report definitions if the rule set is DCP 
+         * DCP uses CTEP report definitions, this is a temp fix
+         */
+        if (desc.equals(RuleType.REPORT_SCHEDULING_RULES.getName()) && !orgName.equals("Division of Cancer Prevention")) {
+            //System.out.println("Size " + reportDefinitions.size());
             // check report definitions for this org
             for (String rd : reportDefinitions) {
                 ReportDefinition reportDefinition = reportDefinitionDao.getByName(rd, org.getId());
                 if (reportDefinition == null && !rd.equals("IGNORE")) {
-                    System.out.println("need to create .." + rd);
+                    //System.out.println("need to create .." + rd);
                     ReportDefinition newRd = new ReportDefinition();
                     newRd.setName(rd);
                     newRd.setOrganization(org);
                     newRd.setAmendable(true);
                     newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
                     newRd.setDuration(2);
+                    newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
 
                     reportDefinitionDao.save(newRd);
                     reportDefinitionsCreated.add(rd);
