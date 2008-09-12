@@ -128,6 +128,9 @@
                 </ec:table>
             </c:if>
         </div>
+
+        <%--A=<c:out value="${command.assignment == null}" />--%>
+        Study Subject Identifier: <ui:text path="studySubjectIdentifier" />
     </jsp:attribute>
 
 </tags:tabForm>

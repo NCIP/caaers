@@ -18,6 +18,10 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     private List<StudySite> studySites = new ArrayList<StudySite>();
     private StudySite studySite;
 
+    public AssignParticipantStudyCommand() {
+        this.assignment = new StudyParticipantAssignment();
+    }
+
     public List<Participant> getParticipantSearchResults() {
         return participantSearchResults;
     }
