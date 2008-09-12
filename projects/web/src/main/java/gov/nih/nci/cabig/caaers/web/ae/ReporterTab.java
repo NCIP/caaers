@@ -167,9 +167,12 @@ public class ReporterTab extends AeTab {
     					Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
     					for(ReportDefinition reportDefinition: command.getNewlySelectedSponsorReports())
     						sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
-
+    					
+    					String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+    					
     					for(Report report: command.getAeReport().getReports()){
-    						if(report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING)){
+    						if(report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
+    														&& report.getReportDefinition().getAmendable()){
     							existingReportMap.remove(report.getReportDefinition());
     							withdrawReportList.add(report);
     						}

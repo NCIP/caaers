@@ -432,46 +432,49 @@
 		<b>OR</b>
 	</div>
 	<chrome:division title="Edit Existing Reports" id="div-report-summary" collapsable="false">
-		<div class="eXtremeTable" >
+		<%-- <div class="eXtremeTable" > --%>
 			<c:choose>
 				<c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
 					<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
 						<table width="100%" border="0" cellspacing="0" class="tableRegion">
 							<tr>
-								<td width="50%">Expedited Report (${aeReport.adverseEvents[0].adverseEventTerm.universalTerm})</td>
-								<td align="center">
+								<td width="10%" align="center">
 									<c:if test="${aeReport.allSponsorReportsCompleted == true}">
-										<input type="button" value="Amend" id="amend-report"/>
+										<input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
 									</c:if>
 									<c:if test="${aeReport.allSponsorReportsCompleted == false}">
-										<input type="button" value="Edit" id="edit-report"/>
+										<input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
 									</c:if>
 								</td>
+								<td>
+									<div class="eXtremeTable" >
+										<table width="100%" border="0" cellspacing="0" class="tableRegion">
+											<thead>
+												<tr align="center" class="label">
+													<td width="5%"/>
+													<td class="tableHeader" width="15%">Report Type</td>
+													<td class="centerTableHeader" width="20%"># of AEs</td>
+													<td class="tableHeader" width="20%">Data Entry Status</td>
+													<td class="tableHeader" width="20%">Submission Status</td>
+												</tr>
+											</thead>
+						
+											<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
+										</table>	
+									</div>
+								</td>
 							</tr>
-						</table>
-						
-						<table width="100%" border="0" cellspacing="0" class="tableRegion">
-							<thead>
-								<tr align="center" class="label">
-									<td width="5%"/>
-									<td class="tableHeader" width="15%">Report Type</td>
-									<td class="centerTableHeader" width="20%"># of AEs</td>
-									<td class="tableHeader" width="20%">Data Entry Status</td>
-									<td class="tableHeader" width="20%">Submission Status</td>
-								</tr>
-							</thead>
-						
-							<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
-						</c:forEach>
-					</table>
-				</c:when>
+						</table>			
+					</table>					
+				</c:forEach>
+			</c:when>
 				<c:otherwise>
 					<table width="100%" border="0" cellspacing="0" class="tableRegion">
 						Reports not present.
 					</table>	
 				</c:otherwise>	
 			</c:choose>					
-		</div>
+		<%-- </div> --%>
 	</chrome:division>
 	</chrome:box>	
 </div>
