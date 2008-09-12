@@ -11,7 +11,7 @@
 	<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 	<td align="left" width="15%">
 		<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
-			${report.reportDefinition.name}
+			${report.reportDefinition.label}
 		</a>	
 	</td>
 	<td width="20%">${report.aeReport.numberOfAes}</td>
