@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.UnsatisfiedProperty;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.*;
@@ -36,6 +37,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     protected ReportRepository reportRepository;
 
     protected EvaluationService evaluationService;
+    
+    protected SchedulerService schedulerService;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -165,6 +168,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public void setReportRepository(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
+    
+    public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;

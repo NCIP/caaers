@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections15.ListUtils;
+
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -32,6 +34,10 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
     private RenderDecisionManager renderDecisionManager;
+    
+    private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
+    private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>(); 
+    List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
     // //// LOGIC
 
@@ -115,6 +121,74 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		}		
 	}
     
+    /*public void initializeNewlySelectedReportDefinitions() {
+		//List<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
+		//List<ReportDefinition> difference = ListUtils.subtract(getSelectedReportDefinitions(),instantiatedReportDefs);
+		//return difference;
+    	//TODO: Verify this. Newly selected should be all that are selected and not the difference with the 
+    	// instantiated ones.
+    	newlySelectedDefs.clear();
+    	newlySelectedDefs.addAll(getSelectedReportDefinitions());
+    }*/
+    
+    
+    
+    /**
+     * This method classifies the newly selected reportDefinitions into 2 lists.
+     * list1  - newlySelectedSponsorReports ( that has all the report definitions defined for the sponsor and are amendable and expedited)
+     * list2 - otherSelectedReports (remaining reportDefinitions)
+     * @param newlySelectedDefs
+     * @param command
+     */
+    public void classifyNewlySelectedReportsDefinitons(){
+    	String nciInstituteCode = getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+    	for(ReportDefinition reportDefinition: newlySelectedDefs){
+    		if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode) && reportDefinition.getAmendable()
+    													&& reportDefinition.getExpedited())
+    			newlySelectedSponsorReports.add(reportDefinition);
+    		else
+    			otherSelectedReports.add(reportDefinition);
+    	}
+    }
+    
+    /**
+     * This method returns a boolean. Its true if the earliest sponsor/amendable report selected is expected to be scheduled before the 
+     * earliest pending sponsor-amendable-expedited report and returns false otherwise.
+     * @param command
+     * @return
+     */
+    public Boolean isNewlySelectedReportEarlier(){
+    	Boolean isSelectedReportEarlier = false;
+    	Report earliestPendingSponsorReport = getAeReport().getEarliestPendingSponsorReport();
+    	for(ReportDefinition reportDefinition: newlySelectedSponsorReports){
+    		if(reportDefinition.getExpectedDueDate().compareTo(earliestPendingSponsorReport.getDueOn()) < 0){
+    			isSelectedReportEarlier = true;
+    			break;
+    		}
+    	}
+    		
+    	return isSelectedReportEarlier;
+    }
+
+    
+    /**
+     * This method amends the reports in the list passed as a parameter to this method.
+     */
+    public void amendReports(List<Report> amendReportList){
+    	for(Report report: amendReportList){
+    		reportRepository.amendReport(report);
+    	}
+    }
+    
+    /**
+     * This method withdraws the reports in the list passed as a parameter to this method.
+     */
+    public void withdrawReports(List<Report> withdrawReportList){
+    	for(Report report: withdrawReportList){
+    		reportRepository.deleteReport(report);
+    	}
+    }
+    
 	/**
 	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
 	 * @return
@@ -122,5 +196,31 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	public boolean isDCPNonAdeersStudy(){
 		if(getStudy() == null) return false;
 		return (!getStudy().getAdeersReporting()) && getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
+	}
+	
+	public void setNewlySelectedSponsorReports(
+			ArrayList<ReportDefinition> newlySelectedSponsorReports) {
+		this.newlySelectedSponsorReports = newlySelectedSponsorReports;
+	}
+	
+	public List<ReportDefinition> getNewlySelectedSponsorReports() {
+		return newlySelectedSponsorReports;
+	}
+	
+	public void setOtherSelectedReports(
+			ArrayList<ReportDefinition> otherSelectedReports) {
+		this.otherSelectedReports = otherSelectedReports;
+	}
+	
+	public List<ReportDefinition> getOtherSelectedReports() {
+		return otherSelectedReports;
+	}
+	
+	public List<ReportDefinition> getNewlySelectedDefs() {
+		return newlySelectedDefs;
+	}
+	
+	public void setNewlySelectedDefs(List<ReportDefinition> newlySelectedDefs) {
+		this.newlySelectedDefs = newlySelectedDefs;
 	}
 }

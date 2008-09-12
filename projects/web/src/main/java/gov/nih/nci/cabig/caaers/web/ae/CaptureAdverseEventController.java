@@ -48,12 +48,14 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
 	private static final int ADVERSE_EVENT_CONFIRMATION_TAB_NUMBER = 2;
-	private static final String REPORT_ID_PARAMETER = "aeReportId";
+	private static final String AE_REPORT_ID_PARAMETER = "aeReportId";
+	private static final String REPORT_ID_PARAMETER = "reportId";
 	private static final String ACTION_PARAMETER = "action";
 	private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
 	private static final String AE_LIST_PARAMETER = "adverseEventList";
 	private static final String CREATE_NEW_TASK = "createNew";
 	private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
+	private static final String AMEND_REPORT = "amendReport";
 	
 	
 	private ParticipantDao participantDao;
@@ -204,14 +206,20 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	    model.put("study", command.getStudy().getId());
 		
 		String action = (String)findInRequest(request, "_action");
-		String reportIdString = (String)findInRequest(request, "_reportId");
+		String aeReportIdString = (String)findInRequest(request, "_reportId");
+		String reportIdString = (String)findInRequest(request, "_repId");
+		Integer aeReportId;
 		Integer reportId;
 		
 		// Set the parameters in the session.
 		if(!action.equals(CREATE_NEW_TASK)){
+			aeReportId = Integer.parseInt(aeReportIdString);
+			request.getSession().setAttribute(AE_REPORT_ID_PARAMETER, aeReportId);
+			model.put("aeReport", aeReportId);
+		}
+		if(action.equals(AMEND_REPORT)){
 			reportId = Integer.parseInt(reportIdString);
 			request.getSession().setAttribute(REPORT_ID_PARAMETER, reportId);
-			model.put("aeReport", reportId);
 		}
 		request.getSession().setAttribute(ACTION_PARAMETER, action);
 		request.getSession().setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());

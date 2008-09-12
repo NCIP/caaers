@@ -25,6 +25,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -64,6 +65,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected ReportDefinitionDao reportDefinitionDao;
     protected ExpeditedReportTree expeditedReportTree;
     protected Map<String, Boolean> mandatoryFieldMap = new HashMap<String, Boolean>();
+    protected ReportRepository reportRepository;
 
     private String treatmentDescriptionType;
 
@@ -71,7 +73,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     
     private List<Map<Integer, Boolean>> outcomes;
     private List<String> outcomeOtherDetails; 
-    private List<ReportDefinition> selectedReportDefinitions;
+    protected List<ReportDefinition> selectedReportDefinitions;
 
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
     	this.reportingPeriodDao = reportingPeriodDao;
@@ -318,4 +320,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public List<ReportDefinition> getSelectedReportDefinitions() {
     	return selectedReportDefinitions;
     }
+    
+    public void setReportRepository(ReportRepository reportRepository) {
+		this.reportRepository = reportRepository;
+	}
 }

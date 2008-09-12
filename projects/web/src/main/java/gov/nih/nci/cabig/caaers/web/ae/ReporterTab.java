@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
@@ -15,6 +18,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -33,8 +37,12 @@ import org.springframework.validation.Errors;
 public class ReporterTab extends AeTab {
     private static final Log log = LogFactory.getLog(ReporterTab.class);
     private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
+    private static final String REPORT_ID_PARAMETER = "reportId";
+    private static final String ACTION_PARAMETER = "action";
     
     private ConfigProperty configurationProperty;
+    
+    protected NowFactory nowFactory;
 
     private EvaluationService evaluationService;
 
@@ -122,21 +130,99 @@ public class ReporterTab extends AeTab {
      *  6. Pre-instantiate the mandatory section's repeating fields (biz rule) 
      *  7. Refresh the mandatory fields map.
      */
-    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd,
                     Errors errors) {
-
+    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
         // only do postProcess, if we are moving forward or if the AE report is already persistent
-        if ((command.getNextPage() >= getNumber()) || command.getAeReport().getId() != null) {
-        	
-            List<ReportDefinition> newlySelectedDefs = newlySelectedReportDefinitions(command);
+    	if ((command.getNextPage() >= getNumber()) || command.getAeReport().getId() != null) {
 
-            if (newlySelectedDefs != null) {
-                evaluationService.addOptionalReports(command.getAeReport(), newlySelectedDefs);
+    		List<ReportDefinition> newReportDefs = new ArrayList<ReportDefinition>();
+    		List<Report> amendReportList = new ArrayList<Report>();
+    		List<Report> withdrawReportList = new ArrayList<Report>();
+    		
+    		String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
+    		//command.initializeNewlySelectedReportDefinitions();
+    		command.setNewlySelectedDefs(command.getSelectedReportDefinitions());
+    		command.classifyNewlySelectedReportsDefinitons();
+    		Map<ReportDefinition, ReportStatus> existingReportMap = initilizeExistingReportMap(command);
+
+    		// Logic for CREATE-NEW FLOW
+    		if(StringUtils.equals("createNew", action)){
+    			newReportDefs.addAll(command.getNewlySelectedDefs());
+    		}
+
+    		// Logic for EDIT-FLOW
+    		// CASE(A) Newly selected amendable sponsor report is earlier
+    		//         - withdraw the existing amendable sponsor report
+    		// CASE(B) Newly selected amendable sponsor report is later
+    		//         - ignore the newly selected amendable sponsor report
+    		
+    		// - add all non-amendable reports if they don't exist or are already submitted/withdrawn
+    		// - add all non-organizational reports if they don't exist or are already submitted/withdrawn.
+    		if(StringUtils.equals("editReport", action)){
+    			if (command.getNewlySelectedDefs() != null) {
+    				if(command.isNewlySelectedReportEarlier()){
+    					// This is CASE(A)
+    					// Firstly, Withdraw the pending amendable sponsor reports.
+    					Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
+    					for(ReportDefinition reportDefinition: command.getNewlySelectedSponsorReports())
+    						sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
+
+    					for(Report report: command.getAeReport().getReports()){
+    						if(report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING)){
+    							existingReportMap.remove(report.getReportDefinition());
+    							withdrawReportList.add(report);
+    						}
+    					}
+    				}else{
+    					// This is CASE(B)
+    					// Here we ignore the newlySelectedSponsorReports.
+    					// So we set the newlySelectedDefs with OtherSelectedReports
+    					command.setNewlySelectedDefs(command.getOtherSelectedReports());
+    				}
+    			}
+    		}
+    		
+    		if(StringUtils.equals("amendReport", action) || StringUtils.equals("editReport", action)){
+    			// For Sponsor/amendable newlySelectedReport take the following action
+    			//        - create New report if it doesnt exist
+    			//        - amend if it exists (also instantiate Notifications)
+    			
+    			// For other reports take the following action
+				//         - create New report if it doesnt exist
+    			//         - amend if it exists and has status = SUBMITTED/WITHDRAWN
+    			//         - ignore if it exists and the status = PENDING.
+    			
+    			for(ReportDefinition reportDefinition: command.getNewlySelectedDefs()){
+    				if(!existingReportMap.containsKey(reportDefinition))
+    					newReportDefs.add(reportDefinition);
+    				else{
+    					if(existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+    								existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+    						for(Report report: command.getAeReport().getReports()){
+    							if(report.getReportDefinition().equals(reportDefinition))
+    								amendReportList.add(report);
+    						}
+    				}
+    			}
+    		}
+    		
+    		
+    		// Create the newly Selected Reports that need to be created.
+    		if (newReportDefs.size() > 0) {
+                evaluationService.addOptionalReports(command.getAeReport(), newReportDefs);
             }
-
-            if (command.getAeReport().getReports().size() > 0) {
+    		
+    		// Withdraw the reports to be withdrawn
+    		command.withdrawReports(withdrawReportList);
+    		
+    		// Amend the reports to be amended
+    		command.amendReports(amendReportList);
+    		
+    		if (command.getAeReport().getReports().size() > 0) {
                 command.save();
             }
+    		
             // find the new mandatory sections
             command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
 
@@ -145,17 +231,31 @@ public class ReporterTab extends AeTab {
 
             // refresh the mandatory fields
             command.refreshMandatoryProperties();
-        }
+            
+            command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
+            
+            // Remove the attributes from the session
+            request.getSession().removeAttribute(ACTION_PARAMETER);
+    	}
+    }
 
+    /**
+     * It creates a map with the reportDefinitons of the "command.aeReport.reports" as the key
+     * and "command.aeReport.report.lastVersion.reportStatus" as the value.
+     * It is needed as helper data structure to implement the create/amend-report logic.
+     * @param command
+     * @return
+     */
+    public Map<ReportDefinition, ReportStatus> initilizeExistingReportMap(ExpeditedAdverseEventInputCommand command){
+    	Map<ReportDefinition, ReportStatus> map = new HashMap<ReportDefinition, ReportStatus>();
+    	for(Report report: command.getAeReport().getReports()){
+    		if(!map.containsKey(report.getReportDefinition()))
+    			map.put(report.getReportDefinition(), report.getLastVersion().getReportStatus());
+    	}
+    	
+    	return map;
     }
     
-    private List<ReportDefinition> newlySelectedReportDefinitions(ExpeditedAdverseEventInputCommand command) {
-    		List<ReportDefinition> instantiatedReportDefs = command.getInstantiatedReportDefinitions();
-    		List<ReportDefinition> difference = ListUtils.subtract(command.getSelectedReportDefinitions(),instantiatedReportDefs);
-    		return difference;
-    }
-    
-
     @Required
     public void setEvaluationService(EvaluationService evaluationService) {
         this.evaluationService = evaluationService;
@@ -165,6 +265,14 @@ public class ReporterTab extends AeTab {
     public void setConfigurationProperty(ConfigProperty configurationProperty) {
 		this.configurationProperty = configurationProperty;
 	}
+    
+    public NowFactory getNowFactory() {
+        return nowFactory;
+    }
+
+    public void setNowFactory(NowFactory nowFactory) {
+        this.nowFactory = nowFactory;
+    }
     
     /**
      * Returns the value associated with the <code>attributeName</code>, if present in

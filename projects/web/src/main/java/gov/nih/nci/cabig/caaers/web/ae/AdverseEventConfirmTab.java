@@ -100,11 +100,11 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + hospitalizationFieldName, ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayExpected", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displaySerious", ""));
-		if(isModifiable){
-			fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
-		}else{
-			fields.add(InputFieldFactory.createImageField("primaryAdverseEventId", "", ""));
-		}
+		//if(isModifiable){
+		//	fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));
+		//}else{
+		//	fields.add(InputFieldFactory.createImageField("primaryAdverseEventId", "", ""));
+		//}
 		return fields;
 	}
 	
@@ -141,7 +141,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		command.refreshSelectedAesMap();
 		
 		//find primary AE
-		command.findPrimaryAdverseEvent();
+		//command.findPrimaryAdverseEvent();
 		
 		//create the 3 column display for all report definitions.
 		Map<String, ReportDefinitionDisplayTable> allReportDefDisplayTableMap = new HashMap<String, ReportDefinitionDisplayTable>();

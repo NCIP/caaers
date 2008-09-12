@@ -304,10 +304,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	/**
 	 * Find primary adverse event.
 	 */
-	public void findPrimaryAdverseEvent(){
-		if(adverseEventReportingPeriod.getAeReports().size() == 0)
-			if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
-	}
+	//public void findPrimaryAdverseEvent(){
+	//	if(adverseEventReportingPeriod.getAeReports().size() == 0)
+	//		if(!seriousAdverseEvents.isEmpty()) this.primaryAdverseEventId = new ArrayList<AdverseEvent>(seriousAdverseEvents).get(0).getId();
+	//}
 	
 	
 	/**

@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -40,9 +41,10 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 	protected WebControllerValidator webControllerValidator;
 	private static final String ACTION_PARAMETER = "action";
 	private static final String AE_LIST_PARAMETER = "adverseEventList";
-    private static final String REPORT_ID_PARAMETER = "aeReportId";
+    private static final String AE_REPORT_ID_PARAMETER = "aeReportId";
     private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
     private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
+    private static final String REPORT_ID_PARAMETER = "reportId";
 	
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
@@ -167,33 +169,33 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         	command.refreshMandatoryProperties();
         }
-        request.getSession().removeAttribute(ACTION_PARAMETER);
+        
         request.getSession().removeAttribute(AE_LIST_PARAMETER);
-        request.getSession().removeAttribute(REPORT_ID_PARAMETER);
+        request.getSession().removeAttribute(AE_REPORT_ID_PARAMETER);
         request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);
         request.getSession().removeAttribute(REPORT_DEFN_LIST_PARAMETER);
+        
+        // Check whether the request is coming from ManageReports and is to amend a report
+        action = request.getParameter(ACTION_PARAMETER);
+        if(StringUtils.equals(action, "amendReport")){
+        	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
+        	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
+        	if(aeReportId != null){
+        		List<Report> amendReportList = new ArrayList();
+        		for(Report report: command.getAeReport().getReports()){
+        			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) ||
+        					report.getLastVersion().getReportStatus().equals(ReportStatus.WITHDRAWN))
+        				amendReportList.add(report);	
+        		}
+        		command.amendReports(amendReportList);
+        	}
+        }
         
     }
 
     @Override
     protected void onBind(HttpServletRequest request, Object command, BindException errors) throws Exception {
         super.onBind(request, command, errors);
-        log.debug("onBind");
-        EditExpeditedAdverseEventCommand cmd = (EditExpeditedAdverseEventCommand) command;
-        // Amendment implementation
-        // Test this
-        if (request.getParameter("reportId") != null) {
-            Integer reportId = Integer.parseInt(request.getParameter("reportId"));
-            for (Report report : cmd.getAeReport().getReports()) {
-                if (report.getId().equals(reportId) && !report.getLastVersion().getReportStatus().equals( ReportStatus.PENDING)) {
-                    ReportVersion reportVersion = new ReportVersion();
-                    reportVersion.setCreatedOn(nowFactory.getNow());
-                    reportVersion.setReportStatus(ReportStatus.PENDING);
-                    report.addReportVersion(reportVersion);
-                    break;
-                }
-            }
-        }
     }
 
     /*
