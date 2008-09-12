@@ -26,6 +26,9 @@ public class Configuration extends DatabaseBackedConfiguration {
 
     public static final ConfigurationProperty<String> ESB_URL = PROPERTIES
                     .add(new ConfigurationProperty.Text("esbUrl"));
+    
+    public static final ConfigurationProperty<String> CAEXCHANGE_URL = PROPERTIES
+    				.add(new ConfigurationProperty.Text("caExchangeUrl"));
 
     public static final ConfigurationProperty<String> SMTP_ADDRESS = PROPERTIES
                     .add(new ConfigurationProperty.Text("smtpAddress"));
