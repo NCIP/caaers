@@ -44,7 +44,7 @@
 
 	});
 	
-	function createNewReport(){
+		function createNewReport(){
 			forwardControl('createNew', '');
 		}
 		
@@ -52,8 +52,12 @@
 			forwardControl('editReport', reportId);
 		}
 		
-		function amendReport(reportId){
-			forwardControl('amendReport', reportId);
+		function amendReport(aeReportId, reportId){
+			var form = document.getElementById('command');
+			form._action.value = 'amendReport';
+			form._reportId.value = aeReportId;
+			form._repId.value = reportId;
+			form.submit();
 		}
 		
 		function forwardControl(task, reportId){
@@ -172,6 +176,7 @@
 		<input type="hidden" name="_finish"/>
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_reportId" value="">
+		<input type="hidden" name="_repId" value="">
 		<c:set var="reportingPeriodType" value="${command.adverseEventReportingPeriod.epoch.name}" />
 	 		<c:if test="${reportingPeriodType != 'Baseline'}">
 	 			<tags:instructions code="instruction_ae_checkpoint" />
@@ -250,7 +255,7 @@
     						<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
     						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<th scope="col" align="left"><b>Is primary?</b></th>
+							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
     					</tr>
     					<tr id="seriousBlankRow" />
     					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
@@ -276,7 +281,7 @@
     						<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
     						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<th scope="col" align="left"><b>Is primary?</b></th>
+							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
     					</tr>
     					<tr id="observedBlankRow" />
     					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
@@ -302,7 +307,7 @@
    							<th scope="col" align="left"><b>Hospitalization</b> </th>
     						<th scope="col" align="left"><b>Expected</b> </th>
     						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<th scope="col" align="left"><b>Is primary?</b></th>
+							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
     					</tr>
     					<tr id="solicitedBlankRow" />
        					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
@@ -426,30 +431,46 @@
 		<input type="button" value="Create New Report(s)" id="create-new-report"/><br><br><br>
 		<b>OR</b>
 	</div>
-	<chrome:division title="Edit In-progress Reports" id="div-report-summary" collapsable="false">
+	<chrome:division title="Edit Existing Reports" id="div-report-summary" collapsable="false">
 		<div class="eXtremeTable" >
-			<table width="100%" border="0" cellspacing="0" class="tableRegion">
-				<c:choose>
-					<c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
-						<thead>
-							<tr align="center" class="label">
-								<td width="5%"/>
-								<td class="tableHeader" width="15%">Report Type</td>
-								<td class="centerTableHeader" width="20%"># of AEs</td>
-								<td class="tableHeader" width="20%">Data Entry Status</td>
-								<td class="tableHeader" width="20%">Submission Status</td>
-								<td class="centerTableHeader" width="20%">Options</td>
+			<c:choose>
+				<c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
+					<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+						<table width="100%" border="0" cellspacing="0" class="tableRegion">
+							<tr>
+								<td width="50%">Expedited Report (${aeReport.adverseEvents[0].adverseEventTerm.universalTerm})</td>
+								<td align="center">
+									<c:if test="${aeReport.allSponsorReportsCompleted == true}">
+										<input type="button" value="Amend" id="amend-report"/>
+									</c:if>
+									<c:if test="${aeReport.allSponsorReportsCompleted == false}">
+										<input type="button" value="Edit" id="edit-report"/>
+									</c:if>
+								</td>
 							</tr>
-						</thead>
-						<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+						</table>
+						
+						<table width="100%" border="0" cellspacing="0" class="tableRegion">
+							<thead>
+								<tr align="center" class="label">
+									<td width="5%"/>
+									<td class="tableHeader" width="15%">Report Type</td>
+									<td class="centerTableHeader" width="20%"># of AEs</td>
+									<td class="tableHeader" width="20%">Data Entry Status</td>
+									<td class="tableHeader" width="20%">Submission Status</td>
+								</tr>
+							</thead>
+						
 							<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
 						</c:forEach>
-					</c:when>
-					<c:otherwise>
+					</table>
+				</c:when>
+				<c:otherwise>
+					<table width="100%" border="0" cellspacing="0" class="tableRegion">
 						Reports not present.
-					</c:otherwise>	
-				</c:choose>					
-			</table>
+					</table>	
+				</c:otherwise>	
+			</c:choose>					
 		</div>
 	</chrome:division>
 	</chrome:box>	
