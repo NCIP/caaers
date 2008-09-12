@@ -2,11 +2,11 @@ package gov.nih.nci.cabig.caaers.rules.business.service;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -17,11 +17,21 @@ import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.*;
 
 @Transactional(readOnly = true)
 public class EvaluationServiceImpl implements EvaluationService {
@@ -34,6 +44,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     private ReportRepository reportRepository;
+    
+    private OrganizationDao organizationDao;
 
     /**
      * @return true if the given adverse event is severe in the context of the provided study, site,
@@ -301,6 +313,15 @@ public class EvaluationServiceImpl implements EvaluationService {
         for (Integer orgId : orgIdSet) {
             reportDefinitions.addAll(reportDefinitionDao.getAll(orgId));
         }
+        
+        /**
+         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
+         * report definitions also . TEMP fix
+         */
+        if (assignment.getStudySite().getStudy().getPrimaryFundingSponsor().getOrganization().getName().equals("Division of Cancer Prevention")) {
+        	reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
+        }
+        
         return reportDefinitions;
     }
 
@@ -382,4 +403,8 @@ public class EvaluationServiceImpl implements EvaluationService {
     public AdverseEventEvaluationService getAdverseEventEvaluationService() {
         return adverseEventEvaluationService;
     }
+
+	public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
+	}
 }
