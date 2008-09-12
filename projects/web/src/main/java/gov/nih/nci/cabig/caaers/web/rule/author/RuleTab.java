@@ -37,7 +37,7 @@ public class RuleTab extends DefaultTab {
     private List<ReportDefinition> getReportDefinitions(Organization org) {
         // System.out.println("getting report definitions ....");
         // get report defnitions
-
+    	
         List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
 
         // cut down objects for serialization
@@ -305,8 +305,22 @@ public class RuleTab extends DefaultTab {
             createRuleCommand.setRuleSet(ruleSet);
             Organization org = createRuleCommand.getOrganizationDao().getByName(
                             createRuleCommand.getOrganizationName());
-
-            createRuleCommand.setReportDefinitions(getReportDefinitions(org));
+            
+            List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
+            reportDefs = getReportDefinitions(org);
+            
+            /**
+             * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
+             * report definitions also . TEMP fix
+             */
+            
+            if (createRuleCommand.getOrganizationName().equals("Division of Cancer Prevention")) {
+            	org = createRuleCommand.getOrganizationDao().getByName("Cancer Therapy Evaluation Program");
+            	reportDefs.addAll(getReportDefinitions(org));
+            }           
+            
+            
+            createRuleCommand.setReportDefinitions(reportDefs);
 
         } catch (Exception e) {
             logger.error("Exception while retrieving the Rule Set", e);
