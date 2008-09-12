@@ -201,7 +201,6 @@ public class RuleAjaxFacade {
 
         Organization org = organizationDao.getByName(organizationName);
 
-        // System.out.println("getting report definitions ....");
         // get report defnitions
         List<ReportDefinition> reportDefinitions = org.getReportDefinitions();
 
@@ -209,11 +208,22 @@ public class RuleAjaxFacade {
         List<ReportDefinition> reducedReportDefinitions = new ArrayList<ReportDefinition>(
                         reportDefinitions.size());
         for (ReportDefinition reportDefinition : reportDefinitions) {
-            // reportDefinition.setPlannedNotifications(null);
-            // reportDefinition.setTimeScaleUnitType(null);
             reducedReportDefinitions.add(reportDefinition);
         }
-
+        
+        /**
+         * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
+         * report definitions also . TEMP fix
+         */
+        
+        if (organizationName.equals("Division of Cancer Prevention")) {
+        	org = organizationDao.getByName("Cancer Therapy Evaluation Program");
+        	reportDefinitions = org.getReportDefinitions();
+            for (ReportDefinition reportDefinition : reportDefinitions) {
+                reducedReportDefinitions.add(reportDefinition);
+            }        	
+        } 
+        
         // System.out.println("add rule create successfully ....");
 
         HttpServletRequest request = WebContextFactory.get().getHttpServletRequest();
