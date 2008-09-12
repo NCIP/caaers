@@ -320,4 +320,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         }
         return fields;
     }
+    
+    @Transient
+    public  Boolean isSponsorReport(String nciInstituteCode){
+    	if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode))
+    		return true;
+    	else
+    		return false;
+    }
 }
