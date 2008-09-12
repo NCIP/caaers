@@ -30,6 +30,7 @@ import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -121,6 +122,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
 	
     protected RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+    
+    protected ReportRepository reportRepository;
     
 	
     protected AbstractAdverseEventInputController() {
@@ -445,4 +448,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 		this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
 	}
  
+	public void setReportRepository(ReportRepository reportRepository) {
+		this.reportRepository = reportRepository;
+	}
 }

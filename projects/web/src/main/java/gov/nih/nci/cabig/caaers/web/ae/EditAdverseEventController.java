@@ -127,7 +127,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
     	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
+    	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, 
+    					expeditedReportTree, renderDecisionManager, reportRepository);
     	if(action != null){
         	if(action.equals("createNew")){
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();

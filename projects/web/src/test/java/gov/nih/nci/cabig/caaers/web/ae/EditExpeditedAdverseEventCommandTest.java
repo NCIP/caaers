@@ -27,6 +27,8 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
@@ -55,6 +57,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
     private ExpeditedReportTree expeditedReportTree; 
     private RenderDecisionManager renderDecisionManager;
     protected StaticNowFactory nowFactory;
+    private ReportRepository reportRepository;
 
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
@@ -68,6 +71,7 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		expeditedReportTree = registerMockFor(ExpeditedReportTree.class);
 		renderDecisionManager = registerMockFor(RenderDecisionManager.class);
+		reportRepository = registerMockFor(ReportRepositoryImpl.class);
 		nowFactory = new StaticNowFactory();
         nowFactory.setNowTimestamp(NOW);
         
@@ -162,7 +166,8 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
     }
     
     protected final EditExpeditedAdverseEventCommand createMockCommand() {
-        return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
+        return new EditExpeditedAdverseEventCommand(expeditedAeReportDao, reportDefinitionDao, 
+        		assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
     }
     
     protected final EditExpeditedAdverseEventCommand createMinimallyValidMockCommand() {

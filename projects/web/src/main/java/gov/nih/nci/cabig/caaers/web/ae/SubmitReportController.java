@@ -48,7 +48,8 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
     	log.debug("In form backing object");
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
         SubmitExpeditedAdverseEventCommand command = new SubmitExpeditedAdverseEventCommand(
-                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager);
+                        getDao(), reportDefinitionDao, assignmentDao, reportingPeriodDao,
+                        expeditedReportTree, renderDecisionManager, reportRepository);
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));

@@ -320,8 +320,5 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public List<ReportDefinition> getSelectedReportDefinitions() {
     	return selectedReportDefinitions;
     }
-    
-    public void setReportRepository(ReportRepository reportRepository) {
-		this.reportRepository = reportRepository;
-	}
+
 }
