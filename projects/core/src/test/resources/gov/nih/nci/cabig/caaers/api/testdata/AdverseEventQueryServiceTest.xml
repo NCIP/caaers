@@ -32,6 +32,11 @@
         name="auditory/ear"
         version_id="3"
         />
+	<ctc_categories
+        id="201"
+        name="ALLERGY/IMMUNOLOGY"
+        version_id="3"
+        />
     <ctc_categories
         id="303"
         name="blood/bone marrow"
@@ -46,6 +51,14 @@
         other_required="1"
         />
     <ctc_terms
+        category_id="201"
+        id="2001"
+        term="Allergic reaction/hypersensitivity (including drug fever)"
+        ctep_term="Hypersensitivity"
+        ctep_code="10020751"
+        other_required="0"
+        />
+	<ctc_terms
         category_id="302"
         id="3012"
         term="Tinnitus"
@@ -54,8 +67,7 @@
         other_required="0"
         />
     <ctc_grades/> 
-
-    <participant_assignments
+	<participant_assignments
         id="-6"
         participant_id="-4"
         study_site_id="-4"
@@ -129,11 +141,17 @@
         comments="That was some big AE"
         />
     
-     <AE_TERMS
+     <!--AE_TERMS
         id="-9"
         adverse_event_id="-3"
         term_id="-11"
         term_type="meddra"
+        /-->
+	<AE_TERMS
+        id="-9"
+        adverse_event_id="-3"
+        term_id="2001"
+        term_type="ctep"
         />
 
 	<MEDDRA_LLT
@@ -318,4 +336,82 @@
      <SPA_PRIOR_THERAPIES />
      <SPA_CONCOMITANT_MEDICATIONS />
      <SPA_PRE_EXISTING_CONDS />
+
+<PARTICIPANTS
+        id="-6"
+        instituitional_patient_number="P006"
+        institution="MyHospital"
+        first_name="Obama"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="NA"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" />
+	<studies id="-101" short_title="Study id -101" 
+    load_status="1"/>
+
+	<TREATMENT_ASSIGNMENT
+     	id="1006"
+     	code="adverseEventReportingPeriodCode"
+     	study_id="-101"
+     	/> 
+	<participant_assignments
+        id="-10"
+       participant_id="-6"
+	   study_site_id="-4"
+        date_of_enrollment="2004-01-05"
+        load_status="1"
+        />	
+	<EPOCHS
+     	id="-1012"
+     	name="test epoch 1"
+     	order_no="1"
+     	study_id="-101"
+     	/>
+
+	<AE_REPORTING_PERIODS
+		id="-1009"
+		start_date="2008-06-26"
+		end_date="2008-07-27"
+		description="AE_REPORTING_PERIODS 1009"
+		treatment_assignment_id="1006"
+		assignment_id="-10"
+		epoch_id="-1012"
+		/>	
+<AE_REPORTS
+        id="-23"
+        reporting_period_id="-1009"
+        created_at="2008-04-04 13:22:32.055"
+        />
+
+	
+
+ <ADVERSE_EVENTS
+        id="-4"
+        report_id="-23"
+        grade_code="1"
+        hospitalization_code="2"
+        attribution_summary_code="4"
+        expected="0"
+        comments="This is a bigger AE"
+        start_date="2007-09-12 21:43:56.987"
+        end_date="2007-09-12 21:43:56.987"
+		 reporting_period_id="-1009"
+        />
+
+<AE_TERMS
+        id="-10"
+        adverse_event_id="-4"
+        term_id="3007"
+        term_type="ctep"
+        />
+
+
+
+	
 </dataset>
