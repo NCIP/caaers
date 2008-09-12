@@ -35,6 +35,7 @@ public class ReportFactory {
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(now);
         reportVersion.setReportStatus(ReportStatus.PENDING);
+        reportVersion.setReportVersionId("0");
         report.addReportVersion(reportVersion);
 
         //attach the aeReport to report

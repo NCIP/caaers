@@ -309,5 +309,14 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
         assertTrue(aeList.size() > 0);
         assertSame(2, aeList.size());
     }
+    
+    public void testUpdateRequiresReporting() throws Exception {
+    	AdverseEvent loaded = getDao().getById(-3);
+    	loaded.setRequiresReporting(true);
+    	getDao().save(loaded);
+    	interruptSession();
+    	loaded = getDao().getById(-3);
+    	assertTrue(loaded.getRequiresReporting());
+    }
 
 }

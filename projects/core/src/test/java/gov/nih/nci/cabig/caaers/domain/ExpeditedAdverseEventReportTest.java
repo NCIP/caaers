@@ -5,11 +5,13 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -510,5 +512,106 @@ public class ExpeditedAdverseEventReportTest extends AbstractTestCase {
         report.addReport(reqd);
 
         assertEquals(1, report.getRequiredReportCount());
+    }
+    
+    public void testGetSponsorDefinedReports() throws Exception {
+    	Report rep = new Report();
+    	ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        Study study = Fixtures.createStudy("El Study");
+        Organization org = Fixtures.createOrganization("test Org");
+        org.setNciInstituteCode("NCI-CODE1");
+        StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(org);
+        sponsor.setPrimary(true);
+        study.addStudyFundingSponsor(sponsor);
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
+        
+        assertEquals(2, report.getSponsorDefinedReports().size());
+    	
+    }
+    
+    public void testGetAllSponsorReportsCompleted() throws Exception {
+    	Report rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+    	ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+    	reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
+    	reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        Study study = Fixtures.createStudy("El Study");
+        Organization org = Fixtures.createOrganization("test Org");
+        org.setNciInstituteCode("NCI-CODE1");
+        StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(org);
+        sponsor.setPrimary(true);
+        study.addStudyFundingSponsor(sponsor);
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
+        
+        assertFalse(report.getAllSponsorReportsCompleted());
+        
+    }
+    
+    public void testGetEarliestPendingSponsorReport() throws Exception{
+    	
+    	Report rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+    	rep.setDueOn(new Timestamp(300));
+    	ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+    	reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	rep = new Report();
+    	Fixtures.createReportVersion(rep);
+    	rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
+    	rep.setDueOn(new Timestamp(200));
+    	reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
+    	rep.setReportDefinition(reportDefinition);
+    	report.addReport(rep);
+    	
+    	Participant participant = Fixtures.createParticipant("Joe", "Shabadoo");
+        Study study = Fixtures.createStudy("El Study");
+        Organization org = Fixtures.createOrganization("test Org");
+        org.setNciInstituteCode("NCI-CODE1");
+        StudyFundingSponsor sponsor = Fixtures.createStudyFundingSponsor(org);
+        sponsor.setPrimary(true);
+        study.addStudyFundingSponsor(sponsor);
+        report.setAssignment(Fixtures.assignParticipant(participant, study, Fixtures.SITE));
+        
+        assertEquals(report.getReports().get(2), report.getEarliestPendingSponsorReport());
     }
 }

@@ -18,6 +18,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,6 +158,74 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
             }
         }
         return areAllReportsSubmitted.toString();
+    }
+    
+    /**
+     * Checks whether all the sponsor reports in the SAE are complete/withdrawn or not.
+     *
+     * @return Boolean
+     */
+    @Transient
+    public Boolean getAllSponsorReportsCompleted(){
+    	Boolean completed = true;
+    	for(Report report: getSponsorDefinedReports()){
+    		if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED &&
+    				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
+    			completed = false;
+    	}
+    	return completed;
+    }
+    
+    /**
+     * Fetches the sponsor report in the SAE which is Pending and has the earliest due-date.
+     */
+    @Transient
+    public Report getEarliestPendingSponsorReport(){
+    	Report earliestPendingReport = null;
+    	List<Report> sponsorPendingReports = new ArrayList<Report>();
+    	for(Report report: getSponsorDefinedReports()){
+    		if(report.getLastVersion().getReportStatus() == ReportStatus.PENDING)
+    			sponsorPendingReports.add(report);
+    	}
+    	
+    	if(sponsorPendingReports.size() > 0){
+    		Date earliestPendingDate = null;
+    		// this is to check if any amendable reports are present.
+    		// if not, the earliestPendingReport will be null after this loop and we will return that.
+    		for(Report report: sponsorPendingReports){
+    			if(report.getReportDefinition().getAmendable()){
+    				earliestPendingDate = report.getDueOn();
+    				earliestPendingReport = report;
+    			}
+    		}
+    		if(earliestPendingReport != null){
+    			for(Report report: sponsorPendingReports){
+    				if(report.getReportDefinition().getAmendable() && earliestPendingDate.compareTo(report.getDueOn()) > 0){
+    					earliestPendingDate = report.getDueOn();
+    					earliestPendingReport = report;
+    				}
+    			}
+    		}
+    	}
+    	return earliestPendingReport;
+    }
+    
+    
+    
+    /**
+     * Returns the list of sponsor defined reports
+     * @return ArrayList
+     */
+    @Transient
+    public List<Report> getSponsorDefinedReports(){
+    	ArrayList<Report> sponsorReports = new ArrayList<Report>();
+    	String nciInstituteCode = this.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+    	for(Report report: reports){
+    		if(report.getReportDefinition().getOrganization().getNciInstituteCode().equals(nciInstituteCode))
+    			sponsorReports.add(report);
+    	}
+    	
+    	return sponsorReports;
     }
 
     @Transient

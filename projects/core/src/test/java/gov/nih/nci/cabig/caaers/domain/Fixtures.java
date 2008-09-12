@@ -405,4 +405,21 @@ public class Fixtures {
     	rp.setAssignment(assignment);
     	return rp;
     }
+    
+    public static Organization createOrganization(final String name, final String nciInstituteCode) {
+        Organization organization = new Organization();
+        organization.setName(name);
+        organization.setDescriptionText("dec:" + name);
+        organization.setNciInstituteCode(nciInstituteCode);
+        return organization;
+    }
+    
+    public static ReportDefinition createReportDefinition(String name, String nciInstituteCode) {
+        ReportDefinition def = new ReportDefinition();
+        def.setName(name);
+        Organization org = createOrganization("testOrg", nciInstituteCode);
+        def.setOrganization(org);
+        def.setAmendable(true);
+        return def;
+    }
 }

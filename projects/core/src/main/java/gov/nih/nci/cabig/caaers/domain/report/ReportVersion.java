@@ -180,25 +180,11 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     }
 
     public String getReportVersionId() {
-        if ((this.reportVersionId == null)
-                        || (this.reportVersionId != null && this.reportVersionId.equals("NA"))) {
-            setReportVersionId("NA");
-        }
         return reportVersionId;
     }
 
     public void setReportVersionId(String reportVersionId) {
-        String id;
-        if (getId() != null) {
-            id = Integer.toString(getId() + 1000);
-            if (this.getReport() != null && this.getReport().getReportDefinition() != null
-                            && this.getReport().getReportDefinition().getOrganization() != null) {
-                id = id + this.getReport().getReportDefinition().getOrganization().getId();
-                this.reportVersionId = id;
-            }
-        } else {
-            this.reportVersionId = reportVersionId;
-        }
+        this.reportVersionId = reportVersionId;
     }
 
     public String getAssignedIdentifer() {

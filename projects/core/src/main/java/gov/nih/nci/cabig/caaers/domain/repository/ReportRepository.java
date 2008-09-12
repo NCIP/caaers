@@ -47,6 +47,13 @@ public interface ReportRepository {
     ReportSubmittability validate(Report report);
 
     /**
+     * This method amends the report passed to it. It initiates the associated notifications and increments
+     * the versionId too.
+     */
+    
+    void amendReport(Report report);
+    
+    /**
      * Will tell whether all the mandatory field for this report is duly filled.
      *
      * @return ErrorMessages, if any.

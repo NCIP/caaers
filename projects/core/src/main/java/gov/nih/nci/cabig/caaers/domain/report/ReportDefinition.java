@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -352,6 +353,13 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
     	today.add(timeScaleUnitType.getCalendarTypeCode(), duration);
     	SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yy");
     	return "Expected Due Date " + formatter.format(today.getTime());
+    }
+    
+    @Transient
+    public Date getExpectedDueDate(){
+    	Calendar today = GregorianCalendar.getInstance();
+    	today.add(timeScaleUnitType.getCalendarTypeCode(), duration);
+    	return today.getTime();
     }
     
     

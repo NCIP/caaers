@@ -29,7 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Transient;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -158,7 +161,34 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
     }
 
-    
+    /**
+     * This method has the logic needed to a report. Basically a new ReportVersion is created and added to the ReportVersions of th
+     * report. The reportVersionId of the lastReportVersion is incremented by 1 and assigned to this reportVersion.
+     * @return void
+     * @author- Sameer Sawant
+     */
+    public void amendReport(Report report){
+    	ReportVersion reportVersion = new ReportVersion();
+        reportVersion.setCreatedOn(nowFactory.getNow());
+        reportVersion.setReportStatus(ReportStatus.PENDING);
+        schedulerService.scheduleNotification(report);
+        
+        // Set report due date
+        Calendar cal = GregorianCalendar.getInstance();
+        Date now = nowFactory.getNow();
+        cal.setTime(now);
+        cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
+        report.setDueOn(cal.getTime());
+        reportVersion.setDueOn(cal.getTime());
+        
+        // Logic to update the reportVersionId
+        ReportVersion lastVersion = report.getLastVersion();
+        Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
+        currentVersionId++;
+        reportVersion.setReportVersionId(currentVersionId.toString());
+        report.addReportVersion(reportVersion);
+        
+    }
     
 
     /**
