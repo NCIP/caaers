@@ -173,7 +173,9 @@
                             <td valign="top">
                                 <ul>
                                     <c:forEach items="${assignment.preExistingConditions}" var="pc" varStatus="status">
-                                        <li>${pc.preExistingCondition.text}
+                                        <li>
+                                                <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
+                                                <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
                                     </c:forEach>
                                 </ul>
                             </td>
