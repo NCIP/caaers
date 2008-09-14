@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.beans.BeanWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -75,17 +76,19 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         return new ModelAndView(getAjaxViewName(request), map);
     }
 
-
-/*
     @Override
-    public void validate(AssignParticipantStudyCommand command, Errors errors) {
-        super.validate(command, errors);
-        if (command.getStudyId() == null) errors.rejectValue("studyId", "REQUIRED",
-                        "Study not selected");
-        if (command.getStudySiteId() == null) errors.rejectValue("studySiteId", "REQUIRED",
-                        "Study Site not selected");
+    protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
+
+        if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
+            errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
+        }
     }
-*/
+
+    public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
+        super.postProcess(request, command, errors);
+        command.init();
+    }
 
     public void setStudyRepository(final StudyRepository studyRepository) {
         this.studyRepository = studyRepository;

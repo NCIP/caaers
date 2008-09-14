@@ -129,6 +129,7 @@
             </c:if>
         </div>
 
+        <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
         Study Subject Identifier: <ui:text path="studySubjectIdentifier" />
     </jsp:attribute>

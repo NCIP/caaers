@@ -51,7 +51,7 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         Flow<AssignParticipantStudyCommand> flow = new Flow<AssignParticipantStudyCommand>("Assign Subject to Study");
         flow.addTab(new AssignParticipantTab());
         flow.addTab(new AssignStudyTab());
-//        flow.addTab(new SubjectMedHistoryTab());
+        flow.addTab(new SubjectMedHistoryTab());
         flow.addTab(new ReviewAssignmentTab());
         setFlow(flow);
     }

@@ -45,5 +45,24 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     public void setStudySite(StudySite studySite) {
         this.studySite = studySite;
     }
+
+    void init() {
+        if (getParticipant() == null || getParticipant().getAssignments() == null) return;
+
+        for (StudyParticipantAssignment spa : getParticipant().getAssignments()) {
+            spa.getStudySite().getStudy().getIdentifiers();
+            spa.getStudySite().getStudy().getMeddraStudyDiseases();
+            spa.getStudySite().getStudy().getCtepStudyDiseases();
+
+            if (spa.getDiseaseHistory() == null) {
+                spa.setPriorTherapies(new ArrayList<StudyParticipantPriorTherapy>());
+                StudyParticipantDiseaseHistory studyParticipantDiseaseHistory = new StudyParticipantDiseaseHistory();
+                studyParticipantDiseaseHistory.setAssignment(spa);
+                spa.setDiseaseHistory(studyParticipantDiseaseHistory);
+                spa.setPreExistingConditions(new ArrayList<StudyParticipantPreExistingCondition>());
+                spa.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
+            }
+        }
+    }
     
 }
