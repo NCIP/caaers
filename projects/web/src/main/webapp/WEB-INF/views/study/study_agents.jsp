@@ -207,7 +207,7 @@ td#linkPosition a img {
 </head>
 <body>
 
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="true">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyAgentsForm" hideErrorDetails="false">
 
     <jsp:attribute name="instructions">
     Click on the Add Study Agent button below in order to add an agent to this study.
