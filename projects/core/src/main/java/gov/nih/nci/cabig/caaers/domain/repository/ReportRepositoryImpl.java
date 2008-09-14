@@ -171,7 +171,6 @@ public class ReportRepositoryImpl implements ReportRepository {
     	ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(nowFactory.getNow());
         reportVersion.setReportStatus(ReportStatus.PENDING);
-        schedulerService.scheduleNotification(report);
         
         // Set report due date
         Calendar cal = GregorianCalendar.getInstance();
@@ -187,6 +186,7 @@ public class ReportRepositoryImpl implements ReportRepository {
         currentVersionId++;
         reportVersion.setReportVersionId(currentVersionId.toString());
         report.addReportVersion(reportVersion);
+        schedulerService.scheduleNotification(report);
         
     }
     

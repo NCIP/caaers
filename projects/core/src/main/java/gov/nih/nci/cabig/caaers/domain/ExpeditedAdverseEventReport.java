@@ -169,7 +169,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public Boolean getAllSponsorReportsCompleted(){
     	Boolean completed = true;
     	for(Report report: getSponsorDefinedReports()){
-    		if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED &&
+    		if(report.getReportDefinition().getExpedited() && report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED &&
     				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
     			completed = false;
     	}
