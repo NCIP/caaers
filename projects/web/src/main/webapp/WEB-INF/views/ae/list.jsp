@@ -175,7 +175,7 @@ background-color:#ffdada;
 			window.location = url;
 			
 		}else if(action =='amend'){
-			var url = '<c:url value="/pages/ae/edit"/>' +'?aeReport=' + aeReportId + '&reportId=' + reportId;
+			var url = '<c:url value="/pages/ae/edit"/>' +'?aeReport=' + aeReportId + '&reportId=' + reportId + '&action=amendReport';
 			window.location = url; 
 		}
         

@@ -181,11 +181,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(StringUtils.equals(action, "amendReport")){
         	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
         	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
-        	if(aeReportId != null){
+        	String reportId = request.getParameter(REPORT_ID_PARAMETER);
+        	if(reportId != null){
         		List<Report> amendReportList = new ArrayList();
         		for(Report report: command.getAeReport().getReports()){
-        			if(report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED) ||
-        					report.getLastVersion().getReportStatus().equals(ReportStatus.WITHDRAWN))
+        			if(report.getId().equals(Integer.parseInt(reportId)))
         				amendReportList.add(report);	
         		}
         		command.amendReports(amendReportList);

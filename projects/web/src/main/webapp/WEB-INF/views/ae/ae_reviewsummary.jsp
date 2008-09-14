@@ -52,11 +52,11 @@
 			forwardControl('editReport', reportId);
 		}
 		
-		function amendReport(aeReportId, reportId){
+		function amendReport(aeReportId){
 			var form = document.getElementById('command');
 			form._action.value = 'amendReport';
 			form._reportId.value = aeReportId;
-			form._repId.value = reportId;
+			//form._repId.value = reportId;
 			form.submit();
 		}
 		
@@ -419,7 +419,7 @@
 				</thead>	
 				<c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
 					<tr id="reportDefinitionMap[${repDefn.id}]" style="display:none">
-						<td align="left">${repDefn.name}</td>
+						<td align="left">${repDefn.label}</td>
 						<td align="left">${command.reportStatusMap[repDefn.id]}</td>
 					</tr>
 				</c:forEach>

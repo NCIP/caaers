@@ -218,8 +218,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 			model.put("aeReport", aeReportId);
 		}
 		if(action.equals(AMEND_REPORT)){
-			reportId = Integer.parseInt(reportIdString);
-			request.getSession().setAttribute(REPORT_ID_PARAMETER, reportId);
+			reportId = Integer.parseInt(aeReportIdString);
+			request.getSession().setAttribute(AE_REPORT_ID_PARAMETER, reportId);
 		}
 		request.getSession().setAttribute(ACTION_PARAMETER, action);
 		request.getSession().setAttribute(AE_LIST_PARAMETER, command.getSelectedAesList());

@@ -23,11 +23,11 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     // //// LOGIC
 
     protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
+    	flow.addTab(new ReporterTab());
     }
 
     protected void addPostBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-    	flow.addTab(new ReporterTab());
-        flow.addTab(new TreatmentTab());
+    	flow.addTab(new TreatmentTab());
         flow.addTab(new PatientDetailsTab());
         flow.addTab(new DescriptionTab());
         flow.addTab(new MedicalInfoTab());
