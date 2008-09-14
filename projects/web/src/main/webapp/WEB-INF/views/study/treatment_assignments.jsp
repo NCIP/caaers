@@ -12,7 +12,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
-<tags:includeScriptaculous/>
+    
   <tags:dwrJavascriptLink objects="createStudy"/>
 <script language="JavaScript" type="text/JavaScript">
 	var addTreatmentAssignmentEditor;
@@ -42,7 +42,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="true">
+<tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="repeatingFields">
 		 <input type="hidden" name="_action" value="">
 		 <input type="hidden" name="_selected" value="">
