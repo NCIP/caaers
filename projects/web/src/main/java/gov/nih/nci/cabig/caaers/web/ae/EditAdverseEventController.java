@@ -191,7 +191,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		command.amendReports(amendReportList);
         	}
         }
-        
+        // Initialize the treatment assignment
+        command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
     }
 
     @Override
