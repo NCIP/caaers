@@ -952,6 +952,7 @@ public class RulesEngineServiceImpl implements RulesEngineService {
                     //System.out.println("need to create .." + rd);
                     ReportDefinition newRd = new ReportDefinition();
                     newRd.setName(rd);
+                    newRd.setLabel(rd);
                     newRd.setOrganization(org);
                     newRd.setAmendable(true);
                     newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
