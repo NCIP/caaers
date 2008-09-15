@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
@@ -119,6 +120,20 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
             refdata.put("_finish", true);
         }
         return refdata;
+    }
+
+    @Override
+    protected boolean suppressValidation(HttpServletRequest request, Object cmd) {
+    	ParticipantInputCommand command = (ParticipantInputCommand) cmd;
+
+        // supress validation when target page is less than current page.
+        int curPage = getCurrentPage(request);
+        int targetPage = getTargetPage(request, curPage);
+        if (targetPage < curPage) return true;
+        
+        // supress for ajax and delete requests
+        if(isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
+        return super.suppressValidation(request, command);
     }
 
     public Task getTask() {

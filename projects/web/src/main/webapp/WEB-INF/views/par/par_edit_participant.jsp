@@ -34,7 +34,7 @@ function addOrganizationIdentifier(container) {
     var url = $('command').action + "&subview"
 
     new Ajax.Updater(container, url, {
-        parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.After, evalScripts : true
+        parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.Bottom, evalScripts : true
     });
 }
 
@@ -67,7 +67,7 @@ function addSystemIdentifier(container) {
     var url = $('command').action + "&subview"
 
     new Ajax.Updater(container, url, {
-        parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.After, evalScripts : true
+        parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.Bottom, evalScripts : true
     });
 }
 
