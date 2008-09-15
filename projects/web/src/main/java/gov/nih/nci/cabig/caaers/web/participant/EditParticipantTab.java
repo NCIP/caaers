@@ -59,11 +59,11 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
 
-        InputField dobYear = InputFieldFactory.createTextField("year", "Year", true);
+        InputField dobYear = InputFieldFactory.createTextField("yearString", "Year", true);
         InputFieldAttributes.setSize(dobYear, 4);
-        InputField dobMonth = InputFieldFactory.createTextField("month", "Month");
+        InputField dobMonth = InputFieldFactory.createTextField("monthString", "Month");
         InputFieldAttributes.setSize(dobMonth, 2);
-        InputField dobDay = InputFieldFactory.createTextField("day", "Day");
+        InputField dobDay = InputFieldFactory.createTextField("dayString", "Day");
         InputFieldAttributes.setSize(dobDay, 2);
 
         CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
