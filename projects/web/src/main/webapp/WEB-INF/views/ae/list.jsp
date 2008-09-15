@@ -206,7 +206,7 @@ background-color:#ffdada;
         <td width="16%" class="tableHeader"># of AEs</td>
         <td width="16%" class="tableHeader">Data Entry Status</td>
         <td width="16%" class="tableHeader">Report Status</td>
-        <td width="16%" class="tableHeader">Options <tags:pageHelp anchor="ae_list"/></td>
+        <td width="16%" class="tableHeader">Options</td>
       </tr>
     </thead>
     <c:if test="${fn:length(command.assignment.reportingPeriods) gt 0}">
