@@ -69,11 +69,12 @@
 		
 		function enableReportsInPopup(){
 			var chkboxElements = $('report-list').select('[type="checkbox"]');
-			for(var i=0; i < chkboxElements.length; i++)
+			for(var i=0; i < chkboxElements.length; i++){
 				if(chkboxElements[i].checked)
-					$(chkboxElements[i].name).show();
+					$(chkboxElements[i].name + '-p').show();
 				else
-					$(chkboxElements[i].name).hide();
+					$(chkboxElements[i].name + '-p').hide();
+			}	
 		}
 		
 		function checkIfReportSelected(){
@@ -418,7 +419,7 @@
 					</tr>
 				</thead>	
 				<c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
-					<tr id="reportDefinitionMap[${repDefn.id}]" style="display:none">
+					<tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
 						<td align="left">${repDefn.label}</td>
 						<td align="left">${command.reportStatusMap[repDefn.id]}</td>
 					</tr>
