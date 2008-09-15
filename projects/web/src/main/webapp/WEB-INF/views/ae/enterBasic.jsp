@@ -379,7 +379,7 @@
     </script>
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes">
+    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
         <jsp:attribute name="instructions">
         <tags:instructions code="instruction_ae_enterBasics" />
         <tags:instructions code="instruction_ae_enterBasicsNote" heading="Note: " />
