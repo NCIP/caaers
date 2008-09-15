@@ -32,7 +32,7 @@
         var url = $('command').action + "?dummy=0&subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.After, evalScripts : true
+            parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.Bottom, evalScripts : true
         });
     }
 
@@ -62,10 +62,10 @@
 
     function addSystemIdentifier(container) {
         var paramHash = populateParameters("addSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
-        var url = $('command').action + "?dummy=0&subview"
+        var url = $('command').action + "?subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.After, evalScripts : true
+            parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.Bottom, evalScripts : true
         });
     }
 
@@ -80,10 +80,10 @@
     function removeSystemIdentifier(container, index) {
         var paramHash = populateParameters("removeSystemIdentifier", "par/ajax/par_SystemIdentifiersSection");
         paramHash.set("index", index);
-        var url = $('command').action + "?dummy=0&subview"
+        var url = $('command').action + "?subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onRemoveSystemIdentifier, evalScripts : true
+            parameters: paramHash.toQueryString(), onSuccess: onRemoveSystemIdentifier, evalScripts : true
         });
     }
 
@@ -179,7 +179,7 @@ ${command.organization}
 </chrome:division>
 
 <chrome:division title="Subject ID Assigned by Organization">
-    <table id="test" class="tablecontent">
+    <table id="organizationIdentifierTable" class="tablecontent">
         <tr id="organization-section">
             <th class="tableHeader"><tags:requiredIndicator/>Identifier</th>
             <th class="tableHeader"><tags:requiredIndicator/>Identifier type</th>
@@ -207,7 +207,7 @@ ${command.organization}
 
 
 <chrome:division title="Subject ID Assigned by a System">
-    <table id="test1" class="tablecontent">
+    <table id="systemIdentifierTable" class="tablecontent">
         <tr id="system-section">
             <th class="tableHeader"><tags:requiredIndicator/>Identifier</th>
             <th class="tableHeader"><tags:requiredIndicator/>Identifier type</th>
