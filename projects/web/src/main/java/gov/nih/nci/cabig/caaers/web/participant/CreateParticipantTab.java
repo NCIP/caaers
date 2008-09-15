@@ -164,6 +164,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
     }
 
     public ModelAndView addOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        System.out.println("addOrganizationIdentifier");
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
@@ -178,11 +179,14 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         // store the new Identifier object into the command.participant
         OrganizationAssignedIdentifier newIdentifier = new OrganizationAssignedIdentifier();
         command.getParticipant().addIdentifier(newIdentifier);
+        
+        System.out.println("org size after add: " + command.getParticipant().getOrganizationIdentifiers().size());
 
         return modelAndView;
     }
 
     public ModelAndView removeOrganizationIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        System.out.println("removeOrganizationIdentifier");
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
@@ -196,12 +200,14 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         for(int i = 0 ; i < size ; i++){
             indexes[i] = i;
         }
+        System.out.println("org size after delete: " + command.getParticipant().getOrganizationIdentifiers().size());
 
         modelAndView.getModel().put("indexes", indexes);
         return modelAndView;
     }
 
     public ModelAndView addSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        System.out.println("addSystemIdentifier");
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
@@ -217,16 +223,22 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         SystemAssignedIdentifier newIdentifier = new SystemAssignedIdentifier();
         command.getParticipant().addIdentifier(newIdentifier);
 
+        System.out.println("sys size after add: " + command.getParticipant().getSystemAssignedIdentifiers().size());
+
         return modelAndView;
     }
 
     public ModelAndView removeSystemIdentifier(HttpServletRequest request, Object cmd, Errors error) {
+        System.out.println("removeSystemIdentifier");
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
         ParticipantInputCommand command =(ParticipantInputCommand)cmd;
         List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
+
+        System.out.println("before delete: "+list.size());
         list.remove(list.get(command.getIndex()));
+        System.out.println("after delete:"+list.size());
 
         // update the array of remainning indexes after deleting
         int size = list.size();
@@ -234,6 +246,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         for(int i = 0 ; i < size ; i++){
             indexes[i] = i;
         }
+        System.out.println("sys size after delete: " + command.getParticipant().getSystemAssignedIdentifiers().size());
 
         modelAndView.getModel().put("indexes", indexes);
         return modelAndView;

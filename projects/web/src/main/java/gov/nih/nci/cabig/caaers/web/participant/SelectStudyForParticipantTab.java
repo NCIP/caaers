@@ -78,6 +78,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public void postProcess(HttpServletRequest request, T command, Errors errors) {
         super.postProcess(request, command, errors);
 
+//        if (getTargetNumber() < getNumber())
         ParticipantInputCommand participantCommand = (ParticipantInputCommand)command;
         StudySite studySite = studySiteDao.findByStudyAndOrganization(command.getStudy().getId(), participantCommand.getOrganization().getId());
         participantCommand.getAssignment().setStudySite(studySite);

@@ -32,7 +32,7 @@
         var url = $('command').action + "?dummy=0&subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onAddOrganizationIdentifier, insertion: Insertion.Bottom, evalScripts : true
+            parameters: paramHash.toQueryString(), onSuccess: onAddOrganizationIdentifier, insertion: Insertion.Bottom, evalScripts : true
         });
     }
 
@@ -45,10 +45,10 @@
     function removeOrganizationIdentifier(container, index) {
         var paramHash = populateParameters("removeOrganizationIdentifier", "par/ajax/par_OrganizationIdentifiersSection");
         paramHash.set("index", index);
-        var url = $('command').action + "?dummy=0&subview"
+        var url = $('command').action + "?subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onRemoveOrganizationIdentifier, evalScripts : true
+            parameters: paramHash.toQueryString(), onSuccess: onRemoveOrganizationIdentifier, evalScripts : true
         });
     }
 
@@ -65,7 +65,7 @@
         var url = $('command').action + "?subview"
 
         new Ajax.Updater(container, url, {
-            parameters: paramHash.toQueryString(), onComplete: onAddSystemIdentifier, insertion: Insertion.Bottom, evalScripts : true
+            parameters: paramHash.toQueryString(), onSuccess: onAddSystemIdentifier, insertion: Insertion.Bottom, evalScripts : true
         });
     }
 

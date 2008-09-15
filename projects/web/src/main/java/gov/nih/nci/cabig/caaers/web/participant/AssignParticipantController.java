@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.web.ListValues;
@@ -35,6 +34,12 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     private ParticipantDao participantDao;
     private StudySiteDao studySiteDao;
     protected ListValues listValues;
+
+    protected PriorTherapyDao priorTherapyDao;
+    protected AnatomicSiteDao anatomicSiteDao;
+    protected PreExistingConditionDao preExistingConditionDao;
+    protected AbstractStudyDiseaseDao abstractStudyDiseaseDao;
+    protected ChemoAgentDao chemoAgentDao;
 
     @Override
     @SuppressWarnings(value = {"unchecked"})
@@ -77,6 +82,13 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     protected void initBinder(HttpServletRequest httpServletRequest, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerDomainObjectEditor(binder, participantDao);
         ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
+
+        ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
+        ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
+        ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
+        ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
+
     }
 
     @Override
@@ -106,24 +118,20 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         log.debug("processFinish.");
 
         AssignParticipantStudyCommand assignParticipantStudyCommand = (AssignParticipantStudyCommand) command;
+  //      StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 
-        StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
+/*
         studyParticipantAssignment.setDateOfEnrollment(new Date());
         studyParticipantAssignment.setParticipant(assignParticipantStudyCommand.getParticipant());
         studyParticipantAssignment.setStudySite(assignParticipantStudyCommand.getStudySite());
-        studyParticipantAssignment.setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
+*/
+//        studyParticipantAssignment.setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
 
         Participant participant = assignParticipantStudyCommand.getParticipant();
         participantDao.reassociateUsingLock(participant);
 
-        participant.addAssignment(studyParticipantAssignment);
+//        participant.addAssignment(studyParticipantAssignment);
         participantDao.save(participant);
-
-/*
-        ModelAndView modelAndView = new ModelAndView("par/par_confirm");
-        modelAndView.addObject("participant", participant);
-        modelAndView.addAllObjects(errors.getModel());
-*/
 
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=edit");
 
@@ -165,6 +173,46 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     public void setStudySiteDao(StudySiteDao studySiteDao) {
         this.studySiteDao = studySiteDao;
+    }
+
+    public PriorTherapyDao getPriorTherapyDao() {
+        return priorTherapyDao;
+    }
+
+    public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
+        this.priorTherapyDao = priorTherapyDao;
+    }
+
+    public AnatomicSiteDao getAnatomicSiteDao() {
+        return anatomicSiteDao;
+    }
+
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+        this.anatomicSiteDao = anatomicSiteDao;
+    }
+
+    public PreExistingConditionDao getPreExistingConditionDao() {
+        return preExistingConditionDao;
+    }
+
+    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
+        this.preExistingConditionDao = preExistingConditionDao;
+    }
+
+    public AbstractStudyDiseaseDao getAbstractStudyDiseaseDao() {
+        return abstractStudyDiseaseDao;
+    }
+
+    public void setAbstractStudyDiseaseDao(AbstractStudyDiseaseDao abstractStudyDiseaseDao) {
+        this.abstractStudyDiseaseDao = abstractStudyDiseaseDao;
+    }
+
+    public ChemoAgentDao getChemoAgentDao() {
+        return chemoAgentDao;
+    }
+
+    public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+        this.chemoAgentDao = chemoAgentDao;
     }
 }
 
