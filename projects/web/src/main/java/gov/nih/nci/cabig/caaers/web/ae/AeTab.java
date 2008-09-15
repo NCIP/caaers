@@ -142,8 +142,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
     
     public CompositeField createTimeField(String baseProperty, String displayName){
-    	InputField hrField = InputFieldFactory.createTextField("hour", "");
-    	InputField mmField = InputFieldFactory.createTextField("minute"," "); 
+    	InputField hrField = InputFieldFactory.createTextField("hourString", "");
+    	InputField mmField = InputFieldFactory.createTextField("minuteString"," "); 
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
     	amPmOption.put("0", "AM");
     	amPmOption.put("1", "PM");
