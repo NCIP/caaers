@@ -3,16 +3,27 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.DomainObjectTools;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
-import org.hibernate.annotations.OrderBy;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OrderBy;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Where;
 
 /**
  * @author Krikor Krumlian
@@ -303,22 +314,42 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
 
     }
-
+    /**
+     * Will return true, if the priorTherapy is assigned to the PriorTherapy, via {@link StudyParticipantPriorTherapy}
+     * @param priorTherapy
+     */
+    public boolean containsPriorTherapy(PriorTherapy priorTherapy){
+    	for(StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()){
+    		if(priorTherapy.getId().equals(spaPriorTherapy.getPriorTherapy().getId())) return true;
+    	}
+    	return false;
+    }
+    
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
 
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
-            if (saeReportPriorTherapy.getId() == null) {
+            if (!containsPriorTherapy(saeReportPriorTherapy.getPriorTherapy())) {
                 StudyParticipantPriorTherapy priorTherapy = StudyParticipantPriorTherapy.createAssignmentPriorTherapy(saeReportPriorTherapy);
                 addPriorTherapy(priorTherapy);
             }
         }
 
     }
-
+    /**
+     * Will return true, if the {@link ConcomitantMedication} is associated to this assignment via {@link StudyParticipantConcomitantMedication}
+     * @param concomitantMedication
+     * @return
+     */
+    public boolean containsConcomitantMedication(ConcomitantMedication concomitantMedication){
+    	for(StudyParticipantConcomitantMedication spaConMed : getConcomitantMedications()){
+    		if(spaConMed.getAgentName().equals(concomitantMedication.getAgentName())) return true;
+    	}
+    	return false;
+    }
     private void syncrhonizeConcomitantMedication(final List<ConcomitantMedication> saeReportConcomitantMedications) {
 
         for (ConcomitantMedication saeReportConcomitantMedication : saeReportConcomitantMedications) {
-            if (saeReportConcomitantMedication.getId() == null) {
+            if (!containsConcomitantMedication(saeReportConcomitantMedication)) {
                 StudyParticipantConcomitantMedication studyParticipantConcomitantMedication = StudyParticipantConcomitantMedication.createAssignmentConcomitantMedication(
                         saeReportConcomitantMedication);
                 addConcomitantMedication(studyParticipantConcomitantMedication);
@@ -326,12 +357,24 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
 
     }
-
+    /**
+     * Will return true, if the {@link MetastaticDiseaseSite} is associated to the assignment via {@link StudyParticipantMetastaticDiseaseSite}
+     * @param metastaticDiseaseSite
+     * @return
+     */
+    public boolean containsMetastaticDiseaseSite(MetastaticDiseaseSite metastaticDiseaseSite){
+    	if(getDiseaseHistory() == null) return true;
+    	for(StudyParticipantMetastaticDiseaseSite spaSite : getDiseaseHistory().getMetastaticDiseaseSites()){
+    		if(spaSite.getCodedSite().getId().equals(metastaticDiseaseSite.getCodedSite().getId())) return true;
+    	}
+    	return false;
+    }
+    
     private void syncrhonizeDiseaseHistory(final DiseaseHistory saeReportDiseaseHistory) {
 
         if (saeReportDiseaseHistory != null && getDiseaseHistory() != null) {
             for (MetastaticDiseaseSite metastaticDiseaseSite : saeReportDiseaseHistory.getMetastaticDiseaseSites()) {
-                if (metastaticDiseaseSite.getId() == null) {
+                if (!containsMetastaticDiseaseSite(metastaticDiseaseSite)) {
                     StudyParticipantMetastaticDiseaseSite assignmentMetastaticDiseaseSite = StudyParticipantMetastaticDiseaseSite.
                             createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite);
                     getDiseaseHistory().addMetastaticDiseaseSite(assignmentMetastaticDiseaseSite);
@@ -341,11 +384,21 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
 
     }
-
+    /**
+     * Will return true, if the {@link PreExistingCondition} is associated to this assignment via, {@link StudyParticipantPreExistingCondition}
+     * @param preCondition
+     * @return
+     */
+    public boolean containsPreExistingCondition(PreExistingCondition preCondition){
+    	for(StudyParticipantPreExistingCondition spaPreCond : getPreExistingConditions()){
+    		if(spaPreCond.getPreExistingCondition().getId().equals(preCondition.getId())) return true;
+    	}
+    	return false;
+    }
     private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
-            if (saeReportPreExistingCondition.getId() == null) {
+            if (!containsPreExistingCondition(saeReportPreExistingCondition.getPreExistingCondition())) {
                 StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(
                         saeReportPreExistingCondition);
                 addPreExistingCondition(studyParticipantPreExistingCondition);

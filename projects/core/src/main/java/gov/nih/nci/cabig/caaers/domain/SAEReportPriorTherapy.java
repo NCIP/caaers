@@ -94,11 +94,11 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     @JoinColumn(name = "ae_prior_therapy_id", nullable = false)
     @IndexColumn(name = "list_index")
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    protected List<PriorTherapyAgent> getPriorTherapyAgentsInternal() {
+    public List<PriorTherapyAgent> getPriorTherapyAgentsInternal() {
         return lazyListHelper.getInternalList(PriorTherapyAgent.class);
     }
 
-    protected void setPriorTherapyAgentsInternal(List<PriorTherapyAgent> priorTherapyAgentsInternal) {
+    public void setPriorTherapyAgentsInternal(List<PriorTherapyAgent> priorTherapyAgentsInternal) {
         lazyListHelper.setInternalList(PriorTherapyAgent.class, priorTherapyAgentsInternal);
     }
 

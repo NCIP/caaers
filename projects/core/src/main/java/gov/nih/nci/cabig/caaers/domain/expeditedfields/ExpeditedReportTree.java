@@ -4,16 +4,12 @@ import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSec
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADVERSE_EVENT_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.BASICS_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.DESCRIPTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.LABS_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_DEVICE_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.MEDICAL_INFO_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OTHER_CAUSE_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.OUTCOME_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PATIENT_DETAILS_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRE_EXISTING_CONDITION_SECTION;
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.PRIOR_THERAPIES_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.RADIATION_INTERVENTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.REPORTER_INFO_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.SUBMIT_REPORT_SECTION;
@@ -71,7 +67,6 @@ public class ExpeditedReportTree extends PropertylessNode {
                         		createPersonBlock("reporter"),
                                 createPersonBlock("physician")
                         ),
-                        section(PATIENT_DETAILS_SECTION), // so that ordering lines up
                         section(RADIATION_INTERVENTION_SECTION, list("radiationInterventions","RadiationIntervention",
                                 property("administration","Type of radiation administration"),
                                 // TODO: these should be a component instead
@@ -131,32 +126,6 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("eventReappear","Did event reappear after study drug was reintroduced?")
                             )
                         ),
-                        section(MEDICAL_INFO_SECTION,
-                            property("participantHistory",
-                                           participantMeasure("height"),
-                                           participantMeasure("weight"),
-                                           property("baselinePerformanceStatus","Baseline performance")),
-                                           property(
-                                                        "diseaseHistory",
-                                                        codedOrOther("ctepStudyDisease",
-                                                                        "Disease name",
-                                                                        "otherPrimaryDisease",
-                                                                        "Other (disease)"),
-                                                        codedOrOther("codedPrimaryDiseaseSite",
-                                                                        "Primary site of disease",
-                                                                        "otherPrimaryDiseaseSite",
-                                                                        "Other (site of primary disease)"),
-                                                        property("diagnosisDate",
-                                                                        "Date of initial diagnosis"),
-                                                        list(
-                                                                        "metastaticDiseaseSites",
-                                                                        "Metastatic disease site",
-                                                                        codedOrOther(
-                                                                                        "codedSite",
-                                                                                        "Site name",
-                                                                                        "otherSite",
-                                                                                        "Other(site of metastatic disease)")))
-                                                    ),
                         section(TREATMENT_INFO_SECTION,
                             property("treatmentInformation",
                                 property("treatmentAssignment","Treatment assignment code"),
@@ -191,48 +160,64 @@ public class ExpeditedReportTree extends PropertylessNode {
 								)
 							)
 						), 
-						section(LABS_SECTION, list("labs",
-                                        new LabsDisplayNameCreator(),
-                                        codedOrOther("labTerm", "Lab test name", "other",
-                                                        "Other test name"), property("units",
-                                                        "Units"), labValue("baseline", "Baseline"),
-                                        labValue("nadir", "Worst"),
-                                        labValue("recovery", "Recovery"), property("site", "Site"),
-                                        property("labDate", "date"), property("infectiousAgent",
-                                                        "Infectious agent"))),
-                        section(PRIOR_THERAPIES_SECTION, 
-                        	list("saeReportPriorTherapies","Prior Therapy", 
-                    				property("priorTherapy", "Prior therapy"),
-                                    property("other", "Comments (prior therapy)"), 
-                                    property("startDate", "Therapy start Date"), 
-                                    property("endDate", "Therapy end Date"), 
-                                    list("priorTherapyAgents", "PriorTherapyAgent",
-                                          property("chemoAgent", "Agent")
-                                    )
-                            )
+						section(LABS_SECTION, 
+							list("labs", new LabsDisplayNameCreator(),
+                                 codedOrOther("labTerm", "Lab test name", "other","Other test name"), 
+                                 property("units","Units"), 
+                                 labValue("baseline", "Baseline"),
+                                 labValue("nadir", "Worst"),
+                                 labValue("recovery", "Recovery"), 
+                                 property("site", "Site"),
+                                 property("labDate", "date"), 
+                                 property("infectiousAgent","Infectious agent")
+                           )
                         ),
-                        section(PRE_EXISTING_CONDITION_SECTION, list(
-                                        "saeReportPreExistingConditions",
-                                        "Pre-existing condition", codedOrOther(
-                                                        "preExistingCondition",
-                                                        "Pre-existing condition", "other",
-                                                        "Other (pre-existing)"))),
-                        section(CONCOMITANT_MEDICATION_SECTION, 
+                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
+                                                        property("text", "Cause"))),
+                        section(ATTRIBUTION_SECTION), // TODO: how to fill this??
+                        section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
+                        section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
+                        section(OUTCOME_SECTION),// TODO: just a space filler section
+                        section(MEDICAL_INFO_SECTION,
+                        		//fields - general
+                        		 property("participantHistory",
+                        				 participantMeasure("height"),
+                                         participantMeasure("weight"),
+                        				 property("baselinePerformanceStatus","Baseline performance")
+                        		 ),
+                        		//fields related to diseases history
+                        		 property("diseaseHistory",
+                                         	codedOrOther("ctepStudyDisease", "Disease name","otherPrimaryDisease","Other (disease)"),
+                                         	codedOrOther("codedPrimaryDiseaseSite", "Primary site of disease", "otherPrimaryDiseaseSite", "Other (site of primary disease)"),
+                                         	property("diagnosisDate","Date of initial diagnosis"),
+			                        		//fields related to metastatic diseases
+			                        		list("metastaticDiseaseSites","Metastatic disease site",
+			                        				codedOrOther("codedSite","Site name","otherSite","Other(site of metastatic disease)")
+			                        		)
+			                    ),
+                        		//fields related to pre-existing conds
+                        		list("saeReportPreExistingConditions","Pre-existing condition", 
+                        				codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)")
+                        		),
+                        		//fields related to con-med
                         		list("concomitantMedications","Medication",
                                         property("agentName", "Medication"),
                                         property("stillTakingMedications","Continued ?"),
                                         property("startDate","Start date"),
                                         property("endDate","End date")
                                        
+                                ),
+                        		//fields related to prior therapy
+                            	list("saeReportPriorTherapies","Prior Therapy", 
+                        				property("priorTherapy", "Prior therapy"),
+                                        property("other", "Comments (prior therapy)"), 
+                                        property("startDate", "Therapy start Date"), 
+                                        property("endDate", "Therapy end Date"), 
+                                        list("priorTherapyAgents", "PriorTherapyAgent",
+                                              property("chemoAgent", "Agent")
+                                        )
                                 )
-                        ),
-                                        
-                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
-                                                        property("text", "Cause"))),
-                        section(ATTRIBUTION_SECTION), // TODO: how to fill this??
-                        section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
-                        section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
-                        section(OUTCOME_SECTION)// TODO: just a space filler section
+                        )
         );
     }
 

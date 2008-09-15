@@ -845,12 +845,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
             throw new CaaersSystemException("Must set assignment before calling synchronizeMedicalHistoryFromAssignmentToReport");
         } else {
             // synchronize from assignment to report
+        	getParticipantHistory().setBaselinePerformanceStatus(assignment.getBaselinePerformance());
             syncrhonizePriorTherapies();
             syncrhonizePreExistingConditions();
             syncrhonizeConcomitantMedications();
             syncrhonizeDiseaseHistories();
-
-
         }
     }
 

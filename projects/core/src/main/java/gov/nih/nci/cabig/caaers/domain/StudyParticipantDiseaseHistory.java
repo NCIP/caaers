@@ -61,7 +61,7 @@ public class StudyParticipantDiseaseHistory extends AbstractMutableDomainObject 
 
     @OneToOne
     @JoinColumn(name = "coded_primary_disease_site_id")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = { CascadeType.LOCK })
     public AnatomicSite getCodedPrimaryDiseaseSite() {
         return codedPrimaryDiseaseSite;
     }

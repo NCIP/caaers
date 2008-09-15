@@ -189,8 +189,6 @@ public class DateValue implements Comparable<DateValue> {
 
     @Transient
     public boolean isNull() {
-
-
         return (this.getMonth() == null && this.getDay() == null && this.getDay() == null);
     }
 }

@@ -27,7 +27,7 @@ public class TreeNodeTest extends TestCase {
         super.setUp();
         deepTree = section(ExpeditedReportSection.BASICS_SECTION, property("r", property("a",
                         property("a1"), property("a2")), section(
-                        ExpeditedReportSection.PATIENT_DETAILS_SECTION, property("b", property("b1"),
+                        ExpeditedReportSection.MEDICAL_INFO_SECTION, property("b", property("b1"),
                                         property("b2"))), list("l", "Lambda", property("l7",
                         property("l71"), property("l72"), property("l73")), property("L9")),
                         property("duplicate", "Dup 0", property("duplicate", "Dup 1", property(

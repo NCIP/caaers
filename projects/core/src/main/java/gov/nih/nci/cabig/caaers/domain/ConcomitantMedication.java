@@ -87,11 +87,9 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 
 
     public static ConcomitantMedication createConcomitantMedication(StudyParticipantConcomitantMedication studyParticipantConcomitantMedication) {
-
         if (studyParticipantConcomitantMedication != null) {
             ConcomitantMedication saeReportConcomitantMedication = copy(studyParticipantConcomitantMedication);
             return saeReportConcomitantMedication;
-
         }
         return null;
 
@@ -99,8 +97,7 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
 
     private static ConcomitantMedication copy(Object source) {
         ConcomitantMedication saeReportConcomitantMedication = new ConcomitantMedication();
-        BeanUtils.copyProperties(source, saeReportConcomitantMedication, new String[]{"id", "gridId",
-                "version", "report"});
+        BeanUtils.copyProperties(source, saeReportConcomitantMedication, new String[]{"id", "gridId","version", "report"});
 
         return saeReportConcomitantMedication;
     }
@@ -109,4 +106,55 @@ public class ConcomitantMedication extends AbstractExpeditedReportCollectionElem
         return copy(this);
 
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((agentName == null) ? 0 : agentName.hashCode());
+		result = prime * result + ((endDate == null) ? 0 : endDate.hashCode());
+		result = prime * result
+				+ ((startDate == null) ? 0 : startDate.hashCode());
+		result = prime
+				* result
+				+ ((stillTakingMedications == null) ? 0
+						: stillTakingMedications.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ConcomitantMedication other = (ConcomitantMedication) obj;
+		if (agentName == null) {
+			if (other.agentName != null)
+				return false;
+		} else if (!agentName.equals(other.agentName))
+			return false;
+		if (endDate == null) {
+			if (other.endDate != null)
+				return false;
+		} else if (!endDate.equals(other.endDate))
+			return false;
+		if (startDate == null) {
+			if (other.startDate != null)
+				return false;
+		} else if (!startDate.equals(other.startDate))
+			return false;
+		if (stillTakingMedications == null) {
+			if (other.stillTakingMedications != null)
+				return false;
+		} else if (!stillTakingMedications.equals(other.stillTakingMedications))
+			return false;
+		return true;
+	}
+    
+    ///OBJECT METHODS
+    
 }
