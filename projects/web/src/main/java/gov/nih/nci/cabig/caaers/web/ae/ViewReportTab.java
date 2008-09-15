@@ -27,15 +27,12 @@ public class ViewReportTab extends AeTab {
     private MessageSource messageSource;
 
     public ViewReportTab() {
-        super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(),
-                        "ae/submit");
+        super("Submission", ExpeditedReportSection.SUBMIT_REPORT_SECTION.getDisplayName(),"ae/submit");
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command,
-                    Errors errors) {
-        handleWithdrawAction(command, request.getParameter("_action"), request
-                        .getParameter("_selected"));
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Errors errors) {
+        handleWithdrawAction(command, request.getParameter("_action"), request.getParameter("_selected"));
     }
 
     @Override
@@ -50,12 +47,9 @@ public class ViewReportTab extends AeTab {
 
             if (!section.isAssociatedToBusinessRules()) continue;
 
-            ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(
-                            command.getAeReport(), section);
+            ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules( command.getAeReport(), section);
             for (ValidationError vError : validationErrors.getErrors()) {
-                reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError
-                                .getCode(), vError.getReplacementVariables(), vError.getMessage(),
-                                Locale.getDefault()));
+                reportSubmittability.addValidityMessage(section, messageSource.getMessage(vError.getCode(), vError.getReplacementVariables(), vError.getMessage(), Locale.getDefault()));
             }
         }
 
@@ -69,16 +63,13 @@ public class ViewReportTab extends AeTab {
         return refdata;
     }
 
-    private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action,
-                    String selected) {
+    private void handleWithdrawAction(ExpeditedAdverseEventInputCommand command, String action,String selected) {
         if ("withdraw".equals(action)) {
 
             for (Report report : command.getAeReport().getReports()) {
                 // TODO: there's no chance this actually works -- report.getId() is an Integer and
                 // selected is a String
-                if (report.getId().equals(selected)
-                                && !report.getLastVersion().getReportStatus().equals(
-                                                ReportStatus.COMPLETED)) {
+                if (report.getId().equals(selected) && !report.getLastVersion().getReportStatus().equals(ReportStatus.COMPLETED)) {
                     reportRepository.withdrawLastReportVersion(report);
                     break;
                 }
@@ -87,14 +78,12 @@ public class ViewReportTab extends AeTab {
     }
 
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         // Note:- Do not call super, as it will do the report level validations.
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                    ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator,ExpeditedAdverseEventInputCommand command) {
         // No fields for this tab
     }
 

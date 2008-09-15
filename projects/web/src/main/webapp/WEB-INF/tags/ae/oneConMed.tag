@@ -1,4 +1,51 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="par" tagdir="/WEB-INF/tags/par" %>
+<%@attribute name="index" required="true"%>
+<%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
+<%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" required="true" %>
+<chrome:division title="${concomitantMedication.agentName}" id="aeReport.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
+ enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
+	<c:set var="mainGroup">conmed${index}</c:set>
+	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
+		<tags:renderRow field="${field}" />
+	</c:forEach>
+	<script>
+	 function initializeConMed_${index}(){
+		 if($('aeReport.concomitantMedications[${index}].stillTakingMedications')){
+			 $('aeReport.concomitantMedications[${index}].stillTakingMedications').observe('click', function(evt){
+				 	//the code to clear end-date and make it a readonly field.
+				 	var edYrField = $('aeReport.concomitantMedications[${index}].endDate.yearString')
+					if(edYrField){
+
+						var edDdField = $('aeReport.concomitantMedications[${index}].endDate.dayString');
+						var edMmField = $('aeReport.concomitantMedications[${index}].endDate.monthString');
+						if(evt.element().value){
+							edYrField.value = '';
+							edDdField.value = '';
+							edMmField.value = '';
+							edYrField.readOnly = true;
+							edDdField.readOnly = true;
+							edMmField.readOnly =  true;
+						}else{
+							edYrField.readOnly = false;
+							edDdField.readOnly = false;
+							edMmField.readOnly =  false;
+						}
+						
+					}
+			  });	
+			 AE.registerCalendarPopups();
+		 }
+
+	 }
+	 initializeConMed_${index}.defer();
+	</script>
+</chrome:division>
+<%--
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -13,3 +60,4 @@
 	</c:forEach>
     
 </ae:fieldGroupDivision>
+--%>

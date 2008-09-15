@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<ftstdata>
+<topic name="ae_captureRoutine" url="ae_captureRoutine.htm" />
+<topic name="ae_list" url="ae_list.htm" />
+<topic name="Before_You_Begin" url="Before_You_Begin.htm" />
+<topic name="First_Topic" url="First_Topic.htm" />
+<topic name="Getting_Started" url="Getting_Started.htm" />
+<topic name="pages_admin_configure" url="pages_admin_configure.htm" />
+<topic name="pages_admin_createIND" url="pages_admin_createIND.htm" />
+<topic name="pages_admin_createInvestigator" url="pages_admin_createInvestigator.htm" />
+<topic name="pages_admin_createOrganization" url="pages_admin_createOrganization.htm" />
+<topic name="pages_admin_createResearchStaff" url="pages_admin_createResearchStaff.htm" />
+<topic name="pages_admin_import" url="pages_admin_import.htm" />
+<topic name="pages_admin_importMeddra" url="pages_admin_importMeddra.htm" />
+<topic name="pages_admin_passwordPolicyConfigure" url="pages_admin_passwordPolicyConfigure.htm" />
+<topic name="participant_assignParticipant" url="participant_assignParticipant.htm" />
+<topic name="participant_create" url="participant_create.htm" />
+<topic name="participant_search" url="participant_search.htm" />
+<topic name="rule_create" url="rule_create.htm" />
+<topic name="rule_import" url="rule_import.htm" />
+<topic name="rule_list" url="rule_list.htm" />
+<topic name="rule_notification_create" url="rule_notification_create.htm" />
+<topic name="rule_notification_list" url="rule_notification_list.htm" />
+<topic name="search_participant" url="search_participant.htm" />
+<topic name="search_report" url="search_report.htm" />
+<topic name="search_routineReport" url="search_routineReport.htm" />
+<topic name="search_study" url="search_study.htm" />
+<topic name="study_create" url="study_create.htm" />
+<topic name="study_search" url="study_search.htm" />
+<topic name="task" url="task.htm" />
+
+</ftstdata>  

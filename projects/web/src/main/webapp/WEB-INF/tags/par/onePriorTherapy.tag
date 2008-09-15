@@ -97,7 +97,7 @@ function initializePriorTherapy(){
 		 	mHistory.addDetails('priorTherapyAgent', evt.element(), inField.value, 'anchorPriorTherapies[${index}].priorTherapyAgents', {parentIndex : ${index} });
 		 	
 		 	//clear the fields
-		 	AE.resetAutocompleter('priorTherapyAgent[${index}]');
+		 	AE.resetAutocompleter('priorTherapyAgents[${index}]');
 	 	});	
 	 	
 	}

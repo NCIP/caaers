@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<tocdata>
+<item name="Welcome" url="First_Topic.htm" />
+<item name="Before You Begin" url="Before_You_Begin.htm" />
+<book name="Adverse Events Tab" url="ae_list.htm" >
+  <item name="Manage Reports" url="ae_list.htm" />
+  <item name="Enter AEs" url="ae_captureRoutine.htm" />
+</book>
+<book name="Studies Tab" url="study_search.htm" >
+  <item name="Enter Study" url="study_create.htm" />
+  <item name="Search Studies" url="study_search.htm" />
+</book>
+<book name="Subjects Tab" url="participant_create.htm" >
+  <item name="Enter Subject" url="participant_create.htm" />
+  <item name="Search Subjects" url="participant_search.htm" />
+  <item name="Assign Subjects to Studies" url="participant_assignParticipant.htm" />
+</book>
+<book name="Administration" url="pages_admin_configure.htm" >
+  <item name="Configure caAERS" url="pages_admin_configure.htm" />
+  <item name="Investigator" url="pages_admin_createInvestigator.htm" />
+  <item name="Research Staff" url="pages_admin_createResearchStaff.htm" />
+  <item name="Import" url="pages_admin_import.htm" />
+  <item name="Import MedDRA" url="pages_admin_importMeddra.htm" />
+  <item name="IND#" url="pages_admin_createIND.htm" />
+  <item name="Organization" url="pages_admin_createOrganization.htm" />
+  <item name="Configure Password Policy" url="pages_admin_passwordPolicyConfigure.htm" />
+</book>
+<book name="Rules Tab" url="rule_create.htm" >
+  <item name="Manage Rules" url="rule_create.htm" />
+  <item name="List Rules" url="rule_list.htm" />
+  <item name="Import Rules" url="rule_import.htm" />
+  <item name="Create Report Definition" url="rule_notification_create.htm" />
+  <item name="List Report Definitions" url="rule_notification_list.htm" />
+</book>
+<book name="Advanced Search" url="search_study.htm" >
+  <item name="Study search" url="search_study.htm" />
+  <item name="Subject search" url="search_participant.htm" />
+  <item name="Expedited Search Report" url="search_report.htm" />
+  <item name="Routine AE search" url="search_routineReport.htm" />
+</book>
+
+</tocdata>

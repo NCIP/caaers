@@ -1,4 +1,35 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@attribute name="index" required="true"%>
+<%@attribute name="preExistingCondition" type="gov.nih.nci.cabig.caaers.domain.PreExistingCondition"%>
+
+<c:set var="mainGroup">preExistingCondition${index}</c:set>
+<c:set var="preCondField" value="${fieldGroups[mainGroup].fields[0]}" />
+<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
+		<table width="100%">
+ 			<tr>
+  				<td width="99%">
+					<c:if test="${not empty preExistingCondition}">
+					<ui:text path="${preCondField.propertyName}" displayNamePath="${preCondField.propertyName}.text" readonly="true" />
+					</c:if>
+					<c:if test="${empty preExistingCondition}">
+					<%-- Other, Specify--%>
+					<c:set var="otherField" value="${fieldGroups[mainGroup].fields[1]}" />
+					Other, specify <ui:text path="${otherField.propertyName}"/>
+					</c:if>
+  				</td>
+  				<td>
+					<a href="#anchorPreExistingCondition" onClick="mHistory.removeDetails('preExistingCondition', ${index}, 'anchorPreExistingCondition')">
+  					<img src="<chrome:imageUrl name="../checkno.gif" />" />
+					</a>
+				</td>
+ 			</tr>
+		</table> 
+</div>
+<%--
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -25,3 +56,4 @@
         </jsp:attribute>
     </tags:renderRow>
 </ae:fieldGroupDivision>
+--%>

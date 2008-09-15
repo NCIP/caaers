@@ -1,4 +1,34 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@attribute name="index" required="true"%>
+<%@attribute name="anatomicSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite" required="true"%>
+<c:set var="mainGroup">metastatic${index}</c:set>
+<c:set var="siteField" value="${fieldGroups[mainGroup].fields[0]}" />
+<div class="${(index % 2 ) gt 0 ? 'odd' : 'even' }">
+		<table width="100%">
+ 			<tr>
+  				<td width="99%">
+					<ui:autocompleter path="${siteField.propertyName}" readonly="true" 
+						displayNamePath="${siteField.propertyName}.name" />
+					<c:if test="${anatomicSite.id eq 110}">
+					<%-- Other, Specify--%>
+					<c:set var="otherSiteField" value="${fieldGroups[mainGroup].fields[1]}" />
+					<ui:text path="${otherSiteField.propertyName}" required="true"/>
+					</c:if>
+  				</td>
+  				<td>
+					<a href="#anchorMetastaticDiseases" onClick="mHistory.removeDetails('metastaticDiseaseSite', ${index}, 'anchorMetastaticDiseases')">
+  					<img src="<chrome:imageUrl name="../checkno.gif" />" />
+					</a>
+				</td>
+ 			</tr>
+		</table> 
+</div>
+
+<%-- 
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
@@ -48,3 +78,4 @@
         </jsp:attribute>
     </tags:renderRow>
 </ae:fieldGroupDivision>
+--%>

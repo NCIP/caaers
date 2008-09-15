@@ -15,7 +15,7 @@
     <c:when test="${field.categoryName == 'date'}"><tags:dateInput path="${field.propertyName}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY' : ''}" /></c:when>
 	<c:when test="${field.categoryName == 'split_date'}"><tags:splitDateInput cssClass="${cssClass}" dayRequired="${field.attributes.ddRequired}" monthRequired="${field.attributes.mmRequired}" yearRequired="${field.attributes.yyRequired}" required="${field.required}" path="${field.propertyName}" /></c:when>    
 	<c:when test="${field.categoryName == 'textarea'}"><form:textarea path="${field.propertyName}" disabled="${disabled}" cols="${not empty field.attributes.cols ? field.attributes.cols : ''}" rows="${not empty field.attributes.rows ? field.attributes.rows : ''}" title="${field.displayName}" cssClass="${field.required ? 'validate-NOTEMPTY&&MAXLENGTH2000' : 'validate-MAXLENGTH2000'}" /></c:when>
-    <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox path="${field.propertyName}" disabled="${disabled}" cssClass="${cssClass}"/></c:when>
+    <c:when test="${field.categoryName == 'checkbox'}"><form:checkbox id="${field.propertyName}" path="${field.propertyName}" disabled="${disabled}" cssClass="${cssClass}"/></c:when>
     <c:when test="${field.categoryName == 'inplace_text'}"><ui:inplaceTextField path="${field.propertyName}" /></c:when>
     <c:when test="${field.categoryName == 'label'}"><ui:value propertyName="${field.propertyName}" /></c:when>
 	<c:when test="${field.categoryName == 'image'}"><img src="<c:url value="/images/chrome/spacer.gif" />" /></c:when>

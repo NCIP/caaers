@@ -134,10 +134,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();
         		aeReport.setCreatedAt(nowFactory.getNowTimestamp());
         		command.setAeReport(aeReport);
-        		List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
-        		if(rdList != null){
-                	command.setSelectedReportDefinitions(rdList);
-                }
         	}
         }
         return command;
@@ -166,11 +162,16 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         if(StringUtils.equals("createNew", action)){
     		command.getAeReport().setReportingPeriod(reportingPeriod);
     		command.reassociate();
+    		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
         }else{
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         	command.refreshMandatoryProperties();
         }
         
+        //will pre determine the display/renderability of fields 
+        command.initializeNotApplicableFields();
+        
+
         request.getSession().removeAttribute(AE_LIST_PARAMETER);
         request.getSession().removeAttribute(AE_REPORT_ID_PARAMETER);
         request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);

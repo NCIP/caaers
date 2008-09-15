@@ -3,14 +3,21 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.collections15.ListUtils;
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.list.LazyList;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -27,6 +34,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 /**
@@ -35,11 +43,25 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
     private RenderDecisionManager renderDecisionManager;
+	
+    private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
+    private String task; // will tell the action we perform on the current item.
+    private Integer index; //corresponds to the index of the item (eg: conmed[3])
+    private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
     
-    private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
+    private Map<Object, Object> studyDiseasesMap;
+    
+   private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
     private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>(); 
     List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
+    private AnatomicSite metastaticDiseaseSite;
+    private PreExistingCondition preExistingCondition;
+    private PriorTherapy priorTherapy;
+    private List<ChemoAgent> chemoAgents;
+    private ChemoAgent chemoAgent;
+    private String concomitantMedication;
+
     // //// LOGIC
 
 
@@ -57,22 +79,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree);
     	this.assignmentDao = assignmentDao;
     	this.renderDecisionManager = renderDecisionManager;
+    	this.chemoAgents = new ArrayList<ChemoAgent>(); // new ArrayList<ChemoAgent>();
     	this.reportRepository = reportRepository;
-    }
-
-    @Override
-    public StudyParticipantAssignment getAssignment() {
-        return getAeReport().getAssignment();
-    }
-
-    @Override
-    public Participant getParticipant() {
-        return getAssignment().getParticipant();
-    }
-
-    @Override
-    public Study getStudy() {
-        return getAssignment().getStudySite().getStudy();
     }
 
     @Override
@@ -90,6 +98,25 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void flush() {
     	reportDao.flush();
     }
+    
+    public void synchronizeAndSaveAssignment(){
+    	ExpeditedAdverseEventReport aeReport = getAeReport();
+    	StudyParticipantAssignment assignment = aeReport.getAssignment();
+    	assignment.synchronizeMedicalHistoryFromReportToAssignment(aeReport);
+    	assignmentDao.save(assignment);
+    }
+    
+    public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
+    	if(studyDiseasesMap == null){
+    		if(diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)){
+        		studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
+        	}else {
+        		studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(),"id", "term.term", "Please select");
+        	}
+    	}
+    	return studyDiseasesMap;
+    }
+    
     
     /**
      * This method will intialize the render decision manager, with the field display status.
@@ -122,18 +149,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 			}
 		}		
 	}
-    
-    /*public void initializeNewlySelectedReportDefinitions() {
-		//List<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
-		//List<ReportDefinition> difference = ListUtils.subtract(getSelectedReportDefinitions(),instantiatedReportDefs);
-		//return difference;
-    	//TODO: Verify this. Newly selected should be all that are selected and not the difference with the 
-    	// instantiated ones.
-    	newlySelectedDefs.clear();
-    	newlySelectedDefs.addAll(getSelectedReportDefinitions());
-    }*/
-    
-    
+       
     
     /**
      * This method classifies the newly selected reportDefinitions into 2 lists.
@@ -190,7 +206,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		reportRepository.deleteReport(report);
     	}
     }
-    
 	/**
 	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
 	 * @return
@@ -200,6 +215,104 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		return (!getStudy().getAdeersReporting()) && getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
 	}
 	
+	
+	///BEAN METHODS
+
+    @Override
+    public StudyParticipantAssignment getAssignment() {
+        return getAeReport().getAssignment();
+    }
+
+    @Override
+    public Participant getParticipant() {
+        return getAssignment().getParticipant();
+    }
+
+    @Override
+    public Study getStudy() {
+        return getAssignment().getStudySite().getStudy();
+    }
+    
+    public Map<Object, Object> getStudyDiseasesMap() {
+		return studyDiseasesMap;
+	}
+    public void setStudyDiseasesMap(Map<Object, Object> studyDiseasesMap) {
+		this.studyDiseasesMap = studyDiseasesMap;
+	}
+    /**
+     * Will tell which subitem that we are dealing with. 
+     * @return
+     */
+    public String getCurrentItem() {
+		return currentItem;
+	}
+    /**
+     * Which tell which subitem that we are dealing with. 
+     * @param currentItem
+     */
+    public void setCurrentItem(String currentItem) {
+		this.currentItem = currentItem;
+	}
+    
+    public String getTask() {
+		return task;
+	}
+    public void setTask(String task) {
+		this.task = task;
+	}
+    
+    public Integer getIndex() {
+		return index;
+	}
+    public void setIndex(Integer index) {
+		this.index = index;
+	}
+    public void setParentIndex(Integer parentIndex) {
+		this.parentIndex = parentIndex;
+	}
+    public Integer getParentIndex() {
+		return parentIndex;
+	}
+    
+    public AnatomicSite getMetastaticDiseaseSite() {
+		return metastaticDiseaseSite;
+	}
+    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
+		this.metastaticDiseaseSite = metastaticDiseaseSite;
+	}
+    public PreExistingCondition getPreExistingCondition() {
+		return preExistingCondition;
+	}
+    public void setPreExistingCondition(PreExistingCondition preExistingCondition) {
+		this.preExistingCondition = preExistingCondition;
+	}
+    public PriorTherapy getPriorTherapy() {
+		return priorTherapy;
+	}
+    public void setPriorTherapy(PriorTherapy priorTherapy) {
+		this.priorTherapy = priorTherapy;
+	}
+    public List<ChemoAgent> getPriorTherapyAgents() {
+		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
+	}
+    public void setPriorTherapyAgents(List<ChemoAgent> chemoAgents) {
+		this.chemoAgents = chemoAgents;
+	}
+    
+    public String getConcomitantMedication() {
+		return concomitantMedication;
+	}
+    public void setConcomitantMedication(String concomitantMedication) {
+		this.concomitantMedication = concomitantMedication;
+	}
+    
+    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
+		this.chemoAgent = chemoAgent;
+	}
+    public ChemoAgent getPriorTherapyAgent() {
+		return chemoAgent;
+	}
+		
 	public void setNewlySelectedSponsorReports(
 			ArrayList<ReportDefinition> newlySelectedSponsorReports) {
 		this.newlySelectedSponsorReports = newlySelectedSponsorReports;

@@ -42,8 +42,7 @@ public abstract class BasicsTab extends AeTab {
     public BasicsTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("ctc-category", "grade", "startDate", "endDate", "hospitalization",
-                        "comments");
+        addHelpKeyExclusion("ctc-category", "grade", "startDate", "endDate", "hospitalization","comments");
     }
 
     private Map<Object, Object> createAttributionOptions() {
