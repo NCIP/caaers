@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 import org.springframework.beans.BeanUtils;
@@ -41,9 +44,12 @@ public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElem
     private <T> void addReportChildLazyList(Class<T> klass) {
         lazyListHelper.add(klass, new SAEReportPriorTherapyFactory<T>(klass, this));
     }
-
+    
+    public boolean equals(PriorTherapy priorTherapy, String other){
+    	return StringUtils.equals(this.other, other) && ObjectUtils.equals(this.priorTherapy, priorTherapy);
+    }
     // //// LOGIC
-
+    
     @Transient
     public String getName() {
         if (getPriorTherapy() != null) {

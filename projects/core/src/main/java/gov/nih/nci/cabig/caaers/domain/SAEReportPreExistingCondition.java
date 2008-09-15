@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
@@ -53,6 +55,14 @@ public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollec
 
     public void setOther(String other) {
         this.other = other;
+    }
+    
+    /**
+     * Will return true, if this object has the same 'other' and 'preexistingcondition' 
+     * @return
+     */
+    public boolean equals(PreExistingCondition cond, String other){
+    	return StringUtils.equals(this.other, other) && ObjectUtils.equals(cond, this.preExistingCondition); 
     }
 
 

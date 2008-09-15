@@ -11,16 +11,16 @@ import javax.persistence.Embeddable;
 public class Address {
 	
 	private int code; //to force hibernate to load the object
-	private int zip;
+	private Integer zip;
 	private String city;
 	private String state;
 	private String street;
 	
 	
-	public int getZip() {
+	public Integer getZip() {
 		return zip;
 	}
-	public void setZip(int zip) {
+	public void setZip(Integer zip) {
 		this.zip = zip;
 	}
 	public String getCity() {

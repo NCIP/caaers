@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
@@ -44,7 +47,10 @@ public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
         this.codedSite = codedSite;
     }
 
-
+    public boolean equals( AnatomicSite codedSite,String otherSite){
+    	return StringUtils.equals(this.otherSite, otherSite) && ObjectUtils.equals(codedSite, this.codedSite);
+    }
+    
     ///OBJECT METHODS
     @Override
     public boolean equals(Object obj) {

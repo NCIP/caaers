@@ -318,9 +318,9 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      * Will return true, if the priorTherapy is assigned to the PriorTherapy, via {@link StudyParticipantPriorTherapy}
      * @param priorTherapy
      */
-    public boolean containsPriorTherapy(PriorTherapy priorTherapy){
+    public boolean containsPriorTherapy(SAEReportPriorTherapy priorTherapy){
     	for(StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()){
-    		if(priorTherapy.getId().equals(spaPriorTherapy.getPriorTherapy().getId())) return true;
+    		if(priorTherapy.equals(spaPriorTherapy.getPriorTherapy(), spaPriorTherapy.getOther())) return true;
     	}
     	return false;
     }
@@ -328,7 +328,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     private void syncrhonizePriorTherapies(final List<SAEReportPriorTherapy> saeReportPriorTherapies) {
 
         for (SAEReportPriorTherapy saeReportPriorTherapy : saeReportPriorTherapies) {
-            if (!containsPriorTherapy(saeReportPriorTherapy.getPriorTherapy())) {
+            if (!containsPriorTherapy(saeReportPriorTherapy)) {
                 StudyParticipantPriorTherapy priorTherapy = StudyParticipantPriorTherapy.createAssignmentPriorTherapy(saeReportPriorTherapy);
                 addPriorTherapy(priorTherapy);
             }
@@ -363,9 +363,10 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      * @return
      */
     public boolean containsMetastaticDiseaseSite(MetastaticDiseaseSite metastaticDiseaseSite){
+    	if(metastaticDiseaseSite == null ) return true;
     	if(getDiseaseHistory() == null) return true;
     	for(StudyParticipantMetastaticDiseaseSite spaSite : getDiseaseHistory().getMetastaticDiseaseSites()){
-    		if(spaSite.getCodedSite().getId().equals(metastaticDiseaseSite.getCodedSite().getId())) return true;
+    		if(metastaticDiseaseSite.equals(spaSite.getCodedSite(), spaSite.getOtherSite())) return true;
     	}
     	return false;
     }
@@ -389,16 +390,17 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      * @param preCondition
      * @return
      */
-    public boolean containsPreExistingCondition(PreExistingCondition preCondition){
+    public boolean containsPreExistingCondition(SAEReportPreExistingCondition saePreCond){
+    	if(saePreCond == null) return true;
     	for(StudyParticipantPreExistingCondition spaPreCond : getPreExistingConditions()){
-    		if(spaPreCond.getPreExistingCondition().getId().equals(preCondition.getId())) return true;
+    		if(saePreCond.equals(spaPreCond.getPreExistingCondition(),spaPreCond.getOther())) return true;
     	}
     	return false;
     }
     private void syncrhonizePreExistingCondition(final List<SAEReportPreExistingCondition> saeReportPreExistingConditions) {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
-            if (!containsPreExistingCondition(saeReportPreExistingCondition.getPreExistingCondition())) {
+            if (!containsPreExistingCondition(saeReportPreExistingCondition)) {
                 StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(
                         saeReportPreExistingCondition);
                 addPreExistingCondition(studyParticipantPreExistingCondition);

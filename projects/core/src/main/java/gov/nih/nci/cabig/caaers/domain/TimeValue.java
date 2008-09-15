@@ -38,7 +38,25 @@ public class TimeValue {
     public int getType() {
         return type;
     }
-
+    
+    @Transient
+    public String getMinuteString(){
+    	if(minute == null) return null;
+    	return String.format("%02d", minute);
+    }
+    public void setMinuteString(String min){
+    	if(min == null || min.length() < 0) minute = null;
+    	minute = Integer.valueOf(min);
+    }
+    @Transient
+    public String getHourString(){
+    	if(hour == null) return null;
+    	return String.format("%02d", hour);
+    }
+    public void setHourString(String hr){
+    	if(hr == null || hr.length() < 0) hour = null;
+    	hour = Integer.valueOf(hr);
+    }
     @Transient
     public boolean isAM() {
         return type == 0;
