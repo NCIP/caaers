@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
@@ -84,13 +85,10 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		Participant participant = new Participant();
 		participant.setFirstName("Dilbert");
 		AdverseEvent ae = new AdverseEvent();
-		try{
-			Calendar c = Calendar.getInstance();
-			c.set(2007, 9, 12);
-			ae.setStartDate(c.getTime());
-			//ae.setStartDate(DateFormat.getInstance().parse("09/12/2007"));
-		}
-		catch(Exception pe){pe.printStackTrace();}
+		
+		Date startDate=DateUtils.createDate(2007, 9, 12);
+			ae.setStartDate(startDate);
+		
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
 		assertEquals(2, aes.size());
 	}
