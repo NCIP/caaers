@@ -319,6 +319,8 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      * @param priorTherapy
      */
     public boolean containsPriorTherapy(SAEReportPriorTherapy priorTherapy){
+    	if(priorTherapy == null) return true;
+    	if(priorTherapy.getPriorTherapy() == null && priorTherapy.getOther() == null) return true;
     	for(StudyParticipantPriorTherapy spaPriorTherapy : getPriorTherapies()){
     		if(priorTherapy.equals(spaPriorTherapy.getPriorTherapy(), spaPriorTherapy.getOther())) return true;
     	}
