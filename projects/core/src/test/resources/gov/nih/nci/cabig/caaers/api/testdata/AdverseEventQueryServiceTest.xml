@@ -67,6 +67,17 @@
         other_required="0"
         />
     <ctc_grades/> 
+
+	    <!--STUDIES
+        id="-2"
+        multi_institution_indicator="0"
+        short_title="Short Title"
+        long_title="Long Title"
+        description="Description"
+        grid_id=""
+        load_status="1"
+        /-->
+
 	<participant_assignments
         id="-6"
         participant_id="-4"
@@ -138,7 +149,7 @@
         hospitalization_code="0"
         attribution_summary_code="3"
         expected="1"
-        comments="That was some big AE"
+        comments="That was some big AE: id=-3"
         />
     
      <!--AE_TERMS
@@ -179,9 +190,9 @@
         hospitalization_code="1"
         attribution_summary_code="3"
         expected="1"
-        comments="That was some big AE"
-        start_date="2007-09-12 21:43:56.987"
-        end_date="2007-09-12 21:43:56.987"
+        comments="That was some big AE: id=-2"
+        start_date="2007-09-12"
+        end_date="2007-09-12"
         reporting_period_id="1002"
         />
         
@@ -301,7 +312,6 @@
         list_index="0"
         />
     <AE_ATTRIBUTIONS
-        id="-19"
         cause_id="-37"
         cause_type="RI"
         attribution_code="4"
@@ -398,9 +408,9 @@
         hospitalization_code="2"
         attribution_summary_code="4"
         expected="0"
-        comments="This is a bigger AE"
-        start_date="2007-09-12 21:43:56.987"
-        end_date="2007-09-12 21:43:56.987"
+        comments="This is a bigger AE: id=-4"
+        start_date="2007-09-12"
+        end_date="2007-09-12"
 		 reporting_period_id="-1009"
         />
 
