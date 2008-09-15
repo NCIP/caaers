@@ -11,7 +11,7 @@
 
 	<ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">
 		<jsp:attribute name="label">
-			<ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?x" />
+			<ui:label path="assignment.concomitantMedications[${index}].stillTakingMedications" text="Still taking ?" />
 		</jsp:attribute>
 		<jsp:attribute name="value">
 			<ui:checkbox path="assignment.concomitantMedications[${index}].stillTakingMedications" />
