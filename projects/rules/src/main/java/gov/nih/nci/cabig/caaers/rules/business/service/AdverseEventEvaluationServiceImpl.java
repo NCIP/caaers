@@ -301,16 +301,14 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * :"gov.nih.nci.cabig.caaers.rules." + + <section_name>"
      */
     @SuppressWarnings(value = "unchecked")
-    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
-                    ExpeditedReportSection section) {
+    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection section) {
 
         // create the input objects
         ValidationErrors errors = new ValidationErrors();
         Study study = aeReport.getStudy();
 
         // 1. fetch the bindUri
-        String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE, "reporting_"
-                        + section.name());
+        String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE, "reporting_" + section.name());
 
         // 2. fire the rules
         List<Object> input = new ArrayList<Object>();
