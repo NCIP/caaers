@@ -1,16 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_PARTICIPANTS;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.LoadStatus;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.*;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.StatementCallback;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,17 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.StatementCallback;
-
 /**
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
-@CaaersUseCases( { CREATE_PARTICIPANT, ASSIGN_PARTICIPANT, IMPORT_PARTICIPANTS })
+@CaaersUseCases({CREATE_PARTICIPANT, ASSIGN_PARTICIPANT, IMPORT_PARTICIPANTS})
 public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-                    "organizationDao");
+            "organizationDao");
 
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
@@ -44,7 +36,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         {
             Participant participant = getDao().getById(-100);
             assertEquals("Wrong number of identifiers initially", 2, participant.getIdentifiers()
-                            .size());
+                    .size());
             participant.getIdentifiers().clear();
         }
 
@@ -63,7 +55,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
             assertEquals("Wrong study site found in test setup", -3001, (int) studySite.getId());
             Participant participant = getDao().getById(-100);
             assertEquals("Participant should already have one assignment", 1, participant
-                            .getAssignments().size());
+                    .getAssignments().size());
 
             StudyParticipantAssignment spa = new StudyParticipantAssignment();
             spa.setParticipant(participant);
@@ -131,25 +123,25 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
 
         interruptSession();
         Participant retrievedParticipant = (Participant) getJdbcTemplate().execute(
-                        new StatementCallback() {
-                            public Object doInStatement(Statement st) throws SQLException,
-                                            DataAccessException {
-                                ResultSet rs = st
-                                                .executeQuery("select * from participants where id = "
-                                                                + savedId.toString());
-                                rs.next();
-                                Participant p = new Participant();
-                                p.setFirstName(rs.getString("first_name"));
-                                return p;
-                            }
-                        });
+                new StatementCallback() {
+                    public Object doInStatement(Statement st) throws SQLException,
+                            DataAccessException {
+                        ResultSet rs = st
+                                .executeQuery("select * from participants where id = "
+                                        + savedId.toString());
+                        rs.next();
+                        Participant p = new Participant();
+                        p.setFirstName(rs.getString("first_name"));
+                        return p;
+                    }
+                });
 
         assertEquals("The name of the retrieved should be Jeff", "Jeff", retrievedParticipant
-                        .getFirstName());
+                .getFirstName());
     }
 
     public void testGetBySubnameMatchesFirstName() throws Exception {
-        List<Participant> matches = getDao().getBySubnames(new String[] { "icha" });
+        List<Participant> matches = getDao().getBySubnames(new String[]{"icha"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
@@ -161,8 +153,8 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         getJdbcTemplate().execute(new StatementCallback() {
             public Object doInStatement(Statement st) throws SQLException, DataAccessException {
                 st
-                                .addBatch("update participant_assignments set load_status = 1 where participant_id = "
-                                                + participantId);
+                        .addBatch("update participant_assignments set load_status = 1 where participant_id = "
+                                + participantId);
                 st.addBatch("update participants set load_status = 1 where id = " + participantId);
                 return st.executeBatch();
 
@@ -174,13 +166,13 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
     }
 
     public void testGetBySubnameMatchesLastName() throws Exception {
-        List<Participant> matches = getDao().getBySubnames(new String[] { "cot" });
+        List<Participant> matches = getDao().getBySubnames(new String[]{"cot"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -100, (int) matches.get(0).getId());
     }
 
     public void testGetBySubnameMatchesInstitutionalId() throws Exception {
-        List<Participant> matches = getDao().getBySubnames(new String[] { "P002" });
+        List<Participant> matches = getDao().getBySubnames(new String[]{"P002"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
@@ -191,17 +183,17 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
     }
 
     public void testGetBySubnameWithNoSubnamesReturnsNothing() throws Exception {
-        List<Participant> actual = getDao().getBySubnames(new String[] {});
+        List<Participant> actual = getDao().getBySubnames(new String[]{});
         assertEquals(0, actual.size());
     }
 
     public void testGetBySubnameMatchesIntersectionOfMultiple() throws Exception {
         List<Participant> matches;
 
-        matches = getDao().getBySubnames(new String[] { "Jor", "P001" });
+        matches = getDao().getBySubnames(new String[]{"Jor", "P001"});
         assertEquals("Should be no matches", 0, matches.size());
 
-        matches = getDao().getBySubnames(new String[] { "Jor", "P002" });
+        matches = getDao().getBySubnames(new String[]{"Jor", "P002"});
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", -101, (int) matches.get(0).getId());
     }
@@ -220,52 +212,6 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         assertNotNull(identifier.getDeclaredField("value"));
     }
 
-    public void testMatchParticipantByStudy() throws Exception {
-        List<Participant> results;
-        results = getDao().matchParticipantByStudy(-2000, "il");
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-    }
-
-    public void testMatchParticipantByStudyByIdentifier() throws Exception {
-        List<Participant> results;
-        // full identifier value
-        results = getDao().matchParticipantByStudy(-2000, "13js77");
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-
-        // partial identifier value
-        results = getDao().matchParticipantByStudy(-2000, "13js");
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-
-        // partial identifier type
-        results = getDao().matchParticipantByStudy(-2000, "MR");
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-    }
-
-    public void testGetBySubnamesJoinOnIdentifier() throws Exception {
-        List<Participant> results;
-        // full identifier value
-        String[] str = { "13js77" };
-        results = getDao().getBySubnamesJoinOnIdentifier(str);
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-
-        // firstName
-        String[] str1 = { "il" };
-        results = getDao().getBySubnamesJoinOnIdentifier(str1);
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-
-        // lastName
-        String[] str2 = { "scott" };
-        results = getDao().getBySubnamesJoinOnIdentifier(str2);
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
-
-    }
 
     public void testSearchParticipantByStudyFirstName() throws Exception {
         List<Participant> results;
@@ -356,6 +302,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         assertEquals("Wrong number of results", 1, results.size());
         assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
     }
+
     public void testDeleteAssignments() {
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant (-100) should not be null ", participant);
@@ -370,8 +317,9 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         assertNotNull("Participant (-100) should be null ", participant);
         int newSize = participant.getAssignments().size();
         assertEquals("The size of the participant assignment should be one less", oldSize - 1,
-                        newSize);
+                newSize);
     }
+
     public void testDeleteParticipant() {
         Participant participant = getDao().getById(-100);
         assertNotNull("Participant (-100) should not be null ", participant);
@@ -380,7 +328,6 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         participant = getDao().getById(-100);
         assertNull("Participant should be null", participant);
     }
-
 
 
 }

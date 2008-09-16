@@ -36,9 +36,7 @@
                 })
             },
             valueSelector: function(obj) {
-                var primaryIdentifier = obj.primaryIdentifierValue == null ? "" :
-                                        " ( " + obj.primaryIdentifierValue + " ) ";
-                return obj.fullName + primaryIdentifier
+                return obj.displayName
             }
         }
 

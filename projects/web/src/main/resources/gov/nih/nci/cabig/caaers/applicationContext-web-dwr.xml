@@ -12,6 +12,7 @@
           class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
         <property name="reportRepository" ref="reportRepository"/>
         <property name="studyAjaxableDomainObjectRepository" ref="studyAjaxableDomainObjectRepository"/>
+        <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
 
     <bean id="captureAeAjaxFacade" autowire="byType"

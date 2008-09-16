@@ -1,4 +1,5 @@
-package gov.nih.nci.cabig.caaers.domain;
+package gov.nih.nci.cabig.caaers.domain.ajax;
+
 
 /**
  *

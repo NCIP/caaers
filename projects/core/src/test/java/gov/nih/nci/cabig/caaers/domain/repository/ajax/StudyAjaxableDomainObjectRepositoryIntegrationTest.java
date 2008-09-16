@@ -1,8 +1,8 @@
-package gov.nih.nci.cabig.caaers.domain.repository;
+package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
-import gov.nih.nci.cabig.caaers.dao.query.StudyAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 
 import java.util.List;
 

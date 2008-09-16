@@ -6,15 +6,6 @@ import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
-
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
@@ -22,33 +13,37 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.*;
+
 /**
  * This class implements the Data access related operations for the Participant domain object.
- * 
+ *
  * @author Rhett Sutphin
  * @author Biju Joseph
  */
 @Transactional(readOnly = true)
 public class ParticipantDao extends GridIdentifiableDao<Participant> implements
-                MutableDomainObjectDao<Participant> {
+        MutableDomainObjectDao<Participant> {
     // these are for getBySubnames
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName",
-                    "lastName");
+            "lastName");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Arrays
-                    .asList("institutionalPatientNumber");
+            .asList("institutionalPatientNumber");
 
     private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES = Arrays.asList("firstName",
-                    "lastName");
+            "lastName");
 
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
     private static final String JOINS = "join o.identifiers as identifier "
-                    + "join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
+            + "join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
 
     /**
      * Get the Class representation of the domain object that this DAO is representing.
-     * 
+     *
      * @return Class representation of the domain object that this DAO is representing.
      */
     @Override
@@ -58,9 +53,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Save or update the participant in the db.
-     * 
-     * @param The
-     *                participant.
+     *
+     * @param The participant.
      */
     @Transactional(readOnly = false)
     public void save(final Participant participant) {
@@ -69,12 +63,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * TODO
-     * 
+     *
      * @param domainObjectImportOutcome
      */
     @Transactional(readOnly = false)
     public void batchSave(
-                    final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome) {
+            final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome) {
         log.debug("Time now : " + new java.util.Date());
         Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
         for (DomainObjectImportOutcome<Participant> outcome : domainObjectImportOutcome) {
@@ -85,7 +79,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Get the list of all participants.
-     * 
+     *
      * @return return the list of participants.
      */
     @SuppressWarnings("unchecked")
@@ -94,8 +88,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
     }
 
     /**
-     * @param subnames
-     *                a set of substrings to match
+     * @param subnames a set of substrings to match
      * @return a list of participants such that each entry in <code>subnames</code> is a
      *         case-insensitive substring match of the participant's name or other identifier
      */
@@ -104,23 +97,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
-    /**
-     * TODO
-     * 
-     * @param subnames
-     * @return
-     */
-    public List<Participant> getBySubnamesJoinOnIdentifier(final String[] subnames) {
-        String joins = " join o.identifiers as identifier ";
-        List<String> subStringMatchProperties = Arrays.asList("o.firstName", "o.lastName",
-                        "identifier.type", "identifier.value");
-        return findBySubname(subnames, null, null, subStringMatchProperties, EMPTY_PROPERTIES,
-                        joins);
-    }
 
     /**
-     * @param subnames
-     *                a set of substrings to match
+     * @param subnames a set of substrings to match
      * @return a list of participants such that each entry in <code>subnames</code> is a
      *         case-insensitive substring match of the participant's name or other identifier
      */
@@ -131,86 +110,43 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Gets the participant by id. This initializes the participant and loads all the objects.
-     * 
-     * @param identifier
-     *                the id.
-     * 
+     *
+     * @param identifier the id.
      * @return the participant by id.
      */
     public Participant getByIdentifier(final Identifier identifier) {
         return findByIdentifier(identifier);
     }
-    
+
     /**
      * This method returns a Fully loaded Participant.
+     *
      * @param identifier
      * @return
      */
-    public Participant getParticipantDesignByIdentifier(final Identifier identifier){
-    	Participant participant = getByIdentifier(identifier);
-    	if(participant != null){
-    		initialize(participant);
-    	}
-    	return participant;
+    public Participant getParticipantDesignByIdentifier(final Identifier identifier) {
+        Participant participant = getByIdentifier(identifier);
+        if (participant != null) {
+            initialize(participant);
+        }
+        return participant;
     }
 
-    /**
-     * TODO
-     * 
-     * @param studyId
-     * @param text
-     * @return
-     */
-    public List<Participant> matchParticipantByStudy(final Integer studyId, final String text) {
-
-        String joins = " join o.identifiers as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s ";
-
-        List<Object> params = new ArrayList<Object>();
-        StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
-                        domainClass().getName()).append(" o ").append(joins);
-
-        queryBuf.append(" where ");
-        queryBuf.append("s.id = ?");
-        params.add(studyId);
-
-        queryBuf.append(" and ( ");
-        queryBuf.append("LOWER(").append("o.firstName").append(") LIKE ?");
-        params.add('%' + text.toLowerCase() + '%');
-
-        queryBuf.append(" or ");
-        queryBuf.append("LOWER(").append("identifier.type").append(") LIKE ? ");
-        params.add('%' + text.toLowerCase() + '%');
-
-        queryBuf.append(" or ");
-        queryBuf.append("LOWER(").append("identifier.value").append(") LIKE ? ");
-        params.add('%' + text.toLowerCase() + '%');
-
-        queryBuf.append(" or ");
-        queryBuf.append("LOWER(").append("o.lastName").append(") LIKE ? ) ");
-        params.add('%' + text.toLowerCase() + '%');
-
-        log.debug("matchParticipantByStudy : " + queryBuf.toString());
-        getHibernateTemplate().setMaxResults(30);
-        List<Participant> result = getHibernateTemplate().find(queryBuf.toString(), params.toArray());
-        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
-        return result;
-    }
 
     /**
      * Search for participants given search criteria.
-     * 
-     * @param props
-     *                The search criteria.
+     *
+     * @param props The search criteria.
      * @return The list of participants.
      * @throws ParseException
      */
-    @SuppressWarnings( { "unchecked" })
+    @SuppressWarnings({"unchecked"})
     public List<Participant> searchParticipant(final Map props) throws ParseException {
 
         List<Object> params = new ArrayList<Object>();
         boolean firstClause = true;
         StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
-                        domainClass().getName()).append(" o ").append(JOINS);
+                domainClass().getName()).append(" o ").append(JOINS);
 
         if (props.get("studyIdentifier") != null) {
             queryBuf.append(firstClause ? " where " : " and ");
@@ -286,10 +222,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Gets the participant by id. This initialize the participant and load all the objects.
-     * 
-     * @param id
-     *                the id
-     * 
+     *
+     * @param id the id
      * @return the participant by id
      */
     public Participant getParticipantById(final int id) {
@@ -301,9 +235,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * This will initialize a lazy collection, consisting of participant objects.
-     * 
-     * @param participant
-     *                The participant object.
+     *
+     * @param participant The participant object.
      */
 
     public Participant initialize(final Participant participant) {
@@ -317,9 +250,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Search for participants using query.
-     * 
-     * @param query
-     *                The query used to search for participants
+     *
+     * @param query The query used to search for participants
      * @return The list of participants.
      */
     @SuppressWarnings("unchecked")
@@ -329,7 +261,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         return (List<Participant>) getHibernateTemplate().execute(new HibernateCallback() {
 
             public Object doInHibernate(final Session session) throws HibernateException,
-                            SQLException {
+                    SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {
@@ -345,9 +277,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * This method will reassociate the domain object to hibernate session. With a lock mode none.
-     * 
+     *
      * @param o -
-     *                the domain object instance that is to be reassociated.
+     *          the domain object instance that is to be reassociated.
      */
     public void reassociateUsingLock(Participant o) {
         getHibernateTemplate().lock(o, LockMode.NONE);
@@ -355,9 +287,8 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
 
     /**
      * Delete the specified participant.
-     * 
-     * @param p
-     *                The participant.
+     *
+     * @param p The participant.
      */
     @Transactional(readOnly = false)
     public void delete(Participant p) {

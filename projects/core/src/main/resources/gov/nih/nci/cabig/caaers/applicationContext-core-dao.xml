@@ -153,7 +153,6 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
             </list>
         </property>
-
         <property name="entityInterceptor">
             <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
           </bean>-->
@@ -485,7 +484,13 @@ This applicationContext contains the definition of the DAOs
         <property name="studyDao" ref="studyDao"></property>
     </bean>
     <bean id="studyAjaxableDomainObjectRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.StudyAjaxableDomainObjectRepository" parent="daoTemplate">
+          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository"
+          parent="daoTemplate">
+    </bean>
+
+    <bean id="participantAjaxableDomainObjectRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository"
+          parent="daoTemplate">
     </bean>
 
     <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"

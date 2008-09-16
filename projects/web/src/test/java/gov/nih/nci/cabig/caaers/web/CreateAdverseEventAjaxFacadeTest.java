@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.*;
-import static gov.nih.nci.cabig.caaers.domain.Fixtures.*;
+import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -78,65 +78,6 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         map.put("labTestNamesRefData", list);
         configProperty.setMap(map);
         facade.setConfigurationProperty(configProperty);
-    }
-
-    public void testMatchParticipants() throws Exception {
-        Participant expectedMatch = setId(3, createParticipant("Foo", "B"));
-        expectedMatch.setDateOfBirth(new DateValue()); // set not null so we can be sure it isn't
-        // copied
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{"foo"})))
-                .andReturn(Arrays.asList(expectedMatch));
-
-        replayMocks();
-        List<Participant> actualList = facade.matchParticipants("foo", null);
-        verifyMocks();
-
-        assertEquals("Wrong number of results", 1, actualList.size());
-        Participant actualMatch = actualList.get(0);
-        assertNotSame("Returned match is not copy", expectedMatch, actualMatch);
-        assertEquals("id not copied", 3, (int) actualMatch.getId());
-        assertEquals("first not copied", "Foo", actualMatch.getFirstName());
-        assertEquals("last not copied", "B", actualMatch.getLastName());
-    }
-
-    public void testMatchParticipantsMultipleSubnames() throws Exception {
-        Participant expectedMatch = setId(5, new Participant());
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{"foo", "zappa"})))
-                .andReturn(Arrays.asList(expectedMatch));
-
-        replayMocks();
-        List<Participant> actualList = facade.matchParticipants("foo zappa", null);
-        verifyMocks();
-
-        assertEquals("Result not forwarded", 1, actualList.size());
-    }
-
-    // No Testing needed here cause these tests are covered under DAO testing
-    public void testMatchParticipantsFiltersByStudyId() throws Exception {
-        List<Participant> expectedList = new ArrayList<Participant>();
-        expectedList.add(createParticipant("Joe", "Two"));
-        Study study = setId(4, new Study());
-        assignParticipant(expectedList.get(0), study, new Organization());
-
-        expect(participantDao.matchParticipantByStudy(4, "oe")).andReturn(expectedList);
-
-        replayMocks();
-        List<Participant> actualList = facade.matchParticipants("oe", 4);
-        verifyMocks();
-
-        assertEquals("Wrong number of participants returned", 1, actualList.size());
-        assertEquals("Wrong participant included", "Two", actualList.get(0).getLastName());
-    }
-
-    public void testMatchParticipantsWithBlankToken() throws Exception {
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{}))).andReturn(
-                Collections.<Participant>emptyList());
-
-        replayMocks();
-        List<Participant> actualList = facade.matchParticipants(" ", null);
-        verifyMocks();
-
-        assertEquals("Should return nothing", 0, actualList.size());
     }
 
 

@@ -3,15 +3,19 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.dao.query.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
@@ -79,6 +83,7 @@ public class CreateAdverseEventAjaxFacade {
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
     protected LabLoadDao labLoadDao;
     private StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository;
+    private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -208,15 +213,14 @@ public class CreateAdverseEventAjaxFacade {
         return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
 
-    public List<Participant> matchParticipants(String text, Integer studyId) {
-        List<Participant> participants;
-        if (studyId == null) {
-            participants = participantDao.getBySubnamesJoinOnIdentifier(extractSubnames(text));
-        } else {
-            participants = participantDao.matchParticipantByStudy(studyId, text);
-        }
-        // cut down objects for serialization
-        return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
+    public List<ParticipantAjaxableDomainObject> matchParticipants(String text, Integer studyId) {
+
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
+        query.filterParticipantsWithMatchingText(text);
+        query.filterByStudy(studyId);
+
+        List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
+        return participantAjaxableDomainObjects;
     }
 
 
@@ -237,18 +241,6 @@ public class CreateAdverseEventAjaxFacade {
         return studies;
     }
 
-    private boolean onStudy(Study study, Integer participantId) {
-        boolean onStudy = false;
-        for (StudySite studySite : study.getStudySites()) {
-            for (StudyParticipantAssignment assignment : studySite.getStudyParticipantAssignments()) {
-                if (assignment.getParticipant().getId().equals(participantId)) {
-                    onStudy = true;
-                    break;
-                }
-            }
-        }
-        return onStudy;
-    }
 
     public List<CtcTerm> matchTerms(String text, Integer ctcVersionId, Integer ctcCategoryId, int limit) throws Exception {
         List<CtcTerm> terms = ctcTermDao.getBySubname(extractSubnames(text), ctcVersionId, ctcCategoryId);
@@ -980,7 +972,14 @@ public class CreateAdverseEventAjaxFacade {
         this.labLoadDao = labLoadDao;
     }
 
+
+    @Required
     public void setStudyAjaxableDomainObjectRepository(StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
         this.studyAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
+    }
+
+    @Required
+    public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
+        this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
     }
 }

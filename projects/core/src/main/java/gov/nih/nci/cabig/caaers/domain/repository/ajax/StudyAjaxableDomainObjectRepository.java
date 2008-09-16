@@ -1,7 +1,7 @@
-package gov.nih.nci.cabig.caaers.domain.repository;
+package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
-import gov.nih.nci.cabig.caaers.dao.query.StudyAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class StudyAjaxableDomainObjectRepository extends AbstractAjaxableDomainO
         List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = new ArrayList<StudyAjaxableDomainObject>();
 
         for (Object[] o : objects) {
-            StudyAjaxableDomainObject studyAjaxableDomainObject = getObjectById(studyAjaxableDomainObjects, (Integer) o[0]);
+            StudyAjaxableDomainObject studyAjaxableDomainObject = (StudyAjaxableDomainObject) getObjectById(studyAjaxableDomainObjects, (Integer) o[0]);
 
             if (studyAjaxableDomainObject == null) {
                 studyAjaxableDomainObject = new StudyAjaxableDomainObject();
@@ -39,15 +39,5 @@ public class StudyAjaxableDomainObjectRepository extends AbstractAjaxableDomainO
 
     }
 
-    protected StudyAjaxableDomainObject getObjectById(List<StudyAjaxableDomainObject> studyAjaxableDomainObjects,
-                                                      Integer id) {
 
-        for (StudyAjaxableDomainObject object : studyAjaxableDomainObjects) {
-            if (object.getId().equals(id)) {
-                return object;
-            }
-        }
-
-        return null;
-    }
 }
