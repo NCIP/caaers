@@ -11,7 +11,7 @@
 <c:set var="reportingPeriodPageURL" 
 	value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&adverseEventReportingPeriod=${reportingPeriod.id}&_target1=1&displayReportingPeriod=true&addReportingPeriodBinder=true" />
 
-<tr align="center" id="${index}" class="${currClass}" onMouseOver="this.className='highlight'" onMouseOut="this.className='${currClass}'">
+<tr align="center" id="${index}" class="${currClass}">
 	<td>
 		<chrome:collapsableElement targetID="table${reportingPeriod.id}" collapsed="true" id="ID_01"/>
 	</td>
@@ -42,7 +42,7 @@
 									<tr align="center" class="label">
 										<td width="5%"/>
 										<td class="tableHeader" width="15%">Report Type</td>
-										<td class="tableHeader" width="20%"># of AEs</td>
+										<td class="centerTableHeader" width="20%"># of AEs</td>
 										<td class="tableHeader" width="20%">Data Entry Status</td>
 										<td class="tableHeader" width="20%">Submission Status</td>
 										<td class="tableHeader" width="20%">Options</td>

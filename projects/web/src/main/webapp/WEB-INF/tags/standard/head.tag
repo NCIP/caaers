@@ -53,8 +53,6 @@
                       // $(i).hide();
               }
         });
-
 </script>
-
 <link rel="icon" href="../../images/caaers.ico"/>  
 <!-- END tags\standard\head.tag -->

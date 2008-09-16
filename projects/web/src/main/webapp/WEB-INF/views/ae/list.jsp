@@ -29,16 +29,23 @@
 	color: #900;
 }
 .centerTableHeader {
-	background-color:#308DBB;
-	border-color:white;
-	border-right:1px solid white;
-	color:white;
-	font-family:Arial, verdana, helvetica, sans-serif;
-	font-size:11px;
-	font-weight:bold;
-	margin:0px;
-	padding:4px 3px;
-	text-align:center;
+	background-color: #2b4186;
+	color: white;
+	font-family: Arial, verdana, helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;
+	text-align: center;
+	padding-right: 3px;
+	padding-left: 3px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin: 0px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-color: white;
+	background-image: url(../../images/blue/eXtableheader_bg.png);
+	background-repeat: repeat-x;
+	background-position: top;
 }
 .eXtremeTable .eXtremeTable {
 	border:1px solid silver;
@@ -131,17 +138,46 @@ background-color:#ffdada;
 	background-repeat: repeat-x;
 	background-position: top;
 }
+.eXtremeTable .eXtremeTable .centerTableHeader {
+	background-color: #2b4186;
+	color: white;
+	font-family: Arial, verdana, helvetica, sans-serif;
+	font-size: 13px;
+	font-weight: normal;
+	text-align: center;
+	padding-right: 3px;
+	padding-left: 3px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin: 0px;
+	border-right-style: solid;
+	border-right-width: 1px;
+	border-color: white;
+	background-image: url(../../images/blue/eXtableheader_bg.png);
+	background-repeat: repeat-x;
+	background-position: top;
+}
 .eXtremeTable .allAEs .tableHeader {
 	background-color:#DE5900;
 	background-image: url(../../images/blue/eXtable_allAE_header_bg.png);
 	background-repeat: repeat-x;
 	color:black;
 }
+.eXtremeTable .allAEs .centerTableHeader {
+	background-color:#DE5900;
+	background-image: url(../../images/blue/eXtable_allAE_header_bg.png);
+	background-repeat: repeat-x;
+	color:black;
+	text-align:center;
+}
 .eXtremeTable .odd {
 	background-color: #eaeaea;
 }
 .eXtremeTable .even {
   	background-color: #abc4d8;
+}
+.eXtremeTable a:hover{
+color:#0033FF;
 }
 </style>
 <script type="text/javascript">
@@ -202,8 +238,8 @@ background-color:#ffdada;
       <tr align="center" class="label">
         <td width="2%" class="tableHeader"></td>
         <td width="18%" class="tableHeader">Evaluation Period</td>
-        <td width="16%" class="tableHeader"># of Reports</td>
-        <td width="16%" class="tableHeader"># of AEs</td>
+        <td width="16%" class="centerTableHeader"># of Reports</td>
+        <td width="16%" class="centerTableHeader"># of AEs</td>
         <td width="16%" class="tableHeader">Data Entry Status</td>
         <td width="16%" class="tableHeader">Report Status</td>
         <td width="16%" class="tableHeader">Options</td>

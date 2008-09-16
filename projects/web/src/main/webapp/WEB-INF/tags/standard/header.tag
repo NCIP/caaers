@@ -10,7 +10,7 @@
 
         <a href="/caaers/pages/task" id="logo">caAERS</a>
 
-          <a href="#" id="help">Help</a>
+          <a href="/caaers/help/caAERS_Help.htm#${currentTask.linkName}.htm" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
         
 

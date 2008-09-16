@@ -13,7 +13,7 @@
 				<td width="5%"><chrome:collapsableElement targetID="aetable${reportingPeriod.id}" collapsed="true" id="ID_03"/></td>
 				<td class="tableHeader" width="10%">All AE's</td>
 				<td class="tableHeader" width="20%">AE Term</td>
-				<td class="tableHeader" width="20%">Grade</td>
+				<td class="centerTableHeader" width="20%">Grade</td>
 				<td class="tableHeader" width="20%">AE Start Date</td>
 				<td class="tableHeader" width="20%">Requires Expedited Reporting?</td>
 			</tr>

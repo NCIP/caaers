@@ -5,10 +5,10 @@
 <%@attribute name="width" required="true" type="java.lang.String" %>
 
 <% String currClass=index%2==0? "odd":"even"; %>
-<tr align="center"  class="<%= currClass %>" onMouseOver="this.className='highlight'"
-			onMouseOut="this.className='<%= currClass %>'">
+<tr align="center"  class="<%= currClass %>">
 	<td width="${width}" align="left">${ae.adverseEventTerm.universalTerm}</td>
 	<td width="${width}">${ae.grade.code}</td>
-	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>	<td width="${width}" align="left">${ae.requiresReporting ? 'Yes' : 'No'}</td>
+	<td width="${width}" align="left"><tags:formatDate value="${ae.startDate}" /></td>
+	<td width="${width}" align="left">${ae.requiresReporting ? 'Yes' : 'No'}</td>
 		
 </tr>
