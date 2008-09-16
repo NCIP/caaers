@@ -90,13 +90,27 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
 
     public void testFilterStudiesIfMatchingTextIsNotNull() {
         studyAjaxableDomainObjectQuery = new StudyAjaxableDomainObjectQuery();
-        studyAjaxableDomainObjectQuery.filterStudiesWithMatchingText("s");
+        studyAjaxableDomainObjectQuery.filterStudiesWithMatchingText("1138-43");
 
         List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(studyAjaxableDomainObjectQuery);
 
+
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
+        assertEquals(1, studyAjaxableDomainObjects.size());
 
+        assertEquals("Wrong match", "Short Title", studyAjaxableDomainObjects.get(0).getShortTitle());
+
+        studyAjaxableDomainObjectQuery = new StudyAjaxableDomainObjectQuery();
+        studyAjaxableDomainObjectQuery.filterStudiesWithMatchingText("-43");
+
+        studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(studyAjaxableDomainObjectQuery);
+
+
+        assertNotNull(studyAjaxableDomainObjects);
+        assertFalse(studyAjaxableDomainObjects.isEmpty());
+        assertEquals(1, studyAjaxableDomainObjects.size());
+        assertEquals("Wrong match", "Short Title", studyAjaxableDomainObjects.get(0).getShortTitle());
 
     }
 

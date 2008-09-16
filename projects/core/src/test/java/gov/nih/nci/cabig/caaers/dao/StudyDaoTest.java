@@ -323,23 +323,6 @@ public class StudyDaoTest extends DaoTestCase<StudyDao> {
     }
 
 
-    public void testGetBySubnamesJoinOnIdentifier() throws Exception {
-        List<Study> results;
-
-        // Full Identifier Value
-        String[] str = {"1138-43"};
-        results = getDao().getBySubnamesJoinOnIdentifier(str, null);
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-
-        // Partial  Identifier Value
-        String[] str1 = {"-43"};
-        results = getDao().getBySubnamesJoinOnIdentifier(str1, null);
-        assertEquals("Wrong number of results", 1, results.size());
-        assertEquals("Wrong match", "Short Title", results.get(0).getShortTitle());
-    }
-
-
     public void testSearchStudyByStudyShortTitle() throws Exception {
         List<Study> results;
         Map<String, String> m = new HashMap<String, String>();

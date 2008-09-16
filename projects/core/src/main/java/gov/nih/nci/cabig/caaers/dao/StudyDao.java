@@ -207,22 +207,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         return findBySubname(subnames, null, null, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
-    /*
-      * Added extraCondition parameter, as a fix for bug 9514
-      */
-    /**
-     * TODO kkk
-     *
-     * @param subnames
-     * @param extraConditions
-     * @return The list of studies.
-     */
-    public List<Study> getBySubnamesJoinOnIdentifier(final String[] subnames, String extraConditions) {
-        String joins = " join o.identifiers as identifier ";
-        List<String> subStringMatchProperties = Arrays.asList("o.shortTitle", "o.longTitle", "identifier.type",
-                "identifier.value");
-        return findBySubname(subnames, extraConditions, null, subStringMatchProperties, EXACT_MATCH_PROPERTIES, joins);
-    }
 
     /**
      * Search for studies given search criteria.
@@ -397,19 +381,20 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
 
                 }
                 return hiberanteQuery.list();
-			}
+            }
 
-		});
+        });
 
-	}
-	/**
+    }
+
+    /**
      * Delete the study.
      *
      * @param study The study to be deleted.
      */
-	@Transactional(readOnly=false)
-	public void delete(Study study){
-		getHibernateTemplate().delete(study);
-	}
+    @Transactional(readOnly = false)
+    public void delete(Study study) {
+        getHibernateTemplate().delete(study);
+    }
 
 }
