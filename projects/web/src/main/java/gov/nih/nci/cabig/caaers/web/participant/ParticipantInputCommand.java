@@ -62,6 +62,9 @@ public class ParticipantInputCommand {
         this.participant = participant;
     }
 
+
+    void init() {
+    };
     /**
      * This method will initialize the objects that we have to work in the flow.
      * @param identifierType

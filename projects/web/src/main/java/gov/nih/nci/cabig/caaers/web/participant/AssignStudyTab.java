@@ -83,12 +83,15 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
             errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
         }
+
+        if (command.getStudySite() == null || command.getStudySite().getId() == null) {
+            errors.rejectValue("assignment.studySite", "PT_008", "Select the Study Site");
+        }
     }
 
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        command.init();
-        
+        if (command.getStudySite() != null) command.setStudy(command.getStudySite().getStudy());
     }
 
     public void setStudyRepository(final StudyRepository studyRepository) {

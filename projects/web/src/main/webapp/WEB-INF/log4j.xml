@@ -19,7 +19,8 @@
 	
     <logger name="gov.nih.nci"><level value="error"/></logger>
 	<logger name="org"><level value="warn"/></logger>
-	<logger name="org.hibernate"><level value="error"/></logger>
+	
+<logger name="org.hibernate"><level value="error"/></logger>
 
     <root>
         <priority value="error"/>

@@ -88,7 +88,6 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, T command) {
     	Map<String, Object> refData = super.referenceData(request, command);
-
         command.refreshStudyDiseases();
 
         refData.put("preExistingConditionOptions", initializePreExistingConditionOptions());

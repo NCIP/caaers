@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.dao.*;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.ae.AbstractAdverseEventInputController;
@@ -20,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 import java.util.Date;
+import java.util.ArrayList;
 
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -61,6 +61,12 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         setFlow(flow);
     }
 
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+        AssignParticipantStudyCommand command = new AssignParticipantStudyCommand();
+        command.init();
+        return command;
+    }
+
     @Override
     protected String getFormSessionAttributeName() {
         // the entry point to this flow is from AssignController
@@ -75,7 +81,10 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
-        return (request.getParameter("studyType") != null) || (request.getParameter("participantType") != null) || (targetPage < curPage);
+
+        if(isAjaxRequest(request) || targetPage < curPage) return true;
+        return super.suppressValidation(request, command);
+        // return (request.getParameter("studyType") != null) || (request.getParameter("participantType") != null) || (targetPage < curPage);
     }
 
 
@@ -118,19 +127,8 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         log.debug("processFinish.");
 
         AssignParticipantStudyCommand assignParticipantStudyCommand = (AssignParticipantStudyCommand) command;
-  //      StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
-
-/*
-        studyParticipantAssignment.setDateOfEnrollment(new Date());
-        studyParticipantAssignment.setParticipant(assignParticipantStudyCommand.getParticipant());
-        studyParticipantAssignment.setStudySite(assignParticipantStudyCommand.getStudySite());
-*/
-//        studyParticipantAssignment.setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
-
         Participant participant = assignParticipantStudyCommand.getParticipant();
         participantDao.reassociateUsingLock(participant);
-
-//        participant.addAssignment(studyParticipantAssignment);
         participantDao.save(participant);
 
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=edit");
@@ -164,7 +162,6 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
 
     protected boolean shouldSave(HttpServletRequest request, AssignParticipantStudyCommand command, Tab<AssignParticipantStudyCommand> assignParticipantStudyCommandTab) {
         return false;
-        // return super.shouldSave(request, command, assignParticipantStudyCommandTab);
     }
 
     public StudySiteDao getStudySiteDao() {

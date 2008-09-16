@@ -48,12 +48,10 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     }
 
     void init() {
-/*
-        studyParticipantAssignment.setDateOfEnrollment(new Date());
-        studyParticipantAssignment.setParticipant(assignParticipantStudyCommand.getParticipant());
-        studyParticipantAssignment.setStudySite(assignParticipantStudyCommand.getStudySite());
-        studyParticipantAssignment.setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
-*/
+
+        if (this.participant == null) this.participant = new Participant();
+        if (this.studySite == null) this.studySite = new StudySite();
+        if (this.studySite.getStudy() == null) this.studySite.setStudy(new Study());
 
         this.assignment = new StudyParticipantAssignment();
         this.assignment.setStudySubjectIdentifier(this.getStudySubjectIdentifier());
@@ -71,13 +69,6 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
         this.assignment.setDiseaseHistory(studyParticipantDiseaseHistory);
         this.assignment.setPreExistingConditions(new ArrayList<StudyParticipantPreExistingCondition>());
         this.assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
-
-/*
-        OrganizationAssignedIdentifier organizationAssignedIdentifier = new OrganizationAssignedIdentifier();
-        organizationAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-
-        this.participant.addIdentifier(organizationAssignedIdentifier);
-*/
     }
-    
+
 }

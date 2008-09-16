@@ -12,6 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.Errors;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,17 +34,12 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
     @Override
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-//        List<Participant> participants = new ArrayList<Participant>();
     }
 
-/*
-    @Override
-    public void validate(AssignParticipantStudyCommand command, Errors errors) {
-        super.validate(command, errors);
-        if (command.getParticipantId() == null) errors.rejectValue("participantId", "REQUIRED",
-                        "Participant not selected");
+    protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
+        if (command.getParticipant() == null || command.getParticipant().getId() == null) errors.rejectValue("participant", "REQUIRED", "Subject not selected");
     }
-*/
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
