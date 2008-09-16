@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import org.springframework.beans.BeanWrapper;
@@ -142,8 +143,8 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     }
     
     public CompositeField createTimeField(String baseProperty, String displayName){
-    	InputField hrField = InputFieldFactory.createTextField("hourString", "");
-    	InputField mmField = InputFieldFactory.createTextField("minuteString"," "); 
+    	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
+    	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR); 
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
     	amPmOption.put("0", "AM");
     	amPmOption.put("1", "PM");
