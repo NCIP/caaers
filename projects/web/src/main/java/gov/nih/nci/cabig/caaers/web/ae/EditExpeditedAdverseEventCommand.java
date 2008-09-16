@@ -126,15 +126,18 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	//find the list of report definitions associated to the existing AE report, and the ones that are newly selected.
     	//Note:- Since there is a potential to throw LazyInit exception, we will use HashMap based logic to find the unique ReportDefinition.
     	HashMap<Integer , ReportDefinition> map = new HashMap<Integer, ReportDefinition>();
-    	for(Report r : getAeReport().getNonWithdrawnReports()){
-    		ReportDefinition rd = r.getReportDefinition();
-    		map.put(rd.getId(), rd);
-    	}
+    	
     	if(getSelectedReportDefinitions() != null){
     		for(ReportDefinition rd : getSelectedReportDefinitions()){
     			map.put(rd.getId(), rd);
     		}
     	}
+    	
+    	for(Report r : getAeReport().getNonWithdrawnReports()){
+    		ReportDefinition rd = r.getReportDefinition();
+    		map.put(rd.getId(), rd);
+    	}
+    	
     	//reassociate them with current running session
     	for(ReportDefinition rd : map.values()){
     		reportDefinitionDao.reassociate(rd);
