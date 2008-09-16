@@ -144,44 +144,44 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertEquals("Correct replacement values", 2, errors.getErrorAt(0)
                         .getReplacementVariables()[0]);
     }
-
-    /**
-     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
-     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
-     * IS_PRIMARY_AE is "Yes"
-     */
-    public void testStartDateForAllAEs() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When startDate present on all AEs");
-    }
-
-    /**
-     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
-     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
-     * IS_PRIMARY_AE is "Yes"
-     */
-    public void testStartDateForOnlyPrimaryAE() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        aeReport.getAdverseEvents().get(1).setStartDate(null);
-        ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors, "When startDate present on primary AE");
-    }
-
-    /**
-     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
-     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
-     * IS_PRIMARY_AE is "Yes"
-     */
-    public void testNoStartDateForAllAEs() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        aeReport.getAdverseEvents().get(0).setStartDate(null);
-        aeReport.getAdverseEvents().get(1).setStartDate(null);
-        ValidationErrors errors = fireRules(aeReport);
-        assertCorrectErrorCode(errors, "AER_BR4_ERR");
-        assertSameErrorCount(errors, 1,
-                        "There should be error when Primary AE dont have start date");
-    }
+//
+//    /**
+//     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
+//     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
+//     * IS_PRIMARY_AE is "Yes"
+//     */
+//    public void testStartDateForAllAEs() throws Exception {
+//        ExpeditedAdverseEventReport aeReport = createAEReport();
+//        ValidationErrors errors = fireRules(aeReport);
+//        assertNoErrors(errors, "When startDate present on all AEs");
+//    }
+//
+//    /**
+//     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
+//     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
+//     * IS_PRIMARY_AE is "Yes"
+//     */
+//    public void testStartDateForOnlyPrimaryAE() throws Exception {
+//        ExpeditedAdverseEventReport aeReport = createAEReport();
+//        aeReport.getAdverseEvents().get(1).setStartDate(null);
+//        ValidationErrors errors = fireRules(aeReport);
+//        assertNoErrors(errors, "When startDate present on primary AE");
+//    }
+//
+//    /**
+//     * RuleName : AER_BR4_CHK Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is
+//     * 'Yes'" Error Code : AER_BR4_ERR Error Message : AE_START_DATE Date must be provided if
+//     * IS_PRIMARY_AE is "Yes"
+//     */
+//    public void testNoStartDateForAllAEs() throws Exception {
+//        ExpeditedAdverseEventReport aeReport = createAEReport();
+//        aeReport.getAdverseEvents().get(0).setStartDate(null);
+//        aeReport.getAdverseEvents().get(1).setStartDate(null);
+//        ValidationErrors errors = fireRules(aeReport);
+//        assertCorrectErrorCode(errors, "AER_BR4_ERR");
+//        assertSameErrorCount(errors, 1,
+//                        "There should be error when Primary AE dont have start date");
+//    }
 
     /**
      * RuleName : AER_BR5_CHK Logic : "'End date' must be greater than or equal to 'Start date' for
