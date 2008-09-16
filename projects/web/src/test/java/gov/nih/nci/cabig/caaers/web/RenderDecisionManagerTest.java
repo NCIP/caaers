@@ -1,5 +1,12 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import junit.framework.TestCase;
 
 public class RenderDecisionManagerTest extends WebTestCase {
@@ -37,5 +44,37 @@ public class RenderDecisionManagerTest extends WebTestCase {
 		newName = mgr.findActualName("biju[6].joseph[7].name");
 		assertEquals("biju[].joseph[].name", newName);
 	}
+	
+	
+	public void testMandatoryFieldRenderability(){
+		List< ReportMandatoryFieldDefinition> mflistA = new ArrayList<ReportMandatoryFieldDefinition>();
+		List< ReportMandatoryFieldDefinition> mflistB = new ArrayList<ReportMandatoryFieldDefinition>();
+		ReportDefinition rd1 = Fixtures.createReportDefinition("a");
+		ReportDefinition rd2 = Fixtures.createReportDefinition("b");
+		
+		mflistA.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", Mandatory.NA));
+		mflistA.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", Mandatory.OPTIONAL));
+		mflistA.add(Fixtures.createMandatoryField("c.k[" + 2 + "].x", Mandatory.MANDATORY));
+		rd1.setMandatoryFields(mflistA);
 
+		mflistB.add(Fixtures.createMandatoryField("a.k[" + 1 + "].xz", Mandatory.NA));
+		mflistB.add(Fixtures.createMandatoryField("a.k[" + 3 + "].xy", Mandatory.NA));
+		mflistB.add(Fixtures.createMandatoryField("b.k[" + 2 + "].x", Mandatory.NA));
+		mflistB.add(Fixtures.createMandatoryField("z.k[].x", Mandatory.NA));
+		rd2.setMandatoryFields(mflistB);
+		
+		List<ReportDefinition> rdList = new ArrayList<ReportDefinition>();
+		rdList.add(rd1);
+		rdList.add(rd2);
+		
+		mgr.updateRenderDecision(rdList);
+		
+		assertFalse(mgr.canRenderField("a.k[1].xz", request, response));
+		assertFalse(mgr.canRenderField("a.k[].xz", request, response));
+		assertTrue(mgr.canRenderField("a.k[3].xy", request, response));
+		assertTrue(mgr.canRenderField("c.k[2].x", request, response));
+		assertFalse(mgr.canRenderField("b.k[" + 2 + "].x", request, response));
+		
+	}
+	
 }

@@ -399,7 +399,9 @@ public class PatientDetailsTab extends AeTab {
     public ModelAndView removeConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
     	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
     	List<ConcomitantMedication> conmeds = command.getAeReport().getConcomitantMedications();
-    	conmeds.remove(conmeds.get(command.getIndex())); //remove the element
+    	ConcomitantMedication conMed =conmeds.get(command.getIndex()); 
+    	command.deleteAttribution(conMed);
+    	conmeds.remove(conMed); //remove the element
     	
     	//create the indexes in reverse order
     	int size = conmeds.size();

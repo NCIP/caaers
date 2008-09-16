@@ -1,6 +1,12 @@
 package gov.nih.nci.cabig.caaers.web;
 
+import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
+
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,5 +59,23 @@ public class RenderDecisionManager {
 	
 	public String findActualName(String name){
 		return name.replaceAll("(\\[\\d+\\])", "[]");
+	}
+	
+	public void updateRenderDecision(Collection<ReportDefinition> rdList){
+		Map<String , Boolean> tempDecisionMap = new HashMap<String, Boolean>();
+		for(ReportDefinition rd : rdList){
+			for(ReportMandatoryFieldDefinition mfd : rd.getMandatoryFields()){
+				Boolean currentValue = tempDecisionMap.get(mfd.getFieldPath());
+				if(mfd.getMandatory() == Mandatory.NA){
+					tempDecisionMap.put(mfd.getFieldPath(), (currentValue == null)? true : currentValue && true);
+				}else{
+					tempDecisionMap.put(mfd.getFieldPath(), false);
+				}
+			}
+		}
+		for(Map.Entry<String, Boolean> entry : tempDecisionMap.entrySet()){
+			if(entry.getValue()) conceal("aeReport." + entry.getKey());
+			else reveal(entry.getKey());
+		}
 	}
 }

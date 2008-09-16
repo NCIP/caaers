@@ -66,58 +66,10 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	//sections to be concealed
         	renderDecisionManager.conceal("aeReport.responseDescription.dcp");
         	renderDecisionManager.conceal("outcomes");
-        	/*//fields to be concealed
-        	renderDecisionManager.conceal("aeReport.adverseEvents[].eventApproximateTime",
-        			"aeReport.adverseEvents[].eventApproximateTime.hour", 
-        			"aeReport.adverseEvents[].eventApproximateTime.minute",
-        			"aeReport.adverseEvents[].eventLocation",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.hour",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.minute",
-        			"aeReport.treatmentInformation.courseAgents[].formulation",
-        			"aeReport.treatmentInformation.courseAgents[].lotNumber",
-        			"aeReport.reporter.title",
-        			"aeReport.reporter.address.street",
-        			"aeReport.reporter.address.city",
-        			"aeReport.reporter.address.state",
-        			"aeReport.reporter.address.zip",
-        			"aeReport.physician.title",
-        			"aeReport.physician.address.street",
-        			"aeReport.physician.address.city",
-        			"aeReport.physician.address.state",
-        			"aeReport.physician.address.zip",
-        			"aeReport.concomitantMedications[].startDate",
-        			"aeReport.concomitantMedications[].endDate",
-        			"aeReport.concomitantMedications[].stillTakingMedications"
-        			);*/
         }else{
         	//sections to be revealed
         	renderDecisionManager.reveal("aeReport.responseDescription.dcp");
         	renderDecisionManager.reveal("outcomes");
-        	/*//fields to be revealed
-        	renderDecisionManager.reveal( "aeReport.adverseEvents[].eventApproximateTime",
-        			"aeReport.adverseEvents[].eventApproximateTime.hour", 
-        			"aeReport.adverseEvents[].eventApproximateTime.minute",
-        			"aeReport.adverseEvents[].eventLocation",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.hour",
-        			"aeReport.treatmentInformation.primaryTreatmentApproximateTime.minute",
-        			"aeReport.treatmentInformation.courseAgents[].formulation",
-        			"aeReport.treatmentInformation.courseAgents[].lotNumber",
-        			"aeReport.reporter.title",
-        			"aeReport.reporter.address.street",
-        			"aeReport.reporter.address.city",
-        			"aeReport.reporter.address.state",
-        			"aeReport.reporter.address.zip",
-        			"aeReport.physician.title",
-        			"aeReport.physician.address.street",
-        			"aeReport.physician.address.city",
-        			"aeReport.physician.address.state",
-        			"aeReport.physician.address.zip",
-        			"aeReport.concomitantMedications[].startDate",
-        			"aeReport.concomitantMedications[].endDate",
-        			"aeReport.concomitantMedications[].stillTakingMedications"
-        			);        	*/
         }
         refdata.put("currentTask", task);
         return refdata;
@@ -163,15 +115,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     		command.getAeReport().setReportingPeriod(reportingPeriod);
     		command.reassociate();
     		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
-        }else{
-        	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-        	command.refreshMandatoryProperties();
+    		// Initialize the treatment assignment & start date of course
+            command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
+            if(command.getAeReport().getAssignment().getStartDateOfFirstCourse() != null)
+            	command.getAeReport().getTreatmentInformation().setFirstCourseDate(command.getAeReport().getAssignment().getStartDateOfFirstCourse());
         }
         
-        //will pre determine the display/renderability of fields 
-        command.initializeNotApplicableFields();
-        
-
         request.getSession().removeAttribute(AE_LIST_PARAMETER);
         request.getSession().removeAttribute(AE_REPORT_ID_PARAMETER);
         request.getSession().removeAttribute(REPORTING_PERIOD_PARAMETER);
@@ -192,8 +141,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		command.amendReports(amendReportList);
         	}
         }
-        // Initialize the treatment assignment
-        command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
+        
+        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+        command.refreshMandatoryProperties();
+        
+        //will pre determine the display/renderability of fields 
+        command.initializeNotApplicableFields();
+        
+     
     }
 
     @Override

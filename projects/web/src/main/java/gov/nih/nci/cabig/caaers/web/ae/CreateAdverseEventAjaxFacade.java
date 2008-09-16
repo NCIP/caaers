@@ -607,45 +607,7 @@ public class CreateAdverseEventAjaxFacade {
         return list;
     }
 
-    /**
-     * When we delte an element which has been attributed, the attribution also needs to be deleted.
-     *
-     * @param o
-     */
-    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport) {
-        for (AdverseEvent ae : aeReport.getAdverseEvents()) {
-            if (o instanceof RadiationIntervention) {
-                deleteAttribution(o, ae.getRadiationAttributions(), ae);
-            } else if (o instanceof MedicalDevice) {
-                deleteAttribution(o, ae.getDeviceAttributions(), ae);
-            } else if (o instanceof SurgeryIntervention) {
-                deleteAttribution(o, ae.getSurgeryAttributions(), ae);
-            } else if (o instanceof CourseAgent) {
-                deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
-            } else if (o instanceof ConcomitantMedication) {
-                deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
-            } else if (o instanceof OtherCause) {
-                deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
-            } else if (o instanceof DiseaseHistory) {
-                deleteAttribution(o, ae.getDiseaseAttributions(), ae);
-            }
-        }
-    }
-
-    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae) {
-        AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
-        for (AdverseEventAttribution<? extends DomainObject> attribution : attributions) {
-            if (obj.getId().equals(attribution.getCause().getId())) {
-                unwantedAttribution = attribution;
-                break;
-            }
-
-        }
-        if (unwantedAttribution != null) {
-            attributions.remove(unwantedAttribution);
-            unwantedAttribution.setAdverseEvent(null);
-        }
-    }
+  
 
     /**
      * Deletes an element in a list property of the current session command, shifting everything
@@ -675,7 +637,7 @@ public class CreateAdverseEventAjaxFacade {
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
         Object removedObject = list.get(indexToDelete);
-        cascaeDeleteToAttributions((DomainObject) removedObject, command.getAeReport());
+        aeReportDao.cascaeDeleteToAttributions((DomainObject) removedObject, command.getAeReport());
         list.remove(indexToDelete);
 
         if (removedObject instanceof ExpeditedAdverseEventReportChild) {

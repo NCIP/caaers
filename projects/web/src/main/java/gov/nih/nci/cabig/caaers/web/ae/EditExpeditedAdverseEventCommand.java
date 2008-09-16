@@ -1,41 +1,35 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections15.FactoryUtils;
-import org.apache.commons.collections15.list.LazyList;
-
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.ctms.lang.NowFactory;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.list.LazyList;
 
 /**
  * @author Rhett Sutphin
@@ -99,6 +93,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	reportDao.flush();
     }
     
+    public void deleteAttribution(DomainObject o){
+    	reportDao.cascaeDeleteToAttributions(o, getAeReport());
+    }
+    
     public void synchronizeAndSaveAssignment(){
     	ExpeditedAdverseEventReport aeReport = getAeReport();
     	StudyParticipantAssignment assignment = aeReport.getAssignment();
@@ -143,14 +141,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		reportDefinitionDao.reassociate(rd);
     	}
     	
-    	//Now call conceal or reveal on RenderDecisionManager
-		for (ReportDefinition reportDefinition : map.values()) {
-			for (ReportMandatoryFieldDefinition mandatoryField : reportDefinition.getMandatoryFields()) {
-				if (mandatoryField.getMandatory().equals(Mandatory.NA)) {					
-					renderDecisionManager.conceal("aeReport."+mandatoryField.getFieldPath());
-				} 
-			}
-		}		
+    	renderDecisionManager.updateRenderDecision(map.values());
+    	
 	}
        
     
