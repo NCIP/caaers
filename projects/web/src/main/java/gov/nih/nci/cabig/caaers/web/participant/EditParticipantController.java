@@ -136,6 +136,22 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
         return super.suppressValidation(request, command);
     }
 
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+
+        // if the target tab is not the next to the cirrent one
+        if (getTargetPage(request, command, errors, page) - page > 1) {
+            ParticipantInputCommand cmd = (ParticipantInputCommand) command;
+
+            // if the assisgnment object needed by SubjectMedHistoryTab is not in the command
+            if (cmd.assignment == null || cmd.assignment.getId() == null)
+                if (getTab((T) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
+                    errors.reject("ERR_USE_CONTINUE", "Use the CONTINUE button please");
+        }
+
+    }
+
     public Task getTask() {
         return task;
     }
