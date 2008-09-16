@@ -230,7 +230,7 @@ public class ReporterTab extends AeTab {
             command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
 
             // pre-init the mandatory section fields
-            command.initializeMandatorySectionFields(getExpeditedReportTree());
+//            command.initializeMandatorySectionFields(getExpeditedReportTree());
 
             // refresh the mandatory fields
             command.refreshMandatoryProperties();
