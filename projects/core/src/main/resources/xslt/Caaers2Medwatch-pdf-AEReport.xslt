@@ -299,17 +299,221 @@
 								<fo:table-cell><fo:block/></fo:table-cell>
 								<fo:table-cell>
 									<fo:table border="1pt solid black">	
-										<fo:table-column column-width="33%" />
-										<fo:table-column column-width="33%" />	
-										<fo:table-column column-width="34%" />									
+										<fo:table-column column-width="30%" />
+										<fo:table-column column-width="20%" />	
+										<fo:table-column column-width="10%" />	
+										<fo:table-column column-width="10%" />	
+										<fo:table-column column-width="30%" />							
 										<fo:table-body>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1">
-												<fo:table-cell number-columns-spanned="3" background-color="black">
+												<fo:table-cell number-columns-spanned="5" background-color="black">
 													<fo:block xsl:use-attribute-sets="black-heading">C. SUSPECT PRODUCT(S)
 													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>	
-																						
+											<fo:table-row height="14mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">1. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Name </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Give labeled strength and mfr/labeler)</fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline"> name goes here </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt"> name goes here </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>																						
+											<fo:table-row height="14mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">2. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Dose, Frequency and Route Used </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
+													<fo:block font-size="6.5pt" font-style="italic">
+														<fo:inline font-size="6.5pt" font-style="normal">3. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label" font-style="normal">Therapy Dates </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(If unknown, give</fo:inline>
+														<fo:block/>
+														duration) from/to (or best estimate)
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="14mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">4. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Diagnosis for Use </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
+													<fo:block font-size="6.5pt" font-weight="bold">
+														<fo:inline font-size="6.5pt" font-weight="normal">5. </fo:inline>
+														<fo:inline>Event Abated After Use </fo:inline>
+														<fo:block/><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>Stopped or Dose Reduced?
+													</fo:block>
+													<fo:block font-size="6.5pt">
+														<fo:inline font-size="6.5pt" >#1 
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Doesn't 														
+														</fo:inline>
+														<fo:block/>
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+														Apply
+														<fo:block/>
+														<fo:leader leader-length="90%" leader-pattern="rule" rule-thickness="0.5pt"/>
+													</fo:block>
+													<fo:block font-size="6.5pt">
+														<fo:inline font-size="6.5pt" >#2
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Doesn't 														
+														</fo:inline>
+														<fo:block/>
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+														Apply
+														<fo:block/>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>												
+											<fo:table-row height="5mm">
+												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">6. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Lot # </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">7. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Exp Date # </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
+													</fo:block>
+												</fo:table-cell>				
+
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 lot number goes here</fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt" text-decoration="underline">#1 exp date goes here</fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">#2 </fo:inline>
+														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
+													</fo:block>
+												</fo:table-cell>												
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
+													<fo:block font-size="6.5pt" font-weight="bold">
+														<fo:inline font-size="6.5pt" font-weight="normal">8. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Event Reappeared After </fo:inline>
+														<fo:block/><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>Reintroduction?
+													</fo:block>
+													<fo:block font-size="6.5pt">
+														<fo:inline font-size="6.5pt" >#1 
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Doesn't 														
+														</fo:inline>
+														<fo:block/>
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+														Apply
+														<fo:block/>
+														<fo:leader leader-length="90%" leader-pattern="rule" rule-thickness="0.5pt"/>
+													</fo:block>
+													<fo:block font-size="6.5pt">
+														<fo:inline font-size="6.5pt" >#2
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Doesn't 														
+														</fo:inline>
+														<fo:block/>
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+														Apply
+														<fo:block/>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row height="9mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">9. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">NDC# or Unique ID </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
+											<fo:table-row height="20mm">
+												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">10. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Concomitant Medical Products and Therapy Dates </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Exclude treatment of event) </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>
 										</fo:table-body>									
 									</fo:table>	  
 								</fo:table-cell>
