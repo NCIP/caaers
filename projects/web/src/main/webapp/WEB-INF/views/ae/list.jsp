@@ -215,7 +215,10 @@ background-color:#ffdada;
       </c:forEach>
     </c:if>
   </table>
-  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}"> Evaluation period not created yet. </c:if>
+  <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target1=1&displayReportingPeriod=true"/>
+  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}"> Evaluation period not created yet. Click 
+  <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a>
+   to enter AEs.</c:if>
 </div>
 </body>
 </html>
