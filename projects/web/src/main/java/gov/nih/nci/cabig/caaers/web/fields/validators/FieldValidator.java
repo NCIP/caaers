@@ -13,7 +13,9 @@ public abstract class FieldValidator {
     public static final FieldValidator DATE_VALUE_VALIDATOR;
     
     public static final FieldValidator NUMBER_VALIDATOR;
-
+    public static final FieldValidator HOUR_VALIDATOR;
+    public static final FieldValidator MINUTE_VALIDATOR;
+    
     static {
         NOT_NULL_VALIDATOR = new NotNullValidator();
         EMAIL_VALIDATOR = new EmailValidator();
@@ -21,8 +23,13 @@ public abstract class FieldValidator {
         DATE_VALIDATOR = new DateValidator();
         DATE_VALUE_VALIDATOR = new DateValueValidator();
         NUMBER_VALIDATOR = new NumberValidator();
+        HOUR_VALIDATOR = createNumberRangeValidator(1, 12);
+        MINUTE_VALIDATOR = createNumberRangeValidator(0, 59);
     }
-
+    
+    static NumberRangeValidator createNumberRangeValidator(int begin, int end){
+    	return new NumberRangeValidator(begin, end);
+    }
     /**
      * Will validate the input, based on the specific validation rules.
      * 
