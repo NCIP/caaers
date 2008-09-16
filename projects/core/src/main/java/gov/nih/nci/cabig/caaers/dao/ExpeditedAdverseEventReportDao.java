@@ -6,11 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.apache.commons.logging.Log;
@@ -260,5 +270,43 @@ public class ExpeditedAdverseEventReportDao extends
         this.reportDao = reportDao;
     }
     
- 
+
+    /**
+     * When we delte an element which has been attributed, the attribution also needs to be deleted.
+     * @param o
+     */
+    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
+    	for(AdverseEvent ae : aeReport.getAdverseEvents()){
+    		if(o instanceof RadiationIntervention){
+    			deleteAttribution(o, ae.getRadiationAttributions(), ae);
+        	}else if(o instanceof MedicalDevice) {
+        		deleteAttribution(o, ae.getDeviceAttributions(), ae);
+        	}else if(o instanceof SurgeryIntervention) {
+        		deleteAttribution(o, ae.getSurgeryAttributions(), ae);
+        	}else if(o instanceof CourseAgent) {
+        		deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
+        	}else if(o instanceof ConcomitantMedication) {
+        		deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
+        	}else if(o instanceof OtherCause) {
+        		deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
+        	}else if(o instanceof DiseaseHistory) {
+        		deleteAttribution(o, ae.getDiseaseAttributions(), ae);
+        	}
+    	}
+    }
+
+    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
+    	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
+    	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
+    		if(obj.getId().equals(attribution.getCause().getId())) {
+    			unwantedAttribution = attribution;
+    			break;
+    		}
+
+    	}
+    	if(unwantedAttribution != null){
+    		attributions.remove(unwantedAttribution);
+    		unwantedAttribution.setAdverseEvent(null);
+    	}
+    }
 }

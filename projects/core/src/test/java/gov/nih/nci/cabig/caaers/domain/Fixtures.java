@@ -129,6 +129,13 @@ public class Fixtures {
         def.addPlannedNotification(createPlannedEmailNotification());
         return def;
     }
+    
+    public static ReportMandatoryFieldDefinition  createMandatoryField(String path, Mandatory m){
+    	ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition();
+    	mf.setFieldPath(path);
+    	mf.setMandatory(m);
+    	return mf;
+    }
 
     public static PlannedEmailNotification createPlannedEmailNotification() {
         PlannedEmailNotification penf = new PlannedEmailNotification();
