@@ -3,6 +3,9 @@ package gov.nih.nci.cabig.caaers.domain;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
+
 @Embeddable
 public class TimeValue {
 
@@ -45,8 +48,7 @@ public class TimeValue {
     	return String.format("%02d", minute);
     }
     public void setMinuteString(String min){
-    	if(min == null || min.length() < 0) minute = null;
-    	minute = Integer.valueOf(min);
+    	minute = StringUtils.isBlank(min)? null: Integer.valueOf(min);
     }
     @Transient
     public String getHourString(){
@@ -54,8 +56,7 @@ public class TimeValue {
     	return String.format("%02d", hour);
     }
     public void setHourString(String hr){
-    	if(hr == null || hr.length() < 0) hour = null;
-    	hour = Integer.valueOf(hr);
+    	hour = StringUtils.isBlank(hr) ? null : Integer.valueOf(hr);
     }
     @Transient
     public boolean isAM() {
