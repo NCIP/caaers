@@ -11,7 +11,7 @@ This applicationContext contains the definition of the DAOs
 			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
-			default-lazy-init="true">
+        default-lazy-init="true">
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
 
@@ -316,7 +316,7 @@ This applicationContext contains the definition of the DAOs
             <ref local="auditSessionFactory"/>
         </property>
     </bean>
-     <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
+    <bean id="auditHistoryRepository" class="gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository">
         <property name="sessionFactory" ref="auditSessionFactory"></property>
     </bean>
 
@@ -360,7 +360,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"
           autowire="byName"/>
 
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate"
           autowire="byType">
     </bean>
 
@@ -392,7 +392,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="routineAdverseEventReportDao" parent="daoTemplate"
           class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
     <bean id="adverseEventReportingPeriodDao" parent="daoTemplate"
-          class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>      
+          class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
     <bean id="epochDao" parent="daoTemplate"
           class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
@@ -448,7 +448,8 @@ This applicationContext contains the definition of the DAOs
     <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao"/>
 
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
-    <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao" />
+    <bean id="abstractStudyDiseaseDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
     <!-- validator beans starts here-->
     <bean id="webControllerValidator"
           class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
@@ -483,6 +484,10 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
     </bean>
+    <bean id="studyAjaxableDomainObjectRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.StudyAjaxableDomainObjectRepository" parent="daoTemplate">
+    </bean>
+
     <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
           lazy-init="true" autowire="byType">
         <property name="mailSender" ref="mailer"/>
@@ -510,8 +515,7 @@ This applicationContext contains the definition of the DAOs
         <property name="schedulerService" ref="schedulerService"/>
     </bean>
 
-     
-    
+
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
         <property name="labLoadDao" ref="labLoadDao"></property>
     </bean>

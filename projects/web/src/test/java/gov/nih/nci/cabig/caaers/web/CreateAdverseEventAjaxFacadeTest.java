@@ -83,9 +83,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testMatchParticipants() throws Exception {
         Participant expectedMatch = setId(3, createParticipant("Foo", "B"));
         expectedMatch.setDateOfBirth(new DateValue()); // set not null so we can be sure it isn't
-                                                        // copied
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "foo" })))
-                        .andReturn(Arrays.asList(expectedMatch));
+        // copied
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{"foo"})))
+                .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Participant> actualList = facade.matchParticipants("foo", null);
@@ -101,8 +101,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchParticipantsMultipleSubnames() throws Exception {
         Participant expectedMatch = setId(5, new Participant());
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "foo", "zappa" })))
-                        .andReturn(Arrays.asList(expectedMatch));
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{"foo", "zappa"})))
+                .andReturn(Arrays.asList(expectedMatch));
 
         replayMocks();
         List<Participant> actualList = facade.matchParticipants("foo zappa", null);
@@ -129,8 +129,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     }
 
     public void testMatchParticipantsWithBlankToken() throws Exception {
-        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] {}))).andReturn(
-                        Collections.<Participant> emptyList());
+        expect(participantDao.getBySubnamesJoinOnIdentifier(aryEq(new String[]{}))).andReturn(
+                Collections.<Participant>emptyList());
 
         replayMocks();
         List<Participant> actualList = facade.matchParticipants(" ", null);
@@ -139,42 +139,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assertEquals("Should return nothing", 0, actualList.size());
     }
 
-    public void testMatchStudies() throws Exception {
-        Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(
-                        studyDao.getBySubnamesJoinOnIdentifier(aryEq(new String[] { "jim" }),
-                                        (String) eq(null))).andReturn(Arrays.asList(expectedMatch));
-
-        replayMocks();
-        List<Study> actualList = facade.matchStudies("jim", null, false);
-        verifyMocks();
-
-        assertEquals("Result not forwarded", 1, actualList.size());
-        Study actualMatch = actualList.get(0);
-        assertNotSame("Returned match is not copy", expectedMatch, actualMatch);
-        assertEquals("id not copied", 22, (int) actualMatch.getId());
-        assertEquals("shortTitle not copied", "Jim's Study", actualMatch.getShortTitle());
-        assertNull("extra field incorrectly copied", actualMatch.getLongTitle());
-    }
-
-    public void testMatchStudiesMultipleSubnames() throws Exception {
-        Study expectedMatch = setId(22, createStudy("Jim's Study"));
-        expect(
-                        studyDao.getBySubnamesJoinOnIdentifier(
-                                        aryEq(new String[] { "jules", "jim" }), (String) eq(null)))
-                        .andReturn(Arrays.asList(expectedMatch));
-
-        replayMocks();
-        List<Study> actualList = facade.matchStudies("jules jim", null, false);
-        verifyMocks();
-
-        assertEquals("Result not forwarded", 1, actualList.size());
-    }
 
     public void testMatchLabTestNames() throws Exception {
         List<Lov> labNames = facade.matchLabTestNames("Chloride");
         assertTrue("There should be at least one lab name containing 'Chloride'",
-                        labNames.size() > 0);
+                labNames.size() > 0);
         for (Lov lov : labNames) {
             assertContains("The lab test name should contain 'Chloride'", lov.getDesc(), "Chloride");
         }
@@ -195,27 +164,10 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     }
 
-    // No Testing needed here cause these tests are covered under DAO testing
-    public void testMatchStudiesFiltersByParticipantId() throws Exception {
-        List<Study> expectedList = new ArrayList<Study>();
-        expectedList.add(createStudy("Joyful"));
-        Participant p = setId(7, createParticipant("Sad", "Man"));
-        assignParticipant(p, expectedList.get(0), new Organization());
-
-        expect(studyDao.matchStudyByParticipant(7, "y", null)).andReturn(expectedList);
-
-        replayMocks();
-        List<Study> actualList = facade.matchStudies("y", 7, false);
-        verifyMocks();
-
-        assertEquals("Wrong number of studies returned", 1, actualList.size());
-        assertEquals("Wrong study included", "Joyful", actualList.get(0).getShortTitle());
-    }
-
     public void testMatchTermsNoCategory() throws Exception {
         List<CtcTerm> expected = new LinkedList<CtcTerm>();
-        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what" }), eq(12), (Integer) isNull()))
-                        .andReturn(expected);
+        expect(ctcTermDao.getBySubname(aryEq(new String[]{"what"}), eq(12), (Integer) isNull()))
+                .andReturn(expected);
 
         replayMocks();
         List<CtcTerm> actual = facade.matchTerms("what", 12, null, 10);
@@ -226,8 +178,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchTermsWithCategory() throws Exception {
         List<CtcTerm> expected = new LinkedList<CtcTerm>();
-        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what" }), eq(12), eq(7))).andReturn(
-                        expected);
+        expect(ctcTermDao.getBySubname(aryEq(new String[]{"what"}), eq(12), eq(7))).andReturn(
+                expected);
 
         replayMocks();
         List<CtcTerm> actual = facade.matchTerms("what", 12, 7, 10);
@@ -238,8 +190,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
     public void testMatchTermsMultipleSubnames() throws Exception {
         List<CtcTerm> expected = new LinkedList<CtcTerm>();
-        expect(ctcTermDao.getBySubname(aryEq(new String[] { "what", "happ" }), eq(2), eq(205)))
-                        .andReturn(expected);
+        expect(ctcTermDao.getBySubname(aryEq(new String[]{"what", "happ"}), eq(2), eq(205)))
+                .andReturn(expected);
 
         replayMocks();
         List<CtcTerm> actual = facade.matchTerms("what happ", 2, 205, 10);
@@ -301,9 +253,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testAddConcomitantMedications() throws Exception {
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
         expect(
-                        webContext
-                                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
-                        .andReturn("The HTML");
+                webContext
+                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+                .andReturn("The HTML");
 
         replayMocks();
         assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
@@ -313,7 +265,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testAddConcomitantMedicationsNoReport() throws Exception {
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/create");
         expect(webContext.forwardToString("/pages/ae/create?index=4&subview=conMedFormSection"))
-                        .andReturn("The HTML");
+                .andReturn("The HTML");
 
         replayMocks();
         assertEquals("The HTML", facade.addFormSection("conMed", 4, null));
@@ -324,9 +276,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         request.setContextPath("/caaers");
         expect(webContext.getCurrentPage()).andReturn("/caaers/pages/ae/edit");
         expect(
-                        webContext
-                                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
-                        .andReturn("The HTML");
+                webContext
+                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+                .andReturn("The HTML");
 
         replayMocks();
         assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
@@ -337,9 +289,9 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         request.setContextPath("/caaers");
         expect(webContext.getCurrentPage()).andReturn("/pages/ae/edit");
         expect(
-                        webContext
-                                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
-                        .andReturn("The HTML");
+                webContext
+                        .forwardToString("/pages/ae/edit?index=4&aeReport=12&subview=conMedFormSection"))
+                .andReturn("The HTML");
 
         replayMocks();
         assertEquals("The HTML", facade.addFormSection("conMed", 4, 12));
@@ -349,7 +301,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     public void testGetGradesForEnumGrades() throws Exception {
         CtcTerm term = registerMockFor(CtcTerm.class);
         expect(ctcTermDao.getById(5)).andReturn(term);
-        expect(term.getGrades()).andReturn(Arrays.<CodedGrade> asList(Grade.SEVERE));
+        expect(term.getGrades()).andReturn(Arrays.<CodedGrade>asList(Grade.SEVERE));
         replayMocks();
 
         List<? extends CodedGrade> actual = facade.getTermGrades(5);
@@ -366,7 +318,7 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         grade.setText("Oh, so severe");
         grade.setGrade(Grade.SEVERE);
         grade.setTerm(term);
-        expect(term.getGrades()).andReturn(Arrays.<CodedGrade> asList(grade));
+        expect(term.getGrades()).andReturn(Arrays.<CodedGrade>asList(grade));
         replayMocks();
 
         List<? extends CodedGrade> actual = facade.getTermGrades(5);
@@ -523,12 +475,12 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
 
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
-                    IndexChange actual) {
+                                          IndexChange actual) {
         assertIndexChange(expectedOriginal, expectedCurrent, null, actual);
     }
 
     private static void assertIndexChange(Integer expectedOriginal, Integer expectedCurrent,
-                    String expectedDisplay, IndexChange actual) {
+                                          String expectedDisplay, IndexChange actual) {
         assertEquals("Wrong original", expectedOriginal, actual.getOriginal());
         assertEquals("Wrong current", expectedCurrent, actual.getCurrent());
         if (expectedDisplay != null) {
@@ -541,20 +493,20 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
     }
 
     private void assertAdverseEventsIdOrder(ExpeditedAdverseEventInputCommand command,
-                    int... expectedOrder) {
+                                            int... expectedOrder) {
         for (int i = 0; i < expectedOrder.length; i++) {
             int id = expectedOrder[i];
             assertTrue("More expected ids than AEs present", i < command.getAeReport()
-                            .getAdverseEvents().size());
+                    .getAdverseEvents().size());
             assertEquals("Wrong id at " + i, new Integer(id), command.getAeReport()
-                            .getAdverseEvents().get(i).getId());
+                    .getAdverseEvents().get(i).getId());
         }
     }
 
     private EditExpeditedAdverseEventCommand createAeCommandAndExpectInSession() {
 
         EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(null, null,
-                        assignmentDao,null, null, null, null);
+                assignmentDao, null, null, null, null);
 
         ExpeditedAdverseEventReport report = new ExpeditedAdverseEventReport();
         report.addAdverseEvent(setId(0, new AdverseEvent()));

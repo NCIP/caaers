@@ -1,49 +1,52 @@
 <beans
-    xmlns="http://www.springframework.org/schema/beans"
-    xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd"
-    >
+        >
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>
 
-    <bean id="createAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
+    <bean id="createAeAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.ae.CreateAdverseEventAjaxFacade">
         <property name="reportRepository" ref="reportRepository"/>
+        <property name="studyAjaxableDomainObjectRepository" ref="studyAjaxableDomainObjectRepository"/>
     </bean>
-    
-    <bean id="captureAeAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade" />
-    
+
+    <bean id="captureAeAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade"/>
+
     <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>
     </bean>
 
-    <bean id="studyAjaxFacade" autowire="byType" 
+    <bean id="studyAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
-          
-     <bean id="participantAjaxFacade" autowire="byType" 
+
+    <bean id="participantAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade"/>
-    
-     <bean id="assignParticipantFacade" autowire="byType" 
+
+    <bean id="assignParticipantFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantAjaxFacade"/>
-    
-     <bean id="investigatorAjaxFacade" autowire="byType" 
+
+    <bean id="investigatorAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.InvestigatorAjaxFacade"/>
-       
-     <bean id="searchStudyAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade"/>   
-     <bean id="ruleAjaxFacade" autowire="byType" 
+
+    <bean id="searchStudyAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade"/>
+    <bean id="ruleAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade"/>
-     <bean id="meddraAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade"/>    
-     <bean id="searchAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade"/>       
-	<bean id="reportAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/> 
-   <bean id="indAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade" /> 
-          
-   <bean id="importAjaxFacade" autowire="byType" 
-          class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade" />                                   
+    <bean id="meddraAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade"/>
+    <bean id="searchAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade"/>
+    <bean id="reportAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
+    <bean id="indAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
+
+    <bean id="importAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade"/>
 </beans>

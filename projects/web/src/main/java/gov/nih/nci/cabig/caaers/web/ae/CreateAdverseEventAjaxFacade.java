@@ -1,92 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
-import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabLoadDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
-import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
-import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
-import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
-import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.CodedGrade;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.Ctc;
-import gov.nih.nci.cabig.caaers.domain.CtcCategory;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.InterventionSite;
-import gov.nih.nci.cabig.caaers.domain.LabCategory;
-import gov.nih.nci.cabig.caaers.domain.LabLoad;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.dao.query.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -104,18 +38,26 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author Rhett Sutphin
  */
 public class CreateAdverseEventAjaxFacade {
 
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
-	private static Class<?>[] CONTROLLERS = { 	EditAdverseEventController.class };
+    private static Class<?>[] CONTROLLERS = {EditAdverseEventController.class};
 
-	protected StudyDao studyDao;
-	protected ParticipantDao participantDao;
-	protected CtcTermDao ctcTermDao;
-	protected CtcCategoryDao ctcCategoryDao;
+    protected StudyDao studyDao;
+    protected ParticipantDao participantDao;
+    protected CtcTermDao ctcTermDao;
+    protected CtcCategoryDao ctcCategoryDao;
     protected CtcDao ctcDao;
     protected LowLevelTermDao lowLevelTermDao;
     protected ExpeditedAdverseEventReportDao aeReportDao;
@@ -136,16 +78,18 @@ public class CreateAdverseEventAjaxFacade {
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
     protected LabLoadDao labLoadDao;
-    
-    public Class<?>[] controllers(){
-    	return CONTROLLERS;
+    private StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository;
+
+    public Class<?>[] controllers() {
+        return CONTROLLERS;
     }
-    
+
     public List<AnatomicSite> matchAnatomicSite(String text) {
         return anatomicSiteDao.getBySubnames(extractSubnames(text));
     }
+
     public AnatomicSite getAnatomicSiteById(String anatomicSiteId) throws Exception {
-       return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
+        return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
     }
 
     public String buildAnatomicSiteTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
@@ -161,7 +105,7 @@ public class CreateAdverseEventAjaxFacade {
             columnTerm.setProperty("name");
             columnTerm.setTitle("Primary site of disease");
             columnTerm
-					.setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
+                    .setCell("gov.nih.nci.cabig.caaers.web.search.link.AnatomicSiteLinkDisplayCell");
             model.addColumn(columnTerm);
 
 
@@ -198,8 +142,8 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<LowLevelTerm> matchLowLevelTermsByCode(int version_id, String text) {
-    	List<LowLevelTerm> terms= lowLevelTermDao.getByVersionSubnames(version_id, extractSubnames(text));
-    	return ObjectTools.reduceAll(terms, "id", "meddraCode", "meddraTerm");
+        List<LowLevelTerm> terms = lowLevelTermDao.getByVersionSubnames(version_id, extractSubnames(text));
+        return ObjectTools.reduceAll(terms, "id", "meddraCode", "meddraTerm");
     }
 
     public List<ChemoAgent> matchChemoAgents(String text) {
@@ -207,10 +151,11 @@ public class CreateAdverseEventAjaxFacade {
         List<ChemoAgent> agents = chemoAgentDao.getBySubname(excerpts);
         return agents;
     }
+
     public ChemoAgent getChemoAgentById(String chemoAgentId) throws Exception {
 
-           return chemoAgentDao.getById(Integer.parseInt(chemoAgentId));
-       }
+        return chemoAgentDao.getById(Integer.parseInt(chemoAgentId));
+    }
 
     public String buildChemoAgentsTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
 
@@ -251,9 +196,9 @@ public class CreateAdverseEventAjaxFacade {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
     }
-    
+
     public Integer getDiseaseFromStudyDisease(String studyDiseaseId) {
-    	CtepStudyDisease ctepStudyDisease= ctepStudyDiseaseDao.getById(Integer.parseInt(studyDiseaseId));
+        CtepStudyDisease ctepStudyDisease = ctepStudyDiseaseDao.getById(Integer.parseInt(studyDiseaseId));
         return ctepStudyDisease.getTerm().getId();
     }
 
@@ -274,58 +219,22 @@ public class CreateAdverseEventAjaxFacade {
         return reduceAll(participants, "firstName", "lastName", "id", "primaryIdentifierValue");
     }
 
-    /* Depracated and replace by a hql based query to enhance performance
-    public List<Participant> matchParticipants(String text, Integer studyId) {
-        List<Participant> participants = participantRepository.getBySubnames(extractSubnames(text));
-        if (studyId != null) {
-            for (Iterator<Participant> it = participants.iterator(); it.hasNext();) {
-                Participant participant = it.next();
-                if (!onStudy(participant, studyId)) it.remove();
-            }
-        }
-        // cut down objects for serialization
-        return reduceAll(participants, "firstName", "lastName", "id");
-    }
-    */
 
-    private boolean onStudy(Participant participant, Integer studyId) {
-        boolean onStudy = false;
-        for (StudyParticipantAssignment assignment : participant.getAssignments()) {
-            if (assignment.getStudySite().getStudy().getId().equals(studyId)) {
-                onStudy = true;
-                break;
-            }
-        }
-        return onStudy;
-    }
-
-    /* Depracated and replace by a hql based query to enhance performance
-    public List<Study> matchStudies(String text, Integer participantId) {
-        List<Study> studies = studyDao.getBySubnames(extractSubnames(text));
-        if (participantId != null) {
-            for (Iterator<Study> it = studies.iterator(); it.hasNext();) {
-                Study study = it.next();
-                if (!onStudy(study, participantId)) it.remove();
-            }
-        }
-        // cut down objects for serialization
-        return reduceAll(studies, "id", "shortTitle");
-    }
-    */
     /*
-     * The extra condition "o.status <> 'Administratively Complete'" as fix for bug 9514
-     */
-    public List<Study> matchStudies(String text, Integer participantId, boolean ignoreCompletedStudy) {
-        List<Study> studies;
-        if (participantId == null) {
-            studies = studyDao.getBySubnamesJoinOnIdentifier(extractSubnames(text),
-                    (ignoreCompletedStudy) ? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'" : null);
-        } else {
-            studies = studyDao.matchStudyByParticipant(participantId, text,
-                    (ignoreCompletedStudy) ? "o.status <> '" + Study.STATUS_ADMINISTRATIVELY_COMPLETE + "'" : null);
+    * The extra condition "o.status <> 'Administratively Complete'" as fix for bug 9514
+    */
+
+
+    public List<StudyAjaxableDomainObject> matchStudies(String text, Integer participantId, boolean ignoreCompletedStudy) {
+
+        StudyAjaxableDomainObjectQuery domainObjectQuery = new StudyAjaxableDomainObjectQuery();
+        domainObjectQuery.filterStudiesWithMatchingText(text);
+        if (participantId != null) {
+            domainObjectQuery.filterByParticipant(participantId);
         }
-        // cut down objects for serialization
-        return reduceAll(studies, "id", "shortTitle", "primaryIdentifierValue");
+        domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
+        List<StudyAjaxableDomainObject> studies = studyAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        return studies;
     }
 
     private boolean onStudy(Study study, Integer participantId) {
@@ -356,15 +265,15 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<CtcTerm> getTermsByCategory(Integer ctcCategoryId) throws Exception {
         List<CtcTerm> terms = null;//ctcCategoryDao.getById(ctcCategoryId).getTerms();
-        
+
         // from rules UI page , if user selects terms without category a fabricated Id 0 is passed.
         // get all terms incase of this special condition -- srini
         if (ctcCategoryId == 0) {
-        	terms =  ctcTermDao.getAll();
+            terms = ctcTermDao.getAll();
         } else {
-        	terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
+            terms = ctcCategoryDao.getById(ctcCategoryId).getTerms();
         }
-        
+
         // cut down objects for serialization
         for (CtcTerm term : terms) {
             term.getCategory().setTerms(null);
@@ -383,7 +292,7 @@ public class CreateAdverseEventAjaxFacade {
         return terms;
     }
 
-    public String buildTermsTableByCategory(final Map parameterMap,Integer ctcCategoryId, String tableId, HttpServletRequest request) throws Exception {
+    public String buildTermsTableByCategory(final Map parameterMap, Integer ctcCategoryId, String tableId, HttpServletRequest request) throws Exception {
         if (ctcCategoryId == null || ctcCategoryId == 0) {
             return "";
         }
@@ -424,11 +333,11 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public List<CtcCategory> getCategoriesWithStudyShortTitle(String studyShortTitle) {
-    	
-    	Study s = studyDao.getByShortTitle(studyShortTitle);
-    	Ctc ctc = s.getAeTerminology().getCtcVersion();
-    	
-    	
+
+        Study s = studyDao.getByShortTitle(studyShortTitle);
+        Ctc ctc = s.getAeTerminology().getCtcVersion();
+
+
         List<CtcCategory> categories = ctc.getCategories();
         // cut down objects for serialization
         for (CtcCategory category : categories) {
@@ -436,8 +345,8 @@ public class CreateAdverseEventAjaxFacade {
         }
         return categories;
     }
-    
-    
+
+
     public List<? extends CodedGrade> getTermGrades(int ctcTermId) {
         List<CodedGrade> list = ctcTermDao.getById(ctcTermId).getGrades();
         // have to detect whether it's a collection of Grade or CtcGrade;
@@ -469,6 +378,7 @@ public class CreateAdverseEventAjaxFacade {
 
         return labTerm;
     }
+
     public String buildLabTermsTable(final Map parameterMap, String labCategoryId, String tableId, HttpServletRequest request) throws Exception {
 
         if (labCategoryId == null || labCategoryId.equalsIgnoreCase("")) {
@@ -581,9 +491,9 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     public boolean pushRoutineAdverseEventToStudyCalendar(int aeReportId) {
-    	if(true)
-    		throw new UnsupportedOperationException("No more supported");
-    	return false;
+        if (true)
+            throw new UnsupportedOperationException("No more supported");
+        return false;
     }
 
     public String withdrawReportVersion(int aeReportId, int reportId) {
@@ -679,13 +589,13 @@ public class CreateAdverseEventAjaxFacade {
         List<IndexChange> changes = createMoveChangeList(objectIndex, targetIndex);
         addDisplayNames(listProperty, changes);
         try {
-			saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
-		} catch( OptimisticLockingFailureException ole){
-			log.error("Error occured while reordering [listProperty :" + listProperty +
-        			", objectIndex :" + targetIndex +
-        			", targetIndex :" + targetIndex +"]", ole);
-        	return new AjaxOutput("Unable to reorder at this point. The same data is being modified by someone else, please restart the page flow");
-		}
+            saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+        } catch (OptimisticLockingFailureException ole) {
+            log.error("Error occured while reordering [listProperty :" + listProperty +
+                    ", objectIndex :" + targetIndex +
+                    ", targetIndex :" + targetIndex + "]", ole);
+            return new AjaxOutput("Unable to reorder at this point. The same data is being modified by someone else, please restart the page flow");
+        }
         return new AjaxOutput(changes);
     }
 
@@ -707,42 +617,44 @@ public class CreateAdverseEventAjaxFacade {
 
     /**
      * When we delte an element which has been attributed, the attribution also needs to be deleted.
+     *
      * @param o
      */
-    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
-    	for(AdverseEvent ae : aeReport.getAdverseEvents()){
-    		if(o instanceof RadiationIntervention){
-    			deleteAttribution(o, ae.getRadiationAttributions(), ae);
-        	}else if(o instanceof MedicalDevice) {
-        		deleteAttribution(o, ae.getDeviceAttributions(), ae);
-        	}else if(o instanceof SurgeryIntervention) {
-        		deleteAttribution(o, ae.getSurgeryAttributions(), ae);
-        	}else if(o instanceof CourseAgent) {
-        		deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
-        	}else if(o instanceof ConcomitantMedication) {
-        		deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
-        	}else if(o instanceof OtherCause) {
-        		deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
-        	}else if(o instanceof DiseaseHistory) {
-        		deleteAttribution(o, ae.getDiseaseAttributions(), ae);
-        	}
-    	}
+    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport) {
+        for (AdverseEvent ae : aeReport.getAdverseEvents()) {
+            if (o instanceof RadiationIntervention) {
+                deleteAttribution(o, ae.getRadiationAttributions(), ae);
+            } else if (o instanceof MedicalDevice) {
+                deleteAttribution(o, ae.getDeviceAttributions(), ae);
+            } else if (o instanceof SurgeryIntervention) {
+                deleteAttribution(o, ae.getSurgeryAttributions(), ae);
+            } else if (o instanceof CourseAgent) {
+                deleteAttribution(o, ae.getCourseAgentAttributions(), ae);
+            } else if (o instanceof ConcomitantMedication) {
+                deleteAttribution(o, ae.getConcomitantMedicationAttributions(), ae);
+            } else if (o instanceof OtherCause) {
+                deleteAttribution(o, ae.getOtherCauseAttributions(), ae);
+            } else if (o instanceof DiseaseHistory) {
+                deleteAttribution(o, ae.getDiseaseAttributions(), ae);
+            }
+        }
     }
 
-    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
-    	AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
-    	for(AdverseEventAttribution<? extends DomainObject> attribution : attributions){
-    		if(obj.getId().equals(attribution.getCause().getId())) {
-    			unwantedAttribution = attribution;
-    			break;
-    		}
+    public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae) {
+        AdverseEventAttribution<? extends DomainObject> unwantedAttribution = null;
+        for (AdverseEventAttribution<? extends DomainObject> attribution : attributions) {
+            if (obj.getId().equals(attribution.getCause().getId())) {
+                unwantedAttribution = attribution;
+                break;
+            }
 
-    	}
-    	if(unwantedAttribution != null){
-    		attributions.remove(unwantedAttribution);
-    		unwantedAttribution.setAdverseEvent(null);
-    	}
+        }
+        if (unwantedAttribution != null) {
+            attributions.remove(unwantedAttribution);
+            unwantedAttribution.setAdverseEvent(null);
+        }
     }
+
     /**
      * Deletes an element in a list property of the current session command, shifting everything
      * else around as appropriate.
@@ -757,7 +669,7 @@ public class CreateAdverseEventAjaxFacade {
      */
     @SuppressWarnings({"unchecked"})
     public AjaxOutput remove(String listProperty, int indexToDelete) {
-        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand)extractCommand();
+        ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
         command.reassociate(); //reassociate to session
         command.getStudy(); //this is to fix the LazyInit execption on "Save&Continue" after a delete(GForge #11981, comments has the details) 
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
@@ -771,27 +683,27 @@ public class CreateAdverseEventAjaxFacade {
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size());
         Object removedObject = list.get(indexToDelete);
-        cascaeDeleteToAttributions((DomainObject)removedObject, command.getAeReport());
+        cascaeDeleteToAttributions((DomainObject) removedObject, command.getAeReport());
         list.remove(indexToDelete);
 
-        if(removedObject instanceof ExpeditedAdverseEventReportChild){
-        	ExpeditedAdverseEventReportChild removedAEChild = (ExpeditedAdverseEventReportChild) removedObject;
-        	removedAEChild.setReport(null);
+        if (removedObject instanceof ExpeditedAdverseEventReportChild) {
+            ExpeditedAdverseEventReportChild removedAEChild = (ExpeditedAdverseEventReportChild) removedObject;
+            removedAEChild.setReport(null);
         }
-        
+
         addDisplayNames(listProperty, changes);
-        try{
-        	saveIfAlreadyPersistent(command);
-        }catch(DataIntegrityViolationException die){
-        	log.error("Error occured while deleting [listProperty :" + listProperty +
-        			", indexToDelete :" + indexToDelete +
-        			"]", die);
-        	return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
-        }catch(OptimisticLockingFailureException ole){
-        	log.error("Error occured while deleting [listProperty :" + listProperty +
-        			", indexToDelete :" + indexToDelete +
-        			"]", ole);
-        	return new AjaxOutput("Unable to delete. The same data is being modified by someone else, please restart the page flow.");
+        try {
+            saveIfAlreadyPersistent(command);
+        } catch (DataIntegrityViolationException die) {
+            log.error("Error occured while deleting [listProperty :" + listProperty +
+                    ", indexToDelete :" + indexToDelete +
+                    "]", die);
+            return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
+        } catch (OptimisticLockingFailureException ole) {
+            log.error("Error occured while deleting [listProperty :" + listProperty +
+                    ", indexToDelete :" + indexToDelete +
+                    "]", ole);
+            return new AjaxOutput("Unable to delete. The same data is being modified by someone else, please restart the page flow.");
         }
         return new AjaxOutput(changes);
     }
@@ -830,9 +742,8 @@ public class CreateAdverseEventAjaxFacade {
         if (parentIndex != null) params.put("parentIndex", Integer.toString(parentIndex));
         return renderAjaxView(viewName, aeReportId, params);
     }
-    
-    
-   
+
+
     protected String renderAjaxView(String viewName, Integer aeReportId, Map<String, String> params) {
         WebContext webContext = WebContextFactory.get();
 
@@ -852,7 +763,6 @@ public class CreateAdverseEventAjaxFacade {
             throw new CaaersSystemException(e);
         }
     }
-    
 
 
     protected Object extractCommand() {
@@ -888,7 +798,7 @@ public class CreateAdverseEventAjaxFacade {
             return page.substring(contextPath.length());
         }
     }
-    
+
 
     // TODO: there's got to be a library version of this somewhere
     private String createQueryString(Map<String, String> params) {
@@ -899,29 +809,28 @@ public class CreateAdverseEventAjaxFacade {
         }
         return sb.toString().substring(0, sb.length() - 1);
     }
-    
+
     //--------------- functionality added for Labviewr integration -------------------------
-    public void dismissLab(int labId){
-    	LabLoad labLoad = labLoadDao.getById(labId);
-    	if(labLoad != null){
-    		labLoad.setDismissed(Boolean.TRUE);
-    		labLoadDao.save(labLoad);
-    	}
+    public void dismissLab(int labId) {
+        LabLoad labLoad = labLoadDao.getById(labId);
+        if (labLoad != null) {
+            labLoad.setDismissed(Boolean.TRUE);
+            labLoadDao.save(labLoad);
+        }
     }
 
-   
-    
+
     ////// CONFIGURATION
 
     @Required
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
+
     @Required
     public void setParticipantDao(final ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
-
 
 
     @Required
@@ -1044,28 +953,34 @@ public class CreateAdverseEventAjaxFacade {
     public void setInterventionSiteDao(InterventionSiteDao interventionSiteDao) {
         this.interventionSiteDao = interventionSiteDao;
     }
-    @Required
-	public CtepStudyDiseaseDao getCtepStudyDiseaseDao() {
-		return ctepStudyDiseaseDao;
-	}
-	public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
-		this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
-	}
 
-	private HttpServletRequest getHttpServletRequest() {
+    @Required
+    public CtepStudyDiseaseDao getCtepStudyDiseaseDao() {
+        return ctepStudyDiseaseDao;
+    }
+
+    public void setCtepStudyDiseaseDao(CtepStudyDiseaseDao ctepStudyDiseaseDao) {
+        this.ctepStudyDiseaseDao = ctepStudyDiseaseDao;
+    }
+
+    private HttpServletRequest getHttpServletRequest() {
         return WebContextFactory.get().getHttpServletRequest();
     }
 
-	public AdverseEventReportingPeriodDao getReportingPeriodDao() {
-		return reportingPeriodDao;
-	}
-	
-	public void setReportingPeriodDao(
-			AdverseEventReportingPeriodDao reportingPeriodDao) {
-		this.reportingPeriodDao = reportingPeriodDao;
-	}
+    public AdverseEventReportingPeriodDao getReportingPeriodDao() {
+        return reportingPeriodDao;
+    }
 
-	public void setLabLoadDao(LabLoadDao labLoadDao) {
-		this.labLoadDao = labLoadDao;
-	}
+    public void setReportingPeriodDao(
+            AdverseEventReportingPeriodDao reportingPeriodDao) {
+        this.reportingPeriodDao = reportingPeriodDao;
+    }
+
+    public void setLabLoadDao(LabLoadDao labLoadDao) {
+        this.labLoadDao = labLoadDao;
+    }
+
+    public void setStudyAjaxableDomainObjectRepository(StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
+        this.studyAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
+    }
 }
