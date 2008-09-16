@@ -54,7 +54,7 @@
 	Logic : "'AE Start Date' must be provided if 'Is Primary AE?' is 'Yes'"
 	Error Code : AER_BR4_ERR
 	Error Message :  AE_START_DATE Date must be provided if IS_PRIMARY_AE is "Yes"
-	============================================================================= -->
+	============================================================================= 
 	<rule name="AER_BR4_CHK">
 		<lhs>
 			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
@@ -62,10 +62,10 @@
 			<eval>NullSafeFieldExtractor.extractField(aeReport,"adverseEvents[0].startDate") == null</eval>
 		</lhs>
 		<rhs>
-			<!-- Populate Error Message-->
 			errors.addValidationError("AER_BR4_ERR","'Start date' must be provided for the primary adverse event", 1);
        	</rhs>
 	</rule>
+	-->
 	<!-- ==========================================================================
 	RuleName : AER_BR5_CHK
 	Logic : "'End date' must be greater than or equal to 'Start date' for adverse event"
