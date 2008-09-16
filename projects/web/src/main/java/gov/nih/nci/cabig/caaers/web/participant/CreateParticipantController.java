@@ -32,6 +32,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -228,4 +229,20 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
 		this.chemoAgentDao = chemoAgentDao;
 	}
+
+    @Override
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
+        super.onBindAndValidate(request, command, errors, page);
+
+        // if the target tab is not the next to the cirrent one
+        if (getTargetPage(request, command, errors, page) - page > 1) {
+            ParticipantInputCommand cmd = (ParticipantInputCommand) command;
+
+            // if the assisgnment object needed by SubjectMedHistoryTab is not in the command 
+            if (cmd.assignment == null || cmd.assignment.getId() == null)
+                if (getTab((ParticipantInputCommand) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
+                    errors.reject("ERR_USE_CONTINUE", "Use the CONTINUE button please");
+        }
+
+    }
 }
