@@ -271,7 +271,7 @@
 													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>	
-											<fo:table-row height="35mm">
+											<fo:table-row height="50mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
 													<fo:block>
 														<fo:inline font-size="6.5">6. </fo:inline>
@@ -279,12 +279,14 @@
 													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>	
-											<fo:table-row height="35mm">
+											<fo:table-row height="48mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border" number-columns-spanned="5">
-													<fo:block>
-														<fo:inline font-size="6.5">7. </fo:inline>
-														<fo:inline xsl:use-attribute-sets="label">Other Relevant History, Including Preexisting Medical Conditions </fo:inline>
-														<fo:inline font-size="6.5" font-style="italic">(e.g., allergies,race, pregnancy, smoking and alcohol use, hepatic/renal dysfunction, etc.) </fo:inline>
+													<fo:block font-size="6.5" font-style="italic">
+														<fo:inline font-size="6.5" font-style="normal">7. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label" font-style="normal">Other Relevant History, Including Preexisting Medical Conditions </fo:inline>
+														<fo:inline font-size="6.5" font-style="italic">(e.g., allergies,race, </fo:inline>
+														<fo:block/><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
+														pregnancy, smoking and alcohol use, hepatic/renal dysfunction, etc.) 
 													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>	
@@ -514,6 +516,238 @@
 													</fo:block>
 												</fo:table-cell>
 											</fo:table-row>
+											<fo:table-row xsl:use-attribute-sets="tr-height-1">
+												<fo:table-cell number-columns-spanned="5" background-color="black">
+													<fo:block xsl:use-attribute-sets="black-heading">D. SUSPECT MEDICAL DEVICE
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>		
+											<fo:table-row>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">1. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Brand Name </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>																					
+											<fo:table-row>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">2. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Common Device Name </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="10mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">3. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Manufacturer Name, City and State </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">4. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Model # </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline xsl:use-attribute-sets="label">Lot # </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="3">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">5. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">
+														Operator of Device </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Health Professional </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Lay User/Patient </fo:inline>
+													</fo:block>
+													<fo:block>
+														<fo:inline font-size="6.5pt">
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Other: </fo:inline>
+													</fo:block>
+													<fo:block font-size="6.5">
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														if other , text with under line 
+													</fo:block>													
+												</fo:table-cell>
+											</fo:table-row>												
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline xsl:use-attribute-sets="label">Catalog # </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block font-size="6.5" font-style="italic">
+														<fo:inline xsl:use-attribute-sets="label" font-style="normal">Expiration Date</fo:inline>
+														<fo:block/>(mm/dd/yyyy)
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline xsl:use-attribute-sets="label">Serial # </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline xsl:use-attribute-sets="label">Other #</fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">6. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">If Implanted, Give Date </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(mm/dd/yyyy)  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">7. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">If Explanted, Give Date </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(mm/dd/yyyy)  </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="9mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">8. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Is this a Single-use Device that was Reprocessed and Reused on a Patient? </fo:inline>
+													</fo:block>
+													<fo:block font-size="6.5">
+													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+													<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="17mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">9. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">If Yes to Item No. 8, Enter Name and Address of Reprocessor </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="9mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">10. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Device Available for Evaluation? </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Do not send to FDA) </fo:inline>
+													</fo:block>
+													<fo:block font-size="6.5">
+													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+													<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Returned to Manufacturer on: _____________
+													</fo:block>
+													<fo:block font-size="6.5pt" font-style="italic" text-align="right">
+													(mm/dd/yyyy)  <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text></fo:block>
+												</fo:table-cell>
+											</fo:table-row>												
+											<fo:table-row height="16mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">11. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Concomitant Medical Products and Therapy Dates </fo:inline>
+														<fo:inline font-size="6.5pt" font-style="italic">(Exclude treatment of event) </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row xsl:use-attribute-sets="tr-height-1">
+												<fo:table-cell number-columns-spanned="5" background-color="black">
+													<fo:block xsl:use-attribute-sets="black-heading">E. INITIAL REPORTER
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="cell-with-right-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">1. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Name and Address </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
+													<fo:block>
+														<fo:inline xsl:use-attribute-sets="label">Phone # </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+											</fo:table-row>																						
+											<fo:table-row height="12mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="5">													
+														<fo:block font-size="6.5pt"> <xsl:text disable-output-escaping="yes">&amp;#160; </xsl:text> </fo:block>
+												</fo:table-cell>
+											</fo:table-row>	
+											<fo:table-row height="8mm">
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">2. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Health Professional? </fo:inline>
+													</fo:block>
+													<fo:block font-size="6.5">
+													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+													<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+													</fo:block>													
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block>
+														<fo:inline font-size="6.5pt">3. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Occupation </fo:inline>
+													</fo:block>
+												</fo:table-cell>
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+													<fo:block font-size="6.5pt" font-weight="bold">
+														<fo:inline font-size="6.5pt" font-style="normal">4. </fo:inline>
+														<fo:inline xsl:use-attribute-sets="label">Initial Reporter Also Sent </fo:inline> <fo:block/>
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>Report to FDA 
+													</fo:block>
+													<fo:block font-size="6.5">
+													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+													<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Yes
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														No
+														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
+														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
+														Unk.
+													</fo:block>														
+												</fo:table-cell>
+											</fo:table-row>												
 										</fo:table-body>									
 									</fo:table>	  
 								</fo:table-cell>
