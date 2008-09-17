@@ -26,7 +26,6 @@
 		<jsp:attribute name="repeatingFields">
 		<chrome:division title="Adverse event">
 			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" />
-			
 		</chrome:division>
 		<chrome:division title="Course and agent">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
