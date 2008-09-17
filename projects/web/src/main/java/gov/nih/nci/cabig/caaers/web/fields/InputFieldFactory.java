@@ -50,7 +50,7 @@ public class InputFieldFactory {
         } else {
             validators = new FieldValidator[]{FieldValidator.DATE_VALIDATOR};
         }
-        return createInputField(DATE, propertyName, displayName, required);
+        return createInputField(DATE, propertyName, displayName, validators);
     }
 
 
