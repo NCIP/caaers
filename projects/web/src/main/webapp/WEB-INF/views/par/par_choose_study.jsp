@@ -70,7 +70,7 @@ function ajaxStudySearch(searchText, searchType) {
                             <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
                         </td>
                         <td><form:input path="searchText" size="25" /></td>
-                        <td><input type="button" value="Search" onclick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
+                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
                     </tr>
                     </table>
             </td>

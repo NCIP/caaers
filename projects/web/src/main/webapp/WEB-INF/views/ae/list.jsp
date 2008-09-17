@@ -171,6 +171,9 @@ background-color:#ffdada;
 	text-align:center;
 }
 .eXtremeTable .odd {
+	background-color: #fff;
+}
+.eXtremeTable .eXtremeTable .odd {
 	background-color: #eaeaea;
 }
 .eXtremeTable .even {

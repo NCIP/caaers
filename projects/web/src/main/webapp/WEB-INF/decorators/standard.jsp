@@ -7,7 +7,6 @@
 <html>
 <head>
     <title>caAERS || <decorator:title/></title>
-    <link rel="icon" href="../../images/caaers.ico"/> 
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <standard:head/>
 <decorator:head/>

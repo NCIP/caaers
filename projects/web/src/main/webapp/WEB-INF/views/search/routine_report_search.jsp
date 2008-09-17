@@ -19,7 +19,6 @@
         div.row div.label { width: 10em; } 
         div.row div.value { margin-left: 11em; }
         input { width:8em; }
-        .box.paired { width: 30%; }
 </style>
 <title>${tab.longTitle} Routine AE search</title>
 <tags:javascriptLink name="extremecomponents"/>
@@ -50,11 +49,21 @@ function buildTable(form) {
 </script>
 </head>
 <body>
-
 <form:form name="searchForm" id="searchForm" method="post">
 <p>
   Search for routine AEs by choosing any of the listed criteria.
 </p>
+<chrome:box title="Study criteria" autopad="true">
+		    <div class="row">
+		    	<div class="label"> Identifier :&nbsp; </div>
+		    	<div class="value"><input id="prop4" type="text"/></div>
+		    </div>
+		    
+		    <div class="row">
+		    	<div class="label"> Short Title :&nbsp; </div>
+		    	<div class="value"><input id="prop5" type="text" name="shortTitle"/></div>
+		    </div>
+</chrome:box>
 <chrome:box title="Routine AE criteria" cssClass="paired" autopad="true">
 
 			<div class="row">
@@ -83,18 +92,6 @@ function buildTable(form) {
 		     <div class="row">
 		    	<div class="label"> MedDRA Code :&nbsp; </div>
 		    	<div class="value"><input id="prop3" type="text"/></div>
-		    </div>
-</chrome:box>
-
-<chrome:box title="Study criteria" cssClass="paired" autopad="true">
-		    <div class="row">
-		    	<div class="label"> Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop4" type="text"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label"> Short Title :&nbsp; </div>
-		    	<div class="value"><input id="prop5" type="text" name="shortTitle"/></div>
 		    </div>
 </chrome:box>
 

@@ -278,7 +278,7 @@
                     <select multiple size="1" style="width:400px" id="disease-term">
                         <option value="">Please select a Category first</option>
                     </select> <span id="disease-selected-name"></span>
-                    <input class='ibutton' type='button' onclick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease'/>
+                    <input class='ibutton' type='button' onClick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease'/>
                    <br>
 
                     <select multiple size="10" id="disease-sel">
@@ -286,7 +286,7 @@
                     </select> <form:select id="disease-sel-hidden" size="1"
                         path="diseaseTermIds">
                     </form:select>
-                    <tags:tabControls tab="${tab}" flow="${flow}"/>    
+                       
             </chrome:division>
             </c:if>
             
@@ -296,7 +296,7 @@
 					<form:hidden  path="diseaseLlt" />
 					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete"/>
                     <input type="button" id="diseaseLlt-clear" value="Clear"/>
-                    <input class='ibutton' type='button' onclick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
+                    <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
                     <tags:indicator id="diseaseLlt-indicator"/>
                     <div id="diseaseLlt-choices" class="autocomplete"></div>
                     
@@ -361,6 +361,7 @@
 			</c:if>
         </chrome:box>
         </div>
+    <tags:tabControls tab="${tab}" flow="${flow}"/> 
     </form:form>
  </div>
 </body>

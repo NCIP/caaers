@@ -35,11 +35,11 @@
 <div class="box ${cssClass}"
     <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
 
-    <!-- header -->
+    <!-- box header -->
     <div class="header"><div class="background-L"><div class="background-R">
       <h2>${title}</h2><c:if test="${!empty title}"><div class="hr"></div></c:if>
     </div></div></div>
-    <!-- end header -->
+    <!-- end box header -->
 
     <!-- inner border -->
     <div class="border-T"><div class="border-L"><div class="border-R"><div class="border-B"><div class="border-TL"><div class="border-TR"><div class="border-BL"><div class="border-BR">

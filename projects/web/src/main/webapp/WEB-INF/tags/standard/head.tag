@@ -54,5 +54,5 @@
               }
         });
 </script>
-<link rel="icon" href="../../images/caaers.ico"/>  
+<link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>  
 <!-- END tags\standard\head.tag -->

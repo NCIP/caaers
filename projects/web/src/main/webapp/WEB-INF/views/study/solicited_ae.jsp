@@ -398,7 +398,6 @@
   
 </head>
 <body>
- 
   <study:summary />
  
   <form:form name="solicitedAEForm">
@@ -409,8 +408,8 @@
   	<chrome:box title="${tab.longTitle}" >
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
-  		<p id="instructions">
-  		  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Add, remove, or edit the evaluation period types required for this study.
+  		<p class="instructions">
+  		  Add, remove, or edit the evaluation period types required for this study.
 		</p>
 	
 	    <tags:hasErrorsMessage />
