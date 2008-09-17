@@ -4,11 +4,13 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "MANDATORY_FIELD_DEFS")
@@ -19,7 +21,6 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
 
     private String fieldPath;
 
-    //private Boolean mandatory;
     private Mandatory mandatory;
 
     public ReportMandatoryFieldDefinition() {
@@ -47,7 +48,8 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
     public void setFieldPath(String fieldPath) {
         this.fieldPath = fieldPath;
     }
-
+    @Type(type="mandatoryType")
+    @Column(name="mandatory")
     public Mandatory getMandatory() {
         return mandatory;
     }
