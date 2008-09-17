@@ -111,7 +111,7 @@
 <c:if test="${(empty command.participant.id) or (command.participant.id le 0)}">
 	<ui:row path="${fieldGroups.site.fields[0].propertyName}">
 		<jsp:attribute name="label">
-			<ui:label path="${fieldGroups.site.fields[0].propertyName}" text="Site" />
+			<ui:label path="${fieldGroups.site.fields[0].propertyName}" text="Site" required="true"/>
 		</jsp:attribute>
 		<jsp:attribute name="value">
 			<ui:select options="${fieldGroups.site.fields[0].attributes.options}" path="${fieldGroups.site.fields[0].propertyName}" title="Site" required="true"/>
