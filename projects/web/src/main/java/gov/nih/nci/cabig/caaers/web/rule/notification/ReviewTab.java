@@ -144,30 +144,30 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         Map<String, String> keyMap = new LinkedHashMap<String, String>();
         keyMap.put("Reporter Details", "REPORTER_INFO_SECTION~Reporter details");
         keyMap.put("Physician details", "REPORTER_INFO_SECTION~Physician details");
-        keyMap.put("Medical information", "MEDICAL_INFO_SECTION");
-        keyMap.put("Medical information - Weight", "MEDICAL_INFO_SECTION~Weight");
-        keyMap.put("Medical information - Height", "MEDICAL_INFO_SECTION~Height");
-        keyMap.put("Medical information - Metastatic disease sites",
+        keyMap.put("Patient details", "MEDICAL_INFO_SECTION");
+        keyMap.put("Patient details - Weight", "MEDICAL_INFO_SECTION~Weight");
+        keyMap.put("Patient details - Height", "MEDICAL_INFO_SECTION~Height");
+        keyMap.put("Patient details - Metastatic disease sites",
                         "MEDICAL_INFO_SECTION~Metastatic disease sites");
+        keyMap.put("Patient details - Prior Therapys", "MEDICAL_INFO_SECTION~Prior Therapys");
+        keyMap.put("Patient details - Pre-Existing Conditions",
+                        "MEDICAL_INFO_SECTION~Pre-existing conditions");
+        keyMap.put("Patient details- Concomitant Medications",
+                        "MEDICAL_INFO_SECTION~Medications");
+        keyMap.put("Other contributing causes", "OTHER_CAUSE_SECTION~OtherCausess");
         keyMap.put("Radiation intervention",
-                        "RADIATION_INTERVENTION_SECTION~RadiationInterventions");
+        "RADIATION_INTERVENTION_SECTION~RadiationInterventions");
         keyMap.put("Surgery intervention", "SURGERY_INTERVENTION_SECTION~SurgeryInterventions");
         keyMap.put("Event and response description", "DESCRIPTION_SECTION");
         keyMap.put("Medical devices", "MEDICAL_DEVICE_SECTION~MedicalDevices");
         keyMap.put("Treatment Information", "TREATMENT_INFO_SECTION");
         keyMap.put("Treatment Information - Study agents", "TREATMENT_INFO_SECTION~Study Agents");
         keyMap.put("Treatment Information - Study agents",
-                        "TREATMENT_INFO_SECTION~Study Agents~Modified dose");
+        "TREATMENT_INFO_SECTION~Study Agents~Modified dose");
         keyMap.put("Labs", "LABS_SECTION~Labs");
         keyMap.put("Labs - Baseline", "LABS_SECTION~Labs~Baseline");
         keyMap.put("Labs - Worst", "LABS_SECTION~Labs~Worst");
         keyMap.put("Labs - Recovery", "LABS_SECTION~Labs~Recovery");
-        keyMap.put("Prior Therapys", "PRIOR_THERAPIES_SECTION~Prior Therapys");
-        keyMap.put("Pre-Existing Conditions",
-                        "PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions");
-        keyMap.put("Concomitant Medications",
-                        "CONCOMITANT_MEDICATION_SECTION~Medications");
-        keyMap.put("Other contributing causes", "OTHER_CAUSE_SECTION~OtherCausess");
 
         for (String key : keyMap.keySet()) {
             InputFieldGroup fieldGrp = fieldGroupMap.get(keyMap.get(key));
