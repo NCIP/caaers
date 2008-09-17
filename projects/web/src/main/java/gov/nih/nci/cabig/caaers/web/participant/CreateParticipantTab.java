@@ -123,12 +123,21 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
         }
-
+        
         for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
-            hasPrimaryID |= identifier.isPrimary();
-            if (hasPrimaryID) break;
+
+            if (identifier.isPrimary()) {
+                if (hasPrimaryID) {
+                    // there are at least 2 Primary ID selected
+                    hasPrimaryID = false;
+                    break;
+                }
+
+                hasPrimaryID = true;
+            }
         }
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
+
+        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include exactly One Primary Identifier");
 
     }
 
