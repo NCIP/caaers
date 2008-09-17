@@ -51,16 +51,17 @@ public class ExpeditedReportTree extends PropertylessNode {
                                 list("adverseEvents",
                                         new AdverseEventsDisplayNameCreator(),
                                         property("grade", "Grade"),
+                                        property("adverseEventCtcTerm", property("term", "CTC term")),
+                                        property("detailsForOther","Other (specify)"),
                                         property("startDate", "Start date"),
                                         property("endDate", "End date"), 
                                         property("attributionSummary","Attribution to study"),
                                         property("hospitalization","Hospitalization"),
                                         property("expected", "Expected"), 
-                                        property("comments", "Comments"),
-                                        property("adverseEventCtcTerm", property("term", "CTC term")),
                                         property("eventLocation", "Where was the patient when the event occurred?"),
                                         property("eventApproximateTime","Time of event"),
-                                        property("detailsForOther","Other (specify)")
+                                        property("outcomes", "Outcomes"),
+                                        property("comments", "Comments")
                                  )
                         ),
                         section(REPORTER_INFO_SECTION, 

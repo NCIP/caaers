@@ -343,6 +343,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
      * @return
      */
     public boolean containsConcomitantMedication(ConcomitantMedication concomitantMedication){
+    	if(concomitantMedication == null || concomitantMedication.getAgentName() == null) return true;
     	for(StudyParticipantConcomitantMedication spaConMed : getConcomitantMedications()){
     		if(spaConMed.getAgentName().equals(concomitantMedication.getAgentName())) return true;
     	}
