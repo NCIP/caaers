@@ -33,25 +33,21 @@
 
 <tags:dwrJavascriptLink objects="importRoutineAe"/>
 <script language="JavaScript" type="text/JavaScript">
-
+	
 	function startImport(totalNumberOfRecords,barId,statusId,type,button){
-		
-		numberOfRecordsProcessed = 0;
-		i = 0;
-		$(button).disabled=true
-		loops = Math.ceil(parseInt(totalNumberOfRecords)/5)
-		while(  i < loops ){
-
-			importRoutineAe.saveObjectBlock(i++, type, function(values) {
-				theReturnedValue = values ;
-				numberOfRecordsProcessed = numberOfRecordsProcessed +  parseInt(theReturnedValue);
-				percentage = parseInt(numberOfRecordsProcessed * 100 / parseInt(totalNumberOfRecords))
-				$(barId).style.width = percentage + "%"
-				$(barId).innerHTML = percentage + "%"
-				//$(barId).innerHTML = numberOfRecordsProcessed + " of " + totalNumberOfRecords;
-			})
-		}
-		$(statusId).update("Import complete , please press Save at the bottom of the screen to continue")
+		$(button).disabled=true;
+		$(barId).style.display = 'block';
+		$(barId).style.visibility = 'visible';
+		$(statusId).update("Import In Progess .....")
+		importRoutineAe.saveObjectBlock(1, type, function(values){
+			returnValue = values;
+			$(barId).style.display = 'none';
+			$(barId).style.visibility = 'hidden';
+			if(returnValue == 'ERR'){
+				$(statusId).update("Import Incomplete, Please contact caAERS support");
+			}
+			$(statusId).update("Import complete , please press Save at the bottom of the screen to continue")
+		});
 	}
 	
 	function validatePage(){
@@ -194,10 +190,7 @@
    		</table>	
    		</chrome:division>
 		
-
-		
 		</c:if>
-
 				
 		<c:if test='${fn:length(command.nonImportableStudies) > 0 || fn:length(command.importableStudies) > 0 }'>
 		
@@ -207,12 +200,16 @@
 				<input id='button3' class='ibutton' type='button' value='Import'  title='Import Studies'
 				   	onclick="startImport(${fn:length(command.importableStudies)},'bar3','importStatus3','study','button3')" />	
            </div>
-		   <div class="value">
-		   		<div class="graph">
-    				<strong id="bar3" class="bar" style="width: 0%;">0%</strong>
-    			</div>
-    			
-		   </div>
+           
+           <div id=bar3 style="display: none;">
+           		<img src="<c:url value="/images/indicator.white.gif"/>">
+           </div>
+           
+<!--		   <div class="value">-->
+<!--		   		<div class="graph">-->
+<!--    				<strong id="bar3" class="bar" style="width: 0%;">0%</strong>-->
+<!--    			</div>-->
+<!--		   </div>-->
        </div>
        <div class="row">
        		<div class="label"></div>
@@ -283,16 +280,19 @@
 				<input id='button2' class='ibutton' type='button' value='Import'  title='Import Participants'
 				   	onclick="startImport(${fn:length(command.importableParticipants)},'bar2','importStatus2','participant','button2')" />	
            </div>
-		   <div class="value">
-		   		<div class="graph">
-    				<strong id="bar2" class="bar" style="width: 0%;">0%</strong>
-    			</div>
-    			
-		   </div>
+           <div id=bar2 style="display: none;">
+           		<img src="<c:url value="/images/indicator.white.gif"/>">
+           </div>
+           
+<!--		   <div class="value">-->
+<!--		   		<div class="graph">-->
+<!--    				<strong id="bar2" class="bar" style="width: 0%;">0%</strong>-->
+<!--    			</div>-->
+<!--		   </div>-->
        </div>
        <div class="row">
        		<div class="label"></div>
-       		<div class="value" id="importStatus2" >Start import by pressing the above button</div>
+       		<div style="text-align:center;" id="importStatus2" >Start import by pressing the above button</div>
        <br/><br/>
 
 		
@@ -384,12 +384,16 @@
 				<input id='button' class='ibutton' type='button' value='Import'  title='Import Routine AEs'
 				   	onclick="startImport(${fn:length(command.importableRoutineAdverseEventReports)},'bar','importStatus','routineAe','button')" />	
            </div>
-		   <div class="value">
-		   		<div class="graph">
-    				<strong id="bar" class="bar" style="width: 0%;">0%</strong>
-    			</div>
-    			
-		   </div>
+           
+           <div id=bar style="display: none;">
+           		<img src="<c:url value="/images/indicator.white.gif"/>">
+           </div>
+<!--		   <div class="value">-->
+<!--		   		<div class="graph">-->
+<!--    				<strong id="bar" class="bar" style="width: 0%;">0%</strong>-->
+<!--    			</div>-->
+<!--    			-->
+<!--		   </div>-->
        </div>
        <div class="row">
        		<div class="label"></div>
