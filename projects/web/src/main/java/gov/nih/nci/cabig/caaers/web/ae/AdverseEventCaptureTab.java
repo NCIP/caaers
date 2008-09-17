@@ -127,8 +127,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 			for(int i = 0; i < size; i++){
 				AdverseEvent ae = cmd.getAdverseEvents().get(i);
 				if(ae == null) continue;
+				if(isMeddraStudy)
+					mainFieldFactory.addField(InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Term", true));
+				else
+					mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
 				
-				mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
 				if(!ae.getSolicited()){
 					if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){ //only if other is requrired
 						mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
@@ -180,7 +183,9 @@ public class AdverseEventCaptureTab extends AdverseEventTab{
 	@Override
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
 		// Setup the categories list for aeTermQuery tag.
-		command.getCtcCategories();
+		boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
+		if(isCTCStudy)
+			command.getCtcCategories();
 		
 		//initalize the seriousness outcome indicators
 		command.initializeOutcome();
