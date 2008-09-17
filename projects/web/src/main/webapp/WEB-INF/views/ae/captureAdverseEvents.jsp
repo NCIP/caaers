@@ -17,12 +17,10 @@
  .selectbox
 {	
 	width:170px;
-	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
 }
 .shortselectbox
 {	
 	width:80px;
-	behavior:expression(window.dropdown_menu_hack!=null?window.dropdown_menu_hack(this):0);
 }
 .divNotes,.divOtherMeddra{
 	font-size:8pt;
