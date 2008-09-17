@@ -57,11 +57,9 @@
             <tags:renderRow field="${field}"/>
         </c:forEach>
 
-		<chrome:division title="Details" path="aeReport.responseDescription.dcp">
        	<c:forEach items="${fieldGroups.DCP_INFO.fields}" var="field">
            	<tags:renderRow field="${field}"/>
        	</c:forEach>
-       	</chrome:division>	
 		
     </jsp:attribute>
 </tags:tabForm>
