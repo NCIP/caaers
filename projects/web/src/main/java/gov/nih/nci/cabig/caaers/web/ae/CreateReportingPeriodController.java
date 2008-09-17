@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.*;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.BeanWrapper;
@@ -101,7 +100,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldAttributes.setColumns(descriptionField, 45);
         reportingPeriodFieldGroup.getFields().add(descriptionField);
 
-        InputField cycleNumberField = InputFieldFactory.createTextField("reportingPeriod.cycleNumber", "Cycle number", FieldValidator.NUMBER_VALIDATOR);
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Cycle number", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
 
@@ -324,6 +323,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
     @Required
     public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
-	}
-    
+    }
+
 }

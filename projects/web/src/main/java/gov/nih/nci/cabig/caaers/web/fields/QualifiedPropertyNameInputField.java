@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -40,7 +39,7 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
         for (FieldValidator validator : validators) {
             if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
                 errors.rejectValue(this.getPropertyName(), "REQUIRED", validator.getMessagePrefix()
-                                + " " + this.getDisplayName());
+                        + " " + this.getDisplayName());
                 return;
             }
         }
@@ -94,7 +93,26 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
     @Override
     public String toString() {
         return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
-                        getPropertyName()).append("; source propertyName=").append(
-                        getSourceField().getPropertyName()).append(']').toString();
+                getPropertyName()).append("; source propertyName=").append(
+                getSourceField().getPropertyName()).append(']').toString();
     }
+
+    public String getValidatorClassName() {
+        StringBuffer validatorClassName = new StringBuffer("");
+        if (validators != null) {
+            for (int i = 0; i < validators.length; i++) {
+                FieldValidator validator = getValidators()[i];
+                if (i == 0) {
+                    validatorClassName.append(String.format("validate-%s", validator.getValidatorCSSClassName()));
+
+                } else {
+
+                    validatorClassName.append(String.format("&&%s", validator.getValidatorCSSClassName()));
+
+                }
+            }
+        }
+        return validatorClassName.toString();
+    }
+
 }

@@ -6,26 +6,18 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Saurabh Agrawal
@@ -52,12 +44,12 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         super("Investigator Details", "Investigator Details", "admin/investigator_details");
         setAutoPopulateHelpKey(true);
         addHelpKeyExclusion("firstName", "middleName", "lastName", "emailAddress", "phoneNumber",
-                        "faxNumber", "statusCode");
+                "faxNumber", "statusCode");
     }
 
     @Override
     public void postProcess(final HttpServletRequest request, final Investigator command,
-                    final Errors errors) {
+                            final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeInvestigator".equals(action)) {
@@ -66,7 +58,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     protected Map<Object, Object> collectOptions(final List list, final String nameProperty,
-                    final String valueProperty) {
+                                                 final String valueProperty) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
         options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));
@@ -74,9 +66,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     protected Map<Object, Object> collectOptionsFromConfig(final String configPropertyName,
-                    final String nameProperty, final String valueProperty) {
+                                                           final String nameProperty, final String valueProperty) {
         return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,
-                        valueProperty);
+                valueProperty);
     }
 
     @Override
@@ -108,38 +100,37 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         // rfgFactory.addField(InputFieldFactory.createSelectField("organization", "Organization",
         // false, options));
         rfgFactory.addField(InputFieldFactory.createAutocompleterField("organization",
-                        "Organization", true));
+                "Organization", true));
 
         rfgFactory.addField(InputFieldFactory.createSelectField("statusCode", "Status", true,
-                        collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
+                collectOptionsFromConfig("studySiteStatusRefData", "code", "desc")));
 
         investigatorFieldGroup = new DefaultInputFieldGroup(INVESTIGATOR_FIELD_GROUP);
         investigatorFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("firstName", "First Name", true));
+                InputFieldFactory.createTextField("firstName", "First Name", true));
 
         investigatorFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("middleName", "Middle Name", false));
+                InputFieldFactory.createTextField("middleName", "Middle Name", false));
         investigatorFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("lastName", "Last Name", true));
+                InputFieldFactory.createTextField("lastName", "Last Name", true));
         investigatorFieldGroup.getFields().add(
-                        InputFieldFactory.createTextField("nciIdentifier", "Investigator number",
-                                        false));
+                InputFieldFactory.createTextField("nciIdentifier", "Investigator number",
+                        false));
 
-        InputField emailAddressField = InputFieldFactory.createTextField("emailAddress",
-                        "Email address", FieldValidator.NOT_NULL_VALIDATOR,
-                        FieldValidator.EMAIL_VALIDATOR);
+        InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress",
+                "Email address", true);
         // InputFieldAttributes.setSize(emailAddressField, 30);
 
         investigatorFieldGroup.getFields().add(emailAddressField);
 
-        InputField phoneNumberField = InputFieldFactory.createTextField("phoneNumber", "Phone",
-                        FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR);
+        InputField phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone",
+                true);
         phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         // InputFieldAttributes.setSize(phoneNumberField, 30);
         investigatorFieldGroup.getFields().add(phoneNumberField);
 
         InputField faxNumberField = InputFieldFactory.createTextField("faxNumber", "Fax",
-                        FieldValidator.PHONE_VALIDATOR);
+                FieldValidator.PHONE_VALIDATOR);
         faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
@@ -153,7 +144,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
 
     @Override
     protected void validate(final Investigator object, final BeanWrapper commandBean,
-                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+                            final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 
         super.validate(object, commandBean, fieldGroups, errors);
         List<SiteInvestigator> investigators = object.getSiteInvestigators();
@@ -161,12 +152,12 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
             SiteInvestigator siteInvestigator = investigators.get(i);
             if (siteInvestigator.getOrganization() == null) {
                 errors.rejectValue("siteInvestigators[" + i + "].organization", "REQUIRED",
-                                "Site is required..!");
+                        "Site is required..!");
 
             }
             if (siteInvestigator.getStatusCode() == null) {
                 errors.rejectValue("siteInvestigators[" + i + "].statusCode", "REQUIRED",
-                                "Status type is required..!");
+                        "Status type is required..!");
 
             }
 

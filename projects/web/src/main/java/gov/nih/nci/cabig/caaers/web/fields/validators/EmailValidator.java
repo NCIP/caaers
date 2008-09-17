@@ -14,4 +14,8 @@ public class EmailValidator extends FieldValidator {
     public String getMessagePrefix() {
         return "Incorrect";
     }
+
+    public String getValidatorCSSClassName() {
+        return "EMAIL";  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

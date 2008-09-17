@@ -9,7 +9,7 @@ public class PhoneNumberValidator extends FieldValidator {
         String strVal = stringValue(fieldValue);
 
         if (StringUtils.isEmpty(strVal)) return true; // empty phone number is considered as
-                                                        // valid.
+        // valid.
 
         int expectedSize = 10;
         if (strVal.startsWith("+")) expectedSize = 12;
@@ -24,6 +24,10 @@ public class PhoneNumberValidator extends FieldValidator {
     @Override
     public String getMessagePrefix() {
         return "Invalid";
+    }
+
+    public String getValidatorCSSClassName() {
+        return "US_PHONE_NO";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }

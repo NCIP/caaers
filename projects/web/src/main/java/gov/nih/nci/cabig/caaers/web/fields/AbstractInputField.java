@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -33,24 +32,26 @@ public abstract class AbstractInputField implements InputField {
         this();
         this.displayName = displayName;
         this.propertyName = propertyName;
-        if (required) this.validators = new FieldValidator[] { FieldValidator.NOT_NULL_VALIDATOR };
+        if (required) this.validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR};
     }
 
     protected AbstractInputField(String propertyName, String displayName,
-                    FieldValidator... validators) {
+                                 FieldValidator... validators) {
         this();
         this.displayName = displayName;
         this.propertyName = propertyName;
         this.validators = validators;
     }
 
-    /** This base implementation does a simple not-null check if the field is required. */
+    /**
+     * This base implementation does a simple not-null check if the field is required.
+     */
     public void validate(BeanWrapper commandBean, Errors errors) {
         if (validators == null) return;
         for (FieldValidator validator : validators) {
             if (!validator.isValid(commandBean.getPropertyValue(this.getPropertyName()))) {
                 errors.rejectValue(this.getPropertyName(), "REQUIRED", validator.getMessagePrefix()
-                                + " " + this.getDisplayName());
+                        + " " + this.getDisplayName());
                 return;
             }
         }
@@ -63,7 +64,7 @@ public abstract class AbstractInputField implements InputField {
     public static void validateRequired(InputField field, BeanWrapper commandBean, Errors errors) {
         if (field.isRequired() && isEmpty(field, commandBean)) {
             errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
-                            + field.getDisplayName());
+                    + field.getDisplayName());
         }
     }
 
@@ -124,12 +125,34 @@ public abstract class AbstractInputField implements InputField {
         return validators;
     }
 
+    public String getValidatorClassName() {
+        StringBuffer validatorClassNameBuffer = new StringBuffer("");
+        if (validators != null) {
+            for (int i = 0; i < validators.length; i++) {
+                FieldValidator validator = getValidators()[i];
+                if (i == 0) {
+                    validatorClassNameBuffer.append(String.format("validate-%s", validator.getValidatorCSSClassName()));
+
+                } else {
+
+                    validatorClassNameBuffer.append(String.format("&&%s", validator.getValidatorCSSClassName()));
+
+                }
+            }
+        }
+
+
+        return validatorClassNameBuffer.toString();
+        ;
+    }
+
+
     // ////OBJECT METHODS
 
     @Override
     public String toString() {
         return new StringBuilder(getClass().getSimpleName()).append("[propertyName=").append(
-                        getPropertyName()).append("; category=").append(getCategoryName()).append(
-                        ']').toString();
+                getPropertyName()).append("; category=").append(getCategoryName()).append(
+                ']').toString();
     }
 }

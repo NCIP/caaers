@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.BindException;
@@ -11,7 +11,7 @@ import org.springframework.validation.FieldError;
 /**
  * This class actually tests the features of {@link AbstractInputField}; maven doesn't seem to run
  * testcases that start with "Abstract".
- * 
+ *
  * @author Rhett Sutphin
  */
 public class InputFieldTest extends AbstractTestCase {
@@ -64,7 +64,7 @@ public class InputFieldTest extends AbstractTestCase {
         assertNotNull("Error is on wrong property", actualError);
         assertEquals("Wrong key for error", "REQUIRED", actualError.getCode());
         assertEquals("Wrong default message for error", "Missing Nomen", actualError
-                        .getDefaultMessage());
+                .getDefaultMessage());
     }
 
     public void testNoErrorsWhenNotRequiredFieldIsNotPresent() throws Exception {
@@ -72,6 +72,26 @@ public class InputFieldTest extends AbstractTestCase {
         field.setRequired(false);
         field.validate(wrappedBean, errors);
         assertFalse(errors.hasErrors());
+    }
+
+    public void testGetValidatorClassNameIfOnlySingleValidatorIsUsed() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.DATE_VALIDATOR) {
+            public Category getCategory() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-DATE", field.getValidatorClassName());
+    }
+
+    public void testGetValidatorClassNameIfMultipleValidatorIsUsed() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.DATE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR) {
+            public Category getCategory() {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-DATE&&NOTEMPTY", field.getValidatorClassName());
     }
 
     private static class TestBean {

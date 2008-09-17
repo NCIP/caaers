@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields.validators;
 
-public class NotNullValidator extends FieldValidator {
+public class ZipCodeValidator extends FieldValidator {
 
     @Override
     public boolean isValid(Object fieldValue) {
@@ -13,6 +13,6 @@ public class NotNullValidator extends FieldValidator {
     }
 
     public String getValidatorCSSClassName() {
-        return "NOTEMPTY";
+        return "ZIPCODE";
     }
 }

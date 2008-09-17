@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
 import java.util.Map;
 
@@ -11,12 +10,12 @@ import java.util.Map;
  * Collects the basic information about a form field in a Spring MVC application. The goal is for
  * fields to be (mostly) rendered automatically and consistently, including labels and the
  * "required" indicator.
- * <p>
+ * <p/>
  * Also enables (but does not implement) some simple automatic validation (via the required flag).
- * 
+ *
+ * @author Rhett Sutphin
  * @see TabWithFields
  * @see InputFieldGroup
- * @author Rhett Sutphin
  */
 public interface InputField {
     String DETAILS = "details";
@@ -38,21 +37,23 @@ public interface InputField {
     String ROWS = "rows";
 
     String ENABLE_DELETE = "enableDelete"; // will put delete symbol near to the field(in
-                                            // renderRow.tag).
-    
+    // renderRow.tag).
+
     String DEFAULT_VALUE = "defaultValue";
-    
+
     //Below fields are used for SPLIT_DATE kind of fields.
     String MONTH_REQUIRED = "mmRequired";
     String DAY_REQUIRED = "ddRequired";
     String YEAR_REQUIRED = "yyRequired";
 
-    
+
     String EXTRA_VALUE_PARAMS = "extraParams";
-    
+
     Category getCategory();
 
-    /** @return the lowercased name of the value returned by {@link #getCategory} */
+    /**
+     * @return the lowercased name of the value returned by {@link #getCategory}
+     */
     String getCategoryName();
 
     String getDisplayName();
@@ -63,16 +64,18 @@ public interface InputField {
 
     /**
      * Returns an array of validators configured for this field.
-     * 
+     *
      * @return {@link FieldValidator}
      */
     FieldValidator[] getValidators();
+
+    String getValidatorClassName();
 
     String getPropertyName();
 
     Map<String, Object> getAttributes();
 
     enum Category {
-        TEXT, TEXTAREA, DATE,SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT,LABEL, RADIO, IMAGE
+        TEXT, TEXTAREA, DATE, SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT, LABEL, RADIO, IMAGE
     }
 }

@@ -19,12 +19,12 @@
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>
 <tags:javascriptLink name="common"/>
-<tags:javascriptLink name="validation" />
-<tags:javascriptLink name="commons-validation" />
+<tags:javascriptLink name="validation"/>
+<tags:javascriptLink name="commons-validation"/>
 
-<tags:javascriptLink name="tigra-menu/tigra-menu" />
-<tags:javascriptLink name="tigra-menu/tigra-menu_tpl" />
-<tags:javascriptLink name="side-bar/side-bar" />
+<tags:javascriptLink name="tigra-menu/tigra-menu"/>
+<tags:javascriptLink name="tigra-menu/tigra-menu_tpl"/>
+<tags:javascriptLink name="side-bar/side-bar"/>
 
 <!-- SCRIPACULOUS START -->
 
@@ -34,25 +34,26 @@
 <tags:javascriptLink name="scriptaculous/dragdrop"/>
 <tags:javascriptLink name="scriptaculous/slider"/>
 <tags:javascriptLink name="common-scriptaculous"/>
+<tags:javascriptLink name="date"/>
 
 <!-- SCRIPACULOUS END -->
 
-<tags:javascriptLink name="ccts-hotlinks" />
+<tags:javascriptLink name="ccts-hotlinks"/>
 <script type="text/javascript">
 
-        // hotlinking                      
-        // https://wiki.nci.nih.gov/x/ygqG
-        CCTS.appShortName = 'caaers'
+    // hotlinking
+    // https://wiki.nci.nih.gov/x/ygqG
+    CCTS.appShortName = 'caaers'
 
-        // this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE
-        var _collapsedELs = new Array();
-        Event.observe(window, "load", function() {
-              for (var i in _collapsedELs) {
-                  if ($(i));
-                      // alert('key is: ' + i + ', value is: ' + _collapsedELs[i]);
-                      // $(i).hide();
-              }
-        });
+    // this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE
+    var _collapsedELs = new Array();
+    Event.observe(window, "load", function() {
+        for (var i in _collapsedELs) {
+            if ($(i));
+            // alert('key is: ' + i + ', value is: ' + _collapsedELs[i]);
+            // $(i).hide();
+        }
+    });
 </script>
-<link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>  
+<link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
 <!-- END tags\standard\head.tag -->

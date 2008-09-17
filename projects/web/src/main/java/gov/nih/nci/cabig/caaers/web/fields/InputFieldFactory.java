@@ -204,6 +204,39 @@ public class InputFieldFactory {
         return new DefaultInputField(category, "dc", "Don't Care", DEFAULT_REQUIREDNESS);
     }
 
+    public static InputField createNumberField(String propertyName, String displayName,
+                                               boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.NUMBER_VALIDATOR};
+        }
+        return createInputField(TEXT, propertyName, displayName, validators);
+    }
+
+    public static InputField createPhoneField(String propertyName, String displayName,
+                                              boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PHONE_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.PHONE_VALIDATOR};
+        }
+        return createInputField(TEXT, propertyName, displayName, validators);
+    }
+
+    public static InputField createEmailField(String propertyName, String displayName,
+                                              boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.EMAIL_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.EMAIL_VALIDATOR};
+        }
+        return createInputField(TEXT, propertyName, displayName, validators);
+    }
+
 
     public static class DefaultInputField extends AbstractInputField {
         private Category category;
@@ -218,6 +251,11 @@ public class InputFieldFactory {
                                   FieldValidator... fieldValidator) {
             super(propertyName, displayName, fieldValidator);
             this.category = category;
+        }
+
+        @Override
+        public String getValidatorClassName() {
+            return super.getValidatorClassName();    //To change body of overridden methods use File | Settings | File Templates.
         }
 
         @Override

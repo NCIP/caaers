@@ -11,15 +11,60 @@ import java.util.*;
  */
 public class InputFieldFactoryTest extends AbstractTestCase {
 
-    public void testCreateDateIfDateIsRequired() {
-        InputField dateField = InputFieldFactory.createDateField("propertyName", "value", true);
-        assertEquals("commons-validations.js need css validate-NOTEMPTY&&DATE class", "validate-NOTEMPTY&&DATE", dateField.getValidatorClassName());
+
+    public void testCreatePhoneFieldIfPhoneIsRequired() {
+        InputField field = InputFieldFactory.createPhoneField("propertyName", "value", true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&US_PHONE_NO class", "validate-NOTEMPTY&&US_PHONE_NO", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+    }
+
+    public void testCreatePhoneFieldIfPhoneIsNotRequired() {
+        InputField field = InputFieldFactory.createPhoneField("propertyName", "value", false);
+        assertEquals("commons-validations.js need css validate-US_PHONE_NO class", "validate-US_PHONE_NO", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
 
-    public void testCreateDateIfDateIsNotRequired() {
-        InputField dateField = InputFieldFactory.createDateField("propertyName", "value", false);
-        assertEquals("commons-validations.js need css validate-DATE class", "validate-DATE", dateField.getValidatorClassName());
+    public void testCreateEmailFieldIfEmailIsRequired() {
+        InputField field = InputFieldFactory.createEmailField("propertyName", "value", true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&EMAIL class", "validate-NOTEMPTY&&EMAIL", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+    }
+
+    public void testCreateEmailFieldIfEmailIsNotRequired() {
+        InputField field = InputFieldFactory.createEmailField("propertyName", "value", false);
+        assertEquals("commons-validations.js need css validate-EMAIL class", "validate-EMAIL", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+
+    }
+
+    public void testCreateDateFieldIfDateIsRequired() {
+        InputField field = InputFieldFactory.createDateField("propertyName", "value", true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&DATE class", "validate-NOTEMPTY&&DATE", field.getValidatorClassName());
+        assertEquals("field must be date field", InputField.Category.DATE, field.getCategory());
+
+    }
+
+    public void testCreateDateFieldIfDateIsNotRequired() {
+        InputField field = InputFieldFactory.createDateField("propertyName", "value", false);
+        assertEquals("commons-validations.js need css validate-DATE class", "validate-DATE", field.getValidatorClassName());
+
+        assertEquals("field must be date field", InputField.Category.DATE, field.getCategory());
+
+    }
+
+
+    public void testCreateNumberFieldIfNumberIsRequired() {
+        InputField field = InputFieldFactory.createNumberField("propertyName", "value", true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&NUMERIC class", "validate-NOTEMPTY&&NUMERIC", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+
+    }
+
+    public void testCreateNumberFieldIfNumberIsNotRequired() {
+        InputField field = InputFieldFactory.createNumberField("propertyName", "value", false);
+        assertEquals("commons-validations.js need css validate-NUMERIC class", "validate-NUMERIC", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
 
