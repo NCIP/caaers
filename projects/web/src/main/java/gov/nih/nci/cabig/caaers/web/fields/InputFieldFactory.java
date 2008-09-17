@@ -1,19 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.AUTOCOMPLETER;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.DATE;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.LONGSELECT;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.SELECT;
-import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.TEXT;
 import static gov.nih.nci.cabig.caaers.web.fields.InputField.Category.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
@@ -29,130 +20,134 @@ public class InputFieldFactory {
 
     private InputFieldFactory() {
     }
-    
+
     public static InputField createInputField(InputField.Category category, String propertyName, String displayName,
-            FieldValidator... validators) {
-    	return new DefaultInputField(category, propertyName, displayName, validators);
+                                              FieldValidator... validators) {
+        return new DefaultInputField(category, propertyName, displayName, validators);
     }
+
     public static InputField createInputField(InputField.Category category, String propertyName, String displayName,
-            boolean required) {
-    	return new DefaultInputField(category, propertyName, displayName, required);
+                                              boolean required) {
+        return new DefaultInputField(category, propertyName, displayName, required);
     }
 
     public static InputField createTextField(String propertyName, String displayName,
-                    FieldValidator... validators) {
+                                             FieldValidator... validators) {
         return createInputField(TEXT, propertyName, displayName, validators);
     }
 
     public static InputField createTextField(String propertyName, String displayName,
-                    boolean required) {
-        return  createInputField(TEXT, propertyName, displayName, required);
+                                             boolean required) {
+        return createInputField(TEXT, propertyName, displayName, required);
     }
 
-    public static InputField createDateField(String propertyName, String displayName,
-                    FieldValidator... validators) {
-        return createInputField(DATE, propertyName, displayName, validators);
-    }
 
     public static InputField createDateField(String propertyName, String displayName,
-                    boolean required) {
+                                             boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.DATE_VALIDATOR};
+        }
         return createInputField(DATE, propertyName, displayName, required);
     }
 
-    
+
     public static InputField createSplitDateField(String propertyName, String displayName,
-    		boolean dayRequired, boolean monthRequired, boolean yearRequired, boolean required){
-    	
-    	FieldValidator validators[] = null;
-    	if(required){
-    		validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
-    	} else {
-    		validators = new FieldValidator[]{FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
-    	}
-    	return createSplitDateField(propertyName, displayName, dayRequired, monthRequired, yearRequired, validators);
+                                                  boolean dayRequired, boolean monthRequired, boolean yearRequired, boolean required) {
+
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+        }
+        return createSplitDateField(propertyName, displayName, dayRequired, monthRequired, yearRequired, validators);
     }
-    
-    public static InputField createSplitDateField(String propertyName, String displayName,boolean dayRequired, boolean monthRequired,boolean yearRequired,
-    		FieldValidator... validators){
-    	
-    	DefaultInputField field = new DefaultInputField(SPLIT_DATE, propertyName, displayName, validators);
-    	field.getAttributes().put(InputField.DAY_REQUIRED, dayRequired);
-    	field.getAttributes().put(InputField.MONTH_REQUIRED, monthRequired);
-    	field.getAttributes().put(InputField.YEAR_REQUIRED, yearRequired);
-    	return field;
+
+    public static InputField createSplitDateField(String propertyName, String displayName, boolean dayRequired, boolean monthRequired, boolean yearRequired,
+                                                  FieldValidator... validators) {
+
+        DefaultInputField field = new DefaultInputField(SPLIT_DATE, propertyName, displayName, validators);
+        field.getAttributes().put(InputField.DAY_REQUIRED, dayRequired);
+        field.getAttributes().put(InputField.MONTH_REQUIRED, monthRequired);
+        field.getAttributes().put(InputField.YEAR_REQUIRED, yearRequired);
+        return field;
     }
+
     public static InputField createTextArea(String propertyName, String displayName,
-                    FieldValidator... validators) {
+                                            FieldValidator... validators) {
         return createInputField(TEXTAREA, propertyName, displayName, validators);
     }
 
     public static InputField createTextArea(String propertyName, String displayName,
-                    boolean required) {
+                                            boolean required) {
         return createInputField(TEXTAREA, propertyName, displayName, required);
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName,
-                    FieldValidator... validators) {
+                                                      FieldValidator... validators) {
         return createInputField(AUTOCOMPLETER, propertyName, displayName, validators);
     }
 
     public static InputField createAutocompleterField(String propertyName, String displayName,
-                    boolean required) {
+                                                      boolean required) {
         return createInputField(AUTOCOMPLETER, propertyName, displayName, required);
     }
-    
-    public static InputField createInplaceTextEditorField(String propertyName, String displayName, boolean required){
-    	return createInputField(INPLACE_TEXT, propertyName, displayName, required);
+
+    public static InputField createInplaceTextEditorField(String propertyName, String displayName, boolean required) {
+        return createInputField(INPLACE_TEXT, propertyName, displayName, required);
     }
-    
-    public static InputField createInplaceTextEditorField(String propertyName, String displayName, FieldValidator... validators){
-    	return createInputField(INPLACE_TEXT, propertyName, displayName, validators);
+
+    public static InputField createInplaceTextEditorField(String propertyName, String displayName, FieldValidator... validators) {
+        return createInputField(INPLACE_TEXT, propertyName, displayName, validators);
     }
-    
-    public static InputField createLabelField(String propertyName, String displayName, boolean required){
-    	return createInputField(LABEL, propertyName, displayName, required);
+
+    public static InputField createLabelField(String propertyName, String displayName, boolean required) {
+        return createInputField(LABEL, propertyName, displayName, required);
     }
-    
-    public static InputField createLabelField(String propertyName, String displayName, FieldValidator... validators){
-    	return createInputField(LABEL, propertyName, displayName, validators);
+
+    public static InputField createLabelField(String propertyName, String displayName, FieldValidator... validators) {
+        return createInputField(LABEL, propertyName, displayName, validators);
     }
 
     public static InputField createSelectField(String propertyName, String displayName,
-                    Map<Object, Object> options, FieldValidator... validators) {
+                                               Map<Object, Object> options, FieldValidator... validators) {
         DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName,
-                        validators);
+                validators);
         InputFieldAttributes.setOptions(select, options);
         return select;
     }
 
     public static InputField createSelectField(String propertyName, String displayName,
-                    boolean required, Map<Object, Object> options) {
+                                               boolean required, Map<Object, Object> options) {
         DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName,
-                        required);
+                required);
         InputFieldAttributes.setOptions(select, options);
         return select;
     }
 
     public static InputField createBooleanSelectField(String propertyName, String displayName) {
         return createBooleanSelectField(propertyName, displayName, DEFAULT_TRUE_DISPLAY,
-                        DEFAULT_FALSE_DISPLAY);
+                DEFAULT_FALSE_DISPLAY);
     }
 
     public static InputField createBooleanSelectField(String propertyName, String displayName,
-                    boolean required) {
+                                                      boolean required) {
         if (required) {
             return createBooleanSelectField(propertyName, displayName, DEFAULT_TRUE_DISPLAY,
-                            DEFAULT_FALSE_DISPLAY, FieldValidator.NOT_NULL_VALIDATOR);
+                    DEFAULT_FALSE_DISPLAY, FieldValidator.NOT_NULL_VALIDATOR);
         } else {
             return createBooleanSelectField(propertyName, displayName, DEFAULT_TRUE_DISPLAY,
-                            DEFAULT_FALSE_DISPLAY, EMPTY_VALIDATORS);
+                    DEFAULT_FALSE_DISPLAY, EMPTY_VALIDATORS);
         }
     }
 
     public static InputField createBooleanSelectField(String propertyName, String displayName,
-                    String trueDisplay, String falseDisplay, FieldValidator... validators) {
+                                                      String trueDisplay, String falseDisplay, FieldValidator... validators) {
         DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName,
-                        validators);
+                validators);
         Map<Object, Object> opts = new LinkedHashMap<Object, Object>();
         opts.put("", "Please select");
         opts.put(Boolean.FALSE, falseDisplay);
@@ -162,43 +157,46 @@ public class InputFieldFactory {
     }
 
     public static InputField createLongSelectField(String propertyName, String displayName,
-                    Map<Object, Object> options, FieldValidator... validators) {
+                                                   Map<Object, Object> options, FieldValidator... validators) {
         DefaultInputField longselect = new DefaultInputField(LONGSELECT, propertyName, displayName,
-                        validators);
+                validators);
         InputFieldAttributes.setOptions(longselect, options);
         return longselect;
     }
 
     public static InputField createLongSelectField(String propertyName, String displayName,
-                    boolean required, Map<Object, Object> options) {
+                                                   boolean required, Map<Object, Object> options) {
         if (required) {
             return createLongSelectField(propertyName, displayName, options,
-                            FieldValidator.NOT_NULL_VALIDATOR);
+                    FieldValidator.NOT_NULL_VALIDATOR);
         } else {
             return createLongSelectField(propertyName, displayName, options, EMPTY_VALIDATORS);
         }
     }
 
     public static InputField createCheckboxField(String propertyName, String displayName,
-                    FieldValidator... validators) {
+                                                 FieldValidator... validators) {
         // it doesn't make sense for checkboxes to ever be "required"
         return new DefaultInputField(InputField.Category.CHECKBOX, propertyName, displayName,
-                        validators);
+                validators);
     }
-    
-    public static InputField createRadioButtonField(String propertyName, String displayName, String value, FieldValidator... validators){
-    	DefaultInputField inputField = new DefaultInputField(InputField.Category.RADIO, propertyName, displayName, validators);
-    	inputField.getAttributes().put(InputField.DEFAULT_VALUE, value);
-    	return inputField;
+
+    public static InputField createRadioButtonField(String propertyName, String displayName, String value, FieldValidator... validators) {
+        DefaultInputField inputField = new DefaultInputField(InputField.Category.RADIO, propertyName, displayName, validators);
+        inputField.getAttributes().put(InputField.DEFAULT_VALUE, value);
+        return inputField;
     }
+
     /**
-     * This field is used to display images on the screen. At present, this is more or less a kind of filler field, 
-     * which is used to act as a space holder. 
+     * This field is used to display images on the screen. At present, this is more or less a kind of filler field,
+     * which is used to act as a space holder.
+     *
      * @return
      */
-    public static InputField createImageField(String properyName, String displayName, String imageName){
-    	return new DefaultInputField(InputField.Category.IMAGE, properyName, displayName);
+    public static InputField createImageField(String properyName, String displayName, String imageName) {
+        return new DefaultInputField(InputField.Category.IMAGE, properyName, displayName);
     }
+
     /**
      * Intended mainly for testing.
      */
@@ -211,13 +209,13 @@ public class InputFieldFactory {
         private Category category;
 
         private DefaultInputField(Category category, String propertyName, String displayName,
-                        boolean required) {
+                                  boolean required) {
             super(propertyName, displayName, required);
             this.category = category;
         }
 
         private DefaultInputField(Category category, String propertyName, String displayName,
-                        FieldValidator... fieldValidator) {
+                                  FieldValidator... fieldValidator) {
             super(propertyName, displayName, fieldValidator);
             this.category = category;
         }

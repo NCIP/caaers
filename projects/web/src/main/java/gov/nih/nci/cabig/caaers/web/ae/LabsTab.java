@@ -1,12 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
 import gov.nih.nci.cabig.caaers.domain.LabTerm;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -14,10 +9,12 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.RepeatingFieldGroupFactory;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.LabTermDao;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Rhett Sutphin
@@ -31,39 +28,39 @@ public class LabsTab extends AeTab {
 
     public LabsTab() {
         super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION
-                        .getDisplayName(), "ae/labs");
+                .getDisplayName(), "ae/labs");
     }
 
     private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName,
-                    String displayName) {
+                                   String displayName) {
         fieldFactory.addField(createLabValueField(propName, displayName));
         fieldFactory.addField(createLabDateField(propName, displayName));
     }
 
     private InputField createLabDateField(String propName, String displayName) {
         return InputFieldFactory.createDateField(propName + ".date", displayName + " date",
-                        FieldValidator.DATE_VALIDATOR);
+                false);
     }
 
     private InputField createLabValueField(String propName, String displayName) {
         return InputFieldFactory
-                        .createTextField(propName + ".value", displayName + " value", false);
+                .createTextField(propName + ".value", displayName + " value", false);
     }
 
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        Map<String, Object> refdata = super.referenceData(request,command);
+        Map<String, Object> refdata = super.referenceData(request, command);
         refdata.put("labCategories", labCategoryDao.getAll());
         return refdata;
     }
 
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator,
-                    ExpeditedAdverseEventInputCommand command) {
+                                     ExpeditedAdverseEventInputCommand command) {
         // InputField labNameField = InputFieldFactory.createAutocompleterField("labTerm", "Lab test
         // name");
         InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name",
-                        false, createOptions());
+                false, createOptions());
         InputFieldAttributes.setSize(labNameField, 60);
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 60);
@@ -71,19 +68,19 @@ public class LabsTab extends AeTab {
         InputField siteField = InputFieldFactory.createTextField("site", "Site", false);
         InputField labDateField = InputFieldFactory.createDateField("labDate", "Date", false);
         InputField infectiousAgentField = InputFieldFactory.createTextArea("infectiousAgent",
-                        "Infectious Agent", false);
+                "Infectious Agent", false);
         InputFieldAttributes.setColumns(infectiousAgentField, 60);
 
         creator.createRepeatingFieldGroup("lab", "labs", createNameCreator(), labNameField,
-                        otherField, InputFieldFactory.createSelectField("units", "Units", false,
-                        		WebUtils.collectOptions(configurationProperty
-                                                        .getMap().get("labUnitsRefData"), "code",
-                                                        "desc", "Please select")),
-                        createLabValueField("baseline", "Baseline"), createLabDateField("baseline",
-                                        "Baseline"), createLabValueField("nadir", "Worst"),
-                        createLabDateField("nadir", "Worst"), createLabValueField("recovery",
-                                        "Recovery"), createLabDateField("recovery", "Recovery"),
-                        siteField, labDateField, infectiousAgentField);
+                otherField, InputFieldFactory.createSelectField("units", "Units", false,
+                        WebUtils.collectOptions(configurationProperty
+                                .getMap().get("labUnitsRefData"), "code",
+                                "desc", "Please select")),
+                createLabValueField("baseline", "Baseline"), createLabDateField("baseline",
+                        "Baseline"), createLabValueField("nadir", "Worst"),
+                createLabDateField("nadir", "Worst"), createLabValueField("recovery",
+                        "Recovery"), createLabDateField("recovery", "Recovery"),
+                siteField, labDateField, infectiousAgentField);
     }
 
     private RepeatingFieldGroupFactory.DisplayNameCreator createNameCreator() {
