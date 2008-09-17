@@ -143,7 +143,6 @@ public abstract class AbstractInputField implements InputField {
 
 
         return validatorClassNameBuffer.toString();
-        ;
     }
 
 
