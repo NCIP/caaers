@@ -51,11 +51,13 @@
 			  	  <td width="50%">
 			   		<chrome:division title="Reporter details"  cssClass="paired" style="border-right-width: 1px; border-right-style: solid; border-color: #C9E3EB">
 					 <rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Reporter details" />
+					<rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Reporter details~Address" />
 			   		</chrome:division>
 			 	  </td>
 			 	  <td width="50%">
 			   		<chrome:division title="Physician details" cssClass="paired">
 			    	  <rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Physician details" />
+					  <rd:renderMandatoryFields key="REPORTER_INFO_SECTION~Physician details~Address" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
