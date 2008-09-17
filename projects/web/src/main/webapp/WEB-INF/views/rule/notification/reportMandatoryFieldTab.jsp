@@ -79,24 +79,38 @@
 			 	  <td width="50%">
 		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
   	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Height" heading="Height" singleRow="true" tabular="true" />
-  	    	      <chrome:division title="Metastatic disease information">
-					<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Metastatic disease sites" />
-				  </chrome:division>
 			 	  </td>
 			  </tr>
+			 <tr>
+				<td>
+					<chrome:division title="Pre-existing conditions">
+						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Pre-existing conditions" />
+					</chrome:division>
+				</td>
+				<td>
+					<chrome:division title="Metastatic disease information">
+						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Metastatic disease sites" />
+				  	</chrome:division>
+				</td>
+			</tr>
+			 <tr>
+				<td>
+					<chrome:division title="Prior therapies">
+						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Prior Therapys" />
+					</chrome:division>
+				</td>
+				<td>
+					<chrome:division title="Concomitant Medications">
+						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Medications" />
+					</chrome:division>
+				</td>
+			</tr>
 			</table>
 		</chrome:division>
 		
-		<chrome:division title="Pre-existing conditions">
-			<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions" />
-		</chrome:division>
 		
-		<chrome:division title="Prior therapies">
-		<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
-		</chrome:division>
-		<chrome:division title="Concomitant Medications">
-		<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications" />
-		</chrome:division>
+		
+
 		<chrome:division title="Other contributing causes">
 			<rd:renderMandatoryFields key="OTHER_CAUSE_SECTION~OtherCausess" />
 		</chrome:division>
