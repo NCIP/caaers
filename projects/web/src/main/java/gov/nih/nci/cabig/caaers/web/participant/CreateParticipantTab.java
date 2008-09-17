@@ -116,17 +116,6 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         return refdata;
     }
 
-/*    @Override
-    public void postProcess(final HttpServletRequest request, final NewParticipantCommand command, final Errors errors) {
-        String action = request.getParameter("_action");
-        String selected = request.getParameter("_selected");
-        if ("removeIdentifier".equals(action)) {
-            NewParticipantCommand newParticipantCommand = command;
-            newParticipantCommand.getParticipant().getIdentifiers().remove(
-                    Integer.parseInt(selected));
-        }
-    }*/
-
     @Override
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         boolean hasPrimaryID = false;

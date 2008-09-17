@@ -148,7 +148,7 @@
   </head>
   <body>
    <form:form id="command">	
-   <tags:hasErrorsMessage />
+   <tags:hasErrorsMessage path="*" />
    
     <tags:tabFields tab="${tab}" />
 

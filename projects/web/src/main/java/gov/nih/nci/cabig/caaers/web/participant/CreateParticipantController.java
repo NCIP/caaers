@@ -75,8 +75,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     }
 
     protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
-        log.debug("Entering Process Finish ...");
-
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
 
         Participant participant = participantCommand.getParticipant();

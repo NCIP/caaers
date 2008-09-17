@@ -37,7 +37,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         Map<String, Object> refdata = referenceData();
         Map<String, InputFieldGroup> groupMap = createFieldGroups(command);
         refdata.put("fieldGroups", groupMap);
-        refdata.put("action", "New");
+//        refdata.put("action", "New");
         return refdata;
     }
 
@@ -149,11 +149,24 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
         }
 
         for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
+
+            if (identifier.isPrimary()) {
+                if (hasPrimaryID) {
+                    // there are at least 2 Primary ID selected
+                    hasPrimaryID = false;
+                    break;
+                }
+
+                hasPrimaryID = true;
+            }
+
+/*
             hasPrimaryID |= identifier.isPrimary();
             if (hasPrimaryID) break;
+*/
         }
 
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include at least a single primary Identifier");
+        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include exactly One Primary Identifier");
 
         if (command.getAssignment() == null) errors.reject("PT_002", "Select one assignment please.");
     }
@@ -188,6 +201,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
         // store the new Identifier object into the command.participant
         OrganizationAssignedIdentifier newIdentifier = new OrganizationAssignedIdentifier();
+        newIdentifier.setOrganization(organizationDao.getById(1));
         command.getParticipant().addIdentifier(newIdentifier);
         
         return modelAndView;
