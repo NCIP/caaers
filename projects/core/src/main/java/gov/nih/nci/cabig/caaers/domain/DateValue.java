@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import org.apache.commons.lang.StringUtils;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
 
@@ -86,7 +88,7 @@ public class DateValue implements Comparable<DateValue> {
 
     @Transient
     public void setYearString(String year) {
-        if (year == null)
+        if (StringUtils.isEmpty(year))
             this.year = null;
         else
             this.year = new Integer(year);
@@ -100,7 +102,7 @@ public class DateValue implements Comparable<DateValue> {
 
     @Transient
     public void setMonthString(String month) {
-        if (month == null)
+        if (StringUtils.isEmpty(month))
             this.month = null;
         else
             this.month = new Integer(month);
@@ -114,7 +116,7 @@ public class DateValue implements Comparable<DateValue> {
 
     @Transient
     public void setDayString(String day) {
-        if (day == null)
+        if (StringUtils.isEmpty(day))
             this.day = null;
         else
             this.day = new Integer(day);
