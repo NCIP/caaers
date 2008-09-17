@@ -64,7 +64,7 @@
                 int i = 0;
                 for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
                 i++;
-                if (aePriorTherapy.getPriorTherapy() == null) {
+                if (pt.getPriorTherapy() == null) {
                 errors.addValidationError("PTY_BR5_ERR","Prior Therapy is required", i);
                 }
                 }

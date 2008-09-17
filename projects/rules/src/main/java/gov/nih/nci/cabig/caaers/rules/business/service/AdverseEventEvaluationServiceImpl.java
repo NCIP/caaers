@@ -301,39 +301,37 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
      * :"gov.nih.nci.cabig.caaers.rules." + + <section_name>"
      */
     @SuppressWarnings(value = "unchecked")
-    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection section) {
+    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections) {
 
         // create the input objects
         ValidationErrors errors = new ValidationErrors();
         Study study = aeReport.getStudy();
 
-        // 1. fetch the bindUri
-        String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE, "reporting_" + section.name());
-
-        // 2. fire the rules
+        // 1. fire the rules
         List<Object> input = new ArrayList<Object>();
         input.add(aeReport);
         input.add(study);
         input.add(errors);
-
-        try {
-            List<Object> output = fireRules(input, bindURI);
-            if (output != null) {
-                for (Iterator it = output.iterator(); it.hasNext();) {
-                    Object o = it.next();
-                    if (o instanceof ValidationErrors) {
-                        errors = (ValidationErrors) o;
-                        break;
-                    }
-                }
-            }
-        } catch (RuleSetNotFoundException e) {
-            log
-                            .debug(
-                                            "There exist no reporting validation business rules for this AE, ignoring exception",
-                                            e);
+        
+        for(ExpeditedReportSection section : sections){
+	        // 2. fetch the bindUri
+	        String bindURI = getBindURI(null, null, CategoryConfiguration.CAAERS_BASE, "reporting_" + section.name());
+	
+	        try {
+	            List<Object> output = fireRules(input, bindURI);
+	            if (output != null) {
+	                for (Iterator it = output.iterator(); it.hasNext();) {
+	                    Object o = it.next();
+	                    if (o instanceof ValidationErrors) {
+	                        errors = (ValidationErrors) o;
+	                        break;
+	                    }
+	                }
+	            }
+	        } catch (RuleSetNotFoundException e) {
+	            log.debug("There exist no reporting validation business rules for this AE, ignoring exception",e);
+	        }
         }
-
         // 3. fetch the errors from
         return errors;
     }

@@ -370,9 +370,9 @@ public class EvaluationServiceImpl implements EvaluationService {
          */
     }
 
-    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection section) {
+    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection... sections) {
         try {
-            return adverseEventEvaluationService.validateReportingBusinessRules(aeReport, section);
+            return adverseEventEvaluationService.validateReportingBusinessRules(aeReport, sections);
         } catch (Exception e) {
             log.error("Error while evaluating business rules", e);
             throw new CaaersSystemException("Error while evaluating business rules", e);

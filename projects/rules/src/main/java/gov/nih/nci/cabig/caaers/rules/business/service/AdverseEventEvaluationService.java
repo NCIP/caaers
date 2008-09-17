@@ -44,6 +44,5 @@ public interface AdverseEventEvaluationService {
      * @return
      * @throws Exception
      */
-    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
-                    ExpeditedReportSection section);
+    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
 }
