@@ -79,15 +79,21 @@ public class ImportAjaxFacade {
      */
 
     public String saveObjectBlock(final int loopNumber, String type) {
-        if ("participant".equals(type)) {
-            return saveParticipantBlock(loopNumber);
-        }
-        if ("study".equals(type)) {
-            return saveStudyBlock(loopNumber);
-        }
-        if ("routineAe".equals(type)) {
-            return saveRoutineAeBlock(loopNumber);
-        }
+    	
+    	try{
+    		if ("participant".equals(type)) {
+                return saveParticipantBlock(loopNumber);
+            }
+            if ("study".equals(type)) {
+                return saveStudyBlock(loopNumber);
+            }
+            if ("routineAe".equals(type)) {
+                return saveRoutineAeBlock(loopNumber);
+            }
+    	}catch(Exception e){
+    		log.error("Exception while Importing", e);
+    		return "ERR";
+    	}
         return "NA";
     }
 
@@ -95,30 +101,25 @@ public class ImportAjaxFacade {
         HttpServletRequest request = getHttpServletRequest();
 
         ImportCommand importCommand = getImportCommand(request);
-        // int startIndex = importCommand.getRoutineStart();
-        int startIndex = 5 * loopNumber;
-        int endIndex = importCommand.getImportableStudies().size();
-        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
-        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
-                        + loopBy);
-        saveStudies(importCommand.getImportableStudies(), startIndex, loopBy);
-        // importCommand.setRoutineStart(loopBy);
-        return String.valueOf(loopBy - startIndex);
+//        int startIndex = 5 * loopNumber;
+//        int endIndex = importCommand.getImportableStudies().size();
+//        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
+//        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
+//                        + loopBy);
+        saveStudies(importCommand.getImportableStudies(), 0, 0);
+        return String.valueOf(1 - 0);
     }
 
     public String saveParticipantBlock(final int loopNumber) {
-        HttpServletRequest request = getHttpServletRequest();
-
-        ImportCommand importCommand = getImportCommand(request);
-        // int startIndex = importCommand.getRoutineStart();
-        int startIndex = 5 * loopNumber;
-        int endIndex = importCommand.getImportableParticipants().size();
-        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
-        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
-                        + loopBy);
-        saveParticipants(importCommand.getImportableParticipants(), startIndex, loopBy);
-        // importCommand.setRoutineStart(loopBy);
-        return String.valueOf(loopBy - startIndex);
+    		HttpServletRequest request = getHttpServletRequest();
+            ImportCommand importCommand = getImportCommand(request);
+//            int startIndex = 5 * loopNumber;
+//            int endIndex = importCommand.getImportableParticipants().size();
+//            int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
+//            System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
+//                            + loopBy);
+            saveParticipants(importCommand.getImportableParticipants(), 0, 0);
+            return String.valueOf(1 - 0);
     }
 
     private void saveParticipants(
@@ -126,20 +127,27 @@ public class ImportAjaxFacade {
                     int startIndex, int endIndex) {
         if (importableParticipants.size() > 0) {
 
-            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants
-                            .subList(startIndex, endIndex)) {
-                participantDao.save(importOutcome.getImportedDomainObject());
+//            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants
+//                            .subList(startIndex, endIndex)) {
+//                participantDao.save(importOutcome.getImportedDomainObject());
+//            }
+        	
+            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants) {
+            	participantDao.save(importOutcome.getImportedDomainObject());
             }
         }
     }
 
-    private void saveStudies(List<DomainObjectImportOutcome<Study>> importableParticipants,
+    private void saveStudies(List<DomainObjectImportOutcome<Study>> importableStuies,
                     int startIndex, int endIndex) {
-        if (importableParticipants.size() > 0) {
+        if (importableStuies.size() > 0) {
 
-            for (DomainObjectImportOutcome<Study> importOutcome : importableParticipants.subList(
-                            startIndex, endIndex)) {
-                studyDao.save(importOutcome.getImportedDomainObject());
+//            for (DomainObjectImportOutcome<Study> importOutcome : importableParticipants.subList(
+//                            startIndex, endIndex)) {
+//                studyDao.save(importOutcome.getImportedDomainObject());
+//            }
+        	for (DomainObjectImportOutcome<Study> importOutcome : importableStuies) {
+        		studyDao.save(importOutcome.getImportedDomainObject());
             }
         }
     }
@@ -248,6 +256,19 @@ public class ImportAjaxFacade {
     private HttpServletRequest getHttpServletRequest() {
         return WebContextFactory.get().getHttpServletRequest();
     }
+    
+    
+    public String testFullParticipantSave(){
+    	HttpServletRequest request = getHttpServletRequest();
+        ImportCommand importCommand = getImportCommand(request);
+        log.debug("Number of participants :: " + importCommand.getImportableParticipants().size());
+        for (DomainObjectImportOutcome<Participant> importOutcome : importCommand.getImportableParticipants()) {
+        		participantDao.save(importOutcome.getImportedDomainObject());
+        }
+        return "DONE";
+    }
+    
+    
 
     // //// CONFIGURATION
 
