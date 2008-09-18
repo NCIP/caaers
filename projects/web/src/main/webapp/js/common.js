@@ -621,3 +621,8 @@ function dump(arr, level) {
 	return dumped_text;
 }
 
+function updateHelpLink(baseUrl, linkName){
+	$('help').href= baseUrl + "#" + linkName + ".htm";
+}
+
+
