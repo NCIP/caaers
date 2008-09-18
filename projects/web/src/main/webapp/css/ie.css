@@ -31,7 +31,7 @@ html div.row, * html .autoclear {
     position: absolute;
     top: 98px;
     vertical-align: middle;
-    width: 980px;
+    width: 970px;
     z-index: 1;
 }
 
