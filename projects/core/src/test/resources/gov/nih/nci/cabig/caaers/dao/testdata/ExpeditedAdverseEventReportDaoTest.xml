@@ -1,177 +1,187 @@
 <dataset>
-	
-	<!--  ======================= Organizations ================================-->
-	<ORGANIZATIONS id="-1001" name="New Site" />
-	<ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite" />
-        
+
+    <!--  ======================= Organizations ================================-->
+    <ORGANIZATIONS id="-1001" name="New Site"/>
+    <ORGANIZATIONS id="-1" name="New Site" grid_id="gridSite"/>
+
     <!-- ========================== CTC related information ===============================-->
-	<ctc_versions id="3" name="CTCAE v3.0" />
-	<ctc_categories id="301" name="allergy/immunology"
-		version_id="3" />
-	<ctc_categories id="302" name="auditory/ear" version_id="3" />
-	<ctc_categories id="303" name="blood/bone marrow"
-		version_id="3" />
-	<ctc_terms id="3007" category_id="302"
-		term="Auditory/Ear - Other (Specify, __)" ctep_term="Ear disorder"
-		ctep_code="10014004" other_required="1" />
-	<ctc_terms category_id="302" id="3012" term="Tinnitus"
-		ctep_term="Tinnitus" ctep_code="10043882" other_required="0" />
-	<ctc_grades /> <!-- to delete in case of existing refs -->
-	
-	<!-- ====================== agents =============================================== -->
-	<agents id="-101" name="agent1"/>
-	<agents id="-102" name="agent2"/>
-    
+    <ctc_versions id="3" name="CTCAE v3.0"/>
+    <ctc_categories id="301" name="allergy/immunology"
+                    version_id="3"/>
+    <ctc_categories id="302" name="auditory/ear" version_id="3"/>
+    <ctc_categories id="303" name="blood/bone marrow"
+                    version_id="3"/>
+    <ctc_terms id="3007" category_id="302"
+               term="Auditory/Ear - Other (Specify, __)" ctep_term="Ear disorder"
+               ctep_code="10014004" other_required="1"/>
+    <ctc_terms category_id="302" id="3012" term="Tinnitus"
+               ctep_term="Tinnitus" ctep_code="10043882" other_required="0"/>
+    <ctc_grades/>
+    <!-- to delete in case of existing refs -->
+
+    <!-- ====================== agents =============================================== -->
+    <agents id="-101" name="agent1"/>
+    <agents id="-102" name="agent2"/>
+
     <!-- ========================= Study related information ================================= -->
-    <STUDIES id="-999" short_title="dummy" load_status="0" />
-	<STUDIES id="-1" short_title="That one" load_status="1" design_code="1"/>
-		
-	<STUDY_DISEASES id="-4" study_id="-1" term_type="meddra"
-		meddra_code="1233212" />
-	<TREATMENT_ASSIGNMENT id="-11" code="TAC001"
-		study_id="-1" dose_level_order="22" description="description"
-		comments="comments" version="0" grid_id="TAC333" />
-	<TREATMENT_ASSIGNMENT id="-10" code="TAC010"
-		study_id="-1" dose_level_order="22" description="description"
-		comments="comments" version="0" grid_id="TAC333" />
-	<STUDY_ORGANIZATIONS id="-10" site_id="-1001"
-		study_id="-1" type="SST" />
-	<TERMINOLOGIES id="-11" term_code="1" ctc_id="3"
-		study_id="-1" />
-	<DISEASE_TERMINOLOGIES id="-11" term_code="1"
-		study_id="-1" />
-	<STUDY_AGENTS id="-11" study_id="-1" agent_id="-101"/>
-	<STUDY_AGENTS id="-12" study_id="-1" agent_id="-102"/>
-	
-	<!--============================================  Participant Information ================================-->
-	<PARTICIPANTS id="-101" instituitional_patient_number="P002"
-		institution="Hospital" first_name="Michael" last_name="Jordan"
-		birth_day="02" birth_month="01" birth_year="2006" gender="Male"
-		ethnicity="ethnicity" race="race" middle_name="m" maiden_name="m"
-		load_status="1" />
-		
-	<!--  ================ Identifiers =================================== -->
-	<IDENTIFIERS id="-200" participant_id="-101" value="13js77" stu_id='-999' 
-		type="MRN" organization_id="-1" discriminator_column="1" />
-		
-	<IDENTIFIERS id="-201" stu_id="-1" value="nci_test" type="MRN"
-		organization_id="-1" discriminator_column="1" />
+    <STUDIES id="-999" short_title="dummy" load_status="0"/>
+    <STUDIES id="-1" short_title="That one" load_status="1" design_code="1"/>
 
-	<!--  ======================== Study participant assignment ============================== -->		
-	<PARTICIPANT_ASSIGNMENTS id="-14"
-		study_site_id="-10" participant_id="-101" date_of_enrollment="2006-09-30"
-		load_status="1" />
-	
-	<!-- ======================= Disease site information ======================================= -->
-	<ANATOMIC_SITES id="-33" name="Rolling" category="Rock" />
-	<ANATOMIC_SITES id="-1" name="Ear" category="Head parts" />
-	<INTERVENTION_SITES id="-33" name="Rolling" />
-	
-		
-	<!--======================================  Reporting Period information ==================================-->
-	<epochs id="-1" name="abcd" order_no="1" />
-	
-	<ae_reporting_periods id="-14" assignment_id="-14"
-		start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" treatment_assignment_id="-10" />
-	
-		<ae_reporting_periods id="-15" assignment_id="-14"
-		start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" treatment_assignment_id="-10" />
-	
-	<!--=================================  Expedited Reports ====================================================-->
-	<AE_REPORTS id="-1" reporting_period_id="-15"
-		created_at="2004-09-04 13:15:30" />
-	<ADVERSE_EVENTS id="-11" report_id="-1"
-		reporting_period_id="-15" list_index="1"  event_time_hour="10" event_time_minute="10" 
-		start_date="2007-09-12 21:43:56.987"
-        end_date="2007-09-12 21:43:56.987"
-        event_time_zone="0" event_location="office"/>
-	<ADVERSE_EVENTS id="-70" report_id="-1"
-		reporting_period_id="-15" list_index="0" event_time_hour="7" event_time_minute="15"  
-		start_date="2007-09-12 21:43:56.987"
-        end_date="2007-09-12 21:43:56.987"
-        event_time_zone="0" event_location="home"/>
-	<AE_TERMS id="-11" adverse_event_id="-70" term_id="3007"
-		term_type="ctep" />
-	<AE_TERMS id="-12" adverse_event_id="-11" term_id="3007"
-		term_type="ctep" />
-	
-	<OUTCOMES id="-11" outcome_type_code="2" adverse_event_id="-11"/>
-	<OUTCOMES id="-12" outcome_type_code="3" adverse_event_id="-70"/>	
-		
-	<AE_LABS id="-20" report_id="-1" list_index="1" units="hectares/liter"
-		baseline_value="3.66" baseline_date="2003-04-17" nadir_value="0.4"
-		nadir_date="2007-03-14" recovery_value="3.54" recovery_date="2007-03-19" />
-	<AE_LABS id="-21" report_id="-1" list_index="0" />
-	<AE_LABS id="-22" report_id="-1" list_index="2" />
-	<PARTICIPANT_HISTORIES id="-57" report_id="-1"
-		height="134.3" height_unit="cm" weight="54.2" weight_unit="kg"
-		baseline_performance_status="About here" />
-	<AE_ATTRIBUTIONS id="-40" adverse_event_id="-70"
-		cause_id="-31" cause_type="CM" attribution_code="4" />
-	<AE_SURGERY_INTERVENTIONS id="-110" report_id="-1"
-		list_index="0" />
-	<ADDITIONAL_INFORMATION id="-100" report_id="-1"
-		other_information="Hello" />
-	<CONCOMITANT_MEDICATIONS id="-30" list_index="1"
-		report_id="-1" agent_name="agent_name2" start_date_day="10" start_date_month="10" start_date_year="2002" start_date_zone="0" end_date_day="10" end_date_month="10" end_date_year="2004" end_date_zone="0" still_taking_medications="1"/>
-	<CONCOMITANT_MEDICATIONS id="-31" list_index="0"
-		report_id="-1" agent_name="agent_name1" start_date_month="11" start_date_year="2003" start_date_zone="0" end_date_zone="0"/>
-	<OTHER_CAUSES id="-82" report_id="-1" list_index="2"
-		cause_text="Tire fire" />
-	<OTHER_CAUSES id="-81" report_id="-1" list_index="0"
-		cause_text="Cuyahoga river" />
-	<OTHER_CAUSES id="-80" report_id="-1" list_index="1"
-		cause_text="Crossed against light" />
-	<AE_REPORT_DESCRIPTIONS id="-10" report_id="-1"
-		present_status_code="3" event_description="It was real bad" retreated="0"
-		recovery_date="2012-03-04" reduced_dose="43" reduced_date="2012-03-04" days_not_given="2" cause_of_death="Bleeding" autopsy_performed="0"/>
-	<AE_REPORT_PEOPLE id="-100" report_id="-1" role="R"
-		first_name="Joe" last_name="DiMaggio" title="Mr"  street="160 Laurelway" city="Herndon" state="VA" zip="20170"/>
-	<AE_REPORT_PEOPLE id="-101" report_id="-1" role="P"
-		first_name="Horatio" last_name="Sandpiper" title="Mrs"  street="160 Laurelway" city="Herndon" state="VA" zip="20170"/>
-	<TREATMENTS id="-10" report_id="-1" first_course_date="2005-06-04"
-		adverse_event_course_date="2006-07-09" adverse_event_course_number="8"
-		treatment_assignment_id="-10" primary_treatment="some primary treatment" treatment_time_hour="11" treatment_time_minute="11" treatment_time_zone="0"/>
-	<COURSE_AGENTS id="-20" treatment_id="-10" list_index="1"
-		administration_delay_minutes="240" dose_amount="17.4" dose_units="mg"
-		dose_route="aural" modified_dose_amount="10" modified_dose_units="mg"
-		modified_dose_route="aural" total_dose_this_course="7"
-		duration_and_schedule="8 times every third hour"
-		last_administered_date="2006-07-10" lot_number="56ABC" formulation="my formulation" study_agent_id="-11"/>
-	<COURSE_AGENTS id="-19" treatment_id="-10" list_index="0"
-		dose_amount=".33" dose_units="kg" dose_route="oral"
-		total_dose_this_course=".84" duration_and_schedule="daily" formulation="dummy formulation" study_agent_id="-12"/>
-	<DISEASE_HISTORIES id="-53" report_id="-1"
-		coded_primary_disease_site_id="-1" study_disease_id="-4"
-		diagnosis_year="2007" diagnosis_month="01" diagnosis_day="04" />
-	<METASTATIC_DISEASE_SITES id="-5"
-		disease_history_id="-53" coded_site_id="-33" />
+    <STUDY_DISEASES id="-4" study_id="-1" term_type="meddra"
+                    meddra_code="1233212"/>
+    <TREATMENT_ASSIGNMENT id="-11" code="TAC001"
+                          study_id="-1" dose_level_order="22" description="description"
+                          comments="comments" version="0" grid_id="TAC333"/>
+    <TREATMENT_ASSIGNMENT id="-10" code="TAC010"
+                          study_id="-1" dose_level_order="22" description="description"
+                          comments="comments" version="0" grid_id="TAC333"/>
+    <STUDY_ORGANIZATIONS id="-10" site_id="-1001"
+                         study_id="-1" type="SST"/>
+    <TERMINOLOGIES id="-11" term_code="1" ctc_id="3"
+                   study_id="-1"/>
+    <DISEASE_TERMINOLOGIES id="-11" term_code="1"
+                           study_id="-1"/>
+    <STUDY_AGENTS id="-11" study_id="-1" agent_id="-101"/>
+    <STUDY_AGENTS id="-12" study_id="-1" agent_id="-102"/>
 
-	
-	<!--=======================================  Reports/Calendar templates ================================================-->
-	<CONTACT_MECHANISMS person_id="-100" type="phone"
-		value="212 555-1212" />
-	<CONTACT_MECHANISMS person_id="-100" type="e-mail"
-		value="joltin@joe.com" />
-	<REPORT_CALENDAR_TEMPLATES id="-30" name="11-day"
-		duration="8" time_scale_unit_code="4" amendable="0" />
-	<REPORT_SCHEDULES id="-41" due_on="2007-05-05"
-		created_on="2007-04-24" report_id="-1" rct_id="-30" />
-	<REPORT_SCHEDULES id="-40" due_on="2007-05-03"
-		created_on="2007-04-22" report_id="-1" rct_id="-30" />
-	<!--
-		tables which an AE report will reference, but which are not otherwise
-		in this file. This is so dbunit will clean them up.
-	-->
-	<!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
-	<SCHEDULED_NOTIFICATIONS />
-	<PLANNED_NOTIFICATIONS />
-	<investigational_new_drugs />
-	<ind_holders />
-	<study_amendments />
-	<study_therapy />
-	<research_staffs />
-	<mandatory_field_defs />
-	<ae_medical_devices />
-	<ae_radiation_interventions />
+    <!--============================================  Participant Information ================================-->
+    <PARTICIPANTS id="-101" instituitional_patient_number="P002"
+                  institution="Hospital" first_name="Michael" last_name="Jordan"
+                  birth_day="02" birth_month="01" birth_year="2006" gender="Male"
+                  ethnicity="ethnicity" race="race" middle_name="m" maiden_name="m"
+                  load_status="1"/>
+
+    <!--  ================ Identifiers =================================== -->
+    <IDENTIFIERS id="-200" participant_id="-101" value="13js77" stu_id='-999'
+                 type="MRN" organization_id="-1" discriminator_column="1"/>
+
+    <IDENTIFIERS id="-201" stu_id="-1" value="nci_test" type="MRN"
+                 organization_id="-1" discriminator_column="1"/>
+
+    <!--  ======================== Study participant assignment ============================== -->
+    <PARTICIPANT_ASSIGNMENTS id="-14"
+                             study_site_id="-10" participant_id="-101" date_of_enrollment="2006-09-30"
+                             load_status="1"/>
+
+    <!-- ======================= Disease site information ======================================= -->
+    <ANATOMIC_SITES id="-33" name="Rolling" category="Rock"/>
+    <ANATOMIC_SITES id="-1" name="Ear" category="Head parts"/>
+    <INTERVENTION_SITES id="-33" name="Rolling"/>
+
+
+    <!--======================================  Reporting Period information ==================================-->
+    <epochs id="-1" name="abcd" order_no="1"/>
+
+    <ae_reporting_periods id="-14" assignment_id="-14"
+                          start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" treatment_assignment_id="-10"/>
+
+    <ae_reporting_periods id="-15" assignment_id="-14"
+                          start_date="2006-09-30" end_date="2007-09-30" epoch_id="-1" treatment_assignment_id="-10"/>
+
+    <!--=================================  Expedited Reports ====================================================-->
+    <AE_REPORTS id="-1" reporting_period_id="-15"
+                created_at="2004-09-04 13:15:30"/>
+    <ADVERSE_EVENTS id="-11" report_id="-1"
+                    reporting_period_id="-15" list_index="1" event_time_hour="10" event_time_minute="10"
+                    start_date="2007-09-12 21:43:56.987"
+                    end_date="2007-09-12 21:43:56.987"
+                    event_time_zone="0" event_location="office"/>
+    <ADVERSE_EVENTS id="-70" report_id="-1"
+                    reporting_period_id="-15" list_index="0" event_time_hour="7" event_time_minute="15"
+                    start_date="2007-09-12 21:43:56.987"
+                    end_date="2007-09-12 21:43:56.987"
+                    event_time_zone="0" event_location="home"/>
+    <AE_TERMS id="-11" adverse_event_id="-70" term_id="3007"
+              term_type="ctep"/>
+    <AE_TERMS id="-12" adverse_event_id="-11" term_id="3007"
+              term_type="ctep"/>
+
+    <OUTCOMES id="-11" outcome_type_code="2" adverse_event_id="-11"/>
+    <OUTCOMES id="-12" outcome_type_code="3" adverse_event_id="-70"/>
+
+    <AE_LABS id="-20" report_id="-1" list_index="1" units="hectares/liter"
+             baseline_value="3.66" baseline_date="2003-04-17" nadir_value="0.4"
+             nadir_date="2007-03-14" recovery_value="3.54" recovery_date="2007-03-19"/>
+    <AE_LABS id="-21" report_id="-1" list_index="0"/>
+    <AE_LABS id="-22" report_id="-1" list_index="2"/>
+    <PARTICIPANT_HISTORIES id="-57" report_id="-1"
+                           height="134.3" height_unit="cm" weight="54.2" weight_unit="kg"
+                           baseline_performance_status="About here"/>
+    <AE_ATTRIBUTIONS id="-40" adverse_event_id="-70"
+                     cause_id="-31" cause_type="CM" attribution_code="4"/>
+    <AE_SURGERY_INTERVENTIONS id="-110" report_id="-1"
+                              list_index="0"/>
+    <ADDITIONAL_INFORMATION id="-100" report_id="-1"
+                            other_information="Hello"/>
+    <CONCOMITANT_MEDICATIONS id="-30" list_index="1"
+                             report_id="-1" start_date_day="10" start_date_month="10" start_date_year="2002"
+                             start_date_zone="0" end_date_day="10" end_date_month="10" end_date_year="2004"
+                             end_date_zone="0" still_taking_medications="1"/>
+    <CONCOMITANT_MEDICATIONS id="-31" list_index="0"
+                             report_id="-1" agent_name="agent_name1" start_date_month="11" start_date_year="2003"
+                             start_date_zone="0" end_date_zone="0"/>
+    <OTHER_CAUSES id="-82" report_id="-1" list_index="2"
+                  cause_text="Tire fire"/>
+    <OTHER_CAUSES id="-81" report_id="-1" list_index="0"
+                  cause_text="Cuyahoga river"/>
+    <OTHER_CAUSES id="-80" report_id="-1" list_index="1"
+                  cause_text="Crossed against light"/>
+    <AE_REPORT_DESCRIPTIONS id="-10" report_id="-1"
+                            present_status_code="3" event_description="It was real bad" retreated="0"
+                            recovery_date="2012-03-04" reduced_dose="43" reduced_date="2012-03-04" days_not_given="2"
+                            cause_of_death="Bleeding" autopsy_performed="0"/>
+    <AE_REPORT_PEOPLE id="-100" report_id="-1" role="R"
+                      first_name="Joe" last_name="DiMaggio" title="Mr" street="160 Laurelway" city="Herndon" state="VA"
+                      zip="20170"/>
+    <AE_REPORT_PEOPLE id="-101" report_id="-1" role="P"
+                      first_name="Horatio" last_name="Sandpiper" title="Mrs" street="160 Laurelway" city="Herndon"
+                      state="VA" zip="20170"/>
+    <TREATMENTS id="-10" report_id="-1" first_course_date="2005-06-04"
+                adverse_event_course_date="2006-07-09" adverse_event_course_number="8"
+                treatment_assignment_id="-10" primary_treatment="some primary treatment" treatment_time_hour="11"
+                treatment_time_minute="11" treatment_time_zone="0"/>
+    <COURSE_AGENTS id="-20" treatment_id="-10" list_index="1"
+                   administration_delay_minutes="240" dose_amount="17.4" dose_units="mg"
+                   dose_route="aural" modified_dose_amount="10" modified_dose_units="mg"
+                   modified_dose_route="aural" total_dose_this_course="7"
+                   duration_and_schedule="8 times every third hour"
+                   last_administered_date="2006-07-10" lot_number="56ABC" formulation="my formulation"
+                   study_agent_id="-11"/>
+    <COURSE_AGENTS id="-19" treatment_id="-10" list_index="0"
+                   dose_amount=".33" dose_units="kg" dose_route="oral"
+                   total_dose_this_course=".84" duration_and_schedule="daily" formulation="dummy formulation"
+                   study_agent_id="-12"/>
+    <DISEASE_HISTORIES id="-53" report_id="-1"
+                       coded_primary_disease_site_id="-1" study_disease_id="-4"
+                       diagnosis_year="2007" diagnosis_month="01" diagnosis_day="04"/>
+    <METASTATIC_DISEASE_SITES id="-5"
+                              disease_history_id="-53" coded_site_id="-33"/>
+
+
+    <!--=======================================  Reports/Calendar templates ================================================-->
+    <CONTACT_MECHANISMS person_id="-100" type="phone"
+                        value="212 555-1212"/>
+    <CONTACT_MECHANISMS person_id="-100" type="e-mail"
+                        value="joltin@joe.com"/>
+    <REPORT_CALENDAR_TEMPLATES id="-30" name="11-day"
+                               duration="8" time_scale_unit_code="4" amendable="0"/>
+    <REPORT_SCHEDULES id="-41" due_on="2007-05-05"
+                      created_on="2007-04-24" report_id="-1" rct_id="-30"/>
+    <REPORT_SCHEDULES id="-40" due_on="2007-05-03"
+                      created_on="2007-04-22" report_id="-1" rct_id="-30"/>
+    <!--
+         tables which an AE report will reference, but which are not otherwise
+         in this file. This is so dbunit will clean them up.
+     -->
+    <!-- Dependency on REPORT_CALENDAR_TEMPLATE, should also be deleted -->
+    <SCHEDULED_NOTIFICATIONS/>
+    <PLANNED_NOTIFICATIONS/>
+    <investigational_new_drugs/>
+    <ind_holders/>
+    <study_amendments/>
+    <study_therapy/>
+    <research_staffs/>
+    <mandatory_field_defs/>
+    <ae_medical_devices/>
+    <ae_radiation_interventions/>
 </dataset>
