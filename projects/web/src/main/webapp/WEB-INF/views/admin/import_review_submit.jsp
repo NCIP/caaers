@@ -43,6 +43,7 @@
 			returnValue = values;
 			$(barId).style.display = 'none';
 			$(barId).style.visibility = 'hidden';
+			alert(returnValue);
 			if(returnValue == 'ERR'){
 				$(statusId).update("Import Incomplete, Please contact caAERS support");
 			}
@@ -80,8 +81,23 @@
 		<input type="hidden" name="_finish" value="true">
 	</div>
 
-
 		<c:if test='${fn:length(command.importableResearchStaff) > 0 || fn:length(command.nonImportableResearchStaff) > 0 }'>
+		
+		<br/><br/>
+		<div class="row">
+			<div class="label">
+				<input id='button5' class='ibutton' type='button' value='Import'  title='Import ResearchStaff'
+				   	onclick="startImport(${fn:length(command.importableStudies)},'bar5','importStatus5','researchstaff','button5')" />	
+           </div>
+           
+           <div id=bar5 style="display: none;">
+           		<img src="<c:url value="/images/indicator.white.gif"/>">
+           </div>
+       </div>
+	   <div class="row">
+       		<div class="label"></div>
+       		<div class="value" id="importStatus5" >Start import by pressing the above button</div>
+       <br/><br/> 	
 		
 		<chrome:division title="ResearchStaff records did NOT get loaded" id="research_staff_not_load">
 		
@@ -138,6 +154,23 @@
 		</c:if>
 		
 		<c:if test='${fn:length(command.importableInvestigators) > 0 || fn:length(command.nonImportableInvestigators) > 0 }'>
+		
+		<br/><br/>
+		<div class="row">
+			<div class="label">
+				<input id='button4' class='ibutton' type='button' value='Import'  title='Import Investigators'
+				   	onclick="startImport(${fn:length(command.importableStudies)},'bar4','importStatus4','investigator','button4')" />	
+           </div>
+           
+           <div id=bar4 style="display: none;">
+           		<img src="<c:url value="/images/indicator.white.gif"/>">
+           </div>
+       </div>
+       <div class="row">
+       		<div class="label"></div>
+       		<div class="value" id="importStatus4" >Start import by pressing the above button</div>
+       <br/><br/>
+		
 		
 		<chrome:division title="Investigator records did NOT get loaded" id="investigator_not_load">
 		
