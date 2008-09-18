@@ -53,7 +53,7 @@
      Logic :  Prior Therapy is required
      Error Code : PTY_BR5_ERR
      Error Message : Prior Therapy is required
-     ============================================================================= -->
+     ============================================================================= 
     <rule name="PTY_BR5_CHK">
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
@@ -74,10 +74,10 @@
             </eval>
         </lhs>
         <rhs>
-            <!-- Populate Error Message-->
 
         </rhs>
     </rule>
+	-->
     <!-- ==========================================================================
      RuleName : PTY_BR3_CHK
      Logic :  “Therapy End Date” must not be provided if “Therapy Start Date” is not provided

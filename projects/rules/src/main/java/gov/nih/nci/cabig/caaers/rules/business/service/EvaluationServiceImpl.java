@@ -370,7 +370,7 @@ public class EvaluationServiceImpl implements EvaluationService {
          */
     }
 
-    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection sections) {
+    public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport, ExpeditedReportSection... sections) {
         try {
             return adverseEventEvaluationService.validateReportingBusinessRules(aeReport, sections);
         } catch (Exception e) {
