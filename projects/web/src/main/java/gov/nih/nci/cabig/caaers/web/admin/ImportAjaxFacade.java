@@ -2,17 +2,20 @@ package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
-import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
@@ -54,6 +57,10 @@ public class ImportAjaxFacade {
     private ParticipantDao participantDao;
 
     private StudyDao studyDao;
+    
+    private InvestigatorDao investigatorDao;
+    
+    private ResearchStaffDao researchStaffDao;
 
     private AdverseEventEvaluationService adverseEventEvaluationService;// = new AdverseEventEvaluationServiceImpl();
 
@@ -82,13 +89,19 @@ public class ImportAjaxFacade {
     	
     	try{
     		if ("participant".equals(type)) {
-                return saveParticipantBlock(loopNumber);
+                return saveParticipants();
             }
             if ("study".equals(type)) {
-                return saveStudyBlock(loopNumber);
+                return saveStudies();
             }
-            if ("routineAe".equals(type)) {
-                return saveRoutineAeBlock(loopNumber);
+//            if ("routineAe".equals(type)) {
+//                return saveRoutineAeBlock(loopNumber);
+//            }
+            if ("investigator".equals(type)) {
+                return saveInvestigators();
+            }
+            if ("researchstaff".equals(type)) {
+                return saveResearchStaff();
             }
     	}catch(Exception e){
     		log.error("Exception while Importing", e);
@@ -96,61 +109,46 @@ public class ImportAjaxFacade {
     	}
         return "NA";
     }
-
-    public String saveStudyBlock(final int loopNumber) {
-        HttpServletRequest request = getHttpServletRequest();
-
+    
+    
+    private String saveInvestigators(){
+    	HttpServletRequest request = getHttpServletRequest();
         ImportCommand importCommand = getImportCommand(request);
-//        int startIndex = 5 * loopNumber;
-//        int endIndex = importCommand.getImportableStudies().size();
-//        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
-//        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
-//                        + loopBy);
-        saveStudies(importCommand.getImportableStudies(), 0, 0);
-        return String.valueOf(1 - 0);
-    }
-
-    public String saveParticipantBlock(final int loopNumber) {
-    		HttpServletRequest request = getHttpServletRequest();
-            ImportCommand importCommand = getImportCommand(request);
-//            int startIndex = 5 * loopNumber;
-//            int endIndex = importCommand.getImportableParticipants().size();
-//            int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
-//            System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
-//                            + loopBy);
-            saveParticipants(importCommand.getImportableParticipants(), 0, 0);
-            return String.valueOf(1 - 0);
-    }
-
-    private void saveParticipants(
-                    List<DomainObjectImportOutcome<Participant>> importableParticipants,
-                    int startIndex, int endIndex) {
-        if (importableParticipants.size() > 0) {
-
-//            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants
-//                            .subList(startIndex, endIndex)) {
-//                participantDao.save(importOutcome.getImportedDomainObject());
-//            }
-        	
-            for (DomainObjectImportOutcome<Participant> importOutcome : importableParticipants) {
-            	participantDao.save(importOutcome.getImportedDomainObject());
-            }
+        List<DomainObjectImportOutcome<Investigator>> importableInvestigators = importCommand.getImportableInvestigators();
+        for (DomainObjectImportOutcome<Investigator> importOutcome : importableInvestigators) {
+    		investigatorDao.save(importOutcome.getImportedDomainObject());
         }
+    	return "DONE";
     }
-
-    private void saveStudies(List<DomainObjectImportOutcome<Study>> importableStuies,
-                    int startIndex, int endIndex) {
-        if (importableStuies.size() > 0) {
-
-//            for (DomainObjectImportOutcome<Study> importOutcome : importableParticipants.subList(
-//                            startIndex, endIndex)) {
-//                studyDao.save(importOutcome.getImportedDomainObject());
-//            }
-        	for (DomainObjectImportOutcome<Study> importOutcome : importableStuies) {
-        		studyDao.save(importOutcome.getImportedDomainObject());
-            }
+    
+    private String saveResearchStaff(){
+      	HttpServletRequest request = getHttpServletRequest();
+        ImportCommand importCommand = getImportCommand(request);
+        List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = importCommand.getImportableResearchStaff();
+        for (DomainObjectImportOutcome<ResearchStaff> importOutcome : importableResearchStaff) {
+        	researchStaffDao.save(importOutcome.getImportedDomainObject());
         }
+    	return "DONE";
     }
+    
+    private String saveStudies() {
+        HttpServletRequest request = getHttpServletRequest();
+        ImportCommand importCommand = getImportCommand(request);
+        for (DomainObjectImportOutcome<Study> importOutcome : importCommand.getImportableStudies()) {
+    		studyDao.save(importOutcome.getImportedDomainObject());
+        }
+        return "DONE";
+    }
+
+    private String saveParticipants() {
+		HttpServletRequest request = getHttpServletRequest();
+        ImportCommand importCommand = getImportCommand(request);
+        for (DomainObjectImportOutcome<Participant> importOutcome : importCommand.getImportableParticipants()) {
+        	participantDao.save(importOutcome.getImportedDomainObject());
+        }
+       return "DONE";
+    }
+
 
     //
     public String saveRoutineAeBlock(final int loopNumber) {
@@ -268,8 +266,6 @@ public class ImportAjaxFacade {
         return "DONE";
     }
     
-    
-
     // //// CONFIGURATION
 
     public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
@@ -318,4 +314,11 @@ public class ImportAjaxFacade {
 		this.adverseEventEvaluationService = adverseEventEvaluationService;
 	}
 
+	public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
+	}
+
+	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
+	}
 }
