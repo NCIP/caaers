@@ -33,7 +33,7 @@
 	<!-- ==================================================================
 		target : release-all
 	====================================================================== -->
-	<target name="release-all" depends="buildlist" 
+	<target name="release-all" depends="buildlist, clean-all" 
 	  			description="compile, jar and publish all projects in the right order, then releases it to Shared Repository">
 	   	<subant target="publish" buildpathref="build-path" />
 	</target>
