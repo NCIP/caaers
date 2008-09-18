@@ -8,32 +8,57 @@ import java.util.*;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju  Joseph
  */
 public class InputFieldFactoryTest extends AbstractTestCase {
 
+    public void testCreateSplitDateFieldIfSplitDateIsRequired() {
+        InputField field = InputFieldFactory.createSplitDateField("propertyName", "value", false, false, true, true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&NUMERIC class", "validate-NOTEMPTY&&NUMERIC", field.getValidatorClassName());
+        assertEquals("field must be SPLIT_DATE field", InputField.Category.SPLIT_DATE, field.getCategory());
+    }
+
+    public void testCreateSplitDateFieldIfSplitDateIsNotRequired() {
+        InputField field = InputFieldFactory.createSplitDateField("propertyName", "value", false, false, true, false);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&NUMERIC class", "validate-NUMERIC", field.getValidatorClassName());
+        assertEquals("field must be SPLIT_DATE field", InputField.Category.SPLIT_DATE, field.getCategory());
+    }
 
     public void testCreatePhoneFieldIfPhoneIsRequired() {
         InputField field = InputFieldFactory.createPhoneField("propertyName", "value", true);
-        assertEquals("commons-validations.js need css validate-NOTEMPTY&&US_PHONE_NO class", "validate-NOTEMPTY&&US_PHONE_NO", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&US_PHONE_NO class", "validate-NOTEMPTY&&US_PHONE_NO&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
     }
 
     public void testCreatePhoneFieldIfPhoneIsNotRequired() {
         InputField field = InputFieldFactory.createPhoneField("propertyName", "value", false);
-        assertEquals("commons-validations.js need css validate-US_PHONE_NO class", "validate-US_PHONE_NO", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-US_PHONE_NO class", "validate-US_PHONE_NO&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+
+    }
+
+    public void testCreateZipCodeFieldIfZipCodeIsRequired() {
+        InputField field = InputFieldFactory.createZipCodeField("propertyName", "value", true);
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&ZIPCODE class", "validate-NOTEMPTY&&ZIPCODE&&MAXLENGTH2000", field.getValidatorClassName());
+        assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
+    }
+
+    public void testCreateZipCodeFieldIfZipCodeIsNotRequired() {
+        InputField field = InputFieldFactory.createZipCodeField("propertyName", "value", false);
+        assertEquals("commons-validations.js need css validate-ZIPCODE class", "validate-ZIPCODE&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
 
     public void testCreateEmailFieldIfEmailIsRequired() {
         InputField field = InputFieldFactory.createEmailField("propertyName", "value", true);
-        assertEquals("commons-validations.js need css validate-NOTEMPTY&&EMAIL class", "validate-NOTEMPTY&&EMAIL", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&EMAIL class", "validate-NOTEMPTY&&EMAIL&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
     }
 
     public void testCreateEmailFieldIfEmailIsNotRequired() {
         InputField field = InputFieldFactory.createEmailField("propertyName", "value", false);
-        assertEquals("commons-validations.js need css validate-EMAIL class", "validate-EMAIL", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-EMAIL class", "validate-EMAIL&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
@@ -56,14 +81,14 @@ public class InputFieldFactoryTest extends AbstractTestCase {
 
     public void testCreateNumberFieldIfNumberIsRequired() {
         InputField field = InputFieldFactory.createNumberField("propertyName", "value", true);
-        assertEquals("commons-validations.js need css validate-NOTEMPTY&&NUMERIC class", "validate-NOTEMPTY&&NUMERIC", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-NOTEMPTY&&NUMERIC&&MAXLENGTH2000 class", "validate-NOTEMPTY&&NUMERIC&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }
 
     public void testCreateNumberFieldIfNumberIsNotRequired() {
         InputField field = InputFieldFactory.createNumberField("propertyName", "value", false);
-        assertEquals("commons-validations.js need css validate-NUMERIC class", "validate-NUMERIC", field.getValidatorClassName());
+        assertEquals("commons-validations.js need css validate-NUMERIC&&MAXLENGTH2000 class", "validate-NUMERIC&&MAXLENGTH2000", field.getValidatorClassName());
         assertEquals("field must be text field", InputField.Category.TEXT, field.getCategory());
 
     }

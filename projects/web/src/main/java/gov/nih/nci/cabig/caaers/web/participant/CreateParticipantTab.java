@@ -7,23 +7,22 @@ import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
-import org.springframework.validation.Errors;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.web.servlet.ModelAndView;
 
 public class CreateParticipantTab<T extends ParticipantInputCommand> extends TabWithFields<T> {
 
     public CreateParticipantTab() {
         super("Enter Subject Information", "Details", "par/par_create_participant");
     }
-    
+
     OrganizationRepository organizationRepository;
     private ListValues listValues;
     private ConfigProperty configurationProperty;
@@ -48,22 +47,18 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("organization", "Site", true, options));
 
         participantFieldGroup = new DefaultInputFieldGroup(PARTICIPANT_FIELD_GROUP);
-        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name",true));
+        participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.firstName", "First Name", true));
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.lastName", "Last Name", true));
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
 
-        InputField dobYear = InputFieldFactory.createTextField("yearString", "Year", true);
-        InputFieldAttributes.setSize(dobYear, 4);
-        InputField dobMonth = InputFieldFactory.createTextField("monthString", "Month");
-        InputFieldAttributes.setSize(dobMonth, 2);
-        InputField dobDay = InputFieldFactory.createTextField("dayString", "Day");
-        InputFieldAttributes.setSize(dobDay, 2);
+        InputField dobField = InputFieldFactory.createSplitDateField("participant.dateOfBirth", "Date of birth", false, false, true, true);
 
-        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").addField(dobYear).addField(dobMonth).addField(dobDay));
+//        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").
+//                addField(dobYear).addField(dobMonth).addField(dobDay));
 
-        dobField.setRequired(true);
-        dobField.getAttributes().put(InputField.HELP, "par.par_create_participant.participant.dateOfBirth");
+//        dobField.setRequired(true);
+//        dobField.getAttributes().put(InputField.HELP, "par.par_create_participant.participant.dateOfBirth");
 
         participantFieldGroup.getFields().add(dobField);
 
@@ -123,7 +118,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         if (dob.checkIfDateIsInValid()) {
             errors.rejectValue("participant.dateOfBirth", "REQUIRED", "Incorrect Date Of Birth");
         }
-        
+
         for (Identifier identifier : command.getParticipant().getIdentifiersLazy()) {
 
             if (identifier.isPrimary()) {
@@ -137,7 +132,8 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
             }
         }
 
-        if (!hasPrimaryID) errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include exactly One Primary Identifier");
+        if (!hasPrimaryID)
+            errors.rejectValue("participant.identifiers", "REQUIRED", "Please Include exactly One Primary Identifier");
 
     }
 
@@ -166,7 +162,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
-        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        ParticipantInputCommand command = (ParticipantInputCommand) cmd;
         List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
 
         // store the new index for the new Identifier
@@ -177,7 +173,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         // store the new Identifier object into the command.participant
         OrganizationAssignedIdentifier newIdentifier = new OrganizationAssignedIdentifier();
         command.getParticipant().addIdentifier(newIdentifier);
-        
+
         System.out.println("org size after add: " + command.getParticipant().getOrganizationIdentifiers().size());
 
         return modelAndView;
@@ -188,14 +184,14 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
-        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        ParticipantInputCommand command = (ParticipantInputCommand) cmd;
         List<OrganizationAssignedIdentifier> list = command.getParticipant().getOrganizationIdentifiers();
         list.remove(list.get(command.getIndex()));
 
         // update the array of remainning indexes after deleting
         int size = list.size();
         Integer[] indexes = new Integer[size];
-        for(int i = 0 ; i < size ; i++){
+        for (int i = 0; i < size; i++) {
             indexes[i] = i;
         }
         System.out.println("org size after delete: " + command.getParticipant().getOrganizationIdentifiers().size());
@@ -209,7 +205,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
-        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        ParticipantInputCommand command = (ParticipantInputCommand) cmd;
         List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
 
         // store the new index for the new Identifier
@@ -231,17 +227,17 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         Map<String, Boolean> map = new HashMap<String, Boolean>();
         ModelAndView modelAndView = new ModelAndView(getAjaxViewName(request), map);
 
-        ParticipantInputCommand command =(ParticipantInputCommand)cmd;
+        ParticipantInputCommand command = (ParticipantInputCommand) cmd;
         List<SystemAssignedIdentifier> list = command.getParticipant().getSystemAssignedIdentifiers();
 
-        System.out.println("before delete: "+list.size());
+        System.out.println("before delete: " + list.size());
         list.remove(list.get(command.getIndex()));
-        System.out.println("after delete:"+list.size());
+        System.out.println("after delete:" + list.size());
 
         // update the array of remainning indexes after deleting
         int size = list.size();
         Integer[] indexes = new Integer[size];
-        for(int i = 0 ; i < size ; i++){
+        for (int i = 0; i < size; i++) {
             indexes[i] = i;
         }
         System.out.println("sys size after delete: " + command.getParticipant().getSystemAssignedIdentifiers().size());
@@ -250,5 +246,5 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         return modelAndView;
     }
 
-    
+
 }

@@ -99,8 +99,8 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
 
     public String getValidatorClassName() {
         StringBuffer validatorClassName = new StringBuffer("");
-        if (validators != null) {
-            for (int i = 0; i < validators.length; i++) {
+        if (getValidators() != null) {
+            for (int i = 0; i < getValidators().length; i++) {
                 FieldValidator validator = getValidators()[i];
                 if (i == 0) {
                     validatorClassName.append(String.format("validate-%s", validator.getValidatorCSSClassName()));
@@ -112,6 +112,16 @@ public abstract class QualifiedPropertyNameInputField implements InputField {
                 }
             }
         }
+        if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
+            if (getValidators() == null || getValidators().length == 0) {
+                validatorClassName.append("validate-MAXLENGTH2000");
+            } else {
+                validatorClassName.append("&&MAXLENGTH2000");
+            }
+
+
+        }
+
         return validatorClassName.toString();
     }
 

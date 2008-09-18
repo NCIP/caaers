@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.BindException;
@@ -13,6 +14,7 @@ import org.springframework.validation.FieldError;
  * testcases that start with "Abstract".
  *
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class InputFieldTest extends AbstractTestCase {
     private AbstractInputField field;
@@ -84,10 +86,61 @@ public class InputFieldTest extends AbstractTestCase {
         assertEquals("commons-validations.js uses this class name for validation", "validate-DATE", field.getValidatorClassName());
     }
 
+
+    public void testGetValidatorClassNameForRequiredTextField() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.NOT_NULL_VALIDATOR) {
+            public Category getCategory() {
+                return Category.TEXT;
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+    }
+
+    public void testGetValidatorClassNameForRequiredTextAreaField() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.NOT_NULL_VALIDATOR) {
+            public Category getCategory() {
+                return Category.TEXTAREA;
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-NOTEMPTY&&MAXLENGTH2000", field.getValidatorClassName());
+    }
+
+    public void testGetValidatorClassNameForNonRequiredTextField() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName") {
+            public Category getCategory() {
+                return Category.TEXT;
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-MAXLENGTH2000", field.getValidatorClassName());
+    }
+
+    public void testGetValidatorClassNameForNonRequiredTextAreaField() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName") {
+            public Category getCategory() {
+                return Category.TEXTAREA;
+            }
+        };
+
+        assertEquals("commons-validations.js uses this class name for validation", "validate-MAXLENGTH2000", field.getValidatorClassName());
+    }
+
+    public void testGetValidatorClassNameIfNoValidatorsAreApplied() throws Exception {
+        field = new AbstractInputField("propertyName", "displayName") {
+            public Category getCategory() {
+                return null;
+            }
+        };
+
+        assertTrue("class name muast be empty", StringUtils.isEmpty(field.getValidatorClassName()));
+    }
+
     public void testGetValidatorClassNameIfMultipleValidatorIsUsed() throws Exception {
         field = new AbstractInputField("propertyName", "displayName", FieldValidator.DATE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR) {
             public Category getCategory() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                return null;
             }
         };
 

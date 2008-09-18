@@ -127,8 +127,10 @@ public abstract class AbstractInputField implements InputField {
 
     public String getValidatorClassName() {
         StringBuffer validatorClassNameBuffer = new StringBuffer("");
-        if (validators != null) {
-            for (int i = 0; i < validators.length; i++) {
+
+
+        if (getValidators() != null) {
+            for (int i = 0; i < getValidators().length; i++) {
                 FieldValidator validator = getValidators()[i];
                 if (i == 0) {
                     validatorClassNameBuffer.append(String.format("validate-%s", validator.getValidatorCSSClassName()));
@@ -139,6 +141,15 @@ public abstract class AbstractInputField implements InputField {
 
                 }
             }
+        }
+        if (getCategory() != null && (getCategory().equals(Category.TEXT) || getCategory().equals(Category.TEXTAREA))) {
+            if (getValidators() == null || getValidators().length == 0) {
+                validatorClassNameBuffer.append("validate-MAXLENGTH2000");
+            } else {
+                validatorClassNameBuffer.append("&&MAXLENGTH2000");
+            }
+
+
         }
 
 

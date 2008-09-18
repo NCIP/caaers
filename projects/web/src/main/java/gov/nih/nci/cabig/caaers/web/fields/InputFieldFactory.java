@@ -59,22 +59,18 @@ public class InputFieldFactory {
 
         FieldValidator validators[] = null;
         if (required) {
-            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALUE_VALIDATOR};
         } else {
-            validators = new FieldValidator[]{FieldValidator.DATE_VALUE_VALIDATOR, FieldValidator.DATE_VALIDATOR};
+            validators = new FieldValidator[]{FieldValidator.DATE_VALUE_VALIDATOR};
         }
-        return createSplitDateField(propertyName, displayName, dayRequired, monthRequired, yearRequired, validators);
-    }
-
-    public static InputField createSplitDateField(String propertyName, String displayName, boolean dayRequired, boolean monthRequired, boolean yearRequired,
-                                                  FieldValidator... validators) {
-
         DefaultInputField field = new DefaultInputField(SPLIT_DATE, propertyName, displayName, validators);
         field.getAttributes().put(InputField.DAY_REQUIRED, dayRequired);
         field.getAttributes().put(InputField.MONTH_REQUIRED, monthRequired);
         field.getAttributes().put(InputField.YEAR_REQUIRED, yearRequired);
         return field;
+
     }
+
 
     public static InputField createTextArea(String propertyName, String displayName,
                                             FieldValidator... validators) {
@@ -237,6 +233,16 @@ public class InputFieldFactory {
         return createInputField(TEXT, propertyName, displayName, validators);
     }
 
+    public static InputField createZipCodeField(String propertyName, String displayName,
+                                                boolean required) {
+        FieldValidator validators[] = null;
+        if (required) {
+            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.ZIP_CODE_VALIDATOR};
+        } else {
+            validators = new FieldValidator[]{FieldValidator.ZIP_CODE_VALIDATOR};
+        }
+        return createInputField(TEXT, propertyName, displayName, validators);
+    }
 
     public static class DefaultInputField extends AbstractInputField {
         private Category category;
