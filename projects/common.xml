@@ -84,6 +84,9 @@
 			<attribute name="pubrevision"/>
 			<attribute name="status"/>
 			<sequential>
+				<tstamp>
+						<format property="now" pattern="yyyyMMddHHmmss"/>
+				</tstamp>
 				<ivy:publish artifactspattern="@{artifactspattern}" 
 						    		resolver="@{resolver}"
 						    		pubrevision="@{pubrevision}"
