@@ -30,12 +30,7 @@
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
 		</url>
-		
-		<!--  SemanticBits shared repository [using sftp] -->
-	 	<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
-		  <ivy pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
-		  <artifact pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
-		</sftp>
+
 	 		
 	 
 	 
@@ -68,6 +63,14 @@
 			
 			<ibiblio name="mvn.repo" root="http://mirrors.ibiblio.org/pub/mirrors/maven2" m2compatible="true" changingPattern=".*SNAPSHOT">
 			</ibiblio>
+            
+            
+            		
+			<!--  SemanticBits shared repository [using sftp] -->
+	 		<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
+		  		<ivy pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
+		  		<artifact pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+			</sftp>
             
         </chain>
 		
