@@ -37,6 +37,7 @@
             table.errortd td {
                 border: 1px gray dotted;
                 font-size: 11px;
+				background-color:white;
             }
         </style>
         
@@ -83,9 +84,9 @@
 
 <table width="900" border="0">
 <tr>
-    <td valign="top"><img src="<c:url value="/images/blue/error.png" />"></td>
+    <td valign="top" width="1px"><img src="<c:url value="/images/blue/error.png" />"></td>
     <td valign="top">
-        <div>
+        <div style="float:left; padding-top:25px; padding-left:20px;">
             <div class="error">ERROR</div>
             <div class="errorMessage">The system encountered an error. Please contact your system administrator.</div>
             <br/>

@@ -92,7 +92,7 @@
         </c:choose>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
-        <chrome:division title="Reporter details">
+        <chrome:division title="Reporter Details">
             <div class="row">
                 <div class="label">Research staff</div>
                 <div class="value">
@@ -112,7 +112,7 @@
             </c:forEach>
         </chrome:division>
 
-        <chrome:division title="Physician details">
+        <chrome:division title="Treating Physician Details">
             <div class="row">
                 <div class="value">
                     <label>

@@ -1,4 +1,4 @@
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@attribute name="code" required="true" %>
 <%@attribute name="heading" %>
-<p class="instruction"><b>${not empty heading ? heading : 'Instructions: '}</b><spring:message code="${code}" text="Instruction" /></p>
+<div class="row"><div class="summarylabel">${not empty heading ? heading : 'Instructions '}</div><div class="summaryvalue"><spring:message code="${code}" text="Instruction" /></div></div>

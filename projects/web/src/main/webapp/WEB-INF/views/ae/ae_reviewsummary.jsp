@@ -136,19 +136,6 @@
 	 	border-style:none;
 	}
 
-	.centerTableHeader {
-		background-color:#308DBB;
-		border-color:white;
-		border-right:1px solid white;
-		color:white;
-		font-family:Arial,verdana,helvetica,sans-serif;
-		font-size:11px;
-		font-weight:bold;
-		margin:0px;
-		padding:4px 3px;
-		text-align:center;
-	}
-
 </style>
 </head>
 <body>
@@ -392,7 +379,7 @@
 
 
 <div id="display_options_popup" style="display:none;text-align:left" >
-<chrome:box title="Report Create New/ Edit" id="popupId">
+<chrome:box title="Create New or Edit Existing Report" id="popupId">
 	<c:if test="${not empty command.participant}">
 		<div align="left"> 
 			<div class="row">
@@ -404,7 +391,7 @@
 			    <div class="summaryvalue">${command.study.longTitle}</div>
 			</div>
 			<div class="row">
-				<div class="summarylabel">Evaluation Period</div>
+				<div class="summarylabel">Evaluation period</div>
 				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
 			</div>
 		</div>
