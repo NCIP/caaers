@@ -7,7 +7,8 @@
 
 	<xsl:output method="xml" />
 	
-
+	
+  
 	<xsl:attribute-set name="tr-height-1">
 		<xsl:attribute name="height">4mm</xsl:attribute>
 	</xsl:attribute-set>
@@ -47,15 +48,16 @@
     	<xsl:attribute name="font-weight">normal</xsl:attribute>
     	<xsl:attribute name="padding-left">1mm</xsl:attribute>
   	</xsl:attribute-set>
-
+	<xsl:param name="image-location"/>
+  
 	<xsl:attribute-set name="unchecked">
-    	<xsl:attribute name="src">file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG</xsl:attribute>
+    	<xsl:attribute name="src"><xsl:value-of select="$image-location"/>/uncheck.jpg</xsl:attribute>
     	<xsl:attribute name="content-height">2mm</xsl:attribute>
     	<xsl:attribute name="content-width">2mm</xsl:attribute>
   	</xsl:attribute-set>
 
 	<xsl:attribute-set name="checked">
-    	<xsl:attribute name="src">file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/checked.JPG</xsl:attribute>
+    	<xsl:attribute name="src"><xsl:value-of select="$image-location"/>/checked.jpg</xsl:attribute>
     	<xsl:attribute name="content-height">2.5mm</xsl:attribute>
     	<xsl:attribute name="content-width">2.5mm</xsl:attribute>
   	</xsl:attribute-set>														
@@ -84,7 +86,7 @@
 							<fo:table-row>
 								<fo:table-cell>	
 									<fo:block  font-size="6" text-align="right">
-									Form Approved: OMB No. 0910-0291, Expires: 10/31/08 <fo:block/>See OMB statement on reverse.
+										Form Approved: OMB No. 0910-0291, Expires: 10/31/08 <fo:block/>See OMB statement on reverse.
 									</fo:block>
 								</fo:table-cell>																
 							</fo:table-row>						
@@ -418,7 +420,7 @@
 																	</xsl:when>	
 																	<xsl:otherwise>
 																	 <fo:block xsl:use-attribute-sets="normal">
-																		AE2:<fo:block/>
+																		AE <xsl:number format="1 "/>:<fo:block/>
 																		<xsl:value-of select="AdverseEventCtcTerm/ctc-term/term"/><fo:block/>
 																		<xsl:value-of select="grade"/><fo:block/>
 																		<xsl:value-of select="comments"/><fo:block/>																		
@@ -453,7 +455,7 @@
 													</fo:block>
 													<xsl:for-each select="AdverseEventReport/Lab">
 														<fo:block xsl:use-attribute-sets="normal">
-															Lab-1 <fo:block/>
+															Lab-<xsl:number format="1 "/> <fo:block/>
 															Base Line value :
 															
 															<xsl:value-of select="baseline/value"/> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> <xsl:value-of select="units"/>
@@ -531,7 +533,8 @@
 										<fo:table-column column-width="20%" />	
 										<fo:table-column column-width="10%" />	
 										<fo:table-column column-width="10%" />	
-										<fo:table-column column-width="30%" />							
+										<fo:table-column column-width="30%" />	
+										<xsl:variable name="iter" select="0"/>						
 										<fo:table-body>
 											<fo:table-row xsl:use-attribute-sets="tr-height-1">
 												<fo:table-cell number-columns-spanned="5" background-color="black">
@@ -546,30 +549,28 @@
 														<fo:inline xsl:use-attribute-sets="label">Name </fo:inline>
 														<fo:inline font-size="6.5pt" font-style="italic">(Give labeled strength and mfr/labeler)</fo:inline>
 													</fo:block>
+													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
 													<fo:block>
-														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+														<xsl:variable name="iter" select="$iter+1"/>
+														<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>
+														<fo:inline font-size="6.5pt" text-decoration="underline">  
+															<xsl:value-of select="StudyAgent/Agent/name"/>
+														</fo:inline>
 													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt">#2 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
-													</fo:block>
+													</xsl:for-each>
 												</fo:table-cell>
 											</fo:table-row>																						
 											<fo:table-row height="14mm">
-												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
+												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">			
+																							
 													<fo:block>
 														<fo:inline font-size="6.5pt">2. </fo:inline>
 														<fo:inline xsl:use-attribute-sets="label">Dose, Frequency and Route Used </fo:inline>
 													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
-													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt">#2 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
-													</fo:block>
+													
+											  		<fo:block xsl:use-attribute-sets="normal" > 
+											  			<xsl:value-of select="AdverseEventReport/TreatmentInformation/TreatmentAssignment/description"/>
+											  		</fo:block> 
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="3">													
 													<fo:block font-size="6.5pt" font-style="italic">
@@ -579,14 +580,27 @@
 														<fo:block/>
 														duration) from/to (or best estimate)
 													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
-													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt">#2 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
-													</fo:block>
+													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">
+														<fo:block>
+															<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/></fo:inline>
+															<fo:inline font-size="6.5pt" text-decoration="underline">  
+																	<xsl:call-template name="standard_date">
+																	        <xsl:with-param name="date" select="../firstCourseDate"/>
+											   						</xsl:call-template>
+											   						<xsl:text disable-output-escaping="yes">&amp;#160;   </xsl:text>
+												   						to 
+												   					<xsl:choose>	
+												   						<xsl:when test="lastAdministeredDate">
+																			<xsl:call-template name="standard_date">
+																			        <xsl:with-param name="date" select="lastAdministeredDate"/>
+													   						</xsl:call-template>											   																				
+																		</xsl:when>
+																		<xsl:otherwise>Unknown</xsl:otherwise>
+																	</xsl:choose>
+															</fo:inline>
+														</fo:block>													
+													</xsl:for-each>
+
 												</fo:table-cell>
 											</fo:table-row>	
 											<fo:table-row height="14mm">
@@ -596,14 +610,14 @@
 														<fo:inline xsl:use-attribute-sets="label">Diagnosis for Use </fo:inline>
 														<fo:inline font-size="6.5pt" font-style="italic">(Indication)</fo:inline>
 													</fo:block>
+													<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/CtepStudyDisease">
 													<fo:block>
-														<fo:inline font-size="6.5pt" text-decoration="underline">#1 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
+														<!--<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>-->
+														<fo:inline font-size="6.5pt">  
+															<xsl:value-of select="DiseaseTerm/ctepTerm"/>
+														</fo:inline>
 													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt">#2 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
-													</fo:block>
+													</xsl:for-each>
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
 													<fo:block font-size="6.5pt" font-weight="bold">
@@ -612,38 +626,36 @@
 														<fo:block/><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>Stopped or Dose Reduced?
 													</fo:block>
 													<fo:block font-size="6.5pt">
-														<fo:inline font-size="6.5pt" >#1 
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Yes
+														<fo:inline font-size="6.5pt" >
+														
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">
+															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+														</xsl:otherwise>
+													</xsl:choose>
+													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														No
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">
+															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+														</xsl:otherwise>
+													</xsl:choose>
+													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Doesn't 														
-														</fo:inline>
-														<fo:block/>
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-														Apply
-														<fo:block/>
-														<fo:leader leader-length="90%" leader-pattern="rule" rule-thickness="0.5pt"/>
-													</fo:block>
-													<fo:block font-size="6.5pt">
-														<fo:inline font-size="6.5pt" >#2
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Yes
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														No
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Doesn't 														
+														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														Apply
 														<fo:block/>
 													</fo:block>
+													
 												</fo:table-cell>
 											</fo:table-row>												
 											<fo:table-row height="5mm">
@@ -665,24 +677,19 @@
 											</fo:table-row>	
 											<fo:table-row height="8mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">		
-													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">	
-														<xsl:if test="lotNumber">									
+													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">										
 														<fo:block>
-															<fo:inline font-size="6.5pt" text-decoration="underline">#1 <xsl:value-of select="lotNumber"/></fo:inline>
+															<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
 															<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
 														</fo:block>
-														</xsl:if>
 													</xsl:for-each>
 												</fo:table-cell>
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2">													
 													<fo:block>
-														<fo:inline font-size="6.5pt" text-decoration="underline">#1 n/a</fo:inline>
+														<fo:inline font-size="6.5pt" >n/a</fo:inline>
 														<fo:inline width="10mm" font-size="6.5pt" text-decoration="underline">  </fo:inline>
 													</fo:block>
-													<fo:block>
-														<fo:inline font-size="6.5pt">#2 </fo:inline>
-														<fo:inline width="10mm" font-size="6.5pt">  </fo:inline>
-													</fo:block>
+
 												</fo:table-cell>												
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="2" number-rows-spanned="2">													
 													<fo:block font-size="6.5pt" font-weight="bold">
@@ -691,38 +698,34 @@
 														<fo:block/><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>Reintroduction?
 													</fo:block>
 													<fo:block font-size="6.5pt">
-														<fo:inline font-size="6.5pt" >#1 
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Yes
+														<fo:inline font-size="6.5pt" >
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">
+															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+														</xsl:otherwise>
+													</xsl:choose>
+													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														No
+													<xsl:choose>
+														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'false'">
+															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+														</xsl:otherwise>
+													</xsl:choose>
+													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Doesn't 														
+														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														Apply
 														<fo:block/>
-														<fo:leader leader-length="90%" leader-pattern="rule" rule-thickness="0.5pt"/>
-													</fo:block>
-													<fo:block font-size="6.5pt">
-														<fo:inline font-size="6.5pt" >#2
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Yes
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														No
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Doesn't 														
-														</fo:inline>
-														<fo:block/>
-														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
-														Apply
-														<fo:block/>
-													</fo:block>
+													</fo:block>	
 												</fo:table-cell>
 											</fo:table-row>
 											<fo:table-row height="9mm">
@@ -1084,14 +1087,11 @@
 													</fo:block>
 													<fo:block font-size="6.5">
 													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-													<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Yes
+														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>	Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														No
+														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic src="file:/Users/sakkala/tech-workspace/caaers12/core/src/main/resources/xslt/uncheck.JPG" content-height="2mm" content-width="2mm"/>
-														Unk.
+														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Unk.
 													</fo:block>														
 												</fo:table-cell>
 											</fo:table-row>												
