@@ -14,9 +14,13 @@ import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.integration.schema.investigator.InvestigatorType;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
@@ -38,6 +42,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -312,49 +317,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         }
         return validXml;
     }
-/*
-    public boolean  validateAgainstSchemaJaxb(File xmlFile, ImportCommand command,String xsdUrl) {
-		boolean validXml = false;
-        try {
-            // parse an XML document into a DOM tree
-        	DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        	documentBuilderFactory.setValidating(false);
-        	documentBuilderFactory.setNamespaceAware(true);
-            DocumentBuilder parser = documentBuilderFactory.newDocumentBuilder();
-            Document document = parser.parse(xmlFile);
-            // create a SchemaFactory capable of understanding WXS schemas
-            SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-            // load a WXS schema, represented by a Schema instance
-            StringBuffer sb = new StringBuffer("classpath:");
-            sb.append(xsdUrl);
-            //Source schemaFile = new StreamSource(new File(xsdUrl));
-            Source schemaFile = new StreamSource(getApplicationContext().getResource(xsdUrl)
-                    .getFile());
-            Schema schema = schemaFactory.newSchema(schemaFile);
-            // create a Validator instance, which can be used to validate an instance document
-            Validator validator = schema.newValidator();
-            // validate the DOM tree
-            validator.validate(new DOMSource(document));
-            validXml = true;
-            // return xmlFile;
-        } catch (FileNotFoundException ex) {
-            throw new CaaersSystemException("File Not found Exception", ex);
-        } catch (IOException ioe) {
-        	//logger.error(ioe.getMessage());
-        	command.setSchemaValidationResult(ioe.getMessage());
-            throw new CaaersSystemException(ioe);
-        } catch (SAXParseException spe) {
-            command.setSchemaValidationResult("Line : " + spe.getLineNumber() + " - "
-                    + spe.getMessage());
-        } catch (SAXException e) {
-        	command.setSchemaValidationResult(e.toString());
-            throw new CaaersSystemException(e);
-        } catch (ParserConfigurationException pce) {
-            throw new CaaersSystemException("Parser configuration exception ", pce);
-        }
-        return validXml;
-    }
-    */
+
     private void handleStaffLoad(ImportCommand command, String type) {
     	BufferedReader input = null;
         try {
@@ -372,10 +335,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
     			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     		    gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff )unmarshaller.unmarshal(xmlFile);
-    			
-    			svc.saveInvestigator(staff);
-    			command.setImportableInvestigators(svc.getImportableInvestigators());
-    			command.setNonImportableInvestigators(svc.getNonImportableInvestigators());
+    		    for(InvestigatorType xmlInvestigator : staff.getInvestigator()){
+    		    	DomainObjectImportOutcome<Investigator> investigatorOutcome = svc.processInvestigator(xmlInvestigator);
+    		    	if(investigatorOutcome.isSavable()){
+    		    		command.addImportableInvestigator(investigatorOutcome);
+    		    	}else{
+    		    		command.addNonImportableInvestigator(investigatorOutcome);
+    		    	}
+    		    }
             }
 
             if ("researchStaff".equals(type)) {
@@ -383,10 +350,14 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
     			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     			gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff  staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff )unmarshaller.unmarshal(xmlFile);
-    			
-    			svc.saveResearchStaff(staff);
-    			command.setImportableResearchStaff(svc.getImportableResearchStaff());
-    			command.setNonImportableResearchStaff(svc.getNonImportableResearchStaff());
+    			for(ResearchStaffType researchStaff : staff.getResearchStaff()){
+    				DomainObjectImportOutcome<ResearchStaff> researchStaffOutcome = svc.processResearchStaff(researchStaff);
+    				if(researchStaffOutcome.isSavable()){
+    					command.addImportableResearchStaff(researchStaffOutcome);
+    				}else{
+    					command.addNonImportableResearchStaff(researchStaffOutcome);
+    				}
+    			}
             }
         } catch (EOFException ex) {
             System.out.println("EndOfFile Reached");       
@@ -413,12 +384,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     
     private void handleLoad(ImportCommand command, String type) {
 
-    	if ("investigator".equals(type) || "researchStaff".equals(type)) {    		
-    		handleStaffLoad(command , type);
-    		return;
-    	}
-    	
-    	
         XStream xstream = new XStream();
         xstream.registerConverter(new JavaBeanConverter(xstream.getMapper(), "class"), -20);
 
@@ -492,20 +457,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
                             new FileOutputStream(xmlFile));
             validateAgainstSchema(xmlFile, command, getXSDLocation(type));
 
-//            if (type.equals("participant")) {
-//                int totalNumberofRecords = 5000;
-//                int currentNumber = 1;
-//                // FileCopyUtils.copy(command.getParticipantFile().getInputStream(),new
-//                // FileOutputStream(xmlFile));
-//                input = new BufferedReader(new FileReader(xmlFile));
-//                ObjectInputStream in = xstream.createObjectInputStream(input);
-//                while (true && currentNumber++ <= totalNumberofRecords
-//                                && command.getSchemaValidationResult() == null) {
-//                    Participant xstreamParticipant = (Participant) in.readObject();
-//                    migrateParticipant(xstreamParticipant, command);
-//                }
-//            }
-            
             if((type.equals("participant")) && (command.getSchemaValidationResult() == null)){
             	processParticipant(xmlFile,command);
             }
@@ -514,21 +465,10 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             	processStudy(xmlFile,command);
             }
             
-            
-
-//            if (type.equals("study")) {
-//                int totalNumberofRecords = 5000;
-//                int currentNumber = 1;
-//                // FileCopyUtils.copy(command.getStudyFile().getInputStream(),new
-//                // FileOutputStream(xmlFile));
-//                input = new BufferedReader(new FileReader(xmlFile));
-//                ObjectInputStream in = xstream.createObjectInputStream(input);
-//                while (true && currentNumber++ <= totalNumberofRecords
-//                                && command.getSchemaValidationResult() == null) {
-//                    Study xstreamStudy = (Study) in.readObject();
-//                    migrateStudy(xstreamStudy, command);
-//                }
-//            }
+            if ("investigator".equals(type) || "researchStaff".equals(type)) {    		
+        		handleStaffLoad(command , type);
+        		return;
+        	}
 
             if (type.equals("routineAeReport")) {
                 int maxNumberofRoutineReports = 1000;
