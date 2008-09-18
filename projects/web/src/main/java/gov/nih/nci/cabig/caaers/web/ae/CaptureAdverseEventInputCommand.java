@@ -278,7 +278,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		for(AdverseEvent ae: adverseEventReportingPeriod.getAdverseEvents()){
 			Integer id = ae.getId();
 			selectedAesMap.put(id, Boolean.FALSE);
-			ae.setRequiresReporting(Boolean.FALSE);
 		}
 		//reset the ones that are available below with true
 		for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
