@@ -22,21 +22,42 @@
 		<ae:oneListReportSubmissionStatus theReport="${report}" reportStatus="${reportStatus}" lastVersion="${lastVersion}"/>
 	</td>
 	<td width="20%" id="action${report.id}" align="left">
-		<c:if test="${command.reportsSubmittable[report.id]}">
+		<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')">
+	     	<OPTION selected label="none" value="none">None</OPTION>
+	     	<c:if test="${command.study.caaersXMLType}">
+	     		<OPTION label="xml" value="xml">caAERS XML</OPTION>
+	     	</c:if>
+	     	<c:if test="${command.study.adeersPDFType}">
+	     		<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+	     	</c:if>
+	     	<c:if test="${command.study.medwatchPDFType}">
+	     		<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+	     	</c:if>
+	     	<c:if test="${command.study.dcpSAEPDFType}">
+	     		<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
+	     	</c:if>
+	     		<c:if test="${command.study.ciomsPDFType}">
+	     	<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
+	     		</c:if>
+	     	<c:if test="${command.study.ciomsSaePDFType}">
+	     		<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
+	     	</c:if>
+	 	</SELECT>
+		<c:if test="${command.reportsSubmittable[report.id]}">	
 		  
 			<c:choose>
-				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
+				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">|
 					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a>	|
 					<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
 				</c:when>
-				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
+				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">|
 					<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a> |
 					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
 				</c:when>
-				<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
+				<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">|
 					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
 				</c:when>
-				<c:when test="${reportStatus eq 'INPROGRESS'}">
+				<c:when test="${reportStatus eq 'INPROGRESS'}">|
 					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
 				</c:when>
 			</c:choose>
