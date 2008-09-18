@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.utils;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -21,6 +22,7 @@ import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FormattingResults;
 import org.apache.fop.apps.MimeConstants;
 import org.apache.fop.apps.PageSequenceResults;
+import org.springframework.core.io.ClassPathResource;
 
 public class XsltTransformer {
 
@@ -105,7 +107,6 @@ public class XsltTransformer {
             // Setup JAXP using identity transformer
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(); // identity transformer
-
             // Setup input stream
             Source src = new StreamSource(new ByteArrayInputStream(fo.getBytes()));
 
@@ -151,6 +152,13 @@ public class XsltTransformer {
 
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer(new StreamSource(stream));
+        
+        //xslt param to access uncheck and check box images. 		
+        String imageLocation = new ClassPathResource("xslt/images").getURL().toString();  
+        
+        imageLocation = "jar:file:/Applications/tomcat5523/webapps/caaers/WEB-INF/lib/caaers-core-1.4-SNAPSHOT-local-20080918155451.jar!/xslt/images";
+        System.out.println("XSLT image location : " + imageLocation);
+        transformer.setParameter("image-location", imageLocation);
 
         // Setup input for XSLT transformation
         Source src = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
