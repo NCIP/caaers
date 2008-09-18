@@ -98,50 +98,9 @@
             />
 
     <TREATMENTS
-        id="-21"
-        report_id="-19"
-        />
-        
-	<ADVERSE_EVENTS
-        id="-3"
-        reporting_period_id="1001"
-        report_id="-19"
-        grade_code="5"
-        hospitalization_code="0"
-        attribution_summary_code="3"
-        expected="1"
-        comments="That was some big AE"
-        requires_reporting="false"
-        />
-    
-     <AE_TERMS
-        id="-9"
-        adverse_event_id="-3"
-        term_id="-11"
-        term_type="meddra"
-        />
-        id="-21"
-        report_id="-19"
-        />
-        
-	<ADVERSE_EVENTS
-        id="-3"
-        reporting_period_id="1001"
-        report_id="-19"
-        grade_code="5"
-        hospitalization_code="0"
-        attribution_summary_code="3"
-        expected="1"
-        comments="That was some big AE"
-        requires_reporting="false"
-        />
-    
-     <AE_TERMS
-        id="-9"
-        adverse_event_id="-3"
-        term_id="-11"
-        term_type="meddra"
-        />
+            id="-21"
+            report_id="-19"
+            />
 
     <ADVERSE_EVENTS
             id="-3"
@@ -152,6 +111,7 @@
             attribution_summary_code="3"
             expected="1"
             comments="That was some big AE"
+            requires_reporting="false"
             />
 
     <AE_TERMS
@@ -160,6 +120,9 @@
             term_id="-11"
             term_type="meddra"
             />
+    id="-21"
+    report_id="-19"
+    />
 
     <MEDDRA_LLT
             id="-11"
