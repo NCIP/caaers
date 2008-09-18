@@ -125,7 +125,7 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
-                    ExpeditedReportSection sectionName) {
+                    ExpeditedReportSection... sectionName) {
         // TODO Auto-generated method stub
         return null;
     }

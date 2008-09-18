@@ -10,30 +10,6 @@
     <bean id="configurationProperty" class="gov.nih.nci.cabig.caaers.utils.ConfigProperty">
         <property name="map">
             <map>
-            	<entry key="titleType">
-            		<list>
-            			<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-            				<property name="code" value="Mr." />
-            				<property name="desc" value="Mr." />
-            			</bean>
-            			<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-            				<property name="code" value="Mrs." />
-            				<property name="desc" value="Mrs." />
-            			</bean>
-            			<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-            				<property name="code" value="Jr." />
-            				<property name="desc" value="Jr." />
-            			</bean>
-            			<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-            				<property name="code" value="Dr." />
-            				<property name="desc" value="Dr." />
-            			</bean>
-            			<bean class="gov.nih.nci.cabig.caaers.utils.Lov">
-            				<property name="code" value="Sir." />
-            				<property name="desc" value="Sir." />
-            			</bean>
-            		</list>
-            	</entry>
                 <entry key="yesNo">
                     <list>
                         <bean class="gov.nih.nci.cabig.caaers.utils.Lov">

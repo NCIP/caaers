@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
-import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
+import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.*;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ADVERSE_EVENT_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.ATTRIBUTION_SECTION;
 import static gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection.BASICS_SECTION;
@@ -179,6 +179,31 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
                         section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
                         section(OUTCOME_SECTION),// TODO: just a space filler section
+                        section(PRIOR_THERAPIES_SECTION, 
+                            	list("saeReportPriorTherapies","Prior Therapy", 
+                        				property("priorTherapy", "Prior therapy"),
+                                        property("other", "Comments (prior therapy)"), 
+                                        property("startDate", "Therapy start Date"), 
+                                        property("endDate", "Therapy end Date"), 
+                                        list("priorTherapyAgents", "PriorTherapyAgent",
+                                              property("chemoAgent", "Agent")
+                                        )
+                                )
+                            ),
+                        section(PRE_EXISTING_CONDITION_SECTION, 
+                        		list("saeReportPreExistingConditions","Pre-existing condition", 
+                        				codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)")
+                        		)
+                        ),
+                        section(CONCOMITANT_MEDICATION_SECTION, 
+                        		list("concomitantMedications","Medication",
+                                        property("agentName", "Medication"),
+                                        property("stillTakingMedications","Continued ?"),
+                                        property("startDate","Start date"),
+                                        property("endDate","End date")
+                                       
+                                )
+                        ),
                         section(MEDICAL_INFO_SECTION,
                         		//fields - general
                         		 property("participantHistory",
@@ -195,29 +220,8 @@ public class ExpeditedReportTree extends PropertylessNode {
 			                        		list("metastaticDiseaseSites","Metastatic disease site",
 			                        				codedOrOther("codedSite","Site name","otherSite","Other(site of metastatic disease)")
 			                        		)
-			                    ),
-                        		//fields related to pre-existing conds
-                        		list("saeReportPreExistingConditions","Pre-existing condition", 
-                        				codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)")
-                        		),
-                        		//fields related to con-med
-                        		list("concomitantMedications","Medication",
-                                        property("agentName", "Medication"),
-                                        property("stillTakingMedications","Continued ?"),
-                                        property("startDate","Start date"),
-                                        property("endDate","End date")
-                                       
-                                ),
-                        		//fields related to prior therapy
-                            	list("saeReportPriorTherapies","Prior Therapy", 
-                        				property("priorTherapy", "Prior therapy"),
-                                        property("other", "Comments (prior therapy)"), 
-                                        property("startDate", "Therapy start Date"), 
-                                        property("endDate", "Therapy end Date"), 
-                                        list("priorTherapyAgents", "PriorTherapyAgent",
-                                              property("chemoAgent", "Agent")
-                                        )
-                                )
+			                    )
+                        		
                         )
         );
     }

@@ -107,6 +107,6 @@ public interface EvaluationService {
      * @param sectionName
      * @return - {@link ValidationErrors}, that contains the errors.
      */
-    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection sectionName);
+    ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,ExpeditedReportSection... sections);
 
 }
