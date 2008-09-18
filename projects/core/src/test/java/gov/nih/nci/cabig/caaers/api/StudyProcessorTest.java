@@ -73,9 +73,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 //				}
 //			}
 
+        interruptSession();
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
+        assertNotNull(updatedStudy);
 
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
