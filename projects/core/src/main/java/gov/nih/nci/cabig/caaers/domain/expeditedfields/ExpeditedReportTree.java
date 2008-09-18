@@ -296,7 +296,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     private static TreeNode createPersonBlock(String person) {
         return property(person, StringUtils.capitalize(person) + " details", 
-        		property("title", "Title"),
+        		property("title", "Job title"),
         		property("firstName", "First name"), 
         		property("middleName", "Middle name"), 
         		property("lastName", "Last name"), 
