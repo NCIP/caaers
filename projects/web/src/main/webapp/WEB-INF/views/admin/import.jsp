@@ -74,10 +74,9 @@
 	
 		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
 		<input type="button" id="participant_button" value="Import Subject         "><br><br>
-		<input type="button" id="routine_ae_report_button" value="Import Routine AEs         "><br><br>
 		<input type="button" id="investigator_button" value="Import Investigator         "><br><br>
-		<input type="button" id="research_staff_button" value="Import Research Staff         ">
-		
+		<input type="button" id="research_staff_button" value="Import Research Staff         "><br><br>
+		<span id="routine_ae_report_button"/>
 		 <tags:errors path="*"/>
     	 
 		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study">
