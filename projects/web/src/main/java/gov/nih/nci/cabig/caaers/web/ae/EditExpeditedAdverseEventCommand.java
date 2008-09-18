@@ -131,7 +131,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     		}
     	}
     	
-    	for(Report r : getAeReport().getNonWithdrawnReports()){
+    	for(Report r : getAeReport().getReports()){
     		ReportDefinition rd = r.getReportDefinition();
     		map.put(rd.getId(), rd);
     	}

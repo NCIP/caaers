@@ -200,16 +200,20 @@ public class ReporterTab extends AeTab {
                 //         - ignore if it exists and the status = PENDING.
 
                 for (ReportDefinition reportDefinition : command.getNewlySelectedDefs()) {
-                    if (!existingReportMap.containsKey(reportDefinition))
-                        newReportDefs.add(reportDefinition);
-                    else {
-                        if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
-                                existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
-                            for (Report report : command.getAeReport().getReports()) {
-                                if (report.getReportDefinition().equals(reportDefinition))
-                                    amendReportList.add(report);
-                            }
-                    }
+                	if (reportDefinition.getAmendable()){
+                		if (!existingReportMap.containsKey(reportDefinition))
+                			newReportDefs.add(reportDefinition);
+                		else {
+                			if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+                					existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+                				for (Report report : command.getAeReport().getReports()) {
+                					if (report.getReportDefinition().equals(reportDefinition))
+                						amendReportList.add(report);
+                				}
+                		}
+                	}else{
+                		newReportDefs.add(reportDefinition);
+                	}
                 }
             }
 
