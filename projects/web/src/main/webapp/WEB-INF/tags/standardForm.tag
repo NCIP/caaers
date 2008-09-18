@@ -14,8 +14,7 @@
 <%@attribute name="navButtons" fragment="true" description="The stylesheet that is to be applied for the navigation button area" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <%@attribute name="flashMessage" fragment="true" description="Will show this message in the flash screen"%>
-<c:if test="${not empty pageHelpAnchor}"><c:set var="pageHelp"><tags:pageHelp anchor="${pageHelpAnchor}"/></c:set></c:if>
-<chrome:box title="${pageHelp}${title}" id="${boxId}" cssClass="${boxClass}">
+<chrome:box title="${title}" id="${boxId}" cssClass="${boxClass}">
 	<c:set var="flashMessage" scope="request"><jsp:invoke fragment="flashMessage"/></c:set>
     <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}">

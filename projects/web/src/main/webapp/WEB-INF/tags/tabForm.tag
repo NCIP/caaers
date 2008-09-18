@@ -21,8 +21,7 @@
 <%@attribute name="saveButtonLabel" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
-<c:if test="${not empty pageHelpAnchor}"><c:set var="pageHelp"><tags:pageHelp anchor="${pageHelpAnchor}"/></c:set></c:if>
-<chrome:box title="${pageHelp}${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
+<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
     <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
         <tags:tabFields tab="${tab}"/>

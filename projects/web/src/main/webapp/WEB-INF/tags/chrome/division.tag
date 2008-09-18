@@ -4,6 +4,7 @@
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="path" description="This path is used by the render decision manager to determinie the visibility" %>
 <%@attribute name="title"%>
+<%@attribute name="titleFragment" fragment="true" description="This is a fragment, that is put beside the title" %>
 <%@attribute name="id"%>
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
@@ -14,14 +15,14 @@
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
 <div class="division ${cssClass}" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
     <div class="header">
-    <c:if test="${not empty title}">
+    <c:if test="${not empty title or not empty titleFragment}">
 
         <c:if test="${enableDelete || collapsable}">
         	<h3>
                 <table cellspacing="0" cellpadding="0" border="0" width="100%">
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
-                        <td width="100%">${title}</td>
+                        <td width="100%">${title}<jsp:invoke fragment="titleFragment" /></td>
  						<c:if test="${not empty deleteParams}"><td align="left"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete"></a></td></c:if>
                     </tr>
                 </table>
@@ -29,7 +30,7 @@
 	   	</c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
-	   		<h3>${title}</h3>
+	   		<h3>${title}<jsp:invoke fragment="titleFragment" /></h3>
 	   	</c:if>
 
     </c:if>

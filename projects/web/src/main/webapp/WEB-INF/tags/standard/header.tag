@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> 
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div id="header">
   <div id="skipnav">
   <a href="#skipnav">Skip Navigation</a>
@@ -9,11 +10,11 @@
     <div class="background-R">
 
         <a href="/caaers/pages/task" id="logo">caAERS</a>
-
-          <a href="/caaers/help/caAERS_Help.htm#${currentTask.linkName}.htm" target="_blank" id="help">Help</a>
+		  <c:url value="/help/caAERS_Help.htm" scope="request" var="_caaersHelpURL" />
+		  <c:set var="roboHelpKey">ROBOHELP_${currentTask.linkName}</c:set>
+		  <spring:message var="roboHelpLink" code="${roboHelpKey}" text="NO_${roboHelpKey}"/>
+          <a href="${_caaersHelpURL}#${roboHelpLink}.htm" target="_blank" id="help">Help</a>
           <a href="<c:url value="/j_acegi_logout"/>" id="logout">Log out</a>
-        
-
         <ul id="sections" class="tabs">
         <c:forEach items="${sections}" var="section">
             <csmauthz:accesscontrol authorizationCheckName="sectionAuthorizationCheck"
