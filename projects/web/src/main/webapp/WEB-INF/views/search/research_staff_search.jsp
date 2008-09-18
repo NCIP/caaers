@@ -60,6 +60,7 @@ function buildTable(form) {
                 </div>
             </li>
         </ul>
+		<tags:pageHelp propertyKey="searchResearchStaff" />
     </div>
  
  <div class="content">

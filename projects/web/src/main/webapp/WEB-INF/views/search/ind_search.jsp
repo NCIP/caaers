@@ -59,6 +59,7 @@ function buildTable(form) {
         <a href="#">Search IND#</a>
     </div></li>
  </ul>
+<tags:pageHelp propertyKey="searchIND" />
         </div>
  
  <div class="content">

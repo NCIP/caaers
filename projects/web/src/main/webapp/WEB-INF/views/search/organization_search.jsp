@@ -57,6 +57,7 @@ function buildTable(form) {
         <a href="searchOrganization">Search Organization</a>
     </div></li>
  </ul>
+	<tags:pageHelp propertyKey="searchOrganization" />
  </div>
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">

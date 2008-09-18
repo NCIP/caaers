@@ -58,8 +58,8 @@ function buildTable(form) {
         <a href="searchInvestigator">Search Investigator</a>
     </div></li>
   </ul>
-
-        </div>
+	<tags:pageHelp propertyKey="searchInvestigator" />
+  </div>
   <br />
 
  <div class="content">
