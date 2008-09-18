@@ -19,24 +19,24 @@
         
 		<!--  Semanticbits shared repository [using http] -->
 		<url name="semanticbits-repo-http">
-			<ivy pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
-  			<artifact pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
+			<ivy pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/ivy.xml" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>
 		
 		<!--  Semanticbits shared repository [using http] -->
 		<url name="semanticbits-grid-repo-http">
-			<ivy pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/caGRID/[organisation]/[module]/[revision]/ivy-[revision].xml" />
-  			<artifact pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
-  			<artifact pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
-  			<artifact pattern="http://sbdev1000.semanticbits.com:8030/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
+			<ivy pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/ivy-[revision].xml" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
 		</url>
 		
 		<!--  SemanticBits shared repository [using sftp] -->
-	<!-- 	<sftp name="semanticbits-repo-sftp" user="caaers" userPassword="caaers" host="10.10.10.2">
-		  <ivy pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
-		  <artifact pattern="/usr/local/tomcats/caaers/demo/tomcat-caaers-demo-8030/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
+	 	<sftp name="semanticbits-repo-sftp" user="userivy" userPassword="userivy" host="10.10.10.21">
+		  <ivy pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/ivy.xml"/>
+		  <artifact pattern="/usr/local/tomcats/apache-tomcat-5.5.23-8090/webapps/ivy-repo/[organisation]/[module]/[revision]/[artifact].[ext]"/>
 		</sftp>
-	 -->		
+	 		
 	 
 	 
 	 <!--  Northwestern RHLCCC Bioinformatics  -->
