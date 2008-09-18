@@ -62,7 +62,7 @@
 <body>
 <tags:tabForm formName="viewReport" tab="${tab}" flow="${flow}" pageHelpAnchor="section18submit">
     <jsp:attribute name="instructions">
-       Submit a specific Report
+       Submit the report once it is complete. You can also withdraw the report completely, or amend it from this page.
     </jsp:attribute>
     <jsp:attribute name="singleFields">
     	<input type="hidden" name="_action" value="">
@@ -87,7 +87,7 @@
     				</td>
     			</tr>
     		</table>
-    		<p> &nbsp; </p>
+    		<p>&nbsp;  </p>
     	</c:if>
 
 		

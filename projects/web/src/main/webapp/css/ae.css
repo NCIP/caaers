@@ -1,4 +1,8 @@
 /* TODO: some of these may be moved up to common */
+.border-BR div.row .summaryvalue {
+  font-weight: normal;
+  margin-left: 6.5em;	
+}
 div.row div.label {
     width: 9em;
 }
@@ -34,7 +38,10 @@ div.row div.summaryvalue {
   font-weight: normal;
   margin-left: 6em;	
 }
-
-input[type="button"].ae-list-editor-button {
-	background-color : #ed6003;
+.border-BR .summarylabel {
+float:left;
+font-weight:bold;
+margin-left:0.3em;
+text-align:right;
+width:6em;
 }
