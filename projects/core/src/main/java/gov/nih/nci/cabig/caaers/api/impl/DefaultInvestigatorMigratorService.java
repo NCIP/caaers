@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.integration.schema.common.ServiceResponse;
@@ -58,7 +59,25 @@ public class DefaultInvestigatorMigratorService extends DefaultMigratorService i
         return rsList.get(0);
     }
 
-
+	public DomainObjectImportOutcome<Investigator> processInvestigator(InvestigatorType xmlInvestigator){
+    	DomainObjectImportOutcome<Investigator> investigatorImportOutcome = null;
+    	Investigator investigator = null;
+		try {
+			investigator = buildInvestigator(xmlInvestigator);
+			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+			investigatorImportOutcome.setImportedDomainObject(investigator);
+		} catch (CaaersSystemException e) {
+			investigator = new Investigator();
+			investigator.setNciIdentifier(xmlInvestigator.getNciIdentifier());
+			investigator.setFirstName(xmlInvestigator.getFirstName());
+			investigator.setLastName(xmlInvestigator.getLastName());
+			investigatorImportOutcome = new DomainObjectImportOutcome<Investigator>();
+			investigatorImportOutcome.setImportedDomainObject(investigator);
+			investigatorImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
+		}
+    	return investigatorImportOutcome;
+	}
+	
     public CaaersServiceResponse saveInvestigator(Staff staff) {//throws RemoteException {
     	List<InvestigatorType> investigatorTypeList = staff.getInvestigator();
     	Investigator investigator = null;
