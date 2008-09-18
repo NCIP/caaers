@@ -156,7 +156,6 @@ public class XsltTransformer {
         //xslt param to access uncheck and check box images. 		
         String imageLocation = new ClassPathResource("xslt/images").getURL().toString();  
         
-        imageLocation = "jar:file:/Applications/tomcat5523/webapps/caaers/WEB-INF/lib/caaers-core-1.4-SNAPSHOT-local-20080918155451.jar!/xslt/images";
         System.out.println("XSLT image location : " + imageLocation);
         transformer.setParameter("image-location", imageLocation);
 
