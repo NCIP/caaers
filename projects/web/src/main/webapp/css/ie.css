@@ -1,20 +1,40 @@
 body {
-	/* Have to use _all_ relative units 
-     for the browser font setting to work on IE6. */
-  font-size: 80%;
-  background: url(../images/blue/bg_ie.jpg) repeat-y center #314993;
+    background: url( ../images/blue/bg.jpg ) repeat-y center #314993;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    color: #000000;
+    text-align: center;
+    margin: 0px;
+    padding: 0px;
 }
 
 /* Force hasLayout */
-* html div.row, * html .autoclear { height: 1% }
-#workflow-tabs { height: 1%; }
-
-
-.pane {
-	/* Fix the issue of summary not aligned properly */
-	clear:both;
+html div.row, * html .autoclear {
+    height: 1%
 }
 
-div.row {
-    clear:both;
+#workflow-tabs {
+    height: 1%;
+}
+
+.pane {
+/* Fix the issue of summary not aligned properly */
+    clear: both;
+}
+
+#taskbar {
+    background: transparent url( ../images/blue/taskbar_BG.png ) repeat-x scroll center top;
+    color: #FFFFFF;
+    font-size: 12pt;
+    height: 51px;
+    padding-left: 10px;
+    position: absolute;
+    top: 98px;
+    vertical-align: middle;
+    width: 980px;
+    z-index: 1;
+}
+
+div.row, build-name, main {
+    clear: both;
 }
