@@ -148,7 +148,7 @@
 <body>
 <form:form id="command">	
 	<tags:tabFields tab="${tab}" />
-	
+	<tags:hasErrorsMessage />
 	<chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
 		<tags:hasErrorsMessage path="aeReport.participantHistory.baselinePerformanceStatus" />
 		<a name="anchorGeneral" />

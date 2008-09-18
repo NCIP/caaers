@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.apache.commons.lang.StringUtils;
@@ -48,8 +49,8 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.REPORTER_INFO_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.REPORTER_INFO_SECTION};
     }
 
     @Override
@@ -61,8 +62,8 @@ public class ReporterTab extends AeTab {
 
     private void createPersonGroup(AeInputFieldCreator creator, String person) {
         String base = person + '.';
-        InputField title = InputFieldFactory.createSelectField(base + "title", "Title", false,
-                WebUtils.collectOptions(configurationProperty.getMap().get("titleType"), "code", "desc", "Please select"));
+        InputField title = InputFieldFactory.createTextField(base + "title", "Title", false);
+        InputFieldAttributes.setSize(title, 50);
         InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
         InputField middleNameField = InputFieldFactory.createTextField(base + "middleName", "Middle name", false);
         InputField lastNameField = InputFieldFactory.createTextField(base + "lastName", "Last name", true);
@@ -85,6 +86,7 @@ public class ReporterTab extends AeTab {
 
         InputField stateField = InputFieldFactory.createTextField(base + "address.state", "State");
         InputFieldAttributes.setColumns(stateField, 50);
+
 
         InputField zipField = InputFieldFactory.createZipCodeField(base + "address.zip", "Zip", false);
         InputFieldAttributes.setColumns(zipField, 5);
@@ -114,10 +116,7 @@ public class ReporterTab extends AeTab {
     public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         super.onDisplay(request, command);
 
-        boolean severe = false;
-        for (AdverseEvent event : command.getAeReport().getAdverseEvents()) {
-            severe |= evaluationService.isSevere(command.getAssignment(), event);
-        }
+        boolean severe = true;
         request.setAttribute("oneOrMoreSevere", severe);
     }
 
@@ -163,7 +162,7 @@ public class ReporterTab extends AeTab {
             // - add all non-amendable reports if they don't exist or are already submitted/withdrawn
             // - add all non-organizational reports if they don't exist or are already submitted/withdrawn.
             if (StringUtils.equals("editReport", action)) {
-                if (command.getNewlySelectedDefs() != null) {
+                if (command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
                     if (command.isNewlySelectedReportEarlier()) {
                         // This is CASE(A)
                         // Firstly, Withdraw the pending amendable sponsor reports.
@@ -198,21 +197,16 @@ public class ReporterTab extends AeTab {
                 //         - create New report if it doesnt exist
                 //         - amend if it exists and has status = SUBMITTED/WITHDRAWN
                 //         - ignore if it exists and the status = PENDING.
-
                 for (ReportDefinition reportDefinition : command.getNewlySelectedDefs()) {
-                    if (reportDefinition.getAmendable()) {
-                        if (!existingReportMap.containsKey(reportDefinition))
-                            newReportDefs.add(reportDefinition);
-                        else {
-                            if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
-                                    existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
-                                for (Report report : command.getAeReport().getReports()) {
-                                    if (report.getReportDefinition().equals(reportDefinition))
-                                        amendReportList.add(report);
-                                }
-                        }
-                    } else {
+                    if (!existingReportMap.containsKey(reportDefinition))
                         newReportDefs.add(reportDefinition);
+                    else {
+                        if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+                                existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+                            for (Report report : command.getAeReport().getReports()) {
+                                if (report.getReportDefinition().equals(reportDefinition))
+                                    amendReportList.add(report);
+                            }
                     }
                 }
             }
@@ -235,9 +229,6 @@ public class ReporterTab extends AeTab {
 
             // find the new mandatory sections
             command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-
-            // pre-init the mandatory section fields
-//            command.initializeMandatorySectionFields(getExpeditedReportTree());
 
             // refresh the mandatory fields
             command.refreshMandatoryProperties();

@@ -116,8 +116,13 @@ public class PatientDetailsTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-    	return ExpeditedReportSection.MEDICAL_INFO_SECTION;
+    public ExpeditedReportSection[] section() {
+    	return new ExpeditedReportSection[] {
+    			ExpeditedReportSection.MEDICAL_INFO_SECTION, 
+    			ExpeditedReportSection.PRIOR_THERAPIES_SECTION, 
+    			ExpeditedReportSection.CONCOMITANT_MEDICATION_SECTION, 
+    			ExpeditedReportSection.PRE_EXISTING_CONDITION_SECTION
+    	};
     }
     
     /**

@@ -116,10 +116,8 @@ public class InputFieldFactory {
         return select;
     }
 
-    public static InputField createSelectField(String propertyName, String displayName,
-                                               boolean required, Map<Object, Object> options) {
-        DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName,
-                required);
+    public static InputField createSelectField(String propertyName, String displayName, boolean required, Map<Object, Object> options) {
+        DefaultInputField select = new DefaultInputField(SELECT, propertyName, displayName, required);
         InputFieldAttributes.setOptions(select, options);
         return select;
     }

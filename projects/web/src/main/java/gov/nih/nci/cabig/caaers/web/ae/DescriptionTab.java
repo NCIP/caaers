@@ -74,8 +74,8 @@ public class DescriptionTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.DESCRIPTION_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] { ExpeditedReportSection.DESCRIPTION_SECTION};
     }
 
 }

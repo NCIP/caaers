@@ -43,7 +43,7 @@ public class AdditionalInformationTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.ADDITIONAL_INFO_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.ADDITIONAL_INFO_SECTION};
     }
 }

@@ -210,16 +210,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 				errors.reject("AT_LEAST_ONE_AE","A report cannot be selected without selecting atleast one adverse event.");
 		}
 		
-		// Check if there are aes selected without selecting any report.
-		if(command.getSelectedReportDefinitions().isEmpty()){
-			Boolean aeSelected = false;
-			for(Integer id: command.getSelectedAesMap().keySet()){
-				if(command.getSelectedAesMap().get(id))
-					aeSelected = true;
-			}
-			if(aeSelected)
-				errors.reject("AT_LEAST_ONE_REPORT","Atleast one of the reports need to be selected in order to select an adverse event.");
-		}
 		
 	}
 	

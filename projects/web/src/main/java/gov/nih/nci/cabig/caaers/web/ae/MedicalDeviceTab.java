@@ -124,8 +124,8 @@ public class MedicalDeviceTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.MEDICAL_DEVICE_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.MEDICAL_DEVICE_SECTION};
     }
 
     public void setConfigurationProperty(ConfigProperty configurationProperty) {

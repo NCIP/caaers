@@ -121,20 +121,23 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {
         MandatoryProperties props = command.getMandatoryProperties();
         if (props == null) return false;
-
-        TreeNode node = expeditedReportTree.getNodeForSection(section());
-        if (node == null) return false;
-
-        List<UnsatisfiedProperty> unsatisfied = props.getUnsatisfied(node, command.getAeReport());
-        return !unsatisfied.isEmpty();
+        
+        for(ExpeditedReportSection section : section()){
+        	TreeNode node = expeditedReportTree.getNodeForSection(section);
+            if (node == null) continue;
+            List<UnsatisfiedProperty> unsatisfied = props.getUnsatisfied(node, command.getAeReport());
+            if(!unsatisfied.isEmpty()) return true; 
+        }
+        return false;
+       
     }
 
-    public abstract ExpeditedReportSection section();
+    public abstract ExpeditedReportSection[] section();
 
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        if (!errors.hasErrors() && section().isAssociatedToBusinessRules()) {
+        if (!errors.hasErrors() && isAssociatedToBusinessRules()) {
             ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
             for (ValidationError vError : validationErrors.getErrors()) {
                 errors.reject(vError.getCode(), vError.getMessage());
@@ -154,6 +157,13 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     	
     	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
     	
+    }
+    
+    public boolean isAssociatedToBusinessRules(){
+    	for(ExpeditedReportSection section : section()){
+    		if(section.isAssociatedToBusinessRules()) return true;
+    	}
+    	return false;
     }
 
     // //// CONFIGURATION

@@ -176,7 +176,7 @@ public class TreatmentTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.TREATMENT_INFO_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.TREATMENT_INFO_SECTION};
     }
 }

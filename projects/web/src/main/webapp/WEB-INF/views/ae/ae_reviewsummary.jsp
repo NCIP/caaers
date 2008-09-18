@@ -79,14 +79,10 @@
 		
 		function checkIfReportSelected(){
 			var reportElements = $('report-list').select('[type="checkbox"]');
-			var selected = false;
-			for(var i = 0; i < reportElements.length; i++)
-				if(reportElements[i].checked)
-					selected = true;
-			if(!selected){
-				alert('At least one report should be selected');
+			for(var i = 0; i < reportElements.length; i++){
+					if(reportElements[i].checked) return true;
 			}
-			return selected;
+			return false;
 		}
 		
 		function checkIfAeSelected(){
@@ -104,9 +100,14 @@
 		function displayOptionsPopup(event){
 			Event.stop(event);
 			enableReportsInPopup();
+
 			var reportSelected = checkIfReportSelected();
-			if(!reportSelected)
-				return false;
+			if(reportSelected){
+				$('div-reports-and-create').show();
+			}else{
+				$('div-reports-and-create').hide();
+			}
+			
 			var aeSelected = checkIfAeSelected();
 			if(!aeSelected)
 				return false;
@@ -396,28 +397,30 @@
 			</div>
 		</div>
 	</c:if>
-	<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
-		<div class="eXtremeTable">
-			<table width="60%" border="0" cellspacing="0" align="center" class="tableRegion">
-				<thead>
-					<tr align="center" class="label">
-						<td class="tableHeader">Report</td>
-						<td class="tableHeader">Status</td>
-					</tr>
-				</thead>	
-				<c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
-					<tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
-						<td align="left">${repDefn.label}</td>
-						<td align="left">${command.reportStatusMap[repDefn.id]}</td>
-					</tr>
-				</c:forEach>
-			</table>
-		</div>
-	</chrome:division>
+	<div id="div-reports-and-create" style="display:none;">
+		<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
+			<div class="eXtremeTable">
+				<table width="60%" border="0" cellspacing="0" align="center" class="tableRegion">
+					<thead>
+						<tr align="center" class="label">
+							<td class="tableHeader">Report</td>
+							<td class="tableHeader">Status</td>
+						</tr>
+					</thead>	
+					<c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
+						<tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
+							<td align="left">${repDefn.label}</td>
+							<td align="left">${command.reportStatusMap[repDefn.id]}</td>
+						</tr>
+					</c:forEach>
+				</table>
+			</div>
+		</chrome:division>
 	<div align="left">
 		<b>Choose to:</b><br><br><br>
 		<input type="button" value="Create New Report(s)" id="create-new-report"/><br><br><br>
 		<b>OR</b>
+	</div>
 	</div>
 	<chrome:division title="Edit Existing Reports" id="div-report-summary" collapsable="false">
 		<%-- <div class="eXtremeTable" > --%>

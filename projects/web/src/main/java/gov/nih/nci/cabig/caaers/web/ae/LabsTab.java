@@ -114,8 +114,8 @@ public class LabsTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.LABS_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.LABS_SECTION};
     }
 
     public LabCategoryDao getLabCategoryDao() {

@@ -44,7 +44,7 @@ public class SurgeryInterventionTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.SURGERY_INTERVENTION_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.SURGERY_INTERVENTION_SECTION};
     }
 }

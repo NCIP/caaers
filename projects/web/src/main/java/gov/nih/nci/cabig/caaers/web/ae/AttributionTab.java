@@ -121,7 +121,7 @@ public class AttributionTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.ATTRIBUTION_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.ATTRIBUTION_SECTION};
     }
 }

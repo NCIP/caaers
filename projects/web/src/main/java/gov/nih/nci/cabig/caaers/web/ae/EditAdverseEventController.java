@@ -56,6 +56,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return new ExpeditedFlowFactory("Edit expedited report");
     }
 
+    
+    
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
@@ -115,10 +117,14 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     		command.getAeReport().setReportingPeriod(reportingPeriod);
     		command.reassociate();
     		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
+    		
     		// Initialize the treatment assignment & start date of course
             command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
             if(command.getAeReport().getAssignment().getStartDateOfFirstCourse() != null)
             	command.getAeReport().getTreatmentInformation().setFirstCourseDate(command.getAeReport().getAssignment().getStartDateOfFirstCourse());
+            
+            // pre-init the mandatory section fields
+            command.initializeMandatorySectionFields(expeditedReportTree);
         }
         
         request.getSession().removeAttribute(AE_LIST_PARAMETER);
@@ -143,11 +149,9 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }
         
         command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-        command.refreshMandatoryProperties();
-        
         //will pre determine the display/renderability of fields 
         command.initializeNotApplicableFields();
-        
+        command.refreshMandatoryProperties();
      
     }
 

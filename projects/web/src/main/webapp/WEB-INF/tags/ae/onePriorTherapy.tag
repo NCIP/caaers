@@ -9,56 +9,79 @@
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy" %>
 <div>
- <chrome:division title="${priorTherapy.name}" id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${collapsed}" collapsable="true"
+<c:set var="mainGroup">priorTherapy${index}</c:set>
+ <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${collapsed or empty priorTherapy.name}" collapsable="true"
   deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
-	<c:set var="mainGroup">priorTherapy${index}</c:set>
-	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
+	
+	<jsp:attribute name="titleFragment">
+		<c:if test="${not empty priorTherapy.name}">${priorTherapy.name}</c:if>
+		<c:if test="${empty priorTherapy.name}">
+			<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}" />
+			<script>
+			Event.observe('${fieldGroups[mainGroup].fields[0].propertyName}', 'change' , function(evt){
+				var ptVal = evt.element().value;
+				if(ptVal == 3 || ptVal == 4 || ptVal == 5 ||ptVal == 7 || ptVal == 8 || ptVal == 11){
+					$('aeReport.saeReportPriorTherapies[${index}]-row').show();
+				}else{	
+					$('aeReport.saeReportPriorTherapies[${index}]-row').hide();
+				}
+			});
+			</script>
+		</c:if>
+	</jsp:attribute>
+	<jsp:body>
+		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
 		<tags:renderRow field="${field}" />
-	</c:forEach>
-   
-	<c:if test="${priorTherapy.priorTherapy.agentsPossible}">
-    <ui:row path="aeReport.saeReportPriorTherapies[${index}]">
-	 <jsp:attribute name="label">
-	 </jsp:attribute>
-	 <jsp:attribute name="value">
-	   <table class="tablecontent" width="95%">
-			<tr>
-				<td width="90%">
-					<ui:autocompleter path="priorTherapyAgents[${index}]" >
-						<jsp:attribute name="populatorJS">
-							function(autocompleter, text){
-								createAE.matchChemoAgents(text, function(values) {
-        							autocompleter.setChoices(values)
-    							})
-							}
-						</jsp:attribute>
-						<jsp:attribute name="selectorJS">
-							function(agent) {
-            					return agent.name
-        					}
-						</jsp:attribute>
-					</ui:autocompleter>
-				</td>
-				<td width="10%">
-					<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
-					<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
-						<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
-						<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<ae:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-	   </table>
-	 </jsp:attribute>
-	  </ui:row>
-	</c:if>
+		</c:forEach>
+	   
+		<c:if test="${priorTherapy.priorTherapy.agentsPossible or empty priorTherapy.name}">
+	    <ui:row path="aeReport.saeReportPriorTherapies[${index}]" style="${empty priorTherapy.name ? 'display:none;' : ''}">
+		 <jsp:attribute name="label">
+		 </jsp:attribute>
+		 <jsp:attribute name="value">
+		   <table class="tablecontent" width="95%">
+				<tr>
+				 	<td colspan="2" align="left"><b color="#2E3257">Agent(s)</b></td>
+				</tr>
+				<tr>
+					<td width="90%">
+						<ui:autocompleter path="priorTherapyAgents[${index}]" >
+							<jsp:attribute name="populatorJS">
+								function(autocompleter, text){
+									createAE.matchChemoAgents(text, function(values) {
+	        							autocompleter.setChoices(values)
+	    							})
+								}
+							</jsp:attribute>
+							<jsp:attribute name="selectorJS">
+								function(agent) {
+	            					return agent.name
+	        					}
+							</jsp:attribute>
+						</ui:autocompleter>
+					</td>
+					<td width="10%">
+						<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
+						<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
+							<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
+							<c:forEach items="${priorTherapy.priorTherapyAgents}" varStatus="status">
+								<c:set var="newIndex" value="${size - (status.index + 1)}" />
+								<ae:onePriorTherapyAgent index="${newIndex}" parentIndex="${index}" />
+							</c:forEach>
+						</div>
+					</td>
+				</tr>
+		   </table>
+		 </jsp:attribute>
+		  </ui:row>
+		</c:if>
+	</jsp:body>
+
  </chrome:division>
 </div>
 <script type="text/javascript">

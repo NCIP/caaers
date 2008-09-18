@@ -88,8 +88,8 @@ public class ViewReportTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.SUBMIT_REPORT_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.SUBMIT_REPORT_SECTION};
     }
 
     // //// CONFIGURATION

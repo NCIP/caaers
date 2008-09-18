@@ -61,8 +61,8 @@ public abstract class BasicsTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.BASICS_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] { ExpeditedReportSection.BASICS_SECTION};
     }
 
     @Override

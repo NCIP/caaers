@@ -204,8 +204,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
             if (tab instanceof AeTab) {
                 AeTab aeTab = (AeTab) tab;
                 sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
-                sb.append(",")
-                  .append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
+                sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
             }
         }
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());
@@ -226,7 +225,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     @Override
     protected boolean shouldSave(HttpServletRequest request, ExpeditedAdverseEventInputCommand command, Tab<ExpeditedAdverseEventInputCommand> tab) {
     	log.debug("In should save");
-        return super.shouldSave(request, command, tab) && request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
+        return  request.getParameter(AJAX_SUBVIEW_PARAMETER) == null;
     }
 
     protected boolean displaySummary(int page) {

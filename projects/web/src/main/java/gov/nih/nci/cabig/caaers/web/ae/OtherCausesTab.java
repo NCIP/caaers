@@ -25,7 +25,7 @@ public class OtherCausesTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.OTHER_CAUSE_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.OTHER_CAUSE_SECTION};
     }
 }

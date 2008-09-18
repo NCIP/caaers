@@ -90,7 +90,7 @@ public class RadiationInterventionTab extends AeTab {
     }
 
     @Override
-    public ExpeditedReportSection section() {
-        return ExpeditedReportSection.RADIATION_INTERVENTION_SECTION;
+    public ExpeditedReportSection[] section() {
+        return new ExpeditedReportSection[] {ExpeditedReportSection.RADIATION_INTERVENTION_SECTION};
     }
 }
