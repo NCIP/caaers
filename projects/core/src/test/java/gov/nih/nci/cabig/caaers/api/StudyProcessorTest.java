@@ -1,17 +1,15 @@
 package gov.nih.nci.cabig.caaers.api;
 
+import edu.nwu.bioinformatics.commons.ResourceRetriever;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.io.support.ResourcePatternResolver;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 /**
  * Test case to test convrsion of jaxb study object to domain study object and call to studymigrator with study domain object.
@@ -24,7 +22,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
     private JAXBContext jaxbContext = null;
     private Unmarshaller unmarshaller = null;
     private gov.nih.nci.cabig.caaers.webservice.Studies studies = null;
-    private File xmlFile = null;
     private StudyDao studyDao = null;
 
     Identifier identifier = null;
@@ -60,10 +57,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfInstanceAtt() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfInstanceAtt.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfInstanceAtt.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -113,23 +109,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfTreatmentAssignmentAttr() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAttr.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAttr.xml"));
 
         studyProcessor.updateStudy(studies);
-
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -165,10 +149,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfTreatmentAssignmentAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -221,10 +204,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfTreatmentAssignmentRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfTreatmentAssignmentRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentRemove.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -264,22 +246,13 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfCtepStudyDiseasesAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
+
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study_PCS");
@@ -310,10 +283,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfCtepStudyDiseasesRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesRemove.xml"));
 
 
         studyProcessor.updateStudy(studies);
@@ -361,22 +333,12 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfCtepStudyDiseasesUpdate() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfCtepStudyDiseasesUpdate.xml"));
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study_PCS");
@@ -405,10 +367,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfMeddraStudyDiseasesAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesAdd.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -439,10 +400,10 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfMeddraStudyDiseasesRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
+        createStudy("studydata/CreateStudyTest_2.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfMeddraStudyDiseasesRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesRemove.xml"));
 
         studyProcessor.updateStudy(studies);
 
@@ -475,10 +436,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySiteAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteAdd.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -510,10 +472,12 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySiteRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySiteRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        createStudy("studydata/CreateStudyTest.xml");
+
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySiteRemove.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -545,10 +509,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyInvestigatorAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorAdd.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -589,22 +554,14 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyInvestigatorRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorRemove.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -634,9 +591,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyInvestigatorUpdate() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        createStudy("studydata/CreateStudyTest.xml");
+
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -689,11 +648,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyPersonnelAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelAdd.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -733,12 +692,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyPersonnelRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
 
-        studyProcessor.updateStudy(studies);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelRemove.xml"));
+
 
 //			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
 //			
@@ -776,10 +734,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudySite_StudyPersonnelUpdate() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelUpdate.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -827,11 +786,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudyAgentAdd() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest.xml");
+        createStudy("studydata/CreateStudyTest.xml");
 
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentAdd.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentAdd.xml"));
+
 
         studyProcessor.updateStudy(studies);
 
@@ -862,10 +821,11 @@ public class StudyProcessorTest extends CaaersDbTestCase {
      */
     public void testStudyUpdateOfStudyAgentRemove() throws Exception {
 
-        createStudy("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/CreateStudyTest_2.xml");
+        createStudy("studydata/CreateStudyTest_2.xml");
 
-        xmlFile = getResources("classpath*:gov/nih/nci/cabig/caaers/impl/studydata/StudyUpdateOfStudyAgentRemove.xml")[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentRemove.xml"));
+
 
 //			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
 //			studyProcessor.updateStudy(studies);
@@ -889,28 +849,26 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
     private void createStudy(String studyXmlLocation) throws Exception {
 
-        xmlFile = getResources(studyXmlLocation)[0].getFile();
-        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(xmlFile);
+
+        studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream(studyXmlLocation));
 
         studyProcessor.createStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.createStudy(studyDto);
-//				}
-//			}
 
 
     }
 
-    private static Resource[] getResources(String pattern) throws IOException {
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resolver.getResources(pattern);
-        return resources;
+    private InputStream createInputStream(String testDataFileName) throws FileNotFoundException {
+        InputStream testDataStream = ResourceRetriever.getResource(getClass().getPackage(), testDataFileName);
+        if (testDataStream == null) {
+            testDataStream = handleTestDataFileNotFound();
+            // if it is still null, fail gracefully
+            if (testDataStream == null) {
+                throw new NullPointerException(
+                        "Test data resource " + ResourceRetriever.getResourceName(getClass().getPackage(), testDataFileName)
+                                + " not found and fallback call to handleTestDataFileNotFound() did not provide a substitute.");
+            }
+        }
+        return testDataStream;
     }
 
 

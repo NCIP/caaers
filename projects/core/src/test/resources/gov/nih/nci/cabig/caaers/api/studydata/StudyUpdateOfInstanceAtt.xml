@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:studies xmlns:p="http://webservice.caaers.cabig.nci.nih.gov" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <p:study>
+        <shortTitle>Study_PCS_Updated</shortTitle>
+        <longTitle>Pancreatic Cancer Study ph 5 Updated</longTitle>
+        <precis>Precis_Updated</precis>
+        <description>Test Study_Updated</description>
+        <phaseCode>Phase III Trial</phaseCode>
+        <status>Temporarily Closed to Accrual</status>
+        <multiInstitutionIndicator>false</multiInstitutionIndicator>
+        <adeersReporting>false</adeersReporting>
+        <p:aeTerminology>
+            <p:ctcVersion>
+                <name>3</name>
+            </p:ctcVersion>
+        </p:aeTerminology>
+        <p:diseaseTerminology>
+            <diseaseCodeTerm>CTEP</diseaseCodeTerm>
+        </p:diseaseTerminology>
+        <design>BLIND</design>
+        <drugAdministrationTherapyType>false</drugAdministrationTherapyType>
+        <deviceTherapyType>false</deviceTherapyType>
+        <radiationTherapyType>false</radiationTherapyType>
+        <surgeryTherapyType>false</surgeryTherapyType>
+        <behavioralTherapyType>false</behavioralTherapyType>
+        <fundingSponsor>
+            <organizationAssignedIdentifier>
+                <value>CTEP001</value>
+            </organizationAssignedIdentifier>
+            <p:studyFundingSponsor>
+                <p:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode/>
+                </p:organization>
+            </p:studyFundingSponsor>
+        </fundingSponsor>
+        <coordinatingCenter>
+            <organizationAssignedIdentifier>
+                <value>WFCCC001</value>
+            </organizationAssignedIdentifier>
+            <p:studyCoordinatingCenter>
+                <p:organization>
+                    <name>Wake Forest Comprehensive Cancer Center</name>
+                    <nciInstituteCode></nciInstituteCode>
+                </p:organization>
+            </p:studyCoordinatingCenter>
+        </coordinatingCenter>
+        <studyOrganizations>
+            <p:studySite>
+                <p:organization>
+                    <name>Cancer Therapy Evaluation Program</name>
+                    <nciInstituteCode></nciInstituteCode>
+                </p:organization>
+                <studyInvestigators>
+                    <p:studyInvestigator>
+                        <roleCode>Site Principal Investigator</roleCode>
+                        <statusCode>Active</statusCode>
+                        <p:siteInvestigator>
+                            <p:investigator>
+                                <firstName>Gerry</firstName>
+                                <lastName>Elbridge</lastName>
+                                <nciIdentifier></nciIdentifier>
+                            </p:investigator>
+                        </p:siteInvestigator>
+                    </p:studyInvestigator>
+                    <p:studyInvestigator>
+                        <roleCode>Site Investigator</roleCode>
+                        <statusCode>Active</statusCode>
+                        <p:siteInvestigator>
+                            <p:investigator>
+                                <firstName>George</firstName>
+                                <lastName>Clinton</lastName>
+                                <nciIdentifier></nciIdentifier>
+                            </p:investigator>
+                        </p:siteInvestigator>
+                    </p:studyInvestigator>
+                </studyInvestigators>
+                <studyPersonnels>
+                    <p:studyPersonnel>
+                        <roleCode>Participant Coordinator</roleCode>
+                        <statusCode>Active</statusCode>
+                        <p:researchStaff>
+                            <firstName>Mike</firstName>
+                            <lastName>Conway</lastName>
+                            <nciIdentifier></nciIdentifier>
+                        </p:researchStaff>
+                    </p:studyPersonnel>
+                </studyPersonnels>
+            </p:studySite>
+            <p:studySite>
+                <p:organization>
+                    <name>Duke University Comprehensive Cancer Center</name>
+                    <nciInstituteCode></nciInstituteCode>
+                </p:organization>
+                <studyPersonnels>
+                    <p:studyPersonnel>
+                        <roleCode>Participant Coordinator</roleCode>
+                        <statusCode>Active</statusCode>
+                        <p:researchStaff>
+                            <firstName>Allan</firstName>
+                            <lastName>Border</lastName>
+                            <nciIdentifier></nciIdentifier>
+                        </p:researchStaff>
+                    </p:studyPersonnel>
+                </studyPersonnels>
+            </p:studySite>
+        </studyOrganizations>
+
+        <identifiers>
+        </identifiers>
+
+        <treatmentAssignments>
+            <p:treatmentAssignment>
+                <code>theCode1</code>
+                <doseLevelOrder>1</doseLevelOrder>
+                <description>Updateddescription1</description>
+                <comments>UpdatedComments1</comments>
+            </p:treatmentAssignment>
+            <p:treatmentAssignment>
+                <code>theCode3</code>
+                <doseLevelOrder>2</doseLevelOrder>
+                <description>Updateddescription3</description>
+                <comments>UpdatedComments3</comments>
+            </p:treatmentAssignment>
+        </treatmentAssignments>
+        <studyAgents>
+            <p:studyAgent>
+                <p:agent>
+                    <name>1-Aminocyclopentane</name>
+                </p:agent>
+                <indType>OTHER</indType>
+                <partOfLeadIND>false</partOfLeadIND>
+                <studyAgentINDAssociations>
+                    <p:studyAgentINDAssociation>
+                        <p:investigationalNewDrug>
+                            <indNumber>222</indNumber>
+                        </p:investigationalNewDrug>
+                    </p:studyAgentINDAssociation>
+                </studyAgentINDAssociations>
+            </p:studyAgent>
+        </studyAgents>
+        <ctepStudyDiseases>
+            <p:ctepStudyDisease>
+                <p:diseaseTerm>
+                    <term>Chondrosarcoma</term>
+                </p:diseaseTerm>
+                <leadDisease>false</leadDisease>
+            </p:ctepStudyDisease>
+            <p:ctepStudyDisease>
+                <p:diseaseTerm>
+                    <term>Medulloblastoma</term>
+                </p:diseaseTerm>
+                <leadDisease>true</leadDisease>
+            </p:ctepStudyDisease>
+        </ctepStudyDiseases>
+    </p:study>
+</p:studies>
