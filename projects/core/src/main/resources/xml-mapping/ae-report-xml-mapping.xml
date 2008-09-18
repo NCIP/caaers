@@ -1414,7 +1414,10 @@
     </field>   
     <field name="studyAgents" type="gov.nih.nci.cabig.caaers.domain.StudyAgent" collection="arraylist">
       <bind-xml name="StudyAgent"/>
-    </field>    
+    </field>   
+    <field name="ctepStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease" collection="arraylist">
+      <bind-xml name="CtepStudyDisease"/>
+    </field> 
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
