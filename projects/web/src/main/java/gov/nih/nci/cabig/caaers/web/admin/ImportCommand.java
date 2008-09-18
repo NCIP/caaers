@@ -223,4 +223,25 @@ public class ImportCommand {
 	public void setResearchStaffFile(MultipartFile researchStaffFile) {
 		this.researchStaffFile = researchStaffFile;
 	}
+	
+	public void addNonImportableResearchStaff(
+            DomainObjectImportOutcome<ResearchStaff> domainObjectImportOutcome) {
+				getNonImportableResearchStaff().add(domainObjectImportOutcome);
+	}		
+	
+	public void addImportableResearchStaff(
+            DomainObjectImportOutcome<ResearchStaff> domainObjectImportOutcome) {
+				getImportableResearchStaff().add(domainObjectImportOutcome);
+	}
+	
+	public void addNonImportableInvestigator(
+            DomainObjectImportOutcome<Investigator> domainObjectImportOutcome) {
+				getNonImportableInvestigators().add(domainObjectImportOutcome);
+	}		
+	
+	public void addImportableInvestigator(
+            DomainObjectImportOutcome<Investigator> domainObjectImportOutcome) {
+				getImportableInvestigators().add(domainObjectImportOutcome);
+	}
+	
 }
