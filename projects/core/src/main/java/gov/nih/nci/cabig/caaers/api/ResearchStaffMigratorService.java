@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.integration.schema.common.CaaersServiceResponse;
+import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffType;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public interface ResearchStaffMigratorService {
 	public List<DomainObjectImportOutcome<ResearchStaff>> getImportableResearchStaff();
 	
 	public List<DomainObjectImportOutcome<ResearchStaff>> getNonImportableResearchStaff();
+	
+	public DomainObjectImportOutcome<ResearchStaff> processResearchStaff(ResearchStaffType xmlResearchStaff);
 	
 	//public void deleteResearchStaff(Staff staff) throws RemoteException;
 }
