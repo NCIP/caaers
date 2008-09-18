@@ -62,7 +62,7 @@ public class ReporterTab extends AeTab {
 
     private void createPersonGroup(AeInputFieldCreator creator, String person) {
         String base = person + '.';
-        InputField title = InputFieldFactory.createTextField(base + "title", "Title", false);
+        InputField title = InputFieldFactory.createTextField(base + "title", "Job title", false);
         InputFieldAttributes.setSize(title, 50);
         InputField firstNameField = InputFieldFactory.createTextField(base + "firstName", "First name", true);
         InputField middleNameField = InputFieldFactory.createTextField(base + "middleName", "Middle name", false);
