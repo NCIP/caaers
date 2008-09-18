@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Biju Joseph
  */
-public class SAEReportPriorTherapyTest extends AbstractTestCase {
+public class SAEReportPriorTherapyTest extends CaaersTestCase {
 
 
     private StudyParticipantPriorTherapy studyParticipantPriorTherapy;

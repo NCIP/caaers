@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Saurabh Agrawal
  */
-public class StudyParticipantAssignmentTest extends AbstractTestCase {
+public class StudyParticipantAssignmentTest extends CaaersTestCase {
 
     private StudyParticipantAssignment assignment;
 
