@@ -113,6 +113,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(DESCRIPTION_SECTION,
                             property("responseDescription",
                                         property("eventDescription", "Description"),
+                                        property("primaryTreatmentApproximateTime","Event treatment, approximate time"),
                                         property("presentStatus", "Present status"),
                                         property("recoveryDate","Date of recovery or death"),
                                         property("retreated","Has the participant been re-treated?"),
@@ -132,7 +133,6 @@ public class ExpeditedReportTree extends PropertylessNode {
                                 property("treatmentAssignment","Treatment assignment code"),
 								property("treatmentAssignmentDescription","Description of treatment assignment or dose level"),
 								property("firstCourseDate","Start date of first course"),
-								property("primaryTreatmentApproximateTime","Treatment time"),
 								// TODO: these should be a component instead
 								property("adverseEventCourse",
 										property("date","Start date of course associated with expedited report"),

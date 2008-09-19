@@ -13,7 +13,7 @@ import java.util.Date;
 @CaaersUseCases({CREATE_EXPEDITED_REPORT})
 public class TreatmentInformationTest extends AbstractTestCase {
     private TreatmentInformation treatmentInformation;
-    private TimeValue primaryTreatmentApproximateTime;
+
 
 
     private CourseAgent courseAgent1, courseAgent2;
@@ -28,14 +28,13 @@ public class TreatmentInformationTest extends AbstractTestCase {
     private String treatmentDescription;
 
     private ExpeditedAdverseEventReport report;
-    private String primaryTreatment;
+   
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        primaryTreatmentApproximateTime = new TimeValue();
-        primaryTreatmentApproximateTime.setHour(2);
-        primaryTreatment = "primaryTreatment";
+       
+       
         treatmentDescription = "treatmentDescription";
         totalCourses = 3;
         firstCourseDate = new Date();
@@ -52,8 +51,6 @@ public class TreatmentInformationTest extends AbstractTestCase {
         treatmentInformation.setId(1);
         treatmentInformation.setGridId("grid id");
         treatmentInformation.setVersion(2);
-        treatmentInformation.setPrimaryTreatmentApproximateTime(primaryTreatmentApproximateTime);
-        treatmentInformation.setPrimaryTreatment(primaryTreatment);
         treatmentInformation.setTreatmentDescription(treatmentDescription);
         treatmentInformation.setTotalCourses(totalCourses);
         treatmentInformation.setAdverseEventCourse(adverseEventCourse);
@@ -107,8 +104,6 @@ public class TreatmentInformationTest extends AbstractTestCase {
 
     public void testCopyForBasicProperties() {
         TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
-        assertEquals("primaryTreatment must be same", primaryTreatment, copiedTreatmentInformation.getPrimaryTreatment());
-        assertEquals("treatmentDescription must be same", treatmentDescription, copiedTreatmentInformation.getTreatmentDescription());
         assertEquals("totalCourses must be same", totalCourses, copiedTreatmentInformation.getTotalCourses());
         assertEquals("firstCourseDate must be same", firstCourseDate, copiedTreatmentInformation.getFirstCourseDate());
 
@@ -166,16 +161,5 @@ public class TreatmentInformationTest extends AbstractTestCase {
         assertNull("version number must be null", copiedTreatmentInformation.getVersion());
     }
 
-
-    public void testCopyPrimaryTreatmentApproximateTime() {
-
-        TreatmentInformation copiedTreatmentInformation = treatmentInformation.copy();
-
-
-        assertSame("primaryTreatmentApproximateTime must  be refer same objects", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
-
-        assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, copiedTreatmentInformation.getPrimaryTreatmentApproximateTime());
-
-
-    }
+   
 }

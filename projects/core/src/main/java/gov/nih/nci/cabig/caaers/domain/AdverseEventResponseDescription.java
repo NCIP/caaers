@@ -5,7 +5,10 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.BeanUtils;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -48,7 +51,10 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
     private Boolean autopsyPerformed;
 
     private String causeOfDeath;
+    
+    private String primaryTreatment;
 
+    private TimeValue primaryTreatmentApproximateTime;
 
     public AdverseEventResponseDescription() {
         retreated = Boolean.FALSE;
@@ -176,6 +182,30 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
 
     public void setCauseOfDeath(String causeOfDeath) {
         this.causeOfDeath = causeOfDeath;
+    }
+
+    public String getPrimaryTreatment() {
+        return primaryTreatment;
+    }
+
+    public void setPrimaryTreatment(String primaryTreatment) {
+        this.primaryTreatment = primaryTreatment;
+    }
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "hour", column = @Column(name = "treatment_time_hour")),
+            @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute")),
+            @AttributeOverride(name = "type", column = @Column(name = "treatment_time_zone"))
+    })
+    public TimeValue getPrimaryTreatmentApproximateTime() {
+        if (primaryTreatmentApproximateTime == null) primaryTreatmentApproximateTime = new TimeValue();
+        return primaryTreatmentApproximateTime;
+    }
+
+    public void setPrimaryTreatmentApproximateTime(
+            TimeValue primaryTreatmentApproximateTime) {
+        this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
     }
 
     public AdverseEventResponseDescription copy() {

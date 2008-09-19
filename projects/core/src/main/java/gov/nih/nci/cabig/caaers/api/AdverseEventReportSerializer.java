@@ -703,8 +703,6 @@ public class AdverseEventReportSerializer {
 		    		treatmentInformation.addCourseAgent(ca1);
 		    	}
 		    	
-		    	treatmentInformation.setPrimaryTreatment(trtInf.getPrimaryTreatment());
-		    	treatmentInformation.setPrimaryTreatmentApproximateTime(trtInf.getPrimaryTreatmentApproximateTime());
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getTreatmentInformation() "+e.getMessage() , e);
 	    	}

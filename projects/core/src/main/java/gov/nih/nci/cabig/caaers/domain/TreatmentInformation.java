@@ -37,9 +37,7 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
 
     private String treatmentDescription;
 
-    private String primaryTreatment;
 
-    private TimeValue primaryTreatmentApproximateTime;
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());
@@ -149,30 +147,6 @@ public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
     @Transient
     public void setTreatmentAssignmentDescription(String desc) {
         // do nothing.
-    }
-
-    public String getPrimaryTreatment() {
-        return primaryTreatment;
-    }
-
-    public void setPrimaryTreatment(String primaryTreatment) {
-        this.primaryTreatment = primaryTreatment;
-    }
-
-    @Embedded
-    @AttributeOverrides({
-            @AttributeOverride(name = "hour", column = @Column(name = "treatment_time_hour")),
-            @AttributeOverride(name = "minute", column = @Column(name = "treatment_time_minute")),
-            @AttributeOverride(name = "type", column = @Column(name = "treatment_time_zone"))
-    })
-    public TimeValue getPrimaryTreatmentApproximateTime() {
-        if (primaryTreatmentApproximateTime == null) primaryTreatmentApproximateTime = new TimeValue();
-        return primaryTreatmentApproximateTime;
-    }
-
-    public void setPrimaryTreatmentApproximateTime(
-            TimeValue primaryTreatmentApproximateTime) {
-        this.primaryTreatmentApproximateTime = primaryTreatmentApproximateTime;
     }
 
 

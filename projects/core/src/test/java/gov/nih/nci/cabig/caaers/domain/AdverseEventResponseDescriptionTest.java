@@ -40,6 +40,8 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     private Boolean autopsyPerformed;
 
     private String causeOfDeath;
+    private String primaryTreatment;
+    private TimeValue primaryTreatmentApproximateTime;
 
     @Override
     protected void setUp() throws Exception {
@@ -59,6 +61,9 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         eventReappear = true;
         autopsyPerformed = true;
         causeOfDeath = "cause of death";
+        primaryTreatment = "primaryTreatment";
+        primaryTreatmentApproximateTime = new TimeValue();
+        primaryTreatmentApproximateTime.setHour(2);
         description.setAutopsyPerformed(autopsyPerformed);
         description.setBlindBroken(blindBroken);
         description.setCauseOfDeath(causeOfDeath);
@@ -77,6 +82,8 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         description.setReport(new ExpeditedAdverseEventReport());
         description.setStudyDrugInterrupted(studyDrugInterrupted);
         description.setVersion(3);
+        description.setPrimaryTreatment(primaryTreatment);
+        description.setPrimaryTreatmentApproximateTime(primaryTreatmentApproximateTime);
     }
 
     public void testCopy() {
@@ -102,6 +109,9 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
         assertEquals(reducedDose, adverseEventResponseDescription.getReducedDose());
         assertEquals(retreated, adverseEventResponseDescription.getRetreated());
         assertEquals(studyDrugInterrupted, adverseEventResponseDescription.getStudyDrugInterrupted());
+        
+        assertEquals("primaryTreatment must be same", primaryTreatment, adverseEventResponseDescription.getPrimaryTreatment());
+     
 
 
     }
@@ -114,5 +124,15 @@ public class AdverseEventResponseDescriptionTest extends AbstractTestCase {
     public void testIsNotRemovedWhenRemoved() throws Exception {
         description.setDateRemovedFromProtocol(null);
         assertFalse(description.isRemovedFromProtocol());
+    }
+    
+    public void testCopyPrimaryTreatmentApproximateTime() {
+    	 AdverseEventResponseDescription adverseEventResponseDescription = description.copy();
+
+        assertSame("primaryTreatmentApproximateTime must  be refer same objects", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+
+        assertEquals("primaryTreatmentApproximateTime must  refer same object ", primaryTreatmentApproximateTime, adverseEventResponseDescription.getPrimaryTreatmentApproximateTime());
+
+
     }
 }
