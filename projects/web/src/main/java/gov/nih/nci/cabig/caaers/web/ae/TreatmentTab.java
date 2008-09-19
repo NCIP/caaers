@@ -59,14 +59,14 @@ public class TreatmentTab extends AeTab {
                         "Total number of courses to date", false);
         InputFieldAttributes.setSize(totalCourseField, 4);
 
-        InputField firstCourseDateField = InputFieldFactory.createDateField("firstCourseDate",
+        InputField firstCourseDateField = InputFieldFactory.createPastDateField("firstCourseDate",
                         "Start date of first course", false);
         firstCourseDateField.getAttributes().put(InputField.HELP,
                         "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
         InputField treatmentTimeField = createTimeField("primaryTreatmentApproximateTime", "Treatment time");
         treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
 
-        InputField adverseEventCourse_dateField = InputFieldFactory.createDateField("adverseEventCourse.date",
+        InputField adverseEventCourse_dateField = InputFieldFactory.createPastDateField("adverseEventCourse.date",
                         "Start date of course associated with expedited report", false);
         adverseEventCourse_dateField.getAttributes().put(InputField.HELP,
                         "ae.treatment.aeReport.treatmentInformation.adverseEventCourse.date");
@@ -102,7 +102,7 @@ public class TreatmentTab extends AeTab {
         		InputFieldFactory.createTextField("lotNumber", "Lot # (if known)"),
                 totalDoseField, 
                 totalUOMField, 
-                InputFieldFactory.createDateField("lastAdministeredDate", "Date last administered", false),
+                InputFieldFactory.createPastDateField("lastAdministeredDate", "Date last administered", false),
                 adminDelayField, 
                 commentsField, 
                 modifiedDoseField);
