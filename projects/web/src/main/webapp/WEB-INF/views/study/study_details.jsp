@@ -67,6 +67,7 @@
 				row.style.display = '';
 			}
 		}
+        showDiseaseMeddraTerms();
 
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
 		AE.createStandardAutocompleter('primaryFundingSponsorOrganization',
