@@ -119,7 +119,7 @@
                            <table>
                                 <c:forEach items="${study.studySites}" var="site">
                                    <tr><td>
-                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" path="studySite" value="${site.id}"/>${site.organization.name }
+                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="if ($('ids')) $('ids').show();" path="studySite" value="${site.id}"/>${site.organization.name }
                                    </td></tr>
                                 </c:forEach>
                            </table>
@@ -129,9 +129,12 @@
             </c:if>
         </div>
 
+<div id="ids" style="display: <c:if test="${fn:length(command.studies) == 0}">none</c:if>;">
+
         <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
         Study Subject Identifier: <ui:text path="studySubjectIdentifier" />
+</div>    
     </jsp:attribute>
 
 </tags:tabForm>
