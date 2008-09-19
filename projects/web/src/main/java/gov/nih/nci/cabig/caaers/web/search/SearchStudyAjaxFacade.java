@@ -86,7 +86,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object build(final TableModel model, final Collection studies) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(studies);
 		table.setVar("study");
@@ -321,7 +321,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildAdverseEvent(final TableModel model, final Collection adverseEvents) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(adverseEvents);
 		table.setAction(model.getContext().getContextPath() + "/pages/search/adverseEvent");
@@ -406,7 +406,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildExpeditedReport(final TableModel model, final Collection expeditedReports) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(expeditedReports);
 		table.setAction(model.getContext().getContextPath() + "/pages/search/report");
@@ -481,7 +481,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildRoutineReport(final TableModel model, final Collection expeditedReports) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(expeditedReports);
 		table.setAction(model.getContext().getContextPath() + "/pages/search/report");
@@ -1325,7 +1325,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildPartcipantTable(final TableModel model, final List<Participant> participants) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(participants);
 		table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
