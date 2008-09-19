@@ -214,7 +214,7 @@
 													<fo:block xsl:use-attribute-sets="label"><xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>	</fo:block>
 													<fo:block xsl:use-attribute-sets="label">
 													<xsl:choose>
-													  <xsl:when test="AdverseEventReport/ParticipantHistory/weight/unit = 'lb'">
+													  <xsl:when test="AdverseEventReport/ParticipantHistory/weight/unit = 'Pound'">
 														<fo:inline xsl:use-attribute-sets="normal" text-decoration="underline">
 															<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 															<xsl:value-of select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
@@ -230,7 +230,7 @@
 													<fo:block font-size="6.5pt" text-align="center"> or	</fo:block>
 													<fo:block xsl:use-attribute-sets="label">
 													<xsl:choose>
-													  <xsl:when test="AdverseEventReport/ParticipantHistory/weight/unit = 'kg'">
+													  <xsl:when test="AdverseEventReport/ParticipantHistory/weight/unit = 'Kilogram'">
 														<fo:inline xsl:use-attribute-sets="normal" text-decoration="underline">
 															<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 															<xsl:value-of select="AdverseEventReport/ParticipantHistory/weight/quantity"/>
@@ -555,6 +555,7 @@
 														<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> </fo:inline>
 														<fo:inline font-size="6.5pt" text-decoration="underline">  
 															<xsl:value-of select="StudyAgent/Agent/name"/>
+															<xsl:value-of select="StudyAgent/otherAgent"/>
 														</fo:inline>
 													</fo:block>
 													</xsl:for-each>
@@ -1109,11 +1110,11 @@
 	<xsl:template name="standard_date">
 		<xsl:param name="date" />
 		<xsl:if test="$date">
-			<!-- Day -->
-			<xsl:value-of select="substring($date, 9, 2)" />
-			<xsl:text>/</xsl:text>
 			<!-- Month -->
 			<xsl:value-of select="substring($date, 6, 2)" />
+			<xsl:text>/</xsl:text>		
+			<!-- Day -->
+			<xsl:value-of select="substring($date, 9, 2)" />
 			<xsl:text>/</xsl:text>
 			<!-- Year -->
 			<xsl:value-of select="substring($date, 1, 4)" />
