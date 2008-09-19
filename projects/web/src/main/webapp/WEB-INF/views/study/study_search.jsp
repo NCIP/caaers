@@ -18,7 +18,7 @@
 <tags:dwrJavascriptLink objects="searchStudy"/>
 <style type="text/css">
         /* Override default lable length */
-       	div.row div.label { width: 9em; } 
+       	div.row div.label { width: 9em; }
         div.row div.value { margin-left: 10em; }
         .endpanes {	clear: both; }
 </style>
@@ -27,28 +27,29 @@
 function buildTable(form) {
 
 	var type = $F('searchCriteria[0].searchType')
-	var text = $F('searchCriteria[0].searchText')		
-	
+	var text = $F('searchCriteria[0].searchText')
+
 	if(text == ''){
 		$('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field</font>"
 	}else{
 		$('error').innerHTML=""
-		
-		//showing indicator and hiding pervious results. (#10826)
+
+//		//showing indicator and hiding pervious results. (#10826)
 		$('indicator').className='';
-		$('assembler_table').hide();
-		
-		searchStudy.getTable(null, type, text, showTable);
+	//	$('assembler_table').hide();  //do not hide the results..becz filter string get disappear
+        var parameterMap = getParameterMap(form);
+
+		searchStudy.getTable(parameterMap, type, text, showTable);
 	}
 }
 
-	
- 
-function fireAction(action, selected){	
-	document.getElementById("_action").value=action;	
+
+
+function fireAction(action, selected){
+	document.getElementById("_action").value=action;
 	document.getElementById("_selected").value=selected;
-	document.searchForm.submit();	
-} 
+	document.searchForm.submit();
+}
 
 </script>
 </head>
@@ -56,12 +57,12 @@ function fireAction(action, selected){
 
 <chrome:box title="Study Criteria" autopad="true">
     <form:form name="searchForm" id="searchForm" method="post">
-       <div>			
+       <div>
 			<input type="hidden" name="_selected" id="_selected" value="">
 			<input type="hidden" name="_action" id="_action" value="">
 		</div>
         <div class="content">
-   			 
+
         	<c:forEach items="${command.searchCriteria}" varStatus="status">
             <div class="row" name="inputs" style="float:left;">
             	<div class="label"> Search By: </div>
@@ -71,7 +72,7 @@ function fireAction(action, selected){
 					</form:select>
 					<form:input path="searchCriteria[${status.index}].searchText" size="25"/>
 					<div id="error"></div>
-				</div>						
+				</div>
 			</div>
 		 	</c:forEach>
 
@@ -87,10 +88,10 @@ function fireAction(action, selected){
 
 <div class="endpanes" />
 <chrome:box title="Results">
-<form:form>
+<form:form id="assembler">
      <chrome:division id="single-fields">
         <div id="tableDiv">
-   			<c:out value="${assembler}" escapeXml="false"/> 
+   			<c:out value="${assembler}" escapeXml="false"/>
 		</div>
 	</chrome:division>
 </form:form>

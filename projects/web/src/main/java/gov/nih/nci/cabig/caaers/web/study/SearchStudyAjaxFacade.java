@@ -86,11 +86,6 @@ public class SearchStudyAjaxFacade {
                 study.addIdentifier(id);
             }
         }
-
-        if (parameterMap != null) {
-            String a = parameterMap.get("assembler_p").toString();
-        }
-
         List<Study> studies = null;
         try {
             studies = studyRepository.search(study);
