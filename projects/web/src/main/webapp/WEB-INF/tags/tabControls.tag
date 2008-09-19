@@ -17,13 +17,13 @@
     <div class="flow-buttons">
         <span class="prev">
             <c:if test="${tabNumber > 0}">
-                <input type="image" src="/caaers/images/blue/${willSave ? 'save' : ''}back_btn.png" id="flow-prev" class="tab${tabNumber - 1}" value="&laquo; ${willSave ? 'save' : ''}back"/>
+                <input type="image" src="/caaers/images/blue/${willSave ? 'save' : ''}back_btn.png" id="flow-prev" class="tab${tabNumber - 1}" value="&laquo; ${willSave ? 'save' : ''}back" alt="&laquo; ${willSave ? 'Save &amp; ' : ''}Back"/>
             </c:if>
         </span>
         <span class="next">
 
             <c:if test="${not isLast  and willSave}">
-                <input type="image" src="/caaers/images/blue/save_btn.png" id="flow-update" class="tab${tabNumber}" value="Save"/>
+                <input type="image" src="/caaers/images/blue/save_btn.png" id="flow-update" class="tab${tabNumber}" value="Save" alt="Save"/>
             </c:if>
 			<c:set var="saveText" value="save" />
             <c:set var="continueLabel" value="${isLast || willSave ? saveText : ''}"/>
@@ -33,7 +33,7 @@
             <c:if test="${not isLast}">
                 <c:set var="continueLabel" value="${continueLabel}continue"/>
             </c:if>
-            <input type="image" src="/caaers/images/blue/${continueLabel}_btn.png" id="flow-next" value="${continueLabel} &raquo;"/>
+            <input type="image" src="/caaers/images/blue/${continueLabel}_btn.png" id="flow-next" value="${continueLabel} &raquo;" alt="${continueLabel} &raquo;"/>
         </span>
     </div>
 </div>
