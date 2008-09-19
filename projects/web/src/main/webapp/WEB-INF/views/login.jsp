@@ -96,7 +96,7 @@ input{outline:none;}
             </div>
             <div class="value">
                 <input type="text" name="j_username"
-                    value="SYSTEM_ADMIN${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}"
+                    value="${sessionScope['ACEGI_SECURITY_LAST_USERNAME']}"
                     />
             </div>
         </div>
@@ -105,7 +105,7 @@ input{outline:none;}
                 Password
             </div>
             <div class="value">
-                <input type="password" name="j_password" value="system_admin"/>
+                <input type="password" name="j_password" value=""/>
             </div>
         </div>
         <div class="row">
