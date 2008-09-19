@@ -198,7 +198,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // Check if the start date is equal to or before the end date.
         if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
             errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                    "Start date cannot be earlier than End date");
+                    "End date cannot be earlier than Start date");
         }
 
         // Check if the start date is equal to end date.
