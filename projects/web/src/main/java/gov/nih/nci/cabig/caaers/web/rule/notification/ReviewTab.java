@@ -158,13 +158,11 @@ public class ReviewTab extends TabWithFields<ReportDefinitionCommand> {
         keyMap.put("Patient details", "MEDICAL_INFO_SECTION");
         keyMap.put("Patient details - Weight", "MEDICAL_INFO_SECTION~Weight");
         keyMap.put("Patient details - Height", "MEDICAL_INFO_SECTION~Height");
-        keyMap.put("Patient details - Metastatic disease sites",
-                        "MEDICAL_INFO_SECTION~Metastatic disease sites");
-        keyMap.put("Patient details - Prior Therapys", "MEDICAL_INFO_SECTION~Prior Therapys");
-        keyMap.put("Patient details - Pre-Existing Conditions",
-                        "MEDICAL_INFO_SECTION~Pre-existing conditions");
-        keyMap.put("Patient details- Concomitant Medications",
-                        "MEDICAL_INFO_SECTION~Medications");
+        keyMap.put("Patient details - Metastatic disease sites", "MEDICAL_INFO_SECTION~Metastatic disease sites");
+        keyMap.put("Patient details - Prior Therapys", "PRIOR_THERAPIES_SECTION~Prior Therapys");
+        keyMap.put("Patient details - Pre-Existing Conditions", "PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions");
+        keyMap.put("Patient details - Concomitant Medications",  "CONCOMITANT_MEDICATION_SECTION~Medications");
+        
         keyMap.put("Other contributing causes", "OTHER_CAUSE_SECTION~OtherCausess");
         keyMap.put("Radiation intervention","RADIATION_INTERVENTION_SECTION~RadiationInterventions");
         keyMap.put("Surgery intervention", "SURGERY_INTERVENTION_SECTION~SurgeryInterventions");

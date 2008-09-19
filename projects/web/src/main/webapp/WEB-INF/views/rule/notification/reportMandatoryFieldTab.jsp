@@ -89,7 +89,7 @@
 			 <tr>
 				<td>
 					<chrome:division title="Pre-existing conditions">
-						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Pre-existing conditions" />
+						<rd:renderMandatoryFields key="PRE_EXISTING_CONDITION_SECTION~Pre-existing conditions" />
 					</chrome:division>
 				</td>
 				<td>
@@ -101,12 +101,12 @@
 			 <tr>
 				<td>
 					<chrome:division title="Prior therapies">
-						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Prior Therapys" />
+						<rd:renderMandatoryFields key="PRIOR_THERAPIES_SECTION~Prior Therapys" />
 					</chrome:division>
 				</td>
 				<td>
 					<chrome:division title="Concomitant Medications">
-						<rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Medications" />
+						<rd:renderMandatoryFields key="CONCOMITANT_MEDICATION_SECTION~Medications" />
 					</chrome:division>
 				</td>
 			</tr>
