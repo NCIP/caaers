@@ -23,7 +23,6 @@
             	
             	if($('identifiersLazy['  + index + '].organization'))
             	{
-        		
             	this.organizationName = "identifiersLazy["  + index + "].organization";
                 this.organizationInputId = this.organizationName + "-input";
             	this.orgName = orgName;
@@ -39,7 +38,7 @@
             	}        	
             	
             	 //only one primary indicator is possible, by default Coordinating center identifier is primary
-            	 this.indicator = "identifiersLazy["  + index + "].primaryIndicator1";
+            	 this.indicator = "identifiersLazy["  + index + "].primaryIndicator";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
             	 		if(i == this.index){
