@@ -63,9 +63,7 @@ public class TreatmentTab extends AeTab {
                         "Start date of first course", false);
         firstCourseDateField.getAttributes().put(InputField.HELP,
                         "ae.treatment.aeReport.treatmentInformation.firstCourseDate");
-        InputField treatmentTimeField = createTimeField("primaryTreatmentApproximateTime", "Treatment time");
-        treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
-
+       
         InputField adverseEventCourse_dateField = InputFieldFactory.createPastDateField("adverseEventCourse.date",
                         "Start date of course associated with expedited report", false);
         adverseEventCourse_dateField.getAttributes().put(InputField.HELP,
@@ -73,7 +71,7 @@ public class TreatmentTab extends AeTab {
 
         creator.createFieldGroup("treatmentInfo", null, "treatmentInformation",
         		assignmentField, descField, newDescField, firstCourseDateField,
-                        adverseEventCourse_dateField, treatmentTimeField, eventCourseField, totalCourseField);
+                        adverseEventCourse_dateField,  eventCourseField, totalCourseField);
 
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent",
                         false, WebUtils.collectOptions(

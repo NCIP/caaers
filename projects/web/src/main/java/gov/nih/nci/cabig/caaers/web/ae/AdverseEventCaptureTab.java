@@ -180,7 +180,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         boolean fromListPage = false;
         fromListPage = paramNames.contains("displayReportingPeriod");
         if (fromListPage)
-            command.refreshAssignment(Integer.decode(rpId));
+            command.refreshAssignment(Integer.parseInt(rpId));
     }
 
     @Override

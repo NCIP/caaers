@@ -98,7 +98,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		String rpId = request.getParameter("adverseEventReportingPeriod");
 		CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
 		if(!StringUtils.isEmpty(rpId)) {
-			cmd.refreshAssignment(Integer.decode(rpId));
+			cmd.refreshAssignment(Integer.parseInt(rpId));
 		}
 	}
 	
@@ -162,6 +162,28 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         }
         else
         	return super.handleInvalidSubmit(request, response);
+	}
+	
+	/**
+	 * If the request is from the Manage Reports page (link has displayReportingPeriod), 
+	 *  - If there is a valid adverseEventReportingPeriod, we need to synchronize the assignment.
+	 *  - If there is no valid adverseEventReportingPeriod, we need to make the assignment null, so that it is refreshed 
+	 *  	from Study-Participant combination (this is for createNew link in Manage reports)
+	 */
+	@Override
+	protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
+		super.onBind(request, command, errors); //binding is done.
+        boolean fromListPage =  request.getParameterMap().keySet().contains("displayReportingPeriod");
+		if(fromListPage){
+			CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
+			AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
+			if(reportingPeriod != null){
+				cmd.setAssignment(reportingPeriod.getAssignment());
+			}else{
+				cmd.setAssignment(null);
+			}
+				
+		}
 	}
 	
 	/**

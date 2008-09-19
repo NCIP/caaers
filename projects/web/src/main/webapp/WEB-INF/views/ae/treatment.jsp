@@ -168,7 +168,6 @@
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[6]}"/>
-            	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[7]}"/>
 			</chrome:division>
             
             

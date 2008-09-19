@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -173,17 +174,17 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		Boolean displaySolicitedTable = false; // For Solicited Adverse Events table
 		
 		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(ae.getRequiresReporting())
+			if(BooleanUtils.isTrue(ae.getRequiresReporting()))
 				displaySeriousTable = true;
 		}
 		
 		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(!ae.getSolicited() && !ae.getRequiresReporting())
+			if(!ae.getSolicited() && BooleanUtils.isNotTrue(ae.getRequiresReporting()))
 				displayObservedTable = true;
 		}
 		
 		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
-			if(ae.getSolicited() && !ae.getRequiresReporting())
+			if(ae.getSolicited() && BooleanUtils.isNotTrue(ae.getRequiresReporting()))
 				displaySolicitedTable = true;
 		}
 		refdata.put("displaySeriousTable", displaySeriousTable);

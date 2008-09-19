@@ -41,8 +41,10 @@ public class DescriptionTab extends AeTab {
 
         InputField removedDateField = createPastDateField(baseProp + ".dateRemovedFromProtocol",
                 "Date removed from protocol", false);
-
+        InputField treatmentTimeField = createTimeField("primaryTreatmentApproximateTime", "Treatment time");
+        treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
         creator.createFieldGroup("desc", desc,
+        		treatmentTimeField,
                 createSelectField(baseProp + ".presentStatus", "Present status", false, statusOpts),
                 createPastDateField(baseProp + ".recoveryDate", "Date of recovery or death", false),
                 createBooleanSelectField(baseProp + ".retreated", "Has the participant been re-treated?", false),
