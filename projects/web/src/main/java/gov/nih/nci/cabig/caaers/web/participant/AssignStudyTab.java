@@ -91,7 +91,10 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        if (command.getStudySite() != null) command.setStudy(command.getStudySite().getStudy());
+        if (command.getStudySite() != null) {
+            command.setStudy(command.getStudySite().getStudy());
+            command.getStudySite().getStudy().getPrimaryIdentifier();
+        };
     }
 
     public void setStudyRepository(final StudyRepository studyRepository) {

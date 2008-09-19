@@ -70,28 +70,28 @@ function submitPage(s){
 				
 				<td valign="top" width="50%">
 					<chrome:division title="Study Details">
-					   <c:forEach var="studySite" items="${command.studySites}" varStatus="status">
-      					<div class="row">
-      						<div class="label">Study primary ID</div>
-      						<div class="value">${studySite.study.primaryIdentifier ne null ? studySite.study.primaryIdentifier.value : ''}</div>
-      					</div>
-      		
-      					<div class="row">
-      						<div class="label">Study short title</div>
-      						<div class="value">${studySite.study.shortTitle}</div>
-      					</div>
-      					<div class="row">
-      						<div class="label">Study long title</div>
-      						<div class="value">${studySite.study.longTitle}</div>
-      					</div>
-      		
-      					<div class="row">
-      						<div class="label">Site</div>
-      						<div class="value">${studySite.organization.name}</div>
-      					</div>
-      					<img src="<chrome:imageUrl name="spacer.gif"/>" width="1"
-							height="1" class="heightControl">
-					   </c:forEach>
+                        <c:set var="studySite" value="${command.studySite}"/>
+
+                        <div class="row">
+                            <div class="label">Study primary ID</div>
+                            <div class="value">${studySite.study.primaryIdentifier ne null ? studySite.study.primaryIdentifier.value : ''}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="label">Study short title</div>
+                            <div class="value">${studySite.study.shortTitle}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label">Study long title</div>
+                            <div class="value">${studySite.study.longTitle}</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="label">Site</div>
+                            <div class="value">${studySite.organization.name}</div>
+                        </div>
+                        <%--<img src="<chrome:imageUrl name="spacer.gif"/>" width="1" height="1" class="heightControl">--%>
+
                         <div class="row">
                             <div class="label">Study subject identifer </div>
                             <div class="value">${command.studySubjectIdentifier}</div>

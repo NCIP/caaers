@@ -34,7 +34,7 @@
 
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                     <tr class="results">
-                        <td></td>
+                        <td>${assignment.studySite.study.primaryIdentifier}</td>
                         <td>${assignment.studySite.study.shortTitle}</td>
                         <td>${assignment.studySite.organization.name}</td>
                         <td>${assignment.studySubjectIdentifier}</td>
@@ -126,7 +126,7 @@
 		
         <chrome:division title="Medical History">
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
-                <chrome:division title="Assignment # ${i.count}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
+                <chrome:division title="Assignment #${i.count} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
                     <table width=100% border="0">
                         <tr><td colspan="4"><h2><tags:message key="section.general" /></h2></td></tr>
                         <tr><td></td><td colspan="3"><tags:message key="baseline.performance" />: ${assignment.baselinePerformance}</td></tr>

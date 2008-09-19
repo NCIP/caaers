@@ -84,6 +84,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
             StudySite studySite = studySiteDao.findByStudyAndOrganization(command.getStudy().getId(), command.getOrganization().getId());
             participantCommand.getAssignment().setStudySite(studySite);
             participantCommand.getAssignment().setParticipant(participantCommand.getParticipant());
+            studySite.getStudy().getPrimaryIdentifier();
         }
     }
 
