@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -529,6 +530,11 @@ public class AdverseEventReportSerializer {
 		    	s.setTargetAccrualNumber(hibernateStudy.getTargetAccrualNumber());
 		    	s.setCtcVersion(hibernateStudy.getCtcVersion());
 		    	s.setDesign(hibernateStudy.getDesign());
+
+		    	List<CtepStudyDisease> ctepds = hibernateStudy.getCtepStudyDiseases();
+		    	for (CtepStudyDisease dis:ctepds) {
+		    		s.addCtepStudyDisease(dis);
+		    	}
 		    	
 		    	List<StudyAgent> sas = hibernateStudy.getStudyAgents();
 		    	for (StudyAgent sa:sas) {
@@ -556,6 +562,8 @@ public class AdverseEventReportSerializer {
 	    	StudyAgent studyAgent = new StudyAgent();
 	    	studyAgent.setIndType(sa.getIndType());
 	    	studyAgent.setAgent(sa.getAgent());
+	    	studyAgent.setAgentAsString(sa.getAgentAsString());
+	    	studyAgent.setOtherAgent(sa.getOtherAgent());
 	    	return studyAgent;
 	    }
 	    private Organization getOrganization(Organization org) {
@@ -688,7 +696,7 @@ public class AdverseEventReportSerializer {
 		    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
 		    		ca1.setDose(ca.getDose());
 		    		ca1.setModifiedDose(ca.getModifiedDose());
-		    		ca1.setStudyAgent(ca.getStudyAgent());
+		    		ca1.setStudyAgent(getStudyAgent(ca.getStudyAgent()));
 		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
 		    		ca1.setFormulation(ca.getFormulation());
 		    		ca1.setLotNumber(ca.getLotNumber());
