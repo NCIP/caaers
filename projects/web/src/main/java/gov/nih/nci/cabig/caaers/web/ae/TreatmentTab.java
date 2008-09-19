@@ -52,10 +52,10 @@ public class TreatmentTab extends AeTab {
         InputFieldAttributes.setColumns(newDescField, 70);
         InputFieldAttributes.setRows(newDescField, 4);
         InputField eventCourseField = InputFieldFactory
-                        .createTextField("adverseEventCourse.number",
+                        .createNumberField("adverseEventCourse.number",
                                         "Course number on which event occurred", false);
         InputFieldAttributes.setSize(eventCourseField, 4);
-        InputField totalCourseField = InputFieldFactory.createTextField("totalCourses",
+        InputField totalCourseField = InputFieldFactory.createNumberField("totalCourses",
                         "Total number of courses to date", false);
         InputFieldAttributes.setSize(totalCourseField, 4);
 
@@ -149,23 +149,6 @@ public class TreatmentTab extends AeTab {
 
     }
 
-    @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        super.validate(command, commandBean, fieldGroups, errors);
-        if ("other".equals(command.getTreatmentDescriptionType())) {
-            if (command.getAeReport().getTreatmentInformation().getTreatmentDescription() == null) {
-                errors.rejectValue("aeReport.treatmentInformation.treatmentDescription",
-                                "REQUIRED",
-                                "Missing description of treatment assignment or dose level");
-            }
-        } else {
-            if (command.getAeReport().getTreatmentInformation().getTreatmentAssignment() == null) {
-                errors.rejectValue("aeReport.treatmentInformation.treatmentAssignment", "REQUIRED",
-                                "Missing description of treatment assignment or dose level");
-            }
-        }
-    }
 
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;

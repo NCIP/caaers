@@ -22,7 +22,7 @@ public class NumberRangeValidator extends FieldValidator {
     }
 
     public String getValidatorCSSClassName() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return "NUMERIC";
     }
 
     @Override
