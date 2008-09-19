@@ -23,6 +23,13 @@ function onAjaxSubjectSearch() {
 
 function ajaxSubjectSearch(searchText, searchType) {
     // START tags:tabMethod
+        var text = $F('searchText')
+
+        if(text == '' ||text.length==1){
+            $('error').innerHTML="<font color='#FF0000'>Provide at least two character in the search field</font>"
+        }else{
+            $('error').innerHTML=""
+
 
 <tags:tabMethod
        method="searchSubjects"
@@ -34,7 +41,7 @@ function ajaxSubjectSearch(searchText, searchType) {
 
     // END tags:tabMethod
 }
-        
+}
 </script>
 
 </head>
@@ -57,7 +64,9 @@ function ajaxSubjectSearch(searchText, searchType) {
             <tr>
                 <td></td>
                 <td></td>
-                <td class="notation">Minimum two characters for search.</td>
+                <td class="notation"><div id="error"></div>
+			</td>
+
             </tr>
         </table>
     </form:form>
