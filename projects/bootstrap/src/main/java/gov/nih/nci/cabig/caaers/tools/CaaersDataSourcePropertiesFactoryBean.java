@@ -27,7 +27,7 @@ public class CaaersDataSourcePropertiesFactoryBean extends
 
     public static final String WEBSSO_BASE_URL = "webSSO.server.baseUrl";
 
-    public static final String WEBSSO_SERVER_TRUST_CERTIFICATE = "webSSO.server.trustCert";
+    public static final String WEBSSO_SERVER_TRUST_CERTIFICATE = "webSSO.trustStore";
 
     public static final String WEBSSO_HOST_CERTIFICATE = "hostCertificate";
 
