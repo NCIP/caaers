@@ -64,14 +64,14 @@ public class InputFieldFactoryTest extends AbstractTestCase {
     }
 
     public void testCreateDateFieldIfDateIsRequired() {
-        InputField field = InputFieldFactory.createDateField("propertyName", "value", true);
+        InputField field = InputFieldFactory.createPastDateField("propertyName", "value", true);
         assertEquals("commons-validations.js need css validate-NOTEMPTY&&DATE class", "validate-NOTEMPTY&&DATE", field.getValidatorClassName());
         assertEquals("field must be date field", InputField.Category.DATE, field.getCategory());
 
     }
 
     public void testCreateDateFieldIfDateIsNotRequired() {
-        InputField field = InputFieldFactory.createDateField("propertyName", "value", false);
+        InputField field = InputFieldFactory.createPastDateField("propertyName", "value", false);
         assertEquals("commons-validations.js need css validate-DATE class", "validate-DATE", field.getValidatorClassName());
 
         assertEquals("field must be date field", InputField.Category.DATE, field.getCategory());

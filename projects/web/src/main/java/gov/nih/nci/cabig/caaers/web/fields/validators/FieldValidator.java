@@ -8,7 +8,8 @@ public abstract class FieldValidator {
 
     public static final FieldValidator PHONE_VALIDATOR;
 
-    public static final FieldValidator DATE_VALIDATOR;
+    public static final FieldValidator PAST_DATE_VALIDATOR;
+    public static final FieldValidator FUTURE_DATE_VALIDATOR;
 
     public static final FieldValidator DATE_VALUE_VALIDATOR;
 
@@ -21,12 +22,13 @@ public abstract class FieldValidator {
         NOT_NULL_VALIDATOR = new NotNullValidator();
         EMAIL_VALIDATOR = new EmailValidator();
         PHONE_VALIDATOR = new PhoneNumberValidator();
-        DATE_VALIDATOR = new DateValidator();
+        PAST_DATE_VALIDATOR = new PastDateValidator();
         DATE_VALUE_VALIDATOR = new DateValueValidator();
         NUMBER_VALIDATOR = new NumberValidator();
         HOUR_VALIDATOR = createNumberRangeValidator(1, 12);
         MINUTE_VALIDATOR = createNumberRangeValidator(0, 59);
         ZIP_CODE_VALIDATOR = new ZipCodeValidator();
+        FUTURE_DATE_VALIDATOR = new FutureDateValidator();
     }
 
     static NumberRangeValidator createNumberRangeValidator(int begin, int end) {

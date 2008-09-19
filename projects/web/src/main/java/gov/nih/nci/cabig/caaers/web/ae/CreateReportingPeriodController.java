@@ -92,8 +92,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createPastDateField("reportingPeriod.startDate", "Start date", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createFutureDateField("reportingPeriod.endDate", "End date", true));
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Evaluation Period Type", true, createEpochOptions(command)));
 
         InputField descriptionField = InputFieldFactory.createTextArea("reportingPeriod.description", "Description", false);

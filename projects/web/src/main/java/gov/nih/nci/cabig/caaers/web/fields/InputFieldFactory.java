@@ -42,16 +42,27 @@ public class InputFieldFactory {
     }
 
 
-    public static InputField createDateField(String propertyName, String displayName,
-                                             boolean required) {
-        FieldValidator validators[] = null;
-        if (required) {
-            validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.DATE_VALIDATOR};
-        } else {
-            validators = new FieldValidator[]{FieldValidator.DATE_VALIDATOR};
-        }
-        return createInputField(DATE, propertyName, displayName, validators);
-    }
+    public static InputField createPastDateField(String propertyName, String displayName,
+                                                    boolean required) {
+           FieldValidator validators[] = null;
+           if (required) {
+               validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.PAST_DATE_VALIDATOR};
+           } else {
+               validators = new FieldValidator[]{FieldValidator.PAST_DATE_VALIDATOR};
+           }
+           return createInputField(DATE, propertyName, displayName, validators);
+       }
+
+       public static InputField createFutureDateField(String propertyName, String displayName,
+                                                      boolean required) {
+           FieldValidator validators[] = null;
+           if (required) {
+               validators = new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.FUTURE_DATE_VALIDATOR};
+           } else {
+               validators = new FieldValidator[]{FieldValidator.FUTURE_DATE_VALIDATOR};
+           }
+           return createInputField(DATE, propertyName, displayName, validators);
+       }
 
 
     public static InputField createSplitDateField(String propertyName, String displayName,

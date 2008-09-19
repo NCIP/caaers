@@ -49,8 +49,8 @@ public abstract class BasicsTab extends AeTab {
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
                 InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
-                InputFieldFactory.createDateField("startDate", "Start date", false),
-                InputFieldFactory.createDateField("endDate", "End date", false),
+                InputFieldFactory.createPastDateField("startDate", "Start date", false),
+                InputFieldFactory.createPastDateField("endDate", "End date", false),
                 attributionField,
                 timeOfEventField,
                 InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),

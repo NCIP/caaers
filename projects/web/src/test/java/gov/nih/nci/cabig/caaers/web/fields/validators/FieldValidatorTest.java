@@ -13,7 +13,7 @@ public class FieldValidatorTest extends AbstractTestCase {
     protected void setUp() throws Exception {
 
         numberValidator = FieldValidator.NUMBER_VALIDATOR;
-        dateValidator = FieldValidator.DATE_VALIDATOR;
+        dateValidator = FieldValidator.PAST_DATE_VALIDATOR;
         notNullValidator = FieldValidator.NOT_NULL_VALIDATOR;
         zipCodeValidator = FieldValidator.ZIP_CODE_VALIDATOR;
 

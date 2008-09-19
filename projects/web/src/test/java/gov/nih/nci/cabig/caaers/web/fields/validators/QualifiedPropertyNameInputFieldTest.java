@@ -14,7 +14,7 @@ public class QualifiedPropertyNameInputFieldTest extends AbstractTestCase {
     private QualifiedPropertyNameInputField field;
 
     public void testGetValidatorClassNameIfOnlySingleValidatorIsUsed() throws Exception {
-        InputField dateField = InputFieldFactory.createDateField("propertyName", "displayName", false);
+        InputField dateField = InputFieldFactory.createPastDateField("propertyName", "displayName", false);
         createField(dateField);
         assertNotNull(field.getValidators());
         assertTrue(field.getValidators().length > 0);

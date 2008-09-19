@@ -77,7 +77,7 @@ public class InputFieldTest extends AbstractTestCase {
     }
 
     public void testGetValidatorClassNameIfOnlySingleValidatorIsUsed() throws Exception {
-        field = new AbstractInputField("propertyName", "displayName", FieldValidator.DATE_VALIDATOR) {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.PAST_DATE_VALIDATOR) {
             public Category getCategory() {
                 return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
@@ -138,7 +138,7 @@ public class InputFieldTest extends AbstractTestCase {
     }
 
     public void testGetValidatorClassNameIfMultipleValidatorIsUsed() throws Exception {
-        field = new AbstractInputField("propertyName", "displayName", FieldValidator.DATE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR) {
+        field = new AbstractInputField("propertyName", "displayName", FieldValidator.PAST_DATE_VALIDATOR, FieldValidator.NOT_NULL_VALIDATOR) {
             public Category getCategory() {
                 return null;
             }

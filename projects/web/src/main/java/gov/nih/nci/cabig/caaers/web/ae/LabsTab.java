@@ -38,7 +38,7 @@ public class LabsTab extends AeTab {
     }
 
     private InputField createLabDateField(String propName, String displayName) {
-        return InputFieldFactory.createDateField(propName + ".date", displayName + " date",
+        return InputFieldFactory.createPastDateField(propName + ".date", displayName + " date",
                 false);
     }
 
@@ -66,7 +66,7 @@ public class LabsTab extends AeTab {
         InputFieldAttributes.setSize(otherField, 60);
 
         InputField siteField = InputFieldFactory.createTextField("site", "Site", false);
-        InputField labDateField = InputFieldFactory.createDateField("labDate", "Date", false);
+        InputField labDateField = InputFieldFactory.createPastDateField("labDate", "Date", false);
         InputField infectiousAgentField = InputFieldFactory.createTextArea("infectiousAgent",
                 "Infectious Agent", false);
         InputFieldAttributes.setColumns(infectiousAgentField, 60);

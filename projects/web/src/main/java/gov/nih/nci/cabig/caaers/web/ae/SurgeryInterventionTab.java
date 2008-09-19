@@ -39,7 +39,7 @@ public class SurgeryInterventionTab extends AeTab {
                         new SimpleNumericDisplayNameCreator("Surgery"), codeField, descField,
                         InputFieldFactory.createAutocompleterField("interventionSite",
                                         "Intervention site", false), InputFieldFactory
-                                        .createDateField("interventionDate",
+                                        .createPastDateField("interventionDate",
                                                         "Date of intervention", false));
     }
 
