@@ -83,7 +83,7 @@
 
     <c:when test="${field.categoryName == 'autocompleter'}">
         <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text"
-               id="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''}
+               id="${field.propertyName}-input" name="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''}
                class="autocomplete ${cssClass} ${field.validatorClassName}"/>
         <tags:indicator id="${field.propertyName}-indicator"/>
         <c:if test="${field.attributes.enableClear and not disabled}">
