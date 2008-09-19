@@ -24,7 +24,7 @@
 </c:if>	
 <c:if test="${isSolicitedAE}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpstatus" begin="${aeTermIndex}">
-		<td><tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }"/></td>
+		<caaers:renderFilter elementID="${field.propertyName}"><td><tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }"/></td></caaers:renderFilter>
 	</c:forEach>
 </c:if>		
 		

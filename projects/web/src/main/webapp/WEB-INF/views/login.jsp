@@ -116,7 +116,7 @@ input {
   <div class="row">
     <div class="label"> Password </div>
     <div class="value">
-      <input type="password" name="j_password" value="system_admin"/>
+      <input type="password" name="j_password" value=""/>
     </div>
   </div>
   <div class="forgot"> <a href='<c:url value="/public/user/resetPassword" />'>Forgot Password?</a> </div>
