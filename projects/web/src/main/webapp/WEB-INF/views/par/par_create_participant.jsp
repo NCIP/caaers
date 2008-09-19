@@ -191,7 +191,7 @@ ${command.organization}
         <c:forEach items="${command.participant.organizationIdentifiers}" varStatus="status" var="idt">
             <par:parIdentifier
                     title="Subject Identifier ${status.index + 1}"
-                    disableDelete="${fn:length(command.participant.organizationIdentifiers) lt 2}"
+                    disableDelete="false"
                     sectionClass="organization-section-row"
                     removeButtonAction="removeIdentifier"
                     index="${status.index}"
@@ -219,7 +219,7 @@ ${command.organization}
         <c:forEach items="${command.participant.systemAssignedIdentifiers}" varStatus="status">
             <par:parIdentifier
                     title="Subject Identifier ${status.index + 1}"
-                    disableDelete="${fn:length(command.participant.systemAssignedIdentifiers) lt 2}"
+                    disableDelete="false"
                     sectionClass="system-section-row"
                     removeButtonAction="removeIdentifier"
                     index="${status.index}"

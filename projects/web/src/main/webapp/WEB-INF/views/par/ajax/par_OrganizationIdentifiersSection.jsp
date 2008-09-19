@@ -5,7 +5,7 @@
 
 <par:parIdentifier
     title="Subject Identifier ${status.index + 1}"
-    disableDelete="${fn:length(command.participant.organizationIdentifiers) lt 2}"
+    disableDelete="false"
     sectionClass="organization-section-row"
     removeButtonAction="removeIdentifier"
     index="${index}"
