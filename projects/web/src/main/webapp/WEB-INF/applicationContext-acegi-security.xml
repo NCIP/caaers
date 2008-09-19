@@ -218,7 +218,7 @@
 		<property name="serviceProperties">
 			<ref local="serviceProperties"/>
 		</property>
-		<property name="trustStore" value="s[webSSO.server.trustCert]"/>
+		<property name="trustStore" value="s[webSSO.trustStore]"/>
 	</bean>
     <bean id="webSSOLogoutFilter"
           class="org.acegisecurity.ui.logout.LogoutFilter" lazy-init="true">
