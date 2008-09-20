@@ -1,6 +1,6 @@
 <ns1:ServiceDescription introduceVersion="1.2" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns2:Namespace location="./aeNotification.xsd" namespace="http://semanticbits.com/aeNotification" packageName="aenotification" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./aeNotification.xsd" namespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain" packageName="gov.nih.nci.cabig.ccts.ae.domain" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="aeNotification" xsi:type="ns2:SchemaElementType"/>
   </ns2:Namespace>
   <ns2:Namespace namespace="http://www.w3.org/2001/XMLSchema" xsi:type="ns2:NamespaceType">
@@ -98,13 +98,10 @@
     </ns4:Method>
     <ns4:Method description="" isImported="false" isProvided="false" name="register" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns10:aeNotification" description="" isArray="false" name="aeNotification" xmlns:ns10="http://semanticbits.com/aeNotification"/>
+      <ns4:Input qName="ns10:aeNotification" description="" isArray="false" name="aeNotification" xmlns:ns10="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain"/>
      </ns4:Inputs>
      <ns4:Output qName="void" description="" isArray="false"/>
-     <ns4:Exceptions>
-      <ns4:Exception description="" name="InvalidRegistration" qname="ns11:InvalidRegistration" xmlns:ns11="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types"/>
-      <ns4:Exception description="" name="RegistrationFailed" qname="ns12:RegistrationFailed" xmlns:ns12="http://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types"/>
-     </ns4:Exceptions>
+     <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>
    <ns3:ResourceFrameworkOptions xsi:type="ns3:ResourceFrameworkOptions">
@@ -115,5 +112,5 @@
    </ns3:ResourceFrameworkOptions>
   </ns3:Service>
  </ns3:Services>
- <ns13:Extensions xsi:type="ns13:ExtensionsType" xmlns:ns13="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
+ <ns11:Extensions xsi:type="ns11:ExtensionsType" xmlns:ns11="gme://gov.nih.nci.cagrid.introduce/1/Extension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"/>
 </ns1:ServiceDescription>

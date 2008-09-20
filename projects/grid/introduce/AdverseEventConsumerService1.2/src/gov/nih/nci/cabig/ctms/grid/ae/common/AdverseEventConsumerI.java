@@ -18,7 +18,7 @@ public interface AdverseEventConsumerI {
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
 
-  public void register(aenotification.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed ;
+  public void register(gov.nih.nci.cabig.ccts.ae.domain.AENotificationType aeNotification) throws RemoteException ;
 
 }
 

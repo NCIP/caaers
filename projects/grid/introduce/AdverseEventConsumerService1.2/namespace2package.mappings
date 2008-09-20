@@ -6,6 +6,6 @@ http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01
 http\://docs.oasis-open.org/wsrf/2004/06/wsrf-WS-ResourceProperties-1.2-draft-01.wsdl=org.oasis.wsrf.properties
 http\://security.introduce.cagrid.nci.nih.gov/ServiceSecurity=gov.nih.nci.cagrid.introduce.security.stubs
 
-http\://semanticbits.com/aeNotification=aenotification
+gme\://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain=gov.nih.nci.cabig.ccts.ae.domain
 gme\://caGrid.caBIG/1.0/gov.nih.nci.cagrid.metadata.security=gov.nih.nci.cagrid.metadata.security
 http\://ae.grid.ctms.cabig.nci.nih.gov/AdverseEventConsumer/types=gov.nih.nci.cabig.ctms.grid.ae.stubs.types

@@ -44,10 +44,11 @@ public class AdverseEventConsumerClient extends AdverseEventConsumerClientBase i
         System.out.println(AdverseEventConsumerClient.class.getName() + " -url <service url>");
     }
 
-    private aenotification.AENotificationType getAe(final String aeFile) throws Exception {
+    private gov.nih.nci.cabig.ccts.ae.domain.AENotificationType getAe(final String aeFile) throws Exception {
         FileReader reader = new FileReader(aeFile);
         InputStream is = getClass().getResourceAsStream("client-config.wsdd");
-        aenotification.AENotificationType ae = (aenotification.AENotificationType) Utils.deserializeObject(reader, aenotification.AENotificationType.class, is);
+        gov.nih.nci.cabig.ccts.ae.domain.AENotificationType ae = 
+        	(gov.nih.nci.cabig.ccts.ae.domain.AENotificationType) Utils.deserializeObject(reader, gov.nih.nci.cabig.ccts.ae.domain.AENotificationType.class, is);
 
         return ae;
     }
@@ -60,7 +61,7 @@ public class AdverseEventConsumerClient extends AdverseEventConsumerClientBase i
                 if (args[0].equals("-url")) {
                     AdverseEventConsumerClient client = new AdverseEventConsumerClient(args[1]);
 
-                    aenotification.AENotificationType notificationType = client.getAe(
+                    gov.nih.nci.cabig.ccts.ae.domain.AENotificationType notificationType = client.getAe(
                             "/Users/saurabhagrawal/projects/latest/psc-2.1/grid/adverse-event-consumer/test/resources/SampleAdverseEventMessage.xml");
                     client.register(notificationType);
 
@@ -76,38 +77,39 @@ public class AdverseEventConsumerClient extends AdverseEventConsumerClientBase i
             e.printStackTrace();
             System.exit(1);
         }
+        
     }
 
-    public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
-        synchronized (portTypeMutex) {
-            configureStubSecurity((Stub) portType, "getMultipleResourceProperties");
-            return portType.getMultipleResourceProperties(params);
-        }
+  public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getMultipleResourceProperties");
+    return portType.getMultipleResourceProperties(params);
     }
+  }
 
-    public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
-        synchronized (portTypeMutex) {
-            configureStubSecurity((Stub) portType, "getResourceProperty");
-            return portType.getResourceProperty(params);
-        }
+  public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"getResourceProperty");
+    return portType.getResourceProperty(params);
     }
+  }
 
-    public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
-        synchronized (portTypeMutex) {
-            configureStubSecurity((Stub) portType, "queryResourceProperties");
-            return portType.queryResourceProperties(params);
-        }
+  public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"queryResourceProperties");
+    return portType.queryResourceProperties(params);
     }
+  }
 
-    public void register(aenotification.AENotificationType aeNotification) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
-        synchronized (portTypeMutex) {
-            configureStubSecurity((Stub) portType, "register");
-            gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest();
-            gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification aeNotificationContainer = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification();
-            aeNotificationContainer.setAeNotification(aeNotification);
-            params.setAeNotification(aeNotificationContainer);
-            gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse boxedResult = portType.register(params);
-        }
+  public void register(gov.nih.nci.cabig.ccts.ae.domain.AENotificationType aeNotification) throws RemoteException {
+    synchronized(portTypeMutex){
+      configureStubSecurity((Stub)portType,"register");
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest();
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification aeNotificationContainer = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequestAeNotification();
+    aeNotificationContainer.setAeNotification(aeNotification);
+    params.setAeNotification(aeNotificationContainer);
+    gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse boxedResult = portType.register(params);
     }
+  }
 
 }

@@ -26,7 +26,7 @@ public class AdverseEventConsumerProviderImpl{
 	}
 	
 
-    public gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse register(gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params) throws RemoteException, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.InvalidRegistration, gov.nih.nci.cabig.ctms.grid.ae.stubs.types.RegistrationFailed {
+    public gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse register(gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterRequest params) throws RemoteException {
     gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse boxedResult = new gov.nih.nci.cabig.ctms.grid.ae.stubs.RegisterResponse();
     impl.register(params.getAeNotification().getAeNotification());
     return boxedResult;
