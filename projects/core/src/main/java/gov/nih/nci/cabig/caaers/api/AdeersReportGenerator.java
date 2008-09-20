@@ -303,7 +303,7 @@ public class AdeersReportGenerator {
             }
             // System.out.println(str1);
 
-            aeg.generateDcpSaeForm(str1, "/Users/sakkala/tech/caaers/dcp/dcp.pdf");
+            aeg.generateMedwatchPdf(str1, "/Users/sakkala/tech/caaers/dcp/myMedWatch.pdf");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
