@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	xmlns:apis="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain"
-	targetNamespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain" elementFormDefault="qualified"
+	xmlns:apis="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.loadlabs.domain"
+	targetNamespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.loadlabs.domain" elementFormDefault="qualified"
 	attributeFormDefault="unqualified">
 	<xs:element name="StudySite" type="apis:StudySite"/>
 	<xs:complexType name="StudySite">

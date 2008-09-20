@@ -12,18 +12,13 @@ import java.rmi.RemoteException;
  */
 public interface LabConsumerServiceI {
 
+  public gov.nih.nci.cabig.ccts.loadlabs.domain.Acknowledgement loadLabs(gov.nih.nci.cabig.ccts.loadlabs.domain.LoadLabsRequest loadLabsRequest) throws RemoteException ;
+
   public org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse getMultipleResourceProperties(org.oasis.wsrf.properties.GetMultipleResourceProperties_Element params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.GetResourcePropertyResponse getResourceProperty(javax.xml.namespace.QName params) throws RemoteException ;
 
   public org.oasis.wsrf.properties.QueryResourcePropertiesResponse queryResourceProperties(org.oasis.wsrf.properties.QueryResourceProperties_Element params) throws RemoteException ;
-
-  /**
-   * load lab data
-   *
-   * @param loadLabsRequest
-   */
-  public gov.nih.nci.cabig.ccts.domain.Acknowledgement loadLabs(gov.nih.nci.cabig.ccts.domain.LoadLabsRequest loadLabsRequest) throws RemoteException ;
 
 }
 
