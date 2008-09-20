@@ -428,6 +428,9 @@ public class AdverseEventReportSerializer {
 		    	adverseEventResponseDescription.setAutopsyPerformed(aerd.getAutopsyPerformed());
 		    	adverseEventResponseDescription.setCauseOfDeath(aerd.getCauseOfDeath());
 		    	
+		    	adverseEventResponseDescription.setPrimaryTreatment(aerd.getPrimaryTreatment());
+		    	adverseEventResponseDescription.setPrimaryTreatmentApproximateTime(aerd.getPrimaryTreatmentApproximateTime());
+		    	
 		    	
 	    	} catch (Exception e) {
 	    		throw new Exception ("Error building getAdverseEventResponseDescription() "+e.getMessage() , e);
