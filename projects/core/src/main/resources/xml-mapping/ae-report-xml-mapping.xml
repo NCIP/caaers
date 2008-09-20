@@ -921,10 +921,15 @@
     <field name="Agent" type="gov.nih.nci.cabig.caaers.domain.Agent">
       <bind-xml name="Agent"/>
     </field>
-
     <field name="indType" type="gov.nih.nci.cabig.caaers.domain.INDType">
       <bind-xml name="INDType"/>
-    </field>  
+    </field>     
+    <field name="agentAsString" type="string" >
+      <bind-xml name="agentAsString"/>
+    </field>
+    <field name="otherAgent" type="string" >
+      <bind-xml name="otherAgent"/>
+    </field>
    </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.INDType" verify-constructable="false">
@@ -981,13 +986,15 @@
       collection="arraylist">
       <bind-xml name="CourseAgent"/>
     </field>
-    
+    <!--
     <field name="primaryTreatment" type="string">
       <bind-xml name="primaryTreatment" node="element"/>
     </field>
+    
     <field name="primaryTreatmentApproximateTime" type="gov.nih.nci.cabig.caaers.domain.TimeValue">
       <bind-xml name="primaryTreatmentApproximateTime"/>
-    </field>        
+    </field>
+        -->    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment">
@@ -1260,6 +1267,9 @@
     <field name="minute" type="integer">
       <bind-xml name="minute" node="element"/>
     </field>          
+    <field name="type" type="integer">
+      <bind-xml name="type" node="element"/>
+    </field>
   </class>
     
   <class name="gov.nih.nci.cabig.caaers.domain.StudySite">
@@ -1357,6 +1367,15 @@
     <field name="nciIdentifier" type="string">
       <bind-xml name="nciIdentifier" node="element"/>
     </field>
+    <field name="emailAddress" type="string">
+      <bind-xml name="emailAddress" node="element"/>
+    </field>
+    <field name="phoneNumber" type="string">
+      <bind-xml name="phoneNumber" node="element"/>
+    </field>
+     <field name="faxNumber" type="string">
+      <bind-xml name="faxNumber" node="element"/>
+    </field>   
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Study">
@@ -1418,6 +1437,7 @@
     <field name="ctepStudyDiseases" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease" collection="arraylist">
       <bind-xml name="CtepStudyDisease"/>
     </field> 
+
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.Identifier">
