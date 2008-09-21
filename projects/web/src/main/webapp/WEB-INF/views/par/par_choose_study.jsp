@@ -70,7 +70,7 @@ function ajaxStudySearch(searchText, searchType) {
                             <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
                         </td>
                         <td><form:input path="searchText" size="25" /></td>
-                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
+                        <td><input type="button" value="Search" onClick="$('bigSearch').show(); ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
                     </tr>
                     </table>
             </td>
@@ -81,6 +81,11 @@ function ajaxStudySearch(searchText, searchType) {
     </form:form>
 </chrome:box>
 
+<c:set var="display" value="none" />
+<c:if test="${fn:length(command.studies) > 0}">
+    <c:set var="display" value="''" />
+</c:if>
+<div id="bigSearch" style="border:0px green dotted; display:${display};">
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createParticipantForm" hideErrorDetails="false" willSave="false" title="Results">
 	<jsp:attribute name="instructions">
 	 <c:if test="${fn:length(command.studies) gt 0}">
@@ -131,6 +136,7 @@ function ajaxStudySearch(searchText, searchType) {
         
     </jsp:attribute>
 </tags:tabForm>
+</div>    
 
 </body>
 </html>
