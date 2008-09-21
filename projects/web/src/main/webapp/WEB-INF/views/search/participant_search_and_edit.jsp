@@ -56,51 +56,57 @@ function buildTable(form) {
 <form:form name="searchForm" id="searchForm" method="post">
 	<p class="instructions">
     <br />Search for Subjects by choosing any of the listed Criteria. The result set will show a list of Subjects. 
-   </p> 
-   
+   </p>
 
 
-<chrome:box title="Subject Criteria" cssClass="mpaired" autopad="false" >
+    <chrome:box title="Subject Criteria" cssClass="mpaired" autopad="false">
 
-		      <div class="row">
-		    	<div class="label"> Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop0" type="text"  name="identifier"/></div>
-		    </div>
-		    
-		    
-		     <div class="row">
-		    	<div class="label"> First Name :&nbsp; </div>
-		    	<div class="value"><input id="prop1" type="text"  name="firstName"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label"> Last Name :&nbsp; </div>
-		    	<div class="value"><input id="prop2" type="text" name="lastName"/></div>
-		    </div>
-
-    <div class="row">
-        <div class="value" style="float:right;">
-            <input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search' title='Search Subject'/>
-            <tags:indicator id="indicator"/>
+        <div class="row">
+            <div class="label"> Identifier :&nbsp; </div>
+            <div class="value"><input id="prop0" type="text" name="identifier"/></div>
         </div>
-    </div>
-		    </chrome:box>
+
+
+        <div class="row">
+            <div class="label"> First Name :&nbsp; </div>
+            <div class="value"><input id="prop1" type="text" name="firstName"/></div>
+        </div>
+
+        <div class="row">
+            <div class="label"> Last Name :&nbsp; </div>
+            <div class="value"><input id="prop2" type="text" name="lastName"/></div>
+        </div>
+
+        <div class="row">
+            <div class="value" style="float:right;">
+                <input class='ibutton' type='button' onclick="buildTable('assembler'); $('bigSearch').show();" value='Search' title='Search Subject'/>
+                <tags:indicator id="indicator"/>
+            </div>
+        </div>
+    </chrome:box>
 
 
 
  </form:form>
 <br>			
 <br>
+
 <form:form id="assembler" >
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
-	<chrome:box title="Results">
+
+    <c:set var="display" value="none" />
+
+    <div id="bigSearch" style="border:0px green dotted; display:${display};">
+    <chrome:box title="Results">
      	<chrome:division id="single-fields">
         <div id="tableDiv">
-   			<c:out value="${assembler}" escapeXml="false"/> 
+   			<c:out value="${assembler}" escapeXml="false"/>
 		</div>
 		</chrome:division>
 	</chrome:box>
+    </div>
+    
 </form:form>
 </div>
 </body>

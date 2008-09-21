@@ -71,11 +71,9 @@ public abstract class SearchController extends SimpleFormController {
     }
 
     // TODO: I really do not like the way I am implementing this I need to find a better way
-    protected void buildSearchResultTable(final HttpServletRequest request, final String prop,
-                    final String value, final int x) throws Exception {
+    protected void buildSearchResultTable(final HttpServletRequest request, final String prop, final String value, final int x) throws Exception {
 
-        SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao,
-                        adverseEventDao, expeditedDao, routineDao, organizationDao);
+        SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao, expeditedDao, routineDao, organizationDao);
         searchFacade.setResearchStaffDao(researchStaffDao);
         searchFacade.setInvestigatorDao(investigatorDao);
         Context context = new HttpServletRequestContext(request);
@@ -125,6 +123,7 @@ public abstract class SearchController extends SimpleFormController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         request.setAttribute("assembler", viewData);
     }

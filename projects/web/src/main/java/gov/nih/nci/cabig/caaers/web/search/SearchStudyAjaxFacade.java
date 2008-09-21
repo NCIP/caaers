@@ -73,9 +73,12 @@ public class SearchStudyAjaxFacade {
 	public SearchStudyAjaxFacade() {
 	}
 
-	public SearchStudyAjaxFacade(final StudyDao studyDao, final ParticipantDao participantDoa,
-			final AdverseEventDao adverseEventDao, final ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao,
-			final RoutineAdverseEventReportDao routineAdverseEventReportDao, final OrganizationDao organizationDao) {
+	public SearchStudyAjaxFacade(final StudyDao studyDao,
+                                 final ParticipantDao participantDoa,
+                                 final AdverseEventDao adverseEventDao,
+                                 final ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao,
+                                 final RoutineAdverseEventReportDao routineAdverseEventReportDao,
+                                 final OrganizationDao organizationDao) {
 		this.studyDao = studyDao;
 		participantDao = participantDoa;
 		this.adverseEventDao = adverseEventDao;
@@ -967,8 +970,7 @@ public class SearchStudyAjaxFacade {
 	/*
 	 * Ajax Call hits this method to generate table
 	 */
-	public String getParticipantTable(final Map parameterMap, final String type, final String text,
-			final HttpServletRequest request) {
+	public String getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
 		List<Participant> participants = new ArrayList<Participant>();
 		if (type != null && text != null) {
@@ -1289,16 +1291,14 @@ public class SearchStudyAjaxFacade {
 		}
 	}
 
-	public String buildParticipantTable(final Map parameterMap, final String type, final String text,
-			final HttpServletRequest request) {
+	public String buildParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
 		List<Participant> participants = new ArrayList<Participant>();
 		if (type != null && text != null) {
 			participants = getParticipants(type, text);
 		}
-		log.debug("Participants :: " + participants.size());
 
-		Context context = null;
+        Context context = null;
 		if (parameterMap == null) {
 			context = new HttpServletRequestContext(request);
 		}
@@ -1314,7 +1314,7 @@ public class SearchStudyAjaxFacade {
 
 		try {
 			return buildPartcipantTable(model, participants).toString();
-		}
+        }
 		catch (Exception e) {
 			e.printStackTrace();
 		}
