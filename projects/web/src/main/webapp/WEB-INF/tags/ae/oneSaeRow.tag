@@ -41,9 +41,11 @@
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 2]}" cssClass="aeNotes" />
 			</div>
 		</td>
-		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
-		<td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}"/></td>
-		</c:forEach>
+        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
+            <caaers:renderFilter elementID="${field.propertyName}">
+                <td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}"/></td>
+            </caaers:renderFilter>
+        </c:forEach>
 	</c:if>
 	<c:if test="${not isAETermOtherSpecify}">
 		<td>
