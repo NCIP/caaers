@@ -31,10 +31,22 @@ public class FactResolver {
     public boolean assertFact(Object sourceObject, String targetObjectType,
                     String targetAttributeName, String targetAttributeValue, String operator)
                     throws Exception {
-
+    	
+    	/**
+    	 * isOnly is basically a special condition to check if all the values in the list 
+    	 * matches the conditions. 
+    	 */
+    	boolean isOnly = false;
+    	
+    	if (operator.equals("isOnly")) {
+    		operator = "==";
+    		isOnly = true;
+    	}
+    	
+    	
         if (targetObjectType == null) {
             return wrapUp(sourceObject, null, sourceObject.getClass().getName(),
-                            targetAttributeName, targetAttributeValue, operator);
+                            targetAttributeName, targetAttributeValue, operator, isOnly);
         }
 
         objectGraphFactory = ObjectGraphFactory.getInstance();
@@ -123,7 +135,7 @@ public class FactResolver {
          */
 
         return wrapUp(sourceObjectInChain, targetNode, targetObjectType, targetAttributeName,
-                        targetAttributeValue, operator);
+                        targetAttributeValue, operator, isOnly);
 
     }
 
@@ -241,7 +253,7 @@ public class FactResolver {
     }
 
     private boolean wrapUp(Object targetObject, Node targetNode, String targetObjectType,
-                    String targetAttributeName, String targetAttributeValue, String operator)
+                    String targetAttributeName, String targetAttributeValue, String operator, boolean isOnly)
                     throws Exception {
         boolean test = false;
         Class cls = null;
@@ -284,7 +296,7 @@ public class FactResolver {
                 // if (value.toString().equalsIgnoreCase(targetAttributeValue)) {
                 if (evaluate(value, operator, targetAttributeValue)) {
                     count++;
-                    if (!operator.equals("!=")) {
+                    if (!operator.equals("!=") && !isOnly) {
                         test = true;
                         break;
                     }
@@ -300,7 +312,8 @@ public class FactResolver {
                  * radiation == radiation true radiation == chemo false
                  */
             }
-            if (operator.equals("!=") && count == list.size()) {
+
+            if ((operator.equals("!=") || isOnly) && count == list.size()) {
                 test = true;
             }
 
@@ -335,7 +348,19 @@ public class FactResolver {
      * @return
      */
     private boolean evaluate(Object value, String operator, String targetAttributeValue) {
-
+    	//handle nulls 
+    	
+    	if (value == null) {
+    		if (operator.equals("==")) {
+    			if (targetAttributeValue.equals("null")) {
+    				return true; 
+    			} else {
+        			return false;
+        		}
+    		} 
+    	}
+	
+    	
         if (value.getClass().getName().endsWith("String")) {
             if (operator.equals("==")) {
                 return value.toString().equalsIgnoreCase(targetAttributeValue);
@@ -357,12 +382,25 @@ public class FactResolver {
                 return ((Integer) value).intValue() < new Integer(targetAttributeValue).intValue();
             }
         } else if (value.getClass().getName().endsWith("Boolean")) {
-            if (operator.equals("==")) {
-                return ((Boolean) value).booleanValue() == new Boolean(targetAttributeValue)
-                                .booleanValue();
+            // null is getting converted to false in boolean conversion , compare nulls before conversion
+        	if (targetAttributeValue.equals("null")) {
+        		if (operator.equals("==")) { 
+        			return value == targetAttributeValue;
+        		} else if (operator.equals("!=")) {
+        			return value != targetAttributeValue;
+        		}
+        	}
+        	
+        	boolean targetBoolValue = new Boolean(targetAttributeValue).booleanValue();
+
+        	if (operator.equals("==")) {            	
+            	if (targetAttributeValue.equals(null)) {
+            		value = false;
+            	}            	
+
+                return ((Boolean) value).booleanValue() == targetBoolValue;
             } else if (operator.equals("!=")) {
-                return ((Boolean) value).booleanValue() != new Boolean(targetAttributeValue)
-                                .booleanValue();
+                return ((Boolean) value).booleanValue() !=  targetBoolValue;
             }
         }
 
