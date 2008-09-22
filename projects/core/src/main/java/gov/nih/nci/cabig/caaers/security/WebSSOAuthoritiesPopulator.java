@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.security;
 
-import java.util.Map;
-import java.util.HashMap;
-import java.util.StringTokenizer;
-import java.io.StringReader;
-
 import gov.nih.nci.cagrid.common.Utils;
+
+import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import org.acegisecurity.AuthenticationException;
 import org.acegisecurity.providers.cas.CasAuthoritiesPopulator;
 import org.acegisecurity.userdetails.UserDetails;
@@ -16,11 +17,6 @@ import org.cagrid.gaards.cds.client.DelegatedCredentialUserClient;
 import org.cagrid.gaards.cds.delegated.stubs.types.DelegatedCredentialReference;
 import org.globus.gsi.GlobusCredential;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringTokenizer;
 
 /**
  * Will create a WebSSOUser object from CAS assertion <p/> Created by IntelliJ IDEA. User: kherm
@@ -34,7 +30,7 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
 
     public static final String KEY_VALUE_PAIR_DELIMITER = "^";
 
-    public static final String CCTS_USER_ID_KEY = "CAGRID_SSO_EMAIL_ID";
+   // public static final String CCTS_USER_ID_KEY = "CAGRID_SSO_EMAIL_ID";
 
     public static final String CAGRID_SSO_FIRST_NAME = "CAGRID_SSO_FIRST_NAME";
 
@@ -75,10 +71,20 @@ public class WebSSOAuthoritiesPopulator implements CasAuthoritiesPopulator {
                             attributeKeyValuePair.indexOf(KEY_VALUE_PAIR_DELIMITER) + 1,
                             attributeKeyValuePair.length()));
         }
+        
+        String gridIdentity = attrMap.get(CAGRID_SSO_GRID_IDENTITY);
+        String userName = "";
+        if (gridIdentity != null) {
+        	userName = gridIdentity.substring(gridIdentity.indexOf("/CN=")+4, gridIdentity.length());
+        } else {
+        	log.error(CAGRID_SSO_GRID_IDENTITY + " is null");
+        }
 
-        WebSSOUser user = new WebSSOUser(userDetailsService.loadUserByUsername(attrMap
-                        .get(CCTS_USER_ID_KEY)));
-        user.setGridId(attrMap.get(CCTS_USER_ID_KEY));
+        //WebSSOUser user = new WebSSOUser(userDetailsService.loadUserByUsername(attrMap.get(CCTS_USER_ID_KEY)));
+        WebSSOUser user = new WebSSOUser(userDetailsService.loadUserByUsername(userName));
+ 
+       // user.setGridId(attrMap.get(CCTS_USER_ID_KEY));
+        user.setGridId(userName);
         user.setDelegatedEPR(attrMap.get(CAGRID_SSO_DELEGATION_SERVICE_EPR));
         user.setFirstName(attrMap.get(CAGRID_SSO_FIRST_NAME));
         user.setLastName(attrMap.get(CAGRID_SSO_LAST_NAME));
