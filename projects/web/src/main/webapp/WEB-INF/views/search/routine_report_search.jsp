@@ -145,17 +145,15 @@ function buildTable(form) {
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search Routine Report'/>
+	<input class='ibutton' type='button' onclick="buildTable('assembler'); $('bigSearch').show();" value='Search'  title='Search Routine Report'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
  </form:form>
 <br>
 
-
+<div id="bigSearch" style="display:none;">
 <form:form id="assembler" >
-
-
 <div>			
 	<input type="hidden" name="_prop" id="prop" >
 	<input type="hidden" name="_value" id="value"  >
@@ -170,5 +168,7 @@ function buildTable(form) {
 	</chrome:division>
 </chrome:box>
 </form:form>
+</div>
+
 </body>
 </html>

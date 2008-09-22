@@ -105,7 +105,7 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     public Map<String, InputFieldGroup> createFieldGroups(ParticipantInputCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup studySubjectIdentifierFieldGroup = new DefaultInputFieldGroup(STUDY_SUBJECT_IDENTIFIER_FIELD_GROUP);
-        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", false));
+        studySubjectIdentifierFieldGroup.getFields().add(InputFieldFactory.createTextField(STUDY_SUBJECT_IDENTIFIER_FIELD, "Study subject identifier", true));
         map.addInputFieldGroup(studySubjectIdentifierFieldGroup);
         return map;
     }
