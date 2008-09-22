@@ -103,7 +103,7 @@ public class CreateAdverseEventAjaxFacade {
             TableModel model = getTableModel(parameterMap, request);
             List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
 
-            String onInvokeAction = "showDiseaseSiteTable('" + tableId + "','" + tableId + "-outer' )";
+            String onInvokeAction = "showShowAllTable('" + tableId + "')";
             addTableAndRowToModel(model, tableId, anatomicSites, onInvokeAction);
 
             Column columnTerm = model.getColumnInstance();
@@ -168,7 +168,7 @@ public class CreateAdverseEventAjaxFacade {
             List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
             TableModel model = getTableModel(parameterMap, request);
 
-            String onInvokeAction = "showChemoAgentsTable('" + tableId + "','" + tableId + "-outer')";
+            String onInvokeAction = "showShowAllTable('" + tableId + "')";
 
             addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
 
@@ -413,7 +413,7 @@ public class CreateAdverseEventAjaxFacade {
         table.setAutoIncludeParameters(Boolean.FALSE);
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(false);
-        table.setSortable(true);
+        table.setSortable(false);
         table.setShowPagination(true);
         table.setItems(items);
         table.setOnInvokeAction(onInvokeAction);
