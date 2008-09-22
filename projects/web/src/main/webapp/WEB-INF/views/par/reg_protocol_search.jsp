@@ -130,7 +130,7 @@
                            <table>
                                 <c:forEach items="${study.studySites}" var="site">
                                    <tr><td>
-                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
+                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onfocus="showSSI();" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
                                    </td></tr>
                                 </c:forEach>
                            </table>
@@ -141,11 +141,10 @@
         </div>
 
 <div id="ids" style="display:'';">
-
         <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
-        Study Subject Identifier: <ui:text path="studySubjectIdentifier" />
-</div>    
+        <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier" required="true"/>
+</div>
     </jsp:attribute>
 
 </tags:tabForm>
