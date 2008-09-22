@@ -158,6 +158,23 @@
 				<expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study " postfix=""/>
 			</field>
+			<field name="INDType" display-uri="IND Information" >
+				<field-value>
+					<input-type>select</input-type>
+				</field-value>
+				<valid-value value="0" display-uri="NA" readable-text="NA"/>
+				<valid-value value="3" display-uri="N/A-Commercial Agent" readable-text="N/A-Commercial Agent"/>
+				<valid-value value="4" display-uri="IND-Exempt" readable-text="IND-Exempt"/>
+				<valid-value value="5" display-uri="DCP IND" readable-text="DCP IND"/>
+				<valid-value value="2" display-uri="Other IND Holder" readable-text="Other IND Holder"/>
+				<valid-value value="1" display-uri="CTEP IND" readable-text="CTEP IND"/>
+
+				<operator name="==" display-uri="Equal To" readable-text="is "/>
+				<operator name="!=" display-uri="Not Equal To" readable-text="is not "/>
+
+				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.INDType','code','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" IND Information " postfix=""/>
+			</field>			
 			<field name="investigationalNewDrugIndicator" display-uri="IND Holder">
 				<field-value>
 					<input-type>autocompleter</input-type>
