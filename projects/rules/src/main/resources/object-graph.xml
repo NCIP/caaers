@@ -183,6 +183,20 @@
 	</navigationPath>
 	<navigationPath>
 		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
+		<targetObjectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</targetObjectType>
+		<node>
+			<name>study</name>
+			<collection>false</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.Study</objectType>
+		</node>
+		<node>
+			<name>studyAgents</name>
+			<collection>true</collection>
+			<objectType>gov.nih.nci.cabig.caaers.domain.StudyAgent</objectType>
+		</node>
+	</navigationPath>
+	<navigationPath>
+		<sourceObjectType>gov.nih.nci.cabig.caaers.domain.Study</sourceObjectType>
 		<targetObjectType>gov.nih.nci.cabig.caaers.domain.Organization</targetObjectType>
 		<node>
 			<name>study</name>
