@@ -12,6 +12,7 @@ public abstract class FieldValidator {
     public static final FieldValidator FUTURE_DATE_VALIDATOR;
 
     public static final FieldValidator DATE_VALUE_VALIDATOR;
+    public static final FieldValidator DATE_VALIDATOR;
 
     public static final FieldValidator NUMBER_VALIDATOR;
     public static final FieldValidator HOUR_VALIDATOR;
@@ -29,6 +30,7 @@ public abstract class FieldValidator {
         MINUTE_VALIDATOR = createNumberRangeValidator(0, 59);
         ZIP_CODE_VALIDATOR = new ZipCodeValidator();
         FUTURE_DATE_VALIDATOR = new FutureDateValidator();
+        DATE_VALIDATOR = new DateValidator();
     }
 
     static NumberRangeValidator createNumberRangeValidator(int begin, int end) {
