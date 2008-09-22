@@ -158,6 +158,7 @@
 				<expression>factResolver.assertFact(study,null,'phaseCode','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" Study " postfix=""/>
 			</field>
+			<!--
 			<field name="INDType" display-uri="IND Information" >
 				<field-value>
 					<input-type>select</input-type>
@@ -174,7 +175,8 @@
 
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.INDType','code','runTimeValue','runTimeOperator')</expression>
 				<grammer prefix=" IND Information " postfix=""/>
-			</field>			
+			</field>
+			-->			
 			<field name="investigationalNewDrugIndicator" display-uri="IND Holder">
 				<field-value>
 					<input-type>autocompleter</input-type>
