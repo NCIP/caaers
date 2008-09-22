@@ -128,7 +128,7 @@
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Import Subject" p:linkName="importController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Subject" p:linkName="createParticipantController"/>
             <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Search/Edit Subject" p:linkName="searchParticipantController"/>
-            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Assign Subjects to Studies" p:linkName="assignParticipantController"/>
+            <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Assign Subject to Study" p:linkName="assignParticipantController"/>
       </list>
     </property>
   </bean>
@@ -210,7 +210,7 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Search Subjects" p:linkName="searchParticipantController"/>
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="Assign Subjects to Studies" p:linkName="assignParticipantController"/>
+		    p:displayName="Assign Subject to Study" p:linkName="assignParticipantController"/>
 	    </list>
 	  </property>
 	</bean>
