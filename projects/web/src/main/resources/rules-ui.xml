@@ -184,16 +184,16 @@
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Study Agent IND Holder " postfix=""/>
 			</field>
-			<field name="investigationalNewDrugIndicator" display-uri="Investigational new drug?" >
+			<field name="StudyAgentIndIndicator" display-uri="Investigational new drug?" >
 				<field-value>
 					<input-type>select</input-type>
 				</field-value>
 				
 				<valid-value value="false" display-uri="No" readable-text="No "/>				
-				<operator name="isOnly" display-uri="is only" readable-text="is only "/>
+				<operator name="isOnly" display-uri="Is Only" readable-text="Is Only "/>
 				
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','investigationalNewDrugIndicator','runTimeValue','runTimeOperator')</expression>
-				<grammer prefix=" Investigational new drug? " postfix="(Commercially Available Agent Only)"/>
+				<grammer prefix=" Study Investigational new drug? " postfix="(Commercially Available Agent Only)"/>
 			</field>			
 			<field name="adeersReporting" display-uri="AdEERS Reporting">
 				<field-value>
