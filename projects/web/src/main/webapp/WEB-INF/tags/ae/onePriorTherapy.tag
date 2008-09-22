@@ -14,7 +14,7 @@
   deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 	
 	<jsp:attribute name="titleFragment">
-		<c:if test="${not empty priorTherapy.name}">${priorTherapy.name}</c:if>
+		${priorTherapy.name}
 		<c:if test="${empty priorTherapy.name}">
 			<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}" />
 			<script>
@@ -39,6 +39,7 @@
 		 <jsp:attribute name="label">
 		 </jsp:attribute>
 		 <jsp:attribute name="value">
+		   <a name="anchorPriorTherapyAgents[${index}]"></a>
 		   <table class="tablecontent" width="95%">
 				<tr>
 				 	<td colspan="2" align="left"><b color="#2E3257">Agent(s)</b></td>
@@ -59,6 +60,8 @@
 	        					}
 							</jsp:attribute>
 						</ui:autocompleter>
+						&nbsp; 
+						<a href="#anchorPriorTherapyAgents[${index}]" onClick="showShowAllTable('priorTherapyAgents[${index}]')">Show All</a>
 					</td>
 					<td width="10%">
 						<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>

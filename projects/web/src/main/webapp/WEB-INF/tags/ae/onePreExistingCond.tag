@@ -17,7 +17,7 @@
 					<c:if test="${empty preExistingCondition}">
 					<%-- Other, Specify--%>
 					<c:set var="otherField" value="${fieldGroups[mainGroup].fields[1]}" />
-					Other, specify <ui:text path="${otherField.propertyName}"/>
+					<c:if test="${otherField.required or otherField.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;Other, specify <ui:text path="${otherField.propertyName}"/>
 					</c:if>
   				</td>
   				<td>

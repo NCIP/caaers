@@ -194,7 +194,7 @@
 	<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
 			<tbody>
 			<tr class="titleRow">
-			  <td align="left" class="title">Select the primary site of disease:</td><td width="20px"><a href="javascript:hideShowAllTable()">
+			  <td align="left" class="title">Select :</td><td width="20px"><a href="javascript:hideShowAllTable()">
 			       <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
 			      </a></td>
 			</tr>

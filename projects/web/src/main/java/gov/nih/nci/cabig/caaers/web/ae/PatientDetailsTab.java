@@ -39,6 +39,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -269,7 +270,14 @@ public class PatientDetailsTab extends AeTab {
     	
     }
     protected void validateMetastaticDiseases(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
-    	
+    	//aeReport.diseaseHistory.metastaticDiseaseSites[1].otherSite
+    	int i =0;
+    	for(MetastaticDiseaseSite mSite : command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites()){
+    		if(mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())){
+    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014","Missing other mentastatic site information");
+    		}
+    		i++;
+    	}
     }
     
     protected void validatePreExistingConditions(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {

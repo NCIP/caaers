@@ -6,9 +6,16 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.ConcomitantMedication" required="true" %>
-<chrome:division title="${concomitantMedication.agentName}" id="aeReport.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
+<c:set var="mainGroup">conmed${index}</c:set>
+<chrome:division  id="aeReport.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
  enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
-	<c:set var="mainGroup">conmed${index}</c:set>
+		<jsp:attribute name="titleFragment">
+			${concomitantMedication.agentName}
+			<c:if test="${empty concomitantMedication.agentName}">
+				<tags:renderRow field="${fieldGroups[mainGroup].fields[0]}" />
+			</c:if>
+		</jsp:attribute>
+		<jsp:body>
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
 		<tags:renderRow field="${field}" />
 	</c:forEach>
@@ -43,6 +50,8 @@
 	 }
 	 initializeConMed_${index}.defer();
 	</script>
+		
+		</jsp:body>
 </chrome:division>
 <%--
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>

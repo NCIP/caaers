@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +39,7 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         }
         return super.handleRequestInternal(request, response);
     }
+    
     
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)

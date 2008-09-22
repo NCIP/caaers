@@ -15,7 +15,7 @@
 					<c:if test="${anatomicSite.id eq 110}">
 					<%-- Other, Specify--%>
 					<c:set var="otherSiteField" value="${fieldGroups[mainGroup].fields[1]}" />
-					<ui:text path="${otherSiteField.propertyName}" required="true"/>
+					<c:if test="${otherSiteField.required or otherSiteField.attributes.mandatory}"><tags:requiredIndicator/></c:if>&nbsp;<ui:text path="${otherSiteField.propertyName}" required="true"/>
 					</c:if>
   				</td>
   				<td>

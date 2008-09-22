@@ -13,7 +13,7 @@
     <tags:labs labs="${command.assignment.labLoads}"/>
     <script type="text/javascript">
         var NAME_FIELDS = [
-            'firstName', 'middleName', 'lastName'
+            'firstName', 'middleName', 'lastName','title', 'address.street', 'address.city', 'address.state', 'address.zip'
         ]
         var PERSON_FIELDS = NAME_FIELDS.concat([
             'contactMechanisms[e-mail]', 'contactMechanisms[phone]', 'contactMechanisms[fax]'
@@ -33,19 +33,18 @@
 		/* IE7 fix:- null text is displayed when staff[field] is empty or null*/
         function updateReporterFromStaff(staff) {
             NAME_FIELDS.each(function(field) {
-            	if(staff[field] != null) $('aeReport.reporter.' + field).value = staff[field]
-                
+            	if(staff[field] != null) updateFieldValue('aeReport.reporter.' + field, staff[field]);
             })
-			if(staff['emailAddress'] != null) $('aeReport.reporter.' + 'contactMechanisms[e-mail]').value = staff['emailAddress']
-			if(staff['phoneNumber'] != null) $('aeReport.reporter.' + 'contactMechanisms[phone]').value = staff['phoneNumber']
-			if(staff['faxNumber'] != null) $('aeReport.reporter.' + 'contactMechanisms[fax]').value = staff['faxNumber']
+			if(staff['emailAddress'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[e-mail]',staff['emailAddress']);
+			if(staff['phoneNumber'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[phone]',staff['phoneNumber']);
+			if(staff['faxNumber'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[fax]',staff['faxNumber']);
 			
             updatePhysicianFromReporterIfSame()
         }
 
         function clear(person) {
             PERSON_FIELDS.each(function (field) {
-                $('aeReport.' + person + '.' + field).value = ''
+            	updateFieldValue('aeReport.' + person + '.' + field, '');
             })
         }
 
@@ -67,8 +66,16 @@
 
         function updatePhysicianFromReporter() {
             PERSON_FIELDS.each(function(field) {
-                $('aeReport.physician.' + field).value = $('aeReport.reporter.' + field).value
+                var rField = $('aeReport.reporter.' + field);
+				if(rField) updateFieldValue('aeReport.physician.' + field, rField.value);
             })
+        }
+
+        function updateFieldValue(uiField, value){
+			var f = $(uiField);
+			if(f){
+				f.value = value;
+			}
         }
 
         Event.observe(window, "load", function() {
