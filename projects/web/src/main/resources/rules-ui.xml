@@ -184,6 +184,15 @@
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug','holderName','runTimeValue','runTimeOperator')</expression>	
 				<grammer prefix=" Study Agent IND Holder " postfix=""/>
 			</field>
+			<field name="partOfLeadIND" display-uri="Lead IND" >
+				<field-value>
+					<input-type>select</input-type>
+				</field-value>
+				<valid-value value="null" display-uri="null" readable-text="null"/>
+				<operator name="isOnly" display-uri="is" readable-text="is "/>
+				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','partOfLeadIND','runTimeValue','runTimeOperator')</expression>
+				<grammer prefix=" Lead IND " postfix=""/>
+			</field>			
 			<field name="adeersReporting" display-uri="AdEERS Reporting">
 				<field-value>
 					<input-type>select</input-type>
