@@ -20,7 +20,7 @@ public class ChemoAgentLinkDisplayCell extends AbstractCell {
 
         if (chemoAgent != null) {
             cellValue = "<a  href=\"javascript:fillChemoAgentAutoCompletor('" + chemoAgent.getId()
-                            + "','" + tableId + "')\">" + chemoAgent.getName() + "</a>";
+                            + "','" + tableId + "','" + chemoAgent.getName() + "')\">" + chemoAgent.getName() + "</a>";
         }
         return cellValue;
     }
