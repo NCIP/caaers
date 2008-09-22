@@ -483,8 +483,7 @@
   <bean name="/search/study" id="studyController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.StudyController"/>
   
-  <bean name="/search/participant" id="participantController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
+  <bean name="/search/participant" id="participantController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.ParticipantController"/>
   
   <bean name="/participant/search" id="searchParticipantController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantController"/>
