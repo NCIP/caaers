@@ -15,7 +15,11 @@
     function doNothing(){
 	}
 
-	function updateTargetPage(s){
+    function showSSI() {
+        if ($('ids')) $('ids').show();
+    }
+
+    function updateTargetPage(s){
 		document.checkEligibility.nextView.value=s;
 		document.checkEligibility.submit();
 	}
@@ -40,6 +44,7 @@
 	}
 
     function onAjaxStudySearch() {
+        $('bigSearch').show();
     }
 
     function ajaxStudySearch(searchText, searchType) {
@@ -96,6 +101,12 @@
     </form:form>
 </chrome:box>
 
+<c:set var="display" value="none" />
+<c:if test="${fn:length(command.studies) > 0}">
+    <c:set var="display" value="''" />
+</c:if>
+
+<div id="bigSearch" style="display:${display};">
 <p id="instructions">Please choose a Study and then press Continue to proceed</p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 
@@ -119,7 +130,7 @@
                            <table>
                                 <c:forEach items="${study.studySites}" var="site">
                                    <tr><td>
-                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="if ($('ids')) $('ids').show();" path="studySite" value="${site.id}"/>${site.organization.name }
+                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
                                    </td></tr>
                                 </c:forEach>
                            </table>
@@ -129,7 +140,7 @@
             </c:if>
         </div>
 
-<div id="ids" style="display: <c:if test="${fn:length(command.studies) == 0}">none</c:if>;">
+<div id="ids" style="display:'';">
 
         <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
@@ -138,6 +149,7 @@
     </jsp:attribute>
 
 </tags:tabForm>
+</div>
 </body>
 </html>
 

@@ -18,6 +18,7 @@ function doNothing(){
 }
 
 function onAjaxSubjectSearch() {
+    $('bigResult').show();
     // alert("onAjaxStudySearch");
 }
 
@@ -72,6 +73,12 @@ function ajaxSubjectSearch(searchText, searchType) {
     </form:form>
 </chrome:box>
 
+<c:set var="display" value="none" />
+<c:if test="${fn:length(command.participantSearchResults) > 0}">
+    <c:set var="display" value="''" />
+</c:if>
+
+<div id="bigResult" style="display:${display};">
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 <jsp:attribute name="singleFields">
     <div id="searchResults" style="width:100%; border: 0px red dotted;">
@@ -104,6 +111,7 @@ function ajaxSubjectSearch(searchText, searchType) {
     </div>
 </jsp:attribute>
 </tags:tabForm>
+</div>
 
 </body>
 </html>
