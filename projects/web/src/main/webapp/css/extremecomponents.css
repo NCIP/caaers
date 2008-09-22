@@ -107,19 +107,23 @@
 
 
 .eXtremeTable .tableHeaderSort {
-	background-color: #3a95c2;
+	background-color: #2b4186;
 	color: white;
 	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: bold;
 	text-align: left;
 	padding-right: 3px;
 	padding-left: 3px;
 	padding-top: 4px;
 	padding-bottom: 4px;
+	margin: 0px;
 	border-right-style: solid;
 	border-right-width: 1px;
 	border-color: white;
+	background-image: url(../images/blue/eXtableheader_bg.png);
+	background-repeat: repeat-x;
+	background-position: top;
 }
 
 .eXtremeTable .odd a, .even a {

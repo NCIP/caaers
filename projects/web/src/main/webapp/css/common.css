@@ -88,7 +88,13 @@ a img{
 	border-left-style: none;
 	vertical-align: middle;
 }
-
+.eXtremeTable a img{
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	vertical-align:baseline;
+}
 #all {
 width:980px;
 margin:0px auto;
@@ -413,8 +419,10 @@ margin-top:6px;
 }
 
 #taskbar a.lte4.gt18{
-padding-top:2px;
+	padding-top:2px;
+	display:inline;
 }
+.spangt18{padding-right:4px}
 
 #taskbar a.selected.lte4{
 	background-image: url(../images/blue/secondlevelnav_selected.jpg);

@@ -20,7 +20,7 @@
 }
 .shortselectbox
 {	
-	width:80px;
+	width:115px;
 }
 .divNotes,.divOtherMeddra{
 	font-size:8pt;
