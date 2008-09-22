@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<fts>
+<chunkinfo url="whfwdata0.xml" first="%" last="cohort"/>
+<chunkinfo url="whfwdata1.xml" first="collect" last="g"/>
+<chunkinfo url="whfwdata2.xml" first="gav" last="onset"/>
+<chunkinfo url="whfwdata3.xml" first="open" last="specializ"/>
+<chunkinfo url="whfwdata4.xml" first="specific" last="–"/>
+
+<tchunkinfo first="0" last="82" url="whftdata0.xml" />
+
+</fts>

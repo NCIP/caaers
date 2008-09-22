@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<indexdata>
+<key name="IND Holder" >
+  <topic name="createINDController" url="createINDController.htm" />
+  <key name="Enter" >
+    <topic name="createINDController" url="createINDController.htm" />
+  </key>
+  <key name="name" >
+    <topic name="createINDController" url="createINDController.htm" />
+  </key>
+</key>
+<key name="Investigational" >
+  <topic name="createINDController" url="createINDController.htm" />
+</key>
+<key name="Investigator" >
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <topic name="createINDController" url="createINDController.htm" />
+  <key name="caAERS" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+  <key name="Edit" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+  <key name="Enter" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+  <key name="Searching" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Investigator Criteria" >
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+</key>
+<key name="LabViewer" >
+  <topic name="configurationController" url="configurationController.htm" />
+  <key name="Enter" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+  <key name="Required" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+  <key name="URL" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+</key>
+<key name="Last Name" >
+  <topic name="searchParticipantController" url="searchParticipantController.htm" />
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <key name="Enter" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Leave" >
+  <topic name="studyController" url="studyController.htm" />
+  <key name="Search" >
+    <topic name="studyController" url="studyController.htm" />
+  </key>
+</key>
+<key name="Level" >
+  <topic name="listRuleController" url="listRuleController.htm" />
+  <key name="view" >
+    <topic name="listRuleController" url="listRuleController.htm" />
+  </key>
+</key>
+<key name="List" >
+  <topic name="searchParticipantController" url="searchParticipantController.htm" />
+  <topic name="reportController" url="reportController.htm" />
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  <topic name="studyController" url="studyController.htm" />
+  <topic name="createINDController" url="createINDController.htm" />
+  <key name="Search" >
+    <topic name="searchParticipantController" url="searchParticipantController.htm" />
+    <topic name="reportController" url="reportController.htm" />
+    <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+    <topic name="createOrganizationController" url="createOrganizationController.htm" />
+    <topic name="studyController" url="studyController.htm" />
+    <topic name="createINDController" url="createINDController.htm" />
+  </key>
+</key>
+<key name="List Report Definitions" >
+  <topic name="listNotificationController" url="listNotificationController.htm" />
+</key>
+<key name="List Rules" >
+  <topic name="listRuleController" url="listRuleController.htm" />
+</key>
+<key name="Mach" >
+  <topic name="importMeddraController" url="importMeddraController.htm" />
+</key>
+<key name="Mail sent" >
+  <topic name="configurationController" url="configurationController.htm" />
+</key>
+<key name="Mail Server" >
+  <topic name="configurationController" url="configurationController.htm" />
+</key>
+<key name="Mail Server config" >
+  <topic name="configurationController" url="configurationController.htm" />
+</key>
+<key name="Manage" >
+  <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+</key>
+<key name="Manage Reports" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+</key>
+<key name="MedDRA" >
+  <topic name="importMeddraController" url="importMeddraController.htm" />
+</key>
+<key name="MedWatch pdf" >
+  <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+  <key name="generate" >
+    <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+  </key>
+</key>
+<key name="Middle Name" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <key name="Enter" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Name" >
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  <topic name="createINDController" url="createINDController.htm" />
+  <topic name="listNotificationController" url="listNotificationController.htm" />
+  <key name="Enter" >
+    <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  </key>
+  <key name="IND Holder" >
+    <topic name="createINDController" url="createINDController.htm" />
+  </key>
+  <key name="Organization" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Navigation Menu" >
+  <topic name="Getting_Started" url="Getting_Started.htm" />
+  <key name="include" >
+    <topic name="Getting_Started" url="Getting_Started.htm" />
+  </key>
+</key>
+<key name="NCI" >
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+</key>
+<key name="NCI Identifier" >
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  <key name="Enter" >
+    <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  </key>
+</key>
+<key name="NCI Institute Code" >
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+</key>
+<key name="New rulesets" >
+  <topic name="importRuleController" url="importRuleController.htm" />
+</key>
+<key name="No" >
+  <topic name="configurationController" url="configurationController.htm" />
+  <key name="Secure SMTP" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+</key>
+<key name="Not Enabled" >
+  <topic name="listRuleController" url="listRuleController.htm" />
+  <key name="Status" >
+    <topic name="listRuleController" url="listRuleController.htm" />
+  </key>
+</key>
+<key name="Organization" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="listRuleController" url="listRuleController.htm" />
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  <topic name="createINDController" url="createINDController.htm" />
+  <key name="Creating" >
+    <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+    <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  </key>
+  <key name="Enter" >
+    <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+  <key name="name" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Organization Since Organizations" >
+  <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  <key name="Searching" >
+    <topic name="createOrganizationController" url="createOrganizationController.htm" />
+  </key>
+</key>
+<key name="Overivew" >
+  <topic name="searchStudyController" url="searchStudyController.htm" />
+</key>
+<key name="Participant ID" >
+  <topic name="reportController" url="reportController.htm" />
+</key>
+<key name="Password Policy" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+</key>
+<key name="Patient Study Calendar" >
+  <topic name="configurationController" url="configurationController.htm" />
+</key>
+<key name="Pdf" >
+  <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+  <key name="generate" >
+    <topic name="listAdverseEventsController" url="listAdverseEventsController.htm" />
+  </key>
+</key>
+<key name="Phase" >
+  <topic name="searchStudyController" url="searchStudyController.htm" />
+  <topic name="studyController" url="studyController.htm" />
+</key>
+<key name="Phone" >
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <key name="Enter" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Primary CTC" >
+  <topic name="reportController" url="reportController.htm" />
+</key>
+<key name="Primary ID" >
+  <topic name="searchParticipantController" url="searchParticipantController.htm" />
+  <topic name="searchStudyController" url="searchStudyController.htm" />
+  <topic name="studyController" url="studyController.htm" />
+  <key name="clicking" >
+    <topic name="searchStudyController" url="searchStudyController.htm" />
+  </key>
+</key>
+<key name="Primary Identifier" >
+  <topic name="searchStudyController" url="searchStudyController.htm" />
+</key>
+<key name="Provides" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+</key>
+<key name="PSC" >
+  <topic name="configurationController" url="configurationController.htm" />
+  <key name="Required" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+</key>
+<key name="Report Definitions" >
+  <topic name="listNotificationController" url="listNotificationController.htm" />
+</key>
+<key name="Required" >
+  <topic name="configurationController" url="configurationController.htm" />
+  <key name="ESB" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+  <key name="Labviewer" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+  <key name="PSC" >
+    <topic name="configurationController" url="configurationController.htm" />
+  </key>
+</key>
+<key name="Research Staff" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  <key name="see" >
+    <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
+  </key>
+</key>
+<key name="Research Staff Page" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+</key>
+<key name="Reset Password" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <key name="clicking" >
+    <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  </key>
+</key>
+<key name="Review" >
+  <topic name="searchParticipantController" url="searchParticipantController.htm" />
+</key>
+<key name="Rules" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+  <topic name="listRuleController" url="listRuleController.htm" />
+  <topic name="importRuleController" url="importRuleController.htm" />
+  <topic name="listNotificationController" url="listNotificationController.htm" />
+</key>
+<key name="Rules Tab" >
+  <topic name="createResearchStaffController" url="createResearchStaffController.htm" />
+</key>
+
+</indexdata>
