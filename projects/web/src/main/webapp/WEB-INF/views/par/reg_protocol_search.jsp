@@ -140,7 +140,12 @@
             </c:if>
         </div>
 
-<div id="ids" style="display:none;">
+<c:set var="_display" value="none" />
+<c:if test="${command.studySite.id != null}">
+    <c:set var="_display" value="''" />
+</c:if>
+<%--<c:out value="" />        --%>
+<div id="ids" style="display:'';">
         <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
         <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier"/>
