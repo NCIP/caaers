@@ -191,7 +191,7 @@
 				<valid-value value="null" display-uri="null" readable-text="null"/>
 				<operator name="isOnly" display-uri="is" readable-text="is "/>
 				<expression>factResolver.assertFact(study,'gov.nih.nci.cabig.caaers.domain.StudyAgent','partOfLeadIND','runTimeValue','runTimeOperator')</expression>
-				<grammer prefix=" Lead IND " postfix=""/>
+				<grammer prefix=" Lead IND " postfix="(Commercially Available Agent Only)"/>
 			</field>			
 			<field name="adeersReporting" display-uri="AdEERS Reporting">
 				<field-value>
