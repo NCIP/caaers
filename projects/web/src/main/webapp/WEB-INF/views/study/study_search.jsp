@@ -76,7 +76,7 @@ function fireAction(action, selected){
 			</div>
 		 	</c:forEach>
 
-            <input class='ibutton' type='button' onclick="buildTable('searchForm');" value='Search'  title='Search Study'/>
+            <input class='ibutton' type='button' onclick="buildTable('searchForm'); $('bigSearch').show();" value='Search'  title='Search Study'/>
             <tags:indicator id="indicator" />
         </div>
     </form:form>
@@ -86,6 +86,7 @@ function fireAction(action, selected){
 <div class="row" style="float:right;">
 </div>
 
+<div id="bigSearch" style="display:none;">
 <div class="endpanes" />
 <chrome:box title="Results">
 <form:form id="assembler">
@@ -96,5 +97,7 @@ function fireAction(action, selected){
 	</chrome:division>
 </form:form>
 </chrome:box>
+</div>
+
 </body>
 </html>
