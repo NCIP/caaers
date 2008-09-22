@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.search.link;
 
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.bean.Column;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 
 /**
  * @author Biju Joseph
@@ -19,9 +19,9 @@ public class AnatomicSiteLinkDisplayCell extends AbstractCell {
         String tableId = model.getTableHandler().getTable().getTableId();
 
         if (anatomicSite != null) {
-            cellValue = "<a  href=\"javascript:fillDiseaseSiteAutoCompletor('"
-                            + anatomicSite.getId() + "','" + tableId + "')\">"
-                            + anatomicSite.getName() + "</a>";
+            cellValue = "<a  href=\"javascript:fillDiseaseSiteAutoCompletor('" + anatomicSite.getId() + "', '" + tableId + "','" +  anatomicSite.getName() + "')\">"
+                            + anatomicSite.getName() + 
+                        "</a>";
         }
         return cellValue;
     }
