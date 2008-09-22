@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -29,6 +31,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
 
     private StudyRepository studyRepository;
+    private ParticipantDao participantDao;
 
     public AssignStudyTab() {
         super("Search for Studies", "Search Study", "par/reg_protocol_search");
@@ -86,6 +89,17 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 
         if (command.getStudySite() == null || command.getStudySite().getId() == null) {
             errors.rejectValue("assignment.studySite", "PT_008", "Select the Study Site");
+        } else {
+            participantDao.reassociate(command.getParticipant());
+            List<StudyParticipantAssignment> l;
+            l = command.getParticipant().getAssignments();
+
+            for (StudyParticipantAssignment assignment : l) {
+                if (assignment.getStudySite().getId().intValue() == command.getStudySite().getId().intValue()) {
+                    errors.reject("PT_009", new Object[] {command.getParticipant().getFullName(), assignment.getStudySite().getStudy().getShortTitle(), assignment.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
+                    break;
+                }
+            }
         }
     }
 
@@ -104,5 +118,13 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
+    }
+
+    public ParticipantDao getParticipantDao() {
+        return participantDao;
+    }
+
+    public void setParticipantDao(ParticipantDao participantDao) {
+        this.participantDao = participantDao;
     }
 }

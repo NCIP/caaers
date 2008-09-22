@@ -413,7 +413,7 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
         for (Object object : list) {
             StudyParticipantMetastaticDiseaseSite pt = (StudyParticipantMetastaticDiseaseSite)object;
             if (pt != null)
-                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_006", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
+                if (!set.add(pt.getCodedSite().getName())) errors.reject("PT_007", new Object[] {pt.getCodedSite().getName()}, "Duplicate Metastatic Disease Site Medication");
         }
 
     }

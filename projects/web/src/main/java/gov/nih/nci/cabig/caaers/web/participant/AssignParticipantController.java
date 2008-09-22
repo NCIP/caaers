@@ -129,6 +129,17 @@ public class AssignParticipantController extends AutomaticSaveAjaxableFormContro
         AssignParticipantStudyCommand assignParticipantStudyCommand = (AssignParticipantStudyCommand) command;
         Participant participant = assignParticipantStudyCommand.getParticipant();
         participantDao.reassociateUsingLock(participant);
+        assignParticipantStudyCommand.getAssignment().setStudySite(assignParticipantStudyCommand.getStudySite());
+        assignParticipantStudyCommand.getAssignment().setParticipant(participant);
+        participant.addAssignment(assignParticipantStudyCommand.getAssignment());
+        assignParticipantStudyCommand.getAssignment().setStudySubjectIdentifier(assignParticipantStudyCommand.getStudySubjectIdentifier());
+
+/*
+        assignParticipantStudyCommand.getAssignment().setDateOfEnrollment(new Date());
+        assignParticipantStudyCommand.setStudy(assignParticipantStudyCommand.getStudySite().getStudy());
+*/
+
+
         participantDao.save(participant);
 
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=edit");
