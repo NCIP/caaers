@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportFormat;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.RoleBasedRecipient;
 import gov.nih.nci.cabig.caaers.domain.report.TimeScaleUnit;
+import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
         definition.setName("Test-RCT");
         definition.setTimeScaleUnitType(TimeScaleUnit.DAY);
         definition.setAmendable(true);
+        definition.setReportFormatType(ReportFormatType.ADEERSPDF);
 
         // create planned notifications
         List<PlannedNotification> pnlist = new ArrayList<PlannedNotification>();
