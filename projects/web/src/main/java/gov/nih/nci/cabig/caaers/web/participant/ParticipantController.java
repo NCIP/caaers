@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Base Controller class to handle the basic work flow in the Creation / Updation of a
  * NewParticipantCommand Design This uses AbstractTabbedFlowFormController to implement tabbed
  * workflow
- * 
+ *
  * @author Saurabh
  * @author Ion
  * @author Biju Joseph
@@ -88,7 +88,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
-        
+
     }
 
     @Override
@@ -147,7 +147,6 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     }
 
 
-
     // /LOGIC
     @Override
     protected Participant getPrimaryDomainObject(final C command) {
@@ -168,12 +167,15 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
-        webControllerValidator.validate(request, command, errors);
+        if (!suppressValidation(request, command)) {
+
+            webControllerValidator.validate(request, command, errors);
+        }
     }
 
     /**
      * Override this in sub controller if summary is needed
-     * 
+     *
      * @return
      */
     protected boolean isSummaryEnabled() {
@@ -181,32 +183,32 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     }
 
     public void setPriorTherapyDao(PriorTherapyDao priorTherapyDao) {
-		this.priorTherapyDao = priorTherapyDao;
-	}
+        this.priorTherapyDao = priorTherapyDao;
+    }
 
-	public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
-		this.anatomicSiteDao = anatomicSiteDao;
-	}
+    public void setAnatomicSiteDao(AnatomicSiteDao anatomicSiteDao) {
+        this.anatomicSiteDao = anatomicSiteDao;
+    }
 
-	public void setPreExistingConditionDao(
-			PreExistingConditionDao preExistingConditionDao) {
-		this.preExistingConditionDao = preExistingConditionDao;
-	}
+    public void setPreExistingConditionDao(
+            PreExistingConditionDao preExistingConditionDao) {
+        this.preExistingConditionDao = preExistingConditionDao;
+    }
 
-	public void setAbstractStudyDiseaseDao(
-			AbstractStudyDiseaseDao abstractStudyDiseaseDao) {
-		this.abstractStudyDiseaseDao = abstractStudyDiseaseDao;
-	}
+    public void setAbstractStudyDiseaseDao(
+            AbstractStudyDiseaseDao abstractStudyDiseaseDao) {
+        this.abstractStudyDiseaseDao = abstractStudyDiseaseDao;
+    }
 
-	public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
-		this.chemoAgentDao = chemoAgentDao;
-	}
+    public void setChemoAgentDao(ChemoAgentDao chemoAgentDao) {
+        this.chemoAgentDao = chemoAgentDao;
+    }
 
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
+    public void setStudyDao(StudyDao studyDao) {
+        this.studyDao = studyDao;
+    }
 
-	@Required
+    @Required
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
@@ -224,11 +226,11 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
     }
-    
+
     @Required
     public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao) {
         this.assignmentDao = assignmentDao;
     }
-    
-    
+
+
 }

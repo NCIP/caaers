@@ -39,12 +39,12 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Base Controller class to handle the basic work flow in the Creation / Updation of a Study Design
  * This uses AbstractTabbedFlowFormController to implement tabbed workflow
- * 
+ *
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C,Study, StudyDao>
-                /*AutomaticSaveFlowFormController<C, Study, StudyDao>*/ {
+public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao>
+        /*AutomaticSaveFlowFormController<C, Study, StudyDao>*/ {
     private static final Log log = LogFactory.getLog(StudyController.class);
 
     protected StudyDao studyDao;
@@ -110,7 +110,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 
     /**
      * Override this in sub controller if summary is needed
-     * 
+     *
      * @return
      */
     protected boolean isSummaryEnabled() {
@@ -163,9 +163,12 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors, int page) throws Exception {
+                                     BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
-        webControllerValidator.validate(request, command, errors);
+        if (!suppressValidation(request,command)) {
+            webControllerValidator.validate(request, command, errors);
+
+        }
     }
 
     // /BEAN PROPERTIES
@@ -231,7 +234,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     }
 
     public void setInvestigationalNewDrugDao(
-                    final InvestigationalNewDrugDao investigationalNewDrugDao) {
+            final InvestigationalNewDrugDao investigationalNewDrugDao) {
         this.investigationalNewDrugDao = investigationalNewDrugDao;
     }
 
