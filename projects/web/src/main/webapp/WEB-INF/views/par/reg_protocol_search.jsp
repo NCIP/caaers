@@ -140,10 +140,10 @@
             </c:if>
         </div>
 
-<div id="ids" style="display:'';">
+<div id="ids" style="display:none;">
         <br />
         <%--A=<c:out value="${command.assignment == null}" />--%>
-        <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier" required="true"/>
+        <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier"/>
 </div>
     </jsp:attribute>
 
