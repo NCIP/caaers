@@ -79,7 +79,6 @@ function buildTable(form) {
 		    	<div class="label"> Investigator number&nbsp; </div>
 		    	<div class="value"><input id="prop2" type="text" name="nciInstituteCode"/></div>
 		    </div>
-   </chrome:box>
 
 	<div class="endpanes" />
 	<div class="row" style="float:right;">
@@ -87,6 +86,7 @@ function buildTable(form) {
 	<tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />
+   </chrome:box>
 
 
    </form:form>
