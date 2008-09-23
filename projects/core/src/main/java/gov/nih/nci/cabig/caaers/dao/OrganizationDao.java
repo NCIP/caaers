@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrganizationDao extends GridIdentifiableDao<Organization> implements
                 MutableDomainObjectDao<Organization> {
 
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name","nciInstituteCode");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
 
