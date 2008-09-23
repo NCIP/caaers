@@ -93,7 +93,7 @@ function removeSystemIdentifier(container, index) {
 
 </script>
 
-<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" willSave="false">
+<tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" willSave="true">
 
 <jsp:attribute name="singleFields">
 <div>
