@@ -49,6 +49,13 @@
 
     function ajaxStudySearch(searchText, searchType) {
         // START tags:tabMethod
+        var text = $F('searchText');
+
+        if(text == ''){
+            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>"
+        }else{
+            $('error').innerHTML=""
+
 
     <tags:tabMethod
            method="searchStudies"
@@ -60,6 +67,7 @@
 
         // END tags:tabMethod
     }
+}
     
 </script>
 </head>
@@ -80,10 +88,14 @@
             <tr>
                 <td class="searchType">Search for a study&nbsp;&nbsp;</td>
                 <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"itemValue="code" /></form:select></td>
-                <td><form:input path="searchText" size="25" /></td>
+                <td><form:input path="searchText" size="25" />&nbsp;<input type="button" onclick="ajaxStudySearch();" value="Search" /></td>
                     <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-                <td><input type="button" onclick="ajaxStudySearch();" value="Search" /></td>
             </tr>
+            <tr>
+                <td></td>
+                <td class="notation" colspan="2"><div id="error"></div>
+			</td>
+            
         </table>
 
         </td>

@@ -71,7 +71,7 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
         String searchText = command.getSearchText();
         String searchType = command.getSearchType();
 
-        if (searchText != null && searchType != null && !searchText.trim().equals("") && searchText.trim().length() >=2) {
+        if (searchText != null && searchType != null && !searchText.trim().equals("")) {
 
                 ParticipantQuery participantQuery = new ParticipantQuery();
                 if ("fn".equals(searchType)) {

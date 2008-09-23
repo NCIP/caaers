@@ -33,8 +33,8 @@ function ajaxSubjectSearch(searchText, searchType) {
     // START tags:tabMethod
         var text = $F('searchText');
 
-        if(text == '' ||text.length==1){
-            $('error').innerHTML="<font color='#FF0000'>Provide at least two character in the search field</font>"
+        if(text == ''){
+            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>"
         }else{
             $('error').innerHTML=""
 

@@ -24,7 +24,6 @@ public class SearchParticipantController extends SearchController {
 
     @Override
     protected void onBind(final HttpServletRequest request, final Object command) throws Exception {
-        log.debug(" onBind ");
         String prop = request.getParameter("_prop");
         String value = request.getParameter("_value");
         log.debug(prop + "||" + value);
@@ -33,8 +32,7 @@ public class SearchParticipantController extends SearchController {
     }
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                    final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         log.debug(" In initBinder " + isFormSubmission(request));
         if (!isFormSubmission(request)) {

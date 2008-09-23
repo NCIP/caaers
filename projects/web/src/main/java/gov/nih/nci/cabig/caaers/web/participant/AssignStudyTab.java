@@ -45,10 +45,8 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         String searchType = command.getSearchType();
         String searchText = command.getSearchText();
 
-        log.debug("Search text : " + searchText + "Type : " + searchType);
         List<Study> studies = null;
-
-        if (searchText != null && searchType != null && !StringUtils.isEmpty(searchText) && searchText.trim().length() >= 2) {
+        if (searchText != null && searchType != null && !StringUtils.isEmpty(StringUtils.trim(searchText))) {
 
             Study exampleStudy = new Study();
             if (StringUtils.equals("st", searchType)) {
