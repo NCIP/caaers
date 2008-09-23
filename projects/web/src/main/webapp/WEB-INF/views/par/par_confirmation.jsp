@@ -13,7 +13,8 @@
     </script>
 <style>
     div.row div.label {
-        width:15em;        
+        width:15em;
+        margin-left:0px;
     }
 </style>
 </head>
@@ -133,22 +134,31 @@
                 <chrome:division title="${assignment.studySite.study.shortTitle} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
                     <table width=100% border="0" cellspacing="5">
                         <tr><td colspan="4"><h2><tags:message key="section.general" /></h2></td></tr>
-                        <tr><td></td><td colspan="3"><tags:message key="baseline.performance" /> ${assignment.baselinePerformance}</td></tr>
+                        <tr>
+                            <td></td>
+                            <td colspan="3">
+                                <div class="row">
+                                    <div class="label" style="text-align:left;"><tags:message
+                                            key="baseline.performance"/>&nbsp;</div>
+                                    <div class="value">${assignment.baselinePerformance}</div>
+                                </div>
+                            </td>
+                        </tr>
 
                         <tr><td colspan="4"><h2><tags:message key="section.disease.information" /></h2></td></tr>
                         <tr>
                             <td></td>
                             <td colspan="3">
                                 <div class="row">
-                                    <div class="label"><tags:message key="disease.name"/>&nbsp;</div>
+                                    <div class="label" style="text-align:left;"><tags:message key="disease.name"/>&nbsp;</div>
                                     <div class="value">${assignment.diseaseHistory.abstractStudyDisease.termName}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="label"><tags:message key="primary.site.of.disease"/>&nbsp;</div>
+                                    <div class="label" style="text-align:left;"><tags:message key="primary.site.of.disease"/>&nbsp;</div>
                                     <div class="value">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name}</div>
                                 </div>
                                 <div class="row">
-                                    <div class="label"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
+                                    <div class="label" style="text-align:left;"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
                                     <div class="value"><tags:validDate date="${assignment.diseaseHistory.diagnosisDate}" /></div>
                                 </div>
                             </td>
@@ -160,6 +170,9 @@
                         <tr>
                             <td width="5%"></td>
                             <td valign="top">
+                                <c:if test="${fn:length(assignment.diseaseHistory.metastaticDiseaseSites) == 0}">
+                                    <i><tags:message key="no.disease.sites" /></i>
+                                </c:if>
                                 <c:forEach items="${assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
                                     <c:if test="${mds.codedSite.id != 110}">${mds.codedSite.name}</c:if>
                                     <c:if test="${mds.codedSite.id == 110}">${mds.otherSite}</c:if>
@@ -174,6 +187,10 @@
                         <tr>
                             <td width="5%"></td>
                             <td valign="top">
+                                    <c:if test="${fn:length(assignment.preExistingConditions) == 0}">
+                                        <i><tags:message key="no.preexisting.conditions" /></i>
+                                    </c:if>
+
                                     <c:forEach items="${assignment.preExistingConditions}" var="pc" varStatus="status">
                                         <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
                                         <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
@@ -188,6 +205,11 @@
                         <tr>
                             <td></td>
                             <td valign="top">
+                                <c:if test="${fn:length(assignment.concomitantMedications) == 0}">
+                                        <i><tags:message key="no.conmeds" /></i>
+                                </c:if>
+
+                                <c:if test="${fn:length(assignment.concomitantMedications) > 0}">
                                 <table width="50%" class="tablecontent">
                                     <tr>
                                         <th>Name</th>
@@ -204,6 +226,7 @@
                                     </tr>
                                     </c:forEach>
                                 </table>
+                                </c:if>
                             </td>
                         </tr>
 
@@ -213,6 +236,11 @@
                         <tr>
                             <td></td>
                             <td valign="top">
+                                <c:if test="${fn:length(assignment.priorTherapies) == 0}">
+                                        <i><tags:message key="no.prior.therapies" /></i>
+                                </c:if>
+
+                                <c:if test="${fn:length(assignment.priorTherapies) > 0}">
                                 <table width="100%" class="tablecontent">
                                     <tr>
                                         <th>Name</th>
@@ -237,6 +265,7 @@
                                     </tr>
                                     </c:forEach>
                                 </table>
+                                </c:if>
                             </td>
                         </tr>
                     </table>

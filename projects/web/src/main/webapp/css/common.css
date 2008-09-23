@@ -704,7 +704,7 @@ div.row div.label, div.row div.value {
 }
 
 div.row div.label {
-  font-weight: normal;
+  font-weight: bold;
   float: left;
   margin-left: 0.5em;
   text-align: right;
