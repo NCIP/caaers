@@ -141,7 +141,7 @@
 <div id="ids" style="display:'';">
     <br />
     <chrome:division title="Study Subject Identifier">
-        <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier"/>
+        <ui:label path="studySubjectIdentifier" required="true" text="Study subject identifier" /><ui:text path="studySubjectIdentifier"/>
     </chrome:division>
 </div>
 

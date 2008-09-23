@@ -16,6 +16,7 @@ public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCom
 
     public ReviewAssignmentTab() {
         super("Review and Submit", "Review and Submit", "par/reg_review_submit");
+//        super("Review and Submit", "Review and Submit", "par/par_confirmation");
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
