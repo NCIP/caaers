@@ -5,11 +5,12 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Collection;
 
 /**
  * 
@@ -24,7 +25,7 @@ public interface AdverseEventEvaluationService {
     Map<String, List<String>> evaluateSAEReportSchedule(ExpeditedAdverseEventReport aeReport, List<AdverseEvent> aeList,
     		Study study) throws Exception;
 
-    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData)
+    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions)
                     throws Exception;
 
     /**
@@ -34,7 +35,7 @@ public interface AdverseEventEvaluationService {
      * @return
      * @throws Exception
      */
-    Collection<ExpeditedReportSection> mandatorySectionsForReport(Report report) throws Exception;
+    Collection<ExpeditedReportSection> mandatorySectionsForReport(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition) throws Exception;
 
     /**
      * This method will execute the business rules set for SAE flow, at funding sponsor level.

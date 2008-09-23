@@ -337,11 +337,9 @@ public class EvaluationServiceImpl implements EvaluationService {
         return reportDefinition.getName();
     }
 
-    public Collection<ExpeditedReportSection> mandatorySections(
-                    ExpeditedAdverseEventReport expeditedData) {
+    public Collection<ExpeditedReportSection> mandatorySections( ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions) {
         try {
-            Collection<ExpeditedReportSection> sections = adverseEventEvaluationService
-                            .mandatorySections(expeditedData);
+            Collection<ExpeditedReportSection> sections = adverseEventEvaluationService.mandatorySections(expeditedData, reportDefinitions);
             if (log.isDebugEnabled()) log.debug("Mandatory sections: " + sections);
             return sections;
         } catch (Exception e) {

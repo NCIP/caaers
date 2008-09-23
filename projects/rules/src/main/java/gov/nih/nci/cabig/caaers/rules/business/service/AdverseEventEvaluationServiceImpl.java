@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.rules.business.service;
 
+import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.INSTITUTION_BASE;
+import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.INSTITUTION_DEFINED_STUDY_BASE;
+import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.SPONSOR_BASE;
+import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.SPONSOR_DEFINED_STUDY_BASE;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -19,7 +23,7 @@ import gov.nih.nci.cabig.caaers.rules.exception.RuleSetNotFoundException;
 import gov.nih.nci.cabig.caaers.rules.objectgraph.FactResolver;
 import gov.nih.nci.cabig.caaers.rules.runtime.BusinessRulesExecutionService;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
-import static gov.nih.nci.cabig.caaers.rules.common.CategoryConfiguration.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -153,11 +157,10 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return map;
     }
 
-    public Collection<ExpeditedReportSection> mandatorySectionsForReport(Report report)
+    public Collection<ExpeditedReportSection> mandatorySectionsForReport(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition)
                     throws Exception {
-        List<AdverseEvent> adverseEvents = report.getAeReport().getAdverseEvents();
-        Study study = report.getAeReport().getStudy();
-        ReportDefinition reportDefinition = report.getReportDefinition();
+        List<AdverseEvent> adverseEvents = aeReport.getAdverseEvents();
+        Study study = aeReport.getStudy();
         Set<String> sections = new HashSet<String>();
         String strSections = null;
         String[] sectionNames = null;
@@ -167,7 +170,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
 
             // evaluate sponsor level rules
             strSections = evaluateSponsorTarget(ae, study, reportDefinition,
-                            RuleType.MANDATORY_SECTIONS_RULES.getName(), report.getAeReport());
+                            RuleType.MANDATORY_SECTIONS_RULES.getName(), aeReport);
             if (!strSections.equals(CAN_NOT_DETERMINED)) {
                 sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections, "\\|\\|");
                 sections.addAll(Arrays.asList(sectionNames));
@@ -177,7 +180,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
             for (StudyOrganization so : study.getStudyOrganizations()) {
                 strSections = evaluateInstitutionTarget(ae, study, so.getOrganization(),
                                 reportDefinition, RuleType.MANDATORY_SECTIONS_RULES.getName(),
-                                report.getAeReport());
+                                aeReport);
                 if (!strSections.equals(CAN_NOT_DETERMINED)) {
                     sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections, "\\|\\|");
                     sections.addAll(Arrays.asList(sectionNames));
@@ -187,18 +190,22 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         }
 
         if (log.isDebugEnabled()) {
-            log.debug("Determined " + sections + " are mandatory for " + report);
+            log.debug("Determined " + sections + " are mandatory for " + reportDefinition.getName());
         }
 
         return sectionNamesToSections(sections);
     }
 
-    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport aeReport)
-                    throws Exception {
+    public Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport aeReport, ReportDefinition... reportDefinitions) throws Exception {
         Set<ExpeditedReportSection> sections = new LinkedHashSet<ExpeditedReportSection>();
-
-        for (Report report : aeReport.getReports()) {
-            sections.addAll(mandatorySectionsForReport(report));
+        if(reportDefinitions != null && reportDefinitions.length > 0){
+        	for(ReportDefinition reportDefinition : reportDefinitions){
+        		sections.addAll(mandatorySectionsForReport(aeReport, reportDefinition));
+        	}
+        }else{
+        	for (Report report : aeReport.getReports()) {
+                sections.addAll( mandatorySectionsForReport(aeReport, report.getReportDefinition()));
+            }	
         }
 
         return sections;
