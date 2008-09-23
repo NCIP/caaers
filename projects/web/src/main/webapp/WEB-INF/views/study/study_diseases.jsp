@@ -274,12 +274,19 @@
                         <option value="">Please select a Category first</option>
                     </select>
 
-                    <br><br>Diseases<br>
-                    <select multiple size="1" style="width:400px" id="disease-term">
-                        <option value="">Please select a Category first</option>
-                    </select> <span id="disease-selected-name"></span>
-                    <input class='ibutton' type='button' onClick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease'/>
-                   <br>
+                    <div>
+                        <br>Diseases<br>
+                        <select multiple size="1" style="width:400px" id="disease-term">
+                            <option value="">Please select a Category first</option>
+                        </select>
+
+                        <span id="disease-selected-name"></span>
+                        <div style="text-align:right; padding-right:11px; padding-top:2px;">
+                            <input class='ibutton' type='button' onClick="fireAction('addStudyDisease','0');" value='Add disease'  title='Add disease' align="right"/>
+                        </div>
+                    </div>
+                    <br/>
+                    <br/>
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
