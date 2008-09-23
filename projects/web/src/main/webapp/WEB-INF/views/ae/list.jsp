@@ -229,6 +229,56 @@ color:#0033FF;
             }
          }
      }
+     
+     function notifyPsc(aeReportId) {
+            AE.showIndicator("notify-indicator-" + aeReportId)
+            createAE.pushAdverseEventToStudyCalendar(aeReportId, function(result) {
+                AE.hideIndicator("notify-indicator-" + aeReportId)
+                var unit = $("notify-unit-" + aeReportId)
+                if (result) {
+                    Element.update(unit, "Notified")
+                    Element.addClassName(unit, "success")
+                } else {
+                    Element.update(unit, "Notification failed")
+                    Element.addClassName(unit, "failure")
+                }
+            })
+        }
+        
+     function notifyPscRoutineEvent(aeReportId) {
+
+            AE.showIndicator("notify-indicator-routine-" + aeReportId)
+            createAE.pushRoutineAdverseEventToStudyCalendar(aeReportId, function(result) {
+                AE.hideIndicator("notify-indicator-routine-" + aeReportId)
+                var unit = $("notify-unit-routine-" + aeReportId)
+                if (result) {
+                    Element.update(unit, "Notified")
+                    Element.addClassName(unit, "success")
+                } else {
+                    Element.update(unit, "Notification failed")
+                    Element.addClassName(unit, "failure")
+                }
+            })
+        }
+        
+       Event.observe(window, "load", function() {
+
+            $$("a.notify").each(function(a) {
+                Event.observe(a, "click", function(e) {
+                    Event.stop(e);
+                    var aeReportId = Event.element(e).id.substring(7)
+                    notifyPsc(aeReportId)
+                })
+            })
+
+            $$("a.notify-routine").each(function(a) {
+                Event.observe(a, "click", function(e) {
+                    Event.stop(e);
+                    var roReportId = Event.element(e).id.substring(14)
+                    notifyPscRoutineEvent(roReportId)
+                })
+            })
+        })    
     </script>
 </head>
 <body>
@@ -244,6 +294,11 @@ color:#0033FF;
       <div class="summaryvalue">${command.study.longTitle}</div>
     </div>
   </div>
+</c:if>
+<c:if test="${not empty configuration.map.pscBaseUrl}">
+<p>
+    View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="psc">study calendar</a>.
+</p>
 </c:if>
 <div class="eXtremeTable" >
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
