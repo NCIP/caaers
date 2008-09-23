@@ -190,7 +190,9 @@
 	</script>
 </head>
 <body>
-
+	<p>
+	 <tags:instructions code="instruction_ae_patientdetails"/>
+	</p>
 <form:form id="command">	
 
 <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99;">
@@ -213,6 +215,9 @@
 	<tags:tabFields tab="${tab}" />
 	<tags:hasErrorsMessage />
 	<chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_general"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.participantHistory.baselinePerformanceStatus" />
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
@@ -280,6 +285,9 @@
 	  
 
 	<chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.diseaseHistory.*" />
 		<a name="anchorDiseaseInfo" />
 		<div id="anchorDiseaseInfo">
@@ -356,6 +364,9 @@
 
 	<a name="anchorMetastaticDiseasesSection" />
 	<chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.diseaseHistory.metastaticDiseaseSites.*" />
 		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
 		<table class="tablecontent" width="80%">
@@ -400,6 +411,9 @@
 
 
 	<chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-existing Conditions" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_precond"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.saeReportPreExistingConditions.*" />
 		<tags:hasErrorsMessage path="preExistingCondition" />
 		<table class="tablecontent" width="80%">
@@ -428,6 +442,9 @@
 
 
 	<chrome:box id="aeReport.concomitantMedications" title="ConMeds" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_conmeds"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.concomitantMedications.*" />
 		<tags:hasErrorsMessage path="concomitantMedication" />
 		<table class="tablecontent" width="80%">
@@ -454,6 +471,9 @@
 		</table>
 	</chrome:box>
 	<chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
+    <p>
+	 <tags:instructions code="instruction_ae_patientdetails_priortherapies"/>
+	</p>
 		<tags:hasErrorsMessage path="aeReport.saeReportPriorTherapies.*" />
 		<tags:hasErrorsMessage path="priorTherapyAgents" />
 		<tags:hasErrorsMessage path="priorTherapy" />

@@ -295,6 +295,11 @@ color:#0033FF;
     </div>
   </div>
 </c:if>
+<p>
+    <tags:instructions code="instruction_manage_reports"/>
+</p>
+
+
 <c:if test="${not empty configuration.map.pscBaseUrl}">
 <p>
     View this person's schedule in the <a href="${configuration.map.pscBaseUrl}/pages/cal/schedule?assignment=${command.assignment.gridId}" class="sso" target="psc">study calendar</a>.

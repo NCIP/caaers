@@ -14,6 +14,7 @@ Note: -
 </chrome:division>
 
 <chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
+
                <tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
                        noBackground="true"
                    callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
@@ -47,6 +48,10 @@ Note: -
     </chrome:division>
 
 <chrome:division title="Solicited Adverse Event(s)" collapsable="true" id="solicitatedID">
+<p>
+    <tags:instructions code="instruction_ae_sae"/>
+</p>
+<p/>
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
 				<tr>

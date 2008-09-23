@@ -275,6 +275,9 @@ right:20px;
  
 </head>
  <body>
+       		<p>
+   			 <tags:instructions code="instruction_ae_adverseevents"/>
+			</p>
 	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm">
       	
       	<jsp:attribute name="singleFields">
@@ -287,7 +290,6 @@ right:20px;
 						</jsp:attribute>
 					</tags:renderRow>
       		</div>
-      		     
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
 					<ae:reportingPeriodAEDetails />

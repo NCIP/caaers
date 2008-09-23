@@ -97,7 +97,7 @@
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11reporterinformation">
     <jsp:attribute name="instructions">
            		<p>
-                    Complete the submitter information below
+                    Complete the submitter information below.
                 </p>
 
     </jsp:attribute>
@@ -108,9 +108,7 @@
     		
     		<p>
     			
-    			Certify that this expedited report has been reviewed and approved by a physician or his/her medical designee responsible for the
-    			
-    			care of this patient.
+    			Certify the physician has signed-off on the report and then enter your information as the submitter.
     		
     		</p>
 
