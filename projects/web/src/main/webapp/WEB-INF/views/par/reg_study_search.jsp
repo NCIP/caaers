@@ -137,11 +137,14 @@
     <c:set var="_display" value="''" />
 </c:if>
 <%--<c:out value="" />        --%>
+
 <div id="ids" style="display:'';">
-        <br />
-        <%--A=<c:out value="${command.assignment == null}" />--%>
+    <br />
+    <chrome:division title="Study Subject Identifier">
         <ui:label path="studySubjectIdentifier" required="true" text="Study Subject Identifier:" /><ui:text path="studySubjectIdentifier"/>
+    </chrome:division>
 </div>
+
     </jsp:attribute>
 
 </tags:tabForm>

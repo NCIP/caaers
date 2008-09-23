@@ -62,23 +62,23 @@ function buildTable(form) {
     <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 
         <div class="row">
-            <div class="label"> Identifier :&nbsp; </div>
+            <div class="label">Identifier&nbsp; </div>
             <div class="value"><input id="prop0" type="text" name="identifier"/></div>
         </div>
 
 
         <div class="row">
-            <div class="label"> First Name :&nbsp; </div>
+            <div class="label">First Name&nbsp; </div>
             <div class="value"><input id="prop1" type="text" name="firstName"/></div>
         </div>
 
         <div class="row">
-            <div class="label"> Last Name :&nbsp; </div>
+            <div class="label">Last Name&nbsp; </div>
             <div class="value"><input id="prop2" type="text" name="lastName"/></div>
         </div>
 
         <div class="row">
-            <div class="value" style="float:right;">
+            <div class="value" style="float:left;">
                 <input class='ibutton' type='button' onclick="buildTable('assembler'); $('bigSearch').show();" value='Search' title='Search Subject'/>
                 <tags:indicator id="indicator"/>
             </div>
