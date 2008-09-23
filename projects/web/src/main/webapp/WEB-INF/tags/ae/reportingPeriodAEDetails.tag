@@ -24,7 +24,7 @@ Note: -
                    <tr>
                        <th scope="col" align="left" width="200px"><b>Term</b> </th>
                        <th scope="col" align="left" width="200px"><b><tags:requiredIndicator/>Grade</b> </th>
-                       <th scope="col" align="left" width="100px"><b>Attribution</b> </th>
+                       <th scope="col" align="left" width="100px"><b><tags:requiredIndicator/>Attribution</b> </th>
                        <th scope="col" align="left" width="109px"><b>Hospitalization</b> </th>
                        <th scope="col" align="left"><b>Expected</b> </th>
                        <caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
