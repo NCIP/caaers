@@ -98,9 +98,11 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
         Participant participant = participantCommand.getParticipant();
         participantDao.save(participant);
 
+/*
         ModelAndView modelAndView = new ModelAndView("par/par_confirm");
         modelAndView.addObject("participant", participant);
         modelAndView.addAllObjects(errors.getModel());
+*/
 
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=confirm");
         return null;
