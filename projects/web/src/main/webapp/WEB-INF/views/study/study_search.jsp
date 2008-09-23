@@ -55,7 +55,7 @@ function fireAction(action, selected){
 </head>
 <body>
 
-<chrome:box title="Study Criteria" autopad="true">
+<chrome:box title="Search Criteria" autopad="true">
     <form:form name="searchForm" id="searchForm" method="post">
        <div>
 			<input type="hidden" name="_selected" id="_selected" value="">

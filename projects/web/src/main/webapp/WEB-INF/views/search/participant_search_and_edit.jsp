@@ -59,7 +59,7 @@ function buildTable(form) {
    </p>
 
 
-    <chrome:box title="Subject Criteria" cssClass="mpaired" autopad="false">
+    <chrome:box title="Search Criteria" cssClass="mpaired" autopad="false">
 
         <div class="row">
             <div class="label"> Identifier :&nbsp; </div>

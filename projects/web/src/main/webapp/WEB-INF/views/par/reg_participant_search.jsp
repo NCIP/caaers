@@ -22,9 +22,16 @@ function onAjaxSubjectSearch() {
     // alert("onAjaxStudySearch");
 }
 
+function _onAjaxSubjectSearch(transport) {
+    $('bigResult').show();
+//    $('searchResults').innerHTML = transport.responseText;
+//     alert("_onAjaxSubjectSearch");
+}
+
 function ajaxSubjectSearch(searchText, searchType) {
+
     // START tags:tabMethod
-        var text = $F('searchText')
+        var text = $F('searchText');
 
         if(text == '' ||text.length==1){
             $('error').innerHTML="<font color='#FF0000'>Provide at least two character in the search field</font>"
@@ -38,9 +45,12 @@ function ajaxSubjectSearch(searchText, searchType) {
        onComplete="onAjaxSubjectSearch"
        divElement="'searchResults'"
        formName="'searchForm'"
-       params="" />
+       params="g444"
+       onSuccess="_onAjaxSubjectSearch"
+       />
 
     // END tags:tabMethod
+            
 }
 }
 </script>
@@ -78,7 +88,7 @@ function ajaxSubjectSearch(searchText, searchType) {
     <c:set var="display" value="''" />
 </c:if>
 
-<div id="bigResult" style="display:${display};">
+<div id="bigResult" style="display:none;">
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 <jsp:attribute name="singleFields">
     <div id="searchResults" style="width:100%; border: 0px red dotted;">

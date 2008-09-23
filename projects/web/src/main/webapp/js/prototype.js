@@ -3838,8 +3838,12 @@ Object.extend(Event, (function() {
         (event.eventName && event.eventName != eventName))
           return false;
 
-      Event.extend(event);
-      handler.call(element, event)
+        try {
+            Event.extend(event);
+            handler.call(element, event);
+        } catch(ex) {
+            // alert("Exception: " + ex);
+        }
     };
 
     wrapper.handler = handler;

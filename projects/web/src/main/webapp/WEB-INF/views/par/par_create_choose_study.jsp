@@ -20,7 +20,7 @@ function updateTargetPage(s){
 }
 
 function onAjaxStudySearch() {
-    // alert("onAjaxStudySearch");
+    $('bigSearch').show(); 
 }
 
 function ajaxStudySearch(searchText, searchType) {
@@ -70,7 +70,7 @@ function ajaxStudySearch(searchText, searchType) {
                             <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
                         </td>
                         <td><form:input path="searchText" size="25" /></td>
-                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value); $('bigSearch').show(); "></td>
+                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
                     </tr>
                     </table>
             </td>
@@ -102,15 +102,17 @@ function ajaxStudySearch(searchText, searchType) {
                     Display the previews results when the user hit BACK button either on the browser or in the page form.
                 --%>
                     <ec:table items="command.studies" var="study"
-                                action="${pageContext.request.contextPath}/pages/newParticipant"
+                                action="${pageContext.request.contextPath}/pages/participant/create"
                                 imagePath="${pageContext.request.contextPath}/images/table/*.gif"
                                 filterable="false"
-                                showPagination="false" form="command"
+                                showPagination="false"
+                                form="command"
                                 cellspacing="0" cellpadding="2" border="0" width="100%" style=""
                                 styleClass=""
-                                autoIncludeParameters="false" >
+                                autoIncludeParameters="false"
+                                sortable="true">
                         <ec:row highlightRow="true">
-                            <ec:column property="transient0" style="width:20px" filterable="false" sortable="false" title="&nbsp;">
+                            <ec:column property="transient0" style="width:20px" filterable="false" sortable="true" title="&nbsp;">
                                 <form:radiobutton path="study" value="${study.id}" onclick="if ($('ids')) $('ids').show();"/>
                             </ec:column>
                             <ec:column property="primaryIdentifier" title="Primary ID" />

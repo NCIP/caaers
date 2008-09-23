@@ -114,12 +114,12 @@
         <div id="searchResults" style="width:100%; border: 0px red dotted;">
             <c:if test="${fn:length(command.studies) > 0}">
                 <ec:table autoIncludeParameters="false" items="command.studies" var="study"
-                    action="${pageContext.request.contextPath}/pages/newParticipant"
+                    action="${pageContext.request.contextPath}/pages/participant/assignParticipant"
                     imagePath="${pageContext.request.contextPath}/images/table/*.gif"
                     filterable="false"
                     showPagination="false" form="command"
                     cellspacing="0" cellpadding="0" border="0" width="100%" style=""
-                    styleClass="">
+                    styleClass="" sortable="false">
                     <ec:row highlightRow="true">
                         <ec:column property="primaryIdentifier" title="Primary ID" />
                         <ec:column property="shortTitle" title="Short Title" />

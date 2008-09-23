@@ -47,6 +47,7 @@
 
     // this works together with [tags:collapsableElement.tag], allows setting the collapsable state = TRUE
     var _collapsedELs = new Array();
+/*
     Event.observe(window, "load", function() {
         for (var i in _collapsedELs) {
             if ($(i));
@@ -54,6 +55,7 @@
             // $(i).hide();
         }
     });
+*/
 </script>
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
 <!-- END tags\standard\head.tag -->
