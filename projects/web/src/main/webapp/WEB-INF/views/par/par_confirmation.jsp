@@ -58,7 +58,7 @@
                 <td>
                     <div class="row">
                         <div class="label">Date of birth&nbsp; </div>
-                        <div class="value">${command.participant.dateOfBirth}</div>
+                        <div class="value"><tags:validDate date="${command.participant.dateOfBirth}" /></div>
                     </div>
 
                     <div class="row">
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="label"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
-                                    <div class="value">${assignment.diseaseHistory.diagnosisDate}</div>
+                                    <div class="value"><tags:validDate date="${assignment.diseaseHistory.diagnosisDate}" /></div>
                                 </div>
                             </td>
                         </tr>
