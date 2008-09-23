@@ -221,7 +221,6 @@
      					</c:if>
  					</SELECT>
      					
- 					</SELECT>
     				</td>
     			</tr>
     		</table>
