@@ -90,7 +90,7 @@
                      object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
             <pattern identifier="errors"
                      object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-            <eval>
+            <eval>NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.totalCourses")!=null &amp;&amp;
                 NumberUtil.compare(NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.adverseEventCourse.number"),
                 NullSafeFieldExtractor.extractIntegerField(aeReport,"treatmentInformation.totalCourses"))
                 &lt; 0

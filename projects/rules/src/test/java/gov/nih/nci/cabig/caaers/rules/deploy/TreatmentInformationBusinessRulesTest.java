@@ -26,11 +26,9 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     }
 
     /**
-    * 
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
      * has not been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must not be
      * provided if COURSE_INFOMATION is not provided.
-     * 
      */
     public void testNoAgent_And_NoCourse() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -51,7 +49,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
      * has not been provided. Error Code : SEC_BR5A_ERR Error Message : PROTOCOL_AGENTS must not be
      * provided if COURSE_INFOMATION is not provided.
-     * 
      */
     public void testAgents_And_Course() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -59,7 +56,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertNoErrors(errors, "When there is Agents and Course Information available");
     }
 
-   
 
     /**
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
@@ -76,7 +72,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertSameErrorCount(errors, 1,
-                        "When Agent information is provided without Course information");
+                "When Agent information is provided without Course information");
         assertCorrectErrorCode(errors, "SEC_BR5B_ERR");
 
     }
@@ -85,7 +81,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
      * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-     * 
      */
     public void testOnlyTACPresent() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -94,7 +89,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error, when there is only TAC", 0, errors
-                        .getErrorCount());
+                .getErrorCount());
 
     }
 
@@ -102,7 +97,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
      * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-     * 
      */
     public void testOnlyDescriptionPresent() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -111,8 +105,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when there is only Other Description or dose level",
-                        0, errors.getErrorCount());
+                "There should not be any error, when there is only Other Description or dose level",
+                0, errors.getErrorCount());
 
     }
 
@@ -120,7 +114,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
      * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-     * 
      */
     public void testBothTAC_AndOtherDescriptionPresent() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -128,8 +121,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should be  error, when there is both TAC and Other Description or dose level",
-                        1, errors.getErrorCount());
+                "There should be  error, when there is both TAC and Other Description or dose level",
+                1, errors.getErrorCount());
         assertEquals("Error code should be same", "TAI_BR2_ERR", errors.getErrorAt(0).getCode());
     }
 
@@ -137,7 +130,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
      * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-     * 
      */
     public void testNoTAC_AndNoOtherDescriptionPresent() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -146,15 +138,14 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when there is no TAC and no Other Description or dose level",
-                        0, errors.getErrorCount());
+                "There should not be any error, when there is no TAC and no Other Description or dose level",
+                0, errors.getErrorCount());
     }
 
     /**
      * RuleName : TAI_BR2_CHK Rule : Either and only �Treatment Assignment Code� or �Describe
      * Treatment Assignment� must be provided Error Code : TAI_BR2_ERR Error Message : Either and
      * only TREATMENT_ASSIGNMENT_CODE or OTHER_TREATMENT_ASSIGNMENT must be provided.
-     * 
      */
     public void testNullTreatmentInformation() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -163,7 +154,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error, when there is no TreatmentInformation at all",
-                        0, errors.getErrorCount());
+                0, errors.getErrorCount());
     }
 
     /**
@@ -176,8 +167,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
-                        0, errors.getErrorCount());
+                "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
+                0, errors.getErrorCount());
     }
 
     /**
@@ -192,8 +183,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
-                        0, errors.getErrorCount());
+                "There should not be any error, when courseNo.OfAE is less than TotalNumberOfCourses",
+                0, errors.getErrorCount());
     }
 
     /**
@@ -206,9 +197,9 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         aeReport.getTreatmentInformation().setTotalCourses(null);
         ValidationErrors errors = fireRules(aeReport);
 
-        assertEquals("There should be error, when TotalNumberOfCourses is null", 1, errors
-                        .getErrorCount());
-        assertEquals("Error code should be same", "CIN_BR1_ERR", errors.getErrorAt(0).getCode());
+        assertEquals(
+                "There should not be any error, when  TotalNumberOfCourses are null. This is required if only courseNo of AE is mandatory field",
+                0, errors.getErrorCount());
 
     }
 
@@ -223,7 +214,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error, when courseNo.OfAE is null", 0, errors
-                        .getErrorCount());
+                .getErrorCount());
 
     }
 
@@ -238,8 +229,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should be error, when courseNo.OfAE is greater than TotalNumberOfCourses",
-                        1, errors.getErrorCount());
+                "There should be error, when courseNo.OfAE is greater than TotalNumberOfCourses",
+                1, errors.getErrorCount());
         assertEquals("Error code should be same", "CIN_BR1_ERR", errors.getErrorAt(0).getCode());
     }
 
@@ -255,20 +246,19 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when courseNo.OfAE is null and totalNo.OfCourse is null",
-                        0, errors.getErrorCount());
+                "There should not be any error, when courseNo.OfAE is null and totalNo.OfCourse is null",
+                0, errors.getErrorCount());
     }
 
     /**
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
-     * 
+     * <p/>
      * RuleName : PAG_BR1B_CHK Logic : " 'Duration of Delay' must not be provided if 'Dose' is not
      * 'Delayed'" Translated Logic : 'Administration delay' must not be provided if 'Dose modified'
      * is not checked Error Code PAG_BR1B_ERR Error Message : DELAY_UOM must not be provided if the
      * AGENT_DELAYED is not "Yes"
-     * 
      */
     public void testNoCourseAgent() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -281,39 +271,37 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error when there are no course agents", 0, errors
-                        .getErrorCount());
+                .getErrorCount());
     }
 
     /**
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
-     * 
+     * <p/>
      * RuleName : PAG_BR1B_CHK Logic : " 'Duration of Delay' must not be provided if 'Dose' is not
      * 'Delayed'" Translated Logic : 'Administration delay' must not be provided if 'Dose modified'
      * is not checked Error Code PAG_BR1B_ERR Error Message : DELAY_UOM must not be provided if the
      * AGENT_DELAYED is not "Yes"
-     * 
      */
     public void testNoAdminDelay_And_NoModifiedDose() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error when there are course agents, having no admin delay and modified dose",
-                        0, errors.getErrorCount());
+                "There should not be any error when there are course agents, having no admin delay and modified dose",
+                0, errors.getErrorCount());
     }
 
     /**
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
-     * 
+     * <p/>
      * RuleName : PAG_BR1B_CHK Logic : " 'Duration of Delay' must not be provided if 'Dose' is not
      * 'Delayed'" Translated Logic : 'Administration delay' must not be provided if 'Dose modified'
      * is not checked Error Code PAG_BR1B_ERR Error Message : DELAY_UOM must not be provided if the
      * AGENT_DELAYED is not "Yes"
-     * 
      */
     public void testAdminDelay_WithModifiedDose() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -328,7 +316,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error when both Admin Delay and Modified dose", 0,
-                        errors.getErrorCount());
+                errors.getErrorCount());
     }
 
     /**
@@ -347,7 +335,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertTrue("There should be errors when there is only Modified Dose, with out Admin delay",
-                        errors.getErrorCount() > 0);
+                errors.getErrorCount() > 0);
         assertEquals("There should be 2 errors", 2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR1A_ERR", errors.getErrorAt(0).getCode());
 
@@ -372,11 +360,11 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertTrue("There should be errors when there is only Modified Dose, with out Admin delay",
-                        errors.getErrorCount() > 0);
+                errors.getErrorCount() > 0);
         assertEquals("There should be 1 error", 1, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR1A_ERR", errors.getErrorAt(0).getCode());
         assertEquals("Error replacement value should be 1", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
 
     }
 
@@ -384,13 +372,11 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
-     * 
+     * <p/>
      * RuleName : PAG_BR1B_CHK Logic : " 'Duration of Delay' must not be provided if 'Dose' is not
      * 'Delayed'" Translated Logic : 'Administration delay' must not be provided if 'Dose modified'
      * is not checked Error Code PAG_BR1B_ERR Error Message : DELAY_UOM must not be provided if the
      * AGENT_DELAYED is not "Yes"
-     * 
-     * 
      */
     public void testAdminDelay_Alone() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -401,7 +387,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertTrue("There should be errors when there is only Admin Delay, with out Modified Dose",
-                        errors.getErrorCount() > 0);
+                errors.getErrorCount() > 0);
         assertEquals("There should be 2 errors", 2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR1B_ERR", errors.getErrorAt(0).getCode());
 
@@ -421,8 +407,8 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "There should not be any error, when NON ind agents dont have last administred date",
-                        0, errors.getErrorCount());
+                "There should not be any error, when NON ind agents dont have last administred date",
+                0, errors.getErrorCount());
     }
 
     /**
@@ -449,7 +435,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals("There should not be any error, when ind agents have last administred date",
-                        0, errors.getErrorCount());
+                0, errors.getErrorCount());
     }
 
     /**
@@ -475,13 +461,13 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "Errors should be there when LastAdministeredDate is not available for IND agents",
-                        2, errors.getErrorCount());
+                "Errors should be there when LastAdministeredDate is not available for IND agents",
+                2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR3_ERR", errors.getErrorAt(0).getCode());
         assertEquals("Error replacement variable should be correct", 1, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
         assertEquals("Error replacement variable should be correct", 2, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
     }
 
     /**
@@ -490,7 +476,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * be entered for an investigational agent.
      */
     public void testNoLastAdministeredDate_ForOneOutOfTwo_InvestigationalStudyAgents()
-                    throws Exception {
+            throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         int i = 0;
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
@@ -509,18 +495,17 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         ValidationErrors errors = fireRules(aeReport);
 
         assertEquals(
-                        "Errors should be there when LastAdministeredDate is not available for IND agents",
-                        1, errors.getErrorCount());
+                "Errors should be there when LastAdministeredDate is not available for IND agents",
+                1, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR3_ERR", errors.getErrorAt(0).getCode());
         assertEquals("Error replacement variable should be correct", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
 
     }
 
     /**
      * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
      * Message : PROTOCOL_AGENT must be unique
-     * 
      */
     public void testUniqueStudyAgents() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -531,7 +516,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     /**
      * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
      * Message : PROTOCOL_AGENT must be unique
-     * 
      */
     public void testDuplicateStudyAgents() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -551,7 +535,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     /**
      * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
      * Message : PROTOCOL_AGENT must be unique
-     * 
      */
     public void testTwoOutOfThreeStudyAgentsSame() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -586,7 +569,6 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
     /**
      * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
      * Message : PROTOCOL_AGENT must be unique
-     * 
      */
     public void testThreeOutOfThreeStudyAgentsSame() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
@@ -618,20 +600,20 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertCorrectErrorCode(errors, "PAG_UK_ERR");
         assertSameErrorCount(errors, 2);
         assertEquals("Replacements (index) should be correct", 2, errors.getErrorAt(0)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
         assertEquals("Replacements (agentName) should be correct", "xyz", errors.getErrorAt(0)
-                        .getReplacementVariables()[1]);
+                .getReplacementVariables()[1]);
         assertEquals("Replacements (index) should be correct", 3, errors.getErrorAt(1)
-                        .getReplacementVariables()[0]);
+                .getReplacementVariables()[0]);
         assertEquals("Replacements (agentName) should be correct", "xyz", errors.getErrorAt(1)
-                        .getReplacementVariables()[1]);
+                .getReplacementVariables()[1]);
     }
 
     /**
      * RuleName : PAG_BR2B_CHK Rule : "'Unit of measure' must be provided if 'Duration of delay' is
      * provided. Error Code : PAG_BR2B_ERR Error Message : DELAY_UOM must be provided if the DELAY
      * is provided
-     * 
+     *
      * @throws Exception
      */
     public void testCourseAgent_HavingNoDose() throws Exception {
@@ -651,7 +633,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : PAG_BR2B_CHK Rule : "'Unit of measure' must be provided if 'Duration of delay' is
      * provided. Error Code : PAG_BR2B_ERR Error Message : DELAY_UOM must be provided if the DELAY
      * is provided
-     * 
+     *
      * @throws Exception
      */
     public void testCourseAgent_HavingTotalDoseAndUnits() throws Exception {
@@ -671,7 +653,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * RuleName : PAG_BR2B_CHK Rule : "'Unit of measure' must be provided if 'Duration of delay' is
      * provided. Error Code : PAG_BR2B_ERR Error Message : DELAY_UOM must be provided if the DELAY
      * is provided
-     * 
+     *
      * @throws Exception
      */
     public void testCourseAgent_NotHavingTotalDoseWithoutUOM() throws Exception {
