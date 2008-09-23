@@ -78,7 +78,6 @@ function buildTable(form) {
 		    	<div class="label"> IND holder :&nbsp; </div>
 		    	<div class="value"><input id="prop1" type="text" name="sponsorName"/></div>
 		    </div>
-   </chrome:box>
 
 	<div class="endpanes" />
 	<div class="row" style="float:right;">
@@ -86,6 +85,7 @@ function buildTable(form) {
 	<tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />
+   </chrome:box>
 
 
    </form:form>
