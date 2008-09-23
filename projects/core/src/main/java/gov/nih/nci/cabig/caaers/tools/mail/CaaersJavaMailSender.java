@@ -65,13 +65,15 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     	Properties properties = new Properties();
     	if(configuration.get(Configuration.SMTP_SSL_ENABLED) != null && configuration.get(Configuration.SMTP_SSL_ENABLED)){
     		
-//    		properties.setProperty("mail.smtp.auth", "true");
 //    		properties.setProperty("mail.smtp.starttls.enable", "true");
-    		
-    		properties.put("mail.transport.protocol", "smtps");
-    		properties.put("mail.smtps.host", configuration.get(Configuration.SMTP_ADDRESS));
-    		properties.put("mail.smtps.auth", "true");
-    		properties.setProperty("mail.smtp.timeout", "8500");
+//
+//    		properties.put("mail.transport.protocol", "smtps");
+//    		properties.put("mail.smtps.host", configuration.get(Configuration.SMTP_ADDRESS));
+//    		properties.put("mail.smtps.auth", "true");
+
+            properties.setProperty("mail.smtp.auth", "true");
+            properties.setProperty("mail.smtp.starttls.enable", "true");
+            properties.setProperty("mail.smtp.timeout", "8500");
         	setJavaMailProperties(properties);	
     	}
     }
