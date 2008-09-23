@@ -35,45 +35,45 @@
                 <td>
                     <div class="leftpane">
                         <div class="row">
-                            <div class="label">First name:</div>
+                            <div class="label">First name&nbsp; </div>
                             <div class="value">${command.participant.firstName}</div>
                         </div>
                         
                         <div class="row">
-                            <div class="label">Last name:</div>
+                            <div class="label">Last name&nbsp; </div>
                             <div class="value">${command.participant.lastName}</div>
                         </div>
 
                         <div class="row">
-                            <div class="label">Maiden name:</div>
+                            <div class="label">Maiden name&nbsp; </div>
                             <div class="value">${command.participant.maidenName}</div>
                         </div>
 
                         <div class="row">
-                            <div class="label">Middle name:</div>
+                            <div class="label">Middle name&nbsp; </div>
                             <div class="value">${command.participant.middleName}</div>
                         </div>
                     </div>
                 </td>
                 <td>
                     <div class="row">
-                        <div class="label">Date of birth:</div>
+                        <div class="label">Date of birth&nbsp; </div>
                         <div class="value">${command.participant.dateOfBirth}</div>
                     </div>
 
                     <div class="row">
-                        <div class="label">Ethnicity:</div>
+                        <div class="label">Ethnicity&nbsp; </div>
                         <div class="value">${command.participant.ethnicity}</div>
                     </div>
 
                     <div class="row">
-                        <div class="label">Race:</div>
+                        <div class="label">Race&nbsp; </div>
                         <div class="value">${command.participant.race}</div>
                     </div>
 
 
                     <div class="row">
-                        <div class="label">Gender:</div>
+                        <div class="label">Gender&nbsp;</div>
                         <div class="value">${command.participant.gender}</div>
                     </div>
 
