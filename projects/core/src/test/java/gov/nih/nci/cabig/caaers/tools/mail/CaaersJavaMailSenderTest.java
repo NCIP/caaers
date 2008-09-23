@@ -20,7 +20,7 @@ public class CaaersJavaMailSenderTest extends TestCase {
 		Configuration conf = EasyMock.createMock(Configuration.class);
 		EasyMock.expect(conf.get(Configuration.SMTP_ADDRESS)).andReturn("smtp.gmail.com").anyTimes();
 		EasyMock.expect(conf.get(Configuration.SMTP_PASSWORD)).andReturn("caaers18").anyTimes();
-		EasyMock.expect(conf.get(Configuration.SMTP_PORT)).andReturn(465).anyTimes();
+		EasyMock.expect(conf.get(Configuration.SMTP_PORT)).andReturn(25).anyTimes();
 		EasyMock.expect(conf.get(Configuration.SMTP_SSL_ENABLED)).andReturn(true).anyTimes();
 		EasyMock.expect(conf.get(Configuration.SMTP_USER)).andReturn("caaers.app@gmail.com").anyTimes();
 		EasyMock.expect(conf.get(Configuration.SYSTEM_FROM_EMAIL)).andReturn("caaers.app@gmail.com").anyTimes();
