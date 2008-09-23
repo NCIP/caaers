@@ -1,4 +1,4 @@
-<project name="caaers-labviewer-consumer" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="caaers-lab-consumer" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/../.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml"/>

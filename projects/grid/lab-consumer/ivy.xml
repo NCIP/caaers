@@ -2,7 +2,7 @@
 <ivy-module version="1.4">
 		
     	<info organisation="gov.nih.nci.cabig.caaers"
-          	module="caaers-labviewer-consumer"
+          	module="caaers-lab-consumer"
           	status="integration" revision="${caaers.version}"/>
         
   
