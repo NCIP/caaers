@@ -16,12 +16,12 @@ import org.hibernate.annotations.Type;
 
 /**
  * Domain object representing Study Therapy
- * 
+ *
  * @author Saurabh Agrawal
  */
 @Entity
 @Table(name = "study_therapy")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_therapy_id") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_study_therapy_id")})
 public class StudyTherapy extends AbstractMutableDomainObject implements StudyChild {
 
     private Study study;
@@ -56,7 +56,7 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (study == null ? 0 : study.getId().hashCode());
+        result = prime * result + (study == null || study.getId() == null ? 0 : study.getId().hashCode());
         result = prime * result + (studyTherapyType == null ? 0 : studyTherapyType.hashCode());
         return result;
     }
@@ -75,6 +75,10 @@ public class StudyTherapy extends AbstractMutableDomainObject implements StudyCh
         final StudyTherapy other = (StudyTherapy) obj;
         if (study == null) {
             if (other.study != null) {
+                return false;
+            }
+        } else if (study.getId() == null) {
+            if (other.study == null ||other.study.getId() != null){
                 return false;
             }
         } else if (!study.getId().equals(other.study.getId())) {
