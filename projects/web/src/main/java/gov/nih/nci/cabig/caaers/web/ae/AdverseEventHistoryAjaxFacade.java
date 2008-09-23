@@ -116,6 +116,7 @@ public class AdverseEventHistoryAjaxFacade {
         table.setSortable(false);
         table.setShowPagination(false);
         table.setItems(items);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
         table.setOnInvokeAction(onInvokeAction);
         model.addTable(table);
 

@@ -98,6 +98,8 @@ public class SearchStudyAjaxFacade {
 		table.setOnInvokeAction("buildTable('assembler')");
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setSortable(true);
 		table.setShowPagination(true);
 		model.addTable(table);
@@ -155,6 +157,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -187,6 +191,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -209,7 +215,7 @@ public class SearchStudyAjaxFacade {
 		model.addColumn(columnMiddleName);
 
 		Column columnNciInstituteCode = model.getColumnInstance();
-		columnNciInstituteCode.setProperty("nciInstituteCode");
+		columnNciInstituteCode.setProperty("nciIdentifier");
 		columnNciInstituteCode.setTitle("NCI Institute Code");
 
 		model.addColumn(columnNciInstituteCode);
@@ -229,6 +235,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -252,6 +260,7 @@ public class SearchStudyAjaxFacade {
 		Column columnOrganizationNameName = model.getColumnInstance();
 		columnOrganizationNameName.setProperty("organization.name");
 		columnOrganizationNameName.setTitle("Organization");
+        columnOrganizationNameName.setAlias("name");
 		model.addColumn(columnOrganizationNameName);
 
 		return model.assemble();
@@ -269,6 +278,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -334,6 +345,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -418,6 +431,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 
@@ -494,6 +509,8 @@ public class SearchStudyAjaxFacade {
 		table.setFilterable(true);
 		table.setShowPagination(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		model.addTable(table);
 
 		Export export = model.getExportInstance();
@@ -1185,6 +1202,8 @@ public class SearchStudyAjaxFacade {
 		table.setOnInvokeAction("buildTable('assembler')");
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+                
 		table.setSortable(true);
 		model.addTable(table);
 		if (StringUtils.isNotEmpty(exportFileName)) {
@@ -1335,6 +1354,8 @@ public class SearchStudyAjaxFacade {
 		table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
 		table.setFilterable(true);
 		table.setSortable(true);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+
 		table.setShowPagination(true);
 		model.addTable(table);
 

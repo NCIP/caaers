@@ -34,6 +34,8 @@ public class SearchStudyAjaxFacade {
         table.setImagePath(model.getContext().getContextPath() + "/images/table/*.gif");
         table.setFilterable(true);
         table.setSortable(false);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+                
         table.setAutoIncludeParameters(false);
         model.addTable(table);
 

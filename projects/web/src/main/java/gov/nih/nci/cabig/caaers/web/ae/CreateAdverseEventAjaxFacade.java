@@ -416,6 +416,8 @@ public class CreateAdverseEventAjaxFacade {
         table.setSortable(false);
         table.setShowPagination(true);
         table.setItems(items);
+        table.setSortRowsCallback("gov.nih.nci.cabig.caaers.web.table.SortRowsCallbackImpl");
+                
         table.setOnInvokeAction(onInvokeAction);
         model.addTable(table);
 
