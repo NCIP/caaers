@@ -34,7 +34,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     private ParticipantDao participantDao;
 
     public AssignStudyTab() {
-        super("Search for Studies", "Search Study", "par/reg_protocol_search");
+        super("Search for Studies", "Search Study", "par/reg_study_search");
     }
 
     @Override

@@ -53,7 +53,7 @@ function buildTable(form) {
 <p>
   Search for routine AEs by choosing any of the listed criteria.
 </p>
-<chrome:box title="Study criteria" autopad="true">
+<chrome:box title="Study Criteria" autopad="true">
 		    <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop4" type="text"/></div>
@@ -64,7 +64,7 @@ function buildTable(form) {
 		    	<div class="value"><input id="prop5" type="text" name="shortTitle"/></div>
 		    </div>
 </chrome:box>
-<chrome:box title="Routine AE criteria" cssClass="paired" autopad="true">
+<chrome:box title="Routine AE Criteria" cssClass="paired" autopad="true">
 
 			<div class="row">
 		    	<div class="label"> Observation Date :&nbsp; </div>
@@ -95,7 +95,7 @@ function buildTable(form) {
 		    </div>
 </chrome:box>
 
-<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>

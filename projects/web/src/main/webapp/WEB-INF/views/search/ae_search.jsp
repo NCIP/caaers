@@ -57,7 +57,7 @@ function buildTable(form) {
   Search for AEs by choosing any of the listed criteria.
 </p>
 
-<chrome:box title="AE criteria" cssClass="paired" autopad="true">
+<chrome:box title="AE Criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> CTC Category :&nbsp; </div>
 		    	<div class="value">
@@ -89,7 +89,7 @@ function buildTable(form) {
 </chrome:box>
 
 
-<chrome:box title="Study criteria" cssClass="paired" autopad="true">
+<chrome:box title="Study Criteria" cssClass="paired" autopad="true">
 		    
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp;</div>
@@ -104,7 +104,7 @@ function buildTable(form) {
 </chrome:box>
 
 
-<chrome:box title="Subject criteria" cssClass="paired" autopad="true">
+<chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
 		        <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
 		    	<div class="value"><input id="prop6" type="firstName"/></div>

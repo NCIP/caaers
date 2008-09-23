@@ -78,19 +78,11 @@
             <tr>
             </tr>
             <tr>
-                <td class="searchType">Search for a Study&nbsp;&nbsp;</td>
+                <td class="searchType">Search for a study&nbsp;&nbsp;</td>
                 <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"itemValue="code" /></form:select></td>
                 <td><form:input path="searchText" size="25" /></td>
                     <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
                 <td><input type="button" onclick="ajaxStudySearch();" value="Search" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td colspan="4" class="notation">
-                    <span class="labels">(<span class="red">*</span><em>Required Information</em>)</span>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    ^ Minimum two characters for search.
-                </td>
             </tr>
         </table>
 
@@ -130,7 +122,7 @@
                            <table>
                                 <c:forEach items="${study.studySites}" var="site">
                                    <tr><td>
-                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onfocus="showSSI();" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
+                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
                                    </td></tr>
                                 </c:forEach>
                            </table>

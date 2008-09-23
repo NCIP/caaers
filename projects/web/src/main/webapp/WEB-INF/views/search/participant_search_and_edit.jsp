@@ -55,7 +55,7 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 	<p class="instructions">
-    <br />Search for Subjects by choosing any of the listed Criteria. The result set will show a list of Subjects. 
+    <br />Search for Subjects by choosing any of the listed criteria. The result set will show a list of Subjects. 
    </p>
 
 
