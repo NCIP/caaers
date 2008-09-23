@@ -1,6 +1,6 @@
 <ns1:ServiceDescription introduceVersion="1.2" xmlns:ns1="gme://gov.nih.nci.cagrid/1/Introduce">
  <ns2:Namespaces xsi:type="ns2:NamespacesType" xmlns:ns2="gme://gov.nih.nci.cagrid.introduce/1/Namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <ns2:Namespace location="./Load Lab Message Domain.xsd" namespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.loadlabs.domain" packageName="gov.nih.nci.cabig.ccts.loadlabs.domain" xsi:type="ns2:NamespaceType">
+  <ns2:Namespace location="./Load Lab Message Domain.xsd" namespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs" packageName="gov.nih.nci.cabig.ccts.domain.loadlabs" xsi:type="ns2:NamespaceType">
    <ns2:SchemaElement type="AcknowledgementMessage" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Activity" xsi:type="ns2:SchemaElementType"/>
    <ns2:SchemaElement type="Documentation" xsi:type="ns2:SchemaElementType"/>
@@ -118,9 +118,9 @@
     </ns4:Method>
     <ns4:Method description="" isImported="false" isProvided="false" name="loadLabs" xsi:type="ns4:MethodType">
      <ns4:Inputs>
-      <ns4:Input qName="ns10:LoadLabsRequest" description="" isArray="false" name="loadLabsRequest" xmlns:ns10="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.loadlabs.domain"/>
+      <ns4:Input qName="ns10:LoadLabsRequest" description="" isArray="false" name="loadLabsRequest" xmlns:ns10="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs"/>
      </ns4:Inputs>
-     <ns4:Output qName="ns11:AcknowledgementMessage" description="" isArray="false" xmlns:ns11="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.loadlabs.domain"/>
+     <ns4:Output qName="ns11:AcknowledgementMessage" description="" isArray="false" xmlns:ns11="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.domain.loadlabs"/>
      <ns4:Exceptions/>
     </ns4:Method>
    </ns4:Methods>
