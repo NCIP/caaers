@@ -104,7 +104,7 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public Collection<ExpeditedReportSection> mandatorySections(
-                    ExpeditedAdverseEventReport expeditedData) {
+                    ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions) {
         return new ArrayList<ExpeditedReportSection>();
     }
 

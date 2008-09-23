@@ -89,9 +89,10 @@ public interface EvaluationService {
     /**
      * 
      * @param expeditedData
+     * @param reportDefinitions
      * @return All the mandatory sections for a given expedited report.
      */
-    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData);
+    Collection<ExpeditedReportSection> mandatorySections(ExpeditedAdverseEventReport expeditedData, ReportDefinition... reportDefinitions);
 
     /**
      * @return All the report definitions which might apply to the given study, site, and
