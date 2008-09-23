@@ -23,6 +23,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ui.ModelMap;
@@ -61,18 +62,6 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, oCommand, errors, page);
-        EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) oCommand;
-        RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-        //hide for non DCP-AdEERS reporting enabled study
-        if(!command.isDCPNonAdeersStudy()){
-        	//sections to be concealed
-        	renderDecisionManager.conceal("aeReport.responseDescription.dcp");
-        	renderDecisionManager.conceal("outcomes");
-        }else{
-        	//sections to be revealed
-        	renderDecisionManager.reveal("aeReport.responseDescription.dcp");
-        	renderDecisionManager.reveal("outcomes");
-        }
         refdata.put("currentTask", task);
         return refdata;
     }
@@ -122,9 +111,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
             command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
             if(command.getAeReport().getAssignment().getStartDateOfFirstCourse() != null)
             	command.getAeReport().getTreatmentInformation().setFirstCourseDate(command.getAeReport().getAssignment().getStartDateOfFirstCourse());
-            
-            // pre-init the mandatory section fields
-            command.initializeMandatorySectionFields(expeditedReportTree);
+           
         }
         
         request.getSession().removeAttribute(AE_LIST_PARAMETER);
@@ -133,8 +120,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         request.getSession().removeAttribute(REPORT_DEFN_LIST_PARAMETER);
         
         // Check whether the request is coming from ManageReports and is to amend a report
-        action = request.getParameter(ACTION_PARAMETER);
-        if(StringUtils.equals(action, "amendReport")){
+        String pramAction = request.getParameter(ACTION_PARAMETER);
+        if(StringUtils.equals(pramAction, "amendReport")){
         	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
         	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
         	String reportId = request.getParameter(REPORT_ID_PARAMETER);
@@ -148,7 +135,17 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	}
         }
         
-        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+        
+
+        if(StringUtils.equals(action, "createNew")){
+        	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport(), rdList.toArray(new ReportDefinition[]{})));
+        	
+        	// pre-init the mandatory section fields
+            command.initializeMandatorySectionFields(expeditedReportTree);
+        }else{
+        	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
+        }
+         
         //will pre determine the display/renderability of fields 
         command.initializeNotApplicableFields();
         command.refreshMandatoryProperties();

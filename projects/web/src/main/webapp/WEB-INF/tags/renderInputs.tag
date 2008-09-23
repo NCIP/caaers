@@ -82,17 +82,14 @@
     </c:when>
 
     <c:when test="${field.categoryName == 'autocompleter'}">
-        <input size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}" type="text"
-               id="${field.propertyName}-input" name="${field.propertyName}-input" title="${field.displayName}" ${disabled ? 'disabled' : ''}
-               class="autocomplete ${cssClass} ${field.validatorClassName}"/>
-        <tags:indicator id="${field.propertyName}-indicator"/>
-        <c:if test="${field.attributes.enableClear and not disabled}">
-            <input type="button"
-                   id="${field.propertyName}-clear"
-                   name="C" value="Clear"
-                   onClick="javascript:$('${field.propertyName}-input').clear();$('${field.propertyName}').clear();"/></c:if>
-        <div id="${field.propertyName}-choices" class="autocomplete" style="display: none"></div>
-        <form:hidden path="${field.propertyName}"/>
+		<ui:autocompleter path="${field.propertyName}" 
+						size="${empty size ? empty field.attributes.size ? '50' : field.attributes.size : size}"
+						title="${field.displayName}"
+						disabled="${disabled}"
+						enableClearButton="${field.attributes.enableClear}" 
+						initialDisplayValue="Begin typing here..."/>
+		
+       
     </c:when>
 
     <c:when test="${field.categoryName == 'longselect'}">

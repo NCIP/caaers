@@ -115,7 +115,10 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public boolean isMandatory(ExpeditedAdverseEventInputCommand command) {
         Collection<ExpeditedReportSection> sections = command.getMandatorySections();
         if (sections == null || sections.isEmpty()) return false;
-        return sections.contains(section());
+        for(ExpeditedReportSection section : section()){
+        	if(sections.contains(section)) return true;
+        }
+        return false; 
     }
 
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {

@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * 
  * @author Biju Joseph
@@ -58,7 +60,10 @@ public class RenderDecisionManager {
 	 */
 	
 	public String findActualName(String name){
-		return name.replaceAll("(\\[\\d+\\])", "[]");
+		String correctedName =  name.replaceAll("(\\[\\d+\\])", "[]");
+		//apply field name corrections
+		if(StringUtils.equals(correctedName, "aeReport.adverseEvents[].outcomes")) correctedName = "outcomes";
+		return correctedName;
 	}
 	
 	public void updateRenderDecision(Collection<ReportDefinition> rdList){
