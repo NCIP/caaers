@@ -45,7 +45,12 @@
 	     	</c:if>
 	 	</SELECT>
 	 	<br>
-	 	<a id="notify-${report.aeReport.id}" class="notify" href="#">notify PSC</a><br>
+	 	<c:if test="${report.aeReport.notificationMessagePossible}">
+	        <span class="notify-unit" id="notify-unit-${report.aeReport.id}">
+	             <a id="notify-${report.aeReport.id}" class="notify" href="#">notify PSC</a>
+	        <tags:indicator id="notify-indicator-${report.aeReport.id}"/>
+	    </span>
+	    </c:if>
 		<c:if test="${command.reportsSubmittable[report.id]}">	
 		  
 			<c:choose>
