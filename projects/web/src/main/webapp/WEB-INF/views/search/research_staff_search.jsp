@@ -82,15 +82,13 @@ function buildTable(form) {
 		    	<div class="value"><input id="prop2" name="name" type="text"/></div>
 		    </div>
 		    
-		    
-   </chrome:box>
-
-	<div class="endpanes" />
+		   <div class="endpanes" />
 	<div class="row" style="float:right;">
 	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search'/>
 	<tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />
+   </chrome:box>
 
 
    </form:form>
