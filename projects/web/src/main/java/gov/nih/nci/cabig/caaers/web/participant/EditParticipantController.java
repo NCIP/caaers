@@ -28,7 +28,7 @@ import org.springframework.web.bind.ServletRequestUtils;
  * @author Ion C. Olaru
  */
 
-public class EditParticipantController <T extends ParticipantInputCommand> extends ParticipantController<T> {
+public class EditParticipantController<T extends ParticipantInputCommand> extends ParticipantController<T> {
 
     private static final Log log = LogFactory.getLog(EditParticipantController.class);
     private Task task;
@@ -43,7 +43,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
         request.getSession().removeAttribute(CreateParticipantAjaxFacade.CREATE_PARTICIPANT_FORM_NAME);
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-        
+
         Participant participant = participantRepository.getParticipantById(Integer.parseInt(request.getParameter("participantId")));
 
         EditParticipantCommand cmd = new EditParticipantCommand(participant);
@@ -55,10 +55,10 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
             studySites.add(studyParticipantAssignment.getStudySite());
         }
         cmd.setStudySites(studySites);
-        
+
         if (participant.getAssignments().size() > 0)
             cmd.setOrganization(participant.getAssignments().get(0).getStudySite().getOrganization());
-        
+
         return cmd;
 
     }
@@ -98,7 +98,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
     }
 
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
-        ParticipantInputCommand cmd = (ParticipantInputCommand)oCommand;
+        ParticipantInputCommand cmd = (ParticipantInputCommand) oCommand;
 //        participantDao.reassociateUsingLock(cmd.getParticipant());
 
         String p = request.getParameter("_asyncMethodName");
@@ -130,15 +130,15 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object cmd) {
-    	ParticipantInputCommand command = (ParticipantInputCommand) cmd;
+        ParticipantInputCommand command = (ParticipantInputCommand) cmd;
 
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
         if (targetPage < curPage) return true;
-        
+
         // supress for ajax and delete requests
-        if(isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
+        if (isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
         return super.suppressValidation(request, command);
     }
 
@@ -153,7 +153,7 @@ public class EditParticipantController <T extends ParticipantInputCommand> exten
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command
             if (cmd.assignment == null || cmd.assignment.getId() == null)
                 if (getTab((T) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
-                    errors.reject("ERR_USE_CONTINUE", "Use the CONTINUE button please");
+                    errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study from the \"Details\" tab");
         }
 
     }

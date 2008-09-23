@@ -239,7 +239,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command 
             if (cmd.assignment == null || cmd.assignment.getId() == null)
                 if (getTab((ParticipantInputCommand) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)
-                    errors.reject("ERR_USE_CONTINUE", "Use the CONTINUE button please");
+                    errors.reject("ERR_SELECT_STUDY_FROM_DETAILS", "Please select a study from the \"Details\" tab");
         }
 
     }
