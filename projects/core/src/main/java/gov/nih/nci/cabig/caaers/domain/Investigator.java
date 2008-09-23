@@ -175,33 +175,29 @@ public class Investigator extends AbstractMutableDomainObject {
     // /OBJECT METHODS
 
     @Override
-    public int hashCode() {
-        final int PRIME = 31;
-        int result = 1;
-        result = PRIME * result + (nciIdentifier == null ? 0 : nciIdentifier.hashCode());
-        return result;
-    }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-    @Override
-    public boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+        Investigator that = (Investigator) o;
+
+        if (emailAddress != null ? !emailAddress.equals(that.emailAddress) : that.emailAddress != null) return false;
+        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
+        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
+        if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier) : that.nciIdentifier != null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Investigator other = (Investigator) obj;
-        if (nciIdentifier == null) {
-            if (other.nciIdentifier != null) {
-                return false;
-            }
-        } else if (!nciIdentifier.equals(other.nciIdentifier)) {
-            return false;
-        }
+        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
+
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        int result = firstName != null ? firstName.hashCode() : 0;
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
+        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
+        return result;
+    }
 }
