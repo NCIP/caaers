@@ -148,6 +148,7 @@ AE.createStandardAutocompleter = function(propertyName, populator, valueSelector
 
 AE.resetAutocompleter = function(propertyName){
 	var el = $(propertyName);
+	AE.hash.set(propertyName, '1');
 	if(el){
 		el.value='';
 		var elInput = $(propertyName + '-input');

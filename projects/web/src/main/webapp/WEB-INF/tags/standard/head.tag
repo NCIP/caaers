@@ -40,7 +40,6 @@
 
 <tags:javascriptLink name="ccts-hotlinks"/>
 <script type="text/javascript">
-
     // hotlinking
     // https://wiki.nci.nih.gov/x/ygqG
     CCTS.appShortName = 'caaers'

@@ -37,27 +37,33 @@
 	<c:if test="${(not empty populatorJS) and (not empty selectorJS)}">
 	AE.createStandardAutocompleter('${path}', ${populatorJS}, ${selectorJS}, ${not empty optionsJS ? optionsJS : '{}'});
     </c:if>
-        
+	<c:if test="${not readonly}">
+   	AE.hash.set('${path}' , '1');
     $('${path}-input').observe('focus', function() {
-        if($('${path}').value == ''){
+        if($('${path}').value == '' && AE.hash.get('${path}') == '1'){
              var el = $('${path}-input');
 			 el.removeClassName('pending-search');
              el.clear();
+			 AE.hash.set('${path}' , '0');
 		}
     });
 
     $('${path}-input').observe('blur', function() {
+			if(AE.hash.get('${path}') == '0'){
                 var el = $('${path}-input');
                 if (el.value == '') {
                 el.value = '${initialDisplayValue}';
                 el.addClassName('pending-search');
-                el.clear();
+               
+				AE.hash.set('${path}' , '1');
+			}
         };
     });
 
     if($('${path}').value == ''){
 		$('${path}-input').addClassName('pending-search');
 	}
+	</c:if>
 	${embededJS}
 </jsp:attribute>
 </ui:fieldWrapper>

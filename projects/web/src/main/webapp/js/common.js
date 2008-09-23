@@ -2,6 +2,7 @@
 var AE = { }
 
 AE.INDICATOR_REF_COUNTS = { };
+AE.hash = new Hash();
 
 // this stuff should technically be synchronized.  Let see if it causes a problem.
 AE.showIndicator = function(id) {

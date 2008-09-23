@@ -109,10 +109,7 @@
     </c:otherwise>
 </c:choose>
 <c:if test="${not empty field.attributes.help}">
-    <tags:hoverHelp path="${field.propertyName}">
-        <spring:message code="${field.attributes.help}"
-                        text="No help available ${field.attributes.help}"/>
-    </tags:hoverHelp>
+    <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
 </c:if>
 <tags:errors path="${field.propertyName}"/>
 <tags:errors path="${field.propertyName}.*"/>

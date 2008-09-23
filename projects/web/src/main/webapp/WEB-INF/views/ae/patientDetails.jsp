@@ -129,6 +129,9 @@
 			 	priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
 
+			Event.observe('command', 'submit', function(e){
+				AE.resetAutocompleter('metastaticDiseaseSite');
+			});
 			
 		 	//-- find the bsa
 		 	findBSA();

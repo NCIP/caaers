@@ -106,9 +106,12 @@
 		);
 
 		//populate the name of the associated organization in sponsor & coordinating center field
-
+		<c:if test="${not empty command.primaryFundingSponsorOrganization.fullName}">
 		$('primaryFundingSponsorOrganization-input').value = '${command.primaryFundingSponsorOrganization.fullName}';
+		</c:if>
+		<c:if test="${not empty command.studyCoordinatingCenter.organization.fullName}">
 		$('studyCoordinatingCenter.organization-input').value = '${command.studyCoordinatingCenter.organization.fullName}';
+		</c:if>
 	});
 
 	</script>
