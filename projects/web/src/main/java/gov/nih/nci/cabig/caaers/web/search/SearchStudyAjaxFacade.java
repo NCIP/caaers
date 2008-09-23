@@ -145,7 +145,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildOrganization(final TableModel model, final List<Organization> organization) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(organization);
 		table.setAction(model.getContext().getContextPath() + "/pages/admin/editOrganization");
@@ -177,7 +177,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildInvestigator(final TableModel model, final List<Investigator> investigators) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(investigators);
 		table.setAction(model.getContext().getContextPath() + "/pages/admin/editInvestigator");
@@ -219,7 +219,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildResearchStaff(final TableModel model, final List<ResearchStaff> researchStaffs) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(researchStaffs);
 		table.setAction(model.getContext().getContextPath() + "/pages/admin/editResearchStaff");
@@ -259,7 +259,7 @@ public class SearchStudyAjaxFacade {
 
 	public Object buildParticipant(final TableModel model, final Collection participants) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(participants);
 		table.setAction(model.getContext().getContextPath() + "/pages/search/participant");
@@ -1176,7 +1176,7 @@ public class SearchStudyAjaxFacade {
 	public Object buildTable(final TableModel model, final Collection items, final String actionPath,
 			final String exportFileName, final ColumnValueObject... cvObjects) throws Exception {
 		Table table = model.getTableInstance();
-		table.setTableId("assembler");
+		table.setTableId("ajaxTable");
 		table.setForm("assembler");
 		table.setItems(items);
 		table.setAction(model.getContext().getContextPath() + actionPath);

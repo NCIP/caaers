@@ -24,7 +24,7 @@ public class SearchStudyAjaxFacade {
 
     public Object build(TableModel model, Collection studies) throws Exception {
         Table table = model.getTableInstance();
-        table.setTableId("assembler");
+        table.setTableId("ajaxTable");
         table.setForm("assembler");
         table.setItems(studies);
         table.setAction(model.getContext().getContextPath() + "/assembler.run");
