@@ -494,6 +494,7 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
           lazy-init="true" autowire="byType">
+        <property name="authenticationMode" ref="authenticationMode"/>
         <property name="mailSender" ref="mailer"/>
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>

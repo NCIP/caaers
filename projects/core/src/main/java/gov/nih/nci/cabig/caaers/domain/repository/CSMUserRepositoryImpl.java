@@ -32,6 +32,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private CSMObjectIdGenerator siteObjectIdGenerator;
     private MailSender mailSender;
     private SimpleMailMessage accountCreatedTemplateMessage;
+    private String authenticationMode;
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
@@ -44,12 +45,10 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         } else {
             csmUser = updateCSMUserForResearchStaff(researchStaff);
         }
-        /* not sure why this gets done here */
-        researchStaff.setLoginId(csmUser.getUserId().toString());
-        createCSMUserGroupsForResearchStaff(researchStaff);
+        createCSMUserGroupsForResearchStaff(csmUser, researchStaff);
     }
 
-    private void createCSMUserGroupsForResearchStaff(final ResearchStaff researchStaff) {
+    private void createCSMUserGroupsForResearchStaff(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final ResearchStaff researchStaff) {
         try {
             List<String> groupIds = new ArrayList<String>();
             for (UserGroupType group : researchStaff.getUserGroupTypes()) {
@@ -57,7 +56,10 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             }
             String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(researchStaff.getOrganization()));
             groupIds.add(organizationGroupId);
-            assignUserToGroup(researchStaff.getLoginId(), groupIds.toArray(new String[groupIds.size()]));
+            if(csmUser.getUserId() == null){
+            	throw new CaaersSystemException("ID has not been assigned to CSM user.");
+            }
+            assignUserToGroup(String.valueOf(csmUser.getUserId()), groupIds.toArray(new String[groupIds.size()]));
         } catch (CSObjectNotFoundException e) {
             throw new CaaersSystemException("Could not assign user to organization group.", e);
         }
@@ -66,7 +68,11 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     private void copyUserToCSMUser(User user, gov.nih.nci.security.authorization.domainobjects.User csmUser) {
         String emailId = user.getEmailAddress();
-        csmUser.setLoginName(emailId);
+        if(user.getLoginId() == null || user.getLoginId().trim().length() == 0){
+        	csmUser.setLoginName(emailId);	
+        }else{
+        	csmUser.setLoginName(user.getLoginId());
+        }
         csmUser.setEmailId(emailId);
         csmUser.setPhoneNumber(user.getPhoneNumber());
         csmUser.setFirstName(user.getFirstName());
@@ -89,14 +95,16 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             csmUser.setPassword(encryptString(researchStaff.getSalt() + "obscurity"));
             createCSMUser(csmUser);
             researchStaffDao.save(researchStaff);
-            sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
-                    + "\n"
-                    + "You must change your password before you can login. In order to do so please visit this URL:\n"
-                    + "\n"
-                    + changeURL + "&token=" + userCreateToken(emailId) + "\n"
-                    + "\n"
-                    + "Regards\n"
-                    + "The caAERS Notification System.\n");
+            if("local".equals(getAuthenticationMode())){
+	            sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
+	                    + "\n"
+	                    + "You must change your password before you can login. In order to do so please visit this URL:\n"
+	                    + "\n"
+	                    + changeURL + "&token=" + userCreateToken(emailId) + "\n"
+	                    + "\n"
+	                    + "Regards\n"
+	                    + "The caAERS Notification System.\n");
+            }
             return csmUser;
         }
     }
@@ -152,7 +160,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public User getUserByName(String userName) {
-        User user = userDao.getByEmailAddress(userName);
+    	User user = userDao.getByLoginId(userName);
         if (user == null) throw new CaaersNoSuchUserException("No such user.");
         return user;
     }
@@ -249,4 +257,13 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             super(message);
         }
     }
+
+    @Required
+	public String getAuthenticationMode() {
+		return authenticationMode;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
 }

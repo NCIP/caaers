@@ -9,7 +9,7 @@
 	<bean  id="caaersDatasourceFactoryBean" class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
                 <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
     </bean>
-    <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer">
+    <bean id="mainPropertyConfigurer" class="gov.nih.nci.cabig.ctms.tools.spring.PropertyPlaceholderConfigurer" lazy-init="false">
         <property name="properties">
             <bean class="gov.nih.nci.cabig.caaers.tools.CaaersDataSourcePropertiesFactoryBean">
                 <property name="databaseConfigurationName"><value>@databaseConfigurationName@</value></property>
@@ -20,6 +20,10 @@
         <property name="placeholderPrefix"><value>s[</value></property>
         <property name="placeholderSuffix"><value>]</value></property>
         <property name="useNullForUnresolvablePlaceholders"><value>true</value></property>
+    </bean>
+    
+    <bean id="authenticationMode" class="java.lang.String">
+        <constructor-arg value="s[authenticationMode]"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.annotation.RequiredAnnotationBeanPostProcessor"/>

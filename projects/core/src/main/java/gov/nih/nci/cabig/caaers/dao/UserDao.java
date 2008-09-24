@@ -49,4 +49,17 @@ public class UserDao extends GridIdentifiableDao<User> implements MutableDomainO
                         "from ResearchStaff where emailAddress= ?", emailAddress);
         return results.size() > 0 ? results.get(0) : null;
     }
+    
+    /**
+     * Get the user who has specified email address.
+     * 
+     * @param loginId
+     *                The loginId of the user.
+     * @return The user.
+     */
+    public User getByLoginId(String loginId) {
+        List<User> results = getHibernateTemplate().find(
+                        "from ResearchStaff where loginId= ?", loginId);
+        return results.size() > 0 ? results.get(0) : null;
+    }
 }
