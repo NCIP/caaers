@@ -1,17 +1,15 @@
 package gov.nih.nci.cabig.caaers.utils;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-
 import java.io.StringWriter;
 
-import org.jibx.runtime.BindingDirectory;
-import org.jibx.runtime.IBindingFactory;
-import org.jibx.runtime.IMarshallingContext;
-import org.jibx.runtime.JiBXException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
 
 public class XMLUtil {
 
-    public static String getXML(Object rootElement) {
+    public static String getXML(Object rootElement) throws Exception {
+    	
+    	/*
         IMarshallingContext mctx = null;
         StringWriter writer = new StringWriter();
         try {
@@ -24,6 +22,16 @@ public class XMLUtil {
         }
         // String returnString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
         return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + writer.toString();
+        
+        */
+    	
+    	JAXBContext jaxbContext = JAXBContext.newInstance("gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae");
+	       // org.jibx.xsd2jibx.GeneratorAntTask f;
+	        Marshaller  m = jaxbContext.createMarshaller();
+	        StringWriter w = new StringWriter();
+	        m.marshal(rootElement, w);
+	        
+	        return w.toString();
     }
 
 }

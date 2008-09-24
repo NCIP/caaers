@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
-import com.semanticbits.aenotification.AENotification;
+import gme.ccts_cabig._1_0.gov_nih_nci_cabig_ccts_ae.AeNotification;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
@@ -25,16 +25,33 @@ public class InteroperationServiceImpl implements InteroperationService {
 
     public void pushToStudyCalendar(ExpeditedAdverseEventReport aeReport)
             throws CaaersSystemException {
-        AENotification aeNotification = aeNotificationFactory.createAENotificationForExpeditedAdverseEventReport(aeReport);
-        // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
-        getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+        AeNotification aeNotification = null;
+		try {
+			aeNotification = aeNotificationFactory.createAENotificationForExpeditedAdverseEventReport(aeReport);
+			String xml = XMLUtil.getXML(aeNotification);
+	        System.out.println("XML " + xml);
+	        
+	        // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
+	        getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new CaaersSystemException(e);
+		}
+        
     }
 
     public void pushToStudyCalendar(RoutineAdverseEventReport roReport)
             throws CaaersSystemException {
-        AENotification aeNotification = aeNotificationFactory.createAENotificationForRoutineAdverseEventReport(roReport);
+        AeNotification aeNotification = null;
+		try {
+			aeNotification = aeNotificationFactory.createAENotificationForRoutineAdverseEventReport(roReport);
+			getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw new CaaersSystemException(e);
+		}
         // getMessageBroadcastService().broadcast(secure(XMLUtil.getXML(aeNotification)));
-        getMessageBroadcastService().broadcast(XMLUtil.getXML(aeNotification));
+        
     }
 
     private String secure(String message) {

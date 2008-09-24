@@ -31,6 +31,7 @@ public class CaaersCaXchangeMessageBroadcastServiceImpl implements MessageBroadc
 
         try {
             CaXchangeMessageBroadcasterImpl broadCaster = new CaXchangeMessageBroadcasterImpl();
+            System.out.println("ca exchage URL + " + configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setCaXchangeURL(configuration.get(Configuration.CAEXCHANGE_URL));
             broadCaster.setMessageTypesMapping(messageTypesMapping);
             broadCaster.setDelegatedCredentialProvider(delegatedCredentialProvider);
