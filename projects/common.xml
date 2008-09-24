@@ -370,23 +370,7 @@
 	        <produces dir="${generated.src.dir}" includes="**/schema/**/*.java"/>
 	    </xjc>
     </target>
-	<!-- ===============================================================================================
-		target:generate-jibx
-		This target will generate the java objects using XSD available in ${main.src.resources}/schema
-	===================================================================================================-->
-	<target name="generate-jibx" description="This target will generate the java objects using XSD available in ${main.src.resources}/schema">
-		<mkdir dir="${generated.src.dir}"/>
-		<taskdef name="xsd2jibx" classname="org.jibx.xsd2jibx.GeneratorAntTask">
-			<classpath>
-				<path refid="main.classpath" />
-			</classpath>
-		</taskdef>
-		<xsd2jibx outputdir="${generated.src.dir}" >
-			<xmlnamespacetojavapackage xmlnamespace="http://semanticbits.com/aeNotification" javapackage="com.semanticbits.aenotification"/>
-			<xsdfileset dir="${main.src.resources}/schema" includes="AENotification.xsd">
-			</xsdfileset>
-		</xsd2jibx>
-	</target>
+	
 
 	<!-- ===============================================================================================
 		target:module-specific-flow
