@@ -102,7 +102,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
                 "Researcher ID", false);
         InputFieldAttributes.setSize(ncidIdField, 30);
         researchStaffFieldGroup.getFields().add(ncidIdField);
-
+        
         InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress",
                 "Email address", true);
         InputFieldAttributes.setSize(emailAddressField, 30);
@@ -119,6 +119,11 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputFieldAttributes.setSize(faxNumberField, 30);
         faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(faxNumberField);
+        
+        InputField loginIdField = InputFieldFactory.createTextField("loginId",
+                "Grid identity", false);
+        InputFieldAttributes.setSize(loginIdField, 30);
+        researchStaffFieldGroup.getFields().add(loginIdField);
 
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(researchStaffFieldGroup);

@@ -448,8 +448,8 @@
   <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
     <property name="webControllerValidator" ref="webControllerValidator"/>
+    <property name="authenticationMode" ref="authenticationMode"/>   
   </bean>
-
 
     <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
         <property name="participantImportService" ref="participantImportService"/>
@@ -469,10 +469,12 @@
   <bean name="/admin/createResearchStaff" id="createResearchStaffController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.CreateResearchStaffController">
     <property name="sessionForm"><value>true</value></property>
-    <property name="webControllerValidator" ref="webControllerValidator"/>   
+    <property name="webControllerValidator" ref="webControllerValidator"/>
+    <property name="authenticationMode" ref="authenticationMode"/>         
   </bean>
   <bean name="/admin/viewResearchStaff" id="viewResearchStaffController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController" >
+	class="gov.nih.nci.cabig.caaers.web.admin.ViewResearchStaffController">
+	<property name="authenticationMode" ref="authenticationMode"/>   
   </bean>
   <bean name="/admin/createIND" id="createINDController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.admin.CreateINDController"/>

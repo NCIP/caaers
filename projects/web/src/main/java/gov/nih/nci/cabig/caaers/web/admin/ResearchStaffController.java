@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
+import java.util.Map;
+
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -16,6 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +41,8 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     private OrganizationDao organizationDao;
 
     protected WebControllerValidator webControllerValidator;
+    
+    private String authenticationMode;
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
@@ -110,4 +115,20 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
     }
+    
+    @Override
+    protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
+                    throws Exception {
+    	Map refData = super.referenceData(request, oCommand, errors, page);
+    	refData.put("authenticationMode", getAuthenticationMode());
+    	return refData;
+    }
+
+	public String getAuthenticationMode() {
+		return authenticationMode;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
 }

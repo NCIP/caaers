@@ -8,6 +8,8 @@ import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 public class ViewResearchStaffController extends ParameterizableViewController {
 
+	private String authenticationMode;
+	
     public ViewResearchStaffController() {
         setViewName("admin/research_staff_confirmation");
     }
@@ -17,7 +19,16 @@ public class ViewResearchStaffController extends ParameterizableViewController {
 
         setViewName("admin/research_staff_confirmation");
         ModelAndView mav = new ModelAndView("admin/research_staff_confirmation");
+        mav.addObject("authenticationMode", getAuthenticationMode());
 
         return mav;
     }
+
+	public String getAuthenticationMode() {
+		return authenticationMode;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
 }
