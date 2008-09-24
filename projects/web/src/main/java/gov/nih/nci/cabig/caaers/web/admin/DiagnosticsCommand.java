@@ -43,7 +43,7 @@ public class DiagnosticsCommand extends ConfigurationCommand{
 	}
 
 	public String getCaExchangeUrl() {
-		caExchangeUrl =  "";
+		caExchangeUrl =  configuration.get(Configuration.CAEXCHANGE_URL);
 		return caExchangeUrl;
 	}
 	
