@@ -91,7 +91,7 @@
 				</field-value>
 				<valid-value value="1" display-uri="Death" readable-text="death"/>
 				<valid-value value="2" display-uri="Life-threatening" readable-text="life-threatening"/>
-				<valid-value value="3" display-uri="Hospitalization - intial or prolonged" readable-text="hospitalization - intial or prolonged "/>
+				<valid-value value="3" display-uri="Hospitalization - initial or prolonged" readable-text="hospitalization - initial or prolonged "/>
 				<valid-value value="4" display-uri="Disability or Permanent Damage" readable-text="disability or permanent damage"/>
 				<valid-value value="5" display-uri="Congenital Anomaly/Birth Defect" readable-text="congenital anomaly/birth defect"/>
 				<valid-value value="6" display-uri="Other Serious (Important Medical Events)" readable-text="other serious (important medical events) "/>				
@@ -264,7 +264,7 @@
 				</field-value>
 				<valid-value value="1" display-uri="Death" readable-text="death"/>
 				<valid-value value="2" display-uri="Life-threatening" readable-text="life-threatening"/>
-				<valid-value value="3" display-uri="Hospitalization - intial or prolonged" readable-text="hospitalization - intial or prolonged "/>
+				<valid-value value="3" display-uri="Hospitalization - initial or prolonged" readable-text="hospitalization - initial or prolonged "/>
 				<valid-value value="4" display-uri="Disability or Permanent Damage" readable-text="disability or permanent damage"/>
 				<valid-value value="5" display-uri="Congenital Anomaly/Birth Defect" readable-text="congenital anomaly/birth defect"/>
 				<valid-value value="6" display-uri="Other Serious (Important Medical Events)" readable-text="other serious (important medical events) "/>				
