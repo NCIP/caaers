@@ -133,7 +133,7 @@
 
 <chrome:division title="Medical History">
     <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
-        <chrome:division title="${assignment.studySite.study.shortTitle} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
+        <chrome:division title="${assignment.studySite.study.shortTitle} (${assignment.studySite.study.primaryIdentifier})" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
             <table width=100% border="0" cellspacing="5">
                 <tr><td colspan="2"><h2><tags:message key="section.general" /></h2></td></tr>
                 <tr>
