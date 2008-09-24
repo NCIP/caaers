@@ -5,12 +5,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>Review and Submit</title>
 <script>
+
 function submitPage(s){
 	document.getElementById("nextView").value=s;
 	document.getElementById("command").submit();
 }
 
 </script>
+
+<style>
+    div.row div.label {
+        width: 15em;
+        padding-right: 0.5em;
+    }
+</style>
+
 </head>
 <body>
 <p id="instructions">
