@@ -224,7 +224,7 @@
 			<table width="100%">
 			<tr>
 			 
-			  <td width="40%">
+			  <td width="50%">
 				<tags:renderRow field="${fieldGroups['general'].fields[0]}"/>
 				<ui:row path="${fieldGroups['participant'].fields[0].propertyName}">
 					<jsp:attribute name="label">
