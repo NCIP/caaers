@@ -147,6 +147,15 @@
 	</script>
   </head>
   <body>
+
+  <p id="instructions">
+
+        <b>Subject</b>&nbsp;${command.participant.fullName}
+        <br />
+        <b>Study</b>&nbsp;${command.studySite.study.shortTitle}
+
+  </p>
+  
    <form:form id="command">	
    <tags:hasErrorsMessage path="*" />
    
