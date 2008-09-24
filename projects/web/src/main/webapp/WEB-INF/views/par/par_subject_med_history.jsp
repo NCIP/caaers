@@ -169,9 +169,8 @@
 
 	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />
-		<a name="anchorDiseaseInfo" />
 		<div id="anchorDiseaseInfo">
-			
+
 			<ui:row path="assignment.diseaseHistory.abstractStudyDisease">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.abstractStudyDisease" text="Disease name" />
@@ -179,8 +178,8 @@
 				<jsp:attribute name="value">
 					<ui:select options="${studyDiseasesOptions}" path="assignment.diseaseHistory.abstractStudyDisease">
 						<jsp:attribute name="embededJS">
-							<%-- 
-							  Note :- If disease is Disease Name is  'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS', other disease should be provided 
+							<%--
+							  Note :- If disease is Disease Name is  'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS', other disease should be provided
 							--%>
 							$('assignment.diseaseHistory.abstractStudyDisease').observe('change', function(evt){
 								var el = $(evt.element());
@@ -196,7 +195,7 @@
 					</ui:select>
 				</jsp:attribute>
 			</ui:row>
-			
+
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDisease" style="display:none;">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.otherPrimaryDisease" text="Other (disease)" required="true" />
@@ -205,7 +204,7 @@
 					<ui:text path="assignment.diseaseHistory.otherPrimaryDisease"  />
 				</jsp:attribute>
 			</ui:row>
-			
+
 			<ui:row path="assignment.diseaseHistory.codedPrimaryDiseaseSite">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.codedPrimaryDiseaseSite" text="Primary site of disease" />
@@ -242,7 +241,7 @@
 					</ui:autocompleter>
 				</jsp:attribute>
 			</ui:row>
-			
+
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.otherPrimaryDiseaseSite" text="Other (site of primary disease)" required="true" />
@@ -251,7 +250,7 @@
 					<ui:text path="assignment.diseaseHistory.otherPrimaryDiseaseSite" />
 				</jsp:attribute>
 			</ui:row>
-			
+
 			<ui:row path="assignment.diseaseHistory.diagnosisDate">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.diagnosisDate" text="Date of initial diagnosis" />

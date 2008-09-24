@@ -131,149 +131,149 @@
         <br>
     </chrome:division>
 
-    <chrome:division title="Medical History">
-        <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
-            <chrome:division title="${assignment.studySite.study.shortTitle} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
-                <table width=100% border="0" cellspacing="5">
-                    <tr><td colspan="4"><h2><tags:message key="section.general" /></h2></td></tr>
-                    <tr>
-                        <td></td>
-                        <td colspan="3">
-                            <div class="row">
-                                <div class="label" style="text-align:left;"><tags:message
-                                        key="baseline.performance"/>&nbsp;</div>
-                                <div class="value">${assignment.baselinePerformance}</div>
-                            </div>
-                        </td>
-                    </tr>
+<chrome:division title="Medical History">
+    <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
+        <chrome:division title="${assignment.studySite.study.shortTitle} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
+            <table width=100% border="0" cellspacing="5">
+                <tr><td colspan="2"><h2><tags:message key="section.general" /></h2></td></tr>
+                <tr>
+                    <td width="5%"></td>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="label" style="text-align:left;"><tags:message
+                                    key="baseline.performance"/>&nbsp;</div>
+                            <div class="value">${assignment.baselinePerformance}</div>
+                        </div>
+                    </td>
+                </tr>
 
-                    <tr><td colspan="4"><h2><tags:message key="section.disease.information" /></h2></td></tr>
-                    <tr>
-                        <td></td>
-                        <td colspan="3">
-                            <div class="row">
-                                <div class="label" style="text-align:left;"><tags:message key="disease.name"/>&nbsp;</div>
-                                <div class="value">${assignment.diseaseHistory.abstractStudyDisease.termName}</div>
-                            </div>
-                            <div class="row">
-                                <div class="label" style="text-align:left;"><tags:message key="primary.site.of.disease"/>&nbsp;</div>
-                                <div class="value">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name}</div>
-                            </div>
-                            <div class="row">
-                                <div class="label" style="text-align:left;"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
-                                <div class="value"><tags:validDate date="${assignment.diseaseHistory.diagnosisDate}" /></div>
-                            </div>
-                        </td>
-                    </tr>
+                <tr><td colspan="4"><h2><tags:message key="section.disease.information" /></h2></td></tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        <div class="row">
+                            <div class="label" style="text-align:left;"><tags:message key="disease.name"/>&nbsp;</div>
+                            <div class="value">${assignment.diseaseHistory.abstractStudyDisease.termName}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label" style="text-align:left;"><tags:message key="primary.site.of.disease"/>&nbsp;</div>
+                            <div class="value">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name}</div>
+                        </div>
+                        <div class="row">
+                            <div class="label" style="text-align:left;"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
+                            <div class="value"><tags:validDate date="${assignment.diseaseHistory.diagnosisDate}" /></div>
+                        </div>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td colspan="2" width="50%"><h2><tags:message key="section.metastatic.disease.site" /></h2></td>
-                    </tr>
-                    <tr>
-                        <td width="5%"></td>
-                        <td valign="top">
-                            <c:if test="${fn:length(assignment.diseaseHistory.metastaticDiseaseSites) == 0}">
-                                <i><tags:message key="no.disease.sites" /></i>
+                <tr>
+                    <td colspan="2"><h2><tags:message key="section.metastatic.disease.site" /></h2></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td valign="top">
+                        <c:if test="${fn:length(assignment.diseaseHistory.metastaticDiseaseSites) == 0}">
+                            <i><tags:message key="no.disease.sites" /></i>
+                        </c:if>
+                        <c:forEach items="${assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
+                            <c:if test="${mds.codedSite.id != 110}">${mds.codedSite.name}</c:if>
+                            <c:if test="${mds.codedSite.id == 110}">${mds.otherSite}</c:if>
+                            <br/>
+                        </c:forEach>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><h2><tags:message key="section.preexisting.conditions" /></h2></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td valign="top">
+                            <c:if test="${fn:length(assignment.preExistingConditions) == 0}">
+                                <i><tags:message key="no.preexisting.conditions" /></i>
                             </c:if>
-                            <c:forEach items="${assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
-                                <c:if test="${mds.codedSite.id != 110}">${mds.codedSite.name}</c:if>
-                                <c:if test="${mds.codedSite.id == 110}">${mds.otherSite}</c:if>
+
+                            <c:forEach items="${assignment.preExistingConditions}" var="pc" varStatus="status">
+                                <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
+                                <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
                                 <br/>
                             </c:forEach>
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td colspan="2" width="50%"><h2><tags:message key="section.preexisting.conditions" /></h2></td>
-                    </tr>
-                    <tr>
-                        <td width="5%"></td>
-                        <td valign="top">
-                                <c:if test="${fn:length(assignment.preExistingConditions) == 0}">
-                                    <i><tags:message key="no.preexisting.conditions" /></i>
-                                </c:if>
+                <tr>
+                    <td colspan="2"><h2><tags:message key="section.conmeds" /></h2></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td valign="top">
+                        <c:if test="${fn:length(assignment.concomitantMedications) == 0}">
+                                <i><tags:message key="no.conmeds" /></i>
+                        </c:if>
 
-                                <c:forEach items="${assignment.preExistingConditions}" var="pc" varStatus="status">
-                                    <c:if test="${not empty pc.preExistingCondition}">${pc.preExistingCondition.text}</c:if>
-                                    <c:if test="${empty pc.preExistingCondition}">${pc.other}</c:if>
-                                    <br/>
-                                </c:forEach>
-                        </td>
-                    </tr>
+                        <c:if test="${fn:length(assignment.concomitantMedications) > 0}">
+                        <table width="50%" class="tablecontent">
+                            <tr>
+                                <th>Name</th>
+                                <th><tags:message key="still.taking" /></th>
+                                <th><tags:message key="start.date" /></th>
+                                <th><tags:message key="end.date" /></th>
+                            </tr>
+                            <c:forEach items="${assignment.concomitantMedications}" var="cm" varStatus="status">
+                            <tr>
+                                <td>${cm.agentName}</td>
+                                <td><c:if test="${cm.stillTakingMedications}"><tags:message key="yes" /></c:if><c:if test="${!cm.stillTakingMedications}"><tags:message key="no" /></c:if></td>
+                                <td><tags:validDate date="${cm.startDate}" /></td>
+                                <td><tags:validDate date="${cm.endDate}" /></td>
+                            </tr>
+                            </c:forEach>
+                        </table>
+                        </c:if>
+                    </td>
+                </tr>
 
-                    <tr>
-                        <td colspan="2"><h2><tags:message key="section.conmeds" /></h2></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td valign="top">
-                            <c:if test="${fn:length(assignment.concomitantMedications) == 0}">
-                                    <i><tags:message key="no.conmeds" /></i>
-                            </c:if>
+                <tr>
+                    <td colspan="2"><h2><tags:message key="section.prior.therapies" /></h2></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td valign="top">
+                        <c:if test="${fn:length(assignment.priorTherapies) == 0}">
+                                <i><tags:message key="no.prior.therapies" /></i>
+                        </c:if>
 
-                            <c:if test="${fn:length(assignment.concomitantMedications) > 0}">
-                            <table width="50%" class="tablecontent">
-                                <tr>
-                                    <th>Name</th>
-                                    <th><tags:message key="still.taking" /></th>
-                                    <th><tags:message key="start.date" /></th>
-                                    <th><tags:message key="end.date" /></th>
-                                </tr>
-                                <c:forEach items="${assignment.concomitantMedications}" var="cm" varStatus="status">
-                                <tr>
-                                    <td>${cm.agentName}</td>
-                                    <td><c:if test="${cm.stillTakingMedications}"><tags:message key="yes" /></c:if><c:if test="${!cm.stillTakingMedications}"><tags:message key="no" /></c:if></td>
-                                    <td><tags:validDate date="${cm.startDate}" /></td>
-                                    <td><tags:validDate date="${cm.endDate}" /></td>
-                                </tr>
-                                </c:forEach>
-                            </table>
-                            </c:if>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td colspan="2"><h2><tags:message key="section.prior.therapies" /></h2></td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td valign="top">
-                            <c:if test="${fn:length(assignment.priorTherapies) == 0}">
-                                    <i><tags:message key="no.prior.therapies" /></i>
-                            </c:if>
-
-                            <c:if test="${fn:length(assignment.priorTherapies) > 0}">
-                            <table width="100%" class="tablecontent">
-                                <tr>
-                                    <th>Name</th>
-                                    <th><tags:message key="comments" /></th>
-                                    <th><tags:message key="start.date" /></th>
-                                    <th><tags:message key="end.date" /></th>
-                                    <th><tags:message key="therapy.agents" /></th>
-                                </tr>
-                                <c:forEach items="${assignment.priorTherapies}" var="pt" varStatus="status">
-                                <tr>
-                                    <td valign="top">${pt.priorTherapy.text}</td>
-                                    <td valign="top">${pt.other}</td>
-                                    <td valign="top"><tags:validDate date="${pt.startDate}" /></td>
-                                    <td valign="top"><tags:validDate date="${pt.endDate}" /></td>
-                                    <td valign="top">
-                                        <c:if test="${fn:length(pt.priorTherapyAgents) > 0}">
-                                            <c:forEach items="${pt.priorTherapyAgents}" var="pta" varStatus="status">
-                                                ${pta.name}<br />
-                                            </c:forEach>
-                                        </c:if>
-                                    </td>
-                                </tr>
-                                </c:forEach>
-                            </table>
-                            </c:if>
-                        </td>
-                    </tr>
-                </table>
-            </chrome:division>
-        </c:forEach>
-    </chrome:division>
+                        <c:if test="${fn:length(assignment.priorTherapies) > 0}">
+                        <table width="100%" class="tablecontent">
+                            <tr>
+                                <th>Name</th>
+                                <th><tags:message key="comments" /></th>
+                                <th><tags:message key="start.date" /></th>
+                                <th><tags:message key="end.date" /></th>
+                                <th><tags:message key="therapy.agents" /></th>
+                            </tr>
+                            <c:forEach items="${assignment.priorTherapies}" var="pt" varStatus="status">
+                            <tr>
+                                <td valign="top">${pt.priorTherapy.text}</td>
+                                <td valign="top">${pt.other}</td>
+                                <td valign="top"><tags:validDate date="${pt.startDate}" /></td>
+                                <td valign="top"><tags:validDate date="${pt.endDate}" /></td>
+                                <td valign="top">
+                                    <c:if test="${fn:length(pt.priorTherapyAgents) > 0}">
+                                        <c:forEach items="${pt.priorTherapyAgents}" var="pta" varStatus="status">
+                                            ${pta.name}<br />
+                                        </c:forEach>
+                                    </c:if>
+                                </td>
+                            </tr>
+                            </c:forEach>
+                        </table>
+                        </c:if>
+                    </td>
+                </tr>
+            </table>
+        </chrome:division>
+    </c:forEach>
+</chrome:division>
 
 </chrome:box>
 
