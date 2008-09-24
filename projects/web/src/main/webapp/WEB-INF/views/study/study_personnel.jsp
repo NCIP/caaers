@@ -87,7 +87,7 @@
 
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="form">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="form" willSave="${not empty command.id}">
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
 	<input type="hidden" name="_selectedPersonnel" value="">

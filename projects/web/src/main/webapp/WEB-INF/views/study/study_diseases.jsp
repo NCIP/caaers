@@ -253,7 +253,7 @@
 <study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
-    <form:form method="post" name="studyDiseasesForm" >
+    <form:form method="post" name="studyDiseasesForm">
       <input type="hidden" name="_action" value="">
       <input type="hidden" name="_selected" value="">
       <tags:tabFields tab="${tab}"/>
@@ -368,7 +368,7 @@
 			</c:if>
         </chrome:box>
         </div>
-    <tags:tabControls tab="${tab}" flow="${flow}"/> 
+    <tags:tabControls tab="${tab}" flow="${flow}" willSave="${not empty command.id}"/> 
     </form:form>
  </div>
 </body>
