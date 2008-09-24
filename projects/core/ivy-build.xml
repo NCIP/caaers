@@ -8,7 +8,7 @@
                 <copy-resources src="${module.lib}/main/xfire" dest="${lib.dir}"  filter="false" />
         </target>
     -->
-    <target name="module-specific-flow" depends="resolve,generate-jibx,generate-jaxb,aspectj-compile ">
+    <target name="module-specific-flow" depends="resolve,generate-jaxb,aspectj-compile ">
         <mkdir dir="${classes.dir}/db"/>
         <copy-resources src="${main.src}/../db" dest="${classes.dir}/db" filter="true"/>
     </target>
