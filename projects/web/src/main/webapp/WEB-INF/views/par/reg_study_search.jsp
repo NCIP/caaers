@@ -75,9 +75,11 @@
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
+<%--
 <p id="instructions">
     <b>Subject</b>&nbsp;${command.participant.fullName}
 </p>
+--%>
 
 <chrome:box autopad="true" title="Search Criteria">
     <form:form id="searchForm" method="post" cssClass="standard">
