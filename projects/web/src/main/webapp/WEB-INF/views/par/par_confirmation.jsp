@@ -133,9 +133,9 @@
             <c:forEach items="${command.assignments}" var="assignment" varStatus="i">
                 <chrome:division title="${assignment.studySite.study.shortTitle} - ${assignment.studySite.study.primaryIdentifier}" collapsable="true" id="a_id_${assignment.id}" collapsed="true">
                     <table width=100% border="0" cellspacing="5">
-                        <tr><td colspan="4"><h2><tags:message key="section.general" /></h2></td></tr>
+                        <tr><td colspan="2"><h2><tags:message key="section.general" /></h2></td></tr>
                         <tr>
-                            <td></td>
+                            <td width="5%"></td>
                             <td colspan="3">
                                 <div class="row">
                                     <div class="label" style="text-align:left;"><tags:message
@@ -165,10 +165,10 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2" width="50%"><h2><tags:message key="section.metastatic.disease.site" /></h2></td>
+                            <td colspan="2"><h2><tags:message key="section.metastatic.disease.site" /></h2></td>
                         </tr>
                         <tr>
-                            <td width="5%"></td>
+                            <td></td>
                             <td valign="top">
                                 <c:if test="${fn:length(assignment.diseaseHistory.metastaticDiseaseSites) == 0}">
                                     <i><tags:message key="no.disease.sites" /></i>
@@ -182,10 +182,10 @@
                         </tr>
 
                         <tr>
-                            <td colspan="2" width="50%"><h2><tags:message key="section.preexisting.conditions" /></h2></td>
+                            <td colspan="2"><h2><tags:message key="section.preexisting.conditions" /></h2></td>
                         </tr>
                         <tr>
-                            <td width="5%"></td>
+                            <td></td>
                             <td valign="top">
                                     <c:if test="${fn:length(assignment.preExistingConditions) == 0}">
                                         <i><tags:message key="no.preexisting.conditions" /></i>
