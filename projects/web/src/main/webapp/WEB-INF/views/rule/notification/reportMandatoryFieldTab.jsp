@@ -74,7 +74,7 @@
 			  </tr>
 			</table>
 		</chrome:division>
-		<chrome:division title="Patient details">
+		<chrome:division title="Subject details">
 		   
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			  <tr>
