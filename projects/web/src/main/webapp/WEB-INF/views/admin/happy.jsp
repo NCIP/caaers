@@ -104,26 +104,7 @@
             </div>
 	  </div>
   </div>
-  <div class="division ">   
-      <div class="content">  
-	      <div class="header"><h3>caExchange handshake</h3> </div>
-      
-        	<div class="leftpanel">
-        		<div class="row">
-                	<div class="label">Message to PSC</div>
-                	<div class="fail">Fail </div>
-            	</div>
-        		<div class="row">
-                	<div class="label">Error</div>
-                	<div class="error">Connection time out .... </div>
-            	</div>				
-           		<div class="row">
-                	<div class="label">Message to C3PR</div>
-                	<div class="pass">Pass </div>
-            	</div>           	
-            </div>
-	  </div>
-  </div>
+
   <div class="content buttons autoclear"/>
 </div>
 </body>
