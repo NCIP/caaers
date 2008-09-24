@@ -11,21 +11,19 @@ function submitPage(s){
 	document.getElementById("searchCategory").value=s;
 	document.getElementById("searchForm").submit();
 }
+
 function navRollOver(obj, state) {
   document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
 }
+
 function doNothing(){
 }
 
 function onAjaxSubjectSearch() {
-    $('bigResult').show();
-    // alert("onAjaxStudySearch");
 }
 
 function _onAjaxSubjectSearch(transport) {
-    $('bigResult').show();
-//    $('searchResults').innerHTML = transport.responseText;
-//     alert("_onAjaxSubjectSearch");
+    $('bigSearch').show();
 }
 
 function ajaxSubjectSearch(searchText, searchType) {
@@ -34,7 +32,7 @@ function ajaxSubjectSearch(searchText, searchType) {
         var text = $F('searchText');
 
         if(text == ''){
-            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>"
+            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>";
         }else{
             $('error').innerHTML=""
 
@@ -88,7 +86,7 @@ function ajaxSubjectSearch(searchText, searchType) {
     <c:set var="display" value="''" />
 </c:if>
 
-<div id="bigResult" style="display:none;">
+<div id="bigSearch" style="display:none;">
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 <jsp:attribute name="singleFields">
     <div id="searchResults" style="width:100%; border: 0px red dotted;">

@@ -8,6 +8,7 @@
               imagePath="${pageContext.request.contextPath}/images/table/*.gif"
               filterable="false"
               showPagination="false"
+              form="command"
               cellspacing="0" cellpadding="0" border="0" width="100%" style="" styleClass="">
 
     <ec:row highlightRow="true">
