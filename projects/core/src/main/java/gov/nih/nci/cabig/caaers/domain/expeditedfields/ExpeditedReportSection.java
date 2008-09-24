@@ -2,13 +2,13 @@ package gov.nih.nci.cabig.caaers.domain.expeditedfields;
 
 public enum ExpeditedReportSection {
     BASICS_SECTION("Enter AEs", true), 
-    ADVERSE_EVENT_SECTION("Adverse events"), 
+    ADVERSE_EVENT_SECTION("Adverse Events"), 
     REPORTER_INFO_SECTION("Reporter"), 
     RADIATION_INTERVENTION_SECTION("Radiation"), 
     SURGERY_INTERVENTION_SECTION("Surgery"),
     MEDICAL_DEVICE_SECTION("Device", true), 
     DESCRIPTION_SECTION("Describe Event", true), 
-    MEDICAL_INFO_SECTION("Patient Details", true), 
+    MEDICAL_INFO_SECTION("Subject Details", true), 
     TREATMENT_INFO_SECTION("Course and Agent", true), 
     LABS_SECTION("Labs", true), 
     PRIOR_THERAPIES_SECTION("Prior Therapies", true), 
