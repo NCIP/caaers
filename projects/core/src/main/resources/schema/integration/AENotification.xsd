@@ -1,7 +1,11 @@
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://semanticbits.com/aeNotification" 
-xmlns="http://semanticbits.com/aeNotification" elementFormDefault="qualified">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+targetNamespace="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain" 
+xmlns="gme://ccts.cabig/1.0/gov.nih.nci.cabig.ccts.ae.domain" 
 
-<xs:element name="AENotification">
+elementFormDefault="qualified">
+  
+  
+<xs:element name="aeNotification">
 	 <xs:complexType>
 	   <xs:sequence>
 	     <xs:element name="detectionDate" type="xs:date"/>
