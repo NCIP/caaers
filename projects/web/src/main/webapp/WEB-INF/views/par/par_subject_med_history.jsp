@@ -1,4 +1,4 @@
-syudy<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 
 <html>
   <head>
