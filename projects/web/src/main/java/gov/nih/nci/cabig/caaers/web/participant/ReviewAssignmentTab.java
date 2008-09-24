@@ -15,7 +15,7 @@ import java.util.Map;
 public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCommand> {
 
     public ReviewAssignmentTab() {
-        super("Review and Submit", "Review and Submit", "par/reg_review_submit");
+        super("Review", "Review", "par/reg_review_submit");
 //        super("Review and Submit", "Review and Submit", "par/par_confirmation");
     }
 
