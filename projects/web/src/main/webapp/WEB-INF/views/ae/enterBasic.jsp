@@ -300,6 +300,20 @@
             new AESection("ae-section-${status.index}", initialCtcTerm[${status.index}])
             </c:forEach>
 
+			Event.observe('main', 'click', function(evt){
+				el = evt.element();
+				var name = el.name;
+				var value = el.value;
+				if(value == 'MILD' || value == 'MODERATE' || value== 'SEVERE' || value == 'LIFE_THREATENING' || value == 'DEATH')
+				{
+					var idx = name.substring(23, name.indexOf(']'));
+					var chkDeath = $('outcomes[' + idx + '][1]');
+					if(chkDeath){
+						chkDeath.checked = (value == 'DEATH');
+					}
+				}
+			});
+			
         })
 
         function showAjaxTable(an, ctc, tableId, outerTableId) {
@@ -391,7 +405,7 @@
             </c:forEach>
         </jsp:attribute>
         <jsp:attribute name="localButtons">
-            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>
+            <%--<tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>--%>
         </jsp:attribute>
     </tags:tabForm>
 </body>

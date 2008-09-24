@@ -85,8 +85,9 @@
                 <ae:oneAdverseEventMeddra index="${status.index}"/>
             </c:forEach>
         </jsp:attribute>
+
         <jsp:attribute name="localButtons">
-            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>
+            <%--<tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/> --%>
         </jsp:attribute>
     </tags:tabForm>
 </body>

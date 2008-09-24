@@ -74,13 +74,6 @@ public class CtcBasicsTab extends BasicsTab {
         }
     }
     
-
-    @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
-        command.updateOutcomes();
-        log.debug("Outcome Map : " + command.getOutcomes().toString());
-        log.debug("Outcome otherDetails :" + command.getOutcomeOtherDetails().toString());
-    }
     
     @Override
     public void postProcess(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command, Errors errors) {

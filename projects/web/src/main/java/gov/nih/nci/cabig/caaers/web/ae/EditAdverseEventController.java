@@ -79,6 +79,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		command.setAeReport(aeReport);
         	}
         }
+    	
         return command;
     }
 
@@ -145,7 +146,9 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }else{
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         }
-         
+        
+        command.updateOutcomes();
+        
         //will pre determine the display/renderability of fields 
         command.initializeNotApplicableFields();
         command.refreshMandatoryProperties();

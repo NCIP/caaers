@@ -181,10 +181,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             // special case, when TreatmentInformation (course&agents tab) is mandatory.
             // All StudyAgents associated with lead IND should be pre-initialized.
             if (ExpeditedReportSection.TREATMENT_INFO_SECTION.equals(section)) {
-                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper
-                                .getPropertyValue(sectionNode.getChildren().get(0)
-                                                .getPropertyName()
-                                                + ".courseAgents");
+                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper.getPropertyValue(sectionNode.getChildren().get(0).getPropertyName() + ".courseAgents");
                 if (courseAgents.size() <= 0) {
                     // first time, the user did not override system pre selection.
                     int i = 0;

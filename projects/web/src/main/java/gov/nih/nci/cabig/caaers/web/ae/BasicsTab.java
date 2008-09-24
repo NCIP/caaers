@@ -125,7 +125,7 @@ public abstract class BasicsTab extends AeTab {
                 break;
             }
         }
-        if (o != null) outcomes.remove(type);
+        if (o != null) outcomes.remove(o);
     }
 
     protected void addOutcomeIfDontExist(List<Outcome> outcomes, OutcomeType type, String otherString) {
