@@ -88,4 +88,10 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     public AdverseEventCtcTerm copy() {
         return (AdverseEventCtcTerm) super.copy();
     }
+    
+    @Override
+    @Transient
+    public boolean isMedDRA() {
+    	return false;
+    }
 }

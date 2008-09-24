@@ -454,7 +454,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         if (grade == null) return "";
 
         //MedDRA or CTC{not evaluated , normal}
-        if (grade.getCode() <= 0 || lowLevelTerm != null)
+        if (grade.getCode() <= 0 || ( adverseEventTerm != null && adverseEventTerm.isMedDRA()))
             return grade.getCode().intValue() + ":  " + grade.getDisplayName();
 
         //CTC ( > Normal), so check contextual grades

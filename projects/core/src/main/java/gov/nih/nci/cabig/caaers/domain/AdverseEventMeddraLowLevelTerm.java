@@ -57,4 +57,10 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     public AdverseEventMeddraLowLevelTerm copy() {
         return (AdverseEventMeddraLowLevelTerm) super.copy();
     }
+    
+    @Override
+    @Transient
+    public boolean isMedDRA() {
+    	return true;
+    }
 }
