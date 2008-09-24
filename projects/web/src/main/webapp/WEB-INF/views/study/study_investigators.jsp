@@ -97,7 +97,7 @@
 </head>
 <body>
 <study:summary />
-
+<p><tags:instructions code="study.study_investigator.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true" willSave="${not empty command.id}">
 <jsp:attribute name="singleFields">
  <input type="hidden" name="_action" value="">
@@ -107,7 +107,7 @@
  <table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td width="70%" valign="top" >
-		<p> Please choose a study site and link investigators to that study site</p>
+		<p><tags:instructions code="study.study_investigators.top" /></p>
 		<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
 		<br />
 		<hr>
@@ -115,6 +115,7 @@
 			<c:if test="${command.studySiteIndex > -1 }">
 				<study:oneStudySiteInvestigator index="${command.studySiteIndex}"/>
 			</c:if>
+            <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
 			<span id="ss-bookmark" />
 		</div>
 	    </td>
@@ -131,13 +132,14 @@
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
  				</div>
+                
  			</chrome:box>
 		</td>
 	  </tr>
 	</table>
  </jsp:attribute>	
  <jsp:attribute name="localButtons">
-  <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
+  
  </jsp:attribute> 
 </tags:tabForm>
 </body>

@@ -7,7 +7,7 @@
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
 	<p id="instructions" align="left">
-	   Click on the Add Investigator button to associate investigator to this study site.	
+	   <p><tags:instructions code="study.study_investigator.1" /></p>.	
 	<br />
 	</p>
 	<table width="100%" class="tablecontent" valign="top">

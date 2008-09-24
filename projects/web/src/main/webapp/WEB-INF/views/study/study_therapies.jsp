@@ -19,6 +19,7 @@
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyTherapiesForm" hideErrorDetails="true">
     
     <jsp:attribute name="repeatingFields">
+    <p><tags:instructions code="study.study_therapies.top" /></p>
         	<div>
 			<input type="hidden" name="_action" value="">
 			<input type="hidden" name="_selected" value="">

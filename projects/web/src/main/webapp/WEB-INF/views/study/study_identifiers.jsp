@@ -126,6 +126,7 @@
 </head>
 <body>
 <study:summary />
+<p><tags:instructions code="study.study_identifers.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyIdentifiersForm" hideErrorDetails="true">   
    <jsp:attribute name="repeatingFields">
         	<div>

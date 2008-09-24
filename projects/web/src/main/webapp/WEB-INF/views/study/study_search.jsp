@@ -56,6 +56,7 @@ function fireAction(action, selected){
 <body>
 
 <chrome:box title="Search Criteria" autopad="true">
+<p><tags:instructions code="study.search.top" /></p>
     <form:form name="searchForm" id="searchForm" method="post">
        <div>
 			<input type="hidden" name="_selected" id="_selected" value="">
@@ -89,6 +90,7 @@ function fireAction(action, selected){
 <div id="bigSearch" style="display:none;">
 <div class="endpanes" />
 <chrome:box title="Results">
+<p><tags:instructions code="study.search.results" /></p>
 <form:form id="assembler">
      <chrome:division id="single-fields">
         <div id="tableDiv">

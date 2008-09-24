@@ -119,9 +119,9 @@
 <body>
 <study:summary />
 
-
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" >
   <jsp:attribute name="repeatingFields">
+		<p><tags:instructions code="study.study_details.top" /></p>
        		<c:forEach items="${fieldGroups.studyDetails.fields}" var="field" >
 			 <tags:renderRow field="${field}"/>
        		</c:forEach>

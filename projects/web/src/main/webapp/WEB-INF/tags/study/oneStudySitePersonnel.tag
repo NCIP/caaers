@@ -6,10 +6,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <div id="ss-section-0" class="row ss-section" style="${style}">
-	<p id="instructions" align="left">
-	   Click on the Add Research Staff button to associate research staff to this study site.	
-	<br />
-	</p>
+	<tags:instructions code="study.study_personnel.staff" />
 	<table width="100%" class="tablecontent" valign="middle">
 	  <tr id="ssi-table-head" class="ssi-table-head">
 		<th width="55%" class="tableHeader"><tags:requiredIndicator />Research Staff</th>

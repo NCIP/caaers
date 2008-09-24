@@ -275,12 +275,11 @@ right:20px;
  
 </head>
  <body>
-       		<p>
-   			 <tags:instructions code="instruction_ae_adverseevents"/>
-			</p>
+
 	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm">
       	
       	<jsp:attribute name="singleFields">
+         <p><tags:instructions code="instruction_ae_adverseevents"/></p>
       		<input type="hidden" name="_action" id="_action" value="">
 			<div id="reportingPeriodSelector">      	
       				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">

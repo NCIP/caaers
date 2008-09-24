@@ -805,4 +805,23 @@ a.help img {
 .endpanes {
     clear: both;
 }
-.instructions{margin-left:22px;}
+.instructions{
+position:relative;
+margin-left:0px;
+margin-bottom:20px;
+}
+
+.instructions .summarylabel {
+float:left;
+font-weight:bold;
+margin-left:10px;
+text-align:right;
+margin-right:7px;
+}
+
+.instructions .summaryvalue {
+font-weight:normal;
+margin-left:90px;
+text-align:left;
+width:75%;
+}

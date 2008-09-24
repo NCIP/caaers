@@ -250,6 +250,7 @@
     </script>
 </head>
 <body>
+<p><tags:instructions code="study.study_disease.top" /></p>
 <study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
@@ -262,14 +263,14 @@
 		
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP Disease Terms" id="disease">
-                    Search for a Disease Category<br>
+                    <p><tags:instructions code="study.study_disease.ctep" /></p>
                     <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
                     <tags:indicator id="disease-indicator" />
                     <div id="disease-choices" class="autocomplete"></div>
                     <input type="button" id="disease-clear" value="Clear" />
                     <p id="disease-selected" style="display: none"></p>
 
-                    <br><br>Select a Sub Category<br>
+                   
                     <select multiple size="1" onmouseover="javascript:hover()" style="width:400px" id="disease-sub-category">
                         <option value="">Please select a Category first</option>
                     </select>
@@ -299,15 +300,13 @@
             
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
-					Enter a MedDRA code (or multiple codes separated by a comma) and then click Add.<br>
+					<p><tags:instructions code="study.study_disease.meddra" /></p>
 					<form:hidden  path="diseaseLlt" />
 					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete"/>
                     <input type="button" id="diseaseLlt-clear" value="Clear"/>
                     <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
                     <tags:indicator id="diseaseLlt-indicator"/>
                     <div id="diseaseLlt-choices" class="autocomplete"></div>
-                    
-                    <tags:tabControls tab="${tab}" flow="${flow}"/>    
             </chrome:division>
             </c:if>
             
@@ -319,6 +318,7 @@
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">
+            <p><tags:instructions code="study.study_disease.selected" /></p>
 			<center>
 			<table width="100%" class="tablecontent">
     			<tr>
@@ -344,7 +344,7 @@
             <!-- MedDRA -->
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="MedDRA">   
-            
+            <p><tags:instructions code="study.study_disease.selected" /></p>
             <center>
 			<table width="100%" class="tablecontent">
     			<tr>

@@ -87,6 +87,7 @@
 
 <body>
 <study:summary />
+<p><tags:instructions code="study.study_personnel.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="form" willSave="${not empty command.id}">
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
@@ -95,7 +96,7 @@
 	<table border="0" id="table1" cellspacing="1" cellpadding="0" width="100%">
 	<tr>
 		<td width="70%" valign="top" >
-			<p id="instructions">Please choose a study site and link research staff to that study site</p>
+			<tags:instructions code="study.study_personnel.site" />
 			<div class="value"><tags:renderInputs field="${fieldGroups.site.fields[0]}"/><tags:indicator id="ss-chg-indicator"/></div>
 			<br />
 			<hr>
@@ -104,6 +105,7 @@
 					<study:oneStudySitePersonnel index="${command.studySiteIndex}"/>
 				</c:if>
 				<span id="ss-bookmark" />
+                <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" /></div>
 			</div>
 	    </td>
       	<td valign="top" width="25%">
@@ -125,7 +127,7 @@
 	</table>
  </jsp:attribute>	
  <jsp:attribute name="localButtons">
-  <div id="addStaffBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Research Staff" /></div>
+  
  </jsp:attribute> 
   
 </tags:tabForm>

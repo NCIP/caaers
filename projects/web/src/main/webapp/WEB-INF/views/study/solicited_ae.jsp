@@ -401,16 +401,14 @@
   <study:summary />
  
   <form:form name="solicitedAEForm">
-
+<p><tags:instructions code="study.study_evalpdtypes.top" /></p>
   	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="true" />
   	
   	<!--  Idea is copied from tabForm.tag -->
   	<chrome:box title="${tab.longTitle}" >
   		<chrome:flashMessage/>
   		<tags:tabFields tab="${tab}"/>
-  		<p class="instructions">
-  		  Add, remove, or edit the evaluation period types required for this study.
-		</p>
+  		<p><tags:instructions code="study.study_evalpdtypes.2" /></p>
 	
 	    <tags:hasErrorsMessage />
   	

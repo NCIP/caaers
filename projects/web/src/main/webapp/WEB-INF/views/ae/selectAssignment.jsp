@@ -112,7 +112,7 @@
             </p>
         </chrome:box>
         <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_subject"/></p>
+            <p><tags:instructions code="instruction_ae_select_study"/></p>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
             <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>

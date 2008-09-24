@@ -89,10 +89,7 @@
 <study:summary />
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studySiteForm" hideErrorDetails="false">
     <jsp:attribute name="singleFields">
-		<p id="instructions">&nbsp;&nbsp;
-		Click on the Add Study Site button below in order to associate a study site to this study.
-		 <br>
-		</p>
+		<p><tags:instructions code="study.study_sites.top" /></p>
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
  	    <div align="left" style="margin-left: 50px">

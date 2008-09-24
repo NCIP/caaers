@@ -44,6 +44,7 @@
 <study:summary />
 <tags:tabForm tab="${tab}" formName="studyTreatmentAssignmentsForm" flow="${flow}" hideErrorDetails="false">
     <jsp:attribute name="repeatingFields">
+    <p><tags:instructions code="study.study_treatments.top" /></p>
 		 <input type="hidden" name="_action" value="">
 		 <input type="hidden" name="_selected" value="">
 		<c:forEach varStatus="status" items="${command.treatmentAssignments}">

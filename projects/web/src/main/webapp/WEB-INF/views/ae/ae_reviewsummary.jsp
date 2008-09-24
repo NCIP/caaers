@@ -176,7 +176,7 @@
 	  	 	<c:choose>
   		 	 <c:when test="${not empty rpdSelectedTable}">
   		 	 	<p><strong>Reports Identified by caAERS</strong></p>
-    	        <tags:instructions code="instruction_ae_checkpointReports" heading=" "/>
+    	        <p>Based on the data you have entered and the rules set up for this study, caAERS recommends that the following notifications or reports be submitted in an expedited fashion:</p>
 				<div align="center">
               	<div id="report-list" align="center" style="padding-bottom:5px;">
             	  <!-- required reports -->
@@ -202,10 +202,7 @@
         		</div> 
         		
         		<p>
-        		At your discretion, you may elect to bypass the caAERS-based report selection above and 
-        		instead manually select from the list of all reports defined for this study the expedited 
-        		reports you wish to complete and submit. To do so, click the Manually Select Reports button above.
-
+        		Click "Manually Select Reports" above to manually select from the list of all reports available for this study.
         		</p>
 				
   	 	 	</c:when>
@@ -235,6 +232,7 @@
 	  	 	<div id="div-aes">
 		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true">
   				<c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
+                <p>caAERS recommends expedited reporting on the below adverse events.  To include additional observed or solicited adverse events with the report(s), expand the appropriate section and select the adverse events.</p>
   					<table id="seriousTable" width="100%" class="tablecontent">
   						<tr>
     						<th scope="col" align="left"><b>Select</b></th>
@@ -397,7 +395,8 @@
 			</div>
 		</div>
 	</c:if>
-	<div id="div-reports-and-create" style="display:none;">
+	<div id="div-reports-and-create" style="display:none;"><hr/>
+    <p><tags:instructions code="instruction_ae_adverseevents"/></p>
 		<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
 			<div class="eXtremeTable">
 				<table width="60%" border="0" cellspacing="0" align="center" class="tableRegion">
@@ -418,7 +417,7 @@
 		</chrome:division>
 	<div align="left">
 		<b>Choose to:</b><br><br><br>
-		<input type="button" value="Create New Report(s)" id="create-new-report"/><br><br><br>
+		<input type="button" value="Create Above Report(s)" id="create-new-report"/><br><br><br>
 		<b>OR</b>
 	</div>
 	</div>

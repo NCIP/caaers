@@ -22,6 +22,7 @@
 </style>
 </head>
 <body>
+<p><tags:instructions code="study.study_overview.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
        <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
