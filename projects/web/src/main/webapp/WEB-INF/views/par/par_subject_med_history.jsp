@@ -282,9 +282,9 @@
 	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
 		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
-		<table class="tablecontent" width="80%">
+		<table class="tablecontent" width="80%" style="padding-left:50px;">
 			<tr>
-				<td>
+				<td style="padding-left:50px;">
 					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
 						<jsp:attribute name="populatorJS">
 							function(autocompleter, text) {
@@ -305,7 +305,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" style="padding-left:50px;">
 					<a name="anchorMetastaticDiseases" />
 					<div id="anchorMetastaticDiseases">
 						<c:set var="size" value="${fn:length(command.assignment.diseaseHistory.metastaticDiseaseSites)}" />
@@ -320,13 +320,12 @@
 		</table>
 	</chrome:box>
 
-
 	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
 		<tags:hasErrorsMessage path="preExistingCondition" />
 		<table class="tablecontent" width="80%">
 			<tr>
-				<td width="90%">
+				<td width="90%" style="padding-left:50px;">
 					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
                     &nbsp;
                     <input id="pre-cond-btn" type="button" value="Add"/>
@@ -336,7 +335,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" style="padding-left:50px;">
 					<a name="anchorPreExistingCondition" />
 					<div id="anchorPreExistingCondition">
 						<c:set var="size" value="${fn:length(command.assignment.preExistingConditions)}" />
@@ -351,13 +350,12 @@
 		</table>
 	</chrome:box>
 
-
 	<chrome:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
 		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
 		<tags:hasErrorsMessage path="concomitantMedication" />
 		<table class="tablecontent" width="80%">
 			<tr>
-				<td width="90%">
+				<td width="90%" style="padding-left:50px;">
 					<ui:text path="concomitantMedication" size="50" />
                     &nbsp;
                     <input id="concomitantMedication-btn" type="button" value="Add"/>
@@ -367,7 +365,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" style="padding-left:50px;">
 					<a name="anchorConcomitantMedication" />
 					<div id="anchorConcomitantMedication">
 						<c:set var="size" value="${fn:length(command.assignment.concomitantMedications)}" />
@@ -389,7 +387,7 @@
 	
 		<table class="tablecontent" width="80%">
 			<tr>
-				<td width="90%">
+				<td width="90%" style="padding-left:50px;">
 					<ui:select options="${priorTherapyOptions}" path="priorTherapy" />
                     &nbsp;
                     <input id="priortherapy-btn" type="button" value="Add"/>
@@ -399,7 +397,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" style="padding-left:50px;">
 					<a name="anchorPriorTherapy" />
 					<div id="anchorPriorTherapy">
 						<c:set var="size" value="${fn:length(command.assignment.priorTherapies)}" />
@@ -413,7 +411,8 @@
 			</tr>
 		</table>
 	</chrome:box>
-	<tags:tabControls flow="${flow}" tab="${tab}" />
+
+    <tags:tabControls flow="${flow}" tab="${tab}" />
     <c:if test="${_finish}"><input type="hidden" name="_finish"/></c:if>
    </form:form>
   </body>
