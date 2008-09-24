@@ -178,7 +178,7 @@ var t= 0 ;
         </table>
         <br>
         <div style="display: none" id = "import">
-        <b>Meddra Files Folder:</b><br>
+        <b>MedDRA Files Folder:</b><br>
     	<input id="meddra_path" type="text" />&nbsp;&nbsp;&nbsp;
 		<input id="import_button" type="button" value="Import" />
 		</div>
@@ -235,7 +235,7 @@ var t= 0 ;
 		<!-- This div is for displaying error message incase the path is blank -->
 		<div id="9-div" style="display:none">
 			<br>
-			<font color="red"><b>Please paste the path of the Meddra files in the input </b></font> 
+			<font color="red"><b>Please paste the path of the MedDRA files in the input </b></font> 
 		</div>
 		<!-- This div is for displaying the success status of import action -->
 		<div id="10-div" style="display:none">

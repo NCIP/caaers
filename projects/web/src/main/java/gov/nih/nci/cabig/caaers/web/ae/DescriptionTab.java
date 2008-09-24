@@ -41,7 +41,7 @@ public class DescriptionTab extends AeTab {
 
         InputField removedDateField = createPastDateField(baseProp + ".dateRemovedFromProtocol",
                 "Date removed from protocol", false);
-        InputField treatmentTimeField = createTimeField(baseProp +".primaryTreatmentApproximateTime", "Treatment time");
+        InputField treatmentTimeField = createTimeField(baseProp +".primaryTreatmentApproximateTime", "Event treatment, approximate time");
         treatmentTimeField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.primaryTreatmentApproximateTime");
         creator.createFieldGroup("desc", desc,
         		treatmentTimeField,
