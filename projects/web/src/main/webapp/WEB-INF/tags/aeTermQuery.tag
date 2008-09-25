@@ -32,10 +32,14 @@
 		},
 		
 		showWindow:function(wUrl, wTitle, wWidth, wHeight){
-			win = new Window({className:"alphacube", destroyOnClose:true,title:wTitle,  width:wWidth,  height:wHeight, 
-			onShow:this.show.bind(this),
-			onBeforeShow:this.beforeShow.bind(this)
-			});
+			win = new Window({
+                className:"alphacube",
+                destroyOnClose:true,
+                title:wTitle,
+                width:wWidth,
+                height:wHeight,
+                onShow:this.show.bind(this),
+                onBeforeShow:this.beforeShow.bind(this)});
 			this.win = win;
 			win.setContent('chooseCategory');
 			win.show(true);
@@ -150,7 +154,7 @@
 			
 		},
 		showCategoryBox:function(){
-	 		this.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 800, 380 );
+	 			this.showWindow('<c:url value="/pages/selectCTCTerms" />', '${title}', 700, 530 );
 	 	},
 	 	onDivScroll:function(selectBoxId)	{
 			if(basename == '') return ;
@@ -193,10 +197,14 @@
 	 	Element.observe('addSingleTermBtn', 'click', function(){
 		 	this.finishSingleTermSelection();
 	 	}.bind(catSel));
-	 	Element.observe('addMultiTermBtn', 'click', function(){
-		 	this.showCategoryBox()
+
+/*
+         Element.observe('addMultiTermBtn', 'click', function(){
+		 	this.showCategoryBox();
 	 	}.bind(catSel));
-		Element.observe('addTermsBtn','click',function(){
+*/
+
+        Element.observe('addTermsBtn','click',function(){
 			this.finishMultiTermsSelection();
 		}.bind(catSel));
 		
@@ -243,7 +251,7 @@
   					</td>
   					<c:if test="${not isMeddra}">
   					<td class="two">OR</td>
-  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" />
+  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   					 &nbsp;&nbsp;&nbsp;&nbsp;click on "Add Multiple" to add several AE terms at once.
   					</td>
   					</c:if>
@@ -261,7 +269,7 @@
 			<jsp:attribute name="label">CTC category(s)</jsp:attribute>
 			<jsp:attribute name="value">
 			  <div id="categories-div-id" class="categories-div" >
-			    <select name="categories" id="categories" size="5" class="categories" multiple >
+			    <select name="categories" id="categories" style="width:500px; height:175px;" class="categories" multiple >
 				  <c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				  </c:forEach>
@@ -273,7 +281,7 @@
 			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
 			<jsp:attribute name="value">
 				<div id="terms-div-id" class="terms-div">
-				  <select name="terms" id="terms" size="5" class="terms" multiple >
+				  <select name="terms" id="terms" size="5" class="terms" multiple style="width:500px; height:225px;">
 					<option value="" > Please select a CTC term first </option>
 				  </select>
 				</div>
