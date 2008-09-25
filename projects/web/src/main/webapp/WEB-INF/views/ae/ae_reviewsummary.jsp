@@ -104,8 +104,10 @@
 			var reportSelected = checkIfReportSelected();
 			if(reportSelected){
 				$('div-reports-and-create').show();
+				$('div-reports-not-selected').hide();
 			}else{
 				$('div-reports-and-create').hide();
+				$('div-reports-not-selected').show();
 			}
 			
 			var aeSelected = checkIfAeSelected();
@@ -231,7 +233,7 @@
              <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
   	 	
 	  	 	<div id="div-aes">
-		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true">
+		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
   				<c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
                 <p>caAERS recommends expedited reporting on the below adverse events.  To include additional observed or solicited adverse events with the report(s), expand the appropriate section and select the adverse events.</p>
   					<table id="seriousTable" width="100%" class="tablecontent">
@@ -258,7 +260,8 @@
   				</c:if>
   			</chrome:division>
   	
-			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsed="false" collapsable="true">
+			<chrome:division id="div-oaes" title="Observed Adverse Event(s)"  collapsable="true">
+
 				<c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -284,7 +287,9 @@
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsed="false" collapsable="true">
+
+			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes"  collapsable="true">
+
 				<c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>
@@ -400,7 +405,7 @@
     <p><tags:instructions code="instruction_ae_adverseevents"/></p>
 		<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
 			<div class="eXtremeTable">
-				<table width="60%" border="0" cellspacing="0" align="center" class="tableRegion">
+				<table width="60%" border="0" cellspacing="0"  class="tableRegion">
 					<thead>
 						<tr align="center" class="label">
 							<td class="tableHeader">Report</td>
@@ -422,6 +427,31 @@
 		<b>OR</b>
 	</div>
 	</div>
+
+	<%-- The below div is only visible if there are no reports selected --%>
+	<div id="div-reports-not-selected">
+		<chrome:division title="Selected Reprots" id="div-selected-reports-2" collapsable="false">
+			<div style="text-align: left;">
+				<div class="eXtremeTable">
+				 <table width="60%" border="0" cellspacing="0" class="tableRegion">
+					<thead>
+						<tr align="center" class="label">
+							<td class="tableHeader">Report</td>
+							<td class="tableHeader">Status</td>
+						</tr>
+					</thead>	
+					 <tr>
+						<td>
+							<tags:message key="instruction_ae_no_reports" /> 
+						</td>
+					</tr>
+				</table>
+				</div>				
+			</div>
+		</chrome:division>
+		<tags:message key="instruction_ae_no_saes"  />
+	</div>
+	
 	<chrome:division title="Edit Existing Reports" id="div-report-summary" collapsable="false">
 		<%-- <div class="eXtremeTable" > --%>
 			<c:choose>
@@ -461,7 +491,7 @@
 			</c:when>
 				<c:otherwise>
 					<table width="100%" border="0" cellspacing="0" class="tableRegion">
-						Reports not present.
+						No reports are available to edit or amend in this evaluation period. 
 					</table>	
 				</c:otherwise>	
 			</c:choose>					
