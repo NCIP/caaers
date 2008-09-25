@@ -113,6 +113,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(DESCRIPTION_SECTION,
                             property("responseDescription",
                                         property("eventDescription", "Description"),
+                                        property("dateRemovedFromProtocol", "Date removed from protocol"),
                                         property("primaryTreatmentApproximateTime","Event treatment, approximate time"),
                                         property("presentStatus", "Present status"),
                                         property("recoveryDate","Date of recovery or death"),
