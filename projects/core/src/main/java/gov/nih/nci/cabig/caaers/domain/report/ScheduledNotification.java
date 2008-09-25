@@ -18,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -111,6 +112,13 @@ public abstract class ScheduledNotification extends AbstractMutableDomainObject 
      */
     public void setBody(String bodyContent) {
         this.body = bodyContent;
+    }
+    
+    @Transient
+    public Boolean isActive(){
+    	if(deliveryStatus != null && deliveryStatus == DeliveryStatus.CREATED)
+    		return true;
+    	return false;
     }
 
 }

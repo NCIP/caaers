@@ -70,9 +70,17 @@ public class ReportFactory {
 
             }//~for rdd
         }//~if
-
-        //populate the scheduled notifications.
+        addScheduledNotifications(reportDefinition, report);
+        return report;
+    }
+    
+    public void addScheduledNotifications(ReportDefinition reportDefinition, Report report){
+    	//populate the scheduled notifications.
         //Note:- ScheduledNotification is per Recipient. A PlannedNotificaiton has many recipients.
+    	
+    	Date now = nowFactory.getNow();
+        Calendar cal = GregorianCalendar.getInstance();
+
         if (reportDefinition.getPlannedNotifications() != null) {
 
             for (PlannedNotification plannedNotification : reportDefinition.getPlannedNotifications()) {
@@ -113,7 +121,6 @@ public class ReportFactory {
                 }//for each to
             }//for each pnf
         }//~if
-        return report;
     }
 
 

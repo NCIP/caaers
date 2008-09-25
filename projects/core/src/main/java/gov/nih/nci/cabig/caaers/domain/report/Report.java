@@ -236,7 +236,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     }
 
     @OneToMany
-    @JoinColumn(name = "report_id", nullable = true)
+    @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<ReportVersion> getReportVersions() {

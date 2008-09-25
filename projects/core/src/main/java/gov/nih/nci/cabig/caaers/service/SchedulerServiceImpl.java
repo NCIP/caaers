@@ -61,31 +61,33 @@ public class SchedulerServiceImpl implements SchedulerService {
             // for each notification creat job detail, and associate with the scheduler
             for (ScheduledNotification nf : notifications) {
 
-                assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
-                assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
+            	if(nf.isActive()){
+            		assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
+            		assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
                 
-                // create a trigger
-                Trigger trigger = makeTrigger(nf);
+            		// create a trigger
+            		Trigger trigger = makeTrigger(nf);
 
-                // create job detail and set the map values
-                String jobName = "J-" + nf.getId().toString();
-                Class jobClass = findJobClass(nf);
-                if (logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
-                JobDetail jobDetail = new JobDetail(jobName,
-                                "JG-" + String.valueOf(report.getId()), jobClass);
-                JobDataMap jobDataMap = jobDetail.getJobDataMap();
-                jobDataMap.put("report.id", report.getId());
-                jobDataMap.put("scheduledNotifiction.id", nf.getId());
-                jobDataMap.put("curIndex", curIndex);
+            		// create job detail and set the map values
+            		String jobName = "J-" + nf.getId().toString();
+            		Class jobClass = findJobClass(nf);
+            		if (logger.isDebugEnabled()) logger.debug("jobClass :" + String.valueOf(jobClass));
+            		JobDetail jobDetail = new JobDetail(jobName,
+            				"JG-" + String.valueOf(report.getId()), jobClass);
+            		JobDataMap jobDataMap = jobDetail.getJobDataMap();
+            		jobDataMap.put("report.id", report.getId());
+            		jobDataMap.put("scheduledNotifiction.id", nf.getId());
+            		jobDataMap.put("curIndex", curIndex);
 
-                // schedule the jobs
-                logger.info("Scheduling the job (jobFullName : " + jobDetail.getFullName() + ")");
-                scheduler.scheduleJob(jobDetail, trigger);
+            		// schedule the jobs
+            		logger.info("Scheduling the job (jobFullName : " + jobDetail.getFullName() + ")");
+            		scheduler.scheduleJob(jobDetail, trigger);
 
-                // update the delivery status of the ScheduledNotification
-                nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
+            		// update the delivery status of the ScheduledNotification
+            		nf.setDeliveryStatus(DeliveryStatus.SCHEDULED);
 
-                curIndex++;
+            	}
+            	curIndex++;
             }// for each nf
             reportScheduleDao.save(report);
         } catch (SchedulerException e) {
@@ -109,13 +111,14 @@ public class SchedulerServiceImpl implements SchedulerService {
             String groupName = "JG-" + String.valueOf(report.getId());
             boolean status = false;
             for (ScheduledNotification nf : report.getScheduledNotifications()) {
-                assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
-                assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
-                jobName = "J-" + nf.getId().toString();
-                status = scheduler.deleteJob(jobName, groupName);
-                if (status) nf.setDeliveryStatus(DeliveryStatus.RECALLED);
-                logger.info("Deleted job[jobName : " + jobName + ", groupName :" + groupName
-                                + "], sucessful? = " + status);
+            	assert nf != null : "report must not contain invalid ScheduledNotificaiton objects";
+            	assert nf.getId() != null : "report must contain ScheduledNotification object, that has valid id";
+            	jobName = "J-" + nf.getId().toString();
+            	status = scheduler.deleteJob(jobName, groupName);
+            	if (status) nf.setDeliveryStatus(DeliveryStatus.RECALLED);
+            	logger.info("Deleted job[jobName : " + jobName + ", groupName :" + groupName
+            			+ "], sucessful? = " + status);
+            	
             }
         } catch (SchedulerException e) {
             logger.error("Exception while unscheduling ", e);

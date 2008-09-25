@@ -16,12 +16,14 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledEmailNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ScheduledNotification;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import org.springframework.transaction.TransactionStatus;
@@ -278,5 +280,43 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
                 }
             });
         }
+    }
+    
+    public void testAmmend() {
+    	{
+    		Report report = getDao().getById(-223);
+    		assertNotNull(report);
+    		assertNotNull(report.getReportVersions());
+    		assertEquals(1, report.getReportVersions().size());
+    		
+    		ReportVersion reportVersion = new ReportVersion();
+            reportVersion.setCreatedOn(new Date());
+            reportVersion.setReportStatus(ReportStatus.PENDING);
+            report.setStatus(ReportStatus.PENDING);
+            
+            // Set report due date
+            Calendar cal = GregorianCalendar.getInstance();
+            cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
+            report.setDueOn(cal.getTime());
+            reportVersion.setDueOn(cal.getTime());
+            
+            // Logic to update the reportVersionId
+            ReportVersion lastVersion = report.getLastVersion();
+            Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
+            currentVersionId++;
+            reportVersion.setReportVersionId(currentVersionId.toString());
+            report.addReportVersion(reportVersion);
+            
+            Report merged = getDao().merge(report);
+            assertNotNull(merged);
+            assertEquals(2, report.getReportVersions().size());
+    	}
+    	 interruptSession();
+    	 {
+    		 Report report = getDao().getById(-223);
+     		assertNotNull(report);
+     		assertNotNull(report.getReportVersions());
+     		assertEquals(2, report.getReportVersions().size());
+    	 }
     }
 }

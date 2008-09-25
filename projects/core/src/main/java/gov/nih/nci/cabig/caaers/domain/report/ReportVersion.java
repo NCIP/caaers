@@ -92,7 +92,7 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     // This is annotated this way so that the IndexColumn in the parent
     // will work with the bidirectional mapping
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "report_id", insertable = false, updatable = false, nullable = false)
     public Report getReport() {
         return report;
     }

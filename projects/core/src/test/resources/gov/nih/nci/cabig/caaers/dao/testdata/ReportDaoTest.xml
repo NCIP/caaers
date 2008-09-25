@@ -194,10 +194,7 @@
         retreated="0"
         recovery_date="2012-03-04"
         />
-    <AE_REPORT_PEOPLE id="-422" first_name="FA" last_name="KE" role="R" report_id="-1"/>
-    <AE_REPORT_PEOPLE id="-423" first_name="FA" last_name="KE" role="P" report_id="-1"/>
-
-    <!-- tables which an AE report will reference, but which are not otherwise
+               <!-- tables which an AE report will reference, but which are not otherwise
         in this file.  This is so dbunit will clean them up. -->
     <DISEASE_HISTORIES/>
     <PARTICIPANT_HISTORIES/>
@@ -224,7 +221,19 @@
 		rct_ID="-222"
         required="1"
         />
-    
+        
+    <report_versions id="-88"    report_id="-223"    list_index="0"  report_version_id="0"/>
+    <AE_REPORT_PEOPLE id="-100" report_id="-1" 
+           	role="S"
+            first_name="Joe" 
+            last_name="DiMaggio" title="Mr" 
+            street="160 Laurelway" city="Herndon" state="VA" 
+            report_version_id="-88"
+                      zip="20170"/>
+    <AE_REPORT_PEOPLE id="-422" first_name="FA" last_name="KE" role="R" report_id="-1"/>
+    <AE_REPORT_PEOPLE id="-423" first_name="FA" last_name="KE" role="P" report_id="-1"/>
+
+
     <mandatory_field_defs />
 
     <report_delivery_defs id="-221" format="0" entity_name="testentity1" end_point="11111111" entity_type="2" end_point_type="phone" rct_id="-222" />

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
 import java.util.Collections;
@@ -30,6 +31,8 @@ public class MessageNotificationService {
     protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
+    
+    private SchedulerService schedulerService;
 
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -60,6 +63,7 @@ public class MessageNotificationService {
                         .parseInt(aeReportId));
 
         Report r = reportDao.getById(Integer.parseInt(reportId));
+        reportDao.initialize(r.getScheduledNotifications());
         ReportVersion rv = r.getLastVersion();
 
         // get submitter info
@@ -84,6 +88,9 @@ public class MessageNotificationService {
             rv.setSubmissionUrl(url);
             rv.setSubmittedOn(new Date());
             rv.setReportStatus(ReportStatus.COMPLETED);
+            
+            // Unschedule all the notifications, once the report is submitted successfully.
+            schedulerService.unScheduleNotification(r);
 
         } else {
             r.setSubmittedOn(new Date());
@@ -155,6 +162,10 @@ public class MessageNotificationService {
                     org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor openSessionInViewInterceptor) {
         this.openSessionInViewInterceptor = openSessionInViewInterceptor;
     }
+    
+    public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 
     private static class StubWebRequest implements WebRequest {
         public String getParameter(final String paramName) {
