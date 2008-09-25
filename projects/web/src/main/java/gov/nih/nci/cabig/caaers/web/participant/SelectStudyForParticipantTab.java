@@ -92,13 +92,18 @@ public class SelectStudyForParticipantTab <T extends ParticipantInputCommand> ex
     protected void validate(T command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         boolean studySiteArray = (command.getStudy() == null || command.getStudy().getId() == null);
+
         if (studySiteArray) {
             errors.rejectValue("studySiteArray", "REQUIRED", "Please Select a Study to Continue");
         }
-        
+
         if (StringUtils.isEmpty(command.assignment.getStudySubjectIdentifier())) {
             errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
+
+            // this is because the previewsly selected study is not selected anymore in the radiobuttons, causing the error on continue
+            command.setStudy(null);
         }
+
     }
 
     @Override

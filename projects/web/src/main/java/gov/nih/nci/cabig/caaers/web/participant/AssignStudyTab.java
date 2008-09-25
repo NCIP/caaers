@@ -81,10 +81,6 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
-        if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
-            errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
-        }
-
         if (command.getStudySite() == null || command.getStudySite().getId() == null) {
             errors.rejectValue("assignment.studySite", "PT_008", "Select the Study Site");
         } else {
@@ -99,6 +95,15 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
                 }
             }
         }
+
+        if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
+            errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
+
+            // this is because the previewsly selected study is not selected anymore in the radiobuttons, causing the error on continue
+            command.setStudySite(null);
+        }
+
+        
     }
 
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
