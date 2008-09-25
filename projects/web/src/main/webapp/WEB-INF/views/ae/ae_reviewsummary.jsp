@@ -146,6 +146,15 @@
 </style>
 </head>
 <body>
+
+
+<c:if test='${not empty command.adverseEventReportingPeriod and not empty rpdAllTable}'>
+    <div class="row">
+        <div class="summarylabel">Evaluation Period</div>
+        <div class="summaryvalue"><tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/> - <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}" />; ${command.adverseEventReportingPeriod.epoch.name}</div>
+    </div>
+</c:if>
+
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
 	<tags:noform>
 		<table class="tablecontent">

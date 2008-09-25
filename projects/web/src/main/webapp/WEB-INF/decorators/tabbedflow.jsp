@@ -59,12 +59,6 @@
 			    <div class="summarylabel">Study</div>
 			    <div class="summaryvalue">${aesummary['Study']}</div>
 			  </div>
-                <c:if test='${not empty command.adverseEventReportingPeriod && not empty rpdAllTable}'>
-                    <div class="row">
-                        <div class="summarylabel">Evaluation Period</div>
-                        <div class="summaryvalue"><tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/> - <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}" />; ${command.adverseEventReportingPeriod.epoch.name}</div>
-                    </div>
-                </c:if>
             </div>
 		</div>
 		</c:if>
