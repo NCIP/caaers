@@ -272,9 +272,14 @@ public class PatientDetailsTab extends AeTab {
     protected void validateMetastaticDiseases(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	//aeReport.diseaseHistory.metastaticDiseaseSites[1].otherSite
     	int i =0;
+    	Set<MetastaticDiseaseSite> set = new HashSet<MetastaticDiseaseSite>();
     	for(MetastaticDiseaseSite mSite : command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites()){
     		if(mSite.getCodedSite().getId().equals(110) && StringUtils.isEmpty(mSite.getOtherSite())){
-    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014","Missing other mentastatic site information");
+    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_014","Missing other metastatic site information");
+    		}
+    		if(!set.add(mSite)){
+    			errors.rejectValue(String.format("aeReport.diseaseHistory.metastaticDiseaseSites[%d].otherSite", i), "SAE_013" , new Object[]{mSite.getCodedSite().getName()},
+    					"Duplicate metastatic site information");
     		}
     		i++;
     	}
@@ -288,7 +293,7 @@ public class PatientDetailsTab extends AeTab {
     			errors.rejectValue(String.format("aeReport.saeReportPreExistingConditions[%d]", i), "SAE_015", "Either a known pre Existing Condition or other is required");
     		}
     		if(!set.add(preCond)){
-    			errors.rejectValue(String.format("aeReport.saeReportPreExistingConditions[%d]", i), "SAE_016", "Duplicate pre Existing condition");
+    			errors.rejectValue(String.format("aeReport.saeReportPreExistingConditions[%d]", i), "SAE_016", new Object[]{preCond.getName()}, "Duplicate pre Existing condition");
     		}
     		i++;
     	}
@@ -301,7 +306,7 @@ public class PatientDetailsTab extends AeTab {
     	for(ConcomitantMedication conMed : command.getAeReport().getConcomitantMedications()){
     		propertyName = String.format("aeReport.concomitantMedications[%d]", i);
     		if(!set.add(conMed)){
-    			errors.rejectValue(propertyName, "SAE_017", "Duplicate concomitant medication");
+    			errors.rejectValue(propertyName, "SAE_017",new Object[]{conMed.getName()}, "Duplicate concomitant medication");
     		}
     		
     		if(BooleanUtils.isTrue(conMed.getStillTakingMedications()) && !conMed.getEndDate().isNull()){
