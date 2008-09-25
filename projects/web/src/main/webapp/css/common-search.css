@@ -3,7 +3,7 @@
 /* top page search */
 .search { margin: 0; }
 
-.search td { white-space: nowrap; color: #3B73B9; margin: 0; font-weight: normal; padding: 0 3px 0 0; }
+.search td { white-space: nowrap; margin: 0; font-weight: normal; padding: 0 3px 0 0; }
 .search .notation { font-weight: normal; }
 .search .searchType { padding: 1px 5px 0 0; }
 .search .labels { padding: 0 5px 0 1px; font-size: 9px; color: #3B73B9; }

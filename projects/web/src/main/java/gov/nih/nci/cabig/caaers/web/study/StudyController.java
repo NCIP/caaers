@@ -68,7 +68,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 
     public StudyController() {
         setCommandClass(Study.class);
-        Flow<C> flow = new Flow<C>("Create Study");
+        Flow<C> flow = new Flow<C>("Enter Study");
         layoutTabs(flow);
         setFlow(flow);
         setAllowDirtyBack(false);

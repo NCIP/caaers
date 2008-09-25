@@ -57,10 +57,11 @@ function ajaxSubjectSearch(searchText, searchType) {
 <body>
 
 <chrome:box autopad="true" title="Search Criteria">
+<p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
     <form:form id="searchForm" method="post" cssClass="standard" title="ABC">
         <table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
             <tr>
-                <td class="searchType">Search for a subject</td>
+                <td class="searchType">Search for subject by</td>
                 <td>
                     <form:select path="searchType">
                         <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code" />
@@ -89,9 +90,9 @@ function ajaxSubjectSearch(searchText, searchType) {
 <div id="bigSearch" style="display:none;">
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
 <jsp:attribute name="singleFields">
+ <p><tags:instructions code="instruction_subject_as2s.searchsubresults"/></p>
     <div id="searchResults" style="width:100%; border: 0px red dotted;">
         <c:if test="${fn:length(command.participantSearchResults) > 0}">
-
         <ec:table autoIncludeParameters="false"
                   items="command.participantSearchResults"
                   var="participant"

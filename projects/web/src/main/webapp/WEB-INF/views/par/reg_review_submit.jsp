@@ -22,10 +22,7 @@ function submitPage(s){
 
 </head>
 <body>
-<p id="instructions">
-   Please review the information and press Save to assign the Subject <b>${command.participant.lastName}, ${command.participant.firstName}</b>
-   to Study <b>${command.studySites[0].study.shortTitle}</b>
-</p>
+ <p><tags:instructions code="instruction_subject_enter.review"/></p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="${command.participant.lastName}, ${command.participant.firstName}" >
     <jsp:attribute name="singleFields">
         <input type="hidden" id="_finish" name="_finish"/>

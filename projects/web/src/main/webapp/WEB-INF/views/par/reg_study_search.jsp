@@ -83,7 +83,7 @@
 
 <chrome:box autopad="true" title="Search Criteria">
     <form:form id="searchForm" method="post" cssClass="standard">
-
+<p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
 <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
     <tr>
         <td>
@@ -94,7 +94,7 @@
             <tr>
                 <td class="searchType">Search for a study&nbsp;&nbsp;</td>
                 <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"itemValue="code" /></form:select></td>
-                <td><form:input path="searchText" size="25" />&nbsp;<input type="button" onclick="ajaxStudySearch();" value="Search" /></td>
+                <td><form:input path="searchText" size="25" />&nbsp;<input type="button" onClick="ajaxStudySearch();" value="Search" /></td>
                     <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
             </tr>
             <tr>
@@ -117,10 +117,9 @@
 </c:if>
 
 <div id="bigSearch" style="display:${display};">
-<p id="instructions">Please choose a Study and then press Continue to proceed</p>
 <tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
-
     <jsp:attribute name="singleFields">
+      <p><tags:instructions code="instruction_subject_as2s.searchstudyresults"/></p>
         <div id="searchResults" style="width:100%; border: 0px red dotted;">
             <c:if test="${fn:length(command.studies) > 0}">
                 <ec:table autoIncludeParameters="false" items="command.studies" var="study"
@@ -159,6 +158,7 @@
 <div id="ids" style="display:'';">
     <br />
     <chrome:division title="Study Subject Identifier">
+    <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
         <ui:label path="studySubjectIdentifier" required="true" text="Study subject identifier" /><ui:text path="studySubjectIdentifier"/>
     </chrome:division>
 </div>

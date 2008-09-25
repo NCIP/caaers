@@ -54,7 +54,7 @@ function ajaxStudySearch(searchText, searchType) {
 <!-- TOP NAVIGATION STARTS HERE -->
 
 <chrome:box autopad="true" title="Search Criteria">
-  	<p class="instructions">Choose the search criteria, type in a minimum of two characters and then click <b>Search</b></p>
+  	<p><tags:instructions code="instruction_subject_enter.choosestudy"/></p>
 
     <form:form id="searchForm" method="post">
     	<div><input type="hidden" name="_action" value="go"></div>
@@ -130,6 +130,7 @@ function ajaxStudySearch(searchText, searchType) {
         <div id="ids" style="display: <c:if test="${fn:length(command.studies) == 0}">none</c:if>;">
             <br />
             <chrome:division title="Study Subject Identifier">
+            <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
                 <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
                     <tags:renderRow field="${field}"/>
                 </c:forEach>

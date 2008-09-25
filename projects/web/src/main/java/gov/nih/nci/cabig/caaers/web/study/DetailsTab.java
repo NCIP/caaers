@@ -43,7 +43,7 @@ public class DetailsTab extends StudyTab {
     InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, coordinatingCenterFieldGroup, dcpCodeFieldGroup;
 
     public DetailsTab() {
-        super("Basic Details", "Details", "study/study_details");
+        super("Details", "Details", "study/study_details");
         setAutoPopulateHelpKey(true);
         addHelpKeyExclusion("multiInstitutionIndicator", "adeersReporting", "term", "ctcVersion", "meddraVersion", "diseaseCodeTerm");
     }

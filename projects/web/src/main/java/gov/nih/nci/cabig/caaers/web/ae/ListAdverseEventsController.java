@@ -128,8 +128,8 @@ public class ListAdverseEventsController extends SimpleFormController {
                     throws Exception {
     	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
         Map<String, Object> refdata = new HashMap<String, Object>();
-        refdata.put("pageTitle", "Manage AEs: Select Subject & Study");
-        refdata.put("bodyTitle", "Manage AEs: Select Subject & Study");
+        refdata.put("pageTitle", "Manage Reports || Select Subject and Study");
+        refdata.put("bodyTitle", "Manage Reports: Select Subject and Study");
         refdata.put("instructions","Select a subject and study to see all the AEs for that combination.");
         return refdata;
     }

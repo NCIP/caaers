@@ -61,7 +61,7 @@ public abstract class ParticipantController<C extends ParticipantInputCommand> e
 
     public ParticipantController() {
         setCommandClass(ParticipantInputCommand.class);
-        Flow<C> flow = new Flow<C>("Create Subject");
+        Flow<C> flow = new Flow<C>("Enter Subject");
 
         layoutTabs(flow);
         setFlow(flow);

@@ -76,7 +76,7 @@ public class CreateRuleController extends AbstractRuleInputController<CreateRule
 
     @Override
     protected String getFlowName() {
-        return "Author Rule";
+        return "Manage Rules";
     }
 
     protected void addTabs() {

@@ -19,7 +19,7 @@
 </style>
 </head>
 <body>
-
+<p><tags:instructions code="instruction_subject_enter.review"/></p>
 <tags:tabForm tab="${tab}" flow="${flow}"
               title="${command.participant.lastName}, ${command.participant.firstName}"
               willSave="false">

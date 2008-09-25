@@ -96,6 +96,7 @@ function removeSystemIdentifier(container, index) {
 <tags:tabForm tab="${tab}" flow="${flow}" hideErrorDetails="false" willSave="true">
 
 <jsp:attribute name="singleFields">
+<p><tags:instructions code="instruction_subject_edit.details.top"/></p>
 <div>
     <input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
@@ -267,8 +268,8 @@ function removeSystemIdentifier(container, index) {
 </jsp:attribute>
 
 <jsp:attribute name="localButtons">
-    <input type=button value="Add System Identifier" id="system-button" onclick="addSystemIdentifier('addSystemIdentifierDiv')">
-    <input type=button value="Add Organization Identifier" id="organization-button" onclick="addOrganizationIdentifier('addOrganizationIdentifierDiv')">
+    <input type=button value="Add System Identifier" id="system-button" onClick="addSystemIdentifier('addSystemIdentifierDiv')">
+    <input type=button value="Add Organization Identifier" id="organization-button" onClick="addOrganizationIdentifier('addOrganizationIdentifierDiv')">
 </jsp:attribute>
      
 </tags:tabForm>

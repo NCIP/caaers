@@ -162,13 +162,14 @@
 
   </p>
 --%>
-
+<p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">	
    <tags:hasErrorsMessage path="*" />
    
     <tags:tabFields tab="${tab}" />
 
 	<chrome:box id="assignment.general" title="General" collapsable="true">
+	   <p><tags:instructions code="instruction_subject_enter.medhist.gen"/></p>
 		<tags:hasErrorsMessage path="assignment.baselinePerformance" />
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
@@ -184,6 +185,7 @@
 	</chrome:box>
 
 	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
+     <p><tags:instructions code="instruction_subject_enter.medhist.disease"/></p>
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />
 		<div id="anchorDiseaseInfo">
 
@@ -280,6 +282,7 @@
 
 
 	<chrome:box id="assignment.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
+    <p><tags:instructions code="instruction_subject_enter.medhist.meta"/></p>
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.metastaticDiseaseSites.*" />
 		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
 		<table class="tablecontent" width="80%" style="padding-left:50px;">
@@ -321,6 +324,7 @@
 	</chrome:box>
 
 	<chrome:box id="assignment.preExistingConditions" title="Pre-existing Conditions" collapsable="true">
+    <p><tags:instructions code="instruction_subject_enter.medhist.pre"/></p>
 		<tags:hasErrorsMessage path="assignment.preExistingConditions.*" />
 		<tags:hasErrorsMessage path="preExistingCondition" />
 		<table class="tablecontent" width="80%">
@@ -351,6 +355,7 @@
 	</chrome:box>
 
 	<chrome:box id="assignment.concomitantMedications" title="ConMeds" collapsable="true">
+    <p><tags:instructions code="instruction_subject_enter.medhist.conmeds"/></p>
 		<tags:hasErrorsMessage path="assignment.concomitantMedications.*" />
 		<tags:hasErrorsMessage path="concomitantMedication" />
 		<table class="tablecontent" width="80%">
@@ -381,6 +386,7 @@
 	</chrome:box>
 
 	<chrome:box id="assignment.priorTherapies" title="Prior Therapies" collapsable="true">
+    <p><tags:instructions code="instruction_subject_enter.medhist.pt"/></p>
 		<tags:hasErrorsMessage path="assignment.priorTherapies.*" />
 		<tags:hasErrorsMessage path="priorTherapyAgents" />
 		<tags:hasErrorsMessage path="priorTherapy" />

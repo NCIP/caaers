@@ -85,7 +85,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
     }
 
     public BasicsTab() {
-        this("Report Definition", "Basic Details", "rule/notification/basicsTab");
+        this("Report Definition", "Details", "rule/notification/basicsTab");
     }
     
     @Override
