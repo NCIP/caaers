@@ -13,7 +13,8 @@ if (navigator.appName !="Netscape")
 <style type="text/css">
 <!--
 p.whs1 { font-size:11pt; }
-li.whs2 { font-size:11pt; }
+p.whs2 { font-size:11pt; font-weight:bold; }
+ol.whs3 { list-style:decimal; }
 -->
 </style><script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
 <!--
@@ -60,7 +61,7 @@ addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 	{
 	document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Delivery Details</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Delivery Details</p>");
 
 	}
 
@@ -83,69 +84,73 @@ else
 <p class="whs1">The delivery details allow you to setup recipients 
  of this report. The report can be sent to a specific email address, a 
  role, or a URL. Reports sent to email addresses and roles are sent as 
- PDF files while reports sent to URLs go through as XML files.<br>
-<b><br>
-Send to email</b><br>
-Use this option if you want the report to always go to a specific e-mail 
- address.<br>
-<b><br>
-Note:</b> This is less flexible than using Send to Role, since all studies 
- using this report definitions will go to the e-mail address listed.<br>&nbsp;</p>
-<ol><li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Click 
- the <b style="font-size: 11pt;">Add eMail</b> button. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the Name. This can be the recipient&rsquo;s name or another way to identify 
- the role. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the email address in the <b style="font-size: 11pt;">Role/Email Address</b> 
- field. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">If at 
- any time you want to remove information you&rsquo;ve added, click the 
- Delete button that corresponds to the information you want to remove. 
- To add mandatory information, click Continue.<br>
-	</font></span></li>
+ PDF files while reports sent to URLs go through as XML files.</p>
+<p class="whs1">&nbsp;</p>
+<p class="whs2">Send to email</p>
+<p class="whs1">Use this option if you want the report to always 
+ go to a specific e-mail address.</p>
+<p class="whs1">Note: This is less flexible than using Send 
+ to Role, since all studies using this report definitions will go to the 
+ e-mail address listed</p>
+<ol type="1" class="whs3">
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ the <span style="font-weight: bold;"><B>Add eMail</B></span> button. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the <span style="font-weight: bold;"><B>Name</B></span>. This can be the recipient's 
+ name or another way to identify the person who'll receive the report. 
+ </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the email address in the <span style="font-weight: bold;"><B>Role/Email Address</B></span> 
+ field. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">If 
+ at any time you want to remove information you've added, click the Delete 
+ button that corresponds to the information you want to remove.</p></li>
 </ol>
-<p class="whs1"><b>Send to role</b> <br>
-Use this option to always send the report to a role. This offers flexibility, 
- since it will send it to the e-mail address listed for the role for the 
- study using the report definition. This way, if the person(s) listed for 
- the role changes, the report will automatically be sent to the new person 
- in the role. <br>&nbsp;</p>
-<ol><li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Click 
- <b style="font-size: 11pt;">Add Role</b>. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Fill in 
- the <b style="font-size: 11pt;">Name</b> field. This can be the recipient&rsquo;s 
- name or another way to identify the email address. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the appropriate information in the <b style="font-size: 11pt;">Role/Email 
- Address</b> field. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">If at 
- any time you want to remove information you&rsquo;ve added, click the 
- <b style="font-size: 11pt;">Delete</b> button that corresponds to the 
- information you want to remove. To add mandatory information, click <b 
- style="font-size: 11pt;">Continue</b>.<br>
-	</font></span></li>
+<p class="whs1">&nbsp;</p>
+<p class="whs1"><span style="font-weight: bold;"><B>Send to role</B></span> 
+ </p>
+<p class="whs1">Use this option to always send the report to 
+ a role. This offers flexibility, since it will send it to the e-mail address 
+ listed for the role for the study using the report definition. This way, 
+ if the person(s) listed for the role changes, the report will automatically 
+ be sent to the new person in the role. </p>
+<ol type="1" class="whs3">
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ <span style="font-weight: bold;"><B>Add Role</B></span>. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the <span style="font-weight: bold;"><B>Name</B></span>. This can be the recipient's 
+ name or another way to identify the person who'll receive the report. 
+ </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the email address in the <span style="font-weight: bold;"><B>Role/Email Address</B></span> 
+ field. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">If 
+ at any time you want to remove information you've added, click the Delete 
+ button that corresponds to the information you want to remove.<span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">.<br>&nbsp;</font></span></p></li>
 </ol>
-<p class="whs1"><b>Send to URL</b><br>
-Use this role for electronic submission of a report. The URL is typically 
- a web service that can consume the report, such as AdEERS. <br>&nbsp;</p>
-<ol><li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Click 
- <b style="font-size: 11pt;">Add URL</b>. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the <b style="font-size: 11pt;">Name</b>. This can be the recipient&rsquo;s 
- name or another way to identify the URL. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">If the 
- site requires a username and password to access it, enter the information 
- in the <b style="font-size: 11pt;">Username</b> and <b style="font-size: 11pt;">Password</b> 
- fields. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the <b style="font-size: 11pt;">URL</b>. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">If at 
- any time you want to remove information you&rsquo;ve added, click the 
- <b style="font-size: 11pt;">Delete</b> button that corresponds to the 
- information you want to remove. To add Mandatory Field information, click 
- <b style="font-size: 11pt;">Continue</b>.</font></span></li>
+<p class="whs2">Send to URL</p>
+<p class="whs1">Use this role for electronic submission of 
+ a report. The URL is typically a web service that can consume the report, 
+ such as AdEERS. </p>
+<p class="whs1">&nbsp;</p>
+<ol type="1" class="whs3">
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ <span style="font-weight: bold;"><B>Add URL</B></span>. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the <span style="font-weight: bold;"><B>Name</B></span>. This can be the recipient's 
+ name or another way to identify the URL. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">&nbsp;If 
+ the site requires a username and password to access it, enter the information 
+ in the <span style="font-weight: bold;"><B>Username</B></span> and <span style="font-weight: bold;"><B>Password</B></span> 
+ fields. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the <span style="font-weight: bold;"><B>URL</B></span>. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">If 
+ at any time you want to remove information you've added, click the Delete 
+ button that corresponds to the information you want to remove.<br>&nbsp;</p></li>
 </ol>
+<p class="whs1">When you are done, click <span style="font-weight: bold;"><B>Continue.</B></span></p>
+<p class="whs1">&nbsp;</p>
 <script type="text/javascript" language="javascript1.2">
 <!--
 highlightSearch();
@@ -155,7 +160,7 @@ if(0)
 {
 document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Delivery Details</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Delivery Details</p>");
 
 }
 //-->

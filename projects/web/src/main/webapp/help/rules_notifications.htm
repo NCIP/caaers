@@ -13,7 +13,7 @@ if (navigator.appName !="Netscape")
 <style type="text/css">
 <!--
 p.whs1 { font-size:11pt; }
-li.whs2 { font-size:11pt; }
+ol.whs2 { list-style:decimal; }
 -->
 </style><script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
 <!--
@@ -60,7 +60,7 @@ addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 	{
 	document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Notifications</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Notifications</p>");
 
 	}
 
@@ -83,51 +83,40 @@ else
 <p class="whs1">Notifications can be set up to send reminders 
  to people about the report. Multiple reminders can be created for the 
  same report, reminding people that the report is almost due or informing 
- them the report is past due.<br>
-<b><br>
-Adding a notification</b> </p>
-<ol><li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
- the number from the <b style="font-size: 11pt;">Time Scale</b> box. For 
- example, if your report is due on Day 5 (as selected on the Basic Details 
- page), you could select 2 to send a reminder three days before the report 
- is due. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Add a 
- recipient. Click <b style="font-size: 11pt;">Add eMail</b> and enter an 
- email address or click <b style="font-size: 11pt;">Add Role</b> to select 
- a role from the list. You can add multiple recipients to the notification. 
- </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">To add 
- a variable, place your cursor where you want the variable to appear, then 
- select the variable from the <b style="font-size: 11pt;">Insert a substitution 
- variable</b> drop down box. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- a <b style="font-size: 11pt;">Subject Line</b>. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Type the 
- body of the message in the Message field. To add a variable, place your 
- cursor where you want the variable to appear, then select a variable from 
- the <b style="font-size: 11pt;">Insert a substitution variable</b> drop 
- down box. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Click 
- <b style="font-size: 11pt;">Reset</b> to clear the information, or <b 
- style="font-size: 11pt;">Delete</b> to completely remove the notification, 
- or <b style="font-size: 11pt;">Continue</b> to review the report.<br>
-	</font></span></li>
+ them the report is past due.<br>&nbsp;</p>
+<p class="whs1"><span style="font-weight: bold;"><B>Adding a notification</B></span> 
+ <br>&nbsp;</p>
+<ol type="1" class="whs2">
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Select 
+ the number from the <span style="font-weight: bold;"><B>Time Scale</B></span> 
+ box. For example, if your report is due on Day 5 (as selected on the Basic 
+ Details page), you could select 2 to send a reminder three days before 
+ the report is due. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ <span style="font-weight: bold;"><B>Add Notification</B></span>.</p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Add 
+ a recipient. Click <span style="font-weight: bold;"><B>Add eMail</B></span> and 
+ enter an email address or click <span style="font-weight: bold;"><B>Add Role</B></span> 
+ to select a role from the list. You can add multiple recipients to the 
+ notification. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">To 
+ add a variable, place your cursor where you want the variable to appear, 
+ then select the variable from the Insert a substitution variable drop 
+ down list. This option can be used in both the subject line and the body 
+ of the message.</p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ a <span style="font-weight: bold;"><B>Subject Line</B></span>.</p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Type 
+ the body of the message in the <span style="font-weight: bold;"><B>Message</B></span> 
+ field. To add a variable, place your cursor where you want the variable 
+ to appear, then select a variable from the Insert a substitution variable 
+ drop down box. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ <span style="font-weight: bold;"><B>Delete</B></span> to completely remove the 
+ notification or <span style="font-weight: bold;"><B>Continue</B></span> to review 
+ the report.</p></li>
 </ol>
-<p class="whs1"><b>Adding additional notifications for the 
- same time period</b><br>
-You can have multiple notifications sent out for the same Time Period. 
- For example, you could have two different notifications being sent three 
- days before the report is due. To do this, click Add Notification and 
- a second Email notification will appear in the same area.<b><br>
-Note:</b> The notifications can be minimized by clicking on the minimize 
- icon.<br>
-<b><br>
-Adding notifications for a different time period</b><br>
-If you want to add a notification for a different time period, for example, 
- the day after the report was due, select a new number from Time Scale 
- box. The notifications you&rsquo;ve previously created will be saved and 
- the page will only show notifications setup for the new time select. From 
- here, follow the steps described previously for Adding a notification.</p>
+<p class="whs1">&nbsp;</p>
 <script type="text/javascript" language="javascript1.2">
 <!--
 highlightSearch();
@@ -137,7 +126,7 @@ if(0)
 {
 document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Notifications</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Notifications</p>");
 
 }
 //-->

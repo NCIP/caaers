@@ -15,7 +15,6 @@ if (navigator.appName !="Netscape")
 p.whs1 { font-size:11pt; }
 h5.whs2 { font-size:11pt; }
 li.whs3 { font-size:11pt; }
-li.whs4 { font-size:11pt; }
 -->
 </style><script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
 <!--
@@ -62,7 +61,7 @@ addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 	{
 	document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"captureAdverseEventController.htm\">Adverse Events Tab</a> > <a href=\"captureAdverseEventController.htm\">Enter AEs</a> > Patient Details</p>");
+document.write("<a href=\"captureAdverseEventController.htm\">Adverse Events Tab</a> > <a href=\"ae_begin.htm\">Enter AEs</a> > Patient Details</p>");
 
 	}
 
@@ -91,8 +90,8 @@ else
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">General</font></span></h5>
 <p class="whs1">When a patient is added to caAERS, general 
  information is provided for that patient. However, when an AE occurs, 
- additional information is required.<br>
-<b><br>
+ additional information is required.<b><br>
+<br>
 To enter patient details:</b> <br>&nbsp;</p>
 <ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
  the <b style="font-size: 11pt;">Baseline performance</b>. </font></span></li>
@@ -108,7 +107,7 @@ To enter patient details:</b> <br>&nbsp;</p>
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">Disease Information</font></span></h5>
 <ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
  <b style="font-size: 11pt;">Disease name</b>. </font></span></li>
-	<li class="whs4"><b style="font-size: 11pt;"><span 
+	<li class="whs3"><b style="font-weight: bold;"><span 
  style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Primary site of disease:</b> This is an auto-populated 
  field; enter the first few letters of the name of the primary site of 
  the disease and select the site from the list when it appears OR click 
@@ -122,18 +121,19 @@ To enter patient details:</b> <br>&nbsp;</p>
 </ol>
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">Metastatic Disease 
  Site</font></span></h5>
-<ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">This is 
- an auto-populated field; enter the first few letters of the name of the 
- metastatic site and select from the list that appears and click <b style="font-size: 11pt;">Add</b> 
- OR click <b style="font-size: 11pt;">Show All</b> and select it from the 
- list in the pop up window that appears. </font></span></li>
+<ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">This 
+ is an auto-populated field; enter the first few letters of the name of 
+ the metastatic site and select from the list that appears and click <b 
+ style="font-size: 11pt;">Add</b> OR click <b style="font-size: 11pt;">Show 
+ All</b> and select it from the list in the pop up window that appears. 
+ </font></span></li>
 	<li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">To add 
  another metastatic site, repeat step 1. </font></span></li>
 </ol>
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">Pre-existing Conditions</font></span></h5>
 <p class="whs1">If the patient has any relevant medical history, 
- add the information to the report. <br>
-<b><br>
+ add the information to the report. <b><br>
+<br>
 To add a relevant medical history:</b> </p>
 <ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
  the condition from the <b style="font-size: 11pt;">Pre-Existing condition</b> 
@@ -148,8 +148,8 @@ To add a relevant medical history:</b> </p>
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">Conmeds</font></span></h5>
 <p class="whs1">Concomitant Medications (conmeds) may need 
  to be provided in the report. Document any concomitant medications that 
- might have contributed to an event.<br>
-<b><br>
+ might have contributed to an event.<b><br>
+<br>
 To add a conmed:</b> </p>
 <ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
  <b style="font-size: 11pt;">Information about concomitant medication</b> 
@@ -170,7 +170,8 @@ To add a conmed:</b> </p>
 <h5 class="whs2"><span class=mw-headline><font size=3 style="font-size:11pt;">Prior Therapies</font></span></h5>
 <p class="whs1">Prior therapies for the primary disease need 
  to be recorded. If the information is relevant, prior therapies for non-primary 
- diseases should also be entered. <b><br>
+ diseases should also be entered. <br>
+<b><br>
 To enter a prior therapy:</b> </p>
 <ol><li class="whs3"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
  <b style="font-size: 11pt;">Prior therapy</b> and click <b style="font-size: 11pt;">Add</b>.<br>
@@ -204,7 +205,7 @@ if(0)
 {
 document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"captureAdverseEventController.htm\">Adverse Events Tab</a> > <a href=\"captureAdverseEventController.htm\">Enter AEs</a> > Patient Details</p>");
+document.write("<a href=\"captureAdverseEventController.htm\">Adverse Events Tab</a> > <a href=\"ae_begin.htm\">Enter AEs</a> > Patient Details</p>");
 
 }
 //-->

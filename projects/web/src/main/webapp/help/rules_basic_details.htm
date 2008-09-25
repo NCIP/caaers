@@ -13,7 +13,7 @@ if (navigator.appName !="Netscape")
 <style type="text/css">
 <!--
 p.whs1 { font-size:11pt; }
-li.whs2 { font-size:11pt; }
+ol.whs2 { list-style:decimal; }
 -->
 </style><script type="text/javascript" language="JavaScript" title="WebHelpInlineScript">
 <!--
@@ -60,7 +60,7 @@ addButton("show",BTN_TEXT,"Show","","","","",0,0,"","","");
 	{
 	document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Basic Details</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Basic Details</p>");
 
 	}
 
@@ -82,63 +82,60 @@ else
 <h3>Create Report Definition - Basic Details</h3>
 <p class="whs1">The Basic Details page defines the general 
  information for the report. A red asterisk <span style="color: #ff0000;"><font color=red >*</font></span> 
- next to a field means it is required information. </p>
-<ol><li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- the organization in the <b style="font-size: 11pt;">Organization</b> field. 
- This is a pre-populated field. Enter the first few letters of the name 
- of the Organization you are looking for and select it from the drop-down 
- menu that appears. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- a name in the <b style="font-size: 11pt;">Name</b> field. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- a name in the <b style="font-size: 11pt;">Display Name</b> field. Keep 
- the name simple but descriptive. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- a <b style="font-size: 11pt;">Description</b> if you want to add more 
- information for the report. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
- <b style="font-size: 11pt;">Yes</b> or <b style="font-size: 11pt;">No</b> 
- for <b style="font-size: 11pt;">Amendable</b>. This field defaults to 
- Yes, which means the report can be added. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
- <b style="font-size: 11pt;">Yes</b> or <b style="font-size: 11pt;">No</b> 
- for <b style="font-size: 11pt;">Report is expedited?</b>. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Make a 
- selection from the Report Format drop down list. Format choices are:<br>
-	 caAERS XML,<br>
-	 AdEERS PDF<br>
+ next to a field means it is required information. <br>&nbsp;</p>
+<ol type="1" class="whs2">
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ the organization in the <span style="font-weight: bold;"><B>Organization</B></span> 
+ field. This is an auto-populated field. Enter the first few letters of 
+ the name of the Organization you are looking for and select it from the 
+ drop-down menu that appears. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ a name in the <span style="font-weight: bold;"><B>Name</B></span> field. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ a name in the <span style="font-weight: bold;"><B>Display Name</B></span> field. 
+ Keep the name simple but descriptive. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ a <span style="font-weight: bold;"><B>Description</B></span> if you want to add 
+ more information for the report. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Select 
+ <span style="font-weight: bold;"><B>Yes</B></span> or <span style="font-weight: bold;"><B>No</B></span> 
+ for <span style="font-weight: bold;"><B>Amendable?</B></span>. This field defaults 
+ to Yes, which means the report can be modified after it has been submitted. 
+ </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Select 
+ <span style="font-weight: bold;"><B>Yes</B></span> or <span style="font-weight: bold;"><B>No</B></span> 
+ for <span style="font-weight: bold;"><B>Report is expedited?</B></span>. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Make 
+ a selection from the <span style="font-weight: bold;"><B>Report Format</B></span> 
+ drop down list. Format choices are: <br>
+	caAERS XML<br>
+	AdEERS PDF<br>
 	MedWatch 3500A PDF<br>
 	DCP SAE PDF<br>
-	CIOMS PDF<br>
-	DCP Safety Report PDF<br>
-	</font></span><span style="font-size: 11pt; font-weight: bold;"><font size=3 style="font-size:11pt;"><B>Note:</B></font></span><span 
- style="font-size: 11pt;"><font size=3 style="font-size:11pt;"> The selection of Mandatory fields you can select 
- from will vary in the following </font></span><span style="font-size: 11pt; font-weight: bold;"><font size=3 style="font-size:11pt;"><B>Mandatory 
- Fields</B></font></span><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;"> task page based on the Report 
- Format you select.</font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
- <b style="font-size: 11pt;">Yes</b> or <b style="font-size: 11pt;">No</b> 
- for <b style="font-size: 11pt;">Attribution</b> required. This field defaults 
- to No. If you change it to Yes, it means that any time an AE is reported 
- on, it must be related to an attribute. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Select 
- a value for <b style="font-size: 11pt;">Time Scale UOM</b> (unit of measurement) 
- from the drop down box. This value tells you the measurement of time before 
- the report is due. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Enter 
- a number for <b style="font-size: 11pt;">Time until report due</b>. This 
- number is associated with what you selected for Time Scale UOM, and determines 
- the specific measurement for when the report is due. For example, if you 
- chose Days for Time Scale UOM, and then entered 5, you&rsquo;re setting 
- the report to be due 5 days after you document the AE. </font></span></li>
-	<li class="whs2"><span style="font-size: 11pt;"><font size=3 style="font-size:11pt;">Click 
- <b style="font-size: 11pt;">Continue</b> to go to the next step.<br>
-	</font></span></li>
+	CIOMS PDF <br>
+	DCP Safety Report PDF</p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Select 
+ Yes or No for<span style="font-weight: bold;"><B> Attribution required?</B></span>. 
+ This field defaults to No. If you change it to Yes, it means that any 
+ time an AE is reported on, it must be related to an attribute. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Select 
+ a value for <span style="font-weight: bold;"><B>Time Scale UOM</B></span> (unit 
+ of measurement) from the drop down box. This value tells you the measurement 
+ of time before the report is due. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Enter 
+ a number for <span style="font-weight: bold;"><B>Time until report due</B></span>. 
+ This number is associated with what you selected for Time Scale UOM, and 
+ determines the specific measurement for when the report is due. For example, 
+ if you chose Days for Time Scale UOM, and then entered 5, you're setting 
+ the report to be due 5 days after you document the AE. </p></li>
+	<li style=" font-size: 11pt; " class=p><p class="whs1">Click 
+ <span style="font-weight: bold;"><B>Continue</B></span> to go to the next step.<br>&nbsp;</p></li>
 </ol>
-<p class="whs1"><b>Warning:</b> If you navigate from this page 
- to a different area of caAERS without completing the entire report definition 
- process, all information will be lost, even if you have clicked <span 
- style="font-weight: bold;"><B>Continue</B></span>.</p>
+<p class="whs1"><span style="font-weight: bold;"><B>Warning:</B></span> 
+ If you navigate from this page to a different area of caAERS without completing 
+ the entire report definition process, all information will be lost, even 
+ if you have clicked Continue. The report definition is not saved until 
+ you click Save on the Review page.</p>
 <script type="text/javascript" language="javascript1.2">
 <!--
 highlightSearch();
@@ -148,7 +145,7 @@ if(0)
 {
 document.write("<p style=\"text-align:right\"> ");
 AddMasterBreadcrumbs("caAERS_Help.htm", "", ">", "Home", "First_Topic.htm");
-document.write("<a href=\"createRuleController.htm\">Rules Tab</a> > <a href=\"createNotificationController.htm\">Create Report Definition</a> > Basic Details</p>");
+document.write("<a href=\"rules_rule_level.htm\">Rules Tab</a> > <a href=\"rules_basic_details.htm\">Create Report Definition</a> > Basic Details</p>");
 
 }
 //-->
