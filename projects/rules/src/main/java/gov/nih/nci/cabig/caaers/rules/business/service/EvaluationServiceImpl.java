@@ -273,9 +273,9 @@ public class EvaluationServiceImpl implements EvaluationService {
      */
     @Transactional(readOnly = false)
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    Collection<ReportDefinition> reportDefs) {
+                    Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
         for (ReportDefinition def : reportDefs) {
-            reportRepository.createReport(def, expeditedData);
+            reportRepository.createReport(def, expeditedData, useDefaultVersion);
         }
         expeditedAdverseEventReportDao.save(expeditedData);
     }
