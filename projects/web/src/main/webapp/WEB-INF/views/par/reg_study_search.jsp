@@ -76,7 +76,10 @@
 <!-- TOP NAVIGATION STARTS HERE -->
 
 <p id="instructions">
-    <b>Subject</b>&nbsp;${command.participant.fullName}
+    <div class="instructions">
+        <div class="summarylabel"><b>Subject</b></div>
+        <div class="summaryvalue">${command.participant.fullName}</div>
+    </div>
 </p>
 
 <chrome:box autopad="true" title="Search Criteria">
