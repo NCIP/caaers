@@ -152,6 +152,9 @@
       <div class="instructions">
           <div class="summarylabel"><b>Subject</b></div>
           <div class="summaryvalue">${command.participant.fullName}</div>
+
+          <div class="summarylabel"><b>Study</b></div>
+          <div class="summaryvalue">${command.study.shortTitle}</div>
       </div>
   </p>
 
