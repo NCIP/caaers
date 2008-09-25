@@ -38,3 +38,13 @@ html div.row, * html .autoclear {
 div.row, build-name, main {
     clear: both;
 }
+
+#build-name {
+	color: #666;
+	font-size: 85%;
+	padding: 3px;
+	position: absolute;
+	bottom: -150px;
+	margin-left: 20px;
+	z-index:-1;
+}

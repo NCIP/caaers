@@ -303,7 +303,6 @@ a#firstlevelnav_configurationController:active{background-position:0px -90px;}
 	position: absolute;
 	bottom: -150px;
 	margin-left: 20px;
-	z-index:-1;
 }
 
 /**** COMMON TAB STYLES (shared across all three levels) */
