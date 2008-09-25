@@ -18,7 +18,7 @@
 <c:if test="${detailsEnabled}">
 	<span class="dueOn"><a href="#" onclick="javascript:showDetails('table${theReport.id}');"><i>${lastVersion.statusAsString}</i></a></span>
 	<div id="table${theReport.id}"	style="position: absolute; display: none;width:400px; left: 520px;">
-		<table class="tableRegion" width="100%">
+		<table class="tableRegion" width="100%" style="background:gray;">
 		   <tr align="right">
 	 	     <td><a href="#" onclick="javascript:hideDetails('table${theReport.id}');"><img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>	</a></td>
 	       </tr>
