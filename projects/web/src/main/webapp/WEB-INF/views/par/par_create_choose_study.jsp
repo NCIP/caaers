@@ -131,9 +131,15 @@ function ajaxStudySearch(searchText, searchType) {
             <br />
             <chrome:division title="Study Subject Identifier">
             <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
+<%--
                 <c:forEach items="${fieldGroups.studySubjectIdentifier.fields}" var="field">
-                    <tags:renderRow field="${field}"/>
+                    <tags:renderRow field="${field}"/> 
                 </c:forEach>
+--%>
+                <ui:row path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}">
+                    <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" text="${fieldGroups.studySubjectIdentifier.fields[0].displayName}"/></jsp:attribute>
+                    <jsp:attribute name="value"><ui:text path="${fieldGroups.studySubjectIdentifier.fields[0].propertyName}" /></jsp:attribute>
+                </ui:row>
             </chrome:division>
         </div>
         
