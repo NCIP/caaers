@@ -107,11 +107,13 @@
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><div class="label">${fn:length(report.reportVersions) -1}</div></td>
             		<td class="completion-messages">
+						
                         <c:choose>
                             <c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
                                 Yes
                             </c:when>
                             <c:otherwise>
+								<c:if test="${report.status ne 'COMPLETED'}">
                                 <p>Not yet.  Remaining to complete:</p>
                                 <c:forEach items="${reportMessages[report.id].messages}" var="sectionEntry">
                                     <h4>${sectionEntry.key.displayName} section</h4>
@@ -121,8 +123,10 @@
                                         </ul>
                                     </c:forEach>
                                 </c:forEach>
+								</c:if>
                             </c:otherwise>
                         </c:choose>
+						
                     </td>
             		<td>
             			<c:if test="${report.lastVersion.reportStatus == 'PENDING'}" >

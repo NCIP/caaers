@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
@@ -108,8 +109,9 @@ public class TreatmentTab extends AeTab {
 
     private CompositeField createDoseField(String doseProperty, String displayName,
                     boolean required, boolean hideRoute) {
+    	FieldValidator[] validators = (required) ? new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR} : new FieldValidator[]{FieldValidator.NUMBER_VALIDATOR};
         DefaultInputFieldGroup group = new DefaultInputFieldGroup(null, displayName).addField(
-                        InputFieldFactory.createTextField("amount", "", required)).addField(
+                        InputFieldFactory.createTextField("amount", "", validators)).addField(
                         InputFieldFactory.createSelectField("units", "units", false,
                         		WebUtils.collectOptions(configurationProperty
                                                         .getMap().get("agentDoseUMORefData"),
