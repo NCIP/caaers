@@ -22,7 +22,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     private static final String MAIN_FIELD_GROUP = "main";
 
     public AdverseEventCaptureTab() {
-        super("Enter Adverse Events", "Adverse events", "ae/captureAdverseEvents");
+        super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
         addHelpKeyExclusion("ctcVersion");
     }
 
