@@ -14,14 +14,29 @@
  <tags:stylesheetLink name="aeTermQuery_box" />
 
 <style type="text/css"> 
- .selectbox
+.selectdiv
 {	
 	width:170px;
+	overflow: hidden;
+}
+.shortselectdiv
+{	
+	width:115px;
+	overflow: hidden;
+}
+ .selectbox
+{	
+	width:165px;
 }
 .shortselectbox
 {	
-	width:115px;
+	width:110px;
 }
+
+.selectboxClick{
+	width:750px;
+}
+
 .divNotes,.divOtherMeddra{
 	font-size:8pt;
 margin-top:5px;
@@ -270,6 +285,9 @@ right:20px;
  		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
  		
  	});
+
+
+ 	
 
  </script>
  

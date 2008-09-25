@@ -627,3 +627,32 @@ function updateHelpLink(baseUrl, linkName){
 }
 
 
+function showBigDropdown(evt, curCss, mup){
+	if(curCss != 'selectbox') return;
+	
+	var el = evt.element();
+	if(mup){
+		var inCombo = !AE.hash.get(el.name);
+		AE.hash.set(el.name, inCombo);
+		if(inCombo){
+			el.removeClassName(curCss);
+			el.addClassName('selectboxClick');
+		}else {
+			hideBigDropdown(evt, el.name, false);
+		}
+	}else{
+		el.removeClassName(curCss);
+		el.addClassName('selectboxClick');
+	}
+		
+}
+function hideBigDropdown(evt, curCss, initToFalse){
+	if(curCss != 'selectbox') return;
+	var el = evt.element();
+	if(initToFalse) AE.hash.set(el.name, false);
+	el.removeClassName('selectboxClick');
+	el.addClassName(curCss);
+	//el.removeClassName('selectbox');
+	
+}
+

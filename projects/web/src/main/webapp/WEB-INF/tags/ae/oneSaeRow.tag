@@ -24,7 +24,27 @@
 </c:if>	
 <c:if test="${isSolicitedAE}">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpstatus" begin="${aeTermIndex}">
-		<caaers:renderFilter elementID="${field.propertyName}"><td><tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }"/></td></caaers:renderFilter>
+		<caaers:renderFilter elementID="${field.propertyName}">
+			<td>
+				<div class="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectdiv' : 'selectdiv' }">
+					<tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }" />
+					<script>
+						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
+							hideBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", true) 
+						});
+						Element.observe('${field.propertyName}', 'change' ,function(evt){ 
+								hideBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", false) 
+						});
+						Element.observe('${field.propertyName}', 'mouseup' ,function(evt){ 
+							showBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", true) 
+						});
+						Element.observe('${field.propertyName}', 'mousedown' ,function(evt){ 
+							showBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", false) 
+						});
+					</script>
+				</div>
+			</td>
+		</caaers:renderFilter>
 	</c:forEach>
 </c:if>		
 		
@@ -43,7 +63,26 @@
 		</td>
         <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
             <caaers:renderFilter elementID="${field.propertyName}">
-                <td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}"/></td>
+                <td>
+                	<div class="${lpIdx.index gt 3 ? 'shortselectdiv' : 'selectdiv'}">
+                		<tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}" />
+					<script>
+						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
+							hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true) 
+						});
+						Element.observe('${field.propertyName}', 'change' ,function(evt){ 
+							hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false) 
+						});
+						Element.observe('${field.propertyName}', 'mouseup' ,function(evt){ 
+							showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true) 
+						});
+						Element.observe('${field.propertyName}', 'mousedown' ,function(evt){ 
+							showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false) 
+						} );
+					</script>
+
+					</div>
+				</td>
             </caaers:renderFilter>
         </c:forEach>
 	</c:if>
@@ -57,7 +96,26 @@
 		</td>
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 2}" varStatus="lpIdx">
 		  <caaers:renderFilter elementID="${field.propertyName}">
-			<td><tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}"/></td>
+			<td>
+				<div class="${lpIdx.index gt 2 ? 'shortselectdiv' : 'selectdiv'}">
+					<tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}"/>
+					<script>
+						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
+							hideBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", true) 
+						} );
+						Element.observe('${field.propertyName}', 'change' ,function(evt){ 
+							hideBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", false) 
+						});
+						Element.observe('${field.propertyName}', 'mouseup' ,function(evt){ 
+							showBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", true) 
+						});
+						Element.observe('${field.propertyName}', 'mousedown' ,function(evt){ 
+							showBigDropdown(evt, "${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}", false) 
+						});
+					</script>
+
+				</div>
+			</td>
 		  </caaers:renderFilter>
 		</c:forEach>
 	</c:if>
