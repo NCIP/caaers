@@ -196,13 +196,13 @@ public class AdeersReportGenerator {
                             .get(Configuration.SMTP_USER), configuration
                             .get(Configuration.SMTP_PASSWORD), configuration
                             .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT),aeReportId);
+                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT),aeReportId, report.getReportDefinition().getReportFormatType());
         }
 
     }
 
     private void sendMail(String mailHost, String user, String pwd, String from, String attachment,
-                    String[] to, int port, String aeReportId) throws Exception {
+                    String[] to, int port, String aeReportId , ReportFormatType reportFormatType) throws Exception {
         try {
         	
             /* Dead code -- to be removed
@@ -244,8 +244,14 @@ public class AdeersReportGenerator {
             	}
             }
             
-            String content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
-            helper.setText(content);
+            String content = "";
+            
+            if (reportFormatType.equals(ReportFormatType.ADEERSPDF)) {
+            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
+            } else {
+            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted. Please refer to the attached PDF report for complete details.";
+            }
+            	helper.setText(content);
           
             File f = new File(attachment);
             FileSystemResource file = new FileSystemResource(f);
