@@ -148,20 +148,20 @@
   </head>
   <body>
 
-  <!--<p id="instructions">-->
+  <p id="instructions">
 
 <%--
 <c:if test="${not empty command.studySite}"><c:set var="study" value="${command.studySite.study}" /></c:if>
 <c:if test="${not empty command.study}"><c:set var="study" value="${command.study}" /></c:if>
 --%>
 
-<%--
         <b>Subject</b>&nbsp;${command.participant.fullName}
+<%--
         <br />
         <b>Study</b>&nbsp;${study.shortTitle}
+--%>
 
   </p>
---%>
 <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">	
    <tags:hasErrorsMessage path="*" />

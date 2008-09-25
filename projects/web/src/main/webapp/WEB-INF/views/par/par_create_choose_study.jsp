@@ -53,6 +53,10 @@ function ajaxStudySearch(searchText, searchType) {
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
 
+<p id="instructions">
+    <b>Subject</b>&nbsp;${command.participant.fullName}
+</p>
+
 <chrome:box autopad="true" title="Search Criteria">
   	<p><tags:instructions code="instruction_subject_enter.choosestudy"/></p>
 
