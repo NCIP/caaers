@@ -6,7 +6,8 @@
 <%@attribute name="index" required="true"%>
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="concomitantMedication" type="gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication" required="true" %>
-<chrome:division title="${concomitantMedication.agentName}" id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
+<chrome:division title="${not empty concomitantMedication.agentName ? concomitantMedication.agentName : 'Incorrect name - sync from Expedited Adverse Event Report issue'}" 
+	id="assignment.concomitantMedications[${index}]" collapsable="true" collapsed="${collapsed}"
  enableDelete="true" deleteParams="'concomitantMedication' ,${index}, 'anchorConcomitantMedication', {}">
 
 	<ui:row path="assignment.concomitantMedications[${index}].stillTakingMedications">

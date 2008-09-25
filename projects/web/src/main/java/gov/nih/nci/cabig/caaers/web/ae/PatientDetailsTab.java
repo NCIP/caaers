@@ -26,6 +26,8 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
+import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.ArrayList;
@@ -147,7 +149,7 @@ public class PatientDetailsTab extends AeTab {
     private CompositeField createParticipantMeasureField(String baseName, String baseDisplayName, Map<Object, Object> unitOptions) {
         return new CompositeField(baseName,
             new DefaultInputFieldGroup(null, baseDisplayName)
-                .addField(InputFieldFactory.createTextField("quantity", ""))
+                .addField(InputFieldFactory.createTextField("quantity", "", new NumberRangeValidator(1, 999)))
                 .addField(InputFieldFactory.createSelectField("unit", "units", false, unitOptions))
         );
     }

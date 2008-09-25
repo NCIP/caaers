@@ -131,6 +131,8 @@
 
 			Event.observe('command', 'submit', function(e){
 				AE.resetAutocompleter('metastaticDiseaseSite');
+				var i = 0;
+				for(i = 0; i < 15; i++)	AE.resetAutocompleter('priorTherapyAgents[' + i + ']');
 			});
 			
 		 	//-- find the bsa
