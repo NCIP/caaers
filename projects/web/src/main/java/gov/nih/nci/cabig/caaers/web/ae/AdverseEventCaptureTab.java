@@ -102,7 +102,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                     if (!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) { //only if other is requrired
                         mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
                     }
-                    InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Notes/Verbatim");
+                    InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
                     InputFieldAttributes.setSize(notesField, 25);
                     mainFieldFactory.addField(notesField); //Notes
                 }
