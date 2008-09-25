@@ -249,7 +249,7 @@ public class AdeersReportGenerator {
             if (reportFormatType.equals(ReportFormatType.ADEERSPDF)) {
             	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
             } else {
-            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted. Please refer to the attached PDF report for complete details.";
+            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
             }
             	helper.setText(content);
           
