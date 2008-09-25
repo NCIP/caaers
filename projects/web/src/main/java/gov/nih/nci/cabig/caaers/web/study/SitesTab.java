@@ -27,7 +27,7 @@ class SitesTab extends StudyTab {
     private RepeatingFieldGroupFactory rfgFactory;
 
     public SitesTab() {
-        super("Study Sites", "Sites", "study/study_sites");
+        super("Sites", "Sites", "study/study_sites");
     }
 
     @Override

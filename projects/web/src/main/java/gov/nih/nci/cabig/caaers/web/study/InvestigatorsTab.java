@@ -29,7 +29,7 @@ class InvestigatorsTab extends StudyTab {
     private List<InputField> fields;
 
     public InvestigatorsTab() {
-        super("Study Investigators", "Investigators", "study/study_investigators");
+        super("Investigators", "Investigators", "study/study_investigators");
     }
 
     @Override

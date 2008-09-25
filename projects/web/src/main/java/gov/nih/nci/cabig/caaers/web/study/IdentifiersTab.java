@@ -29,7 +29,7 @@ public class IdentifiersTab extends StudyTab {
     private RepeatingFieldGroupFactory rfgFactory;
 
     public IdentifiersTab() {
-        super("Study Identifiers", "Identifiers", "study/study_identifiers");
+        super("Identifiers", "Identifiers", "study/study_identifiers");
     }
 
     @Override

@@ -50,7 +50,7 @@ public class AgentsTab extends StudyTab {
     private LinkedHashMap<Object, Object> indTypeMap = new LinkedHashMap<Object, Object>();
 
     public AgentsTab() {
-        super("Study Agents", "Agents", "study/study_agents");
+        super("Agents", "Agents", "study/study_agents");
         // setAutoPopulateHelpKey(true);
         for (INDType indType : INDType.values()) {
             indTypeMap.put(indType.name(), indType.getDisplayName());

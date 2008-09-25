@@ -28,7 +28,7 @@ class PersonnelTab extends StudyTab {
     private List<InputField> fields;
 
     public PersonnelTab() {
-        super("Study Personnel", "Personnel", "study/study_personnel");
+        super("Personnel", "Personnel", "study/study_personnel");
     }
 
     @Override

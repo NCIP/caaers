@@ -35,7 +35,7 @@ public class DiseaseTab extends StudyTab {
     private MeddraVersionDao meddraVersionDao;
 
     public DiseaseTab() {
-        super("Study Disease", "Disease", "study/study_diseases");
+        super("Disease", "Disease", "study/study_diseases");
     }
 
     /*
