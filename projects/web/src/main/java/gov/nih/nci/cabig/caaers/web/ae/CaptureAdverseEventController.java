@@ -201,7 +201,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		Map referenceData =  super.referenceData(request, command, errors, page);
 		Map<String, String> summary = new LinkedHashMap<String, String>();
         summary.put("Participant", (command.getParticipant() == null) ? "" : command.getParticipant().getFullName() );
-        summary.put("Study", (command.getStudy() == null) ? "" : command.getStudy().getLongTitle());
+        summary.put("Study", (command.getStudy() == null) ? "" : command.getStudy().getShortTitle());
         //put summary only if page is greater than 0
         if(page > 0){
         	referenceData.put("aesummary", summary);
