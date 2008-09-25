@@ -120,7 +120,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
        if(!aeReport.getAdverseEvents().isEmpty()){
     	   reportDao.save(aeReport);
     	   List<ReportDefinition> reportDefs = evaluationService.findRequiredReportDefinitions(aeReport, aeReport.getAdverseEvents(), aeReport.getStudy());
-    	   evaluationService.addOptionalReports(aeReport, reportDefs);
+    	   evaluationService.addOptionalReports(aeReport, reportDefs, true);
        }
        
     }

@@ -93,6 +93,17 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
         
         
+        // This is to handle the case where the report is amended to add AEs. There is no new reportDefinition selected.
+        if(StringUtils.equals("amendReport", action) && (rdList == null || rdList.isEmpty())){
+        	// Here we need to populate rdList with submitted amendable reports.
+        	if(rdList == null)
+        		rdList = new ArrayList<ReportDefinition>();
+        	String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+        	for(Report report: command.getAeReport().getReports()){
+        		if(report.isSponsorReport(nciInstituteCode) && report.getStatus() == ReportStatus.COMPLETED && report.getReportDefinition().getAmendable())
+        			rdList.add(report.getReportDefinition());
+        	}
+        }
         
         if(aeList != null){
         	for(AdverseEvent ae: aeList){
@@ -126,6 +137,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	// Get the aeReportId from the request. Check all the submitted/ withdrawn reports and amend them
         	String aeReportId = request.getParameter(AE_REPORT_ID_PARAMETER);
         	String reportId = request.getParameter(REPORT_ID_PARAMETER);
+        	request.getSession().setAttribute(ACTION_PARAMETER, pramAction);
         	if(reportId != null){
         		List<Report> amendReportList = new ArrayList();
         		for(Report report: command.getAeReport().getReports()){

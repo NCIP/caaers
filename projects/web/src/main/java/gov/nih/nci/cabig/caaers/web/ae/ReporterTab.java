@@ -214,7 +214,10 @@ public class ReporterTab extends AeTab {
 
             // Create the newly Selected Reports that need to be created.
             if (newReportDefs.size() > 0) {
-                evaluationService.addOptionalReports(command.getAeReport(), newReportDefs);
+            	if(StringUtils.equals(action, "amendReport"))
+            		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
+            	else
+            		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
             }
 
             // Withdraw the reports to be withdrawn

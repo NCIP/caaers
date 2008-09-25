@@ -132,7 +132,7 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
             reportDao.save(aeReport);
             List<ReportDefinition> reportDefs = evaluationService
                             .findRequiredReportDefinitions(aeReport, aeReport.getAdverseEvents(), this.getStudy());
-            evaluationService.addOptionalReports(aeReport, reportDefs);
+            evaluationService.addOptionalReports(aeReport, reportDefs, true);
         }
 
     }
