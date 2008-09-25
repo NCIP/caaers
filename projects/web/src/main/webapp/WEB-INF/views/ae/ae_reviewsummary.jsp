@@ -136,6 +136,10 @@
 		font-size:8pt;
 	 	border-style:none;
 	}
+    div.row div.summarylabel {
+        width: 10em;
+        padding-right:0.5em;
+    }
 
 </style>
 </head>
@@ -173,7 +177,8 @@
 		</jsp:attribute>
 		<jsp:attribute name="singleFields">
 		<c:if test="${reportingPeriodType != 'Baseline'}">
-	  	 	<c:choose>
+
+             <c:choose>
   		 	 <c:when test="${not empty rpdSelectedTable}">
   		 	 	<p><strong>Reports Identified by caAERS</strong></p>
     	        <p>Based on the data you have entered and the rules set up for this study, caAERS recommends that the following notifications or reports be submitted in an expedited fashion:</p>
@@ -194,40 +199,36 @@
 					</tr>
 				</c:forEach>
 				</table>
-				<div class="autoclear" align="center" style="padding-top: 10px;">
-					<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-				</div>
-				
+
 				</div>
         		</div> 
         		
-        		<p>
-        		Click "Manually Select Reports" above to manually select from the list of all reports available for this study.
-        		</p>
-				
   	 	 	</c:when>
   	 	 	<c:otherwise>
   	 	    	<p>The AEs you have entered <strong>do not</strong> seem to require any expedited reporting. 
             	If you wish to override this decision, please choose the notification and reporting schedule below.</p>
             	<div align="center" style="padding-bottom:5px;" id="report-list">
             	<!-- optional reports -->
-				<table class="tablecontent">
+				<table class="tablecontent" width="80%">
 					<tr>
 						<th>Required</th>
 						<th>Report</th>
 						<th>Status</th>
 					</tr>
-					<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
+					<%--<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">--%>
 					<tr>
-						<td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
-						<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
-						<td>${rdTable.value.status}</td>
+						<td align="left" colspan="3">No reports required.</td>
 					</tr>
-					</c:forEach>
+					<%--</c:forEach>--%>
 				</table>
         		</div>   
   	 		 </c:otherwise>
   	 		</c:choose>
+
+             <div class="autoclear" align="center" style="padding-top: 10px;">
+                 <input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+             </div>
+             <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
   	 	
 	  	 	<div id="div-aes">
 		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true">
@@ -253,11 +254,11 @@
   					</table>
   				</c:if>
   				<c:if test='${!displaySeriousTable}'>
-  					None of the Adverse Events requires reporting.
+  					No unreported adverse events requires reporting.
   				</c:if>
   			</chrome:division>
   	
-			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsed="true" collapsable="true">
+			<chrome:division id="div-oaes" title="Observed Adverse Event(s)" collapsed="false" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
         			<table id="observedTable" width="100%" class="tablecontent">
     					<tr>
@@ -279,11 +280,11 @@
             		</table>
         		</c:if>
         		<c:if test='${!displayObservedTable}'>
-        			No reportable observed adverse events.
+        			No unreported observed adverse events.
         		</c:if> 
 			</chrome:division>
 	
-			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsed="true" collapsable="true">
+			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsed="false" collapsable="true">
 				<c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
     				<table id="solicitedTable" width="100%" class="tablecontent">
     					<tr>
@@ -305,7 +306,7 @@
        				</table>
        			</c:if>
        			<c:if test='${!displaySolicitedTable}'>
-       				No reportable solicited adverse events.
+       				No unreported solicited adverse events.
        			</c:if>
 			</chrome:division>
 			</div>
