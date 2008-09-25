@@ -18,6 +18,7 @@
 <tags:dwrJavascriptLink objects="searchStudy"/>
 <style type="text/css">
         /* Override default lable length */
+		div.row {margin-top:0px; margin-bottom:0px;}
        	div.row div.label { width: 9em; }
         div.row div.value { margin-left: 10em; }
         .endpanes {	clear: both; }

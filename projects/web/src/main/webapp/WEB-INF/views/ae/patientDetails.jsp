@@ -190,6 +190,9 @@
 	   }
 	   
 	</script>
+    <style>
+	.tablecontent td {border:0px;}
+	</style>
 </head>
 <body>
 	<p>

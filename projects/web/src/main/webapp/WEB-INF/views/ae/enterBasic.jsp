@@ -4,42 +4,56 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>
+">
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
-    <title>Enter basic AE information</title>
-    <tags:stylesheetLink name="ae"/>
-    <style type="text/css">
-        /* This is intended to apply to the grade longselect only */
-        .longselect {
-        	width: 40em;
-            white-space: normal;
-        }
-        .longselect label {
-            padding-left: 3.0em;
-            text-indent: -2.5em;
-        }
-        .first-item .delete-control {
-            display: none;
-        }
-        .main-fields .extra {
-    		width: 100%
-		}
-		.ctcCategoryValueDiv{width:660px; overflow:auto; height:40px; }
-		.ctcCategoryClass {  overflow:auto; width:620px;	}
-		 div.row div.label { width: 15em; } 
-		 div.row div.value, div.row div.extra { margin-left: 16em; }
-		 .help-content {
-		 	width:550px;
-		 }
-    </style> 
-    <tags:includeScriptaculous/>
-    <tags:dwrJavascriptLink objects="createAE"/>
-    
-    <tags:labs labs="${command.assignment.labLoads}"/>
-    
-    <script type="text/javascript">
+<title>Enter basic AE information</title>
+<tags:stylesheetLink name="ae"/>
+<style type="text/css">
+/* This is intended to apply to the grade longselect only */
+.longselect {
+	width: 40em;
+	white-space: normal;
+	overflow:visible;
+}
+.longselect label {
+	padding-left: 3.0em;
+	text-indent: -2.5em;
+}
+.first-item .delete-control {
+	display: none;
+}
+.main-fields .extra {
+	width: 100%
+}
+.ctcCategoryValueDiv {
+	width:260px;
+	overflow:visible;
+	height:40px;
+}
+.ctcCategoryClass {
+	overflow:auto;
+	width:620px;
+}
+div.row div.label {
+	width: 15em;
+}
+div.row div.value, div.row div.extra {
+	font-weight: normal;
+	margin-left: 16em;
+	text-align:left;
+	white-space:normal;
+}
+.help-content {
+	width:550px;
+}
+</style>
+<tags:includeScriptaculous/>
+<tags:dwrJavascriptLink objects="createAE"/>
+<tags:labs labs="${command.assignment.labLoads}"/>
+<script type="text/javascript">
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
         var terminologyVersionId = ${empty command.assignment.studySite.study.aeTerminology.meddraVersion.id ? command.assignment.studySite.study.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id} 
 
@@ -393,20 +407,18 @@
     </script>
 </head>
 <body>
-    <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
-        <jsp:attribute name="instructions">
-        <tags:instructions code="instruction_ae_enterBasics" />
-        </jsp:attribute>
-      
-      
-        <jsp:attribute name="repeatingFields">
-            <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-                <ae:oneAdverseEvent index="${status.index}"/>
-            </c:forEach>
-        </jsp:attribute>
-        <jsp:attribute name="localButtons">
-            <%--<tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>--%>
-        </jsp:attribute>
-    </tags:tabForm>
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
+  <jsp:attribute name="instructions">
+    <tags:instructions code="instruction_ae_enterBasics" />
+  </jsp:attribute>
+  <jsp:attribute name="repeatingFields">
+    <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
+      <ae:oneAdverseEvent index="${status.index}"/>
+    </c:forEach>
+  </jsp:attribute>
+  <jsp:attribute name="localButtons">
+    <%--<tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/>--%>
+  </jsp:attribute>
+</tags:tabForm>
 </body>
 </html>

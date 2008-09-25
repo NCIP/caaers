@@ -65,6 +65,13 @@ h1 {
 input {
 	outline:none;
 }
+div.row div.label {
+float:left;
+font-weight:normal;
+margin-left:0.5em;
+text-align:right;
+width:10em;
+}
 </style>
 <link href="../images/caaers.ico" rel="shortcut icon"/>
 </head>

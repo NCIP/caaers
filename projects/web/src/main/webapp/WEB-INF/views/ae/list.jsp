@@ -14,7 +14,7 @@
 <script src="js/common-scriptaculous.js"></script>
 <html>
 <head>
-<title>Manage AEs and Evaluation Periods</title>
+<title>Manage Reports</title>
 <tags:stylesheetLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="createAE"/>
 <tags:dwrJavascriptLink objects="adverseEventHistory"/>

@@ -14,9 +14,7 @@
 		 .tablecontent td {
 		 	border : 0px;
 		 }
-		 .tablecontent tr {
-		 	border : 1px solid;
-		 }
+		 
 	</style>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
