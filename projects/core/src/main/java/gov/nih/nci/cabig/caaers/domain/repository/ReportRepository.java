@@ -29,7 +29,7 @@ public interface ReportRepository {
      * <p/>
      * Also it will schedule the report.
      */
-    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport);
+    Report createReport(ReportDefinition repDef, ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion);
 
     /**
      * Will withdraw the latest version of the report.

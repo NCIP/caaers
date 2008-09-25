@@ -328,4 +328,9 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	else
     		return false;
     }
+    
+    @Transient
+    public String getCurrentVersion(){
+    	return getLastVersion().getReportVersionId();
+    }
 }

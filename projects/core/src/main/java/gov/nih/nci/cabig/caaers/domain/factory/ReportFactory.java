@@ -22,7 +22,7 @@ public class ReportFactory {
 
     private NowFactory nowFactory;
 
-    public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport) {
+    public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
         assert aeReport != null : "ExpeditedAdverseEventReport should not be null. Unable to create a Report";
 
@@ -35,7 +35,14 @@ public class ReportFactory {
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(now);
         reportVersion.setReportStatus(ReportStatus.PENDING);
-        reportVersion.setReportVersionId("0");
+        if(useDefaultVersion)
+        	reportVersion.setReportVersionId("0");
+        else{
+        	String nciInstituteCode = aeReport.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+        	Integer currentBaseVersion = Integer.parseInt(aeReport.getCurrentVersionForSponsorReport(nciInstituteCode));
+        	Integer newVersionId = ++currentBaseVersion;
+        	reportVersion.setReportVersionId(newVersionId.toString());
+        }
         report.addReportVersion(reportVersion);
 
         //attach the aeReport to report

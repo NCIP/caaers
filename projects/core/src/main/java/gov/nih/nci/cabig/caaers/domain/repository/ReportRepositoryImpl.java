@@ -76,8 +76,8 @@ public class ReportRepositoryImpl implements ReportRepository {
      */
 
     @Transactional(readOnly = false)
-    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport) {
-        Report report = reportFactory.createReport(reportDefinition, aeReport);
+    public Report createReport(ReportDefinition reportDefinition, ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
+        Report report = reportFactory.createReport(reportDefinition, aeReport, useDefaultVersion);
 
         //save the report
         reportDao.save(report);
@@ -182,10 +182,16 @@ public class ReportRepositoryImpl implements ReportRepository {
         reportVersion.setDueOn(cal.getTime());
         
         // Logic to update the reportVersionId
-        ReportVersion lastVersion = report.getLastVersion();
-        Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
-        currentVersionId++;
-        reportVersion.setReportVersionId(currentVersionId.toString());
+        //ReportVersion lastVersion = report.getLastVersion();
+        //Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
+        //currentVersionId++;
+        //reportVersion.setReportVersionId(currentVersionId.toString());
+        
+        String nciInstituteCode = report.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+        Integer currentBaseVersion = Integer.parseInt(report.getAeReport().getCurrentVersionForSponsorReport(nciInstituteCode));
+        Integer newVersionId = ++currentBaseVersion;
+        reportVersion.setReportVersionId(newVersionId.toString());
+        
         report.addReportVersion(reportVersion);
         
         // Add notifications to the report object

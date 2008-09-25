@@ -84,7 +84,7 @@ public interface EvaluationService {
      *                A list of ReportDefinitions
      */
     void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    Collection<ReportDefinition> reportDefs);
+                    Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion);
 
     /**
      * 

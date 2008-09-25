@@ -906,4 +906,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         }
 
     }
+    
+    @Transient
+    public String getCurrentVersionForSponsorReport(String nciInstituteCode){
+    	Integer versionNumber = -1;
+    	for(Report report: reports){
+    		if(report.getReportDefinition().getOrganization().getNciInstituteCode().equals(nciInstituteCode))
+    			if(Integer.parseInt(report.getCurrentVersion()) > versionNumber)
+    				versionNumber = Integer.parseInt(report.getCurrentVersion());
+    	}
+    	return versionNumber.toString();
+    }
 }

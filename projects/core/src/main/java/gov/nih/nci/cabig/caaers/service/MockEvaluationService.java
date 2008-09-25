@@ -59,7 +59,7 @@ public class MockEvaluationService implements EvaluationService {
         ReportDefinition def = allDefs.get(0);
         Report report = existingReportWithDef(expeditedData, def);
         if (report == null) {
-            report = reportRepository.createReport(def, expeditedData);
+            report = reportRepository.createReport(def, expeditedData, true);
         }
         report.setRequired(true);
 
@@ -109,7 +109,7 @@ public class MockEvaluationService implements EvaluationService {
     }
 
     public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
-                    Collection<ReportDefinition> reportDefs) {
+                    Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
         // TODO Auto-generated method stub
 
     }
