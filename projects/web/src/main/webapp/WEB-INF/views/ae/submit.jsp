@@ -179,7 +179,7 @@
 							
 							<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
 								<center>
-									<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Amend</a>
+									<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}&action=amendReport"/>">Amend</a>
 								</center>
 							</c:if>
 							

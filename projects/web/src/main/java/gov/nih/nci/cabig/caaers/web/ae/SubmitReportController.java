@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
+import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class SubmitReportController extends AbstractAdverseEventInputController {
 
+	private SchedulerService schedulerService;
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
@@ -97,6 +99,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         if (!endPointUrl) {
             // TODO: take out
             status = ReportStatus.COMPLETED;
+            schedulerService.unScheduleNotification(report);
         } else {
             status = ReportStatus.INPROCESS;
         }
@@ -153,5 +156,9 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         log.debug("Returning the viewname as :" + modelAndView.getViewName());
         return modelAndView;
     }
+    
+    public void setSchedulerService(SchedulerService schedulerService) {
+		this.schedulerService = schedulerService;
+	}
 
 }
