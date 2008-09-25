@@ -103,7 +103,7 @@
     			</tr>
     			<c:forEach items="${command.aeReport.nonWithdrawnReports}" varStatus="status" var="report">
     			<tr>    				
-            		<td><div class="label">${report.reportDefinition.name}</div></td>
+            		<td><div class="label">${report.reportDefinition.label}</div></td>
             		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
             		<td><div class="label">${fn:length(report.reportVersions) -1}</div></td>
             		<td class="completion-messages">
