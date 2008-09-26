@@ -29,7 +29,7 @@
            </c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
-	   		<h3>${title}<jsp:invoke fragment="titleFragment" /></h3>
+	   		${title}<jsp:invoke fragment="titleFragment" />
 	   	</c:if>
 
     </c:if>
