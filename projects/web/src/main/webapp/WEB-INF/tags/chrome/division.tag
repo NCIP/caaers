@@ -14,20 +14,19 @@
 <%@attribute name="collapsed" required="false" %>
 <caaers:renderFilter elementID="${empty path ? 'dummyPath' : path}" uiType="DIVISION">
 <div class="division ${cssClass}" <tags:attribute name="id" value="${id}"/> <tags:attribute name="style" value="${style}"/>>
-    <div class="header">
+    <div class="header" style="border-bottom:1px solid #CCCCCC; color:#2E3257; font-weight:bold; padding:4px 8px 1px;">
     <c:if test="${not empty title or not empty titleFragment}">
 
         <c:if test="${enableDelete || collapsable}">
-        	<h3>
-                <table cellspacing="0" cellpadding="0" border="0" width="100%">
+
+                <table cellspacing="1" cellpadding="1" border="0" width="100%">
                     <tr>
                         <c:if test="${collapsable}"><td align="left"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></td></c:if>
                         <td width="100%">${title}<jsp:invoke fragment="titleFragment" /></td>
  						<c:if test="${not empty deleteParams}"><td align="left"><a href="javascript:fireAction(<c:out value="${deleteParams},'${id}','${cssClass}'" />);"><img src="<chrome:imageUrl name="../checkno.gif"/>" border="0" alt="delete"></a></td></c:if>
                     </tr>
                 </table>
-            </h3>
-	   	</c:if>
+           </c:if>
 
         <c:if test="${!enableDelete && !collapsable}">
 	   		<h3>${title}<jsp:invoke fragment="titleFragment" /></h3>
