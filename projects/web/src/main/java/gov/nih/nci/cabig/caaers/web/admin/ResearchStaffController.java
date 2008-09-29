@@ -15,12 +15,14 @@ import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.mail.MailException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +34,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Saurabh
  */
 public abstract class ResearchStaffController<C extends ResearchStaff> extends
-	AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
+        AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
 
@@ -41,7 +43,7 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     private OrganizationDao organizationDao;
 
     protected WebControllerValidator webControllerValidator;
-    
+
     private String authenticationMode;
 
     public void setOrganizationDao(final OrganizationDao organizationDao) {
@@ -90,12 +92,25 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
                                          final BindException errors) throws Exception {
 
         ResearchStaff researchStaff = (ResearchStaff) command;
-        researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
-                .getScheme(), request.getServerName(), request.getServerPort(), request
-                .getContextPath()));
-        if (!errors.hasErrors()) {
-            request.setAttribute("statusMessage", "Research staff saved successfully.");
+
+        String emailSendingErrorMessage = "";
+        try {
+            researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
+                    .getScheme(), request.getServerName(), request.getServerPort(), request
+                    .getContextPath()));
+        } catch (MailException e) {
+            emailSendingErrorMessage = "Could not send email to user.";
+            logger.error("Could not send email to user.", e);
         }
+        if (!errors.hasErrors()) {
+            String statusMessage = "Research staff saved successfully.";
+
+            if (!StringUtils.isBlank(emailSendingErrorMessage)) {
+                statusMessage = statusMessage + " But we could not send email to user";
+            }
+            request.setAttribute("statusMessage", statusMessage);
+        }
+
 
         ModelAndView modelAndView = new ModelAndView("admin/research_staff_review");
         modelAndView.addAllObjects(errors.getModel());
@@ -115,20 +130,20 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
     }
-    
+
     @Override
     protected Map referenceData(HttpServletRequest request, Object oCommand, Errors errors, int page)
-                    throws Exception {
-    	Map refData = super.referenceData(request, oCommand, errors, page);
-    	refData.put("authenticationMode", getAuthenticationMode());
-    	return refData;
+            throws Exception {
+        Map refData = super.referenceData(request, oCommand, errors, page);
+        refData.put("authenticationMode", getAuthenticationMode());
+        return refData;
     }
 
-	public String getAuthenticationMode() {
-		return authenticationMode;
-	}
+    public String getAuthenticationMode() {
+        return authenticationMode;
+    }
 
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
-	}
+    public void setAuthenticationMode(String authenticationMode) {
+        this.authenticationMode = authenticationMode;
+    }
 }

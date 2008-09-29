@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private String authenticationMode;
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
         /* this should be done by a validator */
@@ -205,15 +208,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public void sendUserEmail(String userName, String subject, String text) {
-        try {
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(getUserByName(userName).getEmailAddress());
-            message.setSubject(subject);
-            message.setText(text);
-            mailSender.send(message);
-        } catch (MailException e) {
-            throw new CaaersSystemException("Could not send email to user.", e);
-        }
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(getUserByName(userName).getEmailAddress());
+        message.setSubject(subject);
+        message.setText(text);
+        mailSender.send(message);
+
     }
 
     private String encryptString(String string) {
