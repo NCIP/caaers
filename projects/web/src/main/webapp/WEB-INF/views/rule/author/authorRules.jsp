@@ -1235,26 +1235,31 @@ button. Rules created will belong to the selected Rule Set.</p>
 				items="${command.ruleSet.rule}">
 
 				<c:set var="ruleCount" value="${ruleStatus.index}" />
-				<div id="rule-${ruleCount + 1}" class="section">
-				<h3 style="position:relative; float:left" class="handle""><span
-					style="position:relative; float:left">Rule -
-				(${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})">
-				<img id="close-image" src="/caaers/images/rule/window-close.gif"
-					align="absmiddle"
-					style="position:relative; float:right; height:18px; border:0px" />
-				</a> <img src="/caaers/images/chrome/spacer.gif"
-					style="position:relative; float:right;width:5px;height:10px"
-					align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})">
-				<img id="toggle-image-${ruleCount + 1}" onclick=""
-					src="/caaers/images/rule/window-minimize.gif" valign="top"
-					align="absmiddle"
-					style="position:relative; float:right; height:18px; border:0px" />
-				</a></h3>
-				<div style="margin-left:50px;"><label class="label"
-					for="condition">Name</label> <form:input
-					path="ruleSet.rule[${ruleCount}].metaData.name"
-					cssStyle="width:200px" /></div>
-				<br />
+
+
+                <div id="rule-${ruleCount + 1}" class="section">
+
+                <h3 style="position:relative; font-size:11px; height:14px;">
+                    <span style="position:relative; float:left">Rule - (${ruleCount+1})</span>
+                    <a href="javascript:deleteRule(${ruleCount + 1})">
+                        <img id="close-image" src="/caaers/images/rule/window-close.gif" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" />
+                    </a>
+
+                    <img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" />
+
+                    <a href="javascript:toggle(${ruleCount + 1})">
+                        <img id="toggle-image-${ruleCount + 1}" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" />
+                    </a>
+
+                </h3>
+
+                <br />
+                <div style="margin-left:50px;">
+                    <label class="label" for="condition">Name</label>
+                    <form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px" />
+                </div>
+                <br />
+
 				<div id="rule-condition-action-container-${ruleCount + 1}">
 				<div style="margin-left:50px;"><label class="label"
 					for="condition">Condition(s)</label></div>
@@ -1736,12 +1741,9 @@ button. Rules created will belong to the selected Rule Set.</p>
 				</c:forEach></div>
 
 				<div class="row">
-				<div style="margin-left:50px;"><label for="action"
-					class="label">Action(s)</label></div>
+				<div style="margin-left:50px;"><label for="action" class="label">Action(s)</label></div>
 				<br />
-					<div id="action-template" style="margin-left:50px;"><img
-					src="/caaers/images/chrome/spacer.gif"
-					style="width:10px;height:10px" align="absmiddle" /> 
+					<div id="action-template" style="margin-left:50px;"><img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" /> 
 				<form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
 					
 					<c:choose>
