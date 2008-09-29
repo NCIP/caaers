@@ -20,6 +20,7 @@
 <tags:dwrJavascriptLink objects="createAE" />
 <script type="text/javascript">
 
+
     function fireAction(action, selected){
         if(action == 'addMeddraStudyDisease'){
            if(!$F('diseaseLlt')) return;
@@ -47,7 +48,7 @@
        }
 
        var diseaseAutocompleterProps = {
-           basename: "disease",
+           basename: "diseaseCategoryAsText",
            populator: function(autocompleter, text) {
                createStudy.matchDiseaseCategories(text, '' , function(values) {
                    autocompleter.setChoices(values)
@@ -75,6 +76,14 @@
        }
 
        function acCreate(mode) {
+           	$( mode.basename + '-clear').observe('click', function(evt) {
+        	$( mode.basename + + "-selected").hide()
+         	$( mode.basename ).value = ""
+       		var ctcDiseaseField = $( mode.basename + "-input")
+       		ctcDiseaseField.addClassName('pending-search');    
+          	ctcDiseaseField.value = 'Begin typing here...';              
+           });
+           
            new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
                mode.populator, {
                valueSelector: mode.valueSelector,
@@ -83,16 +92,6 @@
                },
                indicator: mode.basename + "-indicator"
            })
-           Event.observe(mode.basename + "-clear", "click", function() {
-               	$(mode.basename + "-selected").hide()
-              	$(mode.basename).value = ""
-				var ctcDiseaseField = $(mode.basename + "-input")
-				ctcDiseaseField.value = ""
-				ctcDiseaseField.addClassName('pending-search');    
-               	ctcDiseaseField.value = 'Begin typing here...';
-           })
-
-           
        }
 
 
@@ -114,7 +113,7 @@
        }
 
        function showDiseases() {
-           var categoryId = $("disease-sub-category").value
+         
            var subCategorySelect = $("disease-sub-category")
            // If all is selected
            if ( subCategorySelect.value == "" ){
@@ -218,16 +217,7 @@
 
        }
 
-       function populateSelectsOnLoad()
-       {
-
-           if ( $('disease-input').value.length > 0 )
-           {
-               createStudy.matchDiseaseCategories($('disease-input').value, '' , function(values) {
-                       updateCategories(values[0].id);
-               })
-           }
-       }
+      
 
        Event.observe(window, "load", function() {
        	   <c:if test="${diseaseTerminology == 'CTEP' }">
@@ -238,7 +228,7 @@
            updateSelectedDisplay(diseaseAutocompleterProps)
 
            Event.observe("disease-sub-category", "change", function() { showDiseases() })
-           populateSelectsOnLoad();
+          
            </c:if>
            
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
@@ -251,7 +241,19 @@
 				},
 				function(lowLevelTerm) { return lowLevelTerm.fullName });
 			</c:if>	
-           
+
+
+	        var ctcClearBtn = $('diseaseCategoryAsText-clear');
+	        if(ctcClearBtn){
+		        ctcClearBtn.observe('click', function(){
+		        	 var opt = new Option("Please select a category first", "");
+		        	 var opt1 = new Option("Please select a category first", "");
+		        	$('disease-sub-category').options.length=0;
+		        	$('disease-sub-category').options.add(opt1);
+			        $('disease-term').options.length=0;
+			        $('disease-term').options.add(opt);
+		        });
+	        }
        })
 
     </script>
@@ -271,18 +273,9 @@
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
-                    <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" onfocus="$('disease-input').removeClassName('pending-search'); $('disease-input').clear();"/>
-                    <tags:indicator id="disease-indicator" />
-                    <div id="disease-choices" class="autocomplete"></div>
-                    <input type="button" id="disease-clear" value="Clear" />
 
-					<script>
-					    var dn =  $('disease-input');
-						dn.value = 'Begin typing here...';
-						dn.addClassName('pending-search');
-						
-					</script>
-
+					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
+                    
                     <p id="disease-selected" style="display: none"></p>
 
                    
