@@ -24,13 +24,24 @@ function onAjaxSubjectSearch() {
 
 function _onAjaxSubjectSearch(transport) {
     $('bigSearch').show();
+    $('searchIndicator').hide();
+}
+
+function onKey(e) {
+    var keynum = getKeyNum(e);
+
+    if (keynum == 13) {
+        Event.stop(e);
+        ajaxSubjectSearch();
+    } else return;
 }
 
 function ajaxSubjectSearch(searchText, searchType) {
 
     // START tags:tabMethod
         var text = $F('searchText');
-
+        $('searchIndicator').show();
+    
         if(text == ''){
             $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>";
         }else{
@@ -67,9 +78,9 @@ function ajaxSubjectSearch(searchText, searchType) {
                         <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code" />
                     </form:select>
                 </td>
-                <td><form:input path="searchText" size="30" /></td>
+                <td><form:input path="searchText" size="30" onkeydown="onKey(event);" /></td>
                 <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-                <td width="100%"><input type="button" onClick="ajaxSubjectSearch();" value="Search" /></td>
+                <td width="100%"><input type="button" onClick="ajaxSubjectSearch();" value="Search" />&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
             </tr>
             <tr>
                 <td></td>

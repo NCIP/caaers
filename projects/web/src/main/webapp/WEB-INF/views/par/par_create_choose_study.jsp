@@ -19,17 +19,32 @@ function updateTargetPage(s){
 		document.checkEligibility.submit();
 }
 
+function onKey(e) {
+    var keynum = getKeyNum(e);
+
+    if (keynum == 13) {
+        Event.stop(e);
+        ajaxStudySearch();
+    } else return;
+}
+
 function onAjaxStudySearch() {
     $('bigSearch').show(); 
 }
 
+function onAjaxStudySearchSuccess() {
+    $('searchIndicator').hide();
+}
+
 function ajaxStudySearch(searchText, searchType) {
     // START tags:tabMethod
+    $('searchIndicator').show();
 
 <tags:tabMethod
        method="searchStudies"
        viewName="par/ajax/par_studySearchResult"
        onComplete="onAjaxStudySearch"
+       onSuccess="onAjaxStudySearchSuccess"
        divElement="'searchResults'"
        formName="'searchForm'"
        params="ggg" />
@@ -75,8 +90,8 @@ function ajaxStudySearch(searchText, searchType) {
                             <tags:requiredIndicator />&nbsp;
                             <form:select path="searchType"><form:options items="${searchType}" itemLabel="desc" itemValue="code" /></form:select>
                         </td>
-                        <td><form:input path="searchText" size="25" /></td>
-                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value);"></td>
+                        <td><form:input path="searchText" size="25" onkeydown="onKey(event);" /></td>
+                        <td><input type="button" value="Search" onClick="ajaxStudySearch($('searchText').value, $('searchType').value);">&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
                     </tr>
                     </table>
             </td>

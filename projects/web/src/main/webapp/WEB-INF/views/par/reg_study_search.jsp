@@ -43,14 +43,28 @@
 		});
 	}
 
+    function onKey(e) {
+        var keynum = getKeyNum(e);
+
+        if (keynum == 13) {
+            Event.stop(e);
+            ajaxStudySearch();
+        } else return;
+    }
+
     function onAjaxStudySearch() {
         $('bigSearch').show();
+    }
+
+    function onAjaxStudySearchSuccess() {
+        $('searchIndicator').hide();
     }
 
     function ajaxStudySearch(searchText, searchType) {
         // START tags:tabMethod
         var text = $F('searchText');
-
+        $('searchIndicator').show();
+        
         if(text == ''){
             $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>"
         }else{
@@ -61,6 +75,7 @@
            method="searchStudies"
            viewName="par/ajax/reg_studySearchResult"
            onComplete="onAjaxStudySearch"
+           onSuccess="onAjaxStudySearchSuccess"
            divElement="'searchResults'"
            formName="'searchForm'"
            params="" />
@@ -95,7 +110,7 @@
             <tr>
                 <td class="searchType">Search for a study&nbsp;&nbsp;</td>
                 <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"itemValue="code" /></form:select></td>
-                <td><form:input path="searchText" size="25" />&nbsp;<input type="button" onClick="ajaxStudySearch();" value="Search" /></td>
+                <td><form:input path="searchText" size="25" onkeydown="onKey(event);"/>&nbsp;<input type="button" onClick="ajaxStudySearch();" value="Search" />&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
                     <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
             </tr>
             <tr>
