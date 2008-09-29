@@ -95,7 +95,6 @@
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
-    				<th scope="col" align="left"><b>Report ID</b> </th>
     				<th scope="col" align="left"><b>Report version</b> </th>
     				<th scope="col" align="left"><b>Ready to submit?</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
@@ -104,8 +103,12 @@
     			<c:forEach items="${command.aeReport.nonWithdrawnReports}" varStatus="status" var="report">
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.label}</div></td>
-            		<td><div class="label">${report.lastVersion.reportVersionId}</div></td>
-            		<td><div class="label">${fn:length(report.reportVersions) -1}</div></td>
+            		<c:if test="${report.reportDefinition.amendable == true}">
+	            		<td align="center"><div class="label">${report.lastVersion.reportVersionId}</div></td>
+	            	</c:if>
+	            	<c:if test="${report.reportDefinition.amendable == false}">
+	            		<td/>
+	            	</c:if>
             		<td class="completion-messages">
 						
                         <c:choose>

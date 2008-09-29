@@ -214,7 +214,9 @@ public class ReporterTab extends AeTab {
 
             // Create the newly Selected Reports that need to be created.
             if (newReportDefs.size() > 0) {
-            	if(StringUtils.equals(action, "amendReport"))
+            	// Incase of amend and createNew the new reportVersion is incremented and assigned to the reports created 
+            	// Incase of edit the currentVersion number is assigned to the new reports created.
+            	if(StringUtils.equals(action, "amendReport") || StringUtils.equals(action, "createNew"))
             		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
             	else
             		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);

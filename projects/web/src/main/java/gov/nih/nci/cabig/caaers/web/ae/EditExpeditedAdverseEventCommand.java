@@ -188,8 +188,13 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
      * This method amends the reports in the list passed as a parameter to this method.
      */
     public void amendReports(List<Report> amendReportList){
+    	// Set useDefaultVersion to false so that for the first report the reportVersionId is correctly incremented by 1.
+    	Boolean useDefaultVersion = false;
     	for(Report report: amendReportList){
-    		reportRepository.amendReport(report);
+    		reportRepository.amendReport(report, useDefaultVersion);
+    		// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
+    		// and just incremented for the 1st one in the list.
+    		useDefaultVersion = true;
     	}
     }
     
