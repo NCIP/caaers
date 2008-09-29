@@ -276,6 +276,12 @@ public class EvaluationServiceImpl implements EvaluationService {
                     Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
         for (ReportDefinition def : reportDefs) {
             reportRepository.createReport(def, expeditedData, useDefaultVersion);
+            // Set useDefaultVersion to true. So that incase there are multiple reports , the reportVersion is correctly set for the 
+            // first report and the same reportVersion is used for the remaining reports in the list
+            
+            // eg. if 5 day and 24hr are selected, then the reportVersion becomes 1 for 5 day and 2 for 24 hr report.
+            // rather it should be 1 for both the reports.
+            useDefaultVersion = true;
         }
         expeditedAdverseEventReportDao.save(expeditedData);
     }
