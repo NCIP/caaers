@@ -14,6 +14,7 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
 import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -56,8 +57,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             }
             String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(researchStaff.getOrganization()));
             groupIds.add(organizationGroupId);
-            if(csmUser.getUserId() == null){
-            	throw new CaaersSystemException("ID has not been assigned to CSM user.");
+            if (csmUser.getUserId() == null) {
+                throw new CaaersSystemException("ID has not been assigned to CSM user.");
             }
             assignUserToGroup(String.valueOf(csmUser.getUserId()), groupIds.toArray(new String[groupIds.size()]));
         } catch (CSObjectNotFoundException e) {
@@ -68,10 +69,10 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     private void copyUserToCSMUser(User user, gov.nih.nci.security.authorization.domainobjects.User csmUser) {
         String emailId = user.getEmailAddress();
-        if(user.getLoginId() == null || user.getLoginId().trim().length() == 0){
-        	csmUser.setLoginName(emailId);	
-        }else{
-        	csmUser.setLoginName(user.getLoginId());
+        if (user.getLoginId() == null || user.getLoginId().trim().length() == 0) {
+            csmUser.setLoginName(emailId);
+        } else {
+            csmUser.setLoginName(user.getLoginId());
         }
         csmUser.setEmailId(emailId);
         csmUser.setPhoneNumber(user.getPhoneNumber());
@@ -94,16 +95,19 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             copyUserToCSMUser(researchStaff, csmUser);
             csmUser.setPassword(encryptString(researchStaff.getSalt() + "obscurity"));
             createCSMUser(csmUser);
+            if (StringUtils.isBlank(researchStaff.getLoginId())) {
+                researchStaff.setLoginId(researchStaff.getEmailAddress());
+            }
             researchStaffDao.save(researchStaff);
-            if("local".equals(getAuthenticationMode())){
-	            sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
-	                    + "\n"
-	                    + "You must change your password before you can login. In order to do so please visit this URL:\n"
-	                    + "\n"
-	                    + changeURL + "&token=" + userCreateToken(emailId) + "\n"
-	                    + "\n"
-	                    + "Regards\n"
-	                    + "The caAERS Notification System.\n");
+            if ("local".equals(getAuthenticationMode())) {
+                sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
+                        + "\n"
+                        + "You must change your password before you can login. In order to do so please visit this URL:\n"
+                        + "\n"
+                        + changeURL + "&token=" + userCreateToken(emailId) + "\n"
+                        + "\n"
+                        + "Regards\n"
+                        + "The caAERS Notification System.\n");
             }
             return csmUser;
         }
@@ -160,7 +164,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public User getUserByName(String userName) {
-    	User user = userDao.getByLoginId(userName);
+        User user = userDao.getByLoginId(userName);
         if (user == null) throw new CaaersNoSuchUserException("No such user.");
         return user;
     }
@@ -259,11 +263,11 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     @Required
-	public String getAuthenticationMode() {
-		return authenticationMode;
-	}
+    public String getAuthenticationMode() {
+        return authenticationMode;
+    }
 
-	public void setAuthenticationMode(String authenticationMode) {
-		this.authenticationMode = authenticationMode;
-	}
+    public void setAuthenticationMode(String authenticationMode) {
+        this.authenticationMode = authenticationMode;
+    }
 }
