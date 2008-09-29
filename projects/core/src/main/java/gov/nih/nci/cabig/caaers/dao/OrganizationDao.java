@@ -119,7 +119,7 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     @SuppressWarnings("unchecked")
     public List<Organization> getOrganizationsHavingStudySites() {
 
-        return getHibernateTemplate().find("select distinct ss.organization from StudySite ss");
+        return getHibernateTemplate().find("select distinct ss.organization from StudySite ss order by ss.organization.name");
     }
 
     /**
