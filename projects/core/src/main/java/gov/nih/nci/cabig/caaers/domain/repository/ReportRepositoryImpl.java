@@ -167,7 +167,7 @@ public class ReportRepositoryImpl implements ReportRepository {
      * @return void
      * @author- Sameer Sawant
      */
-    public void amendReport(Report report){
+    public void amendReport(Report report, Boolean useDefaultVersion){
     	ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(nowFactory.getNow());
         reportVersion.setReportStatus(ReportStatus.PENDING);
@@ -189,8 +189,11 @@ public class ReportRepositoryImpl implements ReportRepository {
         
         String nciInstituteCode = report.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
         Integer currentBaseVersion = Integer.parseInt(report.getAeReport().getCurrentVersionForSponsorReport(nciInstituteCode));
-        Integer newVersionId = ++currentBaseVersion;
-        reportVersion.setReportVersionId(newVersionId.toString());
+        Integer newVersionId = currentBaseVersion + 1;
+        if(useDefaultVersion)
+        	reportVersion.setReportVersionId(currentBaseVersion.toString());
+        else
+        	reportVersion.setReportVersionId(newVersionId.toString());
         
         report.addReportVersion(reportVersion);
         

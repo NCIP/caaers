@@ -51,7 +51,7 @@ public interface ReportRepository {
      * the versionId too.
      */
     
-    void amendReport(Report report);
+    void amendReport(Report report, Boolean useDefaultVersion);
     
     /**
      * Will tell whether all the mandatory field for this report is duly filled.

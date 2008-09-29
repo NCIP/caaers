@@ -35,12 +35,16 @@ public class ReportFactory {
         ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(now);
         reportVersion.setReportStatus(ReportStatus.PENDING);
-        if(useDefaultVersion)
-        	reportVersion.setReportVersionId("0");
+        Integer currentBaseVersion = getCurrentReportVersion(aeReport);
+        if(useDefaultVersion){
+        	// Set the new version with the current version number
+        	// This will happen in edit mode
+        	reportVersion.setReportVersionId(currentBaseVersion.toString());
+        }
         else{
-        	String nciInstituteCode = aeReport.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-        	Integer currentBaseVersion = Integer.parseInt(aeReport.getCurrentVersionForSponsorReport(nciInstituteCode));
-        	Integer newVersionId = ++currentBaseVersion;
+        	// Increment the current version number and assign it to the new report instance
+        	// This will happen in createNew and amend mode.
+        	Integer newVersionId = currentBaseVersion + 1;
         	reportVersion.setReportVersionId(newVersionId.toString());
         }
         report.addReportVersion(reportVersion);
@@ -79,6 +83,13 @@ public class ReportFactory {
         }//~if
         addScheduledNotifications(reportDefinition, report);
         return report;
+    }
+    
+    
+    public Integer getCurrentReportVersion(ExpeditedAdverseEventReport aeReport){
+    	String nciInstituteCode = aeReport.getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+    	Integer currentBaseVersion = Integer.parseInt(aeReport.getCurrentVersionForSponsorReport(nciInstituteCode));
+    	return currentBaseVersion;
     }
     
     public void addScheduledNotifications(ReportDefinition reportDefinition, Report report){
