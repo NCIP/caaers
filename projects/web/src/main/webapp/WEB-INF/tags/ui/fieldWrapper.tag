@@ -19,7 +19,7 @@
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
 <caaers:renderFilter elementID="${path}">
 	<c:if test="${not readonly}">
-	<c:set var="validationCss" scope="request">${required ? not empty validationJSClass ? 'validate-NOTEMPTY&&':'validate-NOTEMPTY' : not empty validationJSClass ? 'validate-': ''}${validationJSClass}</c:set>
+	<c:set var="validationCss" scope="request">${validationJSClass}${required ? not empty validationJSClass ? '&&NOTEMPTY':'validate-NOTEMPTY' :''}</c:set>
 	<jsp:invoke fragment="field" />
 	<c:remove var="validationCss" scope="request" />
 	</c:if>

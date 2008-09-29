@@ -1,4 +1,6 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
@@ -82,10 +84,15 @@
                indicator: mode.basename + "-indicator"
            })
            Event.observe(mode.basename + "-clear", "click", function() {
-               $(mode.basename + "-selected").hide()
-               $(mode.basename).value = ""
-               $(mode.basename + "-input").value = ""
+               	$(mode.basename + "-selected").hide()
+              	$(mode.basename).value = ""
+				var ctcDiseaseField = $(mode.basename + "-input")
+				ctcDiseaseField.value = ""
+				ctcDiseaseField.addClassName('pending-search');    
+               	ctcDiseaseField.value = 'Begin typing here...';
            })
+
+           
        }
 
 
@@ -264,10 +271,18 @@
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
-                    <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" />
+                    <form:input size="45" id="disease-input"  path="diseaseCategoryAsText" onfocus="$('disease-input').removeClassName('pending-search'); $('disease-input').clear();"/>
                     <tags:indicator id="disease-indicator" />
                     <div id="disease-choices" class="autocomplete"></div>
                     <input type="button" id="disease-clear" value="Clear" />
+
+					<script>
+					    var dn =  $('disease-input');
+						dn.value = 'Begin typing here...';
+						dn.addClassName('pending-search');
+						
+					</script>
+
                     <p id="disease-selected" style="display: none"></p>
 
                    
@@ -301,12 +316,8 @@
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
-					<form:hidden  path="diseaseLlt" />
-					<input  size="45" type="text" id="diseaseLlt-input" value="" class="autocomplete"/>
-                    <input type="button" id="diseaseLlt-clear" value="Clear"/>
+					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
                     <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
-                    <tags:indicator id="diseaseLlt-indicator"/>
-                    <div id="diseaseLlt-choices" class="autocomplete"></div>
             </chrome:division>
             </c:if>
             

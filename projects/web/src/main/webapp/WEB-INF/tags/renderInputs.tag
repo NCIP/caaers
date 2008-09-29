@@ -87,7 +87,8 @@
 						title="${field.displayName}"
 						disabled="${disabled}"
 						enableClearButton="${field.attributes.enableClear}" 
-						initialDisplayValue="Begin typing here..."/>
+						initialDisplayValue="Begin typing here..."
+						cssClass="${field.validatorClassName}"/>
 		
        
     </c:when>
