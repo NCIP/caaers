@@ -1,10 +1,5 @@
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
  <head>
  	<standard:head/>

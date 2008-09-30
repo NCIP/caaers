@@ -16,8 +16,7 @@ td#linkPosition a img {
 </style>
 <tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="createStudy" />
-<script type="text/javascript"><!--
-	
+<script type="text/javascript">
 	var agentListEditor;
 	var jsAgents = [ ];
 	function fireAction(action, selected){
@@ -202,7 +201,7 @@ td#linkPosition a img {
      	});
      }
      
---></script>
+</script>
 
 </head>
 <body>
@@ -222,17 +221,15 @@ td#linkPosition a img {
 			<input type="hidden" name="_selectedInd" value="">
 			<input type="hidden" name="_selectedOther" value="">
 		</div>	
-		<p id="instructions">
-			
-		</p>
-		<c:forEach var="sa" varStatus="status" items="${command.studyAgents}"> 
+		<p id="instructions"></p>
+
+        <c:forEach var="sa" varStatus="status" items="${command.studyAgents}">
 		<study:oneStudyAgent title="Study Agent ${status.index + 1}"
 				sectionClass="sa-section" index="${status.index}">
-		  </study:oneStudyAgent>		
+		  </study:oneStudyAgent>
 		</c:forEach>
-		
-		<span id="agentbookmark" />
-    
+
+        <span id="agentbookmark"></span>
 	
 	</jsp:attribute>
 	<jsp:attribute name="localButtons" >
