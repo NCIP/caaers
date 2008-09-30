@@ -1,29 +1,11 @@
 
-<project name="excel-importer" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="excel-importer" default="importexcel" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
 	
 	<import file="${parent.dir}/common.xml"/>
-
-	<!-- ==============================================================
-		target: resolve-dist
-	================================================================== -->
-	 <target name="resolve-dist" depends="load-ivy"
-	    	description="--> resolve and retrieve dist conf dependencies with ivy">
-	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
-	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	  </target>
 	
-	<target name="clean" depends="common.clean">
-		
-	</target>
-	
-	<target name="jar">
-		<echo message="Executing jar in ${ant.project.name}" />
-	</target>
-	
-	<target name="importexcel" description="" depends="compile">
+	<target name="importexcel" description="" depends="publish-local">
 	        <echo message="File Name: ${filelocation}"/>
 	        <path id="main.classpath">
 	            <fileset dir="${lib.dir}">

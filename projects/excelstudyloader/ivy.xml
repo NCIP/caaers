@@ -2,7 +2,7 @@
 <ivy-module version="1.4">
 	
     	<info organisation="gov.nih.nci.cabig.caaers"
-          	module="excelimporter"
+          	module="excel-importer"
           	status="integration"/>
         
         <configurations>
@@ -24,8 +24,6 @@
         
          <publications>
     		<artifact name="${ivy.module}" conf="publish" type="jar"/>
-    		<artifact name="${ivy.module}-tests" conf="test" type="jar"/>
-    		<artifact name="caaers" type="war" conf="publish" />
   		</publications>
         
         <!-- dependencies for the web module -->
@@ -37,6 +35,9 @@
 				conf="build->default;runtime->default;dist->dist,publish;distGrid->distGrid"/>
 	 		<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core-bootstrap" rev="latest.integration" 
 				conf="build->default;runtime->default;dist->dist;distGrid->distGrid"/>
+        	
+        	<!-- Testing dependencies -->
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
         	
         	<!--  Spring framework -->
         	<dependency org="org.springframework" name="spring" rev="2.0.2" force="true"/>
