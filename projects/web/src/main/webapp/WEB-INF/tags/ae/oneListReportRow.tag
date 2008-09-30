@@ -81,7 +81,7 @@
 				<thead>
 					<tr align="center" class="label">
 						<td class="tableHeader" width="25%">AE Term</td>
-						<td class="tableHeader" width="25%">Grade</td>
+						<td class="centerTableHeader" width="25%">Grade</td>
 						<td class="tableHeader" width="25%">AE Start Date</td>
 						<td class="tableHeader" width="25%">Requires Expedited Reporting?</td>
 					</tr>

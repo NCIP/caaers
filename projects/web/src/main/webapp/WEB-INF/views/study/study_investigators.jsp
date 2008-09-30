@@ -13,7 +13,6 @@
   .label { 
       width: 12em; 
       text-align: right; 
-      padding: 4px; 
   }
 </style>
 

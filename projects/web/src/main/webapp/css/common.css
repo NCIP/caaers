@@ -638,8 +638,7 @@ ul.errors li {
 
 
 div.div-list-controls {
-	position: absolute;
-	right:0;
+	float:right;
 }
 
 a.list-control {
@@ -687,8 +686,8 @@ span.list-controls {
 div.row {
 	padding-right: 2px;
 	padding-left: 2px;
-	margin-top:12px;
-	margin-bottom:12px;
+	margin-top:7px;
+	margin-bottom:7px;
 }
 /* Automatically clear after each row
    Based on http://www.positioniseverything.net/easyclearing.html */
@@ -698,9 +697,6 @@ div.row:after, .autoclear:after {
     clear: both ;
     height: 0 ;
     visibility: hidden ;
-}
-div.row div.label, div.row div.value {
-  line-height: 1.5em;
 }
 
 div.row div.label {
@@ -715,8 +711,8 @@ div.row div.value {
   font-weight: normal;
   /* default; should be changed whenever .label width is changed */
   margin-left: 11em;
-  /* In Mac the Help (?) button is wrapping */
-  white-space:nowrap;
+  /* In Mac the Help (?) button is wrapping-------Sorry, its causing titles that are too long to go off the page -david
+  white-space:nowrap; */
   text-align:left;
 }
 

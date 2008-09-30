@@ -28,7 +28,7 @@
 .notify-unit.failure {
 	color: #900;
 }
-.centerTableHeader {
+.eXtremeTable .centerTableHeader {
 	background-color: #2b4186;
 	color: white;
 	font-family: Arial, verdana, helvetica, sans-serif;

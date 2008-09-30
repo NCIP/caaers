@@ -60,6 +60,7 @@
 			</tr>
 			<tr>
 				<td width="100%">
+				    <span style="font-size:13px; font-weight:bold;">All Adverse Events for this Reporting Period</span>
 					<ae:listAllAeSection reportingPeriod="${reportingPeriod}"/>
 				</td>
 			</tr>

@@ -417,6 +417,7 @@
 	<div id="div-reports-and-create" style="display:none;"><hr/>
     <p><tags:instructions code="instruction_ae_adverseevents"/></p>
 		<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
+           <input type="button" value="Create Below Report(s)" id="create-new-report"/>
 			<div class="eXtremeTable">
 				<table width="60%" border="0" cellspacing="0"  class="tableRegion">
 					<thead>
@@ -432,13 +433,9 @@
 						</tr>
 					</c:forEach>
 				</table>
-			</div>
+            </div>
 		</chrome:division>
-	<div align="left">
-		<b>Choose to:</b><br><br><br>
-		<input type="button" value="Create Above Report(s)" id="create-new-report"/><br><br><br>
-		<b>OR</b>
-	</div>
+
 	</div>
 
 	<%-- The below div is only visible if there are no reports selected --%>
@@ -470,16 +467,19 @@
 			<c:choose>
 				<c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
 					<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
-						<table width="100%" border="0" cellspacing="0" class="tableRegion">
+						<table width="100%" border="0" cellspacing="0" class="tableRegion" style="margin-bottom:30px;">
 							<tr>
-								<td width="10%" align="center">
+                               <td width="100%" align="left">
 									<c:if test="${aeReport.allSponsorReportsCompleted == true}">
-										<input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
+										<input type="button" value="Amend Below Report(s)" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
 									</c:if>
 									<c:if test="${aeReport.allSponsorReportsCompleted == false}">
-										<input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
+										<input type="button" value="Edit Below Report(s)" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
 									</c:if>
 								</td>
+                            </tr>
+                            <tr>
+								
 								<td>
 									<div class="eXtremeTable" >
 										<table width="100%" border="0" cellspacing="0" class="tableRegion">
