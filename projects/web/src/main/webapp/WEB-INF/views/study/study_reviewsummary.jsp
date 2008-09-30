@@ -248,7 +248,7 @@
             </c:forEach>
             <c:if test="${staffCnt eq 0}">
 				<tr class="results">
-				 <td colspan="3">No personnels(research staffs) are assigned to this study</td>
+				 <td colspan="3">No research staff assigned to this study yet.</td>
 				</tr>
             </c:if>
         </table>
