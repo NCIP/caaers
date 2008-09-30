@@ -547,6 +547,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         ReportDefinition reportDefinition = Fixtures.createReportDefinition("defn1", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
@@ -554,6 +555,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.PENDING);
         reportDefinition = Fixtures.createReportDefinition("defn2", "NCI-CODE2");
+        reportDefinition.setExpedited(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
@@ -561,6 +563,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
         Fixtures.createReportVersion(rep);
         rep.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
         reportDefinition = Fixtures.createReportDefinition("defn3", "NCI-CODE1");
+        reportDefinition.setExpedited(true);
         rep.setReportDefinition(reportDefinition);
         report.addReport(rep);
 
