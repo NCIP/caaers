@@ -241,9 +241,11 @@
              <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
   	 	
 	  	 	<div id="div-aes">
-			<p>
-				<tags:message key="instruction_ae_no_rulesengine_reports" />
-			</p>
+			<c:if test='${!displaySeriousTable}'>
+				<p>
+					<tags:message key="instruction_ae_no_rulesengine_reports" />
+				</p>
+			</c:if>
 		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
   				<c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
                 <p>
