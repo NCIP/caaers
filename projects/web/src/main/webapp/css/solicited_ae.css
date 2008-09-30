@@ -67,18 +67,15 @@
 	 border-width:1px 1px 1px 1px;
 	 height : 2em;
 	}
-	
-	
-	
-    .sae td {
-	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:0px 1px 0px 1px;
-	 height : 2em;
-	}
-	
-	
-	tr.gap
+
+      .sae td {
+          border-color: #6E81A6;
+          border-style: solid;
+          border-width: 1px 1px 1px 1px;
+          height: 2em;
+      }
+
+      tr.gap
 	{
 	    border-color:#6E81A6;
 	    border-style:solid;
