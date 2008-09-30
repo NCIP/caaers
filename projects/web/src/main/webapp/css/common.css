@@ -527,7 +527,6 @@ margin-top:6px;
 }
 
 .box h3 {
-	position: relative;
 	padding-top: 4px;
 	padding-right: 8px;
 	padding-bottom: 1px;
@@ -807,7 +806,6 @@ a.help img {
     clear: both;
 }
 .instructions{
-position:relative;
 margin-left:0px;
 margin-bottom:20px;
 }
