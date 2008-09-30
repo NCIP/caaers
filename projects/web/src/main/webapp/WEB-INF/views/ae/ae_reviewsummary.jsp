@@ -192,7 +192,7 @@
              <c:choose>
   		 	 <c:when test="${not empty rpdSelectedTable}">
   		 	 	<p><strong>Reports Identified by caAERS</strong></p>
-    	        <p>Based on the data you have entered and the rules set up for this study, caAERS recommends that the following notifications or reports be submitted in an expedited fashion:</p>
+    	        <p><tags:message key="instruction_ae_require_reporting" /></p>
 				<div align="center">
               	<div id="report-list" align="center" style="padding-bottom:5px;">
             	  <!-- required reports -->
@@ -216,8 +216,7 @@
         		
   	 	 	</c:when>
   	 	 	<c:otherwise>
-  	 	    	<p>The AEs you have entered <strong>do not</strong> seem to require any expedited reporting. 
-            	If you wish to override this decision, please choose the notification and reporting schedule below.</p>
+  	 	    	<p><tags:message key="instruction_ae_not_require_reporting"/></p>
             	<div align="center" style="padding-bottom:5px;" id="report-list">
             	<!-- optional reports -->
 				<table class="tablecontent" width="80%">
@@ -242,9 +241,14 @@
              <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
   	 	
 	  	 	<div id="div-aes">
+			<p>
+				<tags:message key="instruction_ae_no_rulesengine_reports" />
+			</p>
 		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
   				<c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
-                <p>caAERS recommends expedited reporting on the below adverse events.  To include additional observed or solicited adverse events with the report(s), expand the appropriate section and select the adverse events.</p>
+                <p>
+					<tags:message key="instruction_ae_select_saes" />
+				</p>
   					<table id="seriousTable" width="100%" class="tablecontent">
   						<tr>
     						<th scope="col" align="left"><b>Select</b></th>
@@ -265,7 +269,7 @@
   					</table>
   				</c:if>
   				<c:if test='${!displaySeriousTable}'>
-  					No unreported adverse events requires reporting.
+  					<tags:message key="instruction_ae_saes_na" />
   				</c:if>
   			</chrome:division>
   	
@@ -292,7 +296,7 @@
             		</table>
         		</c:if>
         		<c:if test='${!displayObservedTable}'>
-        			No unreported observed adverse events.
+        			<tags:message key="instruction_ae_oaes_na" />
         		</c:if> 
 			</chrome:division>
 	
@@ -320,7 +324,7 @@
        				</table>
        			</c:if>
        			<c:if test='${!displaySolicitedTable}'>
-       				No unreported solicited adverse events.
+       				<tags:message key="instruction_ae_soaes_na" />
        			</c:if>
 			</chrome:division>
 			</div>
