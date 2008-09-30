@@ -1,3 +1,5 @@
+CREATE LANGUAGE plpgsql;
+
 CREATE OR REPLACE FUNCTION studies_epochs_arms() RETURNS SETOF text AS 
 $$
 DECLARE
