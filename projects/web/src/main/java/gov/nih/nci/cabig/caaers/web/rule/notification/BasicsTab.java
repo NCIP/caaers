@@ -33,7 +33,7 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
         InputField orgField = InputFieldFactory.createAutocompleterField(
                         "reportDefinition.organization", "Organization", true);
         InputFieldAttributes.setDetails(orgField,
-                        "Enter a portion of the organization name that you are looking");
+                        "Enter a portion of the organization name that you are looking for.");
         orgFieldGroup.getFields().add(orgField);
         map.addInputFieldGroup(orgFieldGroup);
 

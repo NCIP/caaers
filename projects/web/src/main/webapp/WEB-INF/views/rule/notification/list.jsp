@@ -15,6 +15,7 @@
             color: #900;
         }
     </style>
+    <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>

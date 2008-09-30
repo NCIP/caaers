@@ -30,7 +30,7 @@
       });
       
     </script>
-    
+<link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>   
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}">
