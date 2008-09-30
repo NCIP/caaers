@@ -155,7 +155,8 @@ public class ExcelProcessor {
         fs.setOrganizationAssignedIdentifier(sfi);
         study.setFundingSponsor(fs);
 
-        study.setShortTitle(localDocumentNumber);
+        //study.setShortTitle(localDocumentNumber);
+        study.setShortTitle(studyTitle);
         study.setLongTitle(studyTitle);
         aeTerminology = study.getAeTerminology();
         Ctc ctc = new Ctc();
@@ -170,8 +171,31 @@ public class ExcelProcessor {
         study.setMultiInstitutionIndicator(true);
         study.setStatus(gov.nih.nci.cabig.caaers.domain.Study.STATUS_ACTIVE);
         study.setAdeersReporting(Boolean.TRUE);
-        study.setPhaseCode(phaseCode);
-
+        
+        if("I".equals(phaseCode)){
+        	study.setPhaseCode("Phase I Trial");
+        }
+        if("II".equals(phaseCode)){
+        	study.setPhaseCode("Phase II Trial");
+        }
+        if("I/II".equals(phaseCode)){
+        	study.setPhaseCode("Phase I/II Trial");
+        }
+        if("III".equals(phaseCode)){
+        	study.setPhaseCode("Phase III Trial");
+        }
+        if("II/III".equals(phaseCode)){
+        	study.setPhaseCode("Phase II/III Trial");
+        }
+        if("IV".equals(phaseCode)){
+        	study.setPhaseCode("Phase IV Trial");
+        }
+        if("0".equals(phaseCode)){
+        	study.setPhaseCode("Phase 0 Trial");
+        }
+        if("Pilot".equals(phaseCode)){
+        	study.setPhaseCode("Pilot");
+        }
     }
 
     private void setStudyAgents(Study study) {
