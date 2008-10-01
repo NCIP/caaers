@@ -46,10 +46,10 @@ public class EditStudyController extends StudyController<Study> {
 
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
         //to support backward compatability, epochs has to be preinitalized
-        if(study.getEpochs() == null || study.getEpochs().isEmpty()){
-        	study.addEpoch(new Epoch("Baseline",0));
-            study.addEpoch(new Epoch("Treatment",1));
-            study.addEpoch(new Epoch("Post-treatment",2));
+        if (study.getEpochs() == null || study.getEpochs().isEmpty()) {
+            study.addEpoch(new Epoch("Baseline", 0));
+            study.addEpoch(new Epoch("Treatment", 1));
+            study.addEpoch(new Epoch("Post-treatment", 2));
         }
 
         if (log.isDebugEnabled()) {
@@ -110,7 +110,7 @@ public class EditStudyController extends StudyController<Study> {
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(final HttpServletRequest request, final Object command,
-                    final Errors errors, final int page) throws Exception {
+                                final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
 
         refdata.put("currentTask", task);
@@ -122,7 +122,7 @@ public class EditStudyController extends StudyController<Study> {
             }
             if (study.getPrimaryIdentifier() != null) {
                 summary.add(new ListValues("Primary identifier", study.getPrimaryIdentifier()
-                                .toString()));
+                        .toString()));
             }
             if (study.getPhaseCode() != null) {
                 summary.add(new ListValues("Phase", study.getPhaseCode().toString()));
@@ -130,11 +130,11 @@ public class EditStudyController extends StudyController<Study> {
 
             if (study.getPrimarySponsorCode() != null) {
                 summary.add(new ListValues("Funding sponsor", study
-                                .getPrimaryFundingSponsorOrganization().getName()));
+                        .getPrimaryFundingSponsorOrganization().getName()));
             }
             if (study.getStudyCoordinatingCenter().getOrganization() != null) {
                 summary.add(new ListValues("Coordinating center", study
-                                .getStudyCoordinatingCenter().getOrganization().getName()));
+                        .getStudyCoordinatingCenter().getOrganization().getName()));
             }
 
             // if (page != 1) {
@@ -147,8 +147,8 @@ public class EditStudyController extends StudyController<Study> {
 
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
+                                         final HttpServletResponse response, final Object command,
+                                         final BindException errors) throws Exception {
         Study study = (Study) command;
         studyDao.merge(study);
         return new ModelAndView(new RedirectView("search"));
@@ -156,7 +156,7 @@ public class EditStudyController extends StudyController<Study> {
 
     @Override
     protected boolean shouldSave(final HttpServletRequest request, final Study command,
-                    final Tab<Study> tab) {
+                                 final Tab<Study> tab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null) {
@@ -164,11 +164,14 @@ public class EditStudyController extends StudyController<Study> {
         }
 
         String action = (String) super.findInRequest(request, "_action");
+        if (org.apache.commons.lang.StringUtils.equals(action, "removeInv")) {
+            return true;
+        }
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
         }
         return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it
-                                                                                // is overview page
+        // is overview page
     }
 
     public Task getTask() {
