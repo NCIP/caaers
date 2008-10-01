@@ -200,14 +200,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 //				}
 //			}
 //		}
-
-        // If grade is greater than 2 then hospitalization cannot be null.
-        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-            if (!ae.getSolicited()) {
-                if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
-                    errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
-            }
-        }
+    	
+    	// If grade is greater than 2 then hospitalization cannot be null.
+    	if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()){
+    		for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+    			if (!ae.getSolicited()) {
+    				if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
+    					errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
+    			}
+    		}
+    	}
 
         // If grade = "Please Select" then other attributes cannot be modified. They should be "Please Select"
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
