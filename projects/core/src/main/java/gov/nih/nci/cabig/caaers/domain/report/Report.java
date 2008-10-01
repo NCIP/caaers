@@ -333,4 +333,12 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public String getCurrentVersion(){
     	return getLastVersion().getReportVersionId();
     }
+    
+    @Transient
+    public Boolean getIsLatestVersion(){
+    	String nciInstituteCode = reportDefinition.getOrganization().getNciInstituteCode();
+    	if(getCurrentVersion().equals(aeReport.getCurrentVersionForSponsorReport(nciInstituteCode)))
+    		return true;
+    	return false;
+    }
 }
