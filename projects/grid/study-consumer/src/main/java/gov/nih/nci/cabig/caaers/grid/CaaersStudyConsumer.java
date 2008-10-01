@@ -6,25 +6,53 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyFundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
+import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.ccts.domain.IdentifierType;
+import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
+import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
+import gov.nih.nci.cabig.ccts.domain.StudyInvestigatorType;
+import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
+import gov.nih.nci.cabig.ccts.domain.StudySiteType;
+import gov.nih.nci.cabig.ccts.domain.SystemAssignedIdentifierType;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.ccts.grid.*;
 import gov.nih.nci.ccts.grid.common.StudyConsumerI;
-import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.InvalidStudyException;
-import gov.nih.nci.ccts.grid.studyconsumer.stubs.types.StudyCreationException;
+import gov.nih.nci.ccts.grid.stubs.types.InvalidStudyException;
+import gov.nih.nci.ccts.grid.stubs.types.StudyCreationException;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.oasis.wsrf.properties.GetMultipleResourcePropertiesResponse;
+import org.oasis.wsrf.properties.GetMultipleResourceProperties_Element;
+import org.oasis.wsrf.properties.GetResourcePropertyResponse;
+import org.oasis.wsrf.properties.QueryResourcePropertiesResponse;
+import org.oasis.wsrf.properties.QueryResourceProperties_Element;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Calendar;
 
 public class CaaersStudyConsumer implements StudyConsumerI {
 
@@ -44,7 +72,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     private Integer rollbackInterval;
 
-    public void commit(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
+    public void commit(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
         logger.info("Begining of studyConsumer : commit");
         /*
@@ -68,7 +96,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     /**
      * This method will remove from caAERs the study if its loadStatus is INPROGRESS.
      */
-    public void rollback(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
+    public void rollback(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException {
 
         logger.info("Begining of studyConsumer : rollback");
@@ -121,13 +149,23 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         }
         logger.info("End of studyConsumer : rollback");
     }
+    private AeTerminology createCtcV3Terminology(Study study) {
+        AeTerminology t = new AeTerminology();
+        Ctc v3 = new Ctc();
+        v3.setId(3);
+        v3.setName(4 + "");
+        t.setTerm(Term.CTC);
+        t.setStudy(study);
+        t.setCtcVersion(v3);
+        return t;
+    }
 
     /**
      * This will create a study in the DB. <p/> Assumptions:- Study is identified by Coordinating
      * Center identifier There will only be one Organization assigned identifer in the input, and it
      * is the CoordinatingCenterIdentifier
      */
-    public void createStudy(gov.nih.nci.ccts.grid.Study studyDto) throws RemoteException,
+    public void createStudy(gov.nih.nci.cabig.ccts.domain.Study studyDto) throws RemoteException,
                     InvalidStudyException, StudyCreationException {
         try {
             logger.info("Begining of studyConsumer : createStudy");
@@ -168,7 +206,7 @@ public class CaaersStudyConsumer implements StudyConsumerI {
      * @return
      * @throws InvalidStudyException
      */
-    String findCoordinatingCenterIdentifier(gov.nih.nci.ccts.grid.Study studyDto)
+    String findCoordinatingCenterIdentifier(gov.nih.nci.cabig.ccts.domain.Study studyDto)
                     throws InvalidStudyException {
         String ccIdentifier = null;
         for (IdentifierType idType : studyDto.getIdentifier()) {
@@ -191,10 +229,10 @@ public class CaaersStudyConsumer implements StudyConsumerI {
 
     }
 
-    void populateStudyDetails(gov.nih.nci.ccts.grid.Study studyDto,
+    void populateStudyDetails(gov.nih.nci.cabig.ccts.domain.Study studyDto,
                     gov.nih.nci.cabig.caaers.domain.Study study) throws StudyCreationException,
                     InvalidStudyException {
-
+    	System.out.println("Creating study..");
         study.setShortTitle(studyDto.getShortTitleText());
         study.setLongTitle(studyDto.getLongTitleText());
         study.setPrecis(studyDto.getPrecisText());
@@ -204,6 +242,12 @@ public class CaaersStudyConsumer implements StudyConsumerI {
         study.setPhaseCode(studyDto.getPhaseCode());
         study.setMultiInstitutionIndicator(BooleanUtils.toBoolean(studyDto
                         .getMultiInstitutionIndicator()));
+        study.addStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION);
+        
+        
+         //fixed by srini , bug Id CAAERS-1038
+         AeTerminology aet = createCtcV3Terminology(study);
+         study.setAeTerminology(aet);
 
         // populate study identifiers
         IdentifierType[] identifierTypes = studyDto.getIdentifier();
@@ -550,4 +594,19 @@ public class CaaersStudyConsumer implements StudyConsumerI {
     public void setRollbackInterval(Integer rollbackInterval) {
         this.rollbackInterval = rollbackInterval;
     }
+
+	public GetMultipleResourcePropertiesResponse getMultipleResourceProperties(GetMultipleResourceProperties_Element params) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public GetResourcePropertyResponse getResourceProperty(QName params) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public QueryResourcePropertiesResponse queryResourceProperties(QueryResourceProperties_Element params) throws RemoteException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
