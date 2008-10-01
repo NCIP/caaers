@@ -5,7 +5,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
 
-<c:set var="MAX_COLS" value="${2}"/>
+<c:set var="MAX_COLS" value="${4}"/>
 
 <html>
 <head>
