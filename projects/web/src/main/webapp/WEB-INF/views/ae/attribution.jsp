@@ -17,8 +17,7 @@
     <style type="text/css">
         hr.attrib-divider {
             border: 2px solid #6E81A6;
-            margin: 0.4em 2em;
-            width: ${13 + MAX_COLS * 16}em;
+            margin: 0.4em 1em;
         }
         .attribution {
             border-spacing: 0;

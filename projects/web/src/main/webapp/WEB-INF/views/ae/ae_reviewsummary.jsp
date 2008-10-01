@@ -16,7 +16,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <tags:includeScriptaculous/>
-  <tags:includePrototypeWindow />
+<tags:includePrototypeWindow />
 <script type="text/javascript">
 
 	Event.observe(window, "load", function() {
@@ -134,386 +134,396 @@
 		
 </script>
 <style type="text/css">
-	.divNotes,.divOtherMeddra{
-		font-size:8pt;
-	 	border-style:none;
-	}
-    div.row div.summarylabel {
-        width: 10em;
-        padding-right:0.5em;
-    }
-
+.divNotes, .divOtherMeddra {
+	font-size:8pt;
+	border-style:none;
+}
+div.row div.summarylabel {
+	width: 10em;
+	padding-right:0.5em;
+}
+.reportSet {
+	border:2px solid #A7A7A7;
+	padding:10px;
+	background-color: #b2bbff;
+	background-image: url(/caaers/images/blue/report_set_bg.png);
+	background-repeat: repeat-x;
+	background-position: top;	
+}
+.eXtremeTable .tableRegion {
+border:1px solid silver;
+font-family:arial,verdana,helvetica,sans-serif;
+font-size:12px;
+margin-top:0px;
+padding:2px;
+background-color:#e5e8ff;
+}
 </style>
 </head>
 <body>
-
-
 <c:if test='${not empty command.adverseEventReportingPeriod and not empty rpdAllTable}'>
-    <div class="row">
-        <div class="summarylabel">Evaluation Period</div>
-        <div class="summaryvalue"><tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/> - <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}" />; ${command.adverseEventReportingPeriod.epoch.name}</div>
-    </div>
+  <div class="row">
+    <div class="summarylabel">Evaluation Period</div>
+    <div class="summaryvalue">
+      <tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/>
+      -
+      <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}" />
+      ; ${command.adverseEventReportingPeriod.epoch.name}</div>
+  </div>
 </c:if>
-
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
-	<tags:noform>
-		<table class="tablecontent">
-		<tr>
-			<th>Required</th>
-			<th>Report</th>
-			<th>Status</th>
-		</tr>
-		<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
-			<tr>
-				<td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
-				<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
-				<td>${rdTable.value.status}</td>
-			</tr>
-		</c:forEach>
-		</table>
-	
-	</tags:noform>			
+  <tags:noform>
+    <table class="tablecontent">
+      <tr>
+        <th>Required</th>
+        <th>Report</th>
+        <th>Status</th>
+      </tr>
+      <c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
+        <tr>
+          <td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
+          <td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/>
+            <tags:renderLabel field="${rdTable.value.field}"/></td>
+          <td>${rdTable.value.status}</td>
+        </tr>
+      </c:forEach>
+    </table>
+  </tags:noform>
 </div>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report">
-	
-		<jsp:attribute name="instructions">
-		<input type="hidden" name="_finish"/>
-		<input type="hidden" name="_action" value="">
-		<input type="hidden" name="_reportId" value="">
-		<input type="hidden" name="_repId" value="">
-		<c:set var="reportingPeriodType" value="${command.adverseEventReportingPeriod.epoch.name}" />
-	 		<c:if test="${reportingPeriodType != 'Baseline'}">
-	 			<tags:instructions code="instruction_ae_checkpoint" />
-	 		</c:if>
-		</jsp:attribute>
-		<jsp:attribute name="singleFields">
-		<c:if test="${reportingPeriodType != 'Baseline'}">
-
-             <c:choose>
-  		 	 <c:when test="${not empty rpdSelectedTable}">
-  		 	 	<p><strong>Reports Identified by caAERS</strong></p>
-    	        <p><tags:message key="instruction_ae_require_reporting" /></p>
-				<div align="center">
-              	<div id="report-list" align="center" style="padding-bottom:5px;">
-            	  <!-- required reports -->
-				<table class="tablecontent">
-					<tr>
-						<th>Required</th>
-						<th>Report</th>
-						<th>Status</th>
-					</tr>
-				<c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
-					<tr>
-						<td align="center"> ${rdTable.value.required ? 'Yes' : 'No' }</td>
-						<td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/> <tags:renderLabel field="${rdTable.value.field}"/></td>
-						<td>${rdTable.value.status}</td>
-					</tr>
-				</c:forEach>
-				</table>
-
-				</div>
-        		</div> 
-        		
-  	 	 	</c:when>
-  	 	 	<c:otherwise>
-  	 	    	<p><tags:message key="instruction_ae_not_require_reporting"/></p>
-            	<div align="center" style="padding-bottom:5px;" id="report-list">
-            	<!-- optional reports -->
-				<table class="tablecontent" width="80%">
-					<tr>
-						<th>Required</th>
-						<th>Report</th>
-						<th>Status</th>
-					</tr>
-					<%--<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">--%>
-					<tr>
-						<td align="left" colspan="3">No reports required.</td>
-					</tr>
-					<%--</c:forEach>--%>
-				</table>
-        		</div>   
-  	 		 </c:otherwise>
-  	 		</c:choose>
-
-             <div class="autoclear" align="center" style="padding-top: 10px;">
-                 <input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-             </div>
-             <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
-  	 	
-	  	 	<div id="div-aes">
-			<c:if test='${!displaySeriousTable}'>
-				<p>
-					<tags:message key="instruction_ae_no_rulesengine_reports" />
-				</p>
-			</c:if>
-		  	<chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
-  				<c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
-                <p>
-					<tags:message key="instruction_ae_select_saes" />
-				</p>
-  					<table id="seriousTable" width="100%" class="tablecontent">
-  						<tr>
-    						<th scope="col" align="left"><b>Select</b></th>
-    						<th scope="col" align="left" width="30%"><b>Term</b> </th>
-    						<th scope="col" align="left"><b>Grade</b> </th>
-    						<th scope="col" align="left"><b>Attribution</b> </th>
-    						<th scope="col" align="left"><b>Hospitalization</b> </th>
-    						<th scope="col" align="left"><b>Expected</b> </th>
-    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
-    					</tr>
-    					<tr id="seriousBlankRow" />
-    					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-    						<c:if test="${ae.requiresReporting}">
-    							<ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
-    						</c:if>
-    					</c:forEach>
-  					</table>
-  				</c:if>
-  				<c:if test='${!displaySeriousTable}'>
-  					<tags:message key="instruction_ae_saes_na" />
-  				</c:if>
-  			</chrome:division>
-  	
-			<chrome:division id="div-oaes" title="Observed Adverse Event(s)"  collapsable="true">
-
-				<c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
-        			<table id="observedTable" width="100%" class="tablecontent">
-    					<tr>
-    						<th scope="col" align="left"><b>Select</b></th>
-    						<th scope="col" align="left" width="30%"><b><tags:requiredIndicator/>Term</b> </th>
-    						<th scope="col" align="left"><b><tags:requiredIndicator/>Grade</b> </th>
-    						<th scope="col" align="left"><b>Attribution</b> </th>
-    						<th scope="col" align="left"><b>Hospitalization</b> </th>
-    						<th scope="col" align="left"><b>Expected</b> </th>
-    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
-    					</tr>
-    					<tr id="observedBlankRow" />
-    					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
-	            				<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
-	            			</c:if>
-            			</c:forEach>
-            		</table>
-        		</c:if>
-        		<c:if test='${!displayObservedTable}'>
-        			<tags:message key="instruction_ae_oaes_na" />
-        		</c:if> 
-			</chrome:division>
-	
-
-			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes"  collapsable="true">
-
-				<c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
-    				<table id="solicitedTable" width="100%" class="tablecontent">
-    					<tr>
-    						<th scope="col" align="left"><b>Select</b></th>
-    						<th scope="col" align="left" width="30%"><b>Term</b> </th>
-    						<th scope="col" align="left"><b>Grade</b> </th>
-    						<th scope="col" align="left"><b>Attribution</b> </th>
-   							<th scope="col" align="left"><b>Hospitalization</b> </th>
-    						<th scope="col" align="left"><b>Expected</b> </th>
-    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-							<%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
-    					</tr>
-    					<tr id="solicitedBlankRow" />
-       					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-       						<c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
-	       						<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
-	       					</c:if>
-       					</c:forEach>
-       				</table>
-       			</c:if>
-       			<c:if test='${!displaySolicitedTable}'>
-       				<tags:message key="instruction_ae_soaes_na" />
-       			</c:if>
-			</chrome:division>
-			</div>
-		</c:if>
-		<%-- Till this point was for non-baseline reporting period --%>
-		
-		
-		<%-- This is for baseline reporting period --%> 
-		<c:if test="${reportingPeriodType == 'Baseline'}">
-			<chrome:division title="Observed Adverse Event(s)" id="div-oaes" collapsable="true">
-				<c:if test='${command.adverseEventReportingPeriod != null}'>
-        			<table id="observedTable" width="100%" class="tablecontent">
-    					<tr>
-    						<th scope="col" align="left" width="30%"><b>Term</b> </th>
-    						<th scope="col" align="left"><b>Grade</b> </th>
-    						<th scope="col" align="left"><b>Attribution</b> </th>
-    						<th scope="col" align="left"><b>Hospitalization</b> </th>
-    						<th scope="col" align="left"><b>Expected</b> </th>
-    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-						</tr>
-    					<tr id="observedBlankRow" />
-    					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-            				<c:if test="${not ae.solicited}">
-	            				<ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
-	            			</c:if>
-            			</c:forEach>
-            		</table>
-        
-        		</c:if> 
-			</chrome:division>
-	
-			<chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
-				<c:if test='${command.adverseEventReportingPeriod != null}'>
-    				<table id="solicitedTable" width="100%" class="tablecontent">
-    					<tr>
-    						<th scope="col" align="left" width="30%"><b>Term</b> </th>
-    						<th scope="col" align="left"><b>Grade</b> </th>
-    						<th scope="col" align="left"><b>Attribution</b> </th>
-   							<th scope="col" align="left"><b>Hospitalization</b> </th>
-    						<th scope="col" align="left"><b>Expected</b> </th>
-    						<caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
-						</tr>
-    					<tr id="solicitedBlankRow" />
-       					<c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-       						<c:if test="${ae.solicited}">
-	       						<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
-	       					</c:if>
-       					</c:forEach>
-       				</table>
-       			</c:if>	
-			</chrome:division>
-		</c:if> 
-		
-  	</jsp:attribute>
-  	<jsp:attribute name="tabControls">
-  		<div class="content buttons autoclear">
-    	<div class="flow-buttons">
-        <span class="prev">
-                <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
-        </span>
-        <span class="next">
-        	<input type="submit" value="Report" id="flow-next"/>
-        </span>
-    	</div>
-		</div>
-  	</jsp:attribute>
-
-	
-</tags:tabForm>
-
-
-<div id="display_options_popup" style="display:none;text-align:left" >
-<chrome:box title="Create New or Edit Existing Report" id="popupId">
-	<c:if test="${not empty command.participant}">
-		<div align="left"> 
-			<div class="row">
-			    <div class="summarylabel">Subject</div>
-			    <div class="summaryvalue">${command.participant.fullName}</div>
-			</div>
-			<div class="row">
-			    <div class="summarylabel">Study</div>
-			    <div class="summaryvalue">${command.study.longTitle}</div>
-			</div>
-			<div class="row">
-				<div class="summarylabel">Evaluation period</div>
-				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
-			</div>
-		</div>
-	</c:if>
-	<div id="div-reports-and-create" style="display:none;"><hr/>
-    <p><tags:instructions code="instruction_ae_adverseevents"/></p>
-		<chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
-           <input type="button" value="Create Below Report(s)" id="create-new-report"/>
-			<div class="eXtremeTable">
-				<table width="60%" border="0" cellspacing="0"  class="tableRegion">
-					<thead>
-						<tr align="center" class="label">
-							<td class="tableHeader">Report</td>
-							<td class="tableHeader">Status</td>
-						</tr>
-					</thead>	
-					<c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
-						<tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
-							<td align="left">${repDefn.label}</td>
-							<td align="left">${command.reportStatusMap[repDefn.id]}</td>
-						</tr>
-					</c:forEach>
-				</table>
+  <jsp:attribute name="instructions">
+    <input type="hidden" name="_finish"/>
+    <input type="hidden" name="_action" value="">
+    <input type="hidden" name="_reportId" value="">
+    <input type="hidden" name="_repId" value="">
+    <c:set var="reportingPeriodType" value="${command.adverseEventReportingPeriod.epoch.name}" />
+    <c:if test="${reportingPeriodType != 'Baseline'}">
+      <tags:instructions code="instruction_ae_checkpoint" />
+    </c:if>
+  </jsp:attribute>
+  <jsp:attribute name="singleFields">
+    <c:if test="${reportingPeriodType != 'Baseline'}">
+      <c:choose>
+        <c:when test="${not empty rpdSelectedTable}">
+          <p><strong>Reports Identified by caAERS</strong></p>
+          <p>
+            <tags:message key="instruction_ae_require_reporting" />
+          </p>
+          <div align="center">
+            <div id="report-list" align="center" style="padding-bottom:5px;">
+              <!-- required reports -->
+              <table class="tablecontent">
+                <tr>
+                  <th>Required</th>
+                  <th>Report</th>
+                  <th>Status</th>
+                </tr>
+                <c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
+                  <tr>
+                    <td align="center"> ${rdTable.value.required ? 'Yes' : 'No' }</td>
+                    <td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/>
+                      <tags:renderLabel field="${rdTable.value.field}"/></td>
+                    <td>${rdTable.value.status}</td>
+                  </tr>
+                </c:forEach>
+              </table>
             </div>
-		</chrome:division>
-
-	</div>
-
-	<%-- The below div is only visible if there are no reports selected --%>
-	<div id="div-reports-not-selected">
-		<chrome:division title="Selected Reprots" id="div-selected-reports-2" collapsable="false">
-			<div style="text-align: left;">
-				<div class="eXtremeTable">
-				 <table width="60%" border="0" cellspacing="0" class="tableRegion">
-					<thead>
-						<tr align="center" class="label">
-							<td class="tableHeader">Report</td>
-							<td class="tableHeader">Status</td>
-						</tr>
-					</thead>	
-					 <tr>
-						<td>
-							<tags:message key="instruction_ae_no_reports" /> 
-						</td>
-					</tr>
-				</table>
-				</div>				
-			</div>
-		</chrome:division>
-		<tags:message key="instruction_ae_no_saes"  />
-	</div>
-	
-	<chrome:division title="Edit Existing Reports" id="div-report-summary" collapsable="false">
-		<%-- <div class="eXtremeTable" > --%>
-			<c:choose>
-				<c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
-					<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
-						<table width="100%" border="0" cellspacing="0" class="tableRegion" style="margin-bottom:30px;">
-							<tr>
-                               <td width="100%" align="left">
-									<c:if test="${aeReport.allSponsorReportsCompleted == true}">
-										<input type="button" value="Amend Below Report(s)" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
-									</c:if>
-									<c:if test="${aeReport.allSponsorReportsCompleted == false}">
-										<input type="button" value="Edit Below Report(s)" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
-									</c:if>
-								</td>
-                            </tr>
-                            <tr>
-								
-								<td>
-									<div class="eXtremeTable" >
-										<table width="100%" border="0" cellspacing="0" class="tableRegion">
-											<thead>
-												<tr align="center" class="label">
-													<td width="5%"/>
-													<td class="tableHeader" width="15%">Report Type</td>
-													<td class="centerTableHeader" width="20%"># of AEs</td>
-													<td class="tableHeader" width="20%">Data Entry Status</td>
-													<td class="tableHeader" width="20%">Submission Status</td>
-												</tr>
-											</thead>
-						
-											<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
-										</table>	
-									</div>
-								</td>
-							</tr>
-						</table>			
-					</table>					
-				</c:forEach>
-			</c:when>
-				<c:otherwise>
-					<table width="100%" border="0" cellspacing="0" class="tableRegion">
-						No reports are available to edit or amend in this evaluation period. 
-					</table>	
-				</c:otherwise>	
-			</c:choose>					
-		<%-- </div> --%>
-	</chrome:division>
-	</chrome:box>	
+          </div>
+        </c:when>
+        <c:otherwise>
+          <p>
+            <tags:message key="instruction_ae_not_require_reporting"/>
+          </p>
+          <div align="center" style="padding-bottom:5px;" id="report-list">
+            <!-- optional reports -->
+            <table class="tablecontent" width="80%">
+              <tr>
+                <th>Required</th>
+                <th>Report</th>
+                <th>Status</th>
+              </tr>
+              <%--<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">--%>
+              <tr>
+                <td align="left" colspan="3">No reports required.</td>
+              </tr>
+              <%--</c:forEach>--%>
+            </table>
+          </div>
+        </c:otherwise>
+      </c:choose>
+      <div class="autoclear" align="center" style="padding-top: 10px;">
+        <input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+      </div>
+      <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+      <div id="div-aes">
+        <c:if test='${!displaySeriousTable}'>
+          <p>
+            <tags:message key="instruction_ae_no_rulesengine_reports" />
+          </p>
+        </c:if>
+        <chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
+          <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
+            <p>
+              <tags:message key="instruction_ae_select_saes" />
+            </p>
+            <table id="seriousTable" width="100%" class="tablecontent">
+              <tr>
+                <th scope="col" align="left"><b>Select</b></th>
+                <th scope="col" align="left" width="30%"><b>Term</b> </th>
+                <th scope="col" align="left"><b>Grade</b> </th>
+                <th scope="col" align="left"><b>Attribution</b> </th>
+                <th scope="col" align="left"><b>Hospitalization</b> </th>
+                <th scope="col" align="left"><b>Expected</b> </th>
+                <caaers:renderFilter elementID="adverseEvents[].serious">
+                  <th scope="col" align="left"><b>Serious</b> </th>
+                </caaers:renderFilter>
+                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
+              </tr>
+              <tr id="seriousBlankRow" />
+              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
+                <c:if test="${ae.requiresReporting}">
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                </c:if>
+              </c:forEach>
+            </table>
+          </c:if>
+          <c:if test='${!displaySeriousTable}'>
+            <tags:message key="instruction_ae_saes_na" />
+          </c:if>
+        </chrome:division>
+        <chrome:division id="div-oaes" title="Observed Adverse Event(s)"  collapsable="true">
+          <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
+            <table id="observedTable" width="100%" class="tablecontent">
+              <tr>
+                <th scope="col" align="left"><b>Select</b></th>
+                <th scope="col" align="left" width="30%"><b>
+                  <tags:requiredIndicator/>
+                  Term</b> </th>
+                <th scope="col" align="left"><b>
+                  <tags:requiredIndicator/>
+                  Grade</b> </th>
+                <th scope="col" align="left"><b>Attribution</b> </th>
+                <th scope="col" align="left"><b>Hospitalization</b> </th>
+                <th scope="col" align="left"><b>Expected</b> </th>
+                <caaers:renderFilter elementID="adverseEvents[].serious">
+                  <th scope="col" align="left"><b>Serious</b> </th>
+                </caaers:renderFilter>
+                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
+              </tr>
+              <tr id="observedBlankRow" />
+              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
+                <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                </c:if>
+              </c:forEach>
+            </table>
+          </c:if>
+          <c:if test='${!displayObservedTable}'>
+            <tags:message key="instruction_ae_oaes_na" />
+          </c:if>
+        </chrome:division>
+        <chrome:division title="Solicited Adverse Event(s)" id="div-soaes"  collapsable="true">
+          <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
+            <table id="solicitedTable" width="100%" class="tablecontent">
+              <tr>
+                <th scope="col" align="left"><b>Select</b></th>
+                <th scope="col" align="left" width="30%"><b>Term</b> </th>
+                <th scope="col" align="left"><b>Grade</b> </th>
+                <th scope="col" align="left"><b>Attribution</b> </th>
+                <th scope="col" align="left"><b>Hospitalization</b> </th>
+                <th scope="col" align="left"><b>Expected</b> </th>
+                <caaers:renderFilter elementID="adverseEvents[].serious">
+                  <th scope="col" align="left"><b>Serious</b> </th>
+                </caaers:renderFilter>
+                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
+              </tr>
+              <tr id="solicitedBlankRow" />
+              <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
+                <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
+                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                </c:if>
+              </c:forEach>
+            </table>
+          </c:if>
+          <c:if test='${!displaySolicitedTable}'>
+            <tags:message key="instruction_ae_soaes_na" />
+          </c:if>
+        </chrome:division>
+      </div>
+    </c:if>
+    <%-- Till this point was for non-baseline reporting period --%>
+    <%-- This is for baseline reporting period --%>
+    <c:if test="${reportingPeriodType == 'Baseline'}">
+      <chrome:division title="Observed Adverse Event(s)" id="div-oaes" collapsable="true">
+        <c:if test='${command.adverseEventReportingPeriod != null}'>
+          <table id="observedTable" width="100%" class="tablecontent">
+            <tr>
+              <th scope="col" align="left" width="30%"><b>Term</b> </th>
+              <th scope="col" align="left"><b>Grade</b> </th>
+              <th scope="col" align="left"><b>Attribution</b> </th>
+              <th scope="col" align="left"><b>Hospitalization</b> </th>
+              <th scope="col" align="left"><b>Expected</b> </th>
+              <caaers:renderFilter elementID="adverseEvents[].serious">
+                <th scope="col" align="left"><b>Serious</b> </th>
+              </caaers:renderFilter>
+            </tr>
+            <tr id="observedBlankRow" />
+            <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
+              <c:if test="${not ae.solicited}">
+                <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
+              </c:if>
+            </c:forEach>
+          </table>
+        </c:if>
+      </chrome:division>
+      <chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
+        <c:if test='${command.adverseEventReportingPeriod != null}'>
+          <table id="solicitedTable" width="100%" class="tablecontent">
+            <tr>
+              <th scope="col" align="left" width="30%"><b>Term</b> </th>
+              <th scope="col" align="left"><b>Grade</b> </th>
+              <th scope="col" align="left"><b>Attribution</b> </th>
+              <th scope="col" align="left"><b>Hospitalization</b> </th>
+              <th scope="col" align="left"><b>Expected</b> </th>
+              <caaers:renderFilter elementID="adverseEvents[].serious">
+                <th scope="col" align="left"><b>Serious</b> </th>
+              </caaers:renderFilter>
+            </tr>
+            <tr id="solicitedBlankRow" />
+            <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
+              <c:if test="${ae.solicited}">
+                <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
+              </c:if>
+            </c:forEach>
+          </table>
+        </c:if>
+      </chrome:division>
+    </c:if>
+  </jsp:attribute>
+  <jsp:attribute name="tabControls">
+    <div class="content buttons autoclear">
+      <div class="flow-buttons"> <span class="prev">
+        <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
+        </span> <span class="next">
+        <input type="submit" value="Report" id="flow-next"/>
+        </span> </div>
+    </div>
+  </jsp:attribute>
+</tags:tabForm>
+<div id="display_options_popup" style="display:none;text-align:left" >
+  <chrome:box title="Create New / Edit / Amend Existing Report" id="popupId">
+    <c:if test="${not empty command.participant}">
+      <div align="left">
+        <div class="row">
+          <div class="summarylabel">Subject</div>
+          <div class="summaryvalue">${command.participant.fullName}</div>
+        </div>
+        <div class="row">
+          <div class="summarylabel">Study</div>
+          <div class="summaryvalue">${command.study.longTitle}</div>
+        </div>
+        <div class="row">
+          <div class="summarylabel">Evaluation period</div>
+          <div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
+        </div>
+      </div>
+    </c:if>
+    <div id="div-reports-and-create" style="display:none;">
+      <hr/>
+      <p>
+        <tags:instructions code="instruction_ae_adverseevents"/>
+      </p>
+      <chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
+        <table class="reportSet" width="100%">
+         <tr>
+          <td width="10%" align="left">
+          <input type="button" value="Create" id="create-new-report"/>
+          </td>
+        <td>
+        <div class="eXtremeTable">
+          <table width="100%" border="0" cellspacing="0"  class="tableRegion">
+            <thead>
+              <tr align="center" class="label">
+                <td class="tableHeader">Report</td>
+                <td class="tableHeader">Status</td>
+              </tr>
+            </thead>
+            <c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
+              <tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
+                <td align="left">${repDefn.label}</td>
+                <td align="left">${command.reportStatusMap[repDefn.id]}</td>
+              </tr>
+            </c:forEach>
+          </table>
+        </div>
+         </tr>
+        </table>
+      </chrome:division>
+    </div>
+    <%-- The below div is only visible if there are no reports selected --%>
+    <div id="div-reports-not-selected">
+      <chrome:division title="Selected Reprots" id="div-selected-reports-2" collapsable="false">
+        <div style="text-align: left;">
+          <div class="eXtremeTable">
+            <table width="60%" border="0" cellspacing="0" class="tableRegion">
+              <thead>
+                <tr align="center" class="label">
+                  <td class="tableHeader">Report</td>
+                  <td class="tableHeader">Status</td>
+                </tr>
+              </thead>
+              <tr>
+                <td><tags:message key="instruction_ae_no_reports" />
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </chrome:division>
+      <tags:message key="instruction_ae_no_saes"  />
+    </div>
+    <chrome:division title="Edit/Amend Existing Report" id="div-report-summary" collapsable="false">
+      <%-- <div class="eXtremeTable" > --%>
+      <c:choose>
+        <c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
+          <c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+            <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
+              <tr>
+                <td width="10%" align="left"><c:if test="${aeReport.allSponsorReportsCompleted == true}">
+                    <input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
+                  </c:if>
+                  <c:if test="${aeReport.allSponsorReportsCompleted == false}">
+                    <input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
+                  </c:if>
+                </td>
+                <td><div class="eXtremeTable" >
+                    <table width="100%" border="0" cellspacing="0" class="tableRegion">
+                      <thead>
+                        <tr align="center" class="label">
+                          <td width="5%"/>
+                          <td class="tableHeader" width="15%">Report Type</td>
+                          <td class="centerTableHeader" width="20%"># of AEs</td>
+                          <td class="tableHeader" width="20%">Data Entry Status</td>
+                          <td class="tableHeader" width="20%">Submission Status</td>
+                        </tr>
+                      </thead>
+                      <ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
+                    </table>
+                  </div></td>
+              </tr>
+            </table>
+            </table>
+          </c:forEach>
+        </c:when>
+        <c:otherwise>
+          <table width="100%" border="0" cellspacing="0" class="tableRegion">
+            No reports are available to edit or amend in this evaluation period.
+          </table>
+        </c:otherwise>
+      </c:choose>
+      <%-- </div> --%>
+    </chrome:division>
+  </chrome:box>
 </div>
-
 </body>
 </html>
