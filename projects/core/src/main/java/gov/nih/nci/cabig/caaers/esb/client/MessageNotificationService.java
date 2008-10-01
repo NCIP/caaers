@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 import java.util.Collections;
 import java.util.Date;
@@ -27,7 +28,9 @@ import org.springframework.web.context.request.WebRequest;
 
 public class MessageNotificationService {
     protected Configuration configuration;
-
+    
+    protected CaaersJavaMailSender caaersJavaMailSender;
+    
     protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
@@ -120,27 +123,48 @@ public class MessageNotificationService {
     private void sendMail(String mailHost, String user, String pwd, String from, String to,
                     String messages, boolean success, String aeReportId) throws Exception {
         try {
-            JavaMailSenderImpl sender = new JavaMailSenderImpl();
-            // sender.setHost("smtp.comcast.net");
-            sender.setUsername(user);
-            sender.setPassword(pwd);
-            System.out.println("host .." + mailHost);
-            sender.setHost(mailHost);
-            MimeMessage message = sender.createMimeMessage();
-            // message.setFrom(new InternetAddress(from));
-            if (success) {
+        	
+        	
+        	caaersJavaMailSender.setUsername(user);
+        	caaersJavaMailSender.setPassword(pwd);
+        	System.out.println("host .." + mailHost);
+        	caaersJavaMailSender.setHost(mailHost);
+        	
+        	MimeMessage message = caaersJavaMailSender.createMimeMessage();
+        	if (success) {
                 message.setSubject("Submission of Expedited Report(" + aeReportId + ") to AdEERS");
             } else {
                 message.setSubject("Problem with Submission of Expedited Report(" + aeReportId
                                 + ") to AdEERS");
             }
             message.setFrom(new InternetAddress(from));
-
             // use the true flag to indicate you need a multipart message
             MimeMessageHelper helper = new MimeMessageHelper(message, false);
             helper.setTo(to);
             message.setText(messages);
-            sender.send(message);
+            caaersJavaMailSender.send(message);
+        	
+//            JavaMailSenderImpl sender = new JavaMailSenderImpl();
+//            // sender.setHost("smtp.comcast.net");
+//            sender.setUsername(user);
+//            sender.setPassword(pwd);
+//            System.out.println("host .." + mailHost);
+//            sender.setHost(mailHost);
+//            MimeMessage message = sender.createMimeMessage();
+//            // message.setFrom(new InternetAddress(from));
+//            if (success) {
+//                message.setSubject("Submission of Expedited Report(" + aeReportId + ") to AdEERS");
+//            } else {
+//                message.setSubject("Problem with Submission of Expedited Report(" + aeReportId
+//                                + ") to AdEERS");
+//            }
+//            message.setFrom(new InternetAddress(from));
+//
+//            // use the true flag to indicate you need a multipart message
+//            MimeMessageHelper helper = new MimeMessageHelper(message, false);
+//            helper.setTo(to);
+//            message.setText(messages);
+//            sender.send(message);
 
             System.out.println("sent . . ");
         } catch (Exception e) {
@@ -165,6 +189,10 @@ public class MessageNotificationService {
     
     public void setSchedulerService(SchedulerService schedulerService) {
 		this.schedulerService = schedulerService;
+	}
+    
+    public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+		this.caaersJavaMailSender = caaersJavaMailSender;
 	}
 
     private static class StubWebRequest implements WebRequest {
