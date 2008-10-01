@@ -100,7 +100,7 @@
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
     			</tr>
-    			<c:forEach items="${command.aeReport.nonWithdrawnReports}" varStatus="status" var="report">
+    			<c:forEach items="${command.aeReport.reports}" varStatus="status" var="report">
     			<tr>    				
             		<td><div class="label">${report.reportDefinition.label}</div></td>
             		<c:if test="${report.reportDefinition.amendable == true}">
@@ -175,21 +175,21 @@
             		</td>
             		<td>
             			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
-
-							<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-								<center>
-									<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
-									<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
-									<a href="javascript:fireAction('withdraw',${report.id});">Withdraw</a>
-								</center>
-							</c:if>
+							<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
+								<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
+									<center>
+										<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
+										<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
+										<a href="javascript:fireAction('withdraw',${report.id});">Withdraw</a>
+									</center>
+								</c:if>
 							
-							<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
-								<center>
-									<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}&action=amendReport"/>">Amend</a>
-								</center>
-							</c:if>
-							
+								<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
+									<center>
+										<a href="<c:url value="/pages/ae/edit?aeReport=${command.aeReport.id}&reportId=${report.id}&action=amendReport"/>">Amend</a>
+									</center>
+								</c:if>
+							</c:if>					
 						
 						</c:if>
             		

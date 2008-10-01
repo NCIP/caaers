@@ -10,9 +10,14 @@
 <tr align="center" id="row${rpIndex}" class="${repcurrClass}">
 	<td width="5%"><chrome:collapsableElement targetID="reptable${report.id}" collapsed="true" id="ID_02"/></td>
 	<td align="left" width="15%">
-		<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+		<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}">
+			<a href="<c:url value="/pages/ae/edit?aeReport=${report.aeReport.id}"/>">
+				${report.reportDefinition.label}
+			</a>
+		</c:if>
+		<c:if test="${report.reportDefinition.amendable and !report.isLatestVersion}">
 			${report.reportDefinition.label}
-		</a>	
+		</c:if>
 	</td>
 	<td width="20%">${report.aeReport.numberOfAes}</td>
 	<td width="20%" align="left">
@@ -51,25 +56,26 @@
 	        <tags:indicator id="notify-indicator-${report.aeReport.id}"/>
 	    </span>
 	    </c:if>
-		<c:if test="${command.reportsSubmittable[report.id]}">	
-		  
-			<c:choose>
-				<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
-					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a><br>
-					<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
-				</c:when>
-				<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
-					<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a> <br>
-					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
-				</c:when>
-				<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
-					<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
-				</c:when>
-				<c:when test="${reportStatus eq 'INPROGRESS'}">
-					<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
-				</c:when>
-			</c:choose>
-		  
+		<c:if test="${command.reportsSubmittable[report.id]}">
+			
+			<c:if test="${!report.reportDefinition.amendable or report.isLatestVersion}"> 
+				<c:choose>
+					<c:when test="${reportStatus eq 'PENDING' or reportStatus eq 'FAILED'}">
+						<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Submit</a><br>
+						<a href="#" onClick="doAction('withdraw', ${report.aeReport.id},${report.id})">Withdraw</a>
+					</c:when>
+					<c:when test="${reportStatus eq 'COMPLETED' and (not empty lastVersion.submissionUrl)}">
+						<a href="${lastVersion.submissionUrl}" target="_blank">View in AdEERS</a> <br>
+						<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
+					</c:when>
+					<c:when test="${report.reportDefinition.amendable and (reportStatus eq 'WITHDRAWN' or reportStatus eq 'COMPLETED')}">
+						<a href="#" onClick="doAction('amend', ${report.aeReport.id},${report.id})">Amend</a>
+					</c:when>
+					<c:when test="${reportStatus eq 'INPROGRESS'}">
+						<a href="#" onClick="doAction('submit', ${report.aeReport.id},${report.id})">Resubmit</a>
+					</c:when>
+				</c:choose>
+		  	</c:if>
 		</c:if>
 	</td>
 </tr>
