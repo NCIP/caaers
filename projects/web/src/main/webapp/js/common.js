@@ -311,8 +311,7 @@ Object.extend(ListEditor.prototype, {
     
     
     remove: function(evt) {
-    
-      if(!confirm ("Are you sure you want to delete this?"))
+    	if(!confirm ("Are you sure you want to delete this?"))
         return;
         
         Event.stop(evt);
@@ -339,7 +338,6 @@ Object.extend(ListEditor.prototype, {
           delArgs = delArgs.concat(this.options.removeParameters);
         }
         delArgs = delArgs.concat([function(ajaxOutput) {
-        
         	if(ajaxOutput.error){
         		alert(ajaxOutput.errorMessage);
         		return;
@@ -355,10 +353,8 @@ Object.extend(ListEditor.prototype, {
             var container = divs[0].parentNode
             var toDelete = divs[indexToDelete];
             container.removeChild(toDelete)
-
             this.updateFirstAndLast()
             this.applyIndexChanges(ajaxOutput.changes)
-
             $$("div." + this.divisionClass + " .list-controls").each(function(e) { e.reveal() })
             
             if (this.options.removeCallback) this.options.removeCallback(indexToDelete)
@@ -443,12 +439,15 @@ Object.extend(ListEditor.prototype, {
             return values
         })
         this.form.descendants().each(function(elt) {
+        	if(elt.nodeName == '#comment') return; //Fix for IE7, on comment node hasAttribute call is failing.
             if (!(elt.name || elt.id || elt.hasAttribute("for"))) return;
             changes.each(function(change) {
+            	
                 var matchedAndChanged = false
                 var root = this.collectionProperty + "[" + change.original + "]";
                 var newRoot = this.collectionProperty + "[" + change.current + "]";
                 var rootRE = "^" + root.replace("[", "\\[").replace("]", "\\]")
+                
                 if (elt.name && elt.name.match(rootRE)) {
                     var oldName = elt.name
                     elt.name = elt.name.replace(root, newRoot)
