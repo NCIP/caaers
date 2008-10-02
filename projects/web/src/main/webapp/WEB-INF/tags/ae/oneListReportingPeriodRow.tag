@@ -42,7 +42,8 @@
 									<tr align="center" class="label">
 										<td width="5%"/>
 										<td class="tableHeader" width="15%">Report Type</td>
-										<td class="centerTableHeader" width="20%"># of AEs</td>
+										<td class="centerTableHeader" width="10%">Report Version</td>
+										<td class="centerTableHeader" width="10%"># of AEs</td>
 										<td class="tableHeader" width="20%">Data Entry Status</td>
 										<td class="tableHeader" width="20%">Submission Status</td>
 										<td class="tableHeader" width="20%">Options</td>

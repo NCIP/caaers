@@ -12,7 +12,13 @@
 	<td align="left" width="15%">
 			${report.reportDefinition.label}
 	</td>
-	<td width="20%">${report.aeReport.numberOfAes}</td>
+	<c:if test="${report.reportDefinition.amendable == true}">
+	            		<td align="center" width="10%"><div class="label">${report.lastVersion.reportVersionId}</div></td>
+	            	</c:if>
+	            	<c:if test="${report.reportDefinition.amendable == false}">
+	            		<td width="10%"/>
+	            	</c:if>
+	<td width="10%">${report.aeReport.numberOfAes}</td>
 	<td width="20%" align="left">
 		${report.lastVersion.reportStatus}
 	</td>
@@ -22,7 +28,7 @@
 </tr>
 <tr id="reptable${report.id}" style="display:none;">
 	<td/><td/>
-	<td colspan=4>
+	<td colspan=5>
 		<div class="eXtremeTable">
 			<table width="100%" border="0" cellspacing="0" class="rpAeTableRegion">
 				<thead>
