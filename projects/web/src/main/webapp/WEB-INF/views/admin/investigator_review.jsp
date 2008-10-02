@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<title>Investigator</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <tags:stylesheetLink name="participant" />
 <tags:includeScriptaculous />

@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<title>Research Staff</title>
     <tags:stylesheetLink name="tabbedflow"/>
     <tags:includeScriptaculous/>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">

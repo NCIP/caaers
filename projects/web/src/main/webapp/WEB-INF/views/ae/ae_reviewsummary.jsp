@@ -431,7 +431,7 @@ background-color:#e5e8ff;
           </div>
         </div>
       </chrome:division>
-      <tags:message key="instruction_ae_no_saes"  />
+      <div style="margin-left:10px; margin-bottom:20px;"><tags:message key="instruction_ae_no_saes"  /></div>
     </div>
     <chrome:division title="Edit/Amend Existing Report" id="div-report-summary" collapsable="false">
       <%-- <div class="eXtremeTable" > --%>

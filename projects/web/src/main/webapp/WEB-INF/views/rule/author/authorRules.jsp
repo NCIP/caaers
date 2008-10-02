@@ -2,8 +2,6 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-
-
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -11,7 +9,6 @@
 <tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="authorRule" />
 <tags:dwrJavascriptLink objects="createAE" />
-
 <script type="text/javascript">
       
       Event.observe(window, "load", function() {
@@ -38,36 +35,27 @@
 			}
 			
 	</script>
-
 <title>Specify Rules for Trigger</title>
-
 <style>
-
-
-	div.section,div#createNew {
-		border: 1px solid #CCCCCC;
-		margin: 30px 5px;
-		padding: 0px 0px 10px 0px;
-		background-color: #EFEFEF;
-	}
-
-	div#createNew input { margin-left: 5px; }
-
-	div#createNew h3, div.section h3{
-		font-size: 14px;
-		padding: 2px 5px;
-		margin: 0 0 10px 0;
-
-		background: url("/caaers/images/rule/window_titlebar.png");
-
-		background-color: #6E81A6;
-		display: block;
-		color: #FFFFFF;
-	}
-
-
+div.section, div#createNew {
+	border: 1px solid #CCCCCC;
+	margin: 30px 5px;
+	padding: 0px 0px 10px 0px;
+	background-color: #EFEFEF;
+}
+div#createNew input {
+	margin-left: 5px;
+}
+div#createNew h3, div.section h3 {
+	font-size: 14px;
+	padding: 2px 5px;
+	margin: 0 0 10px 0;
+	background: url("/caaers/images/rule/window_titlebar.png");
+	background-color: #6E81A6;
+	display: block;
+	color: #FFFFFF;
+}
 </style>
-
 <script type="text/javascript">
 		//loadCategoryObjects();
 		var sections = new Array();
@@ -1192,194 +1180,147 @@
 	
 	
 </script>
-
 </head>
 <body>
-
-
 <c:forEach var="cat" items="${command.categories}">
-	<script>
+  <script>
 		categoryObjects2.push('${cat.id}' + '||' + '${cat.name}');
 	</script>
-
 </c:forEach>
-
-
 <p id="instructions">Rules can be added by using the Add Rule
-button. Rules created will belong to the selected Rule Set.</p>
-
+  button. Rules created will belong to the selected Rule Set.</p>
 <chrome:division >
-
-	<%--<form:form cssClass="standard">--%>
-	<tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
-		<jsp:attribute name="singleFields">
-
-			<tags:errors path="*" />
-
-			<%--<tags:tabFields tab="${tab}"/>--%>
-
-
-			<div class="row">
-			<div class="label"><label for="ruleSetName">Rule Set
-			Name</label></div>
-			<div class="value"><form:input path="ruleSetName" size="40" readonly="readonly"/>
-			</div>
-			<!--
+  <%--<form:form cssClass="standard">--%>
+  <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
+    <jsp:attribute name="singleFields">
+      <tags:errors path="*" />
+      <%--<tags:tabFields tab="${tab}"/>--%>
+      <div class="row">
+        <div class="label">
+          <label for="ruleSetName">Rule Set
+          Name</label>
+        </div>
+        <div class="value">
+          <form:input path="ruleSetName" size="40" readonly="readonly"/>
+        </div>
+        <!--
 			<div class="local-buttons"><input type="button"
 				value="Add Rule" align="right" onclick="addRule()" /></div>
 			</div>
 			-->
-
-
-			<div id="allRules"><c:forEach varStatus="ruleStatus"
+        <div id="allRules">
+          <c:forEach varStatus="ruleStatus"
 				items="${command.ruleSet.rule}">
-
-				<c:set var="ruleCount" value="${ruleStatus.index}" />
-
-
-                <div id="rule-${ruleCount + 1}" class="section">
-
-                <h3 style="position:relative; font-size:11px; height:14px;">
-                    <span style="position:relative; float:left">Rule - (${ruleCount+1})</span>
-                    <a href="javascript:deleteRule(${ruleCount + 1})">
-                        <img id="close-image" src="/caaers/images/rule/window-close.gif" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" />
-                    </a>
-
-                    <img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" />
-
-                    <a href="javascript:toggle(${ruleCount + 1})">
-                        <img id="toggle-image-${ruleCount + 1}" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" />
-                    </a>
-
-                </h3>
-
-                <br />
+            <c:set var="ruleCount" value="${ruleStatus.index}" />
+            <div id="rule-${ruleCount + 1}" class="section">
+              <h3 style="position:relative; font-size:11px; height:14px;"> <span style="position:relative; float:left">Rule - (${ruleCount+1})</span> <a href="javascript:deleteRule(${ruleCount + 1})"> <img id="close-image" src="/caaers/images/rule/window-close.gif" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> <img src="/caaers/images/chrome/spacer.gif" style="position:relative; float:right;width:5px;height:10px" align="absmiddle" /> <a href="javascript:toggle(${ruleCount + 1})"> <img id="toggle-image-${ruleCount + 1}" src="/caaers/images/rule/window-minimize.gif" valign="top" align="absmiddle" style="position:relative; float:right; height:13px; border:0px" /> </a> </h3>
+              <br />
+              <div style="margin-left:50px;">
+                <label class="label" for="condition">Name</label>
+                <form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px" />
+              </div>
+              <br />
+              <div id="rule-condition-action-container-${ruleCount + 1}">
                 <div style="margin-left:50px;">
-                    <label class="label" for="condition">Name</label>
-                    <form:input path="ruleSet.rule[${ruleCount}].metaData.name" cssStyle="width:200px" />
+                  <label class="label"
+					for="condition">Condition(s)</label>
                 </div>
-                <br />
-
-				<div id="rule-condition-action-container-${ruleCount + 1}">
-				<div style="margin-left:50px;"><label class="label"
-					for="condition">Condition(s)</label></div>
-				<div class="row" value="${command.ruleSet.rule[ruleCount]}"
+                <div class="row" value="${command.ruleSet.rule[ruleCount]}"
 					id="rule-${ruleCount + 1}-columns"><br />
-
-				<c:forEach varStatus="columnStatus" begin="0"
+                  <c:forEach varStatus="columnStatus" begin="0"
 					items="${command.ruleSet.rule[ruleCount].condition.column}">
-					<c:set var="columnCount" value="${columnStatus.index}" />
-
-					<div id="rule-${ruleCount}-column-${columnCount}"
+                    <c:set var="columnCount" value="${columnStatus.index}" />
+                    <div id="rule-${ruleCount}-column-${columnCount}"
 						style="margin-left:50px; 
 						
-						<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}">
-							visibility:hidden
-						</c:if>"
-						
-						 class="lineitem"><img
+						<c:if test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].markedDelete}"> visibility:hidden
+                      </c:if>
+                      "
+                      
+                      class="lineitem"><img
 						src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> 
-					<c:choose>
-						<c:when test="${columnCount == 0}">
-							<label for="IF">IF</label>
-							<img src="/caaers/images/chrome/spacer.gif"
-								style="width:15px;height:1px" align="absmiddle" />
-						</c:when>
-						<c:otherwise>
-							<label for="AND">AND</label>
-						</c:otherwise>
-					</c:choose> <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" />
+                      <c:choose>
+                        <c:when test="${columnCount == 0}">
+                          <label for="IF">IF</label>
+                          <img src="/caaers/images/chrome/spacer.gif"
+								style="width:15px;height:1px" align="absmiddle" /> </c:when>
+                        <c:otherwise>
+                          <label for="AND">AND</label>
+                        </c:otherwise>
+                      </c:choose>
+                      <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <span>
-					<form:select
+                      <form:select
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
-						<form:option value="">Please select Domain Object</form:option>
-						<form:options items="${ruleUi.condition[0].domainObject}"
+                        <form:option value="">Please select Domain Object</form:option>
+                        <form:options items="${ruleUi.condition[0].domainObject}"
 							itemLabel="displayUri" itemValue="className" />
-					</form:select> 
-					
-					<!-- set domain-object display-uri to column -->
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
-						
-															
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
-						
-						
-					</span> <img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> <form:select
+                      </form:select>
+                      <!-- set domain-object display-uri to column -->
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].displayUri" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
+                      </span> <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" />
+                      <form:select
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
-						<form:option value="">Please select Field</form:option>
-
-						<c:forEach items="${ruleUi.condition[0].domainObject}"
+                        <form:option value="">Please select Field</form:option>
+                        <c:forEach items="${ruleUi.condition[0].domainObject}"
 							varStatus="selectedField">
-							<c:set var="selectedIndex" value="${selectedField.index}" />
-							<c:if
+                          <c:set var="selectedIndex" value="${selectedField.index}" />
+                          <c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      			ruleUi.condition[0].domainObject[selectedIndex].className}">
-												        		      			
-								<c:forEach var="f" items="${command.ruleUi.condition[0].domainObject[selectedIndex].field}">
-								  <c:if test="${f.filter == '' || f.filter == command.terminology}">
-									<form:option value="${f.name}">${f.displayUri}</form:option>
-								  </c:if>									
-								</c:forEach>	
-
-
-							</c:if>
-						</c:forEach>
-
-					</form:select> 
-					
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
-					<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
-
-					<img src="/caaers/images/chrome/spacer.gif"
-						style="width:10px;height:10px" align="absmiddle" /> <form:select
+                            <c:forEach var="f" items="${command.ruleUi.condition[0].domainObject[selectedIndex].field}">
+                              <c:if test="${f.filter == '' || f.filter == command.terminology}">
+                                <form:option value="${f.name}">${f.displayUri}</form:option>
+                              </c:if>
+                            </c:forEach>
+                          </c:if>
+                        </c:forEach>
+                      </form:select>
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].expression" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPrefix" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].grammerPostfix" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].displayUri" />
+                      <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
+                      <img src="/caaers/images/chrome/spacer.gif"
+						style="width:10px;height:10px" align="absmiddle" />
+                      <form:select
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
 						onchange="handleOperatorOnchange(this, ${ruleCount})">
-						<form:option value="">Please select operator</form:option>
-
-
-
-						<c:forEach items="${ruleUi.condition[0].domainObject}"
+                        <form:option value="">Please select operator</form:option>
+                        <c:forEach items="${ruleUi.condition[0].domainObject}"
 							varStatus="selectedDomainObject">
-							<c:set var="domainObjectIndex"
+                          <c:set var="domainObjectIndex"
 								value="${selectedDomainObject.index}" />
-
-							<c:if
+                          <c:if
 								test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      			ruleUi.condition[0].domainObject[domainObjectIndex].className}">
-								<c:forEach
+                            <c:forEach
 									items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
 									varStatus="selectedField">
-									<c:set var="fieldIndex" value="${selectedField.index}" />
-
-
-									<c:if
+                              <c:set var="fieldIndex" value="${selectedField.index}" />
+                              <c:if
 										test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
 												        		      					ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
-										<form:options
+                                <form:options
 											items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].operator}"
 											itemLabel="displayUri" itemValue="name" />
-									</c:if>
-								</c:forEach>
-							</c:if>
-						</c:forEach>
-
-					</form:select> <img src="/caaers/images/chrome/spacer.gif"
+                              </c:if>
+                            </c:forEach>
+                          </c:if>
+                        </c:forEach>
+                      </form:select>
+                      <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <span
 						id="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value.span">
-
-					<c:choose>
-						<c:when
+                      <c:choose>
+                        <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "category"}'>
-
-
-							<script type="text/javascript">
+                          <script type="text/javascript">
 																	var fieldValue;
 																		var readableValue;
 																		//createAE.getCategories(3, function(categories) {
@@ -1440,15 +1381,9 @@ button. Rules created will belong to the selected Rule Set.</p>
 																		        
 																	           //})
 																	</script>
-
-
-						</c:when>
-					
-						<c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
-
-							
-
-							<script type="text/javascript">
+                        </c:when>
+                        <c:when test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "term"}'>
+                          <script type="text/javascript">
 												// force 1sec delay for ajax to make sure categories are loaded.. this is just  TEMP FIX 
 											//   setTimeout("loadTermsBasedOnCategory()",1000);	
 
@@ -1507,14 +1442,10 @@ button. Rules created will belong to the selected Rule Set.</p>
 
 															
 							</script>
-
-						</c:when>
-						<c:when
+                        </c:when>
+                        <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "investigationalNewDrugIndicator"}'>
-
-
-
-							<script type="text/javascript">
+                          <script type="text/javascript">
 
 														loadOrgs();
 												function loadOrgs() {
@@ -1547,15 +1478,10 @@ button. Rules created will belong to the selected Rule Set.</p>
 
 															
 							</script>
-
-						</c:when>
-
-						<c:when
+                        </c:when>
+                        <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "meddraCode"}'>
-
-
-
-							<script type="text/javascript">
+                          <script type="text/javascript">
 
 
 	
@@ -1584,15 +1510,10 @@ button. Rules created will belong to the selected Rule Set.</p>
 
 															
 							</script>
-
-						</c:when>
-
-						<c:when
+                        </c:when>
+                        <c:when
 							test='${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "reportDefinitionName" || command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName eq "treatmentAssignmentCode"}'>
-
-
-
-							<script type="text/javascript">
+                          <script type="text/javascript">
 							
 					var criteria = '${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}' ;
 					var criteria1 = "" ;
@@ -1655,139 +1576,126 @@ button. Rules created will belong to the selected Rule Set.</p>
 				                    											
 															
 							</script>
-
-						</c:when>
-						
-						
-
-						<c:otherwise>
-							<c:choose>
-								<c:when
+                        </c:when>
+                        <c:otherwise>
+                          <c:choose>
+                            <c:when
 									test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
 																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
-									<form:select
+                              <form:select
 										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										multiple="false">
-										<form:option value="">Please select value</form:option>
-									</form:select>
-
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${ruleUi.condition[0].domainObject}"
+                                <form:option value="">Please select value</form:option>
+                              </form:select>
+                            </c:when>
+                            <c:otherwise>
+                              <c:forEach items="${ruleUi.condition[0].domainObject}"
 										varStatus="selectedDomainObject">
-										<c:set var="domainObjectIndex"
+                                <c:set var="domainObjectIndex"
 											value="${selectedDomainObject.index}" />
-
-										<c:if
+                                <c:if
 											test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ==
 												        		      						ruleUi.condition[0].domainObject[domainObjectIndex].className}">
-											<c:forEach
+                                  <c:forEach
 												items="${ruleUi.condition[0].domainObject[domainObjectIndex].field}"
 												varStatus="selectedField">
-												<c:set var="fieldIndex" value="${selectedField.index}" />
-
-
-												<c:if
+                                    <c:set var="fieldIndex" value="${selectedField.index}" />
+                                    <c:if
 													test="${command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName ==
 												        		      							ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].name}">
-
-													<c:choose>
-														<c:when
+                                      <c:choose>
+                                        <c:when
 															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
-															<form:select
+                                          <form:select
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="multiple" size="3"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
-																<form:options
+                                            <form:options
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
-															</form:select>
-															<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
-														</c:when>
-														<c:otherwise>
-															<form:select
+                                          </form:select>
+                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
+                                        </c:when>
+                                        <c:otherwise>
+                                          <form:select
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="false"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
-																<form:option value="">Please select value</form:option>
-																<form:options
+                                            <form:option value="">Please select value</form:option>
+                                            <form:options
 																	items="${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].validValue}"
 																	itemLabel="displayUri" itemValue="value" />
-															</form:select>
-															<form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
-														</c:otherwise>
-													</c:choose>
-
-												</c:if>
-											</c:forEach>
-										</c:if>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-
-						</c:otherwise>
-					</c:choose> </span> <a href="javascript:fetchCondition(${ruleCount})"> <img
+                                          </form:select>
+                                          <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
+                                        </c:otherwise>
+                                      </c:choose>
+                                    </c:if>
+                                  </c:forEach>
+                                </c:if>
+                              </c:forEach>
+                            </c:otherwise>
+                          </c:choose>
+                        </c:otherwise>
+                      </c:choose>
+                      </span> <a href="javascript:fetchCondition(${ruleCount})"> <img
 						id="add-column-${ruleCount}"
 						src="/caaers/images/rule/add_condition.gif" align="absmiddle"
-						style="cursor:hand; border:0px" /> </a> <c:if
-						test="${columnCount > 0}">
-						<a href="javascript:removeCondition(${ruleCount}, ${columnCount})">
-						<img id="remove-column-${ruleCount}"
+						style="cursor:hand; border:0px" /> </a>
+                      <c:if
+						test="${columnCount > 0}"> <a href="javascript:removeCondition(${ruleCount}, ${columnCount})"> <img id="remove-column-${ruleCount}"
 							src="/caaers/images/rule/remove_condition.gif" align="absmiddle"
-							style="cursor:hand;  border:0px" /> </a>
-					</c:if></div>
-
-					<br id="rule-${ruleCount}-column-${columnCount}-br" />
-				</c:forEach></div>
-
-				<div class="row">
-				<div style="margin-left:50px;"><label for="action" class="label">Action(s)</label></div>
-				<br />
-					<div id="action-template" style="margin-left:50px;"><img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" /> 
-				<form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
-					
-					<c:choose>
-						<c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
-								<c:forEach var="reportSectionName" items="${command.reportSectionNames}">
-									<form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
-								</c:forEach>
-						</c:when>
-						<c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
-								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
-									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
-								</c:forEach>
-								<form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
-						</c:when>
-						<c:otherwise>
-							<form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
-							<form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
-								<c:forEach var="reportDefinition" items="${command.reportDefinitions}">
-									<form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
-								</c:forEach>	
-						</c:otherwise>
-					</c:choose>
-					<c:forEach items="${notifications}" var="notification">
-						<form:option value="${notification.id}">${notification.name}</form:option>
-					</c:forEach>					
-				</form:select></div>
-				<c:if test="${ruleCount} == 0">
-					<br />
-				</c:if></div>
-				</div>
-				</div>
-
-			</c:forEach>
-			
-			
-			</div>
-			<!-- closing allRules -->
-			<div class="local-buttons"><input type="button"
-				value="Add Rule" onclick="addRule()" /></div>
-			</div>
-		</jsp:attribute>
-	</tags:tabForm>
-	
+							style="cursor:hand;  border:0px" /> </a> </c:if>
+                    </div>
+                    <br id="rule-${ruleCount}-column-${columnCount}-br" />
+                  </c:forEach>
+                </div>
+                <div class="row">
+                  <div style="margin-left:50px;">
+                    <label for="action" class="label">Action(s)</label>
+                  </div>
+                  <br />
+                  <div id="action-template" style="margin-left:50px;"><img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
+                    <form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                      <c:choose>
+                        <c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
+                          <c:forEach var="reportSectionName" items="${command.reportSectionNames}">
+                            <form:option value="${reportSectionName}">${reportSectionName.displayName}</form:option>
+                          </c:forEach>
+                        </c:when>
+                        <c:when test='${command.ruleSetName == "SAE Reporting Rules"}'>
+                          <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
+                            <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
+                          </c:forEach>
+                          <form:option value="IGNORE">No Report Required (Study Level Exception Rule)</form:option>
+                        </c:when>
+                        <c:otherwise>
+                          <form:option value="ROUTINE_AE">Assess as Routine AE</form:option>
+                          <form:option value="SERIOUS_ADVERSE_EVENT">Assess as Serious AE</form:option>
+                          <c:forEach var="reportDefinition" items="${command.reportDefinitions}">
+                            <form:option value="${reportDefinition.name}">${reportDefinition.name}</form:option>
+                          </c:forEach>
+                        </c:otherwise>
+                      </c:choose>
+                      <c:forEach items="${notifications}" var="notification">
+                        <form:option value="${notification.id}">${notification.name}</form:option>
+                      </c:forEach>
+                    </form:select>
+                  </div>
+                  <c:if test="${ruleCount} == 0"> <br />
+                  </c:if>
+                </div>
+              </div>
+            </div>
+          </c:forEach>
+        </div>
+        <!-- closing allRules -->
+        <div class="local-buttons">
+          <input type="button"
+				value="Add Rule" onClick="addRule()" />
+        </div>
+      </div>
+    </jsp:attribute>
+  </tags:tabForm>
 </chrome:division>
-
 </body>
 </html>

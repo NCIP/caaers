@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Confirmation</title>
+<title>Organization Confirmation</title>
 </head>
 <body>
 <chrome:box title="Confirmation">

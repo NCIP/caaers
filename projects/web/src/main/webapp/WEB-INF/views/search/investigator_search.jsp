@@ -16,7 +16,7 @@
         }        
 </style>
 
-<title>${tab.longTitle}</title>
+<title>Search Investigator</title>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <tags:dwrJavascriptLink objects="search"/>
 
@@ -82,7 +82,7 @@ function buildTable(form) {
 
 	<div class="endpanes" />
 	<div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search'/>
+	<input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
 	<tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />

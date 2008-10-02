@@ -13,14 +13,15 @@
 <style type="text/css">
    div.row div.label { width: 13em; } 
    div.row div.value { margin-left: 14em; }
-</style>   
+</style>  
+<link rel="shortcut icon" href="../../../images/caaers.ico" type="image/x-icon"/> 
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" >
     	<jsp:attribute name="instructions">
     	  Select the fields of adverse event entry screen which are to be made mandatory, 
     	  when <b>${command.reportDefinition.name}</b> definition is associated to an adverse event report.
-    	  <i> <br/> <b>TODO:</b> need a better instruction...</i>
+    	  <br/> <!--TODO: need a better instruction...-->
     	  <br> 
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
@@ -38,7 +39,7 @@
 			 	  <td width="50%" VALIGN="top">
 			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
 			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents" />
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" singleRow="true" tabular="true" />
+			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" tabular="true" />
 			   		</chrome:division>
 			 	  </td>
 			  </tr>
@@ -82,8 +83,8 @@
 			  	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION" />
 			 	  </td>
 			 	  <td width="50%">
-		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" singleRow="true" tabular="true" />
-  	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Height" heading="Height" singleRow="true" tabular="true" />
+		    	  <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Weight" heading="Weight" tabular="true" />
+  	    	      <rd:renderMandatoryFields key="MEDICAL_INFO_SECTION~Height" heading="Height" tabular="true" />
 			 	  </td>
 			  </tr>
 			 <tr>
@@ -157,9 +158,9 @@
 			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs" />
 			 	  </td>
 			 	  <td width="50%" VALIGN="top">
-			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" singleRow="true" tabular="true" />
-					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" singleRow="true" tabular="true" />
-					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" singleRow="true" tabular="true" />
+			   		<rd:renderMandatoryFields key="LABS_SECTION~Labs~Baseline" heading="Baseline" tabular="true"/>
+					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Worst" heading="Worst" tabular="true" />
+					<rd:renderMandatoryFields key="LABS_SECTION~Labs~Recovery" heading="Recovery" tabular="true" />
 			 	  </td>
 			  </tr>
 			</table>

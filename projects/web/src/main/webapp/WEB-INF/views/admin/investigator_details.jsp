@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<title>Investigator</title>
 <tags:includeScriptaculous />
 <tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">

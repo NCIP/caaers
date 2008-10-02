@@ -4,7 +4,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <html>
 <head>
-    <title>Configure application</title>
+    <title>Configure caAERS</title>
     <style type="text/css">
         div.row {
             padding: 5px 3px;

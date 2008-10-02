@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<title>Search Organization</title>
 <tags:stylesheetLink name="tabbedflow"/>
 <tags:stylesheetLink name="participant"/>
 <tags:includeScriptaculous />
@@ -79,7 +80,7 @@ function buildTable(form) {
 
 	<div class="endpanes" />
 	<div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler');" value='Search'  title='Search'/>
+	<input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
 	<tags:indicator id="indicator" />
 	</div>
 	<div class="endpanes" />

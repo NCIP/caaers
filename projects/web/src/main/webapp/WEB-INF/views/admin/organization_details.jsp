@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<title>Create Organization</title>
 	<tags:stylesheetLink name="tabbedflow"/>
  	 <style type="text/css">
         div.content {
