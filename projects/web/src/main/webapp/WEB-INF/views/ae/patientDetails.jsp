@@ -148,29 +148,27 @@
 	   	  var wt = $F('aeReport.participantHistory.weight.quantity');
 	   	  var wtUOM = $F('aeReport.participantHistory.weight.unit');
 	   	  createAE.calculateBodySurfaceArea(ht, htUOM, wt, wtUOM,function(bsa){
-	   	    if(bsa > 0) Element.update($('bsa-value'), bsa.toFixed(2));
+	   	    if(bsa > 0) Element.update($('bsa-value'), bsa.toFixed(4));
 	   	  });
 	   }
 
 
-	   function showShowAllTable(baseName){
-		   var parameterMap = getParameterMap('command');;
-		   	if(baseName == 'metastaticDiseaseSite' || baseName == 'aeReport.diseaseHistory.codedPrimaryDiseaseSite'){
-			   createAE.buildAnatomicSiteTable(parameterMap,baseName,function(table){
-					$('showAllDropDownContent').innerHTML = table;
-					$('showAllDropDown').show();
-			   });
-			}else{
-				createAE.buildChemoAgentsTable(parameterMap,baseName,function(table){
-					$('showAllDropDownContent').innerHTML = table;
-					$('showAllDropDown').show();
-				});
-		    }
-		   
-			
-	   }
-	   
-	   function fillDiseaseSiteAutoCompletor(val,baseName, text){
+        function showShowAllTable(baseName) {
+            var parameterMap = getParameterMap('command');
+            if (baseName == 'metastaticDiseaseSite' || baseName == 'aeReport.diseaseHistory.codedPrimaryDiseaseSite') {
+                createAE.buildAnatomicSiteTable(parameterMap, baseName, function(table) {
+                    $('showAllDropDownContent').innerHTML = table;
+                    $('showAllDropDown').show();
+                });
+            } else {
+                createAE.buildChemoAgentsTable(parameterMap, baseName, function(table) {
+                    $('showAllDropDownContent').innerHTML = table;
+                    $('showAllDropDown').show();
+                });
+            }
+        }
+
+        function fillDiseaseSiteAutoCompletor(val,baseName, text){
 		    $(baseName).value = val;
 		    $(baseName+ "-input").value = text;
 		    $(baseName+ "-input").removeClassName('pending-search');

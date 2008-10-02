@@ -59,21 +59,18 @@ public class ParticipantHistory extends AbstractExpeditedReportSingleChild {
         if (weight.quantity == null || height.quantity == null) return 0;
         if (weight.unit == null || height.unit == null) return 0;
 
-        double wt = (weight.unit.equalsIgnoreCase("Pound")) ? weight.quantity.doubleValue() / 2.20462262185
-                : weight.quantity.doubleValue();
-        double ht = (height.unit.equalsIgnoreCase("Inch")) ? height.quantity.doubleValue() * 2.54
-                : height.quantity.doubleValue();
-        return Math.sqrt((wt * ht) / 3600);
+        double wt = (weight.unit.equalsIgnoreCase("Pound")) ? weight.quantity.doubleValue() / 2.20462262185 : weight.quantity.doubleValue();
+        double ht = (height.unit.equalsIgnoreCase("Inch")) ? height.quantity.doubleValue() * 2.54 : height.quantity.doubleValue();
+
+        // also round the result to 4 decimals
+        return ((double)Math.round(0.20247 * Math.pow(ht/100, 0.725) * Math.pow(wt, 0.425) * 10000)) / 10000;
     }
 
     public ParticipantHistory copy() {
-
         ParticipantHistory participantHistory = new ParticipantHistory();
-        BeanUtils.copyProperties(this, participantHistory, new String[]{"id", "gridId",
-                "version", "report"});
+        BeanUtils.copyProperties(this, participantHistory, new String[]{"id", "gridId", "version", "report"});
 
         return participantHistory;
-
     }
 
     @Embeddable
