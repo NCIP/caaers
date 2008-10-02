@@ -29,8 +29,7 @@ public class DefaultObjectPropertyReader extends AbstractObjectPropertyReader {
                 obj = applyKeys(obj);
             }
             if (continueTraverse) {
-                DefaultObjectPropertyReader nestedDefaultObjectPropertyReader = new DefaultObjectPropertyReader(
-                                obj, nestedPath);
+                DefaultObjectPropertyReader nestedDefaultObjectPropertyReader = new DefaultObjectPropertyReader(obj, nestedPath);
                 return nestedDefaultObjectPropertyReader.getPropertyValueFromPath();
             }
         }

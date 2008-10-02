@@ -12,32 +12,38 @@
     		<tbody class="tablebody">
     		    <tr class="head">
     		       <th class="term" >Evaluation Period Type</th>
-    		       <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
-        			<th id="th-table1-${statusVar.index}" class="reportingperiod">
 
-                  <c:if test="${!displayOnly}">
-        			  <input type="hidden" name="epoch_id" value="${eachEpoch.epochOrder}" />
-        		  </c:if>	  
-		                <div class="index">
-		                <c:choose>
-						  <c:when test='${statusVar.index != 0 && !displayOnly}' >
-						   <ui:inplaceTextField path="epochs[${statusVar.index}].name" />
-						  </c:when>
-						  <c:otherwise>
-						    <span id="epochs[${statusVar.index}].name-id"><caaers:value path="epochs[${statusVar.index}].name" /></span>
-						  </c:otherwise>
-						</c:choose>
-								                
-		              <c:if test="${!displayOnly}">
-        			    &nbsp<a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='right' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img></a></div>
-		            	<div class="inst"><a href="#jumphere" class="instructionLinks" id="epochs[${statusVar.index}].descriptionText-id">Edit Instructions</a></div>
-		            	<tags:popupEditInstruction propertyName="epochs[${statusVar.index}].descriptionText"></tags:popupEditInstruction>
-  		                <a name="jumphere" />
-  		              </c:if>  
-            		</th>
-            		</c:forEach>
-            	
-            	   <c:if test="${!displayOnly}">
+                    <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
+                        <th id="th-table1-${statusVar.index}" class="reportingperiod">
+
+                            <c:if test="${!displayOnly}">
+                                <input type="hidden" name="epoch_id" value="${eachEpoch.epochOrder}"/>
+                            </c:if>
+                            <div class="index">
+                                <c:choose>
+                                    <c:when test='${statusVar.index != 0 && !displayOnly}'>
+                                        <ui:inplaceTextField path="epochs[${statusVar.index}].name"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <span id="epochs[${statusVar.index}].name-id"><caaers:value path="epochs[${statusVar.index}].name"/></span>
+                                    </c:otherwise>
+                                </c:choose>
+
+                                <c:if test="${!displayOnly}">
+                                &nbsp<a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='right' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img></a>
+                                </c:if>
+                            </div>
+                            <c:if test="${!displayOnly}">
+                                <div class="inst">
+                                    <a href="#jumphere" class="instructionLinks" id="epochs[${statusVar.index}].descriptionText-id">Edit Instructions</a>
+                                </div>
+                                <tags:popupEditInstruction propertyName="epochs[${statusVar.index}].descriptionText"></tags:popupEditInstruction>
+                                <a name="jumphere"/>
+                            </c:if>
+                        </th>
+                    </c:forEach>
+
+                    <c:if test="${!displayOnly}">
         		  	  <th id="addButtonCell" class="action"> &nbsp<input id="AddEpoch" type="button" value="Add" /></th>
        		  	   </c:if>  
     			</tr>

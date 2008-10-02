@@ -1,16 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
   <title>${tab.longTitle}</title>
-  <tags:includeScriptaculous/>
+  
   <tags:includePrototypeWindow />
   <tags:dwrJavascriptLink objects="createStudy"/>
 
@@ -26,25 +20,25 @@
     
     function initializeAllEvents()
     {
-     Event.observe('flow-prev', 'click', checkForm);
-     Event.observe('flow-next', 'click', checkForm);
-     
-     <c:if test="${param.studyId != null}">
-       Event.observe('flow-update', 'click', checkForm);
-     </c:if>
-     
-     registerAddInstructionLinks();
-     registerSelectAllCheckBoxes();  
-     registerDeleteEpochIcons();   
-     registerAddEpochButton();  
-    
-     var listOfTermIds = updateTermIds();
-     var termIDArray = $A(listOfTermIds);
-     termIDArray.each( registerDeleteButtons );
-    
+        Event.observe('flow-prev', 'click', checkForm);
+        Event.observe('flow-next', 'click', checkForm);
+
+    <c:if test="${param.studyId != null}">
+        Event.observe('flow-update', 'click', checkForm);
+    </c:if>
+
+        registerAddInstructionLinks();
+        registerSelectAllCheckBoxes();
+        registerDeleteEpochIcons();
+        registerAddEpochButton();
+
+        var listOfTermIds = updateTermIds();
+        var termIDArray = $A(listOfTermIds);
+        termIDArray.each(registerDeleteButtons);
+
     }
-    
-    function uninitializeAllEvents()
+
+   function uninitializeAllEvents()
     {
     try{
      unRegisterAddInstructionLinks();
@@ -401,7 +395,7 @@
   <study:summary />
  
   <form:form name="solicitedAEForm">
-<p><tags:instructions code="study.study_evalpdtypes.top" /></p>
+    <p><tags:instructions code="study.study_evalpdtypes.top" /></p>
   	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="true" />
   	
   	<!--  Idea is copied from tabForm.tag -->
