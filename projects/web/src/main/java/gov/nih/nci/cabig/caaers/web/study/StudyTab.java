@@ -77,7 +77,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
             for (StudyOrganization so : study.getStudyOrganizations()) {
                 i++;
                 if (so.getOrganization() == null) continue;
-                list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + "("
+                list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + " ("
                                 + so.getRoleName() + ")"));
             }
         }
