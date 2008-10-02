@@ -199,21 +199,17 @@
 <form:form id="command">	
 
 <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99;">
-	<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
-			<tbody>
-			<tr class="titleRow">
-			  <td align="left" class="title">Select :</td><td width="20px"><a href="javascript:hideShowAllTable()">
-			       <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
-			      </a></td>
-			</tr>
-			<tr>
-			<td colspan="2">
-			        <div id="showAllDropDownContent"  />
-
-			</td>
-			</tr>
-			</tbody>
-			</table>
+    <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
+        <tbody>
+            <tr class="titleRow">
+                <td align="left" class="title">Select :</td>
+                <td width="20px"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div id="showAllDropDownContent"/></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 	<tags:tabFields tab="${tab}" />
 	<tags:hasErrorsMessage />
