@@ -42,6 +42,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.RequestUtils;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.servlet.ModelAndView;
 
 public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormController<CaptureAdverseEventInputCommand, AdverseEventReportingPeriod, AdverseEventReportingPeriodDao> {
@@ -174,17 +177,23 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected void onBind(HttpServletRequest request, Object command,BindException errors) throws Exception {
 		super.onBind(request, command, errors); //binding is done.
         boolean fromListPage =  request.getParameterMap().keySet().contains("displayReportingPeriod");
-		if(fromListPage){
-			CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
-			AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
-			if(reportingPeriod != null){
-				cmd.setAssignment(reportingPeriod.getAssignment());
-			}else{
-				cmd.setAssignment(null);
-			}
-				
-		}
-	}
+
+        if (fromListPage) {
+            CaptureAdverseEventInputCommand cmd = (CaptureAdverseEventInputCommand) command;
+            AdverseEventReportingPeriod reportingPeriod = cmd.getAdverseEventReportingPeriod();
+            
+            if (reportingPeriod != null) {
+                try {
+                    int rpId = ServletRequestUtils.getIntParameter(request, "adverseEventReportingPeriod");
+                    cmd.setAssignment(reportingPeriod.getAssignment());
+                } catch (ServletRequestBindingException e) {
+                    cmd.setAssignment(null);
+                }
+            } else {
+                cmd.setAssignment(null);
+            }
+        }
+    }
 	
 	/**
 	 * Will return the {@link AdverseEventReportingPeriod} 
