@@ -104,6 +104,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             researchStaffDao.save(researchStaff);
             if ("local".equals(getAuthenticationMode())) {
                 sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
+                		+ "Your username is follows:\n"
+                		+ "Username: " + researchStaff.getLoginId()
                         + "\n"
                         + "You must change your password before you can login. In order to do so please visit this URL:\n"
                         + "\n"
