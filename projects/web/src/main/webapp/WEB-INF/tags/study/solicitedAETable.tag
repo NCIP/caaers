@@ -47,18 +47,20 @@
         		  	  <th id="addButtonCell" class="action"> &nbsp<input id="AddEpoch" type="button" value="Add" /></th>
        		  	   </c:if>  
     			</tr>
+ 				<c:if test="${!displayOnly}">
     		    <tr class="gap">
-    		      <c:if test="${!displayOnly}">
         	        <td colspan="3" style="border-width:0px 0px 0px 0px;">
     		           Check the appropriate boxes to associate the AE term to a evaluation period type.
     		        </td>
-    		      </c:if>
     		    </tr>
+				</c:if>
     			<tr class="head">
                     <th class="term">Adverse Event Term</th>
                     <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
                         <th id="th-col-epoch-${statusVar.index}" class="epoch" align="center">
+							<c:if test="${not displayOnly}">
                             <div><input id="ck${statusVar.index}" type="checkbox" ${displayOnly?'disabled':''}/></div>
+							</c:if>
                         </th>
                     </c:forEach>
                     <c:if test="${!displayOnly}">
@@ -68,13 +70,14 @@
     			 <c:forEach  varStatus="status" var="eachRow" items="${listOfSolicitedAERows}" >
     			    <study:oneSolicitedAERow displayOnly="${displayOnly}" index="${status.index}" eachRow="${eachRow}" />
     			 </c:forEach>
+				<c:if test="${!displayOnly}">
     			<tr id="specialLastRow" class="bottom">
     				<td colspan="5" align='center'><span id='lastRowSpan' class='lastRowValue' style="display:none;">You have no solicited adverse events added in the list !</span></td>
     			</tr>	
     			
     			<tr class="lastLineOfTable">
     		    </tr>
-    		    			
+    		    </c:if>			
   			</tbody>
   			
   		</table>	
