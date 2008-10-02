@@ -1,4 +1,4 @@
-class updateStudyDcpDesignColumn  extends edu.northwestern.bioinformatics.bering.Migration {
+class updateOrganizationRoles  extends edu.northwestern.bioinformatics.bering.Migration {
 
 
     public void up(){
