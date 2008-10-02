@@ -192,7 +192,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     public List<ReportDefinition> findRequiredReportDefinitions(){
     	//if already available return that, as we will take care of clearing it when we quit this tab.
-    	if(requiredReportDefinitionsMap.isEmpty()){
+    	if(requiredReportDefinitionsMap.isEmpty() && !adverseEventReportingPeriod.isBaselineReportingType()){
     		this.requiredReportDefinitionsMap = evaluationService.findRequiredReportDefinitions(this.adverseEventReportingPeriod);
     		//refresh the serious AE list here
     		refreshSeriousAdverseEvents();

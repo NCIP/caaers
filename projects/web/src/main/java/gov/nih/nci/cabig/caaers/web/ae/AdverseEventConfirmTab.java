@@ -80,7 +80,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 	
 	public List<InputField> createCustomFieldGroup(AdverseEvent ae, int i, boolean isMeddraStudy, boolean isBaseline){
 		//only non-baseline, grade != NOT_EVALUATED is selectable, or can be opted as primary
-		boolean isModifiable = !isBaseline && ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
+		boolean isModifiable = ae.getGrade() != null && ae.getGrade()!= Grade.NOT_EVALUATED;
 		
 		List<InputField> fields= new ArrayList<InputField>();
 		if(isModifiable){
@@ -118,8 +118,8 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		//Call the super class referenceData, so that the createFieldGroup is executed
 		Map<String, Object> refdata = super.referenceData(request, command);
 		
-		if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
-			return refdata;
+		//if(command.getAdverseEventReportingPeriod().isBaselineReportingType())
+		//	return refdata;
 		
 		//do the setup stuff
 		

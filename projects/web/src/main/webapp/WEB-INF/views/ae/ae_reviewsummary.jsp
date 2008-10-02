@@ -202,7 +202,6 @@ background-color:#e5e8ff;
     </c:if>
   </jsp:attribute>
   <jsp:attribute name="singleFields">
-    <c:if test="${reportingPeriodType != 'Baseline'}">
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
           <p><strong>Reports Identified by caAERS</strong></p>
@@ -350,55 +349,7 @@ background-color:#e5e8ff;
           </c:if>
         </chrome:division>
       </div>
-    </c:if>
-    <%-- Till this point was for non-baseline reporting period --%>
-    <%-- This is for baseline reporting period --%>
-    <c:if test="${reportingPeriodType == 'Baseline'}">
-      <chrome:division title="Observed Adverse Event(s)" id="div-oaes" collapsable="true">
-        <c:if test='${command.adverseEventReportingPeriod != null}'>
-          <table id="observedTable" width="100%" class="tablecontent">
-            <tr>
-              <th scope="col" align="left" width="30%"><b>Term</b> </th>
-              <th scope="col" align="left"><b>Grade</b> </th>
-              <th scope="col" align="left"><b>Attribution</b> </th>
-              <th scope="col" align="left"><b>Hospitalization</b> </th>
-              <th scope="col" align="left"><b>Expected</b> </th>
-              <caaers:renderFilter elementID="adverseEvents[].serious">
-                <th scope="col" align="left"><b>Serious</b> </th>
-              </caaers:renderFilter>
-            </tr>
-            <tr id="observedBlankRow" />
-            <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-              <c:if test="${not ae.solicited}">
-                <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
-              </c:if>
-            </c:forEach>
-          </table>
-        </c:if>
-      </chrome:division>
-      <chrome:division title="Solicited Adverse Event(s)" id="div-soaes" collapsable="true">
-        <c:if test='${command.adverseEventReportingPeriod != null}'>
-          <table id="solicitedTable" width="100%" class="tablecontent">
-            <tr>
-              <th scope="col" align="left" width="30%"><b>Term</b> </th>
-              <th scope="col" align="left"><b>Grade</b> </th>
-              <th scope="col" align="left"><b>Attribution</b> </th>
-              <th scope="col" align="left"><b>Hospitalization</b> </th>
-              <th scope="col" align="left"><b>Expected</b> </th>
-              <caaers:renderFilter elementID="adverseEvents[].serious">
-                <th scope="col" align="left"><b>Serious</b> </th>
-              </caaers:renderFilter>
-            </tr>
-            <tr id="solicitedBlankRow" />
-            <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
-              <c:if test="${ae.solicited}">
-                <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0" hideDeleteCtrl="true"/>
-              </c:if>
-            </c:forEach>
-          </table>
-        </c:if>
-      </chrome:division>
-    </c:if>
+    
   </jsp:attribute>
   <jsp:attribute name="tabControls">
     <div class="content buttons autoclear">
