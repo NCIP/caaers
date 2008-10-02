@@ -69,7 +69,7 @@ div.row div.value, div.row div.extra {
                     }
                 },
                 fullName: '${ae.adverseEventCtcTerm.term.fullName}',
-                fullNameWithMedDRA : '${ae.adverseEventCtcTerm.term.fullNameWithMedDRA}',
+                fullNameWithMedDRA : '${ae.adverseEventCtcTerm.term.fullName}',
                 lowLevelTermField : '${ae.lowLevelTerm.fullName}',
                 otherRequired: ${ae.adverseEventCtcTerm.term.otherRequired}
             }
