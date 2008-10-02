@@ -201,7 +201,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         if (props.get("participantDateOfBirth") != null) {
             queryBuf.append(firstClause ? " where " : " and ");
             String p = (String) props.get("participantDateOfBirth");
-            DateValue dob = stringToDateValue(p);
+            DateValue dob = DateValue.stringToDateValue(p);
             queryBuf.append(" o.dateOfBirth.year").append(" = ? ");
             params.add(dob.getYear());
             if (dob.getMonth() > 0) {

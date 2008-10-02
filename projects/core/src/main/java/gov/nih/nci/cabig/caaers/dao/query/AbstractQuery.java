@@ -7,9 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 
  * @author Saurabh Agrawal
- * 
  */
 public class AbstractQuery {
 
@@ -42,9 +40,9 @@ public class AbstractQuery {
         String orderByString = "";
         if (queryString.lastIndexOf("order by") > 0) {
             orderByString = queryString.substring(queryString.lastIndexOf("order by"),
-                            queryString.length()).trim();
+                    queryString.length()).trim();
             queryBuffer = new StringBuffer(queryString.substring(0,
-                            queryString.lastIndexOf("order by")).trim());
+                    queryString.lastIndexOf("order by")).trim());
         } else {
             queryBuffer = new StringBuffer(queryString.trim());
         }
@@ -54,7 +52,9 @@ public class AbstractQuery {
         }
 
         for (String conditon : andConditions) {
-            if (queryBuffer.toString().toUpperCase().indexOf(WHERE) < 0) {
+
+            if (queryBuffer.toString().toUpperCase().lastIndexOf(WHERE) < 0 || queryBuffer.toString().toUpperCase().lastIndexOf(WHERE)
+                    < queryBuffer.toString().toUpperCase().lastIndexOf("FROM")) {
                 queryBuffer.append(" " + WHERE + " " + conditon);
             } else {
                 queryBuffer.append(" " + AND + " " + conditon);
@@ -64,7 +64,7 @@ public class AbstractQuery {
 
         if (!orConditions.isEmpty()) {
             boolean groupOR = andConditions.size() > 0
-                            || queryBuffer.toString().toUpperCase().indexOf(WHERE) > 0;
+                    || queryBuffer.toString().toUpperCase().indexOf(WHERE) > 0;
 
             if (groupOR) {
                 queryBuffer.append(" " + AND + " (");
@@ -95,11 +95,9 @@ public class AbstractQuery {
 
     /**
      * Bind an argument to a named parameter.
-     * 
-     * @param key
-     *                the key of the parameter
-     * @param value
-     *                the value of the parameter
+     *
+     * @param key   the key of the parameter
+     * @param value the value of the parameter
      */
     protected void setParameter(final String key, final Object value) {
         queryParameterMap.put(key, value);
@@ -112,9 +110,8 @@ public class AbstractQuery {
      * andWhere("a.name=:name") will append queryString to "Select * from Article a WHERE
      * a.name=:name order by a.id"
      * </p>
-     * 
-     * @param condition
-     *                the condition
+     *
+     * @param condition the condition
      */
     protected void andWhere(final String condition) {
         andConditions.add(condition);
@@ -127,7 +124,7 @@ public class AbstractQuery {
     /**
      * Joins an object to the query select * from Study s join s.identifiers as id where
      * s.shortTitle='study'
-     * 
+     *
      * @param join
      */
     protected void join(String objectQuery) {
@@ -138,7 +135,7 @@ public class AbstractQuery {
     /**
      * Joins an object to the query select * from Study s left join s.identifiers as id where
      * s.shortTitle='study'
-     * 
+     *
      * @param join
      */
     protected void leftJoin(String objectQuery) {

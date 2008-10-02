@@ -42,7 +42,6 @@ public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDa
 
 
                 }
-                hiberanteQuery.setMaxResults(30);
                 return hiberanteQuery.list();
             }
 

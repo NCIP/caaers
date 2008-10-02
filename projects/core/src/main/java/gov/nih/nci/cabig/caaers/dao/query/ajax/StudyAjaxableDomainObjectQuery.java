@@ -18,6 +18,11 @@ public class StudyAjaxableDomainObjectQuery extends AbstractAjaxableDomainObject
     private static final String PARTICIPANT_ID = "participantId";
     private static final String STATUS = "status";
 
+    public StudyAjaxableDomainObjectQuery(String queryString) {
+        super(queryString);
+
+    }
+
     public StudyAjaxableDomainObjectQuery() {
         super(queryString);
 

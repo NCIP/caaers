@@ -1,8 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.BeanUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,31 +14,51 @@ import java.util.List;
  */
 
 @Transactional(readOnly = true)
-public class StudyAjaxableDomainObjectRepository extends AbstractAjaxableDomainObjectRepository {
-    public List<StudyAjaxableDomainObject> findStudies(StudyAjaxableDomainObjectQuery query) {
+public class StudyAjaxableDomainObjectRepository<T extends StudyAjaxableDomainObject> extends AbstractAjaxableDomainObjectRepository {
+
+    public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query) {
+
         List<Object[]> objects = super.find(query);
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = new ArrayList<StudyAjaxableDomainObject>();
+        List<T> studyAjaxableDomainObjects = new ArrayList<T>();
 
         for (Object[] o : objects) {
-            StudyAjaxableDomainObject studyAjaxableDomainObject = (StudyAjaxableDomainObject) getObjectById(studyAjaxableDomainObjects, (Integer) o[0]);
+            T studyAjaxableDomainObject = (T) getObjectById(studyAjaxableDomainObjects, (Integer) o[0]);
 
             if (studyAjaxableDomainObject == null) {
-                studyAjaxableDomainObject = new StudyAjaxableDomainObject();
+                studyAjaxableDomainObject = (T) BeanUtils.instantiateClass(getObjectClass());
                 studyAjaxableDomainObject.setId((Integer) o[0]);
                 studyAjaxableDomainObject.setShortTitle((String) o[1]);
                 if (o[3] != null && (Boolean) o[3]) {
                     studyAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
                 }
+
+                addAdditionalProperties(studyAjaxableDomainObject, o);
+
                 studyAjaxableDomainObjects.add(studyAjaxableDomainObject);
 
-            } else if (studyAjaxableDomainObject != null && o[3] != null && (Boolean) o[3]) {
-                studyAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
+            } else {
+                updateAdditionalProperties(studyAjaxableDomainObject, o);
+
             }
 
 
         }
         return studyAjaxableDomainObjects;
 
+    }
+
+    protected void updateAdditionalProperties(T studyAjaxableDomainObject, Object[] o) {
+        if (o[3] != null && (Boolean) o[3]) {
+            studyAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
+        }
+
+    }
+
+    protected Class getObjectClass() {
+        return StudyAjaxableDomainObject.class;
+    }
+
+    protected void addAdditionalProperties(T studyAjaxableDomainObject, Object[] objects) {
     }
 
 

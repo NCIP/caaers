@@ -1,0 +1,143 @@
+package gov.nih.nci.cabig.caaers.dao.query.ajax;
+
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import org.apache.commons.lang.StringUtils;
+
+/**
+ * @author Biju Joseph
+ */
+public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
+    private static String queryString = "Select study.id,study.shortTitle," +
+            "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
+            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor " +
+            "from Study study " +
+            "left join study.identifiers as identifier " +
+            "order by study.shortTitle ";
+
+
+    private static final String FIRST_NAME = "firstName";
+
+    private static final String LAST_NAME = "lastName";
+
+    private static final String IDENTIFIER_VALUE = "identifier";
+
+
+    private static final String RACE = "race";
+
+    private static final String ETHNITICTY = "ethnicity";
+    private static final String SHORT_TITLE = "shortTitle";
+    private static final String IDENTIFIER_EXACT_TYPE = "identifierType";
+    private static final String IDENTIFIER_EXACT_VALUE = "identifierValue";
+    private static final String YEAR = "year";
+    private static final String MONTH = "month";
+    private static final String DAY = "day";
+
+    public StudySearchableAjaxableDomainObjectQuery() {
+        super(queryString);
+
+
+    }
+
+    public void filterStudiesWithMatchingIdentifierOnly(String text) {
+        if (!StringUtils.isBlank(text)) {
+
+            String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+
+            andWhere(String.format("(lower(identifier.type) LIKE :%s " +
+                    "or lower(identifier.value) LIKE :%s)", IDENTIFIER_EXACT_TYPE, IDENTIFIER_EXACT_VALUE));
+            setParameter(IDENTIFIER_EXACT_VALUE, searchString);
+            setParameter(IDENTIFIER_EXACT_TYPE, searchString);
+        }
+    }
+
+    public void filterByParticipant(String firstName, String lastName, String ethnicity,
+                                    final String identifierValue, String gender, DateValue dateOfBirth) {
+
+        leftJoin("study.studyOrganizations as ss left join ss.studyParticipantAssignments as spa left join spa.participant as p");
+
+        filterByParticipantIdentifierValue(identifierValue);
+
+        filterByFirstName(firstName);
+        filterByLastName(lastName);
+
+        filteryByEthnicity(ethnicity);
+
+        filterByHavingRace(gender);
+
+        filterByDateOfBirth(dateOfBirth);
+
+
+    }
+
+    private void filterByDateOfBirth(DateValue dateOfBirth) {
+        if (dateOfBirth != null && !dateOfBirth.isNull()) {
+            andWhere(String.format(" p.dateOfBirth.year = :%s", YEAR));
+            setParameter(YEAR, dateOfBirth.getYear());
+
+            if (dateOfBirth.getMonth() > 0) {
+                andWhere(String.format(" p.dateOfBirth.month = :%s", MONTH));
+                setParameter(MONTH, dateOfBirth.getMonth());
+
+            }
+            if (dateOfBirth.getDay() > 0) {
+                andWhere(String.format(" p.dateOfBirth.day = :%s", DAY));
+                setParameter(DAY, dateOfBirth.getDay());
+            }
+
+        }
+
+    }
+
+    public void filterStudiesWithMatchingShortTitleOnly(String text) {
+        if (!StringUtils.isBlank(text)) {
+
+            String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+
+            andWhere(String.format("(lower(study.shortTitle) LIKE :%s )"
+                    , SHORT_TITLE));
+            setParameter(SHORT_TITLE, searchString);
+        }
+    }
+
+    private void filterByFirstName(final String firstName) {
+        if (!StringUtils.isBlank(firstName)) {
+            String searchString = "%" + firstName.toLowerCase() + "%";
+            andWhere("lower(p.firstName) LIKE :" + FIRST_NAME);
+            setParameter(FIRST_NAME, searchString);
+        }
+    }
+
+    private void filterByLastName(final String lastName) {
+        if (!StringUtils.isBlank(lastName)) {
+            String searchString = "%" + lastName.toLowerCase() + "%";
+            andWhere("lower(p.lastName) LIKE :" + LAST_NAME);
+            setParameter(LAST_NAME, searchString);
+        }
+    }
+
+    private void filterByParticipantIdentifierValue(final String value) {
+        if (!StringUtils.isBlank(value)) {
+            String searchString = "%" + value.toLowerCase() + "%";
+            leftJoin("p.identifiers as pIdentifier");
+            andWhere("lower(pIdentifier.value) LIKE :" + IDENTIFIER_VALUE);
+            setParameter(IDENTIFIER_VALUE, searchString);
+        }
+    }
+
+
+    private void filterByHavingRace(final String race) {
+        if (!StringUtils.isBlank(race)) {
+            andWhere("p.gender = :" + RACE);
+            setParameter(RACE, race);
+        }
+    }
+
+    private void filteryByEthnicity(final String ethnicity) {
+        if (!StringUtils.isBlank(ethnicity)) {
+            andWhere("p.ethnicity = :" + ETHNITICTY);
+            setParameter(ETHNITICTY, ethnicity);
+        }
+    }
+
+
+}

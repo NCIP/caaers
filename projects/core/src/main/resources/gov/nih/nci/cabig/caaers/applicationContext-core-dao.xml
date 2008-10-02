@@ -153,6 +153,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
             </list>
         </property>
+        <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
         <property name="entityInterceptor">
             <!--        <bean class="gov.nih.nci.cabig.caaers.utils.GridIdentifierInterceptor" autowire="byName" />
           </bean>-->
@@ -341,6 +342,7 @@ This applicationContext contains the definition of the DAOs
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
+                <!--<prop key="hibernate.show_sql">true</prop>-->
             </props>
         </property>
     </bean>
@@ -482,9 +484,15 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyRepository" class="gov.nih.nci.cabig.caaers.domain.repository.StudyRepository">
         <property name="studyDao" ref="studyDao"></property>
     </bean>
+
     <bean id="studyAjaxableDomainObjectRepository"
           class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository"
           parent="daoTemplate">
+    </bean>
+
+    <bean id="studySearchableAjaxableDomainObjectRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository"
+          parent="studyAjaxableDomainObjectRepository">
     </bean>
 
     <bean id="participantAjaxableDomainObjectRepository"

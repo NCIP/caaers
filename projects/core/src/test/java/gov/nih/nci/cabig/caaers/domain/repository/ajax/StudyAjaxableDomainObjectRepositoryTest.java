@@ -12,11 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by IntelliJ IDEA.
- * User: saurabhagrawal
- * Date: Sep 15, 2008
- * Time: 12:20:34 PM
- * To change this template use File | Settings | File Templates.
+ * @author Biju Joseph
  */
 public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
@@ -103,6 +99,8 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
         assertEquals(studyWithNoPrimaryIdentifier[0], studyAjaxableDomainObject.getId());
         assertEquals(matchingStudyWithPrimaryIdentifier[2], studyAjaxableDomainObject.getPrimaryIdentifierValue());
         assertEquals(studyWithNoPrimaryIdentifier[1], studyAjaxableDomainObject.getShortTitle());
+        assertEquals("study short title ( another identifier value ) ", studyAjaxableDomainObject.getDisplayName());
+
     }
 
     public void testIfContainsObjectMethodReturnsTrue_AddStudiesInReverseOrder() {
@@ -124,6 +122,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
         StudyAjaxableDomainObject studyAjaxableDomainObject = studyAjaxableDomainObjects.get(0);
         assertEquals(studyWithNoPrimaryIdentifier[0], studyAjaxableDomainObject.getId());
         assertEquals(matchingStudyWithPrimaryIdentifier[2], studyAjaxableDomainObject.getPrimaryIdentifierValue());
+        assertEquals("study short title ( another identifier value ) ", studyAjaxableDomainObject.getDisplayName());
         assertEquals(studyWithNoPrimaryIdentifier[1], studyAjaxableDomainObject.getShortTitle());
     }
 

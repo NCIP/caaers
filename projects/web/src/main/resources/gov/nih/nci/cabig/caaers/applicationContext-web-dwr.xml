@@ -35,11 +35,18 @@
     <bean id="investigatorAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.admin.InvestigatorAjaxFacade"/>
 
-    <bean id="searchStudyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade"/>
+    <bean id="searchStudyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade">
+        <property name="studySearchableAjaxableDomainObjectRepository"
+                  ref="studySearchableAjaxableDomainObjectRepository"/>
+    </bean>
     <bean id="ruleAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.RuleAjaxFacade"/>
     <bean id="meddraAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.MeddraAjaxFacade"/>
-    <bean id="searchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade"/>
-    <bean id="reportAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
+    <bean id="searchAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchStudyAjaxFacade">
+        <property name="studySearchableAjaxableDomainObjectRepository"
+                  ref="studySearchableAjaxableDomainObjectRepository"/>
+    </bean>
+    <bean id="reportAjaxFacade" autowire="byType"
+          class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
     <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
 
     <bean id="importAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportAjaxFacade"/>

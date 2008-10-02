@@ -8,6 +8,7 @@ import javax.persistence.Transient;
 import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.Date;
+import java.text.ParseException;
 
 @Embeddable
 public class DateValue implements Comparable<DateValue> {
@@ -20,6 +21,27 @@ public class DateValue implements Comparable<DateValue> {
     private Integer year;
 
     private int zone = 0; //attribute kept to force Hibernate in instantiating this object
+
+    public static DateValue stringToDateValue(String date) throws ParseException {
+        if (StringUtils.isBlank(date)) {
+            return null;
+        }
+        String[] dateParts = date.split("/");
+        int size = dateParts.length;
+        if (size != 3) throw new ParseException("Unknown format, expected format is 'mm/dd/yyyy'",
+                0);
+        DateValue dateValue = new DateValue();
+        try {
+            dateValue.setMonth(Integer.parseInt(dateParts[0]));
+            dateValue.setDay(Integer.parseInt(dateParts[1]));
+            dateValue.setYear(Integer.parseInt(dateParts[2]));
+        } catch (NumberFormatException e) {
+            throw new ParseException(
+                    "Unknown format, unable to parse the date values, expected format is 'mm/dd/yyyy'",
+                    0);
+        }
+        return dateValue;
+    }
 
     public DateValue() {
         this(null, null, null);
