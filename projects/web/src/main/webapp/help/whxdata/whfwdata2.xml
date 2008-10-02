@@ -112,7 +112,6 @@
 <key name="los"> 58, </key>
 <key name="lost"> 36,70, </key>
 <key name="lot"> 14,16,32, </key>
-<key name="mach"> 60, </key>
 <key name="maiden"> 38,54, </key>
 <key name="mail"> 3,22,24,32,33,36,39,72, </key>
 <key name="main"> 31, </key>
@@ -124,7 +123,7 @@
 <key name="manufactur"> 16,32, </key>
 <key name="mark"> 41,46, </key>
 <key name="mat"> 13,32,62, </key>
-<key name="match"> 32,38,41,44,53, </key>
+<key name="match"> 32,38,41,44,53,60, </key>
 <key name="maximum"> 66, </key>
 <key name="mean"> 3,36,39,40,68,70,76, </key>
 <key name="measur"> 14,21,32, </key>
@@ -187,5 +186,6 @@
 <key name="onset"> 14,32, </key>
 <key name="open"> 8,10,32,37,41,43,60,63,79,80, </key>
 <key name="operator"> 16,32,40,78, </key>
+<key name="option"> 12,24,32,36,40,72,74,77,78, </key>
 
 </ftswdata>  
