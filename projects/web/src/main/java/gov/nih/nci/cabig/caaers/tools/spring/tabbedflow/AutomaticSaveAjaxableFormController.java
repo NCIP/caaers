@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.tools.spring.tabbedflow;
 
 import org.apache.commons.lang.StringUtils;
+
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.MutableDomainObject;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
@@ -48,6 +50,11 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         Map refdata = super.referenceData(request, command, errors, page);
         WorkFlowTab<C> current = (WorkFlowTab<C>) getFlow(command).getTab(page);
         refdata.putAll(current.referenceData(request, (C) command));
+        
+        if(!errors.hasErrors() && !refdata.containsKey("flashMessage")){
+        	if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
+        }
+        
         return refdata;
     }
 

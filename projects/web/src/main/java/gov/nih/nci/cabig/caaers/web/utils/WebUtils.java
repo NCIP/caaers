@@ -5,6 +5,9 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.drools.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
@@ -82,7 +85,9 @@ public class WebUtils {
     	}
     	return options;
     }
-
+    
+    
+    
     public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty,
                     String itemLabelProperty) {
         return collectOptions(items, itemValueProperty, itemLabelProperty, null);
@@ -96,5 +101,16 @@ public class WebUtils {
         } else {
             return wrappedItem.getPropertyValue(propertyName);
         }
+    }
+    
+    /**
+     * Returns the previous page, based on the request parameter _page
+     * @param request
+     * @return
+     */
+    public static int getPreviousPage(HttpServletRequest request){
+    	String pg = request.getParameter("_page");
+    	if(StringUtils.isEmpty(pg)) return -1;
+    	return Integer.parseInt(pg);
     }
 }

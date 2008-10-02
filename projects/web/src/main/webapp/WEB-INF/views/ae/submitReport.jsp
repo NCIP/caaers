@@ -65,6 +65,20 @@
     
     <input type="hidden" name="_finish"/>
     </jsp:attribute>
+		
+	<jsp:attribute name="tabControls">
+	<div class="content buttons autoclear">
+		<div class="local-buttons"></div>
+	    	<div class="flow-buttons">
+		<span class="prev">       
+	            <input type="image" alt="« Save &amp; Back" value="« saveback" class="tab0" id="flow-prev" src="/caaers/images/blue/saveback_btn.png"/>
+	        </span>	        
+		<span class="next">
+				<input type="image" alt="submit report »" value="Submit Report " id="flow-next" src="<c:url value="/images/blue/submit_btn.png" />"/>
+	        </span>
+		</div>
+	</div>
+	</jsp:attribute>
 
 </tags:tabForm>
 </body>
