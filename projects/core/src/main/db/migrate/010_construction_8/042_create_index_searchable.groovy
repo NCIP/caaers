@@ -20,8 +20,8 @@ class CreateIndicies extends edu.northwestern.bioinformatics.bering.Migration {
         dropTable('DROP INDEX participants_flname_idx2')
         dropTable('DROP INDEX participants_eg_idx1')
         dropTable('DROP INDEX participants_eg_idx2')
-        dropTable('DROP INDEX participants_eg_idx1')
-        dropTable('DROP INDEX participants_eg_idx2')
+        dropTable('DROP INDEX participants_dob_idx1')
+        dropTable('DROP INDEX participants_dob_idx2')
         dropTable('DROP INDEX organizations_namecode_idx1')
         dropTable('DROP INDEX organizations_namecode_idx2')
         
