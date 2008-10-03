@@ -103,7 +103,7 @@ public class ListValues {
         ListValues lov4 = new ListValues("White", "White");
         ListValues lov5 = new ListValues("Black or African American", "Black or African American");
         ListValues lov6 = new ListValues("American Indian or Alaska Native", "American Indian or Alaska Native");
-        ListValues lov7 = new ListValues("Native Hawaiian or other Pacific Islander", "Native Hawaiian or other Pacific Islander");
+        ListValues lov7 = new ListValues("Native Hawaiian or Other Pacific Islander", "Native Hawaiian or Other Pacific Islander");
         ListValues lov8 = new ListValues("Not Reported", "Not Reported");
         //ListValues lov9 = new ListValues("More than one race", "More than one race");
         //ListValues lov10 = new ListValues("Other", "Other");
