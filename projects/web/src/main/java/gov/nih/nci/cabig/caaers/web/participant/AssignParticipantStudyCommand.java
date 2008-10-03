@@ -15,29 +15,13 @@ import java.util.Date;
 public class AssignParticipantStudyCommand extends ParticipantInputCommand {
     protected final Log log = LogFactory.getLog(getClass());
 
-    private List<Participant> participantSearchResults = new ArrayList<Participant>();
-    private List<StudySite> studySites = new ArrayList<StudySite>();
     private StudySite studySite;
+    private List<Participant> participantSearchResults= new ArrayList<Participant>();
 
     public AssignParticipantStudyCommand() {
         this.assignment = new StudyParticipantAssignment();
     }
 
-    public List<Participant> getParticipantSearchResults() {
-        return participantSearchResults;
-    }
-
-    public void setParticipantSearchResults(final List<Participant> participantSearchResults) {
-        this.participantSearchResults = participantSearchResults;
-    }
-
-    public List<StudySite> getStudySites() {
-        return studySites;
-    }
-
-    public void setStudySites(final List<StudySite> studySites) {
-        this.studySites = studySites;
-    }
 
     public StudySite getStudySite() {
         return studySite;
@@ -71,4 +55,7 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
         this.assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
     }
 
+    public void setParticipantSearchResults(List<Participant> participantSearchResults) {
+        this.participantSearchResults = participantSearchResults;
+    }
 }
