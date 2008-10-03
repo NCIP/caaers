@@ -134,6 +134,7 @@ public class MessageNotificationService {
             //this pdf has already been generated in AdeersReportGenerator , we are just attching here incase of successfull submission.
             String tempDir = System.getProperty("java.io.tmpdir");
             attachment = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+            System.out.println("attachement is "+ attachment);
         } else {
         	subject = "Problem with Submission of Expedited Report(" + aeReportId + ") to AdEERS";
         	// send only to submitter incase of failure
