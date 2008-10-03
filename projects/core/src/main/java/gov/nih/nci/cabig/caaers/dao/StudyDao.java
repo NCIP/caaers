@@ -276,7 +276,7 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         if (props.get("participantDateOfBirth") != null) {
             queryBuf.append(firstClause ? " where " : " and ");
             String p = (String) props.get("participantDateOfBirth");
-            DateValue dob = stringToDateValue(p);
+            DateValue dob = DateValue.stringToDateValue(p);
             queryBuf.append(" p.dateOfBirth.year").append(" = ? ");
             params.add(dob.getYear());
             if (dob.getMonth() > 0) {
