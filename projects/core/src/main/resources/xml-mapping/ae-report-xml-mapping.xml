@@ -1159,6 +1159,15 @@
     <field name="recovery" type="gov.nih.nci.cabig.caaers.domain.LabValue">
       <bind-xml name="recovery"/>
     </field>
+    <field name="site" type="string">
+      <bind-xml name="site" node="element"/>
+    </field>
+    <field name="infectiousAgent" type="string">
+      <bind-xml name="infectiousAgent" node="element"/>
+    </field>
+    <field name="labDate" type="date">
+      <bind-xml name="labDate" node="element"/>
+    </field>    
   </class>
 
   <class name="gov.nih.nci.cabig.caaers.domain.LabTerm">
