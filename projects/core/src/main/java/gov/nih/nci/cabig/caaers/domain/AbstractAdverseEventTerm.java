@@ -61,6 +61,9 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
     
     @Transient
     public abstract boolean isMedDRA();
+    
+    @Transient
+    public abstract String getFullName();
 
     public AbstractAdverseEventTerm copy() {
         AbstractAdverseEventTerm abstractAdverseEventTerm = (AbstractAdverseEventTerm) BeanUtils.instantiateClass(getClass());

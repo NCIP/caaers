@@ -25,6 +25,13 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     public CtcTerm getTerm() {
         return super.getTerm();
     }
+    
+    @Override
+    @Transient
+    public String getFullName() {
+    	if(getTerm() == null)	return "";
+    	return getTerm().getFullName();
+    }
 
     /*
      * (non-Javadoc)

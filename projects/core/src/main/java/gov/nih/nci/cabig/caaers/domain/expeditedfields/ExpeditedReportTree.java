@@ -184,8 +184,8 @@ public class ExpeditedReportTree extends PropertylessNode {
                             	list("saeReportPriorTherapies","Prior Therapy", 
                         				property("priorTherapy", "Prior therapy"),
                                         property("other", "Comments (prior therapy)"), 
-                                        property("startDate", "Therapy start Date"), 
-                                        property("endDate", "Therapy end Date"), 
+                                        property("startDate", "Therapy start date"), 
+                                        property("endDate", "Therapy end date"), 
                                         list("priorTherapyAgents", "PriorTherapyAgent",
                                               property("chemoAgent", "Agent")
                                         )
@@ -199,7 +199,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                         section(CONCOMITANT_MEDICATION_SECTION, 
                         		list("concomitantMedications","Medication",
                                         property("agentName", "Medication"),
-                                        property("stillTakingMedications","Continued ?"),
+                                        property("stillTakingMedications","Continued?"),
                                         property("startDate","Start date"),
                                         property("endDate","End date")
                                        

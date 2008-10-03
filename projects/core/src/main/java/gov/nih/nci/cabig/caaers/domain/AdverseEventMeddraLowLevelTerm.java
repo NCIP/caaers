@@ -23,7 +23,13 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
     public void setMeddraCode(String meddraCode) {
         this.meddraCode = meddraCode;
     }
-
+    
+    @Transient
+    public String getFullName() {
+    	if(getTerm() == null) return "";
+    	return getTerm().getFullName();
+    }
+    
     @Transient
     public String getUniversalTerm() {
         return getTerm() == null ? null : getTerm().getFullName();
