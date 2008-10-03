@@ -13,7 +13,7 @@ import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
 import gov.nih.nci.cagrid.common.Utils;
-import gov.nih.nci.ccts.grid.Registration;
+import gov.nih.nci.cabig.ccts.domain.Registration;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.io.InputStream;
