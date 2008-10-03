@@ -164,7 +164,7 @@ public abstract class BasicsTab extends AeTab {
 
             //special case HOSPITALIZATION
             if (ae.getHospitalization() != null && ae.getHospitalization().equals(Hospitalization.YES))
-                addOutcomeIfDontExist(ae.getOutcomes(), OutcomeType.DEATH, null);
+                addOutcomeIfDontExist(ae.getOutcomes(), OutcomeType.HOSPITALIZATION, null);
 
             i++;
         }
