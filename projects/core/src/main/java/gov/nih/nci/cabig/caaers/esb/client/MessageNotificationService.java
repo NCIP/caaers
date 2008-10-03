@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -31,7 +32,7 @@ import org.springframework.web.context.request.WebRequest;
 public class MessageNotificationService {
     protected Configuration configuration;
 
-    //protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
     
@@ -212,12 +213,12 @@ public class MessageNotificationService {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
-/*
+
     public void setExpeditedAdverseEventReportDao(
                     ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
-*/
+
     public void setOpenSessionInViewInterceptor(
                     org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor openSessionInViewInterceptor) {
         this.openSessionInViewInterceptor = openSessionInViewInterceptor;
