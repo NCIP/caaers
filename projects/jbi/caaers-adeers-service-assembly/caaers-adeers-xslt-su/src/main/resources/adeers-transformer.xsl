@@ -980,6 +980,23 @@
                         <xsl:value-of select="units"/>
                     </WORST_UOM>
                 </xsl:if>
+                <xsl:if test="site != ''">
+                    <MICROBIOLOGY_SITE>
+                        <xsl:value-of select="site"/>
+                    </MICROBIOLOGY_SITE>
+                </xsl:if>
+                <xsl:if test="labDate != ''">
+                    <MICROBIOLOGY_DATE>
+                        <xsl:call-template name="standard_date">
+                            <xsl:with-param name="date" select="labDate"/>
+                        </xsl:call-template>                    
+                    </MICROBIOLOGY_DATE>
+                </xsl:if>
+                <xsl:if test="infectiousAgent != ''">
+                    <INFECTIOUS_AGENT>
+                        <xsl:value-of select="infectiousAgent"/>
+                    </INFECTIOUS_AGENT>
+                </xsl:if>	
             </LAB_RESULT>
         </xsl:for-each>
 
