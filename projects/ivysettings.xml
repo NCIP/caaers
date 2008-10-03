@@ -29,6 +29,7 @@
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[artifact]-[revision].[ext]" />
   			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[organization]-[module]-[artifact]-[revision].[ext]" />
+  			<artifact pattern="http://repo.semanticbits.com/ivy-repo/caGRID/[organisation]/[module]/[revision]/[artifact].[ext]" />
 		</url>
 
 	 		
