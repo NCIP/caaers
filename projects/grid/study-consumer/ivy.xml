@@ -39,9 +39,12 @@
 				conf="build->publish;runtime->publish,runtime;dist->dist;distGrid->distGrid"/>
 				
         	<!--  C3PR registration stubs/skeltons -->
-        	<dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer-client" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer-common" rev="0.1"  />
-        	<dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer-stubs" rev="0.1"  />
+
+        	<dependency org="gov.nih.nci.ccts.grid" name="StudyConsumer" rev="1.5.SNAPSHOT"  >
+        		<artifact name="StudyConsumer-client" />
+        		<artifact name="StudyConsumer-common" />
+        		<artifact name="StudyConsumer-stubs" />
+        	</dependency>
         	
         	<!-- CTMS commons dependencies -->
 			<dependency org="gov.nih.nci.cabig.ctms" name="ctms-commons-base" rev="${ctms.version}" transitive="false"/>
