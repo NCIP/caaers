@@ -26,8 +26,11 @@
     <bean id="studyAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
 
-    <bean id="participantAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade"/>
+    <bean id="participantAjaxFacade"
+          class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">
+        <property name="organizationDao" ref="organizationDao"/>
+        <property name="participantRepository" ref="participantRepository"/>
+    </bean>
 
     <bean id="assignParticipantFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantAjaxFacade"/>

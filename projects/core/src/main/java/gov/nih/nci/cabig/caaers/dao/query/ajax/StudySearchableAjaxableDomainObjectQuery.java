@@ -4,14 +4,18 @@ import gov.nih.nci.cabig.caaers.domain.DateValue;
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * this query Will NOT work if you are retriving study sites by searching on participants also
+ *
  * @author Biju Joseph
  */
 public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDomainObjectQuery {
     private static String queryString = "Select study.id,study.shortTitle," +
             "identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
-            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor " +
+            "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
+            "ss.organization.name,ss.id,ss.class " +
             "from Study study " +
             "left join study.identifiers as identifier " +
+            "left join study.studyOrganizations as ss " +
             "order by study.shortTitle ";
 
 
@@ -31,11 +35,22 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static final String YEAR = "year";
     private static final String MONTH = "month";
     private static final String DAY = "day";
+    private static final String STUDY_SITE_CLASS = "studySiteClass";
+    private static final String SITE_ID = "siteId";
 
     public StudySearchableAjaxableDomainObjectQuery() {
         super(queryString);
 
 
+    }
+
+    public void filterStudiesByStudySiteBySiteId(Integer siteId) {
+        if (siteId != null) {
+            andWhere(String.format("ss.class = :%s", STUDY_SITE_CLASS));
+            setParameter(STUDY_SITE_CLASS, "SST");
+            andWhere(String.format("ss.organization.id = :%s", SITE_ID));
+            setParameter(SITE_ID, siteId);
+        }
     }
 
     public void filterStudiesWithMatchingIdentifierOnly(String text) {
@@ -53,7 +68,7 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     public void filterByParticipant(String firstName, String lastName, String ethnicity,
                                     final String identifierValue, String gender, DateValue dateOfBirth) {
 
-        leftJoin("study.studyOrganizations as ss left join ss.studyParticipantAssignments as spa left join spa.participant as p");
+        leftJoin("ss.studyParticipantAssignments as spa left join spa.participant as p");
 
         filterByParticipantIdentifierValue(identifierValue);
 

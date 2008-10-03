@@ -30,7 +30,6 @@ import java.util.HashMap;
 public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
 
-    private StudyRepository studyRepository;
     private ParticipantDao participantDao;
 
     public AssignStudyTab() {
@@ -41,32 +40,6 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public Map<String, Object> referenceData(AssignParticipantStudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
         refdata.put("assignType", "study");
-
-        String searchType = command.getSearchType();
-        String searchText = command.getSearchText();
-
-        List<Study> studies = null;
-        if (searchText != null && searchType != null && !StringUtils.isEmpty(StringUtils.trim(searchText))) {
-
-            Study exampleStudy = new Study();
-            if (StringUtils.equals("st", searchType)) {
-                exampleStudy.setShortTitle(searchText);
-            } else if (StringUtils.equals("lt", searchType)) {
-                exampleStudy.setLongTitle(searchText);
-            } else if (StringUtils.equals("idtf", searchType)) {
-                Identifier identifier = new Identifier();
-                identifier.setValue(searchText);
-                exampleStudy.addIdentifier(identifier);
-            }
-            try {
-                studies = studyRepository.search(exampleStudy);
-            } catch (Exception ex) {
-                log.error("Error in search: ", ex);
-            }
-
-            command.setSearchText("");
-            command.setStudies(studies);
-        }
 
 
         return refdata;
@@ -90,7 +63,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 
             for (StudyParticipantAssignment assignment : l) {
                 if (assignment.getStudySite().getId().intValue() == command.getStudySite().getId().intValue()) {
-                    errors.reject("PT_009", new Object[] {command.getParticipant().getFullName(), assignment.getStudySite().getStudy().getShortTitle(), assignment.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
+                    errors.reject("PT_009", new Object[]{command.getParticipant().getFullName(), assignment.getStudySite().getStudy().getShortTitle(), assignment.getStudySite().getOrganization().getFullName()}, "Duplicate assignment.");
                     break;
                 }
             }
@@ -103,7 +76,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
             command.setStudySite(null);
         }
 
-        
+
     }
 
     public void postProcess(HttpServletRequest request, AssignParticipantStudyCommand command, Errors errors) {
@@ -111,11 +84,7 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         if (command.getStudySite() != null) {
             command.setStudy(command.getStudySite().getStudy());
             command.getStudySite().getStudy().getPrimaryIdentifier();
-        };
-    }
-
-    public void setStudyRepository(final StudyRepository studyRepository) {
-        this.studyRepository = studyRepository;
+        }
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {

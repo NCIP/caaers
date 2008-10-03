@@ -340,9 +340,9 @@
             status_code="inactive"
             start_date="01-01-2001"
             end_date="01-01-2002"
-            study_id="-5"
+            study_id="-2"
             site_id="-1002"
-            type="SCC"
+            type="SST"
             />
 
     <investigational_new_drugs id="-881" ind_number="-881"/>

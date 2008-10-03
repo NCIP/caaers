@@ -1,188 +1,191 @@
-<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.extremecomponents.org" prefix="ec" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Search for a Study</title>
-<script>
-	function submitPage(s){
-		document.getElementById("command").submit();
-	}
-	function navRollOver(obj, state) {
-  		document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-	}
-    
-    function doNothing(){
-	}
 
-    function showSSI() {
-        if ($('ids')) $('ids').show();
-    }
+    <tags:dwrJavascriptLink objects="searchStudy"/>
+    <tags:includeScriptaculous/>
 
-    function updateTargetPage(s){
-		document.checkEligibility.nextView.value=s;
-		document.checkEligibility.submit();
-	}
+    <tags:javascriptLink name="extremecomponents"/>
 
-	function resetSites(btn){
-		var classValue= 'siteStudy_' + btn.value;
-		$$('.sitesRadioBtn').each(function(input){
-		   if(input.classNames().toArray().indexOf(classValue) < 0){
-		   	  input.checked=false;
-		   }
-		});
-	}
-	
-	function resetStudy(study_id){
-		$$('.studyRadioBtn').each(function(input){
-			if(input.classNames().toArray().indexOf(study_id) < 0){
-				input.checked=false;
-			}else{
-				input.checked=true;
-			}
-		});
-	}
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Search for a Study</title>
+    <script>
+        function submitPage(s) {
 
-    function onKey(e) {
-        var keynum = getKeyNum(e);
-
-        if (keynum == 13) {
-            Event.stop(e);
-            ajaxStudySearch();
-        } else return;
-    }
-
-    function onAjaxStudySearch() {
-        $('bigSearch').show();
-    }
-
-    function onAjaxStudySearchSuccess() {
-        $('searchIndicator').hide();
-    }
-
-    function ajaxStudySearch(searchText, searchType) {
-        // START tags:tabMethod
-        var text = $F('searchText');
-        $('searchIndicator').show();
-        
-        if(text == ''){
-            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>"
-        }else{
-            $('error').innerHTML=""
+            document.getElementById("command").submit();
+        }
+        function navRollOver(obj, state) {
+            document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
+        }
 
 
-    <tags:tabMethod
-           method="searchStudies"
-           viewName="par/ajax/reg_studySearchResult"
-           onComplete="onAjaxStudySearch"
-           onSuccess="onAjaxStudySearchSuccess"
-           divElement="'searchResults'"
-           formName="'searchForm'"
-           params="" />
+        function updateTargetPage(s) {
+            document.checkEligibility.nextView.value = s;
+            document.checkEligibility.submit();
+        }
 
-        // END tags:tabMethod
-    }
-}
-    
-</script>
+        function resetSites(btn) {
+            var classValue = 'siteStudy_' + btn.value;
+            $$('.sitesRadioBtn').each(function(input) {
+                if (input.classNames().toArray().indexOf(classValue) < 0) {
+                    input.checked = false;
+                }
+            });
+        }
+
+        function resetStudyAndSites(button) {
+            resetSites(button);
+            $('studySite').value = button.value;
+            if ($('ids')) $('ids').show();
+
+
+        }
+
+
+        function onKey(e) {
+            var keynum = getKeyNum(e);
+
+            if (keynum == 13) {
+                Event.stop(e);
+                buildTable('assembler');
+            } else return;
+        }
+
+        function buildTable(form) {
+            // START tags:tabMethod
+
+            var text = $F('searchText');
+            $('indicator').show();
+
+            if (text == '') {
+                $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
+            } else {
+                //$('error').innerHTML = ""
+                var type = $('searchType').options[$('searchType').selectedIndex].value;
+
+
+                var parameterMap = getParameterMap(form);
+                searchStudy.getTableForAssignParticipant(parameterMap, type, text, showTable)
+
+
+            }
+        }
+
+
+        ValidationManager.submitPostProcess = function(formElement, flag) {
+            flag = true;
+            if (formElement.id != 'command') {
+                return true
+            } else {
+
+                if (removeSpaces($('studySubjectIdentifier').value) == '')
+                {
+                    $('studySubjectIdentifier').value = $('studySubjectIdentifierInput').value
+                }
+
+            }
+            return flag;
+        }
+
+    </script>
 </head>
 <body>
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
-
 <p id="instructions">
-    <div class="instructions">
-        <div class="summarylabel"><b>Subject</b></div>
-        <div class="summaryvalue">${command.participant.fullName}</div>
-    </div>
+
+<div class="instructions">
+    <div class="summarylabel"><b>Subject</b></div>
+    <div class="summaryvalue">${command.participant.fullName}</div>
+</div>
 </p>
+<tags:tabForm tab="${tab}" flow="${flow}" title="Search Criteria" willSave="false">
+<jsp:attribute name="singleFields">
+   <div class="error">
+       <div id="studySiteError">
 
-<chrome:box autopad="true" title="Search Criteria">
-    <form:form id="searchForm" method="post" cssClass="standard">
-<p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
-<table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
-    <tr>
-        <td>
+       </div>
+       <div id="studySubjectIdentifierError">
 
-        <table border="0" cellspacing="0" cellpadding="0">
+       </div>
+   </div>
+       <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
+
+       <form:hidden path="studySite"/>
+       <form:hidden path="studySubjectIdentifier"/>
+
+   </div>
+        <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
             <tr>
+                <td>
+
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tr>
+                        </tr>
+                        <tr>
+                            <td class="searchType">Search for a study&nbsp;&nbsp;</td>
+                            <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"
+                                                                             itemValue="code"/></form:select></td>
+                            <td><form:input path="searchText" size="25" onkeydown="onKey(event);"/>&nbsp;<input
+                                    type="button" onclick="buildTable('assembler');" value="Search"/>&nbsp;<img
+                                    src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;"
+                                id="indicator">
+                            </td>
+                            <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="notation" colspan="2">
+                                <div id="error"></div>
+                            </td>
+
+                    </table>
+
+                </td>
             </tr>
-            <tr>
-                <td class="searchType">Search for a study&nbsp;&nbsp;</td>
-                <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"itemValue="code" /></form:select></td>
-                <td><form:input path="searchText" size="25" onkeydown="onKey(event);"/>&nbsp;<input type="button" onClick="ajaxStudySearch();" value="Search" />&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
-                    <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
-            </tr>
-            <tr>
-                <td></td>
-                <td class="notation" colspan="2"><div id="error"></div>
-			</td>
-            
         </table>
 
-        </td>
-        </tr>
-    </table>
-        
-    </form:form>
-</chrome:box>
-
-<c:set var="display" value="none" />
-<c:if test="${fn:length(command.studies) > 0}">
-    <c:set var="display" value="''" />
-</c:if>
-
-<div id="bigSearch" style="display:${display};">
-<tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
-    <jsp:attribute name="singleFields">
-      <p><tags:instructions code="instruction_subject_as2s.searchstudyresults"/></p>
-        <div id="searchResults" style="width:100%; border: 0px red dotted;">
-            <c:if test="${fn:length(command.studies) > 0}">
-                <ec:table autoIncludeParameters="false" items="command.studies" var="study"
-                    action="${pageContext.request.contextPath}/pages/participant/assignParticipant"
-                    imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-                    filterable="false"
-                    showPagination="false" form="command"
-                    cellspacing="0" cellpadding="0" border="0" width="100%" style=""
-                    styleClass="" sortable="false">
-                    <ec:row highlightRow="true">
-                        <ec:column property="primaryIdentifier" title="Primary ID" />
-                        <ec:column property="shortTitle" title="Short Title" />
-                        <ec:column property="primarySponsorCode" title="Funding Sponsor" />
-                        <ec:column property="phaseCode" title="Phase" />
-                        <ec:column property="status" title="Status" />
-                        <ec:column title="Sites" property="status">
-                           <table>
-                                <c:forEach items="${study.studySites}" var="site">
-                                   <tr><td>
-                                       <form:radiobutton cssClass="sitesRadioBtn siteStudy_${study.id}" onclick="showSSI();" path="studySite" value="${site.id}"/>${site.organization.name }
-                                   </td></tr>
-                                </c:forEach>
-                           </table>
-                        </ec:column>
-                    </ec:row>
-                </ec:table>
-            </c:if>
-        </div>
-
-<c:set var="_display" value="none" />
-<c:if test="${command.studySite.id != null}">
-    <c:set var="_display" value="''" />
-</c:if>
-<%--<c:out value="" />        --%>
-
-<div id="ids" style="display:'';">
-    <br />
-    <chrome:division title="Study Subject Identifier">
-    <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
-        <ui:label path="studySubjectIdentifier" required="true" text="Study subject identifier" /><ui:text path="studySubjectIdentifier"/>
-    </chrome:division>
-</div>
-
-    </jsp:attribute>
-
+          </jsp:attribute>
 </tags:tabForm>
+<div id="bigSearch">
+
+    <chrome:box title="Results">
+
+        <form:form id="assembler">
+
+
+            <div>
+                <input type="hidden" name="_prop" id="prop">
+                <input type="hidden" name="_value" id="value">
+            </div>
+            <p><tags:instructions code="instruction_subject_as2s.searchstudyresults"/></p>
+            <chrome:division id="single-fields">
+                <div id="tableDiv">
+                    <c:out value="${assembler}" escapeXml="false"/>
+                </div>
+            </chrome:division>
+        </form:form>
+        <div id="ids" style="display:none;">
+            <br/>
+            <chrome:division title="Study Subject Identifier">
+                <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
+                <label for="studySubjectIdentifierInput">
+                    <tags:requiredIndicator/>&nbsp;Study subject identifier
+                </label>
+                <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value=""
+                       name="studySubjectIdentifierInput"/>
+            </chrome:division>
+
+        </div>
+    </chrome:box>
+
 </div>
+
+
 </body>
 </html>
 

@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
+import gov.nih.nci.cabig.caaers.domain.StudySite;
+
+import java.util.List;
+import java.util.ArrayList;
+
 
 /**
  *
@@ -13,6 +18,8 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
 
     private String status;
     private String phaseCode;
+
+    List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
 
     public String getStatus() {
         return status;
@@ -36,6 +43,29 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
 
     public void setPrimarySponsorCode(String primarySponsorCode) {
         this.primarySponsorCode = primarySponsorCode;
+    }
+
+    protected AbstractAjaxableDomainObject getObjectById(List<? extends AbstractAjaxableDomainObject> ajaxableDomainObjects,
+                                                         Integer id) {
+
+        for (AbstractAjaxableDomainObject object : ajaxableDomainObjects) {
+            if (object.getId().equals(id)) {
+                return object;
+            }
+        }
+
+        return null;
+    }
+
+    public void addStudySite(StudySiteAjaxableDomainObject studySiteAjaxableDomainObject) {
+        if (getObjectById(this.getStudySites(), studySiteAjaxableDomainObject.getId()) == null) {
+            getStudySites().add(studySiteAjaxableDomainObject);
+        }
+
+    }
+
+    public List<StudySiteAjaxableDomainObject> getStudySites() {
+        return studySites;
     }
 
     public String getDisplayName() {

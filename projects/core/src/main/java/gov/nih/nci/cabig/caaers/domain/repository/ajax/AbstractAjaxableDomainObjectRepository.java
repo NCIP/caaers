@@ -36,6 +36,7 @@ public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDa
                     SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
+               // hiberanteQuery.setMaxResults(null);
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
                     hiberanteQuery.setParameter(key, value);

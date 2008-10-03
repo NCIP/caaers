@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.StringUtils;
 
@@ -24,6 +25,17 @@ public class StudySearchableAjaxableDomainObjectRepository extends StudyAjaxable
         studySearchableAjaxableDomainObject.setPhaseCode((String) o[4]);
         studySearchableAjaxableDomainObject.setStatus((String) o[5]);
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
+
+        updateStudySite(studySearchableAjaxableDomainObject, o);
+    }
+
+    private void updateStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
+        if (!StringUtils.isBlank((String) o[7]) && StringUtils.equals((String) o[9], "SST")) {
+            StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
+            studySiteAjaxableDomainObject.setId((Integer) o[8]);
+            studySiteAjaxableDomainObject.setName((String) o[7]);
+            studySearchableAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
+        }
     }
 
     private void updateFundingSponsor(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
@@ -37,6 +49,7 @@ public class StudySearchableAjaxableDomainObjectRepository extends StudyAjaxable
         super.updateAdditionalProperties(studySearchableAjaxableDomainObject, o);
 
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
+        updateStudySite(studySearchableAjaxableDomainObject, o);
 
     }
 

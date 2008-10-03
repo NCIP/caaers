@@ -321,24 +321,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     }
     
     
-    public DateValue stringToDateValue(String date) throws ParseException {
-        String[] dateParts = date.split("/");
-        int size = dateParts.length;
-        if (size != 3) throw new ParseException("Unknown format, expected format is 'mm/dd/yyyy'",
-                        0);
-        DateValue dateValue = new DateValue();
-        try {
-            dateValue.setMonth(Integer.parseInt(dateParts[0]));
-            dateValue.setDay(Integer.parseInt(dateParts[1]));
-            dateValue.setYear(Integer.parseInt(dateParts[2]));
-        } catch (NumberFormatException e) {
-            throw new ParseException(
-                            "Unknown format, unable to parse the date values, expected format is 'mm/dd/yyyy'",
-                            0);
-        }
-        return dateValue;
-    }
-
+    
     /*
      * Only used for import , using this in any other instance might introduce confusion
      * 

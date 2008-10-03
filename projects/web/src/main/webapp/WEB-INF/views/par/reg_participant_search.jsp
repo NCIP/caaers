@@ -1,136 +1,121 @@
 <!-- BEGIN views\par\reg_participant_search.jsp -->
-<%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://www.extremecomponents.org" prefix="ec" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Search for a Subject</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Search for a Subject</title>
+    <tags:includeScriptaculous/>
 
-    <script>
-function submitPage(s){
-	document.getElementById("searchCategory").value=s;
-	document.getElementById("searchForm").submit();
-}
+    <tags:javascriptLink name="extremecomponents"/>
+    <tags:dwrJavascriptLink objects="createParticipant"/>
 
-function navRollOver(obj, state) {
-  document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
-}
+    <script type="text/javascript">
 
-function doNothing(){
-}
+        function navRollOver(obj, state) {
+            document.getElementById(obj).className = (state == 'on') ? 'resultsOver' : 'results';
+        }
 
-function onAjaxSubjectSearch() {
-}
+        
+        function onKey(e) {
+            var keynum = getKeyNum(e);
 
-function _onAjaxSubjectSearch(transport) {
-    $('bigSearch').show();
-    $('searchIndicator').hide();
-}
+            if (keynum == 13) {
+                Event.stop(e);
+                buildTable('assembler');
+            } else return;
+        }
 
-function onKey(e) {
-    var keynum = getKeyNum(e);
+        function buildTable(form) {
 
-    if (keynum == 13) {
-        Event.stop(e);
-        ajaxSubjectSearch();
-    } else return;
-}
+            var text = $F('searchText');
+            $('indicator').show();
 
-function ajaxSubjectSearch(searchText, searchType) {
-
-    // START tags:tabMethod
-        var text = $F('searchText');
-        $('searchIndicator').show();
-    
-        if(text == ''){
-            $('error').innerHTML="<font color='#FF0000'>Provide at least one character in the search field.</font>";
-        }else{
-            $('error').innerHTML=""
+            if (text == '') {
+                $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>";
+            } else {
+                $('error').innerHTML = ""
+                $('indicator').className = ''
+                var type = $('searchType').options[$('searchType').selectedIndex].value;
 
 
-<tags:tabMethod
-       method="searchSubjects"
-       viewName="par/ajax/reg_subjectSearchResult"
-       onComplete="onAjaxSubjectSearch"
-       divElement="'searchResults'"
-       formName="'searchForm'"
-       params="g444"
-       onSuccess="_onAjaxSubjectSearch"
-       />
+                var parameterMap = getParameterMap(form);
+                createParticipant.getParticipantTable(parameterMap, type, text, showTable)
 
-    // END tags:tabMethod
-            
-}
-}
-</script>
+
+            }
+        }
+
+        function selectParticipant(selectedParticipant){
+             $('participant').value=selectedParticipant;
+        }
+
+
+    </script>
 
 </head>
 <body>
 
-<chrome:box autopad="true" title="Search Criteria">
-<p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
-    <form:form id="searchForm" method="post" cssClass="standard" title="ABC">
-        <table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
-            <tr>
-                <td class="searchType">Search for subject by</td>
-                <td>
-                    <form:select path="searchType">
-                        <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code" />
-                    </form:select>
-                </td>
-                <td><form:input path="searchText" size="30" onkeydown="onKey(event);" /></td>
-                <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
-                <td width="100%"><input type="button" onClick="ajaxSubjectSearch();" value="Search" />&nbsp;<img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="searchIndicator"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td class="notation"><div id="error"></div>
-			</td>
 
-            </tr>
-        </table>
-    </form:form>
-</chrome:box>
-
-<c:set var="display" value="none" />
-<c:if test="${fn:length(command.participantSearchResults) > 0}">
-    <c:set var="display" value="''" />
-</c:if>
-
-<div id="bigSearch" style="display:none;">
-<tags:tabForm tab="${tab}" flow="${flow}" title="Results" willSave="false">
+<tags:tabForm tab="${tab}" flow="${flow}" title="Search Criteria" willSave="false">
 <jsp:attribute name="singleFields">
- <p><tags:instructions code="instruction_subject_as2s.searchsubresults"/></p>
-    <div id="searchResults" style="width:100%; border: 0px red dotted;">
-        <c:if test="${fn:length(command.participantSearchResults) > 0}">
-        <ec:table autoIncludeParameters="false"
-                  items="command.participantSearchResults"
-                  var="participant"
-                  action="${pageContext.request.contextPath}/pages/home"
-                  imagePath="${pageContext.request.contextPath}/images/table/*.gif"
-                  filterable="false"
-                  showPagination="false"
-                  cellspacing="0" cellpadding="0" border="0" width="100%" style="" styleClass="">
+    <table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
+        <p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
+        <tr>
+            <form:hidden  path="participant"/>
+            <td class="searchType">Search for subject by</td>
+            <td>
+                <form:select path="searchType">
+                    <form:options items="${participantSearchType}" itemLabel="desc" itemValue="code"/>
+                </form:select>
+            </td>
+            <td><form:input path="searchText" size="30" onkeydown="onKey(event);"/></td>
+            <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
+            <td width="100%"><input type="button" onClick="buildTable('assembler');" value="Search"/>&nbsp;
+                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;"
+                id="indicator">
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td class="notation">
+                <div id="error"></div>
+            </td>
 
-        <ec:row highlightRow="true">
-            <ec:column property="kk" style="width:10px" filterable="false" sortable="false" title=" ">
-                <form:radiobutton path="participant" value="${participant.id}" />
-            </ec:column>
-            <ec:column property="primaryIdentifier" title="Primary ID"/>
-            <ec:column property="firstName" title="First Name"/>
-            <ec:column property="lastName" title="Last Name" />
-            <ec:column property="dateOfBirth" title="Date of Birth"/>
-            <ec:column property="gender" title="Gender" />
-            <ec:column property="race" title="Race" />
-            <ec:column property="ethnicity" title="Ethnicity" />
-        </ec:row>
-        </ec:table>
-    </c:if>
+        </tr>
 
-    </div>
+    </table>
+
 </jsp:attribute>
 </tags:tabForm>
+
+
+<c:set var="display" value="none"/>
+<c:if test="${fn:length(command.participantSearchResults) > 0}">
+    <c:set var="display" value="''"/>
+</c:if>
+
+
+<div id="bigSearch">
+    <form:form id="assembler">
+
+
+        <div>
+            <input type="hidden" name="_prop" id="prop">
+            <input type="hidden" name="_value" id="value">
+        </div>
+        <chrome:box title="Results">
+            <p><tags:instructions code="instruction_subject_as2s.searchsubresults"/></p>
+            <chrome:division id="single-fields">
+                <div id="tableDiv">
+                    <c:out value="${assembler}" escapeXml="false"/>
+                </div>
+            </chrome:division>
+        </chrome:box>
+    </form:form>
 </div>
 
 </body>
