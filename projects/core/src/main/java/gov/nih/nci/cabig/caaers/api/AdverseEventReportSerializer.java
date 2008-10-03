@@ -37,6 +37,7 @@ import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdverseEventReportSerializer {
@@ -291,6 +292,9 @@ public class AdverseEventReportSerializer {
 		   l.setBaseline(lab.getBaseline());
 		   l.setNadir(lab.getNadir());
 		   l.setRecovery(lab.getRecovery());
+		   l.setLabDate(lab.getLabDate());
+		   l.setSite(lab.getSite());
+		   l.setInfectiousAgent(lab.getInfectiousAgent());
 		   
 		   return l;
 	   }
@@ -734,6 +738,14 @@ public class AdverseEventReportSerializer {
 			AdverseEventReportSerializer aes = new AdverseEventReportSerializer();
 			ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 			aer.setId(123);
+			
+			Lab l = new Lab();
+			l.setInfectiousAgent("test agent");
+			l.setSite("test site");
+			l.setLabDate(new Date());
+			
+			//List<Lab> labs= new ArrayList<Lab>();
+			aer.addLab(l);
 			
 			try {
 				XmlMarshaller marshaller = new XmlMarshaller();
