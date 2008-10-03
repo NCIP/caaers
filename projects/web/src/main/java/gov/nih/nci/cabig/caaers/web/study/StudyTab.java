@@ -47,8 +47,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
         refdata.put(name, getConfigurationProperty().getMap().get(name));
     }
 
-    protected Map<Object, Object> collectOptions(List list, String nameProperty,
-                    String valueProperty, String... exclusionProperties) {
+    protected Map<Object, Object> collectOptions(List list, String nameProperty, String valueProperty, String... exclusionProperties) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
         options.putAll(WebUtils.collectOptions(list, nameProperty, valueProperty));

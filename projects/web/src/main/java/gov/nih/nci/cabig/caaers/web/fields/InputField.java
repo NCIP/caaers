@@ -75,7 +75,7 @@ public interface InputField {
 
     Map<String, Object> getAttributes();
 
-    enum Category {
+    public enum Category {
         TEXT, TEXTAREA, DATE, SPLIT_DATE, SELECT, AUTOCOMPLETER, COMPOSITE, CHECKBOX, LONGSELECT, INPLACE_TEXT, LABEL, RADIO, IMAGE
     }
 }

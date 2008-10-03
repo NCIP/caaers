@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.*;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.ArrayList;
 import java.util.Arrays;

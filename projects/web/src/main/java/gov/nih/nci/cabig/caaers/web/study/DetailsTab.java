@@ -62,34 +62,27 @@ public class DetailsTab extends StudyTab {
             // set up the fields
             fieldGroup = new DefaultInputFieldGroup("studyDetails");
             List<InputField> fields = fieldGroup.getFields();
-            InputField shortTitleField = InputFieldFactory.createTextField("shortTitle",
-                            "Short title", true);
+            InputField shortTitleField = InputFieldFactory.createTextField("shortTitle", "Short title", true);
             InputFieldAttributes.setSize(shortTitleField, 50);
             fields.add(shortTitleField);
-            InputField longTitleField = InputFieldFactory.createTextArea("longTitle", "Long title",
-                            true);
+            InputField longTitleField = InputFieldFactory.createTextArea("longTitle", "Long title", true);
             InputFieldAttributes.setColumns(longTitleField, 70);
             fields.add(longTitleField);
             InputField precisField = InputFieldFactory.createTextArea("precis", "Precis", false);
             InputFieldAttributes.setColumns(precisField, 70);
             fields.add(precisField);
-            InputField descField = InputFieldFactory.createTextArea("description", "Description",
-                            false);
+            InputField descField = InputFieldFactory.createTextArea("description", "Description", false);
             InputFieldAttributes.setColumns(descField, 70);
 
             fields.add(descField);
-            fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true,
-                            collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
-            fields.add(InputFieldFactory.createSelectField("status", "Status", true,
-                            collectOptionsFromConfig("statusRefData", "code", "desc")));
+            fields.add(InputFieldFactory.createSelectField("phaseCode", "Phase", true, collectOptionsFromConfig("phaseCodeRefData", "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("status", "Status", true, collectOptionsFromConfig("statusRefData", "code", "desc")));
             Map<Object, Object> options = new LinkedHashMap<Object, Object>();
             options.put("", "Please select");
             options.put(Boolean.FALSE, "No");
             options.put(Boolean.TRUE, "Yes");
-            fields.add(InputFieldFactory.createSelectField("multiInstitutionIndicator",
-                            "Multi Institutional", true, options));
-            fields.add(InputFieldFactory.createSelectField("adeersReporting",
-                            "AdEERS  reporting required", true, options));
+            fields.add(InputFieldFactory.createSelectField("multiInstitutionIndicator", "Multi Institutional", true, options));
+            fields.add(InputFieldFactory.createSelectField("adeersReporting", "AdEERS  reporting required", true, options));
 
         }
 
@@ -159,14 +152,8 @@ public class DetailsTab extends StudyTab {
         // Create fieldGroup for DiseaseTerminology
         InputFieldGroup studyDiseaseCodeFieldGroup = new DefaultInputFieldGroup("sdcFieldGroup");
         List<InputField> sdFields = studyDiseaseCodeFieldGroup.getFields();
-        sdFields.add(InputFieldFactory
-                        .createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology",
-                                        true, WebUtils.collectOptions(Arrays
-                                                            .asList(DiseaseCodeTerm.values()),
-                                                            null, "displayName")));
-            sdFields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion",
-            				"MedDRA version", false, collectOptions(meddraVersionDao.getAll(),
-            								"id", "name")));
+        sdFields.add(InputFieldFactory.createSelectField("diseaseTerminology.diseaseCodeTerm", "Terminology", true, WebUtils.collectOptions(Arrays.asList(DiseaseCodeTerm.values()), null, "displayName")));
+        sdFields.add(InputFieldFactory.createSelectField("diseaseTerminology.meddraVersion", "MedDRA version", false, collectOptions(meddraVersionDao.getAll(), "id", "name")));
 
         if (dcpCodeFieldGroup == null) {
             dcpCodeFieldGroup = new DefaultInputFieldGroup("dcpFieldGroup");
@@ -174,8 +161,7 @@ public class DetailsTab extends StudyTab {
             Map<Object, Object> designOpts = new LinkedHashMap<Object, Object>();
             designOpts.put("", "Please select");
             designOpts.putAll(collectOptions(Arrays.asList(Design.values()), null, "displayName"));
-            fields.add(InputFieldFactory.createSelectField("design", "Study design", false,
-                            designOpts));
+            fields.add(InputFieldFactory.createSelectField("design", "Study design", false, designOpts));
         }
 
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -191,55 +177,48 @@ public class DetailsTab extends StudyTab {
     }
 
     @Override
-    protected void validate(final Study command, final BeanWrapper commandBean,
-                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
-        if (command.getAeTerminology().getTerm() == Term.MEDDRA
-                        && command.getAeTerminology().getMeddraVersion() == null) {
-            InputField field = fieldGroups.get("scFieldGroup").getFields().get(1);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
-                            + field.getDisplayName());
+    protected void validate(final Study command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+
+        // Adverse event coding terminology
+        if (command.getAeTerminology().getTerm() == Term.MEDDRA && command.getAeTerminology().getMeddraVersion() == null) {
+            InputField field = fieldGroups.get("scFieldGroup").getFields().get(2);
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
         }
 
-        if (command.getAeTerminology().getTerm() == Term.CTC
-                        && command.getAeTerminology().getCtcVersion() == null) {
-            InputField field = fieldGroups.get("scFieldGroup").getFields().get(0);
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
-                            + field.getDisplayName());
+        if (command.getAeTerminology().getTerm() == Term.CTC) {
+
+            if (command.getAeTerminology().getCtcVersion() == null) {
+                InputField field = fieldGroups.get("scFieldGroup").getFields().get(1);
+                errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+            }
+
+            if (command.getOtherMeddra() == null) {
+                InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
+                errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
+            }
         }
-        
-        if (command.getAeTerminology().getTerm() == Term.CTC
-        				&& command.getOtherMeddra() == null) {
-        	
-        	InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
-        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
-        					+ field.getDisplayName());
-        }
-        
+
+        // Disease coding terminology
         // This is to validate if meddra version is selected incase the disease term is of type meddra
-        if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA
-        				&& command.getDiseaseTerminology().getMeddraVersion() == null) {
+        if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA && command.getDiseaseTerminology().getMeddraVersion() == null) {
         	InputField field = fieldGroups.get("sdcFieldGroup").getFields().get(1);
-        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing "
-        					+ field.getDisplayName());
+        	errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
         }
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Study command,
-                    final Errors errors) {
+    public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
         super.postProcess(request, command, errors);
         if (errors.hasErrors()) {
             return;
         }
 
         for (int i = 0; i <= 1; i++) {
-            OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier) command
-                            .getIdentifiers().get(i);
+            OrganizationAssignedIdentifier identifier = (OrganizationAssignedIdentifier) command.getIdentifiers().get(i);
             if (identifier.getType().equals(OrganizationAssignedIdentifier.SPONSOR_IDENTIFIER_TYPE)) {
                 identifier.setOrganization(command.getPrimaryFundingSponsorOrganization());
             }
-            if (identifier.getType().equals(
-                            OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)) {
+            if (identifier.getType().equals(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE)) {
                 identifier.setOrganization(command.getStudyCoordinatingCenter().getOrganization());
             }
         }
