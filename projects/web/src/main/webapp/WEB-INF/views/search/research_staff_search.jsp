@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <tags:stylesheetLink name="tabbedflow"/>
@@ -65,7 +65,9 @@ function buildTable(form) {
  
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">
-  
+<p>
+<tags:instructions code="researchstaffsearch" />
+</p>
    <chrome:box title="Research Staff Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> First Name&nbsp; </div>

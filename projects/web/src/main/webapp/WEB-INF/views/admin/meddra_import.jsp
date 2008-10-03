@@ -152,6 +152,9 @@ var t= 0 ;
 </head>
 <body>
 	<chrome:box title="Import MedDRA Dictionary" autopad="true">
+   <p>
+    <tags:instructions code="importmeddra" />
+   </p>
 		<table id="test" class="tablecontent">
     		<tr id="organization-section">
     			<th class="tableHeader" width=300>Version Name</th>

@@ -19,10 +19,7 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" >
     	<jsp:attribute name="instructions">
-    	  Select the fields of adverse event entry screen which are to be made mandatory, 
-    	  when <b>${command.reportDefinition.name}</b> definition is associated to an adverse event report.
-    	  <br/> <!--TODO: need a better instruction...-->
-    	  <br> 
+    	 <tags:instructions code="mandatoryfields" />
     	</jsp:attribute>
 		<jsp:attribute name="repeatingFields">
 		<chrome:division title="Adverse event">

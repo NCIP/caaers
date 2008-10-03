@@ -58,9 +58,9 @@
     <chrome:box title="Investigational New Drug Details">
 	<form:form>
 		<chrome:division id="single-fields">
-			<div class="instructions">You can add the details of an Investigational New Drug(IND) here.
-			<br /><br />
-			</div>
+			<p>
+             <tags:instructions code="inddetails" />
+            </p>
 			<tags:hasErrorsMessage hideErrorDetails="true"/>
 			<!--  JSP body here -->
 			<div id="indfields">

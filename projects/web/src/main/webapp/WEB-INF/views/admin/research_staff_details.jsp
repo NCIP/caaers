@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <title>Research Staff</title>
@@ -68,13 +68,14 @@
 </ul>
         </div>
 <br/>
-
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
 <jsp:attribute name="repeatingFields">
 	<input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
 	<input type="hidden" name="_finish" value="true"/>
-
+<p>
+<tags:instructions code="researchstaffdetails" />
+</p>
  <chrome:division title="Site">
 	<c:forEach items="${fieldGroups.site.fields}" var="field">
 	  <csmauthz:accesscontrol domainObject="${organization}"

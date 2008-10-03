@@ -27,10 +27,10 @@
     </div>      
   <br />
  
-
+<p>
+<tags:instructions code="organizationdetails" />
+</p>
 <tags:tabForm tab="${tab}" flow="${flow}"  formName="organizationForm">
-
-    
 		 <jsp:attribute name="singleFields">
             <div>
 			<input type="hidden" name="_action" value="">

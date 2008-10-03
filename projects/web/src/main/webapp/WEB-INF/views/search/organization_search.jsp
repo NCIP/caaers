@@ -62,10 +62,9 @@ function buildTable(form) {
  </div>
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">
-   <p class="instructions">
-    <br />
-     Search for Organization by choosing any of the listed Criteria. The result will show the details of Organization.
-   </p> 
+<p>
+<tags:instructions code="organizationsearch" />
+</p>
    <chrome:box title="Organization Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> Name :&nbsp; </div>

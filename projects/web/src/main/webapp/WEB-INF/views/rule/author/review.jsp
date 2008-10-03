@@ -25,10 +25,10 @@
 </head>
 <body>
     
-    <chrome:division style="width : 60%">
+    <chrome:division>
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
     <jsp:attribute name="instructions">
-    	Please review the details furnished below, then press save to persist the modifications.
+    	<tags:instructions code="rulereview" />
     </jsp:attribute>
 	<jsp:attribute name="singleFields">
 		  

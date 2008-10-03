@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title>Import Rules</title>
@@ -42,7 +43,10 @@
     </style>
 </head>
 <body>
-<chrome:box autopad="true">
+<chrome:box title="Import XML File" autopad="true">
+<p>
+<tags:instructions code="importxmlrules" />
+</p>
 	<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             <div class="row">
                 <div class="label">

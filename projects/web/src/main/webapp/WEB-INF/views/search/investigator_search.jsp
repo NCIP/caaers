@@ -63,6 +63,9 @@ function buildTable(form) {
   <br />
 
  <div class="content">
+         <p>
+        <tags:instructions code="investigatorreview" />
+        </p>
   <form:form name="searchForm" id="searchForm" method="post">
    
    <chrome:box title="Investigator Criteria" cssClass="mpaired" autopad="false">

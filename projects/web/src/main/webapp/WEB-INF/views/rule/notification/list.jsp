@@ -18,13 +18,16 @@
     <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
+<p>
+<tags:instructions code="listreportdefinitions" />
+</p>
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
     items="command.reportCalendarTemplateList"
     var="rct" imagePath="${ecImagePath}"
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="90%"
-    style="" styleClass=""
+    style="width:100%;" styleClass=""
     filterable="false">
     <ec:row>
         <ec:column property="name" title="Name">

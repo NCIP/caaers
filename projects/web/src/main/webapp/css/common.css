@@ -41,7 +41,7 @@ body {
     left:-18px;
 }
 #thirdlevelnav{
-	margin:5px;
+	margin:5px;	
 }
 
 #thirdlevelnav div{
@@ -821,3 +821,5 @@ text-align:left;
 width:75%;
 }
 #table231{background-color:#fff}
+/* suppress Routine AE search button */
+#secondlevelnav_routineReportController{visibility:hidden;}

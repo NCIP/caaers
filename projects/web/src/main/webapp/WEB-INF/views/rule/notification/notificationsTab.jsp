@@ -128,7 +128,7 @@
 		}
 		
 	--></script> 
-
+<link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
    <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -136,8 +136,9 @@
     	<td>
     	  	<!-- This box contains the Scale -->
     		<chrome:box title="Time Scale" id="timescale" style="width:100%" autopad="true">
-   				<p>You are configuring reminder notifications for <b>${command.reportDefinition.name}</b>.
-   				Choose the ${command.reportDefinition.timeScaleUnitType},and configure the notification(s)</p>
+   				<p>
+                <tags:instructions code="rulenotifications" />
+                </p>
    				
    				<table  border="0" cellpadding="0" cellspacing="0" bordercolor="#0066CC" width="98%">
    					<tr align="center" valign="middle"> 

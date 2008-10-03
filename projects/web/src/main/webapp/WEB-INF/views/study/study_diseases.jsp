@@ -257,6 +257,14 @@
        })
 
     </script>
+    <!--[if IE]>
+<style>
+#thirdlevelnav{
+	margin:5px;
+	font-size:9pt;
+}
+</style>
+<![endif]-->
 </head>
 <body>
 <p><tags:instructions code="study.study_disease.top" /></p>

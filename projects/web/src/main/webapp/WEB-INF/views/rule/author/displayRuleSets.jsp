@@ -47,11 +47,11 @@
 </head>
 <body>
 
-<p id="instructions">
-        Select Rule Set name to Add or Modify the Rules. To create new Rule Set, click the "Create Rule Set" button.
+<p>
+<tags:instructions code="ruleset" />
 </p>
 
-<chrome:division style="width : 60%">
+<chrome:division>
 
     <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >
 		<jsp:attribute name="singleFields">
@@ -65,7 +65,7 @@
 				<%-- Check whether RuleSets exist or not --%>
 				<c:when test="${empty command.existingRuleSets}" >
 	            	<div class="row">
-    	            	Rule Sets do not exist. Please continue to create a new Rule Set.
+    	            	Rule Sets do not exist. Please create a new Rule Set.
         	    	</div>
 				</c:when>
 				<%-- Display all the existing rulesets --%>
@@ -73,7 +73,7 @@
 					<input type="radio" id="radioRuleSetName1" name="radioRuleSetName" style="visibility:hidden"/>
 					<c:forEach items="${command.existingRuleSets}" var="ruleSet">
 				        <div class="row">
-    	        		    <label><input type="radio" id="radioRuleSetName" name="radioRuleSetName" value="${ruleSet.description}" onclick="disableCreateRuleSet(this)"/> &nbsp; <b>${ruleSet.description} </b></label>
+    	        		    <label><input type="radio" id="radioRuleSetName" name="radioRuleSetName" value="${ruleSet.description}" onClick="disableCreateRuleSet(this)"/> &nbsp; <b>${ruleSet.description} </b></label>
 			            </div>
     				</c:forEach>
         	    </c:otherwise>
@@ -82,7 +82,7 @@
         <div class="row"  id="newRuleSetDiv" style="display:none">
             <div class="label"><label for="newRuleSetName">Rule Set Name</label></div>
             <div class="value">
-                <select id="newRuleSetName" onchange="setRuleSetName(this)">
+                <select id="newRuleSetName" onChange="setRuleSetName(this)">
                     <option value="Please select a RuleSet Name">Please select a Rule Set Name</option>
                     <!--
                     
@@ -100,7 +100,7 @@
         <div class="row" id="otherRuleSetDiv" style="display:none">
             <div class="label"><label for="otherRuleSetName">Other Name</label></div>
             <div class="value">
-		<input type="text" id="otherRuleSetName" name="otherRuleSetName" onkeyup="setOtherRuleSetName(this)"/>
+		<input type="text" id="otherRuleSetName" name="otherRuleSetName" onKeyUp="setOtherRuleSetName(this)"/>
             </div>
         </div>
 	

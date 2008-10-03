@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <title>Investigator</title>

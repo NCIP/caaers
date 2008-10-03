@@ -4,7 +4,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
-    <title>Rule Sets</title>
+    <title>List Rules</title>
     <tags:stylesheetLink name="extremecomponents"/>
     <tags:dwrJavascriptLink objects="authorRule"/>
     <style type="text/css">
@@ -71,15 +71,16 @@
     </script>
 </head>
 <body>
-
-
+<p>
+<tags:instructions code="listrules" />
+</p>
 <c:set var="ecImagePath"><c:url value="/images/table/*.gif"/></c:set>
 <ec:table
     items="command.ruleSets"
     var="ruleSet" imagePath="${ecImagePath}"
     showPagination="false"
     cellspacing="0" cellpadding="0" border="0" width="80%"
-    style="" styleClass="">
+    style="margin-left:30px; width:90%;" styleClass="">
     <c:if test="${ruleSet.name != 'default' }">
     <ec:row>
     

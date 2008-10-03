@@ -1187,8 +1187,9 @@ div#createNew h3, div.section h3 {
 		categoryObjects2.push('${cat.id}' + '||' + '${cat.name}');
 	</script>
 </c:forEach>
-<p id="instructions">Rules can be added by using the Add Rule
-  button. Rules created will belong to the selected Rule Set.</p>
+<p>
+<tags:instructions code="3rules" />
+  </p>
 <chrome:division >
   <%--<form:form cssClass="standard">--%>
   <tags:tabForm tab="${tab}" flow="${flow}" willSave="false" >

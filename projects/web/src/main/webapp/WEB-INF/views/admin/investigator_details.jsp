@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <html>
 <head>
@@ -111,9 +112,12 @@ Event.observe(window, "load", function() {
 
     </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
-    
+            <p>
+        <tags:instructions code="investigatordetails" />
+        </p>
     
     	<chrome:division title="Investigator Details" id="investigator">
+
 		<div class="leftpanel">
 			<c:forEach begin="0" end="3" items="${fieldGroups.investigator.fields}" var="field">
                <tags:renderRow field="${field}"  />

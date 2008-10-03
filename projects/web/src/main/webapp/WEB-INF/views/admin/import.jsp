@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
 <tags:includeScriptaculous/>
@@ -62,11 +62,11 @@
 
 </head>
 <body>
-<p id="instructions">
-        Import Studies/Protocols or Subjects into caAERS
-</p>
     <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
+<p>
+  <tags:instructions code="importdata" />
+</p>
 	<div>		
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">

@@ -65,10 +65,9 @@ function buildTable(form) {
  
  <div class="content">
   <form:form name="searchForm" id="searchForm" method="post">
-   <p class="instructions">
-    <br />
-     Search for Investigational New Drug by choosing any of the listed Criteria. The result will show the details such as IND# and sponsor.
-   </p> 
+<p>
+<tags:instructions code="indsearch" />
+</p>
    <chrome:box title="Investigational New Drug Criteria" cssClass="mpaired" autopad="false">
 		    <div class="row">
 		    	<div class="label"> IND # :&nbsp; </div>

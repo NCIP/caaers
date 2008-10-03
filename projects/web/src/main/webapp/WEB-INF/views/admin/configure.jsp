@@ -2,6 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <html>
 <head>
     <title>Configure caAERS</title>
@@ -45,7 +46,10 @@
     </style>
 </head>
 <body>
-    <chrome:box autopad="true">
+    <chrome:box title="Configure caAERS" autopad="true">
+    <p>
+    <tags:instructions code="configurecaares" />
+    </p>
     <c:url value="/pages/admin/configure" var="action"/>
     <form:form action="${action}" cssClass="standard">
         <c:forEach items="${command.conf}" var="entry" varStatus="status">

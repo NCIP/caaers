@@ -1,14 +1,14 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 <html>
 <head>
-	<title>${tab.longTitle}</title>
-    <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
-  	<tags:includePrototypeWindow />
-	<tags:javascriptLink name="extremecomponents"/>
-    <tags:dwrJavascriptLink objects="createAE"/>
-    <tags:labs labs="${command.assignment.labLoads}"/>
-	<script type="text/javascript">
+<title>${tab.longTitle}</title>
+<tags:stylesheetLink name="ae"/>
+<tags:includeScriptaculous/>
+<tags:includePrototypeWindow />
+<tags:javascriptLink name="extremecomponents"/>
+<tags:dwrJavascriptLink objects="createAE"/>
+<tags:labs labs="${command.assignment.labLoads}"/>
+<script type="text/javascript">
 		var mHistory = null;
  		var mHistoryClass = Class.create();
  		Object.extend(mHistoryClass.prototype, {
@@ -188,32 +188,33 @@
 	   }
 	   
 	</script>
-    <style>
-	.tablecontent td {border:0px;}
-	</style>
+<style>
+.tablecontent td {
+	border:0px;
+}
+</style>
 </head>
 <body>
-	<p>
-	 <tags:instructions code="instruction_ae_patientdetails"/>
-	</p>
-<form:form id="command">	
-
-<div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99;">
+<p>
+  <tags:instructions code="instruction_ae_patientdetails"/>
+</p>
+<form:form id="command">
+  <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99;">
     <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
-        <tbody>
-            <tr class="titleRow">
-                <td align="left" class="title">Select :</td>
-                <td width="20px"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div id="showAllDropDownContent"/></td>
-            </tr>
-        </tbody>
+      <tbody>
+        <tr class="titleRow">
+          <td align="left" class="title">Select :</td>
+          <td width="20px"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
+        </tr>
+        <tr>
+          <td colspan="2"><div id="showAllDropDownContent"/></td>
+        </tr>
+      </tbody>
     </table>
-</div>
-	<tags:tabFields tab="${tab}" />
-	<tags:hasErrorsMessage />
-	<chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
+  </div>
+  <tags:tabFields tab="${tab}" />
+  <tags:hasErrorsMessage />
+  <chrome:box id="aeReport.participantHistory" title="General" collapsable="true">
     <p>
 	 <tags:instructions code="instruction_ae_patientdetails_general"/>
 	</p>
@@ -285,222 +286,187 @@
 
 	<chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
     <p>
-	 <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
-	</p>
-		<tags:hasErrorsMessage path="aeReport.diseaseHistory.*" />
-		<a name="anchorDiseaseInfo" />
-		<div id="anchorDiseaseInfo">
-			<ui:row path="${fieldGroups['disease'].fields[0].propertyName}">
-				<jsp:attribute name="label">
-					<tags:renderLabel field="${fieldGroups['disease'].fields[0]}" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<tags:renderInputs field="${fieldGroups['disease'].fields[0]}" />
-				</jsp:attribute>
-				<jsp:attribute name="embededJS">
-					<%-- 
+      <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
+    </p>
+    <tags:hasErrorsMessage path="aeReport.diseaseHistory.*" />
+    <a name="anchorDiseaseInfo" />
+    <div id="anchorDiseaseInfo">
+      <ui:row path="${fieldGroups['disease'].fields[0].propertyName}">
+        <jsp:attribute name="label">
+          <tags:renderLabel field="${fieldGroups['disease'].fields[0]}" />
+        </jsp:attribute>
+        <jsp:attribute name="value">
+          <tags:renderInputs field="${fieldGroups['disease'].fields[0]}" />
+        </jsp:attribute>
+        <jsp:attribute name="embededJS">
+          <%-- 
 					  Note :- If disease is Disease Name is  'Solid tumor, NOS' or 'Hematopoietic malignancy, NOS', other disease should be provided 
 					--%>
-					$('${fieldGroups['disease'].fields[0].propertyName}').observe('change', function(evt){
-						var el = $(evt.element());
-						var optionText = el.options[el.selectedIndex].text;
-						if(optionText == 'Solid tumor, NOS' || optionText == 'Hematopoietic malignancy, NOS'){
-							AE.slideAndShow("${fieldGroups['disease'].fields[1].propertyName}-row")
-						}else{
-							$('${fieldGroups['disease'].fields[1].propertyName}').value = ''
-     		 	 					AE.slideAndHide("${fieldGroups['disease'].fields[1].propertyName}-row")
-						}
-					});
-				</jsp:attribute>
-			</ui:row>
-			 <tags:renderRow field="${fieldGroups['disease'].fields[1]}" style="display: none" />
-		
-			<c:set var="cpsField" value="${fieldGroups['disease'].fields[2]}" />
-			<c:set var="opsField" value="${fieldGroups['disease'].fields[3]}" />
-			<ui:row path="${cpsField.propertyName}">
-				<jsp:attribute name="label">
-					<tags:renderLabel field="${cpsField}" />
-				</jsp:attribute>
-				<jsp:attribute name="value">
-					<ui:autocompleter path="${cpsField.propertyName}"
+          $('${fieldGroups['disease'].fields[0].propertyName}').observe('change', function(evt){
+          var el = $(evt.element());
+          var optionText = el.options[el.selectedIndex].text;
+          if(optionText == 'Solid tumor, NOS' || optionText == 'Hematopoietic malignancy, NOS'){
+          AE.slideAndShow("${fieldGroups['disease'].fields[1].propertyName}-row")
+          }else{
+          $('${fieldGroups['disease'].fields[1].propertyName}').value = ''
+          AE.slideAndHide("${fieldGroups['disease'].fields[1].propertyName}-row")
+          }
+          }); </jsp:attribute>
+      </ui:row>
+      <tags:renderRow field="${fieldGroups['disease'].fields[1]}" style="display: none" />
+      <c:set var="cpsField" value="${fieldGroups['disease'].fields[2]}" />
+      <c:set var="opsField" value="${fieldGroups['disease'].fields[3]}" />
+      <ui:row path="${cpsField.propertyName}">
+        <jsp:attribute name="label">
+          <tags:renderLabel field="${cpsField}" />
+        </jsp:attribute>
+        <jsp:attribute name="value">
+          <ui:autocompleter path="${cpsField.propertyName}"
 					  initialDisplayValue="${empty command.aeReport.diseaseHistory.codedPrimaryDiseaseSite ? 'Begin typing here...' : command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.name}">
-						<jsp:attribute name="populatorJS">
-							function(autocompleter, text) {
-                				createAE.matchAnatomicSite(text, function(values) {
-                    				autocompleter.setChoices(values)
-                				})
-            				}
-						</jsp:attribute>
-						<jsp:attribute name="selectorJS">
-							function(obj){
-								return obj.name;
-							}
-						</jsp:attribute>
-						<jsp:attribute name="optionsJS">
-							{
-								afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
-									//show the otherPrimaryDiseaseSite box below, using javascript
-									$('${cpsField.propertyName}').value = selectedChoice.id
-									if(selectedChoice.id == '110'){
-										AE.slideAndShow("${opsField.propertyName}-row");
-									}else{
-										$("${opsField.propertyName}").value=""
-        								AE.slideAndHide("${opsField.propertyName}-row")
-									}
-								}
-							}
-						</jsp:attribute>
-					</ui:autocompleter>
-					<a href="#anchorDiseaseInfo" onClick="showShowAllTable('aeReport.diseaseHistory.codedPrimaryDiseaseSite')">Show All</a>
-				</jsp:attribute>
-			</ui:row>
-			<tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
-			<tags:renderRow field="${fieldGroups['disease'].fields[4]}" />
-			
-		</div>
-		</div>
-	</chrome:box>
-
-	<a name="anchorMetastaticDiseasesSection" />
-	<chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
+            <jsp:attribute name="populatorJS"> function(autocompleter, text) {
+              createAE.matchAnatomicSite(text, function(values) {
+              autocompleter.setChoices(values)
+              })
+              } </jsp:attribute>
+            <jsp:attribute name="selectorJS"> function(obj){
+              return obj.name;
+              } </jsp:attribute>
+            <jsp:attribute name="optionsJS"> {
+              afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
+              //show the otherPrimaryDiseaseSite box below, using javascript
+              $('${cpsField.propertyName}').value = selectedChoice.id
+              if(selectedChoice.id == '110'){
+              AE.slideAndShow("${opsField.propertyName}-row");
+              }else{
+              $("${opsField.propertyName}").value=""
+              AE.slideAndHide("${opsField.propertyName}-row")
+              }
+              }
+              } </jsp:attribute>
+          </ui:autocompleter>
+          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('aeReport.diseaseHistory.codedPrimaryDiseaseSite')">Show All</a> </jsp:attribute>
+      </ui:row>
+      <tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
+      <tags:renderRow field="${fieldGroups['disease'].fields[4]}" />
+    </div>
+    </div>
+  </chrome:box>
+  <a name="anchorMetastaticDiseasesSection" />
+  <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
     <p>
-	 <tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/>
-	</p>
-		<tags:hasErrorsMessage path="aeReport.diseaseHistory.metastaticDiseaseSites.*" />
-		<tags:hasErrorsMessage path="metastaticDiseaseSite" />
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td>
-					<ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
-						<jsp:attribute name="populatorJS">
-							function(autocompleter, text) {
-                				createAE.matchAnatomicSite(text, function(values) {
-                    				autocompleter.setChoices(values)
-                				})
-							}	
-						</jsp:attribute>
-						<jsp:attribute name="selectorJS">
-							function (obj) {   
-								return obj.name;  
-							}
-						</jsp:attribute>
-					</ui:autocompleter>
-                    &nbsp;
-					<a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('metastaticDiseaseSite')">Show All</a>
-					&nbsp;
-                    <input id="metastatic-diseases-btn" type="button" value="Add"/>
-                </td>
-				
-			</tr>
-			<tr>
-				<td>
-					<a name="anchorMetastaticDiseases" />
-					<div id="anchorMetastaticDiseases">
-						<c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}" />
-						<c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
-							<ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
-	 </chrome:box>
-
-
-	<chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-existing Conditions" collapsable="true">
+      <tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/>
+    </p>
+    <tags:hasErrorsMessage path="aeReport.diseaseHistory.metastaticDiseaseSites.*" />
+    <tags:hasErrorsMessage path="metastaticDiseaseSite" />
+    <table class="tablecontent" width="80%">
+      <tr>
+        <td><ui:autocompleter path="metastaticDiseaseSite" initialDisplayValue="Begin typing here..." size="50">
+            <jsp:attribute name="populatorJS"> function(autocompleter, text) {
+              createAE.matchAnatomicSite(text, function(values) {
+              autocompleter.setChoices(values)
+              })
+              } </jsp:attribute>
+            <jsp:attribute name="selectorJS"> function (obj) {   
+              return obj.name;  
+              } </jsp:attribute>
+          </ui:autocompleter>
+          &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('metastaticDiseaseSite')">Show All</a> &nbsp;
+          <input id="metastatic-diseases-btn" type="button" value="Add"/>
+        </td>
+      </tr>
+      <tr>
+        <td><a name="anchorMetastaticDiseases" />
+          <div id="anchorMetastaticDiseases">
+            <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}" />
+            <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
+              <c:set var="newIndex" value="${size - (status.index + 1)}" />
+              <c:set var="mSite" value="${command.aeReport.diseaseHistory.metastaticDiseaseSites[newIndex]}" />
+              <ae:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" />
+            </c:forEach>
+          </div></td>
+      </tr>
+    </table>
+  </chrome:box>
+  <chrome:box id="aeReport.saeReportPreExistingConditions" title="Pre-existing Conditions" collapsable="true">
     <p>
-	 <tags:instructions code="instruction_ae_patientdetails_precond"/>
-	</p>
-		<tags:hasErrorsMessage path="aeReport.saeReportPreExistingConditions.*" />
-		<tags:hasErrorsMessage path="preExistingCondition" />
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td width="90%">
-					<ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
-                    &nbsp;
-                    <input id="pre-cond-btn" type="button" value="Add"/>
-                </td>
-			</tr>
-			<tr>
-				<td>
-					<a name="anchorPreExistingCondition" />
-					<div id="anchorPreExistingCondition">
-						<c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
-						<c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="pCond" value="${command.aeReport.saeReportPreExistingConditions[newIndex]}" />
-							<ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</chrome:box>
-
-
-	<chrome:box id="aeReport.concomitantMedications" title="ConMeds" collapsable="true">
+      <tags:instructions code="instruction_ae_patientdetails_precond"/>
+    </p>
+    <tags:hasErrorsMessage path="aeReport.saeReportPreExistingConditions.*" />
+    <tags:hasErrorsMessage path="preExistingCondition" />
+    <table class="tablecontent" width="80%">
+      <tr>
+        <td width="90%"><ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
+          &nbsp;
+          <input id="pre-cond-btn" type="button" value="Add"/>
+        </td>
+      </tr>
+      <tr>
+        <td><a name="anchorPreExistingCondition" />
+          <div id="anchorPreExistingCondition">
+            <c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
+            <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
+              <c:set var="newIndex" value="${size - (status.index + 1)}" />
+              <c:set var="pCond" value="${command.aeReport.saeReportPreExistingConditions[newIndex]}" />
+              <ae:onePreExistingCond index="${newIndex}" preExistingCondition="${pCond.preExistingCondition}" />
+            </c:forEach>
+          </div></td>
+      </tr>
+    </table>
+  </chrome:box>
+  <chrome:box id="aeReport.concomitantMedications" title="ConMeds" collapsable="true">
     <p>
-	 <tags:instructions code="instruction_ae_patientdetails_conmeds"/>
-	</p>
-		<tags:hasErrorsMessage path="aeReport.concomitantMedications.*" />
-		<tags:hasErrorsMessage path="concomitantMedication" />
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td width="90%">
-					<ui:text path="concomitantMedication" size="50" />
-                    &nbsp;
-                    <input id="concomitantMedication-btn" type="button" value="Add"/>
-                </td>
-			</tr>
-			<tr>
-				<td>
-					<a name="anchorConcomitantMedication" />
-					<div id="anchorConcomitantMedication">
-						<c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
-						<c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="conMed" value="${command.aeReport.concomitantMedications[newIndex]}" />
-							<ae:oneConMed index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</chrome:box>
-	<chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
+      <tags:instructions code="instruction_ae_patientdetails_conmeds"/>
+    </p>
+    <tags:hasErrorsMessage path="aeReport.concomitantMedications.*" />
+    <tags:hasErrorsMessage path="concomitantMedication" />
+    <table class="tablecontent" width="80%">
+      <tr>
+        <td width="90%"><ui:text path="concomitantMedication" size="50" />
+          &nbsp;
+          <input id="concomitantMedication-btn" type="button" value="Add"/>
+        </td>
+      </tr>
+      <tr>
+        <td><a name="anchorConcomitantMedication" />
+          <div id="anchorConcomitantMedication">
+            <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
+            <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
+              <c:set var="newIndex" value="${size - (status.index + 1)}" />
+              <c:set var="conMed" value="${command.aeReport.concomitantMedications[newIndex]}" />
+              <ae:oneConMed index="${newIndex}" concomitantMedication="${conMed}" collapsed="true" />
+            </c:forEach>
+          </div></td>
+      </tr>
+    </table>
+  </chrome:box>
+  <chrome:box id="aeReport.saeReportPriorTherapies" title="Prior Therapies" collapsable="true">
     <p>
-	 <tags:instructions code="instruction_ae_patientdetails_priortherapies"/>
-	</p>
-		<tags:hasErrorsMessage path="aeReport.saeReportPriorTherapies.*" />
-		<tags:hasErrorsMessage path="priorTherapyAgents" />
-		<tags:hasErrorsMessage path="priorTherapy" />
-	
-		<table class="tablecontent" width="80%">
-			<tr>
-				<td width="90%">
-					<ui:select options="${priorTherapyOptions}" path="priorTherapy" />
-                    &nbsp;
-                    <input id="priortherapy-btn" type="button" value="Add"/>
-                </td>
-			</tr>
-			<tr>
-				<td>
-					<a name="anchorPriorTherapy" />
-					<div id="anchorPriorTherapy">
-						<c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
-						<c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
-							<c:set var="newIndex" value="${size - (status.index + 1)}" />
-							<c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}" />
-							<ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" /> 
-						</c:forEach>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</chrome:box>	 
-	<tags:tabControls flow="${flow}" tab="${tab}" />
+      <tags:instructions code="instruction_ae_patientdetails_priortherapies"/>
+    </p>
+    <tags:hasErrorsMessage path="aeReport.saeReportPriorTherapies.*" />
+    <tags:hasErrorsMessage path="priorTherapyAgents" />
+    <tags:hasErrorsMessage path="priorTherapy" />
+    <table class="tablecontent" width="80%">
+      <tr>
+        <td width="90%"><ui:select options="${priorTherapyOptions}" path="priorTherapy" />
+          &nbsp;
+          <input id="priortherapy-btn" type="button" value="Add"/>
+        </td>
+      </tr>
+      <tr>
+        <td><a name="anchorPriorTherapy" />
+          <div id="anchorPriorTherapy">
+            <c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
+            <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
+              <c:set var="newIndex" value="${size - (status.index + 1)}" />
+              <c:set var="ptherapy" value="${command.aeReport.saeReportPriorTherapies[newIndex]}" />
+              <ae:onePriorTherapy index="${newIndex}" priorTherapy="${ptherapy}" collapsed="true" />
+            </c:forEach>
+          </div></td>
+      </tr>
+    </table>
+  </chrome:box>
+  <tags:tabControls flow="${flow}" tab="${tab}" />
 </form:form>
 </body>
 </html>

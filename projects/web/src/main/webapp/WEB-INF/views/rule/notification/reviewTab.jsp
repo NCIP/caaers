@@ -24,13 +24,13 @@
     	
     	 
     </script>
-    
+    <link type="image/x-icon" href="../../../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
- <chrome:division title="Review Notification(s)">
+
     <tags:tabForm tab="${tab}" flow="${flow}" >
     <jsp:attribute name="instructions">
-    	Please review the details furnished below, then press save to persist the modifications.
+    	<tags:instructions code="createrulereview" />
     </jsp:attribute>
 	<jsp:attribute name="repeatingFields">
 		  <tags:errors path="*"/>
@@ -106,6 +106,6 @@
         <input id="markFinish" type="hidden" name="_finish"/>
 	</jsp:attribute>
 </tags:tabForm> 
-</chrome:division>
+
 </body>
 </html>
