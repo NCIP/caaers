@@ -59,8 +59,10 @@ public class AdeersReportGenerator {
     protected final Log log = LogFactory.getLog(getClass());
     
     protected CaaersJavaMailSender caaersJavaMailSender;
+    
 
-    public AdeersReportGenerator() {
+
+	public AdeersReportGenerator() {
     };
 
     public String getAdeersXml(String adverseEventReportXml) throws Exception {
@@ -155,73 +157,49 @@ public class AdeersReportGenerator {
                 emails.add(email.trim());
             }
         }
-
+        String tempDir = System.getProperty("java.io.tmpdir");
+        
         if (eprs.size() > 0) {
+        	// generating the pdf here , this would be attched to the email incase of successfull submission to Adeers  (MessageNotificationService)
+        	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+        	this.generatePdf(xml);
+        	
             xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
 
             messageBroadcastService.initialize();
             messageBroadcastService.broadcast(xml);
-
-        }
-
-        if (emails.size() > 0) {
-            String tempDir = System.getProperty("java.io.tmpdir");
             
+        } else if (emails.size() > 0) {
+            
+            String subject = "";
             
             if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.ADEERSPDF)) {
             	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
             	this.generatePdf(xml);
+            	subject = "Expedited Adverse Event Report";
             } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.DCPSAEFORM)) {
             	pdfOutFile = tempDir + "/dcpSAEForm-" + aeReportId + ".pdf";
             	this.generateDcpSaeForm(xml, pdfOutFile);
+            	subject = "DCP SAE Form";
             } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.MEDWATCHPDF)) {
             	pdfOutFile = tempDir + "/medWatchReport-" + aeReportId + ".pdf";
             	this.generateMedwatchPdf(xml);
+            	subject = "Medwatch Form FDA 3500A";
             } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSFORM)) {
             	pdfOutFile = tempDir + "/CIOMSForm-" + aeReportId + ".pdf";
             	this.generateCIOMS(xml, pdfOutFile);
+            	subject = "CIOMS Form";
             } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSSAEFORM)) {
             	pdfOutFile = tempDir + "/CIOMS-SAE-Form-" + aeReportId + ".pdf";
             	this.generateCIOMSTypeForm(xml, pdfOutFile);
+            	subject = "CIOMS SAE Form";
             } else {
             	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
             	generatePdf(xml);
+            	subject = "Expedited Adverse Event Report";
             }
             
-            //pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
-
-            //generatePdf(xml);
-
-            sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration
-                            .get(Configuration.SMTP_USER), configuration
-                            .get(Configuration.SMTP_PASSWORD), configuration
-                            .get(Configuration.SYSTEM_FROM_EMAIL), pdfOutFile, emails
-                            .toArray(new String[0]), configuration.get(Configuration.SMTP_PORT),aeReportId, report.getReportDefinition().getReportFormatType());
-        }
-
-    }
-
-    private void sendMail(String mailHost, String user, String pwd, String from, String attachment,
-                    String[] to, int port, String aeReportId , ReportFormatType reportFormatType) throws Exception {
-        try {
-        	
-            /* Dead code -- to be removed
-        	JavaMailSenderImpl sender = new JavaMailSenderImpl();
-            // sender.setHost("smtp.comcast.net");
-            sender.setUsername(user);
-            sender.setPassword(pwd);
-            sender.setHost(mailHost);
-            sender.setPort(port);
-            */
-            MimeMessage message = caaersJavaMailSender.createMimeMessage();
-            message.setSubject("Expedited Adverse Event Report");
-            message.setFrom(new InternetAddress(from));
-
-            // use the true flag to indicate you need a multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setTo(to);
-
-            //helper.setText("report ... ");
+            //
             ExpeditedAdverseEventReport expeditedAdverseEventReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
             Participant participant = expeditedAdverseEventReport.getAssignment().getParticipant();
             String firstName = participant.getLastFirst();
@@ -245,32 +223,43 @@ public class AdeersReportGenerator {
             }
             
             String content = "";
-            
-            if (reportFormatType.equals(ReportFormatType.ADEERSPDF)) {
-            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
+            if (report.getReportDefinition().equals(ReportFormatType.ADEERSPDF)) {
+            	content = "An "+subject+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
             } else {
-            	content = "An expedited report for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
+            	content = "An "+subject+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
             }
-            	helper.setText(content);
-          
-            File f = new File(attachment);
-            FileSystemResource file = new FileSystemResource(f);
-            helper.addAttachment(file.getFilename(), file);
-
-            /*
-             * for (int i=0 ; i<attachments.length; i++) { File f = new File(attachments[i]);
-             * FileSystemResource file = new FileSystemResource(f);
-             * helper.addAttachment(file.getFilename(), file); }
-             */
-
             
-            caaersJavaMailSender.send(message);
+            sendMail(configuration.get(Configuration.SYSTEM_FROM_EMAIL), emails.toArray(new String[0]), subject, content, pdfOutFile);
 
-        } catch (Exception e) {
-            throw new Exception(" Error in sending email , please check the confiuration " , e);
         }
 
     }
+    
+	public void sendMail(String from, String[] to, String subject, String content, String attachment) throws Exception {
+		
+		try {		
+		    MimeMessage message = caaersJavaMailSender.createMimeMessage();
+		    message.setSubject(subject);
+		    message.setFrom(new InternetAddress(from));
+		
+		    // use the true flag to indicate you need a multipart message
+		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		    helper.setTo(to);
+		    helper.setText(content);
+		    
+			if (attachment != null) {
+			    File f = new File(attachment);
+			    FileSystemResource file = new FileSystemResource(f);
+			    helper.addAttachment(file.getFilename(), file);
+			}
+		    
+		    caaersJavaMailSender.send(message);
+		    
+		} catch (Exception e) {
+		    throw new Exception(" Error in sending email , please check the confiuration " , e);
+		}
+	
+	 }
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
@@ -284,15 +273,16 @@ public class AdeersReportGenerator {
     public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
     }
-    
-    public CaaersJavaMailSender getCaaersJavaMailSender() {
-		return caaersJavaMailSender;
-	}
-    
-    public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+
+
+    public void setExpeditedAdverseEventReportDao(
+            ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+    		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+    }
+	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
 		this.caaersJavaMailSender = caaersJavaMailSender;
 	}
-    
+    		
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         String str1 = "";
@@ -316,9 +306,6 @@ public class AdeersReportGenerator {
         }
     }
 
-    public void setExpeditedAdverseEventReportDao(
-                    ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-    }
+
 
 }
