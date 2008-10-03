@@ -125,8 +125,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		Set<String> paramNames = request.getParameterMap().keySet();
         boolean addReportingPeriodBinder = false;
         addReportingPeriodBinder = paramNames.contains("addReportingPeriodBinder");
-        if(!addReportingPeriodBinder)
-        	binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
+        if (!addReportingPeriodBinder) binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
 		initBinder(request,binder, aeCommand);
 		return binder;

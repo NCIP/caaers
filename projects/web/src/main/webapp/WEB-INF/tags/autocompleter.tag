@@ -16,22 +16,32 @@
  <form:hidden path="${propertyName}"/>
 
 <script>
-$('${propertyName}-input').observe('focus', function() {
-    if($('${propertyName}').value == ''){
-         var el = $('${propertyName}-input');
-         el.clear();
-         el.removeClassName('pending-search');
-    }
-});
-$('${propertyName}-input').observe('blur', function() {
-        var el = $('${propertyName}-input');
-        if (el.value == '') {
-        el.value = '${initialDisplayValue}';
-        el.addClassName('pending-search');
-        $('${propertyName}').clear();
-    };
-});
-if($('${propertyName}').value == ''){
-    $('${propertyName}-input').addClassName('pending-search');
-}
+    <c:if test="${not readonly}">
+        AE.hash.set('${path}' , '1');
+
+        $('${propertyName}-input').observe('focus', function() {
+            if ($('${propertyName}').value == '' && AE.hash.get('${path}') == '1') {
+                var el = $('${propertyName}-input');
+                el.clear();
+                el.removeClassName('pending-search');
+                AE.hash.set('${path}', '0');
+            }
+        });
+
+        $('${propertyName}-input').observe('blur', function() {
+            if (AE.hash.get('${path}') == '0') {
+                var el = $('${propertyName}-input');
+                if (el.value == '') {
+                    el.value = '${initialDisplayValue}';
+                    el.addClassName('pending-search');
+                    $('${propertyName}').clear();
+                    AE.hash.set('${path}', '1');
+                }
+            }
+        });
+
+        if ($('${propertyName}').value == '') {
+            $('${propertyName}-input').addClassName('pending-search');
+        }
+    </c:if>
 </script>

@@ -15,12 +15,16 @@ Note: -
 
 <chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
 <p><tags:instructions code="instruction_ae_oae"/></p>
-               <tags:aeTermQuery isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+               <tags:aeTermQuery
+                       isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
                        noBackground="true"
-                   callbackFunctionName="rpCreator.addAdverseEvents" ignoreOtherSpecify="false" isAjaxable="true"
-                   version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
-                   title="">
+                       callbackFunctionName="rpCreator.addAdverseEvents"
+                       ignoreOtherSpecify="false"
+                       isAjaxable="true"
+                       version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
+                       title="">
                </tags:aeTermQuery>
+    
                <table id="observedTable" width="100%" class="tablecontent">
                    <tr>
                        <th scope="col" align="left" width="200px"><b>Term</b> </th>
@@ -41,10 +45,11 @@ Note: -
                    </c:forEach>
                 <c:if test="${noObservedAE}">
                 <tr id="observedEmptyRow">
-                        <td colspan="7">No observed adverse event added</td>
+                    <td colspan="7">No observed adverse event added</td>
                 </tr>
                 </c:if>
                </table>
+
     </chrome:division>
 
 <chrome:division title="Solicited Adverse Event(s)" collapsable="true" id="solicitatedID">
@@ -74,6 +79,5 @@ Note: -
    			</table>
    	</center>
  </chrome:division>
-
 
 </c:if>
