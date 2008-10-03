@@ -25,27 +25,10 @@ END;
 $$ 
 LANGUAGE 'plpgsql' ;
 
-CREATE OR REPLACE FUNCTION researchstaff_login() RETURNS SETOF text AS 
-$$
-DECLARE
-	staff research_staffs%rowtype;
-BEGIN
-	
-	--research_staffs.login_id = research_staffs.email_address migration
-	FOR staff IN SELECT * FROM research_staffs
-    LOOP
-        UPDATE research_staffs set login_id=email_address where id=staff.id;
-        RETURN NEXT staff.first_name || '--DONE';
-    END LOOP;
-END;
-$$ 
-LANGUAGE 'plpgsql' ;
 
 DELETE FROM arms;
 DELETE FROM epochs;
 
 SELECT * from studies_epochs_arms();
-SELECT * from researchstaff_login();
 
 DROP FUNCTION studies_epochs_arms();
-DROP FUNCTION researchstaff_login();
