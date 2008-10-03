@@ -258,7 +258,7 @@
 			</td>
 			<td>
 	    		<div class="row">
-	        		<div class="label">Birth Date</div>
+	        		<div class="label">Birth date</div>
 	        		<div class="value">${command.participant.dateOfBirth}</div>
 	    		</div>
 	

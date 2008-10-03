@@ -23,6 +23,7 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -169,6 +171,14 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
             webControllerValidator.validate(request, command, errors);
 
         }
+    }
+    
+    /**
+     * Do not show flash message when we change site.
+     */
+    @Override
+    public void populateSaveConfirmationMessage(Map refdata,HttpServletRequest request, Object command, Errors errors, int page) {
+    	if(StringUtils.isEmpty(request.getParameter("_action")))  	super.populateSaveConfirmationMessage(refdata, request, command, errors, page);
     }
 
     // /BEAN PROPERTIES

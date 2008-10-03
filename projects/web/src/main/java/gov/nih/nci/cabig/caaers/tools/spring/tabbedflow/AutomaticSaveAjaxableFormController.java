@@ -51,13 +51,25 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         WorkFlowTab<C> current = (WorkFlowTab<C>) getFlow(command).getTab(page);
         refdata.putAll(current.referenceData(request, (C) command));
         
-        if(!errors.hasErrors() && !refdata.containsKey("flashMessage")){
-        	if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
-        }
+     
         
         return refdata;
     }
-
+    
+    /**
+     * This method puts the flash message, when user clicks on save.
+     * @param refdata
+     * @param request
+     * @param oCommand
+     * @param errors
+     * @param page
+     */
+    public void populateSaveConfirmationMessage( Map refdata, HttpServletRequest request, Object oCommand, Errors errors, int page){
+    	   if(!errors.hasErrors() && !refdata.containsKey("flashMessage")){
+           	if(page == WebUtils.getPreviousPage(request)) refdata.put("flashMessage", "Information saved successfully"); 
+           }
+    }
+    
     @Override
     protected void postProcessPage(HttpServletRequest request, Object command, Errors errors,
                     int page) throws Exception {

@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
+
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
@@ -66,22 +68,30 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
      * @param listOfTermIDs
      * @return
      */
-    public String addObservedAE(int[] listOfTermIDs) {
+    public AjaxOutput addObservedAE(int[] listOfTermIDs) {
         
+    	AjaxOutput ajaxOutput = new AjaxOutput();
+    	
+    	
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
+        List<String> removedTerms = new ArrayList<String>();
         //filter off the terms that are already present
         for(int id : listOfTermIDs){
         	filteredTermIDs.add(id);
         }
         //remove from filteredTermIds, the ones that are avaliable in AE
         for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
-        	filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
+        	boolean removed = filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
+        	if(removed) removedTerms.add(ae.getAdverseEventTerm().getFullName());
         }
-        
-        if(filteredTermIDs.isEmpty()) return "";
+        if(!removedTerms.isEmpty()){
+        	String[] removedTermsArray = removedTerms.toArray(new String[]{});
+        	ajaxOutput.setObjectContent(removedTermsArray);
+        }
+        if(filteredTermIDs.isEmpty()) return ajaxOutput;
         
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
         for(int id: filteredTermIDs){
@@ -110,8 +120,10 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         }
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
     	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
-    	 params.put("index", Integer.toString(index));
-        return renderAjaxView("observedAdverseEventSection", 0, params);
+    	params.put("index", Integer.toString(index));
+    	 
+    	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
+        return ajaxOutput;
     }
     
     public AjaxOutput deleteAdverseEvent(int index){

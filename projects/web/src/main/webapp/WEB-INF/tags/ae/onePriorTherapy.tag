@@ -42,7 +42,7 @@
 		   <a name="anchorPriorTherapyAgents[${index}]"></a>
 		   <table class="tablecontent" width="95%">
 				<tr>
-				 	<td colspan="2" align="left"><b color="#2E3257">Agent(s)</b></td>
+				 	<td colspan="2" align="left"><b color="#2E3257">Therapy agent(s)</b></td>
 				</tr>
 				<tr>
 					<td width="90%">

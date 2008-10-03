@@ -222,7 +222,7 @@ public class PatientDetailsTab extends AeTab {
 
         InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Start date", false, false, false, false);
         InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "End date", false, false, false, false);
-        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Continued ?");
+        InputField stillTakingMedicationField = InputFieldFactory.createCheckboxField("stillTakingMedications", "Continued?");
 
         creator.createRepeatingFieldGroup("conmed", "concomitantMedications",new SimpleNumericDisplayNameCreator("Medication"), 
         		agentNameField,stillTakingMedicationField, startDateField, endDateField);
@@ -236,7 +236,7 @@ public class PatientDetailsTab extends AeTab {
         InputField priorTherapyField = InputFieldFactory.createSelectField("priorTherapy", "Prior therapy", false, initializePriorTherapyOptions());
         InputField otherField = InputFieldFactory.createTextArea("other", "Comments", false);
         InputFieldAttributes.setColumns(otherField, 65);
-        InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start Date", false, true, true, false);
+        InputField startDateField = InputFieldFactory.createSplitDateField("startDate", "Therapy start date", false, true, true, false);
         InputField endDateField = InputFieldFactory.createSplitDateField("endDate", "Therapy end date", false, true, true, false);
 
         creator.createRepeatingFieldGroup("priorTherapy", "saeReportPriorTherapies",

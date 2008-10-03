@@ -234,15 +234,28 @@ right:20px;
  		addAdverseEvents:function(selectedTerms){
  	 		//find the terms that are not already added in the page
  			var listOfTermIDs = new Array();
+ 			
  		  	$H(selectedTerms).keys().each( function(termID) {
- 		  		var term = $H( selectedTerms ).get(termID);
- 		  		if( !this.isTermAgainAdded(termID)){
  		  		  listOfTermIDs.push( termID );
- 		        }
  		  	}.bind(this));
- 		  	//get the HTML to add from server   
- 		  	captureAE.addObservedAE(listOfTermIDs, function(responseStr){
-				$('observedBlankRow').insert({after:responseStr});
+ 		  	
+ 		  	
+ 		  	//get the HTML to add from server
+ 		  	var notAddedTerms = new Array();   
+ 		  	captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput){
+ 	 		  	var notAddedTerms = ajaxOutput.objectContent;
+ 	 			if(notAddedTerms != null){
+ 	 				//show alert message for terms not added
+ 	 				var errMsg = '';
+ 	 				var i; 
+ 	 				for(i = 0; i < notAddedTerms.length; i++) errMsg = errMsg + (i > 0 ? ',' : '') + notAddedTerms[i];
+ 	 				
+ 	 				if(errMsg != ''){
+ 	 					alert(errMsg + " - is already present.");
+ 	 				}			
+				}
+ 	 		  	
+				$('observedBlankRow').insert({after: ajaxOutput.htmlContent});
 				if( $('observedEmptyRow')) $('observedEmptyRow').remove();
 				this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
  		  	}.bind(this));
