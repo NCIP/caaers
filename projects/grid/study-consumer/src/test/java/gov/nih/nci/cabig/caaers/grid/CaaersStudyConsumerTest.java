@@ -6,15 +6,15 @@ import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.ccts.grid.AddressType;
-import gov.nih.nci.ccts.grid.CoordinatingCenterStudyStatusType;
-import gov.nih.nci.ccts.grid.HealthcareSiteType;
-import gov.nih.nci.ccts.grid.OrganizationAssignedIdentifierType;
-import gov.nih.nci.ccts.grid.Study;
-import gov.nih.nci.ccts.grid.StudyCoordinatingCenterType;
-import gov.nih.nci.ccts.grid.StudyDataEntryStatusType;
-import gov.nih.nci.ccts.grid.StudyFundingSponsorType;
-import gov.nih.nci.ccts.grid.StudyOrganizationType;
+import gov.nih.nci.cabig.ccts.domain.AddressType;
+import gov.nih.nci.cabig.ccts.domain.CoordinatingCenterStudyStatusType;
+import gov.nih.nci.cabig.ccts.domain.HealthcareSiteType;
+import gov.nih.nci.cabig.ccts.domain.OrganizationAssignedIdentifierType;
+import gov.nih.nci.cabig.ccts.domain.Study;
+import gov.nih.nci.cabig.ccts.domain.StudyCoordinatingCenterType;
+import gov.nih.nci.cabig.ccts.domain.StudyDataEntryStatusType;
+import gov.nih.nci.cabig.ccts.domain.StudyFundingSponsorType;
+import gov.nih.nci.cabig.ccts.domain.StudyOrganizationType;
 
 import java.math.BigInteger;
 
