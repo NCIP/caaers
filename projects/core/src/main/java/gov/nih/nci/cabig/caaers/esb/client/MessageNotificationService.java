@@ -1,17 +1,19 @@
 package gov.nih.nci.cabig.caaers.esb.client;
 
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
+import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -20,6 +22,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
@@ -28,7 +31,7 @@ import org.springframework.web.context.request.WebRequest;
 public class MessageNotificationService {
     protected Configuration configuration;
 
-    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+    //protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
     protected OpenSessionInViewInterceptor openSessionInViewInterceptor;
     
@@ -37,8 +40,8 @@ public class MessageNotificationService {
     protected final Log log = LogFactory.getLog(getClass());
 
     private ReportDao reportDao;
-
-    public void setReportDao(ReportDao reportDao) {
+    
+	public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
     }
 
@@ -59,13 +62,32 @@ public class MessageNotificationService {
         // get AEreport by using this id
 
         WebRequest stubWebRequest = preProcess();
-        ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer
-                        .parseInt(aeReportId));
+      //  ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer
+        //                .parseInt(aeReportId));
 
         Report r = reportDao.getById(Integer.parseInt(reportId));
         reportDao.initialize(r.getScheduledNotifications());
         ReportVersion rv = r.getLastVersion();
-
+        
+        
+        //
+        List<String> emails = new ArrayList<String>();
+        
+        for (ReportDelivery delivery : r.getReportDeliveries()) {
+            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
+            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
+                String ep = delivery.getEndPoint();
+                emails.add(ep);
+            }
+        }
+        
+        String[] emailAddresses = rv.getEmailAsArray();
+        if (emailAddresses != null) {
+            for (String email : emailAddresses) {
+                emails.add(email.trim());
+            }
+        }
+        emails.add(submitterEmail);
         // get submitter info
         /*
          * Reporter reporter = aeReport.getReporter(); Map contact =
@@ -102,22 +124,60 @@ public class MessageNotificationService {
         rv.setSubmissionMessage(messages);
         r.setSubmissionMessage(messages);
         reportDao.save(r);
-
+        
+        String subject = "";
+        String attachment = null;
         if (success) {
             messages = messages + url;
+            subject = "Submission of Expedited Report(" + aeReportId + ") to AdEERS";  
+            //this pdf has already been generated in AdeersReportGenerator , we are just attching here incase of successfull submission.
+            String tempDir = System.getProperty("java.io.tmpdir");
+            attachment = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
+        } else {
+        	subject = "Problem with Submission of Expedited Report(" + aeReportId + ") to AdEERS";
+        	// send only to submitter incase of failure
+        	emails = new ArrayList<String>();
+        	emails.add(submitterEmail);
         }
-
+        
         log.debug("send email ");
-        // send email .
-        sendMail(configuration.get(Configuration.SMTP_ADDRESS), configuration
-                        .get(Configuration.SMTP_USER), configuration
-                        .get(Configuration.SMTP_PASSWORD), configuration
-                        .get(Configuration.SYSTEM_FROM_EMAIL), submitterEmail, messages, success,
-                        aeReportId);
-        // sendMail("smtp.comcast.net", "", "" , "caAERS_AdEERS@semanticbits.com",
+        sendMail(emails.toArray(new String[0]), subject, messages, attachment);
     }
 
-    private void sendMail(String mailHost, String user, String pwd, String from, String to,
+	public void sendMail(String[] to, String subject, String content, String attachment) throws Exception {
+		
+		try {		
+			JavaMailSenderImpl caaersJavaMailSender = new JavaMailSenderImpl();
+			caaersJavaMailSender.setUsername(configuration.get(Configuration.SMTP_USER));
+			caaersJavaMailSender.setPassword(configuration.get(Configuration.SMTP_PASSWORD));
+            //System.out.println("host .." + mailHost);
+            caaersJavaMailSender.setHost(configuration.get(Configuration.SMTP_ADDRESS));
+            
+		    MimeMessage message = caaersJavaMailSender.createMimeMessage();
+		    message.setSubject(subject);
+		    message.setFrom(new InternetAddress(configuration.get(Configuration.SYSTEM_FROM_EMAIL)));
+		
+		    // use the true flag to indicate you need a multipart message
+		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		    helper.setTo(to);
+		    helper.setText(content);
+		    
+			if (attachment != null) {
+			    File f = new File(attachment);
+			    FileSystemResource file = new FileSystemResource(f);
+			    helper.addAttachment(file.getFilename(), file);
+			}
+		    
+		    caaersJavaMailSender.send(message);
+		    
+		} catch (Exception e) {
+		    throw new Exception(" Error in sending email , please check the confiuration " , e);
+		}
+	
+	 }
+	
+/*
+    private void sendMail(String mailHost, String user, String pwd, String from, String[] to,
                     String messages, boolean success, String aeReportId) throws Exception {
         try {
             JavaMailSenderImpl sender = new JavaMailSenderImpl();
@@ -148,16 +208,16 @@ public class MessageNotificationService {
         }
 
     }
-
+*/
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
-
+/*
     public void setExpeditedAdverseEventReportDao(
                     ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
-
+*/
     public void setOpenSessionInViewInterceptor(
                     org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor openSessionInViewInterceptor) {
         this.openSessionInViewInterceptor = openSessionInViewInterceptor;
