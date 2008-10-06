@@ -97,7 +97,7 @@
 						 var orgSectionLength = $$('.organization-section-row').length;
 						 if(sysSectionLength > 0) newIndex = newIndex + sysSectionLength;
 						 if(orgSectionLength > 0) newIndex = newIndex + orgSectionLength;
-						 if($('ssi-empty-row')){
+						 if($('si-empty-row')){
                 				Effect.Fade('si-empty-row');
                			 }  		            
 		                 newIndex=newIndex-1;
