@@ -15,6 +15,7 @@ import java.util.Date;
 public class AssignParticipantStudyCommand extends ParticipantInputCommand {
 
     protected final Log log = LogFactory.getLog(getClass());
+    private List<Participant> participantSearchResults= new ArrayList<Participant>();
     private StudySite studySite;
 
     public AssignParticipantStudyCommand() {
