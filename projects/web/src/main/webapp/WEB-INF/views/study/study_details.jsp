@@ -137,7 +137,7 @@
         <c:forEach var="i" begin="1" end="3">
             <ui:row path="${fieldGroups.scFieldGroup.fields[i].propertyName}">
                 <jsp:attribute name="label"><ui:label required="true" path="${fieldGroups.scFieldGroup.fields[i].propertyName}" text="${fieldGroups.scFieldGroup.fields[i].displayName}"/></jsp:attribute>
-                <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="true" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}" /></jsp:attribute>
+                <jsp:attribute name="value"><ui:select path="${fieldGroups.scFieldGroup.fields[i].propertyName}" required="false" options="${fieldGroups.scFieldGroup.fields[i].attributes.options}" /></jsp:attribute>
             </ui:row>
         </c:forEach>
 
