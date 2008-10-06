@@ -28,7 +28,7 @@ public class OrganizationTab extends TabWithFields<Organization> {
     public OrganizationTab() {
         super("Organization Details", "Organization Details", "admin/organization_details");
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("name");
+        /*addHelpKeyExclusion("name");*/
     }
 
     @Override

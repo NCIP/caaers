@@ -81,7 +81,7 @@ public class PatientDetailsTab extends AeTab {
 	
     public PatientDetailsTab() {
         super("Patient Details", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/patientDetails");
-        addHelpKeyExclusion("baselinePerformanceStatus");
+       /* addHelpKeyExclusion("baselinePerformanceStatus");*/
         
         methodNameMap.put("add" + METASTATIC_DISEASE_SITE, "addMetastaticDiseaseSite");
         methodNameMap.put("remove" + METASTATIC_DISEASE_SITE, "removeMetastaticDiseaseSite");

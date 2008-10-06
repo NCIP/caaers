@@ -27,11 +27,9 @@ import org.springframework.validation.Errors;
 public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
     private boolean autoPopulateHelpKey;
 
-    private List<String> helpExclusionList;
 
     public TabWithFields(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
-        helpExclusionList = new ArrayList<String>();
     }
 
     /**
@@ -109,9 +107,6 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
         String helpKeyPrefix = (getViewName() != null) ? getViewName().replaceAll("/", ".") : "";
         String[] nameSubset = null;
         nameSubset = field.getPropertyName().split("\\.");
-        if (helpExclusionList.contains(nameSubset[nameSubset.length - 1])) {
-            return;
-        }
         field.getAttributes().put(InputField.HELP, helpKeyPrefix + "."+ field.getPropertyName().replaceAll("(\\[\\d+\\])", ""));
     }
 
@@ -125,8 +120,5 @@ public abstract class TabWithFields<C> extends InPlaceEditableTab<C> {
         this.autoPopulateHelpKey = autoPopulateHelpKey;
     }
 
-    public void addHelpKeyExclusion(String... properties) {
-        helpExclusionList.addAll(Arrays.asList(properties));
-    }
-
+   
 }

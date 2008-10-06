@@ -45,7 +45,7 @@ public class DetailsTab extends StudyTab {
     public DetailsTab() {
         super("Details", "Details", "study/study_details");
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("multiInstitutionIndicator", "adeersReporting", "term", "ctcVersion", "meddraVersion", "diseaseCodeTerm");
+        /*addHelpKeyExclusion("multiInstitutionIndicator", "adeersReporting", "term", "ctcVersion", "meddraVersion", "diseaseCodeTerm");*/
     }
 
     @Override

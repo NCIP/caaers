@@ -21,7 +21,7 @@ public class DescriptionTab extends AeTab {
         super("Event and response description", ExpeditedReportSection.DESCRIPTION_SECTION
                 .getDisplayName(), "ae/description");
         setAutoPopulateHelpKey(true);
-        addHelpKeyExclusion("presentStatus", "recoveryDate", "retreated");
+/*        addHelpKeyExclusion("presentStatus", "recoveryDate", "retreated");*/
     }
 
 
