@@ -785,7 +785,7 @@
                 </xsl:if>
                 <HOSPITALIZATION>
                     <xsl:choose>
-                        <xsl:when test="substring(hospitalization, 1, 1) = 0">No</xsl:when>
+                        <xsl:when test="substring(hospitalization, 1, 1) = 2">No</xsl:when>
                         <xsl:otherwise>Yes</xsl:otherwise>
                     </xsl:choose>
                 </HOSPITALIZATION>
