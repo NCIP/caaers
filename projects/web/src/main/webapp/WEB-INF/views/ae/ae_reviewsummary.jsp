@@ -165,9 +165,9 @@ background-color:#e5e8ff;
   <div class="row">
     <div class="summarylabel">Evaluation Period</div>
     <div class="summaryvalue">
-      <tags:formatDate value="${command.adverseEventReportingPeriod.endDate}"/>
+      <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}"/>
       -
-      <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}" />
+      <tags:formatDate value="${command.adverseEventReportingPeriod.endDate}" />
       ; ${command.adverseEventReportingPeriod.epoch.name}</div>
   </div>
 </c:if>
