@@ -2,9 +2,9 @@
 <fts>
 <chunkinfo url="whfwdata0.xml" first="%" last="collect"/>
 <chunkinfo url="whfwdata1.xml" first="column" last="gend"/>
-<chunkinfo url="whfwdata2.xml" first="general" last="option"/>
-<chunkinfo url="whfwdata3.xml" first="optional" last="staff'"/>
-<chunkinfo url="whfwdata4.xml" first="standalon" last="–"/>
+<chunkinfo url="whfwdata2.xml" first="general" last="operator"/>
+<chunkinfo url="whfwdata3.xml" first="option" last="specify"/>
+<chunkinfo url="whfwdata4.xml" first="sponsor" last="–"/>
 
 <tchunkinfo first="0" last="82" url="whftdata0.xml" />
 

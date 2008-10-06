@@ -3,7 +3,7 @@
 <item name="Welcome" url="First_Topic.htm" />
 <item name="Before You Begin" url="begin.htm" />
 <item name="User Roles" url="roles.htm" />
-<book name="Adverse Events Tab" url="captureAdverseEventController.htm" >
+<book name="Adverse Events Tab" >
   <item name="Manage Reports" url="listAdverseEventsController.htm" />
   <book name="Enter AEs" >
     <item name="Begin" url="ae_begin.htm" />
@@ -13,7 +13,7 @@
     <item name="Enter AEs" url="ae_enterAEs.htm" />
     <item name="Course and Agent" url="ae_course_and_agent.htm" />
     <item name="Describe Event" url="ae_describe_event.htm" />
-    <item name="Patient Details" url="ae_patient_details.htm" />
+    <item name="Subject Details" url="ae_patient_details.htm" />
     <item name="Other Causes" url="ae_other_causes.htm" />
     <item name="Radiation" url="ae_radiation.htm" />
     <item name="Surgery" url="ae_surgery.htm" />
@@ -50,7 +50,7 @@
   </book>
   <book name="Assign Subjects to Studies" >
     <item name="Search Subject" url="asub_search_subject.htm" />
-    <item name="Search Study" url="asub_search_study.htm" />
+    <item name="Choose Study" url="asub_search_study.htm" />
     <item name="Subject Medical History" url="asub_subject_medical_history.htm" />
     <item name="Review and Submit" url="asub_review_submit.htm" />
   </book>
@@ -102,7 +102,6 @@
   <item name="Study search" url="studyController.htm" />
   <item name="Subject search" url="participantController.htm" />
   <item name="Expedited Search Report" url="reportController.htm" />
-  <item name="Routine AE search" url="routineReportController.htm" />
 </book>
 
 </tocdata>
