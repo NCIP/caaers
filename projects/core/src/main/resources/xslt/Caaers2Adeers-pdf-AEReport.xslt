@@ -784,6 +784,159 @@
 		  			    </fo:table-row>				  			  		  			  	  
 		  			</fo:table-body>
 		  		</fo:table>
+					<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+
+				<fo:block xsl:use-attribute-sets="sub-head" > 
+		  			Description of Event 
+		  		</fo:block>
+		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		  		<fo:table>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+					<fo:table-column column-width="30%"/>
+					<fo:table-column column-width="20%"/>
+
+										
+		  			<fo:table-body>
+		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm"> 
+						  			Description and Treatment of Event :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+									<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventDescription"/>									
+						  		</fo:block>      							
+      						</fo:table-cell>
+      					</fo:table-row>
+      					
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Present Status :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+				  		            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
+					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
+				  			
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Date of Recovery or Death :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+			   						</xsl:call-template>
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Retreated :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'false'">No</xsl:if>
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'true'">Yes</xsl:if>
+						  		</fo:block>      							
+      						</fo:table-cell>     						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Removed from Protocol Treatment (to date) :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:choose>
+						  				<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol">Yes</xsl:when>
+						  				<xsl:otherwise>No</xsl:otherwise>
+						  			</xsl:choose>
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Date Removed from Protocol Treatment :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/>
+			   						</xsl:call-template>						  		
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Cause of Death :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  			<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/causeOfDeath"/>		
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>
+		  			  
+		  			    <fo:table-row>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Death Date :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 
+						  		<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">
+						  			<xsl:call-template name="standard_date">
+									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
+			   						</xsl:call-template>	
+			   					</xsl:if>					  			
+						  		</fo:block> 
+						  		     							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
+						  			Autopsy Performed :  
+						  		</fo:block>      							
+      						</fo:table-cell>
+      						<fo:table-cell>
+						  		<fo:block xsl:use-attribute-sets="normal" > 	
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'false'">No</xsl:if>
+						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/autopsyPerformed = 'true'">Yes</xsl:if>
+						  		</fo:block>      							
+      						</fo:table-cell>      						
+		  			  </fo:table-row>		  			  		  			  		  			  
+	  			</fo:table-body>
+		  		</fo:table>
+		  		
+		  		
+		  								  		  		
+					<fo:block>
+						<fo:leader leader-length="95%" leader-pattern="rule"/>
+					</fo:block>	
+
+
 		  		
 		  		<xsl:if test="AdverseEventReport/RadiationIntervention">
 				<fo:block>
@@ -1292,144 +1445,6 @@
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>		  		
 		  		
-				<fo:block xsl:use-attribute-sets="sub-head" > 
-		  			Description of Event 
-		  		</fo:block>
-		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
-		  		<fo:table>
-					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
-					<fo:table-column column-width="30%"/>
-					<fo:table-column column-width="20%"/>
-
-										
-		  			<fo:table-body>
-		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm"> 
-						  			Description and Treatment of Event :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:value-of select="AdverseEventReport/AdverseEventResponseDescription/eventDescription"/>									
-						  		</fo:block>      							
-      						</fo:table-cell>
-      					</fo:table-row>
-      					
-		  			    <fo:table-row>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Present Status :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-				  		            <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'INTERVENTION_CONTINUES'">Intervention for AE Continues</xsl:if>
-					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERING'">Recovering/Resolving</xsl:if>
-					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITH_SEQUELAE'">Recovered/Resolved with Sequelae</xsl:if>
-					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'RECOVERED_WITHOUT_SEQUELAE'">Recovered/Resolved without Sequelae</xsl:if>
-					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'NOT_RECOVERED'">Not recovered/Not resolved</xsl:if>
-					                <xsl:if test="AdverseEventReport/AdverseEventResponseDescription/presentStatus = 'DEAD'">Fatal/Died</xsl:if>
-				  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Date of Recovery or Death :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/recoveryDate"/>
-			   						</xsl:call-template>
-						  		</fo:block>      							
-      						</fo:table-cell>      						
-		  			  </fo:table-row>
-
-		  			    <fo:table-row>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Retreated :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'false'">NO</xsl:if>
-						  			<xsl:if test="AdverseEventReport/AdverseEventResponseDescription/retreated = 'true'">YES</xsl:if>
-						  		</fo:block>      							
-      						</fo:table-cell>     						
-		  			  </fo:table-row>
-		  			  
-		  			    <fo:table-row>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Removed from Protocol Treatment (to date) :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Date Removed from Protocol Treatment :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="AdverseEventReport/AdverseEventResponseDescription/dateRemovedFromProtocol"/>
-			   						</xsl:call-template>						  		
-						  		</fo:block>      							
-      						</fo:table-cell>      						
-		  			  </fo:table-row>
-		  			  
-		  			    <fo:table-row>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Cause of Death :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>      						
-		  			  </fo:table-row>
-		  			  
-		  			    <fo:table-row>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Death Date :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="label" margin-left="2mm" > 
-						  			Autopsy Performed :  
-						  		</fo:block>      							
-      						</fo:table-cell>
-      						<fo:table-cell>
-						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			
-						  		</fo:block>      							
-      						</fo:table-cell>      						
-		  			  </fo:table-row>		  			  		  			  		  			  
-	  			</fo:table-body>
-		  		</fo:table>
-		  		
-		  		
-		  								  		  		
-					<fo:block>
-						<fo:leader leader-length="95%" leader-pattern="rule"/>
-					</fo:block>	
 				</xsl:if>
 				
 				<xsl:if test="AdverseEventReport/SAEReportPriorTherapy">
