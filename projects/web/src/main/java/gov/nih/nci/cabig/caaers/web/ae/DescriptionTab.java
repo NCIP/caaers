@@ -30,7 +30,7 @@ public class DescriptionTab extends AeTab {
                                      ExpeditedAdverseEventInputCommand command) {
         String baseProp = "responseDescription";
 
-        InputField desc = createTextArea(baseProp + ".eventDescription", "Description and treatment of event(s)", false);
+        InputField desc = createTextArea(baseProp + ".eventDescription", "Description & treatment of event(s)", false);
         InputFieldAttributes.setColumns(desc, 70);
         InputFieldAttributes.setRows(desc, 8);
 
