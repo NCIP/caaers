@@ -41,7 +41,11 @@ public class CtcTerm extends AbstractImmutableDomainObject {
 
     @Transient
     public String getFullName() {
-    	return getTerm();
+    	 if (select == null) {
+             return getTerm();
+         } else {
+             return getTerm() + " - " + getSelect();
+         }
         
     }
 
