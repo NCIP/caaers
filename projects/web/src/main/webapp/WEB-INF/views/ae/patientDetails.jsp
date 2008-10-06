@@ -179,7 +179,12 @@
         }
 
         function fillDiseaseSiteAutoCompletor(val,baseName, text){
-		    $(baseName).value = val;
+            if (baseName == 'codedPrimaryDiseaseSite') {
+
+                baseName = 'aeReport.diseaseHistory.codedPrimaryDiseaseSite'
+            }
+
+            $(baseName).value = val;
 		    $(baseName+ "-input").value = text;
 		    $(baseName+ "-input").removeClassName('pending-search');
 		   hideShowAllTable();
@@ -354,7 +359,7 @@
               }
               } </jsp:attribute>
           </ui:autocompleter>
-          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'aeReport.diseaseHistory.codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
+          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
 
       </ui:row>
       <tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
