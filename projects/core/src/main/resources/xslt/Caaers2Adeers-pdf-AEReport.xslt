@@ -259,7 +259,7 @@
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
-		  			  <!-- 
+		  			  
 		  			  <fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			  	
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -270,8 +270,10 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			name
-						  		</fo:block>      							
+									<xsl:value-of select="AdverseEventReport/Reporter/firstName"/> 
+									<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
+									<xsl:value-of select="AdverseEventReport/Reporter/lastName"/>
+						  		</fo:block>       							
       						</fo:table-cell>
       					</fo:table-row>
       					
@@ -283,9 +285,11 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:if test="AdverseEventReport/Reporter/ContactMechanism/key = 'phone'">
-						  				<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism/value"/>
-						  			</xsl:if>
+						  			<xsl:for-each select="AdverseEventReport/Reporter/ContactMechanism">
+						  				<xsl:if test="key = 'phone'">
+						  					<xsl:value-of select="value"/>
+						  				</xsl:if>
+						  			</xsl:for-each>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -295,9 +299,11 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:if test="AdverseEventReport/Reporter/ContactMechanism/key = 'fax'">
-						  				<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism/value"/>
-						  			</xsl:if>
+						  			<xsl:for-each select="AdverseEventReport/Reporter/ContactMechanism">
+						  				<xsl:if test="key = 'fax'">
+						  					<xsl:value-of select="value"/>
+						  				</xsl:if>
+						  			</xsl:for-each>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -307,13 +313,15 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-							  			<xsl:if test="AdverseEventReport/Reporter/ContactMechanism/key = 'e-mail'">
-						  				<xsl:value-of select="AdverseEventReport/Reporter/ContactMechanism/value"/>
-						  			</xsl:if>
+						  			<xsl:for-each select="AdverseEventReport/Reporter/ContactMechanism">
+						  				<xsl:if test="key = 'e-mail'">
+						  					<xsl:value-of select="value"/>
+						  				</xsl:if>
+						  			</xsl:for-each>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
-		  			  	-->
+		  			  	
 		  			  <fo:table-row><fo:table-cell><fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block> </fo:table-cell></fo:table-row>
 		  			  	
 		  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
@@ -404,7 +412,7 @@
       						</fo:table-cell>
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
-						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/Identifier/value"/>
+						  			<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/studySubjectIdentifier"/>
 						  		</fo:block>      							
       						</fo:table-cell>
       						<fo:table-cell>
@@ -1688,38 +1696,41 @@
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
-					
+				
+			<xsl:if test = "AdverseEventReport/ConcomitantMedication"	>
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Concomitant Medications
 		  		</fo:block>
+		  	</xsl:if>	
 		  		
-		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
 		  		
 		  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
 			  			<fo:block xsl:use-attribute-sets="normal" > 
 			  				<xsl:value-of select="name"/>  
 			  			</fo:block>
 			  		</xsl:for-each>
-		  		
+		  	<xsl:if test = "AdverseEventReport/ConcomitantMedication"	>	
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
-					
+			</xsl:if>	
+			
+			<xsl:if test = "AdverseEventReport/OtherCause"	>				
   				<fo:block xsl:use-attribute-sets="sub-head" > 
 		  			Other Contributing Causes
 		  		</fo:block>
-		  		
-		  		<fo:block> <xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text> </fo:block>
+		   </xsl:if>			
+
 		  			<xsl:for-each select="AdverseEventReport/OtherCause">
 			  			<fo:block xsl:use-attribute-sets="normal" > 
 			  				<xsl:value-of select="text"/>  
 			  			</fo:block>
 			  		</xsl:for-each>	  		
-
+			<xsl:if test = "AdverseEventReport/OtherCause"	>	
 		  			<fo:block>
 						<fo:leader leader-length="95%" leader-pattern="rule"/>
 					</fo:block>	
-
+			</xsl:if>
 		  		
   				<fo:block  xsl:use-attribute-sets="sub-head" > 
 					<xsl:if test="AdverseEventReport/AdverseEvent/AdverseEventCtcTerm/universal-term">
@@ -1914,7 +1925,7 @@
 		      						</fo:table-cell>
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
-			  			    			
+			  	<xsl:if test="ConcomitantMedicationAttribution">		
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -1941,7 +1952,8 @@
 		      						</fo:table-cell>
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
-			  			    
+			  	</xsl:if>	
+			  	<xsl:if test="OtherCauseAttribution">		    
 			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
@@ -1968,7 +1980,7 @@
 		      						</fo:table-cell>
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
-
+				</xsl:if>
 
 
 
