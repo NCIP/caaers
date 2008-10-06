@@ -153,11 +153,21 @@
 	   }
 
 
-        function showShowAllTable(baseName) {
+        function showShowAllTable(el, baseName) {
+            var _top = Position.cumulativeOffset($(el))[1];
+            var _left = Position.cumulativeOffset($(el))[0];
+
             var parameterMap = getParameterMap('command');
             if (baseName == 'metastaticDiseaseSite' || baseName == 'aeReport.diseaseHistory.codedPrimaryDiseaseSite') {
                 createAE.buildAnatomicSiteTable(parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
+//                    $('showAllDropDown').style.position = 'absolute';
+                    try {
+                        $('showAllDropDown').style.top = (_top-190) + "px";
+                        $('showAllDropDown').style.left = (_left - 120) + "px";
+                    } catch (e) {
+//                        alert('2');
+                    }
                     $('showAllDropDown').show();
                 });
             } else {
@@ -199,7 +209,7 @@
   <tags:instructions code="instruction_ae_patientdetails"/>
 </p>
 <form:form id="command">
-  <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99;">
+  <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
     <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
       <tbody>
         <tr class="titleRow">
@@ -344,7 +354,8 @@
               }
               } </jsp:attribute>
           </ui:autocompleter>
-          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('aeReport.diseaseHistory.codedPrimaryDiseaseSite')">Show All</a> </jsp:attribute>
+          <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'aeReport.diseaseHistory.codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
+
       </ui:row>
       <tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
       <tags:renderRow field="${fieldGroups['disease'].fields[4]}" />
@@ -370,7 +381,7 @@
               return obj.name;  
               } </jsp:attribute>
           </ui:autocompleter>
-          &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('metastaticDiseaseSite')">Show All</a> &nbsp;
+            &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a> &nbsp;
           <input id="metastatic-diseases-btn" type="button" value="Add"/>
         </td>
       </tr>
