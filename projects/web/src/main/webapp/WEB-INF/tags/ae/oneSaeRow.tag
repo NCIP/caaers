@@ -133,7 +133,7 @@
 	</c:if>
 	<c:if test="${not hideDeleteCtrl}">
 	<td>
-		<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="" style="border:0" /></a>
+		<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
 	</td>
 	</c:if>
 </c:if>		
