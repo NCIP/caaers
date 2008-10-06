@@ -158,7 +158,7 @@
             var _left = Position.cumulativeOffset($(el))[0];
 
             var parameterMap = getParameterMap('command');
-            if (baseName == 'metastaticDiseaseSite' || baseName == 'aeReport.diseaseHistory.codedPrimaryDiseaseSite') {
+            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
                 createAE.buildAnatomicSiteTable(parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
 //                    $('showAllDropDown').style.position = 'absolute';
