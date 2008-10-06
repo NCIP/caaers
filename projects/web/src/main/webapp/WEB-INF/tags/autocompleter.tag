@@ -9,7 +9,7 @@
 <%@attribute name="enableClear" type="java.lang.Boolean" %>
 <%@attribute name="initialDisplayValue" required="false" %>
 
- <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}"/>
+ <input size="${empty size ?  '50' : size}" type="text" value="${initialDisplayValue}" id="${propertyName}-input" title="${displayName}" ${disabled ? 'disabled' : ''} class="autocomplete ${required ? 'validate-NOTEMPTY' : ''}" onkeydown="suppressEnter(event);"/>
  <tags:indicator id="${propertyName}-indicator"/>
  <c:if test="${enableClear and not disabled}"><input type="button" id="${propertyName}-clear" name="C" value="Clear" onClick="javascript:$('${propertyName}-input').clear();$('${propertyName}').clear();" /></c:if>
  <div id="${propertyName}-choices" class="autocomplete" style="display: none"></div>

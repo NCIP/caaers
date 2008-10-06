@@ -195,13 +195,8 @@
 	 	catSel.initializeAutoCompleter();
 	}
  	
- 	Element.observe(window, "load", function() {
- 		initalizeCategorySelector();	
- 	 
- 	});
-		
  	<c:if test="${isAjaxable}">
- 		initalizeCategorySelector.defer();
+         initalizeCategorySelector.defer();
  	</c:if>
 
 </script>
