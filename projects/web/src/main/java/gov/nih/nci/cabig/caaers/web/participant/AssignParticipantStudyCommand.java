@@ -53,4 +53,8 @@ public class AssignParticipantStudyCommand extends ParticipantInputCommand {
         this.assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
     }
 
+    public void setParticipantSearchResults(List<Participant> participantSearchResults) {
+        this.participantSearchResults = participantSearchResults;
+    }
+
 }
