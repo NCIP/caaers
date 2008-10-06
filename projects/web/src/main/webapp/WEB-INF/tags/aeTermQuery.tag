@@ -194,37 +194,6 @@
 		//call this function directly.
 		catSel = new CategorySelector(${isMeddra}, ${version}, ${ignoreOtherSpecify});
 	 	catSel.initializeAutoCompleter();
-	 	//capture events on the buttons
-	 	Element.observe('addSingleTermBtn', 'click', function(){
-		 	this.finishSingleTermSelection();
-	 	}.bind(catSel));
-
-/*
-         Element.observe('addMultiTermBtn', 'click', function(){
-		 	this.showCategoryBox();
-	 	}.bind(catSel));
-*/
-
-        Element.observe('addTermsBtn','click',function(){
-			this.finishMultiTermsSelection();
-		}.bind(catSel));
-		
-	 	//capture the events on the divisions for scroll correction.
-	    Element.observe('categories-div-id','scroll', function(){
-			this.OnDivScroll('categories');
-	    }.bind(catSel));
-	    Element.observe('categories','change',function(){
-	    	this.showTerms('categories', catSel.ignoreOtherSpecify);
-		}.bind(catSel));
-	    Element.observe('categories','focus',function(){
-	    	this.onSelectFocus('categories');
-	    }.bind(catSel));
-		Element.observe('terms-div-id','scroll', function(){
-			  this.OnDivScroll('terms');
-		}.bind(catSel));
-		Element.observe('terms','focus',function(){
-			  this.onSelectFocus('terms');
-		}.bind(catSel));
 	}
  	
  	Element.observe(window, "load", function() {
@@ -244,7 +213,7 @@
   				<tr>
   					<td class="one">
   						<div>
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/><input id="addSingleTermBtn" type="button" value="Add"  />
+  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/><input id="addSingleTermBtn" type="button" value="Add"  onClick="catSel.finishSingleTermSelection();" />
   						</div>
   						<div class="local-buttons">
   							
@@ -269,8 +238,8 @@
 		<ui:row path="dummyPath">
 			<jsp:attribute name="label">CTC category(s)</jsp:attribute>
 			<jsp:attribute name="value">
-			  <div id="categories-div-id" class="categories-div" >
-			    <select name="categories" id="categories" style="width:500px; height:175px;" class="categories" multiple >
+			  <div id="categories-div-id" class="categories-div" onScroll="catSel.OnDivScroll('categories');" >
+			    <select name="categories" id="categories" style="width:500px; height:175px;" onChange="catSel.showTerms('categories', catSel.ignoreOtherSpecify);" onFocus="catSel.onSelectFocus('categories');" class="categories" multiple >
 				  <c:forEach var="cat" items="${command.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				  </c:forEach>
@@ -281,8 +250,8 @@
 		<ui:row path="dummyPath2">
 			<jsp:attribute name="label">CTC terms(s)</jsp:attribute>
 			<jsp:attribute name="value">
-				<div id="terms-div-id" class="terms-div">
-				  <select name="terms" id="terms" size="5" class="terms" multiple style="width:500px; height:225px;">
+				<div id="terms-div-id" class="terms-div" onScroll="catSel.OnDivScroll('terms');">
+				  <select name="terms" id="terms" size="5" class="terms" multiple style="width:500px; height:225px;" onFocus="catSel.onSelectFocus('terms');">
 					<option value="" > Please select a CTC term first </option>
 				  </select>
 				</div>
@@ -291,7 +260,7 @@
 		<hr />
 		<div class="aeTermQuery-buttons">
 			<c:if test="${empty localButtons}">
-			<input id="addTermsBtn" type="button" value="Add Terms" />
+			<input id="addTermsBtn" type="button" value="Add Terms" onClick="catSel.finishMultiTermsSelection();" />
 			</c:if>
 			 <jsp:invoke fragment="localButtons"/>
 		</div>		
