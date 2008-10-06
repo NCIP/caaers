@@ -35,9 +35,9 @@
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}">
 		<jsp:attribute name="singleFields">
+        <tags:instructions code="createreportdefinition" />
 			<div>
 			<tags:renderRow field="${fieldGroups.reportDefinitionOrganization.fields[0]}" />
-			<hr />
 			</div>
             <div id="ruleset-fields">
                 <c:forEach items="${fieldGroups.reportDefinitionFieldGroup.fields}" var="field">

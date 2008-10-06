@@ -53,7 +53,7 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 <p>
-  Search for expedited AE reports by choosing any of the listed criteria.
+  <tags:instructions code="advancedreportsearch" />
 </p>
 <chrome:box title="Study Criteria" autopad="true">
 		    <div class="row">

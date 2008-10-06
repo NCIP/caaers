@@ -53,7 +53,7 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 <p>
-  Search for studies by choosing any of the listed criteria.
+  <tags:instructions code="advancedstudysearch" />
 </p>  
 <chrome:box title="Study Criteria" cssClass="paired" autopad="true">
 		    <div class="row">

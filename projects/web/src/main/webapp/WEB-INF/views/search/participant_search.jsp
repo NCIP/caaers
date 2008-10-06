@@ -45,7 +45,7 @@ function buildTable(form) {
 
 <form:form name="searchForm" id="searchForm" method="post">
 <p>
-  Search for subjects by choosing any of the listed criteria.
+  <tags:instructions code="advancedsubjectsearch" />
 </p>
 <chrome:box title="Study Criteria" cssClass="paired" autopad="true">
 		    <div class="row">
@@ -109,7 +109,7 @@ function buildTable(form) {
 
 <div class="endpanes" />
 <div class="row" style="float:right;">
-	<input class='ibutton' type='button' onclick="buildTable('assembler'); $('bigSearch').show();" value='Search'  title='Search Subject'/>
+	<input class='ibutton' type='button' onClick="buildTable('assembler'); $('bigSearch').show();" value='Search'  title='Search Subject'/>
 	<tags:indicator id="indicator" />
 </div>
 <div class="endpanes" />
