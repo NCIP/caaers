@@ -44,6 +44,7 @@
                 var parameterMap = getParameterMap(form);
                 createParticipant.getParticipantTable(parameterMap, type, text, showTable)
 
+                $('bigSearch').show();
 
             }
         }
@@ -74,8 +75,7 @@
             <td><form:input path="searchText" size="30" onkeydown="onKey(event);"/></td>
             <c:set var="targetPage" value="${assignType == 'study' ? '_target1' : '_target0'}"/>
             <td width="100%"><input type="button" onClick="buildTable('assembler');" value="Search"/>&nbsp;
-                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;"
-                id="indicator">
+                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator">
             </td>
         </tr>
         <tr>
@@ -93,13 +93,7 @@
 </tags:tabForm>
 
 
-<c:set var="display" value="none"/>
-<c:if test="${fn:length(command.participantSearchResults) > 0}">
-    <c:set var="display" value="''"/>
-</c:if>
-
-
-<div id="bigSearch">
+<div id="bigSearch" style="display:none;">
     <form:form id="assembler">
 
 
