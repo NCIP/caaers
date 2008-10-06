@@ -678,6 +678,7 @@
 											</fo:table-row>	
 											<fo:table-row height="8mm">
 												<fo:table-cell xsl:use-attribute-sets="full-border"  number-columns-spanned="1">		
+													<fo:block/>
 													<xsl:for-each select="AdverseEventReport/TreatmentInformation/CourseAgent">										
 														<fo:block>
 															<fo:inline font-size="6.5pt" text-decoration="underline"># <xsl:number format="1 "/> <xsl:value-of select="lotNumber"/></fo:inline>
