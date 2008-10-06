@@ -95,7 +95,7 @@ public class TreatmentTab extends AeTab {
         
         creator.createRepeatingFieldGroup("courseAgent", 
         		"treatmentInformation.courseAgents", 
-        		new SimpleNumericDisplayNameCreator("Study agent"), 
+        		new SimpleNumericDisplayNameCreator("Study Agent"), 
         		agentField,
         		InputFieldFactory.createTextField("formulation", "Formulation"),
         		InputFieldFactory.createTextField("lotNumber", "Lot # (if known)"),

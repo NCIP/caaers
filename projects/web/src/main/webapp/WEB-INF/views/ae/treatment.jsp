@@ -132,38 +132,36 @@
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
-        <jsp:attribute name="instructions">
-            You are entering treatment information for ${command.assignment.participant.fullName} on
-            ${command.assignment.studySite.study.shortTitle}.
-        </jsp:attribute>
         <jsp:attribute name="singleFields">
-            <div class="row">
-                <div class="label">
-                	<input type="radio" id="description-type-default" value="default" name="treatmentDescriptionType" checked="checked"/>
-                    <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
+        	<chrome:division title="Treatment Information">
+	            <div class="row">
+    	            <div class="label">
+        	        	<input type="radio" id="description-type-default" value="default" name="treatmentDescriptionType" checked="checked"/>
+            	        <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[0]}"/>
+     	           </div>
+        	        <div class="value">
+            	        <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[0]}" />
+             	   </div>
+      	    	</div>
+        	    <div class="row">
+ 	               <div class="label">
+    	                <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[1]}"/>
+        	        </div>
+            	    <div class="value">
+                	    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[1]}" disabled="true"/>
+     	           </div>
+       		    </div>
+       		    <div class="row">
+     	           <div class="label">
+       	                <input type="radio" id="description-type-other" value="other" name="treatmentDescriptionType"/>
+       	                <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[2]}"/>
+       		       </div>
+               	   <div class="value">
+                   	    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[2]}"/>
+                   </div>
                 </div>
-                <div class="value">
-                    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[0]}" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="label">
-                    <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[1]}"/>
-                </div>
-                <div class="value">
-                    <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[1]}" disabled="true"/>
-                </div>
-            </div>
-            <div class="row">
-                <div class="label">
-                    <input type="radio" id="description-type-other" value="other" name="treatmentDescriptionType"/>
-                    <tags:renderLabel field="${fieldGroups.treatmentInfo.fields[2]}"/>
-                </div>
-                <div class="value">
-                   <tags:renderInputs field="${fieldGroups.treatmentInfo.fields[2]}"/>
-                </div>
-            </div>
-			<chrome:division title="Course information">
+            </chrome:division>
+			<chrome:division title="Course Information">
 				<tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>

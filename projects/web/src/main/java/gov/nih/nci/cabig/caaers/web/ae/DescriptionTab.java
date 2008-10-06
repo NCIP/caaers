@@ -54,7 +54,7 @@ public class DescriptionTab extends AeTab {
 
         creator.createFieldGroup("DCP_INFO",
                 createSelectField(baseProp + ".blindBroken", "Was blind broken due to event?", false, createBooleanOptions()),
-                createSelectField(baseProp + ".studyDrugInterrupted", "Was Study Drug stopped/interrupted/reduced in response to event?", false, createBooleanOptions()),
+                createSelectField(baseProp + ".studyDrugInterrupted", "Was study agent stopped/interrupted/reduced in response to event?", false, createBooleanOptions()),
                 reducedDose,
                 createPastDateField(baseProp + ".reducedDate", "Date dose reduced", false),
                 InputFieldFactory.createTextField(baseProp + ".daysNotGiven", "If interrupted, specify total number of days not given", false),
