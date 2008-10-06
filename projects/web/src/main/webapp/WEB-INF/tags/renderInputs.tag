@@ -109,7 +109,7 @@
         UNIMPLEMENTED FIELD TYPE ${field.categoryName} for ${field.propertyName}
     </c:otherwise>
 </c:choose>
-<c:if test="${not empty field.attributes.help}">
+<c:if test="${not empty field.attributes.help and field.categoryName ne 'autocompleter'}">
     <tags:hoverHelp path="${field.propertyName}" code="${field.attributes.help}" />
 </c:if>
 <tags:errors path="${field.propertyName}"/>
