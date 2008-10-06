@@ -55,6 +55,18 @@
 			<div class="divOtherMeddra">
 			<tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
+			<script>
+				if(${adverseEvent.lowLevelTerm != null})
+					$('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.fullName}'; 
+				var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
+				AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
+				function(autocompleter, text) {
+						createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+													autocompleter.setChoices(values)})
+				},
+				function(lowLevelTerm) { return lowLevelTerm.fullName });
+				
+			</script>
 			</div>
 			<div class="divNotes">
 			${fieldGroups[mainGroup].fields[aeTermIndex + 2].displayName}
