@@ -70,7 +70,7 @@ function buildTable(form) {
 <chrome:box title="Expedited AE Report Criteria" cssClass="paired" autopad="true">
 
 			<div class="row">
-		    	<div class="label"> Detection Date :&nbsp; </div>
+		    	<div class="label">Start Date :&nbsp; </div>
 		    	<div class="value"><input id="prop0" type="text"/></div>
 		    </div>
 				
