@@ -423,7 +423,9 @@
       						<fo:table-cell>
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/
-										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+										<xsl:if test="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString">
+											<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+										</xsl:if>
 										<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>					  		
 						  		</fo:block>      							
       						</fo:table-cell>
@@ -621,9 +623,9 @@
 									        <xsl:with-param name="date" select="AdverseEventReport/DiseaseHistory/diagnosisDate"/>
 			   						</xsl:call-template>	
 			   					-->
-			   						
+			   					<xsl:if test="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString">
 			   						<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/monthString"/>/<xsl:value-of select="AdverseEventReport/DiseaseHistory/diagnosisDate/yearString"/>					  		
-		
+								</xsl:if>
 						  		</fo:block>      							
       						</fo:table-cell>
 		  			  </fo:table-row>
@@ -1505,23 +1507,16 @@
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-									<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/dayString"/>/<xsl:value-of select="startDate/yearString"/>
-									<!--
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="startDate"/>
-			   						</xsl:call-template>
-			   						-->
+							  		<xsl:if test="startDate/monthString">
+										<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/dayString"/>/<xsl:value-of select="startDate/yearString"/>
+									</xsl:if>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
 							  		<fo:block xsl:use-attribute-sets="normal" > 
-							  		<!--
-									<xsl:call-template name="standard_date">
-									        <xsl:with-param name="date" select="endDate"/>
-			   						</xsl:call-template>
-			   						-->
-			   						<xsl:value-of select="endDate/monthString"/>/<xsl:value-of select="endDate/dayString"/>/<xsl:value-of select="endDate/yearString"/>
-			   						
+							  		<xsl:if test="endDate/monthString">
+			   							<xsl:value-of select="endDate/monthString"/>/<xsl:value-of select="endDate/dayString"/>/<xsl:value-of select="endDate/yearString"/>
+			   						</xsl:if>
 							  		</fo:block>      							
 	      						</fo:table-cell>
 	      						<fo:table-cell>
@@ -1996,7 +1991,34 @@
 				  			    </fo:table-row>
 			  			    </xsl:for-each>
 				</xsl:if>
+			  	<xsl:if test="DiseaseAttribution">		    
+			  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  			Disease 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+	      						<fo:table-cell>
+							  		<fo:block xsl:use-attribute-sets="normal" > 
+							  		</fo:block>      							
+	      						</fo:table-cell>
+			  			    </fo:table-row>
 
+			  			    <xsl:for-each select="DiseaseAttribution"> 
+				  			    <fo:table-row xsl:use-attribute-sets="tr-height-1" >
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160;   </xsl:text><xsl:value-of select="DiseaseHistory/CtepStudyDisease/DiseaseTerm/ctepTerm"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+		      						<fo:table-cell>
+								  		<fo:block xsl:use-attribute-sets="normal" > 
+								  			<xsl:value-of select="attribution"/>
+								  		</fo:block>      							
+		      						</fo:table-cell>
+				  			    </fo:table-row>
+			  			    </xsl:for-each>
+				</xsl:if>
 
 
 			  			    
