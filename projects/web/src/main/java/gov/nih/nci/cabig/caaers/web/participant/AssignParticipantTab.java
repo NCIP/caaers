@@ -38,13 +38,15 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
 
     protected void validate(AssignParticipantStudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        if (command.getParticipant() == null || command.getParticipant().getId() == null) errors.rejectValue("participant", "REQUIRED", "Subject not selected");
+        if (command.getParticipant() == null || command.getParticipant().getId() == null)
+            errors.rejectValue("participant", "REQUIRED", "Subject not selected");
     }
 
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
     }
+
 
     @Required
     public void setParticipantRepository(final ParticipantRepository participantRepository) {
@@ -64,35 +66,4 @@ public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCo
         this.listValues = listValues;
     }
 
-    public Map<String, Object> referenceData(HttpServletRequest request, AssignParticipantStudyCommand command) {
-
-        Map<String, Object> refdata = super.referenceData(command);
-
-        String searchText = command.getSearchText();
-        String searchType = command.getSearchType();
-
-        if (searchText != null && searchType != null && !searchText.trim().equals("")) {
-
-                ParticipantQuery participantQuery = new ParticipantQuery();
-                if ("fn".equals(searchType)) {
-                    participantQuery.filterByFirstName(searchText);
-                } else if ("ln".equals(searchType)) {
-                    participantQuery.filterByLastName(searchText);
-                } else if ("idtf".equals(searchType)) {
-                    participantQuery.leftJoinFetchOnIdentifiers();
-                    participantQuery.filterByIdentifierValue(searchText);
-                }
-
-                try {
-                    command.setParticipantSearchResults(participantRepository.searchParticipant(participantQuery));
-                } catch (Exception e) {
-                    log.error("Error while searching participants", e);
-                }
-
-                command.setSearchText("");
-        }
-        
-        return refdata;
-        
-    }
 }
