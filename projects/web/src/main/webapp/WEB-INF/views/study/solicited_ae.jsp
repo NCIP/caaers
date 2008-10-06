@@ -13,7 +13,8 @@
 
   
   <script type="text/javascript">
-  
+
+   var catSel = null;
    var setOfWindowsOpened = new Array();
   
    Event.observe(window, 'load', initializeAllEvents); 

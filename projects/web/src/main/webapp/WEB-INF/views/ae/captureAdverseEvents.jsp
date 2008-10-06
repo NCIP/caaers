@@ -135,7 +135,7 @@ right:20px;
 </style>
  
  <script>
-
+	var catSel = null;
  	var RPCreatorClass = Class.create();
  	Object.extend(RPCreatorClass.prototype, {
  	 	/*

@@ -22,7 +22,6 @@
  	
  	//Note:- for some reason, the javascript embeded inside javascript tag in the child page (the page loaded in the linline popup window via AJAX)
  	//is not properly executing, so I modified it to work based on inline-hidden div.
- 	var catSel = null;
  	var CategorySelector = Class.create();
  	Object.extend(CategorySelector.prototype, {
 		initialize: function(meddra, ver, ignoreOtherSpecify) {
