@@ -38,11 +38,9 @@
         }
 
         function resetStudyAndSites(button) {
-            resetSites(button);
+//            resetSites(button);/
             $('studySite').value = button.value;
             if ($('ids')) $('ids').show();
-
-
         }
 
 
@@ -58,26 +56,27 @@
         function buildTable(form) {
             // START tags:tabMethod
 
-            var text = $F('searchText');
-            $('indicator').show();
+            var text = $F('searchText_');
 
             if (text == '') {
                 $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
             } else {
                 //$('error').innerHTML = ""
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
-
+                $('indicator').show();
 
                 var parameterMap = getParameterMap(form);
                 searchStudy.getTableForAssignParticipant(parameterMap, type, text, showTable)
+                $('indicator').hide();
 
-
+                $('bigSearch').show();
             }
         }
 
 
         ValidationManager.submitPostProcess = function(formElement, flag) {
             flag = true;
+            $('searchText').value = $('searchText_').value
             if (formElement.id != 'command') {
                 return true
             } else {
@@ -103,39 +102,27 @@
     <div class="summaryvalue">${command.participant.fullName}</div>
 </div>
 </p>
-<tags:tabForm tab="${tab}" flow="${flow}" title="Search Criteria" willSave="false">
-<jsp:attribute name="singleFields">
-   <div class="error">
-       <div id="studySiteError">
 
-       </div>
-       <div id="studySubjectIdentifierError">
+<chrome:box autopad="true" title="Search Criteria">
 
-       </div>
-   </div>
-       <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
-
-       <form:hidden path="studySite"/>
-       <form:hidden path="studySubjectIdentifier"/>
-
-   </div>
+    <form:form id="searchForm" method="post" cssClass="standard">
+        <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+        <p><tags:instructions code="instruction_subject_as2s.searchstudy"/></p>
         <table border="0" cellspacing="0" cellpadding="0" class="search" width="100%">
             <tr>
                 <td>
 
                     <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                        </tr>
+                        <tr></tr>
                         <tr>
                             <td class="searchType">Search for a study&nbsp;&nbsp;</td>
-                            <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc"
-                                                                             itemValue="code"/></form:select></td>
-                            <td><form:input path="searchText" size="25" onkeydown="onKey(event);"/>&nbsp;<input
-                                    type="button" onclick="buildTable('assembler');" value="Search"/>&nbsp;<img
-                                    src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;"
-                                id="indicator">
-                            </td>
-                            <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
+                            <td><form:select path="searchType"><form:options items="${studySearchType}" itemLabel="desc" itemValue="code"/></form:select></td>
+                            <td>
+                                <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
+                                <%--<form:input path="searchText" size="25" onkeydown="onKey(event);" />&nbsp;--%>
+                                <input type="button" onClick="buildTable('assembler');" value="Search"/>&nbsp;
+                                <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
+                                <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
                         </tr>
                         <tr>
                             <td></td>
@@ -149,15 +136,16 @@
             </tr>
         </table>
 
-          </jsp:attribute>
-</tags:tabForm>
-<div id="bigSearch">
+    </form:form>
+</chrome:box>
+
+
+<div id="bigSearch" style="display:none;">
 
     <chrome:box title="Results">
 
+    <chrome:box title="" noBackground="true">
         <form:form id="assembler">
-
-
             <div>
                 <input type="hidden" name="_prop" id="prop">
                 <input type="hidden" name="_value" id="value">
@@ -168,23 +156,41 @@
                     <c:out value="${assembler}" escapeXml="false"/>
                 </div>
             </chrome:division>
-        </form:form>
-        <div id="ids" style="display:none;">
-            <br/>
-            <chrome:division title="Study Subject Identifier">
-                <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
-                <label for="studySubjectIdentifierInput">
-                    <tags:requiredIndicator/>&nbsp;Study subject identifier
-                </label>
-                <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value=""
-                       name="studySubjectIdentifierInput"/>
-            </chrome:division>
 
-        </div>
+            <div id="ids" style="display:none;">
+                <br/>
+                <chrome:division title="Study Subject Identifier">
+                    <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
+                    <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
+                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="" name="studySubjectIdentifierInput"/>
+                </chrome:division>
+
+            </div>
+            
+        </form:form>
+
     </chrome:box>
 
-</div>
 
+<%--STANDARD FORM --%>
+            <form:form  id="command">
+                <tags:tabFields tab="${tab}"/>
+                <tags:tabControls tab="${tab}" flow="${flow}"/>
+                <form:hidden path="studySite"/>
+                <form:hidden path="studySubjectIdentifier"/>
+                <form:hidden path="searchText"/>
+            </form:form>
+
+<%--STANDARD FORM --%>
+
+        </chrome:box>
+        </div>
+
+<script>
+    Event.observe(window, "load", function(){
+        buildTable('assembler');
+    })
+</script>
 
 </body>
 </html>

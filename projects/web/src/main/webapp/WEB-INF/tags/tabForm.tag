@@ -19,9 +19,10 @@
 <%@attribute name="localButtons" fragment="true" %>
 <%@attribute name="tabControls" fragment="true" %>
 <%@attribute name="saveButtonLabel" %>
+<%@attribute name="noBackground" required="false" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
-<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}">
+<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}"  noBackground="${noBackground}">
     <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
         <tags:tabFields tab="${tab}"/>
