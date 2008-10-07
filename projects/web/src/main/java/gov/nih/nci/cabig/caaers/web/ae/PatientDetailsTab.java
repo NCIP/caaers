@@ -260,7 +260,8 @@ public class PatientDetailsTab extends AeTab {
     @Override
     protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,Errors errors) {
     	super.validate(command, commandBean, fieldGroups, errors);
-    	
+    	validateDiseaseInformation(command, commandBean, fieldGroups, errors);
+    	validateMetastaticDiseases(command, commandBean, fieldGroups, errors);
     	validatePreExistingConditions(command, commandBean, fieldGroups, errors);
     	validateConcomitantMedications(command, commandBean, fieldGroups, errors);
     	validatePriorTherapies(command, commandBean, fieldGroups, errors);
