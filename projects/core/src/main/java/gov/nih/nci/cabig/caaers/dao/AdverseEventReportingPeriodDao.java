@@ -53,7 +53,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
      */
     @SuppressWarnings("unchecked")
 	public List<AdverseEventReportingPeriod> getByAssignment(StudyParticipantAssignment assignment) {
-        List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ?", assignment.getId());
+        List<AdverseEventReportingPeriod> results = getHibernateTemplate().find("from AdverseEventReportingPeriod where assignment_id= ? order by start_date desc", assignment.getId());
         return results;
     }
     
