@@ -109,7 +109,7 @@ public class AttributionTab extends AeTab {
         String propertyName = new StringBuilder().append("attributionMap[").append(groupKey)
                         .append("][").append(aeIndex).append("][").append(causeIndex).append(']')
                         .toString();
-        return InputFieldFactory.createSelectField(propertyName, null, true, ATTRIBUTION_OPTIONS);
+        return InputFieldFactory.createSelectField(propertyName, " ", true, ATTRIBUTION_OPTIONS);
     }
 
     private static Map<Object, Object> collectAttributionOptions() {
