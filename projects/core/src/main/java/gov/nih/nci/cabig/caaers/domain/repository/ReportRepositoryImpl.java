@@ -113,6 +113,7 @@ public class ReportRepositoryImpl implements ReportRepository {
 		    	   for (AdverseEvent ae : aeReport.getAdverseEvents()) {
 		    		   Attribution max = null;
 		    		   for (AdverseEventAttribution<?> attribution : ae.getAdverseEventAttributions()) {
+		    			   if(attribution.getAttribution() == null) {max = null; break;} //special case when people click save again (after an error).
 		    			   if (max == null || attribution.getAttribution().getCode() > max.getCode()) {
 		    				   max = attribution.getAttribution();
 		    			   }

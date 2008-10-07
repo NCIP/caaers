@@ -442,6 +442,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
             Attribution... attributions) {
         if (attributionList == null || attributionList.isEmpty()) return false;
         for (AdverseEventAttribution<? extends DomainObject> aea : attributionList) {
+        	if(aea.getAttribution() == null) return false;
             for (Attribution att : attributions) {
                 if (aea.getAttribution().equals(att)) return true;
             }
