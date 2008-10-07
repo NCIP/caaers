@@ -99,8 +99,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
 
                 if (!ae.getSolicited()) {
-                    if (!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) { //only if other is requrired
-                        mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
+                    if (!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) {//only if other is requrired
+                    	InputField otherMeddraField = InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false);
+                    	InputFieldAttributes.setSize(otherMeddraField, 25);
+                    	mainFieldFactory.addField(otherMeddraField);
+                        //mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
                     }
                     InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
                     InputFieldAttributes.setSize(notesField, 25);
