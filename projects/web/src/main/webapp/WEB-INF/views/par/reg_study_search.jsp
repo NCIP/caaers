@@ -49,17 +49,17 @@
 
             if (keynum == 13) {
                 Event.stop(e);
-                buildTable('assembler');
+                buildTable('assembler', true);
             } else return;
         }
 
-        function buildTable(form) {
+        function buildTable(form, validate) {
             // START tags:tabMethod
 
             var text = $F('searchText_');
 
             if (text == '') {
-                $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
+                if (validate) $('error').innerHTML = "<font color='#FF0000'>Provide at least one character in the search field.</font>"
             } else {
                 //$('error').innerHTML = ""
                 var type = $('searchType').options[$('searchType').selectedIndex].value;
@@ -120,7 +120,7 @@
                             <td>
                                 <input type="text" size="25" onkeydown="onKey(event);" value="${command.searchText}" id="searchText_">
                                 <%--<form:input path="searchText" size="25" onkeydown="onKey(event);" />&nbsp;--%>
-                                <input type="button" onClick="buildTable('assembler');" value="Search"/>&nbsp;
+                                <input type="button" onClick="buildTable('assembler', true);" value="Search"/>&nbsp;
                                 <img src="<c:url value="/images/alphacube/progress.gif" />" style="display:none;" id="indicator"></td>
                                 <c:set var="targetPage" value="${assignType == 'study' ? '_target0' : '_target1'}"/>
                         </tr>
@@ -188,7 +188,7 @@
 
 <script>
     Event.observe(window, "load", function(){
-        buildTable('assembler');
+        buildTable('assembler', false);
     })
 </script>
 
