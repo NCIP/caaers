@@ -104,8 +104,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             researchStaffDao.save(researchStaff);
             if ("local".equals(getAuthenticationMode())) {
                 sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
-                		+ "Your username is follows:\n"
-                		+ "Username: " + researchStaff.getLoginId()
+                        + "Your username is follows:\n"
+                        + "Username: " + researchStaff.getLoginId()
                         + "\n"
                         + "You must change your password before you can login. In order to do so please visit this URL:\n"
                         + "\n"
@@ -119,13 +119,12 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     private gov.nih.nci.security.authorization.domainobjects.User updateCSMUserForResearchStaff(final ResearchStaff researchStaff) {
-        String emailId = researchStaff.getEmailAddress();
-        // FIXME:Biju check for existing research staff with null login id....user must not be able to update the login name
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(emailId);
+        String loginId = researchStaff.getLoginId();
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
         copyUserToCSMUser(researchStaff, csmUser);
         saveCSMUser(csmUser);
         researchStaffDao.save(researchStaff);
-        /* sendUserEmail(emailId, "Your updated caAERS account", "Your caAERS account has been updated"); */ // annoying for development
+        sendUserEmail(loginId, "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
         return csmUser;
     }
 

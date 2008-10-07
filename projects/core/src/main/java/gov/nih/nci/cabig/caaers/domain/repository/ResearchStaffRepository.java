@@ -33,6 +33,7 @@ public class ResearchStaffRepository {
 
     private ResearchStaffDao researchStaffDao;
 
+
     private UserProvisioningManager userProvisioningManager;
 
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
@@ -57,6 +58,10 @@ public class ResearchStaffRepository {
         ResearchStaff researchStaff = researchStaffDao.getById(id);
         initialize(researchStaff);
         return researchStaff;
+    }
+
+    public List<ResearchStaff> searchResearchStaff(final ResearchStaffQuery query) {
+        return researchStaffDao.searchResearchStaff(query);
     }
 
     @SuppressWarnings("unchecked")

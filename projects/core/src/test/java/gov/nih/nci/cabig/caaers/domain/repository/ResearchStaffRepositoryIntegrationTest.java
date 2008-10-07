@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -14,6 +15,7 @@ import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.apache.log4j.Logger;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.MailException;
@@ -57,7 +59,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
         researchStaffRepository = (ResearchStaffRepository) getApplicationContext().getBean("researchStaffRepository");
         csmUserRepository = (CSMUserRepositoryImpl) getApplicationContext().getBean("csmUserRepository");
-       // csmUserRepository.setMailSender(new );
+        // csmUserRepository.setMailSender(new );
         organizationRepository = (OrganizationRepository) getApplicationContext().getBean("organizationRepository");
         jdbcTemplate = (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
         userProvisioningManager = (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
@@ -146,6 +148,31 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     }
 
+    public void testFindReserachStaffByEmailAddressOrLoginId() throws Exception {
+
+        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_site_cd);
+        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+
+        // there should be a mock emailer...
+        researchStaffRepository.save(researchStaff, "noURL");
+
+        // now create new research staff with same email address and try to save it..
+
+        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+
+        researchStaffQuery.filterByEmailAddressOrLoginId(researchStaff.getLoginId());
+        List<ResearchStaff> researchStaffList = researchStaffRepository.searchResearchStaff(researchStaffQuery);
+        assertFalse(researchStaffList.isEmpty());
+        for (ResearchStaff existingResearchStaff : researchStaffList) {
+            assertTrue(StringUtils.equals(researchStaff.getLoginId(), existingResearchStaff.getLoginId())
+                    || StringUtils.equals(researchStaff.getEmailAddress(), existingResearchStaff.getEmailAddress()));
+        }
+
+    }
+
     public void testUpdateReserachStaff() throws Exception {
 
         List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
@@ -166,6 +193,37 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
         researchStaffRepository.save(researchStaff, "noURL");
 
+        userGroupTypes = new ArrayList<UserGroupType>();
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_study_cd);
+
+        valaidateResearchStaff(researchStaff, userGroupTypes);
+        deleteCsmUser(researchStaff);
+
+    }
+
+    public void testUpdateEmailAddressOfReserachStaff() throws Exception {
+
+        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_site_cd);
+        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+
+        researchStaffRepository.save(researchStaff, "noURL");
+        valaidateResearchStaff(researchStaff, userGroupTypes);
+
+        // now update the research staff;
+        String loginId = researchStaff.getLoginId();
+        researchStaff = researchStaffRepository.getById(researchStaff.getId());
+        researchStaff.setEmailAddress("newemail@email.com");
+        researchStaff.addUserGroupType(UserGroupType.caaers_study_cd);
+        researchStaff.removeUserGroupType(UserGroupType.caaers_site_cd);
+
+        researchStaffRepository.save(researchStaff, "noURL");
+
+        assertNotNull(researchStaff.getId());
+        assertEquals("must not change login id if u update email address of research staff", loginId, researchStaff.getLoginId());
         userGroupTypes = new ArrayList<UserGroupType>();
         userGroupTypes.add(UserGroupType.caaers_participant_cd);
         userGroupTypes.add(UserGroupType.caaers_study_cd);
@@ -206,8 +264,6 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         assertEquals(csmUser.getFirstName(), researchStaff.getFirstName());
         assertEquals(csmUser.getLastName(), researchStaff.getLastName());
         assertEquals(csmUser.getEmailId(), researchStaff.getEmailAddress());
-//        assertEquals(csmUser.getOrganization(), researchStaff.getOrganization().getNciInstituteCode());
-        assertEquals(csmUser.getLoginName(), researchStaff.getEmailAddress());
         assertEquals(csmUser.getLoginName(), researchStaff.getLoginId());
         assertEquals(csmUser.getPhoneNumber(), researchStaff.getPhoneNumber());
 

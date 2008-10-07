@@ -3,10 +3,14 @@ package gov.nih.nci.cabig.caaers.web.admin;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.security.UserProvisioningManager;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +32,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {
             UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd,
             UserGroupType.caaers_site_cd, UserGroupType.caaers_study_cd};
+    private ResearchStaffDao researchStaffDao;
 
     public ResearchStaffTab() {
         super("Research Staff Details", "Details", "admin/research_staff_details");
@@ -70,6 +75,16 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
         }
 
+        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+        researchStaffQuery.filterByEmailAddressOrLoginId(command.getEmailAddress());
+        List<ResearchStaff> researchStaffList = researchStaffDao
+                .searchResearchStaff(researchStaffQuery);
+        for (ResearchStaff researchStaff : researchStaffList) {
+            if (!researchStaff.getId().equals(command.getId())) {
+                errors.reject("REQUIRED", "Email address already exits in database..!");
+                break;
+            }
+        }
     }
 
     @Override
@@ -102,7 +117,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
                 "Researcher ID", false);
         InputFieldAttributes.setSize(ncidIdField, 30);
         researchStaffFieldGroup.getFields().add(ncidIdField);
-        
+
         InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress",
                 "Email address", true);
         InputFieldAttributes.setSize(emailAddressField, 30);
@@ -119,7 +134,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputFieldAttributes.setSize(faxNumberField, 30);
         faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(faxNumberField);
-        
+
         InputField loginIdField = InputFieldFactory.createTextField("loginId",
                 "Grid identity", false);
         InputFieldAttributes.setSize(loginIdField, 30);
@@ -132,4 +147,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         return map;
     }
 
-}
+
+    @Required
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+        this.researchStaffDao = researchStaffDao;
+    }
+
+  }

@@ -14,6 +14,7 @@ public class ResearchStaffQuery extends AbstractQuery {
     private static String LAST_NAME = "lastName";
 
     private static String EMAIL_ADDRESS = "emailAddress";
+    private static String LOGIN_ID = "loginId";
 
     private static String NCI_IDENTIFIER = "nciIdentifier";
 
@@ -43,6 +44,12 @@ public class ResearchStaffQuery extends AbstractQuery {
     public void filterByEmailAddress(final String emailAddress) {
         String searchString = "%" + emailAddress.trim().toLowerCase() + "%";
         andWhere("lower(rs.emailAddress) LIKE :" + EMAIL_ADDRESS);
+        setParameter(EMAIL_ADDRESS, searchString);
+    }
+    public void filterByEmailAddressOrLoginId(final String emailAddressOrLoginId) {
+        String searchString = "%" + emailAddressOrLoginId.trim().toLowerCase() + "%";
+        andWhere(String.format("(lower(rs.emailAddress) LIKE :%s or lower(rs.loginId) LIKE :%s)",EMAIL_ADDRESS, LOGIN_ID));
+        setParameter(LOGIN_ID, searchString);
         setParameter(EMAIL_ADDRESS, searchString);
     }
 

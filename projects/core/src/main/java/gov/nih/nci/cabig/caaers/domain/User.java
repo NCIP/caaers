@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueEmailAddressForResearchStaff;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +9,7 @@ import java.sql.Timestamp;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import javax.persistence.Table;
 import javax.persistence.Column;
-import javax.persistence.Transient;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 
@@ -68,7 +65,6 @@ public abstract class User extends AbstractMutableDomainObject {
         this.loginId = loginId;
     }
 
-    @UniqueEmailAddressForResearchStaff(message = "Email address already exits in database..!")
     public String getEmailAddress() {
         return emailAddress;
     }
