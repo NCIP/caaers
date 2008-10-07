@@ -156,8 +156,8 @@
 	      ================================================================================================= -->
 	    
 	<target name="drop-rules-tables" description="drop the rules tables"
-	            depends="resolve, find-admin-datasource">
-	        <property file="${adminDsFile}"/>
+	            depends="resolve, find-datasource">
+	        <property file="${dsFile}"/>
 	        <echo message="${datasource.driver}"/>
 	        <echo message="${datasource.url}"/>
 	        <echo message="${datasource.username}"/>
