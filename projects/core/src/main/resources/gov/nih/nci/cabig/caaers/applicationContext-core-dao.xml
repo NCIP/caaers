@@ -459,10 +459,6 @@ This applicationContext contains the definition of the DAOs
         <property name="organizationDao" ref="organizationDao"/>
     </bean>
 
-    <bean id="uniqueEmailAddressForResearchStaffValidator"
-          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueEmailAddressForResearchStaffValidator">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
-    </bean>
     <bean id="uniqueIdentifierValidator"
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForParticipantValidator">
         <property name="participantDao" ref="participantDao"/>

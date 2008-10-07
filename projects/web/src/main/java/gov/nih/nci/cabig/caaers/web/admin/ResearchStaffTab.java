@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.security.UserProvisioningManager;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -74,15 +73,14 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
             errors.reject("REQUIRED", "You must select at least one user role..!");
 
         }
-
-        ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-        researchStaffQuery.filterByEmailAddressOrLoginId(command.getEmailAddress());
-        List<ResearchStaff> researchStaffList = researchStaffDao
-                .searchResearchStaff(researchStaffQuery);
-        for (ResearchStaff researchStaff : researchStaffList) {
-            if (!researchStaff.getId().equals(command.getId())) {
-                errors.reject("REQUIRED", "Email address already exits in database..!");
-                break;
+        if (command ==null || command.getId() == null)
+        {
+            ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
+            researchStaffQuery.filterByLoginId(command.getEmailAddress());
+            List<ResearchStaff> researchStaffList = researchStaffDao
+                    .searchResearchStaff(researchStaffQuery);
+                if (researchStaffList!=null ||!researchStaffList.isEmpty()) {
+                    errors.reject("REQUIRED", "Email address already exits in database..!");
             }
         }
     }
@@ -153,4 +151,4 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         this.researchStaffDao = researchStaffDao;
     }
 
-  }
+}

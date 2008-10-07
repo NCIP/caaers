@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -16,7 +15,6 @@ import gov.nih.nci.security.authorization.domainobjects.User;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.MailException;
 
@@ -163,7 +161,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
 
-        researchStaffQuery.filterByEmailAddressOrLoginId(researchStaff.getLoginId());
+        researchStaffQuery.filterByLoginId(researchStaff.getLoginId());
         List<ResearchStaff> researchStaffList = researchStaffRepository.searchResearchStaff(researchStaffQuery);
         assertFalse(researchStaffList.isEmpty());
         for (ResearchStaff existingResearchStaff : researchStaffList) {
