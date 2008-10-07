@@ -79,7 +79,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
             researchStaffQuery.filterByLoginId(command.getEmailAddress());
             List<ResearchStaff> researchStaffList = researchStaffDao
                     .searchResearchStaff(researchStaffQuery);
-                if (researchStaffList!=null ||!researchStaffList.isEmpty()) {
+                if (researchStaffList!=null && !researchStaffList.isEmpty()) {
                     errors.reject("REQUIRED", "Email address already exits in database..!");
             }
         }
