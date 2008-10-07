@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Rhett Sutphin
@@ -82,7 +83,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
     @Override
     public void send(SimpleMailMessage message) {
         String fromAddress = configuration.get(Configuration.SYSTEM_FROM_EMAIL);
-        if (!fromAddress.equals("")) message.setFrom(fromAddress);
+        if (!StringUtils.isBlank(fromAddress)) message.setFrom(fromAddress);
         super.send(message);
     }
     

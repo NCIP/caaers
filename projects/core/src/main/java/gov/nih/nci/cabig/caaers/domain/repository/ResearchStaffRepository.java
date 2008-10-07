@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
@@ -61,8 +62,8 @@ public class ResearchStaffRepository {
     @SuppressWarnings("unchecked")
     public ResearchStaff initialize(final ResearchStaff researchStaff) {
         try {
-            List<Group> groups = new ArrayList(userProvisioningManager.getGroups(researchStaff
-                    .getLoginId()));
+            gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
+            List<Group> groups = new ArrayList(userProvisioningManager.getGroups(String.valueOf(csmUser.getUserId())));
             for (Group group : groups) {
                 UserGroupType userGroupType = UserGroupType.getByCode(Long.valueOf(
                         group.getGroupId()).intValue());

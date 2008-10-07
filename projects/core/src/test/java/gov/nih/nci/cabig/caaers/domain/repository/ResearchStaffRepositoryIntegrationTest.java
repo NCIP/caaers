@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.accesscontrol.SiteSecurityAfterInvocationCollectionFilteringProvider;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -15,10 +16,12 @@ import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.MailException;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Biju Joseph
@@ -31,7 +34,6 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     private ResearchStaffRepository researchStaffRepository;
 
-    private SiteSecurityAfterInvocationCollectionFilteringProvider siteSecurityAfterInvocationCollectionFilteringProvider;
 
     private OrganizationRepository organizationRepository;
 
@@ -42,41 +44,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     private String name;
     private JdbcTemplate jdbcTemplate;
 
-    // public void testSearchStudy() throws Exception {
-    // Study study = new Study();
-    // study.setDescription("test");
-    // List<Identifier> identifiers = new ArrayList<Identifier>();
-    // identifiers.add(new SystemAssignedIdentifier());
-    // study.setIdentifiers(identifiers);
-    // StudySite studySite = new StudySite();
-    // Organization organization = createOrganization("abc");
-    // organization.setId(1);
-    // studySite.setOrganization(organization);
-    // study.addStudyOrganization(studySite);
-    // studyDao.getStudyHavingStudySites(studySite);
-    // studyDao.searchByExample(study, true);
-    //
-    // }
-
-//    @Override
-//
-//    protected String[] getConfigLocations() {
-////        <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml" />
-////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml" />
-////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml" />
-////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml" />
-////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-security.xml"/>
-////            <import resource="classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"/>
-//
-//        return new String[]{"classpath*:applicationContext-test.xml",
-//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
-//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-test-security.xml",
-//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
-//                "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml"
-//                // "classpath*:gov/nih/nci/cabig/caaers/applicationContext-configProperties.xml",
-//        };
-//
-//    }
+    CSMUserRepositoryImpl csmUserRepository;
 
     @Override
     protected void setUp() throws Exception {
@@ -87,13 +55,18 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         DataAuditInfo.setLocal(new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo
                 ("admin", "localhost", new Date(), "/pages/task"));
 
-        organizationRepository= (OrganizationRepository) getApplicationContext().getBean("organizationRepository");
-        jdbcTemplate= (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
-        userProvisioningManager= (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
-        siteObjectIdGenerator= (CSMObjectIdGenerator) getApplicationContext().getBean("sitePrivilegeAndObjectIdGenerator");
+        researchStaffRepository = (ResearchStaffRepository) getApplicationContext().getBean("researchStaffRepository");
+        csmUserRepository = (CSMUserRepositoryImpl) getApplicationContext().getBean("csmUserRepository");
+       // csmUserRepository.setMailSender(new );
+        organizationRepository = (OrganizationRepository) getApplicationContext().getBean("organizationRepository");
+        jdbcTemplate = (JdbcTemplate) getApplicationContext().getBean("jdbcTemplate");
+        userProvisioningManager = (UserProvisioningManager) getApplicationContext().getBean("csmUserProvisioningManager");
+        siteObjectIdGenerator = (CSMObjectIdGenerator) getApplicationContext().getBean("sitePrivilegeAndObjectIdGenerator");
         organization = Fixtures.createOrganization(name);
         organizationRepository.create(organization);
         assertNotNull(organization);
+
+
     }
 
     @Override
@@ -125,102 +98,104 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 
     }
 
-    //commenting the test cases becasue of   problem with CaaersJavaMailSender.send
-//
-//    public void testSaveReserachStaff() throws Exception {
-//
-//        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
-//
-//        userGroupTypes.add(UserGroupType.caaers_super_user);
-//        userGroupTypes.add(UserGroupType.caaers_ae_cd);
-//        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
-//
-//        researchStaffRepository.save(researchStaff, "noURL");
-//
-//        // now validate research staff, csm_user and csm_user_group
-//        // ResearchStaff newResearchStaff = researchStaffRepository.getById(researchStaff.getId());
-//        // assertEquals(2, newResearchStaff.getUserGroupTypes().size());
-//
-//        valaidateResearchStaff(researchStaff, userGroupTypes);
-//        deleteCsmUser(researchStaff);
-//
-//    }
-//
-//    public void testSaveReserachStaffForExistingEmailAddress() throws Exception {
-//
-//        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
-//
-//        userGroupTypes.add(UserGroupType.caaers_participant_cd);
-//        userGroupTypes.add(UserGroupType.caaers_site_cd);
-//        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
-//
-//        // there should be a mock emailer...
-//        researchStaffRepository.save(researchStaff, "noURL");
-//
-//        // now create new research staff with same email address and try to save it..
-//
-//        ResearchStaff newResearchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
-//        try {
-//            researchStaffRepository.save(newResearchStaff, "noURL");
-//            fail("email address should be unique");
-//        }
-//        catch (CaaersSystemException e) {
-//            //assertEquals("Email address allready exists..!", e.getMessage());
-//            assertNotNull(e.getMessage());
-//        }
-//
-//    }
-//
-//    public void testUpdateReserachStaff() throws Exception {
-//
-//        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
-//
-//        userGroupTypes.add(UserGroupType.caaers_participant_cd);
-//        userGroupTypes.add(UserGroupType.caaers_site_cd);
-//        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
-//
-//        researchStaffRepository.save(researchStaff, "noURL");
-//        valaidateResearchStaff(researchStaff, userGroupTypes);
-//
-//        // now update the research staff;
-//
-//        // researchStaff = researchStaffRepository.getById(researchStaff.getId());
-//        // researchStaff.setLastName("last name");
-//        // researchStaff.addUserGroupType(UserGroupType.caaers_study_cd);
-//        // researchStaff.removeUserGroupType(UserGroupType.caaers_site_cd);
-//        //
-//        // researchStaffRepository.save(researchStaff, "noURL");
-//        //
-//        // userGroupTypes = new ArrayList<UserGroupType>();
-//        // userGroupTypes.add(UserGroupType.caaers_participant_cd);
-//        // userGroupTypes.add(UserGroupType.caaers_study_cd);
-//        //
-//        // valaidateResearchStaff(researchStaff, userGroupTypes);
-//        // deleteCsmUser(researchStaff);
-//
-//    }
+    public void testSaveReserachStaff() throws Exception {
+
+        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+
+        userGroupTypes.add(UserGroupType.caaers_super_user);
+        userGroupTypes.add(UserGroupType.caaers_ae_cd);
+        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+
+        try {
+            researchStaffRepository.save(researchStaff, "noURL");
+        } catch (MailException e) {
+            //ignore mail exception.
+        }
+
+        //now validate research staff, csm_user and csm_user_group
+        ResearchStaff newResearchStaff = researchStaffRepository.getById(researchStaff.getId());
+        assertEquals(2, newResearchStaff.getUserGroupTypes().size());
+
+        valaidateResearchStaff(researchStaff, userGroupTypes);
+        deleteCsmUser(researchStaff);
+
+    }
+
+    public void testSaveReserachStaffForExistingEmailAddress() throws Exception {
+
+        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_site_cd);
+        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+
+        // there should be a mock emailer...
+        researchStaffRepository.save(researchStaff, "noURL");
+
+        // now create new research staff with same email address and try to save it..
+
+        ResearchStaff newResearchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+        try {
+            researchStaffRepository.save(newResearchStaff, "noURL");
+            fail("email address should be unique");
+        }
+        catch (CaaersSystemException e) {
+            //assertEquals("Email address allready exists..!", e.getMessage());
+            assertNotNull(e.getMessage());
+        }
+
+    }
+
+    public void testUpdateReserachStaff() throws Exception {
+
+        List<UserGroupType> userGroupTypes = new ArrayList<UserGroupType>();
+
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_site_cd);
+        ResearchStaff researchStaff = Fixtures.createResearchStaff(organization, userGroupTypes, name);
+
+        researchStaffRepository.save(researchStaff, "noURL");
+        valaidateResearchStaff(researchStaff, userGroupTypes);
+
+        // now update the research staff;
+
+        researchStaff = researchStaffRepository.getById(researchStaff.getId());
+        researchStaff.setLastName("last name");
+        researchStaff.addUserGroupType(UserGroupType.caaers_study_cd);
+        researchStaff.removeUserGroupType(UserGroupType.caaers_site_cd);
+
+        researchStaffRepository.save(researchStaff, "noURL");
+
+        userGroupTypes = new ArrayList<UserGroupType>();
+        userGroupTypes.add(UserGroupType.caaers_participant_cd);
+        userGroupTypes.add(UserGroupType.caaers_study_cd);
+
+        valaidateResearchStaff(researchStaff, userGroupTypes);
+        deleteCsmUser(researchStaff);
+
+    }
 
     private void valaidateResearchStaff(final ResearchStaff researchStaff, final List<UserGroupType> userGroupTypes)
             throws CSObjectNotFoundException {
+        User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
 
-        int assignedToGroups = jdbcTemplate.queryForInt("select count(*) from csm_user_group where user_id="
-                + researchStaff.getLoginId());
+        int assignedToGroups = jdbcTemplate.queryForInt(String.format("select count(*) from csm_user_group where user_id=%s"
+                , csmUser.getUserId()));
 
         assertEquals(userGroupTypes.size() + 1, assignedToGroups);
         assertEquals(assignedToGroups, researchStaff.getUserGroupTypes().size() + 1);
 
-        User csmUser = userProvisioningManager.getUserById(researchStaff.getLoginId());
         validateCsmUser(csmUser, researchStaff);
 
         for (UserGroupType userGroupType : userGroupTypes) {
             assertEquals(1, jdbcTemplate.queryForList(
-                    "select group_id from csm_user_group where user_id=" + researchStaff.getLoginId()
+                    "select group_id from csm_user_group where user_id=" + csmUser.getUserId()
                             + " and group_id=" + userGroupType.getCode().toString()).size());
 
         }
         assertEquals(1, jdbcTemplate.queryForList(
                 "select distinct user_group_id from csm_user_group cug,csm_group cg where cug.group_id=cg.group_id and cug.user_id="
-                        + researchStaff.getLoginId() + " and cg.group_name='"
+                        + csmUser.getUserId() + " and cg.group_name='"
                         + siteObjectIdGenerator.generateId(organization) + "'").size());
 
     }
@@ -231,9 +206,9 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         assertEquals(csmUser.getFirstName(), researchStaff.getFirstName());
         assertEquals(csmUser.getLastName(), researchStaff.getLastName());
         assertEquals(csmUser.getEmailId(), researchStaff.getEmailAddress());
-        assertEquals(csmUser.getOrganization(), researchStaff.getOrganization().getNciInstituteCode());
+//        assertEquals(csmUser.getOrganization(), researchStaff.getOrganization().getNciInstituteCode());
         assertEquals(csmUser.getLoginName(), researchStaff.getEmailAddress());
-        assertEquals(csmUser.getUserId().toString(), researchStaff.getLoginId());
+        assertEquals(csmUser.getLoginName(), researchStaff.getLoginId());
         assertEquals(csmUser.getPhoneNumber(), researchStaff.getPhoneNumber());
 
     }
@@ -269,20 +244,14 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
     }
 
     private void deleteCsmUser(final ResearchStaff researchStaff) {
+        User csmUser = userProvisioningManager.getUser(researchStaff.getLoginId());
 
-        jdbcTemplate.execute("delete from csm_user_group where user_id=" + researchStaff.getLoginId());
-        jdbcTemplate.execute("delete from csm_user where user_id=" + researchStaff.getLoginId());
+        jdbcTemplate.execute("delete from csm_user_group where user_id=" + csmUser.getUserId());
+        jdbcTemplate.execute("delete from csm_user where user_id=" + csmUser.getUserId());
 //        setComplete();
 //        endTransaction();
 //        startNewTransaction();
     }
 
-    @Required
-    public void setSiteSecurityAfterInvocationCollectionFilteringProvider(
-            final SiteSecurityAfterInvocationCollectionFilteringProvider siteSecurityAfterInvocationCollectionFilteringProvider) {
-        this.siteSecurityAfterInvocationCollectionFilteringProvider = siteSecurityAfterInvocationCollectionFilteringProvider;
-    }
 
-
- 
 }

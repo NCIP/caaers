@@ -21,7 +21,7 @@ import org.hibernate.annotations.IndexColumn;
 
 /**
  * This class represents the User domain object associated with the Adverse event report.
- * 
+ *
  * @author Saurabh Agrawal
  */
 @MappedSuperclass
@@ -176,7 +176,7 @@ public abstract class User extends AbstractMutableDomainObject {
         User user = (User) o;
 
         if (emailAddress != null ? !emailAddress.equals(user.emailAddress)
-                        : user.emailAddress != null) return false;
+                : user.emailAddress != null) return false;
         if (faxNumber != null ? !faxNumber.equals(user.faxNumber) : user.faxNumber != null) return false;
         if (loginId != null ? !loginId.equals(user.loginId) : user.loginId != null) return false;
         if (phoneNumber != null ? !phoneNumber.equals(user.phoneNumber) : user.phoneNumber != null) return false;
@@ -210,7 +210,9 @@ public abstract class User extends AbstractMutableDomainObject {
     }
 
     public void addUserGroupType(UserGroupType userGroupType) {
-        userGroupTypes.add(userGroupType);
+        if (!userGroupTypes.contains(userGroupType)) {
+            userGroupTypes.add(userGroupType);
+        }
     }
 
     public void removeUserGroupType(UserGroupType userGroupType) {
