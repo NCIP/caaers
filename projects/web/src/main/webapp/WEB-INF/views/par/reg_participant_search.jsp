@@ -60,12 +60,12 @@
 <body>
 
 
-<tags:tabForm tab="${tab}" flow="${flow}" title="Search Criteria" willSave="false">
-<jsp:attribute name="singleFields">
-    <table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
+  <form:form id="searchForm" method="post" cssClass="standard">
+        <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+		<table border="0" cellspacing="2" cellpadding="2" class="search" width="100%">
         <p><tags:instructions code="instruction_subject_as2s.searchsub"/></p>
         <tr>
-            <form:hidden  path="participant"/>
+            
             <td class="searchType">Search for subject by</td>
             <td>
                 <form:select path="searchType">
@@ -88,10 +88,7 @@
         </tr>
 
     </table>
-
-</jsp:attribute>
-</tags:tabForm>
-
+  </form:form>
 
 <div id="bigSearch" style="display:none;">
     <form:form id="assembler">
@@ -112,6 +109,12 @@
     </form:form>
 </div>
 
+
+<form:form  id="command">
+	<form:hidden  path="participant"/>
+     <tags:tabFields tab="${tab}"/>
+     <tags:tabControls tab="${tab}" flow="${flow}"/>
+</form:form>
 </body>
 </html>
 
