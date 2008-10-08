@@ -43,7 +43,7 @@
 			returnValue = values;
 			$(barId).style.display = 'none';
 			$(barId).style.visibility = 'hidden';
-			alert(returnValue);
+			//alert(returnValue);
 			if(returnValue == 'ERR'){
 				$(statusId).update("Import Incomplete, Please contact caAERS support");
 			}
