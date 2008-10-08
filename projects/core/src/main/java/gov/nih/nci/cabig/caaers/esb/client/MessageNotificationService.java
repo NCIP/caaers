@@ -28,6 +28,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
 import org.springframework.web.context.request.WebRequest;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 public class MessageNotificationService {
     protected Configuration configuration;
@@ -41,6 +42,8 @@ public class MessageNotificationService {
     protected final Log log = LogFactory.getLog(getClass());
 
     private ReportDao reportDao;
+    
+    protected CaaersJavaMailSender caaersJavaMailSender;
     
 	public void setReportDao(ReportDao reportDao) {
         this.reportDao = reportDao;
@@ -149,11 +152,12 @@ public class MessageNotificationService {
 	public void sendMail(String[] to, String subject, String content, String attachment) throws Exception {
 		
 		try {		
-			JavaMailSenderImpl caaersJavaMailSender = new JavaMailSenderImpl();
-			caaersJavaMailSender.setUsername(configuration.get(Configuration.SMTP_USER));
-			caaersJavaMailSender.setPassword(configuration.get(Configuration.SMTP_PASSWORD));
+			//JavaMailSenderImpl caaersJavaMailSender = new JavaMailSenderImpl();
+			
+			//caaersJavaMailSender.setUsername(configuration.get(Configuration.SMTP_USER));
+			//caaersJavaMailSender.setPassword(configuration.get(Configuration.SMTP_PASSWORD));
             //System.out.println("host .." + mailHost);
-            caaersJavaMailSender.setHost(configuration.get(Configuration.SMTP_ADDRESS));
+            //caaersJavaMailSender.setHost(configuration.get(Configuration.SMTP_ADDRESS));
             
 		    MimeMessage message = caaersJavaMailSender.createMimeMessage();
 		    message.setSubject(subject);
@@ -211,6 +215,10 @@ public class MessageNotificationService {
 
     }
 */
+	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
+		this.caaersJavaMailSender = caaersJavaMailSender;
+	}
+	
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
