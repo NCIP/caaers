@@ -19,7 +19,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
  */
 @Entity
 @Table(name = "report_format")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "report_format_id_seq") })
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_format_id") })
 public class ReportFormat extends AbstractMutableDomainObject implements StudyChild {
 
     private Study study;
