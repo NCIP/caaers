@@ -445,8 +445,7 @@
 	class="gov.nih.nci.cabig.caaers.web.search.SearchResearchStaffController">
   </bean>
 
-  <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
+  <bean name="/admin/editResearchStaff" id="editResearchStaffController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.EditResearchStaffController">
     <property name="webControllerValidator" ref="webControllerValidator"/>
     <property name="authenticationMode" ref="authenticationMode"/>   
   </bean>

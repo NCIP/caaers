@@ -26,9 +26,7 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
         request.getSession().removeAttribute(getReplacedCommandSessionAttributeName(request));
-
-        ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request
-                        .getParameter("researchStaffId")));
+        ResearchStaff researchStaff = researchStaffRepository.getById(Integer.parseInt(request.getParameter("researchStaffId")));
 
         if (log.isDebugEnabled()) {
             log.debug("Retrieved ResearchStaff :" + String.valueOf(researchStaff));
@@ -40,12 +38,10 @@ public class EditResearchStaffController extends ResearchStaffController<Researc
     @Override
     protected void layoutTabs(final Flow<ResearchStaff> flow) {
         flow.addTab(new ResearchStaffTab());
-
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final ResearchStaff command,
-                    final Tab<ResearchStaff> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final ResearchStaff command, final Tab<ResearchStaff> tab) {
         // supress for ajax and delete requests
         return super.shouldSave(request, command, tab);
     }

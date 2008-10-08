@@ -55,114 +55,94 @@
 <body>
 <div class="tabpane">
 
-    <div class="workflow-tabs2">
-
-
-<ul id="" class="tabs autoclear">
-    <li id="thirdlevelnav" class="tab selected">
-        <div><a href="createResearchStaff">Create Research Staff</a></div>
-    </li>
-    <li id="thirdlevelnav" class="tab">
-        <div><a href="searchResearchStaff">Search Research Staff</a></div>
-    </li>
-</ul>
-        </div>
+<div class="workflow-tabs2">
+    <ul id="" class="tabs autoclear">
+        <li id="thirdlevelnav" class="tab selected">
+            <div><a href="createResearchStaff">Create Research Staff</a></div>
+        </li>
+        <li id="thirdlevelnav" class="tab">
+            <div><a href="searchResearchStaff">Search Research Staff</a></div>
+        </li>
+    </ul>
+</div>
 <br/>
+
 <tags:tabForm tab="${tab}" flow="${flow}" formName="researchStaffForm">
 <jsp:attribute name="repeatingFields">
 	<input type="hidden" name="_action" value="">
     <input type="hidden" name="_selected" value="">
 	<input type="hidden" name="_finish" value="true"/>
-<p>
-<tags:instructions code="researchstaffdetails" />
-</p>
- <chrome:division title="Site">
-	<c:forEach items="${fieldGroups.site.fields}" var="field">
-	  <csmauthz:accesscontrol domainObject="${organization}"
-                        hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
-      <tags:renderRow field="${field}"/>
-	  </csmauthz:accesscontrol>
-	</c:forEach>
- </chrome:division>
 
- <chrome:division title="Details">
-  <div class="leftpanel">
-            <c:forEach begin="0" end="3"
-                       items="${fieldGroups.researchStaff.fields}" var="field">
+    <p><tags:instructions code="researchstaffdetails" /></p>
+
+    <chrome:division title="Site">
+    <c:forEach items="${fieldGroups.site.fields}" var="field">
+        <csmauthz:accesscontrol domainObject="${organization}" hasPrivileges="ACCESS" authorizationCheckName="siteAuthorizationCheck">
+            <tags:renderRow field="${field}"/>
+        </csmauthz:accesscontrol>
+    </c:forEach>
+    </chrome:division>
+
+    <chrome:division title="Details">
+    <div class="leftpanel">
+            <c:forEach begin="0" end="3" items="${fieldGroups.researchStaff.fields}" var="field">
                 <tags:renderRow field="${field}"/>
             </c:forEach>
-  </div>
-  <div class="rightpanel">
+    </div>
+    <div class="rightpanel">
     <td>
-         <c:forEach begin="4" end="6"
-                       items="${fieldGroups.researchStaff.fields}" var="field">
+         <c:forEach begin="4" end="6" items="${fieldGroups.researchStaff.fields}" var="field">
             <tags:renderRow field="${field}"/>
         </c:forEach>
-    
-	<c:if test="${authenticationMode == 'webSSO'}">
-		<tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
-	</c:if>
+
+        <c:if test="${authenticationMode == 'webSSO'}">
+            <tags:renderRow field="${fieldGroups.researchStaff.fields[7]}"/>
+        </c:if>
     </td>
-  </div>
-</chrome:division>
+    </div>
+    </chrome:division>
 
 <chrome:division id="staff-details" title="User Role (Check all that apply)">
 
 <div class="leftpanel">
 
-
     <div class="row">
-        <div class="label label2">
-            Subject coordinator
-        </div>
+        <div class="label label2">Subject coordinator</div>
         <div class="value value2">
-            <input type="checkbox"
-                   onclick="this.checked?$('caaers_participant_cd').value='true':$('caaers_participant_cd').value='false';" ${caaers_participant_cd ? 'checked':'' }/>
-            <input id="caaers_participant_cd" type="hidden" name="caaers_participant_cd"/>
+            <input type="checkbox" onclick="this.checked?$('caaers_participant_cd').value='true':$('caaers_participant_cd').value='false';" ${caaers_participant_cd ? 'checked':'' }/>
+            <input id="caaers_participant_cd" type="hidden" name="caaers_participant_cd" value="${caaers_participant_cd}" />
         </div>
     </div>
 
     <div class="row">
-        <div class="label label2">
-            Study coordinator
-        </div>
+        <div class="label label2">Study coordinator</div>
         <div class="value value2">
-            <input type="checkbox"
-                   onclick="this.checked?$('caaers_study_cd').value='true':$('caaers_study_cd').value='false';" ${caaers_study_cd ? 'checked':''} />
-            <input id="caaers_study_cd" type="hidden" name="caaers_study_cd"/>
+            <input type="checkbox" onclick="this.checked?$('caaers_study_cd').value='true':$('caaers_study_cd').value='false';" ${caaers_study_cd ? 'checked':''} />
+            <input id="caaers_study_cd" type="hidden" name="caaers_study_cd" value="${caaers_study_cd}"/>
         </div>
     </div>
 
     <div class="row">
-        <div class="label label2">
-            Adverse event coordinator
-        </div>
+        <div class="label label2">Adverse event coordinator</div>
         <div class="value value2">
-            <input type="checkbox"
-                   onclick="this.checked?$('caaers_ae_cd').value='true':$('caaers_ae_cd').value='false';" ${caaers_ae_cd ? 'checked':''} />
+            <input type="checkbox" onclick="this.checked?$('caaers_ae_cd').value='true':$('caaers_ae_cd').value='false';" ${caaers_ae_cd ? 'checked':''} />
             <input id="caaers_ae_cd" type="hidden" name="caaers_ae_cd" value="${caaers_ae_cd}"/>
         </div>
     </div>
 
     <div class="row">
-        <div class="label label2">
-            Site coordinator
-        </div>
+        <div class="label label2">Site coordinator</div>
         <div class="value value2">
-            <input type="checkbox"
-                   onclick="this.checked?$('caaers_site_cd').value='true':$('caaers_site_cd').value='false';" ${caaers_site_cd ? 'checked' :''} />
+            <input type="checkbox" onclick="this.checked?$('caaers_site_cd').value='true':$('caaers_site_cd').value='false';" ${caaers_site_cd ? 'checked' :''} />
             <input id="caaers_site_cd" type="hidden" name="caaers_site_cd" value="${caaers_site_cd}"/>
         </div>
     </div>
-
 
 </div>
 
 </chrome:division>
 
-
 </jsp:attribute>
-
 
 </tags:tabForm>
 </body>

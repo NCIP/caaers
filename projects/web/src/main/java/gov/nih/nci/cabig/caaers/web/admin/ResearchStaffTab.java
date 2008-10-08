@@ -23,21 +23,15 @@ import java.util.Map;
 public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
 
     protected static final Log log = LogFactory.getLog(ResearchStaffTab.class);
-
     private static final String RESEARCH_STAFF_FIELD_GROUP = "researchStaff";
-
     private static final String SITE_FIELD_GROUP = "site";
 
-    private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {
-            UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd,
-            UserGroupType.caaers_site_cd, UserGroupType.caaers_study_cd};
+    private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd, UserGroupType.caaers_site_cd, UserGroupType.caaers_study_cd};
     private ResearchStaffDao researchStaffDao;
 
     public ResearchStaffTab() {
         super("Research Staff Details", "Details", "admin/research_staff_details");
         setAutoPopulateHelpKey(true);
-        /*addHelpKeyExclusion("firstName", "middleName", "lastName", "emailAddress", "phoneNumber",
-                "faxNumber");*/
     }
 
     @Override
@@ -64,8 +58,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     }
 
     @Override
-    protected void validate(final ResearchStaff command, final BeanWrapper commandBean,
-                            final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+    protected void validate(final ResearchStaff command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         HashSet<String> set = new HashSet<String>();
         List<UserGroupType> userGroupTypes = command.getUserGroupTypes();
@@ -77,8 +70,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         {
             ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
             researchStaffQuery.filterByLoginId(command.getEmailAddress());
-            List<ResearchStaff> researchStaffList = researchStaffDao
-                    .searchResearchStaff(researchStaffQuery);
+            List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
                 if (researchStaffList!=null && !researchStaffList.isEmpty()) {
                     errors.reject("REQUIRED", "Email address already exits in database..!");
             }
@@ -92,18 +84,14 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputFieldGroup siteFieldGroup;
 
         siteFieldGroup = new DefaultInputFieldGroup(SITE_FIELD_GROUP);
-        siteFieldGroup.getFields().add(
-                InputFieldFactory.createAutocompleterField("organization", "Organization",
-                        true));
+        siteFieldGroup.getFields().add(InputFieldFactory.createAutocompleterField("organization", "Organization", true));
         researchStaffFieldGroup = new DefaultInputFieldGroup(RESEARCH_STAFF_FIELD_GROUP);
 
-        InputField firstNameField = InputFieldFactory.createTextField("firstName", "First name",
-                true);
+        InputField firstNameField = InputFieldFactory.createTextField("firstName", "First name", true);
         InputFieldAttributes.setSize(firstNameField, 30);
         researchStaffFieldGroup.getFields().add(firstNameField);
 
-        InputField middleNameField = InputFieldFactory.createTextField("middleName", "Middle name",
-                false);
+        InputField middleNameField = InputFieldFactory.createTextField("middleName", "Middle name", false);
         InputFieldAttributes.setSize(middleNameField, 30);
         researchStaffFieldGroup.getFields().add(middleNameField);
 
@@ -111,30 +99,25 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         InputFieldAttributes.setSize(lastNameField, 30);
         researchStaffFieldGroup.getFields().add(lastNameField);
 
-        InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier",
-                "Researcher ID", false);
+        InputField ncidIdField = InputFieldFactory.createTextField("nciIdentifier", "Researcher ID", false);
         InputFieldAttributes.setSize(ncidIdField, 30);
         researchStaffFieldGroup.getFields().add(ncidIdField);
 
-        InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress",
-                "Email address", true);
+        InputField emailAddressField = InputFieldFactory.createEmailField("emailAddress", "Email address", true);
         InputFieldAttributes.setSize(emailAddressField, 30);
         researchStaffFieldGroup.getFields().add(emailAddressField);
 
-        InputField phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone",
-                true);
+        InputField phoneNumberField = InputFieldFactory.createPhoneField("phoneNumber", "Phone", true);
         InputFieldAttributes.setSize(phoneNumberField, 30);
         phoneNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(phoneNumberField);
 
-        InputField faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax",
-                false);
+        InputField faxNumberField = InputFieldFactory.createPhoneField("faxNumber", "Fax", false);
         InputFieldAttributes.setSize(faxNumberField, 30);
         faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         researchStaffFieldGroup.getFields().add(faxNumberField);
 
-        InputField loginIdField = InputFieldFactory.createTextField("loginId",
-                "Grid identity", false);
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Grid identity", false);
         InputFieldAttributes.setSize(loginIdField, 30);
         researchStaffFieldGroup.getFields().add(loginIdField);
 
