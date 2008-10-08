@@ -1,5 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <html>
 <head>
 <tags:includeScriptaculous/>
@@ -62,11 +62,11 @@
 
 </head>
 <body>
+<p id="instructions">
+        Import Studies/Protocols or Subjects into caAERS
+</p>
     <tags:tabForm tab="${tab}" flow="${flow}" formName="ImportForm" enctype="multipart/form-data">
         <jsp:attribute name="singleFields">
-<p>
-  <tags:instructions code="importdata" />
-</p>
 	<div>		
 		<input type="hidden" name="_action" value="">
 		<input type="hidden" name="_selected" value="">
@@ -74,12 +74,14 @@
 	
 		<input type="button" id="study_button" value="Import Study / Protocol"><br><br>
 		<input type="button" id="participant_button" value="Import Subject         "><br><br>
+<!--		<input type="button" id="routine_ae_report_button" value="Import Routine AEs         "><br><br>-->
 		<input type="button" id="investigator_button" value="Import Investigator         "><br><br>
-		<input type="button" id="research_staff_button" value="Import Research Staff         "><br><br>
-		<span id="routine_ae_report_button"/>
+		<input type="button" id="research_staff_button" value="Import Research Staff         ">
+		<input type="hidden" id="routine_ae_report_button" value="Import Routine AEs         "><br><br>
+		
 		 <tags:errors path="*"/>
     	 
-		<div style="display: none;position:relative;top:-30px; left:300px;width:300px;" id = "study">
+		<div style="display: none;position:relative;top:-30px; left:300px;width:300px;;" id = "study">
     	<input id="study_file" type="file" name="studyFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>
