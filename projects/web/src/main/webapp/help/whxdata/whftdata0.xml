@@ -34,6 +34,7 @@
 <topic name="begin" url="begin.htm" />
 <topic name="captureAdverseEventController" url="captureAdverseEventController.htm" />
 <topic name="configurationController" url="configurationController.htm" />
+<topic name="ConfigureReportingDefinitions" url="ConfigureReportingDefinitions.htm" />
 <topic name="createINDController" url="createINDController.htm" />
 <topic name="createInvestigatorController" url="createInvestigatorController.htm" />
 <topic name="createNotificationController" url="createNotificationController.htm" />

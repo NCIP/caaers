@@ -177,6 +177,7 @@ asub_subject_medical_history.htm
 begin.htm
 captureAdverseEventController.htm
 configurationController.htm
+ConfigureReportingDefinitions.htm
 createINDController.htm
 createInvestigatorController.htm
 createNotificationController.htm
