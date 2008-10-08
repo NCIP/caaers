@@ -154,20 +154,22 @@
 
 
         function showShowAllTable(el, baseName) {
-            var _top = Position.cumulativeOffset($(el))[1];
-            var _left = Position.cumulativeOffset($(el))[0];
 
             var parameterMap = getParameterMap('command');
-            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
-                createAE.buildAnatomicSiteTable(parameterMap, baseName, function(table) {
+            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite' || baseName.indexOf("priorTherapyAgents") >=0) {
+                createAE.buildAnatomicSiteTable(el, parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
 //                    $('showAllDropDown').style.position = 'absolute';
                     try {
+                        var _top = Position.cumulativeOffset($(el))[1];
+                        var _left = Position.cumulativeOffset($(el))[0];
+
                         $('showAllDropDown').style.top = (_top-190) + "px";
                         $('showAllDropDown').style.left = (_left - 120) + "px";
                     } catch (e) {
 //                        alert('2');
                     }
+
                     $('showAllDropDown').show();
                 });
             } else {
@@ -180,8 +182,12 @@
 
         function fillDiseaseSiteAutoCompletor(val,baseName, text){
             if (baseName == 'codedPrimaryDiseaseSite') {
+                baseName = 'aeReport.diseaseHistory.codedPrimaryDiseaseSite';
+            }
 
-                baseName = 'aeReport.diseaseHistory.codedPrimaryDiseaseSite'
+            if (baseName.indexOf('priorTherapyAgents') >= 0) {
+                baseName = baseName.replace("__", "[") ;
+                baseName = baseName.replace("_", "]") ;
             }
 
             $(baseName).value = val;

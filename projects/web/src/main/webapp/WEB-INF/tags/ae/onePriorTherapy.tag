@@ -39,7 +39,7 @@
 		 <jsp:attribute name="label">
 		 </jsp:attribute>
 		 <jsp:attribute name="value">
-		   <a name="anchorPriorTherapyAgents[${index}]"></a>
+		   <a name="anchorPriorTherapyAgents_${index}_"></a>
 		   <table class="tablecontent" width="95%">
 				<tr>
 				 	<td colspan="2" align="left"><b color="#2E3257">Therapy agent(s)</b></td>
@@ -61,7 +61,7 @@
 							</jsp:attribute>
 						</ui:autocompleter>
 						&nbsp; 
-						<a href="#anchorPriorTherapyAgents[${index}]" onClick="showShowAllTable('priorTherapyAgents[${index}]')">Show All</a>
+						<a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a>
 					</td>
 					<td width="10%">
 						<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>

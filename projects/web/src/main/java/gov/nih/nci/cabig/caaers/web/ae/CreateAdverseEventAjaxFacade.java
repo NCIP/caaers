@@ -97,13 +97,13 @@ public class CreateAdverseEventAjaxFacade {
         return anatomicSiteDao.getById(Integer.parseInt(anatomicSiteId));
     }
 
-    public String buildAnatomicSiteTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
+    public String buildAnatomicSiteTable(String el, final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
 
         try {
             TableModel model = getTableModel(parameterMap, request);
             List<AnatomicSite> anatomicSites = anatomicSiteDao.getAll();
 
-            String onInvokeAction = "showShowAllTable('" + tableId + "')";
+            String onInvokeAction = "showShowAllTable('" + el + "', '" + tableId + "')";
             addTableAndRowToModel(model, tableId, anatomicSites, onInvokeAction);
 
             Column columnTerm = model.getColumnInstance();
