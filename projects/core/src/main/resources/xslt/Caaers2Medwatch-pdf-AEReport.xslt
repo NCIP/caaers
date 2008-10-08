@@ -176,7 +176,9 @@
 														of Birth:
 														<fo:inline xsl:use-attribute-sets="normal" > 
 																<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/monthString"/>/
-																<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+																<xsl:if test="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString">
+																	<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/dayString"/>/
+																</xsl:if>
 																<xsl:value-of select="AdverseEventReport/StudyParticipantAssignment/Participant/dateOfBirth/yearString"/>					
 														</fo:inline>  		
 											  		</fo:block> 
@@ -748,7 +750,10 @@
 													</fo:block>
 													<fo:block xsl:use-attribute-sets="normal">
 											  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
-												  				<xsl:value-of select="name"/>  (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
+												  				<xsl:value-of select="name"/>  
+												  				<xsl:if test="startDate/monthString">
+												  					(<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
+												  				</xsl:if>
 												  			<fo:block/>
 												  		</xsl:for-each>													
 													</fo:block>													
@@ -1016,7 +1021,11 @@
 													</fo:block>
 													<fo:block xsl:use-attribute-sets="normal">
 											  			<xsl:for-each select="AdverseEventReport/ConcomitantMedication">
-												  				<xsl:value-of select="name"/>  (<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
+												  				<xsl:value-of select="name"/>  
+												  				<xsl:if test="startDate/monthString">
+												  					(<xsl:value-of select="startDate/monthString"/>/<xsl:value-of select="startDate/yearString"/>)
+												  				</xsl:if>
+												  				
 												  			<fo:block/>
 												  		</xsl:for-each>													
 													</fo:block>
