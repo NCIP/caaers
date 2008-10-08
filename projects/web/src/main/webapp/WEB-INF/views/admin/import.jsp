@@ -79,27 +79,27 @@
 		<span id="routine_ae_report_button"/>
 		 <tags:errors path="*"/>
     	 
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "study">
+		<div style="display: none;position:relative;top:-30px; left:300px;" id = "study">
     	<input id="study_file" type="file" name="studyFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>
 		
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "participant"> 
+		<div style="display: none;position:relative;top:-30px; left:300px;" id = "participant"> 
     	<input id="participant_file" type="file" name="participantFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>
 		
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "routineAeReport"> 
+		<div style="display: none;position:relative;top:-30px; left:300px;" id = "routineAeReport"> 
     	<input id="routine_ae_report_file" type="file" name="routineAdverseEventReportFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>
 
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "investigator"> 
+		<div style="display: none;position:relative;top:-30px; left:300px;" id = "investigator"> 
     	<input id="investigator_file" type="file" name="investigatorFile" />
 		<input id="type" type="hidden" name="type" />
 		</div>    	
 
-		<div style="display: none;position:relative;top:-30px; left:200px;" id = "researchStaff"> 
+		<div style="display: none;position:relative;top:-30px; left:300px;" id = "researchStaff"> 
     	<input id="research_staff_file" type="file" name="researchStaffFile" />
 		<input id="type" type="hidden" name="type" />
 		</div> 
