@@ -113,7 +113,7 @@
        }
 
        function showDiseases() {
-         
+         var categoryId = $("disease-sub-category").value
            var subCategorySelect = $("disease-sub-category")
            // If all is selected
            if ( subCategorySelect.value == "" ){
