@@ -123,10 +123,15 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true, createGradeOptions(ae, "Ctc")));
                 }
 
-                if (ae.getSolicited())
-                    mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
-                else
-                    mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", true, createAttributionOptions()));
+                if(cmd.getAdverseEventReportingPeriod().isBaselineReportingType())
+                	mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
+                else{
+                	// The attribution validation is applied only to Observed AEs in non-baseline reporting period.
+                	if (ae.getSolicited())
+                		mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
+                	else
+                		mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", true, createAttributionOptions()));
+                }
                 mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
                         "Hospitalization", false, createHospitalizationOptions()));
                 mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
