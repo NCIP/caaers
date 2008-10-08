@@ -85,7 +85,10 @@ div#createNew h3, div.section h3 {
 						sections.push('rule-' + (sections.length + 1));
 						var columnHolder = getElementHolderDiv();
 						columnHolder.innerHTML = html;
-						var newRule = columnHolder.childNodes[1].cloneNode(true);
+						// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
+						var len = columnHolder.childNodes.length;
+						var newRule = columnHolder.childNodes[len-1].cloneNode(true);
+						//var newRule = columnHolder.childNodes[1].cloneNode(true);
 						columnHolder.innerHTML = "";
 						$('allRules').appendChild(newRule);
 						Effect.Appear(newRule.id);
@@ -105,7 +108,10 @@ div#createNew h3, div.section h3 {
 							var columns = $('rule-'+(ruleCount + 1)+'-columns');
 							var columnHolder = getElementHolderDiv();
 							columnHolder.innerHTML = columnContent;
-							var newColumn = columnHolder.childNodes[1].cloneNode(true);	
+							// CAAERS-1152 child nodes count is 1 in IE , 2 in FF as FF counts white spaces , so 0(1-1) for IE and 1(2-1) for FF
+							var len = columnHolder.childNodes.length;
+							var newColumn = columnHolder.childNodes[len-1].cloneNode(true);
+							//var newColumn = columnHolder.childNodes[1].cloneNode(true);	
 							
 							columnHolder.innerHTML = "";
 							columns.appendChild(newColumn);
