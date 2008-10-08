@@ -83,7 +83,7 @@ div.row div.value, div.row div.extra {
         }
 
         function termValueSelector(term) {
-            return term.fullNameWithMedDRA;
+            return term.fullName;
         }
 
         var AESection = Class.create();
