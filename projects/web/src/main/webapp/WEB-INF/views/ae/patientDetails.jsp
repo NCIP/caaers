@@ -192,6 +192,16 @@
             } else {
                 createAE.buildChemoAgentsTable(parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
+                    try {
+                        var _top = Position.cumulativeOffset($(el))[1];
+                        var _left = Position.cumulativeOffset($(el))[0];
+
+                        $('showAllDropDown').style.top = (_top-190) + "px";
+                        $('showAllDropDown').style.left = (_left - 120) + "px";
+                    } catch (e) {
+//                        alert('2');
+                    }
+                    
                     $('showAllDropDown').show();
                 });
             }
