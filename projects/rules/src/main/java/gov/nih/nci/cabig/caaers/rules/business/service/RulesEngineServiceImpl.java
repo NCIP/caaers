@@ -958,7 +958,7 @@ public class RulesEngineServiceImpl implements RulesEngineService {
                     newRd.setTimeScaleUnitType(TimeScaleUnit.DAY);
                     newRd.setDuration(2);
                     newRd.setReportFormatType(ReportFormatType.ADEERSPDF);
-
+                    newRd.setExpedited(false);
                     reportDefinitionDao.save(newRd);
                     reportDefinitionsCreated.add(rd);
                 }
