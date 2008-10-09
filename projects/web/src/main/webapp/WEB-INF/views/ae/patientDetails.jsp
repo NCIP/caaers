@@ -175,7 +175,7 @@
 
             var parameterMap = getParameterMap('command');
             if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
-                createAE.buildAnatomicSiteTable(parameterMap, baseName, function(table) {
+                createAE.buildAnatomicSiteTable(el, parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
 //                    $('showAllDropDown').style.position = 'absolute';
                     try {
