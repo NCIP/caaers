@@ -15,10 +15,11 @@ import java.util.Date;
  * This class represents the Outcome domain object associated with the Adverse event report.
  *
  * @author Krikor Krumlian
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "outcomes")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_outcome_id")})
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_outcomes_id")})
 public class Outcome extends AbstractMutableDomainObject {
 
     private OutcomeType outcomeType;
