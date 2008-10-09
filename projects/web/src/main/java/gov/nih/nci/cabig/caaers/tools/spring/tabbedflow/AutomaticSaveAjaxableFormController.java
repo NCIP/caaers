@@ -51,7 +51,7 @@ public abstract class AutomaticSaveAjaxableFormController<C, D extends MutableDo
         WorkFlowTab<C> current = (WorkFlowTab<C>) getFlow(command).getTab(page);
         refdata.putAll(current.referenceData(request, (C) command));
         
-     
+        populateSaveConfirmationMessage(refdata, request, oCommand, errors, page);
         
         return refdata;
     }
