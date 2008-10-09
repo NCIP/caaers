@@ -15,7 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections15.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.validation.BindException;
@@ -164,7 +164,7 @@ public class EditStudyController extends StudyController<Study> {
         }
 
         String action = (String) super.findInRequest(request, "_action");
-        if (org.apache.commons.lang.StringUtils.equals(action, "removeInv")) {
+        if (StringUtils.equals(action, "removeInv") || StringUtils.equals(action, "removeSite")) {
             return true;
         }
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
