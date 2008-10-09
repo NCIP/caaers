@@ -64,6 +64,8 @@
         					}
 						</jsp:attribute>
 					</ui:autocompleter>
+					&nbsp; 
+					<a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a>
 				</td>
 				<td width="10%">
 					<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>

@@ -16,6 +16,7 @@
 		 }
 		 
 	</style>
+	<tags:javascriptLink name="extremecomponents"/>
  	<tags:dwrJavascriptLink objects="createAE"/>
 	<script type="text/javascript">
 		var mHistory = null;
@@ -142,6 +143,77 @@
 		function fireAction(type, index, loc, options, id){
 			mHistory.removeDetails(type, index, loc, options);
 		}
+		
+		        function showShowAllTable(el, baseName) {
+
+            var parameterMap = getParameterMap('command');
+            if (baseName == 'metastaticDiseaseSite' || baseName == 'codedPrimaryDiseaseSite') {
+                createAE.buildAnatomicSiteTable(el, parameterMap, baseName, function(table) {
+                    $('showAllDropDownContent').innerHTML = table;
+//                    $('showAllDropDown').style.position = 'absolute';
+                    try {
+                        var _top = Position.cumulativeOffset($(el))[1];
+                        var _left = Position.cumulativeOffset($(el))[0];
+
+                        $('showAllDropDown').style.top = (_top-190) + "px";
+                        $('showAllDropDown').style.left = (_left - 120) + "px";
+                    } catch (e) {
+//                        alert('2');
+                    }
+                    $('showAllDropDown').show();
+                });
+            } else {
+                createAE.buildChemoAgentsTable(parameterMap, baseName, function(table) {
+                    $('showAllDropDownContent').innerHTML = table;
+                    try {
+                        var _top = Position.cumulativeOffset($(el))[1];
+                        var _left = Position.cumulativeOffset($(el))[0];
+
+                        $('showAllDropDown').style.top = (_top-190) + "px";
+                        $('showAllDropDown').style.left = (_left - 120) + "px";
+                    } catch (e) {
+//                        alert('2');
+                    }
+                    
+                    $('showAllDropDown').show();
+                });
+            }
+        }
+        
+        function fillDiseaseSiteAutoCompletor(val,baseName, text){
+            if (baseName == 'codedPrimaryDiseaseSite') {
+
+                baseName = 'assignment.diseaseHistory.codedPrimaryDiseaseSite'
+            }
+
+            if (baseName.indexOf('priorTherapyAgents') >= 0) {
+                baseName = baseName.replace("__", "[") ;
+                baseName = baseName.replace("_", "]") ;
+            }
+
+            $(baseName).value = val;
+		    $(baseName+ "-input").value = text;
+		    $(baseName+ "-input").removeClassName('pending-search');
+		   hideShowAllTable();
+	   }
+
+	   function fillChemoAgentAutoCompletor(val, baseName, text){
+	   		if (baseName.indexOf('priorTherapyAgents') >= 0) {
+                baseName = baseName.replace("__", "[") ;
+                baseName = baseName.replace("_", "]") ;
+            }
+	   		
+	        $(baseName).value = val;
+		    $(baseName+ "-input").value = text;
+		    $(baseName+ "-input").removeClassName('pending-search');
+		   hideShowAllTable();
+		   
+	   }
+        
+        function hideShowAllTable(){
+		  $('showAllDropDown').hide();
+	   }
+		
 	</script>
   </head>
   <body>
@@ -156,6 +228,19 @@
       </div>
   </p>
 
+	<div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
+    <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
+      <tbody>
+        <tr class="titleRow">
+          <td align="left" class="title">Select :</td>
+          <td align="right"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
+        </tr>
+        <tr>
+          <td colspan="2"><div id="showAllDropDownContent"/></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">	
    <tags:hasErrorsMessage path="*" />
@@ -251,7 +336,7 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-				</jsp:attribute>
+				<a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
 			</ui:row>
 
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
@@ -296,7 +381,7 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-                    &nbsp;
+                    &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a> &nbsp;
                     <input id="metastatic-diseases-btn" type="button" value="Add"/>
                 </td>
 				<td></td>
