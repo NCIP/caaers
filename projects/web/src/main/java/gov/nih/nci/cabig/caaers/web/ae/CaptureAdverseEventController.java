@@ -187,6 +187,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
                     cmd.setAssignment(reportingPeriod.getAssignment());
                 } catch (ServletRequestBindingException e) {
                     cmd.setAssignment(null);
+                    cmd.setAdverseEventReportingPeriod(null);
                 }
             } else {
                 cmd.setAssignment(null);
