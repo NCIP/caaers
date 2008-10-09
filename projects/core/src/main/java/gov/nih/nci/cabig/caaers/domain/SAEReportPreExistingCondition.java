@@ -16,10 +16,11 @@ import javax.persistence.Transient;
  * event report.
  *
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "ae_pre_existing_conds")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_pre_existing_conds")})
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "SEQ_ae_pre_existing_conds_ID")})
 public class SAEReportPreExistingCondition extends AbstractExpeditedReportCollectionElementChild {
     private PreExistingCondition preExistingCondition;
 
