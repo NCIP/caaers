@@ -1,116 +1,100 @@
-  	.close-button {
-        position:relative;
-        top:-17px;
-        border:0;
-        
-    }
-  
- 	
- 	.sae col.term {
- 		text-align: center;
- 	}
- 	
- 	.sae col.epoch {
- 		text-align: center;
- 	}
- 	
- 	.sae .deletecol {
- 	    
-		padding-left: 2em;
-	    padding-right: 2em;
-	    
- 	}
- 	
-	.sae .data{
- 	    border-width:0px 1px 0px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
- 	}
- 	
-	.sae th.term {
-	    border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	width: 22em;
-		height : 3em;
-		vertical-align: CENTER;
-	    horizontal-align: center;
-	}
-	.sae th.epoch {
-		width: 10em;
-		vertical-align: center;
-	}
-
-	.sae th.reportingperiod {
-		width: 10em;
-		vertical-align: top;
-	}
-	.sae th.action {
-		border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	color: black;
-	 	width: 90px;
-	}
-	
-	.sae .lastLineOfTable
-	{
-		border-width:0px 0px 1px 0px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	
-	}
-	
-    th.reportingperiod, th.epoch {
-	 border-color:#6E81A6;
-	 border-style:solid;
-	 border-width:1px 1px 1px 1px;
-	 height : 2em;
-	}
-
-      .sae td {
-          border-color: #6E81A6;
-          border-style: solid;
-          border-width: 1px 1px 1px 1px;
-          height: 2em;
-      }
-
-      tr.gap
-	{
-	    border-color:#6E81A6;
-	    border-style:solid;
-	    border-width:1px 0px 1px 0px;
-	    height : 2em;
-	}
-	.sae tr.head {
-		border-width:1px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae tr.bottom {
-		border-width:0px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae tr.bottom td{
-		border-width: 0px 1px 1px 1px;
-		border-color:#6E81A6;
-	 	border-style:solid;
-	 	
-	}
-	.sae .inst {
-		font-style: normal;
-		font-weight: normal;
-	}
-    
-    .instructionLinks{
-        font-family: arial; font-size: 7pt;  
-    }
-    
-	.lastRowValue {
-	 font-style: normal;
-		text-align: center;
-		color:red; 
-	}
+.close-button {
+	position:relative;
+	border:0;
+}
+.delete-epoch {
+	background-image:url(../images/blue/button_bg.jpg);
+	color:white;
+	display:block;
+	text-decoration: none;
+}
+.sae col.term {
+	text-align: center;
+}
+.sae col.epoch {
+	text-align: center;
+}
+.sae .deletecol {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+.sae .data {
+	border-width:0px 1px 0px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+}
+.sae th.term {
+	border-width:1px 1px 1px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+	width: 22em;
+	height : 3em;
+	vertical-align: CENTER;
+	horizontal-align: center;
+}
+.sae th.epoch {
+	width: 10em;
+	vertical-align: center;
+}
+.sae th.reportingperiod {
+	width: 10em;
+	vertical-align: top;
+}
+.sae th.action {
+	border-width:1px 1px 1px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+	color: black;
+	width: 90px;
+}
+.sae .lastLineOfTable {
+	border-width:0px 0px 1px 0px;
+	border-color:#6E81A6;
+	border-style:solid;
+}
+th.reportingperiod, th.epoch {
+	border-color:#6E81A6;
+	border-style:solid;
+	border-width:1px 1px 1px 1px;
+	height : 2em;
+}
+.sae td {
+	border-color: #6E81A6;
+	border-style: solid;
+	border-width: 1px 1px 1px 1px;
+	height: 2em;
+}
+tr.gap {
+	border-color:#6E81A6;
+	border-style:solid;
+	border-width:1px 0px 1px 0px;
+	height : 2em;
+}
+.sae tr.head {
+	border-width:1px 1px 1px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+}
+.sae tr.bottom {
+	border-width:0px 1px 1px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+}
+.sae tr.bottom td {
+	border-width: 0px 1px 1px 1px;
+	border-color:#6E81A6;
+	border-style:solid;
+}
+.sae .inst {
+	font-style: normal;
+	font-weight: normal;
+}
+.instructionLinks {
+	font-family: arial;
+	font-size: 7pt;
+}
+.lastRowValue {
+	font-style: normal;
+	text-align: center;
+	color:red;
+}

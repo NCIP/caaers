@@ -10,6 +10,12 @@
         <table id="sae-0" class="sae">
   		 
     		<tbody class="tablebody">
+			 <tr>
+			  <td style="border:0px">&nbsp;</td>
+			  <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
+			  <td style="border:0px; text-align:center; border-collapse:collapse;"><a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='center' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img>&nbsp;Delete Epoch</a></td>
+			  </c:forEach>
+			 </tr>
     		    <tr class="head">
     		       <th class="term" >Evaluation Period Type</th>
 
@@ -30,7 +36,7 @@
                                 </c:choose>
 
                                 <c:if test="${!displayOnly}">
-                                &nbsp<a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='right' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img></a>
+                                &nbsp
                                 </c:if>
                             </div>
                             <c:if test="${!displayOnly}">
