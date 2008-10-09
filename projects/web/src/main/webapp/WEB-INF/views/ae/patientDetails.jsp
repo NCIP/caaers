@@ -225,6 +225,11 @@
 	   }
 
 	   function fillChemoAgentAutoCompletor(val, baseName, text){
+	   		if (baseName.indexOf('priorTherapyAgents') >= 0) {
+                baseName = baseName.replace("__", "[") ;
+                baseName = baseName.replace("_", "]") ;
+            }
+	   
 		    $(baseName).value = val;
 		    $(baseName+ "-input").value = text;
 		    $(baseName+ "-input").removeClassName('pending-search');
