@@ -19,10 +19,11 @@ import javax.persistence.Table;
  *
  * @author Kulasekaran
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "metastatic_disease_sites")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_metastatic_disease_sites_id")})
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_metastatic_disease_site_id")})
 // TODO: this sort of class might be better as a component rather than another domain object
 public class MetastaticDiseaseSite extends AbstractMutableDomainObject {
     private String otherSite;
