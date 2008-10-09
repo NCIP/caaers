@@ -904,21 +904,17 @@ div#createNew h3, div.section h3 {
 			
 			} else 
 			{
-				
+				//alert ("here");
 				authorRule.getValidValues(domainObjectSelectedIndex-1, fieldDropDown.selectedIndex-1, 
 				                     		function (html) 
-			                   			{
+			                   	{
 
 
 									var newId = validValueField.id; 
 									var spanId = newId + '.span';
 
-									var isMultiSelect=false;
+									var isMultiSelect=getSelect(domainObject, fieldDropDown.selectedIndex-1);
 									
-									if (domainObject.field[fieldDropDown.selectedIndex-1].fieldValue.inputType == 'multiselect')
-									{
-										isMultiSelect=true;
-									}
 									
 									var selectArea = '';
 									
@@ -936,15 +932,10 @@ div#createNew h3, div.section h3 {
 									
 									var hiddenField = '<input type="hidden" id="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' + ' name="ruleSet.rule['+ruleCount+'].condition.column['+columnCount+'].fieldConstraint[0].literalRestriction[0].readableValue"' +'/>'
 									selectArea += html + '</select>';
-						
 
-									//Element.remove(validValueField);
 									$(spanId).innerHTML = selectArea + hiddenField;
-									
-									//alert ($(spanId).innerHTML );
+
 							   	});
-							   	
-							   	//onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
 			}
 		
 		}
@@ -955,6 +946,21 @@ div#createNew h3, div.section h3 {
 		}
 
 
+	}
+	
+	function getSelect(domainObject, i) {
+	// in IE-7 after adding rule , first time error when getting fields and properties , caught and returning false.
+	// need to fix this code . 			 	
+				var isMultiSelect=false;
+				try {
+					if (domainObject.field[i].fieldValue.inputType == 'multiselect')
+						{
+							isMultiSelect=true;
+						}	
+				} catch(e) {
+						isMultiSelect=false;
+				}
+				return isMultiSelect;
 	}
 	
 	function getCategoryValue(ruleCount)
