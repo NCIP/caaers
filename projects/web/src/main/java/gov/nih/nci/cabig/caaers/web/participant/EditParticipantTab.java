@@ -61,7 +61,7 @@ public class EditParticipantTab<T extends ParticipantInputCommand> extends TabWi
 
         InputField dobYear = InputFieldFactory.createTextField("yearString", "Year", true);
         InputFieldAttributes.setSize(dobYear, 4);
-        InputField dobMonth = InputFieldFactory.createTextField("monthString", "Month");
+        InputField dobMonth = InputFieldFactory.createTextField("monthString", "Month",true);
         InputFieldAttributes.setSize(dobMonth, 2);
         InputField dobDay = InputFieldFactory.createTextField("dayString", "Day");
         InputFieldAttributes.setSize(dobDay, 2);
