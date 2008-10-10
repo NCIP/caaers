@@ -1,4 +1,9 @@
---QUERY 1 
+--studies-epochs-arms data migration script for users migrating from caAERS1.1.x to caAERS 1.5.x
+--Instructions
+--Please execute Query 1 Thru Query 6 against the database configured for caAERS.
+--Copy the SQL statement between "--Start" & "--End" for execution.    
+
+--Query 1 
 --Start
 CREATE LANGUAGE plpgsql;
 --END
@@ -11,8 +16,6 @@ DECLARE
     study studies%rowtype;
     epochid integer;
 BEGIN
-	
-	--studies-epochs-arms  migration
     FOR study IN SELECT * FROM studies WHERE id > 0 order by id
     LOOP
         epochid := nextval('epochs_id_seq');
