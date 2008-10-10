@@ -17,9 +17,7 @@
  	 		addDetails : function(itemType, src, val, loc, options){
  	 	 		
  	 	 		src.disable();
- 	 	 		var idiv = $(src.id + "-indicator"); 
- 	 	 		if(idiv) idiv.removeClassName('indicator');
-				 	 	 		
+				this.showIndicator(src.id + "-indicator");	 	 		
  	 	 		var container = $(loc);
  	 	 		var paramHash = new Hash(); //parameters to post to server
  	 	 		paramHash.set('task', 'add');
@@ -34,15 +32,16 @@
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
 				this.insertContent(container, url, paramHash, function() {
 						src.enable();
-						if(idiv) idiv.addClassName('indicator');
-						});
+						this.hideIndicator(src.id + "-indicator");
+						}.bind(this));
  	 		},
  	 		removeDetails :function(itemType,index, loc, options){
  	 	 		if(index < 0) return;
 
+				
 				var confirmation = confirm("Do you really want to delete?");
 				if(!confirmation) return; //return if not agreed.
-								
+				this.showIndicator(itemType+"-indicator");				
 				var container = $(loc);
 				
 				var paramHash = new Hash(); //parameters to post to server
@@ -57,8 +56,10 @@
  	 	 		
  	 	 		var url = $('command').action + "?subview"; //make the ajax request
  	 	 		var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
- 	 	 		replaceHtml($(loc) , '');
-				this.insertContent(container, url, paramHash.merge(sectionHash));				
+ 	 	 		var newLoc = replaceHtml($(loc) , '');
+				this.insertContent(newLoc, url, paramHash.merge(sectionHash), function () {
+					this.hideIndicator(itemType + "-indicator");
+				}.bind(this));				
 				
  	 	 		
  	 		},
@@ -76,6 +77,14 @@
  				new Ajax.Updater(aContainer, url, {
  					parameters: params.toQueryString() , onComplete: onCompleteCallBack ,insertion: Insertion.Top, evalScripts : true
  				});
+ 			},
+ 			showIndicator :  function(name){
+ 				var idiv = $(name); 
+ 	 	 		if(idiv) idiv.removeClassName('indicator');
+ 			},
+ 			hideIndicator : function(name){
+ 				var idiv = $(name); 
+ 	 	 		if(idiv) idiv.addClassName('indicator');
  			},
  			formElementsInSection : function(aContainer){
  	 			return aContainer.select('input', 'select', 'textarea');	
@@ -432,6 +441,7 @@
       </tr>
       <tr>
         <td><a name="anchorMetastaticDiseases" />
+		  <tags:indicator id="metastaticDiseaseSite-indicator" />
           <div id="anchorMetastaticDiseases">
             <c:set var="size" value="${fn:length(command.aeReport.diseaseHistory.metastaticDiseaseSites)}" />
             <c:forEach items="${command.aeReport.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
@@ -459,6 +469,7 @@
       </tr>
       <tr>
         <td><a name="anchorPreExistingCondition" />
+		  <tags:indicator id="preExistingCondition-indicator" />
           <div id="anchorPreExistingCondition">
             <c:set var="size" value="${fn:length(command.aeReport.saeReportPreExistingConditions)}" />
             <c:forEach items="${command.aeReport.saeReportPreExistingConditions}" varStatus="status">
@@ -486,6 +497,7 @@
       </tr>
       <tr>
         <td><a name="anchorConcomitantMedication" />
+ 		  <tags:indicator id="concomitantMedication-indicator" />
           <div id="anchorConcomitantMedication">
             <c:set var="size" value="${fn:length(command.aeReport.concomitantMedications)}" />
             <c:forEach items="${command.aeReport.concomitantMedications}" varStatus="status">
@@ -514,6 +526,7 @@
       </tr>
       <tr>
         <td><a name="anchorPriorTherapy" />
+		  <tags:indicator id="priorTherapy-indicator" />
           <div id="anchorPriorTherapy">
             <c:set var="size" value="${fn:length(command.aeReport.saeReportPriorTherapies)}" />
             <c:forEach items="${command.aeReport.saeReportPriorTherapies}" varStatus="status">
