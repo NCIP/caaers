@@ -1,3 +1,10 @@
+--studies-epochs-arms data migration script for users migrating from caAERS1.1.x to caAERS 1.5.x
+--Instructions
+--Please execute below provided pl/sql block against the oracle database configured for caAERS.
+--Copy the PL/SQL block between "--Start" & "--End" for execution.   
+
+--pl/sql block
+--Start
 DECLARE
     study_rec studies%ROWTYPE;
     CURSOR c_studies IS SELECT * FROM studies;
@@ -18,3 +25,4 @@ BEGIN
 
 END;
 /
+--End

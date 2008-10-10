@@ -1,6 +1,6 @@
 --studies-epochs-arms data migration script for users migrating from caAERS1.1.x to caAERS 1.5.x
 --Instructions
---Please execute Query 1 Thru Query 6 against the database configured for caAERS.
+--Please execute Query 1 Thru Query 6 against the postgres database configured for caAERS.
 --Copy the SQL statement between "--Start" & "--End" for execution.    
 
 --Query 1 
