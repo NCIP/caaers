@@ -228,7 +228,7 @@
             <xs:enumeration value="White"/>
             <xs:enumeration value="Black or African American"/>
             <xs:enumeration value="American Indian or Alaska Native"/>
-            <xs:enumeration value="Native Hawaiian or other Pacific Islander"/>
+            <xs:enumeration value="Native Hawaiian or Other PacificIslander"/>
             <xs:enumeration value="Not Reported"/>
             <xs:enumeration value="Unknown"/>
         </xs:restriction>
