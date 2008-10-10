@@ -336,7 +336,7 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-				<a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a> </jsp:attribute>
+				
 			</ui:row>
 
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
@@ -381,7 +381,7 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-                    &nbsp; <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a> &nbsp;
+                    &nbsp;
                     <input id="metastatic-diseases-btn" type="button" value="Add"/>
                 </td>
 				<td></td>
