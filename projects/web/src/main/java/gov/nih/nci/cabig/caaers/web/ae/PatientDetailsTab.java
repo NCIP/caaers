@@ -496,10 +496,14 @@ public class PatientDetailsTab extends AeTab {
     	PriorTherapyAgent agent = new PriorTherapyAgent();
     	ChemoAgent chemoAgent = command.getPriorTherapyAgent();
     	command.setPriorTherapyAgent(null);
-    	if(chemoAgent == null){
+    	/*
+    	 * I dont know why ajax calls strip off array parameter - priorTherapyAgents[x]
+    	 * 
+    	 * if(chemoAgent == null){
     		chemoAgent = command.getPriorTherapyAgents().get(command.getParentIndex());
     		command.getPriorTherapyAgents().set(command.getParentIndex(), null);
     	}
+    	*/
     	agent.setChemoAgent(chemoAgent);
     	priorTherapy.addPriorTherapyAgent(agent);
     	

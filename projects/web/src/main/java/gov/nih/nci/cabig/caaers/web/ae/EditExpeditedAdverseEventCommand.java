@@ -52,7 +52,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private AnatomicSite metastaticDiseaseSite;
     private PreExistingCondition preExistingCondition;
     private PriorTherapy priorTherapy;
-    private List<ChemoAgent> chemoAgents;
+    private List<String> chemoAgents;
     private ChemoAgent chemoAgent;
     private String concomitantMedication;
 
@@ -73,7 +73,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree);
     	this.assignmentDao = assignmentDao;
     	this.renderDecisionManager = renderDecisionManager;
-    	this.chemoAgents = new ArrayList<ChemoAgent>(); // new ArrayList<ChemoAgent>();
+    	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
     	this.reportRepository = reportRepository;
     }
 
@@ -292,10 +292,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void setPriorTherapy(PriorTherapy priorTherapy) {
 		this.priorTherapy = priorTherapy;
 	}
-    public List<ChemoAgent> getPriorTherapyAgents() {
+    public List<String> getPriorTherapyAgents() {
 		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
 	}
-    public void setPriorTherapyAgents(List<ChemoAgent> chemoAgents) {
+    public void setPriorTherapyAgents(List<String> chemoAgents) {
 		this.chemoAgents = chemoAgents;
 	}
     
