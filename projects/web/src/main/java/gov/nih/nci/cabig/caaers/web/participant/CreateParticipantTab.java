@@ -52,7 +52,7 @@ public class CreateParticipantTab<T extends ParticipantInputCommand> extends Tab
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.maidenName", "Maiden Name", false));
         participantFieldGroup.getFields().add(InputFieldFactory.createTextField("participant.middleName", "Middle Name", false));
 
-        InputField dobField = InputFieldFactory.createSplitDateField("participant.dateOfBirth", "Date of birth", false, false, true, true);
+        InputField dobField = InputFieldFactory.createSplitDateField("participant.dateOfBirth", "Date of birth", false, true, true, true);
 
 //        CompositeField dobField = new CompositeField("participant.dateOfBirth", new DefaultInputFieldGroup(null, "Date of birth").
 //                addField(dobYear).addField(dobMonth).addField(dobDay));
