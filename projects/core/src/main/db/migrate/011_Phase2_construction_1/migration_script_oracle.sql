@@ -10,7 +10,6 @@ DECLARE
     CURSOR c_studies IS SELECT * FROM studies;
 	
 BEGIN
-	--Studies migration
 	FOR study_rec IN c_studies LOOP
 	
 		INSERT INTO epochs (id,version,name,description,study_id,order_no,grid_id) values(SEQ_EPOCHS_ID.NEXTVAL,0,'Baseline',null,study_rec.id,0,null);
