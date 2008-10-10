@@ -1,5 +1,10 @@
+--QUERY 1 
+--Start
 CREATE LANGUAGE plpgsql;
+--END
 
+--Query 2
+--Start
 CREATE OR REPLACE FUNCTION studies_epochs_arms() RETURNS SETOF text AS 
 $$
 DECLARE
@@ -24,11 +29,25 @@ BEGIN
 END;
 $$ 
 LANGUAGE 'plpgsql' ;
+--End
 
-
+--Query 3
+--Start
 DELETE FROM arms;
+--End
+
+--Query 4
+--Start
 DELETE FROM epochs;
+--End
 
+
+--Query 5
+--Start
 SELECT * from studies_epochs_arms();
+--End
 
+--Query 6
+--Start
 DROP FUNCTION studies_epochs_arms();
+--End
