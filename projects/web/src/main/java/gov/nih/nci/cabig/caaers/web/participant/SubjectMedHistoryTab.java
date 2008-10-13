@@ -270,11 +270,11 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
     	int size = priorTherapyAgents.size();
     	Integer[] indexes = new Integer[]{size};
     	modelAndView.getModel().put("indexes", indexes);
-    	
+    	//NOTE : firefox for some reason is chopping off the '[x]' in the variable name, so had to do this goof-up in obtaining the chemoagent.
     	StudyParticipantPriorTherapyAgent agent = new StudyParticipantPriorTherapyAgent();
-    	agent.setChemoAgent(command.getPriorTherapyAgents().get(0));
+    	agent.setChemoAgent(command.getPriorTherapyAgent());
     	priorTherapy.addPriorTherapyAgent(agent);
-    	command.getPriorTherapyAgents().set(0, null);
+    	command.setPriorTherapyAgent( null);
     	
     	return modelAndView;
     }

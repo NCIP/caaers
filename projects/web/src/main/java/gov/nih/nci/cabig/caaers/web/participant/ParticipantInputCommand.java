@@ -44,7 +44,10 @@ public class ParticipantInputCommand {
     private AnatomicSite metastaticDiseaseSite;
     private PreExistingCondition preExistingCondition;
     private PriorTherapy priorTherapy;
-    private List<ChemoAgent> chemoAgents;
+    
+    private List<String> chemoAgents;
+    private ChemoAgent chemoAgent;
+    
     private String concomitantMedication;
 
     private Map<Object, Object> studyDiseasesMap;
@@ -54,7 +57,7 @@ public class ParticipantInputCommand {
 
 
     public ParticipantInputCommand() {
-    	chemoAgents = new ArrayList<ChemoAgent>(); // new ArrayList<ChemoAgent>();
+    	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
     }
 
     public ParticipantInputCommand(Participant participant) {
@@ -263,11 +266,18 @@ public class ParticipantInputCommand {
     public void setPriorTherapy(PriorTherapy priorTherapy) {
 		this.priorTherapy = priorTherapy;
 	}
-    public List<ChemoAgent> getPriorTherapyAgents() {
+    
+    public List<String> getPriorTherapyAgents() {
 		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
 	}
-    public void setPriorTherapyAgent(List<ChemoAgent> chemoAgents) {
+    public void setPriorTherapyAgents(List<String> chemoAgents) {
 		this.chemoAgents = chemoAgents;
+	}
+    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
+		this.chemoAgent = chemoAgent;
+	}
+    public ChemoAgent getPriorTherapyAgent() {
+		return chemoAgent;
 	}
     
     public String getConcomitantMedication() {

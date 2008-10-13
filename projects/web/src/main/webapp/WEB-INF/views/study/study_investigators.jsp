@@ -15,6 +15,8 @@
 <script language="JavaScript" type="text/JavaScript">
   var invListEditor;
   function fireDelete(selected, trClass){
+		var confirmation = confirm("Do you really want to delete?");
+		if(!confirmation) return; //return if not agreed.
 	fireAction('removeInv',selected);
   }
 	

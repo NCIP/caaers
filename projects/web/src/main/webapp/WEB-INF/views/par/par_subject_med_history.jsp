@@ -139,6 +139,20 @@
 			 	this.addDetails('priorTherapy', e.element(), priorTherapyField.value, 'anchorPriorTherapy');
 			 	priorTherapyField.selectedIndex = 0;
 		 	}.bind(mHistory));
+
+		 	Event.observe('command', 'submit', function(e){
+
+				/* Below is a very ugly tweak did for IE7 if priorTherapyAgents[i]-input='begin', the value of priorTherapyAgents[i], is assumed by spring as its value 
+				  But only happens in IE7
+				  */
+				AE.resetAutocompleter('metastaticDiseaseSite');
+				var i = 0;
+				for(i = 0; i < 15; i++){
+					var el = 	$('priorTherapyAgents[' + i + ']');
+					if(el) el.value = '';
+					if(el) $('priorTherapyAgents[' + i + ']-input').value = '';
+				}
+			});
 		}
 		function fireAction(type, index, loc, options, id){
 			mHistory.removeDetails(type, index, loc, options);
