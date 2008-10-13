@@ -43,9 +43,7 @@
     
 	<c:if test="${priorTherapy.priorTherapy.agentsPossible}">
     <ui:row path="assignment.priorTherapies[${index}]">
-	 <jsp:attribute name="label">
-         Prior Therapy Agents
-     </jsp:attribute>
+	 <jsp:attribute name="label">Prior Therapy Agents</jsp:attribute>
 	 <jsp:attribute name="value">
 	   <table class="tablecontent" width="95%">
 			<tr>

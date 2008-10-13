@@ -82,13 +82,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         participant.addAssignment(participantCommand.getAssignment());
 
         participantDao.save(participant);
-
-/*
-        ModelAndView modelAndView = new ModelAndView("par/par_confirm");
-        modelAndView.addObject("participant", participant);
-        modelAndView.addAllObjects(errors.getModel());
-*/
-
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=create");
 
         return null;
@@ -114,9 +107,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         ControllerTools.registerDomainObjectEditor(binder, studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "assignment.diseaseHistory.abstractStudyDisease", abstractStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
-        
-        
-
     }
 
     protected Object findInRequest(final HttpServletRequest request, final String attributName) {
@@ -232,7 +222,7 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
 
-        // if the target tab is not the next to the cirrent one
+        // if the target tab is not the next to the crrent one
         if (getTargetPage(request, command, errors, page) - page > 1) {
             ParticipantInputCommand cmd = (ParticipantInputCommand) command;
 

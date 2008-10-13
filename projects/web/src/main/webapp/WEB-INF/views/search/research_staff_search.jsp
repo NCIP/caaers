@@ -1,15 +1,13 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
 <html>
 <head>
 <tags:stylesheetLink name="tabbedflow"/>
 <tags:stylesheetLink name="participant"/>
-<tags:includeScriptaculous />
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <style type="text/css">
         /* Override default lable length */
-         div.row div.label { width: 9em; } 
+        div.row div.label { width: 9em; } 
         div.row div.value { margin-left: 10em; }
         div.content {
             padding: 5px 15px;
@@ -27,9 +25,9 @@ function buildTable(form) {
 	var type = "";
 	var text = "";
 
-	for(var x=0; x < 3; x++) {
+	for (var x=0; x < 3; x++) {
 	
-		if ( $('prop'+x).value.length > 0 ){
+		if ($('prop'+x).value.length > 0 ) {
 			text = text +  $('prop'+x).value + ",";
 			type = type +  $('prop'+x).name +',';
 		}
@@ -64,34 +62,32 @@ function buildTable(form) {
     </div>
  
  <div class="content">
-  <form:form name="searchForm" id="searchForm" method="post">
-<p>
-<tags:instructions code="researchstaffsearch" />
-</p>
-   <chrome:box title="Research Staff Criteria" cssClass="mpaired" autopad="false">
-		    <div class="row">
-		    	<div class="label"> First Name&nbsp; </div>
-		    	<div class="value"><input id="prop0" name="firstName" type="text"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label"> Last Name&nbsp; </div>
-		    	<div class="value"><input id="prop1" name="lastName" type="text"/></div>
-		    </div>
-		    
-		    <div class="row">
-		    	<div class="label">Organization&nbsp; </div>
-		    	<div class="value"><input id="prop2" name="name" type="text"/></div>
-		    </div>
-		    
-		   <div class="endpanes" />
-	<div class="row" style="float:right;">
-	<input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
-	<tags:indicator id="indicator" />
-	</div>
-	<div class="endpanes" />
-   </chrome:box>
+    <form:form name="searchForm" id="searchForm" method="post">
+    <p><tags:instructions code="researchstaffsearch" /></p>
 
+        <chrome:box title="Research Staff Criteria" cssClass="mpaired" autopad="false">
+            <div class="row">
+                <div class="label"> First Name&nbsp; </div>
+                <div class="value"><input id="prop0" name="firstName" type="text"/></div>
+            </div>
+
+            <div class="row">
+                <div class="label"> Last Name&nbsp; </div>
+                <div class="value"><input id="prop1" name="lastName" type="text"/></div>
+            </div>
+
+            <div class="row">
+                <div class="label">Organization&nbsp; </div>
+                <div class="value"><input id="prop2" name="name" type="text"/></div>
+            </div>
+
+           <div class="endpanes"></div>
+        <div class="row" style="float:right;">
+            <input class='ibutton' type='button' onClick="buildTable('assembler');" value='Search'  title='Search'/>
+            <tags:indicator id="indicator" />
+        </div>
+        <div class="endpanes"></div>
+    </chrome:box>
 
    </form:form>
   <br>
