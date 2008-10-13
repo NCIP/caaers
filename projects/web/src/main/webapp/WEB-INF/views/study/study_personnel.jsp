@@ -14,6 +14,8 @@
    <script language="JavaScript" type="text/JavaScript">
      var personnelListEditor;
  	 function fireDelete(selected, trClass){
+ 		var confirmation = confirm("Do you really want to delete?");
+		if(!confirmation) return; //return if not agreed.
 		fireAction('removeStudyPersonnel',selected);
   	 }
      function fireAction(action, selectedPersonnel){
