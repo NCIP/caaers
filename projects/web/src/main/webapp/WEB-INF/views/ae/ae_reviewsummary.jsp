@@ -260,8 +260,13 @@ background-color:#e5e8ff;
             <tags:message key="instruction_ae_no_rulesengine_reports" />
           </p>
         </c:if>
+        <c:if test='${displaySeriousTable}'>
+       		<p>
+            	<tags:message key="instruction_ae_rulesengine_reports" />
+        	</p>
+        </c:if>
 
-        <p><tags:message key="instruction_ae_select_saes" /></p>
+        <p><tags:message key="instruction_ae_note" /></p>
 
         <chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
           <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
