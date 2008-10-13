@@ -336,7 +336,7 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-				
+				</jsp:attribute>
 			</ui:row>
 
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
