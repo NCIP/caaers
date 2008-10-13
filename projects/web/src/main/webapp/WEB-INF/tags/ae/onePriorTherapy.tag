@@ -33,13 +33,13 @@
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpStatus" begin="1">
 		<tags:renderRow field="${field}" />
 		</c:forEach>
-	   
+
 		<c:if test="${priorTherapy.priorTherapy.agentsPossible or empty priorTherapy.name}">
+
 	    <ui:row path="aeReport.saeReportPriorTherapies[${index}]" style="${empty priorTherapy.name ? 'display:none;' : ''}">
-		 <jsp:attribute name="label">
-		 </jsp:attribute>
+		 <jsp:attribute name="label"></jsp:attribute>
 		 <jsp:attribute name="value">
-		   <a name="anchorPriorTherapyAgents_${index}_"></a>
+             <%--<a name="anchorPriorTherapyAgents_${index}_"></a>--%>
 		   <table class="tablecontent" width="95%">
 				<tr>
 				 	<td colspan="2" align="left"><b color="#2E3257">Therapy agent(s)</b></td>
@@ -60,7 +60,7 @@
 	        					}
 							</jsp:attribute>
 						</ui:autocompleter>
-						&nbsp; 
+						&nbsp;
 						<a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a>
 					</td>
 					<td width="10%">
@@ -82,8 +82,11 @@
 		   </table>
 		 </jsp:attribute>
 		  </ui:row>
+
+
 		</c:if>
-	</jsp:body>
+
+    </jsp:body>
 
  </chrome:division>
 </div>

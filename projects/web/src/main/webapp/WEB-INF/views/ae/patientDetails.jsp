@@ -1,13 +1,14 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <html>
 <head>
 <title>${tab.longTitle}</title>
 <tags:stylesheetLink name="ae"/>
-<tags:includeScriptaculous/>
 <tags:includePrototypeWindow />
 <tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="createAE"/>
 <tags:labs labs="${command.assignment.labLoads}"/>
+
 <script type="text/javascript">
 		var mHistory = null;
  		var mHistoryClass = Class.create();
