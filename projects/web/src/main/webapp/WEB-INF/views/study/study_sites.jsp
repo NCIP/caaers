@@ -16,8 +16,10 @@
   <tags:dwrJavascriptLink objects="createStudy"/>
 <script language="JavaScript" type="text/JavaScript">
 	var addSiteEditor;
-	
 	function fireDelete(selected, trClass){
+		var confirmation = confirm("Do you really want to delete?");
+		if(!confirmation) return; //return if not agreed.
+		
 		var ssfrm = $('command');
 		ssfrm._target.name='_noname';
 		ssfrm._action.value='removeSite';
@@ -77,6 +79,7 @@
                 	refreshDeleteButtons();
              }
       	});
+
       	
       	//enable-disable delete buttons
       	refreshDeleteButtons();
