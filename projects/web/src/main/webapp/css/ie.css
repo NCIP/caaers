@@ -1,44 +1,38 @@
 body {
-    background: url( ../images/blue/bg_ie.jpg ) repeat-y center #314993;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
-    color: #000000;
-    text-align: center;
-    margin: 0px;
-    padding: 0px;
+	background: url( ../images/blue/bg_ie.jpg ) repeat-y center #314993;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	color: #000000;
+	text-align: center;
+	margin: 0px;
+	padding: 0px;
 }
-
 /* Force hasLayout */
 html div.row, * html .autoclear {
-    height: 1%
+	height: 1%
 }
-
 #workflow-tabs {
-    height: 1%;
+	height: 1%;
 }
-
 .pane {
-/* Fix the issue of summary not aligned properly */
+	/* Fix the issue of summary not aligned properly */
     clear: both;
 }
-
 #taskbar {
-    background: transparent url( ../images/blue/taskbar_BG.png ) repeat-x scroll center top;
-    color: #FFFFFF;
-    font-size: 12pt;
-    height: 51px;
-    padding-left: 10px;
-    position: absolute;
-    top: 98px;
-    vertical-align: middle;
-    width: 970px;
-    z-index: 1;
-}
+	background: transparent url( ../images/blue/taskbar_BG.png ) repeat-x scroll center top;
+	color: #FFFFFF;
+	font-size: 12pt;
+	height: 51px;
+	padding-left: 10px;
+	position: absolute;
+	top: 98px;
+	vertical-align: middle;
+	z-index:1;
 
+}
 div.row, build-name, main {
-    clear: both;
+	clear: both;
 }
-
 #build-name {
 	color: #666;
 	font-size: 85%;
@@ -47,4 +41,8 @@ div.row, build-name, main {
 	bottom: -150px;
 	margin-left: 20px;
 	z-index:-1;
+}
+#thirdlevelnav {
+	font-size:9pt;
+	margin:5px;
 }

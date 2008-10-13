@@ -20,14 +20,7 @@
        div.row div.value  {white-space:normal;}
 	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 </style>
-<!--[if IE]>
-<style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
-}
-</style>
-<![endif]-->
+ 
 </head>
 <body>
 <p><tags:instructions code="study.study_overview.top" /></p>

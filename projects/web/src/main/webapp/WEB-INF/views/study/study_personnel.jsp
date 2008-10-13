@@ -85,12 +85,13 @@
 </script>
 <!--[if IE]>
 <style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
+#thirdlevelnav {
+font-size: 10pt;
+margin:5px;
 }
 </style>
 <![endif]-->
+
 </head>
 
 <body>

@@ -202,14 +202,7 @@ td#linkPosition a img {
      }
      
 </script>
-<!--[if IE]>
-<style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
-}
-</style>
-<![endif]-->
+ 
 </head>
 <body>
 

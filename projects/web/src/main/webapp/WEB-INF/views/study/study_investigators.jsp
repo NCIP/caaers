@@ -86,14 +86,7 @@
 	fireAction('changeSite', indx);
   }
 </script>
-<!--[if IE]>
-<style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
-}
-</style>
-<![endif]-->
+ 
 </head>
 <body>
 <study:summary />
@@ -122,7 +115,7 @@
       	<td valign="top" width="25%">
 			<chrome:box title="Summary" id="participant-entry2" autopad="true">
  				<c:forEach var="studySite" varStatus="status" items="${command.studyOrganizations}">
- 					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
+ 					<div class =""><a href="#" onClick="javascript:chooseSitesfromSummary(${status.index});" 
 						title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>
  					<div class="">Investigators Assigned: <b> ${fn:length(studySite.studyInvestigators)} </b>

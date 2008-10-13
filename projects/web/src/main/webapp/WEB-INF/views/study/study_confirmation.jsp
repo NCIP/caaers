@@ -16,14 +16,7 @@
   /* TODO: all these are temporary */
   #confirmbox {  width: 98%;}
 </style>
-<!--[if IE]>
-<style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
-}
-</style>
-<![endif]-->
+ 
 </head>
 <body>
 <chrome:box title="Confirmation"  id="confirmbox">

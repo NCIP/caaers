@@ -13,14 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <tags:includeScriptaculous/>
-<!--[if IE]>
-<style>
-#thirdlevelnav{
-	margin:5px;
-	font-size:9pt;
-}
-</style>
-<![endif]-->
+ 
 </head>
 <body>
 <study:summary />
