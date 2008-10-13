@@ -162,13 +162,14 @@ public class CreateAdverseEventAjaxFacade {
         return chemoAgentDao.getById(Integer.parseInt(chemoAgentId));
     }
 
-    public String buildChemoAgentsTable(final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
+    public String buildChemoAgentsTable(String el, final Map parameterMap, String tableId, HttpServletRequest request) throws Exception {
 
         try {
             List<ChemoAgent> chemoAgents = chemoAgentDao.getAll();
             TableModel model = getTableModel(parameterMap, request);
 
-            String onInvokeAction = "showShowAllTable('" + tableId + "')";
+//            String onInvokeAction = "showShowAllTable('" + tableId + "')";
+            String onInvokeAction = "showShowAllTable('" + el + "', '" + tableId + "')";
 
             addTableAndRowToModel(model, tableId, chemoAgents, onInvokeAction);
 
