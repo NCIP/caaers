@@ -6,6 +6,8 @@
 <%@attribute name="reportStatus" required="true" type="gov.nih.nci.cabig.caaers.domain.ReportStatus" %>
 <%@attribute name="lastVersion" type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" required="true" description="The last version of the report" %>
 
+<script type="text/javascript" src="<c:url value="/js/wz_tooltip/wz_tooltip.js" />"></script>
+
 <%--
   Link : completed , inprocess , failed 
   Non link : Pending , Withdrawn 
@@ -13,49 +15,39 @@
   Class : dueOn -  for link
   Class : submittedOn for non links
 --%>
+
+<script>
+    function showToolTip(text) {
+        Tip(text, WIDTH, 300, TITLE, 'Title', SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, false);
+    }
+</script>
+
 <c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED')  }" />
 
 <c:if test="${detailsEnabled}">
-	<span class="dueOn"><a href="#" onclick="showDetails('_table${theReport.id}');"><i>${lastVersion.statusAsString}</i></a></span>
+	<span class="dueOn"><a style="cursor:pointer;" onclick="showToolTip(($('_ctx_${theReport.id}').innerHTML))"><i><u>${lastVersion.statusAsString}</u></i></a></span>
 	<div id="_table${theReport.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
-		<table class="tableRegion" width="100%" style="background:gray;">
-		   <tr align="right">
-	 	     <td><a href="#" onclick="javascript:hideDetails('_table${theReport.id}');"><img id="close-image" src="<c:url value="/images/rule/window-close.gif"/>"/>	</a></td>
-	       </tr>
-	       <tr>
-	         <td>
-				<c:choose>
-					<c:when test="${reportStatus eq 'INPROCESS'}">
-					 <font color="red">
-						<i>Submission to AdEERS in process</i>
-						<br />
-						Refresh to update the Submission status. Incase if the submission status is hung for more than few minutes, please try the resubmit option. 
-					 </font>
-					</c:when>
-					<c:when test="${reportStatus eq 'FAILED'}">
-					 <font color="red">
-						<i>Submission to AdEERS  failed!</i>
-						${fn:replace(lastVersion.submissionMessage,".","<br>")}
-					 </font>
-					</c:when>
-					<c:when test="${reportStatus eq 'COMPLETED'}">${fn:replace(lastVersion.submissionMessage,".","<br>")}</c:when>
-				</c:choose>				
-			
-			</td>
-	       </tr>
-	       <tr>
-	         <td>
-			
-				<c:choose>
-					<c:when test="${reportStatus eq 'COMPLETED'}">
-						<a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
-					</c:when>
-				</c:choose>
-			
-			</td>
-	       </tr>
-	    </table>
-	</div>
+        <div id="_ctx_${theReport.id}">
+        <c:choose>
+            <c:when test="${reportStatus eq 'INPROCESS'}">
+                <i>Submission to AdEERS in process</i>
+                <br />
+                Refresh to update the Submission status. Incase if the submission status is hung for more than few minutes, please try the resubmit option.
+            </c:when>
+            <c:when test="${reportStatus eq 'FAILED'}">
+                <i>Submission to AdEERS  failed!</i>
+                ${fn:replace(lastVersion.submissionMessage,".","<br>")}
+            </c:when>
+            <c:when test="${reportStatus eq 'COMPLETED'}">${fn:replace(lastVersion.submissionMessage,".","<br>")}</c:when>
+        </c:choose>
+        </div>
+
+        <c:choose>
+            <c:when test="${reportStatus eq 'COMPLETED'}">
+            <a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a>
+            </c:when>
+        </c:choose>
+    </div>
 </c:if>
 
 <c:if test="${not detailsEnabled}">
