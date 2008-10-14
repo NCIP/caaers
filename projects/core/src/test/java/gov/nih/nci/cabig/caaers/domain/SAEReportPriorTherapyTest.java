@@ -11,6 +11,7 @@ public class SAEReportPriorTherapyTest extends CaaersTestCase {
     private StudyParticipantPriorTherapy studyParticipantPriorTherapy;
     private DateValue endDateValue;
     private PriorTherapy priorTherapy;
+    private PriorTherapy priorTherapy2;
     private String other;
     private DateValue startDateValue;
 
@@ -43,8 +44,8 @@ public class SAEReportPriorTherapyTest extends CaaersTestCase {
         saeReportPriorTherapy.setStartDate(startDateValue);
         endDateValue = new DateValue(2009);
         saeReportPriorTherapy.setEndDate(endDateValue);
-        priorTherapy = new PriorTherapy();
-        saeReportPriorTherapy.setPriorTherapy(priorTherapy);
+        priorTherapy2 = new PriorTherapy();
+        saeReportPriorTherapy.setPriorTherapy(priorTherapy2);
         other = "other";
         saeReportPriorTherapy.setOther(other);
         saeReportPriorTherapy.setReport(new ExpeditedAdverseEventReport());
