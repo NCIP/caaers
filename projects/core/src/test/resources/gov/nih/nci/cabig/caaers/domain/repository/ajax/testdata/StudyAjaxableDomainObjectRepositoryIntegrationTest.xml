@@ -42,6 +42,7 @@
             description="Description"
             grid_id=""
             load_status="1"
+            status="Active - Trial is open to accrual"
             />
     <STUDIES
             id="-3"
