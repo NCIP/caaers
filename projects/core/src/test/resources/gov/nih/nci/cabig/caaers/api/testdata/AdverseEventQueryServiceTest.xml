@@ -346,7 +346,8 @@
      <SPA_PRIOR_THERAPIES />
      <SPA_CONCOMITANT_MEDICATIONS />
      <SPA_PRE_EXISTING_CONDS />
-
+	 <outcomes />
+	 <disease_terminologies />
 <PARTICIPANTS
         id="-6"
         instituitional_patient_number="P006"
