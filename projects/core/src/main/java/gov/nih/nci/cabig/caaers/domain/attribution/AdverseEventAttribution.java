@@ -67,6 +67,7 @@ public abstract class AdverseEventAttribution<T extends DomainObject> extends
     public <R extends AdverseEventAttribution> R copy() {
         R adverseEventAttribution = (R) BeanUtils.instantiateClass(getClass());
         BeanUtils.copyProperties(this, adverseEventAttribution, new String[]{"id", "gridId", "version", "adverseEvent"});
+        adverseEventAttribution.setCause(cause);
         return adverseEventAttribution;
 
     }
