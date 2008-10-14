@@ -183,4 +183,5 @@
     <mandatory_field_defs/>
     <ae_medical_devices/>
     <ae_radiation_interventions/>
+    <ae_reporting_periods/>
 </dataset>
