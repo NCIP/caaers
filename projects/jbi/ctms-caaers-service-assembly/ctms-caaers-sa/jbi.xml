@@ -7,11 +7,11 @@
         </identification>        
         <service-unit>
             <identification>
-                <name>ctms-caaers-jms-su-3.2.1-incubating</name>
+                <name>ctms-caaers-jms-su-3.1.2-incubating</name>
                 <description>JMS input queue for caAERS</description>
             </identification>
             <target>
-                <artifacts-zip>ctms-caaers-jms-su-3.2.1-incubating.zip</artifacts-zip>
+                <artifacts-zip>ctms-caaers-jms-su-3.1.2-incubating.zip</artifacts-zip>
                 <component-name>servicemix-jms</component-name>
             </target>
         </service-unit>
