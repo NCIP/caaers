@@ -62,14 +62,15 @@ public class ParticipantHistoryTest extends AbstractTestCase {
     }
 
     public void testFindBodySurfaceArea() throws Exception {
-        double bsa = Math.sqrt((ht * wt) / 3600);
-        double calBsa = ParticipantHistory.bodySuraceArea(ht, "Centimeter", wt, "Kilogram");
         double nwt = (wt / 2.20462262185);
         double nht = (ht * 2.54);
 
-        double bsa2 = Math.sqrt((nht * nwt) / 3600);
         double calBsa2 = ParticipantHistory.bodySuraceArea(ht, "Inch", wt, "Pound");
-        assertEquals("BodySurfaceArea is wrong", bsa2, calBsa2);
+        double calBsa1 = ParticipantHistory.bodySuraceArea(nht, "Centimeter", nwt, "Kilogram");
+        double bsa = ((double)Math.round(0.20247 * Math.pow(nht/100, 0.725) * Math.pow(nwt, 0.425) * 10000)) / 10000;
+
+        assertEquals("BodySurfaceArea is wrong", bsa, calBsa1);
+        assertEquals("BodySurfaceArea is wrong", bsa, calBsa2);
     }
 
 
