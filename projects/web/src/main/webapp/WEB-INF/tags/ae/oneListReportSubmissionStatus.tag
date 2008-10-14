@@ -38,7 +38,7 @@
                 <i>Submission to AdEERS  failed!</i>
                 ${fn:replace(lastVersion.submissionMessage,".","<br>")}
             </c:when>
-            <c:when test="${reportStatus eq 'COMPLETED'}">${fn:replace(lastVersion.submissionMessage,".","<br>")}</c:when>
+            <c:when test="${reportStatus eq 'COMPLETED'}">${fn:replace(lastVersion.submissionMessage,".","<br>")}<br><a href="${lastVersion.submissionUrl}" target="_blank">${lastVersion.submissionUrl}</a></c:when>
         </c:choose>
         </div>
 
