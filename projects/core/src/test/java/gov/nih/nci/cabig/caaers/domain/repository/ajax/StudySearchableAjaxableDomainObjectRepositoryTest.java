@@ -21,9 +21,9 @@ public class StudySearchableAjaxableDomainObjectRepositoryTest extends AbstractT
     private StudySearchableAjaxableDomainObjectQuery query;
     List<Object[]> objects = new ArrayList<Object[]>();
 
-    Object[] nciStudy = new Object[7];
-    Object[] ctepStudy = new Object[7];
-    Object[] studyWithNullValues = new Object[7];
+    Object[] nciStudy = new Object[9];
+    Object[] ctepStudy = new Object[9];
+    Object[] studyWithNullValues = new Object[9];
 
     @Override
     protected void setUp() throws Exception {
