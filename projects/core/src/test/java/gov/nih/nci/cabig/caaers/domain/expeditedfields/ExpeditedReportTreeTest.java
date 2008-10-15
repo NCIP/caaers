@@ -86,7 +86,7 @@ public class ExpeditedReportTreeTest extends TestCase {
     public void testFindNestedPropertyNode() throws Exception {
         TreeNode found = tree.find("responseDescription.eventDescription");
         assertNotNull(found);
-        assertEquals("Description", found.getDisplayName());
+        assertEquals("Description and treatment of event(s)", found.getDisplayName());
     }
 
     public void testFindListPropertyChildNode() throws Exception {
