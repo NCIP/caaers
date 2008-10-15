@@ -1,19 +1,22 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.ArrayList;
+
+import junit.framework.TestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Saurabh Agrawal
  */
-public class StudyParticipantAssignmentTest extends CaaersTestCase {
+public class StudyParticipantAssignmentTest extends TestCase {
 
     private StudyParticipantAssignment assignment;
 
     private ExpeditedAdverseEventReport report;
     private Participant participant;
     private SAEReportPriorTherapy saeReportPriorTherapy;
-    private SAEReportPriorTherapy existingSaeReportPriorTherapy;
+    private StudyParticipantPriorTherapy existingPriorTherapy;
 
     @Override
     protected void setUp() throws Exception {
@@ -23,9 +26,13 @@ public class StudyParticipantAssignmentTest extends CaaersTestCase {
         AdverseEventReportingPeriod period = new AdverseEventReportingPeriod();
         period.setAssignment(assignment);
         report.setReportingPeriod(period);
+      
+        PriorTherapy priorTherapy = new PriorTherapy();
         saeReportPriorTherapy = new SAEReportPriorTherapy();
-        existingSaeReportPriorTherapy = new SAEReportPriorTherapy();
-        existingSaeReportPriorTherapy.setId(1);
+        saeReportPriorTherapy.setPriorTherapy(priorTherapy);
+      
+        existingPriorTherapy = new StudyParticipantPriorTherapy();
+        existingPriorTherapy.setPriorTherapy(priorTherapy);
     }
 
     private void createAssignment() {
@@ -34,6 +41,9 @@ public class StudyParticipantAssignmentTest extends CaaersTestCase {
         participant = new Participant();
         participant.setFirstName("first name");
         assignment.setParticipant(participant);
+        assignment.setPriorTherapies(new ArrayList<StudyParticipantPriorTherapy>());
+        assignment.setConcomitantMedications(new ArrayList<StudyParticipantConcomitantMedication>());
+        assignment.setPreExistingConditions(new ArrayList<StudyParticipantPreExistingCondition>());
     }
 
     public void testWrongUsesOfSyncrhonizeMethod() {
@@ -52,11 +62,14 @@ public class StudyParticipantAssignmentTest extends CaaersTestCase {
 
     public void testSyncrhonizePriorTherapies() {
         report.addSaeReportPriorTherapies(saeReportPriorTherapy);
+        
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the prior therapy", 1, assignment.getPriorTherapies().size());
 
-        report.addSaeReportPriorTherapies(existingSaeReportPriorTherapy);
+        
+        //create a fresh assignment, add one StudyParticipantPriorTherapy. 
         createAssignment();
+        assignment.addPriorTherapy(existingPriorTherapy);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
         assertEquals("must not copy the prior therapy", 1, assignment.getPriorTherapies().size());
@@ -108,7 +121,9 @@ public class StudyParticipantAssignmentTest extends CaaersTestCase {
     }
 
     public void testSyncrhonizeConcomitantMedication() {
-        report.addConcomitantMedication(new ConcomitantMedication());
+    	ConcomitantMedication conMed = new ConcomitantMedication();
+    	conMed.setAgentName("myagent");
+        report.addConcomitantMedication(conMed);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the concomitantMedication", 1, assignment.getConcomitantMedications().size());
 
