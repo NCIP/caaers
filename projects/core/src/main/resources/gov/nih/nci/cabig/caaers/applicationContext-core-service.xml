@@ -34,7 +34,7 @@ This applicationContext contains the definition of the concrete services
 		<property name="configuration" ref="configuration"/>
 		<property name="messageTypesMapping">
 			<map>
-				<entry key="AENotification" value="SCHEDULE_MODIFICATION"/>
+				<entry key="aeNotification" value="SCHEDULE_MODIFICATION"/>
 			</map>
 		</property>
 		<property name="delegatedCredentialProvider" ref="delegatedCredentialProvider"/>
