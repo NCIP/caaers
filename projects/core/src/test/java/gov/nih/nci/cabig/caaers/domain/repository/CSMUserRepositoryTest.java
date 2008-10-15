@@ -44,8 +44,8 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
     }
 
     public void testGetUserByName() throws Exception {
-        expect(userDao.getByEmailAddress("nobody@betterbethere.com")).andReturn(null);
-        expect(userDao.getByEmailAddress(userName)).andReturn(user);
+        expect(userDao.getByLoginId("nobody@betterbethere.com")).andReturn(null);
+        expect(userDao.getByLoginId(userName)).andReturn(user);
 
         replayMocks();
         try {
@@ -60,7 +60,7 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
     }
 
     public void testUserChangePassword() throws Exception {
-        expect(userDao.getByEmailAddress(userName)).andReturn(user);
+        expect(userDao.getByLoginId(userName)).andReturn(user);
         expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);
         expect(csmUser.getPassword()).andReturn("old_password");
         csmUser.setPassword("new_password");
@@ -92,7 +92,7 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
     }
 
     public void testUserCreateToken() throws Exception {
-        expect(userDao.getByEmailAddress(userName)).andReturn(user);
+        expect(userDao.getByLoginId(userName)).andReturn(user);
         userDao.save(user);
 
         replayMocks();
