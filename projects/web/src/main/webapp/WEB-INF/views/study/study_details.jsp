@@ -5,13 +5,8 @@
 	<title>${tab.longTitle}</title>
 
     <style type="text/css">
-        div.row div.label {
-            width: 11em;
-        }
-
-        div.row div.value {
-            margin-left: 12em;
-        }
+        div.row div.label { width: 11em; }
+        div.row div.value { margin-left: 12em; }
     </style>
 
     <tags:javascriptLink name="hover-display" />
@@ -143,7 +138,10 @@
         </c:forEach>
         <div id="diseaseMeddraOption" style="display:none">
             <c:forEach begin="1" end="1" items="${fieldGroups.sdcFieldGroup.fields}" var="field" varStatus="status">
-                <tags:renderRow field="${field}"/>
+                <ui:row path="${field.propertyName}">
+                    <jsp:attribute name="label"><ui:label required="true" path="${field.propertyName}" text="${field.displayName}"/></jsp:attribute>
+                    <jsp:attribute name="value"><ui:select path="${field.propertyName}" required="false" options="${field.attributes.options}" /></jsp:attribute>
+                </ui:row>
             </c:forEach>
         </div>
     </chrome:division>
