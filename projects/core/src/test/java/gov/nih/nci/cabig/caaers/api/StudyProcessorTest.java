@@ -108,6 +108,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -148,6 +149,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -192,6 +194,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -226,6 +229,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -263,6 +267,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -302,6 +307,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -336,6 +342,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -361,6 +368,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -388,6 +396,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -416,6 +425,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -442,6 +452,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -478,6 +489,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -513,6 +525,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -560,6 +573,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -628,6 +642,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -671,6 +686,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
@@ -694,6 +710,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
+        assertNotNull(updatedStudy);
         updatedStudy = studyDao.getStudyDesignById(updatedStudy.getId());
 
         assertNotNull(updatedStudy);
