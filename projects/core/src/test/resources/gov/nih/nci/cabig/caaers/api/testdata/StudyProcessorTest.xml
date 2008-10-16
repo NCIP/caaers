@@ -232,13 +232,10 @@
    	<studies />
     <investigational_new_drugs />
     <ind_holders />
-	
 	<research_staffs />
 	<disease_terminologies/>
 	<epochs/>
 	<identifiers/>
-	<report_format/>
-	<study_amendments/>
 	<study_therapy/>
 	<treatment_assignment/>
 	<study_agents/>
@@ -247,16 +244,9 @@
 	<study_investigators/>
 	<study_organizations/>
 	<study_personnel/>
-	<ae_routine_reports/>
-	<ae_reporting_periods />
 	<arms/>
+	<ae_reporting_periods/>
+	<ae_reports/>
+	<ae_labs/>
 	<treatments/>
-	<adverse_events/>
-	<course_agents/>
-	<solicited_events/>
-	<ae_attributions/>
-	<ae_terms/>
-	
-    	 
-   
 </dataset>
