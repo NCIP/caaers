@@ -63,16 +63,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
         interruptSession();
         SecurityTestUtils.switchToSuperuser();
 
@@ -99,8 +89,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         assertFalse(updatedStudy.getDeviceTherapyType());
         assertFalse(updatedStudy.getSurgeryTherapyType());
         assertFalse(updatedStudy.getBehavioralTherapyType());
-
-
     }
 
 
@@ -157,16 +145,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -211,16 +189,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfTreatmentAssignmentRemove.xml"));
 
         studyProcessor.updateStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -291,16 +259,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
 
         studyProcessor.updateStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -375,15 +333,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -408,16 +357,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfMeddraStudyDiseasesRemove.xml"));
 
         studyProcessor.updateStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -446,15 +385,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -483,16 +413,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -518,16 +438,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
 
         studyProcessor.updateStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -598,18 +508,7 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyInvestigatorUpdate.xml"));
 
-
         studyProcessor.updateStudy(studies);
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
 
         SecurityTestUtils.switchToSuperuser();
 
@@ -658,16 +557,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -698,18 +587,9 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
 
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudySite_StudyPersonnelRemove.xml"));
-
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
+        
+        studyProcessor.updateStudy(studies);
+        
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
@@ -744,15 +624,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
 
@@ -796,15 +667,6 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         studyProcessor.updateStudy(studies);
 
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
         SecurityTestUtils.switchToSuperuser();
 
 
@@ -825,20 +687,10 @@ public class StudyProcessorTest extends CaaersDbTestCase {
 
         createStudy("studydata/CreateStudyTest_2.xml");
 
-
         studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/StudyUpdateOfStudyAgentRemove.xml"));
-
-
-//			List<gov.nih.nci.cabig.caaers.webservice.Study> studyList = studies.getStudy();
-//			studyProcessor.updateStudy(studies);
-//			if(studyList!=null && !studyList.isEmpty()){
-//				Iterator<gov.nih.nci.cabig.caaers.webservice.Study> iterator = studyList.iterator();
-//				while(iterator.hasNext()){
-//					gov.nih.nci.cabig.caaers.webservice.Study studyDto = iterator.next();
-//					studyProcessor.updateStudy(studyDto);
-//				}
-//			}
-
+        
+        studyProcessor.updateStudy(studies);
+        
         SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study PCS");
