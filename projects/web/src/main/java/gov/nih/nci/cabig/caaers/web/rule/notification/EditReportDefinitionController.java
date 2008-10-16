@@ -11,11 +11,13 @@ import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.Errors;
 
 /**
  * 
@@ -36,8 +38,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
     }
 
     @Override
-    protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command,
-                    Tab<ReportDefinitionCommand> tab) {
+    protected boolean shouldSave(HttpServletRequest request, ReportDefinitionCommand command, Tab<ReportDefinitionCommand> tab) {
         return !isAjaxAddRequest(request);
     }
 
@@ -57,8 +58,7 @@ public class EditReportDefinitionController extends AbstractReportDefinitionCont
         // initialize all the lazy collections in rpDef
         reportDefinitionDao.initialize(rpDef);
         reconcileMandatoryFields(rpDef.getMandatoryFields(), expeditedReportTree);
-        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao,
-                        getConfigurationProperty());
+        ReportDefinitionCommand rpDefCmd = new ReportDefinitionCommand(rpDef, reportDefinitionDao, getConfigurationProperty());
 
         // find the index of the first planned notificaiton
         List<PlannedNotification> pnfList = rpDef.getPlannedNotifications();

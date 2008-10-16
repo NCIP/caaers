@@ -1,16 +1,11 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <tags:stylesheetLink name="ae"/>
     <tags:stylesheetLink name="extremecomponents"/>
     <style type="text/css">
-    .eXtremeTable select {
-		width: 150px;
-	}
+        .eXtremeTable select { width: 150px; }
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="reportDef"/>

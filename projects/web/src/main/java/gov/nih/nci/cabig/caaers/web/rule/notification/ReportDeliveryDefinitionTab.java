@@ -46,8 +46,7 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         InputField addressField = InputFieldFactory.createTextField("endPoint", "Address", true);
         InputFieldAttributes.setSize(addressField, 50);
         rfgFactory.addField(addressField);
-        rfgFactory.addField(InputFieldFactory.createSelectField("endPoint", "Role", true, command
-                        .getRoles()));
+        rfgFactory.addField(InputFieldFactory.createSelectField("endPoint", "Role", true, command.getRoles()));
         // -
         InputFieldGroupMap map = new InputFieldGroupMap();
         int rddCount = command.getReportDefinition().getDeliveryDefinitions().size();
@@ -55,9 +54,17 @@ public class ReportDeliveryDefinitionTab extends TabWithFields<ReportDefinitionC
         return map;
     }
 
+    public Map<String, Object> referenceData(HttpServletRequest request, ReportDefinitionCommand command) {
+        Map refdata = super.referenceData(request, command);
+        String action = request.getParameter("_action");
+        if (StringUtils.equals(action, "deleteDelivery")) {
+            refdata.put("flashMessage", "Delivery deleted successfully");
+        }
+        return refdata;
+    }
+
     @Override
-    public void postProcess(HttpServletRequest request, ReportDefinitionCommand command,
-                    Errors errors) {
+    public void postProcess(HttpServletRequest request, ReportDefinitionCommand command, Errors errors) {
         String action = request.getParameter("_action");
         String selectedIndex = request.getParameter("_selected");
         if (StringUtils.equals(action, "deleteDelivery")) {
