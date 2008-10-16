@@ -4,16 +4,11 @@
 <head>
 <tags:stylesheetLink name="tabbedflow"/>
 <tags:stylesheetLink name="participant"/>
-<tags:includeScriptaculous />
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 
 <style type="text/css">
-        /* Override default lable length */
-         div.row div.label { width: 9em; } 
-        div.row div.value { margin-left: 10em; }
-        div.content {
-            padding: 5px 15px;
-        }        
+    div.row div.label { width: 9em; }
+    div.row div.value { margin-left: 10em; }
+    div.content { padding: 5px 15px; }
 </style>
 
 <title>Search Investigator</title>
@@ -40,6 +35,7 @@ function buildTable(form) {
 	
 	var parameterMap = getParameterMap(form);		
 	search.getInvestigatorTable(parameterMap,type,text,showTable);
+    $('bigSearch').show();
 }
 
 
@@ -93,20 +89,23 @@ function buildTable(form) {
 
 
    </form:form>
-  <br>
-  <form:form id="assembler" >
-	<div>			
-	<input type="hidden" name="_prop" id="prop" >
-	<input type="hidden" name="_value" id="value"  >
-	</div>
-	<chrome:box title="Search Results">
-     <chrome:division id="single-fields">
-        <div id="tableDiv">
-   			<c:out value="${assembler}" escapeXml="false"/> 
-		</div>
-	</chrome:division>
-	</chrome:box>
-   </form:form>
+
+     <div id="bigSearch" style="display:none;">
+         <br>
+         <form:form id="assembler">
+             <div>
+                 <input type="hidden" name="_prop" id="prop">
+                 <input type="hidden" name="_value" id="value">
+             </div>
+             <chrome:box title="Search Results">
+                 <chrome:division id="single-fields">
+                     <div id="tableDiv">
+                         <c:out value="${assembler}" escapeXml="false"/>
+                     </div>
+                 </chrome:division>
+             </chrome:box>
+         </form:form>
+     </div>
  </div>
  
 </div>

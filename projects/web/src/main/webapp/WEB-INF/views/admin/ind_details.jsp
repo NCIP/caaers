@@ -9,7 +9,6 @@
             padding: 5px 15px;
         }
     </style>
- 	<tags:includeScriptaculous/>
  	<tags:dwrJavascriptLink objects="createIND"/>
 	<script>
 		 Event.observe(window, "load", function() {
