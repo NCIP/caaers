@@ -47,7 +47,7 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
         csmUser = registerMockFor(gov.nih.nci.security.authorization.domainobjects.User.class);
 
         userDao = registerDaoMockFor(UserDao.class);
-        expect(userDao.getByEmailAddress(userName)).andReturn(user).anyTimes();
+        expect(userDao.getByLoginId(userName)).andReturn(user).anyTimes();
 
         userProvisioningManager = registerMockFor(UserProvisioningManager.class);
         expect(userProvisioningManager.getUser(userName)).andReturn(csmUser).anyTimes();
