@@ -41,7 +41,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		Participant participant = new Participant();
 		participant.setLastName("Scott");
 		List<AdverseEvent> aes = svc.getByParticipant(participant);
-		assertEquals(2, aes.size());
+		assertEquals(3, aes.size());
 		//System.out.println(svc.getText(svc.getXML(aes)));
 	}
 	
@@ -67,7 +67,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		AdverseEvent ae = new AdverseEvent();
 		ae.setGrade(Grade.DEATH);
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(1, aes.size());
+		assertEquals(0, aes.size());
 	}
 		
 	public void testAEsForParticipantWithHosp() {
@@ -76,21 +76,21 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		AdverseEvent ae = new AdverseEvent();
 		ae.setHospitalization(Hospitalization.NO);
 		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(1, aes.size());
-		AdverseEvent resultAe = aes.get(0);
-		assertEquals(-4, resultAe.getId().intValue());
+		assertEquals(0, aes.size());
+
 	}
+	
 	
 	public void testAEsForParticipantWithStartDate() {
 		Participant participant = new Participant();
 		participant.setFirstName("Dilbert");
 		AdverseEvent ae = new AdverseEvent();
 		
-		Date startDate=DateUtils.createDate(2007, 9, 12);
-			ae.setStartDate(startDate);
+		Date startDate=DateUtils.createTimestamp(2007, 9, 12, 0, 0, 0);
+		ae.setStartDate(startDate);
 		
-		List<AdverseEvent> aes = svc.getByParticipant(participant, ae);
-		assertEquals(2, aes.size());
+		List<AdverseEvent> aes = svc.getByParticipant(participant,ae);
+		assertEquals(1, aes.size());
 	}
 	public void testAEsForNonExistingParticipant() {
 		Participant participant = new Participant();
