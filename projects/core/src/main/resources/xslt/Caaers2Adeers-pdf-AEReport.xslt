@@ -776,7 +776,9 @@
 						  		<fo:block xsl:use-attribute-sets="normal" > 
 						  		<xsl:variable name="flg">
 						  			<xsl:for-each select="AdverseEventReport/StudyParticipantAssignment/StudySite/Study/StudyAgent">
-						  				<xsl:if test="INDType != 'NA'">Yes </xsl:if>
+						  				<xsl:if test="INDType = 'DCP_IND'">Yes</xsl:if>
+						  				<xsl:if test="INDType = 'CTEP_IND'">Yes</xsl:if>
+						  				<xsl:if test="INDType = 'OTHER'">Yes</xsl:if>
 						  			</xsl:for-each>
 						  		</xsl:variable>
 						  		<xsl:value-of select="substring($flg,1,3)"/>
