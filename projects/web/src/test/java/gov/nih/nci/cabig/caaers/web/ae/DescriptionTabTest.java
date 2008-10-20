@@ -15,6 +15,7 @@ public class DescriptionTabTest extends AeTabTestCase {
 
     public void testFields() throws Exception {
         assertFieldProperties("desc", "aeReport.responseDescription.eventDescription",
+        				"aeReport.responseDescription.primaryTreatmentApproximateTime",
                         "aeReport.responseDescription.presentStatus",
                         "aeReport.responseDescription.recoveryDate",
                         "aeReport.responseDescription.retreated",
