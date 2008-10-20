@@ -58,8 +58,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
-        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(request, command).get(
-                        "ctcCategories");
+        List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(request, command).get("ctcCategories");
         assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
