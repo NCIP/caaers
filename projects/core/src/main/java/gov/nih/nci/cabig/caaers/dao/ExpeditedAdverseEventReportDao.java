@@ -275,7 +275,7 @@ public class ExpeditedAdverseEventReportDao extends
      * When we delte an element which has been attributed, the attribution also needs to be deleted.
      * @param o
      */
-    public void cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
+    public boolean cascaeDeleteToAttributions(DomainObject o, ExpeditedAdverseEventReport aeReport){
     	for(AdverseEvent ae : aeReport.getAdverseEvents()){
     		if(o instanceof RadiationIntervention){
     			deleteAttribution(o, ae.getRadiationAttributions(), ae);
@@ -293,6 +293,7 @@ public class ExpeditedAdverseEventReportDao extends
         		deleteAttribution(o, ae.getDiseaseAttributions(), ae);
         	}
     	}
+    	return true;
     }
 
     public void deleteAttribution(DomainObject obj, List<? extends AdverseEventAttribution<? extends DomainObject>> attributions, AdverseEvent ae){
