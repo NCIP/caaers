@@ -84,20 +84,29 @@ public class ReporterTabTest extends AeTabTestCase {
 
     public void testReporterFieldProperties() throws Exception {
     	replayMocks();
-        assertFieldProperties("reporter", "aeReport.reporter.firstName",
+        assertFieldProperties("reporter","aeReport.reporter.title",
+        				"aeReport.reporter.firstName",
                         "aeReport.reporter.middleName", "aeReport.reporter.lastName",
                         "aeReport.reporter.contactMechanisms[e-mail]",
                         "aeReport.reporter.contactMechanisms[phone]",
-                        "aeReport.reporter.contactMechanisms[fax]");
+                        "aeReport.reporter.contactMechanisms[fax]",
+                        "aeReport.reporter.address.street",
+                        "aeReport.reporter.address.city",
+                        "aeReport.reporter.address.state",
+                        "aeReport.reporter.address.zip");
     }
 
     public void testPhysicianFieldProperties() throws Exception {
     	replayMocks();
-        assertFieldProperties("physician", "aeReport.physician.firstName",
+        assertFieldProperties("physician", "aeReport.physician.title","aeReport.physician.firstName",
                         "aeReport.physician.middleName", "aeReport.physician.lastName",
                         "aeReport.physician.contactMechanisms[e-mail]",
                         "aeReport.physician.contactMechanisms[phone]",
-                        "aeReport.physician.contactMechanisms[fax]");
+                        "aeReport.physician.contactMechanisms[fax]",
+                        "aeReport.physician.address.street",
+                        "aeReport.physician.address.city",
+                        "aeReport.physician.address.state",
+                        "aeReport.physician.address.zip");
     }
 
     public void testReporterFirstNameRequired() throws Exception {
@@ -138,25 +147,7 @@ public class ReporterTabTest extends AeTabTestCase {
                         "E-mail address");
     }
 
-    public void testOnDisplayEvaluates() throws Exception {
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(true);
-        replayMocks();
-
-        getTab().onDisplay(request, command);
-        verifyMocks();
-
-        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
-    }
-
-    public void testOnDisplayWhenNotSevere() throws Exception {
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
-        replayMocks();
-
-        getTab().onDisplay(request, command);
-        verifyMocks();
-
-        assertEquals(Boolean.FALSE, request.getAttribute("oneOrMoreSevere"));
-    }
+ 
 
     private AdverseEvent addAEToCommand() {
         AdverseEvent ae = new AdverseEvent();
@@ -164,20 +155,7 @@ public class ReporterTabTest extends AeTabTestCase {
         return ae;
     }
 
-    public void testOnDisplayWithMultipleAEs() throws Exception {
-        AdverseEvent ae1 = addAEToCommand();
-        AdverseEvent ae2 = addAEToCommand();
-
-        expect(evaluationService.isSevere(same(assignment), same(ae0))).andReturn(false);
-        expect(evaluationService.isSevere(same(assignment), same(ae1))).andReturn(false);
-        expect(evaluationService.isSevere(same(assignment), same(ae2))).andReturn(true);
-        replayMocks();
-
-        getTab().onDisplay(request, command);
-        verifyMocks();
-
-        assertEquals(Boolean.TRUE, request.getAttribute("oneOrMoreSevere"));
-    }
+ 
     
     public void testInitilizeExistingReportMap() throws Exception{
     	addReportsToAeReport();
