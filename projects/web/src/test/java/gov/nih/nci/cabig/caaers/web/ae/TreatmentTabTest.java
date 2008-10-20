@@ -51,6 +51,8 @@ public class TreatmentTabTest extends AeTabTestCase {
         assertFieldProperties(
                         "courseAgent2",
                         "aeReport.treatmentInformation.courseAgents[2].studyAgent",
+                        "aeReport.treatmentInformation.courseAgents[2].formulation",
+                        "aeReport.treatmentInformation.courseAgents[2].lotNumber",
                         "aeReport.treatmentInformation.courseAgents[2].dose.amount",
                         "aeReport.treatmentInformation.courseAgents[2].dose.units",
                         "aeReport.treatmentInformation.courseAgents[2].lastAdministeredDate",
@@ -62,13 +64,13 @@ public class TreatmentTabTest extends AeTabTestCase {
     }
 
     public void testTotalDoseAdministered() throws Exception {
-        InputField totalDoseField = getFieldGroup("courseAgent7").getFields().get(1);
+        InputField totalDoseField = getFieldGroup("courseAgent0").getFields().get(3);
         assertEquals("Wrong field name, it should be 'Total dose administered this course'",
-                        "aeReport.treatmentInformation.courseAgents[7].dose.amount", totalDoseField
+                        "aeReport.treatmentInformation.courseAgents[0].dose.amount", totalDoseField
                                         .getPropertyName());
-        totalDoseField = getFieldGroup("courseAgent7").getFields().get(2);
+        totalDoseField = getFieldGroup("courseAgent0").getFields().get(4);
         assertEquals("Wrong field name, it should be 'Total dose administered (UOM)'",
-                        "aeReport.treatmentInformation.courseAgents[7].dose.units", totalDoseField
+                        "aeReport.treatmentInformation.courseAgents[0].dose.units", totalDoseField
                                         .getPropertyName());
     }
 
@@ -105,7 +107,7 @@ public class TreatmentTabTest extends AeTabTestCase {
      */
     @SuppressWarnings( { "unchecked" })
     public void testModDoseSubfields() throws Exception {
-        InputField modDoseField = getFieldGroup("courseAgent7").getFields().get(6); // modifiedDose
+        InputField modDoseField = getFieldGroup("courseAgent7").getFields().get(8); // modifiedDose
         assertTrue("Field 4 isn't dose (probably a test setup issue): "
                         + modDoseField.getPropertyName(), modDoseField.getPropertyName().endsWith(
                         "modifiedDose"));
@@ -124,7 +126,7 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     public void testAdminDelaySubfields() throws Exception {
-        InputField delayField = getFieldGroup("courseAgent7").getFields().get(4); // admindelay
+        InputField delayField = getFieldGroup("courseAgent7").getFields().get(6); // admindelay
         List<InputField> subfields = (List<InputField>) delayField.getAttributes().get(
                         InputField.SUBFIELDS);
         assertNotNull("Dose isn't a composite field", subfields);
@@ -139,7 +141,7 @@ public class TreatmentTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     public void testDelayUnitsInField() throws Exception {
-        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(4);
+        InputField delayComposite = getFieldGroup("courseAgent0").getFields().get(6);
 
         Map<Object, Object> actualOptions = getActualSelectFieldOptions(
                         (List<InputField>) delayComposite.getAttributes().get(InputField.SUBFIELDS),
@@ -159,7 +161,7 @@ public class TreatmentTabTest extends AeTabTestCase {
         InputFieldGroup group = getFieldGroup("courseAgent0");
         Map<Object, Object> actualOptions = getActualSelectFieldOptions(group.getFields(),
                         "aeReport.treatmentInformation.courseAgents[0].studyAgent");
-        assertEquals("Wrong number of options: " + actualOptions, 2, actualOptions.size());
+        assertEquals("Wrong number of options: " + actualOptions, 3, actualOptions.size());
         assertEquals("Missing option for sa 0", "Agent 1", actualOptions.get(166));
         assertEquals("Missing option for sa 1", "Agent 2", actualOptions.get(267));
     }
