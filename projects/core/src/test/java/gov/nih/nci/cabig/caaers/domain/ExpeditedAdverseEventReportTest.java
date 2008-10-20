@@ -73,7 +73,7 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
 //        assertEquals(1, copiedReport.getLabs().size());
 //        for (Lab object : copiedReport.getLabs()) {
 //            assertSame("must change reference", copiedReport, object.getReport());
-        }
+//        }
     }
 
     public void testAdverseEvents() {
