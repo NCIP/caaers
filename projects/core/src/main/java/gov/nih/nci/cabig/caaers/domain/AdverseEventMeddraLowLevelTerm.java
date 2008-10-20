@@ -35,7 +35,7 @@ public class AdverseEventMeddraLowLevelTerm extends AbstractAdverseEventTerm<Low
         return getTerm() == null ? null : getTerm().getFullName();
     }
 
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "term_id")
     @Override
     public LowLevelTerm getTerm() {

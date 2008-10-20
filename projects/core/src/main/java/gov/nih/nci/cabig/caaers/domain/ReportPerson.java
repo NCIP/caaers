@@ -27,7 +27,7 @@ public abstract class ReportPerson extends PersonContact {
 
     // //// BOUND PROPERTIES
 
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "report_version_id")
     public ReportVersion getReport() {
         return report;

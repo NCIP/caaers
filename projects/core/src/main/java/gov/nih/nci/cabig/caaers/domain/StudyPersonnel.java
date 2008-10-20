@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -28,7 +29,7 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
 
     private StudyOrganization studyOrganization;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "research_staffs_id")
     public ResearchStaff getResearchStaff() {
         return researchStaff;
@@ -38,7 +39,7 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
         this.researchStaff = researchStaff;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_sites_id")
     public StudyOrganization getStudyOrganization() {
         return studyOrganization;

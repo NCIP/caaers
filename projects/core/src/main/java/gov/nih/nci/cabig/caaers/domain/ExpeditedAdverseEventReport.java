@@ -574,7 +574,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     // non-total cascade allows us to skip saving if the reporter hasn't been filled in yet
-    @OneToOne(mappedBy = "expeditedReport")
+    @OneToOne(mappedBy = "expeditedReport",  fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Reporter getReporter() {
         return reporter;
@@ -586,7 +586,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
-    @OneToOne(mappedBy = "expeditedReport")
+    @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.DELETE, CascadeType.EVICT, CascadeType.LOCK, CascadeType.REMOVE})
     public Physician getPhysician() {
         return physician;
@@ -597,7 +597,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (physician != null) physician.setExpeditedReport(this);
     }
 
-    @OneToOne(mappedBy = "report")
+    @OneToOne(mappedBy = "report", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL})
     public DiseaseHistory getDiseaseHistory() {
         if (diseaseHistory == null) setDiseaseHistory(new DiseaseHistory());
@@ -609,7 +609,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (diseaseHistory != null) diseaseHistory.setReport(this);
     }
 
-    @OneToOne(mappedBy = "report")
+    @OneToOne(mappedBy = "report", fetch=FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     public ParticipantHistory getParticipantHistory() {
         if (participantHistory == null) setParticipantHistory(new ParticipantHistory());
@@ -664,7 +664,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.createdAt = createdAt;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "reporting_period_id")
     @Cascade(value = {CascadeType.LOCK})
     public AdverseEventReportingPeriod getReportingPeriod() {

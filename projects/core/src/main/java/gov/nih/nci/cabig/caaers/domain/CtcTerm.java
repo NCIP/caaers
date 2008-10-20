@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.ctms.domain.AbstractImmutableDomainObject;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Column;
 import javax.persistence.Transient;
@@ -103,7 +104,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         this.ctepCode = ctepCode;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     public CtcCategory getCategory() {
         return category;
     }

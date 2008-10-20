@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -11,7 +12,7 @@ import javax.persistence.Transient;
 public class OrganizationHeldIND extends INDHolder {
     private Organization organization;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch=FetchType.LAZY)
     @JoinColumn(name = "org_id", nullable = false)
     public Organization getOrganization() {
         return organization;

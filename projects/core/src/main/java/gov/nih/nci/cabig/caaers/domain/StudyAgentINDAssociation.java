@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ public class StudyAgentINDAssociation extends AbstractIdentifiableDomainObject i
 
     private InvestigationalNewDrug investigationalNewDrug;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_agent_id")
     public StudyAgent getStudyAgent() {
         return studyAgent;
@@ -29,7 +30,7 @@ public class StudyAgentINDAssociation extends AbstractIdentifiableDomainObject i
         this.studyAgent = studyAgent;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "ind_id")
     public InvestigationalNewDrug getInvestigationalNewDrug() {
         return investigationalNewDrug;

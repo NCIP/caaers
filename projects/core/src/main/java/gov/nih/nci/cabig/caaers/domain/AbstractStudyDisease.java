@@ -13,6 +13,7 @@ import org.hibernate.annotations.Parameter;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
@@ -40,9 +41,7 @@ public abstract class AbstractStudyDisease<T extends DomainObject> extends
 
     // //// BEAN PROPERTIES
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(insertable=false, updatable=false, nullable=false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(insertable = false, updatable = false)
     @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {

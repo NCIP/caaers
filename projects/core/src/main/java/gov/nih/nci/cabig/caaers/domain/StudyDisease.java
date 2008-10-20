@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -36,7 +37,7 @@ public class StudyDisease extends AbstractMutableDomainObject {
         super();
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_id")
     @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
@@ -47,7 +48,7 @@ public class StudyDisease extends AbstractMutableDomainObject {
         this.study = study;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "disease_term_id")
     @Cascade(value = { CascadeType.ALL })
     public DiseaseTerm getDiseaseTerm() {

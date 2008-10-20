@@ -64,7 +64,8 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
         this.agent = agent;
         
     }
-    @ManyToOne
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_id")
     @Cascade(value = {CascadeType.EVICT})
     public Study getStudy() {
@@ -86,7 +87,7 @@ public class StudyAgent extends AbstractMutableDomainObject implements StudyChil
         this.agent = agent;
     }
 
-    @OneToMany(mappedBy = "studyAgent", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "studyAgent", fetch = FetchType.LAZY)
     @Cascade( { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociationsInternal() {
         return lazyListHelper.getInternalList(StudyAgentINDAssociation.class);

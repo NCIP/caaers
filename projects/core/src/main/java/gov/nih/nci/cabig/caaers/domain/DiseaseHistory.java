@@ -47,7 +47,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         getMetastaticDiseaseSites().add(site);
     }
 
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "coded_primary_disease_site_id")
     @Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedPrimaryDiseaseSite() {
@@ -105,7 +105,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         this.abstractStudyDisease = meddraStudyDisease;
     }
 
-    @OneToOne
+    @OneToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "study_disease_id")
     @Cascade(value = {CascadeType.ALL})
     public AbstractStudyDisease getAbstractStudyDisease() {

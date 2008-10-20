@@ -53,7 +53,7 @@ public class InvestigationalNewDrug extends AbstractMutableDomainObject {
         holderName = holder.getName();
     }
 
-    @OneToMany(mappedBy = "investigationalNewDrug", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "investigationalNewDrug")
     @Cascade( { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     public List<StudyAgentINDAssociation> getStudyAgentINDAssociations() {
         return studyAgentINDAssociations;
