@@ -27,7 +27,7 @@ public class CaaersDbNoSecurityTestCase extends CaaersDbTestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		
-		/*AspectJSecurityInterceptorStub interceptorStub = new AspectJSecurityInterceptorStub();
+		AspectJSecurityInterceptorStub interceptorStub = new AspectJSecurityInterceptorStub();
 		//
 		try{
 			aspect = (StudyParticipantAssignmentAspect) getDeployedApplicationContext().getBean("studyParticipantAssignmentAspect");
@@ -44,13 +44,13 @@ public class CaaersDbNoSecurityTestCase extends CaaersDbTestCase {
         	securityInterceptorAspect.setSecurityInterceptor(null);
         }catch(Exception e){
         	
-        }*/
+        }
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		/*aspect.setSecurityInterceptor(orgInterceptor);
-		securityInterceptorAspect.setSecurityInterceptor(orgInterceptor);*/
+		aspect.setSecurityInterceptor(orgInterceptor);
+		securityInterceptorAspect.setSecurityInterceptor(orgInterceptor);
 		super.tearDown();
 	}
 }

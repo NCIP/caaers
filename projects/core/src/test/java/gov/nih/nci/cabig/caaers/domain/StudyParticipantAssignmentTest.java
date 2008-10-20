@@ -1,15 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+
 import java.util.ArrayList;
 
 import junit.framework.TestCase;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 
 /**
  * @author Saurabh Agrawal
  */
-public class StudyParticipantAssignmentTest extends TestCase {
+public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
     private StudyParticipantAssignment assignment;
 

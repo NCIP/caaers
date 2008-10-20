@@ -29,7 +29,7 @@ public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
 		participant.setFirstName("Dilbert");
 		List<AdverseEvent> aes = svc.getByParticipant(participant);
 		assertEquals(2, aes.size());
-		System.out.println(svc.getText(svc.getXML(aes)));
+		//System.out.println(svc.getText(svc.getXML(aes)));
 
 		participant = new Participant();
 		participant.setFirstName("John");
