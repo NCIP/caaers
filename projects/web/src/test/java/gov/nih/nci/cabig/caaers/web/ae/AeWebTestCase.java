@@ -1,6 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+
+import java.util.Date;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -15,6 +18,8 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
@@ -104,6 +109,13 @@ public abstract class AeWebTestCase extends WebTestCase {
         event.getAdverseEventCtcTerm().setCtcTerm(new CtcTerm());
         event.setStartDate(NOW);
         event.setEndDate(NOW);
+        
+        Outcome o = new Outcome();
+        o.setDate(new Date());
+        o.setOutcomeType(OutcomeType.HOSPITALIZATION);
+        event.addOutcome(o);
+        
+        c.updateOutcomes();
 
         // ReporterTab
         c.getAeReport().setReporter(new Reporter());
