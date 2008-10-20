@@ -27,7 +27,8 @@ public abstract class RulesTestCase extends CaaersTestCase {
     public abstract Class<? extends TestCase> getTestClass();
 
     public String getFileContext(String fileName) throws Exception {
-        File testFile = new ClassPathResource(fileName, getTestClass()).getFile();
+    	
+        File testFile = new ClassPathResource("/gov/nih/nci/cabig/caaers/rules/deploy/" + fileName).getFile();
         BufferedReader ds = new BufferedReader(new FileReader(testFile));
         String line = null;
         StringBuffer xml = new StringBuffer();
