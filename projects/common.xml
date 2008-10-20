@@ -139,8 +139,8 @@
 	
 	<!-- This path will contain the test dependencies and test classes -->
 	<path id="test.run.classpath">
-		<path refid="test.classpath" />
 		<pathelement path="${test.classes.dir}" />
+		<path refid="test.classpath" />
 	</path>
 	
 	
