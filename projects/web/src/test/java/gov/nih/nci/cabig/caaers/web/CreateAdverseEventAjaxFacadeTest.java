@@ -17,6 +17,8 @@ import static org.easymock.EasyMock.*;
 
 import java.util.*;
 
+import org.easymock.classextension.EasyMock;
+
 /**
  * @author Rhett Sutphin
  */
@@ -354,10 +356,11 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
         expect(studySite.getStudy()).andReturn(new Study());
+        AdverseEvent ae = command.getAeReport().getAdverseEvents().get(3);
+        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 3).getChanges();
         verifyMocks();
-
         assertAdverseEventsIdOrder(command, 0, 1, 2);
         assertEquals("Wrong changes: " + actual, 1, actual.size());
         assertIndexChange(3, null, actual.get(0));
@@ -369,7 +372,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
         expect(studySite.getStudy()).andReturn(new Study());
-
+        AdverseEvent ae = command.getAeReport().getAdverseEvents().get(0);
+        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 0).getChanges();
         verifyMocks();
@@ -388,7 +392,8 @@ public class CreateAdverseEventAjaxFacadeTest extends DwrFacadeTestCase {
         assignmentDao.reassociate(assignment);
         expect(assignment.getStudySite()).andReturn(studySite);
         expect(studySite.getStudy()).andReturn(new Study());
-
+        AdverseEvent ae = command.getAeReport().getAdverseEvents().get(2);
+        expect(aeReportDao.cascaeDeleteToAttributions(ae, command.getAeReport())).andReturn(true);
         replayMocks();
         List<IndexChange> actual = facade.remove("aeReport.adverseEvents", 2).getChanges();
         verifyMocks();
