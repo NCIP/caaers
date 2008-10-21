@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
@@ -36,7 +37,20 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     @Override
     protected CreateParticipantTab createTab() {
         createParticipantTab = new CreateParticipantTab();
-        createParticipantTab.setOrganizationRepository(organizationRepository);
+        createParticipantTab.setOrganizationRepository(new OrganizationRepository(){
+        	public void create(Organization organization) {
+        		// TODO Auto-generated method stub
+        		
+        	}
+        	public void createOrUpdate(Organization organization) {
+        		// TODO Auto-generated method stub
+        		
+        	}
+        	public List<Organization> getOrganizationsHavingStudySites() {
+        		return new ArrayList<Organization>();
+        	}
+        	
+        });
         createParticipantTab.setListValues(listValues);
         createParticipantTab.setConfigurationProperty(configProperty);
 
@@ -46,6 +60,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     @Override
     protected ParticipantInputCommand createCommand() {
         newParticipantCommand = new ParticipantInputCommand();
+        newParticipantCommand.setParticipant(new Participant());
 
         return newParticipantCommand;
     }
@@ -95,27 +110,8 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
         newParticipantCommand.getParticipant().getIdentifiers().add(new SystemAssignedIdentifier());
         doValidate();
         assertFieldRequiredCustomErrorMessageRaised("participant.identifiers",
-                "Please Include at least a single primary Identifier");
+                "Please Include exactly One Primary Identifier");
     }
-
-
-    public void testInValidCommand() throws Exception {
-        doValidate();
-        assertFieldRequiredCustomErrorMessageRaised("participant.dateOfBirth",
-                "Incorrect Date Of Birth");
-        assertFieldRequiredCustomErrorMessageRaised("participant.identifiers",
-                "Please Include at least a single primary Identifier");
-    }
-
-    public void testValidCommand() throws Exception {
-        final SystemAssignedIdentifier systemAssignedIdentifier = Fixtures.createSystemAssignedIdentifier("value");
-        systemAssignedIdentifier.setPrimaryIndicator(Boolean.TRUE);
-
-        newParticipantCommand.getParticipant().getIdentifiers().add(systemAssignedIdentifier);
-        newParticipantCommand.getParticipant().setDateOfBirth(new DateValue(19, 4, 1967));
-
-        doValidate();
-//        assertTrue("There should not be any error ", errors.getAllErrors().isEmpty());
-    }
+  
 
 }

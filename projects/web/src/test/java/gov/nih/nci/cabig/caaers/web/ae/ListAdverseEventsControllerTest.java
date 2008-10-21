@@ -14,6 +14,8 @@ import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.easymock.classextension.EasyMock;
+
 /**
  * @author Rhett Sutphin
  */
@@ -65,18 +67,18 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         assertTrue(controller.isFormSubmission(request));
     }
 
-    public void testBindAssignment() throws Exception {
-        StudyParticipantAssignment expectedAssignment = Fixtures.setId(3,
-                        new StudyParticipantAssignment());
-        String expectedGridId = "a-grid-id";
-        request.setParameter("assignment", expectedGridId);
-        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
-        mockCommand.setAssignment(expectedAssignment);
-        expect(mockCommand.getStudy()).andReturn(new Study());
-        expect(mockCommand.getParticipant()).andReturn(new Participant());
-        expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
-        replayMocks();
-        controller.handleRequest(request, response);
-        verifyMocks();
-    }
+//    public void testBindAssignment() throws Exception {
+//        StudyParticipantAssignment expectedAssignment = Fixtures.setId(3,
+//                        new StudyParticipantAssignment());
+//        String expectedGridId = "a-grid-id";
+//        request.setParameter("assignment", expectedGridId);
+//        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
+//        mockCommand.setAssignment(expectedAssignment);
+//        expect(mockCommand.getStudy()).andReturn(new Study());
+//        expect(mockCommand.getParticipant()).andReturn(new Participant());
+//        expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
+//        replayMocks();
+//        controller.handleRequest(request, response);
+//        verifyMocks();
+//    }
 }
