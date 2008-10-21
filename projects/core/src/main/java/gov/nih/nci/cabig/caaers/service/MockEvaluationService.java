@@ -116,18 +116,18 @@ public class MockEvaluationService implements EvaluationService {
 
     public List<ReportDefinition> applicableReportDefinitions(StudyParticipantAssignment assignment) {
         // TODO Auto-generated method stub
-        return null;
+        return new ArrayList<ReportDefinition>();
     }
 
     public ReportSubmittability isSubmittable(Report report) {
         // TODO Auto-generated method stub
-        return null;
+        return new ReportSubmittability();
     }
 
     public ValidationErrors validateReportingBusinessRules(ExpeditedAdverseEventReport aeReport,
                     ExpeditedReportSection... sectionName) {
         // TODO Auto-generated method stub
-        return null;
+        return new ValidationErrors();
     }
 
     // //// CONFIGURATION
