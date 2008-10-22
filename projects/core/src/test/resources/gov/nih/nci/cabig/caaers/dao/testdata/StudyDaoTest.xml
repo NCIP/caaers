@@ -283,6 +283,7 @@
 
 
     <study_investigators
+    		id="-22"
             role_code="role"
             status_code="status"
             site_investigators_id="-4004"
@@ -290,6 +291,7 @@
             />
 
     <study_investigators
+    		   id="-23"
                role_code="role"
                status_code="status"
                site_investigators_id="-4005"
