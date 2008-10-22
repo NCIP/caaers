@@ -418,7 +418,7 @@ background-color:#e5e8ff;
     </div>
     <%-- The below div is only visible if there are no reports selected --%>
     <div id="div-reports-not-selected">
-      <chrome:division title="Selected Reprots" id="div-selected-reports-2" collapsable="false">
+      <chrome:division title="Selected Reports" id="div-selected-reports-2" collapsable="false">
         <div style="text-align: left;">
           <div class="eXtremeTable">
             <table width="60%" border="0" cellspacing="0" class="tableRegion">
