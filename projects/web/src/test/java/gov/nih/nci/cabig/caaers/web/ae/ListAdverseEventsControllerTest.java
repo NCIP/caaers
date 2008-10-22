@@ -67,18 +67,24 @@ public class ListAdverseEventsControllerTest extends WebTestCase {
         assertTrue(controller.isFormSubmission(request));
     }
 
-//    public void testBindAssignment() throws Exception {
-//        StudyParticipantAssignment expectedAssignment = Fixtures.setId(3,
-//                        new StudyParticipantAssignment());
-//        String expectedGridId = "a-grid-id";
-//        request.setParameter("assignment", expectedGridId);
-//        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
-//        mockCommand.setAssignment(expectedAssignment);
-//        expect(mockCommand.getStudy()).andReturn(new Study());
-//        expect(mockCommand.getParticipant()).andReturn(new Participant());
-//        expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
-//        replayMocks();
-//        controller.handleRequest(request, response);
-//        verifyMocks();
-//    }
+    public void testBindAssignment() throws Exception {
+        StudyParticipantAssignment expectedAssignment = Fixtures.setId(3, new StudyParticipantAssignment());
+        Participant p = new Participant();
+        Study s = new Study();
+        String expectedGridId = "a-grid-id";
+        request.setParameter("assignment", expectedGridId);
+        expect(assignmentDao.getByGridId(expectedGridId)).andReturn(expectedAssignment);
+        mockCommand.setAssignment(expectedAssignment);
+        mockCommand.setAssignment(expectedAssignment);
+        mockCommand.setParticipant(p);
+        mockCommand.setStudy(s);
+        mockCommand.updateSubmittability();
+        expect(mockCommand.getStudy()).andReturn(s).anyTimes();
+        expect(mockCommand.getParticipant()).andReturn(p).anyTimes();
+        expect(mockCommand.getAssignment()).andStubReturn(expectedAssignment);
+        expect(assignmentDao.getAssignment(p, s)).andReturn(expectedAssignment).anyTimes();
+        replayMocks();
+        controller.handleRequest(request, response);
+        verifyMocks();
+    }
 }
