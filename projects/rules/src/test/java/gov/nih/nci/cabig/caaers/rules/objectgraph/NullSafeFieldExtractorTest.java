@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.rules.objectgraph;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
 import junit.framework.TestCase;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class NullSafeFieldExtractorTest extends TestCase {
+public class NullSafeFieldExtractorTest extends AbstractNoSecurityTestCase {
 
     protected void setUp() throws Exception {
         super.setUp();
@@ -22,38 +23,38 @@ public class NullSafeFieldExtractorTest extends TestCase {
     }
 
     public void testExtractField() {
-//        ExpeditedAdverseEventReport aeReport = createAEReport();
-//        for (AdverseEvent adverseEvent : aeReport.getAdverseEvents()) {
-//            System.out.println(NullSafeFieldExtractor.extractField(adverseEvent,
-//                    "lowLevelTerm")
-//            );
-//
-//        }
-//        aeReport.getResponseDescription().setPresentStatus(null);
-//        Object o = NullSafeFieldExtractor.extractField(aeReport,
-//                "responseDescription.presentStatus.displayName");
-//        System.out.println(o);
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        for (AdverseEvent adverseEvent : aeReport.getAdverseEvents()) {
+            System.out.println(NullSafeFieldExtractor.extractField(adverseEvent,
+                    "lowLevelTerm")
+            );
+
+        }
+        aeReport.getResponseDescription().setPresentStatus(null);
+        Object o = NullSafeFieldExtractor.extractField(aeReport,
+                "responseDescription.presentStatus.displayName");
+        System.out.println(o);
     	assertTrue(true);
     }
 
     public void testExtractFieldNullInput() {
-//        ExpeditedAdverseEventReport aeReport = createAEReport();
-//        aeReport.getResponseDescription().setPresentStatus(null);
-//        Object o = NullSafeFieldExtractor.extractField(null,
-//                "responseDescription.presentStatus.displayName");
-//        System.out.println(o);
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getResponseDescription().setPresentStatus(null);
+        Object o = NullSafeFieldExtractor.extractField(null,
+                "responseDescription.presentStatus.displayName");
+        System.out.println(o);
         assertTrue(true);
     }
 
     public void testExtractFieldInvalidProperty() {
-//        ExpeditedAdverseEventReport aeReport = createAEReport();
-//        aeReport.getResponseDescription().setPresentStatus(null);
-//        try {
-//            Object o = NullSafeFieldExtractor.extractField(aeReport,
-//                    "xresponseDescription.presentStatus.displayName");
-//        } catch (NotReadablePropertyException e) {
-//
-//        }
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getResponseDescription().setPresentStatus(null);
+        try {
+            Object o = NullSafeFieldExtractor.extractField(aeReport,
+                    "xresponseDescription.presentStatus.displayName");
+        } catch (NotReadablePropertyException e) {
+
+        }
     	assertTrue(true);
     }
 
