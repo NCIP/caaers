@@ -42,7 +42,7 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
         assertSupports(object);
         Organization site = (Organization) object;
 
-        return object.getClass().getName() + pathSeperator + site.getNciInstituteCode();
+        return Organization.class.getName() + pathSeperator + site.getNciInstituteCode();
     }
 
     public String getPathSeperator() {
