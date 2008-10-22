@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
 
 /**
  * @author Biju Joseph
  */
-public class RadiationAttributionTest extends AbstractTestCase {
+public class RadiationAttributionTest extends AbstractNoSecurityTestCase {
 
     private RadiationAttribution deviceAttribution;
     private AdverseEvent adverseEvent;
@@ -30,15 +31,15 @@ public class RadiationAttributionTest extends AbstractTestCase {
     }
 
     public void testCopy() {
-//        RadiationAttribution copiedRadiationAttribution = deviceAttribution.copy();
-//        assertNull("id must be null", copiedRadiationAttribution.getId());
-//        assertNull("grid id must be null", copiedRadiationAttribution.getGridId());
-//        assertNull("version number must be null", copiedRadiationAttribution.getVersion());
-//
-//        assertSame("medical cause must refer to same object", cause, copiedRadiationAttribution.getCause());
-//        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedRadiationAttribution.getAttribution());
-//        assertNotNull(deviceAttribution.getAdverseEvent());
-//        assertNull("must not copy adverse event", copiedRadiationAttribution.getAdverseEvent());
+        RadiationAttribution copiedRadiationAttribution = deviceAttribution.copy();
+        assertNull("id must be null", copiedRadiationAttribution.getId());
+        assertNull("grid id must be null", copiedRadiationAttribution.getGridId());
+        assertNull("version number must be null", copiedRadiationAttribution.getVersion());
+
+        assertSame("medical cause must refer to same object", cause, copiedRadiationAttribution.getCause());
+        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedRadiationAttribution.getAttribution());
+        assertNotNull(deviceAttribution.getAdverseEvent());
+        assertNull("must not copy adverse event", copiedRadiationAttribution.getAdverseEvent());
 
     	assertTrue(true);
     }

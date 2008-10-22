@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
 
 /**
  * @author Biju Joseph
  */
-public class DeviceAttributionTest extends AbstractTestCase {
+public class DeviceAttributionTest extends AbstractNoSecurityTestCase {
 
     private DeviceAttribution deviceAttribution;
     private AdverseEvent adverseEvent;
@@ -30,15 +31,15 @@ public class DeviceAttributionTest extends AbstractTestCase {
     }
 
     public void testCopy() {
-//        DeviceAttribution copiedDeviceAttribution = deviceAttribution.copy();
-//        assertNull("id must be null", copiedDeviceAttribution.getId());
-//        assertNull("grid id must be null", copiedDeviceAttribution.getGridId());
-//        assertNull("version number must be null", copiedDeviceAttribution.getVersion());
-//
-//        assertSame("medical cause must refer to same object", cause, copiedDeviceAttribution.getCause());
-//        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedDeviceAttribution.getAttribution());
-//        assertNotNull(deviceAttribution.getAdverseEvent());
-//        assertNull("must not copy adverse event", copiedDeviceAttribution.getAdverseEvent());
+        DeviceAttribution copiedDeviceAttribution = deviceAttribution.copy();
+        assertNull("id must be null", copiedDeviceAttribution.getId());
+        assertNull("grid id must be null", copiedDeviceAttribution.getGridId());
+        assertNull("version number must be null", copiedDeviceAttribution.getVersion());
+
+        assertSame("medical cause must refer to same object", cause, copiedDeviceAttribution.getCause());
+        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedDeviceAttribution.getAttribution());
+        assertNotNull(deviceAttribution.getAdverseEvent());
+        assertNull("must not copy adverse event", copiedDeviceAttribution.getAdverseEvent());
         assertTrue(true);
 
     }

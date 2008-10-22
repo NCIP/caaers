@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 
 /**
  * @author Biju Joseph
  */
-public class SurgeryAttributionTest extends AbstractTestCase {
+public class SurgeryAttributionTest extends AbstractNoSecurityTestCase {
 
     private SurgeryAttribution surgeryAttribution;
     private AdverseEvent adverseEvent;
@@ -30,15 +31,15 @@ public class SurgeryAttributionTest extends AbstractTestCase {
     }
 
     public void testCopy() {
-//        SurgeryAttribution copiedSurgeryAttribution = surgeryAttribution.copy();
-//        assertNull("id must be null", copiedSurgeryAttribution.getId());
-//        assertNull("grid id must be null", copiedSurgeryAttribution.getGridId());
-//        assertNull("version number must be null", copiedSurgeryAttribution.getVersion());
-//
-//        assertSame("medical cause must refer to same object", cause, copiedSurgeryAttribution.getCause());
-//        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedSurgeryAttribution.getAttribution());
-//        assertNotNull(surgeryAttribution.getAdverseEvent());
-//        assertNull("must not copy adverse event", copiedSurgeryAttribution.getAdverseEvent());
+        SurgeryAttribution copiedSurgeryAttribution = surgeryAttribution.copy();
+        assertNull("id must be null", copiedSurgeryAttribution.getId());
+        assertNull("grid id must be null", copiedSurgeryAttribution.getGridId());
+        assertNull("version number must be null", copiedSurgeryAttribution.getVersion());
+
+        assertSame("medical cause must refer to same object", cause, copiedSurgeryAttribution.getCause());
+        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedSurgeryAttribution.getAttribution());
+        assertNotNull(surgeryAttribution.getAdverseEvent());
+        assertNull("must not copy adverse event", copiedSurgeryAttribution.getAdverseEvent());
     	assertTrue(true);
 
     }

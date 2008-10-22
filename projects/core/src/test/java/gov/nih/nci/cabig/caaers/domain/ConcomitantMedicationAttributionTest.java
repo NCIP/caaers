@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 
 /**
  * @author Biju Joseph
  */
-public class ConcomitantMedicationAttributionTest extends AbstractTestCase {
+public class ConcomitantMedicationAttributionTest extends AbstractNoSecurityTestCase {
 
     private ConcomitantMedicationAttribution concomitantMedicationAttribution;
     private AdverseEvent adverseEvent;
@@ -30,15 +31,15 @@ public class ConcomitantMedicationAttributionTest extends AbstractTestCase {
     }
 
     public void testCopy() {
-//        ConcomitantMedicationAttribution copiedConcomitantMedicationAttribution = concomitantMedicationAttribution.copy();
-//        assertNull("id must be null", copiedConcomitantMedicationAttribution.getId());
-//        assertNull("grid id must be null", copiedConcomitantMedicationAttribution.getGridId());
-//        assertNull("version number must be null", copiedConcomitantMedicationAttribution.getVersion());
-//
-//        assertSame("medical cause must refer to same object", cause, copiedConcomitantMedicationAttribution.getCause());
-//        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedConcomitantMedicationAttribution.getAttribution());
-//        assertNotNull(concomitantMedicationAttribution.getAdverseEvent());
-//        assertNull("must not copy adverse event", copiedConcomitantMedicationAttribution.getAdverseEvent());
+        ConcomitantMedicationAttribution copiedConcomitantMedicationAttribution = concomitantMedicationAttribution.copy();
+        assertNull("id must be null", copiedConcomitantMedicationAttribution.getId());
+        assertNull("grid id must be null", copiedConcomitantMedicationAttribution.getGridId());
+        assertNull("version number must be null", copiedConcomitantMedicationAttribution.getVersion());
+
+        assertSame("medical cause must refer to same object", cause, copiedConcomitantMedicationAttribution.getCause());
+        assertEquals("attribution must be same", Attribution.POSSIBLE, copiedConcomitantMedicationAttribution.getAttribution());
+        assertNotNull(concomitantMedicationAttribution.getAdverseEvent());
+        assertNull("must not copy adverse event", copiedConcomitantMedicationAttribution.getAdverseEvent());
     	assertTrue(true);
 
 

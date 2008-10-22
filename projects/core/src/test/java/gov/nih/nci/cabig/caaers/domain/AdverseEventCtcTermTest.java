@@ -1,11 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import junit.framework.TestCase;
 
 /**
  * @author Rhett Sutphin
  */
-public class AdverseEventCtcTermTest extends TestCase {
+public class AdverseEventCtcTermTest extends AbstractNoSecurityTestCase {
     private AdverseEventCtcTerm term;
 
     private AdverseEvent adverseEvent;
@@ -29,19 +30,19 @@ public class AdverseEventCtcTermTest extends TestCase {
         cd4.setTerm("CD4 count");
     }
 
-//    public void testCopy() throws Exception {
-//        term.setCtcTerm(cd4);
-//        term.setId(1);
-//        term.setGridId("grid id");
-//        term.setVersion(2);
-//        AdverseEventCtcTerm adverseEventCtcTerm = term.copy();
-//        assertNull(adverseEventCtcTerm.getId());
-//        assertNull(adverseEventCtcTerm.getGridId());
-//        assertNull(adverseEventCtcTerm.getVersion());
-//
-//        assertNull("must not copy adverse event", adverseEventCtcTerm.getAdverseEvent());
-//        assertSame("term must refer to same object", cd4, adverseEventCtcTerm.getTerm());
-//    }
+    public void testCopy() throws Exception {
+        term.setCtcTerm(cd4);
+        term.setId(1);
+        term.setGridId("grid id");
+        term.setVersion(2);
+        AdverseEventCtcTerm adverseEventCtcTerm = term.copy();
+        assertNull(adverseEventCtcTerm.getId());
+        assertNull(adverseEventCtcTerm.getGridId());
+        assertNull(adverseEventCtcTerm.getVersion());
+
+        assertNull("must not copy adverse event", adverseEventCtcTerm.getAdverseEvent());
+        assertSame("term must refer to same object", cd4, adverseEventCtcTerm.getTerm());
+    }
 
     public void testUniversalTermForSpecificTerm() throws Exception {
         term.setCtcTerm(cd4);
