@@ -4,6 +4,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
@@ -45,7 +46,7 @@ import junit.framework.TestCase;
  * @author Sameer Work
  *
  */
-public class EditExpeditedAdverseEventCommandTest extends AbstractTestCase {
+public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTestCase {
 	protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 	protected StudyParticipantAssignment assignment;
 	private EditExpeditedAdverseEventCommand command;
