@@ -1,14 +1,12 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -16,11 +14,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 /**
  * @author Rhett Sutphin
  */
 @CaaersUseCases({CREATE_EXPEDITED_REPORT})
-public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
+public class ExpeditedAdverseEventReportTest extends AbstractNoSecurityTestCase {
     private static final Timestamp CREATED_AT = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9,
             8, 7);
 
@@ -66,188 +67,188 @@ public class ExpeditedAdverseEventReportTest extends CaaersTestCase {
     }
 
     public void testCopyLab() {
-//        report.addLab(new Lab());
-//        assertFalse(report.getLabs().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getLabs().size());
-//        for (Lab object : copiedReport.getLabs()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addLab(new Lab());
+        assertFalse(report.getLabs().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getLabs().size());
+        for (Lab object : copiedReport.getLabs()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     }
 
     public void testAdverseEvents() {
-//        assertFalse(report.getAdverseEvents().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(report.getAdverseEvents().size(), copiedReport.getAdverseEvents().size());
-//        for (AdverseEvent event : copiedReport.getAdverseEvents()) {
-//            assertSame("must change reference", copiedReport, event.getReport());
-//        }
+        assertFalse(report.getAdverseEvents().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getAdverseEvents().size(), copiedReport.getAdverseEvents().size());
+        for (AdverseEvent event : copiedReport.getAdverseEvents()) {
+            assertSame("must change reference", copiedReport, event.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testPriorTherapies() {
-//        report.addSaeReportPriorTherapies(new SAEReportPriorTherapy());
-//        assertFalse(report.getSaeReportPriorTherapies().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(report.getSaeReportPriorTherapies().size(), copiedReport.getSaeReportPriorTherapies().size());
-//        for (SAEReportPriorTherapy priorTherapy : copiedReport.getSaeReportPriorTherapies()) {
-//            assertSame("must change reference", copiedReport, priorTherapy.getReport());
-//        }
+        report.addSaeReportPriorTherapies(new SAEReportPriorTherapy());
+        assertFalse(report.getSaeReportPriorTherapies().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getSaeReportPriorTherapies().size(), copiedReport.getSaeReportPriorTherapies().size());
+        for (SAEReportPriorTherapy priorTherapy : copiedReport.getSaeReportPriorTherapies()) {
+            assertSame("must change reference", copiedReport, priorTherapy.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testTreatmentInformation() {
 
-//        report.setTreatmentInformation(new TreatmentInformation());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getTreatmentInformation());
-//        assertSame("must change reference", copiedReport, copiedReport.getTreatmentInformation().getReport());
+        report.setTreatmentInformation(new TreatmentInformation());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getTreatmentInformation());
+        assertSame("must change reference", copiedReport, copiedReport.getTreatmentInformation().getReport());
     	assertTrue(true);
 
     }
 
     public void testCopyPhysician() {
-//
-//        report.setPhysician(new Physician());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getPhysician());
-//        assertSame("must change reference", copiedReport, copiedReport.getPhysician().getExpeditedReport());
+
+        report.setPhysician(new Physician());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getPhysician());
+        assertSame("must change reference", copiedReport, copiedReport.getPhysician().getExpeditedReport());
     	assertTrue(true);
     }
 
     public void testCopyReporter() {
-//
-//        report.setReporter(new Reporter());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getReporter());
-//        assertSame("must change reference", copiedReport, copiedReport.getReporter().getExpeditedReport());
+
+        report.setReporter(new Reporter());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getReporter());
+        assertSame("must change reference", copiedReport, copiedReport.getReporter().getExpeditedReport());
     	assertTrue(true);
     }
 
     public void testCopyAdditionalInformation() {
 
-//        report.setAdditionalInformation(new AdditionalInformation());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getAdditionalInformation());
-//        assertSame("must change reference", copiedReport, copiedReport.getAdditionalInformation().getReport());
+        report.setAdditionalInformation(new AdditionalInformation());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getAdditionalInformation());
+        assertSame("must change reference", copiedReport, copiedReport.getAdditionalInformation().getReport());
     	assertTrue(true);
     }
 
     public void testCopyResponseDescription() {
 
-//        report.setResponseDescription(new AdverseEventResponseDescription());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getResponseDescription());
-//        assertSame("must change reference", copiedReport, copiedReport.getResponseDescription().getReport());
+        report.setResponseDescription(new AdverseEventResponseDescription());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getResponseDescription());
+        assertSame("must change reference", copiedReport, copiedReport.getResponseDescription().getReport());
     	assertTrue(true);
     }
 
     public void testCopyDiseaseHistory() {
 
-//        report.setDiseaseHistory(new DiseaseHistory());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getDiseaseHistory());
-//        assertSame("must change reference", copiedReport, copiedReport.getDiseaseHistory().getReport());
+        report.setDiseaseHistory(new DiseaseHistory());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getDiseaseHistory());
+        assertSame("must change reference", copiedReport, copiedReport.getDiseaseHistory().getReport());
     	assertTrue(true);
     }
 
     public void testCopyParticipantHistory() {
-//
-//        report.setParticipantHistory(new ParticipantHistory());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertNotNull(copiedReport.getParticipantHistory());
-//        assertSame("must change reference", copiedReport, copiedReport.getParticipantHistory().getReport());
+
+        report.setParticipantHistory(new ParticipantHistory());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertNotNull(copiedReport.getParticipantHistory());
+        assertSame("must change reference", copiedReport, copiedReport.getParticipantHistory().getReport());
     	assertTrue(true);
     }
 
     public void testCopyMedicalDevices() {
-//        report.addMedicalDevice(new MedicalDevice());
-//        assertFalse(report.getMedicalDevices().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getMedicalDevices().size());
-//        for (MedicalDevice object : copiedReport.getMedicalDevices()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addMedicalDevice(new MedicalDevice());
+        assertFalse(report.getMedicalDevices().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getMedicalDevices().size());
+        for (MedicalDevice object : copiedReport.getMedicalDevices()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testCopyPreExistingConditions() {
-//        report.addSaeReportPreExistingCondition(new SAEReportPreExistingCondition());
-//        assertFalse(report.getSaeReportPreExistingConditions().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getSaeReportPreExistingConditions().size());
-//        for (SAEReportPreExistingCondition object : copiedReport.getSaeReportPreExistingConditions()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addSaeReportPreExistingCondition(new SAEReportPreExistingCondition());
+        assertFalse(report.getSaeReportPreExistingConditions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getSaeReportPreExistingConditions().size());
+        for (SAEReportPreExistingCondition object : copiedReport.getSaeReportPreExistingConditions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testCopyOtherCauses() {
-//        report.addOtherCause(new OtherCause());
-//        assertFalse(report.getOtherCauses().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getOtherCauses().size());
-//        for (OtherCause object : copiedReport.getOtherCauses()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addOtherCause(new OtherCause());
+        assertFalse(report.getOtherCauses().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getOtherCauses().size());
+        for (OtherCause object : copiedReport.getOtherCauses()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testCopyRadiationIntervention() {
-//        report.addRadiationIntervention(new RadiationIntervention());
-//        assertFalse(report.getRadiationInterventions().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getRadiationInterventions().size());
-//        for (RadiationIntervention object : copiedReport.getRadiationInterventions()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addRadiationIntervention(new RadiationIntervention());
+        assertFalse(report.getRadiationInterventions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getRadiationInterventions().size());
+        for (RadiationIntervention object : copiedReport.getRadiationInterventions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testCopySurgeryIntervention() {
-//        report.addSurgeryIntervention(new SurgeryIntervention());
-//        assertFalse(report.getSurgeryInterventions().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(report.getSurgeryInterventions().size(), copiedReport.getSurgeryInterventions().size());
-//        for (SurgeryIntervention object : copiedReport.getSurgeryInterventions()) {
-//            assertSame("must change reference", copiedReport, object.getReport());
-//        }
+        report.addSurgeryIntervention(new SurgeryIntervention());
+        assertFalse(report.getSurgeryInterventions().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(report.getSurgeryInterventions().size(), copiedReport.getSurgeryInterventions().size());
+        for (SurgeryIntervention object : copiedReport.getSurgeryInterventions()) {
+            assertSame("must change reference", copiedReport, object.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testCopyConMed() {
-//        report.addConcomitantMedication(new ConcomitantMedication());
-//        assertFalse(report.getConcomitantMedications().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertEquals(1, copiedReport.getConcomitantMedications().size());
-//        for (ConcomitantMedication concomitantMedication : copiedReport.getConcomitantMedications()) {
-//            assertSame("must change reference", copiedReport, concomitantMedication.getReport());
-//        }
+        report.addConcomitantMedication(new ConcomitantMedication());
+        assertFalse(report.getConcomitantMedications().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertEquals(1, copiedReport.getConcomitantMedications().size());
+        for (ConcomitantMedication concomitantMedication : copiedReport.getConcomitantMedications()) {
+            assertSame("must change reference", copiedReport, concomitantMedication.getReport());
+        }
     	assertTrue(true);
     }
 
     public void testMustNotCopyReports() {
-//        report.addReport(new Report());
-//        assertFalse(report.getReports().isEmpty());
-//
-//        ExpeditedAdverseEventReport copiedReport = report.copy();
-//        assertTrue("must not copy report", copiedReport.getReports().isEmpty());
+        report.addReport(new Report());
+        assertFalse(report.getReports().isEmpty());
+
+        ExpeditedAdverseEventReport copiedReport = report.copy();
+        assertTrue("must not copy report", copiedReport.getReports().isEmpty());
 
     }
 
