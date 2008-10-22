@@ -27,8 +27,7 @@ public class StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider implements
     public boolean checkAuthorization(Authentication authentication, String permission,
                     AbstractMutableDomainObject domainObject) {
         boolean hasPermission = false;
-        log
-                        .debug("Invoking checkPermission on StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider");
+        log.debug("Invoking checkPermission on StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider");
 
         if (domainObject instanceof Study) {
             Study study = (Study) domainObject;
@@ -36,17 +35,13 @@ public class StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider implements
             if (study.getStudySites().size() > 0) {
                 for (StudySite site : study.getStudySites()) {
                     Organization organization = site.getOrganization();
-                    log.debug("### Checking permission for user on site:"
-                                    + organization.getNciInstituteCode());
-                    hasPermission = csmGroupAuthorizationCheck.checkAuthorizationForObjectId(
-                                    authentication, permission, siteObjectIdGenerator
-                                                    .generateId(organization));
+                    log.debug("### Checking permission for user on site:" + organization.getNciInstituteCode());
+                    hasPermission = csmGroupAuthorizationCheck.checkAuthorizationForObjectId( authentication, permission, siteObjectIdGenerator.generateId(organization));
                     // only needs permission on one of the sites
                     if (hasPermission) break;
                 }
             } else {
-                log
-                                .debug("Unsupported object sent to StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider. Expecting Study object found "
+                log.debug("Unsupported object sent to StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider. Expecting Study object found "
                                                 + domainObject.getClass().getName());
                 hasPermission = true;
             }
