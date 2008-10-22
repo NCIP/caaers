@@ -13,44 +13,10 @@ import org.aspectj.lang.Aspects;
  */
 public class CaaersDbNoSecurityTestCase extends CaaersDbTestCase {
 	
-	
-	AspectJSecurityInterceptor orgInterceptor;
-	StudyParticipantAssignmentAspect aspect = null;
-    SecurityInterceptorAspect securityInterceptorAspect = null;
-    
-	/**
-	 *   Will override the security interceptor in {@link StudyParticipantAssignmentAspect}
-	 *   Will override the security interceptor in {@link SecurityInterceptorAspect}
-	 */
-	
 	@Override
 	protected void setUp() throws Exception {
+		// change the security interceptor with stub.
 		super.setUp();
-		
-		AspectJSecurityInterceptorStub interceptorStub = new AspectJSecurityInterceptorStub();
-		//
-		try{
-			aspect = (StudyParticipantAssignmentAspect) getDeployedApplicationContext().getBean("studyParticipantAssignmentAspect");
-			orgInterceptor = aspect.getSecurityInterceptor();
-			aspect.setSecurityInterceptor(interceptorStub);
-		}catch(Exception e){
-		}
-		
-    
-    
-        try{
-        	securityInterceptorAspect = (SecurityInterceptorAspect) getDeployedApplicationContext().getBean("daoSecurityInterceptorAspectBean");
-        	orgInterceptor = securityInterceptorAspect.getSecurityInterceptor();
-        	securityInterceptorAspect.setSecurityInterceptor(null);
-        }catch(Exception e){
-        	
-        }
-	}
-	
-	@Override
-	protected void tearDown() throws Exception {
-		aspect.setSecurityInterceptor(orgInterceptor);
-		securityInterceptorAspect.setSecurityInterceptor(orgInterceptor);
-		super.tearDown();
+		aspect.setSecurityInterceptor(stubInterceptor);
 	}
 }

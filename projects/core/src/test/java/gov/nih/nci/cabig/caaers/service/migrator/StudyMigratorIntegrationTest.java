@@ -27,15 +27,6 @@ public class StudyMigratorIntegrationTest extends CaaersTestCase {
 		assertTrue(migrator.getChildren().get(4) instanceof IdentifierMigrator);
 	}
 	
-	@Override
-	public String[] getConfigLocations() {
-		return new String[] {
-				"classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-spring.xml",
-	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-db.xml",
-	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
-	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
-	            "classpath*:applicationContext-test.xml"
-	        };
-	}
+	
 
 }

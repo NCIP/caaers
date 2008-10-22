@@ -21,15 +21,7 @@ public class LowLevelTermDaoTest extends DaoTestCase<LowLevelTermDao> {
 	private MeddraVersionDao meddraVersionDao = (MeddraVersionDao) getApplicationContext().getBean(
 					  "meddraVersionDao");
 	
-	@Override
-	public String[] getConfigLocations() {
-		// TODO Auto-generated method stub
-		  return new String[] {
-		            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-dao.xml",
-		            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-core-service.xml",
-		            "classpath*:applicationContext-test.xml"
-		        };
-	}
+
     public void testGetById() throws Exception {
         //LowLevelTerm llt = getDao().getById(12);
         //assertNotNull("LowLevelTerm not found", llt);

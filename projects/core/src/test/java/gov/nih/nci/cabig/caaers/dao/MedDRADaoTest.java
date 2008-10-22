@@ -1,20 +1,16 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.JdbcDaoTestCase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
 @CaaersUseCases( { MAPPING_VOCAB })
-public class MedDRADaoTest extends JdbcDaoTestCase<MedDRADao> {
+public class MedDRADaoTest extends CaaersDbNoSecurityTestCase {
+	
 
 	public void testCreateMeddraVersion() throws Exception{
 		//String meddra_name = "TestMeddra";
