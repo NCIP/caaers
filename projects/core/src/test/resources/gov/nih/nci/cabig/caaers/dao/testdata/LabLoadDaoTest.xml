@@ -392,7 +392,6 @@
 	        name="New Lab"
 	        result="900"
 	        units="cpq"
-	        dismissed="false"
 	        assignment_id="-14"
 	/>
 

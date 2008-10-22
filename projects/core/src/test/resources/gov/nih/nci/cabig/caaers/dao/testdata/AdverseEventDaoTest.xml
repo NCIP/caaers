@@ -111,7 +111,6 @@
             attribution_summary_code="3"
             expected="1"
             comments="That was some big AE"
-            requires_reporting="false"
             />
 
     <AE_TERMS
