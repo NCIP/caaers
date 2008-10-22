@@ -312,6 +312,7 @@
         list_index="0"
         />
     <AE_ATTRIBUTIONS
+    	id="-99"
         cause_id="-37"
         cause_type="RI"
         attribution_code="4"
@@ -399,9 +400,6 @@
         reporting_period_id="-1009"
         created_at="2008-04-04 13:22:32.055"
         />
-
-	
-
  <ADVERSE_EVENTS
         id="-4"
         report_id="-23"
@@ -422,7 +420,4 @@
         term_type="ctep"
         />
 
-
-
-	
 </dataset>
