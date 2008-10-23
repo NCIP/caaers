@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -312,19 +313,18 @@ public class EvaluationServiceImpl implements EvaluationService {
         List<ReportDefinition> reportDefinitions = new ArrayList<ReportDefinition>();
         // Same organization play multiple roles.
         Set<Integer> orgIdSet = new HashSet<Integer>();
-        for (StudyOrganization studyOrganization : assignment.getStudySite().getStudy()
-                        .getStudyOrganizations()) {
-            orgIdSet.add(studyOrganization.getOrganization().getId());
-        }
-        for (Integer orgId : orgIdSet) {
-            reportDefinitions.addAll(reportDefinitionDao.getAll(orgId));
+        List<StudyOrganization> studyOrgs =  assignment.getStudySite().getStudy().getStudyOrganizations();
+        for (StudyOrganization studyOrganization : studyOrgs) {
+        	reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
         
         /**
          * Get REport definitions of CTEP for DCP studies , because DCP uses CTEP 
          * report definitions also . TEMP fix
          */
-        if (assignment.getStudySite().getStudy().getPrimaryFundingSponsor().getOrganization().getName().equals("Division of Cancer Prevention")) {
+        Organization primarySponsor = assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization();
+        organizationDao.lock(primarySponsor);
+        if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
         	reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
         }
         
