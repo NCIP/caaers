@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,13 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name","nciInstituteCode");
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
+    
+    public void initialize(Organization org){
+    	getHibernateTemplate().initialize(org);
+    }
+    public void lock(Organization org){
+    	getHibernateTemplate().lock(org, LockMode.NONE);
+    }
     /**
      * Get the Class representation of the domain object that this DAO is representing.
      * 
