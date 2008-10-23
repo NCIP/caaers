@@ -189,16 +189,6 @@ This applicationContext contains the definition of the concrete services
 		</constructor-arg>
 	</bean>
 	
-	<bean id="investigatorMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService">
-		<property name="investigatorDao" ref="investigatorDao" />
-		<property name="organizationDao" ref="organizationDao" />
-	</bean>
-	<bean id="researchStaffMigratorService" class="gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService">
-		<property name="researchStaffDao" ref="researchStaffDao" />
-		<property name="organizationDao" ref="organizationDao" />	
-		<property name="researchStaffRepository" ref="researchStaffRepository" />
-	</bean>	
-		
 	<bean id="adverseEventQueryService" class="gov.nih.nci.cabig.caaers.api.impl.AdverseEventQueryServiceImpl">
 		<property name="adverseEventDao" ref="adverseEventDao" />	
 	</bean>
@@ -236,5 +226,9 @@ This applicationContext contains the definition of the concrete services
 		<property name="researchStaffMigratorService" ref="researchStaffMigratorService"/>
 		<property name="configuration" ref="configuration"/>
     </bean>
+
+	<bean id="reportDefinitionConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter">
+		<property name="organizationDao" ref="organizationDao"/>
+	</bean>
 
 </beans>
