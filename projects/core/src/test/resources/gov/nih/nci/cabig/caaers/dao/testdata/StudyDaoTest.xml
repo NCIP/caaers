@@ -1,3 +1,4 @@
+
 <dataset>
     <ctc_versions
             id="3"
@@ -398,9 +399,7 @@
 
     <ctc_grades/>
 
-
-    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
-    <investigational_new_drugs/>
+	<study_agents />
     <ind_holders/>
     <study_agent_inds/>
     <research_staffs/>

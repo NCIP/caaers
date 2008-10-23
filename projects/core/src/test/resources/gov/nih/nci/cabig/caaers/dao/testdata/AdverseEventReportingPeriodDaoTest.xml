@@ -1,4 +1,7 @@
 <dataset>
+    <organizations
+        id="1002"
+        name="New Site"/> 
     <ctc_versions
         id="3"
         name="CTCAE v3.0"
@@ -48,9 +51,7 @@
         type="SST"
         />
         
-    <organizations
-        id="1002"
-        name="New Site"/> 
+
         
     <participants
         id="1004"

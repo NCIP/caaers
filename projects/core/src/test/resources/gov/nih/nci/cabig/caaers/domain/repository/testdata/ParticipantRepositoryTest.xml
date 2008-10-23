@@ -91,6 +91,7 @@
         study_site_id="-3000"
         load_status="1" />
     <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <study_agents />
     <investigational_new_drugs />
     <ind_holders />
 	<ae_reports />

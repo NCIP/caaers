@@ -42,6 +42,11 @@
         ctep_code="10043882"
         other_required="0"
         />
+        <STUDIES
+        id="-1"
+        short_title="That one"
+        load_status="1"
+        />
     
     <INTERVENTION_SITES id="-33" name="Rolling"/>    
         
@@ -228,15 +233,6 @@
         category="Head parts"
         />
         
-    <STUDIES
-        id="-1"
-        short_title="That one"
-        load_status="1"
-        />
-
-    
-
-         
     <TREATMENT_ASSIGNMENT
         id="-11"
   		code="TAC001"
