@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
@@ -19,7 +18,6 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Role;
 import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
-import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,11 +25,6 @@ import java.util.List;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.TestingAuthenticationToken;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,8 +43,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	private ApplicationContext applicationContext;
 	protected ResearchStaffRepository researchStaffRepository;
 	
-	private List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
-	private List<DomainObjectImportOutcome<ResearchStaff>> nonImportableResearchStaff = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
 
 	/**
      * Fetches the research staff from the DB
@@ -95,11 +86,9 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     }
     
     
-    public CaaersServiceResponse saveResearchStaff(Staff staff) {//throws RemoteException {
+    public CaaersServiceResponse saveResearchStaff(Staff staff) {
     	List<ResearchStaffType> researchStaffList = staff.getResearchStaff();
     	ResearchStaff researchStaff = null;//buildInvestigator(investigatorType);
-    	getImportableResearchStaff().clear();
-    	getNonImportableResearchStaff().clear();
     	
     	List<WsError> wsErrors = new ArrayList<WsError>();
     	CaaersServiceResponse caaersServiceResponse = new CaaersServiceResponse();
@@ -113,7 +102,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     			saveResearchStaff(researchStaff);
     			DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
     			researchStaffImportOutcome.setImportedDomainObject(researchStaff);
-    			addImportableResearchStaff(researchStaffImportOutcome);
     		} catch (CaaersSystemException e) {
     			researchStaff = new ResearchStaff();
     			researchStaff.setNciIdentifier(researchStaffType.getNciIdentifier());
@@ -122,13 +110,11 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
             	DomainObjectImportOutcome<ResearchStaff> researchStaffImportOutcome = new DomainObjectImportOutcome<ResearchStaff>();
             	researchStaffImportOutcome.setImportedDomainObject(researchStaff);
             	researchStaffImportOutcome.addErrorMessage(e.getMessage(), Severity.ERROR);
-            	addNonImportableResearchStaff(researchStaffImportOutcome);
  
     			WsError err = new WsError();
     			err.setErrorDesc("Failed to process ResearchStaff ::: nciIdentifier : "+researchStaffType.getNciIdentifier() + " ::: firstName : "+researchStaffType.getFirstName()+ " ::: lastName : "+researchStaffType.getLastName()) ;
     			err.setException(e.getMessage());
     			wsErrors.add(err);           	
-    			//throw new RemoteException("Unable to import investigator", e);
     		}
     	}
     	serviceResponse.setWsError(wsErrors);
@@ -143,7 +129,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
     	  try {
               logger.info("Begining of ResearchStaffMigrator : buildResearchStaff");
                
-             // if (researchStaffDto == null) throw getInvalidResearchStaffException("null input");
               String nciIdentifier = researchStaffDto.getNciIdentifier();
               String email = researchStaffDto.getEmailAddress();
               ResearchStaff researchStaff = fetchResearchStaff(email);
@@ -208,40 +193,6 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	public ResearchStaffDao getResearchStaffDao() {
 		return researchStaffDao;
 	}
-
-	public List<DomainObjectImportOutcome<ResearchStaff>> getImportableResearchStaff() {
-		return importableResearchStaff;
-	}
-
-	public List<DomainObjectImportOutcome<ResearchStaff>> getNonImportableResearchStaff() {
-		return nonImportableResearchStaff;
-	}
-
-	private void addImportableResearchStaff(DomainObjectImportOutcome<ResearchStaff> domainObjectImportResearchStaff) {
-		this.getImportableResearchStaff().add(domainObjectImportResearchStaff);
-	}
-
-	private void addNonImportableResearchStaff(DomainObjectImportOutcome<ResearchStaff> domainObjectImportResearchStaff) {
-		this.getNonImportableResearchStaff().add(domainObjectImportResearchStaff);
-	}
-	
-	private void switchUser(String userName, String... roles) {
-        GrantedAuthority[] authorities = new GrantedAuthority[roles.length];
-        for (int i = 0; i < roles.length; i++) {
-            authorities[i] = new GrantedAuthorityImpl(roles[i]);
-        }
-        Authentication auth = new TestingAuthenticationToken(userName, "ignored", authorities);
-        auth.setAuthenticated(true);
-        SecurityContextHolder.getContext().setAuthentication(auth);
-    }
-	
-	private boolean enableAuthorization(boolean on) {
-        AuthorizationSwitch sw = (AuthorizationSwitch) this.applicationContext.getBean("authorizationSwitch");
-        if (sw == null) throw new RuntimeException("Authorization switch not found");
-        boolean current = sw.isOn();
-        sw.setOn(on);
-        return current;
-    }
 
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
