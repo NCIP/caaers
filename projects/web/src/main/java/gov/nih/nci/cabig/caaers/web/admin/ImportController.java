@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.api.InvestigatorMigratorService;
-import gov.nih.nci.cabig.caaers.api.ResearchStaffMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultInvestigatorMigratorService;
+import gov.nih.nci.cabig.caaers.api.impl.DefaultResearchStaffMigratorService;
 import gov.nih.nci.cabig.caaers.api.impl.ParticipantServiceImpl;
 import gov.nih.nci.cabig.caaers.api.impl.StudyProcessorImpl;
 import gov.nih.nci.cabig.caaers.dao.AgentDao;
@@ -42,7 +42,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -331,7 +330,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             }
             
             if ("investigator".equals(type)) {
-            	InvestigatorMigratorService svc = (InvestigatorMigratorService) getApplicationContext().getBean("investigatorMigratorService");
+            	DefaultInvestigatorMigratorService svc = (DefaultInvestigatorMigratorService) getApplicationContext().getBean("investigatorMigratorService");
             	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.investigator");
     			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     		    gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff )unmarshaller.unmarshal(xmlFile);
@@ -346,7 +345,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
             }
 
             if ("researchStaff".equals(type)) {
-            	ResearchStaffMigratorService svc = (ResearchStaffMigratorService) getApplicationContext().getBean("researchStaffMigratorService");
+            	DefaultResearchStaffMigratorService svc = (DefaultResearchStaffMigratorService) getApplicationContext().getBean("researchStaffMigratorService");
             	JAXBContext jaxbContext = JAXBContext.newInstance("gov.nih.nci.cabig.caaers.integration.schema.researchstaff");
     			Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
     			gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff  staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff )unmarshaller.unmarshal(xmlFile);
