@@ -19,10 +19,8 @@ import javax.persistence.*;
 @DiscriminatorValue("ABSTRACT_TERM")
 // should be ignored
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_terms_id")})
-public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
-        AbstractMutableDomainObject {
+public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends AbstractMutableDomainObject {
     private T term;
-
     private AdverseEvent adverseEvent;
 
     // //// BEAN PROPERTIES
@@ -67,10 +65,7 @@ public abstract class AbstractAdverseEventTerm<T extends DomainObject> extends
 
     public AbstractAdverseEventTerm copy() {
         AbstractAdverseEventTerm abstractAdverseEventTerm = (AbstractAdverseEventTerm) BeanUtils.instantiateClass(getClass());
-        BeanUtils.copyProperties(this, abstractAdverseEventTerm,
-                new String[]{"id", "gridId", "version", "adverseEvent"});
-
+        BeanUtils.copyProperties(this, abstractAdverseEventTerm, new String[]{"id", "gridId", "version", "adverseEvent"});
         return abstractAdverseEventTerm;
-
     }
 }
