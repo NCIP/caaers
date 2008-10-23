@@ -27,15 +27,10 @@ public abstract class WebTestCase extends AbstractNoSecurityTestCase {
     protected static final Timestamp NOW = DateUtils.createTimestamp(2004, Calendar.MARCH, 27);
 
     protected MockHttpServletRequest request;
-
     protected MockHttpServletResponse response;
-
     protected MockServletContext servletContext;
-
     protected MockHttpSession session;
-
-    protected StaticNowFactory nowFactory; // TODO: probably makes sense to put this in the main
-    // test case
+    protected StaticNowFactory nowFactory; 
 
     @Override
     protected void setUp() throws Exception {

@@ -45,15 +45,12 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
         this.primarySponsorCode = primarySponsorCode;
     }
 
-    protected AbstractAjaxableDomainObject getObjectById(List<? extends AbstractAjaxableDomainObject> ajaxableDomainObjects,
-                                                         Integer id) {
-
+    protected AbstractAjaxableDomainObject getObjectById(List<? extends AbstractAjaxableDomainObject> ajaxableDomainObjects, Integer id) {
         for (AbstractAjaxableDomainObject object : ajaxableDomainObjects) {
             if (object.getId().equals(id)) {
                 return object;
             }
         }
-
         return null;
     }
 
@@ -69,11 +66,8 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     }
 
     public String getDisplayName() {
-
-        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" :
-                " ( " + this.getPrimaryIdentifierValue() + " ) ";
+        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" : " ( " + this.getPrimaryIdentifierValue() + " ) ";
         return this.getShortTitle() + primaryIdentifier;
-
     }
 
 

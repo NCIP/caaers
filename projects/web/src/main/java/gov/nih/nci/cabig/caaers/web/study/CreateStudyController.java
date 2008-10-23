@@ -36,6 +36,7 @@ public class CreateStudyController extends StudyController<Study> {
         flow.addTab(new TreatmentAssignmentTab());
         flow.addTab(new DiseaseTab());
         flow.addTab(new SolicitedAdverseEventTab());
+        flow.addTab(new ExpectedAEsTab());
         flow.addTab(new SitesTab());
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());
@@ -65,9 +66,9 @@ public class CreateStudyController extends StudyController<Study> {
         ccIdentifier.setPrimaryIndicator(true);
         ccIdentifier.setType(OrganizationAssignedIdentifier.COORDINATING_CENTER_IDENTIFIER_TYPE);
         study.addIdentifier(ccIdentifier);
-        study.addEpoch(new Epoch("Baseline",0));
-        study.addEpoch(new Epoch("Treatment",1));
-        study.addEpoch(new Epoch("Post-treatment",2));
+        study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
+        study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
+        study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
         return study;
     }
 

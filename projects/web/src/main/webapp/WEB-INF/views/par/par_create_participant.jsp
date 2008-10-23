@@ -126,8 +126,6 @@ ${command.organization}
 
 </chrome:division>
 
-
-
 <chrome:division  title="Demographic Information">
 <table id="test2" class="single-fields" width="100%">
     <tr >

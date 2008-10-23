@@ -23,23 +23,22 @@ public class SolicitedAECheckBoxesTest extends TestCase {
 	public void testCheckBoxesDataStructure()
 	{
 		Study newStudy = Fixtures.createStudy("Arun Study 1");
-		newStudy.setShortTitle("ARUN Short Title Inserted");
-		newStudy.setLongTitle("ARUN Long Title Inserted");
+		newStudy.setShortTitle("Short Title Inserted");
+		newStudy.setLongTitle("Long Title Inserted");
 		newStudy.setAeTerminology(Fixtures.createCtcV3Terminology(newStudy));
 		newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 		newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
 		newStudy.setLoadStatus(LoadStatus.INPROGRESS.getCode());
 		newStudy.setAdeersReporting(Boolean.TRUE);
 
-  	    Epoch epoch1 = new Epoch("Pre-Treatment", 1);
+  	    Epoch epoch1 = new Epoch(Epoch.NAME_PRETREATMENT, 1);
 	    epoch1.setDescriptionText("Pre-Treatment description");
 	    
-	    Epoch epoch2 = new Epoch("Treatment",2);
+	    Epoch epoch2 = new Epoch(Epoch.NAME_TREATMENT, 2);
   	    epoch2.setDescriptionText("Treatment description");
   	    
-	    Epoch epoch3 = new Epoch("Post-Treatment",3);
+	    Epoch epoch3 = new Epoch(Epoch.NAME_POSTTREATMENT, 3);
   	    epoch3.setDescriptionText("Post-Treatment description");
-  	    
   	    
   	    SolicitedAdverseEvent sae11 = new SolicitedAdverseEvent();
   	    CtcTerm ctcterm = new CtcTerm();

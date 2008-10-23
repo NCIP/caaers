@@ -45,24 +45,17 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao>
-        /*AutomaticSaveFlowFormController<C, Study, StudyDao>*/ {
+public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
+
     private static final Log log = LogFactory.getLog(StudyController.class);
 
     protected StudyDao studyDao;
-
     private OrganizationDao organizationDao;
-
     private AgentDao agentDao;
-
     private SiteInvestigatorDao siteInvestigatorDao;
-
     private ResearchStaffDao researchStaffDao;
-
     private CtcDao ctcDao;
-
     private InvestigationalNewDrugDao investigationalNewDrugDao;
-
     private MeddraVersionDao meddraVersionDao;
 
     // validator needs to be called in onBindAndValidate()
@@ -164,8 +157,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     }
 
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                                     BindException errors, int page) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
         if (!suppressValidation(request,command)) {
             webControllerValidator.validate(request, command, errors);
@@ -243,8 +235,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
         return investigationalNewDrugDao;
     }
 
-    public void setInvestigationalNewDrugDao(
-            final InvestigationalNewDrugDao investigationalNewDrugDao) {
+    public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
         this.investigationalNewDrugDao = investigationalNewDrugDao;
     }
 

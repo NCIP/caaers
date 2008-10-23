@@ -47,9 +47,9 @@ public class EditStudyController extends StudyController<Study> {
         Study study = studyDao.getStudyDesignById(Integer.parseInt(request.getParameter("studyId")));
         //to support backward compatability, epochs has to be preinitalized
         if (study.getEpochs() == null || study.getEpochs().isEmpty()) {
-            study.addEpoch(new Epoch("Baseline", 0));
-            study.addEpoch(new Epoch("Treatment", 1));
-            study.addEpoch(new Epoch("Post-treatment", 2));
+            study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
+            study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
+            study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
         }
 
         if (log.isDebugEnabled()) {
@@ -100,6 +100,7 @@ public class EditStudyController extends StudyController<Study> {
         flow.addTab(new TreatmentAssignmentTab());
         flow.addTab(new DiseaseTab());
         flow.addTab(new SolicitedAdverseEventTab());
+        flow.addTab(new ExpectedAEsTab());
         flow.addTab(new SitesTab());
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());

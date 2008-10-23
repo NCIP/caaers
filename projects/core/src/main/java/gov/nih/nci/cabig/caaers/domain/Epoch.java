@@ -21,17 +21,18 @@ import org.hibernate.annotations.Parameter;
 @Table(name = "epochs")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_epochs_id") })
 public class Epoch  extends AbstractMutableDomainObject {
-	
-	private String name;
-	
+
+    public static final String NAME_BASELINE = "Baseline";
+    public static final String NAME_PRETREATMENT = "Pre-Treatment";
+    public static final String NAME_TREATMENT = "Treatment";
+    public static final String NAME_POSTTREATMENT = "Post-treatment";
+
+    private String name;
 	private String descriptionText = "";
-	
 	private Integer epochOrder;
-	
 	private List<Arm> arms=new ArrayList<Arm>();
 	
-	public Epoch()
-	{}
+	public Epoch() {}
 	public Epoch( String epochName, Integer epochOrder, String... armNames)
 	{
 		this.name = epochName;

@@ -23,7 +23,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
     public AdverseEventCaptureTab() {
         super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
-        /*addHelpKeyExclusion("ctcVersion");*/
     }
 
 

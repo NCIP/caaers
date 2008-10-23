@@ -57,10 +57,8 @@ public abstract class StudyTab extends TabWithFields<Study> {
         return options;
     }
 
-    protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName,
-                    String nameProperty, String valueProperty, String... exclusionProperties) {
-        return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty,
-                        valueProperty, exclusionProperties);
+    protected Map<Object, Object> collectOptionsFromConfig(String configPropertyName, String nameProperty, String valueProperty, String... exclusionProperties) {
+        return collectOptions(configurationProperty.getMap().get(configPropertyName), nameProperty, valueProperty, exclusionProperties);
     }
 
     @Override
@@ -76,8 +74,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
             for (StudyOrganization so : study.getStudyOrganizations()) {
                 i++;
                 if (so.getOrganization() == null) continue;
-                list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + " ("
-                                + so.getRoleName() + ")"));
+                list.add(new Lov(String.valueOf(i), so.getOrganization().getName() + " (" + so.getRoleName() + ")"));
             }
         }
 
@@ -94,8 +91,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
 
     public void rejectFields(List<InputField> fields, Errors errors, String errorMessage) {
         for (InputField field : fields) {
-            errors.rejectValue(field.getPropertyName(), "REQUIRED", errorMessage + " "
-                            + field.getDisplayName());
+            errors.rejectValue(field.getPropertyName(), "REQUIRED", errorMessage + " " + field.getDisplayName());
         }
     }
 
