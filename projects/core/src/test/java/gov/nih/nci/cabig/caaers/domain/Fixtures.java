@@ -195,6 +195,13 @@ public class Fixtures {
         adverseEventCtcTerm.setCtcTerm(ctcTerm);
         return adverseEventCtcTerm;
     }
+    
+    public static CtcTerm createCtcTerm(final String ctepTerm, final String ctepCode){
+    	CtcTerm cTerm = new CtcTerm();
+    	cTerm.setCtepTerm(ctepTerm);
+    	cTerm.setCtepCode(ctepCode);
+    	return cTerm;
+    }
 
     public static Ctc createCtcaeV3() {
         Ctc v3 = setId(3, new Ctc());

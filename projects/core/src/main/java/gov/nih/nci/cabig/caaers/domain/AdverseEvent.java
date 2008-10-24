@@ -10,6 +10,7 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -91,7 +92,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
 
     // //// BOUND PROPERTIES
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getLowLevelTerm() {
         return lowLevelTerm;

@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -21,6 +22,7 @@ import org.hibernate.annotations.Parameter;
 public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 	private CtcTerm ctcterm;
 	private LowLevelTerm medraterm;
+	private LowLevelTerm otherTerm;
 
 	@OneToOne
 	@JoinColumn(name="ctc_term_id")
@@ -38,6 +40,17 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 	public void setLowLevelTerm(LowLevelTerm medraterm) {
 		this.medraterm = medraterm;
 	}
+	
+	@OneToOne
+	@JoinColumn(name="other_term_id")
+	public LowLevelTerm getOtherTerm(){
+		return otherTerm;
+	}
+	
+	public void setOtherTerm(LowLevelTerm otherTerm){
+		this.otherTerm = otherTerm;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -67,4 +80,9 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 		return false;
 	}
 	
+	@Transient
+    public boolean isOtherRequired() {
+		if(getCtcterm() == null) return false;
+		return getCtcterm().isOtherRequired();
+    }
 }
