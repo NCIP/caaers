@@ -22,51 +22,30 @@
 <c:if test="${aeTermIndex gt 0}">
 	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
 </c:if>	
-<c:if test="${isSolicitedAE}">
-	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="lpstatus" begin="${aeTermIndex}">
-		<caaers:renderFilter elementID="${field.propertyName}">
-			<td>
-				<div class="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectdiv' : 'selectdiv' }">
-					<tags:renderInputs field="${field}" cssClass="${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }" />
-					<script>
-						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
-							hideBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", true) 
-						});
-						Element.observe('${field.propertyName}', 'change' ,function(evt){ 
-								hideBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", false) 
-						});
-						Element.observe('${field.propertyName}', 'mouseup' ,function(evt){ 
-							showBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", true) 
-						});
-						Element.observe('${field.propertyName}', 'mousedown' ,function(evt){ 
-							showBigDropdown(evt, "${lpstatus.index == aeTermIndex ? 'aeTerm' : lpstatus.index gt 1 ? 'shortselectbox' : 'selectbox' }", false) 
-						});
-					</script>
-				</div>
-			</td>
-		</caaers:renderFilter>
-	</c:forEach>
-</c:if>		
-		
-<c:if test="${not isSolicitedAE}">
+
 	<c:if test="${isAETermOtherSpecify}">
 		<td>
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
 			<div class="divOtherMeddra">
-			<tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
-			<script>
-				if(${adverseEvent.lowLevelTerm != null})
-					$('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.fullName}'; 
-				var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
-				AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
-				function(autocompleter, text) {
-						createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-													autocompleter.setChoices(values)})
-				},
-				function(lowLevelTerm) { return lowLevelTerm.fullName });
-				
-			</script>
+			<c:if test="${not isSolicitedAE}">
+				<tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
+				<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
+				<script>
+					if(${adverseEvent.lowLevelTerm != null})
+						$('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.fullName}'; 
+					var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
+					AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
+					function(autocompleter, text) {
+							createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+														autocompleter.setChoices(values)})
+					},
+					function(lowLevelTerm) { return lowLevelTerm.fullName });
+					
+				</script>
+			</c:if>
+			<%-- <c:if test="${isSolicitedAE}">
+				<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeTerm"/>
+			</c:if> --%>	
 			</div>
 			<div class="divNotes">
 			${fieldGroups[mainGroup].fields[aeTermIndex + 2].displayName}
@@ -131,10 +110,12 @@
 		  </caaers:renderFilter>
 		</c:forEach>
 	</c:if>
-	<c:if test="${not hideDeleteCtrl}">
-	<td>
-		<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
-	</td>
+	<c:if test="${not isSolicitedAE}">
+		<c:if test="${not hideDeleteCtrl}">
+			<td>
+				<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
+			</td>
+		</c:if>
 	</c:if>
-</c:if>		
+		
 </tr>

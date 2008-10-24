@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
@@ -57,6 +58,8 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     private CtcDao ctcDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private MeddraVersionDao meddraVersionDao;
+    
+    private LowLevelTermDao lowLevelTermDao;
 
     // validator needs to be called in onBindAndValidate()
     protected WebControllerValidator webControllerValidator;
@@ -243,5 +246,13 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     public void setWebControllerValidator(WebControllerValidator webControllerValidator) {
         this.webControllerValidator = webControllerValidator;
     }
+    
+    public LowLevelTermDao getLowLevelTermDao() {
+		return lowLevelTermDao;
+	}
+    
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+		this.lowLevelTermDao = lowLevelTermDao;
+	}
 
 }

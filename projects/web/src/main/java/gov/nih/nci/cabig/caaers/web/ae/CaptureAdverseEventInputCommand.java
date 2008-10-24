@@ -129,8 +129,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			reportDefinitionDao.reassociate(repDef);
 		}
 		
-		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null)
+		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
 			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
+		}
 	}
 
 

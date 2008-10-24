@@ -27,7 +27,7 @@ public class SolicitedEventTabTable{
 	private LinkedList<LinkedList<Object>> listOfSolicitedAERows = new LinkedList<LinkedList<Object>>();
 	private List<Epoch> listOfEpochs;
 	private int numOfnewlyAddedRows;
-	public SolicitedEventTabTable( Study command, String[] termIDs, String[] terms )
+	public SolicitedEventTabTable( Study command, String[] termIDs, String[] terms, CtcTermDao ctcTermDao)
 	{
 		LinkedList<Object> eachRowOfSolicitedAE = null;
 		for(int i = 0 ; i < termIDs.length ; i++ )
@@ -36,13 +36,26 @@ public class SolicitedEventTabTable{
 			eachRowOfSolicitedAE.add(termIDs[i]);
 			eachRowOfSolicitedAE.add(terms[i]);
 			
+			eachRowOfSolicitedAE.add(null);
+			eachRowOfSolicitedAE.add(isOtherFieldRequired(command, termIDs[i], ctcTermDao));
+			
 			int numberOfEpochs = command.getEpochs().size(); 
 			for( int e = 0 ; e < numberOfEpochs ; e++ )
 			  eachRowOfSolicitedAE.add(false);
 			numOfnewlyAddedRows++;
 			listOfSolicitedAERows.add(eachRowOfSolicitedAE);
 		}
-	  
+	}
+	
+	public Boolean isOtherFieldRequired(Study command, String termID, CtcTermDao ctcTermDao){
+		if(command.getAeTerminology().getTerm().equals(Term.CTC)){
+			CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
+			if(ctcterm.isOtherRequired())
+				return true;
+			else
+				return false;
+		}else
+			return false;
 	}
 
 	public SolicitedEventTabTable( Study command, String[] termIDs, CtcTermDao ctcTermDao, LowLevelTermDao lowLevelTermDao )
@@ -62,7 +75,6 @@ public class SolicitedEventTabTable{
 		buildConsolidatedListOfSolicitedAEs( listOfEpochs );
 		
 		constructListOfSolicitedAErows();
-		
 	}
 	
 	private void constructListOfSolicitedAErows()
@@ -74,6 +86,15 @@ public class SolicitedEventTabTable{
 			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getId() : solicitedAE.getLowLevelTerm().getId() );
 			// add ctdc or medra term as 2nd element
 			eachRowOfSolicitedAE.add( ( solicitedAE.getCtcterm() != null )? solicitedAE.getCtcterm().getFullName() : solicitedAE.getLowLevelTerm().getFullName());
+			
+			// add Other meddra field as the 3rd element
+			eachRowOfSolicitedAE.add((solicitedAE.getOtherTerm() != null) ? solicitedAE.getOtherTerm() : null);
+			// add a boolean which is true incase the otherMeddra is needed for ctc Term.
+			if(solicitedAE.getCtcterm() != null && solicitedAE.getCtcterm().isOtherRequired())
+				eachRowOfSolicitedAE.add(Boolean.TRUE);
+			else
+				eachRowOfSolicitedAE.add(Boolean.FALSE);
+				
 			
 			for( Epoch epoch : listOfEpochs )
 			{
@@ -134,7 +155,6 @@ public class SolicitedEventTabTable{
 			return false;
 		else
 			return listOFSolicitedAEs.contains( solicitedAE );	
-		
 	}
 	
 	private List<SolicitedAdverseEvent> getSolicitedAEsForEpoch(Epoch epoch)

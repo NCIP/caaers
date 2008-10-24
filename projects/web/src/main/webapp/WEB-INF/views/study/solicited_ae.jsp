@@ -6,7 +6,9 @@
   <title>${tab.longTitle}</title>
   
   <tags:includePrototypeWindow />
-  <tags:dwrJavascriptLink objects="createStudy"/>
+  <tags:includeScriptaculous/>
+  <tags:stylesheetLink name="ae"/>
+  <tags:dwrJavascriptLink objects="createStudy, createAE"/>
 
   <tags:stylesheetLink name="aeTermQuery_box" />
   <tags:stylesheetLink name="solicited_ae" />
@@ -388,7 +390,6 @@
       Event.stopObserving("button-"+termID.value,'click',handleDelete);
     }
     
-  
   </script>
    
 </head>
@@ -397,7 +398,7 @@
  
   <form:form name="solicitedAEForm">
     <p><tags:instructions code="study.study_evalpdtypes.top" /></p>
-  	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="true" isAjaxable="true"/>
+  	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="false" isAjaxable="true"/>
   	
   	<!--  Idea is copied from tabForm.tag -->
   	<chrome:box title="${tab.longTitle}" >

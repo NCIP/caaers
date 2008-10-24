@@ -114,41 +114,40 @@ public class EditExpeditedAdverseEventCommandTest extends AbstractNoSecurityTest
     }
     
     public void testIsNewlySelectedReportEarlier() throws Exception{
-//    	addReportsToAeReport();
-//    	Organization organization = Fixtures.createOrganization("testOrg", "testNCICode");
-//    	Organization organization2 = Fixtures.createOrganization("testOrg2", "testNCICode2");
-//    	command.getAeReport().getStudy().setPrimaryFundingSponsorOrganization(organization);
-//    	
-//    	// Set the report due-dates.
-//    	String inputDate = "2008-09-12";
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//    	command.getAeReport().getReports().get(0).setDueOn(formatter.parse(inputDate));
-//    	inputDate = "2008-09-25";
-//    	command.getAeReport().getReports().get(1).setDueOn(formatter.parse(inputDate));
-//    	command.getAeReport().getReports().get(2).setDueOn(formatter.parse(inputDate));
-//    	command.getAeReport().getReports().get(3).setDueOn(formatter.parse(inputDate));
-//    	
-//    	// Set up the organization
-//    	command.getAeReport().getReports().get(0).getReportDefinition().setOrganization(organization2);
-//    	command.getAeReport().getReports().get(1).getReportDefinition().setOrganization(organization);
-//    	command.getAeReport().getReports().get(2).getReportDefinition().setOrganization(organization);
-//    	command.getAeReport().getReports().get(3).getReportDefinition().setOrganization(organization);
-//    	
-//    	// Set amendable
-//    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
-//    	command.getAeReport().getReports().get(1).getReportDefinition().setAmendable(true);
-//    	
-//    	// Add new report-definitons to newlySelectedSponsorReports
-//    	ReportDefinition reportDefinition = new ReportDefinition();
-//    	reportDefinition.setTimeScaleUnitType(TimeScaleUnit.DAY);
-//    	reportDefinition.setDuration(2);
-//    	command.getNewlySelectedSponsorReports().add(reportDefinition);
-//    	reportDefinition = new ReportDefinition();
-//    	reportDefinition.setTimeScaleUnitType(TimeScaleUnit.DAY);
-//    	reportDefinition.setDuration(3);
-//    	command.getNewlySelectedSponsorReports().add(reportDefinition);
-//    	assertTrue(command.isNewlySelectedReportEarlier());
-    	assertTrue(true);
+    	addReportsToAeReport();
+    	Organization organization = Fixtures.createOrganization("testOrg", "testNCICode");
+    	Organization organization2 = Fixtures.createOrganization("testOrg2", "testNCICode2");
+    	command.getAeReport().getStudy().setPrimaryFundingSponsorOrganization(organization);
+    	
+    	// Set the report due-dates.
+    	String inputDate = "2008-09-12";
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    	command.getAeReport().getReports().get(0).setDueOn(formatter.parse(inputDate));
+    	inputDate = "2008-09-25";
+    	command.getAeReport().getReports().get(1).setDueOn(formatter.parse(inputDate));
+    	command.getAeReport().getReports().get(2).setDueOn(formatter.parse(inputDate));
+    	command.getAeReport().getReports().get(3).setDueOn(formatter.parse(inputDate));
+    	
+    	// Set up the organization
+    	command.getAeReport().getReports().get(0).getReportDefinition().setOrganization(organization2);
+    	command.getAeReport().getReports().get(1).getReportDefinition().setOrganization(organization);
+    	command.getAeReport().getReports().get(2).getReportDefinition().setOrganization(organization);
+    	command.getAeReport().getReports().get(3).getReportDefinition().setOrganization(organization);
+    	
+    	// Set amendable
+    	command.getAeReport().getReports().get(0).getReportDefinition().setAmendable(true);
+    	command.getAeReport().getReports().get(1).getReportDefinition().setAmendable(true);
+    	
+    	// Add new report-definitons to newlySelectedSponsorReports
+    	ReportDefinition reportDefinition = new ReportDefinition();
+    	reportDefinition.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	reportDefinition.setDuration(2);
+    	command.getNewlySelectedSponsorReports().add(reportDefinition);
+    	reportDefinition = new ReportDefinition();
+    	reportDefinition.setTimeScaleUnitType(TimeScaleUnit.DAY);
+    	reportDefinition.setDuration(3);
+    	command.getNewlySelectedSponsorReports().add(reportDefinition);
+    	assertFalse(command.isNewlySelectedReportEarlier());
     }
     
     public void addReportsToAeReport(){

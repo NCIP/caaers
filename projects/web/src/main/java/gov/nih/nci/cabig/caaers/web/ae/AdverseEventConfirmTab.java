@@ -89,11 +89,8 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			fields.add(InputFieldFactory.createImageField("selectedAesMap[" + ae.getId() + "]", "", ""));
 		}
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].adverseEventTerm.universalTerm", ""));
-		//other-specify for non-solicited CTC terms. 
-		if(!ae.getSolicited()){
-			if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].lowLevelTerm", ""));
-			fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].detailsForOther", ""));
-		}
+		if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].lowLevelTerm", ""));
+		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].detailsForOther", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayGrade", ""));
 		String attributionFieldName = (ae.getAttributionSummary() != null)? "attributionSummary.displayName" : "attributionSummary";
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + attributionFieldName, ""));

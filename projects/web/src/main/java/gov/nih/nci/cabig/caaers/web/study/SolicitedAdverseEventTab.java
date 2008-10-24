@@ -13,9 +13,12 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
 import org.directwebremoting.WebContextFactory;
@@ -70,13 +73,14 @@ public class SolicitedAdverseEventTab extends StudyTab {
     		
     		String[] termIDs = (String[])request.getAttribute("listOfTermIDs");
     		String[] terms = (String[])request.getAttribute("listOfTerms");
-    		table = new SolicitedEventTabTable( study, termIDs, terms );
+    		table = new SolicitedEventTabTable( study, termIDs, terms, ctcTermDao );
     		refdata.put("numOfnewlyAddedRows", table.getNumOfnewlyAddedRows());
     	}	
     	System.out.println(table.getListOfSolicitedAERows());
     	refdata.put("listOfSolicitedAERows",table.getListOfSolicitedAERows());  
         System.out.println("listOfSolicitedAERows:"+ table.getListOfSolicitedAERows());
-    	return refdata;
+        
+        return refdata;
     }
     
     
@@ -103,6 +107,18 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	if( setOfEpochNames.size() != listOfEpochNames.size())
     		errors.reject("name","There is a duplicate evaluation period type. Modify or delete the evaluation period types so they are all unique.");
     	
+    	// Validate otherMeddra for ctc terminology.
+    	HashMap<String, Boolean> otherMeddraErrorMap = new HashMap<String, Boolean>(); // This is used to avoid repeating the error messages.
+    	for(Epoch epoch: command.getEpochs()){
+    		for(SolicitedAdverseEvent sae: epoch.getArms().get(0).getSolicitedAdverseEvents()){
+    			if(sae.getCtcterm() != null && sae.getCtcterm().isOtherRequired()){
+    				if(sae.getOtherTerm() == null && !otherMeddraErrorMap.containsKey(sae.getCtcterm().getTerm())){
+    					errors.reject("otherMeddraRequired", "Other medDRA term is required for the term " + sae.getCtcterm().getTerm());
+    					otherMeddraErrorMap.put(sae.getCtcterm().getTerm(), Boolean.TRUE);
+    				}
+    			}
+    		}
+    	}
     }
 
     protected void retainOnlyTheseEpochsInStudy( Study command, String[] epoch_orders )
@@ -165,7 +181,16 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	    			  CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
 	      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
 	      			  solicitedAE.setCtcterm( ctcterm );
-	                  listOfSolicitedAEs.add( solicitedAE );
+	      			  // Add otherMeddra term if exists
+	      			  if(ctcterm.isOtherRequired()){
+	      				  String attributeName = "otherMeddra-" + ctcterm.getId();
+	      				  String lowLevelTermIdString = (String)findInRequest(request, attributeName);
+	      				  if(!lowLevelTermIdString.equals("")){
+	      					  LowLevelTerm lowLevelTerm = lowLevelTermDao.getById(Integer.parseInt(lowLevelTermIdString));
+	      					  solicitedAE.setOtherTerm(lowLevelTerm);
+	      				  }
+	      			  }
+	      			  listOfSolicitedAEs.add( solicitedAE );
 	    		  }
 	      		  else
 	    		  {
@@ -183,7 +208,19 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	}	
     	retainOnlyTheseEpochsInStudy( command, epoch_ids );
 
+    }
+    
+    /**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
 
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
     }
     
     /*
@@ -252,5 +289,4 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	}
 
 
-	
 }

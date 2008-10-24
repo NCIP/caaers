@@ -104,33 +104,23 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                     	mainFieldFactory.addField(otherMeddraField);
                         //mainFieldFactory.addField(InputFieldFactory.createAutocompleterField("lowLevelTerm", "Other(MedDRA)", false));
                     }
-                    InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
-                    InputFieldAttributes.setSize(notesField, 25);
-                    mainFieldFactory.addField(notesField); //Notes
+                }else{
+                	if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){
+                		mainFieldFactory.addField(InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)", false));
+                	}
                 }
+                InputField notesField = InputFieldFactory.createTextField("detailsForOther", "Verbatim");
+                InputFieldAttributes.setSize(notesField, 25);
+                mainFieldFactory.addField(notesField); //Notes
+
                 //grade
                 if (isMeddraStudy) {
-                    // Make grade mandatory only for observed aes.
-                    if (ae.getSolicited())
                         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Meddra")));
-                    else
-                        mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true, createGradeOptions(ae, "Meddra")));
                 } else {
-                    if (ae.getSolicited())
                         mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Ctc")));
-                    else
-                        mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", true, createGradeOptions(ae, "Ctc")));
                 }
 
-                if(cmd.getAdverseEventReportingPeriod().isBaselineReportingType())
-                	mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
-                else{
-                	// The attribution validation is applied only to Observed AEs in non-baseline reporting period.
-                	if (ae.getSolicited())
-                		mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
-                	else
-                		mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", true, createAttributionOptions()));
-                }
+               	mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
                 mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
                         "Hospitalization", false, createHospitalizationOptions()));
                 mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
@@ -192,26 +182,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
                             Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
-//		// firstStartDateField should be present for non-baseline reporting periods.
-//		if((command.getAdverseEventReportingPeriod() != null) && (command.getAdverseEventReportingPeriod().getEpoch().getName().equals("Baseline"))){
-//			InputField firstStartDateField = fieldGroups.get("main0").getFields().get(1);
-//			errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED",
-//                            firstStartDateField.getDisplayName() + " required for primary AE");
-//		}
-//		
-//		// test: if(grade == not evaluated), other fields shouldnt be entered.
-//		if(command.getAdverseEventReportingPeriod().getAdverseEvents() != null && command.getAdverseEventReportingPeriod().getAdverseEvents().size() > 0){
-//			for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getAdverseEvents()){
-//				if(ae.getGrade() != null && ae.getGrade().getName().equals("Not Evaluated")){
-//					// Check if other field values are entered. Incase they are, an error should be displayed.
-//				}
-//			}
-//		}
-    	
     	// If grade is greater than 2 then hospitalization cannot be null.
     	if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()){
     		for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
-    			if (!ae.getSolicited()) {
+    			if (!ae.getSolicited() && ae.getGrade() != null) {
     				if (ae.getGrade().getCode() > 2 && ae.getHospitalization() == null)
     					errors.reject("HOSPITALIZATION_NEEDED", "Hospitalization must be entered if grade is greater than 2");
     			}

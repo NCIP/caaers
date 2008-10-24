@@ -344,7 +344,7 @@ background-color:#e5e8ff;
               <tr id="solicitedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
                 </c:if>
               </c:forEach>
             </table>

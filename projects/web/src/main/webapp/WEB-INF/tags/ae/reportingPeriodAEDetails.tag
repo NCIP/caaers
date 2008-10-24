@@ -74,7 +74,7 @@ Note: -
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
    					<c:if test="${ae.solicited}">
 						<c:set var="noSolictedAE" value="false" scope="request" />
-    					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0"/>
+    					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0"/>
     				</c:if>
    				</c:forEach>
 				<c:if test="${noSolictedAE}">

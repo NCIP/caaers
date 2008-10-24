@@ -176,6 +176,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
                     AdverseEventCtcTerm aeCtcTerm = new AdverseEventCtcTerm();
                     aeCtcTerm.setCtcTerm(sae.getCtcterm());
                     adverseEvent.setAdverseEventTerm(aeCtcTerm);
+                    if(sae.getOtherTerm() != null)
+                    	adverseEvent.setLowLevelTerm(sae.getOtherTerm());
                     aeCtcTerm.setAdverseEvent(adverseEvent);
                 }
                 reportingPeriod.addAdverseEvent(adverseEvent);
