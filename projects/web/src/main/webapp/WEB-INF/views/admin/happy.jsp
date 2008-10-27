@@ -64,7 +64,7 @@
             	</div>
 
             	<div class="row">
-                	<div class="label">caExchange URL</div>
+                	<div class="label">caXchange URL</div>
                 	<div class="value">${command.caExchangeUrl}</div>
             	</div>            	
             </div>
