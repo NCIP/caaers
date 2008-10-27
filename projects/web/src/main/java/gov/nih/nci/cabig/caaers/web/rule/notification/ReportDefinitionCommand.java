@@ -51,7 +51,11 @@ public class ReportDefinitionCommand {
 
     // hide validation errors
     private boolean hideErrors;
-
+    
+    public ReportDefinitionCommand(){
+    	
+    }
+    
     public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao,
                     ConfigProperty configurationProperty) {
 
