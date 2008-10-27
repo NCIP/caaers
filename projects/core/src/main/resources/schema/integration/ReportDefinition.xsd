@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://reportdefinition.caaers.cabig.nci.nih.gov"
+    xmlns="http://reportdefinition.caaers.cabig.nci.nih.gov"
+    elementFormDefault="unqualified">
+    
+    <xs:element name="ReportDefinitions">
+        <xs:annotation>
+            <xs:documentation> The top level (typically root) element. Allows the definition of
+                default values for all nested bean definitions. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element  ref="reportDefinition" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="reportDefinition" type="ReportDefinitionType"/>
+    <xs:complexType name="ReportDefinitionType">
+      <xs:sequence>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element name="label" type="xs:string"/>
+        <xs:element name="description" type="xs:string"/>
+        <xs:element name="amendable" type="xs:boolean"/>
+        <xs:element name="duration" type="xs:int"/>
+        <xs:element name="timeScaleUnit" type="xs:string"/>
+		<xs:element name="organization" type="OrganizationType"/>        
+        <xs:element name="attributionRequired" type="xs:boolean"/>
+        <xs:element name="expedited" type="xs:boolean"/>
+        <xs:element name="expectedDisplayDueDate" type="xs:string"/>
+        <xs:element name="reportFormat" type="xs:string"/>
+        <xs:element name="deliveryDefinition" type="ReportDeliveryDefinition" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="mandatoryField" type="ReportMandatoryFieldDefinition" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="plannedNotificaiton" type="PlannedNotification" minOccurs="0" maxOccurs="unbounded"/> 
+      </xs:sequence>
+    </xs:complexType>
+    
+     <xs:complexType name="ReportDeliveryDefinition">
+      <xs:sequence>
+      	 <xs:element name="format" type="xs:string"/>
+         <xs:element name="entityName" type="xs:string"/>
+         <xs:element name="entityDescription" type="xs:string"/>
+         <xs:element name="entityType" type="xs:int"/>
+         <xs:element name="endPointType" type="xs:string"/>
+         <xs:element name="endPoint" type="xs:string"/>
+         <xs:element name="userName" type="xs:string"/>
+         <xs:element name="password" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="ReportMandatoryFieldDefinition">
+      <xs:sequence>
+         <xs:element name="fieldPath" type="xs:string"/>
+         <xs:element name="mandatory" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="PlannedNotification">
+        <xs:sequence>
+            <xs:element name="indexOnTimeScale" type="xs:int"/>
+            <xs:element name="recipients" type="Recipient" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="bodyContent" type="NotificationBodyContent"/>
+            <xs:element name="attachments" type="NotificationAttachment" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="subject" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Recipient">
+      <xs:sequence>
+      	<xs:element name="type" type="RecipientType"/>
+      	<xs:element name="value" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="NotificationBodyContent">
+      <xs:sequence>
+      	<xs:element name="body" type="xs:string"/>
+      	<xs:element name="contentType" type="xs:string" default="text/html"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="NotificationAttachment">
+      <xs:sequence>
+      	<xs:element name="content" type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="OrganizationType">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="nciInstituteCode" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:simpleType name="RecipientType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ROLE"/>
+            <xs:enumeration value="CONTACT"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>
