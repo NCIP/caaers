@@ -33,7 +33,6 @@ public class Agent extends AbstractMutableDomainObject {
 
     private String nscNumber;
 
-    private List<StudyAgent> studyAgents = new ArrayList<StudyAgent>();
     
     
 
@@ -55,16 +54,7 @@ public class Agent extends AbstractMutableDomainObject {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "agent", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
-    public List<StudyAgent> getStudyAgents() {
-        return studyAgents;
-    }
-
-    public void setStudyAgents(List<StudyAgent> studyAgents) {
-        this.studyAgents = studyAgents;
-    }
-
+  
     @Column(name = "nsc")
     public String getNscNumber() {
         return nscNumber;
