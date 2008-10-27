@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import org.acegisecurity.afterinvocation.AfterInvocationProviderManager;
 import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -38,6 +39,7 @@ import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.security.stub.AspectJSecurityInterceptorStub;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
+import gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect;
 
 /**
  * @author Rhett Sutphin
@@ -47,17 +49,13 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     protected final Log log = LogFactory.getLog(getClass());
     
     private static RuntimeException acLoadFailure = null;
-    private static ApplicationContext applicationContext = null;
+    protected static ApplicationContext applicationContext = null;
 
     protected WebRequest webRequest = new StubWebRequest();
 
     private boolean shouldFlush = true;
 
-    //security stub interceptor
-    protected static StudyParticipantAssignmentAspect aspect;
-	protected static AspectJSecurityInterceptor interceptor ;
-    protected static AspectJSecurityInterceptor stubInterceptor;
-
+    
     private static final DataAuditInfo INFO = new gov.nih.nci.cabig.ctms.audit.domain.DataAuditInfo("dun", "127.1.2.7", DateUtils.createDate(2004, Calendar.NOVEMBER, 2),
                     "/studycalendar/zippo");
     
@@ -66,14 +64,8 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     	//let the AspectJ runtime load properly
     	ApplicationContext ctx = getDeployedApplicationContext();
     	
-        if(aspect == null){
-   		 	aspect = (StudyParticipantAssignmentAspect) ctx.getBean("studyParticipantAssignmentAspect");
-   		 	interceptor = aspect.getSecurityInterceptor();
-   		 	stubInterceptor = new  AspectJSecurityInterceptorStub();
-   	 	}
-   	 	aspect.setSecurityInterceptor(interceptor); //this step is for safety, sometimes due to error in testcase, tearDown may not work
-   	 	SecurityTestUtils.insertCSMPolicy(getDataSource());
    	 	SecurityTestUtils.switchToSuperuser();
+   	 	SecurityTestUtils.enableAuthorization(true, ctx);
      
     }
     
@@ -99,8 +91,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     }
     protected void tearDownAuthorization() throws Exception{
     	SecurityTestUtils.switchToNoUser();
-        SecurityTestUtils.deleteCSMPolicy(getDataSource());	
-        aspect.setSecurityInterceptor(interceptor);
+    	SecurityTestUtils.enableAuthorization(true, applicationContext);
     }
     protected void tearDownAuditing() {
     	DataAuditInfo.setLocal(null);

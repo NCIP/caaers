@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class ParticipantImportServiceIntegrationTest extends CaaersTestCase {
+public class ParticipantImportServiceIntegrationTest extends AbstractNoSecurityTestCase {
 
     private ParticipantImportServiceImpl participantImportService;
     private StudySiteDao studySiteDao;

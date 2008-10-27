@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.*;
@@ -8,7 +9,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import org.easymock.classextension.EasyMock;
 
 
-public class StudyParticipantAssignmentMigratorTest extends CaaersTestCase {
+public class StudyParticipantAssignmentMigratorTest extends AbstractNoSecurityTestCase {
 	private Participant xstreamParticipant;
 	Participant participant;
 	DomainObjectImportOutcome<Participant> outcome = new DomainObjectImportOutcome<Participant>();
