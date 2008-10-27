@@ -36,7 +36,9 @@
         <ec:column property="description" title="Description"/>
         <ec:column property="organization" title="Organization">${rct.organization.fullName}</ec:column>
         <ec:column property="duration" title="Final Report Due">${rct.duration} ${rct.timeScaleUnitType.displayName}(s)</ec:column>
-  
+  		<ec:column property="action" title="Action" sortable="false" filterable="false">
+            	<a href="<c:url value="/pages/rule/notification/export?repDefId=${rct.id}"/>">Export/Download</a>
+        </ec:column>
     </ec:row>
 </ec:table>
 </body>
