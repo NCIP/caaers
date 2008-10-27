@@ -47,7 +47,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     private SolicitedEventTabTable table;
     
 	public SolicitedAdverseEventTab() {
-		 super("Evaluation Period Types & Solicted Adverse Events", "Evaluation Period Types", "study/solicited_ae");
+		 super("Evaluation Period Types & Solicited Adverse Events", "Evaluation Period Types", "study/solicited_ae");
 	}
 
 	
