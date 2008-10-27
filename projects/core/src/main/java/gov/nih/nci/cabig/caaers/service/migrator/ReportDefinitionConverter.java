@@ -153,17 +153,17 @@ public class ReportDefinitionConverter {
 					recipients.add(contactMechanismBasedRecipient);
 				}
 				plannedEmailNotification.setRecipients(recipients);
-				
-				notificationBodyContentDomain = new NotificationBodyContent();
-				notificationBodyContentDomain.setContentType(plannedNotification.getBodyContent().getContentType());
-				notificationBodyContentDomain.setBody(plannedNotification.getBodyContent().getBody());
-				plannedEmailNotification.setNotificationBodyContent(notificationBodyContentDomain);
-				plannedEmailNotification.setSubjectLine(plannedNotification.getSubject());
-				
-				plannedNotifications.add(plannedEmailNotification);
 			}
-			reportDefinitionDomain.setPlannedNotifications(plannedNotifications);
+			
+			notificationBodyContentDomain = new NotificationBodyContent();
+			notificationBodyContentDomain.setContentType(plannedNotification.getBodyContent().getContentType());
+			notificationBodyContentDomain.setBody(plannedNotification.getBodyContent().getBody());
+			plannedEmailNotification.setNotificationBodyContent(notificationBodyContentDomain);
+			plannedEmailNotification.setSubjectLine(plannedNotification.getSubject());
+			
+			plannedNotifications.add(plannedEmailNotification);
 		}
+		reportDefinitionDomain.setPlannedNotifications(plannedNotifications);
 		return reportDefinitionDomain;
 	}
 	
@@ -242,6 +242,7 @@ public class ReportDefinitionConverter {
 				plannedNotificationDto = objectFactory.createPlannedNotification();
 				plannedNotificationDto.setIndexOnTimeScale(plannedEmailNotification.getIndexOnTimeScale());
 				plannedNotificationDto.setSubject(plannedEmailNotification.getSubjectLine());
+				
 				for(Recipient recipient : plannedEmailNotification.getRecipients()){
 					recipientDto = objectFactory.createRecipient();
 					if(recipient instanceof ContactMechanismBasedRecipient){
