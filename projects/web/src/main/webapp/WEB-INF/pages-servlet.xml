@@ -67,16 +67,11 @@
 	p:displayName="Analysis and Review">
     <property name="taskList">
       <list>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Review AEs" p:linkName="adverseEventController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Review Expedited Reports" p:linkName="reportController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Review Routine AEs" p:linkName="routineReportController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="List Studies" p:linkName="studyController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="List Subjects" p:linkName="participantController"/>
+	<!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review AEs" p:linkName="adverseEventController"/>-->
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Expedited Reports" p:linkName="reportController"/>
+	<!--<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Review Routine AEs" p:linkName="routineReportController"/>-->
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Studies" p:linkName="studyController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="List Subjects" p:linkName="participantController"/>
 
       </list>
     </property>
