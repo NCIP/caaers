@@ -105,7 +105,6 @@
 	      p:displayName="List Rules" p:linkName="listRuleController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Import Rules" p:linkName="importRuleController"/>
-
       </list>
     </property>
   </bean>
@@ -114,10 +113,12 @@
 	p:displayName="Report Calendar Template">
     <property name="taskList">
       <list>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
-	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		      p:displayName="Create Report Definition" p:linkName="createNotificationController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		      p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
+		<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		      p:displayName="Import Report Definitions" p:linkName="importReportDefinitionController"/>
       </list>
     </property>
   </bean>
@@ -236,7 +237,9 @@
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		    p:displayName="Create Report Definition" p:linkName="createNotificationController"/> 
 	      <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		    p:displayName="List Report Definitions" p:linkName="listNotificationController"/>                                
+		    p:displayName="List Report Definitions" p:linkName="listNotificationController"/>
+		  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		      p:displayName="Import Report Definitions" p:linkName="importReportDefinitionController"/>                                
 	    </list>
 	  </property>
 	</bean>
@@ -593,5 +596,12 @@
 	class="gov.nih.nci.cabig.caaers.web.rule.deploy.DeployRuleController">
   </bean>
 
+  <bean name="/rule/notification/export" id="exportReportDefinitionController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.notification.ExportReportDefinitionController">
+  </bean>	
 
+  <bean name="/rule/notification/import" id="importReportDefinitionController" autowire="byType"
+	class="gov.nih.nci.cabig.caaers.web.rule.notification.ImportReportDefinitionController">
+  </bean>
+  
 </beans>
