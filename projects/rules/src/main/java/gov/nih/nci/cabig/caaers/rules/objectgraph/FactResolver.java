@@ -1,5 +1,8 @@
 package gov.nih.nci.cabig.caaers.rules.objectgraph;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Study;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -50,9 +53,18 @@ public class FactResolver {
         }
 
         objectGraphFactory = ObjectGraphFactory.getInstance();
+        
+        String className = "";
+        
+        if (sourceObject instanceof Study) {
+        	className = Study.class.getName();
+        } else if (sourceObject instanceof AdverseEvent) {
+        	className = AdverseEvent.class.getName();        	
+        } else {
+        	className = sourceObject.getClass().getName();
+        }
 
-        NavigationPath np = objectGraphFactory.findNavigationPath(
-                        sourceObject.getClass().getName(), targetObjectType);
+        NavigationPath np = objectGraphFactory.findNavigationPath(className, targetObjectType);
 
         /*
          * NavigationPath np = new NavigationPath();
