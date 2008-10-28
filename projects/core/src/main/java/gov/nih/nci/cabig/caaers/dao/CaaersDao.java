@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
@@ -307,6 +308,15 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     @Transactional(readOnly = false)
     public void refresh(T o){
     	getHibernateTemplate().refresh(o);
+    }
+    
+    /**
+     * This will lock the object
+     * @param o
+     */
+    @Transactional(readOnly = false)
+    public void lock(T o){
+    	getHibernateTemplate().lock(o, LockMode.NONE);
     }
 
     /**
