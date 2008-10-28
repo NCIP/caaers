@@ -72,7 +72,6 @@ public class StudyProcessorTest extends CaaersDbNoSecurityTestCase {
         studyProcessor.updateStudy(studies);
 
         interruptSession();
-        SecurityTestUtils.switchToSuperuser();
 
         updatedStudy = studyDao.getByShortTitle("Study_PCS_Updated");
         assertNotNull(updatedStudy);
