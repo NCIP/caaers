@@ -5,6 +5,7 @@ package gov.nih.nci.cabig.caaers.api;
 
 import java.util.Date;
 
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
@@ -19,7 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
  * @author <a href="mailto:joshua.phillips@semanticbits.com>Joshua Phillips</a>
  * 
  */
-public class StudyServiceTest extends CaaersDbTestCase {
+public class StudyServiceTest extends CaaersDbNoSecurityTestCase {
 
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
                     "organizationDao");
