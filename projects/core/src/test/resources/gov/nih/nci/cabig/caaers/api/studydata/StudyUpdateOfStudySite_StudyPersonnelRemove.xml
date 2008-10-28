@@ -40,7 +40,7 @@
             </organizationAssignedIdentifier>
             <p:studyCoordinatingCenter>
                 <p:organization>
-                    <name>Wake Forest Comprehensive Cancer Center</name>
+                    <name>Cancer and Leukemia Group B</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
             </p:studyCoordinatingCenter>
@@ -89,7 +89,7 @@
             </p:studySite>
             <p:studySite>
                 <p:organization>
-                    <name>Duke University Comprehensive Cancer Center</name>
+                    <name>Johns Hopkins University</name>
                     <nciInstituteCode></nciInstituteCode>
                 </p:organization>
             </p:studySite>
