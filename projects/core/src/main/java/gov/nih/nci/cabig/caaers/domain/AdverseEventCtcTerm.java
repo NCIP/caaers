@@ -43,8 +43,7 @@ public class AdverseEventCtcTerm extends AbstractAdverseEventTerm<CtcTerm> {
     public String getUniversalTerm() {
         if (getTerm() == null) {
             return null;
-        } else if (getTerm().isOtherRequired()
-                && getAdverseEvent() != null
+        } else if (getAdverseEvent() != null
                 && (getAdverseEvent().getDetailsForOther() != null || getAdverseEvent()
                 .getLowLevelTerm() != null)) {
             StringBuilder sb = new StringBuilder(getTerm().getFullName());
