@@ -168,7 +168,11 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         ht.initialize(study.getEpochs());
         for (StudyAgent sa : study.getStudyAgents()) {
             ht.initialize(sa.getStudyAgentINDAssociationsInternal());
+            for(StudyAgentINDAssociation saa : sa.getStudyAgentINDAssociationsInternal()){
+            	ht.initialize(saa.getInvestigationalNewDrug());
+            }
         }
+        
         return study;
     }
 
