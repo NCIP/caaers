@@ -28,9 +28,9 @@ Note: -
                <table id="observedTable" width="100%" class="tablecontent">
                    <tr>
                        <th scope="col" align="left" width="200px"><b>Term</b> </th>
-                       <th scope="col" align="left" width="200px"><b><tags:requiredIndicator/>Grade</b> </th>
+                       <th scope="col" align="left" width="200px"><b>Grade</b> </th>
                        <c:if test='${command.adverseEventReportingPeriod.baselineReportingType == false}'>
-	                       <th scope="col" align="left" width="100px"><b><tags:requiredIndicator/>Attribution</b> </th>
+	                       <th scope="col" align="left" width="100px"><b>Attribution</b> </th>
 	                   </c:if>
 	                   <c:if test='${command.adverseEventReportingPeriod.baselineReportingType == true}'>
 	                       <th scope="col" align="left" width="100px"><b>Attribution</b> </th>
@@ -46,7 +46,7 @@ Note: -
                    <c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
                        <c:if test="${not ae.solicited}">
                         <c:set var="noObservedAE" value="false" scope="request"/>
-                        <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0"/>
+                        <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0" renderNotes="true"/>
                     </c:if>
                    </c:forEach>
                 <c:if test="${noObservedAE}">
@@ -74,7 +74,7 @@ Note: -
    				<c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
    					<c:if test="${ae.solicited}">
 						<c:set var="noSolictedAE" value="false" scope="request" />
-    					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0"/>
+    					<ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="0" renderNotes="true"/>
     				</c:if>
    				</c:forEach>
 				<c:if test="${noSolictedAE}">

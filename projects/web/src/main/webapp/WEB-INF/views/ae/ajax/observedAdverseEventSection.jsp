@@ -6,6 +6,6 @@
 <tags:noform>
 	<c:forEach begin="${param.index}" items="${command.adverseEvents}" var="ae" varStatus="status">
 	
-		<ae:oneSaeRow index="${status.index}"  isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="${ae.solicited}" adverseEvent="${ae}" aeTermIndex="0"/>
+		<ae:oneSaeRow index="${status.index}"  isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="${ae.solicited}" adverseEvent="${ae}" aeTermIndex="0" renderNotes="true"/>
 	</c:forEach>	
 </tags:noform>

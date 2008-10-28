@@ -11,6 +11,7 @@
 <%@attribute name="adverseEvent" type="gov.nih.nci.cabig.caaers.domain.AdverseEvent" required="true" description="The adverse event that is being rendered" %>
 <%@attribute name="hideDeleteCtrl" type="java.lang.Boolean" description="If true, will not display the column containing delete button" %>
 <%@attribute name="aeTermIndex" type="java.lang.Integer" required="true" description="The index of aeTerm, explicitly set this to 0 or 1, this is to support checkbox in confirmation page" %>
+<%@attribute name="renderNotes" type="java.lang.Boolean" required="true" description="Display the render Notes section if this is set to true" %>
 
 <c:set var="mainGroup">main${index}</c:set>
     	<%--
@@ -80,10 +81,12 @@
 	<c:if test="${not isAETermOtherSpecify}">
 		<td>
 			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
-			<div class="divNotes">
-			${fieldGroups[mainGroup].fields[1].displayName}
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeNotes" />
-			</div>
+			<c:if test="${renderNotes}">
+				<div class="divNotes">
+				${fieldGroups[mainGroup].fields[1].displayName}
+				<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeNotes" />
+				</div>
+			</c:if>
 		</td>
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 2}" varStatus="lpIdx">
 		  <caaers:renderFilter elementID="${field.propertyName}">

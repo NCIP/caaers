@@ -286,7 +286,7 @@ background-color:#e5e8ff;
               <tr id="seriousBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${ae.requiresReporting}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false"/>
                 </c:if>
               </c:forEach>
             </table>
@@ -301,10 +301,8 @@ background-color:#e5e8ff;
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
                 <th scope="col" align="left" width="30%"><b>
-                  <tags:requiredIndicator/>
                   Term</b> </th>
                 <th scope="col" align="left"><b>
-                  <tags:requiredIndicator/>
                   Grade</b> </th>
                 <th scope="col" align="left"><b>Attribution</b> </th>
                 <th scope="col" align="left"><b>Hospitalization</b> </th>
@@ -317,7 +315,7 @@ background-color:#e5e8ff;
               <tr id="observedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false"/>
                 </c:if>
               </c:forEach>
             </table>
@@ -344,7 +342,7 @@ background-color:#e5e8ff;
               <tr id="solicitedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true"/>
+                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false"/>
                 </c:if>
               </c:forEach>
             </table>
