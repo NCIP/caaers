@@ -175,7 +175,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			}
 		}
 		enableAuthorization(authorizationOnByDefault);
-		switchUser(null);		
 		logger.info("Leaving createStudy() in StudyProcessorImpl");
 		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
@@ -235,7 +234,6 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			}
 		}
 		enableAuthorization(authorizationOnByDefault);
-		switchUser(null);
 		logger.info("Leaving updateStudy() in StudyProcessor");
 		caaersServiceResponse.setResponse(studyServiceResponse);
 		return caaersServiceResponse;
