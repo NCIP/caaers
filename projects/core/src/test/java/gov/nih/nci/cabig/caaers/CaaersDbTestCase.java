@@ -61,11 +61,9 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     
     
     protected void setUpAuthorization() throws Exception {
-    	//let the AspectJ runtime load properly
-    	ApplicationContext ctx = getDeployedApplicationContext();
     	
    	 	SecurityTestUtils.switchToSuperuser();
-   	 	SecurityTestUtils.enableAuthorization(true, ctx);
+   	 	SecurityTestUtils.enableAuthorization(true, applicationContext);
      
     }
     
@@ -80,6 +78,8 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+      
+        getDeployedApplicationContext();  //let the AspectJ runtime load properly
         setUpAuthorization();
         setUpAuditing();
         setUpSession();
