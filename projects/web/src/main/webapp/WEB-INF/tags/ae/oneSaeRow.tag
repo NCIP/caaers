@@ -12,6 +12,7 @@
 <%@attribute name="hideDeleteCtrl" type="java.lang.Boolean" description="If true, will not display the column containing delete button" %>
 <%@attribute name="aeTermIndex" type="java.lang.Integer" required="true" description="The index of aeTerm, explicitly set this to 0 or 1, this is to support checkbox in confirmation page" %>
 <%@attribute name="renderNotes" type="java.lang.Boolean" required="true" description="Display the render Notes section if this is set to true" %>
+<%@attribute name="renderSubmittedFlag" type="java.lang.Boolean" required="true" description="Determines whether to display the image indicating the adverse event has been successfully submitted" %>
 
 <c:set var="mainGroup">main${index}</c:set>
     	<%--
@@ -23,6 +24,14 @@
 <c:if test="${aeTermIndex gt 0}">
 	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
 </c:if>	
+<c:if test="${renderSubmittedFlag}">
+	<c:if test="${adverseEvent.submitted == true}">
+		<td><img src="<chrome:imageUrl name="../checkno.gif" />" alt="Submitted" title="Submitted" style="border:0" /></td>
+	</c:if>
+	<c:if test="${adverseEvent.submitted == false}">
+		<td/>
+	</c:if>
+</c:if>
 
 	<c:if test="${isAETermOtherSpecify}">
 		<td>
