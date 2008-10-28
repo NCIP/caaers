@@ -227,7 +227,10 @@
    		 org_id="-1001"
    		 drug_id="-8002" />
    	
-   	
+   	<CTC_VERSIONS
+   		id="3"
+   		name="CTCAE v3.0"/>
+   		
    	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
    	<studies />
     <investigational_new_drugs />
