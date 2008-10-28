@@ -55,8 +55,12 @@ public class ImportReportDefinitionController extends SimpleFormController{
     	reportDefinitions = (ReportDefinitions)unmarshaller.unmarshal(importRuleCommand.getRuleSetFile1().getInputStream());
     	String reportDefName = reportDefinitions.getReportDefinition().get(0).getName();
     	
+    	
     	if(reportDefinitionDao.getByName(reportDefName) != null){
-    		importRuleCommand.setMessage("Report Definition -->" + reportDefName + " exists in caAERS");
+    		StringBuffer message = new StringBuffer(reportDefName);
+    		message.append("\n");
+    		message.append("Exists in caAERS");
+    		importRuleCommand.setMessage(message.toString());
     		importRuleCommand.setUpdated(true);
         	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
             return modelAndView;
