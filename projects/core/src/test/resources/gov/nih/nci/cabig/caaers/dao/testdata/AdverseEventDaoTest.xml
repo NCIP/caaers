@@ -139,6 +139,12 @@
             id="-17"
             report_id="-17"
             />
+    <REPORT_CALENDAR_TEMPLATES id="-30" name="11-day"
+                               duration="8" time_scale_unit_code="4" amendable="0"/>
+    <REPORT_SCHEDULES id="-41" due_on="2007-05-05"
+                      created_on="2007-04-24" report_id="-17" rct_id="-30"/>
+    <report_versions id="-88"    report_id="-41"    list_index="0"  report_version_id="0" status_code="2"/>
+    
 
     <ADVERSE_EVENTS
             id="-2"

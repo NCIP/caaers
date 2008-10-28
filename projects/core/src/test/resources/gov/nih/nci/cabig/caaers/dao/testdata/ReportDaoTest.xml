@@ -222,7 +222,7 @@
         required="1"
         />
         
-    <report_versions id="-88"    report_id="-223"    list_index="0"  report_version_id="0"/>
+    <report_versions id="-88"    report_id="-223"    list_index="0"  report_version_id="0" status_code="2"/>
     <AE_REPORT_PEOPLE id="-100" report_id="-1" 
            	role="S"
             first_name="Joe" 

@@ -917,4 +917,19 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     	}
     	return versionNumber.toString();
     }
+    
+    /**
+     * This method returns true if any of the reports associated to this data-collection was submitted
+     * successfully.
+     * @return
+     */
+    @Transient
+    public Boolean getHasSubmittedReport(){
+    	Boolean submitted = false;
+    	for(Report report: reports){
+    		if(report.isSubmitted())
+    			submitted = true;
+    	}
+    	return submitted;
+    }
 }

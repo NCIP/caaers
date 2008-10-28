@@ -80,7 +80,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     private TimeValue eventApproximateTime;
 
     private String eventLocation;
-
+    
     public AdverseEvent() {
         solicited = false;
     }
@@ -604,5 +604,18 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
                 getCourseAgentAttributions().add((CourseAgentAttribution) adverseEventAttribution);
             }
         }
+    }
+    
+    /**
+     * This method returns true if any of the reports associated to the data-collection this ae
+     * belongs to was submitted successfully.
+     * @return Boolean
+     */
+    @Transient
+    public Boolean getSubmitted(){
+    	Boolean submitted = false;
+    	if(report != null && report.getHasSubmittedReport())
+    		submitted = true;
+    	return submitted;
     }
 }

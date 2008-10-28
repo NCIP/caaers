@@ -608,7 +608,12 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
 //        AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
 //        aeser.serialize(loaded);
     	assertTrue(true);
-    }  
+    }
+    
+    public void testHasSubmittedReport(){
+    	ExpeditedAdverseEventReport loaded = getDao().getById(-1);
+    	assertTrue(loaded.getHasSubmittedReport());
+    }
 
     private void doSaveTest(SaveTester tester) {
         Integer savedId;

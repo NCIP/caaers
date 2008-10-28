@@ -319,4 +319,9 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
      		assertEquals(2, report.getReportVersions().size());
     	 }
     }
+    
+    public void testIsSubmitted(){
+		Report report = getDao().getById(-223);
+		assertTrue(report.isSubmitted());
+    }
 }
