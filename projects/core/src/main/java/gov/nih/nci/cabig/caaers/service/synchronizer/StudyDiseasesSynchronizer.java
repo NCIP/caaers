@@ -95,7 +95,7 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 		for(MeddraStudyDisease xmlMeddraStudyDisease : xmlStudy.getMeddraStudyDiseases()){
 			for(MeddraStudyDisease dbMeddraStudyDisease : dbStudy.getMeddraStudyDiseases()){
 				xmlMeddraStudyDisease.setId(dbMeddraStudyDisease.getId());
-				if(xmlMeddraStudyDisease.getMeddraCode().equals(dbMeddraStudyDisease.getMeddraCode())){
+				if(xmlMeddraStudyDisease.getMeddraCode().equals(dbMeddraStudyDisease.getTerm().getMeddraCode())){
 					break;
 				}else{
 					xmlMeddraStudyDisease.setId(null);
@@ -111,7 +111,7 @@ public class StudyDiseasesSynchronizer  implements Migrator<gov.nih.nci.cabig.ca
 			for(MeddraStudyDisease xmlMeddraStudyDisease : xmlStudy.getMeddraStudyDiseases()){
 				remMeddraStudyDisease = new MeddraStudyDisease();
 				remMeddraStudyDisease = dbMeddraStudyDisease;
-				if(remMeddraStudyDisease.getMeddraCode().equals(xmlMeddraStudyDisease.getMeddraCode())){
+				if(remMeddraStudyDisease.getTerm().getMeddraCode().equals(xmlMeddraStudyDisease.getMeddraCode())){
 					remMeddraStudyDisease =  null;
 					break;
 				}
