@@ -371,7 +371,6 @@ public class Fixtures {
     	Agent agent = new Agent();
     	agent.setDescription("abcd");
     	agent.setName(name);
-    	agent.setStudyAgents(studyAgents);
     	for(StudyAgent sa : studyAgents) sa.setAgent(agent);
     	return agent;
     }
