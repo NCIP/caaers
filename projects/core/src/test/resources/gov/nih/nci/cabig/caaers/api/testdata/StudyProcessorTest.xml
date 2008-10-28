@@ -8,14 +8,14 @@
         
     <ORGANIZATIONS
         id="-1002"
-        name="Wake Forest Comprehensive Cancer Center"
-        nci_institute_code="WAKE"
+        name="Cancer and Leukemia Group B"
+        nci_institute_code="CALGB"
         grid_id="gridSite_2"/>
     	
     <ORGANIZATIONS
     id="-1003"
-    name="Duke University Comprehensive Cancer Center"
-    nci_institute_code="DUKE"
+    name="Johns Hopkins University"
+    nci_institute_code="MD017"
     grid_id="gridSite_3"/>	
     
      <ORGANIZATIONS
