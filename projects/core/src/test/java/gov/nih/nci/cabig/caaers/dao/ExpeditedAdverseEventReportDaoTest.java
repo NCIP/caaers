@@ -31,6 +31,7 @@ import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.math.BigDecimal;
@@ -604,13 +605,15 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoTestCase<ExpeditedAdv
     }
     
     public void testSerializeExpeditedAdverseEventReport() throws Exception {
-//      ExpeditedAdverseEventReport loaded = getDao().getById(-1);
-//      AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-//      aeser.serialize(loaded);
-    	ExpeditedAdverseEventReport loaded = new ExpeditedAdverseEventReport();
-    	loaded.setId(123);
+
+    	ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
+    	aer.setId(123);
+    	
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-    	aeser.serialize(loaded);
+    	
+    	XmlMarshaller marshaller = new XmlMarshaller();
+		marshaller.toXML(aer,aeser.getMappingFile());
+
     	assertTrue(true);
     }
     
