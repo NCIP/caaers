@@ -11,8 +11,7 @@ import org.hibernate.cfg.ImprovedNamingStrategy;
  */
 public class WonderfulNamingStrategy extends ImprovedNamingStrategy {
     @Override
-    public String foreignKeyColumnName(String propertyName, String propertyEntityName,
-                    String propertyTableName, String referencedColumnName) {
+    public String foreignKeyColumnName(String propertyName, String propertyEntityName, String propertyTableName, String referencedColumnName) {
         return columnName(propertyName) + "_id";
     }
 
