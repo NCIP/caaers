@@ -73,9 +73,7 @@ public class CreateStudyController extends StudyController<Study> {
     }
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                    final HttpServletResponse response, final Object command,
-                    final BindException errors) throws Exception {
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
 
         Study study = (Study) command;
         // saveResearchStaff the study by calling merge, as the study might be assocated

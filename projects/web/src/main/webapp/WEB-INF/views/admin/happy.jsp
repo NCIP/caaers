@@ -107,5 +107,7 @@
 
   <div class="content buttons autoclear"/>
 </div>
+        </div>
+    </div>
 </body>
 </html>

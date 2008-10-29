@@ -37,12 +37,11 @@ public class SelectedStudySiteCell implements Cell {
                 inputBuilder.getHtmlBuilder().tr(0).close();
                 inputBuilder.tdStart();
                 inputBuilder.getHtmlBuilder().input("radio")
-                        .name("studySite" + studySite.getId().intValue())
+                        .name("studySite")
                         .id("studySite" + studySite.getId().intValue())
                         .value(studySite.getId().toString())
                         .onclick("resetStudyAndSites(this);")
-                        .styleClass("sitesRadioBtn siteStudy_" + studySite.getId())
-                        ;
+                        .styleClass("sitesRadioBtn siteStudy_" + studySite.getId());
                 inputBuilder.getHtmlBuilder().xclose();
                 inputBuilder.tdBody(studySite.getName());
 

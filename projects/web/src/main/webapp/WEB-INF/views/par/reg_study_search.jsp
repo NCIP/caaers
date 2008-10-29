@@ -66,6 +66,7 @@
                 $('indicator').show();
 
                 var parameterMap = getParameterMap(form);
+                parameterMap["organizationID"] = "<c:out value="${command.participant.assignments[0].studySite.organization.id}" />";
                 searchStudy.getTableForAssignParticipant(parameterMap, type, text, showTable)
                 $('indicator').hide();
 

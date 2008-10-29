@@ -33,10 +33,8 @@ import javax.persistence.DiscriminatorValue;
 @DiscriminatorValue("ABSTRACT_TERM")
 // should be ignored
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_study_diseases_id") })
-public abstract class AbstractStudyDisease<T extends DomainObject> extends
-                AbstractMutableDomainObject implements Serializable {
+public abstract class AbstractStudyDisease<T extends DomainObject> extends AbstractMutableDomainObject implements Serializable {
     private T term;
-
     private Study study;
 
     // //// BEAN PROPERTIES

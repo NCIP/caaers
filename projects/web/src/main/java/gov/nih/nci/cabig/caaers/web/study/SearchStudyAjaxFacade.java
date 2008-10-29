@@ -29,18 +29,11 @@ public class SearchStudyAjaxFacade {
 
     public Object build(TableModel model, Collection studySearchableAjaxableDomainObjects) throws Exception {
         addTable(model, studySearchableAjaxableDomainObjects);
-
-
         addPrimaryIdColumn(model);
-
         addShorTitleColumn(model);
-
         addSponsorColumn(model);
-
         addPhaseCodeColumn(model);
-
         addStatusColumn(model);
-
         return model.assemble();
     }
 
@@ -127,7 +120,15 @@ public class SearchStudyAjaxFacade {
     }
 
     public String getTableForAssignParticipant(Map parameterMap, String type, String text, HttpServletRequest request) {
-        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text);
+
+        int organizationID;
+        try {
+            organizationID = Integer.parseInt((String)parameterMap.get("organizationID"));
+        } catch (Exception e) {
+            organizationID = 0;
+        }
+        
+        List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID);
 
         try {
 
@@ -154,9 +155,7 @@ public class SearchStudyAjaxFacade {
             model.addColumn(columnShortTitle);
 
             addSponsorColumn(model);
-
             addPhaseCodeColumn(model);
-
             addStatusColumn(model);
 
             Column columnStudySite = model.getColumnInstance();
@@ -176,7 +175,14 @@ public class SearchStudyAjaxFacade {
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text) {
+        return getObjects(type, text, 0); 
+    }
+
+    private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID) {
         StudySearchableAjaxableDomainObjectQuery studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
+
+        if (organizationID > 0)
+            studySearchableAjaxableDomainObjectQuery.filterStudiesByStudySiteBySiteId(organizationID);
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");

@@ -30,13 +30,9 @@ import java.util.*;
 public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomainObjectDao<Study> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("shortTitle", "longTitle");
-
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
     private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES = Arrays.asList("longTitle");
-
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
-
     private static final List<String> EXACT_MATCH_TITLE_PROPERTIES = Arrays.asList("shortTitle");
 
     private static final String JOINS = "join o.identifiers as identifier "
@@ -350,14 +346,10 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
             example.excludeProperty("multiInstitutionIndicator").enableLike(MatchMode.ANYWHERE);
             studyCriteria.add(example);
             if (study.getIdentifiers().size() > 0) {
-                studyCriteria.createCriteria("identifiers").add(
-                        Restrictions.ilike("value", study.getIdentifiers().get(0).getValue() + "%"));
+                studyCriteria.createCriteria("identifiers").add(Restrictions.ilike("value", study.getIdentifiers().get(0).getValue() + "%"));
             }
             if (study.getStudyOrganizations().size() > 0) {
-                studyCriteria.createCriteria("studyOrganizations").add(
-                        Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization()
-                                .getId()));
-
+                studyCriteria.createCriteria("studyOrganizations").add(Restrictions.eq("organization.id", study.getStudyOrganizations().get(0).getOrganization().getId()));
             }
             return studyCriteria.list();
         }
