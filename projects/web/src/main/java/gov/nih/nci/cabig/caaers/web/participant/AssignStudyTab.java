@@ -95,6 +95,12 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     	studySiteDao.lock(command.getStudySite());
     }
     
+    @Override
+    public void beforeBind(HttpServletRequest request,AssignParticipantStudyCommand command) {
+    	super.beforeBind(request, command);
+    	studySiteDao.lock(command.getStudySite());
+    }
+    
     
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
