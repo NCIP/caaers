@@ -15,7 +15,11 @@ import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Assignmen
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType.Identifiers;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import javax.xml.datatype.XMLGregorianCalendar;
 
 
 /**
@@ -115,6 +119,15 @@ public class ParticipantConverter {
 			List<StudyParticipantAssignment> assignmentList = new ArrayList<StudyParticipantAssignment>();
 			for(AssignmentType assignmentType : assignments.getAssignment()){
 				studyParticipantAssignment = new StudyParticipantAssignment();
+				studyParticipantAssignment.setStudySubjectIdentifier(assignmentType.getStudySubjectIdentifier());
+				
+				if(assignmentType.getDateOfEnrollment() != null){
+					Calendar dateOfEnrollment = Calendar.getInstance();
+					XMLGregorianCalendar cal = assignmentType.getDateOfEnrollment();
+					dateOfEnrollment.set(cal.getYear(), cal.getMonth(), cal.getDay());
+					studyParticipantAssignment.setDateOfEnrollment(dateOfEnrollment.getTime());
+				}	
+				
 				studySite = new StudySite();
 				study = new Study();
 				identifier = new Identifier();
