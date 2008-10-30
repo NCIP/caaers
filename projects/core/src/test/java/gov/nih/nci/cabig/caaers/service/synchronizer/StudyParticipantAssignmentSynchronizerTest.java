@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.service.synchronizer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -14,6 +10,10 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecurityTestCase {
 	Participant dbParticipant,xmlParticipant;
@@ -51,6 +51,8 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		dbParticipant.setId(1);
 		dbParticipant.addIdentifier(orgIdentifier1);
 		studyParticipantAssignment1 = new StudyParticipantAssignment();
+		studyParticipantAssignment1.setStudySubjectIdentifier("001");
+		studyParticipantAssignment1.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment1.setStudySite(studySite1);
 		studyParticipantAssignment1.setId(1);
 		dbParticipant.addAssignment(studyParticipantAssignment1);
@@ -69,6 +71,8 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		xmlParticipant = Fixtures.createParticipant("first", "last");
 		xmlParticipant.addIdentifier(orgIdentifier1a);
 		studyParticipantAssignment1a = new StudyParticipantAssignment();
+		studyParticipantAssignment1a.setStudySubjectIdentifier("001");
+		studyParticipantAssignment1a.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment1a.setStudySite(studySite1a);
 		assignmentList.add(studyParticipantAssignment1a);
 		
@@ -86,6 +90,8 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		orgIdentifier2a = Fixtures.createOrganizationAssignedIdentifier("2", organization2a);
 		xmlParticipant.addIdentifier(orgIdentifier2a);
 		studyParticipantAssignment2a = new StudyParticipantAssignment();
+		studyParticipantAssignment2a.setStudySubjectIdentifier("002");
+		studyParticipantAssignment2a.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment2a.setStudySite(studySite2a);
 		assignmentList.add(studyParticipantAssignment2a);
 		xmlParticipant.setAssignments(assignmentList);
