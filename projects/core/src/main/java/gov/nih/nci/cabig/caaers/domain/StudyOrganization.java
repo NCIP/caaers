@@ -61,9 +61,9 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
         studyInvestigator.setStudyOrganization(this);
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "site_id", nullable = false)
-    @Cascade(value = { CascadeType.LOCK })
+    @Cascade(value = { CascadeType.LOCK})
     public Organization getOrganization() {
         return organization;
     }
