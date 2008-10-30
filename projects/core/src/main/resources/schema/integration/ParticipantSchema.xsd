@@ -77,6 +77,8 @@
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
+                	<xs:element name="studySubjectIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                	<xs:element name="dateOfEnrollment" type="xs:date" minOccurs="1" maxOccurs="1"/>
                     <xs:element ref="studySite"/>
                 </xs:sequence>
             </xs:extension>
