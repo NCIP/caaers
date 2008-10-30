@@ -26,9 +26,12 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 String identifierType = identifier.getType();
 
                 StudySite studySite = studySiteDao.matchByStudyAndOrg(organizationName, identifierValue, identifierType);
-
-                dest.addAssignment(new StudyParticipantAssignment(dest, studySite));
-
+                
+                StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);
+                studParticipantAssignment.setStudySubjectIdentifier(studyParticipantAssignment.getStudySubjectIdentifier());
+                studParticipantAssignment.setDateOfEnrollment(studyParticipantAssignment.getDateOfEnrollment());
+                
+                dest.addAssignment(studParticipantAssignment);
 
                 outcome.ifNullObject(studySite, DomainObjectImportOutcome.Severity.ERROR,
                         "The Study with Identifier \" " + identifierValue
