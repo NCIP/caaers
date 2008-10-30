@@ -29,12 +29,12 @@ public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCom
         return map;
     }
     
-    @Override
-    public void onDisplay(HttpServletRequest request,AssignParticipantStudyCommand command) {
-    	super.onDisplay(request, command);
-    	StudySite site = command.getStudySite();
-    	if(site != null) organizationDao.lock(site.getOrganization());
-    }
+//    @Override
+//    public void onDisplay(HttpServletRequest request,AssignParticipantStudyCommand command) {
+//    	super.onDisplay(request, command);
+//    	StudySite site = command.getStudySite();
+//    	if(site != null) organizationDao.lock(site.getOrganization());
+//    }
     public OrganizationDao getOrganizationDao() {
 		return organizationDao;
 	}
