@@ -15,7 +15,8 @@
     <title>Search for a Study</title>
     <script>
         function submitPage(s) {
-
+                alert($('studySite').value);
+            return;
             document.getElementById("command").submit();
         }
         function navRollOver(obj, state) {
@@ -28,6 +29,7 @@
             document.checkEligibility.submit();
         }
 
+/*
         function resetSites(btn) {
             var classValue = 'siteStudy_' + btn.value;
             $$('.sitesRadioBtn').each(function(input) {
@@ -36,10 +38,10 @@
                 }
             });
         }
+*/
 
         function resetStudyAndSites(button) {
-//            resetSites(button);/
-            $('studySite').value = button.value;
+            $('command').studySite.value = button.value;
             if ($('ids')) $('ids').show();
         }
 
@@ -177,9 +179,9 @@
             <form:form  id="command">
                 <tags:tabFields tab="${tab}"/>
                 <tags:tabControls tab="${tab}" flow="${flow}"/>
-                <form:hidden path="studySite"/>
                 <form:hidden path="studySubjectIdentifier"/>
                 <form:hidden path="searchText"/>
+                <input type=hidden name="studySite">
             </form:form>
 
 <%--STANDARD FORM --%>
