@@ -37,28 +37,23 @@ public class StudyTherapiesTab extends StudyTab {
             fieldGroup = new DefaultInputFieldGroup("studyTherapies");
             List<InputField> fields = fieldGroup.getFields();
 
-            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField(
-                            "drugAdministrationTherapyType", "Agent");
+            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField("drugAdministrationTherapyType", "Agent");
             InputFieldAttributes.setSize(drugAdministrationTherapyTypeField, 50);
             fields.add(drugAdministrationTherapyTypeField);
 
-            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField(
-                            "deviceTherapyType", "Device");
+            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("deviceTherapyType", "Device");
             InputFieldAttributes.setSize(deviceTherapyTypeField, 50);
             fields.add(deviceTherapyTypeField);
 
-            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField(
-                            "radiationTherapyType", "Radiation");
+            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField("radiationTherapyType", "Radiation");
             InputFieldAttributes.setSize(radiationTherapyTypeField, 50);
             fields.add(radiationTherapyTypeField);
 
-            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField(
-                            "surgeryTherapyType", "Surgery");
+            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("surgeryTherapyType", "Surgery");
             InputFieldAttributes.setSize(surgeryTherapyTypeField, 50);
             fields.add(surgeryTherapyTypeField);
 
-            InputField behavioralTypeField = InputFieldFactory.createCheckboxField(
-                            "behavioralTherapyType", "Behavioral");
+            InputField behavioralTypeField = InputFieldFactory.createCheckboxField("behavioralTherapyType", "Behavioral");
             fields.add(behavioralTypeField);
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -75,14 +70,12 @@ public class StudyTherapiesTab extends StudyTab {
     protected void updateStudyTherapies(final Study study) {
         List<StudyTherapy> studyTherapies = study.getStudyTherapies();
 
-        if (study.getDrugAdministrationTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) == null) {
+        if (study.getDrugAdministrationTherapyType()&& study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) == null) {
             StudyTherapy drugAdministrationTherapy = new StudyTherapy();
             drugAdministrationTherapy.setStudy(study);
             drugAdministrationTherapy.setStudyTherapyType(StudyTherapyType.DRUG_ADMINISTRATION);
             study.getStudyTherapies().add(drugAdministrationTherapy);
-        } else if (!study.getDrugAdministrationTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
+        } else if (!study.getDrugAdministrationTherapyType() && study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
         }
         if (study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) == null) {
@@ -94,34 +87,28 @@ public class StudyTherapiesTab extends StudyTab {
                         && study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DEVICE));
         }
-        if (study.getRadiationTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.RADIATION) == null) {
+        if (study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) == null) {
             StudyTherapy radiationTherapy = new StudyTherapy();
             radiationTherapy.setStudy(study);
             radiationTherapy.setStudyTherapyType(StudyTherapyType.RADIATION);
             study.getStudyTherapies().add(radiationTherapy);
-        } else if (!study.getRadiationTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
+        } else if (!study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.RADIATION));
         }
-        if (study.getSurgeryTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.SURGERY) == null) {
+        if (study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) == null) {
             StudyTherapy surgeryTherapy = new StudyTherapy();
             surgeryTherapy.setStudy(study);
             surgeryTherapy.setStudyTherapyType(StudyTherapyType.SURGERY);
             study.getStudyTherapies().add(surgeryTherapy);
-        } else if (!study.getSurgeryTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
+        } else if (!study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.SURGERY));
         }
-        if (study.getBehavioralTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) == null) {
+        if (study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) == null) {
             StudyTherapy behavioralTherapy = new StudyTherapy();
             behavioralTherapy.setStudy(study);
             behavioralTherapy.setStudyTherapyType(StudyTherapyType.BEHAVIORAL);
             study.getStudyTherapies().add(behavioralTherapy);
-        } else if (!study.getBehavioralTherapyType()
-                        && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
+        } else if (!study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.BEHAVIORAL));
         }
     }

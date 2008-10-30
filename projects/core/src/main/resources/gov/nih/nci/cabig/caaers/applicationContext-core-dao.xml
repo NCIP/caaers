@@ -151,6 +151,8 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Epoch</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Arm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Condition</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -164,8 +166,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
     <!-- Auditing related beans definition start here-->
-    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
-          autowire="byName">
+    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
@@ -496,8 +497,7 @@ This applicationContext contains the definition of the DAOs
           parent="daoTemplate">
     </bean>
 
-    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
-          lazy-init="true" autowire="byType">
+    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl" lazy-init="true" autowire="byType">
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="mailSender" ref="mailer"/>
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
@@ -508,15 +508,13 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
 
-    <bean id="researchStaffRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
+    <bean id="researchStaffRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository">
         <property name="researchStaffDao" ref="researchStaffDao"/>
         <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
     </bean>
 
-    <bean id="reportRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
+    <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>
         <property name="expeditedReportTree" ref="expeditedReportTree"/>
         <property name="reportDao" ref="reportDao"/>
@@ -536,8 +534,9 @@ This applicationContext contains the definition of the DAOs
         <property name="nowFactory" ref="nowFactory"></property>
     </bean>
 
-    <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory">
-    </bean>
+    <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
+
+    <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao" />
 
     <!-- Factory beans end here-->
 

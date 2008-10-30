@@ -1,0 +1,14 @@
+<dataset>
+    <conditions
+        id="-1"
+        condition_name="Condition 001"
+        />
+    <conditions
+        id="-6"
+        condition_name="Condition 006"
+        />
+    <conditions
+        id="-18"
+        condition_name="Condition 018"
+        />
+</dataset>

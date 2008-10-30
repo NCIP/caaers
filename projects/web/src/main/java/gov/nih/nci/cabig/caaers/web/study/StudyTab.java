@@ -27,8 +27,8 @@ import org.springframework.validation.Errors;
 public abstract class StudyTab extends TabWithFields<Study> {
     // TODO: This should be named after the class, but the existing context instance
     // is named like this. Alternate TODO: get rid of this bogus class entirely.
-    private ConfigProperty configurationProperty;
 
+    private ConfigProperty configurationProperty;
     protected static final Log log = LogFactory.getLog(StudyTab.class);
 
     public StudyTab(String longTitle, String shortTitle, String viewName) {

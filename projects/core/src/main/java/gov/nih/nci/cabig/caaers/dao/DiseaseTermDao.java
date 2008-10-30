@@ -64,8 +64,7 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
      */
     @SuppressWarnings("unchecked")
     public DiseaseTerm getByCTEPTermName(final String name) {
-        List<DiseaseTerm> results = getHibernateTemplate().find(
-                        "from " + domainClass().getName() + " where ctep_term= ?", name);
+        List<DiseaseTerm> results = getHibernateTemplate().find("from " + domainClass().getName() + " where ctep_term= ?", name);
         return results.size() > 0 ? results.get(0) : null;
     }
 
@@ -78,8 +77,7 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
      */
     @SuppressWarnings("unchecked")
     public DiseaseTerm getByMeddra(final String name) {
-        List<DiseaseTerm> results = getHibernateTemplate().find(
-                        "from " + domainClass().getName() + " where medraCode= ?", name);
+        List<DiseaseTerm> results = getHibernateTemplate().find("from " + domainClass().getName() + " where medraCode= ?", name);
         return results.size() > 0 ? results.get(0) : null;
     }
 

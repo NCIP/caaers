@@ -1,5 +1,10 @@
 
 <dataset>
+    <conditions
+        id="-18"
+        condition_name="Condition 018"
+        />
+
     <ctc_versions
             id="3"
             name="CTCAE v3.0"
@@ -379,6 +384,8 @@
             site_id="-1002"
             type="SCC"
             />
+
+    <STUDY_DISEASES id="-4" study_id="-2" term_type="dcp" meddra_code="1233212"/>
 
     <investigational_new_drugs id="-881" ind_number="-881"/>
     <investigational_new_drugs id="-882" ind_number="-882"/>

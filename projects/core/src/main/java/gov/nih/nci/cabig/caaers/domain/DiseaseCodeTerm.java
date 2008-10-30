@@ -11,10 +11,10 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Krikor Krumlian
  */
 public enum DiseaseCodeTerm implements CodedEnum<Integer> {
-    CTEP(1, "CTEP"), MEDDRA(2, "MedDRA");
+
+    CTEP(1, "CTEP"), MEDDRA(2, "MedDRA"), OTHER(3, "Other - Specify");
 
     private int code;
-
     private String displayName;
 
     DiseaseCodeTerm(int code) {

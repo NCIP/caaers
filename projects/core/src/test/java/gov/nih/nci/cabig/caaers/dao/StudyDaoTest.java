@@ -96,6 +96,73 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
         }
     }
 
+    public void testSaveWithNewCondition() throws Exception {
+        Integer savedId;
+        {
+            Study newStudy = new Study();
+
+            StudyCondition sc = new StudyCondition();
+            Condition condition = new Condition();
+            condition.setConditionName("NEW Condition 101.");
+
+            sc.setStudy(newStudy);
+            sc.setTerm(condition);
+            newStudy.addStudyCondition(sc);
+
+            newStudy.setShortTitle("Short Title Inserted");
+            newStudy.setLongTitle("Long Title Inserted");
+            newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+            newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+            newStudy.setAdeersReporting(Boolean.TRUE);
+            getDao().save(newStudy);
+            assertNotNull("No ID for newly saved study", newStudy.getId());
+            assertEquals(1, newStudy.getStudyConditions().size());
+            savedId = newStudy.getId();
+        }
+
+        interruptSession();
+
+        {
+            Study reloaded = getDao().getById(savedId);
+            assertNotNull("Saved Study not found", reloaded);
+            assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
+            assertNull("Ctc Version should be null", reloaded.getAeTerminology().getCtcVersion());
+        }
+    }
+    public void testSaveWithExistingCondition() throws Exception {
+        Integer savedId;
+        {
+            Study newStudy = new Study();
+
+            StudyCondition sc = new StudyCondition();
+            Condition condition = new Condition();
+            condition.setId(-18);
+            condition.setConditionName("NEW Condition 001.");
+            sc.setStudy(newStudy);
+            sc.setTerm(condition);
+            newStudy.addStudyCondition(sc);
+
+            newStudy.setShortTitle("Short Title Inserted");
+            newStudy.setLongTitle("Long Title Inserted");
+            newStudy.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
+            newStudy.setMultiInstitutionIndicator(Boolean.FALSE);
+            newStudy.setAdeersReporting(Boolean.TRUE);
+            getDao().save(newStudy);
+            assertNotNull("No ID for newly saved study", newStudy.getId());
+            savedId = newStudy.getId();
+        }
+
+        interruptSession();
+
+        {
+            Study reloaded = getDao().getById(savedId);
+            assertNotNull("Saved Study not found", reloaded);
+            assertNotNull("AeTerminology is null", reloaded.getAeTerminology());
+            assertNull("Ctc Version should be null", reloaded.getAeTerminology().getCtcVersion());
+            assertEquals(1, reloaded.getStudyConditions().size());
+        }
+    }
+
     public void testGetBySubnameMatchesShortTitle() throws Exception {
         List<Study> actual = getDao().getBySubnames(new String[]{"orter"});
         assertEquals("Wrong number of matches", 1, actual.size());
@@ -625,6 +692,12 @@ assertTrue(true);
         assertNotNull("No ID for newly saved study", studyId);
 
 
+    }
+
+    public void testCondition() {
+        Condition condition = new Condition();
+        condition.setConditionName("Condition_001");
+        assertNotNull(condition);
     }
 
 }

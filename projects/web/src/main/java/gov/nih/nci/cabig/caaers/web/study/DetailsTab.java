@@ -33,13 +33,12 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 public class DetailsTab extends StudyTab {
 
     private CtcDao ctcDao;
-
     private MeddraVersionDao meddraVersionDao;
-
     InputFieldGroup fieldGroup, reportFormatFieldGroup, fundSponsorFieldGroup, coordinatingCenterFieldGroup, dcpCodeFieldGroup;
 
     public DetailsTab() {

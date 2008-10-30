@@ -72,8 +72,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<StudyOrganization> studyOrganizations;
 
     private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
-
     private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
+    private List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
 
     private final LazyListHelper lazyListHelper;
 
@@ -951,4 +951,23 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 	public void setOtherMeddra(MeddraVersion otherMeddra) {
 		this.otherMeddra = otherMeddra;
 	}
+
+    @OneToMany
+    @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Where(clause = "term_type = 'dcp'")
+    @UniqueObjectInCollection(message = "Duplicate - Same condition is associated to the study more than ones")
+    public List<StudyCondition> getStudyConditions() {
+        return studyConditions;
+    }
+
+    public void setStudyConditions(List<StudyCondition> studyConditions) {
+        this.studyConditions = studyConditions;
+    }
+
+    public void addStudyCondition(final StudyCondition studyCondition) {
+        studyCondition.setStudy(this);
+        studyConditions.add(studyCondition);
+    }
+
 }

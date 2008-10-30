@@ -48,10 +48,10 @@
 		
 		function showDiseaseMeddraTerms(){
 			var row = document.getElementById('diseaseMeddraOption');
-			if($('diseaseTerminology.diseaseCodeTerm').options[0].selected){
-				row.style.display = 'none';
-			}else{
-				row.style.display = '';
+			if ($('diseaseTerminology.diseaseCodeTerm').options[1].selected){
+                row.style.display = '';
+			} else{
+                row.style.display = 'none';
 			}
 		}
         showDiseaseMeddraTerms();
