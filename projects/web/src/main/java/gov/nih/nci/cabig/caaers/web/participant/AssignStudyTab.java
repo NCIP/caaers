@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -30,7 +31,7 @@ import java.util.HashMap;
 
 public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
-    private StudySiteDao studySiteDao;
+    private OrganizationDao organizationDao;
 
     private ParticipantDao participantDao;
 
@@ -89,16 +90,13 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         }
     }
 
-    @Override
-    public void onDisplay(HttpServletRequest request,AssignParticipantStudyCommand command) {
-    	super.onDisplay(request, command);
-    	studySiteDao.lock(command.getStudySite());
-    }
     
     @Override
     public void beforeBind(HttpServletRequest request,AssignParticipantStudyCommand command) {
     	super.beforeBind(request, command);
-    	studySiteDao.lock(command.getStudySite());
+    	StudySite site = command.getStudySite();
+    	if(site != null)
+    		organizationDao.lock(command.getStudySite().getOrganization());
     }
     
     
@@ -114,11 +112,10 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
-    
-    public StudySiteDao getStudySiteDao() {
-		return studySiteDao;
+    public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
-    public void setStudySiteDao(StudySiteDao studySiteDao) {
-		this.studySiteDao = studySiteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 }
