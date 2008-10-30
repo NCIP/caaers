@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
+import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
@@ -15,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCommand> {
-	private StudySiteDao studySiteDao;
+	private OrganizationDao organizationDao;
+	
     public ReviewAssignmentTab() {
         super("Review", "Review", "par/reg_review_submit");
 //        super("Review and Submit", "Review and Submit", "par/par_confirmation");
@@ -29,13 +32,13 @@ public class ReviewAssignmentTab extends TabWithFields<AssignParticipantStudyCom
     @Override
     public void onDisplay(HttpServletRequest request,AssignParticipantStudyCommand command) {
     	super.onDisplay(request, command);
-    	studySiteDao.lock(command.getStudySite());
+    	StudySite site = command.getStudySite();
+    	if(site != null) organizationDao.lock(site.getOrganization());
     }
-    
-    public StudySiteDao getStudySiteDao() {
-		return studySiteDao;
+    public OrganizationDao getOrganizationDao() {
+		return organizationDao;
 	}
-    public void setStudySiteDao(StudySiteDao studySiteDao) {
-		this.studySiteDao = studySiteDao;
+    public void setOrganizationDao(OrganizationDao organizationDao) {
+		this.organizationDao = organizationDao;
 	}
 }
