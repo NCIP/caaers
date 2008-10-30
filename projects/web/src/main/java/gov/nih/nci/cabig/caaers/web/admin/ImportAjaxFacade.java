@@ -15,8 +15,10 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
 import java.io.IOException;
@@ -61,6 +63,8 @@ public class ImportAjaxFacade {
     private InvestigatorDao investigatorDao;
     
     private ResearchStaffDao researchStaffDao;
+    
+    protected ResearchStaffRepository researchStaffRepository;
 
     private AdverseEventEvaluationService adverseEventEvaluationService;// = new AdverseEventEvaluationServiceImpl();
 
@@ -126,8 +130,15 @@ public class ImportAjaxFacade {
         ImportCommand importCommand = getImportCommand(request);
         List<DomainObjectImportOutcome<ResearchStaff>> importableResearchStaff = importCommand.getImportableResearchStaff();
         for (DomainObjectImportOutcome<ResearchStaff> importOutcome : importableResearchStaff) {
-        	researchStaffDao.save(importOutcome.getImportedDomainObject());
+        	//researchStaffDao.save(importOutcome.getImportedDomainObject());
+        	researchStaffRepository.save(importOutcome.getImportedDomainObject(), ResetPasswordController.getURL(request
+                    .getScheme(), request.getServerName(), request.getServerPort(), request
+                    .getContextPath()));
         }
+        
+        
+        
+        
     	return "DONE";
     }
     
@@ -320,5 +331,10 @@ public class ImportAjaxFacade {
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
+	}
+
+	public void setResearchStaffRepository(
+			ResearchStaffRepository researchStaffRepository) {
+		this.researchStaffRepository = researchStaffRepository;
 	}
 }
