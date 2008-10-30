@@ -37,6 +37,8 @@
     </identifiers>
     <assignments>
       <p:assignment>
+      	<studySubjectIdentifier>001</studySubjectIdentifier>
+        <dateOfEnrollment>2008-01-01</dateOfEnrollment>
         <p:studySite>
           <p:study>
             <identifiers>
