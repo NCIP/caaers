@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 
 public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand> {
     private static final Log log = LogFactory.getLog(AssignStudyTab.class);
+    private StudySiteDao studySiteDao;
 
     private ParticipantDao participantDao;
 
@@ -87,6 +89,13 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
         }
     }
 
+    @Override
+    public void onDisplay(HttpServletRequest request,AssignParticipantStudyCommand command) {
+    	super.onDisplay(request, command);
+    	studySiteDao.lock(command.getStudySite());
+    }
+    
+    
     public Map<String, InputFieldGroup> createFieldGroups(AssignParticipantStudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         return map;
@@ -99,4 +108,11 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
     }
+    
+    public StudySiteDao getStudySiteDao() {
+		return studySiteDao;
+	}
+    public void setStudySiteDao(StudySiteDao studySiteDao) {
+		this.studySiteDao = studySiteDao;
+	}
 }
