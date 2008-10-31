@@ -323,7 +323,6 @@ public class EvaluationServiceImpl implements EvaluationService {
          * report definitions also . TEMP fix
          */
         Organization primarySponsor = assignment.getStudySite().getStudy().getPrimaryFundingSponsorOrganization();
-        organizationDao.lock(primarySponsor);
         if (primarySponsor.getName().equals("Division of Cancer Prevention")) {
         	reportDefinitions.addAll(reportDefinitionDao.getAll(this.organizationDao.getByName("Cancer Therapy Evaluation Program").getId()));
         }
