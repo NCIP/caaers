@@ -43,7 +43,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
 	private ApplicationContext applicationContext;
 	protected ResearchStaffRepository researchStaffRepository;
 	
-
+	
 	/**
      * Fetches the research staff from the DB
      * 

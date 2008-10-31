@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.tools.mail;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 
+import java.io.File;
 import java.util.Properties;
 
 import javax.mail.MessagingException;
@@ -12,9 +13,11 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -98,6 +101,33 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 			 throw new CaaersSystemException("Error while sending email", e);
 		}
     }
+    
+    /**
+     * This method is used to send an email
+     */
+	public void sendMail(String[] to, String subject, String content, String[] attachmentFilePaths){
+		try {		
+		    MimeMessage message = createMimeMessage();
+		    message.setSubject(subject);
+		
+		    // use the true flag to indicate you need a multipart message
+		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
+		    helper.setTo(to);
+		    helper.setText(content);
+		    
+		    for(String attachmentPath : attachmentFilePaths){
+		    	if(StringUtils.isNotEmpty(attachmentPath)){
+		    		File f = new File(attachmentPath);
+		    		FileSystemResource file = new FileSystemResource(f);
+				    helper.addAttachment(file.getFilename(), file);
+		    	}
+		    }
+			send(message);
+		    
+		} catch (Exception e) {
+			 throw new CaaersSystemException("Error while sending email", e);
+		}
+	}
     
     @Required
     public void setConfiguration(Configuration configuration) {

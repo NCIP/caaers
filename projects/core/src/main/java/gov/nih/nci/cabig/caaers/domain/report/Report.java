@@ -4,6 +4,8 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
 
@@ -52,10 +54,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
     private List<ReportVersion> reportVersions;
 
-    // TODO: This is to CC people when submitting report - Not sure if this
-    // should be here or if we should create a new ReportDelivery object which in
-    // turn is tied into ReportDeliveryDefinition & ReportDefinition
-    private String email;
 
     private List<ReportDelivery> deliveries;
 
@@ -81,7 +79,21 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     public boolean hasScheduledNotifications() {
         return (notifications != null) && (!notifications.isEmpty());
     }
-
+    
+    /**
+     * This method will loop through the delivery defs,to see if there is an endpoint of type url
+     * @return
+     */
+    public boolean hasSystemDeliveries(){
+    	if(deliveries == null) return false;
+    	
+    	for(ReportDelivery rDelivery : deliveries){
+    		if(rDelivery.isSystemType()) return true;
+    	}
+    	
+    	return false;
+    }
+    
     /**
      * Returns the notification having the supplied Id.
      */
@@ -218,23 +230,46 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.physicianSignoff = physicianSignoff;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
+    
+    
+    /**
+     * This method will return the list of email recipients associated with this report. 
+     *  - Email recipients from deliveries
+     *  - CC Emails from ReportVersion (Last version) 
+     */
     @Transient
-    public String[] getEmailAsArray() {
-        if (this.email == null) {
-            return null;
-        }
-        String[] emails = this.email.split(",");
-        return emails;
+    public List<String> getEmailRecipients(){
+    	List<String> emailAddresses = new ArrayList<String>();
+    	if(deliveries != null){
+    		for(ReportDelivery rd : deliveries){
+    			if(rd.isEmailType()) emailAddresses.add(rd.getEndPoint());
+    		}
+    	}
+    	//now include the CC emails.
+    	ReportVersion lastVersion = getLastVersion();
+    	if(lastVersion != null){
+    		lastVersion.getCcEmails();
+    		String[] ccEmails = lastVersion.getEmailAsArray();
+    		for(String ccEmail : ccEmails){
+    			String email = ccEmail.trim();
+    			if(StringUtils.isNotEmpty(email))	emailAddresses.add(email);
+    		}
+    	}
+    	
+    	return emailAddresses;
     }
-
+    
+    @Transient
+    public List<ReportDelivery> getExternalSystemDeliveries(){
+    	List<ReportDelivery> externalDeliveries = new ArrayList<ReportDelivery>();
+    	if(deliveries != null){
+    		for(ReportDelivery rd : deliveries){
+    			if(rd.isSystemType()) externalDeliveries.add(rd);
+    		}
+    	}
+    	return externalDeliveries;
+    }
+    
     @OneToMany
     @JoinColumn(name = "report_id", nullable = false)
     @IndexColumn(name = "list_index")
@@ -356,4 +391,6 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	}
     	return submitted;
     }
+    
+   
 }

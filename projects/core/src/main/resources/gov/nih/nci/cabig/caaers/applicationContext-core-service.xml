@@ -230,5 +230,15 @@ This applicationContext contains the definition of the concrete services
 	<bean id="reportDefinitionConverter" class="gov.nih.nci.cabig.caaers.service.migrator.ReportDefinitionConverter">
 		<property name="organizationDao" ref="organizationDao"/>
 	</bean> 
-
+	
+	<bean id="adeersReportGenerator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.api.AdeersReportGenerator"/>
+	<bean id="reportSubmissionService" lazy-init="true" class="gov.nih.nci.cabig.caaers.service.ReportSubmissionService">
+	    	<property name="caaersJavaMailSender" ref="mailer" />
+	    	<property name="adeersReportGenerator" ref="adeersReportGenerator" />
+	    	<property name="messageBroadcastService" ref="messageBroadcaster" />
+	    	<property name="reportDao" ref="reportDao" />
+	    	<property name="schedulerService" ref="schedulerService" />
+	    	<property name="nowFactory" ref="nowFactory" />
+	</bean>
+	
 </beans>

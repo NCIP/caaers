@@ -6,13 +6,17 @@ import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -62,8 +66,16 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     private String submissionMessage;
 
     private Report report;
+    
+    List<ReportContent> contents;
+    
 
     // ////Logic
+    public void addReportContent(ReportContent content){
+    	if(contents == null) contents = new ArrayList<ReportContent>();
+    	contents.add(content);
+    }
+    
     @Transient
     public String getStatusAsString(){
     	if(reportStatus == ReportStatus.PENDING){
@@ -210,4 +222,15 @@ public class ReportVersion extends AbstractMutableDomainObject implements Serial
     public void setSubmissionUrl(String submissionUrl) {
         this.submissionUrl = submissionUrl;
     }
+    
+    @OneToMany
+    @JoinColumn(name="report_version_id" ,nullable=false)
+    @Cascade(value={CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    public List<ReportContent> getContents() {
+		return contents;
+	}
+    public void setContents(List<ReportContent> contents) {
+		this.contents = contents;
+	}
+   
 }

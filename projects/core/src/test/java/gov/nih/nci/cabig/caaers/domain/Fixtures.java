@@ -112,6 +112,10 @@ public class Fixtures {
         report.setPhysician(makeExpeditedReportPersonSavable(new Physician()));
         return report;
     }
+    
+    public static Submitter createSubmitter(){
+    	return makeExpeditedReportPersonSavable(new Submitter());
+    }
 
     private static <T extends ReportPerson> T makeExpeditedReportPersonSavable(final T person) {
         person.setFirstName("Frank");
@@ -435,4 +439,12 @@ public class Fixtures {
         def.setAmendable(true);
         return def;
     }
+    
+   public static ReportDeliveryDefinition createReportDeliveryDefinition(String endPointType, int entityType){
+	   ReportDeliveryDefinition rd = new ReportDeliveryDefinition();
+	   rd.setEndPoint("abcd");
+	   rd.setEndPointType(endPointType);
+	   rd.setEntityType(entityType);
+	   return rd;
+   }
 }

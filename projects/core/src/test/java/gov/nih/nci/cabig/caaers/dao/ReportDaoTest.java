@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.DeliveryStatus;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportContent;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDelivery;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDeliveryDefinition;
@@ -283,41 +284,88 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     }
     
     public void testAmmend() {
-    	{
-    		Report report = getDao().getById(-223);
-    		assertNotNull(report);
-    		assertNotNull(report.getReportVersions());
-    		assertEquals(1, report.getReportVersions().size());
-    		
-    		ReportVersion reportVersion = new ReportVersion();
-            reportVersion.setCreatedOn(new Date());
-            reportVersion.setReportStatus(ReportStatus.PENDING);
-            report.setStatus(ReportStatus.PENDING);
-            
-            // Set report due date
-            Calendar cal = GregorianCalendar.getInstance();
-            cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
-            report.setDueOn(cal.getTime());
-            reportVersion.setDueOn(cal.getTime());
-            
-            // Logic to update the reportVersionId
-            ReportVersion lastVersion = report.getLastVersion();
-            Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
-            currentVersionId++;
-            reportVersion.setReportVersionId(currentVersionId.toString());
-            report.addReportVersion(reportVersion);
-            
-            Report merged = getDao().merge(report);
-            assertNotNull(merged);
-            assertEquals(2, report.getReportVersions().size());
-    	}
+    	 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+    		 @Override
+             protected void doInTransactionWithoutResult(TransactionStatus status) {
+	    		Report report = getDao().getById(-223);
+	    		assertNotNull(report);
+	    		assertNotNull(report.getReportVersions());
+	    		assertEquals(1, report.getReportVersions().size());
+	    		
+	    		ReportVersion reportVersion = new ReportVersion();
+	            reportVersion.setCreatedOn(new Date());
+	            reportVersion.setReportStatus(ReportStatus.PENDING);
+	            report.setStatus(ReportStatus.PENDING);
+	            
+	            // Set report due date
+	            Calendar cal = GregorianCalendar.getInstance();
+	            cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
+	            report.setDueOn(cal.getTime());
+	            reportVersion.setDueOn(cal.getTime());
+	            
+	            // Logic to update the reportVersionId
+	            ReportVersion lastVersion = report.getLastVersion();
+	            Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
+	            currentVersionId++;
+	            reportVersion.setReportVersionId(currentVersionId.toString());
+	            report.addReportVersion(reportVersion);
+	            
+	            Report merged = getDao().merge(report);
+	            assertNotNull(merged);
+	            assertEquals(2, report.getReportVersions().size());
+    		 }
+    	});
     	 interruptSession();
-    	 {
-    		 Report report = getDao().getById(-223);
-     		assertNotNull(report);
-     		assertNotNull(report.getReportVersions());
-     		assertEquals(2, report.getReportVersions().size());
-    	 }
+		 transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			 @Override
+	         protected void doInTransactionWithoutResult(TransactionStatus status) {
+	    		 Report report = getDao().getById(-223);
+	     		assertNotNull(report);
+	     		assertNotNull(report.getReportVersions());
+	     		assertEquals(2, report.getReportVersions().size());
+			 }
+		 });
+    }
+    
+    public void testSaveWithReportVersionModified() {
+    	transactionTemplate.execute(new TransactionCallbackWithoutResult(){
+    		@Override
+    		protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+    			Report report = getDao().getById(-223);
+	    		assertNotNull(report);
+	    		assertNotNull(report.getReportVersions());
+	    		assertEquals(1, report.getReportVersions().size());
+	    		
+	    		ReportVersion reportVersion = report.getLastVersion();
+	            reportVersion.setCreatedOn(new Date());
+	            reportVersion.setReportStatus(ReportStatus.PENDING);
+	            
+	            ReportContent c1 = new ReportContent("application/pdf");
+	            c1.setContent("<xml><testing>Welcome</testing></xml>".getBytes());
+	            
+	            ReportContent c2 = new ReportContent("text/xml");
+	            c2.setContent("<xml><testing>Welcome</testing></xml>".getBytes());
+	            
+	            reportVersion.addReportContent(c1);
+	            reportVersion.addReportContent(c2);
+	            
+	            report.setStatus(ReportStatus.PENDING);
+	            rsDao.save(report);
+	            
+    		}
+    	});
+    	interruptSession();
+    	transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+			@Override
+	        protected void doInTransactionWithoutResult(TransactionStatus status) {
+	    		Report report = getDao().getById(-223);
+	     		assertNotNull(report);
+	     		ReportContent rc = report.getLastVersion().getContents().get(1);
+	     		byte[] xmlContent = rc.getContent();
+	     		assertEquals("<xml><testing>Welcome</testing></xml>" , new String(xmlContent));
+	     		assertEquals("text/xml", rc.getContentType());
+			}
+		});
     }
     
     public void testIsSubmitted(){

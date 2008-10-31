@@ -151,6 +151,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.Epoch</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Arm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.report.ReportContent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Condition</value>
             </list>

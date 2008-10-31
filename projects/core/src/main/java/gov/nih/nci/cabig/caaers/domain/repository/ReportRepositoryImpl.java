@@ -20,14 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.service.SchedulerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Transient;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
@@ -35,6 +28,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.persistence.Transient;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Biju Joseph
@@ -257,6 +259,8 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
 
     }
+
+    
     
     @Required
     public void setReportDao(final ReportDao reportDao) {
@@ -282,4 +286,6 @@ public class ReportRepositoryImpl implements ReportRepository {
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
+    
+  
 }

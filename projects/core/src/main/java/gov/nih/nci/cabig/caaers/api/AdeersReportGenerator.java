@@ -33,6 +33,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class AdeersReportGenerator {
 
+    
+    protected final Log log = LogFactory.getLog(getClass());
+
     // TO-DO set in spring config
     private String xmlXsltFile = "xslt/Caaers2Adeers-xml-AEReport.xslt";
 
@@ -46,24 +49,16 @@ public class AdeersReportGenerator {
 
     private String xslFOCIOMSXsltFile = "xslt/Caaers2CIOMS-pdf.xslt";
 
-    private String pdfOutFile = "/tmp/aeReport.pdf";
+//BJ : never globally share variables on a multi threaded env (this is a singleton bean).
+//    private String pdfOutFile = "/tmp/aeReport.pdf";
 
-    protected Configuration configuration;
 
-    protected CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService;
-
-    protected ReportDao reportDao;
-
-    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
-    
-    protected final Log log = LogFactory.getLog(getClass());
-    
-    protected CaaersJavaMailSender caaersJavaMailSender;
-    
+    protected  AdverseEventReportSerializer aeReportSerializer;
 
 
 	public AdeersReportGenerator() {
-    };
+		aeReportSerializer = new AdverseEventReportSerializer();
+	};
 
     public String getAdeersXml(String adverseEventReportXml) throws Exception {
         XsltTransformer xsltTrans = new XsltTransformer();
@@ -72,11 +67,7 @@ public class AdeersReportGenerator {
         return transformedToAdeers;
     }
 
-    public void generatePdf(String adverseEventReportXml) throws Exception {
 
-        XsltTransformer xsltTrans = new XsltTransformer();
-        xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOXsltFile);
-    }
 
     public void generatePdf(String adverseEventReportXml, String pdfOutFileName) throws Exception {
 
@@ -84,11 +75,7 @@ public class AdeersReportGenerator {
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOXsltFile);
     }
 
-    public void generateMedwatchPdf(String adverseEventReportXml) throws Exception {
 
-        XsltTransformer xsltTrans = new XsltTransformer();
-        xsltTrans.toPdf(adverseEventReportXml, pdfOutFile, xslFOMedWatchXsltFile);
-    }
 
     public void generateDcpSaeForm(String adverseEventReportXml, String pdfOutFileName)
                     throws Exception {
@@ -116,173 +103,61 @@ public class AdeersReportGenerator {
         XsltTransformer xsltTrans = new XsltTransformer();
         xsltTrans.toPdf(adverseEventReportXml, pdfOutFileName, xslFOMedWatchXsltFile);
     }
-
-    
-
-    public void generateAndNotify(String aeReportId, Report report, String xml) throws Exception {
-        List<String> emails = new ArrayList<String>();
-        List<String> eprs = new ArrayList<String>();
-
-        int reportId = report.getId();
-
-        // Report report = adverseEventReportDataObject.getReports().get(((int)reportIndex));
-        StringBuilder sb = new StringBuilder();
-        sb.append("<EXTERNAL_SYSTEMS>");
-        for (ReportDelivery delivery : report.getReportDeliveries()) {
-            ReportDeliveryDefinition rdd = delivery.getReportDeliveryDefinition();
-            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL)) {
-                String ep = delivery.getEndPoint();
-                emails.add(ep);
-            }
-            if (rdd.getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL)) {
-                String ep = delivery.getEndPoint();
-                String uid = rdd.getUserName();
-                String pwd = rdd.getPassword();
-                sb.append(ep + "::" + uid + "::" + pwd + ",");
-                eprs.add(ep);
-            }
-        }
-        sb.append("</EXTERNAL_SYSTEMS>");
-        sb.append("<REPORT_ID>" + reportId + "</REPORT_ID>");
-
-        String submitterEmail = report.getLastVersion().getSubmitter().getContactMechanisms().get(
-                        PersonContact.EMAIL);
-
-        sb.append("<SUBMITTER_EMAIL>" + submitterEmail + "</SUBMITTER_EMAIL>");
-
-        // CCs
-        String[] emailAddresses = report.getLastVersion().getEmailAsArray();
-        if (emailAddresses != null) {
-            for (String email : emailAddresses) {
-                emails.add(email.trim());
-            }
-        }
-        String tempDir = System.getProperty("java.io.tmpdir");
-        
-        if (eprs.size() > 0) {
-        	// generating the pdf here , this would be attched to the email incase of successfull submission to Adeers  (MessageNotificationService)
-        	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
-        	this.generatePdf(xml);
-        	
-            xml = xml.replaceAll("<AdverseEventReport>", "<AdverseEventReport>" + sb.toString());
-
-            messageBroadcastService.initialize();
-            messageBroadcastService.broadcast(xml);
-            
-        } else if (emails.size() > 0) {
-            
-            String subject = "";
-            
-            if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.ADEERSPDF)) {
-            	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
-            	this.generatePdf(xml);
-            	subject = "Expedited Adverse Event Report";
-            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.DCPSAEFORM)) {
-            	pdfOutFile = tempDir + "/dcpSAEForm-" + aeReportId + ".pdf";
-            	this.generateDcpSaeForm(xml, pdfOutFile);
-            	subject = "DCP SAE Form";
-            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.MEDWATCHPDF)) {
-            	pdfOutFile = tempDir + "/medWatchReport-" + aeReportId + ".pdf";
-            	this.generateMedwatchPdf(xml);
-            	subject = "Medwatch Form FDA 3500A";
-            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSFORM)) {
-            	pdfOutFile = tempDir + "/CIOMSForm-" + aeReportId + ".pdf";
-            	this.generateCIOMS(xml, pdfOutFile);
-            	subject = "CIOMS Form";
-            } else if ( report.getReportDefinition().getReportFormatType().equals(ReportFormatType.CIOMSSAEFORM)) {
-            	pdfOutFile = tempDir + "/CIOMS-SAE-Form-" + aeReportId + ".pdf";
-            	this.generateCIOMSTypeForm(xml, pdfOutFile);
-            	subject = "CIOMS SAE Form";
-            } else {
-            	pdfOutFile = tempDir + "/expeditedAdverseEventReport-" + aeReportId + ".pdf";
-            	generatePdf(xml);
-            	subject = "Expedited Adverse Event Report";
-            }
-            
-            //
-            ExpeditedAdverseEventReport expeditedAdverseEventReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
-            Participant participant = expeditedAdverseEventReport.getAssignment().getParticipant();
-            String firstName = participant.getLastFirst();
-            String lastName = participant.getLastName();
-            List<Identifier> pIds = participant.getIdentifiers();
-            String pid = "";
-            for (Identifier identifier:pIds) {
-            	if (identifier.getPrimaryIndicator()) {
-            		pid = identifier.getValue();
-            	}
-            }
-            
-            Study study = expeditedAdverseEventReport.getStudy();
-            String shortTitle = study.getShortTitle();
-            List<Identifier> sIds = study.getIdentifiers();
-            String sid = "";
-            for (Identifier identifier:sIds) {
-            	if (identifier.getPrimaryIndicator()) {
-            		sid = identifier.getValue();
-            	}
-            }
-            
-            String content = "";
-            if (report.getReportDefinition().equals(ReportFormatType.ADEERSPDF)) {
-            	content = "An "+subject+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been submitted to AdEERS. Please refer to the attached AdEERS report for complete details.";
-            } else {
-            	content = "An "+subject+" for "+firstName +" " + lastName+"("+pid+") on "+shortTitle+"("+sid+") has successfully been created. Please refer to the attached PDF report for complete details.";
-            }
-            
-            sendMail(configuration.get(Configuration.SYSTEM_FROM_EMAIL), emails.toArray(new String[0]), subject, content, pdfOutFile);
-
-        }
-
+    /**
+     * This method will generate the caAERS internal xml representation of the report.
+     * @param aeReport
+     */
+    public String generateCaaersXml(ExpeditedAdverseEventReport aeReport) throws Exception{
+    	return aeReportSerializer.serialize(aeReport);
     }
     
-	public void sendMail(String from, String[] to, String subject, String content, String attachment) throws Exception {
-		
-		try {		
-		    MimeMessage message = caaersJavaMailSender.createMimeMessage();
-		    message.setSubject(subject);
-		    message.setFrom(new InternetAddress(from));
-		
-		    // use the true flag to indicate you need a multipart message
-		    MimeMessageHelper helper = new MimeMessageHelper(message, true);
-		    helper.setTo(to);
-		    helper.setText(content);
-		    
-			if (attachment != null) {
-			    File f = new File(attachment);
-			    FileSystemResource file = new FileSystemResource(f);
-			    helper.addAttachment(file.getFilename(), file);
-			}
-		    
-		    caaersJavaMailSender.send(message);
-		    
-		} catch (Exception e) {
-		    throw new Exception(" Error in sending email , please check the confiuration " , e);
+    /**
+     * This method will generate the PDF file and store it in the file system and return its path.
+     * @param report
+     * @param caaersXml
+     * @return
+     * @throws Exception
+     */
+    public String[] generateExternalReports(Report report, String caaersXml) throws Exception {
+    	assert report != null;
+    	ReportFormatType formatType = report.getReportDefinition().getReportFormatType();
+    	Integer aeReportId = report.getAeReport().getId();
+    	
+    	String pdfOutFile = System.getProperty("java.io.tmpdir");
+    	
+    	switch (formatType) {
+			case DCPSAEFORM:
+				pdfOutFile += "/dcpSAEForm-" + aeReportId + ".pdf";
+	        	this.generateDcpSaeForm(caaersXml, pdfOutFile);
+				break;
+			case MEDWATCHPDF:
+				pdfOutFile += "/medWatchReport-" + aeReportId + ".pdf";
+	        	this.generateMedwatchPdf(caaersXml, pdfOutFile);
+				break;
+			case CIOMSFORM:
+				pdfOutFile += "/CIOMSForm-" + aeReportId + ".pdf";
+	        	this.generateCIOMS(caaersXml, pdfOutFile);
+				break;
+			case CIOMSSAEFORM:
+				pdfOutFile += "/CIOMS-SAE-Form-" + aeReportId + ".pdf";
+	        	this.generateCIOMSTypeForm(caaersXml, pdfOutFile);
+				break;
+			default: //adders /caaersxml (BJ)
+				pdfOutFile  += "/expeditedAdverseEventReport-" + report.getAeReport().getId() + ".pdf";
+				generatePdf(caaersXml, pdfOutFile);
+				break;
 		}
-	
-	 }
-
-    public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
+    	return new String[] { pdfOutFile };
+    	
     }
-
-    public void setMessageBroadcastService(
-                    CaaersAdeersMessageBroadcastServiceImpl messageBroadcastService) {
-        this.messageBroadcastService = messageBroadcastService;
-    }
-
-    public void setReportDao(ReportDao reportDao) {
-        this.reportDao = reportDao;
-    }
+  
 
 
-    public void setExpeditedAdverseEventReportDao(
-            ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
-    		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-    }
-	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender) {
-		this.caaersJavaMailSender = caaersJavaMailSender;
+
+	public void setAeReportSerializer(AdverseEventReportSerializer aeReportSerializer) {
+		this.aeReportSerializer = aeReportSerializer;
 	}
-    		
+	
     public static void main(String[] args) {
         // TODO Auto-generated method stub
         String str1 = "";

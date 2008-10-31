@@ -246,6 +246,7 @@
     <ae_pre_existing_conds />
     <additional_information />
     <ae_radiation_interventions />
+    <report_contents />
     
     <!--  Hack, we need to clear all miss-fired triggers from quartz tables for easy execution of 
      	  SchedulerServiceTest. So adding certain of the quartz related tables so that when this 

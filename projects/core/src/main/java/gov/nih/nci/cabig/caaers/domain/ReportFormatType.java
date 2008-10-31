@@ -7,9 +7,12 @@ import static gov.nih.nci.cabig.ctms.domain.EnumHelper.sentenceCasedName;
 import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 
 public enum ReportFormatType implements CodedEnum<Integer> {
-    CAAERSXML(1, "CaAERS XML"), ADEERSPDF(2, "AdEERS PDF"), MEDWATCHPDF(3, "MedWatch 3500A PDF"), DCPSAEFORM(
-                    4, "DCP SAE PDF"), CIOMSFORM(5, "CIOMS PDF"), CIOMSSAEFORM(6,
-                    "DCP Safety Report PDF");
+    CAAERSXML(1, "CaAERS XML"), 
+    ADEERSPDF(2, "AdEERS Expedited Adverse Event Report"), 
+    MEDWATCHPDF(3, "Medwatch Form FDA 3500A"), 
+    DCPSAEFORM(4, "DCP SAE Form"), 
+    CIOMSFORM(5, "CIOMS Form"), 
+    CIOMSSAEFORM(6,"CIOMS SAE Form");
 
     private int code;
 

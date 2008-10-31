@@ -1,12 +1,13 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -42,10 +43,6 @@ import java.util.List;
 
 public class AdverseEventReportSerializer {
 
-	
-	   private ExpeditedAdverseEventReportDao adverseEventReportDao;
-	   private ExpeditedAdverseEventReport adverseEventReportDataObject;
-
 	   //TODO:
 	   // Added TreatmentAssignment in TreatmentInformation
 	   // Removed TreatmentInformation.treatmentAssignmentCode
@@ -64,8 +61,14 @@ public class AdverseEventReportSerializer {
 	    * @throws Exception
 	    */
 	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject) throws Exception{
-		   this.adverseEventReportDataObject = adverseEventReportDataObject;
-		   return serialize();
+		   String xml = "";
+			XmlMarshaller marshaller = new XmlMarshaller();
+
+			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
+			xml = marshaller.toXML(aer,getMappingFile());
+		
+
+			return xml;
 	   }
 
 	   /**
@@ -75,28 +78,14 @@ public class AdverseEventReportSerializer {
 	    * @throws Exception
 	    */
 	   public String serialize (int adverseEventReportId) throws Exception{
-		   adverseEventReportDataObject = getAdverseEventReportDao().getById(adverseEventReportId);
-		   return serialize();
+		   //BJ : Unused method , so will be deleted in next release;
+		   if(true) throw new UnsupportedOperationException("This should not be used as the AdverseEventReportDao was not properly initialized");
+//		   ExpeditedAdverseEventReport adverseEventReportDataObject = getAdverseEventReportDao().getById(adverseEventReportId);
+//		   return serialize(adverseEventReportDataObject);
+		   return "";
 	   }
 
-	   /**
-	    *
-	    * @return
-	    * @throws Exception
-	    */
-	   private String serialize() throws Exception{
-
-
-		   String xml = "";
-
-			XmlMarshaller marshaller = new XmlMarshaller();
-
-			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
-			xml = marshaller.toXML(aer,getMappingFile());
-		
-
-			return xml;
-	   }
+	  
 
 	   /**
 	    *
@@ -618,7 +607,7 @@ public class AdverseEventReportSerializer {
 				if (ae.getAdverseEventTerm().getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
 					adverseEvent.setAdverseEventMeddraLowLevelTerm(ae.getAdverseEventMeddraLowLevelTerm());
 				} else {
-					adverseEvent.getAdverseEventCtcTerm().setCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm());
+					adverseEvent.getAdverseEventCtcTerm().setCtcTerm(getCtcTerm(ae.getAdverseEventCtcTerm().getCtcTerm()));
 				}
 				adverseEvent.setLowLevelTerm(ae.getLowLevelTerm());
 	
@@ -648,7 +637,26 @@ public class AdverseEventReportSerializer {
 
 	    	return adverseEvent;
 	    }
-
+	    /**
+	     * This method will return a copy of the CTCTerm from the given term
+	     * @param term
+	     * @return
+	     */
+	    private CtcTerm getCtcTerm(CtcTerm ctcTerm){
+	    	CtcTerm term = new CtcTerm();
+	    	term.setId(ctcTerm.getId());
+	    	term.setTerm(ctcTerm.getTerm());
+	    	term.setCtepTerm(ctcTerm.getCtepTerm());
+	    	term.setCtepCode(ctcTerm.getCtepCode());
+	    	term.setSelect(ctcTerm.getSelect());
+	    	term.setOtherRequired(ctcTerm.isOtherRequired());
+	    	CtcCategory category = new CtcCategory();
+	    	category.setId(ctcTerm.getCategory().getId());
+	    	category.setName(ctcTerm.getCategory().getName());
+	    	term.setCategory(category);
+	    	
+	    	return term;
+	    }
 
 	    private OtherCauseAttribution getOtherCauseAttribution(OtherCauseAttribution oca) throws Exception {
 	    	OtherCauseAttribution otherCauseAttribution = new OtherCauseAttribution();
@@ -717,13 +725,7 @@ public class AdverseEventReportSerializer {
 	    	return treatmentInformation;
 	    }
 
-		public ExpeditedAdverseEventReportDao getAdverseEventReportDao() {
-			return adverseEventReportDao;
-		}
 
-		public void setAdverseEventReportDao(ExpeditedAdverseEventReportDao adverseEventReportDao) {
-			this.adverseEventReportDao = adverseEventReportDao;
-		}
 
 		public String getMappingFile() {
 			return mappingFile;

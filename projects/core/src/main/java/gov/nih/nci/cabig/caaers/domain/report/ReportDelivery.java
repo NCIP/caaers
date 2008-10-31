@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -77,5 +78,25 @@ public class ReportDelivery extends AbstractMutableDomainObject {
 
     public void setReport(Report report) {
         this.report = report;
+    }
+    
+    @Transient
+    public boolean isEmailType(){
+    	return getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_EMAIL);
+    }
+    
+    @Transient
+    public boolean isSystemType(){
+    	return getReportDeliveryDefinition().getEndPointType().equals(ReportDeliveryDefinition.ENDPOINT_TYPE_URL) 
+    		&& getReportDeliveryDefinition().getEntityType() == (ReportDeliveryDefinition.ENTITY_TYPE_SYSTEM);
+    }
+    
+    @Transient
+    public String getUserName(){
+    	return getReportDeliveryDefinition().getUserName();
+    }
+    @Transient
+    public String getPassword(){
+    	return getReportDeliveryDefinition().getPassword();
     }
 }

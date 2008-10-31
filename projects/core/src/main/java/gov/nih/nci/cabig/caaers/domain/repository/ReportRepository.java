@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 
+import java.io.File;
 import java.util.Collection;
 
 /**
@@ -66,5 +67,5 @@ public interface ReportRepository {
      * @param mandatorySections
      */
     public void initializeMandatorySectionFields(ExpeditedAdverseEventReport aeReport, Collection<ExpeditedReportSection> mandatorySections);
-
+  
 }

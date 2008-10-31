@@ -56,9 +56,7 @@ public class AdverseEventResponseDescription extends AbstractExpeditedReportSing
 
     private TimeValue primaryTreatmentApproximateTime;
 
-    public AdverseEventResponseDescription() {
-        retreated = Boolean.FALSE;
-    }
+
 
     // //// LOGIC
 

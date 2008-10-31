@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.service;
 
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+
 import java.util.Properties;
 
 import javax.activation.FileTypeMap;
@@ -12,7 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessagePreparator;
 
-public class MailerStub extends JavaMailSenderImpl {
+public class MailerStub extends CaaersJavaMailSender {
     @Override
     public void send(MimeMessage mimeMessage) throws MailException {
         // TODO Auto-generated method stub
@@ -105,6 +107,12 @@ public class MailerStub extends JavaMailSenderImpl {
     public void setUsername(String username) {
         // TODO Auto-generated method stub
         // super.setUsername(username);
+    }
+    
+    @Override
+    public void sendMail(String[] to, String subject, String content,
+    		String[] attachmentFilePaths) {
+    	super.sendMail(to, subject, content, attachmentFilePaths);
     }
 
 }

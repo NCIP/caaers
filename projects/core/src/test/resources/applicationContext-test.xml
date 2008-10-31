@@ -84,11 +84,10 @@
     <!-- Unable to load study participant assignment -->
     <bean id="studyParticipantAssignmentAspect"
           class="gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect">
-
-        <property name="securityInterceptor"
-                  ref="daoSecurity"/>
-
+        <property name="securityInterceptor" ref="daoSecurity"/>
     </bean>
-    <bean id="mailer" class="gov.nih.nci.cabig.caaers.service.MailerStub"/>
+    <bean id="mailer" class="gov.nih.nci.cabig.caaers.service.MailerStub">
+    	<property name="configuration" ref="configuration" />
+    </bean>
 
 </beans>

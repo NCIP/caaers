@@ -73,8 +73,7 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
                 log.debug("Denying access");
             }
 
-            throw new AccessDeniedException(
-                            "User does not have permission to view to this Study Site");
+            throw new AccessDeniedException("User does not have permission to view to this Study Site");
         }
     }
 
