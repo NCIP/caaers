@@ -24,7 +24,7 @@ public class XMLUtilTest extends RulesTestCase {
 
     public void testUnmarshal() throws Exception {
         String xml = getCommonFileContext("test_rule2.xml");
-        System.out.println(xml);
+        //System.out.println(xml);
         Object p = XMLUtil.unmarshal(xml);
         assertNotNull("Object cannot be null", p);
     	assertTrue(true);
