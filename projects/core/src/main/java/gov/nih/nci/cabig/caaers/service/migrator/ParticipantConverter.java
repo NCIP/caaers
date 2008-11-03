@@ -121,13 +121,6 @@ public class ParticipantConverter {
 				studyParticipantAssignment = new StudyParticipantAssignment();
 				studyParticipantAssignment.setStudySubjectIdentifier(assignmentType.getStudySubjectIdentifier());
 				
-				if(assignmentType.getDateOfEnrollment() != null){
-					Calendar dateOfEnrollment = Calendar.getInstance();
-					XMLGregorianCalendar cal = assignmentType.getDateOfEnrollment();
-					dateOfEnrollment.set(cal.getYear(), cal.getMonth(), cal.getDay());
-					studyParticipantAssignment.setDateOfEnrollment(dateOfEnrollment.getTime());
-				}	
-				
 				studySite = new StudySite();
 				study = new Study();
 				identifier = new Identifier();

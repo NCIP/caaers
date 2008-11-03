@@ -29,7 +29,6 @@ public class StudyParticipantAssignmentMigrator implements Migrator<Participant>
                 
                 StudyParticipantAssignment studParticipantAssignment = new StudyParticipantAssignment(dest, studySite);
                 studParticipantAssignment.setStudySubjectIdentifier(studyParticipantAssignment.getStudySubjectIdentifier());
-                studParticipantAssignment.setDateOfEnrollment(studyParticipantAssignment.getDateOfEnrollment());
                 
                 dest.addAssignment(studParticipantAssignment);
 
