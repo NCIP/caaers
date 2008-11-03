@@ -29,7 +29,6 @@
     <assignments>
       <p:assignment>
       	<studySubjectIdentifier>001</studySubjectIdentifier>
-        <dateOfEnrollment>2008-01-01</dateOfEnrollment>
         <p:studySite>
           <p:study>
             <identifiers>
@@ -47,7 +46,6 @@
       </p:assignment>
       <p:assignment>
       	<studySubjectIdentifier>002</studySubjectIdentifier>
-        <dateOfEnrollment>2008-01-01</dateOfEnrollment>
         <p:studySite>
           <p:study>
             <identifiers>
