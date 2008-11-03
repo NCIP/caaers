@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.rules.common;
 
+import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
 import org.springframework.core.io.ClassPathResource;
-
-import gov.nih.nci.cabig.caaers.rules.RulesTestCase;
-import junit.framework.TestCase;
 
 public class XMLUtilTest extends RulesTestCase {
     @Override
