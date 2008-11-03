@@ -35,7 +35,6 @@ public class StudyParticipantAssignmentSynchronizer implements Migrator<Particip
 				
 				if(studyIdentifierMatchFound && (xmlOrgName.equals(dbOrgName) || xmlNciInstCode.equals(dbNciInstCode))){
 					dbStudyParticipantAssignment.setStudySubjectIdentifier(xmlStudyParticipantAssignment.getStudySubjectIdentifier());
-					dbStudyParticipantAssignment.setDateOfEnrollment(xmlStudyParticipantAssignment.getDateOfEnrollment());
 					break;
 				}else{
 					xmlStudyParticipantAssignment.setId(null);
