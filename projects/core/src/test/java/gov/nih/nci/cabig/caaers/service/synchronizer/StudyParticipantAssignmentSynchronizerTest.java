@@ -52,7 +52,6 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		dbParticipant.addIdentifier(orgIdentifier1);
 		studyParticipantAssignment1 = new StudyParticipantAssignment();
 		studyParticipantAssignment1.setStudySubjectIdentifier("001");
-		studyParticipantAssignment1.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment1.setStudySite(studySite1);
 		studyParticipantAssignment1.setId(1);
 		dbParticipant.addAssignment(studyParticipantAssignment1);
@@ -72,7 +71,6 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		xmlParticipant.addIdentifier(orgIdentifier1a);
 		studyParticipantAssignment1a = new StudyParticipantAssignment();
 		studyParticipantAssignment1a.setStudySubjectIdentifier("001");
-		studyParticipantAssignment1a.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment1a.setStudySite(studySite1a);
 		assignmentList.add(studyParticipantAssignment1a);
 		
@@ -91,7 +89,6 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		xmlParticipant.addIdentifier(orgIdentifier2a);
 		studyParticipantAssignment2a = new StudyParticipantAssignment();
 		studyParticipantAssignment2a.setStudySubjectIdentifier("002");
-		studyParticipantAssignment2a.setDateOfEnrollment(new Date(System.currentTimeMillis()));
 		studyParticipantAssignment2a.setStudySite(studySite2a);
 		assignmentList.add(studyParticipantAssignment2a);
 		xmlParticipant.setAssignments(assignmentList);
@@ -121,6 +118,7 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		dbParticipant.setId(1);
 		dbParticipant.addIdentifier(orgIdentifier1);
 		studyParticipantAssignment1 = new StudyParticipantAssignment();
+		studyParticipantAssignment1.setStudySubjectIdentifier("001");
 		studyParticipantAssignment1.setStudySite(studySite1);
 		studyParticipantAssignment1.setId(1);
 		dbParticipant.addAssignment(studyParticipantAssignment1);
@@ -139,6 +137,7 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		dbParticipant.addIdentifier(orgIdentifier2a);
 		dbParticipant.setId(2);
 		studyParticipantAssignment2a = new StudyParticipantAssignment();
+		studyParticipantAssignment2a.setStudySubjectIdentifier("002");
 		studyParticipantAssignment2a.setStudySite(studySite2a);
 		dbParticipant.addAssignment(studyParticipantAssignment2a);
 		
@@ -158,6 +157,7 @@ public class StudyParticipantAssignmentSynchronizerTest extends AbstractNoSecuri
 		xmlParticipant = Fixtures.createParticipant("first", "last");
 		xmlParticipant.addIdentifier(orgIdentifier1);
 		studyParticipantAssignment1a = new StudyParticipantAssignment();
+		studyParticipantAssignment1a.setStudySubjectIdentifier("001");
 		studyParticipantAssignment1a.setStudySite(studySite1a);
 		assignmentList.add(studyParticipantAssignment1a);
 		xmlParticipant.setAssignments(assignmentList);
