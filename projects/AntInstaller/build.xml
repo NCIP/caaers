@@ -1,0 +1,61 @@
+<project name="MyProject" default="dist" basedir=".">
+    <description>
+        Ant Installer Fraamework build file
+    </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="lib.dir"  location="lib"/>
+  <property name="antlib.dir"  location="${lib.dir}/antlib"/>
+  
+  <path id = "build.classpath">
+  	<fileset dir="${lib.dir}" includes="**/*.jar"/>
+  	<fileset dir="${antlib.dir}" includes="**/*.jar"/>
+  </path>
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source " >
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac destdir="${build}">
+    <src path ="${src}"/>
+    <classpath refid = "build.classpath"/>
+    </javac>
+    <copy todir= "${build}">
+    	<fileset dir ="${src}">
+    		<exclude name ="**/*.java"/>
+    		<exclude name ="**/*.html"/>
+    		
+    	</fileset>
+    </copy>
+  </target>
+
+  <target name="dist" depends="compile"
+        description="generate the distribution" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}/lib"/>
+
+    <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+    <jar jarfile="${dist}/lib/ant-installer.jar" basedir="${build}"/>
+  	<copy file="${dist}/lib/ant-installer.jar" todir="${basedir}/../caAERS_Installer/installer/lib" overwrite="true"/>
+  	<copy file="${dist}/lib/ant-installer.jar" todir="${basedir}/../caAERS_Installer/installer/template/installlib" overwrite="true"/>
+  	
+  </target>
+	
+	
+
+  <target name="clean"
+        description="clean up" >
+    <!-- Delete the ${build} and ${dist} directory trees -->
+    <delete dir="${build}"/>
+    <delete dir="${dist}"/>
+  </target>
+</project>
+

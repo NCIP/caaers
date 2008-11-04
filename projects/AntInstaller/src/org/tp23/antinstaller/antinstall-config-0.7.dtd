@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+/* 
+ * Copyright 2005 Paul Hinds
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<!ELEMENT validated EMPTY >
+<!ATTLIST validated defaultValue CDATA #REQUIRED >
+<!ATTLIST validated regex CDATA #REQUIRED >
+<!ATTLIST validated displayText CDATA #REQUIRED >
+<!ATTLIST validated property NMTOKEN #REQUIRED >
+<!ATTLIST validated explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT file EMPTY >
+<!ATTLIST file defaultValue CDATA #REQUIRED >
+<!ATTLIST file defaultValueWin CDATA #IMPLIED >
+<!ATTLIST file displayText CDATA #REQUIRED >
+<!ATTLIST file property NMTOKEN #REQUIRED >
+<!ATTLIST file checkExists (true | false) #IMPLIED  >
+<!ATTLIST file explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT option EMPTY >
+<!ATTLIST option value CDATA #REQUIRED >
+<!ATTLIST option text CDATA #REQUIRED >
+
+<!ELEMENT comment EMPTY >
+<!ATTLIST comment bold (true | false) #IMPLIED >
+<!ATTLIST comment displayText CDATA #REQUIRED >
+<!ATTLIST comment title NMTOKEN #IMPLIED >
+<!ATTLIST comment explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT checkbox EMPTY >
+<!ATTLIST checkbox defaultValue NMTOKEN #REQUIRED >
+<!ATTLIST checkbox force (true | false) #IMPLIED  >
+<!ATTLIST checkbox displayText CDATA #REQUIRED >
+<!ATTLIST checkbox property NMTOKEN #REQUIRED >
+<!ATTLIST checkbox explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT installer ( page+ ) >
+<!ATTLIST installer verbose (true | false) #IMPLIED  >
+<!ATTLIST installer debug (true | false) #IMPLIED  >
+<!ATTLIST installer name CDATA #REQUIRED >
+<!ATTLIST installer windowIcon CDATA #IMPLIED >
+<!ATTLIST installer lookAndFeel NMTOKEN #IMPLIED >
+<!ATTLIST installer minJavaVersion NMTOKEN #IMPLIED >
+<!ATTLIST installer ui CDATA #IMPLIED >
+<!ATTLIST installer defaultImageResource CDATA #IMPLIED >
+<!ATTLIST installer finishButtonText CDATA #IMPLIED >
+<!ATTLIST installer antialiased CDATA #IMPLIED >
+
+<!ELEMENT directory EMPTY >
+<!ATTLIST directory defaultValue CDATA #REQUIRED >
+<!ATTLIST directory defaultValueWin CDATA #IMPLIED >
+<!ATTLIST directory create (true | false) #IMPLIED  >
+<!ATTLIST directory displayText CDATA #REQUIRED >
+<!ATTLIST directory property NMTOKEN #REQUIRED >
+<!ATTLIST directory checkExists (true | false) #IMPLIED  >
+<!ATTLIST directory explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT app-root EMPTY >
+<!ATTLIST app-root defaultValue CDATA #REQUIRED >
+<!ATTLIST app-root defaultValueWin CDATA #IMPLIED >
+<!ATTLIST app-root create (true | false) #IMPLIED  >
+<!ATTLIST app-root displayText CDATA #REQUIRED >
+<!ATTLIST app-root property NMTOKEN #REQUIRED >
+<!ATTLIST app-root checkExists (true | false) #IMPLIED  >
+<!ATTLIST app-root explanatoryText CDATA #IMPLIED >
+<!ATTLIST app-root checkFile1 CDATA #IMPLIED >
+<!ATTLIST app-root checkFile2 CDATA #IMPLIED >
+<!ATTLIST app-root checkDir1 CDATA #IMPLIED >
+<!ATTLIST app-root checkDir2 CDATA #IMPLIED >
+
+<!ELEMENT target EMPTY >
+<!ATTLIST target defaultValue NMTOKEN #REQUIRED >
+<!ATTLIST target force (true | false) #IMPLIED  >
+<!ATTLIST target displayText CDATA #REQUIRED >
+<!ATTLIST target target NMTOKEN #REQUIRED >
+<!ATTLIST target explanatoryText CDATA #IMPLIED >
+<!ATTLIST target osSpecific CDATA #IMPLIED >
+<!ATTLIST target strict CDATA #IMPLIED >
+
+<!ELEMENT page ( app-root | comment | text | checkbox | select | large-select | target-select | directory | file | target | validated | password | date )* >
+<!ATTLIST page name CDATA #REQUIRED >
+<!ATTLIST page type NMTOKEN #REQUIRED >
+<!ATTLIST page imageResource CDATA #IMPLIED >
+<!ATTLIST page displayText CDATA #REQUIRED >
+<!ATTLIST page target NMTOKEN #IMPLIED >
+
+<!-- License page attributes -->
+<!ATTLIST page resource CDATA #IMPLIED >
+<!ATTLIST page usePaging CDATA #IMPLIED >
+
+<!-- Splash page attributes -->
+<!ATTLIST page splashResource CDATA #IMPLIED >
+<!ATTLIST page altText CDATA #IMPLIED >
+
+<!-- Progress page attributes -->
+<!ATTLIST page showTargets NMTOKEN #IMPLIED >
+
+<!-- Input page attributes -->
+<!ATTLIST page ifTarget NMTOKEN #IMPLIED >
+<!ATTLIST page ifProperty CDATA #IMPLIED >
+<!ATTLIST page overflow CDATA #IMPLIED >
+
+<!ELEMENT select ( option+ ) >
+<!ATTLIST select defaultValue CDATA #REQUIRED >
+<!ATTLIST select explanatoryText CDATA #IMPLIED >
+<!ATTLIST select displayText CDATA #REQUIRED >
+<!ATTLIST select property NMTOKEN #REQUIRED >
+<!ATTLIST select explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT large-select ( option+ ) >
+<!ATTLIST large-select defaultValue CDATA #REQUIRED >
+<!ATTLIST large-select explanatoryText CDATA #IMPLIED >
+<!ATTLIST large-select displayText CDATA #REQUIRED >
+<!ATTLIST large-select property NMTOKEN #REQUIRED >
+<!ATTLIST large-select explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT target-select ( option+ ) >
+<!ATTLIST target-select defaultValue CDATA #REQUIRED >
+<!ATTLIST target-select explanatoryText CDATA #IMPLIED >
+<!ATTLIST target-select displayText CDATA #REQUIRED >
+<!ATTLIST target-select property NMTOKEN #REQUIRED >
+<!ATTLIST target-select explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT password EMPTY >
+<!ATTLIST password defaultValue NMTOKEN #REQUIRED >
+<!ATTLIST password regex CDATA #REQUIRED >
+<!ATTLIST password displayText CDATA #REQUIRED >
+<!ATTLIST password property NMTOKEN #REQUIRED >
+<!ATTLIST password explanatoryText CDATA #IMPLIED >
+<!ATTLIST password textMask CDATA #IMPLIED >
+
+<!ELEMENT date EMPTY >
+<!ATTLIST date defaultValue CDATA #REQUIRED >
+<!ATTLIST date dateFormat CDATA #REQUIRED >
+<!ATTLIST date displayText CDATA #REQUIRED >
+<!ATTLIST date property NMTOKEN #REQUIRED >
+<!ATTLIST date explanatoryText CDATA #IMPLIED >
+
+<!ELEMENT text EMPTY >
+<!ATTLIST text defaultValue CDATA #REQUIRED >
+<!ATTLIST text displayText CDATA #REQUIRED >
+<!ATTLIST text property NMTOKEN #REQUIRED >
+<!ATTLIST text explanatoryText CDATA #IMPLIED >
+

@@ -1,0 +1,10 @@
+#
+# Default config for the SelfExtractor
+#
+org.tp23.antinstaller.runtime.exe.CreateLoggerFilter
+org.tp23.antinstaller.runtime.exe.LoadConfigFilter
+org.tp23.antinstaller.runtime.exe.CreateUIFilter
+org.tp23.antinstaller.runtime.exe.ExecuteRunnerFilter
+org.tp23.antinstaller.runtime.exe.PropertyPrinterFilter
+org.tp23.antinstaller.runtime.exe.AntLauncherFilter
+org.tp23.antinstaller.runtime.exe.FinalizerFilter
