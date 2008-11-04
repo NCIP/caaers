@@ -1,13 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.CtcDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -58,7 +51,8 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     private CtcDao ctcDao;
     private InvestigationalNewDrugDao investigationalNewDrugDao;
     private MeddraVersionDao meddraVersionDao;
-    
+    private ConditionDao conditionDao;
+
     private LowLevelTermDao lowLevelTermDao;
 
     // validator needs to be called in onBindAndValidate()
@@ -255,4 +249,11 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 		this.lowLevelTermDao = lowLevelTermDao;
 	}
 
+    public ConditionDao getConditionDao() {
+        return conditionDao;
+    }
+
+    public void setConditionDao(ConditionDao conditionDao) {
+        this.conditionDao = conditionDao;
+    }
 }

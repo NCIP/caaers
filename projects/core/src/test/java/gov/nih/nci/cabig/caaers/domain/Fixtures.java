@@ -193,8 +193,7 @@ public class Fixtures {
         return t;
     }
 
-    public static AdverseEventCtcTerm createAdverseEventCtcTerm(final AdverseEvent adverseEvent,
-                                                                final CtcTerm ctcTerm) {
+    public static AdverseEventCtcTerm createAdverseEventCtcTerm(final AdverseEvent adverseEvent,final CtcTerm ctcTerm) {
         AdverseEventCtcTerm adverseEventCtcTerm = adverseEvent.getAdverseEventCtcTerm();
         adverseEventCtcTerm.setCtcTerm(ctcTerm);
         return adverseEventCtcTerm;
