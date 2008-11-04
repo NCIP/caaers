@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
@@ -136,25 +137,27 @@ public class DiseaseTab extends StudyTab {
             System.out.println("Adding a Condition.");
 
             Condition condition = null;
-            try {
-                int _c = Integer.parseInt(study.getCondition());
-                StudyCondition studyCondition = new StudyCondition();
+            int _c = 0;
 
-                if (_c > 0) {
-                    condition = conditionDao.getById(_c);
-                    studyCondition.setTerm(condition);
-                } else {
-                    Condition newCondition = new Condition();
-                    if (StringUtils.isNotBlank(request.getParameter("condition-input")))
-                        newCondition.setConditionName(request.getParameter("condition-input"));
-                    conditionDao.save(newCondition);
-                    studyCondition.setTerm(newCondition);
-                }
-                study.addStudyCondition(studyCondition);
+            try {
+                _c = Integer.parseInt(study.getCondition());
             } catch (NumberFormatException e) {
                 log.warn("Incorrect ID for the Condition Object.");
                 e.printStackTrace();
             }
+            StudyCondition studyCondition = new StudyCondition();
+
+            if (_c > 0) {
+                condition = conditionDao.getById(_c);
+                studyCondition.setTerm(condition);
+            } else {
+                Condition newCondition = new Condition();
+                if (StringUtils.isNotBlank(request.getParameter("condition-input")))
+                    newCondition.setConditionName(StringEscapeUtils.escapeHtml(request.getParameter("condition-input")));
+                conditionDao.save(newCondition);
+                studyCondition.setTerm(newCondition);
+            }
+            study.addStudyCondition(studyCondition);
         }
 
         if (action.equals("removeOtherCondition")) {

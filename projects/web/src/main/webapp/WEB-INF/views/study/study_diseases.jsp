@@ -21,7 +21,8 @@
 <script type="text/javascript">
 
 Event.observe(window, "load", function() {
-    $('condition').value = 0;
+    $('condition-input').clear();
+    $('condition').clear();
 })
 
 function fireAction(action, selected) {
@@ -325,9 +326,8 @@ Event.observe(window, "load", function() {
 
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
-                    </select> <form:select id="disease-sel-hidden" size="1"
-                        path="diseaseTermIds">
-                    </form:select>
+                    </select> 
+                <form:select id="disease-sel-hidden" size="1" path="diseaseTermIds"></form:select>
                        
             </chrome:division>
             </c:if>
@@ -420,7 +420,7 @@ Event.observe(window, "load", function() {
     			</tr>
     			<c:forEach items="${command.studyConditions}" var="studyConditions" varStatus="status">
     			<tr>
-            		<td><div class="label">${studyConditions.term.conditionName}</div></td>
+            		<td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
             		<td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
             	</c:forEach>
