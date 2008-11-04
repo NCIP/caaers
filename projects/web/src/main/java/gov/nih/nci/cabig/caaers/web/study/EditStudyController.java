@@ -110,8 +110,7 @@ public class EditStudyController extends StudyController<Study> {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(final HttpServletRequest request, final Object command,
-                                final Errors errors, final int page) throws Exception {
+    protected Map referenceData(final HttpServletRequest request, final Object command, final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
 
         refdata.put("currentTask", task);

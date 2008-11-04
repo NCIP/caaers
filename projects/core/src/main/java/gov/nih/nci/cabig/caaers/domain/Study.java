@@ -89,8 +89,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private String[] diseaseTermIds;
 
     private String diseaseCategoryAsText;
-
     private String diseaseLlt;
+    private String condition;
 
     private int studySiteIndex = -1; // represents the studysite, selected in the (add
     // Investigators page)
@@ -346,6 +346,15 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     public void setDiseaseLlt(final String diseaseLlt) {
         this.diseaseLlt = diseaseLlt;
+    }
+
+    @Transient
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(final String condition) {
+        this.condition = condition;
     }
 
     @Deprecated

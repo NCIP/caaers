@@ -23,6 +23,11 @@ public class ConditionDao extends CaaersDao<Condition> {
         return getHibernateTemplate().find("from Condition");
     }
 
+    @SuppressWarnings("unchecked")
+    public List<Condition> getAllByText(String text) {
+        return getHibernateTemplate().find("from Condition c where lower(c.conditionName) like ?", "%" + text.toLowerCase() + "%");
+    }
+
     @Override
     public Condition getById(int id) {
         return super.getById(id);

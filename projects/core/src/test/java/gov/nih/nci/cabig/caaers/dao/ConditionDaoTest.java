@@ -28,4 +28,9 @@ public class ConditionDaoTest extends DaoTestCase<ConditionDao> {
         getDao().save(condition);
         assertEquals(true, condition.getId() > 0);
     }
+
+    public void testGetAll() throws Exception {
+        List<Condition> all = getDao().getAll();
+        System.out.println();
+    }
 }

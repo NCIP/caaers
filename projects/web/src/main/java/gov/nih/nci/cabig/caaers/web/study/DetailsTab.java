@@ -207,6 +207,8 @@ public class DetailsTab extends StudyTab {
 
     @Override
     public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
+
+        System.out.println("term="+command.getDiseaseTerminology().getDiseaseCodeTerm().getDisplayName());
         super.postProcess(request, command, errors);
         if (errors.hasErrors()) {
             return;

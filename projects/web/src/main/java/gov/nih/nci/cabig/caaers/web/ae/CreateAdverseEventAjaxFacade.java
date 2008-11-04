@@ -84,6 +84,7 @@ public class CreateAdverseEventAjaxFacade {
     protected LabLoadDao labLoadDao;
     private StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
+    private ConditionDao conditionDao;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -149,6 +150,11 @@ public class CreateAdverseEventAjaxFacade {
     public List<LowLevelTerm> matchLowLevelTermsByCode(int version_id, String text) {
         List<LowLevelTerm> terms = lowLevelTermDao.getByVersionSubnames(version_id, extractSubnames(text));
         return ObjectTools.reduceAll(terms, "id", "meddraCode", "meddraTerm");
+    }
+
+    public List<Condition> matchConditions(String text) {
+        List<Condition> conditions = conditionDao.getAllByText(text);
+        return conditions;
     }
 
     public List<ChemoAgent> matchChemoAgents(String text) {
@@ -836,8 +842,7 @@ public class CreateAdverseEventAjaxFacade {
     }
 
     @Required
-    public void setPreExistingConditionDao(
-            PreExistingConditionDao preExistingConditionDao) {
+    public void setPreExistingConditionDao(PreExistingConditionDao preExistingConditionDao) {
         this.preExistingConditionDao = preExistingConditionDao;
     }
 
@@ -946,5 +951,14 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setParticipantAjaxableDomainObjectRepository(ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
         this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+    }
+
+    public ConditionDao getConditionDao() {
+        return conditionDao;
+    }
+    
+    @Required
+    public void setConditionDao(ConditionDao conditionDao) {
+        this.conditionDao = conditionDao;
     }
 }

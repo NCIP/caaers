@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class SearchStudyControllerTest extends WebTestCase {
 
     private SearchStudyController controller = new SearchStudyController();
-
     private StudyRepository studyRepository;
 
     protected void setUp() throws Exception {

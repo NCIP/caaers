@@ -32,13 +32,11 @@ public class UniqueIdentifierForStudyValidator implements Validator<UniqueIdenti
                                 && otherId.getType().equals(id.getType())
                                 && !ObjectUtils.equals(id.getId(), otherId.getId())) {
 
-                    if (id instanceof OrganizationAssignedIdentifier
-                                    && otherId instanceof OrganizationAssignedIdentifier) {
+                    if (id instanceof OrganizationAssignedIdentifier && otherId instanceof OrganizationAssignedIdentifier) {
                         OrganizationAssignedIdentifier orgId = (OrganizationAssignedIdentifier) id;
                         OrganizationAssignedIdentifier orgOtherId = (OrganizationAssignedIdentifier) otherId;
                         if (orgId.getId().equals(orgOtherId.getId())) return false;
-                    } else if (id instanceof SystemAssignedIdentifier
-                                    && otherId instanceof SystemAssignedIdentifier) {
+                    } else if (id instanceof SystemAssignedIdentifier && otherId instanceof SystemAssignedIdentifier) {
                         SystemAssignedIdentifier sId = (SystemAssignedIdentifier) id;
                         SystemAssignedIdentifier sOtherId = (SystemAssignedIdentifier) otherId;
                         if (sId.getSystemName().equals(sOtherId.getSystemName())) return false;
