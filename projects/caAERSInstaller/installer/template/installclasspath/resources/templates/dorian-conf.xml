@@ -1,0 +1,58 @@
+<dorian>
+	<resource name="DorianConfiguration"
+		class="gov.nih.nci.cagrid.dorian.service.DorianConfiguration">
+		<dorian-config>
+			<dorian-internal-id>DORIAN</dorian-internal-id>
+			<database>
+				<name/>
+				<driver>com.mysql.jdbc.Driver</driver>
+				<urlPrefix>jdbc:mysql:</urlPrefix>
+				<host>@DB_HOST@</host>
+				<port>@DB_PORT@</port>
+				<username>@DB_UN@</username>
+				<password>@DB_PWD@</password>
+				<pool>1</pool>
+			</database>
+		</dorian-config>
+	</resource>
+	<resource name="IdPConfiguration" class="gov.nih.nci.cagrid.dorian.service.idp.IdPConfiguration">
+		<idp-config>
+			<uid-length min="4" max="10"/>
+			<password-length min="6" max="10"/>
+			<registration-policy class="gov.nih.nci.cagrid.dorian.service.idp.ManualRegistrationPolicy"/>
+			<asserting-credentials auto="true" renew="true" key-password="idpkey"/>
+		</idp-config>
+	</resource>
+	<resource name="IFSConfiguration" class="gov.nih.nci.cagrid.dorian.service.ifs.IFSConfiguration">
+		<ifs-config>
+			<idp-name-length min="4" max="255"/>
+			<credentials-valid years="12" months="0" days="0" hours="0" minutes="0" seconds="0"/>
+			<max-proxy-lifetime hours="12" minutes="0" seconds="0"/>
+			<policies>
+				<policy name="Manual Approval / Manual Renewal"
+					class="gov.nih.nci.cagrid.dorian.service.ifs.ManualApprovalPolicy"/>
+				<policy name="Manual Approval / Auto Renewal"
+					class="gov.nih.nci.cagrid.dorian.service.ifs.ManualApprovalAutoRenewalPolicy"/>
+				<policy name="Auto Approval / Manual Renewal"
+					class="gov.nih.nci.cagrid.dorian.service.ifs.AutoApprovalPolicy"/>
+				<policy name="Auto Approval / Auto Renewal"
+					class="gov.nih.nci.cagrid.dorian.service.ifs.AutoApprovalAutoRenewalPolicy"/>
+			</policies>
+			<gts-services>
+				<gts-service>@GTS_EPR@</gts-service>
+			</gts-services>
+		</ifs-config>
+	</resource>
+	<resource name="DorianCertificateAuthorityConf"
+		class="gov.nih.nci.cagrid.dorian.ca.DorianCertificateAuthorityConf">
+		<dorian-ca-config>
+			<ca-password value="admin"/>
+			<auto-create enabled="true">
+				<time-valid years="5" months="0" days="0" hours="0" minutes="0" seconds="0"/>
+				<ca-subject dn="O=OSU,OU=BMI,OU=caGrid,OU=Dorian,OU=localhost,CN=caGrid Dorian CA"/>
+			</auto-create>
+			<auto-renewal enabled="true" years="5" months="0" days="0" hours="0" minutes="0"
+				seconds="0"/>
+		</dorian-ca-config>
+	</resource>
+</dorian>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.username">@DB_USER@</property>
+        <property name="connection.password">@DB_PASSWORD@</property>
+        <property name="connection.url">jdbc:oracle:thin:@@DB_HOST@:@DB_PORT@/@DB_NAME@</property>
+        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+        <property name="dialect">org.hibernate.dialect.Oracle9Dialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Privilege.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Application.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Role.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/dao/hibernate/RolePrivilege.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/dao/hibernate/UserGroup.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/dao/hibernate/ProtectionGroupProtectionElement.hbm.xml"/>     
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/Group.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/User.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionGroup.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/ProtectionElement.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserGroupRoleProtectionGroup.hbm.xml"/>
+        <mapping resource="gov/nih/nci/security/authorization/domainobjects/UserProtectionElement.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

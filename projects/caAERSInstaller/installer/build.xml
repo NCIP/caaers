@@ -1,0 +1,103 @@
+<project name="Ant Installer" default="makeInstaller" basedir=".">
+    <description>
+        caGrid Installer build file
+    </description>
+  <!-- set global properties for this build -->
+  
+  <property name="installerName" value="caAERSInstaller"/>
+  <property name="project.property.file" value="../deploy.properties"/>
+  <property name="dist" location="dist"/>
+  
+
+  <target name="init" depends="clean">
+    
+    <tstamp/>
+    
+    <mkdir dir="${basedir}/temp"/>
+  	
+  </target>
+  
+  <target name="makeInstaller" depends="copyRelease">
+  <ant  dir="${basedir}/temp" antfile="${basedir}/temp/build-installer.xml" target="selfextract">
+  	<property name="installerName" value="${installerName}"/>
+  </ant>
+  <copy todir="${basedir}">
+  	<fileset dir="${basedir}/temp">
+  		<include name="${installerName}.jar"/>
+  	</fileset>
+  </copy>
+  <delete dir="${basedir}/temp"/>
+  </target>
+  
+  
+  
+  <target name="copyAntFiles" depends="init">
+   <copy todir="${basedir}/temp">
+   	<fileset dir="${basedir}/antfiles"/>     
+   </copy>
+  </target>
+  
+  <target name="copyTemplate" depends="copyAntFiles">
+     <copy todir="${basedir}/temp">
+     	<fileset dir="${basedir}/template"/>     
+     </copy>
+  </target>
+  
+  <target name="copyRelease" depends="copyTemplate">
+       <mkdir dir="${basedir}/temp/installclasspath/resources/release"/>
+       <copy file="${project.property.file}" todir="${basedir}/temp/installclasspath/resources"/>
+     
+       <copy todir="${basedir}/temp/installclasspath/resources/release">
+       	<fileset dir="${basedir}/..">
+    	     <exclude name="installer/**"/>
+    	     <exclude name="CVS"/>
+    	     <exclude name=".classpath"/>
+    	     <exclude name=".cvsignore"/>
+    	     <exclude name=".project"/>
+    	 </fileset>
+       </copy>
+  </target>
+  
+  
+  <target name="clean"  description="clean up" >
+     <delete dir="${basedir}/temp"/>
+  </target>	
+  <target name="cleanuptarget"
+        description="clean up" >
+   
+    
+  </target>
+ <target name="runInstaller" depends="makeInstaller">
+ 	<java jar="${installerName}.jar"
+ 	           fork="true"
+ 	           failonerror="true"
+ 	           maxmemory="128m"
+ 	           />
+	</target>
+	<target name="test" depends="makeInstaller">
+		<delete dir="${user.home}/.gridenv.properties"/>
+		<java jar="${installerName}.jar"
+		 	           fork="true"
+		 	           failonerror="true"
+		 	           maxmemory="128m"
+		 	           />
+			</target>
+	
+	<target name="testCopy" >
+		   <delete dir="/tmp/vinaytest"/>
+		   <mkdir dir="/tmp/vinaytest"/>
+		   <copy todir="/tmp/vinaytest">
+		     	<fileset dir="${basedir}/template"/>     
+		     </copy>
+	</target>
+	
+	<target name="signjar" depends="generatekey" description="Sign the Jars">
+		<signjar jar="${installerName}.jar" alias="installer" storepass="installerpassword" keystore="${dist}/lib/installerkeys"/>
+	</target>
+	<target name="generatekey" depends="makeInstaller" description="generate keys">
+		<delete dir="${dist}/lib"/>
+		<mkdir dir="${dist}/lib"/>
+		<genkey alias="installer" storepass="installerpassword" keystore="${dist}/lib/installerkeys" dname="CN=caAERS Development Group, OU=SementicBits LLC, O=caBIG, C=US"/>
+	</target>
+	
+</project>

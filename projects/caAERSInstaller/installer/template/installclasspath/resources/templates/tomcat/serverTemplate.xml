@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector className="org.apache.coyote.tomcat5.CoyoteConnector" port="8443" maxHttpHeaderSize="8192"
+               maxThreads="150" minSpareThreads="25" maxSpareThreads="75"
+               enableLookups="true" disableUploadTimeout="true"
+               acceptCount="100" debug="0" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" keystoreFile="conf/cabig/caaers_keystore" />

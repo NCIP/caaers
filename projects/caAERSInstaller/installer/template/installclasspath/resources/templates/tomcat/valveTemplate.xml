@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Valve className="org.globus.tomcat.coyote.valves.HTTPSValve"/>

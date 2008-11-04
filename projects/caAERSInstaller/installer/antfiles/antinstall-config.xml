@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+<!DOCTYPE installer PUBLIC "-//tp23 //DTD Ant Installer Config//EN" "http://antinstaller.sf.net/dtd/antinstall-config-0.7.dtd">
+
+<installer ui="swing,text" verbose="false" lookAndFeel="org.jvnet.substance.skin.SubstanceFieldOfWheatLookAndFeel" name="caGrid Installer" windowIcon="/resources/gkmain_inv.png" defaultImageResource="/resources/caGrid.jpg" minJavaVersion="1.4">
+<!--  each page element represents a page of the installer -->
+   
+			
+    <page type="input" name="P1" displayText="caAERS Installer " 
+        		imageResource="/resources/caGrid.jpg">
+        		
+            
+	    
+	    <comment displayText="This installer will install and/or configure the following:" bold="true" />
+	    
+	    <comment displayText="		1) caAERS application" bold="true" />
+	    <comment displayText="		2) Tomcat " bold="true" />
+	    
+	
+    </page>
+   
+    
+    <page
+    			type="license"
+    			name="license"
+    			displayText="License Conditions"
+    			resource="/resources/grid_license.txt"
+    			imageResource="/resources/caGrid.jpg">
+    		<select
+				property="agreed"
+				defaultValue="false"
+				displayText="">
+				<option text="I accept" value="true"/>
+				<option text="I do not accept" value="false"/>
+				
+				
+							
+	</select>
+	</page>
+  
+        
+        <page type="input" 
+                    	  name="P2" 
+                    	  displayText="Do you want to point to an exisiting installation of Tomcat ?" 	
+                    	  imageResource="/resources/caGrid.jpg"
+                    	  ifProperty="(${gridenv.tomcat.exist}.equalsIgnoreCase('false'))">
+                    	
+                    	<select
+                		property="user.tomcat.exist"
+                		defaultValue="false"
+                		displayText="Choose one">
+                		<option text="Yes" value="true"/>
+                		<option text="No" value="false"/>
+                		
+                		
+                					
+                	</select>
+        </page>
+        
+       
+        
+        <page type="usertomcatexistpage" 
+                        	  name="P3" 
+                        	  displayText="Give root location of Tomcat ?" 	
+                        	  imageResource="/resources/caGrid.jpg"
+                        	  ifProperty="(${gridenv.tomcat.exist}.equalsIgnoreCase('false'))**(${user.tomcat.exist}.equalsIgnoreCase('true'))">
+                        	
+                        	<directory property="user.ext.tomcat.home" defaultValue="${gridenv.user.local.home}/cagrid-1-0/external" defaultValueWin="${gridenv.user.local.home}/cagrid-1-0/external" displayText="Tomcat Location" />
+    
+        </page>
+        
+        <page type="input" 
+                            	  name="P4" 
+                            	  displayText="Give Installation directory for Tomcat" 	
+                            	  imageResource="/resources/caGrid.jpg"
+                            	  ifProperty="(${gridenv.tomcat.exist}.equalsIgnoreCase('false'))**(${user.tomcat.exist}.equalsIgnoreCase('false'))">
+                            	
+                            	<directory property="tomcat.install.dir" defaultValue="${gridenv.user.local.home}/cagrid-1-0/external" defaultValueWin="${gridenv.user.local.home}/cagrid-1-0/external" displayText="Tomcat Location" />
+        
+        </page>
+        
+        <page type="input" name="P5" displayText="Choose database vendor" 
+            		imageResource="/resources/caGrid.jpg" >
+            		
+                <select
+    			property="database.vendor"
+    			defaultValue="postgres"
+    			displayText="Database Type:">
+    		<option text="Postgres" value="postgres"/>
+    		<option text="Oracle" value="oracle"/>
+    	    				
+    		</select>
+                
+                
+    </page>
+    
+    
+    <page type="databaseconfigurationpage" name="P6" displayText="Provide database parameters" 
+            		imageResource="/resources/caGrid.jpg"
+            		 >
+            		
+               <text property="database.name" 
+	    		  displayText="Database Name" 
+	    		  defaultValue="caaers" 
+	    	          explanatoryText="The name of the database e.g caaers" />
+	    	   
+	    	   <text property="database.host.name" 
+	    		  displayText="Host Name" 
+	    		  defaultValue="localhost" 
+	    	          explanatoryText="The name or IP address of the host machine" />
+	    	   
+	    	   <text property="database.host.port" 
+	    		  displayText="Port Address" 
+	    		  defaultValue="5432" 
+	    	          explanatoryText="The port number. For oracle use 1522 or for postgres it is 5432" />
+	    	    
+	    	   <text property="database.userid" 
+	    		  displayText="User Id" 
+	    		  defaultValue="postgres" 
+	    	          explanatoryText="The user id for logging into database" />
+	    	          
+	    	    <text property="database.password" 
+	    		  displayText="Password" 
+	    		  defaultValue="postgres" 
+	    	          explanatoryText="The password for logging into database" />
+	    	
+	    	<comment displayText="Make sure the database is up and running" bold="true" />
+                
+                
+    </page>
+    
+    
+    <page type="input" 
+       	  name="P7" 
+       	  displayText="Create Administrator for caAERS" 	
+       	  imageResource="/resources/caGrid.jpg">
+          
+          <text property="ccts.username" 
+    		  	displayText="Admin UserName" 
+    		  	defaultValue="SYSTEM_ADMIN" 
+    	        explanatoryText="The user id for logging into caAERS" />
+					    	          
+   	      <text property="ccts.password" 
+   		  		displayText="Admin Password" 
+   		  		defaultValue="system_admin" 
+   	          	explanatoryText="The password for logging into caAERS" />    
+   	          	              	
+        </page>
+    
+        
+        <page type="input" 
+                            	  name="P9" 
+                            	  displayText="Give directory for rules repository" 	
+                            	  imageResource="/resources/caGrid.jpg"
+                            	  >
+                            	
+         <directory property="rules.repository.dir" 
+         			defaultValue="${gridenv.user.local.home}/caAERS/rules/rules_repo"
+         			defaultValueWin="${gridenv.user.local.home}/caAERS/rules/rules_repo"
+         			checkExists="true"
+         			displayText="Rule Repository"
+         			create="true" />
+        
+        </page>
+        
+        <page type="input" 
+           	  name="P10" 
+           	  displayText="Configuration for web sso" 	
+           	  imageResource="/resources/caGrid.jpg">
+                 	<select
+						property="auth.mode"
+						defaultValue="local"
+						displayText="Authentication Mode:">
+						<option text="Local    (Install caAERS as a stand-alone application)" value="local"/>
+						<option text="WebSSO   (Install caAERS as part of the CCTS suite)" value="webSSO"/>					    	    	    	    				
+					</select>
+						 	
+        </page>
+   
+   
+        <page type="input" ifProperty="(${auth.mode}.equalsIgnoreCase('webSSO'))"
+                            	  name="P11" 
+                            	  displayText="Configuration for web sso" 	
+                            	  imageResource="/resources/caGrid.jpg"
+                            	  >
+                            	
+                            	<text property="webSSO.server.baseUrl" 
+					    		  displayText="WebSSO server URL" 
+					    		  defaultValue="https://cbvapp-d1017.nci.nih.gov:48443/cas" 
+					    	          explanatoryText="Give the server URL for web sso" />
+                            	
+                            	<text property="webSSO.server.address" 
+					    		  displayText="WebSSO server address" 
+					    		  defaultValue="cbvapp-d1017.nci.nih.gov" 
+					    	          explanatoryText="Give the server address" />
+					    	          
+					    	    <text property="webSSO.server.port" 
+					    		  displayText="WebSSO server port" 
+					    		  defaultValue="48443"
+					    	          explanatoryText="Give the server port" />
+					    	     
+					    	    <file property="webSSO.trustStore" 
+					    		  displayText="WebSSO truststore" 
+					    		  defaultValue="${gridenv.user.local.home}/"
+					    		  defaultValueWin="${gridenv.user.local.home}/"  
+					    		  checkExists="true"
+					    	          explanatoryText="Give truststore" /> 
+					    	          
+					    	    <text property="truststore.passphrase" 
+					    		  displayText="Truststore passphrase" 
+					    		  defaultValue="" 
+					    	          explanatoryText="Give the passphrase for truststore " />      
+
+					    	     <file property="hostCertificate" 
+					    		  displayText="Host certificate" 
+					    		  defaultValue="${gridenv.user.local.home}/"
+					    		  defaultValueWin="${gridenv.user.local.home}/"  
+					    		  checkExists="true"
+					    	          explanatoryText="Point to host certificate " />
+					    	          
+					    	      <file property="hostKey" 
+					    		  displayText="Host Key" 
+					    		  defaultValue="${gridenv.user.local.home}/"
+					    		  defaultValueWin="${gridenv.user.local.home}/"  
+					    		  checkExists="true"
+					    	          explanatoryText="Point to host key " />
+					    	          
+					    	      <text property="webSSO.cas.acegi.security.url" 
+					    		  displayText="Acegi URL" 
+					    		  defaultValue="http://localhost:8080/caaers/j_acegi_cas_security_check" 
+					    	          explanatoryText="Give web sso cas acegi url" />    
+                            	
+								<text property="grid.studyconsumer.url" 
+					    		  displayText="Study Consumer URL" 
+					    		  defaultValue="/wsrf/services/cagrid/StudyConsumer" 
+					    	          explanatoryText="Give the url for study consumer service" />
+        
+								<text property="grid.registrationconsumer.url" 
+					    		  displayText="Registration Consumer URL" 
+					    		  defaultValue="/wsrf/services/cagrid/RegistrationConsumer" 
+					    	          explanatoryText="Give the url for Registration consumer service" />
+        </page>
+       
+    <page type="input" name="selector" displayText="Components to Install">
+        <comment displayText="The following components will be installed" bold="true" />
+        <target displayText="caAERS Installation and Setup" target="caaers" defaultValue="true" force="true" />
+        
+    </page>
+<!--  These are some other input types -->
+<!--  page type="progress" shows a progress page with the install button 
+                Its target is set to cleanuptarget since it is the last page this target will be run last-->
+    <page type="progress" name="progress" showTargets="true" displayText="Installation Progress" target="finished">
+    </page>
+</installer>

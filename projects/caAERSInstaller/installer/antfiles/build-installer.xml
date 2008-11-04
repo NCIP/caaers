@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!--
+
+This Ant script is used to package parts of the demo app to create an installer
+
+the selfextract target shows an example of creating a self extracting jar for the demo app
+
+run with ...
+
+ant -buildfile build-demo.xml
+
+-->
+<project name="Create Demo Installer Zip Build"  default="selfextract"  basedir=".">
+
+	<path id="taskdef.cp">
+	  <fileset dir="../lib">
+        <include name="ant-ext.jar"/>
+        <include name="ant-installer.jar"/>
+      </fileset>
+	</path>
+	
+	<taskdef 
+		name="installer" 
+		classname="org.tp23.antinstaller.taskdefs.Installer"
+		classpathref="taskdef.cp"/>
+
+	<target name="selfextract">
+		<echo message="Building DEMO SELFEXTRACT"/>
+		<installer file="./${installerName}.jar" compress="true"
+				extractType="SelfExtractor"
+				installConfig="antinstall-config.xml"
+				buildFile="build.xml"
+				antInstallLib="installlib"
+				antLib="installlib"
+				validateConfig="true"
+				failOnError="true"
+				duplicate="preserve">
+			
+			<fileset dir="installclasspath" includes="resources/**/*.*"/>
+		</installer>
+		<!-- old build jar  file="./selfextractpack.jar" compress="true">
+			<manifest>
+				<attribute name="Manifest-Version" value="1.0"/>
+				<attribute name="Main-Class" value="org.tp23.antinstaller.selfextract.SelfExtractor"/>
+				<attribute name="Look-And-Feel" value="org.tp23.jgoodies.plaf.plastic.PlasticXPLookAndFeel"/>
+			</manifest>
+			<fileset dir="selfextract">
+				<include name="**/*"/>
+			</fileset>
+			<zipgroupfileset dir="installlib" includes="*.jar"/>
+		</jar-->
+	</target>
+
+
+<!-- N.B.
+this target does nothing in the deployed version
+and exists for preparing the files to deploy to sourceforge
+-->
+	
+</project>

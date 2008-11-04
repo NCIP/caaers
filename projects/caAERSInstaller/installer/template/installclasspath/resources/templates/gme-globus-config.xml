@@ -1,0 +1,64 @@
+<mobius>
+	<resource name="mobiusConfig" class="org.projectmobius.services.common.MobiusConfiguration">
+		<mobius-configuration>
+			<MobiusNetworkServiceDescriptor serviceType="GME" hostname="http://SERVICE-DEPLOY-HOST:8080/wsrf/services/SERVICE-INSTANCE-NAME">
+				<serviceIdentifier serviceId="http://SERVICE-DEPLOY-HOST:8080/wsrf/services/SERVICE-INSTANCE-NAME"/>
+			  	<ports>
+					<port protocol="TCP" portNumber="1111"/>
+			  	</ports>
+			  	<aliases>
+			  	</aliases>
+			</MobiusNetworkServiceDescriptor>
+			
+			<handlers>
+				<handler name="DestroyServiceRequest" class="org.projectmobius.services.gme.handlers.DestroyServiceHandlerImpl"/>
+				<handler name="StopRequest" class="org.projectmobius.services.common.handlers.DefaultStopRequestHandler"/>
+				<handler name="RemovePeerRequest" class="org.projectmobius.services.gme.handlers.RemovePeerRequestHandler"/>
+				<handler name="RemoveNamespaceRequest" class="org.projectmobius.services.gme.handlers.RemoveNamespaceRequestHandler"/>
+				<handler name="SchemaListRequest" class="org.projectmobius.services.gme.handlers.SchemaListRequestHandler"/>
+				<handler name="GetPeersRequest" class="org.projectmobius.services.gme.handlers.GetPeersRequestHandler"/>
+				<handler name="AddNamespaceRequest" class="org.projectmobius.services.gme.handlers.AddNamespaceRequestHandler"/>
+				<handler name="AddPeerRequest" class="org.projectmobius.services.gme.handlers.AddPeerRequestHandler"/>
+				<handler name="AuthoritativeNamespacesRequest" class="org.projectmobius.services.gme.handlers.AuthoritativeNamespacesRequestHandler"/>
+				<handler name="NamespaceLookupRequest" class="org.projectmobius.services.gme.handlers.NamespaceLookupRequestHandler"/>
+				<handler name="SubmitSchemaRequest" class="org.projectmobius.services.gme.handlers.PublishRequestHandler"/>
+				<handler name="ReferenceResolutionRequest" class="org.projectmobius.services.gme.handlers.ReferenceResolutionRequestHandler"/>
+				<handler name="SchemaRequest" class="org.projectmobius.services.gme.handlers.SchemaRequestHandler"/>
+				<handler name="ServiceDataRequest" class="org.projectmobius.services.common.handlers.DefaultServiceDataRequestHandler"/>
+				<handler name="SchemaElementReferenceRequest" class="org.projectmobius.services.gme.handlers.SchemaElementReferenceHandler"/>
+			</handlers>
+			<authenticationController class="org.projectmobius.security.DefaultAuthenticationController"/>
+			<authorizationController class="org.projectmobius.security.DefaultAuthorizationController"/>
+            <gridServiceFactories>
+            	<gridServiceFactory name="default" isDefault="true" class="org.projectmobius.gme.client.GlobusGMEXMLDataModelServiceFactory"/>
+			</gridServiceFactories>
+			<serviceRegistry serviceId="localhost" registryClass="org.projectmobius.common.DefaultRegistry"/>
+		</mobius-configuration>
+	</resource>
+        <resource name="gmeConfig" class="org.projectmobius.services.gme.GMEConfiguration">
+		<gmeConfiguration-configuration>
+			<policies>
+				<performance-caching>
+					<namespace-caching max-records="5" time-to-live="4:00"/>
+					<schema-caching max-schemas="1000" time-to-live="00:30"/>
+				</performance-caching>
+				<notification-policy support="specified">
+					<notification-list>
+						<gme hostname="" id=""/>
+					</notification-list>
+				</notification-policy>
+				<upgrade-policy value="true"/>
+			</policies>
+			<root-database id="GlobusGME">
+				<name/>
+				<driver>com.mysql.jdbc.Driver</driver>
+				<urlPrefix>jdbc:mysql:</urlPrefix>
+				<host>@HOST@</host>
+				<port>@PORT@</port>
+				<username>@USER@</username>
+				<password>@PASSWORD@<password/>
+				<pool>3</pool>
+			</root-database>
+		</gmeConfiguration-configuration>
+	</resource>
+</mobius>

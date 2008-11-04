@@ -1,0 +1,528 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<project name="caAERS " default="caaers" basedir=".">
+	<description>
+        certificate test
+    </description>
+	<!-- set global properties for this build -->
+	<property url="http://demo.semanticbits.com/installer/caaers-online-properties.properties" />
+	<property file="${user.home}/.gridenv.properties" />
+	<property name="tomcat.download.url" value="http://www.eng.lsu.edu/mirrors/apache/tomcat/tomcat-5/v5.5.25/bin/apache-tomcat-5.5.25.zip" />
+	<property name="tomcat.file.name" value="apache-tomcat-5.5.25.zip" />
+	<property name="tomcat.version" value="apache-tomcat-5.5.25" />
+	<!--
+
+  <property name="caaers.download.url" value="http://download.bioinformatics.northwestern.edu/maven2/gov/nih/nci/cabig/caaers/caaers-web/0.7.1/caaers-web-0.7.1.war"/>
+
+  -->
+	<!--	<property name="caaers.download.url" value="http://74.93.192.33:8030/installer/caaers.war"/> -->
+	<property name="caaers.file.name" value="caaers.war" />
+	<!--  <property name="caaers.version" value="0.10-SNAPSHOT"/> -->
+	<property name="caaers.core.jar" value="caaers-core-*.jar" />
+	<property name="temp.dir" value="${user.home}/caaers_temp" />
+	<property name="working.dir" value="${temp.dir}/caaers" />
+	<property name="extract.dir" value="${working.dir}/extract" />
+	<property name="jar.extract.dir" value="${working.dir}/jarextract" />
+	<path id="rules.url">
+		<pathelement location="${rules.repository.dir}" />
+	</path>
+	<path id="trust.store">
+		<pathelement location="${webSSO.trustStore}" />
+	</path>
+	<path id="host.cert">
+		<pathelement location="${hostCertificate}" />
+	</path>
+	<path id="host.key">
+		<pathelement location="${hostKey}" />
+	</path>
+	<path id="bering.classpath">
+		<fileset dir="${extract.dir}/WEB-INF/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="xmltaskdef.cp">
+		<fileset dir="${basedir}/resources/lib">
+			<include name="xmltask-v1.13.jar" />
+		</fileset>
+	</path>
+	<path id="customlib.cp">
+		<fileset dir="${basedir}/resources/custom_libs">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<taskdef name="xmltask" classname="com.oopsconsultancy.xmltask.ant.XmlTask" classpathref="xmltaskdef.cp" />
+	<!-- These are the only 5 conditions which needs to 
+
+      requires.tomcat.installation
+
+      use.existing.tomcat.requires.https.enabling
+
+      use.existing.tomcat.no.https.enabling.required
+
+      use.user.tomcat.requires.https.enabling
+
+      use.user.tomcat.no.https.enabling.required
+
+    -->
+	<!-- CONDITION 1 -->
+	<condition property="requires.tomcat.installation">
+		<and>
+			<equals arg1="${tomcat.https.enabled}" arg2="false" />
+			<equals arg1="${tomcat.exist}" arg2="false" />
+			<equals arg1="${user.tomcat.exist}" arg2="false" />
+		</and>
+	</condition>
+	<!-- CONDITION 2 -->
+	<condition property="use.existing.tomcat.requires.https.enabling">
+		<and>
+			<equals arg1="${tomcat.https.enabled}" arg2="false" />
+			<equals arg1="${tomcat.exist}" arg2="true" />
+		</and>
+	</condition>
+	<!-- CONDITION 3 -->
+	<condition property="use.existing.tomcat.no.https.enabling.required">
+		<and>
+			<equals arg1="${tomcat.https.enabled}" arg2="true" />
+			<equals arg1="${tomcat.exist}" arg2="true" />
+		</and>
+	</condition>
+	<!-- CONDITION 4 -->
+	<condition property="use.user.tomcat.requires.https.enabling">
+		<and>
+			<equals arg1="${user.tomcat.https.enabled}" arg2="false" />
+			<equals arg1="${tomcat.exist}" arg2="false" />
+			<equals arg1="${user.tomcat.exist}" arg2="true" />
+		</and>
+	</condition>
+	<!-- CONDITION 5 -->
+	<condition property="use.user.tomcat.no.https.enabling.required">
+		<and>
+			<equals arg1="${user.tomcat.https.enabled}" arg2="true" />
+			<equals arg1="${tomcat.exist}" arg2="false" />
+			<equals arg1="${user.tomcat.exist}" arg2="true" />
+		</and>
+	</condition>
+	<condition property="should.run.csm.policy">
+		<and>
+			<equals arg1="${csm.populated}" arg2="false" />
+		</and>
+	</condition>
+	
+	<condition property="websso.properties.required">
+		<and>
+			<equals arg1="${auth.mode}" arg2="webSSO" />
+		</and>
+	</condition>
+	
+	<condition property="websso.properties.not.required">
+			<and>
+				<equals arg1="${auth.mode}" arg2="local" />
+			</and>
+	</condition>
+	
+	<target name="mytest">
+		<echo message="C S M :${csm.populated}" />
+	</target>
+	<target name="init">
+		<delete dir="${temp.dir}" />
+		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${working.dir}" />
+		<mkdir dir="${extract.dir}" />
+		<mkdir dir="${jar.extract.dir}" />
+		<echo message="Https:${tomcat.https.enabled}" />
+	</target>
+	<!--
+
+	                                  ******************
+
+	                                  *** target_1    ****
+
+	                                  ******************
+
+	         -->
+	<target name="requires_tomcat_installation" if="requires.tomcat.installation">
+		<echo message="Configuring for  and condition 1" />
+		<antcall target="download_and_install_tomcat">
+			<param name="install.dir" value="${tomcat.install.dir}" />
+		</antcall>
+		<antcall target="configureServer.xml">
+			<param name="tomcat.temp.home" value="${tomcat.install.dir}/${tomcat.version}" />
+		</antcall>
+		<antcall target="setUpConfDirectory">
+			<param name="tomcat.temp.home" value="${tomcat.install.dir}/${tomcat.version}" />
+		</antcall>
+		<antcall target="download_and_install_caaers">
+			<param name="tomcat.temp.home" value="${tomcat.install.dir}/${tomcat.version}" />
+		</antcall>
+		<propertyfile file="${user.home}/.gridenv.properties">
+			<entry key="env.CATALINA_HOME" value="${tomcat.install.dir}/${tomcat.version}" />
+			<entry key="tomcat.exist" value="true" />
+			<entry key="tomcat.https.enabled" value="true" />
+		</propertyfile>
+	</target>
+	<!--
+
+		                                  ******************
+
+		                                  *** target_2    ****
+
+		                                  ******************
+
+		         -->
+	<target name="use_existing_tomcat_requires_https_enabling" if="use.existing.tomcat.requires.https.enabling">
+		<echo message="Configuring for target condition 2" />
+		<antcall target="configureServer.xml">
+			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+		</antcall>
+		<antcall target="setUpConfDirectory">
+			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+		</antcall>
+		<antcall target="download_and_install_caaers">
+			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+		</antcall>
+		<propertyfile file="${user.home}/.gridenv.properties">
+			<entry key="tomcat.https.enabled" value="true" />
+		</propertyfile>
+	</target>
+	<!--
+
+		                                  ******************
+
+		                                  *** target_3    ****
+
+		                                  ******************
+
+		         -->
+	<target name="use_existing_tomcat_no_https_enabling_required" if="use.existing.tomcat.no.https.enabling.required">
+		<echo message="Configuring for condition 3" />
+		<antcall target="setUpConfDirectory">
+			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+		</antcall>
+		<antcall target="download_and_install_caaers">
+			<param name="tomcat.temp.home" value="${CATALINA_HOME}" />
+		</antcall>
+		<propertyfile file="${user.home}/.gridenv.properties">
+			<entry key="tomcat.exist" value="true" />
+			<entry key="tomcat.https.enabled" value="true" />
+		</propertyfile>
+	</target>
+	<!--
+
+		                                  ******************
+
+		                                  *** target_4    ****
+
+		                                  ******************
+
+		         -->
+	<target name="use_user_tomcat_requires_https_enabling" if="use.user.tomcat.requires.https.enabling">
+		<echo message="Configuring for condition 4" />
+		<antcall target="configureServer.xml">
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
+		</antcall>
+		<antcall target="setUpConfDirectory">
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
+		</antcall>
+		<antcall target="download_and_install_caaers">
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
+		</antcall>
+		<propertyfile file="${user.home}/.gridenv.properties">
+			<entry key="env.CATALINA_HOME" value="${user.ext.tomcat.home}" />
+			<entry key="tomcat.exist" value="true" />
+			<entry key="tomcat.https.enabled" value="true" />
+		</propertyfile>
+	</target>
+	<!--
+
+			                                  ******************
+
+			                                  *** target_5    ****
+
+			                                  ******************
+
+			         -->
+	<target name="use_user_tomcat_no_https_enabling_required" if="use.user.tomcat.no.https.enabling.required">
+		<echo message="Configuring for target condition 5" />
+		<antcall target="setUpConfDirectory">
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
+		</antcall>
+		<antcall target="download_and_install_caaers">
+			<param name="tomcat.temp.home" value="${user.ext.tomcat.home}" />
+		</antcall>
+		<propertyfile file="${user.home}/.gridenv.properties">
+			<entry key="env.CATALINA_HOME" value="${user.ext.tomcat.home}" />
+			<entry key="tomcat.exist" value="true" />
+			<entry key="tomcat.https.enabled" value="true" />
+		</propertyfile>
+	</target>
+	<!--
+
+			 *************************************************************************************************
+
+			 ***************   Main Tagert                                                    ****************
+
+			 *************************************************************************************************
+
+ 	 -->
+	<target name="caaers">
+		<antcall target="requires_tomcat_installation" />
+		<antcall target="use_existing_tomcat_requires_https_enabling" />
+		<antcall target="use_existing_tomcat_no_https_enabling_required" />
+		<antcall target="use_user_tomcat_requires_https_enabling" />
+		<antcall target="use_user_tomcat_no_https_enabling_required" />
+	</target>
+	<!--
+
+	 		 *************************************************************************************************
+
+	 		 ***************   End of Main Target                                             ****************
+
+	 		 *************************************************************************************************
+
+ 	 -->
+	<target name="configureServer.xml">
+		<xmltask source="${tomcat.temp.home}/conf/server.xml" dest="${tomcat.temp.home}/conf/server.xml">
+			<remove path="/Server/Service/Connector[@scheme='https']" />
+		</xmltask>
+		<xmltask source="${tomcat.temp.home}/conf/server.xml" dest="${tomcat.temp.home}/conf/server.xml">
+			<insert path="/Server/Service[@name='Catalina']" file="${basedir}/resources/templates/tomcat/serverTemplate.xml" />
+		</xmltask>
+		<mkdir dir="${tomcat.temp.home}/conf/cabig" />
+		<copy file="${basedir}/resources/templates/conf/caaers_keystore.xml" tofile="${tomcat.temp.home}/conf/cabig/caaers_keystore" overwrite="true" />
+	</target>
+	<target name="download_and_install_tomcat">
+		<delete dir="${install.dir}/${tomcat.version}" />
+		<mkdir dir="${basedir}/tomcat_temp" />
+		<get src="${tomcat.download.url}" dest="${basedir}/tomcat_temp/${tomcat.file.name}" />
+		<unzip src="${basedir}/tomcat_temp/${tomcat.file.name}" dest="${install.dir}" />
+		<delete dir="${basedir}/tomcat_temp" />
+	</target>
+	<target name="setUpConfDirectory">
+		<copy file="${basedir}/resources/templates/conf/ApplicationSecurityConfig.xml" tofile="${tomcat.temp.home}/conf/cabig/ApplicationSecurityConfig.xml" overwrite="true" />
+		<replace file="${tomcat.temp.home}/conf/cabig/ApplicationSecurityConfig.xml" token="@PATH_TO_CABIG_CONF@" value="${tomcat.temp.home}/conf/cabig" />
+		<copy file="${basedir}/resources/templates/conf/${database.vendor}.caaers.hibernate.cfg.xml" tofile="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" overwrite="true" />
+		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_USER@" value="${database.userid}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_PASSWORD@" value="${database.password}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_HOST@" value="${database.host.name}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_PORT@" value="${database.host.port}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/caaers.hibernate.cfg.xml" token="@DB_NAME@" value="${database.name}" />
+
+		<antcall target="copy_csm_jass_config" />
+		
+		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_USER@" value="${database.userid}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_PASSWORD@" value="${database.password}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_HOST@" value="${database.host.name}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_PORT@" value="${database.host.port}" />
+		<replace file="${tomcat.temp.home}/conf/cabig/csm_jaas.config" token="@DB_NAME@" value="${database.name}" />
+		<propertyfile file="${tomcat.temp.home}/conf/catalina.properties">
+			<entry key="gov.nih.nci.security.configFile" value="$${catalina.home}/conf/cabig/ApplicationSecurityConfig.xml" />
+			<entry key="java.security.auth.login.config" value="$${catalina.home}/conf/cabig/csm_jaas.config" />
+		</propertyfile>
+		<mkdir dir="${tomcat.temp.home}/conf/caaers" />
+		<mkdir dir="${user.home}/.caaers" />
+		<mkdir dir="${basedir}/conf_temp" />
+		<copy file="${basedir}/resources/templates/conf/${database.vendor}.datasource.properties" tofile="${basedir}/conf_temp/datasource.properties" overwrite="true" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_USER@" value="${database.userid}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_PASSWORD@" value="${database.password}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_HOST@" value="${database.host.name}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_PORT@" value="${database.host.port}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@DB_NAME@" value="${database.name}" />
+		<pathconvert property="modified.rules.url" refid="rules.url">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@URL@" value="${modified.rules.url}" />
+		
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@AUTH_MODE@" value="${auth.mode}" />
+		
+		<antcall target="websso.properties.required" />
+		<antcall target="websso.properties.not.required" />
+		
+		<copy file="${basedir}/conf_temp/datasource.properties" todir="${tomcat.temp.home}/conf/caaers" overwrite="true" />
+		<copy file="${basedir}/conf_temp/datasource.properties" todir="${user.home}/.caaers" overwrite="true" />
+		<delete dir="${basedir}/conf_temp" />
+		
+	</target>
+	
+	<!-- webSSO properties will be replaced in datasource.properties file for webSSO mode-->
+	<target name="websso.properties.required" if="websso.properties.required">
+		<echo message="webSSO Mode" />
+			 		
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@WEBSSO_BASEURL@" value="${webSSO.server.baseUrl}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@WEBSSO_SERVER_ADDRESS@" value="${webSSO.server.address}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@WEBSSO_SERVER_PORT@" value="${webSSO.server.port}" />		
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@ACEGI_URL@" value="${webSSO.cas.acegi.security.url}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@STUDY_CONSUMER_URL@" value="${grid.studyconsumer.url}" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@REGISTRATION_CONSUMER_URL@" value="${grid.registrationconsumer.url}" />
+
+		<pathconvert property="modified.trust.store" refid="trust.store">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@TRUST_STORE@" value="${modified.trust.store}" />
+		
+	 	<pathconvert property="modified.host.cert" refid="host.cert">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@HOST_CERT@" value="${modified.host.cert}" />
+	 	
+		<pathconvert property="modified.host.key" refid="host.key">
+			<filtermapper>
+				<replacestring from="\" to="/" />
+			</filtermapper>
+		</pathconvert>
+		<replace file="${basedir}/conf_temp/datasource.properties" token="@HOST_KEY@" value="${modified.host.key}" />
+		
+	 	<antcall target="install_cert" />
+			
+	</target>
+	
+	<!-- webSSO properties will be removed from datasource.properties file for local mode-->
+	<target name="websso.properties.not.required" if="websso.properties.not.required">
+		<echo message="Local Mode" />
+	   	<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.server.baseUrl=@WEBSSO_BASEURL@" value="" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.server.address=@WEBSSO_SERVER_ADDRESS@" value="" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.server.port=@WEBSSO_SERVER_PORT@" value="" />		
+		<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.trustStore=@TRUST_STORE@" value="" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="hostCertificate=@HOST_CERT@" value="" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="hostKey=@HOST_KEY@" value="" />
+	 	<replace file="${basedir}/conf_temp/datasource.properties" token="webSSO.cas.acegi.security.url=@ACEGI_URL@" value="" />
+	 	<replace file="${basedir}/conf_temp/datasource.properties" token="grid.studyconsumer.url=@STUDY_CONSUMER_URL@" value="" />
+		<replace file="${basedir}/conf_temp/datasource.properties" token="grid.registrationconsumer.url=@REGISTRATION_CONSUMER_URL@" value="" />
+	</target>
+	
+	<!--
+		This target will download caaers.war from the remote location. Then will unwar, and unjar 
+		the caaers-core-xxx.jar, inorder to extract the groovy files and run bering migration.
+	-->
+	<target name="download_and_install_caaers" depends="init">
+		<delete dir="${tomcat.temp.home}/work/Catalina/localhost/caaers" />
+		<delete dir="${tomcat.temp.home}/webapps/caaers" />
+		<delete file="${tomcat.temp.home}/webapps/caaers.war" />
+		
+		<get src="${caaers.download.url}" dest="${working.dir}/${caaers.file.name}" />
+		
+		<unwar src="${working.dir}/${caaers.file.name}" dest="${working.dir}/extract" />
+		<unjar dest="${jar.extract.dir}">
+		   <fileset dir="${extract.dir}/WEB-INF/lib">
+		    <include name="${caaers.core.jar}"/>
+		   </fileset>
+		</unjar> 
+		
+		<copy file="${working.dir}/${caaers.file.name}" todir="${tomcat.temp.home}/webapps" />
+		
+		<antcall target="migrate" />
+		<antcall target="insert-csm-policy" />
+		<antcall target="insert-ccts-user" />
+		<delete dir="${user.home}/caaers_download_temp" />
+	</target>
+	
+	<target name="define-vars">
+		<condition property="datasource.dialect" value="gov.nih.nci.cabig.caaers.tools.hibernate.ImprovedPostgreSQLDialect">
+			<contains string="${database.vendor}" substring="post" />
+		</condition>
+		<condition property="datasource.dialect" value="org.hibernate.dialect.Oracle9Dialect">
+			<contains string="${database.vendor}" substring="ora" />
+		</condition>
+		<condition property="datasource.url" value="jdbc:postgresql://${database.host.name}:${database.host.port}/${database.name}">
+			<contains string="${database.vendor}" substring="post" />
+		</condition>
+		<condition property="datasource.url" value="jdbc:oracle:thin:@${database.host.name}:${database.host.port}:${database.name}">
+			<contains string="${database.vendor}" substring="ora" />
+		</condition>
+		<condition property="datasource.driver" value="org.postgresql.Driver">
+			<contains string="${database.vendor}" substring="post" />
+		</condition>
+		<condition property="datasource.driver" value="oracle.jdbc.OracleDriver">
+			<contains string="${database.vendor}" substring="ora" />
+		</condition>
+	</target>
+	<target name="prepare-bering" depends="define-vars">
+		<!--Taskdef. Has to be done inside since classpath is ext-->
+		<taskdef resource="edu/northwestern/bioinformatics/bering/antlib.xml" classpathref="bering.classpath" />
+		<property name="oracle.keyword" value="Oracle" />
+		<property name="postgresql.keyword" value="PostgreSQLDialect" />
+		<condition property="bering.dialect" value="edu.northwestern.bioinformatics.bering.dialect.PostgreSQL">
+			<contains string="${datasource.dialect}" substring="${postgresql.keyword}" />
+		</condition>
+		<condition property="bering.dialect" value="edu.northwestern.bioinformatics.bering.dialect.Oracle">
+			<contains string="${datasource.dialect}" substring="${oracle.keyword}" />
+		</condition>
+	</target>
+	<target name="migrate" depends="prepare-bering">
+		<migrate classpathRef="bering.classpath" driver="${datasource.driver}" dialect="${bering.dialect}" url="${datasource.url}" userid="${database.userid}" password="${database.password}" migrationsDir="${jar.extract.dir}/db/migrate" />
+	</target>
+	<target name="csm-init">
+		<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask">
+			<classpath location="${extract.dir}/WEB-INF/lib/dbunit-2.1.jar" />
+		</taskdef>
+	</target>
+	<target name="insert-csm-policy" depends="csm-init,define-vars" if="should.run.csm.policy">
+		<dbunit driver="${datasource.driver}" url="${datasource.url}" userid="${database.userid}" password="${database.password}">
+			<classpath refid="bering.classpath" />
+			<operation type="CLEAN_INSERT" src="${basedir}/resources/templates/conf/CSM_policy.xml" />
+		</dbunit>
+	</target>
+	
+	<target name="create-user-properties">
+		<java classname="gov.nih.nci.caaersinstaller.util.CreateUserUtil">
+          	<arg value="${ccts.username}"/>
+		  	<arg value="${ccts.password}"/>
+			<arg value="${extract.dir}/"/> 
+			<classpath refid="customlib.cp"/>
+       </java>
+	</target>
+		
+	<target name="insert-ccts-user" description="insert create ccts user/passowrd into caaers database" depends="create-user-properties,define-vars">
+		   
+		<echo message="${datasource.driver}"/>    
+		<echo message="${datasource.url}"/>    
+		<echo message="${database.userid}"/>    
+		<echo message="${database.password}"/>
+		<property file="${extract.dir}/user.properties"/> 
+		<echo message="${user.username}"/>
+		<echo message="${user.password}"/>
+		
+		<sql driver="${datasource.driver}" userid="${database.userid}" password="${database.password}" url="${datasource.url}"  
+			classpathref="bering.classpath" onerror="abort" autocommit="true">
+			
+			update csm_user set login_name = '${user.username}' where user_id = -1;
+			update csm_user set password = '${user.password}' where user_id = -1;
+			
+		</sql>
+		
+	</target>
+	
+	<target name="install_cert">
+		<echo message="${webSSO.server.address}"/>  
+		<echo message="${webSSO.server.port}"/>  
+		<echo message="${truststore.passphrase}"/>
+		<echo message="${modified.trust.store}"/>
+		
+		<java classname="gov.nih.nci.caaersinstaller.util.InstallCert">
+          	<arg value="${webSSO.server.address}"/>
+		  	<arg value="${webSSO.server.port}"/>
+			<arg value="${truststore.passphrase}"/>
+			<arg value="${modified.trust.store}/"/>
+			<classpath refid="customlib.cp"/>
+       </java>
+	</target>
+	
+	<target name="copy_csm_jass_config">
+		<java classname="gov.nih.nci.caaersinstaller.util.CsmJaasFileCopier">
+          	<arg value="${basedir}/resources/templates/conf/${database.vendor}.csm_jaas.config"/>
+		  	<arg value="${tomcat.temp.home}/conf/cabig/csm_jaas.config"/>
+		 <classpath refid="customlib.cp"/>	
+       </java>
+	</target>
+	
+	<target name="cleanuptarget" description="clean up">
+
+	</target>
+	<target name="finished" description="clean up">
+		<echo message="System set up is complete " />
+	</target>
+</project>

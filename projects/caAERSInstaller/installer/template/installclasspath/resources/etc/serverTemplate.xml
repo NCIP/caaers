@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Connector acceptCount="10" autoFlush="true" cert="/Users/joshua/dev/ew/cagrid-1-0/caGrid/projects/authentication-service/host_cert.pem" className="org.globus.tomcat.coyote.net.HTTPSConnector" debug="0" disableUploadTimeout="true" enableLookups="true" key="abc" maxSpareThreads="75" maxThreads="150" minSpareThreads="25" port="8443" scheme="https"/>

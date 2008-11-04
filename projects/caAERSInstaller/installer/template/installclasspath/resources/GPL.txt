@@ -1,0 +1,7 @@
+Some license conditions here
+Version 1.x, August 2006
+
+ Write something about portal here
+
+END OF TERMS AND CONDITIONS
+
