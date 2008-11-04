@@ -160,8 +160,25 @@
                     <xsl:value-of select="TreatmentInformation/totalCourses"/>
                 </TOTAL_NUMBER_OF_COURSES>
             </xsl:if>
-
-            <INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
+            
+			<xsl:variable name="flg">
+	  			<xsl:for-each select="StudyParticipantAssignment/StudySite/Study/StudyAgent">
+	  				<xsl:if test="INDType = 'DCP_IND'">Yes</xsl:if>
+	  				<xsl:if test="INDType = 'CTEP_IND'">Yes</xsl:if>
+	  				<xsl:if test="INDType = 'OTHER'">Yes</xsl:if>
+	  			</xsl:for-each>
+	  		</xsl:variable>
+	  		
+	  		<xsl:choose>
+	  			<xsl:when test="string-length($flg)=0">
+	  				<INV_AGENT_ADMIN>No</INV_AGENT_ADMIN>
+	  			</xsl:when>
+	  			<xsl:otherwise>
+	  				<INV_AGENT_ADMIN><xsl:value-of select="substring($flg,1,3)"/></INV_AGENT_ADMIN>
+	  			</xsl:otherwise>
+	  		</xsl:choose>
+ 		
+            
             <!-- no info -->
         </COURSE_INFORMATION>
 
