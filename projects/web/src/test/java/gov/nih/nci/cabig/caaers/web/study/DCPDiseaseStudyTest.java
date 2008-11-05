@@ -50,6 +50,8 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         request.setMethod("POST");
         request.setParameter("condition", "5");
         request.setParameter("_action", "addOtherCondition");
+        request.setParameter("_selected", "0");
+        request.setParameter("_page", "5");
         EasyMock.expect(conditionDao.getById(5)).andReturn(condition);
         replayMocks();
         
