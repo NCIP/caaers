@@ -315,7 +315,8 @@ public class EvaluationServiceImpl implements EvaluationService {
         Set<Integer> orgIdSet = new HashSet<Integer>();
         List<StudyOrganization> studyOrgs =  assignment.getStudySite().getStudy().getStudyOrganizations();
         for (StudyOrganization studyOrganization : studyOrgs) {
-        	reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
+        	if(orgIdSet.add(studyOrganization.getOrganization().getId()))
+        		reportDefinitions.addAll(reportDefinitionDao.getAll(studyOrganization.getOrganization().getId()));
         }
         
         /**
