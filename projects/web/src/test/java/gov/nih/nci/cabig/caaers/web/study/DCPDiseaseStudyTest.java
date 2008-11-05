@@ -37,6 +37,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         controller.setConditionDao(conditionDao);
 
         study = Fixtures.createStudy("study");
+      
         diseaseTab = new DiseaseTab();
         diseaseTab.setConditionDao(conditionDao);
     }
@@ -46,6 +47,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         Condition condition = new Condition();
         errors = new BindException(new BeanPropertyBindingResult(study, "command"));
         condition.setId(5);
+        study.setCondition("5");
         
         request.setMethod("POST");
         request.setParameter("condition", "5");
@@ -58,6 +60,6 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         diseaseTab.postProcess(request, study, errors);
 
         verifyMocks();
-        assertEquals(new Integer(5), study.getStudyConditions().get(0).getId());
+        assertEquals(new Integer(5), study.getStudyConditions().get(0).getTerm().getId());
     }
 }
