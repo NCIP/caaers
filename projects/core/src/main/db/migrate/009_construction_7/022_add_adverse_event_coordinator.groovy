@@ -20,6 +20,7 @@ class AddAdverseEventCoordinator extends edu.northwestern.bioinformatics.bering.
     void down(){
         execute("delete from csm_user_group_role_pg where group_id=-13 and user_group_role_pg_id=-27");
         execute("delete from csm_user_group_role_pg where group_id=-13 and user_group_role_pg_id=-26");
-        execute("delete from csm_group where group_id=-13 and group_name='caaers_ae_cd'");
+        // updated ae coordinator in 012_Phase2_construction_2/005_update_adverse_event_coordinator.groovy , moved the following csm_group delete to that file.
+        // execute("delete from csm_group where group_id=-13 and group_name='caaers_ae_cd'");
     }
 }
