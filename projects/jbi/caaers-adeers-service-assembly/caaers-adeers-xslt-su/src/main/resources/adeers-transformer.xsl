@@ -267,7 +267,7 @@
             </SURGERY_INTERVENTION>
         </xsl:if>
 
-        <xsl:if test="MedicalDevice/brandName !=''">
+        <xsl:if test="MedicalDevice/brandName !='' or MedicalDevice/commonName !=''">
             <SUSPECT_MEDICAL_DEVICE>
 
                 <xsl:if test="MedicalDevice/brandName != ''">
