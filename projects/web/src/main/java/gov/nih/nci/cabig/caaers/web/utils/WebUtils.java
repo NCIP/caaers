@@ -30,8 +30,7 @@ public class WebUtils {
      *                <code>item.toString()</code> will be used instead.
      * @return an options map suitable for use as the {@link InputField#OPTIONS} attribute
      */
-    public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty,
-                    String itemLabelProperty, String blankValue) {
+    public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty, String itemLabelProperty, String blankValue) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         if (blankValue != null) options.put("", blankValue);
         for (Object item : items) {
