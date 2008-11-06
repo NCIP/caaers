@@ -104,7 +104,7 @@ public class CtcTerm extends AbstractImmutableDomainObject {
         this.ctepCode = ctepCode;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     public CtcCategory getCategory() {
         return category;
     }
