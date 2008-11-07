@@ -50,16 +50,7 @@
         	<dependency org="org.springframework" name="spring-web" rev="2.0.2" force="true" />
         	<dependency org="org.springframework" name="spring-webmvc" rev="2.0.2" force="true" />
 			<dependency org="org.acegisecurity" name="acegi-security" rev="1.0.3" />
-			<dependency org="org.springmodules" name="spring-modules-jbpm31" rev="0.8a" >
-				<exclude conf="*" name="hibernate" />
-        		<exclude conf="*" name="spring-core" />
-        		<exclude conf="*" name="spring-aop" />
-        		<exclude name="spring*" conf="*" />
-        		<exclude name="jbpm" conf="*" /><!-- explicity specified jbdl 3.2.3 -->
-			</dependency>
-			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3"/>
 			
-
 			<!--  Commons Jar (Apache/NW) -->
         	<dependency org="commons-collections" name="commons-collections" rev="3.2" />
         	<dependency org="commons-lang" name="commons-lang" rev="2.3" />
