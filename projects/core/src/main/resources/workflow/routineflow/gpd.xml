@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<root-container name="routineflow" width="976" height="690">
+  <node name="Start Routine Report Flow" x="146" y="6" width="288" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="0" h1="60" w2="-2" h2="-65"/>
+    </edge>
+  </node>
+  <node name="Publish Report For Review" x="152" y="101" width="286" height="36">
+    <edge>
+      <label x="6" y="-12"/>
+    </edge>
+  </node>
+  <node name="Perform Level 1 Review" x="161" y="290" width="287" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="-63" y="10"/>
+      <bendpoint w1="261" h1="53" w2="-241" h2="51"/>
+    </edge>
+  </node>
+  <node name="Perform Level 2 Review" x="170" y="413" width="278" height="36">
+    <edge>
+      <label x="-121" y="-8"/>
+    </edge>
+    <edge>
+      <label x="-209" y="4"/>
+      <bendpoint w1="496" h1="-1" w2="-1" h2="120"/>
+    </edge>
+    <edge>
+      <label x="7" y="79"/>
+      <bendpoint w1="-283" h1="1" w2="-264" h2="210"/>
+      <bendpoint w1="-284" h1="-210" w2="-265" h2="-1"/>
+    </edge>
+  </node>
+  <node name="Provide Additional Requested Information" x="638" y="292" width="337" height="36">
+    <edge>
+      <label x="-223" y="-25"/>
+      <bendpoint w1="1" h1="-86" w2="517" h2="2"/>
+    </edge>
+  </node>
+  <node name="Review Completed" x="185" y="551" width="265" height="36">
+    <edge>
+      <label x="-35" y="-17"/>
+    </edge>
+  </node>
+  <node name="Locked" x="192" y="653" width="250" height="36"/>
+  <node name="Ready For Review" x="168" y="204" width="245" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="10" y="18"/>
+      <bendpoint w1="-238" h1="113" w2="-257" h2="-96"/>
+    </edge>
+  </node>
+</root-container>
