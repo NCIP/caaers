@@ -45,11 +45,6 @@ The state associated with this task node is : REVIEW2
 			</description>
 		</transition>
 		<transition to="Provide Additional Requested Information" name="Additional Info Needed"></transition>
-		<transition to="Ready For Review" name="Publish for Review">
-			<description>
-				.
-			</description>
-		</transition>
 	</task-node>
 
 	<task-node name="Provide Additional Requested Information">
@@ -68,6 +63,7 @@ When the Routine Period (is locked), it can go to end state.
 The state associated with this task is &quot;REVIEW_COMPLETE&quot;
 		</description>
 		<transition to="Locked" name="Lock"></transition>
+		<transition to="Ready For Review" name="Publish For Review"></transition>
 	</state>
 
 	<node name="Ready For Review">

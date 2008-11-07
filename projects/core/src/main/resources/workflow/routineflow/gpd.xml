@@ -29,11 +29,6 @@
       <label x="-209" y="4"/>
       <bendpoint w1="496" h1="-1" w2="-1" h2="120"/>
     </edge>
-    <edge>
-      <label x="7" y="79"/>
-      <bendpoint w1="-283" h1="1" w2="-264" h2="210"/>
-      <bendpoint w1="-284" h1="-210" w2="-265" h2="-1"/>
-    </edge>
   </node>
   <node name="Provide Additional Requested Information" x="638" y="292" width="337" height="36">
     <edge>
@@ -45,15 +40,22 @@
     <edge>
       <label x="-35" y="-17"/>
     </edge>
+    <edge>
+      <label x="24" y="140"/>
+      <bendpoint w1="-311" h1="-3" w2="-284" h2="344"/>
+      <bendpoint w1="-310" h1="-340" w2="-283" h2="7"/>
+    </edge>
   </node>
-  <node name="Locked" x="192" y="653" width="250" height="36"/>
   <node name="Ready For Review" x="168" y="204" width="245" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="10" y="18"/>
+      <label x="5" y="33"/>
+      <bendpoint w1="-163" h1="73" w2="-182" h2="-136"/>
       <bendpoint w1="-238" h1="113" w2="-257" h2="-96"/>
+      <bendpoint w1="-239" h1="207" w2="-258" h2="-2"/>
     </edge>
   </node>
+  <node name="Locked" x="192" y="653" width="250" height="36"/>
 </root-container>
