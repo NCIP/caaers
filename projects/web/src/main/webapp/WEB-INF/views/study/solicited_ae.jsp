@@ -42,20 +42,20 @@
     }
 
    function uninitializeAllEvents()
-    {
-    try{
-     unRegisterAddInstructionLinks();
-     unRegisterSelectAllCheckBoxes();  
-     unRegisterDeleteEpochIcons();   
-     unRegisterAddEpochButton();  
-    
-    }catch(ex)
-    {
-  //    alert('exception');
-    }
-    }
-    
-    function registerAddEpochButton()
+   {
+       try {
+           unRegisterAddInstructionLinks();
+           unRegisterSelectAllCheckBoxes();
+           unRegisterDeleteEpochIcons();
+           unRegisterAddEpochButton();
+
+       } catch(ex)
+       {
+           //    alert('exception');
+       }
+   }
+
+   function registerAddEpochButton()
     {
         Event.observe('AddEpoch', 'click', addEpoch);
     } 
@@ -78,19 +78,17 @@
 	   	               
                    
     }
-   
-    function deleteEpoch( epoch_index ){
-        
-       	 
-           <tags:tabMethod  method="deleteEpoch" 
-                         viewName="study/ajax/generateSolicitedAETable" 
-                         divElement="'SolicitedAETableArea'" 
-                         formName="'command'"
-                         params="_deleteEpoch=true"
-                         onComplete="initializeAllEvents"/>
-                   
-    }
-   
+
+   function deleteEpoch(epoch_index) {
+
+   <tags:tabMethod  method="deleteEpoch"
+       viewName="study/ajax/generateSolicitedAETable"
+       divElement="'SolicitedAETableArea'"
+       formName="'command'"
+       params="_deleteEpoch=true"
+       onComplete="initializeAllEvents"/>
+   }
+
    function registerSelectAllCheckBoxes()
     {
       var header_of_all_epochs = $$('.epoch');
@@ -159,10 +157,10 @@
          // event.currentTarget only works for all standard browsers.      
          
          // removing delete option for BaseLine Epoch
-         if( i == 0 )
+         if (i == 0)
              $(all_delete_epoch_links[i]).hide();
          else    
-             Event.observe($(all_delete_epoch_links[i]).id,'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
+             Event.observe($(all_delete_epoch_links[i]).id, 'click', callback_delete_epoch.bind($(all_delete_epoch_links[i])));
        }
     }
     
@@ -188,39 +186,29 @@
     
     function callback_delete_epoch(event)
     {
-    
-    
-       if(!event.currentTarget) event.currentTarget = this;
-       
-       var delete_epoch_icon_id = event.currentTarget.id;
-       var epoch_index = delete_epoch_icon_id.substring("delete-epoch-".length);
-       var all_cells_of_this_epoch_column = $$('.col-epoch-'+epoch_index);
-       
-       var header_of_all_epochs = $$('.epoch');
-       
-       
-       if(confirm("Do you really want to delete this treatment period ?"))
-       { 
-     
-         uninitializeAllEvents();
-        
-         $('th-table1-'+epoch_index).remove();
-         $('th-col-epoch-'+epoch_index).remove();
-         for(var i = 0 ; i < all_cells_of_this_epoch_column.length ; i++)
-         {
-           all_cells_of_this_epoch_column[i].remove();
-         }
-         
-         deleteEpoch( epoch_index );
-        
-       }
-       else
-         return false;
-         
-        
+        if (!event.currentTarget) event.currentTarget = this;
+
+        var delete_epoch_icon_id = event.currentTarget.id;
+        var epoch_index = delete_epoch_icon_id.substring("delete-epoch-".length);
+        var all_cells_of_this_epoch_column = $$('.col-epoch-' + epoch_index);
+        var header_of_all_epochs = $$('.epoch');
+
+        if (confirm("Do you really want to delete this treatment period ?"))
+        {
+            uninitializeAllEvents();
+
+            $('th-table1-' + epoch_index).remove();
+            $('th-col-epoch-' + epoch_index).remove();
+            for (var i = 0; i < all_cells_of_this_epoch_column.length; i++) {
+                all_cells_of_this_epoch_column[i].remove();
+            }
+            deleteEpoch(epoch_index);
+        }
+        else
+            return false;
     }
-    
-    function selectAll(event)
+
+   function selectAll(event)
     {
       
        var selectall_ckbox = Event.element(event).id;

@@ -6,8 +6,11 @@
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@attribute name="displayOnly" required="true" type="java.lang.Boolean" %>
-        			
-        <table id="sae-0" class="sae">
+
+<c:if test="${statusMessage eq 'wrongEpochDelete'}">
+    <div id="flash-message" class="error"><tags:message key="wrong.epoch.delete" /></div>
+</c:if>
+    <table id="sae-0" class="sae">
   		 
     		<tbody class="tablebody">
 			 <tr>

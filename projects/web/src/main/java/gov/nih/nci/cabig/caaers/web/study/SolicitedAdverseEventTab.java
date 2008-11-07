@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.EpochDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -30,6 +31,7 @@ import org.springframework.web.servlet.ModelAndView;
  * This tab captures the solicited adverse event details in the study flow.
  * @author Biju Joseph
  * @author Arun Kumar
+ * @author Ion C. Olaru
  *
  */
 public class SolicitedAdverseEventTab extends StudyTab {
@@ -41,9 +43,9 @@ public class SolicitedAdverseEventTab extends StudyTab {
 
 	
     private CtcTermDao ctcTermDao;
-
     private LowLevelTermDao lowLevelTermDao;
-    
+    private EpochDao epochDao;
+
     private SolicitedEventTabTable table;
     
 	public SolicitedAdverseEventTab() {
@@ -55,7 +57,6 @@ public class SolicitedAdverseEventTab extends StudyTab {
     public Map<String, Object> referenceData(HttpServletRequest request, Study study) {
       
     	Map<String, Object> refdata = super.referenceData();
-    	
     	SolicitedEventTabTable table = null;
     	
     	if(request.getParameter( AJAX_REQUEST_ADDEPOCH ) != null || request.getParameter( AJAX_REQUEST_DELETEEPOCH ) != null )
@@ -76,10 +77,8 @@ public class SolicitedAdverseEventTab extends StudyTab {
     		table = new SolicitedEventTabTable( study, termIDs, terms, ctcTermDao );
     		refdata.put("numOfnewlyAddedRows", table.getNumOfnewlyAddedRows());
     	}	
-    	System.out.println(table.getListOfSolicitedAERows());
     	refdata.put("listOfSolicitedAERows",table.getListOfSolicitedAERows());  
-        System.out.println("listOfSolicitedAERows:"+ table.getListOfSolicitedAERows());
-        
+
         return refdata;
     }
     
@@ -121,39 +120,36 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	}
     }
 
-    protected void retainOnlyTheseEpochsInStudy( Study command, String[] epoch_orders )
-    {
-    	try{
-    	ArrayList<String> unDeletedEpochs = new ArrayList<String>();
-    	
-    	for(String epoch_order : epoch_orders ) {
-    		unDeletedEpochs.add( epoch_order );
-    	}
-    	
-    	List<Epoch> all_epochs = command.getEpochs();
-    	
-    	java.util.Iterator<Epoch> iterator =  all_epochs.iterator();
-    	while( iterator.hasNext() )
-    	{
-    		Epoch epoch = iterator.next();
-    		System.out.println("1:"+unDeletedEpochs.get(0).equals(String.valueOf(epoch.getEpochOrder())));	
-    		
-    	    
-    		if( !unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder())) )
-    		{
-    		   System.out.println("Deleting... : " + epoch.getId());    			
-               iterator.remove();
-    		}
-    	}
-    	
-    	}catch(Exception ex)
-    	{
-    		 ex.printStackTrace();
-    	}
-    	
+    protected void retainOnlyTheseEpochsInStudy(HttpServletRequest request, Study command, String[] epoch_orders) {
+        try {
+            ArrayList<String> unDeletedEpochs = new ArrayList<String>();
+
+            for (String epoch_order : epoch_orders) {
+                unDeletedEpochs.add(epoch_order);
+            }
+
+            List<Epoch> all_epochs = command.getEpochs();
+            java.util.Iterator<Epoch> iterator = all_epochs.iterator();
+            
+            while (iterator.hasNext()) {
+                Epoch epoch = iterator.next();
+
+                if (!unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder()))) {
+                    int count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
+                    // System.out.println("This epoch is assigned to (" + count + ") Reporting Periods.");
+                    if (count == 0) iterator.remove(); else {
+                        request.setAttribute("statusMessage", "wrongEpochDelete");
+                    }
+                }
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
-    
+
     @Override
     public void onBind(HttpServletRequest request, Study command, Errors errors) {
     	// TODO Auto-generated method stub
@@ -164,11 +160,9 @@ public class SolicitedAdverseEventTab extends StudyTab {
         List<Epoch> listOfEpochs = command.getEpochs();
    	    String[] epoch_ids = request.getParameterValues("epoch_id");
     	
-    	System.out.println( epoch_ids.length );
-    	
         int indexOfEpoch = 0;
     	
-    	for(Epoch e : command.getEpochs()){
+    	for (Epoch e : command.getEpochs()){
     		List<SolicitedAdverseEvent> listOfSolicitedAEs = new ArrayList<SolicitedAdverseEvent>();
     		String[] termIDs = request.getParameterValues( "epoch[" + indexOfEpoch + "]" );
     		
@@ -206,8 +200,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
     		listOfOldSolicitedAEs.addAll( listOfSolicitedAEs );
     		indexOfEpoch++;
     	}	
-    	retainOnlyTheseEpochsInStudy( command, epoch_ids );
-
+    	retainOnlyTheseEpochsInStudy(request, command, epoch_ids);
     }
     
     /**
@@ -280,13 +273,19 @@ public class SolicitedAdverseEventTab extends StudyTab {
 /*
  *  For future use
  */
-	public ModelAndView deleteEpoch(HttpServletRequest request, Object commandObj, Errors error) {        
-		Study study= (Study) commandObj;
+	public ModelAndView deleteEpoch(HttpServletRequest request, Object oStudy, Errors error) {
+		Study study= (Study)oStudy;
+        // the list of all epochs on the page (before deleting) except the # of the one to delete
         String[] epoch_ids = request.getParameterValues("epoch_id");
-        log.debug("epochs_ids.length: " + epoch_ids.length);
-    	retainOnlyTheseEpochsInStudy( study, epoch_ids );
+    	retainOnlyTheseEpochsInStudy(request, study, epoch_ids);
 		return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());
 	}
 
+    public EpochDao getEpochDao() {
+        return epochDao;
+    }
 
+    public void setEpochDao(EpochDao epochDao) {
+        this.epochDao = epochDao;
+    }
 }

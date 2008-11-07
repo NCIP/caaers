@@ -29,30 +29,20 @@ import java.util.List;
 public class Study extends AbstractIdentifiableDomainObject implements Serializable {
 
     public static final String STATUS_ADMINISTRATIVELY_COMPLETE = "Administratively Complete";
-
     public static final String STATUS_ACTIVE = "Active - Trial is open to accrual";
 
     private String shortTitle;
-
     private String longTitle;
-
     private String description;
-
     private String precis;
-
     private String phaseCode;
-
     private AeTerminology aeTerminology;
-
     private DiseaseTerminology diseaseTerminology;
-
     private String status;
 
     // TODO: Remove
     private Boolean blindedIndicator;
-
     private Boolean multiInstitutionIndicator;
-
     private Boolean adeersReporting;
 
     // TODO: Remove
@@ -68,7 +58,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private Integer targetAccrualNumber;
     
     private MeddraVersion otherMeddra;
-
     private List<StudyOrganization> studyOrganizations;
 
     private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
@@ -78,11 +67,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private final LazyListHelper lazyListHelper;
 
     private OrganizationAssignedIdentifier organizationAssignedIdentifier;
-
     private List<StudyTherapy> studyTherapies = new ArrayList<StudyTherapy>();
-
     private List<ReportFormat> reportFormats = new ArrayList<ReportFormat>();
-    
     private List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
 
     // TODO move into Command Object

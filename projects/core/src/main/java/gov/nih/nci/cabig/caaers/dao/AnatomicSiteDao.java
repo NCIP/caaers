@@ -41,8 +41,7 @@ public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
      */
 
     public List<AnatomicSite> getBySubnames(String[] subnames) {
-        return findBySubname(subnames, null, EXTRA_PARAMS, SUBSTRING_MATCH_PROPERTIES,
-                        EXACT_MATCH_PROPERTIES);
+        return findBySubname(subnames, null, EXTRA_PARAMS, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
     /**
