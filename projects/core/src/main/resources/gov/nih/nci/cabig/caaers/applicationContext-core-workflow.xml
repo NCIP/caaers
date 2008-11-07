@@ -3,7 +3,7 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans>
-	 <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+	 <!-- <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="configuration" value="classpath:/jbpm.cfg.xml"/>
         
@@ -25,11 +25,6 @@
         <property name="definitionLocation" value="classpath:/workflow/routineflow/processdefinition.xml"/>
     </bean>
 	
-	<!-- 
-	 <bean id="testProcess" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
-        <property name="definitionLocation" value="classpath:/testprocess.xml"/>
-    </bean>
-    -->
-    <bean id="workflowManagerService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowManagerService"/>
+   <bean id="workflowManagerService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowManagerService"/> -->
     
 </beans>
