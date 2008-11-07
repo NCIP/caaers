@@ -29,8 +29,10 @@ This applicationContext contains the definition of the DAOs
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
+              <value>classpath*:/org/jbpm/**/*.hbm.xml</value>
             </list>
         </property>
+        
         <property name="namingStrategy">
             <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
         </property>
