@@ -173,6 +173,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
+			this.assignment.getParticipant().getIdentifiers();
 		}
     }
     
@@ -280,6 +281,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			Integer id = ae.getId();
 			selectedAesMap.put(id, Boolean.FALSE);
 		}
+		for(AdverseEvent ae: adverseEventReportingPeriod.getReportableAdverseEvents()){
+			if(seriousAdverseEvents != null)
+				ae.setRequiresReporting(seriousAdverseEvents.contains(ae));
+		}
 		//reset the ones that are available below with true
 		for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
 			for(AdverseEvent ae : entry.getValue()){
@@ -315,7 +320,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * @param selectedAesMap
 	 */
 	public void updateRequiresReportingFlag(AdverseEvent ae){
-		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty()) return;
+		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty())return;
 		ae.setRequiresReporting(seriousAdverseEvents.contains(ae));
 		
 	}
