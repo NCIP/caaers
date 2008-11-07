@@ -26,12 +26,13 @@ State associated with this task node is DRAFT
 			This task node represents that the Routine Report (Reporting Period) is sent for Level 1 review.
 The state associated with this task node is : REVIEW1
 		</description>
+		<task></task>
 		<transition to="Perform Level 2 Review" name="Level 2 Review">
 			<description>
 				This transition occurs then the review is passed
 			</description>
 		</transition>
-		<transition to="Provide Additional Requested Information" name="Additional Info Needed"></transition>
+		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
 	</task-node>
 
 	<task-node name="Perform Level 2 Review">
@@ -44,10 +45,9 @@ The state associated with this task node is : REVIEW2
 				This is when the review is passed.
 			</description>
 		</transition>
-		<transition to="Provide Additional Requested Information" name="Additional Info Needed"></transition>
 	</task-node>
 
-	<task-node name="Provide Additional Requested Information">
+	<task-node name="Provide Additional Info for First Review">
 		<description>
 			The reviewer asked for more information, while reviewing the Routine report content. A task should be created to the data entry person, to provide this information. 
 The status associated with this task is ADDITIONAL_INFO_NEEDED
@@ -74,6 +74,11 @@ State associated with this Node is READY4REVIEW
 		<transition to="Perform Level 1 Review" name="Level 1 Review"></transition>
 		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
 	</node>
+
+	<task-node name="Provide Additional Info for Second Review">
+		<transition to="Perform Level 2 Review" name="Additional Info Needed"></transition>
+		<transition to="Ready For Review" name="Publish for Review"></transition>
+	</task-node>
 
 
 	<end-state name="Locked">

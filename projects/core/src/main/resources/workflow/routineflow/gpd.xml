@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="routineflow" width="976" height="690">
+<root-container name="routineflow" width="1355" height="782">
   <node name="Start Routine Report Flow" x="146" y="6" width="288" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -17,23 +17,19 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="-63" y="10"/>
-      <bendpoint w1="261" h1="53" w2="-241" h2="51"/>
+      <label x="-59" y="0"/>
+      <bendpoint w1="263" h1="37" w2="-238" h2="40"/>
     </edge>
   </node>
   <node name="Perform Level 2 Review" x="170" y="413" width="278" height="36">
     <edge>
       <label x="-121" y="-8"/>
     </edge>
-    <edge>
-      <label x="-209" y="4"/>
-      <bendpoint w1="496" h1="-1" w2="-1" h2="120"/>
-    </edge>
   </node>
-  <node name="Provide Additional Requested Information" x="638" y="292" width="337" height="36">
+  <node name="Provide Additional Info for First Review" x="640" y="274" width="337" height="36">
     <edge>
-      <label x="-223" y="-25"/>
-      <bendpoint w1="1" h1="-86" w2="517" h2="2"/>
+      <label x="-62" y="-32"/>
+      <bendpoint w1="-257" h1="-15" w2="261" h2="55"/>
     </edge>
   </node>
   <node name="Review Completed" x="185" y="551" width="265" height="36">
@@ -58,4 +54,16 @@
     </edge>
   </node>
   <node name="Locked" x="192" y="653" width="250" height="36"/>
+  <node name="Provide Additional Info for Second Review" x="722" y="422" width="308" height="36">
+    <edge>
+      <label x="-63" y="1"/>
+      <bendpoint w1="-286" h1="32" w2="281" h2="41"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="174" h1="3" w2="760" h2="221"/>
+      <bendpoint w1="173" h1="-112" w2="759" h2="106"/>
+      <bendpoint w1="168" h1="-217" w2="754" h2="1"/>
+    </edge>
+  </node>
 </root-container>
