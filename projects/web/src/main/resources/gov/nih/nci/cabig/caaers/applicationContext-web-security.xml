@@ -179,6 +179,116 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			ref="sectionPrivilegeAndObjectIdGenerator" />
 	</bean>
 
+    <util:map id="tabObjectPrivilegeMap">
+    	<!-- STUDY FLOW  , STUDY READ ONLY -->
+		<entry key="gov.nih.nci.cabig.caaers.web.study.DetailsTab" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		
+		<!-- STUDY FLOW ,  UPDATE -->
+		<entry key="gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.DetailsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.StudyTherapiesTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.AgentsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.TreatmentAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.DiseaseTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.SolicitedAdverseEventTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.ExpectedAEsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.SitesTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.InvestigatorsTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.PersonnelTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
+
+		<!-- STUDY FLOW ,  CREATE -->
+		<entry key="gov.nih.nci.cabig.caaers.web.study.DetailsTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.StudyTherapiesTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.AgentsTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.TreatmentAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.DiseaseTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.SolicitedAdverseEventTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.ExpectedAEsTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.SitesTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.InvestigatorsTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.PersonnelTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.IdentifiersTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.study.EmptyStudyTab" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
+		
+		<!-- SUBJECT FLOW , READ -->	
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+
+		<!-- SUBJECT FLOW , UPDATE -->	
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.SubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>		
+				
+		<!-- SUBJECT FLOW , CREATE -->	
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.SelectStudyForParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.SubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
+		
+		<!-- AE FLOW , CREATE -->
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventConfirmTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.CtcBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.MeddraBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.TreatmentTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.DescriptionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.PatientDetailsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.OtherCausesTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.RadiationInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SurgeryInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.MedicalDeviceTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.LabsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>			
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AttributionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+
+		<!-- AE FLOW , UPDATE -->
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.CtcBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.MeddraBasicsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.TreatmentTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.DescriptionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.PatientDetailsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.OtherCausesTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.RadiationInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.SurgeryInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.MedicalDeviceTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.LabsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>			
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AttributionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		
+		
+	</util:map>
+	
+	<bean id="tabPrivilegeAndObjectIdGenerator"
+		class="gov.nih.nci.cabig.caaers.web.security.TabPrivilageAndObjectIdGenerator">
+		<property name="objectPrivilegeMap"
+			ref="tabObjectPrivilegeMap" />
+	</bean>	
+
+	<bean id="tabAuthorizationCheck"
+		class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
+		
+		<property name="authorizationSwitch" ref="authorizationSwitch"/>
+		
+		<property name="csmAuthorizationCheck">
+			<bean class="gov.nih.nci.security.acegi.grid.authorization.CSMGridGroupAuthorizationCheck">
+				<property name="csmUserProvisioningManager"
+					ref="csmUserProvisioningManager" />
+                <property name="authorizationSwitch" ref="authorizationSwitch"/>
+			</bean>
+
+		</property>
+		<property name="objectIdGenerator"
+			ref="tabPrivilegeAndObjectIdGenerator" />
+		<property name="privilegeGenerator"
+			ref="tabPrivilegeAndObjectIdGenerator" />
+	</bean>
+		
     <bean id="siteAuthorizationCheck"
           class="gov.nih.nci.security.acegi.csm.authorization.DelegatingObjectPrivilegeCSMAuthorizationCheck">
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
