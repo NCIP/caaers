@@ -22,24 +22,18 @@ import java.util.*;
  *
  * @author Rhett Sutphin
  * @author Biju Joseph
+ * @author Ion C. Olaru
  */
 @Transactional(readOnly = true)
 public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         MutableDomainObjectDao<Participant> {
     // these are for getBySubnames
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName",
-            "lastName");
-
-    private static final List<String> EXACT_MATCH_PROPERTIES = Arrays
-            .asList("institutionalPatientNumber");
-
-    private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES = Arrays.asList("firstName",
-            "lastName");
-
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("firstName", "lastName");
+    private static final List<String> EXACT_MATCH_PROPERTIES = Arrays.asList("institutionalPatientNumber");
+    private static final List<String> EXACT_MATCH_UNIQUE_PROPERTIES = Arrays.asList("firstName","lastName");
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
-    private static final String JOINS = "join o.identifiers as identifier "
-            + "join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
+    private static final String JOINS = "join o.identifiers as identifier join o.assignments as spa join spa.studySite as ss join ss.study as s join s.identifiers as sIdentifier ";
 
     /**
      * Get the Class representation of the domain object that this DAO is representing.
@@ -67,8 +61,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
      * @param domainObjectImportOutcome
      */
     @Transactional(readOnly = false)
-    public void batchSave(
-            final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome) {
+    public void batchSave(final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome) {
         log.debug("Time now : " + new java.util.Date());
         Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
         for (DomainObjectImportOutcome<Participant> outcome : domainObjectImportOutcome) {
@@ -132,6 +125,9 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         return participant;
     }
 
+    public List<Identifier> getSitePrimaryIdentifiers(int siteID) {
+        return getHibernateTemplate().find("FROM Identifier idt WHERE idt.organization.id = ? AND idt.primaryIndicator = ?", new Object[]{siteID, true});
+    }
 
     /**
      * Search for participants given search criteria.
@@ -260,8 +256,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         log.debug("::: " + queryString.toString());
         return (List<Participant>) getHibernateTemplate().execute(new HibernateCallback() {
 
-            public Object doInHibernate(final Session session) throws HibernateException,
-                    SQLException {
+            public Object doInHibernate(final Session session) throws HibernateException, SQLException {
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
                 for (String key : queryParameterMap.keySet()) {

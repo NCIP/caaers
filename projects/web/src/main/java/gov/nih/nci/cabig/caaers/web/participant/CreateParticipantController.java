@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudySiteDao;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.domain.repository.OrganizationRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
@@ -22,6 +23,9 @@ import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Iterator;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -227,11 +231,23 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
+        ParticipantInputCommand cmd = (ParticipantInputCommand) command;
+
+        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
+
+        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
+            Identifier sID = sitePrimaryIdentifiers.get(i);
+            for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
+                Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
+                
+                if (sID.getValue().equals(pID.getValue())) {
+                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+                }
+            }
+        }
 
         // if the target tab is not the next to the crrent one
         if (getTargetPage(request, command, errors, page) - page > 1) {
-            ParticipantInputCommand cmd = (ParticipantInputCommand) command;
-
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command 
             if (cmd.assignment == null || cmd.assignment.getId() == null)
                 if (getTab((ParticipantInputCommand) command, getTargetPage(request, command, errors, page)).getClass() == SubjectMedHistoryTab.class)

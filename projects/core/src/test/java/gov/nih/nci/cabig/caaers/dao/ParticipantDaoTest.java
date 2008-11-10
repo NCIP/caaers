@@ -10,10 +10,7 @@ import org.springframework.jdbc.core.StatementCallback;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Krikor Krumlian
@@ -316,8 +313,7 @@ public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
         participant = getDao().getById(-100);
         assertNotNull("Participant (-100) should be null ", participant);
         int newSize = participant.getAssignments().size();
-        assertEquals("The size of the participant assignment should be one less", oldSize - 1,
-                newSize);
+        assertEquals("The size of the participant assignment should be one less", oldSize - 1, newSize);
     }
 
     public void testDeleteParticipant() {
