@@ -7,7 +7,7 @@
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
->
+        >
 
     <bean id="authorizationSwitch"
           class="gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch"
@@ -134,6 +134,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         || execution(public void gov.nih.nci.cabig.caaers.dao.CaaersDao+.merge(gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject+))
         || execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.get*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository+.find*(..))
          ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
                               "/>
 
@@ -202,6 +203,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.match*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository.find*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
@@ -238,6 +241,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.StudyDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
             </value>
         </property>
         <property name="accessDecisionManager">
