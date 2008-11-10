@@ -70,6 +70,12 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
 
     @Override
     protected void layoutTabs(final Flow<T> flow) {
+    	
+    	/**
+    	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
+    	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
+    	 */
+    	
         flow.addTab(new EditParticipantReviewParticipantTab());
         flow.addTab(new EditParticipantTab());
         flow.addTab(new SubjectMedHistoryTab());
