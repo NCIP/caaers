@@ -297,6 +297,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public FlowFactory<CaptureAdverseEventInputCommand> getFlowFactory() {
 		return new FlowFactory<CaptureAdverseEventInputCommand>() {
 			public Flow<CaptureAdverseEventInputCommand> createFlow(CaptureAdverseEventInputCommand cmd) {
+				
+            	/**
+            	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
+            	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
+            	 */
+				
+				
 				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("Enter AEs || Select Subject and Study");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());
