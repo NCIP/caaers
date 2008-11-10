@@ -134,6 +134,11 @@ public class SolicitedAdverseEventTab extends StudyTab {
             while (iterator.hasNext()) {
                 Epoch epoch = iterator.next();
 
+                if (epoch.getId() == null) {
+                    iterator.remove();
+                    continue;
+                }
+                
                 if (!unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder()))) {
                     int count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
                     // System.out.println("This epoch is assigned to (" + count + ") Reporting Periods.");
