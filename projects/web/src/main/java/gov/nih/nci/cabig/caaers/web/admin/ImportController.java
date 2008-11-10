@@ -24,9 +24,7 @@ import gov.nih.nci.cabig.caaers.integration.schema.researchstaff.ResearchStaffTy
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.ParticipantImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
-import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -63,7 +61,6 @@ import javax.xml.validation.Validator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -93,7 +90,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private StudyDao studyDao;
 
-
     private OrganizationDao organizationDao;
 
     private RoutineAdverseEventReportDao routineAdverseEventReportDao;
@@ -106,7 +102,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private CtcDao ctcDao;
 
-   private StudyImportServiceImpl studyImportService;
    
    //added by Monish Dombla
    private StudyProcessorImpl studyProcessorImpl;
@@ -117,8 +112,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 
     private AdverseEventEvaluationService adverseEventEvaluationService = new AdverseEventEvaluationServiceImpl();
 
-    private ParticipantImportServiceImpl participantImportService;
-
+    
     public ImportController() {
 
         setCommandClass(ImportCommand.class);
@@ -521,11 +515,12 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 				for(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto : participants.getParticipant()){
 					DomainObjectImportOutcome<Participant> participantImportOutcome  = participantServiceImpl.processParticipant(participantDto);
 					if (participantImportOutcome.isSavable()) {
-			            command.addImportableParticipant(participantImportOutcome);
+						command.addImportableParticipant(participantImportOutcome);
 			        } else {
 			            command.addNonImportableParticipant(participantImportOutcome);
 			        }
 				}
+				
 			}
 		} catch (JAXBException e) {
 			throw new CaaersSystemException("There was an error converting participant data transfer object to participant domain object", e);
@@ -672,11 +667,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.routineAdverseEventReportDao = routineAdverseEventReportDao;
     }
 
-    @Required
-    public void setStudyImportService(final StudyImportServiceImpl studyImportService) {
-        this.studyImportService = studyImportService;
-    }
-
     public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
         return routineAdverseEventReportServiceImpl;
     }
@@ -712,10 +702,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         public Object fromString(String str) {
             return str.trim();
         }
-    }
-
-    public void setParticipantImportService(final ParticipantImportServiceImpl participantImportService) {
-        this.participantImportService = participantImportService;
     }
 
 	public StudyProcessorImpl getStudyProcessorImpl() {
