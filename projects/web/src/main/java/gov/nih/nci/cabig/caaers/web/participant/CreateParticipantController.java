@@ -64,6 +64,12 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
     public FlowFactory<ParticipantInputCommand> getFlowFactory() {
         return new FlowFactory<ParticipantInputCommand>() {
             public Flow<ParticipantInputCommand> createFlow(ParticipantInputCommand cmd) {
+            	
+            	/**
+            	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
+            	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
+            	 */
+            	
                 Flow<ParticipantInputCommand> flow = new Flow<ParticipantInputCommand>("Enter Subject");
                 flow.addTab(new CreateParticipantTab());
                 flow.addTab(new SelectStudyForParticipantTab());
