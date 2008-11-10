@@ -93,6 +93,10 @@ public class EditStudyController extends StudyController<Study> {
 
     @Override
     protected void layoutTabs(final Flow<Study> flow) {
+    	/**
+    	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
+    	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
+    	 */
         flow.addTab(new EmptyStudyTab("Overview", "Overview", "study/study_reviewsummary"));
         flow.addTab(new DetailsTab());
         flow.addTab(new StudyTherapiesTab());
