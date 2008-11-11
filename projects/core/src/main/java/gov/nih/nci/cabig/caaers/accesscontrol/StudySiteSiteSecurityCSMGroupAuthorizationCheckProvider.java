@@ -3,9 +3,9 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
+
 import org.acegisecurity.Authentication;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,7 +25,7 @@ public class StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider implements
                     .getLogger(StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider.class);
 
     public boolean checkAuthorization(Authentication authentication, String permission,
-                    AbstractMutableDomainObject domainObject) {
+                    Object domainObject) {
         boolean hasPermission = false;
         log.debug("Invoking checkPermission on StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider");
 

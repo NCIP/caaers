@@ -72,8 +72,7 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
             DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
                             .get(domainObject.getClass().getName());
             if (auth != null) {
-                hasPermission = auth.checkAuthorization(authentication, "ACCESS",
-                                (AbstractMutableDomainObject) domainObject);
+                hasPermission = auth.checkAuthorization(authentication, "ACCESS", domainObject);
             }
             if (!hasPermission) {
                 filterer.remove(domainObject);

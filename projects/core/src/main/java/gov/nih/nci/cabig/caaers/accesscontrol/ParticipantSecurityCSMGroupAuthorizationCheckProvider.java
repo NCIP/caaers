@@ -9,8 +9,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
- * Created by IntelliJ IDEA. User: Biju Joseph Date: Sep 21, 2007 Time: 10:34:53 AM To change this
- * template use File | Settings | File Templates.
+ * Srini Akkala
  */
 public class ParticipantSecurityCSMGroupAuthorizationCheckProvider implements
                 DomainObjectSiteSecurityAuthorizationCheckProvider {
@@ -23,7 +22,7 @@ public class ParticipantSecurityCSMGroupAuthorizationCheckProvider implements
                     .getLogger(ParticipantSecurityCSMGroupAuthorizationCheckProvider.class);
     
     public boolean checkAuthorization(Authentication authentication, String permission,
-                    AbstractMutableDomainObject domainObject) {
+                    Object domainObject) {
         boolean hasPermission = false;
         log.debug("Invoking checkPermission on ParticipantSecurityCSMGroupAuthorizationCheckProvider");
         

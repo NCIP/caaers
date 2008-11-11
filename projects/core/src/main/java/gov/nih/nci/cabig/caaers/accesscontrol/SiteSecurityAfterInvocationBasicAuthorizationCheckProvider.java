@@ -63,8 +63,7 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
         DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
                         .get(returnedObject.getClass().getName());
         if (auth != null) {
-            hasPermission = auth.checkAuthorization(authentication, "ACCESS",
-                            (AbstractMutableDomainObject) returnedObject);
+            hasPermission = auth.checkAuthorization(authentication, "ACCESS", returnedObject);
         }
         if (hasPermission) {
             return returnedObject;

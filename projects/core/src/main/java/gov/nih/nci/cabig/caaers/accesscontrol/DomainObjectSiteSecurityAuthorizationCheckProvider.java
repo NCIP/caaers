@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import org.acegisecurity.Authentication;
 
 /**
@@ -9,5 +8,5 @@ import org.acegisecurity.Authentication;
  */
 public interface DomainObjectSiteSecurityAuthorizationCheckProvider {
     boolean checkAuthorization(Authentication authentication, String permission,
-                    AbstractMutableDomainObject domainObject);
+                    Object domainObject);
 }
