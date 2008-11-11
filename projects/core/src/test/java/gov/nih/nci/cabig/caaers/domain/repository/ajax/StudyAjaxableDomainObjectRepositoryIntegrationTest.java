@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
         query = new StudySearchableAjaxableDomainObjectQuery();
         query.filterByParticipant(participantId);
 
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
@@ -38,7 +38,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
         query = new StudySearchableAjaxableDomainObjectQuery();
         query.filterStudiesWithMatchingText("1138-43");
         query.filterByParticipant(participantId);
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
@@ -81,7 +81,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
     public void testFindStudies() {
         query = new StudySearchableAjaxableDomainObjectQuery();
 
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
@@ -93,7 +93,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
         query = new StudySearchableAjaxableDomainObjectQuery();
         query.filterStudiesWithMatchingText("1138-43");
 
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
 
         assertNotNull(studyAjaxableDomainObjects);
@@ -120,7 +120,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
         query = new StudySearchableAjaxableDomainObjectQuery();
         query.filterByStudyStatus(true);
 
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
@@ -132,7 +132,7 @@ public class StudyAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDb
         query = new StudySearchableAjaxableDomainObjectQuery();
         query.filterByStudyStatus(false);
 
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+        List<StudySearchableAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
 
         assertNotNull(studyAjaxableDomainObjects);
         assertFalse(studyAjaxableDomainObjects.isEmpty());
