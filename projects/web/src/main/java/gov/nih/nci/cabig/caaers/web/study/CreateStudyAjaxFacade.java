@@ -343,39 +343,30 @@ public class CreateStudyAjaxFacade {
     public AjaxOutput remove(String listProperty, int indexToDelete, String displayName) {
         HttpServletRequest request = getHttpServletRequest();
         Study command = getStudyCommand(request);
-        List<Object> list = (List<Object>) new BeanWrapperImpl(command)
-                        .getPropertyValue(listProperty);
+        List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
-            log
-                            .debug("Attempted to delete beyond the end; " + indexToDelete + " >= "
-                                            + list.size());
-            return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; "
-                            + indexToDelete + " >= " + list.size());
+            log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
+            return new AjaxOutput("Unable to delete. Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
         }
         if (indexToDelete < 0) {
             log.debug("Attempted to delete from an invalid index; " + indexToDelete + " < 0");
-            return new AjaxOutput("Unable to delete. Attempted to delete from an invalid index; "
-                            + indexToDelete + " < 0");
+            return new AjaxOutput("Unable to delete. Attempted to delete from an invalid index; " + indexToDelete + " < 0");
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
         Object o = list.remove(indexToDelete);
         try {
             saveIfAlreadyPersistent(command);
         } catch (DataIntegrityViolationException die) {
-            log.error("Error occured while deleting [listProperty :" + listProperty
-                            + ", indexToDelete :" + indexToDelete + ", displayName :" + displayName
-                            + "]", die);
+            log.error("Error occured while deleting [listProperty :" + listProperty + ", indexToDelete :" + indexToDelete + ", displayName :" + displayName + "]", die);
             list.add(indexToDelete, o);
             replaceStudyInSessionWithNew(request, command);
-            return new AjaxOutput(
-                            "Unable to delete. The object being removed is referenced elsewhere.");
+            return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
         }
 
         return new AjaxOutput(changes);
     }
 
-    private List<IndexChange> createDeleteChangeList(int indexToDelete, int length,
-                    String displayName) {
+    private List<IndexChange> createDeleteChangeList(int indexToDelete, int length, String displayName) {
         List<IndexChange> changes = new ArrayList<IndexChange>();
         changes.add(new IndexChange(indexToDelete, null));
         for (int i = indexToDelete + 1; i < length; i++) {
@@ -392,8 +383,7 @@ public class CreateStudyAjaxFacade {
         }
     }
 
-    private void setRequestAttributes(final HttpServletRequest request, final int index,
-                    final int listEditorIndex, final String subview) {
+    private void setRequestAttributes(final HttpServletRequest request, final int index, final int listEditorIndex, final String subview) {
         request.setAttribute(AJAX_INDEX_PARAMETER, index);
         request.setAttribute(AJAX_SUBVIEW_PARAMETER, subview);
         request.setAttribute(AJAX_REQUEST_PARAMETER, "AJAX");
@@ -497,8 +487,7 @@ public class CreateStudyAjaxFacade {
      * @param investigationalNewDrugDao
      *                the investigationalNewDrugDao to set
      */
-    public void setInvestigationalNewDrugDao(
-                    final InvestigationalNewDrugDao investigationalNewDrugDao) {
+    public void setInvestigationalNewDrugDao(final InvestigationalNewDrugDao investigationalNewDrugDao) {
         this.investigationalNewDrugDao = investigationalNewDrugDao;
     }
 
