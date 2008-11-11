@@ -1,13 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Identifier;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Row;
 import org.extremecomponents.table.bean.Table;
@@ -123,11 +118,11 @@ public class SearchStudyAjaxFacade {
 
         int organizationID;
         try {
-            organizationID = Integer.parseInt((String)parameterMap.get("organizationID"));
+            organizationID = Integer.parseInt((String) parameterMap.get("organizationID"));
         } catch (Exception e) {
             organizationID = 0;
         }
-        
+
         List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects = getObjects(type, text, organizationID);
 
         try {
@@ -175,7 +170,7 @@ public class SearchStudyAjaxFacade {
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text) {
-        return getObjects(type, text, 0); 
+        return getObjects(type, text, 0);
     }
 
     private List<StudySearchableAjaxableDomainObject> getObjects(String type, String text, int organizationID) {

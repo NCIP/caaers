@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.isA;
@@ -16,30 +16,37 @@ import java.util.List;
  */
 public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
-    private StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository;
+    private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private HibernateTemplate hibernateTemplate;
-    private StudyAjaxableDomainObjectQuery query;
+    private StudySearchableAjaxableDomainObjectQuery query;
     List<Object[]> objects = new ArrayList<Object[]>();
 
-    Object[] studyWithNoPrimaryIdentifier = new Object[4];
-    Object[] studyWithPrimaryIdentifier = new Object[4];
-    Object[] studyWithNullValues = new Object[4];
-    Object[] matchingStudyWithPrimaryIdentifier = new Object[4];
+    Object[] studyWithNoPrimaryIdentifier = new Object[9];
+    Object[] studyWithPrimaryIdentifier = new Object[9];
+    Object[] studyWithNullValues = new Object[9];
+    Object[] matchingStudyWithPrimaryIdentifier = new Object[9];
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
 
-        studyAjaxableDomainObjectRepository = new StudyAjaxableDomainObjectRepository();
+        studySearchableAjaxableDomainObjectRepository = new StudySearchableAjaxableDomainObjectRepository();
 
         hibernateTemplate = registerMockFor(HibernateTemplate.class);
-        studyAjaxableDomainObjectRepository.setHibernateTemplate(hibernateTemplate);
-        query = new StudyAjaxableDomainObjectQuery();
+        studySearchableAjaxableDomainObjectRepository.setHibernateTemplate(hibernateTemplate);
+        query = new StudySearchableAjaxableDomainObjectQuery();
+
 
         studyWithNoPrimaryIdentifier[0] = 1;
         studyWithNoPrimaryIdentifier[1] = "study short title";
+
         studyWithNoPrimaryIdentifier[2] = "identifier value";
+
         studyWithNoPrimaryIdentifier[3] = Boolean.FALSE;
+
+        studyWithNoPrimaryIdentifier[4] = "Phase II Trial";
+        studyWithNoPrimaryIdentifier[5] = "Active - Trial is open to accrual";
+        studyWithNoPrimaryIdentifier[6] = "NCI";
 
 
         studyWithPrimaryIdentifier[0] = 2;
@@ -47,10 +54,20 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
         studyWithPrimaryIdentifier[2] = "identifier value";
         studyWithPrimaryIdentifier[3] = Boolean.TRUE;
 
+        studyWithPrimaryIdentifier[4] = "Phase II Trial";
+        studyWithPrimaryIdentifier[5] = "Active - Trial is open to accrual";
+        studyWithPrimaryIdentifier[6] = "NCI";
+
+
         matchingStudyWithPrimaryIdentifier[0] = 1;
         matchingStudyWithPrimaryIdentifier[1] = "study short title";
         matchingStudyWithPrimaryIdentifier[2] = "another identifier value";
         matchingStudyWithPrimaryIdentifier[3] = Boolean.TRUE;
+
+        matchingStudyWithPrimaryIdentifier[4] = "Phase II Trial";
+        matchingStudyWithPrimaryIdentifier[5] = "Active - Trial is open to accrual";
+        matchingStudyWithPrimaryIdentifier[6] = "NCI";
+
 
         objects.add(studyWithNoPrimaryIdentifier);
         objects.add(studyWithPrimaryIdentifier);
@@ -66,7 +83,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(1, studyAjaxableDomainObjects.size());
@@ -90,7 +107,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(1, studyAjaxableDomainObjects.size());
@@ -114,7 +131,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(1, studyAjaxableDomainObjects.size());
@@ -132,7 +149,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(1, studyAjaxableDomainObjects.size());
@@ -149,7 +166,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
 
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(1, studyAjaxableDomainObjects.size());
@@ -163,7 +180,7 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
     public void testFindStudies() {
         expect(hibernateTemplate.execute(isA(HibernateCallback.class))).andReturn(objects);
         replayMocks();
-        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studyAjaxableDomainObjectRepository.findStudies(query);
+        List<StudyAjaxableDomainObject> studyAjaxableDomainObjects = studySearchableAjaxableDomainObjectRepository.findStudies(query);
         verifyMocks();
         assertNotNull(studyAjaxableDomainObjects);
         assertEquals(3, studyAjaxableDomainObjects.size());

@@ -29,7 +29,7 @@ This applicationContext contains the definition of the DAOs
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
-         <!--      <value>classpath*:/org/jbpm/**/*.hbm.xml</value> -->
+                <!--      <value>classpath*:/org/jbpm/**/*.hbm.xml</value> -->
             </list>
         </property>
         
@@ -169,7 +169,8 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
     <!-- Auditing related beans definition start here-->
-    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
+    <bean id="auditSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+          autowire="byName">
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
@@ -485,14 +486,10 @@ This applicationContext contains the definition of the DAOs
         <property name="studyDao" ref="studyDao"></property>
     </bean>
 
-    <bean id="studyAjaxableDomainObjectRepository"
-          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository"
-          parent="daoTemplate">
-    </bean>
 
     <bean id="studySearchableAjaxableDomainObjectRepository"
           class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository"
-          parent="studyAjaxableDomainObjectRepository">
+          parent="daoTemplate">
     </bean>
 
     <bean id="participantAjaxableDomainObjectRepository"
@@ -500,7 +497,8 @@ This applicationContext contains the definition of the DAOs
           parent="daoTemplate">
     </bean>
 
-    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl" lazy-init="true" autowire="byType">
+    <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
+          lazy-init="true" autowire="byType">
         <property name="authenticationMode" ref="authenticationMode"/>
         <property name="mailSender" ref="mailer"/>
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
@@ -539,7 +537,7 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
 
-    <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao" />
+    <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
 
     <!-- Factory beans end here-->
 

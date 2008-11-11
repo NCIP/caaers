@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.dao.query.ajax;
 
 import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -23,13 +24,10 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
     private static final String LAST_NAME = "lastName";
 
-    private static final String IDENTIFIER_VALUE = "identifier";
-
 
     private static final String RACE = "race";
 
     private static final String ETHNITICTY = "ethnicity";
-    private static final String SHORT_TITLE = "shortTitle";
     private static final String IDENTIFIER_EXACT_TYPE = "identifierType";
     private static final String IDENTIFIER_EXACT_VALUE = "identifierValue";
     private static final String YEAR = "year";
@@ -37,6 +35,13 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
     private static final String DAY = "day";
     private static final String STUDY_SITE_CLASS = "studySiteClass";
     private static final String SITE_ID = "siteId";
+    private static final String IDENTIFIER_VALUE = "identifierValue";
+
+    private static final String IDENTIFIER_TYPE = "type";
+    private static final String SHORT_TITLE = "shortTitle";
+    private static final String LONG_TITLE = "longTitle";
+    private static final String PARTICIPANT_ID = "participantId";
+    private static final String STATUS = "status";
 
     public StudySearchableAjaxableDomainObjectQuery() {
         super(queryString);
@@ -101,6 +106,35 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
         }
 
+    }
+
+    public void filterStudiesWithMatchingText(String text) {
+        String searchString = text != null ? "%" + text.toLowerCase() + "%" : null;
+
+        andWhere(String.format("(lower(study.shortTitle) LIKE :%s or lower(study.longTitle) LIKE :%s " +
+                "or  lower(identifier.type) LIKE :%s " +
+                "or lower(identifier.value) LIKE :%s)", SHORT_TITLE, LONG_TITLE, IDENTIFIER_TYPE, IDENTIFIER_VALUE));
+        setParameter(IDENTIFIER_VALUE, searchString);
+        setParameter(IDENTIFIER_TYPE, searchString);
+        setParameter(SHORT_TITLE, searchString);
+        setParameter(LONG_TITLE, searchString);
+
+    }
+
+    public void filterByParticipant(Integer participantId) {
+
+        leftJoin("ss.studyParticipantAssignments as spa join spa.participant as p");
+        andWhere("p.id =:" + PARTICIPANT_ID);
+        setParameter(PARTICIPANT_ID, participantId);
+
+    }
+
+
+    public void filterByStudyStatus(boolean ignoreCompletedStudy) {
+        if (ignoreCompletedStudy) {
+            andWhere("study.status <> :" + STATUS);
+            setParameter(STATUS, Study.STATUS_ADMINISTRATIVELY_COMPLETE);
+        }
     }
 
     public void filterStudiesWithMatchingShortTitleOnly(String text) {

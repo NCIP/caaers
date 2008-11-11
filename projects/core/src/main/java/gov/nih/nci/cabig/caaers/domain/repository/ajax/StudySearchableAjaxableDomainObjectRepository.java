@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
-import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +15,50 @@ import java.util.List;
  */
 
 @Transactional(readOnly = true)
-public class StudySearchableAjaxableDomainObjectRepository extends StudyAjaxableDomainObjectRepository<StudySearchableAjaxableDomainObject> {
+public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearchableAjaxableDomainObject> extends AbstractAjaxableDomainObjectRepository {
+
+    public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query) {
+
+        List<Object[]> objects = super.find(query);
+        List<T> studySearchableAjaxableDomainObjects = new ArrayList<T>();
+
+        for (Object[] o : objects) {
+            T studySearchableAjaxableDomainObject = (T) getObjectById(studySearchableAjaxableDomainObjects, (Integer) o[0]);
+
+            if (studySearchableAjaxableDomainObject == null) {
+                studySearchableAjaxableDomainObject = (T) BeanUtils.instantiateClass(getObjectClass());
+                studySearchableAjaxableDomainObject.setId((Integer) o[0]);
+                studySearchableAjaxableDomainObject.setShortTitle((String) o[1]);
+                if (o[3] != null && (Boolean) o[3]) {
+                    studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
+                }
+
+                addAdditionalProperties(studySearchableAjaxableDomainObject, o);
+
+                studySearchableAjaxableDomainObjects.add(studySearchableAjaxableDomainObject);
+
+            } else {
+                updateAdditionalProperties(studySearchableAjaxableDomainObject, o);
+
+            }
 
 
-    @Override
+        }
+        return studySearchableAjaxableDomainObjects;
+
+    }
+
+    protected void updateAdditionalProperties(T studySearchableAjaxableDomainObject, Object[] o) {
+        if (o[3] != null && (Boolean) o[3]) {
+            studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
+        }
+        updateFundingSponsor(studySearchableAjaxableDomainObject, o);
+        updateStudySite(studySearchableAjaxableDomainObject, o);
+
+
+    }
+
     protected void addAdditionalProperties(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
-        super.addAdditionalProperties(studySearchableAjaxableDomainObject, o);
         studySearchableAjaxableDomainObject.setPhaseCode((String) o[4]);
         studySearchableAjaxableDomainObject.setStatus((String) o[5]);
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
@@ -44,19 +81,12 @@ public class StudySearchableAjaxableDomainObjectRepository extends StudyAjaxable
         }
     }
 
-    @Override
-    protected void updateAdditionalProperties(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
-        super.updateAdditionalProperties(studySearchableAjaxableDomainObject, o);
 
-        updateFundingSponsor(studySearchableAjaxableDomainObject, o);
-        updateStudySite(studySearchableAjaxableDomainObject, o);
-
-    }
-
-    @Override
     protected Class getObjectClass() {
         return StudySearchableAjaxableDomainObject.class;
 
 
     }
+
+
 }
