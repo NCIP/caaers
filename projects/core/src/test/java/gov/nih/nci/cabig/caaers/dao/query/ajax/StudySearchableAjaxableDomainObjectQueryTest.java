@@ -13,7 +13,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
         assertEquals("wrong parsing for constructor",
                 "Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                         "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as " +
-                        "fundingSponsor, ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier " +
+                        "fundingSponsor, ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier " +
                         "left join study.studyOrganizations as ss order by study.shortTitle", query.getQueryString());
 
     }
@@ -24,7 +24,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
         assertEquals("Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                 "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as " +
-                "fundingSponsor, ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier " +
+                "fundingSponsor, ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier " +
                 "left join study.studyOrganizations as ss " +
                 "left join ss.studyParticipantAssignments as spa join spa.participant as p WHERE p.id =:participantId order by study.shortTitle",
                 query.getQueryString());
@@ -45,7 +45,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
         assertEquals("Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                 "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as " +
-                "fundingSponsor, ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier " +
+                "fundingSponsor, ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier " +
                 "left join study.studyOrganizations as ss " +
                 "WHERE (lower(study.shortTitle) LIKE :shortTitle or lower(study.longTitle) LIKE :longTitle " +
                 "or  lower(identifier.type) LIKE :type or lower(identifier.value) LIKE :identifierValue) order by study.shortTitle",
@@ -81,7 +81,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
         assertEquals("Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                 "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
-                "ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier left join " +
+                "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier left join " +
                 "study.studyOrganizations as ss left join ss.studyParticipantAssignments as spa left join spa.participant as p " +
                 "WHERE lower(p.firstName) LIKE :firstName order by study.shortTitle", query.getQueryString());
         assertEquals("wrong number of parameters", query.getParameterMap().size(), 1);
@@ -100,7 +100,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
         assertEquals("Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                 "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
-                "ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier left join " +
+                "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier left join " +
                 "study.studyOrganizations as ss left join ss.studyParticipantAssignments as spa left join spa.participant as p WHERE " +
                 "lower(p.firstName) LIKE :firstName AND lower(p.lastName) LIKE :lastName order by study.shortTitle", query.getQueryString());
         assertEquals("wrong number of parameters", query.getParameterMap().size(), 2);
@@ -124,7 +124,7 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
         assertEquals("Select study.id,study.shortTitle,identifier.value,identifier.primaryIndicator,study.phaseCode,study.status," +
                 "(select sfs.organization.nciInstituteCode from StudyFundingSponsor sfs  where sfs.study.id =study.id) as fundingSponsor, " +
-                "ss.organization.name,ss.id,ss.class from Study study left join study.identifiers as identifier left join " +
+                "ss.organization.name,ss.id,ss.class,ss.organization.nciInstituteCode from Study study left join study.identifiers as identifier left join " +
                 "study.studyOrganizations as ss left join ss.studyParticipantAssignments as spa left join spa.participant as p " +
                 "WHERE (lower(study.shortTitle) LIKE :shortTitle ) AND lower(p.firstName) LIKE :firstName order by study.shortTitle", query.getQueryString());
 
