@@ -4,18 +4,17 @@ import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudyAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudyAjaxableDomainObjectRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
@@ -82,7 +81,7 @@ public class CreateAdverseEventAjaxFacade {
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
     protected LabLoadDao labLoadDao;
-    private StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository;
+    private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
     private ConditionDao conditionDao;
 
@@ -238,13 +237,13 @@ public class CreateAdverseEventAjaxFacade {
 
     public List<StudyAjaxableDomainObject> matchStudies(String text, Integer participantId, boolean ignoreCompletedStudy) {
 
-        StudyAjaxableDomainObjectQuery domainObjectQuery = new StudyAjaxableDomainObjectQuery();
+        StudySearchableAjaxableDomainObjectQuery domainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
         domainObjectQuery.filterStudiesWithMatchingText(text);
         if (participantId != null) {
             domainObjectQuery.filterByParticipant(participantId);
         }
         domainObjectQuery.filterByStudyStatus(ignoreCompletedStudy);
-        List<StudyAjaxableDomainObject> studies = studyAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
+        List<StudyAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(domainObjectQuery);
         return studies;
     }
 
@@ -944,8 +943,8 @@ public class CreateAdverseEventAjaxFacade {
 
 
     @Required
-    public void setStudyAjaxableDomainObjectRepository(StudyAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
-        this.studyAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
+    public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {
+        this.studySearchableAjaxableDomainObjectRepository = studyAjaxableDomainObjectRepository;
     }
 
     @Required
