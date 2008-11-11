@@ -291,6 +291,8 @@ right:20px;
  			}
  			if(aeSubmitted == 0)
  			{
+ 				if(!confirm( "Are you sure you want to delete this?" ))
+                  return false;
  	 			captureAE.deleteAdverseEvent(indx,'', function(ajaxOutput){
  	 	 			$('ae-section-' + indx).remove();
  	 			}.bind(this));
@@ -325,7 +327,6 @@ right:20px;
  	});
 
 	function checkSubmittedAEs(event){
-		//alert('Ganapati Bappa Morya');
 		var reportIdArray = new Array();
 		var totalReportIdCount = 0;
 		var listOfAEIndexes = $$('.submittedAERow');
@@ -380,7 +381,6 @@ right:20px;
 	}
 	
 	function deleteOrAmendAndSubmit(){
-		//alert('GANAPATI BAPPA MORYA !!');
 		Windows.close('amend-popup-id');
 		var form = document.getElementById('command');
 		if(form._action.value == 'amendmentRequired'){
