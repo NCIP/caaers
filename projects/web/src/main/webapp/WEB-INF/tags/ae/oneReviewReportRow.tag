@@ -41,7 +41,7 @@
 				</thead>
 						
 				<c:forEach items="${report.aeReport.adverseEvents}" var="ae" varStatus="statusAE">
-					<ae:oneListAeRow index="${statusAE.index}" ae="${ae}" width="25%"/>
+						<ae:oneListAeRow index="${statusAE.index}" ae="${ae}" width="25%"/>
 				</c:forEach>	
 			</table>
 		</div>

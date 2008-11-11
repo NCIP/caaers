@@ -95,7 +95,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         		rdList = new ArrayList<ReportDefinition>();
         	String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
         	for(Report report: command.getAeReport().getReports()){
-        		if(report.isSponsorReport(nciInstituteCode) && report.getStatus() == ReportStatus.COMPLETED && report.getReportDefinition().getAmendable())
+        		if(report.isSponsorReport(nciInstituteCode) && report.getStatus() == ReportStatus.COMPLETED && report.getReportDefinition().getAmendable() && report.getIsLatestVersion())
         			rdList.add(report.getReportDefinition());
         	}
         }

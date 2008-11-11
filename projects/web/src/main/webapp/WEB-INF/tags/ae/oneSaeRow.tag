@@ -26,7 +26,7 @@
 </c:if>	
 <c:if test="${renderSubmittedFlag}">
 	<c:if test="${adverseEvent.submitted == true}">
-		<td><img src="<chrome:imageUrl name="../checkno.gif" />" alt="Submitted" title="Submitted" style="border:0" /></td>
+		<td><img id="ae-section-${index}-submitted-image" src="<chrome:imageUrl name="../aeSubmitted.png" />" alt="Submitted" title="Submitted" style="border:0" /></td>
 	</c:if>
 	<c:if test="${adverseEvent.submitted == false}">
 		<td/>
@@ -129,5 +129,10 @@
 			</td>
 		</c:if>
 	</c:if>
-		
+	
+	<c:if test="${adverseEvent.submitted == true}">
+		<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>
+		<input name="submittedAERow" type="hidden" class="submittedAERow" value="${index}" id="ae-section-${index}-submittedAERow"/>
+		<input name="ae-section-${index}-reportID" type="hidden" id="ae-section-${index}-reportID" value="${adverseEvent.report.id}" />
+	</c:if>	
 </tr>

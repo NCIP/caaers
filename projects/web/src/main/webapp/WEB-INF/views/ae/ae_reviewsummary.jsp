@@ -21,7 +21,7 @@
 
 	Event.observe(window, "load", function() {
 	
-		Event.observe('flow-next', 'click', displayOptionsPopup);
+		//Event.observe('flow-next', 'click', displayOptionsPopup);
 		
 		$('create-new-report').observe("click", function(){ createNewReport(); });
 		
@@ -91,14 +91,13 @@
 			for(var i = 0; i < aeElements.length; i++)
 				if(aeElements[i].checked)
 					selected = true;
-			if(!selected){
-				alert('At least one adverse event should be selected');
-			}
+			//if(!selected){
+			//	alert('At least one adverse event should be selected');
+			//}
 			return selected;
 		}
 		
-		function displayOptionsPopup(event){
-			Event.stop(event);
+		function displayOptionsPopup(){
 			enableReportsInPopup();
 
 			var reportSelected = checkIfReportSelected();
@@ -111,8 +110,11 @@
 			}
 			
 			var aeSelected = checkIfAeSelected();
-			if(!aeSelected)
+			if(!aeSelected && reportSelected)
+			{
+				alert('Reports cannot be selected without selecting an Adverse Event(s)');
 				return false;
+			}
 			var contentWin = new Window({className:"alphacube", 
  	 	 			destroyOnClose:true, 
  	 	 			width:700,  height:530, 
@@ -250,10 +252,12 @@ background-color:#e5e8ff;
           </div>
         </c:otherwise>
       </c:choose>
-      <div class="autoclear" align="center" style="padding-top: 10px;">
-        <input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      </div>
-      <p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+      <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
+	  	<div class="autoclear" align="center" style="padding-top: 10px;">
+   			<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+      	</div>
+      	<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+      </c:if>
       <div id="div-aes">
         <c:if test='${!displaySeriousTable}'>
           <p>
@@ -359,7 +363,9 @@ background-color:#e5e8ff;
       <div class="flow-buttons"> <span class="prev">
         <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
         </span> <span class="next">
-        <input type="submit" value="Report" id="flow-next"/>
+        <a href="javascript:displayOptionsPopup()">
+        	<img src="<chrome:imageUrl name="../blue/continue_btn.png" />"  alt="Continue" title="Continue" style="border:0" />
+        </a>
         </span> </div>
     </div>
   </jsp:attribute>

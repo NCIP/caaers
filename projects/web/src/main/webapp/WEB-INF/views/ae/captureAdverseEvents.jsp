@@ -4,9 +4,13 @@
 <html>
  <head>
  <tags:includePrototypeWindow />
+ <tags:includeScriptaculous/>
  <tags:stylesheetLink name="ae"/>
  <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
  <tags:stylesheetLink name="aeTermQuery_box" />
+ 
+ <tags:stylesheetLink name="extremecomponents"/>
+<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 
 <style type="text/css"> 
 .selectdiv
@@ -136,7 +140,8 @@ right:20px;
  
  <script>
 	var catSel = null;
- 	var RPCreatorClass = Class.create();
+	var RPCreatorClass = Class.create();
+	var deleteIndex = 0;
  	Object.extend(RPCreatorClass.prototype, {
  	 	/*
  	 		rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
@@ -268,10 +273,28 @@ right:20px;
  	 		}.bind(this));
  		},
  		deleteAdverseEvent:function(indx){
- 	 		captureAE.deleteAdverseEvent(indx, function(ajaxOutput){
- 	 	 		$('ae-section-' + indx).remove();
- 	 		}.bind(this));
- 	 	
+ 			var repIdArr = new Array();
+ 			var listOfAEIndexes = $$('.submittedAERow');
+ 			var aeSubmitted = 0;
+ 			for(var i = 0 ; i < listOfAEIndexes.length ; i++)
+ 			{
+ 				if(listOfAEIndexes[i].value == indx){
+ 					aeSubmitted = 1;
+ 					deleteIndex = indx;
+ 					var repElementId = 'ae-section-' + indx + '-reportID';
+ 					repIdArr[0] = document.getElementById(repElementId).value;
+ 					var form = document.getElementById('command');
+					form._action.value = 'deleteAE';
+ 					displayAmendPopup('', repIdArr);
+ 					document.getElementById('command')._amendReportIds.value = repIdArr;
+ 				}
+ 			}
+ 			if(aeSubmitted == 0)
+ 			{
+ 	 			captureAE.deleteAdverseEvent(indx,'', function(ajaxOutput){
+ 	 	 			$('ae-section-' + indx).remove();
+ 	 			}.bind(this));
+ 	 		}
  		}
  		 		
  	});
@@ -282,6 +305,13 @@ right:20px;
  	*/
  	var rpCreator = null; 
  	Event.observe(window, "load", function(){
+ 	
+ 		Event.observe('flow-next', 'click', checkSubmittedAEs);
+ 		Event.observe('flow-prev', 'click', checkSubmittedAEs);
+ 		Event.observe('flow-update', 'click', checkSubmittedAEs);
+ 		
+ 		
+ 		
  		var url = document.addRoutineAeForm.action;
  		var stripped_url = '';
  		var index = -1;
@@ -294,7 +324,135 @@ right:20px;
  		
  	});
 
-
+	function checkSubmittedAEs(event){
+		//alert('Ganapati Bappa Morya');
+		var reportIdArray = new Array();
+		var totalReportIdCount = 0;
+		var listOfAEIndexes = $$('.submittedAERow');
+		for(var i = 0 ; i < listOfAEIndexes.length ; i++)
+		{
+			var signature = createSignature(listOfAEIndexes[i].value);
+			var oldSignatureId = 'ae-section-' + listOfAEIndexes[i].value + '-signature';
+			var oldSignature = document.getElementById(oldSignatureId).value;
+			if(signature != oldSignature){
+				// The ae was modified.
+				var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
+				reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
+			}
+		}
+		if(totalReportIdCount != 0){
+			var form = document.getElementById('command');
+			form._action.value = 'amendmentRequired';
+			displayAmendPopup(event, reportIdArray);
+		}
+		document.getElementById('command')._amendReportIds.value = reportIdArray;
+	}
+	
+	function createSignature(index){
+		var signature = '';
+		var otherMeddraId = 'adverseEvents[' + index + '].lowLevelTerm-input';
+		var verbatimId = 'adverseEvents[' + index + '].detailsForOther';
+		var gradeId = 'adverseEvents[' + index + '].grade';
+		var attributionId = 'adverseEvents[' + index + '].attributionSummary';
+		var hospitalizationId = 'adverseEvents[' + index + '].hospitalization';
+		var expectedId = 'adverseEvents[' + index + '].expected';
+		var seriousId = 'adverseEvents[' + index + '].serious';
+		signature = document.getElementById(verbatimId).value + '$$' + // verbatim input
+					document.getElementById(gradeId).value + '$$' + // grade input
+					document.getElementById(attributionId).value + '$$' + // attribution input
+					document.getElementById(hospitalizationId).value + '$$' + // hospitalization input
+					document.getElementById(expectedId).value; // expected input
+					 
+		// If otherMeddraId element exists append otherMeddra Value to the signature.
+		if(document.getElementById(otherMeddraId) != null)
+			signature = signature + '$$' + document.getElementById(otherMeddraId).value;// otherMeddra input
+		else
+			signature = signature + '$$';
+		
+		
+		// If seriousId element exists append serious Value to the signature.
+		if(document.getElementById(seriousId) != null)
+			signature = signature + '$$' + document.getElementById(seriousId).value;
+		else
+			signature = signature + '$$';	
+		
+		return signature;
+	}
+	
+	function deleteOrAmendAndSubmit(){
+		//alert('GANAPATI BAPPA MORYA !!');
+		Windows.close('amend-popup-id');
+		var form = document.getElementById('command');
+		if(form._action.value == 'amendmentRequired'){
+			form.submit();
+		}else if(form._action.value == 'deleteAE'){
+			captureAE.deleteAdverseEvent(deleteIndex, document.getElementById('command')._amendReportIds.value, function(ajaxOutput){
+					//alert('Entered callback method');
+ 	 	 			$('ae-section-' + deleteIndex).remove();
+ 	 	 			if($('ae-section-' + deleteIndex + '-submittedAERow'))
+	 	 	 			$('ae-section-' + deleteIndex + '-submittedAERow').remove();
+ 	 	 			var repId = document.getElementById('command')._amendReportIds.value;
+ 	 	 			// Remove the image and .submittedAERow where repId is the one of the AE deleted. 
+ 	 	 			// This is needed to avoid re-amendment of the same report.
+ 	 	 			// First determine all the indexes that have the reportId = repId
+ 	 	 			var handleAeArr = new Array();
+ 	 	 			var c = 0;
+ 	 	 			var listOfAEIndexes = $$('.submittedAERow');
+					for(var i = 0 ; i < listOfAEIndexes.length ; i++)
+					{
+						var repIdElement = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
+						if(document.getElementById(repIdElement).value == repId)
+							handleAeArr[c++] = listOfAEIndexes[i].value;
+					}
+					// Remove the image and ".submittedAERow" elements for all the indexes in handleAeArr array.
+					//alert('Number of aes to be handles  = ' + handleAeArr.length); 
+					for(var j = 0; j < handleAeArr.length; j++)
+					{
+						$('ae-section-' + handleAeArr[j] + '-submitted-image').remove();
+						$('ae-section-' + handleAeArr[j] + '-submittedAERow').remove();
+					}
+ 	 	 			
+ 	 		});
+ 	 		
+		}
+	}
+	
+	function displayAmendPopup(event, reportIdArray){
+		//alert('Inside displayAmendPopup, reportIdArray = ' + reportIdArray);
+		var form = document.getElementById('command');
+		if(form._action.value == 'amendmentRequired')
+			Event.stop(event);
+		
+		// Show the reports that are in the reportIdArray
+		for(var i = 0; i < reportIdArray.length; i++){
+			//alert('HERE... amend-aeReport-' + reportIdArray[i]);
+			$('amend-aeReport-' + reportIdArray[i]).show();
+		}
+		
+		var contentWin = new Window({className:"alphacube", 
+ 	 	 			destroyOnClose:true, id:"amend-popup-id",
+ 	 	 			width:700,  height:530, 
+ 					top: 30, left: 300});
+     		contentWin.setContent( 'display_amend_popup' );
+      		contentWin.showCenter(true);
+      		popupObserver = {
+      			onDestroy: function(eventName, win) {
+      				if (win == contentWin) {
+      					$('display_amend_popup').style.display='none';
+      					
+      					// Hide the reports that are in the reportIdArray
+						for(var i = 0; i < reportIdArray.length; i++){
+							$('amend-aeReport-' + reportIdArray[i]).hide();
+						}
+						
+      					contentWin = null;
+      					Windows.removeObserver(this);
+      				}
+      			}
+      		}
+      		Windows.addObserver(popupObserver);
+      		
+	}
  	
 
  </script>
@@ -307,6 +465,7 @@ right:20px;
       	<jsp:attribute name="singleFields">
          <p><tags:instructions code="instruction_ae_select_evaluation_period"/></p>
       		<input type="hidden" name="_action" id="_action" value="">
+      		<input type="hidden" name="_amendReportIds" id="_amendReportIds" value="">
 			<div id="reportingPeriodSelector">      	
       				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
 						<jsp:attribute name="value">
@@ -319,7 +478,7 @@ right:20px;
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
 					<ae:reportingPeriodAEDetails />
 				</c:if>
-       		</div>
+			</div>
        </jsp:attribute>
     </tags:tabForm>
  </body>

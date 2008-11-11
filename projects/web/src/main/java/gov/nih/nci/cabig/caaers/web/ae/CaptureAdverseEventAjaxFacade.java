@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
@@ -126,9 +128,30 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         return ajaxOutput;
     }
     
-    public AjaxOutput deleteAdverseEvent(int index){
+    public AjaxOutput deleteAdverseEvent(int index, String reportId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
+    	// Remove the adverseEvent from the list of AEs assosicated to the report which has id = deletedId
     	command.getAdverseEvents().remove(index);
+    	
+    	if(!reportId.equals("")){
+    		Integer repId = Integer.decode(reportId);
+    		for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
+    			if(repId.equals(aeReport.getId())){
+    				//Delete the adverseEvent
+    				aeReport.getAdverseEvents().remove(deletedAe);
+    				Boolean useDefaultVersion = false;
+    				for(Report report: aeReport.getReports()){
+    					if(report.getReportDefinition().getAmendable()){
+    						reportRepository.amendReport(report, useDefaultVersion);
+    						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
+    						// and just incremented for the 1st one in the list.
+    						useDefaultVersion = true;
+    					}
+    				}
+    			}
+    		}
+    	}
     	return new AjaxOutput();
     }
 }

@@ -1,18 +1,26 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import org.drools.util.StringUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * @author Biju Joseph
@@ -20,7 +28,7 @@ import java.util.Set;
 public class AdverseEventCaptureTab extends AdverseEventTab {
 
     private static final String MAIN_FIELD_GROUP = "main";
-
+    
     public AdverseEventCaptureTab() {
         super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
     }
@@ -152,7 +160,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
         //initalize the seriousness outcome indicators
         command.initializeOutcome();
-
+        
         return super.referenceData(request, command);
 
     }
@@ -163,6 +171,34 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             return; //ignore if this is an ajax request
         //sync the seriousness outcomes
         command.synchronizeOutcome();
+        
+        command.initialize();
+        // Amend the reports if AEs associated to it are modified and the user is OK with the amendment.
+        String action = (String)findInRequest(request, "_action");
+        if(action.equals("amendmentRequired")){
+        	String reportIds = (String) findInRequest(request, "_amendReportIds");
+        	StringTokenizer st = new StringTokenizer(reportIds, ",");
+        	HashMap<Integer, Boolean> reportIdMap = new HashMap<Integer, Boolean>();
+        	while(st.hasMoreTokens()){
+        		String repId = st.nextToken();
+        		if(!reportIdMap.containsKey(Integer.decode(repId)));
+        			reportIdMap.put(Integer.parseInt(repId), Boolean.TRUE);
+        	}
+        	
+        	for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
+        		if(reportIdMap.containsKey(aeReport.getId())){
+        			Boolean useDefaultVersion = false;
+        	    	for(Report report: aeReport.getReports()){
+        	    		if(report.getReportDefinition().getAmendable() && report.getIsLatestVersion()){
+        	    			reportRepository.amendReport(report, useDefaultVersion);
+        	    			// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
+        	    			// and just incremented for the 1st one in the list.
+        	    			useDefaultVersion = true;
+        	    		}
+        	    	}
+        		}
+        	}
+        }
     }
 
     @Override
@@ -208,4 +244,5 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             }
         }
     }
+    
 }
