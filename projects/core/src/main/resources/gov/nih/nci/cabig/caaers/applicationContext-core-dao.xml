@@ -521,6 +521,8 @@ This applicationContext contains the definition of the DAOs
         <property name="reportDao" ref="reportDao"/>
         <property name="reportFactory" ref="reportFactory"/>
         <property name="schedulerService" ref="schedulerService"/>
+        <property name="participantDao" ref="participantDao"/>
+        <property name="studyDao" ref="studyDao"/>
     </bean>
 
 
