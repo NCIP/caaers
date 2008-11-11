@@ -37,7 +37,7 @@ public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extend
     public void testSearchStudyByParticipantIdentifierANDStudyIdentifier() throws Exception {
         studySearchableAjaxableDomainObjectQuery = new StudySearchableAjaxableDomainObjectQuery();
         studySearchableAjaxableDomainObjectQuery.filterByParticipant("Dilbert", "Scott", null, "13js77", null, null);
-        studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("1138-43");
+        //studySearchableAjaxableDomainObjectQuery.filterStudiesWithMatchingIdentifierOnly("1138-43");
         List<StudySearchableAjaxableDomainObject> studySearchableAjaxableDomainObjects =
                 studySearchableAjaxableDomainObjectRepository.findStudies(studySearchableAjaxableDomainObjectQuery);
 
