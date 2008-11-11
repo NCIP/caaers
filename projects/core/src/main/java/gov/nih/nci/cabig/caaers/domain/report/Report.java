@@ -378,18 +378,14 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     }
     
     /**
-     * This method returns true if any of the report versions associated to this report has a
-     * status of SUBMITTED.
+     * This method returns true if the last reportVersion is in Submitted state.
      * @return
      */
     @Transient
     public Boolean isSubmitted(){
-    	Boolean submitted = false;
-    	for(ReportVersion reportVersion: reportVersions){
-    		if(reportVersion.getReportStatus() != null && reportVersion.getReportStatus() == ReportStatus.COMPLETED)
-    			submitted = true;
-    	}
-    	return submitted;
+    	if(this.getLastVersion() != null && this.getLastVersion().getReportStatus() == ReportStatus.COMPLETED)
+    		return true;
+    	return false;
     }
     
    

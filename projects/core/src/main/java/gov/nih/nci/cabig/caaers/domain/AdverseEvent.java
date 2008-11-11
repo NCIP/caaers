@@ -618,4 +618,38 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     		submitted = true;
     	return submitted;
     }
+    
+    /**
+     * This method generates a signature for the AE. It uses the values of all the attributes of AEs that can be accessed and modified
+     * on the captureAE page. It appends all these values in a specific order (so that it can be compared to the signature generated on
+     * the client side and then saved in the html as a hidden field.
+     * @return String
+     */
+    @Transient
+    public String getSignature(){
+    	StringBuffer sb = new StringBuffer("");
+    	// verbatim value
+    	sb.append(detailsForOther == null ? "" : detailsForOther.toString());
+    	sb.append("$$");
+    	// grade value
+    	sb.append(grade == null ? "" : grade.getName()); // grade value
+    	sb.append("$$");
+    	// attribution value
+    	sb.append(attributionSummary == null ? "" : attributionSummary.getName());
+    	sb.append("$$");
+    	// hospitalization value
+    	sb.append(hospitalization == null ? "" : hospitalization.getName());
+    	sb.append("$$");
+    	// expected
+    	sb.append(expected == null ? "" : expected);
+    	sb.append("$$");
+    	if(!getSolicited() && getAdverseEventCtcTerm() != null && getAdverseEventCtcTerm().getTerm() != null){
+    		if(getAdverseEventCtcTerm().getTerm().isOtherRequired()){
+    			sb.append(lowLevelTerm == null ? "" : lowLevelTerm.getFullName());
+    		}
+    	}
+    	sb.append("$$");
+    	sb.append(serious == null ? "" : serious.getName());
+    	return sb.toString();
+    }
 }

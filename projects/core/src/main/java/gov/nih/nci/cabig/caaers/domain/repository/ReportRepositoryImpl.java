@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
@@ -46,6 +48,8 @@ public class ReportRepositoryImpl implements ReportRepository {
 
     private static final Log log = LogFactory.getLog(ReportRepositoryImpl.class);
     private ReportDao reportDao;
+    private ParticipantDao participantDao;
+    private StudyDao studyDao;
     private ExpeditedReportTree expeditedReportTree;
     private SchedulerService schedulerService;
 
@@ -171,6 +175,11 @@ public class ReportRepositoryImpl implements ReportRepository {
      * @author- Sameer Sawant
      */
     public void amendReport(Report report, Boolean useDefaultVersion){
+    	
+    	reportDao.reassociate(report);
+    	participantDao.lock(report.getAeReport().getParticipant());
+    	studyDao.lock(report.getAeReport().getStudy());
+    	
     	ReportVersion reportVersion = new ReportVersion();
         reportVersion.setCreatedOn(nowFactory.getNow());
         reportVersion.setReportStatus(ReportStatus.PENDING);
@@ -259,8 +268,16 @@ public class ReportRepositoryImpl implements ReportRepository {
         }
 
     }
-
     
+    @Required
+    public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
+	}
+    
+    @Required
+    public void setParticipantDao(ParticipantDao participantDao) {
+		this.participantDao = participantDao;
+	}
     
     @Required
     public void setReportDao(final ReportDao reportDao) {

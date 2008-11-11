@@ -925,10 +925,10 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
      */
     @Transient
     public Boolean getHasSubmittedReport(){
-    	Boolean submitted = false;
+    	Boolean submitted = true;
     	for(Report report: reports){
-    		if(report.isSubmitted())
-    			submitted = true;
+    		if(report.getReportDefinition().getAmendable() && !report.isSubmitted())
+    			submitted = false;
     	}
     	return submitted;
     }
