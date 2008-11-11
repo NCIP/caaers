@@ -33,6 +33,7 @@ public class CaaersRegistrationConsumerTest extends CaaersDbTestCase {
 
     @Override
     protected void setUp() throws Exception {
+    	super.setUp();
     	//avoided calling super.setup
         setUpAuthorization();
         setUpAuditing();
