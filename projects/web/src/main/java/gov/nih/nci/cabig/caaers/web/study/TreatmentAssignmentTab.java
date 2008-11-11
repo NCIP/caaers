@@ -30,8 +30,7 @@ public class TreatmentAssignmentTab extends StudyTab {
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Study command,
-                    final Errors errors) {
+    public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeTreatmentAssignment".equals(action)) {
@@ -48,19 +47,16 @@ public class TreatmentAssignmentTab extends StudyTab {
             InputFieldAttributes.setSize(codeField, 20);
             rfgFactory.addField(codeField);
 
-            InputField doseLevelOrderField = InputFieldFactory.createTextField("doseLevelOrder",
-                            "Dose level order", false);
+            InputField doseLevelOrderField = InputFieldFactory.createTextField("doseLevelOrder", "Dose level order", false);
             InputFieldAttributes.setSize(doseLevelOrderField, 20);
             rfgFactory.addField(doseLevelOrderField);
 
-            InputField descriptionField = InputFieldFactory.createTextArea("description",
-                            "Description", true);
+            InputField descriptionField = InputFieldFactory.createTextArea("description", "Description", true);
 
             InputFieldAttributes.setColumns(descriptionField, 80);
             rfgFactory.addField(descriptionField);
 
-            InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments",
-                            false);
+            InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
             InputFieldAttributes.setColumns(commentsField, 80);
             rfgFactory.addField(commentsField);
 
@@ -73,20 +69,15 @@ public class TreatmentAssignmentTab extends StudyTab {
     }
 
     @Override
-    protected void validate(final Study command, final BeanWrapper commandBean,
-                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+    protected void validate(final Study command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
         List<TreatmentAssignment> treatmentAssignments = command.getTreatmentAssignments();
 
         for (int j = 0; j < treatmentAssignments.size(); j++) {
             TreatmentAssignment treatmentAssignment = treatmentAssignments.get(j);
-            if (treatmentAssignment.getDoseLevelOrder() != null
-                            && treatmentAssignment.getDoseLevelOrder().toString().length() > 2) {
-                errors
-                                .rejectValue("treatmentAssignments[" + j + "].doseLevelOrder",
-                                                "REQUIRED",
-                                                "Does level order should be a two digit number only (less than 100)..!");
+            if (treatmentAssignment.getDoseLevelOrder() != null && treatmentAssignment.getDoseLevelOrder().toString().length() > 2) {
+                errors.rejectValue("treatmentAssignments[" + j + "].doseLevelOrder", "REQUIRED", "Does level order should be a two digit number only (less than 100)..!");
             }
         }
 
