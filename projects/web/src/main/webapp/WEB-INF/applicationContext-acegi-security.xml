@@ -54,9 +54,8 @@
         <entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
         <entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
         <entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
-        <entry key="/pages/study/view.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+        <entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
         <entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-        <entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:UPDATE"/>
         <entry key="/pages/ae/create.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/ae/edit.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
         <entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
