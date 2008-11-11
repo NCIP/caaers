@@ -71,6 +71,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
             StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
             studySiteAjaxableDomainObject.setId((Integer) o[8]);
             studySiteAjaxableDomainObject.setName((String) o[7]);
+            studySiteAjaxableDomainObject.setNciInstituteCode((String) o[10]);
             studySearchableAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
         }
     }

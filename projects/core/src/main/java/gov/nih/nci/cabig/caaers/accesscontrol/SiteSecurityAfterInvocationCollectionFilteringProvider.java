@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
+import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.Collection;
@@ -65,9 +66,10 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
 
             boolean hasPermission = false;
 
-            if (domainObject == null || !(domainObject instanceof AbstractMutableDomainObject)) {
+            if (  (domainObject == null || !(domainObject instanceof AbstractMutableDomainObject)) && !(domainObject instanceof AbstractAjaxableDomainObject)   ) {
                 hasPermission = true;
             }
+            
 
             DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
                             .get(domainObject.getClass().getName());

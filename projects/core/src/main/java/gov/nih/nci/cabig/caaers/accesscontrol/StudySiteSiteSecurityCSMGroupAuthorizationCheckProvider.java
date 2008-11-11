@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.security.acegi.csm.authorization.CSMGroupAuthorizationCheck;
 import gov.nih.nci.security.acegi.csm.authorization.CSMObjectIdGenerator;
 
@@ -28,15 +30,34 @@ public class StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider implements
                     Object domainObject) {
         boolean hasPermission = false;
         log.debug("Invoking checkPermission on StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider");
+        
+        if (domainObject instanceof StudySearchableAjaxableDomainObject) {
+        	StudySearchableAjaxableDomainObject study = (StudySearchableAjaxableDomainObject) domainObject;
+            // if no sites then make it globally accessible
+            if (study.getStudySites().size() > 0) {
+                for (StudySiteAjaxableDomainObject site : study.getStudySites()) {
+                    String nciInstitudeCode = site.getNciInstituteCode();
+                    log.debug("### Checking permission for user on site:" + nciInstitudeCode);
+                    hasPermission = csmGroupAuthorizationCheck.checkAuthorizationForObjectId( authentication, permission, siteObjectIdGenerator.generateId(nciInstitudeCode));
+                    // only needs permission on one of the sites
+                    if (hasPermission) break;
+                }
+            } else {
+                log.debug("Unsupported object sent to StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider. Expecting Study object found "
+                                                + domainObject.getClass().getName());
+                hasPermission = true;
+            }
 
+        }       
+        
         if (domainObject instanceof Study) {
             Study study = (Study) domainObject;
             // if no sites then make it globally accessible
             if (study.getStudySites().size() > 0) {
                 for (StudySite site : study.getStudySites()) {
-                    Organization organization = site.getOrganization();
-                    log.debug("### Checking permission for user on site:" + organization.getNciInstituteCode());
-                    hasPermission = csmGroupAuthorizationCheck.checkAuthorizationForObjectId( authentication, permission, siteObjectIdGenerator.generateId(organization));
+                    String nciInstitudeCode = site.getOrganization().getNciInstituteCode();
+                    log.debug("### Checking permission for user on site:" + nciInstitudeCode);
+                    hasPermission = csmGroupAuthorizationCheck.checkAuthorizationForObjectId( authentication, permission, siteObjectIdGenerator.generateId(nciInstitudeCode));
                     // only needs permission on one of the sites
                     if (hasPermission) break;
                 }

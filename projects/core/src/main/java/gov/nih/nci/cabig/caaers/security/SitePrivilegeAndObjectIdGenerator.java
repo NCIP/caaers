@@ -40,9 +40,11 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
      */
     public String generateId(Object object) {
         assertSupports(object);
-        Organization site = (Organization) object;
-
-        return Organization.class.getName() + pathSeperator + site.getNciInstituteCode();
+        //Organization site = (Organization) object;
+        //return Organization.class.getName() + pathSeperator + site.getNciInstituteCode();
+        
+        //nciInstitudeCode is passed instead of full object
+        return "gov.nih.nci.cabig.caaers.domain.Organization" + pathSeperator + object.toString();
     }
 
     public String getPathSeperator() {
@@ -62,7 +64,7 @@ public final class SitePrivilegeAndObjectIdGenerator implements CSMPrivilegeGene
     }
 
     private boolean supports(Object object) {
-        return object instanceof Organization;
+        return object instanceof java.lang.String;
     }
 
     private void assertSupports(Object object) {

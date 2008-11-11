@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
+import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.security.constants.Constants;
 import org.acegisecurity.AccessDeniedException;
@@ -56,7 +57,8 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
         }
         boolean hasPermission = false;
 
-        if (returnedObject == null || !(returnedObject instanceof AbstractMutableDomainObject)) {
+        //if (returnedObject == null || !(returnedObject instanceof AbstractMutableDomainObject)) {
+        if (  (returnedObject == null || !(returnedObject instanceof AbstractMutableDomainObject)) && !(returnedObject instanceof AbstractAjaxableDomainObject)   ) {
             hasPermission = true;
         }
 
