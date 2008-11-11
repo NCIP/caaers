@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.participant;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.Identifier;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -151,10 +152,23 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     @Override
     protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors, int page) throws Exception {
         super.onBindAndValidate(request, command, errors, page);
+        ParticipantInputCommand cmd = (ParticipantInputCommand) command;
+
+        List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
+
+        for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
+            Identifier sID = sitePrimaryIdentifiers.get(i);
+            for (int j=0; j<cmd.getParticipant().getIdentifiers().size(); j++) {
+                Identifier pID = cmd.getParticipant().getIdentifiers().get(j);
+
+                if (sID.getValue().equals(pID.getValue()) && (sID.getId() == null || sID.getId().intValue() != pID.getId().intValue())) {
+                    errors.reject("ERR_DUPLICATE_SITE_PRIMARY_IDENTIFIER", new Object[] {cmd.getOrganization().getName(), pID.getValue()}, "Duplicate identifiers for the same site.");
+                }
+            }
+        }
 
         // if the target tab is not the next to the cirrent one
         if (getTargetPage(request, command, errors, page) - page > 1) {
-            ParticipantInputCommand cmd = (ParticipantInputCommand) command;
 
             // if the assisgnment object needed by SubjectMedHistoryTab is not in the command
             if (cmd.assignment == null || cmd.assignment.getId() == null)

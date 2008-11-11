@@ -125,6 +125,12 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
         return participant;
     }
 
+    /**
+     * Return the list of Primaty Identifiers for a given Site
+     *
+     * @param siteID The site ID for which to return the list of identifiers
+     * @return List<Identidier>
+     */
     public List<Identifier> getSitePrimaryIdentifiers(int siteID) {
         return getHibernateTemplate().find("FROM Identifier idt WHERE idt.organization.id = ? AND idt.primaryIndicator = ?", new Object[]{siteID, true});
     }
