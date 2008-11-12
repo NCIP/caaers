@@ -252,7 +252,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         assertEquals(1, jdbcTemplate.queryForList(
                 "select distinct user_group_id from csm_user_group cug,csm_group cg where cug.group_id=cg.group_id and cug.user_id="
                         + csmUser.getUserId() + " and cg.group_name='"
-                        + siteObjectIdGenerator.generateId(organization) + "'").size());
+                        + siteObjectIdGenerator.generateId(organization.getNciInstituteCode()) + "'").size());
 
     }
 
@@ -271,7 +271,7 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
         assertNotNull(organization);
         assertNotNull(group);
         assertEquals(group.getGroupDesc(), organization.getDescriptionText());
-        String siteId = siteObjectIdGenerator.generateId(organization);
+        String siteId = siteObjectIdGenerator.generateId(organization.getNciInstituteCode());
         assertEquals(group.getGroupName(), siteId);
 
     }
@@ -307,9 +307,6 @@ public class ResearchStaffRepositoryIntegrationTest extends CaaersDbTestCase {
 //        startNewTransaction();
     }
 
-	
-	public void testTest() { 
-		assertTrue(true); 
-	}
+
 
 }
