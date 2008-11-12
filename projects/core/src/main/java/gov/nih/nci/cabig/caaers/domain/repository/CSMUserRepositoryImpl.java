@@ -58,7 +58,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             for (UserGroupType group : researchStaff.getUserGroupTypes()) {
                 groupIds.add(group.getCode().toString());
             }
-            String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(researchStaff.getOrganization()));
+            String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(researchStaff.getOrganization().getNciInstituteCode()));
             groupIds.add(organizationGroupId);
             if (csmUser.getUserId() == null) {
                 throw new CaaersSystemException("ID has not been assigned to CSM user.");
