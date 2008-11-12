@@ -45,8 +45,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     
     private Map<Object, Object> studyDiseasesMap;
     
-   private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
-    private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>(); 
+    private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
+    private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>();
     List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
     private AnatomicSite metastaticDiseaseSite;
@@ -105,14 +105,16 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
     public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
-    	if(studyDiseasesMap == null){
-    		if(diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)){
-        		studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
-        	}else {
-        		studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(),"id", "term.term", "Please select");
-        	}
-    	}
-    	return studyDiseasesMap;
+        if (studyDiseasesMap == null) {
+            if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
+            } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.CTEP)) {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(), "id", "term.term", "Please select");
+            } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getStudyConditions(), "id", "term.conditionName", "Please select");
+            }
+        }
+        return studyDiseasesMap;
     }
     
     
@@ -156,8 +158,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void classifyNewlySelectedReportsDefinitons(){
     	String nciInstituteCode = getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
     	for(ReportDefinition reportDefinition: newlySelectedDefs){
-    		if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode) && reportDefinition.getAmendable()
-    													&& reportDefinition.getExpedited())
+    		if(reportDefinition.getOrganization().getNciInstituteCode().equals(nciInstituteCode) && reportDefinition.getAmendable() && reportDefinition.getExpedited())
     			newlySelectedSponsorReports.add(reportDefinition);
     		else
     			otherSelectedReports.add(reportDefinition);
