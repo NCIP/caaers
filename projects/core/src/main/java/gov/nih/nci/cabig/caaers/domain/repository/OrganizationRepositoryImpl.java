@@ -61,7 +61,7 @@ public class OrganizationRepositoryImpl implements OrganizationRepository {
                     throws CaaersSystemException {
         Group group = new Group();
         try {
-            String siteId = siteObjectIdGenerator.generateId(organization);
+            String siteId = siteObjectIdGenerator.generateId(organization.getNciInstituteCode());
 
             Application app = userProvisioningManager.getApplication(csmApplicationContextName);
             group.setApplication(app);
