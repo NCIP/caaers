@@ -309,6 +309,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   value="CSM_AUTHN_CHECK"/>
         <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
                   ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+        <property name="authorizationSwitch" ref="authorizationSwitch"/>
 
     </bean>
 
@@ -319,6 +320,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="accessPrivilege" ref="ACCESS_PRIVILEGE"/>
         <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
                   ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
+        <property name="authorizationSwitch" ref="authorizationSwitch"/>
     </bean>
     <bean id="ACCESS_PRIVILEGE" class="java.lang.String">
         <constructor-arg value="ACCESS"/>
