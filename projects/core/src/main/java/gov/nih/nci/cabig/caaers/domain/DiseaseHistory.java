@@ -190,9 +190,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
 
     private static DiseaseHistory copyBasicProperties(Object object) {
         DiseaseHistory saeReportDiseaseHistory = new DiseaseHistory();
-        BeanUtils.copyProperties(object, saeReportDiseaseHistory, new String[]{"id", "gridId",
-                "version", "report", "metastaticDiseaseSitesInternal", "metastaticDiseaseSites"
-                , "meddraStudyDisease", "ctepStudyDisease"});
+        BeanUtils.copyProperties(object, saeReportDiseaseHistory, new String[]{"id", "gridId", "version", "report", "metastaticDiseaseSitesInternal", "metastaticDiseaseSites", "meddraStudyDisease", "ctepStudyDisease", "otherCondition"});
         return saeReportDiseaseHistory;
     }
 
@@ -201,8 +199,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         DiseaseHistory saeReportDiseaseHistory = copyBasicProperties(this);
 
         for (MetastaticDiseaseSite metastaticDiseaseSite : this.getMetastaticDiseaseSites()) {
-            saeReportDiseaseHistory.addMetastaticDiseaseSite(metastaticDiseaseSite.
-                    copy());
+            saeReportDiseaseHistory.addMetastaticDiseaseSite(metastaticDiseaseSite.copy());
         }
         return saeReportDiseaseHistory;
 
