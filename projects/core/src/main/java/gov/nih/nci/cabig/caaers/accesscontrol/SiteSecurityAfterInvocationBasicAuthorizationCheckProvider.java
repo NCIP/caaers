@@ -27,6 +27,8 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
     private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
 
     private Class processDomainObjectClass = AbstractMutableDomainObject.class;
+    
+    private gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch;
 
     private Logger log = Logger
                     .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
@@ -34,7 +36,10 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
     public Object decide(Authentication authentication, Object object,
                     ConfigAttributeDefinition configAttributeDefinition, Object returnedObject)
                     throws AccessDeniedException {
-
+        if (!authorizationSwitch.isOn()) {
+        	return returnedObject;
+        }
+        
         if (returnedObject == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Return object is null, skipping");
@@ -114,4 +119,9 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
                     LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
         this.domainObjectSiteSecurityAuhthorizationCheckProvidersMap = domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
     }
+
+	public void setAuthorizationSwitch(
+			gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch) {
+		this.authorizationSwitch = authorizationSwitch;
+	}
 }

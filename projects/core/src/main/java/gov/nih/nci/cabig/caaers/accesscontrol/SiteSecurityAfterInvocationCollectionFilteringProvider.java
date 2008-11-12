@@ -26,6 +26,8 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
     private String processConfigAttribute;
 
     private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
+    
+    private gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch;
 
     private Logger log = Logger
                     .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
@@ -55,6 +57,9 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
                 log.debug("Return object is not a collection, skipping");
             }
             return returnedObject;
+        }
+        if (!authorizationSwitch.isOn()) {
+        	return filterer.getFilteredObject();
         }
         // Locate unauthorised Collection elements
         Iterator collectionIter = filterer.iterator();
@@ -107,4 +112,9 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
                     LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap) {
         this.domainObjectSiteSecurityAuhthorizationCheckProvidersMap = domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
     }
+    @Required
+	public void setAuthorizationSwitch(
+			gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch) {
+		this.authorizationSwitch = authorizationSwitch;
+	}
 }
