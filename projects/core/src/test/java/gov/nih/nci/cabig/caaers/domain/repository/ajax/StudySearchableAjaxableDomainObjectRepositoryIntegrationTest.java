@@ -1,18 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
-import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
 
-import java.util.List;
 import java.text.ParseException;
+import java.util.List;
 
 /**
  * @author Biju Joseph
  */
-public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDbTestCase {
+public class StudySearchableAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
     private StudySearchableAjaxableDomainObjectQuery studySearchableAjaxableDomainObjectQuery;
 
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository = (StudySearchableAjaxableDomainObjectRepository)
