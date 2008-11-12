@@ -87,7 +87,7 @@ public class OrganizationRepositoryTest extends AbstractTestCase {
 			throws CSObjectNotFoundException, CSTransactionException {
 		String expectedGeneratedId = "a great ID";
 
-		expect(idGenerator.generateId(toCreate)).andReturn(expectedGeneratedId);
+		expect(idGenerator.generateId(toCreate.getNciInstituteCode())).andReturn(expectedGeneratedId);
 		expect(userProvisioningManager.getApplication(APP_NAME)).andReturn(
 				new Application());
 		expect(userProvisioningManager.getProtectionGroupById(SITE_PG_ID))
