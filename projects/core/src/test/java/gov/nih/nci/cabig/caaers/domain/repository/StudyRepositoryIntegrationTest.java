@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class StudyRepositoryIntegrationTest extends CaaersDbTestCase {
+public class StudyRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
 
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
             "organizationDao");
