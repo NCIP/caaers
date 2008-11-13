@@ -1,8 +1,27 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.Availability;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -59,8 +78,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected StudyParticipantAssignmentDao assignmentDao;
 
     protected CtcTermDao ctcTermDao;
+
     protected LowLevelTermDao lowLevelTermDao;
-    protected ConditionDao conditionDao;
 
     protected AgentDao agentDao;
 
@@ -71,8 +90,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected StudyAgentDao studyAgentDao;
 
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+
     protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
-    protected StudyConditionDao studyConditionDao;
 
     protected AnatomicSiteDao anatomicSiteDao;
 
@@ -128,18 +147,12 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
-
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
-        ControllerTools.registerDomainObjectEditor(binder, conditionDao);
         ControllerTools.registerDomainObjectEditor(binder, agentDao);
-
         ControllerTools.registerDomainObjectEditor(binder, studyAgentDao);
-
         ControllerTools.registerDomainObjectEditor(binder, ctepStudyDiseaseDao);
         ControllerTools.registerDomainObjectEditor(binder, meddraStudyDiseaseDao);
-        ControllerTools.registerDomainObjectEditor(binder, studyConditionDao);
-
         ControllerTools.registerDomainObjectEditor(binder, anatomicSiteDao);
         ControllerTools.registerDomainObjectEditor(binder, priorTherapyDao);
         ControllerTools.registerDomainObjectEditor(binder, preExistingConditionDao);
@@ -437,20 +450,4 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 	public void setReportRepository(ReportRepository reportRepository) {
 		this.reportRepository = reportRepository;
 	}
-
-    public ConditionDao getConditionDao() {
-        return conditionDao;
-    }
-
-    public void setConditionDao(ConditionDao conditionDao) {
-        this.conditionDao = conditionDao;
-    }
-
-    public StudyConditionDao getStudyConditionDao() {
-        return studyConditionDao;
-    }
-
-    public void setStudyConditionDao(StudyConditionDao studyConditionDao) {
-        this.studyConditionDao = studyConditionDao;
-    }
 }

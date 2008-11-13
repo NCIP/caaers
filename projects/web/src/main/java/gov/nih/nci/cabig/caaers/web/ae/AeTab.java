@@ -31,11 +31,14 @@ import javax.servlet.http.HttpServletRequest;
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
 public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputCommand> {
-
     protected static final String MANDATORY_FIELD_ATTR = "mandatory";
+
     private ExpeditedReportTree expeditedReportTree;
+
     protected ReportRepository reportRepository;
+
     protected EvaluationService evaluationService;
+    
     protected SchedulerService schedulerService;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {

@@ -159,17 +159,13 @@ public class PatientDetailsTab extends AeTab {
      */
     private void createDiseaseInformantionFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
     	InputField studyDiseaseField = null;
-
-        DiseaseCodeTerm dct = command.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
-        if (dct == DiseaseCodeTerm.MEDDRA) {
-            studyDiseaseField = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
-        } else if (dct == DiseaseCodeTerm.CTEP) {
-            studyDiseaseField = InputFieldFactory.createSelectField("ctepStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
-        } else if (dct == DiseaseCodeTerm.OTHER) {
-            studyDiseaseField = InputFieldFactory.createSelectField("otherCondition", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.OTHER));
-        }
-
-        InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
+        //based on ctep - meddra create studyDisease field.
+    	if(command.getAeReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA){
+    		studyDiseaseField = InputFieldFactory.createSelectField("meddraStudyDisease", "Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.MEDDRA));
+    	}else {
+    		studyDiseaseField = InputFieldFactory.createSelectField("ctepStudyDisease","Disease name", false, command.getStudyDiseasesOptions(DiseaseCodeTerm.CTEP));
+    	}
+    	InputField diseaseSite = InputFieldFactory.createAutocompleterField("codedPrimaryDiseaseSite", "Primary site of disease", false);
         InputFieldAttributes.setSize(diseaseSite, 40);
         InputField otherDiseaseField = InputFieldFactory.createTextField("otherPrimaryDisease", "Other (disease)");
         InputFieldAttributes.setSize(otherDiseaseField, 50);
@@ -211,7 +207,8 @@ public class PatientDetailsTab extends AeTab {
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 50);
 
-        creator.createRepeatingFieldGroup("preExistingCondition", "saeReportPreExistingConditions", new SimpleNumericDisplayNameCreator("Pre-existing condition"), preCondField, otherField);
+        creator.createRepeatingFieldGroup("preExistingCondition", "saeReportPreExistingConditions", new SimpleNumericDisplayNameCreator("Pre-existing condition"),
+                        preCondField, otherField);
     }
     
     

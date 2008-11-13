@@ -121,13 +121,11 @@ public abstract class AeWebTestCase extends WebTestCase {
         c.getAeReport().setReporter(new Reporter());
         c.getAeReport().getReporter().setFirstName("Dan");
         c.getAeReport().getReporter().setLastName("McReporter");
-        c.getAeReport().getReporter().getContactMechanisms().put(ReportPerson.EMAIL,
-                        "dan@example.com");
+        c.getAeReport().getReporter().getContactMechanisms().put(ReportPerson.EMAIL,"dan@example.com");
         c.getAeReport().setPhysician(new Physician());
         c.getAeReport().getPhysician().setFirstName("Jim");
         c.getAeReport().getPhysician().setLastName("O'Physician");
-        c.getAeReport().getPhysician().getContactMechanisms().put(ReportPerson.EMAIL,
-                        "docjim@example.com");
+        c.getAeReport().getPhysician().getContactMechanisms().put(ReportPerson.EMAIL,"docjim@example.com");
 
         // CheckpointTab
         c.setNextPage(5);

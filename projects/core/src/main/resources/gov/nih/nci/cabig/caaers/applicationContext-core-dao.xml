@@ -392,12 +392,17 @@ This applicationContext contains the definition of the DAOs
     <tx:annotation-driven proxy-target-class="true"/>
 
     <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
-    <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
-    <bean id="routineAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
-    <bean id="adverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
-    <bean id="epochDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
+    <bean id="expeditedAdverseEventReportDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
+    <bean id="routineAdverseEventReportDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
+    <bean id="adverseEventReportingPeriodDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
+    <bean id="epochDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.EpochDao"/>
     <bean id="participantDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ParticipantDao"/>
-    <bean id="studyParticipantAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
+    <bean id="studyParticipantAssignmentDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao"/>
     <bean id="studySiteDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudySiteDao"/>
     <bean id="studyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDao"/>
     <bean id="studyAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyAgentDao"/>
@@ -406,7 +411,8 @@ This applicationContext contains the definition of the DAOs
     <bean id="diseaseTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.DiseaseTermDao"/>
     <bean id="researchStaffDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ResearchStaffDao"/>
     <bean id="userDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.UserDao"/>
-    <bean id="passwordPolicyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
+    <bean id="passwordPolicyDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao"/>
     <bean id="organizationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.OrganizationDao"/>
     <bean id="labTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabTermDao"/>
     <bean id="labCategoryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabCategoryDao"/>
@@ -426,28 +432,35 @@ This applicationContext contains the definition of the DAOs
     <bean id="studyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyDiseaseDao"/>
     <bean id="ctepStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao"/>
     <bean id="meddraStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao"/>
-    <bean id="studyConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.StudyConditionDao"/>
 
     <bean id="priorTherapyDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PriorTherapyDao"/>
-    <bean id="preExistingConditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
+    <bean id="preExistingConditionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao"/>
     <bean id="lowLevelTermDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao"/>
-    <bean id="investigationalNewDrugDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao"/>
+    <bean id="investigationalNewDrugDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao"/>
     <bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao"/>
     <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao"/>
     <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao"/>
     <!--Rules/Scheduler/Notification DAOs-->
-    <bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao"/>
+    <bean id="reportDefinitionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao"/>
     <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao"/>
-    <bean id="scheduledNotificationDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao"/>
-    <bean id="reportDeliveryDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"/>
+    <bean id="scheduledNotificationDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ScheduledNotificationDao"/>
+    <bean id="reportDeliveryDefinitionDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDefinitionDao"/>
     <bean id="reportDeliveryDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDeliveryDao"/>
 
     <bean id="labLoadDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.LabLoadDao"/>
-    <bean id="abstractStudyDiseaseDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
+    <bean id="abstractStudyDiseaseDao" parent="daoTemplate"
+          class="gov.nih.nci.cabig.caaers.dao.AbstractStudyDiseaseDao"/>
     <!-- validator beans starts here-->
-    <bean id="webControllerValidator" class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
+    <bean id="webControllerValidator"
+          class="gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidatorImpl" autowire="byType"/>
 
-    <bean id="uniqueNciIdentifierForOrganizationValidator" class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
+    <bean id="uniqueNciIdentifierForOrganizationValidator"
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueNciIdentifierForOrganizationValidator">
         <property name="organizationDao" ref="organizationDao"/>
     </bean>
 

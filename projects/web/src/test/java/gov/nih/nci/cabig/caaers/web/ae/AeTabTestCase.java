@@ -57,12 +57,10 @@ public abstract class AeTabTestCase extends AeWebTestCase {
     }
 
     protected void assertFieldRequiredErrorRaised(String fieldName, String displayName) {
-        assertEquals("Wrong number of errors for " + fieldName, 1, errors
-                        .getFieldErrorCount(fieldName));
+        assertEquals("Wrong number of errors for " + fieldName, 1, errors.getFieldErrorCount(fieldName));
         ObjectError fieldError = errors.getFieldError(fieldName);
         assertEquals("Wrong code for " + fieldName + " error", "REQUIRED", fieldError.getCode());
-        assertEquals("Wrong default message for " + fieldName + " error", "Missing " + displayName,
-                        fieldError.getDefaultMessage());
+        assertEquals("Wrong default message for " + fieldName + " error", "Missing " + displayName, fieldError.getDefaultMessage());
     }
 
     protected void assertDisplayNameForFieldGroup(String expectedDisplayName, String groupName) {
@@ -74,11 +72,9 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         InputFieldGroup actualGroup = getFieldGroup(fieldGroupName);
         assertNotNull("There's no group named " + fieldGroupName, actualGroup);
         List<InputField> actualFields = actualGroup.getFields();
-        assertEquals("Wrong number of fields in " + fieldGroupName, expectedProperties.length,
-                        actualFields.size());
+        assertEquals("Wrong number of fields in " + fieldGroupName, expectedProperties.length, actualFields.size());
         for (int i = 0; i < expectedProperties.length; i++) {
-            assertEquals("Wrong property " + i, expectedProperties[i], actualFields.get(i)
-                            .getPropertyName());
+            assertEquals("Wrong property " + i, expectedProperties[i], actualFields.get(i).getPropertyName());
         }
     }
 
@@ -112,14 +108,12 @@ public abstract class AeTabTestCase extends AeWebTestCase {
         return tab;
     }
 
-    protected Map<Object, Object> getActualSelectFieldOptions(String fieldGroupName,
-                    String propertyName) {
+    protected Map<Object, Object> getActualSelectFieldOptions(String fieldGroupName, String propertyName) {
         return getActualSelectFieldOptions(getFieldGroup(fieldGroupName).getFields(), propertyName);
     }
 
     @SuppressWarnings( { "unchecked" })
-    protected Map<Object, Object> getActualSelectFieldOptions(List<InputField> fields,
-                    String propertyName) {
+    protected Map<Object, Object> getActualSelectFieldOptions(List<InputField> fields, String propertyName) {
         InputField field = findField(fields, propertyName);
         Map<Object, Object> options = InputFieldAttributes.getOptions(field);
         assertNotNull("Field for " + propertyName + " is not a select", options);
