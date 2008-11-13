@@ -39,13 +39,9 @@ public class PatientDetailsTabTest extends AeTabTestCase {
         // TODO: this makes me stupider for having done it
         configurationProperty = new ConfigProperty();
         configurationProperty.setMap(new HashMap<String, List<Lov>>());
-        configurationProperty.getMap().put("bpsRefData",
-                        createMirroredLov("0 = zero", "1 = one", "2 = two"));
-        configurationProperty.getMap().put("heightUnitsRefData",
-                        createMirroredLov("Inch", "Centimeter"));
-        configurationProperty.getMap().put("weightUnitsRefData",
-                        createMirroredLov("Pound", "Kilogram"));
-        
+        configurationProperty.getMap().put("bpsRefData", createMirroredLov("0 = zero", "1 = one", "2 = two"));
+        configurationProperty.getMap().put("heightUnitsRefData", createMirroredLov("Inch", "Centimeter"));
+        configurationProperty.getMap().put("weightUnitsRefData", createMirroredLov("Pound", "Kilogram"));
         
         super.setUp();
     }
@@ -115,23 +111,19 @@ public class PatientDetailsTabTest extends AeTabTestCase {
     }
 
     public void testEitherConditionOrOtherRequired() throws Exception {
-        command.getAeReport().getSaeReportPreExistingConditions().get(0).setPreExistingCondition(
-                        null);
+        command.getAeReport().getSaeReportPreExistingConditions().get(0).setPreExistingCondition(null);
         command.getAeReport().getSaeReportPreExistingConditions().get(0).setOther(null);
         doValidate();
         assertEquals(1, getErrors().getErrorCount());
-        ObjectError fieldError = getErrors().getFieldError(
-                        "aeReport.saeReportPreExistingConditions[0]");
+        ObjectError fieldError = getErrors().getFieldError("aeReport.saeReportPreExistingConditions[0]");
         assertNotNull(fieldError);
         assertEquals("Wrong code", "SAE_015", fieldError.getCode());
-        assertEquals("Wrong message", "Either a known pre Existing Condition or other is required",
-                        fieldError.getDefaultMessage());
+        assertEquals("Wrong message", "Either a known pre Existing Condition or other is required", fieldError.getDefaultMessage());
     }
     
 
     public void testParticipantFieldsPresent() throws Exception {
-        assertFieldProperties("participant", "aeReport.participantHistory.height",
-                        "aeReport.participantHistory.weight");
+        assertFieldProperties("participant", "aeReport.participantHistory.height", "aeReport.participantHistory.weight");
     }
 
     public void testStaticDiseaseFieldsPresent() throws Exception {
@@ -184,15 +176,12 @@ public class PatientDetailsTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     private Map<Object, Object> getMeasureUnitFieldOptions(String measure) {
-        InputField measureField = findField(getFieldGroup("participant").getFields(),
-                        "aeReport.participantHistory." + measure);
-        InputField unitField = findField(CompositeField.getSubfields(measureField),
-                        "aeReport.participantHistory." + measure + ".unit");
+        InputField measureField = findField(getFieldGroup("participant").getFields(),"aeReport.participantHistory." + measure);
+        InputField unitField = findField(CompositeField.getSubfields(measureField),"aeReport.participantHistory." + measure + ".unit");
         return InputFieldAttributes.getOptions(unitField);
     }
 
-    private static <K, V> void assertKeyAndValue(String message, K expectedKey, V expectedValue,
-                    Map.Entry<K, V> actual) {
+    private static <K, V> void assertKeyAndValue(String message, K expectedKey, V expectedValue,Map.Entry<K, V> actual) {
         assertEquals(message + ": wrong key", expectedKey, actual.getKey());
         assertEquals(message + ": wrong value", expectedValue, actual.getValue());
     }

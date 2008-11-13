@@ -78,6 +78,20 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
     }
 
     @Transient
+    public StudyCondition getOtherCondition() {
+        if (this.abstractStudyDisease instanceof StudyCondition) {
+            return (StudyCondition) abstractStudyDisease;
+        } else {
+            return null;
+        }
+    }
+
+    @Transient
+    public void setOtherCondition(StudyCondition studyCondition) {
+        this.abstractStudyDisease = studyCondition;
+    }
+
+    @Transient
     public CtepStudyDisease getCtepStudyDisease() {
         if (this.abstractStudyDisease instanceof CtepStudyDisease) {
             return (CtepStudyDisease) abstractStudyDisease;
