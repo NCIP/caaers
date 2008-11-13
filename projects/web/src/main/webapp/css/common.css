@@ -9,8 +9,7 @@ body {
 	margin: 0px;
 	padding: 0px;
 }
-
-.workflow-tabs{
+.workflow-tabs {
 	position: relative;
 	top: 140px;
 	width:950px;
@@ -24,8 +23,7 @@ body {
 	background-repeat:repeat-x;
 	background-position:bottom;
 }
-
-.workflow-tabs2{
+.workflow-tabs2 {
 	position: relative;
 	width:950px;
 	background-color: #666;
@@ -37,31 +35,24 @@ body {
 	background-image: url(../images/blue/thirdlevelnav_grey_gradient.png);
 	background-repeat:repeat-x;
 	background-position:bottom;
-    top:-12px;
-    left:-18px;
+	top:-12px;
+	left:-18px;
 }
-#thirdlevelnav{
-	margin:5px;	
-}
-
-#thirdlevelnav div{
+#thirdlevelnav { margin:5px; }
+#thirdlevelnav div {
 	background-image: url(../images/blue/thirdlevelarrow_grey.png);
 	background-repeat: no-repeat;
 	background-position:right;
 	padding-right: 20px;
 }
-
-#thirdlevelnav div a{
+#thirdlevelnav div a {
 	text-decoration:none;
 	color: #fff;
 }
-#thirdlevelnav div a:hover{text-decoration:underline}
-#thirdlevelnav div a:active{
-	color:#CCCCCC
-}
-
-#thirdlevelnav.last div{background-image:none;}
-#thirdlevelnav.selected div a{
+#thirdlevelnav div a:hover { text-decoration:underline }
+#thirdlevelnav div a:active { color:#CCCCCC }
+#thirdlevelnav.last div { background-image:none; }
+#thirdlevelnav.selected div a {
 	color:#333333;
 	font-weight: bold;
 	background-color: #FFFFCC;
@@ -73,22 +64,20 @@ body {
 	background-repeat: repeat-x;
 	background-position: bottom;
 }
-
-.hr{
+.hr {
 	background-color: #999999;
 	height: 2px;
 	margin-right: 4px;
 	margin-left: 20px;
 }
-
-a img{
+a img {
 	border-top-style: none;
 	border-right-style: none;
 	border-bottom-style: none;
 	border-left-style: none;
 	vertical-align: middle;
 }
-.eXtremeTable a img{
+.eXtremeTable a img {
 	border-top-style: none;
 	border-right-style: none;
 	border-bottom-style: none;
@@ -96,29 +85,25 @@ a img{
 	vertical-align:baseline;
 }
 #all {
-width:980px;
-margin:0px auto;
-text-align:left;
-background: #FFF;
-position:relative;
+	width:980px;
+	margin:0px auto;
+	text-align:left;
+	background: #FFF;
+	position:relative;
 }
-
 h1, h2, h3, h4, h5, h6 {
-  margin: 0;
-  padding: 0;
-  color: #2E3257;
-  font-weight: 600;
+	margin: 0;
+	padding: 0;
+	color: #2E3257;
+	font-weight: 600;
 }
-
 h1 {
-  font-size: 1.2em;
-  margin-bottom: 1em;
+	font-size: 1.2em;
+	margin-bottom: 1em;
 }
 h2 { font-size: 1.0em; }
 h3, h4 { font-size: 0.9em; }
-
 p { margin: 1em 0; }
-
 /**** COMMON TEMPLATE ELEMENTS */
 
 #header {
@@ -128,11 +113,7 @@ p { margin: 1em 0; }
 	background-image: url(../images/blue/header_bg.jpg);
 	background-position: top;
 }
-
-#header .background-R {
-  background: url(../images/chrome/header_BG_R.gif) no-repeat top right;
-}
-
+#header .background-R { background: url(../images/chrome/header_BG_R.gif) no-repeat top right; }
 a#logo {
 	background-image: url(../images/blue/caAERSlogo.png);
 	height: 100px;
@@ -140,18 +121,9 @@ a#logo {
 	position:absolute;
 	text-indent: -9999px;
 }
-a#logo:link {
-background-position: 0px
-}
-
-a#logo:hover {
-background-position: 0px -100px;
-}
-
-a#logo:active {
-background-position: 0px -200px;
-}
-
+a#logo:link { background-position: 0px }
+a#logo:hover { background-position: 0px -100px; }
+a#logo:active { background-position: 0px -200px; }
 #logout {
 	background-image: url(../images/blue/logout_tab.png);
 	position: absolute;
@@ -168,13 +140,10 @@ background-position: 0px -200px;
 	text-decoration: none;
 	font-size: 0.85em;
 }
-
-a#logout:hover {
-	text-decoration: underline;
-}
-#skipnav{
-text-indent:-9999px;
-position:absolute;
+a#logout:hover { text-decoration: underline; }
+#skipnav {
+	text-indent:-9999px;
+	position:absolute;
 }
 #help {
 	background-image: url(../images/blue/logout_tab.png);
@@ -192,12 +161,7 @@ position:absolute;
 	text-decoration: none;
 	font-size: 0.85em;
 }
-
-a#help:hover {
-	text-decoration: underline;
-}
-
-
+a#help:hover { text-decoration: underline; }
 /***
 1st LEVEL TABS
 
@@ -206,90 +170,82 @@ a#help:hover {
 
 a#firstlevelnav_listAdverseEventsController {
 	background-image: url(../images/blue/adverseEvents_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
 	margin-right: -5px;
 }
-a#firstlevelnav_listAdverseEventsController:link{background-position:0px 0px;}
-a#firstlevelnav_listAdverseEventsController:hover{background-position:0px -45px;}
-a#firstlevelnav_listAdverseEventsController:active{background-position:0px -90px;}
-.selected a#firstlevelnav_listAdverseEventsController {background-image: url(../images/blue/adverseEvents_btn_selected.png);}
-
+a#firstlevelnav_listAdverseEventsController:link { background-position:0px 0px; }
+a#firstlevelnav_listAdverseEventsController:hover { background-position:0px -45px; }
+a#firstlevelnav_listAdverseEventsController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_listAdverseEventsController { background-image: url(../images/blue/adverseEvents_btn_selected.png); }
 a#firstlevelnav_searchStudyController {
 	background-image: url(../images/blue/studies_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
-margin-right: -5px;
-margin-left: -5px;
+	margin-right: -5px;
+	margin-left: -5px;
 }
-a#firstlevelnav_searchStudyController:link{background-position:0px 0px;}
-a#firstlevelnav_searchStudyController:hover{background-position:0px -45px;}
-a#firstlevelnav_searchStudyController:active{background-position:0px -90px;}
-
-.selected a#firstlevelnav_searchStudyController {background-image: url(../images/blue/studies_btn_selected.png);}
-
+a#firstlevelnav_searchStudyController:link { background-position:0px 0px; }
+a#firstlevelnav_searchStudyController:hover { background-position:0px -45px; }
+a#firstlevelnav_searchStudyController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_searchStudyController { background-image: url(../images/blue/studies_btn_selected.png); }
 a#firstlevelnav_createParticipantController {
 	background-image: url(../images/blue/subjects_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
 	margin-right: -5px;
-margin-left: -5px;
+	margin-left: -5px;
 }
-a#firstlevelnav_createParticipantController:link{background-position:0px 0px;}
-a#firstlevelnav_createParticipantController:hover{background-position:0px -45px;}
-a#firstlevelnav_createParticipantController:active{background-position:0px -90px;}
-.selected a#firstlevelnav_createParticipantController {background-image: url(../images/blue/subjects_btn_selected.png);}
-
+a#firstlevelnav_createParticipantController:link { background-position:0px 0px; }
+a#firstlevelnav_createParticipantController:hover { background-position:0px -45px; }
+a#firstlevelnav_createParticipantController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_createParticipantController { background-image: url(../images/blue/subjects_btn_selected.png); }
 a#firstlevelnav_createRuleController {
 	background-image: url(../images/blue/rules_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
 	margin-right: -5px;
-margin-left: -5px;
+	margin-left: -5px;
 }
-a#firstlevelnav_createRuleController:link{background-position:0px 0px;}
-a#firstlevelnav_createRuleController:hover{background-position:0px -45px;}
-a#firstlevelnav_createRuleController:active{background-position:0px -90px;}
-.selected a#firstlevelnav_createRuleController {background-image: url(../images/blue/rules_btn_selected.png);}
-
+a#firstlevelnav_createRuleController:link { background-position:0px 0px; }
+a#firstlevelnav_createRuleController:hover { background-position:0px -45px; }
+a#firstlevelnav_createRuleController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_createRuleController { background-image: url(../images/blue/rules_btn_selected.png); }
 a#firstlevelnav_studyController {
 	background-image: url(../images/blue/advancedSearch_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
 	margin-right: -5px;
-margin-left: -5px;
+	margin-left: -5px;
 }
-a#firstlevelnav_studyController:link{background-position:0px 0px;}
-a#firstlevelnav_studyController:hover{background-position:0px -45px;}
-a#firstlevelnav_studyController:active{background-position:0px -90px;}
-.selected a#firstlevelnav_studyController {background-image: url(../images/blue/advancedSearch_btn_selected.png);}
-
+a#firstlevelnav_studyController:link { background-position:0px 0px; }
+a#firstlevelnav_studyController:hover { background-position:0px -45px; }
+a#firstlevelnav_studyController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_studyController { background-image: url(../images/blue/advancedSearch_btn_selected.png); }
 a#firstlevelnav_configurationController {
 	background-image: url(../images/blue/administration_btn.png);
-	height: 45px;
+	height: 0px;
+	padding:45px 0px 0px 0px;
 	width: 133px;
-	text-indent: -9999px;
 	float: left;
 	margin-right: -5px;
-margin-left: -5px;
+	margin-left: -5px;
 }
-a#firstlevelnav_configurationController:link{background-position:0px 0px;}
-a#firstlevelnav_configurationController:hover{background-position:0px -45px;}
-a#firstlevelnav_configurationController:active{background-position:0px -90px;}
-.selected a#firstlevelnav_configurationController {background-image: url(../images/blue/administration_btn_selected.png);}
-
+a#firstlevelnav_configurationController:link { background-position:0px 0px; }
+a#firstlevelnav_configurationController:hover { background-position:0px -45px; }
+a#firstlevelnav_configurationController:active { background-position:0px -90px; }
+.selected a#firstlevelnav_configurationController { background-image: url(../images/blue/administration_btn_selected.png); }
 #sso-form { display: none }
-
 #build-name {
 	color: #666;
 	font-size: 85%;
@@ -298,30 +254,26 @@ a#firstlevelnav_configurationController:active{background-position:0px -90px;}
 	bottom: -150px;
 	margin-left: 20px;
 }
-
 /**** COMMON TAB STYLES (shared across all three levels) */
 
 ul.tabs {
 	margin: 0;
 	float:none;
 	padding-left:0;
-	}
-
-ul.tabs li {
-  display: block;
-  list-style-type: none;
-  float:left;
-  padding: 0;
 }
-
+ul.tabs li {
+	display: block;
+	list-style-type: none;
+	float:left;
+	padding: 0;
+}
 /**** SECTION TABS */
 
 #sections {
-  position: absolute;
-  top: 53px; left: 236px;
+	position: absolute;
+	top: 53px;
+	left: 236px;
 }
-
-
 /*
 #sections li.selected {
   background-image: url(../images/chrome/section_BG_s.gif);
@@ -352,10 +304,8 @@ ul.tabs li {
 	color: #FFFFFF;
 	vertical-align: middle;
 	z-index: 1;
-
 }
-
-#taskbar a.lte4{
+#taskbar a.lte4 {
 	color:#FFF;
 	text-decoration: none;
 	height: 43px;
@@ -364,8 +314,7 @@ ul.tabs li {
 	padding-top: 8px;
 	font-weight: bold;
 }
-
-#taskbar a.gt4{
+#taskbar a.gt4 {
 	color:#FFF;
 	text-decoration: none;
 	height: 19px;
@@ -378,58 +327,45 @@ ul.tabs li {
 	margin-top: 1px;
 	margin-right: 2px;
 }
-
-#taskbar a.gt4:hover{
+#taskbar a.gt4:hover {
 	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
 	background-repeat: no-repeat;
 }
-
-#taskbar a.gt4:active{
+#taskbar a.gt4:active {
 	background-image: url(../images/blue/secondlevelnav_hover_gt4.png);
 	background-repeat: no-repeat;
 }
-
-#taskbar a.lte4 img{
-margin-right:7px;
-margin-left:5px;
+#taskbar a.lte4 img {
+	margin-right:7px;
+	margin-left:5px;
 }
-
 #taskbar a:hover {
 	color:#fff;
 	background-image: url(../images/blue/secondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
-
 #taskbar a:active {
 	color:#ffe9a5;
 	background-image: url(../images/blue/secondlevelnav_hover.png);
 	background-repeat: no-repeat;
 }
-
-#taskbar a.lte4 img.imagegt18{
-float:left;
-margin-top:6px;
+#taskbar a.lte4 img.imagegt18 {
+	float:left;
+	margin-top:6px;
 }
-
-#taskbar a.lte4.gt18{
+#taskbar a.lte4.gt18 {
 	padding-top:2px;
 	display:inline;
 }
-.spangt18{padding-right:4px}
-
-#taskbar a.selected.lte4{
+.spangt18 { padding-right:4px }
+#taskbar a.selected.lte4 {
 	background-image: url(../images/blue/secondlevelnav_selected.jpg);
 	background-repeat: no-repeat;
-
 }
-
-#taskbar a.selected.gt4{
+#taskbar a.selected.gt4 {
 	background-image: url(../images/blue/secondlevelnav_gt4_selected.png);
 	background-repeat: no-repeat;
-
 }
-
-
 /**** PAGE CONTENT BOXES */
 
 #main {
@@ -437,52 +373,39 @@ margin-top:6px;
 	padding-right: 18px;
 	padding-bottom: 20px;
 	padding-left: 18px;
-
 	position: relative;
 	top: 140px;
 }
-
 #flash-message {
-  border: 1px solid #999;
-  border-width: 1px 0;
-  text-align: center;
-  background-color: #ccc;
-  margin: 1em auto;
-  width: 75%;
-  padding: 0.5em;
+	border: 1px solid #999;
+	border-width: 1px 0;
+	text-align: center;
+	background-color: #ccc;
+	margin: 1em auto;
+	width: 75%;
+	padding: 0.5em;
 }
-
 #flash-message.info {
-  border-color: #390;
-  background-color: #aea;
+	border-color: #390;
+	background-color: #aea;
 }
-
 #flash-message.error {
-  border-color: #930;
-  background-color: #ea9;
+	border-color: #930;
+	background-color: #ea9;
 }
-
 /* A pane is a vertical subdivision of the page.
    Individual panes will need to have their widths specified
    if there's more than one in a page;
    the total should be something less than 100%. */
-.pane {
-
-  margin: 0 14px 12px 0;
-}
-
+.pane { margin: 0 14px 12px 0; }
 /* Each pane will contain one or more "boxes" */
 .box {
 	background-color: #fff;
 	margin-bottom: 12px;
 	background-image: url(../images/blue/box_bg.jpg);
 	background-repeat: repeat-x;
-
-
-
 }
-.box .header {
-}
+.box .header { }
 .box .header h2 {
 	color: #333366;
 	margin: 0;
@@ -491,35 +414,24 @@ margin-top:6px;
 	padding-right: 20px;
 	padding-left: 20px;
 	font-weight:normal;
-
 }
 .box .header .background-L { background: url(../images/blue/box_header_bg_l.jpg) no-repeat top left; }
 .box .header .background-R { background: url(../images/blue/box_header_bg_r.jpg) no-repeat top right; }
-
-
-.border-T  {  }
-.border-L  { background: url(../images/blue/box_l.png)  repeat-y left; }
-.border-R  { background: url(../images/blue/box_r.png)  repeat-y right; }
-.border-B  { background: url(../images/blue/box_bottom.png)  repeat-x bottom; }
-.border-TL {}
+.border-T { }
+.border-L { background: url(../images/blue/box_l.png) repeat-y left; }
+.border-R { background: url(../images/blue/box_r.png) repeat-y right; }
+.border-B { background: url(../images/blue/box_bottom.png) repeat-x bottom; }
+.border-TL { }
 .border-TR { }
 .border-BL { background: url(../images/blue/box_bl.png) no-repeat bottom left; }
 .border-BR { background: url(../images/blue/box_br.png) no-repeat bottom right; }
-
 .box .interior {
-  margin: 0 8px 0 7px;
-  padding: 8px 0;
-  min-height: 28px;
+	margin: 0 8px 0 7px;
+	padding: 8px 0;
+	min-height: 28px;
 }
-
-.box.tabbed .interior {
-  padding-top: 0;
-}
-
-.box .content {
-  padding: 8px;
-}
-
+.box.tabbed .interior { padding-top: 0; }
+.box .content { padding: 8px; }
 .box h3 {
 	padding-top: 4px;
 	padding-right: 8px;
@@ -531,147 +443,97 @@ margin-top:6px;
 	border-bottom-style: solid;
 	border-bottom-color: #CCCCCC;
 }
-
 /**** TABS WITHIN A BOX */
 
 .box ul.inner.tabs { /* this overspecific selector is necessary for IE */
-  background: url(../images/chrome/inner-tab_BG.gif) no-repeat top right;
-  padding: 4px 7px 0 0;
-  margin: 0 0 0 7px;
-  height: 20px;
-  font-size: .9em;
+	background: url(../images/chrome/inner-tab_BG.gif) no-repeat top right;
+	padding: 4px 7px 0 0;
+	margin: 0 0 0 7px;
+	height: 20px;
+	font-size: .9em;
 }
-
-.box ul.inner.tabs li {
-  background: url(../images/chrome/inner-tab_L.gif) no-repeat top left;
-}
-
-.box ul.inner.tabs li.selected {
-  background-image: url(../images/chrome/inner-tab_L_s.gif);
-}
-
+.box ul.inner.tabs li { background: url(../images/chrome/inner-tab_L.gif) no-repeat top left; }
+.box ul.inner.tabs li.selected { background-image: url(../images/chrome/inner-tab_L_s.gif); }
 .box ul.inner.tabs li div {
-  background: url(../images/chrome/inner-tab_R.gif) no-repeat top right;
-  padding: 0 20px;
+	background: url(../images/chrome/inner-tab_R.gif) no-repeat top right;
+	padding: 0 20px;
 }
-
-.box ul.inner.tabs li.selected div {
-  background-image: url(../images/chrome/inner-tab_R_s.gif); 
-}
-
+.box ul.inner.tabs li.selected div { background-image: url(../images/chrome/inner-tab_R_s.gif); }
 .box ul.inner.tabs a {
-  line-height: 20px;
-  display: block;
-  text-decoration: none;
-  font-weight: bold;
-  color: #333333;
+	line-height: 20px;
+	display: block;
+	text-decoration: none;
+	font-weight: bold;
+	color: #333333;
 }
-.box ul.inner.tabs a:hover {
-  color: #002EE2;
-}
-
+.box ul.inner.tabs a:hover { color: #002EE2; }
 /* two boxes with the additional class "paired" are displayed side-by-side */
 .box.paired {
-    width: 45%;
-    margin: 1em;
+	width: 45%;
+	margin: 1em;
 	float:left;
 }
-
-.division {
-    clear: both;
-}
-
+.division { clear: both; }
 /**** REUSABLE PAGE ELEMENTS/CLASSES */
 
 .required-indicator {
 	color: #a00;
 	font-family: arial, serif;
 }
-
-#thirdlevelnav .required-indicator{
+#thirdlevelnav .required-indicator {
 	color: #f66;
 	font-family: arial, serif;
 }
-
 .required-for-submit {
-  color: #6f6; font-family: Arial, serif;
-  font-weight: bold;
+	color: #6f6;
+	font-family: Arial, serif;
+	font-weight: bold;
 }
-
-span.phone-number{
-	 font-style: italic;
-}
-.error input {
-  border-color: #c03;
-}
-.error .label {
-  color: #c03;
-}
-
-.errors {
+span.phone-number { font-style: italic; }
+.error input { border-color: #c03; }
+.error .label { color: #c03; }
+.errors { color: #c03; }
+div.errors {
 	color: #c03;
-}
-
-div.errors  {
-  color: #c03;
-   font-size:11pt;
-   border: 1px solid #c03;
-   margin: 40px;
-   padding: 0 0em 0.2em 1em;
+	font-size:11pt;
+	border: 1px solid #c03;
+	margin: 40px;
+	padding: 0 0em 0.2em 1em;
 }
 ul.errors {
 	color: #c03;
-    margin: 0; padding: 0 1em 0.2em 1em;
+	margin: 0;
+	padding: 0 1em 0.2em 1em;
 }
 ul.errors li {
-  margin: 0 0.8em; padding: 0;
-  list-style-image: url('../images/error.png'); 
+	margin: 0 0.8em;
+	padding: 0;
+	list-style-image: url('../images/error.png');
 }
-
 /* The delete checkbox which may go in a box's h3s */
 
 
-div.div-list-controls {
-	float:right;
-}
-
+div.div-list-controls { float:right; }
 a.list-control {
-    text-decoration: none;
-    color: #222;
-  	top: 0;
+	text-decoration: none;
+	color: #222;
+	top: 0;
 }
 a.delete-control {
-  	font-size: 1.4em;
-  	font-weight: bold;
-  	padding: 0 2px;
-}
-a.min-max-control {
+	font-size: 1.4em;
+	font-weight: bold;
 	padding: 0 2px;
 }
-a.move-up-control {
-	font-size: 1.2em;
-}
-a.move-down-control {
-	font-size: 1.2em;
-}
+a.min-max-control { padding: 0 2px; }
+a.move-up-control { font-size: 1.2em; }
+a.move-down-control { font-size: 1.2em; }
 a.list-control:hover {
-    background-color: #222;
-    color: #eee;
+	background-color: #222;
+	color: #eee;
 }
-
-
-div.first-item a.move-up-control {
-    visibility: hidden;
-}
-
-div.last-item a.move-down-control {
-    visibility: hidden;
-}
-
-span.list-controls {
-    padding: 0 4px;
-}
-
+div.first-item a.move-up-control { visibility: hidden; }
+div.last-item a.move-down-control { visibility: hidden; }
+span.list-controls { padding: 0 4px; }
 /*
     'row' is a class for label: value type rows.  The intent is
     that each row would contain 2-3 subdivs:  a label (float: left), an optional extra
@@ -686,134 +548,93 @@ div.row {
 /* Automatically clear after each row
    Based on http://www.positioniseverything.net/easyclearing.html */
 div.row:after, .autoclear:after {
-    display: block ;
-    content: ' ';
-    clear: both ;
-    height: 0 ;
-    visibility: hidden ;
+	display: block;
+	content: ' ';
+	clear: both;
+	height: 0;
+	visibility: hidden;
 }
-
 div.row div.label {
-  font-weight: bold;
-  float: left;
-  margin-left: 0.5em;
-  text-align: right;
-  /* default width; pages might override */
+	font-weight: bold;
+	float: left;
+	margin-left: 0.5em;
+	text-align: right;
+	/* default width; pages might override */
   width: 10em;
 }
 div.row div.value {
-  font-weight: normal;
-  /* default; should be changed whenever .label width is changed */
+	font-weight: normal;
+	/* default; should be changed whenever .label width is changed */
   margin-left: 11em;
-  /* In Mac the Help (?) button is wrapping-------Sorry, its causing titles that are too long to go off the page -david
+	/* In Mac the Help (?) button is wrapping-------Sorry, its causing titles that are too long to go off the page -david
   white-space:nowrap; */
   text-align:left;
 }
-
-img.indicator {
-    visibility: hidden;
-}
-
+img.indicator { visibility: hidden; }
 /*
   Left and right panels
 */
 .rightpanel {
-    float:right;
-    width:48%;
-    margin: 0 14px 14px 0;
-    padding: 5px;
+	float:right;
+	width:48%;
+	margin: 0 14px 14px 0;
+	padding: 5px;
 }
-
 .leftpanel {
-    float: left;
-    width:48%;
-    margin: 0 5px 5px -2em;
-    padding: 5px;
+	float: left;
+	width:48%;
+	margin: 0 5px 5px -2em;
+	padding: 5px;
 }
 /*
   Styles for Table Data 
 */
-table.tablecontent {
-    border-collapse: collapse;
-}
-
-.tablecontent td, .tablecontent th {
-	padding: 0.2em;
-
-}
-
-
-.tablecontent .tableHeader th, .tablecontent .even td , .tablecontent .odd td {
-    text-align: left;
-}
-
-
-
-
+table.tablecontent { border-collapse: collapse; }
+.tablecontent td, .tablecontent th { padding: 0.2em; }
+.tablecontent .tableHeader th, .tablecontent .even td, .tablecontent .odd td { text-align: left; }
 .tablecontent th {
-    text-align: left;
+	text-align: left;
 	background-color:#e4e4e4;
 	border: 1px solid #e4e4e4
 }
-
-.tablecontent td {
-    border:1px solid #ccc;
-}
-.tablecontent .highlight td {
-
-	background-color: #F5F5F5;
-
-}
-
-
-
+.tablecontent td { border:1px solid #ccc; }
+.tablecontent .highlight td { background-color: #F5F5F5; }
 a.help {
-    display: block;
-    float: right;
-    color: #fff;
+	display: block;
+	float: right;
+	color: #fff;
 }
-a.help img {
-    border: none;
-}
-
-
+a.help img { border: none; }
 .dueOn {
-    color: #cc0033;
-    text-align: center;
+	color: #cc0033;
+	text-align: center;
 }
-
 .submittedOn {
-    color:#009900;
-    text-align: center;
+	color:#009900;
+	text-align: center;
 }
-
 .leftpane {
-    float: left;
-    padding: 5px;
+	float: left;
+	padding: 5px;
 }
-
-.endpanes {
-    clear: both;
+.endpanes { clear: both; }
+.instructions {
+	margin-left:0px;
+	margin-bottom:20px;
 }
-.instructions{
-margin-left:0px;
-margin-bottom:20px;
-}
-
 .instructions .summarylabel {
-float:left;
-font-weight:bold;
-margin-left:10px;
-text-align:right;
-margin-right:7px;
+	float:left;
+	font-weight:bold;
+	margin-left:10px;
+	text-align:right;
+	margin-right:7px;
 }
-
 .instructions .summaryvalue {
-font-weight:normal;
-margin-left:90px;
-text-align:left;
-width:75%;
+	font-weight:normal;
+	margin-left:90px;
+	text-align:left;
+	width:75%;
 }
-#table231{background-color:#fff}
+#table231 { background-color:#fff }
 /* suppress Routine AE search button */
-#secondlevelnav_routineReportController{visibility:hidden;}
+#secondlevelnav_routineReportController { visibility:hidden; }
