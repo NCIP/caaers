@@ -451,6 +451,7 @@
     <bean name="/admin/import" id="importController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.ImportController">
         <property name="studyProcessorImpl" ref="studyProcessorImpl"/>
         <property name="participantServiceImpl" ref="participantServiceImpl"/>
+        <property name="domainObjectValidator" ref="domainObjectValidator"/>
     </bean>
   
   <bean name="/admin/importMeddra" id="importMeddraController" autowire="byName"
