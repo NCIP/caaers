@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.meddra;
 
 import gov.nih.nci.cabig.caaers.domain.MeddraVersion;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import javax.persistence.Column;
@@ -141,4 +142,53 @@ public class AbstractMeddraDomainObject implements DomainObject {
     public void setMeddraVersion(MeddraVersion meddraVersion){
     	this.meddraVersion = meddraVersion;
     }
+    
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (meddraCode == null ? 0 : meddraCode.hashCode());
+        result = prime * result + (meddraTerm == null ? 0 : meddraTerm.hashCode());
+        result = prime * result + (meddraVersion == null ? 0 : meddraVersion.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final AbstractMeddraDomainObject other = (AbstractMeddraDomainObject) obj;
+        if (meddraCode == null) {
+            if (other.meddraCode != null) {
+                return false;
+            }
+        } else if (!meddraCode.equals(other.meddraCode)) {
+            return false;
+        }
+        if (meddraTerm == null) {
+            if (other.meddraTerm != null) {
+                return false;
+            }
+        } else if (!meddraTerm.equals(other.meddraTerm)) {
+            return false;
+        }
+        if (meddraVersion == null) {
+            if (other.meddraVersion != null) {
+                return false;
+            }
+        } else if (!meddraVersion.equals(other.meddraVersion)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }
