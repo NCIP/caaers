@@ -1,5 +1,6 @@
 
 <dataset>
+
     <conditions
         id="-18"
         condition_name="Condition 018"
@@ -16,6 +17,16 @@
     <agents id="-990" name="abcd" description="biju" nsc="123"/>
     <agents id="-991" name="abcd" description="biju2" nsc="1223"/>
 
+    <!-- START STUDY-TERMS-->
+
+        <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
+        <CTC_TERMS id="3012" category_id="302" term="Tinnitus" ctep_term="Tinnitus" ctep_code="10043882" other_required="0" />
+        <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
+
+        <STUDY_TERMS id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
+        <STUDY_TERMS id="-9" study_id="-3" term_id="-11" term_type="meddra" />
+
+    <!-- END STUDY-TERMS-->
 
     <ORGANIZATIONS
             id="-1001"
@@ -397,9 +408,7 @@
     <ctc_terms id="-5" category_id="-6" term="term1" ctep_term="term1"/>
 
     <meddra_llt id="-7" meddra_code="700m" version_id="4"/>
-
     <ctc_terms id="-51" category_id="-6" term="term1" ctep_term="term1"/>
-
     <meddra_llt id="-71" meddra_code="700m" version_id="4"/>
 
     <!--  due to FK references -->

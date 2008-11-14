@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
@@ -63,6 +64,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<CtepStudyDisease> ctepStudyDiseases = new ArrayList<CtepStudyDisease>();
     private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
     private List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
+
+    private List<StudyMeddraLowLevelTerm> studyMeddraTerms = new ArrayList<StudyMeddraLowLevelTerm>();
+    private List<StudyCtcTerm> studyCTCTerms = new ArrayList<StudyCtcTerm>();
 
     private final LazyListHelper lazyListHelper;
 
@@ -963,6 +967,42 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     public void addStudyCondition(final StudyCondition studyCondition) {
         studyCondition.setStudy(this);
         studyConditions.add(studyCondition);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than ones")
+    @Where(clause = "term_type = 'ctep'")
+    public List<StudyCtcTerm> getStudyCTCTerms() {
+        return studyCTCTerms;
+    }
+
+    public void setStudyCTCTerms(List<StudyCtcTerm> studyCTCTerms) {
+        this.studyCTCTerms = studyCTCTerms;
+    }
+
+    public void addStudyCTCTerms(final StudyCtcTerm studyCtcTerm) {
+        studyCtcTerm.setStudy(this);
+        studyCTCTerms.add(studyCtcTerm);
+    }
+
+    @OneToMany
+    @JoinColumn(name = "study_id", nullable = false)
+    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than ones")
+    @Where(clause = "term_type = 'meddra'")    
+    public List<StudyMeddraLowLevelTerm> getStudyMeddraTerms() {
+        return studyMeddraTerms;
+    }
+
+    public void setStudyMeddraTerms(List<StudyMeddraLowLevelTerm> studyMeddraTerms) {
+        this.studyMeddraTerms = studyMeddraTerms;
+    }
+
+    public void addStudyMeddraTerms(final StudyMeddraLowLevelTerm studyMeddraLowLevelTerm) {
+        studyMeddraLowLevelTerm.setStudy(this);
+        studyMeddraTerms.add(studyMeddraLowLevelTerm);
     }
 
 }

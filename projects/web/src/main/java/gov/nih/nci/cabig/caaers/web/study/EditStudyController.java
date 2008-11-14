@@ -150,17 +150,14 @@ public class EditStudyController extends StudyController<Study> {
     }
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                                         final HttpServletResponse response, final Object command,
-                                         final BindException errors) throws Exception {
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         Study study = (Study) command;
         studyDao.merge(study);
         return new ModelAndView(new RedirectView("search"));
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final Study command,
-                                 final Tab<Study> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final Study command, final Tab<Study> tab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null) {

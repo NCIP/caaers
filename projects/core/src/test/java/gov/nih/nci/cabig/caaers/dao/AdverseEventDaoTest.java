@@ -284,20 +284,16 @@ public class AdverseEventDaoTest extends DaoTestCase<AdverseEventDao> {
     public void testLoadCtcBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-2);
         assertNotNull("Ctc Term is null", loaded.getAdverseEventTerm());
-        assertEquals("This term is not Ctc", true,
-                loaded.getAdverseEventTerm() instanceof AdverseEventCtcTerm);
-        assertEquals("This term is not CtcTerm", true,
-                loaded.getAdverseEventTerm().getTerm() instanceof CtcTerm);
+        assertEquals("This term is not Ctc", true, loaded.getAdverseEventTerm() instanceof AdverseEventCtcTerm);
+        assertEquals("This term is not CtcTerm", true, loaded.getAdverseEventTerm().getTerm() instanceof CtcTerm);
         assertEquals("Wrong Ctc Id", 3012, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
 
     public void testLoadMeddraBasedTerm() throws Exception {
         AdverseEvent loaded = getDao().getById(-3);
         assertNotNull("Meddra Term is null", loaded.getAdverseEventTerm());
-        assertEquals("This term is not MedDRA", true,
-                loaded.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm);
-        assertEquals("This term is not LowLevelTerm", true,
-                loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
+        assertEquals("This term is not MedDRA", true, loaded.getAdverseEventTerm() instanceof AdverseEventMeddraLowLevelTerm);
+        assertEquals("This term is not LowLevelTerm", true, loaded.getAdverseEventTerm().getTerm() instanceof LowLevelTerm);
         assertEquals("Wrong Meddra Id", -11, (int) loaded.getAdverseEventTerm().getTerm().getId());
     }
 

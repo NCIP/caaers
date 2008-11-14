@@ -23,15 +23,14 @@ import java.util.*;
  * @author Ram Chilukuri
  * @author Krikor Krumlian
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
+ * @author <a href="mailto:ion.olaru@semanticbits.com">Ion C. Olaru</a>
  */
 @CaaersUseCases({CREATE_STUDY, STUDY_ABSTRACTION, IMPORT_STUDIES})
 public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
+
     private OrganizationDao sitedao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
-
     private AgentDao agentDao = (AgentDao) getApplicationContext().getBean("agentDao");
-
-    private InvestigationalNewDrugDao indDao = (InvestigationalNewDrugDao) getApplicationContext().getBean(
-            "investigationalNewDrugDao");
+    private InvestigationalNewDrugDao indDao = (InvestigationalNewDrugDao) getApplicationContext().getBean("investigationalNewDrugDao");
 
     public void testGet() throws Exception {
         Study loaded = getDao().getById(-2);
@@ -698,6 +697,22 @@ assertTrue(true);
         Condition condition = new Condition();
         condition.setConditionName("Condition_001");
         assertNotNull(condition);
+    }
+
+    public void testLoadCtcBasedTerm() throws Exception {
+        Study loaded = getDao().getById(-2);
+        assertNotNull("Ctc Term List is null", loaded.getStudyCTCTerms());
+        assertEquals("This StudyTerm is not Ctc", true, loaded.getStudyCTCTerms().get(0) instanceof StudyCtcTerm);
+        assertEquals("This term is not CtcTerm", true, loaded.getStudyCTCTerms().get(0).getTerm() instanceof CtcTerm);
+        assertEquals("Wrong Ctc Id", 3012, loaded.getStudyCTCTerms().get(0).getTerm().getId().intValue());
+    }
+
+    public void testLoadMeddraBasedTerm() throws Exception {
+        Study loaded = getDao().getById(-3);
+        assertNotNull("Meddra Term List is null", loaded.getStudyMeddraTerms());
+        assertEquals("This term is not MedDRA", true, loaded.getStudyMeddraTerms().get(0) instanceof StudyMeddraLowLevelTerm);
+        assertEquals("This term is not LowLevelTerm", true, loaded.getStudyMeddraTerms().get(0).getTerm() instanceof LowLevelTerm);
+        assertEquals("Wrong Meddra Id", -11, loaded.getStudyMeddraTerms().get(0).getTerm().getId().intValue());
     }
 
 }
