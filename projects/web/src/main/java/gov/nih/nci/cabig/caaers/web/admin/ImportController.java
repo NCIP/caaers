@@ -25,6 +25,8 @@ import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationSer
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.RoutineAdverseEventReportServiceImpl;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.AbstractTabbedFlowFormController;
@@ -39,7 +41,9 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -101,7 +105,8 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private MedDRADao meddraDao;
 
     private CtcDao ctcDao;
-
+    
+    private DomainObjectValidator domainObjectValidator;
    
    //added by Monish Dombla
    private StudyProcessorImpl studyProcessorImpl;
@@ -500,7 +505,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     
     
     /**
-     * This method is added to test the create and update of Participant 
+     * This method is added to process create and update of Participant 
      * Monish Dombla
      */
     
@@ -529,7 +534,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     
     
     /**
-     * This method is added to test the create and update of Study 
+     * This method is added to process create and update of Study 
      * Monish Dombla
      */
     
@@ -543,11 +548,30 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			if(studies != null){
 				for(gov.nih.nci.cabig.caaers.webservice.Study studyDto : studies.getStudy()){
 					DomainObjectImportOutcome<Study> studyImportOutcome  = studyProcessorImpl.processStudy(studyDto);
-					if (studyImportOutcome.isSavable()) {
+					List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
+					if (studyImportOutcome.isSavable() && errors.size() == 0) {
 			            command.addImportableStudy(studyImportOutcome);
 			        } else {
+			        	for(String errMsg : errors){
+			    			studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
+			    		}
 			            command.addNonImportableStudy(studyImportOutcome);
 			        }
+				}
+				//Remove Duplicate Studies in the List.
+				List<DomainObjectImportOutcome<Study>> dupList = new ArrayList<DomainObjectImportOutcome<Study>>();
+				for(int i=0 ; i < command.getImportableStudies().size()-1 ; i++){
+					Study study1 = command.getImportableStudies().get(i).getImportedDomainObject();
+					Study study2 = command.getImportableStudies().get(i+1).getImportedDomainObject();
+					if(study1.equals(study2)){
+						command.getImportableStudies().get(i+1).addErrorMessage("Study Identifier already used in a different Study", Severity.ERROR);
+						command.addNonImportableStudy(command.getImportableStudies().get(i+1));
+						dupList.add(command.getImportableStudies().get(i+1));
+						log.debug("Duplicate Study :: " + study2.getShortTitle());
+					}
+				}
+				for(DomainObjectImportOutcome<Study> obj : dupList){
+					command.getImportableStudies().remove(obj);
 				}
 			}
 		} catch (JAXBException e) {
@@ -720,7 +744,11 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			ParticipantServiceImpl participantServiceImpl) {
 		this.participantServiceImpl = participantServiceImpl;
 	}
-	
+
+	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
+		this.domainObjectValidator = domainObjectValidator;
+	}
+
 	/**
 	 * This method fetches the specified resource pattern from classpath.
 	 * In this context used to fetch xsd files.
