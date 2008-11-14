@@ -1004,5 +1004,50 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         studyMeddraLowLevelTerm.setStudy(this);
         studyMeddraTerms.add(studyMeddraLowLevelTerm);
     }
+    
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (shortTitle == null ? 0 : shortTitle.hashCode());
+        result = prime * result + (longTitle == null ? 0 : longTitle.hashCode());
+        result = prime * result + (description == null ? 0 : description.hashCode());
+        result = prime * result + (precis == null ? 0 : precis.hashCode());
+        result = prime * result + (getId() == null ? 0 : getId().hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+    	boolean found = false;
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Study other = (Study) obj;
+        if (getIdentifiers() == null) {
+            if (other.getIdentifiers() != null) {
+                return false;
+            }
+        } else {
+        	for(Identifier identifier : getIdentifiers()){
+        		for(Identifier otherIdentifier : other.getIdentifiers()){
+        			if(identifier.equals(otherIdentifier)){
+        				found = true;
+        			}
+        		}
+        	}
+        	return found;
+        }
+        	
+        return true;
+    }
+    
 
 }
