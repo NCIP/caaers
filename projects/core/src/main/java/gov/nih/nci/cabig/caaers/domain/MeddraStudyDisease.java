@@ -40,4 +40,25 @@ public class MeddraStudyDisease extends AbstractStudyDisease<LowLevelTerm> {
     public String getTermName() {
         return getTerm().getFullName();
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final MeddraStudyDisease that = (MeddraStudyDisease) o;
+
+        if (getTerm() != null ? !getTerm().equals(that.getTerm()) : that.getTerm() != null) return false;
+
+        return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (this.getTerm() == null ? 0 : this.getTerm().hashCode());
+        return result;
+    }
+    
 }
