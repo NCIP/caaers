@@ -116,13 +116,7 @@ public class Identifier extends AbstractMutableDomainObject {
             return false;
         }
         final Identifier other = (Identifier) obj;
-        if (getId() == null) {
-            if (other.getId() != null) {
-                return false;
-            }
-        } else if (!getId().equals(other.getId())) {
-            return false;
-        }
+
         if (type == null) {
             if (other.type != null) {
                 return false;
