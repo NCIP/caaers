@@ -278,7 +278,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    @UniqueObjectInCollection(message = "Duplicate - Same agent, already associated to this study")
+    @UniqueObjectInCollection(message = "Duplicates found in studyAgents list")
     public List<StudyAgent> getStudyAgents() {
         return lazyListHelper.getLazyList(StudyAgent.class);
     }
@@ -405,7 +405,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     @UniqueIdentifierForStudy(message = "Identifier already exist for a different study")
-    @UniqueObjectInCollection(message = "Duplicate Identifier")
+    @UniqueObjectInCollection(message = "Duplicates found in Identifiers list")
     public List<Identifier> getIdentifiersLazy() {
         return lazyListHelper.getLazyList(Identifier.class);
     }
@@ -429,7 +429,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'ctep'")
-    @UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
+    @UniqueObjectInCollection(message = "Duplicates found in CtepStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<CtepStudyDisease> getCtepStudyDiseases() {
         return ctepStudyDiseases;
@@ -443,7 +443,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @Where(clause = "term_type = 'meddra'")
-    @UniqueObjectInCollection(message = "Duplicate - Same disease is associated to the study more than ones")
+    @UniqueObjectInCollection(message = "Duplicates found in MeddraStudyDiseases list")
     // it is pretty lame that this is necessary
     public List<MeddraStudyDisease> getMeddraStudyDiseases() {
         return meddraStudyDiseases;
@@ -551,6 +551,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @OneToMany(mappedBy = "study", fetch = FetchType.LAZY)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @UniqueObjectInCollection(message = "Duplicates found in StudyOrganizations list")
     public List<StudyOrganization> getStudyOrganizations() {
         return studyOrganizations;
     }
@@ -576,7 +577,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    @UniqueObjectInCollection(message = "Duplicate treatment assignment")
+    @UniqueObjectInCollection(message = "Duplicates found in TreatmentAssignment list")
     public List<TreatmentAssignment> getTreatmentAssignments() {
         return lazyListHelper.getLazyList(TreatmentAssignment.class);
     }
