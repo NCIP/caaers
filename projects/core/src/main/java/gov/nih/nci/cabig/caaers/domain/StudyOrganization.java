@@ -123,5 +123,60 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 
     @Transient
     public abstract String getRoleName();
+    
+    
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (getOrganization() == null ? 0 : getOrganization().hashCode());
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        boolean sameInstance = false;
+        if(this instanceof StudySite && obj instanceof StudySite){
+        	sameInstance = true;
+        }else if(this instanceof StudyFundingSponsor && obj instanceof StudyFundingSponsor){
+        	sameInstance = true;
+        }else if(this instanceof StudyCoordinatingCenter && obj instanceof StudyCoordinatingCenter){
+        	sameInstance = true;
+        }
+        
+        final StudyOrganization other = (StudyOrganization) obj;
+        boolean sameOrg = false;
+        if (organization == null) {
+            if (other.getOrganization() != null) {
+                return false;
+            }
+        } else if (organization.equals(other.getOrganization())) {
+            sameOrg = true;
+        }
+        
+        boolean sameStudy = false;
+        if (getStudy() == null) {
+            if (other.getStudy() != null) {
+                return false;
+            }
+        }else if (getStudy().equals(other.getStudy())) {
+            sameStudy = true;
+        }
+        if(sameInstance && sameOrg && sameStudy){
+        	return  true;
+        }else{
+        	return false;
+        }
+    }
+    
 }
