@@ -638,7 +638,10 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
     	sb.append(attributionSummary == null ? "" : attributionSummary.getName());
     	sb.append("$$");
     	// hospitalization value
-    	sb.append(hospitalization == null ? "" : hospitalization.getName());
+    	if(hospitalization == null)
+    		sb.append("");
+    	else
+    		sb.append(hospitalization.getName().equals("NONE") ? "" : hospitalization.getName());
     	sb.append("$$");
     	// expected
     	sb.append(expected == null ? "" : expected);
