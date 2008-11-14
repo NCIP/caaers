@@ -241,4 +241,5 @@ This applicationContext contains the definition of the concrete services
 	    	<property name="nowFactory" ref="nowFactory" />
 	</bean>
 	
+	<bean id="domainObjectValidator" autowire="byType" lazy-init="true"	class="gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator"/>
 </beans>
