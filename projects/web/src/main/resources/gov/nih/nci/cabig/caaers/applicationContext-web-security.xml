@@ -231,7 +231,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdditionalInformationTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ViewReportTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		
+        <!--========= RULES ========-->
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.SelectRuleTypeTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.DisplayRuleSetsTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.RuleTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.author.ReviewTab" value="gov.nih.nci.cabig.caaers.domain.Rule:READ"/>
 		
+        <!--========= REPORT DEFINITIONS ========-->
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.notification.BasicsTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDeliveryDefinitionTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReportMandatoryFieldDefinitionTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.notification.NotificationsTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.rule.notification.ReviewTab" value="gov.nih.nci.cabig.caaers.Admin:ACCESS"/>
+		
+		<!--========= TODO ADMIN ========-->
+				
 	</util:map>
 	
 	<bean id="tabPrivilegeAndObjectIdGenerator"
