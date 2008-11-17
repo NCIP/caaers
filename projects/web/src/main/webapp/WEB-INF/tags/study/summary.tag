@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <c:if test="${not empty studySummary }">
-<div id="study-summary-pane" style="with:100%;clear:both;">
+<div id="study-summary-pane" style="width:100%; clear:both;">
  <chrome:box title="Summary">
  <table width="100%">
  <tr>
