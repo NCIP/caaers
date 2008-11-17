@@ -105,7 +105,7 @@ public class CaaersStudyConsumerTest extends CaaersTestCase {
         HealthcareSiteType siteType = new HealthcareSiteType();
         siteType.setAddress(new AddressType());
         siteType.setDescriptionText("abce");
-        siteType.setNciInstituteCode("DUKE");
+        siteType.setNciInstituteCode("NCI");
         idType[0].setHealthcareSite(siteType);
 
         idType[1] = new OrganizationAssignedIdentifierType();
