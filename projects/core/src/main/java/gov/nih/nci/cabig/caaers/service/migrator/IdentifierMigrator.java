@@ -50,7 +50,7 @@ implements Migrator<E> {
 				outcome.ifNullObject(organization, Severity.ERROR,
 						"The organization specified in identifier is invalid");
 				orgIdentifier.setOrganization(organization);
-				orgIdentifier.setPrimaryIndicator(Boolean.FALSE);
+				//orgIdentifier.setPrimaryIndicator(Boolean.FALSE);
 
 				if (orgIdentifier.getType().equals(
 				"Protocol Authority Identifier")) {
