@@ -80,7 +80,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
             assertEquals("Not Reported", updatedParticipant.getGender());
             assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
+            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
             //}
             //}
 
@@ -119,7 +119,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
             assertEquals("Not Reported", updatedParticipant.getGender());
             assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
+            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
 
             assertEquals(2, updatedParticipant.getIdentifiers().size());
 //				}
@@ -163,7 +163,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
             assertEquals("Not Reported", updatedParticipant.getGender());
             assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
+            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
 
             assertEquals(1, updatedParticipant.getIdentifiers().size());
 //				}
@@ -205,7 +205,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
             assertEquals("Not Reported", updatedParticipant.getGender());
             assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
+            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
 
             assertEquals(2, updatedParticipant.getAssignments().size());
 //				}
@@ -247,7 +247,7 @@ public class ParticipantServiceTest extends CaaersDbTestCase {
             assertEquals(new DateValue(1, 1, 1960), updatedParticipant.getDateOfBirth());
             assertEquals("Not Reported", updatedParticipant.getGender());
             assertEquals("Black or African American", updatedParticipant.getRace());
-            assertEquals("Non Hispanic or Latino", updatedParticipant.getEthnicity());
+            assertEquals("Not Hispanic or Latino", updatedParticipant.getEthnicity());
 
             assertEquals(1, updatedParticipant.getAssignments().size());
 //				}
