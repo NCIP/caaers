@@ -53,6 +53,7 @@
 		<property name="studyConverter" ref="studyConverter" />
 		<property name="studyDao" ref="studyDao" />
 		<property name="studySynchronizer" ref="studySynchronizer" />
+		<property name="domainObjectValidator" ref="domainObjectValidator" />
   </bean>
   
   	
@@ -61,6 +62,7 @@
 		<property name="participantConverter" ref="participantConverter" />
 		<property name="participantDao" ref="participantDao" />
 		<property name="participantSynchronizer" ref="participantSynchronizer" />
+		<property name="domainObjectValidator" ref="domainObjectValidator" />
    </bean>	
     
   <bean name="jaxbServiceFactory" class="org.codehaus.xfire.jaxb2.JaxbServiceFactory">
