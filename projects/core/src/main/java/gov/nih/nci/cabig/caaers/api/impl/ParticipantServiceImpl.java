@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.ParticipantConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.ParticipantSynchronizer;
+import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.webservice.participant.CaaersServiceResponse;
 import gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType;
 import gov.nih.nci.cabig.caaers.webservice.participant.Participants;
@@ -45,6 +46,7 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
     private ParticipantImportServiceImpl participantImportServiceImpl;
     private ParticipantConverter participantConverter;
     private ParticipantSynchronizer participantSynchronizer;
+    private DomainObjectValidator domainObjectValidator;
     
 	/**
 	 * Method exisits only to be called from ImportController 
@@ -116,8 +118,8 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         	StringBuilder sb = new StringBuilder("Participant ");
     		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
     		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
-        	
-        	if(participantImportOutcome.isSavable()){
+    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
+        	if(participantImportOutcome.isSavable() && errors.size() == 0){
         		participantDao.save(participantImportOutcome.getImportedDomainObject());
         		participantServiceResponse.setResponsecode("0");
         		sb.append("  Created in caAERS");
@@ -132,6 +134,9 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 				for(Message message : participantImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
+				for(String errMsg : errors){
+					messages.add(errMsg);
+	        	}
 				participantServiceResponse.setMessage(messages);
 			}
         }
@@ -170,8 +175,8 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
         	StringBuilder sb = new StringBuilder("Participant ");
     		sb.append(participantImportOutcome.getImportedDomainObject().getFirstName()).append(" ");
     		sb.append(participantImportOutcome.getImportedDomainObject().getLastName());
-        	
-        	if(participantImportOutcome.isSavable()){
+    		List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
+        	if(participantImportOutcome.isSavable() && errors.size() == 0){
         		Participant dbParticipant = fetchParticipant(participantImportOutcome.getImportedDomainObject());
         		if(dbParticipant != null){
         			participantSynchronizer.migrate(dbParticipant, participantImportOutcome.getImportedDomainObject(), participantImportOutcome);
@@ -196,6 +201,9 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 				for(Message message : participantImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
+				for(String errMsg : errors){
+					messages.add(errMsg);
+	        	}
 				participantServiceResponse.setMessage(messages);
         	}
         }
@@ -272,5 +280,9 @@ public class ParticipantServiceImpl implements ParticipantService,ApplicationCon
 	public void setParticipantSynchronizer(
 			ParticipantSynchronizer participantSynchronizer) {
 		this.participantSynchronizer = participantSynchronizer;
+	}
+	
+	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
+		this.domainObjectValidator = domainObjectValidator;
 	}
 }
