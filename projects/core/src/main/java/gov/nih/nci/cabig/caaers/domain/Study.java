@@ -1041,6 +1041,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         		for(Identifier otherIdentifier : other.getIdentifiers()){
         			if(identifier.equals(otherIdentifier)){
         				found = true;
+        				break;
         			}
         		}
         	}
