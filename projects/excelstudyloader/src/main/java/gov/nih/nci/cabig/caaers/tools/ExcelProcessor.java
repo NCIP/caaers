@@ -35,6 +35,8 @@ import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
 import gov.nih.nci.cabig.caaers.service.StudyImportServiceImpl;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
+import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
+import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -74,6 +76,8 @@ public class ExcelProcessor {
 	private DiseaseTerminology diseaseTerminology;
 	private AeTerminology aeTerminology;
 	private DomainObjectImportOutcome<Study> studyImportOutcome;
+	private DomainObjectValidator domainObjectValidator;
+	
 
     private int rowCount = 0;
     private final String STUDY_SHEET_NAME = "admin info";
@@ -378,9 +382,13 @@ public class ExcelProcessor {
 
     private void validateStudy(Study study) {
         studyImportOutcome = studyImportService.importStudy(study);
-        if (studyImportOutcome.isSavable()) {
+        List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
+        if (studyImportOutcome.isSavable() && errors.size() == 0) {
             saveStudy(studyImportOutcome.getImportedDomainObject());
         } else {
+        	for(String errMsg : errors){
+        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
+        	}
             List<DomainObjectImportOutcome.Message> messages = studyImportOutcome
                     .getMessages();
             System.out.println("Error: Unable to save study: "
@@ -393,7 +401,6 @@ public class ExcelProcessor {
     }
 
     private void saveStudy(Study study) {
-        //study.setDescription(study.getDescription() + "xxxx");
         if(fetchStudy(study) == null){
         	System.out.println("Study with Short Title " + study.getShortTitle() + " Created in caAERS ");
         	studydao.save(study);
@@ -665,5 +672,9 @@ public class ExcelProcessor {
     public void setStudyImportService(StudyImportServiceImpl studyImportService) {
         this.studyImportService = studyImportService;
     }
+
+	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
+		this.domainObjectValidator = domainObjectValidator;
+	}
 
 }
