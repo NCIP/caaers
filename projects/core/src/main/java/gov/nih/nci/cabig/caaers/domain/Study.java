@@ -278,7 +278,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    @UniqueObjectInCollection(message = "Duplicates found in studyAgents list")
+    @UniqueObjectInCollection(message = "Duplicates found in Study Agents list")
     public List<StudyAgent> getStudyAgents() {
         return lazyListHelper.getLazyList(StudyAgent.class);
     }
@@ -577,7 +577,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    @UniqueObjectInCollection(message = "Duplicates found in TreatmentAssignment list")
+    @UniqueObjectInCollection(message = "Duplicates found in TreatmentAssignments list")
     public List<TreatmentAssignment> getTreatmentAssignments() {
         return lazyListHelper.getLazyList(TreatmentAssignment.class);
     }
