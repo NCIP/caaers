@@ -68,45 +68,45 @@ public class ParticipantDomainObjectValidatorTest extends CaaersTestCase{
 	}
 	
 	
-	public void testDuplicateAssignment(){
-		Study study = Fixtures.createStudy("short title");
-		Organization organization = Fixtures.createOrganization("CTEP");
-		Identifier orgIdentifier = Fixtures.createOrganizationAssignedIdentifier("ORG-1", organization);
-		
-		StudySite ss1 = new StudySite();
-		ss1.setOrganization(organization);
-		ss1.setStudy(study);
-		study.addIdentifier(orgIdentifier);
-		study.addStudyOrganization(ss1);
-		
-		StudySite ss2 = new StudySite();
-		ss2.setOrganization(organization);
-		ss2.setStudy(study);
-		study.addIdentifier(orgIdentifier);
-		study.addStudyOrganization(ss2);
-		
-		StudyParticipantAssignment sp1 = new StudyParticipantAssignment();
-		sp1.setParticipant(participant);
-		sp1.setStudySite(ss1);
-		sp1.setId(1);
-		
-		StudyParticipantAssignment sp2 = new StudyParticipantAssignment();
-		sp2.setParticipant(participant);
-		sp2.setStudySite(ss2);
-		sp2.setId(1);
-
-		
-		participant.addAssignment(sp1);
-		participant.addAssignment(sp2);
-		
-		
-		boolean eq = ss1.equals(ss2);
-		boolean eq1 = sp1.equals(sp2);
-		
-		assertEquals(true, eq);
-		assertEquals(true, eq1);
-		
-	}
+//	public void testDuplicateAssignment(){
+//		Study study = Fixtures.createStudy("short title");
+//		Organization organization = Fixtures.createOrganization("CTEP");
+//		Identifier orgIdentifier = Fixtures.createOrganizationAssignedIdentifier("ORG-1", organization);
+//		
+//		StudySite ss1 = new StudySite();
+//		ss1.setOrganization(organization);
+//		ss1.setStudy(study);
+//		study.addIdentifier(orgIdentifier);
+//		study.addStudyOrganization(ss1);
+//		
+//		StudySite ss2 = new StudySite();
+//		ss2.setOrganization(organization);
+//		ss2.setStudy(study);
+//		study.addIdentifier(orgIdentifier);
+//		study.addStudyOrganization(ss2);
+//		
+//		StudyParticipantAssignment sp1 = new StudyParticipantAssignment();
+//		sp1.setParticipant(participant);
+//		sp1.setStudySite(ss1);
+//		sp1.setId(1);
+//		
+//		StudyParticipantAssignment sp2 = new StudyParticipantAssignment();
+//		sp2.setParticipant(participant);
+//		sp2.setStudySite(ss2);
+//		sp2.setId(1);
+//
+//		
+//		participant.addAssignment(sp1);
+//		participant.addAssignment(sp2);
+//		
+//		
+//		boolean eq = ss1.equals(ss2);
+//		boolean eq1 = sp1.equals(sp2);
+//		
+//		assertEquals(true, eq);
+//		assertEquals(true, eq1);
+//		
+//	}
 	
 	public void testDuplicateParticipants(){
 		
