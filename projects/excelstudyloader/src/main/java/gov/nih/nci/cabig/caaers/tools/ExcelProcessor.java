@@ -393,7 +393,7 @@ public class ExcelProcessor {
     }
 
     private void saveStudy(Study study) {
-        study.setDescription(study.getDescription() + "xxxx");
+        //study.setDescription(study.getDescription() + "xxxx");
         if(fetchStudy(study) == null){
         	System.out.println("Study with Short Title " + study.getShortTitle() + " Created in caAERS ");
         	studydao.save(study);
