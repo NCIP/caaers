@@ -519,13 +519,35 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 			if(participants != null){
 				for(gov.nih.nci.cabig.caaers.webservice.participant.ParticipantType participantDto : participants.getParticipant()){
 					DomainObjectImportOutcome<Participant> participantImportOutcome  = participantServiceImpl.processParticipant(participantDto);
-					if (participantImportOutcome.isSavable()) {
+					List<String> errors = domainObjectValidator.validate(participantImportOutcome.getImportedDomainObject());
+					if (participantImportOutcome.isSavable() && errors.size() == 0) {
 						command.addImportableParticipant(participantImportOutcome);
 			        } else {
+			        	for(String errMsg : errors){
+			        		participantImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
+			        	}
 			            command.addNonImportableParticipant(participantImportOutcome);
 			        }
 				}
 				
+				//Remove Duplicate Participants from the ImportableParticipants  List.
+				List<DomainObjectImportOutcome<Participant>> dupList = new ArrayList<DomainObjectImportOutcome<Participant>>();
+				for(int k=0 ; k < command.getImportableParticipants().size()-1 ; k++){
+					Participant par1 = command.getImportableParticipants().get(k).getImportedDomainObject();
+					for(int l=k+1 ; l < command.getImportableParticipants().size() ; l++){
+						Participant par2 = command.getImportableParticipants().get(l).getImportedDomainObject();
+						if(par1.equals(par2)){
+							command.getImportableParticipants().get(l).addErrorMessage("Participant Identifier already used", Severity.ERROR);
+							command.addNonImportableParticipant(command.getImportableParticipants().get(l));
+							dupList.add(command.getImportableParticipants().get(l));
+							log.debug("Duplicate Participant :: " + par2.getFullName());
+							break;
+						}
+					}
+				}
+				for(DomainObjectImportOutcome<Participant> obj : dupList){
+					command.getImportableParticipants().remove(obj);
+				}
 			}
 		} catch (JAXBException e) {
 			throw new CaaersSystemException("There was an error converting participant data transfer object to participant domain object", e);
@@ -562,12 +584,15 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
 				List<DomainObjectImportOutcome<Study>> dupList = new ArrayList<DomainObjectImportOutcome<Study>>();
 				for(int i=0 ; i < command.getImportableStudies().size()-1 ; i++){
 					Study study1 = command.getImportableStudies().get(i).getImportedDomainObject();
-					Study study2 = command.getImportableStudies().get(i+1).getImportedDomainObject();
-					if(study1.equals(study2)){
-						command.getImportableStudies().get(i+1).addErrorMessage("Study Identifier already used in a different Study", Severity.ERROR);
-						command.addNonImportableStudy(command.getImportableStudies().get(i+1));
-						dupList.add(command.getImportableStudies().get(i+1));
-						log.debug("Duplicate Study :: " + study2.getShortTitle());
+					for(int j=i+1 ; j < command.getImportableStudies().size() ; j++){
+						Study study2 = command.getImportableStudies().get(j).getImportedDomainObject();
+						if(study1.equals(study2)){
+							command.getImportableStudies().get(j).addErrorMessage("Study Identifier already used in a different Study", Severity.ERROR);
+							command.addNonImportableStudy(command.getImportableStudies().get(j));
+							dupList.add(command.getImportableStudies().get(j));
+							log.debug("Duplicate Study :: " + study2.getShortTitle());
+							break;
+						}
 					}
 				}
 				for(DomainObjectImportOutcome<Study> obj : dupList){
