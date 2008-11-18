@@ -264,6 +264,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
     @OrderBy
     // order by ID for testing consistency
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @UniqueObjectInCollection(message = "Duplicate Assignement found in Assignments list")
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
     }
@@ -280,36 +281,68 @@ public class Participant extends AbstractIdentifiableDomainObject {
         this.loadStatus = loadStatus;
     }
 
+//    @Override
+//    public boolean equals(final Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if (o == null || getClass() != o.getClass()) {
+//            return false;
+//        }
+//
+//        final Participant that = (Participant) o;
+//
+//        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) {
+//            return false;
+//        }
+//        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+//            return false;
+//        }
+//        if (gender != null ? !gender.equals(that.gender) : that.gender != null) {
+//            return false;
+//        }
+//        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
+//            return false;
+//        }
+//        if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null) {
+//            return false;
+//        }
+//        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+//            return false;
+//        }
+//
+//        return true;
+//    }
+    
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
+    public boolean equals(Object obj) {
+    	boolean found = false;
+        if (this == obj) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (obj == null) {
             return false;
         }
-
-        final Participant that = (Participant) o;
-
-        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) {
+        if (getClass() != obj.getClass()) {
             return false;
         }
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
-            return false;
+        final Participant other = (Participant) obj;
+        if (getIdentifiers() == null) {
+            if (other.getIdentifiers() != null) {
+                return false;
+            }
+        } else {
+        	for(Identifier identifier : getIdentifiers()){
+        		for(Identifier otherIdentifier : other.getIdentifiers()){
+        			if(identifier.equals(otherIdentifier)){
+        				found = true;
+        				break;
+        			}
+        		}
+        	}
+        	return found;
         }
-        if (gender != null ? !gender.equals(that.gender) : that.gender != null) {
-            return false;
-        }
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
-            return false;
-        }
-        if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null) {
-            return false;
-        }
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
-
+        	
         return true;
     }
 
@@ -328,7 +361,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
     @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     @UniqueIdentifierForParticipant
-    @UniqueObjectInCollection
+    @UniqueObjectInCollection(message = "Duplicate Identifier found in Identifiers list")
     public List<Identifier> getIdentifiers() {
         return lazyListHelper.getInternalList(Identifier.class);
     }
@@ -359,14 +392,14 @@ public class Participant extends AbstractIdentifiableDomainObject {
 
     @Transient
     @UniqueIdentifierForParticipant
-    @UniqueObjectInCollection
+    @UniqueObjectInCollection(message = "Duplicate SystemAssignedIdentifier found in Identifiers list")
     public List<SystemAssignedIdentifier> getSystemAssignedIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), SystemAssignedIdentifier.class);
     }                                
 
     @Transient
     @UniqueIdentifierForParticipant
-    @UniqueObjectInCollection
+    @UniqueObjectInCollection(message = "Duplicate OrganizationAssignedIdentifer found in Identifiers list")
     public List<OrganizationAssignedIdentifier> getOrganizationIdentifiers() {
         return new ProjectedList(this.getIdentifiers(), OrganizationAssignedIdentifier.class);  
     }
