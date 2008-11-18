@@ -203,7 +203,7 @@
     <xs:simpleType name="EthnicityType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Hispanic or Latino"/>
-            <xs:enumeration value="Non Hispanic or Latino"/>
+            <xs:enumeration value="Not Hispanic or Latino"/>
             <xs:enumeration value="Not Reported"/>
             <xs:enumeration value="Unknown"/>
         </xs:restriction>
