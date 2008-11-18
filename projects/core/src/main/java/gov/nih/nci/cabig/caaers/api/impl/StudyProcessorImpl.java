@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Message;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome.Severity;
 import gov.nih.nci.cabig.caaers.service.migrator.StudyConverter;
 import gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer;
+import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import gov.nih.nci.cabig.caaers.webservice.Response;
 import gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch;
 
@@ -45,6 +46,7 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 	private StudyConverter studyConverter;
 	private StudySynchronizer studySynchronizer;
 	private ApplicationContext applicationContext;
+	private DomainObjectValidator domainObjectValidator;
 	
 	public StudyProcessorImpl(){
 		
@@ -159,18 +161,25 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				studyServiceResponse.setResponsecode("1");
 				studyServiceResponse.setDescription("Study exists in caAERS, which is identifiable by one of the identifiers provided");
 			}
-			if(studyImportOutcome.isSavable()){
+			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
+			if(studyImportOutcome.isSavable() && errors.size() == 0){
 				studyDao.save(studyImportOutcome.getImportedDomainObject());
 				studyServiceResponse.setResponsecode("0");
 				studyServiceResponse.setDescription("Study with Short Title  \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" Created in caAERS");
 				logger.info("Study Created");
 			}else{
+				for(String errMsg : errors){
+	        		studyImportOutcome.addErrorMessage(errMsg, Severity.ERROR);
+	        	}
 				studyServiceResponse.setResponsecode("1");
 				studyServiceResponse.setDescription("Study with Short Title \"" +  studyImportOutcome.getImportedDomainObject().getShortTitle() + "\" could not be created in caAERS");
 				List<String> messages = new ArrayList<String>(); 
 				for(Message message : studyImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
+				for(String errMsg : errors){
+					messages.add(errMsg);
+	        	}
 				studyServiceResponse.setMessage(messages);
 			}
 		}
@@ -209,7 +218,8 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 		
 		if(studyImportOutcome == null){
 			studyImportOutcome = studyImportService.importStudy(study);
-			if(studyImportOutcome.isSavable()){
+			List<String> errors = domainObjectValidator.validate(studyImportOutcome.getImportedDomainObject());
+			if(studyImportOutcome.isSavable() && errors.size() == 0){
 				Study dbStudy = fetchStudy(studyImportOutcome.getImportedDomainObject());
 				if(dbStudy != null){
 					studySynchronizer.migrate(dbStudy, studyImportOutcome.getImportedDomainObject(), studyImportOutcome);
@@ -230,6 +240,9 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 				for(Message message : studyImportOutcome.getMessages()){
 					messages.add(message.getMessage());
 				}
+				for(String errMsg : errors){
+					messages.add(errMsg);
+	        	}
 				studyServiceResponse.setMessage(messages);
 			}
 		}
@@ -278,6 +291,10 @@ private static Log logger = LogFactory.getLog(StudyProcessorImpl.class);
 			throws BeansException {
 		this.applicationContext = applicationContext;
 		
+	}
+
+	public void setDomainObjectValidator(DomainObjectValidator domainObjectValidator) {
+		this.domainObjectValidator = domainObjectValidator;
 	}
 
 }
