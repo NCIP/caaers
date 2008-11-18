@@ -8,7 +8,7 @@
     <birthDate>1960-01-01</birthDate>
     <gender>Not Reported</gender>
     <race>Black or African American</race>
-    <ethnicity>Non Hispanic or Latino</ethnicity>
+    <ethnicity>Not Hispanic or Latino</ethnicity>
     <identifiers>
       <p:organizationAssignedIdentifier>
         <type>MRN</type>
