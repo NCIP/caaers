@@ -18,6 +18,7 @@
 		<property name="diseasetermdao" ref="diseaseTermDao"/>
 		<property name="investigatordao" ref="investigatorDao"/>
 		<property name="studyImportService" ref="studyImportService"/>
+		<property name="domainObjectValidator" ref="domainObjectValidator"/>
     </bean>
 
 </beans>
