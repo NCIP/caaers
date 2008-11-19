@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.testreports;
 
-import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -19,7 +19,7 @@ import java.util.List;
  * 
  */
 
-public class StudyDaoTest extends DaoTestCase {
+public class StudyDaoTest extends DaoNoSecurityTestCase {
 
     private StudyDao studyDao;
 
