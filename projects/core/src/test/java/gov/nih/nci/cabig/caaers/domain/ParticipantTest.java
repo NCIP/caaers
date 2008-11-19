@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
+import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.List;
  */
 
 @CaaersUseCases({CREATE_PARTICIPANT})
-public class ParticipantTest extends CaaersTestCase {
+public class ParticipantTest extends CaaersNoSecurityTestCase {
     private Participant participant;
 
 
