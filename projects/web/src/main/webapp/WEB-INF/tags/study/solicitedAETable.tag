@@ -16,7 +16,7 @@
 			 <tr>
 			  <td style="border:0px">&nbsp;</td>
 			  <c:forEach varStatus="statusVar" var="eachEpoch" items="${command.epochs}">
-			  <td style="border:0px; text-align:center; border-collapse:collapse;"><c:if test="${!displayOnly}"><a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='center' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img>&nbsp;Delete Epoch</a></c:if></td>
+			  <td style="border:0px; text-align:center; border-collapse:collapse;"><c:if test="${!displayOnly}"><a ${(statusVar.index == 0)?"style='display:none;'":""} id="delete-epoch-${statusVar.index}" class="delete-epoch" href="#jumhere"><img align='center' class="close-button" src="<c:url value='/images/checkno.gif' ></c:url>"></img>&nbsp;Delete</a></c:if></td>
 			  </c:forEach>
 			 </tr>
     		    <tr class="head">
@@ -53,7 +53,7 @@
                     </c:forEach>
 
                     <c:if test="${!displayOnly}">
-        		  	  <th id="addButtonCell" class="action"> &nbsp<input id="AddEpoch" type="button" value="Add Epoch" /></th>
+        		  	  <th id="addButtonCell" class="action"> &nbsp<input id="AddEpoch" type="button" value="Add" /></th>
        		  	   </c:if>  
     			</tr>
  				<c:if test="${!displayOnly}">
