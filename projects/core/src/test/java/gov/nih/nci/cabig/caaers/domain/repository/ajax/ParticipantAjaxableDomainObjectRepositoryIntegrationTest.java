@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Biju Joseph
  */
-public class ParticipantAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDbTestCase {
+public class ParticipantAjaxableDomainObjectRepositoryIntegrationTest extends CaaersDbNoSecurityTestCase {
     private ParticipantAjaxableDomainObjectQuery participantAjaxableDomainObjectQuery;
 
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository = (ParticipantAjaxableDomainObjectRepository)
