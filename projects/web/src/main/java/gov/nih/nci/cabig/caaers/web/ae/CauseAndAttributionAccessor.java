@@ -26,6 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This class is part of the implementation of AttributionMap and AttributionTab.
  * 
@@ -261,8 +263,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class RadiationAccessor extends
-                    CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> {
+    private static class RadiationAccessor extends CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.RADIATION_ATTRIBUTION_KEY;
@@ -297,8 +298,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class DeviceAccessor extends
-                    CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> {
+    private static class DeviceAccessor extends CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.DEVICE_ATTRIBUTION_KEY;
@@ -321,7 +321,13 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(MedicalDevice device) {
-            return device.getDeviceType();
+            StringBuffer sb = new StringBuffer();
+            if (!StringUtils.isEmpty(StringUtils.trim(device.getBrandName()))) sb.append(StringUtils.trim(device.getBrandName()));
+            if (!StringUtils.isEmpty(StringUtils.trim(device.getCommonName()))) {
+                if (sb.length() > 0) sb.append(", ");
+                sb.append(StringUtils.trim(device.getCommonName()));
+            }
+            return sb.toString();
         }
     }
 }
