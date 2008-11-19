@@ -373,7 +373,7 @@ public class ExcelProcessor {
 
     private void setStudyInvestigators(Study study) {
 
-        StudyCoordinatingCenter scc = study.getStudyCoordinatingCenter();
+        StudyCoordinatingCenter scc = study.getCoordinatingCenter().getStudyCoordinatingCenter();
         setInvestigatorsInOrg(scc);
         for (StudySite ss : study.getStudySites()) {
             setInvestigatorsInOrg(ss);
