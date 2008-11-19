@@ -1,19 +1,14 @@
 package gov.nih.nci.cabig.caaers.api;
 
-import edu.nwu.bioinformatics.commons.DateUtils;
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class AdverseEventQueryServiceTest extends CaaersDbTestCase {
+public class AdverseEventQueryServiceTest extends CaaersDbNoSecurityTestCase {
 
 	private AdverseEventQueryService svc = null;
 
