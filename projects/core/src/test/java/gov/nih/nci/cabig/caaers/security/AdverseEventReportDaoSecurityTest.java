@@ -1,17 +1,16 @@
 package gov.nih.nci.cabig.caaers.security;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
-import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
+import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
-import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
-import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-import gov.nih.nci.cabig.caaers.domain.Fixtures;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -25,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
  */
-public class AdverseEventReportDaoSecurityTest extends CaaersDbTestCase {
+public class AdverseEventReportDaoSecurityTest extends CaaersDbNoSecurityTestCase {
     private static final Log logger = LogFactory.getLog(AdverseEventReportDaoSecurityTest.class);
 
     CtcTermDao ctcTermDao;
