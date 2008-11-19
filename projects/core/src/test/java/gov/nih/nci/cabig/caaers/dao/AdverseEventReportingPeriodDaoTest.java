@@ -1,24 +1,22 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-
 import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 /**
  * 
  * @author Sameer Sawant
  */
 
-public class AdverseEventReportingPeriodDaoTest extends DaoTestCase<AdverseEventReportingPeriodDao> {
+public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<AdverseEventReportingPeriodDao> {
 	
 	private TreatmentAssignmentDao treatmentAssignmentDao = (TreatmentAssignmentDao) getApplicationContext()
     								.getBean("treatmentAssignmentDao");
