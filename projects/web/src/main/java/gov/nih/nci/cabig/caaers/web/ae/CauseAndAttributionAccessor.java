@@ -322,10 +322,10 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         public String getDisplayName(MedicalDevice device) {
             StringBuffer sb = new StringBuffer();
-            if (!StringUtils.isEmpty(StringUtils.trim(device.getBrandName()))) sb.append(StringUtils.trim(device.getBrandName()));
-            if (!StringUtils.isEmpty(StringUtils.trim(device.getCommonName()))) {
+            if (!StringUtils.isEmpty(StringUtils.trim(device.getCommonName()))) sb.append(StringUtils.trim(device.getCommonName()));
+            if (!StringUtils.isEmpty(StringUtils.trim(device.getBrandName()))) {
                 if (sb.length() > 0) sb.append(", ");
-                sb.append(StringUtils.trim(device.getCommonName()));
+                sb.append(StringUtils.trim(device.getBrandName()));
             }
             return sb.toString();
         }
