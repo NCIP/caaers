@@ -1,11 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
-
-import java.util.Date;
-
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
@@ -16,11 +13,13 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
 
+import java.util.Date;
+
 /**
  * @author Rhett Sutphin
  */
 @CaaersUseCases( { ASSIGN_PARTICIPANT })
-public class StudyParticipantAssignmentDaoTest extends DaoTestCase<StudyParticipantAssignmentDao> {
+public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<StudyParticipantAssignmentDao> {
     private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
                     "participantDao");
 
