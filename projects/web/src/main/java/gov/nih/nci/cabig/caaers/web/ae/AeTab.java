@@ -97,8 +97,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      */
     private boolean isMandatory(MandatoryProperties mandatoryProps, InputField field) {
         if (mandatoryProps == null) return false;
-        boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.",
-                        ""));
+        boolean mandatory = mandatoryProps.isMandatory(field.getPropertyName().replace("aeReport.", ""));
         if (field.getCategory() == InputField.Category.COMPOSITE) {
             for (InputField subfield : CompositeField.getSubfields(field))
                 mandatory |= isMandatory(mandatoryProps, subfield);

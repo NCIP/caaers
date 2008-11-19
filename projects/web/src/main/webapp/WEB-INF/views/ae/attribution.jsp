@@ -11,8 +11,8 @@
 <head>
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    
     <tags:labs labs="${command.assignment.labLoads}"/>
     <style type="text/css">
         hr.attrib-divider {
@@ -109,8 +109,7 @@
     </jsp:attribute>
     <jsp:attribute name="singleFields">
         <c:forEach var="offset" begin="0" end="${fn:length(command.aeReport.adverseEvents) - 1}" step="${MAX_COLS}">
-            <ae:attributionTable adverseEvents="${command.aeReport.adverseEvents}" blocks="${blocks}"
-                                 maxAEs="${MAX_COLS}" offset="${offset}"/>
+            <ae:attributionTable adverseEvents="${command.aeReport.adverseEvents}" blocks="${blocks}"maxAEs="${MAX_COLS}" offset="${offset}"/>
         </c:forEach>
     </jsp:attribute>
 </tags:tabForm>

@@ -106,9 +106,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class ConcomitantMedicationAccessor
-                    extends
-                    CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> {
+    private static class ConcomitantMedicationAccessor extends CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY;
@@ -135,8 +133,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class OtherCauseAccessor extends
-                    CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
+    private static class OtherCauseAccessor extends CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.OTHER_CAUSES_ATTRIBUTION_KEY;
@@ -163,8 +160,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private abstract static class SingleObjectAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>>
-                    extends CauseAndAttributionAccessor<C, A> {
+    private abstract static class SingleObjectAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>> extends CauseAndAttributionAccessor<C, A> {
         @Override
         protected final List<C> getCauseList(ExpeditedAdverseEventReport aeReport) {
             C cause = getSingleCause(aeReport);
@@ -189,8 +185,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         protected abstract boolean considerEmpty(C cause);
     }
 
-    private static class DiseaseAccessor extends
-                    SingleObjectAccessor<DiseaseHistory, DiseaseAttribution> {
+    private static class DiseaseAccessor extends SingleObjectAccessor<DiseaseHistory, DiseaseAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.DISEASE_ATTRIBUTION_KEY;
@@ -203,7 +198,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         protected boolean considerEmpty(DiseaseHistory cause) {
-            return (cause.getCtepStudyDisease() == null && cause.getOtherPrimaryDisease() == null && cause.getMeddraStudyDisease() == null);
+            return (cause.getCtepStudyDisease() == null && cause.getOtherPrimaryDisease() == null && cause.getMeddraStudyDisease() == null && cause.getOtherCondition() == null);
         }
 
         @Override
@@ -218,10 +213,12 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(DiseaseHistory diseaseHistory) {
-            if (diseaseHistory.getCtepStudyDisease() != null) {
+            if (diseaseHistory.getOtherCondition() != null) {
+                return diseaseHistory.getOtherCondition().getTerm().getConditionName();
+            } else if (diseaseHistory.getCtepStudyDisease() != null) {
                 return diseaseHistory.getCtepStudyDisease().getTerm().getTerm();
-            } if(diseaseHistory.getMeddraStudyDisease() != null){
-            	return diseaseHistory.getMeddraStudyDisease().getTerm().getMeddraTerm();
+            } else if (diseaseHistory.getMeddraStudyDisease() != null) {
+                return diseaseHistory.getMeddraStudyDisease().getTerm().getMeddraTerm();
             } else {
                 return diseaseHistory.getOtherPrimaryDisease();
             }
