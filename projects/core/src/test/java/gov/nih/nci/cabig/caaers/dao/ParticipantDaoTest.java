@@ -1,23 +1,34 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_PARTICIPANTS;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
-import gov.nih.nci.cabig.caaers.domain.*;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.StatementCallback;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.StatementCallback;
 
 /**
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
 @CaaersUseCases({CREATE_PARTICIPANT, ASSIGN_PARTICIPANT, IMPORT_PARTICIPANTS})
-public class ParticipantDaoTest extends DaoTestCase<ParticipantDao> {
+public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
             "organizationDao");
 
