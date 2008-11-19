@@ -1,12 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
+import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -14,11 +12,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 /**
  * @author Krikor Krumlian
  */
 @CaaersUseCases({ CREATE_ROUTINE_REPORT})
-public class RoutineAdverseEventReportTest extends CaaersTestCase {
+public class RoutineAdverseEventReportTest extends CaaersNoSecurityTestCase {
     private static final Timestamp START_DATE = DateTools.createTimestamp(2006, Calendar.MAY, 8, 9, 8, 7);
     private static final Timestamp END_DATE = DateTools.createTimestamp(2006, Calendar.JULY, 8, 9, 8, 7);
     
