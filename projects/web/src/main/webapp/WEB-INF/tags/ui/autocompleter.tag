@@ -27,7 +27,7 @@
   displayNamePath="${displayNamePath}" title="${title}">
 <jsp:attribute name="field">
   <input size="${empty size ? '50' : size}" type="text" id="${path}-input" name="${path}-input" title="${title}" ${disabled ? 'disabled' : ''} value="${initialDisplayValue}" 
-	class="autocomplete ${cssClass} ${validationCss}"/>
+	class="autocomplete ${cssClass} ${validationCss}" onkeydown="suppressEnter(event)"/>
   <tags:indicator id="${path}-indicator"/>
   <c:if test="${enableClearButton and not disabled}"><input type="button" id="${path}-clear" name="C" value="Clear" onClick="javascript:$('${path}-input').clear();$('${path}').clear();" /></c:if>
   <div id="${path}-choices" class="autocomplete" style="display: none"></div>
