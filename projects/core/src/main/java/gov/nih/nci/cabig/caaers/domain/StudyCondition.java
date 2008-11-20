@@ -29,4 +29,16 @@ public class StudyCondition extends AbstractStudyDisease<Condition> {
     public String getTermName() {
         return getTerm().getConditionName();
     }
+
+    public boolean equals(Object obj) {
+        if (obj == null) return false;
+        if (!(obj instanceof StudyCondition)) return false;
+
+        if (this.getId() != null && ((StudyCondition)obj).getId() != null) {
+            return (this.getId().intValue() == ((StudyCondition)obj).getId().intValue()); 
+        } else {
+            return this.getTerm().getConditionName().equals(((StudyCondition)obj).getTerm().getConditionName());
+        }
+    }
+    
 }

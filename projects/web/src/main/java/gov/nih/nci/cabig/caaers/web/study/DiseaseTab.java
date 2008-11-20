@@ -8,8 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +30,8 @@ public class DiseaseTab extends StudyTab {
     private LowLevelTermDao lowLevelTermDao;
     private MeddraVersionDao meddraVersionDao;
     private ConditionDao conditionDao;
-
+    private HashMap<String, Condition> conditionMap;
+    
     public DiseaseTab() {
         super("Disease", "Disease", "study/study_diseases");
     }
@@ -73,25 +73,16 @@ public class DiseaseTab extends StudyTab {
             }
         }
 
-/*
-        HashMap<String, Condition> conditionMap = new HashMap<String, Condition>();
-        for (StudyCondition studyCondition : command.getStudyConditions()) {
-            conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
+        if (checkDuplicateConditionById(conditionMap, command.getCondition())) {
+            errors.reject("DUPLICATE_STUDY_CONDITION", new Object[] {(conditionMap.get(command.getCondition())).getConditionName()}, "");
         }
-        if (command.getStudyConditions() != null) {
-            if (conditionMap.containsKey(command.getCondition())) {
-                errors.reject("DUPLICATE", "'" + conditionMap.get(command.getCondition() + "' is already associated to this study"));
-                command.setCondition(null);
-            }
-        }
-*/
     }
 
     @Override
     public void postProcess(HttpServletRequest request, Study command, Errors errors) {
         super.postProcess(request, command, errors);
         if (!errors.hasErrors()) {
-            handleStudyDiseaseAction(command, request.getParameter("_action"), request.getParameter("_selected"), request);
+            handleStudyDiseaseAction(errors, command, request.getParameter("_action"), request.getParameter("_selected"), request);
             command.setDiseaseLlt(null);
         }
     }
@@ -99,6 +90,12 @@ public class DiseaseTab extends StudyTab {
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, Study command) {
         Map<String, Object> refdata = super.referenceData(command);
+
+        // this will hold the Study Conditions' IDs as keys
+        conditionMap = new HashMap<String, Condition>();
+        for (StudyCondition studyCondition : command.getStudyConditions()) {
+            conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
+        }
 
         String diseaseTerminology = "MEDDRA";
         if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) diseaseTerminology = "CTEP";
@@ -119,7 +116,20 @@ public class DiseaseTab extends StudyTab {
         return super.createFieldGroups(command);
     }
 
-    private void handleStudyDiseaseAction(Study study, String action, String selected, HttpServletRequest request) {
+    private boolean checkDuplicateConditionById(Map conditions, String conditionName) {
+        return (conditionMap.containsKey(conditionName));
+    }
+
+    private boolean checkDuplicateConditionByText(Map conditions, String conditionName) {
+        Iterator it = conditionMap.keySet().iterator();
+        while (it.hasNext()) {
+            Condition c = (Condition)conditionMap.get(it.next());
+            if (conditionName.equals(c.getConditionName())) return true;
+        }
+        return false;
+    }
+
+    private void handleStudyDiseaseAction(Errors errors, Study study, String action, String selected, HttpServletRequest request) {
 
         if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 && study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
             String diseaseCode = study.getDiseaseLlt();
@@ -134,7 +144,6 @@ public class DiseaseTab extends StudyTab {
         }
 
         if (action.equals("addOtherCondition")) {
-            System.out.println("Adding a Condition.");
 
             Condition condition = null;
             int _c = 0;
@@ -151,13 +160,20 @@ public class DiseaseTab extends StudyTab {
                 condition = conditionDao.getById(_c);
                 studyCondition.setTerm(condition);
             } else {
+
                 Condition newCondition = new Condition();
                 if (StringUtils.isNotBlank(request.getParameter("condition-input")))
                     newCondition.setConditionName(StringEscapeUtils.escapeHtml(request.getParameter("condition-input")));
-                conditionDao.save(newCondition);
-                studyCondition.setTerm(newCondition);
+
+                if (checkDuplicateConditionByText(conditionMap, newCondition.getConditionName())) {
+                    errors.reject("DUPLICATE_STUDY_CONDITION", new Object[] {newCondition.getConditionName()}, "");
+                } else {
+                    conditionDao.save(newCondition);
+                    studyCondition.setTerm(newCondition);
+                }
+                
             }
-            study.addStudyCondition(studyCondition);
+            if (!errors.hasErrors()) study.addStudyCondition(studyCondition);
         }
 
         if (action.equals("removeOtherCondition")) {
