@@ -203,6 +203,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<!-- SUBJECT FLOW , UPDATE (assumption : user with CREATE would automatically have UPDATE )-->		
 		<entry key="gov.nih.nci.cabig.caaers.web.participant.EditParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>		
 		<entry key="gov.nih.nci.cabig.caaers.web.participant.SubjectMedHistoryTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>		
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.AssignParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.AssignStudyTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.participant.ReviewAssignmentTab" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>	
 				
 		<!-- SUBJECT FLOW , CREATE -->	
 		<entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
