@@ -19,10 +19,10 @@ function getParameterMap(form) {
      // KK - Added the code below cause after an export the content in these 
      //      attributes was not resetting hence making the table not to show.
     
-    map['assembler_ev']=""
-	map['assembler_efn']=""
-	map['assembler_crd']="15"
-	map['ec_eti']=""
+    map['assembler_ev']="";
+	map['assembler_efn']="";
+	map['assembler_crd']="15";
+	map['ec_eti']="";
     
     return map;
 }

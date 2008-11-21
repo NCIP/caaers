@@ -177,7 +177,7 @@
                     $('showAllDropDown').show();
                 });
             } else {
-                createAE.buildChemoAgentsTable(parameterMap, baseName, function(table) {
+                createAE.buildChemoAgentsTable(el, parameterMap, baseName, function(table) {
                     $('showAllDropDownContent').innerHTML = table;
                     try {
                         var _top = Position.cumulativeOffset($(el))[1];
@@ -242,23 +242,24 @@
       </div>
   </p>
 
-	<div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
-    <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
-      <tbody>
-        <tr class="titleRow">
-          <td align="left" class="title">Select :</td>
-          <td align="right"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
-        </tr>
-        <tr>
-          <td colspan="2"><div id="showAllDropDownContent"/></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
   <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
-   <form:form id="command">	
+   <form:form id="command">
+   <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
+   <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
+     <tbody>
+       <tr class="titleRow">
+         <td align="left" class="title">Select :</td>
+         <td align="right"><a href="javascript:hideShowAllTable()"><img src="/caaers/images/rule/window-close.gif" id="close-image"/></a></td>
+       </tr>
+       <tr>
+         <td colspan="2"><div id="showAllDropDownContent"/></td>
+       </tr>
+     </tbody>
+   </table>
+ </div>
+
    <tags:hasErrorsMessage path="*" />
-   
+
     <tags:tabFields tab="${tab}" />
 
 	<chrome:box id="assignment.general" title="General" collapsable="true">
@@ -350,7 +351,9 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-				</jsp:attribute>
+                    <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a>
+                    
+                </jsp:attribute>
 			</ui:row>
 
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
@@ -397,6 +400,7 @@
 					</ui:autocompleter>
                     &nbsp;
                     <input id="metastatic-diseases-btn" type="button" value="Add"/>
+                    <a href="#anchorMetastaticDiseasesSection" onClick="showShowAllTable('_c2', 'metastaticDiseaseSite')" id="_c2">Show All</a>
                 </td>
 				<td></td>
 			</tr>
@@ -411,7 +415,7 @@
 							<par:oneMetastaticDiseaseSite index="${newIndex}" anatomicSite="${mSite.codedSite}" />
 						</c:forEach>
 					</div>
-				</td>
+                </td>
 			</tr>
 		</table>
 	</chrome:box>
