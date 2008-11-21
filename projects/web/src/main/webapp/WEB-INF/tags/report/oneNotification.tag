@@ -56,10 +56,10 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
     <option value="nCIProtocolNumber">NCI Protocol Number</option> 
     <option value="ticketNumber">Ticket Number</option>
     <option value="amendmentNumber">Amendment Number</option>
+    <option value="reportId">Report ID</option>
    --%>
    
    <option value="patientId">Patient ID</option>
-   <option value="reportId">Report ID</option>
    <option value="reportURL">URL To Report</option>
    <option value="study.shortTitle">Study Short Title</option>
    <option value="study.primaryIdentifier.value">Study Primary Identifier</option>
