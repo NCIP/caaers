@@ -36,8 +36,7 @@ public class ImportReportDefinitionController extends SimpleFormController{
     }
 
     @Override
-    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response,
-                    Object command, BindException errors) throws Exception {
+    protected ModelAndView onSubmit(HttpServletRequest request, HttpServletResponse response, Object command, BindException errors) throws Exception {
     	
     	ImportRuleCommand importRuleCommand = (ImportRuleCommand) command;
         
@@ -56,11 +55,12 @@ public class ImportReportDefinitionController extends SimpleFormController{
     	String reportDefName = reportDefinitions.getReportDefinition().get(0).getName();
     	
     	
-    	if(reportDefinitionDao.getByName(reportDefName) != null){
+    	if (reportDefinitionDao.getByName(reportDefName) != null){
     		StringBuffer message = new StringBuffer(reportDefName);
     		message.append("\n");
     		message.append("Exists in caAERS");
-    		importRuleCommand.setMessage(message.toString());
+//    		importRuleCommand.setMessage(message.toString());
+    		importRuleCommand.setErrorMessage(message.toString());
     		importRuleCommand.setUpdated(true);
         	ModelAndView modelAndView = new ModelAndView(getFormView(), errors.getModel());
             return modelAndView;
@@ -82,8 +82,7 @@ public class ImportReportDefinitionController extends SimpleFormController{
 		this.reportDefinitionDao = reportDefinitionDao;
 	}
 
-	public void setReportDefinitionConverter(
-			ReportDefinitionConverter reportDefinitionConverter) {
+	public void setReportDefinitionConverter(ReportDefinitionConverter reportDefinitionConverter) {
 		this.reportDefinitionConverter = reportDefinitionConverter;
 	}
     

@@ -61,7 +61,8 @@
         </div>
     </form:form>
     <c:if test="${command.updated}">
-		<p class="updated">${command.message}</p>
+		<c:if test="${not empty command.message}"><p class="updated">${command.message}</p></c:if>
+		<c:if test="${not empty command.errorMessage}"><div id="flash-message" class="error">${command.errorMessage}</div></c:if>
 	</c:if>
 </chrome:box>
 </body>

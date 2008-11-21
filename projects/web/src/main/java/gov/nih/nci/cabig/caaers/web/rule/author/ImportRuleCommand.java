@@ -9,9 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImportRuleCommand implements RuleInputCommand {
 
     private String folder;
-
     private String message;
-
+    private String errorMessage;
+    
     private boolean updated = false;
 
     private MultipartFile ruleSetFile1;
@@ -53,4 +53,11 @@ public class ImportRuleCommand implements RuleInputCommand {
         this.message = message;
     }
 
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
 }
