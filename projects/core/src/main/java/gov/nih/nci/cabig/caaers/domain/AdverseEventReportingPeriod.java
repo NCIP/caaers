@@ -45,6 +45,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	private Integer cycleNumber;
 	
+	//private Integer workflowId;
+	
 	//private ExpeditedAdverseEventReport expeditedAdverseEventReport;
 	
 	private TreatmentAssignment treatmentAssignment;
@@ -157,7 +159,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     public List<AdverseEvent> getEvaluatedAdverseEvents(){
     	evaluatedAdverseEvents = new ArrayList<AdverseEvent>();
     	for(AdverseEvent ae: this.getAdverseEvents()){
-    		if(ae.getGrade() != null)
+    		if(ae.getGrade() != null && !(ae.getGrade().equals(Grade.NOT_EVALUATED)))
     			evaluatedAdverseEvents.add(ae);
     	}
     	return evaluatedAdverseEvents;
@@ -225,6 +227,14 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     public void setCycleNumber(Integer cycleNumber) {
 		this.cycleNumber = cycleNumber;
 	}
+    
+    //public Integer getWorkflowId() {
+    //	return workflowId;
+    //}
+    
+    //public void setWorkflowId(Integer workflowId){
+    //	this.workflowId = workflowId;
+    //}
     
     @ManyToOne(fetch = FetchType.LAZY)
     public Epoch getEpoch(){
@@ -314,5 +324,13 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	return "Report(s) Completed";
     }
     
-    
+    /**
+     * This returns the string that is used as a name in ProcessInstance and TaskInstance (workflow related tables)
+     * 
+     * @return String
+     */
+    //@Transient
+    //public String getWorkflowIdentifier(){
+    //	return "routineFlow-" + getId();
+    //}
 }

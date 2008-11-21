@@ -173,6 +173,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     				report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
     			completed = false;
     	}
+    	
+    	// Handle the case where there are no expedited / amendable reports.
+    	if(!getHasAmendableReport()){
+    		for(Report report: getSponsorDefinedReports()){
+    			if(report.getLastVersion().getReportStatus() != ReportStatus.COMPLETED && report.getLastVersion().getReportStatus() != ReportStatus.WITHDRAWN)
+    				completed = false;
+    		}
+    	}
     	return completed;
     }
     
@@ -930,6 +938,28 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     		if(report.getReportDefinition().getAmendable() && !report.isSubmitted())
     			submitted = false;
     	}
+    	
+    	// This is to make sure that atleast one amendable report was present.
+    	Boolean amendablePresent = false;
+    	for(Report report: reports){
+    		if(report.getReportDefinition().getAmendable())
+    			amendablePresent = true;
+    	}
+    	if(!amendablePresent)
+    		submitted = false;
     	return submitted;
+    }
+    
+    /**
+     * This method returns true if the data-collection has atleast one amendable report. It returns false otherwise.
+     */
+    @Transient
+    public Boolean getHasAmendableReport(){
+    	Boolean hasAmendableReport = false;
+    	for(Report report: reports){
+    		if(report.getReportDefinition().getAmendable())
+    			hasAmendableReport = true;
+    	}
+    	return hasAmendableReport;
     }
 }
