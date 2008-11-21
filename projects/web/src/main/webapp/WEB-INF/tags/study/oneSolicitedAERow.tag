@@ -7,7 +7,11 @@
 <c:set var="terminologyVersionId" value="${empty command.otherMeddra.id ? 0 : command.otherMeddra.id}" />
 <c:set var="initialDisplayValue" value="${eachRow[2] == null ? 'Begin typing here...' : eachRow[2].fullName}" />
 
-    			<tr id="tr-${eachRow[0]}" class="data" align="center">
+<c:if test="${eachRow[2].class.name eq 'gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm'}">
+    <c:set var="initialDisplayValue" value="${eachRow[2].meddraTerm}" />
+</c:if>
+
+                <tr id="tr-${eachRow[0]}" class="data" align="center">
     				<td align="left" style="padding-left:1em"><label  id='name-${eachRow[0]}'>${eachRow[1]}</label>
     				<input name="eachRowTermID" type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
     				<c:if test="${eachRow[3]}">
@@ -20,7 +24,7 @@
 														autocompleter.setChoices(values)
 												})
 								},
-								function(lowLevelTerm) { return lowLevelTerm.fullName });
+								function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
     					</script>
     				</c:if>
     				</td>
