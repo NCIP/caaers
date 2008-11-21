@@ -23,6 +23,10 @@
     <item name="Attachments" url="ae_attachemnts.htm" />
     <item name="Submit" url="ae_submit.htm" />
   </book>
+  <book name="Amend an Expedited Report" >
+    <item name="Amend in Enter AE flow" url="Amend_in_Enter_AE_flow.htm" />
+    <item name="Amend in Manage Reports" url="Amend_in_Manage_Reports.htm" />
+  </book>
 </book>
 <book name="Studies Tab" >
   <item name="Search Studies" url="searchStudyController.htm" />
@@ -72,6 +76,7 @@
     <item name="Review" url="rules_definitions_review.htm" />
   </book>
   <item name="List Report Definitions" url="listNotificationController.htm" />
+  <item name="Import Report Definitions" url="import_report_definitions.htm" />
 </book>
 <book name="Administration Tab" >
   <item name="Configure caAERS" url="configurationController.htm" />
