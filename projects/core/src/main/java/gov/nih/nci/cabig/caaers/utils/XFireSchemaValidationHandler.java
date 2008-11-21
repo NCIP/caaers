@@ -62,6 +62,12 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         }else if(payload.getName().toLowerCase().equals("participants")){
         	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd")[0].getFile());
         	schema = factory.newSchema(ss);
+        }else if("http://schema.integration.caaers.cabig.nci.nih.gov/investigator".equalsIgnoreCase(payload.getNamespaceURI())){
+        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/Investigator.xsd")[0].getFile());
+        	schema = factory.newSchema(ss);
+        }else if("http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff".equalsIgnoreCase(payload.getNamespaceURI())){
+        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd")[0].getFile());
+        	schema = factory.newSchema(ss);
         }
         
         if(schema != null){
@@ -92,4 +98,3 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         return resources;
     }
 }
-
