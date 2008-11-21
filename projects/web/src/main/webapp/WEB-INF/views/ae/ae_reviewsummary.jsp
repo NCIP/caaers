@@ -449,13 +449,14 @@ background-color:#e5e8ff;
           <c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
             <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
               <tr>
-                <td width="10%" align="left"><c:if test="${aeReport.allSponsorReportsCompleted == true}">
-                    <input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
-                  </c:if>
-                  <c:if test="${aeReport.allSponsorReportsCompleted == false}">
-                    <input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
-                  </c:if>
-                </td>
+	                <td width="10%" align="left">
+	                	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
+   	                 		<input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
+                  		</c:if>
+                  		<c:if test="${aeReport.allSponsorReportsCompleted == false}">
+                    		<input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
+                  		</c:if>
+                	</td>
                 <td><div class="eXtremeTable" >
                     <table width="100%" border="0" cellspacing="0" class="tableRegion">
                       <thead>
