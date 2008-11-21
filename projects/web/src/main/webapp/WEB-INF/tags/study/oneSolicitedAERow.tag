@@ -15,8 +15,11 @@
     				<td align="left" style="padding-left:1em"><label  id='name-${eachRow[0]}'>${eachRow[1]}</label>
     				<input name="eachRowTermID" type="hidden" class="eachRowTermID" value="${eachRow[0]}" />
     				<c:if test="${eachRow[3]}">
- 		   				<br><tags:requiredIndicator/>Other(MedDRA)
-    					<tags:autocompleter displayName="abcd" propertyName="otherMeddra-${eachRow[0]}" size="30" initialDisplayValue="${initialDisplayValue}" initialValue="${eachRow[2] == null ? '' : eachRow[2].id}"/>
+ 		   				<br><tags:requiredIndicator/>Other(MedDRA):&nbsp;
+
+                        <c:if test="${displayOnly}">${initialDisplayValue}</c:if>
+                        <c:if test="${!displayOnly}">
+                        <tags:autocompleter displayName="abcd" propertyName="otherMeddra-${eachRow[0]}" size="30" initialDisplayValue="${initialDisplayValue}" initialValue="${eachRow[2] == null ? '' : eachRow[2].id}"/>
     					<script>
 	    					AE.createStandardAutocompleter('otherMeddra-${eachRow[0]}',
 								function(autocompleter, text) {
@@ -26,7 +29,8 @@
 								},
 								function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
     					</script>
-    				</c:if>
+                        </c:if>
+                    </c:if>
     				</td>
     			   <c:forEach varStatus="status" var="eachCheckBox" items="${eachRow}" begin="4" >
                      <td class="col-epoch-${status.index-4}"><input  ${displayOnly?'disabled':''} class="ck${status.index-4} ck-${eachRow[0]}" id="ck${status.index-4}-${eachRow[0]}" name="epoch[${status.index-4}]" value="${eachRow[0]}" type="checkbox" ${(eachRow[status.index] == true)?'checked':''}/></td>    			   
