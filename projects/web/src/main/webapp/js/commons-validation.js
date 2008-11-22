@@ -278,7 +278,7 @@ function isNumeric(string, ignoreWhiteSpace) {
 
 // Check that a string contains only numbers
 function isCorrectDate(string) {
-    DEFAULT_DATE_FORMAT = "mm/dd/yyyy";
+    DEFAULT_DATE_FORMAT = "MM/dd/yyyy";
     if (string == "")
         return true;
     string = trimWhitespace(string);
