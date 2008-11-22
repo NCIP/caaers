@@ -104,7 +104,7 @@ function compareDates(date1, dateformat1, date2, dateformat2) {
 //   1 if date1 is greater than date2
 //   0 if date2 is greater than date1 of if they are the same
 //  -1 if either of the dates is in an invalid format
-//   the format of the input date should be mm/dd/yyyy
+//   the format of the input date should be MM/dd/yyyy
 //
 function compareDateWithToday(inputDate) {
     dateFormat = "M/d/yyyy";
