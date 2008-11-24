@@ -619,7 +619,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
     
     public void testHasSubmittedReport(){
     	ExpeditedAdverseEventReport loaded = getDao().getById(-1);
-    	assertTrue(loaded.getHasSubmittedReport());
+    	assertFalse(loaded.getHasSubmittedReport());
     }
 
     private void doSaveTest(SaveTester tester) {
