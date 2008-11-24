@@ -5,7 +5,7 @@ body {
 	color: #000000;
 	text-align: center;
 	margin: 0px;
-	padding: 0px;
+	padding-right: 1px;
 }
 /* Force hasLayout */
 html div.row, * html .autoclear {
@@ -28,6 +28,7 @@ html div.row, * html .autoclear {
 	top: 98px;
 	vertical-align: middle;
 	z-index:1;
+	width: 971px;
 
 }
 div.row, build-name, main {
@@ -45,4 +46,18 @@ div.row, build-name, main {
 #thirdlevelnav {
 	font-size:9pt;
 	margin:5px;
+}
+#all {
+	width:980px;
+	margin:0px auto;
+	padding-left:-0.1px;
+	text-align:left;
+	position:relative;
+}
+#header {
+	width: 100%;
+	position: absolute;
+	height: 100px;
+	background-image: url(../images/blue/header_bg.jpg);
+	background-position: top;
 }

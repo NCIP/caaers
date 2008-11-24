@@ -87,8 +87,8 @@ a img {
 #all {
 	width:980px;
 	margin:0px auto;
+	padding-right:1px; /*1px background jog hack*/
 	text-align:left;
-	background: #FFF;
 	position:relative;
 }
 h1, h2, h3, h4, h5, h6 {
@@ -107,7 +107,7 @@ p { margin: 1em 0; }
 /**** COMMON TEMPLATE ELEMENTS */
 
 #header {
-	width: 100%;
+	width: 980px;
 	position: absolute;
 	height: 100px;
 	background-image: url(../images/blue/header_bg.jpg);

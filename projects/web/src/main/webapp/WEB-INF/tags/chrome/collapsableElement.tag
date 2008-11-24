@@ -7,10 +7,10 @@
 
 <c:if test="${collapsed}">
 <script language="JavaScript1.2">_collapsedELs['${targetID}'] = 1;</script>
-<img src="<c:url value="/images/arrow-right.png"/>" style="cursor:pointer;" onclick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">
+<img src="<c:url value="/images/arrow-right.png"/>" style="cursor:pointer; vertical-align:middle;" onclick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">
 </c:if>
 
 <c:if test="${!collapsed}">
-<img src="<c:url value="/images/arrow-down.png" />" style="cursor:pointer;" onclick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">    
+<img src="<c:url value="/images/arrow-down.png" />" style="cursor:pointer; vertical-align:middle;" onclick="javascript: if ($('${targetID}').style.display == 'none') { $('${targetID}').show(); this.src = this.src.replace('right','down');} else { $('${targetID}').hide(); this.src = this.src.replace('down','right');}">    
 </c:if>
 
