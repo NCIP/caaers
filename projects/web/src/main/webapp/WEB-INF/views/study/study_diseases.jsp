@@ -290,7 +290,7 @@ Event.observe(window, "load", function() {
 <study:summary />
 <div style="clear:both;">
     <%-- Can't use tags:tabForm b/c there are two boxes in the form --%>
-    <form:form method="post" name="studyDiseasesForm">
+    <form:form method="post" name="studyDiseasesForm" >
       <input type="hidden" name="_action" value="">
       <input type="hidden" name="_selected" value="">
       <tags:tabFields tab="${tab}"/>
@@ -335,13 +335,13 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
-					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
+					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
                     <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
             </chrome:division>
             </c:if>
             
             <c:if test="${diseaseTerminology == 'OTHER' }">
-            <chrome:division title="Other Conditions">
+            <chrome:division title="Other, Specify">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
 					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
                     <input class='ibutton' type='button' onClick="fireAction('addOtherCondition','0');" value='Add condition'  title='Add condition'/>
@@ -352,7 +352,7 @@ Event.observe(window, "load", function() {
         </div>   
         <div class="rightpanel">
         <chrome:box title="Selected Diseases " id="diseases">
-          <tags:hasErrorsMessage hideErrorDetails="${hideErrorDetails}"/>
+          <tags:hasErrorsMessage hideErrorDetails="false"/>
             <!-- CTEP -->
             <c:if test="${diseaseTerminology == 'CTEP' }">
             <chrome:division title="CTEP">
@@ -368,8 +368,7 @@ Event.observe(window, "load", function() {
     			<tr>    				
             		<td><div class="label">${studyDisease.term.ctepTerm}</div></td>
             		<td><div class="label"><form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
-            		<td><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});">
-								<img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
+            		<td><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
             	</c:forEach>
             	 <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
@@ -410,7 +409,7 @@ Event.observe(window, "load", function() {
 
             <!-- OTHER -->
             <c:if test="${diseaseTerminology == 'OTHER' }">
-            <chrome:division title="Other">
+            <chrome:division title="Other, Specify">
             <p><tags:instructions code="study.study_disease.selected" /></p>
             <center>
 			<table width="100%" class="tablecontent">
