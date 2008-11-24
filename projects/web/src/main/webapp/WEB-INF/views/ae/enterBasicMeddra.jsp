@@ -65,7 +65,7 @@
              new ListEditor("ae-section", createAE, "AdverseEventMeddra", {
                 addParameters: [aeReportId],
                 reorderable: true,
-                deletable: true,
+                deletable: false,
                 minimizeable: true,
                 addCallback: function(nextIndex) {
                     new LowLevelTerm(nextIndex);

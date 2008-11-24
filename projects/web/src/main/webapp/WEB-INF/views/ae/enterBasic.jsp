@@ -305,7 +305,7 @@ div.row div.value, div.row div.extra {
                    $("aeReport.adverseEvents["+target+"].startDate-indicator").innerHTML = tempHTML;
                 },
                 reorderable: true,
-                deletable: true, 
+                deletable: false, 
                 minimizeable: true
             }, "aeReport.adverseEvents")
 
