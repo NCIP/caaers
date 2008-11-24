@@ -172,8 +172,7 @@ right:20px;
                 width: 600,
                 height: 450,
                 recenterAuto:true});
-             this.win.showCenter(true);
-//             this.win.show(true);
+                this.win.showCenter(true);
  		},
  		addOptionToSelectBox:function(selBox, optLabel, optValue){
  			//adds the option to specified select box.
