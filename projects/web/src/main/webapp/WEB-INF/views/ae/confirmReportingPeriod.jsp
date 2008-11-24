@@ -1,14 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@ taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
-<%@ taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="standard" tagdir="/WEB-INF/tags/standard"%>
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
 <html>
 <head>
@@ -24,7 +14,7 @@
 </style>
 <script>
 	Event.observe(window, "load", function(){
-		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, ${command.editFlow});
+		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, false);
 		
 		$('ok-id').observe("click", function(){
 			window.parent.Windows.close(window.parent.rpCreator.win.getId());			
