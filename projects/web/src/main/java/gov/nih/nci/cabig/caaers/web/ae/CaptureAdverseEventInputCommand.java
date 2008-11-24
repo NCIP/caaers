@@ -173,7 +173,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
-			this.assignment.getParticipant().getIdentifiers();
+			if(this.assignment != null)
+				this.assignment.getParticipant().getIdentifiers();
 		}
     }
     
