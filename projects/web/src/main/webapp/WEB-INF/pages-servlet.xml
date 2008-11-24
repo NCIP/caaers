@@ -369,11 +369,8 @@
   <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>
 	
-  <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>	    
-	
-  <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType"
-  	class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
+  <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>
+  <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
 	
   <bean name="/ae/edit" id="editAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.EditAdverseEventController" p:task-ref="aeEditTask"/>

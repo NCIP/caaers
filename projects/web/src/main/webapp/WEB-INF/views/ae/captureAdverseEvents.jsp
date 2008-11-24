@@ -168,10 +168,12 @@ right:20px;
  	 		this.win = new Window({className:"alphacube", 
  	 	 		destroyOnClose:true, 
  	 	 		title:"",
- 	 	 		width:700,  height:530, 
- 				url: url, 
- 				top: 30, left: 300});
- 			this.win.show(true);
+ 				url: url,
+                width: 600,
+                height: 450,
+                recenterAuto:true});
+             this.win.showCenter(true);
+//             this.win.show(true);
  		},
  		addOptionToSelectBox:function(selBox, optLabel, optValue){
  			//adds the option to specified select box.

@@ -4,6 +4,8 @@
 -->
 
 <decorators defaultdir="/WEB-INF/decorators">
+    <decorator name="standardNoHeader" page="standard-no-header.jsp" />
+
     <decorator name="standard" page="standard.jsp">
         <pattern>/pages/*</pattern>
         <pattern>/public/*</pattern>
