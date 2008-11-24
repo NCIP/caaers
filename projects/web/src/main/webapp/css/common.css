@@ -576,14 +576,14 @@ img.indicator { visibility: hidden; }
 */
 .rightpanel {
 	float:right;
-	width:48%;
-	margin: 0 14px 14px 0;
+	width:46%;
 	padding: 5px;
+	clear:none;
 }
 .leftpanel {
 	float: left;
-	width:48%;
-	margin: 0 5px 5px -2em;
+	clear:none;
+	width:46%;
 	padding: 5px;
 }
 /*
