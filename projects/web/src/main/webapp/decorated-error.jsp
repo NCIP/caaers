@@ -21,7 +21,9 @@
             div.error {
                 font-size: 36px;
                 text-align: left;
-                color: #cc0033
+                color: #cc0033;
+				margin-left:-2px;
+				padding-bottom:16px;
             }
 
             div.errorMessage {
@@ -86,7 +88,7 @@
 <tr>
     <td valign="top" width="1px"><img src="<c:url value="/images/blue/error.png" />"></td>
     <td valign="top">
-        <div style="float:left; padding-top:25px; padding-left:20px;">
+        <div style="float:left; padding-left:20px; padding-top:12px;">
             <div class="error">ERROR</div>
             <div class="errorMessage">The system encountered an error. Please contact your system administrator.</div>
             <br/>
@@ -98,8 +100,8 @@
     <td colspan="2" valign="top">
         <table width="900" border="0">
             <tr style="border-bottom: 1px black dotted">
-                <td align="left"><h2>Detailed Error</h2></td>
-                <td align="right"><a href="javascript:PanelCombo('error');"><img id="error-image" src="/caaers/images/chrome/minimize.gif" border="0" align="right"/></a></td>
+                <td align="left"><h2 style="float:left">Detailed Error</h2> &nbsp;&nbsp;<a href="javascript:PanelCombo('error');"><img id="error-image" src="/caaers/images/chrome/minimize.gif" border="0" alt="Expand"/></a></td>
+                <td align="right"></td>
             </tr>
             <tr>
                 <td align="left" colspan="2">
