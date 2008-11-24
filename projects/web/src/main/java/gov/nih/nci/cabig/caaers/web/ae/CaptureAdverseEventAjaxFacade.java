@@ -151,7 +151,19 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     				}
     			}
     		}
+    	}else{
+    		// Check if the ae was part of any report (non-submitted).
+    		// then it should be removed from that report as well.
+    		if(deletedAe.getReport() != null){
+    			for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
+    				if(aeReport.getId().equals(deletedAe.getReport().getId())){
+    					aeReport.getAdverseEvents().remove(deletedAe);
+    				}
+    			}
+    		}
     	}
+    	
+    	
     	return new AjaxOutput();
     }
 }
