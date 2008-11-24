@@ -255,46 +255,70 @@
         </table>
     </chrome:division>
 
-	<c:if test="${not empty command.ctepStudyDiseases}">
-    <chrome:division title="Diseases">
-        <table class="tablecontent" width="96%" >
-            <br>
-            <tr>
-                <th scope="col">Primary</th>
-                <th scope="col">Disease Term</th>
-            </tr>
+    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
+            <c:if test="${not empty command.meddraStudyDiseases}">
+            <chrome:division title="Diseases">
+                <table class="tablecontent" width="96%" >
+                    <br>
+                    <tr>
+                        <th scope="col">Disease Term</th>
+                        <th scope="col">MedDRA Code</th>
+                    </tr>
 
-            <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
-                <tr class="results">
-                    <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
-                    <td>${studyDisease.term.ctepTerm}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        <br>
-    </chrome:division>
+                    <c:forEach items="${command.meddraStudyDiseases}" var="studyDisease">
+                        <tr class="results">
+                            <td>${studyDisease.term.meddraTerm}</td>
+                            <td>${studyDisease.term.meddraCode}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <br>
+            </chrome:division>
+            </c:if>
     </c:if>
-    
-    <c:if test="${not empty command.meddraStudyDiseases}">
-    <chrome:division title="Diseases">
-        <table class="tablecontent" width="96%" >
-            <br>
-            <tr>
-            	<th scope="col">Disease Term</th>
-                <th scope="col">MedDRA Code</th>
-            </tr>
 
-            <c:forEach items="${command.meddraStudyDiseases}" var="studyDisease">
-                <tr class="results">
-                	<td>${studyDisease.term.meddraTerm}</td>
-                    <td>${studyDisease.term.meddraCode}</td>
-                </tr>
-            </c:forEach>
-        </table>
-        <br>
-    </chrome:division>
+    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
+            <c:if test="${not empty command.ctepStudyDiseases}">
+            <chrome:division title="Diseases">
+                <table class="tablecontent" width="96%" >
+                    <br>
+                    <tr>
+                        <th scope="col">Primary</th>
+                        <th scope="col">Disease Term</th>
+                    </tr>
+
+                    <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
+                        <tr class="results">
+                            <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
+                            <td>${studyDisease.term.ctepTerm}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <br>
+            </chrome:division>
+            </c:if>
     </c:if>
-	
+
+    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
+            <c:if test="${not empty command.studyConditions}">
+            <chrome:division title="Diseases">
+                <table class="tablecontent" width="96%" >
+                    <br>
+                    <tr>
+                        <th scope="col">Disease Term</th>
+                    </tr>
+
+                    <c:forEach items="${command.studyConditions}" var="studyDisease">
+                        <tr class="results">
+                            <td>${studyDisease.term.conditionName}</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+                <br>
+            </chrome:division>
+            </c:if>
+    </c:if>
+
 	<chrome:division title="Identifiers">
 			<table class="tablecontent" width="96%">
 			<tr>
