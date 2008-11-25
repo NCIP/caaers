@@ -233,6 +233,8 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         super.onBindAndValidate(request, command, errors, page);
         ParticipantInputCommand cmd = (ParticipantInputCommand) command;
 
+        if (isAjaxRequest(request) && cmd.getOrganization() == null) return;
+        
         List<Identifier> sitePrimaryIdentifiers = participantDao.getSitePrimaryIdentifiers(cmd.getOrganization().getId().intValue());
 
         for (int i=0; i<sitePrimaryIdentifiers.size(); i++) {
