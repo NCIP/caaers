@@ -342,7 +342,7 @@ Event.observe(window, "load", function() {
             
             <c:if test="${diseaseTerminology == 'OTHER' }">
             <chrome:division title="Other, Specify">
-					<p><tags:instructions code="study.study_disease.meddra" /></p>
+					<p><tags:instructions code="study.study_disease.other" /></p>
 					<ui:autocompleter path="condition" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38" />
                     <input class='ibutton' type='button' onClick="fireAction('addOtherCondition','0');" value='Add condition'  title='Add condition'/>
             </chrome:division>
