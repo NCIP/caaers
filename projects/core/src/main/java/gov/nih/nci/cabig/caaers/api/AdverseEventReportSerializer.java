@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.AdditionalInformation;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -439,7 +440,7 @@ public class AdverseEventReportSerializer {
 		    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
 		    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
 		    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
-		    	diseaseHistory.setCodedPrimaryDiseaseSite(dh.getCodedPrimaryDiseaseSite());
+		    	diseaseHistory.setCodedPrimaryDiseaseSite(getAnatomicSite(dh.getCodedPrimaryDiseaseSite()));
 		    	diseaseHistory.setAbstractStudyDisease(dh.getCtepStudyDisease() == null ?
 		    			dh.getMeddraStudyDisease() : dh.getCtepStudyDisease());
 		    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
@@ -452,7 +453,14 @@ public class AdverseEventReportSerializer {
 	    	}
 	    	return diseaseHistory;
 	    }
-
+	    private AnatomicSite getAnatomicSite(AnatomicSite ash) {
+	    	AnatomicSite site = new AnatomicSite();
+	    	site.setId(ash.getId());
+	    	site.setName(ash.getName());
+	    	site.setCategory(ash.getCategory());
+	    	return site;	    	
+	    }
+	    
 	    private StudyParticipantAssignment getStudyParticipantAssignment(StudyParticipantAssignment spa) throws Exception {
 	    	StudyParticipantAssignment studyParticipantAssignment = new StudyParticipantAssignment();
 	    	try {
