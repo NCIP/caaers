@@ -56,7 +56,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 
     private ReportDefinitionDao reportDefinitionDao = (ReportDefinitionDao) getApplicationContext()
                     .getBean("reportDefinitionDao");
-    
+
     private AdverseEventReportingPeriodDao reportingPeriodDao = (AdverseEventReportingPeriodDao) getApplicationContext().getBean("adverseEventReportingPeriodDao");
 
     public void testGet() throws Exception {
@@ -190,7 +190,7 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertEquals("Wrong number of contact mechanisms", 2, actual.getContactMechanisms().size());
         assertEquals("joltin@joe.com", actual.getContactMechanisms().get(ReportPerson.EMAIL));
         assertEquals("212 555-1212", actual.getContactMechanisms().get(ReportPerson.PHONE));
-    } 
+    }
 
     public void testGetPhysician() throws Exception {
         Physician actual = getDao().getById(-1).getPhysician();
@@ -603,20 +603,18 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         results = getDao().searchExpeditedReports(m);
         assertEquals("Wrong number of results", 1, results.size());
     }
-    
+
     public void testSerializeExpeditedAdverseEventReport() throws Exception {
 
-    	ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
-    	aer.setId(123);
-    	
+    	ExpeditedAdverseEventReport aer = getDao().getById(-1);
+
     	AdverseEventReportSerializer aeser = new AdverseEventReportSerializer();
-    	
-    	XmlMarshaller marshaller = new XmlMarshaller();
-		//marshaller.toXML(aer,aeser.getMappingFile());
+
+    	aeser.serialize(aer);
 
     	assertTrue(true);
     }
-    
+
     public void testHasSubmittedReport(){
     	ExpeditedAdverseEventReport loaded = getDao().getById(-1);
     	assertFalse(loaded.getHasSubmittedReport());
