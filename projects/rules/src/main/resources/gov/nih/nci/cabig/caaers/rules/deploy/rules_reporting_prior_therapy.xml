@@ -154,6 +154,7 @@
      Error Code : PTY_BR4A_ERR
      Error Message : CHEMO_AGENTS must be provided for the  provided PRIOR_THERAPY value.
      ============================================================================= -->
+<!--
     <rule name="PTY_BR4A_CHK">
         <lhs>
             <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
@@ -181,10 +182,13 @@
             </eval>
         </lhs>
         <rhs>
-            <!-- Already Populated Error Message-->
+            -->
+<!-- Already Populated Error Message-->
+<!--
 
         </rhs>
     </rule>
+-->
     <!-- ==========================================================================
      RuleName : PTY_BR4B_CHK
      Logic : ‘Prior Therapy Agents’ must not be provided if "Prior_Therapy" is not
