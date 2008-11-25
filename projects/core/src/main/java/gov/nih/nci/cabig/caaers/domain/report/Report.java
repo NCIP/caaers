@@ -250,9 +250,11 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	if(lastVersion != null){
     		lastVersion.getCcEmails();
     		String[] ccEmails = lastVersion.getEmailAsArray();
-    		for(String ccEmail : ccEmails){
-    			String email = ccEmail.trim();
-    			if(StringUtils.isNotEmpty(email))	emailAddresses.add(email);
+    		if(ccEmails != null){
+    			for(String ccEmail : ccEmails){
+    				String email = ccEmail.trim();
+    				if(StringUtils.isNotEmpty(email))	emailAddresses.add(email);
+    			}
     		}
     	}
     	
