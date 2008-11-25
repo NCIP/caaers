@@ -9,6 +9,9 @@
 <html>
 <head><title>Welcome to caAERS</title>
 <link rel="icon" href="../images/caaers.ico"/>
+<style>
+.division .header { margin-bottom:5px; }
+</style>
 </head>
 <body><chrome:box title="Task">
 <chrome:division title="Regular Tasks">

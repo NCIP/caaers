@@ -10,6 +10,7 @@
         div.row {
             padding: 5px 3px;
              width: 70%;
+			
         }
         .row .value {
             margin-left: 22%;
@@ -40,19 +41,20 @@
             font-weight: bold;
             font-size: 1.1em;
         }
+
     </style>
 </head>
 <body>
 <chrome:box title="Import Report Definition XML File" autopad="true">
 <p>
-<!--<tags:instructions code="importxmlreportdefinitions" />-->
+<tags:instructions code="importxmlreportdefinitions" />
 </p>
 	<form:form action="${action}" enctype="multipart/form-data" cssClass="standard">
             <div class="row">
-                <div class="label">
-                   ReportDefinition File  
+                <div class="label" style="width:11em;">
+                   Report Definition File  
                 </div>
-                <div class="value">
+                <div class="value" style="margin-left:12em;">
                 	<input type="file" name="ruleSetFile1" size="50"/>
                 </div>
             </div>    

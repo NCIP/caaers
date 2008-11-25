@@ -26,7 +26,7 @@
 </c:if>	
 <c:if test="${renderSubmittedFlag}">
 	<c:if test="${adverseEvent.submitted == true}">
-		<td><img id="ae-section-${index}-submitted-image" src="<chrome:imageUrl name="../aeSubmitted.png" />" alt="Submitted" title="Submitted" style="border:0" /></td>
+		<td><img id="ae-section-${index}-submitted-image" src="<chrome:imageUrl name="../aeSubmitted.png" />" alt="This adverse event has already been reported. An ammendment will be required if a change is made to this adverse event." title="Submitted" style="border:0" /></td>
 	</c:if>
 	<c:if test="${adverseEvent.submitted == false}">
 		<td/>
