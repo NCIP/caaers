@@ -31,7 +31,7 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements
 
     private StudyOrganization studyOrganization;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "site_investigators_id")
     public SiteInvestigator getSiteInvestigator() {
         return siteInvestigator;
@@ -41,7 +41,7 @@ public class StudyInvestigator extends AbstractMutableDomainObject implements
         this.siteInvestigator = siteInvestigator;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "study_sites_id")
     public StudyOrganization getStudyOrganization() {
         return studyOrganization;

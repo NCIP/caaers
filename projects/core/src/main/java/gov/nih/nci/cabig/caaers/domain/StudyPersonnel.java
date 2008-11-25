@@ -29,7 +29,7 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
 
     private StudyOrganization studyOrganization;
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "research_staffs_id")
     public ResearchStaff getResearchStaff() {
         return researchStaff;
@@ -39,7 +39,7 @@ public class StudyPersonnel extends AbstractMutableDomainObject implements Study
         this.researchStaff = researchStaff;
     }
 
-    @ManyToOne(fetch=FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "study_sites_id")
     public StudyOrganization getStudyOrganization() {
         return studyOrganization;
