@@ -104,7 +104,7 @@ public class EditStudyController extends StudyController<Study> {
         flow.addTab(new TreatmentAssignmentTab());
         flow.addTab(new DiseaseTab());
         flow.addTab(new SolicitedAdverseEventTab());
-        flow.addTab(new ExpectedAEsTab());
+//        flow.addTab(new ExpectedAEsTab());
         flow.addTab(new SitesTab());
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());
@@ -124,21 +124,21 @@ public class EditStudyController extends StudyController<Study> {
             if (study.getShortTitle() != null) {
                 summary.add(new ListValues("Short title", study.getShortTitle()));
             }
+
             if (study.getPrimaryIdentifier() != null) {
-                summary.add(new ListValues("Primary identifier", study.getPrimaryIdentifier()
-                        .toString()));
+                summary.add(new ListValues("Primary identifier", study.getPrimaryIdentifier().toString()));
             }
+
             if (study.getPhaseCode() != null) {
                 summary.add(new ListValues("Phase", study.getPhaseCode().toString()));
             }
 
             if (study.getPrimarySponsorCode() != null) {
-                summary.add(new ListValues("Funding sponsor", study
-                        .getPrimaryFundingSponsorOrganization().getName()));
+                summary.add(new ListValues("Funding sponsor", study.getPrimaryFundingSponsorOrganization().getName()));
             }
+
             if (study.getStudyCoordinatingCenter().getOrganization() != null) {
-                summary.add(new ListValues("Coordinating center", study
-                        .getStudyCoordinatingCenter().getOrganization().getName()));
+                summary.add(new ListValues("Coordinating center", study.getStudyCoordinatingCenter().getOrganization().getName()));
             }
 
             // if (page != 1) {
