@@ -47,7 +47,7 @@ public class DiseaseHistory extends AbstractExpeditedReportSingleChild {
         getMetastaticDiseaseSites().add(site);
     }
 
-    @OneToOne(fetch=FetchType.LAZY)
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "coded_primary_disease_site_id")
     @Cascade(value = {CascadeType.ALL})
     public AnatomicSite getCodedPrimaryDiseaseSite() {
