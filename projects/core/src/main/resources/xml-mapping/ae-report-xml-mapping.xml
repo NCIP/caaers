@@ -627,8 +627,9 @@
     <field name="diagnosisDate" type="gov.nih.nci.cabig.caaers.domain.DateValue">
       <bind-xml name="diagnosisDate"/>
     </field>
-    <field name="ctepStudyDisease" type="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">
-      <bind-xml name="CtepStudyDisease"/>
+      
+    <field name="abstractStudyDisease" type="gov.nih.nci.cabig.caaers.domain.AbstractStudyDisease">
+      <bind-xml auto-naming="deriveByClass"/> <!--CtepStudyDisease or MeddraStudyDisease-->
     </field>
     <field name="codedPrimaryDiseaseSite" type="gov.nih.nci.cabig.caaers.domain.AnatomicSite">
       <bind-xml name="AnatomicSite"/>
@@ -638,7 +639,8 @@
       <bind-xml name="MetastaticDiseaseSite"/>
     </field>
   </class>
-
+  
+  
   <class name="gov.nih.nci.cabig.caaers.domain.CtepStudyDisease">
     <map-to xml="CtepStudyDisease"/>
     <field name="id" type="integer">
@@ -650,9 +652,37 @@
     <field name="term" type="gov.nih.nci.cabig.caaers.domain.DiseaseTerm">
       <bind-xml name="DiseaseTerm" node="element"/>
     </field>
-
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.MeddraStudyDisease">
+    <map-to xml="MeddraStudyDisease"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="meddraCode" type="string">
+      <bind-xml name="meddraCode" node="element"/>
+    </field>
+    <field name="term" type="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
+      <bind-xml name="LowLevelTerm" node="element"/>
+    </field>    
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
+    <map-to xml="LowLevelTerm"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="meddraCode" type="string">
+      <bind-xml name="meddraCode" node="element"/>
+    </field>
+    <field name="meddraTerm" type="string">
+      <bind-xml name="meddraTerm" node="element"/>
+    </field>
+    <field name="fullName" type="string">
+      <bind-xml name="fullName" node="element"/>
+    </field>
+  </class>
+    
   <class name="gov.nih.nci.cabig.caaers.domain.DiseaseTerm">
     <map-to xml="DiseaseTerm"/>
     <field name="id" type="integer">
@@ -796,12 +826,7 @@
        
   </class>
 
-  <class name="gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm">
-    <map-to xml="LowLevelTerm"/>
-    <field name="fullName" type="string">
-      <bind-xml name="fullName" node="element"/>
-    </field>
- </class>
+
  
 
     <class name="gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution"
