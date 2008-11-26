@@ -48,19 +48,9 @@
     	<xsl:attribute name="font-weight">normal</xsl:attribute>
     	<xsl:attribute name="padding-left">1mm</xsl:attribute>
   	</xsl:attribute-set>
-	<xsl:param name="image-location"/>
+	
   
-	<xsl:attribute-set name="unchecked">
-    	<xsl:attribute name="src"><xsl:value-of select="$image-location"/>/uncheck.jpg</xsl:attribute>
-    	<xsl:attribute name="content-height">2mm</xsl:attribute>
-    	<xsl:attribute name="content-width">2mm</xsl:attribute>
-  	</xsl:attribute-set>
-
-	<xsl:attribute-set name="checked">
-    	<xsl:attribute name="src"><xsl:value-of select="$image-location"/>/checked.jpg</xsl:attribute>
-    	<xsl:attribute name="content-height">2.5mm</xsl:attribute>
-    	<xsl:attribute name="content-width">2.5mm</xsl:attribute>
-  	</xsl:attribute-set>														
+													
 																	
 	<xsl:template match="/">
 		
@@ -189,10 +179,10 @@
 													<fo:block font-size="6.5pt"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Female'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 													<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
@@ -201,10 +191,10 @@
 													<fo:block font-size="6.5pt"><xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/StudyParticipantAssignment/Participant/gender = 'Male'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>													
 													<xsl:text disable-output-escaping="yes">&amp;#160;</xsl:text>
@@ -258,11 +248,11 @@
 													<fo:block>
 														<fo:inline font-size="6.5">1. </fo:inline>
 														<fo:inline xsl:use-attribute-sets="label">
-														<fo:external-graphic xsl:use-attribute-sets="checked"/>
+														[x]
 														Adverse Event <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text></fo:inline>
 														<fo:inline font-size="6.5">and/or <xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text> </fo:inline> 
 														<fo:inline xsl:use-attribute-sets="label">
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+														[ ]
 														Product Problem</fo:inline>
 														<fo:inline font-size="6.5" font-style="italic"> (e.g., defects/malfunctions) </fo:inline>
 													</fo:block>
@@ -285,10 +275,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'DEATH'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Death: 
@@ -298,10 +288,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'DISABILITY'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Disability or Permanent Damage													
@@ -315,10 +305,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'LIFE_THREATENING'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Life-threatening
@@ -327,10 +317,10 @@
 		
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'CONGENITAL_ANOMALY'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Congenital Anomaly/Birth Defect													
@@ -339,20 +329,20 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'HOSPITALIZATION'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Hospitalization - initial or prolonged
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'OTHER_SERIOUS'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Other Serious (Important Medical Events)												
@@ -361,10 +351,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;</xsl:text>
 														<xsl:choose>
 															<xsl:when test="Outcome/OutcomeType = 'REQUIRED_INTERVENTION'">
-																<fo:external-graphic xsl:use-attribute-sets="checked"/>
+																[x]
 															</xsl:when>
 															<xsl:otherwise>
-																<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+																[ ]
 															</xsl:otherwise>
 														</xsl:choose>
 														Required Intervention to Prevent Permanent Impairment/Damage (Devices)													
@@ -633,25 +623,25 @@
 														
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'true'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventAbate = 'false'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Doesn't 														
+														[ ]Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
@@ -705,25 +695,25 @@
 														<fo:inline font-size="6.5pt" >
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'true'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 													Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/AdverseEventResponseDescription/eventReappear = 'false'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 													No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Doesn't 														
+														[ ]Doesn't 														
 														</fo:inline>
 														<fo:block/>
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;&amp;#160;</xsl:text>
@@ -824,10 +814,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'HEALTH_PROFESSIONAL'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>	
 													Health Professional </fo:inline>
@@ -837,10 +827,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'PATIENT'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>		
 													Lay User/Patient </fo:inline>
@@ -850,10 +840,10 @@
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/DeviceOperator = 'OTHER'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>	
 													Other: </fo:inline>
@@ -934,20 +924,20 @@
 													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/DeviceReprocessed = 'YES'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>													
 														Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/DeviceReprocessed = 'NO'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>	
 														No
@@ -977,30 +967,30 @@
 													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'YES'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>	
 														Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/EvaluationAvailability = 'NO'">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>	
 														No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
 													<xsl:choose>
 														<xsl:when test="AdverseEventReport/MedicalDevice/returnedDate">
-															<fo:external-graphic xsl:use-attribute-sets="checked"/>
+															[x]
 														</xsl:when>
 														<xsl:otherwise>
-															<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+															[ ]
 														</xsl:otherwise>
 													</xsl:choose>
 														Returned to Manufacturer on: 
@@ -1077,10 +1067,10 @@
 													</fo:block>
 													<fo:block font-size="6.5">
 													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-													<fo:external-graphic xsl:use-attribute-sets="checked"/>
+													[x]
 														Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-													<fo:external-graphic xsl:use-attribute-sets="unchecked"/>
+													[ ]
 														No
 													</fo:block>													
 												</fo:table-cell>
@@ -1098,11 +1088,11 @@
 													</fo:block>
 													<fo:block font-size="6.5">
 													<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>	Yes
+														[ ]	Yes
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>No
+														[ ]No
 														<xsl:text disable-output-escaping="yes">&amp;#160;&amp;#160;</xsl:text>
-														<fo:external-graphic xsl:use-attribute-sets="unchecked"/>Unk.
+														[ ]Unk.
 													</fo:block>														
 												</fo:table-cell>
 											</fo:table-row>												
