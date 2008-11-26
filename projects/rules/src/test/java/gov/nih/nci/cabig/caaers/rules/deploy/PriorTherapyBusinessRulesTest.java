@@ -160,6 +160,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      * value.
      */
 
+/*
     public void testBMTPriorTherapy_Without_PriorTherapyAgents() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         int i = 0;
@@ -171,6 +172,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         assertSameErrorCount(errors, 2);
 
     }
+*/
 
     /**
      * RuleName : PTY_BR4B_CHK Logic : ?Prior Therapy Agents? must not be provided if
