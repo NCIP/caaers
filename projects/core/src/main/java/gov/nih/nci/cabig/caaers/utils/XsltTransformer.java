@@ -154,10 +154,10 @@ public class XsltTransformer {
         Transformer transformer = factory.newTransformer(new StreamSource(stream));
         
         //xslt param to access uncheck and check box images. 		
-        String imageLocation = new ClassPathResource("xslt/images").getURL().toString();  
+        //String imageLocation = new ClassPathResource("xslt/images").getURL().toString();  
         
-        System.out.println("XSLT image location : " + imageLocation);
-        transformer.setParameter("image-location", imageLocation);
+        //System.out.println("XSLT image location : " + imageLocation);
+        //transformer.setParameter("image-location", imageLocation);
 
         // Setup input for XSLT transformation
         Source src = new StreamSource(new ByteArrayInputStream(inXml.getBytes()));
