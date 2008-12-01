@@ -77,7 +77,8 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
             if(StringUtils.isNotEmpty(additionalCollections)){
             	String collectionPropertyNames[] = StringUtils.split(additionalCollections, ',');
             	for(String collectionPropertyName : collectionPropertyNames){
-            		collectionPropertyMap.put(PropertyUtil.getCollectionMethodName(collectionPropertyName), collectionPropertyName);
+            		if(isReadableProperty(beanWrapperImpl, collectionPropertyName))
+            			collectionPropertyMap.put(PropertyUtil.getCollectionMethodName(collectionPropertyName), collectionPropertyName);
             	}
             }
             
