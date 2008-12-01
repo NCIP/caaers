@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -70,7 +71,16 @@ public class WebControllerValidatorImpl implements ApplicationContextAware, WebC
                 }
 
             }
-
+            
+            //figureout the additional collections to validate. 
+            String additionalCollections = request.getParameter(ADDITIONAL_COLLECTIONS_PARAM);
+            if(StringUtils.isNotEmpty(additionalCollections)){
+            	String collectionPropertyNames[] = StringUtils.split(additionalCollections, ',');
+            	for(String collectionPropertyName : collectionPropertyNames){
+            		collectionPropertyMap.put(PropertyUtil.getCollectionMethodName(collectionPropertyName), collectionPropertyName);
+            	}
+            }
+            
             //now validate the collection
             for (String collectionPropertyName : propertyMap.keySet()) {
 

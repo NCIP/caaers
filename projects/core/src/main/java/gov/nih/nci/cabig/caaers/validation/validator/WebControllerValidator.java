@@ -11,6 +11,11 @@ import org.springframework.web.servlet.mvc.BaseCommandController;
  * @author Biju Joseph, Created on December,7th, 2007
  */
 public interface WebControllerValidator {
+	
+	/**
+	 * A comma seperated list of collection parameter names.
+	 */
+	String ADDITIONAL_COLLECTIONS_PARAM = "ADDITIONAL_COLLECTIONS_PARAM";
 
     /**
      * Validate the domain object after. This method should be called in
