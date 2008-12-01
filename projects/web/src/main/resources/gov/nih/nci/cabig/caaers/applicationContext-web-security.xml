@@ -47,7 +47,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/createRoutine"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/captureRoutine"
-			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />	
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createReportingPeriod"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createAeReportingPeriod"
@@ -57,6 +57,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/ae/editRoutine"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list"
+			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+		<entry key="/pages/ae/routingAndReview"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 
 		<!--========== TODO: REPORT ===========-->

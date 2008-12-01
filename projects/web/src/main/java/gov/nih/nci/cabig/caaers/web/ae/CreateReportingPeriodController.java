@@ -6,6 +6,8 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -23,6 +25,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.caaers.workflow.WorkflowService;
 
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -33,6 +36,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.math.NumberUtils;
+import org.jbpm.JbpmConfiguration;
+import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Required;
@@ -62,6 +67,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private StudyDao studyDao;
     private EpochDao epochDao;
+    private WorkflowService workflowService;
+    private WorkflowConfigDao workflowConfigDao;
+	private UserDao userDao;
 
     public CreateReportingPeriodController() {
         setFormView("ae/createReportingPeriod");
@@ -184,7 +192,20 @@ public class CreateReportingPeriodController extends SimpleFormController {
             }
         }
         adverseEventReportingPeriodDao.save(reportingPeriod);
-
+        // TODO check if workflow has been enabled.
+        // create a workflow instance.
+        // set the workflowID in reportingPeriod and save it again.
+        /*Long workflowId = workflowService.createProcessInstance("routineFlow");
+        ProcessInstance pInstance = workflowService.fetchProcessInstance(workflowId);
+        pInstance.getContextInstance().setVariable("workflowConfigDao", workflowConfigDao);
+        pInstance.getContextInstance().setVariable("userDao", userDao);
+        pInstance.getContextInstance().setVariable("workflowDefinitionName", "routineFlow");
+        pInstance.getContextInstance().setVariable("workflowService", workflowService);
+        pInstance.signal();
+        
+        reportingPeriod.setWorkflowId(workflowId);
+        adverseEventReportingPeriodDao.save(reportingPeriod);
+        */
         Map map = new LinkedHashMap();
         map.putAll(createFieldGroups(command));
 
@@ -349,5 +370,24 @@ public class CreateReportingPeriodController extends SimpleFormController {
     public void setTreatmentAssignmentDao(TreatmentAssignmentDao treatmentAssignmentDao) {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
+    
+    public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+    
+    public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
+    
+    public void setWorkflowConfigDao (WorkflowConfigDao workflowConfigDao){
+    	this.workflowConfigDao = workflowConfigDao;
+    }
+    
+    public WorkflowConfigDao getWorkflowConfigDao(){
+    	return workflowConfigDao;
+    }
 
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
 }

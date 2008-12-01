@@ -21,6 +21,7 @@
         <pattern>/pages/ae/create</pattern>
         <pattern>/pages/ae/createRoutine</pattern>
         <pattern>/pages/ae/captureRoutine</pattern>
+        <pattern>/pages/ae/routingAndReview</pattern>
         <pattern>/pages/ae/edit</pattern>
         <pattern>/pages/ae/editRoutine</pattern>
         <pattern>/pages/ae/submitReport</pattern>

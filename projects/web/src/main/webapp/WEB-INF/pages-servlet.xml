@@ -84,7 +84,9 @@
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		  p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>      
+		  p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>
+	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
+		  p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>     
       </list>
       
     </property>
@@ -184,6 +186,7 @@
             <list>
                   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
                   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>
+                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>
             </list>
           </property>
 	</bean>
@@ -369,6 +372,7 @@
   <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>
 	
+  <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>	
   <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>
   <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
 	
