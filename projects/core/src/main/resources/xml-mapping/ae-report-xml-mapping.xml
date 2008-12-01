@@ -19,6 +19,9 @@
     <field name="status" type="gov.nih.nci.cabig.caaers.domain.ReportStatus">
       <bind-xml name="status"/>
     </field>
+    <field name="reviewStatus" type="gov.nih.nci.cabig.caaers.domain.ReviewStatus">
+    	<bind-xml name="reviewStatus"/>
+    </field>
     <field name="responseDescription"
       type="gov.nih.nci.cabig.caaers.domain.AdverseEventResponseDescription">
       <bind-xml name="AdverseEventResponseDescription"/>
@@ -272,6 +275,19 @@
 
   <class name="gov.nih.nci.cabig.caaers.domain.ReportStatus" verify-constructable="false">
     <map-to xml="ReportStatus" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
+    <field name="code" type="integer">
+      <bind-xml name="code" node="element"/>
+    </field>
+    <field name="name" type="string">
+      <bind-xml name="name" node="element"/>
+    </field>
+    <field name="displayName" type="string">
+      <bind-xml name="displayName" node="element"/>
+    </field>
+  </class>
+  
+  <class name="gov.nih.nci.cabig.caaers.domain.ReviewStatus" verify-constructable="false">
+    <map-to xml="ReviewStatus" ns-uri="gme://caCORE.cabig/3.0/gov.nih.nci.cabig.caaers.domain"/>
     <field name="code" type="integer">
       <bind-xml name="code" node="element"/>
     </field>

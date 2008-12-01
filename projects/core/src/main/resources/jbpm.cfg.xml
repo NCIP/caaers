@@ -7,7 +7,7 @@
     <factory>
       <bean class="org.jbpm.persistence.db.DbPersistenceServiceFactory">
         
-        <field name="isTransactionEnabled"><false /></field> 
+        <field name="isTransactionEnabled"><true /></field> 
       </bean>
     </factory>
   </service> 

@@ -13,57 +13,15 @@
 	</start-state>
 
 
-	<task-node name="Publish Report For Review">
-		<description>
-			After the Routine Report is created, it should be send for review. In the data entry person's queue a task should be created to do this.
-State associated with this task node is DRAFT
-		</description>
-		<transition to="Ready For Review" name="Publish for Review"></transition>
-	</task-node>
-
-	<task-node name="Perform Level 1 Review">
-		<description>
-			This task node represents that the Routine Report (Reporting Period) is sent for Level 1 review.
-The state associated with this task node is : REVIEW1
-		</description>
-		<task></task>
-		<transition to="Perform Level 2 Review" name="Level 2 Review">
-			<description>
-				This transition occurs then the review is passed
-			</description>
-		</transition>
-		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
-	</task-node>
-
-	<task-node name="Perform Level 2 Review">
-		<description>
-			This task node represents that the Routine Report (Reporting Period) is sent for Level 2 review.
-The state associated with this task node is : REVIEW2
-		</description>
-		<transition to="Review Completed" name="Review Complete">
-			<description>
-				This is when the review is passed.
-			</description>
-		</transition>
-	</task-node>
-
-	<task-node name="Provide Additional Info for First Review">
-		<description>
-			The reviewer asked for more information, while reviewing the Routine report content. A task should be created to the data entry person, to provide this information. 
-The status associated with this task is ADDITIONAL_INFO_NEEDED
-
-		</description>
-		<transition to="Ready For Review" name="Publish for Review"></transition>
-	</task-node>
-
 	<state name="Review Completed">
 		<description>
 			This state node is invoked when the routine report review is completed. This is a long wait state, at some point in time, the data entry person can add more AE information and send it to review again. 
 When the Routine Period (is locked), it can go to end state. 
 The state associated with this task is &quot;REVIEW_COMPLETE&quot;
 		</description>
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
 		<transition to="Locked" name="Lock"></transition>
-		<transition to="Ready For Review" name="Publish For Review"></transition>
+		<transition to="Publish Report For Review" name="To Draft/Info"></transition>
 	</state>
 
 	<node name="Ready For Review">
@@ -71,14 +29,40 @@ The state associated with this task is &quot;REVIEW_COMPLETE&quot;
 			This node will immediately transition to one of its next state, based on the job data vairables.
 State associated with this Node is READY4REVIEW
 		</description>
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
 		<transition to="Perform Level 1 Review" name="Level 1 Review"></transition>
 		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
 	</node>
 
-	<task-node name="Provide Additional Info for Second Review">
-		<transition to="Perform Level 2 Review" name="Additional Info Needed"></transition>
-		<transition to="Ready For Review" name="Publish for Review"></transition>
-	</task-node>
+	<node name="Publish Report For Review">
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<transition to="Ready For Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Perform Level 1 Review">
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Perform Level 2 Review">
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<transition to="Review Completed" name="Review Complete"></transition>
+		<transition to="Provide Additional Info for Second Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for First Review">
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<transition to="Perform Level 1 Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for Second Review">
+		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<transition to="Perform Level 2 Review" name="Publish For Review"></transition>
+	</node>
 
 
 	<end-state name="Locked">

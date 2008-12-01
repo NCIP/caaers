@@ -30,6 +30,7 @@ This applicationContext contains the definition of the DAOs
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
                 <!--      <value>classpath*:/org/jbpm/**/*.hbm.xml</value> -->
+                <value>classpath*:/org/jbpm/**/*.hbm.xml</value>
             </list>
         </property>
         
@@ -60,6 +61,10 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport</value>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.NotificationRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleRecipient</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>
@@ -350,7 +355,7 @@ This applicationContext contains the definition of the DAOs
             <props>
                 <prop key="hibernate.query.substitutions">true 1, false 0, yes 'Y', no 'N'</prop>
                 <prop key="hibernate.jdbc.batch_size">30</prop>
-                <!--<prop key="hibernate.show_sql">true</prop>-->
+                <prop key="hibernate.show_sql">true</prop>
             </props>
         </property>
     </bean>
@@ -438,6 +443,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="meddraVersionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.MeddraVersionDao"/>
     <bean id="treatmentAssignmentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao"/>
     <bean id="chemoAgentDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ChemoAgentDao"/>
+    <bean id="workflowConfigDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao"/>
     <!--Rules/Scheduler/Notification DAOs-->
     <bean id="reportDefinitionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao"/>
     <bean id="reportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.report.ReportDao"/>

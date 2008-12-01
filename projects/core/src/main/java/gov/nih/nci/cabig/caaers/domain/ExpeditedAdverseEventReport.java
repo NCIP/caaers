@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.*;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,6 +50,8 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
     private AdverseEventReportingPeriod reportingPeriod;
+    private Integer workflowId;
+    private ReviewStatus reviewStatus;
 
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
@@ -592,6 +595,16 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         this.reporter = reporter;
         if (reporter != null) reporter.setExpeditedReport(this);
     }
+    
+    @Column(name = "review_status_code")
+    @Type(type = "reviewStatus")
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+    
+    public void setReviewStatus(ReviewStatus reviewStatus){
+    	this.reviewStatus = reviewStatus;
+    }
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
@@ -662,6 +675,14 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     public void addReport(Report report) {
         getReports().add(report);
         report.setAeReport(this);
+    }
+    
+    public Integer getWorkflowId() {
+    	return workflowId;
+    }
+    
+    public void setWorkflowId(Integer workflowId){
+    	this.workflowId = workflowId;
     }
 
     public Timestamp getCreatedAt() {
@@ -961,5 +982,15 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     			hasAmendableReport = true;
     	}
     	return hasAmendableReport;
+    }
+    
+    /**
+     * This returns the string that is used as a name in ProcessInstance and TaskInstance (workflow related tables)
+     * 
+     * @return String
+     */
+    @Transient
+    public String getWorkflowIdentifier(){
+    	return "reportFlow-" + getId();
     }
 }

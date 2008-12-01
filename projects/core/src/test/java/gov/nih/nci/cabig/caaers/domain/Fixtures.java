@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.CombinationPolicy
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
+import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
@@ -445,5 +446,13 @@ public class Fixtures {
 	   rd.setEndPointType(endPointType);
 	   rd.setEntityType(entityType);
 	   return rd;
+   }
+   
+   public static TaskConfig createTaskConfig(String statusName, Boolean applicable){
+	   TaskConfig tc = new TaskConfig();
+	   tc.setStatusName(statusName);
+	   tc.setApplicable(applicable);
+	   return tc;
+	   
    }
 }

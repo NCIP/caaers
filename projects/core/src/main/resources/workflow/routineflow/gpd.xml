@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="routineflow" width="1355" height="782">
-  <node name="Start Routine Report Flow" x="146" y="6" width="288" height="36">
+<root-container name="routineflow" width="1062" height="688">
+  <node name="Start Routine Report Flow" x="301" y="8" width="288" height="36">
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="0" h1="60" w2="-2" h2="-65"/>
     </edge>
   </node>
-  <node name="Publish Report For Review" x="152" y="101" width="286" height="36">
-    <edge>
-      <label x="6" y="-12"/>
-    </edge>
-  </node>
-  <node name="Perform Level 1 Review" x="161" y="290" width="287" height="36">
+  <node name="Review Completed" x="311" y="553" width="265" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="-59" y="0"/>
-      <bendpoint w1="263" h1="37" w2="-238" h2="40"/>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-365" h1="2" w2="-368" h2="453"/>
+      <bendpoint w1="-365" h1="-295" w2="-368" h2="156"/>
+      <bendpoint w1="-366" h1="-451" w2="-369" h2="0"/>
     </edge>
   </node>
-  <node name="Perform Level 2 Review" x="170" y="413" width="278" height="36">
-    <edge>
-      <label x="-121" y="-8"/>
-    </edge>
-  </node>
-  <node name="Provide Additional Info for First Review" x="640" y="274" width="337" height="36">
-    <edge>
-      <label x="-62" y="-32"/>
-      <bendpoint w1="-257" h1="-15" w2="261" h2="55"/>
-    </edge>
-  </node>
-  <node name="Review Completed" x="185" y="551" width="265" height="36">
-    <edge>
-      <label x="-35" y="-17"/>
-    </edge>
-    <edge>
-      <label x="24" y="140"/>
-      <bendpoint w1="-311" h1="-3" w2="-284" h2="344"/>
-      <bendpoint w1="-310" h1="-340" w2="-283" h2="7"/>
-    </edge>
-  </node>
-  <node name="Ready For Review" x="168" y="204" width="245" height="36">
+  <node name="Ready For Review" x="323" y="206" width="245" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="5" y="33"/>
-      <bendpoint w1="-163" h1="73" w2="-182" h2="-136"/>
-      <bendpoint w1="-238" h1="113" w2="-257" h2="-96"/>
-      <bendpoint w1="-239" h1="207" w2="-258" h2="-2"/>
-    </edge>
-  </node>
-  <node name="Locked" x="192" y="653" width="250" height="36"/>
-  <node name="Provide Additional Info for Second Review" x="722" y="422" width="308" height="36">
-    <edge>
-      <label x="-63" y="1"/>
-      <bendpoint w1="-286" h1="32" w2="281" h2="41"/>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-276" h1="0" w2="-279" h2="-223"/>
+      <bendpoint w1="-273" h1="230" w2="-276" h2="7"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="174" h1="3" w2="760" h2="221"/>
-      <bendpoint w1="173" h1="-112" w2="759" h2="106"/>
-      <bendpoint w1="168" h1="-217" w2="754" h2="1"/>
+      <bendpoint w1="-180" h1="3" w2="-181" h2="107"/>
+      <bendpoint w1="-182" h1="-97" w2="-183" h2="7"/>
     </edge>
   </node>
+  <node name="Publish Report For Review" x="305" y="102" width="282" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
+  <node name="Perform Level 1 Review" x="311" y="313" width="272" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="216" h1="37" w2="-242" h2="39"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-208" h1="-2" w2="-207" h2="209"/>
+      <bendpoint w1="-209" h1="-116" w2="-208" h2="95"/>
+      <bendpoint w1="-208" h1="-216" w2="-207" h2="-5"/>
+    </edge>
+  </node>
+  <node name="Perform Level 2 Review" x="309" y="429" width="279" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="224" h1="36" w2="-235" h2="37"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-243" h1="0" w2="-241" h2="327"/>
+      <bendpoint w1="-246" h1="-320" w2="-244" h2="7"/>
+    </edge>
+  </node>
+  <node name="Provide Additional Info for First Review" x="751" y="311" width="308" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-245" h1="-36" w2="213" h2="-38"/>
+    </edge>
+  </node>
+  <node name="Provide Additional Info for Second Review" x="756" y="428" width="303" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-247" h1="-42" w2="212" h2="-43"/>
+    </edge>
+  </node>
+  <node name="Locked" x="324" y="651" width="250" height="36"/>
 </root-container>

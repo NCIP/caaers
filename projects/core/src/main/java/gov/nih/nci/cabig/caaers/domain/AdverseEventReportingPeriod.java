@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -23,6 +24,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.Where;
 
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -45,7 +47,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	private Integer cycleNumber;
 	
-	//private Integer workflowId;
+	private Long workflowId;
+	
+	private ReviewStatus reviewStatus;
 	
 	//private ExpeditedAdverseEventReport expeditedAdverseEventReport;
 	
@@ -228,13 +232,23 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 		this.cycleNumber = cycleNumber;
 	}
     
-    //public Integer getWorkflowId() {
-    //	return workflowId;
-    //}
+    public Long getWorkflowId() {
+    	return workflowId;
+    }
     
-    //public void setWorkflowId(Integer workflowId){
-    //	this.workflowId = workflowId;
-    //}
+    public void setWorkflowId(Long workflowId){
+    	this.workflowId = workflowId;
+    }
+    
+    @Column(name = "review_status_code")
+    @Type(type = "reviewStatus")
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+    
+    public void setReviewStatus(ReviewStatus reviewStatus){
+    	this.reviewStatus = reviewStatus;
+    }
     
     @ManyToOne(fetch = FetchType.LAZY)
     public Epoch getEpoch(){
@@ -329,8 +343,8 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
      * 
      * @return String
      */
-    //@Transient
-    //public String getWorkflowIdentifier(){
-    //	return "routineFlow-" + getId();
-    //}
+    @Transient
+    public String getWorkflowIdentifier(){
+    	return "routineFlow-" + getId();
+    }
 }

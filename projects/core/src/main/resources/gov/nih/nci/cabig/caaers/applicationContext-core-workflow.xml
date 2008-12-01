@@ -7,7 +7,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="configuration" value="classpath:/jbpm.cfg.xml"/>
         
-        <property name="processDefinitions">
+       <property name="processDefinitions">
             <list>
                 <ref local="routineFlow"/>
             </list>
@@ -17,14 +17,34 @@
         
     </bean>
     
-    <bean id="jbpmTemplate"	class="org.springmodules.workflow.jbpm31.JbpmTemplate">
+     <bean id="jbpmTemplate"	class="org.springmodules.workflow.jbpm31.JbpmTemplate">
     			<constructor-arg index="0" ref="jbpmConfiguration" />
-	</bean>
+    			<constructor-arg index="1" ref="routineFlow" />
+	</bean> 
 	
 	 <bean id="routineFlow" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
         <property name="definitionLocation" value="classpath:/workflow/routineflow/processdefinition.xml"/>
     </bean>
 	
-   <bean id="workflowManagerService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowManagerService"/> -->
+   <bean id="workflowManagerService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowManagerService"/>
     
+   <bean id="nodeSkipActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler">
+   		<property name="workflowConfigDao" ref="workflowConfigDao"/>
+   		<property name="jbpmConfiguration" ref="jbpmConfiguration"/>
+   		<property name="workflowService" ref="workflowService"/>
+   		<property name="userDao" ref="userDao"/>
+   </bean>
+   
+   <bean id="workflowService"
+        class="gov.nih.nci.cabig.caaers.workflow.WorkflowServiceImpl">
+        <property name="jbpmConfiguration" ref="jbpmConfiguration"/>
+        <property name="routineFlowProcessDefinition" ref="routineFlow"/>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="caaersJavaMailSender" ref="mailer"/>
+        <property name="possibleTransitionsResolver" ref="possibleTransitionsResolver"/>
+        <property name="workflowConfigDao" ref="workflowConfigDao"/>
+   </bean>
+   
+   <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>
+        -->
 </beans>
