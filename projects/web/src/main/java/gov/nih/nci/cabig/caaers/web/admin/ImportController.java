@@ -335,12 +335,34 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     		    gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff staff = (gov.nih.nci.cabig.caaers.integration.schema.investigator.Staff )unmarshaller.unmarshal(xmlFile);
     		    for(InvestigatorType xmlInvestigator : staff.getInvestigator()){
     		    	DomainObjectImportOutcome<Investigator> investigatorOutcome = svc.processInvestigator(xmlInvestigator);
-    		    	if(investigatorOutcome.isSavable()){
+    		    	List<String> errors = domainObjectValidator.validate(investigatorOutcome.getImportedDomainObject());
+    		    	if(investigatorOutcome.isSavable() && errors.size() == 0){
     		    		command.addImportableInvestigator(investigatorOutcome);
     		    	}else{
+    		    		for(String errMsg : errors){
+    		    			investigatorOutcome.addErrorMessage(errMsg, Severity.ERROR);
+			        	}
     		    		command.addNonImportableInvestigator(investigatorOutcome);
     		    	}
     		    }
+    		    //Remove Duplicate Investigators from the ImportableInvestigators List.
+    		    List<DomainObjectImportOutcome<Investigator>> dupList = new ArrayList<DomainObjectImportOutcome<Investigator>>();
+    		    for(int k=0 ; k < command.getImportableInvestigators().size()-1 ; k++){
+    		    	Investigator inv1 = command.getImportableInvestigators().get(k).getImportedDomainObject();
+					for(int l=k+1 ; l < command.getImportableInvestigators().size() ; l++){
+						Investigator inv2 = command.getImportableInvestigators().get(l).getImportedDomainObject();
+						if(inv1.equals(inv2)){
+							command.getImportableInvestigators().get(l).addErrorMessage("Duplicate Investigator", Severity.ERROR);
+							command.addNonImportableInvestigator(command.getImportableInvestigators().get(l));
+							dupList.add(command.getImportableInvestigators().get(l));
+							log.debug("Duplicate Investigator :: " + inv2.getFullName());
+							break;
+						}
+					}
+				}
+				for(DomainObjectImportOutcome<Investigator> obj : dupList){
+					command.getImportableInvestigators().remove(obj);
+				}
             }
 
             if ("researchStaff".equals(type)) {
@@ -350,12 +372,34 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     			gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff  staff = (gov.nih.nci.cabig.caaers.integration.schema.researchstaff.Staff )unmarshaller.unmarshal(xmlFile);
     			for(ResearchStaffType researchStaff : staff.getResearchStaff()){
     				DomainObjectImportOutcome<ResearchStaff> researchStaffOutcome = svc.processResearchStaff(researchStaff);
+    				List<String> errors = domainObjectValidator.validate(researchStaffOutcome.getImportedDomainObject());
     				if(researchStaffOutcome.isSavable()){
     					command.addImportableResearchStaff(researchStaffOutcome);
     				}else{
+    					for(String errMsg : errors){
+    						researchStaffOutcome.addErrorMessage(errMsg, Severity.ERROR);
+			        	}
     					command.addNonImportableResearchStaff(researchStaffOutcome);
     				}
     			}
+    			//Remove Duplicate Investigators from the ImportableInvestigators List.
+    		    List<DomainObjectImportOutcome<ResearchStaff>> dupList = new ArrayList<DomainObjectImportOutcome<ResearchStaff>>();
+    		    for(int k=0 ; k < command.getImportableResearchStaff().size()-1 ; k++){
+    		    	ResearchStaff rStaff1 = command.getImportableResearchStaff().get(k).getImportedDomainObject();
+					for(int l=k+1 ; l < command.getImportableResearchStaff().size() ; l++){
+						ResearchStaff rStaff2 = command.getImportableResearchStaff().get(l).getImportedDomainObject();
+						if(rStaff1.equals(rStaff2)){
+							command.getImportableResearchStaff().get(l).addErrorMessage("Duplicate ResearchStaff", Severity.ERROR);
+							command.addNonImportableResearchStaff(command.getImportableResearchStaff().get(l));
+							dupList.add(command.getImportableResearchStaff().get(l));
+							log.debug("Duplicate Investigator :: " + rStaff2.getFullName());
+							break;
+						}
+					}
+				}
+				for(DomainObjectImportOutcome<ResearchStaff> obj : dupList){
+					command.getImportableResearchStaff().remove(obj);
+				}
             }
         } catch (EOFException ex) {
             System.out.println("EndOfFile Reached");       
