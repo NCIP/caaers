@@ -55,9 +55,9 @@
 			<exclude conf="*" name="spring-core" />
 			<exclude conf="*" name="spring-aop" />
 			<exclude name="spring*" conf="*" />
-			<exclude name="jbpm" conf="*" /><!-- explicity specified jbdl 3.2.3 -->
+			<exclude name="jbpm" conf="*" /><!-- explicity specified jbdl 3.2.3.sb -->
 			</dependency>
-			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3"/>
+			<dependency org="org.jbpm" name="jbpm-jpdl" rev="3.2.3.sb"/>
 			
 
 			
