@@ -24,12 +24,9 @@ Validator<UniqueResearchStaffEmailAddress>{
 	public boolean validate(Object value) {
 		// is value null ?
         if (value == null) return true;
-        
-        if (!(value instanceof ResearchStaff)) return true;
-        ResearchStaff other = (ResearchStaff) value;
-        
+        String emailAddress = (String)value;
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-        researchStaffQuery.filterByLoginId(other.getEmailAddress());
+        researchStaffQuery.filterByLoginId(emailAddress);
         List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
             if (researchStaffList!=null && !researchStaffList.isEmpty()) {
             	message = "EmailAddress already in use";
