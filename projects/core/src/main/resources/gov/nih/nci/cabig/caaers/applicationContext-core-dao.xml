@@ -472,6 +472,12 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudyValidator">
         <property name="studyDao" ref="studyDao"/>
     </bean>
+    
+    <bean id="uniqueResearchStaffEmailAddressValidator"
+          class="gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddressValidator">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
+    
     <!-- validator beans end here-->
 
     <!-- Repository beans starts here-->
