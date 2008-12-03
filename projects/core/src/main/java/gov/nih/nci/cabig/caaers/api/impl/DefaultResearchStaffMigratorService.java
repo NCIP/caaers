@@ -137,6 +137,7 @@ public class DefaultResearchStaffMigratorService extends DefaultMigratorService 
               	researchStaff = new ResearchStaff();
               	researchStaff.setNciIdentifier(nciIdentifier);
               	researchStaff.setEmailAddress(researchStaffDto.getEmailAddress());
+              	researchStaff.setLoginId(researchStaffDto.getEmailAddress());
               } 
               researchStaff.setFirstName(researchStaffDto.getFirstName());
               researchStaff.setLastName(researchStaffDto.getLastName());
