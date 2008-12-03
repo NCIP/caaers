@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.validator;
 
+import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -9,7 +10,7 @@ import gov.nih.nci.cabig.caaers.validation.validator.DomainObjectValidator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ResearchStaffDomainObjectValidatorTest extends CaaersTestCase{
+public class ResearchStaffDomainObjectValidatorTest extends CaaersDbTestCase{
 	ResearchStaff rStaff;
 	Organization organization;
 	List<String> errors;
@@ -37,6 +38,21 @@ public class ResearchStaffDomainObjectValidatorTest extends CaaersTestCase{
 		errors = domainObjectValidator.validate(rStaff);
 		
 		assertEquals(0,errors.size());
+	}
+	
+	public void testResearchStaffInValid(){
+		
+		rStaff.setFirstName("Bill");
+		rStaff.setLastName("Gates");
+		rStaff.setEmailAddress("abc@def.com");
+		rStaff.setPhoneNumber("123-456-789");
+		rStaff.setFaxNumber("111-111-1112");
+		rStaff.setNciIdentifier("nci id");
+		rStaff.setOrganization(organization);
+		
+		errors = domainObjectValidator.validate(rStaff);
+		
+		assertEquals(1,errors.size());
 	}
 
 }
