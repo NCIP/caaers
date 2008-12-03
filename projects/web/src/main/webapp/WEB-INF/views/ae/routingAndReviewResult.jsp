@@ -183,7 +183,6 @@ color:#0033FF;
 </style>
 </head>
 <body>
-	Ganapati Bappa Morya !!!
 	<div class="eXtremeTable" >
   <c:if test="${fn:length(command.assignmentList) gt 0}">
   	<c:forEach items="${command.assignmentList}" var="assignment" varStatus="assignmentStatus">
