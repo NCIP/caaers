@@ -202,7 +202,7 @@ color:#0033FF;
     		</thead>
     		
       			<c:forEach items="${assignment.reportingPeriods}" var="reportingPeriod" varStatus="rpStatus">
-        			<ae:oneRandRReportingPeriodRow reportingPeriod="${reportingPeriod}" index="${rpStatus.index}"/>
+        			<ae:oneRoutingReportingPeriodRow reportingPeriod="${reportingPeriod}" index="${rpStatus.index}"/>
       			</c:forEach>
     		
   		</table>
