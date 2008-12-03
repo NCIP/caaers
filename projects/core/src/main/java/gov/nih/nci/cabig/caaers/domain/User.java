@@ -1,17 +1,18 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddress;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-import javax.persistence.Column;
-import javax.persistence.JoinTable;
-import javax.persistence.JoinColumn;
 
 import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
@@ -64,7 +65,8 @@ public abstract class User extends AbstractMutableDomainObject {
     public void setLoginId(String loginId) {
         this.loginId = loginId;
     }
-
+    
+    @UniqueResearchStaffEmailAddress(message = "EmailAddress already in use")
     public String getEmailAddress() {
         return emailAddress;
     }
