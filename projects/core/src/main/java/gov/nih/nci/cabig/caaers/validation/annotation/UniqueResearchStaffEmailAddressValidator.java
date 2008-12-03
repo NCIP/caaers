@@ -38,4 +38,7 @@ Validator<UniqueResearchStaffEmailAddress>{
 		return true;
 	}
 
+	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
+	}
 }
