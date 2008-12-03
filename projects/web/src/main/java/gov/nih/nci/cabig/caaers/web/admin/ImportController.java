@@ -373,7 +373,7 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     			for(ResearchStaffType researchStaff : staff.getResearchStaff()){
     				DomainObjectImportOutcome<ResearchStaff> researchStaffOutcome = svc.processResearchStaff(researchStaff);
     				List<String> errors = domainObjectValidator.validate(researchStaffOutcome.getImportedDomainObject());
-    				if(researchStaffOutcome.isSavable()){
+    				if(researchStaffOutcome.isSavable() && errors.size() == 0){
     					command.addImportableResearchStaff(researchStaffOutcome);
     				}else{
     					for(String errMsg : errors){
