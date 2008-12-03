@@ -40,6 +40,7 @@
 										<td class="tableHeader" width="15%">Report Type</td>
 										<td class="centerTableHeader" width="10%">Report Version</td>
 										<td class="centerTableHeader" width="10%"># of AEs</td>
+										<td class="tableHeader" width="20%">Review Comments</td>
 										<td class="tableHeader" width="20%">Review Status</td>
 									</tr>
 								</thead>

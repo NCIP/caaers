@@ -20,6 +20,7 @@
 	            	</c:if>
 	<td width="10%">${report.aeReport.numberOfAes}</td>
 	<td/>
+	<td/>
 </tr>
 <tr id="reptable${report.id}" style="display:none;">
 	<td/><td/>
