@@ -1,8 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
@@ -15,18 +14,16 @@ public class ParticipantStudyLinkDisplayCell extends AbstractCell {
 
     @Override
     protected String getCellValue(TableModel model, Column column) {
-        Participant participant = (Participant) model.getCurrentRowBean();
+    	ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject) model.getCurrentRowBean();
 
         String cellValue = column.getValueAsString();
-        String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";
+        String link = model.getContext().getContextPath() + "/pages/study/edit?studyId=";        
 
-        for (StudyParticipantAssignment assignment : participant.getAssignments()) {
-            Study study = assignment.getStudySite().getStudy();
-            String identifier = study.getPrimaryIdentifier() == null ? study.getIdentifiers()
-                            .get(0).getValue() : study.getPrimaryIdentifier().getValue();
-
-            cellValue = "<a href=\"" + link + study.getId().toString() + "\">" + identifier
-                            + "</a><br>";
+        for (StudySearchableAjaxableDomainObject study : participant.getStudies()) {
+            if (study.getPrimaryIdentifierValue() != null)  {
+            	String identifier = study.getPrimaryIdentifierValue();
+            	cellValue = cellValue+ "<a href=\"" + link + study.getId().toString() + "\">" + identifier + "</a><br>";
+            }
 
         }
 
