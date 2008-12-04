@@ -1,25 +1,22 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
-import gov.nih.nci.cabig.caaers.web.ListValues;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.springframework.validation.Errors;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.web.servlet.ModelAndView;
+import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.Errors;
+import org.springframework.web.servlet.ModelAndView;
 
 public class AssignParticipantTab extends TabWithFields<AssignParticipantStudyCommand> {
 
