@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
@@ -13,20 +14,29 @@ import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import static gov.nih.nci.cabig.caaers.domain.DateValue.stringToDateValue;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,6 +63,8 @@ public class SearchStudyAjaxFacade {
     private StudyDao studyDao;
 
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
+    
+    private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 
     private ParticipantDao participantDao;
 
@@ -298,7 +310,7 @@ public class SearchStudyAjaxFacade {
 
         Column columnPrimaryIdentifier = model.getColumnInstance();
         columnPrimaryIdentifier.setSortable(false);
-        columnPrimaryIdentifier.setProperty("primaryIdentifier.value");
+        columnPrimaryIdentifier.setProperty("primaryIdentifierValue");
         columnPrimaryIdentifier.setTitle("Primary ID");
         columnPrimaryIdentifier.setCell("gov.nih.nci.cabig.caaers.web.search.ParticipantLinkDisplayCell");
         model.addColumn(columnPrimaryIdentifier);
@@ -668,7 +680,7 @@ public class SearchStudyAjaxFacade {
     }
 
     @SuppressWarnings("finally")
-    private List<Participant> constructExecuteParticipantQuery(final String type, final String text) {
+    private List<ParticipantAjaxableDomainObject> constructExecuteParticipantQuery(final String type, final String text) {
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");
@@ -676,7 +688,9 @@ public class SearchStudyAjaxFacade {
         log.debug("text :: " + text);
         String sType, sText;
         Map<String, String> propValue = new HashMap<String, String>();
-        List<Participant> participants = new ArrayList<Participant>();
+        
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
+        List<ParticipantAjaxableDomainObject> participantAjaxableDomainObjects = new ArrayList<ParticipantAjaxableDomainObject>();
 
         // map the html properties to the model properties
         Map<String, String> m = new HashMap<String, String>();
@@ -695,7 +709,20 @@ public class SearchStudyAjaxFacade {
             // Create a map of property key ,and search criteria
             propValue.put(m.get(sType), sText);
         }
-
+        
+        try {
+        	query.filterByPrimaryIdentifiers();
+			query.filterParticipants(propValue);
+			query.filterByStudyIdentifierValue(propValue.get("studyIdentifier"));
+			query.filterByStudyShortTitle(propValue.get("studyShortTitle"));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			throw new RuntimeException("Query Parsing Error : constructExecuteParticipantQuery", e);
+		}
+ 
+		participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(query);
+        return participantAjaxableDomainObjects;
+        /*
         try {
             participants = participantDao.searchParticipant(propValue);
         }
@@ -705,6 +732,7 @@ public class SearchStudyAjaxFacade {
         finally {
             return participants;
         }
+        */
     }
 
     @SuppressWarnings("finally")
@@ -988,7 +1016,8 @@ public class SearchStudyAjaxFacade {
       */
     public String getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
-        List<Participant> participants = new ArrayList<Participant>();
+        //List<Participant> participants = new ArrayList<Participant>();
+    	List<ParticipantAjaxableDomainObject> participants= new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = constructExecuteParticipantQuery(type, text);
         }
@@ -1267,7 +1296,7 @@ public class SearchStudyAjaxFacade {
     }
 
     @SuppressWarnings("finally")
-    private List<Participant> getParticipants(final String type, final String text) {
+    private List<ParticipantAjaxableDomainObject> getParticipants(final String type, final String text) {
 
         StringTokenizer typeToken = new StringTokenizer(type, ",");
         StringTokenizer textToken = new StringTokenizer(text, ",");
@@ -1275,23 +1304,27 @@ public class SearchStudyAjaxFacade {
         log.debug("text :: " + text);
         String sType, sText;
 
-        List<Participant> participants = new ArrayList<Participant>();
-        ParticipantQuery participantQuery = new ParticipantQuery();
-        participantQuery.leftJoinFetchOnIdentifiers();
+        List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
+        
+        
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
+        //ParticipantQuery participantQuery = new ParticipantQuery();
+        //participantQuery.leftJoinFetchOnIdentifiers();
         while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
             sType = typeToken.nextToken();
             sText = textToken.nextToken();
+            
             if (sType.equals("firstName")) {
-                participantQuery.filterByFirstName(sText);
+            	query.filterByFirstName(sText);
             } else if (sType.equals("identifier")) {
-                participantQuery.filterByIdentifierValue(sText);
+                query.filterByLastName(sText);
             } else if (sType.equals("lastName")) {
-                participantQuery.filterByLastName(sText);
+                query.filterByParticipantIdentifierValue(sText);
             }
         }
 
         try {
-            participants = participantDao.searchParticipant(participantQuery);
+            participants = participantAjaxableDomainObjectRepository.findParticipants(query);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
@@ -1303,7 +1336,7 @@ public class SearchStudyAjaxFacade {
 
     public String buildParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
-        List<Participant> participants = new ArrayList<Participant>();
+        List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = getParticipants(type, text);
         }
@@ -1320,7 +1353,7 @@ public class SearchStudyAjaxFacade {
         // Limit limit = new TableLimit(limitFactory);
         // limit.setRowAttributes(totalRows, DEFAULT_ROWS_DISPLAYED);
         // model.setLimit(limit);
-
+        
         try {
             return buildPartcipantTable(model, participants).toString();
         }
@@ -1332,7 +1365,7 @@ public class SearchStudyAjaxFacade {
 
     }
 
-    public Object buildPartcipantTable(final TableModel model, final List<Participant> participants) throws Exception {
+    public Object buildPartcipantTable(final TableModel model, final List<ParticipantAjaxableDomainObject> participants) throws Exception {
         Table table = model.getTableInstance();
         table.setTableId("ajaxTable");
         table.setForm("assembler");
@@ -1454,6 +1487,11 @@ public class SearchStudyAjaxFacade {
     public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository) {
         this.studySearchableAjaxableDomainObjectRepository = studySearchableAjaxableDomainObjectRepository;
     }
+    @Required
+	public void setParticipantAjaxableDomainObjectRepository(
+			ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
+		this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+	}
 }
 
 class ColumnValueObject {
