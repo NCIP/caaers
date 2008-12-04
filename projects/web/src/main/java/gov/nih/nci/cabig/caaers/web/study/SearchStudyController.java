@@ -3,23 +3,25 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
-import org.springframework.validation.BindException;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-import org.springframework.beans.factory.annotation.Required;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.extremecomponents.table.context.Context;
+import org.extremecomponents.table.context.HttpServletRequestContext;
+import org.extremecomponents.table.core.TableModel;
+import org.extremecomponents.table.core.TableModelImpl;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
  * @author Kulasekaran
