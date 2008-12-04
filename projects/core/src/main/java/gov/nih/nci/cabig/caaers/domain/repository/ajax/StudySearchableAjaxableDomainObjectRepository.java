@@ -1,14 +1,16 @@
 package gov.nih.nci.cabig.caaers.domain.repository.ajax;
 
 import gov.nih.nci.cabig.caaers.dao.query.ajax.AbstractAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Biju Joseph
@@ -54,6 +56,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
         }
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
         updateStudySite(studySearchableAjaxableDomainObject, o);
+        updateStudyPersonnel(studySearchableAjaxableDomainObject, o);
 
 
     }
@@ -64,10 +67,11 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
 
         updateStudySite(studySearchableAjaxableDomainObject, o);
+        updateStudyPersonnel(studySearchableAjaxableDomainObject, o);
     }
 
     private void updateStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
-        if (!StringUtils.isBlank((String) o[7]) && StringUtils.equals((String) o[9], "SST")) {
+        if (!StringUtils.isBlank((String) o[7]) && (StringUtils.equals((String) o[9], "SST") || StringUtils.equals((String) o[9], "SCC"))) {
             StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
             studySiteAjaxableDomainObject.setId((Integer) o[8]);
             studySiteAjaxableDomainObject.setName((String) o[7]);
@@ -76,6 +80,12 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
         }
     }
 
+    private void updateStudyPersonnel(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
+    	if (o[11] != null) {
+            studySearchableAjaxableDomainObject.addStudyPersonnelId((Integer) o[11]);
+        }
+    }
+    
     private void updateFundingSponsor(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
         if (!StringUtils.isBlank((String) o[6])) {
             studySearchableAjaxableDomainObject.setPrimarySponsorCode((String) o[6]);
