@@ -49,6 +49,10 @@
         <property name="studySearchableAjaxableDomainObjectRepository"
                   ref="studySearchableAjaxableDomainObjectRepository"/>
     </bean>
+    <bean id="searchParticipantAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.search.SearchParticipantAjaxFacade">
+        <property name="participantAjaxableDomainObjectRepository"
+                  ref="participantAjaxableDomainObjectRepository"/>
+    </bean>
     <bean id="reportAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.rule.notification.ReportDefinitionAjaxFacade"/>
     <bean id="indAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.admin.INDAjaxFacade"/>
