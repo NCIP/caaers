@@ -137,6 +137,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.dao.ParticipantDao+.search*(..))
                               "/>
 
 
@@ -210,10 +211,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.find*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
                
-               
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>               
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
-               value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
     </util:map>
 
@@ -249,6 +251,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
             </value>
         </property>
         <property name="accessDecisionManager">
@@ -281,7 +284,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="afterInvocationManager" class="org.acegisecurity.afterinvocation.AfterInvocationProviderManager">
         <property name="providers">
             <list>
+            	<!-- we are restricting all the results in search , why do we need to check once again for a given instance , will clarify with SAURAV when he gets back -  Srini
                 <ref local="siteSecurityBasicAuthCheck"/>
+                -->
                 <ref local="siteSecurityCollectionFilter"/>
             </list>
         </property>
@@ -310,7 +315,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
                   ref="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"/>
         <property name="authorizationSwitch" ref="authorizationSwitch"/>
-
     </bean>
 
     <bean id="siteSecurityBasicAuthCheck"
@@ -326,8 +330,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <constructor-arg value="ACCESS"/>
     </bean>
 
-
-    <bean id="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"
+<!--
+    <bean id="studySiteSiteSecurityAuthorizationCheckProvider"
           class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
@@ -338,15 +342,38 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
         <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
     </bean>
-    
+-->
+
+    <bean id="participantSiteSecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.ParticipantSiteSecurityFilterer">
+          <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>    
+
+    <bean id="studySiteSecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSecurityFilterer">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
+            
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
+        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
+               value-ref="studySiteSecurityFilterer"/>
+        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
+               value-ref="participantSiteSecurityFilterer"/>   
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
-               value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>
+               value-ref="studySiteSecurityFilterer"/>
+        <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
+               value-ref="participantSiteSecurityFilterer"/>  
+               
+                                                       
+               <!--
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"        
                value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>               
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
-               value-ref="participantSecurityCSMGroupAuthorizationCheckProvider"/>               
+               value-ref="participantSecurityCSMGroupAuthorizationCheckProvider"/>  
+        <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
+               value-ref="participantSecurityCSMGroupAuthorizationCheckProvider"/> 
+               -->                            
     </util:map>
 
     <!--> oraganization security beans end here  -->
