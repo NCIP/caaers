@@ -60,19 +60,13 @@ public class SiteSecurityAfterInvocationBasicAuthorizationCheckProvider implemen
 
             return returnedObject;
         }
-        boolean hasPermission = false;
 
-        //if (returnedObject == null || !(returnedObject instanceof AbstractMutableDomainObject)) {
-        if (  (returnedObject == null || !(returnedObject instanceof AbstractMutableDomainObject)) && !(returnedObject instanceof AbstractAjaxableDomainObject)   ) {
-            hasPermission = true;
-        }
-
-        DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
+        DomainObjectSecurityFilterer auth = (DomainObjectSecurityFilterer) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
                         .get(returnedObject.getClass().getName());
         if (auth != null) {
-            hasPermission = auth.checkAuthorization(authentication, "ACCESS", returnedObject);
+        	returnedObject = auth.filter(authentication, "ACCESS", returnedObject);
         }
-        if (hasPermission) {
+        if (returnedObject != null) {
             return returnedObject;
         } else {
             if (log.isDebugEnabled()) {
