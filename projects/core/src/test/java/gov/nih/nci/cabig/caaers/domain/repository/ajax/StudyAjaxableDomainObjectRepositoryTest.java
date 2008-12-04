@@ -21,10 +21,10 @@ public class StudyAjaxableDomainObjectRepositoryTest extends AbstractTestCase {
     private StudySearchableAjaxableDomainObjectQuery query;
     List<Object[]> objects = new ArrayList<Object[]>();
 
-    Object[] studyWithNoPrimaryIdentifier = new Object[9];
-    Object[] studyWithPrimaryIdentifier = new Object[9];
-    Object[] studyWithNullValues = new Object[9];
-    Object[] matchingStudyWithPrimaryIdentifier = new Object[9];
+    Object[] studyWithNoPrimaryIdentifier = new Object[12];
+    Object[] studyWithPrimaryIdentifier = new Object[12];
+    Object[] studyWithNullValues = new Object[12];
+    Object[] matchingStudyWithPrimaryIdentifier = new Object[12];
 
     @Override
     protected void setUp() throws Exception {
