@@ -30,9 +30,9 @@
     <ORGANIZATIONS
             id="-1003"
             version="1"
-            name="Northwestern Univ Cancer Center"
-            description_text="NUCC"
-            nci_institute_code="WAKE"/>
+            name="Wake Forest University Health Sciences"
+            description_text="Wake Forest University Health Sciences"
+            nci_institute_code="NC002"/>
 
     <STUDIES
             id="-2"
