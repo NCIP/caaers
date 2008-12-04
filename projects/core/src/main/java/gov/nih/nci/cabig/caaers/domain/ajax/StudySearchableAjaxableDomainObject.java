@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.domain.ajax;
 
-import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -18,7 +18,7 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
 
     private String status;
     private String phaseCode;
-
+    List<Integer> studyPersonnelIds = new ArrayList<Integer>();
     List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
 
     public String getStatus() {
@@ -86,4 +86,21 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     public void setShortTitle(String shortTitle) {
         this.shortTitle = shortTitle;
     }
+
+    public void addStudyPersonnelId(Integer researchStaffId) {
+        if (getObjectById(getStudyPersonnelIds(), researchStaffId) == null) {
+        	getStudyPersonnelIds().add(researchStaffId);
+        }
+    }
+    protected Integer getObjectById(List<Integer> studyPersonnelIds, Integer id) {
+        for (Integer object : studyPersonnelIds) {
+            if (object.equals(id)) {
+                return object;
+            }
+        }
+        return null;
+    }    
+	public List<Integer> getStudyPersonnelIds() {
+		return studyPersonnelIds;
+	}
 }
