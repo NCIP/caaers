@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
@@ -11,7 +11,7 @@ public class ParticipantLinkDisplayCell extends AbstractCell {
     @Override
     protected String getCellValue(final TableModel model, final Column column) {
 
-        Participant participant = (Participant) model.getCurrentRowBean();
+    	ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject) model.getCurrentRowBean();
 
         String cellValue = column.getValueAsString();
         String link = model.getContext().getContextPath()
