@@ -6,7 +6,7 @@ import junit.framework.TestCase;
  * @author Saurabh Agrawal
  */
 public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
-
+/*
     public void testQueryConstructor() throws Exception {
         AbstractAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
 
@@ -142,6 +142,6 @@ public class StudySearchableAjaxableDomainObjectQueryTest extends TestCase {
 
 
     }
-
+*/
 
 }
