@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 
 import org.acegisecurity.AccessDeniedException;
@@ -31,12 +27,14 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
 
     private Logger log = Logger
                     .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
+    
 
     public Object decide(Authentication authentication, Object object,
-                    ConfigAttributeDefinition configAttributeDefinition, Object returnedObject)
+                    ConfigAttributeDefinition configAttributeDefinition, Object resultList)
                     throws AccessDeniedException {
-
-        if (returnedObject == null) {
+    	
+     	
+        if (resultList == null) {
             if (log.isDebugEnabled()) {
                 log.debug("Return object is null, skipping");
             }
@@ -45,52 +43,32 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
         }
 
         Filterer filterer = null;
+        Object searchedObject = null;
 
-        if (returnedObject instanceof Collection) {
-            Collection collection = (Collection) returnedObject;
-            filterer = new CollectionFilterer(collection);
-        } else if (returnedObject.getClass().isArray()) {
-            Object[] array = (Object[]) returnedObject;
+        if (resultList instanceof Collection) {
+            Collection collection = (Collection) resultList;
+            filterer = new CollectionFilterer(collection);            
+        } else if (resultList.getClass().isArray()) {
+            Object[] array = (Object[]) resultList;
             filterer = new ArrayFilterer(array);
         } else {
             if (log.isDebugEnabled()) {
                 log.debug("Return object is not a collection, skipping");
             }
-            return returnedObject;
+            return resultList;
         }
-        if (!authorizationSwitch.isOn()) {
+        
+        if (!authorizationSwitch.isOn() || !filterer.iterator().hasNext()) {
         	return filterer.getFilteredObject();
         }
-        // Locate unauthorised Collection elements
-        Iterator collectionIter = filterer.iterator();
-
-        log.debug("### Intercepting collection for Site Security check");
-
-        while (collectionIter.hasNext()) {
-            Object domainObject = collectionIter.next();
-
-            boolean hasPermission = false;
-
-            if (  (domainObject == null || !(domainObject instanceof AbstractMutableDomainObject)) && !(domainObject instanceof AbstractAjaxableDomainObject)   ) {
-                hasPermission = true;
-            }
-            
-
-            DomainObjectSiteSecurityAuthorizationCheckProvider auth = (DomainObjectSiteSecurityAuthorizationCheckProvider) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
-                            .get(domainObject.getClass().getName());
-            if (auth != null) {
-                hasPermission = auth.checkAuthorization(authentication, "ACCESS", domainObject);
-            }
-            if (!hasPermission) {
-                filterer.remove(domainObject);
-
-                if (log.isDebugEnabled()) {
-                    log.debug("### Principal is NOT authorised for element: " + domainObject);
-                }
-            }
-        }
-
-        return filterer.getFilteredObject();
+        searchedObject = filterer.iterator().next();
+        
+        // load objects from domainObjectSiteSecurityAuhthorizationCheckProvidersMap , applicationContext-core-security.xml
+        DomainObjectSecurityFilterer auth = (DomainObjectSecurityFilterer) domainObjectSiteSecurityAuhthorizationCheckProvidersMap
+        .get(searchedObject.getClass().getName());
+        
+        return auth.filter(authentication, "ACCESS", filterer);
+        //return filteredResults.getFilteredObject();
     }
 
     @Required
@@ -117,4 +95,5 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
 			gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch) {
 		this.authorizationSwitch = authorizationSwitch;
 	}
+
 }
