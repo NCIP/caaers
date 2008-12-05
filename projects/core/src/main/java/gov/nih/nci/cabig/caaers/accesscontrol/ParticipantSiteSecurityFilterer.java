@@ -5,8 +5,10 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,6 +40,15 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
         		
         	}
         }
+        // get research staff and associated organization.
+		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	rsQuery.filterByLoginId(user.getUsername());
+    	List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);        
+        ResearchStaff researchStaff = rsList.get(0);
+        Organization organization = researchStaff.getOrganization();
+                
+		StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
+		studySite.setNciInstituteCode(organization.getNciInstituteCode());
         
         boolean studyFilteringRequired = false ; 
         //check if user is AE Coordinator or Subject Coordinator  ...
@@ -47,24 +58,11 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
         		studyFilteringRequired = true;
         		break;
         	}
-        }
-        
-        // get research staff and associated organization.
-		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-    	rsQuery.filterByLoginId(user.getUsername());
+        }	
 
-    	List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
-        
-        ResearchStaff researchStaff = rsList.get(0);
-        Organization organization = researchStaff.getOrganization();
-        
-        System.out.println(organization.getNciInstituteCode()) ;
-        
-		StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
-		studySite.setNciInstituteCode(organization.getNciInstituteCode());
-		
 		if (returnObject instanceof ParticipantAjaxableDomainObject) {
-			if (isAuthorized(studySite,(ParticipantAjaxableDomainObject)returnObject)) {
+			ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject)returnObject;
+			if (isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired))) {
 				return returnObject;
 			} else {
 				return null;
@@ -76,18 +74,40 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
 		while (collectionIter.hasNext()) {
         	Object domainObject = collectionIter.next();
         	ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject)domainObject;
-        	List <StudySiteAjaxableDomainObject> studySites = participant.getStudySites();
-        	if (!studySites.contains(studySite)) {
+
+        	if (!isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired))) {
         		filterer.remove(participant);
         	}
         }
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, ParticipantAjaxableDomainObject participant) {
-		if (participant.getStudySites().contains(studySite)) return true;
+	private List <StudySearchableAjaxableDomainObject> getAuthorizedStudies(ParticipantAjaxableDomainObject participant, Integer researchStaffId, boolean studyFilteringRequired) {
+		List <StudySearchableAjaxableDomainObject> authorizedStudies = new ArrayList<StudySearchableAjaxableDomainObject>();
+		
+//		 study level filtering for AE Coordinator or Subject Coordinator  ...
+		if (studyFilteringRequired) {
+			List <StudySearchableAjaxableDomainObject> studies = participant.getStudies();				
+			for (StudySearchableAjaxableDomainObject study:studies) {
+				if (study.getStudyPersonnelIds().contains(researchStaffId)) {
+					authorizedStudies.add(study);
+				}
+			}
+		} else {
+			authorizedStudies = participant.getStudies();
+		}	
+		return authorizedStudies;
+	}
+	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, List <StudySearchableAjaxableDomainObject> authorizedStudies) {
+		//get all studySites.
+		List <StudySiteAjaxableDomainObject> allSites = new ArrayList<StudySiteAjaxableDomainObject>();		
+		for (StudySearchableAjaxableDomainObject study:authorizedStudies) {
+			allSites.addAll(study.getStudySites());
+		}
+		if (allSites.contains(studySite)) return true;
 		return false;
 	}
+
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}

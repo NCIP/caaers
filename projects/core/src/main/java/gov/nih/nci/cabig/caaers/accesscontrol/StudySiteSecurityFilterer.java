@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
@@ -38,16 +39,7 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
         		
         	}
         }
-        
-        boolean studyFilteringRequired = false ; 
-        //check if user is AE Coordinator or Subject Coordinator  ...
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
-        		studyFilteringRequired = true;
-        		break;
-        	}
-        }
+             
         
         // get research staff and associated organization.
 		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
@@ -60,16 +52,30 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
 		studySite.setNciInstituteCode(organization.getNciInstituteCode());
 		
-		if (returnObject instanceof StudySearchableAjaxableDomainObject) {
-			if (isAuthorized(studySite,(StudySearchableAjaxableDomainObject)returnObject)) {
+		boolean studyFilteringRequired = false ; 
+		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
+        //check if user is  SLRR
+        for (int i=0; i<grantedAuthorities.length; i++) {
+        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
+        		studyFilteringRequired = true;
+        		break;
+        	}
+        }
+        
+		boolean isAuthorizedOnThisStudy = true;
+		
+		if (returnObject instanceof StudySearchableAjaxableDomainObject) {			
+			// study level filtering for SLRR
+			if (studyFilteringRequired) {
+				if (!isAuthorized(researchStaff.getId(),(StudySearchableAjaxableDomainObject)returnObject)) {
+					isAuthorizedOnThisStudy=false;
+				}
+			}
+			// if not SLRR , or SLRR is authorized , then apply site level filtering.
+			if (isAuthorized(studySite,(StudySearchableAjaxableDomainObject)returnObject) && isAuthorizedOnThisStudy) {
 				return returnObject;
 			} else {
-				// study level filtering for AE Coordinator or Subject Coordinator  ...
-				if (studyFilteringRequired) {
-					if (isAuthorized(researchStaff.getId(),(StudySearchableAjaxableDomainObject)returnObject)) {
-						return returnObject;
-					}
-				}
 				return null;
 			}
 		}
@@ -79,7 +85,15 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		while (collectionIter.hasNext()) {
         	Object domainObject = collectionIter.next();
         	StudySearchableAjaxableDomainObject study = (StudySearchableAjaxableDomainObject)domainObject;
-        	if (!isAuthorized(studySite,study)) {
+        	isAuthorizedOnThisStudy = true;
+        	// study level filtering for SLRR
+			if (studyFilteringRequired) {
+				if (!isAuthorized(researchStaff.getId(),study)) {
+					isAuthorizedOnThisStudy=false;
+				}
+			}
+			//if not SLRR , or SLRR is authorized , then apply site level filtering.
+        	if (!isAuthorized(studySite,study) || !isAuthorizedOnThisStudy) {
         		filterer.remove(study);
         	}
         }
@@ -87,6 +101,10 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		return filterer.getFilteredObject();
 	}
 	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, StudySearchableAjaxableDomainObject study) {
+		// check if user is part of co-ordinating center 
+		if (studySite.getNciInstituteCode().equals(study.getCoordinatingCenterCode())) return true;
+		
+		//if not co-ordinating center check for study sites.
 		if (study.getStudySites().contains(studySite)) return true;
 		return false;
 	}
