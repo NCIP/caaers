@@ -10,8 +10,17 @@ public class StudySiteAjaxableDomainObject extends AbstractAjaxableDomainObject 
 
     private String name;
     private String nciInstituteCode;
+    private Integer studyId;
 
-    public String getNciInstituteCode() {
+    public Integer getStudyId() {
+		return studyId;
+	}
+
+	public void setStudyId(Integer studyId) {
+		this.studyId = studyId;
+	}
+
+	public String getNciInstituteCode() {
 		return nciInstituteCode;
 	}
 

@@ -15,7 +15,7 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     private String shortTitle;
     private String primaryIdentifierValue;
     private String primarySponsorCode;
-
+    private String coordinatingCenterCode;
     private String status;
     private String phaseCode;
     List<Integer> studyPersonnelIds = new ArrayList<Integer>();
@@ -103,4 +103,29 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
 	public List<Integer> getStudyPersonnelIds() {
 		return studyPersonnelIds;
 	}
+
+	public String getCoordinatingCenterCode() {
+		return coordinatingCenterCode;
+	}
+
+	public void setCoordinatingCenterCode(String coordinatingCenterCode) {
+		this.coordinatingCenterCode = coordinatingCenterCode;
+	}
+	   public boolean equals(Object arg0) {
+	        if (arg0 == null) {
+	            return false;
+	        }
+
+	        if (!(arg0 instanceof StudySearchableAjaxableDomainObject)) {
+	            return false;
+	        }
+
+	        StudySearchableAjaxableDomainObject other = (StudySearchableAjaxableDomainObject) arg0;
+
+	        if (this.getId().equals(other.getId())) {
+	            return true;
+	        }
+
+	        return false;
+	    }
 }

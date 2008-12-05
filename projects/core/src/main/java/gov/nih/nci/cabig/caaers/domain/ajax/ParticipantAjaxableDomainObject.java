@@ -18,7 +18,7 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
     
     private String primaryIdentifierValue;
     
-    List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
+  //  List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
     List<StudySearchableAjaxableDomainObject> studies = new ArrayList<StudySearchableAjaxableDomainObject>();
 
     //FIXME : this logic belongs to participant
@@ -73,9 +73,13 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
 	public void addStudy(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject) {
         if (getObjectById(this.getStudies(), studySearchableAjaxableDomainObject.getId()) == null) {
         	getStudies().add(studySearchableAjaxableDomainObject);
+        } else {
+        	getStudies().remove(studySearchableAjaxableDomainObject);
+        	getStudies().add(studySearchableAjaxableDomainObject);
         }
 
     }
+	/*
     public List<StudySiteAjaxableDomainObject> getStudySites() {
         return studySites;
     }
@@ -85,7 +89,8 @@ public class ParticipantAjaxableDomainObject extends AbstractAjaxableDomainObjec
             getStudySites().add(studySiteAjaxableDomainObject);
         }
 
-    }    
+    }   
+    */
     protected AbstractAjaxableDomainObject getObjectById(List<? extends AbstractAjaxableDomainObject> ajaxableDomainObjects, Integer id) {
         for (AbstractAjaxableDomainObject object : ajaxableDomainObjects) {
             if (object.getId().equals(id)) {

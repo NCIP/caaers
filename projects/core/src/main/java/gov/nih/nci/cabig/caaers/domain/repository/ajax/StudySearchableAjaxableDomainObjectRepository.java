@@ -55,6 +55,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
             studySearchableAjaxableDomainObject.setPrimaryIdentifierValue((String) o[2]);
         }
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
+        updateCoordinatingCenter(studySearchableAjaxableDomainObject, o);
         updateStudySite(studySearchableAjaxableDomainObject, o);
         updateStudyPersonnel(studySearchableAjaxableDomainObject, o);
 
@@ -65,13 +66,15 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
         studySearchableAjaxableDomainObject.setPhaseCode((String) o[4]);
         studySearchableAjaxableDomainObject.setStatus((String) o[5]);
         updateFundingSponsor(studySearchableAjaxableDomainObject, o);
+        updateCoordinatingCenter(studySearchableAjaxableDomainObject, o);
 
         updateStudySite(studySearchableAjaxableDomainObject, o);
         updateStudyPersonnel(studySearchableAjaxableDomainObject, o);
     }
 
     private void updateStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
-        if (!StringUtils.isBlank((String) o[7]) && (StringUtils.equals((String) o[9], "SST") || StringUtils.equals((String) o[9], "SCC"))) {
+        //if (!StringUtils.isBlank((String) o[7]) && (StringUtils.equals((String) o[9], "SST") || StringUtils.equals((String) o[9], "SCC"))) {
+        if (!StringUtils.isBlank((String) o[7]) && (StringUtils.equals((String) o[9], "SST"))) {
             StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
             studySiteAjaxableDomainObject.setId((Integer) o[8]);
             studySiteAjaxableDomainObject.setName((String) o[7]);
@@ -92,6 +95,11 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
         }
     }
 
+    private void updateCoordinatingCenter(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
+        if (!StringUtils.isBlank((String) o[12])) {
+            studySearchableAjaxableDomainObject.setCoordinatingCenterCode((String) o[12]);
+        }
+    }    
 
     protected Class getObjectClass() {
         return StudySearchableAjaxableDomainObject.class;
