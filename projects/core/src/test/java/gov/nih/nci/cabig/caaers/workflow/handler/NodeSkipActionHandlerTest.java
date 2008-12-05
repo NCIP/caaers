@@ -1,17 +1,21 @@
 package gov.nih.nci.cabig.caaers.workflow.handler;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.easymock.classextension.EasyMock;
-
-import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.workflow.NotificationRecipient;
-import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import org.jbpm.graph.def.Node;
+import org.jbpm.graph.def.ProcessDefinition;
+import org.jbpm.graph.exe.ExecutionContext;
+import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.graph.exe.Token;
 /**
  * 
  * @author Biju Joseph
@@ -19,54 +23,92 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
  */
 public class NodeSkipActionHandlerTest extends CaaersNoSecurityTestCase {
 	
-	private UserDao userDao;
-	private WorkflowConfigDao wfConfigDao;
-	private WorkflowConfig wfConfig;
 	
 	private String taskDefName = "MyTask";
 	private String emailAddress = "biju.joseph@semanticbits.com";
 	
 	private NodeSkipActionHandler handler;
+	private WorkflowServiceImpl wfService;
 	
+	TaskConfig tConfig;
 	
-	@Override
+
 	protected void setUp() throws Exception {
 		super.setUp();
-		userDao = registerDaoMockFor(UserDao.class);
-		wfConfigDao = registerDaoMockFor(WorkflowConfigDao.class);
-		wfConfig = registerMockFor(WorkflowConfig.class);
 		handler = new NodeSkipActionHandler();
-		handler.setUserDao(userDao);
-		handler.setWorkflowConfigDao(wfConfigDao);
+		wfService = registerMockFor(WorkflowServiceImpl.class);
+		
+		handler.setWorkflowService(wfService);
+	}
+	
+
+	
+	
+	public void testExecute_NotApplicable_Case() throws Exception {
+		String wfDefName = "Test";
+		String taskDefName = "a1";
+		ProcessDefinition pDef = new ProcessDefinition();
+		pDef.setName(wfDefName);
+		
+		ProcessInstance pInstance = registerMockFor(ProcessInstance.class);
+		Node n = registerMockFor(Node.class);
+		Token token = registerMockFor(Token.class);
+		tConfig = Fixtures.createTaskConfig(taskDefName, false);
+		
+		ExecutionContext context = registerMockFor(ExecutionContext.class);
+		EasyMock.expect(context.getProcessDefinition()).andReturn(pDef);
+		EasyMock.expect(context.getProcessInstance()).andReturn(pInstance);
+		EasyMock.expect(pInstance.getRootToken()).andReturn(token);
+		EasyMock.expect(token.getNode()).andReturn(n);
+		EasyMock.expect(n.getName()).andReturn(taskDefName);
+		
+		EasyMock.expect(wfService.findTaskConfig(wfDefName, taskDefName)).andReturn(tConfig);
+		n.leave(context);
+		replayMocks();
+		handler.execute(context);
+		verifyMocks();
 		
 	}
 	
 
-	public void testFetchTaskAssignees() {
-		NotificationRecipient nfR = new NotificationRecipient();
-		nfR.setName(emailAddress);
-		ArrayList<NotificationRecipient> recipients = new ArrayList<NotificationRecipient>();
-		recipients.add(nfR);
+	public void testExecute_Applicable_Case() throws Exception {
+		String wfDefName = "Test";
+		String taskDefName = "a1";
+		ProcessDefinition pDef = new ProcessDefinition();
+		pDef.setName(wfDefName);
 		
-		ResearchStaff staff = new ResearchStaff();
-		staff.setLoginId("biju");
+		ProcessInstance pInstance = registerMockFor(ProcessInstance.class);
+		Node n = registerMockFor(Node.class);
+		Token token = registerMockFor(Token.class);
+		tConfig = Fixtures.createTaskConfig(taskDefName, true);
 		
-		EasyMock.expect(wfConfig.getNotificationRecipientsForTask(taskDefName)).andReturn(recipients);
-		EasyMock.expect(userDao.getByEmailAddress(emailAddress)).andReturn(staff);
+		ExecutionContext context = registerMockFor(ExecutionContext.class);
+		EasyMock.expect(context.getProcessDefinition()).andReturn(pDef);
+		EasyMock.expect(context.getProcessInstance()).andReturn(pInstance);
+		EasyMock.expect(pInstance.getRootToken()).andReturn(token);
+		EasyMock.expect(token.getNode()).andReturn(n);
+		EasyMock.expect(n.getName()).andReturn(taskDefName);
+		
+		EasyMock.expect(wfService.findTaskConfig(wfDefName, taskDefName)).andReturn(tConfig);
+		
+		List<User> users = new ArrayList<User>();
+		User u1 = new ResearchStaff();
+		u1.setLoginId("joel@efg.com");
+		users.add(u1);
+		
+		EasyMock.expect(wfService.findTaskAssignees(wfDefName, taskDefName)).andReturn(users);
+		
+		wfService.createTaskInstances(context, users);
 		
 		replayMocks();
-		
-		List<String> assignees = handler.fetchTaskAssignees(wfConfig, taskDefName);
-		
+		handler.execute(context);
 		verifyMocks();
-		assertTrue(assignees.size() == 1);
-		assertEquals(assignees.get(0), "biju");
+		
 	}
-	
 	
 	public void testDependencyInjectionOnBean(){
 		handler = (NodeSkipActionHandler)getDeployedApplicationContext().getBean("nodeSkipActionHandler");
-		assertTrue(handler.getWorkflowConfigDao() != null);
+		assertTrue(handler.getWorkflowService() != null);
 	}
 
 }

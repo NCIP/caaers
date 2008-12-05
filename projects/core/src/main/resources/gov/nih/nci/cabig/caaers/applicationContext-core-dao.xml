@@ -62,8 +62,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.NotificationRecipient</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleRecipient</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.Assignee</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Lab</value>
                 <value>gov.nih.nci.cabig.caaers.domain.LabLoad</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Agent</value>

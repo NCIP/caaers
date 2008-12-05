@@ -12,6 +12,75 @@
 		<transition to="Publish Report For Review"></transition>
 	</start-state>
 
+	<node name="Ready For Review">
+		<description>
+			This node will immediately transition to one of its next state, based on the job data vairables.
+State associated with this Node is READY4REVIEW
+		</description>
+		<event type="node-enter">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+				 	<targetBean>nodeSkipActionHandler</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 1 Review" name="Level 1 Review"></transition>
+		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Publish Report For Review">
+		<event type="node-enter">
+		<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+		 	<targetBean>nodeSkipActionHandler</targetBean>
+    		<factoryKey>jbpmConfiguration</factoryKey>
+		</action>
+		</event>
+		<transition to="Ready For Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Perform Level 1 Review">
+		<event type="node-enter">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+				 	<targetBean>nodeSkipActionHandler</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Perform Level 2 Review">
+		<event type="node-enter">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+				 	<targetBean>nodeSkipActionHandler</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Review Completed" name="Review Complete"></transition>
+		<transition to="Provide Additional Info for Second Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for First Review">
+		<event type="node-enter">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+				 	<targetBean>nodeSkipActionHandler</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 1 Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for Second Review">
+		<event type="node-enter">
+		<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+			 	<targetBean>nodeSkipActionHandler</targetBean>
+    			<factoryKey>jbpmConfiguration</factoryKey>
+		</action>
+		</event>
+		<transition to="Perform Level 2 Review" name="Publish For Review"></transition>
+	</node>
 
 	<state name="Review Completed">
 		<description>
@@ -19,51 +88,15 @@
 When the Routine Period (is locked), it can go to end state. 
 The state associated with this task is &quot;REVIEW_COMPLETE&quot;
 		</description>
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
+		<event type="node-enter">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="nodeSkipActionHandler">
+				 	<targetBean>nodeSkipActionHandler</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
 		<transition to="Locked" name="Lock"></transition>
 		<transition to="Publish Report For Review" name="To Draft/Info"></transition>
 	</state>
-
-	<node name="Ready For Review">
-		<description>
-			This node will immediately transition to one of its next state, based on the job data vairables.
-State associated with this Node is READY4REVIEW
-		</description>
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Perform Level 1 Review" name="Level 1 Review"></transition>
-		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
-		<transition to="Publish Report For Review" name="Cancel Review"></transition>
-	</node>
-
-	<node name="Publish Report For Review">
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Ready For Review" name="Publish For Review"></transition>
-	</node>
-
-	<node name="Perform Level 1 Review">
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
-		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
-		<transition to="Publish Report For Review" name="Cancel Review"></transition>
-	</node>
-
-	<node name="Perform Level 2 Review">
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Review Completed" name="Review Complete"></transition>
-		<transition to="Provide Additional Info for Second Review" name="Additional Info Needed"></transition>
-		<transition to="Publish Report For Review" name="Cancel Review"></transition>
-	</node>
-
-	<node name="Provide Additional Info for First Review">
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Perform Level 1 Review" name="Publish For Review"></transition>
-	</node>
-
-	<node name="Provide Additional Info for Second Review">
-		<event type="node-enter"><action class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler" config-type="bean" name="nodeSkipActionHandler"></action></event>
-		<transition to="Perform Level 2 Review" name="Publish For Review"></transition>
-	</node>
-
 
 	<end-state name="Locked">
 		<description>

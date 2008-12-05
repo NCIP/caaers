@@ -31,9 +31,9 @@ implements MutableDomainObjectDao<WorkflowConfig>{
      * Get the list of WorkflowConfigs based on the workflowDefinitionName.
      */
     @SuppressWarnings("unchecked")
-	public List<WorkflowConfig> getByWorkflowDefinitionName(String workflowDefinitionName) {
+	public  WorkflowConfig getByWorkflowDefinitionName(String workflowDefinitionName) {
         List<WorkflowConfig> results = getHibernateTemplate().find("from WorkflowConfig where workflowDefinitionName= ?", workflowDefinitionName);
-        return results;
+        return (results == null || results.size() < 1) ? null : results.get(0);
     }
 
 }

@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.LoginPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordCreationPolicy;
 import gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 
@@ -448,11 +449,20 @@ public class Fixtures {
 	   return rd;
    }
    
-   public static TaskConfig createTaskConfig(String statusName, Boolean applicable){
+   public static TaskConfig createTaskConfig(String taskNodeName, Boolean applicable){
 	   TaskConfig tc = new TaskConfig();
-	   tc.setStatusName(statusName);
+	   tc.setTaskName(taskNodeName);
 	   tc.setApplicable(applicable);
 	   return tc;
 	   
+   }
+   
+   public static WorkflowConfig createWorkflowConfig(String wfDefName){
+	   WorkflowConfig wfConfig = new WorkflowConfig();
+	   wfConfig.setWorkflowDefinitionName(wfDefName);
+	   wfConfig.addTaskConfigs(createTaskConfig("a1", true));
+	   wfConfig.addTaskConfigs(createTaskConfig("b1", false));
+	   wfConfig.addTaskConfigs(createTaskConfig("c1", true));
+	   return wfConfig;
    }
 }

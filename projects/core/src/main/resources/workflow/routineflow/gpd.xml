@@ -1,20 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="routineflow" width="1062" height="688">
+<root-container name="routineflow" width="1221" height="688">
   <node name="Start Routine Report Flow" x="301" y="8" width="288" height="36">
     <edge>
       <label x="5" y="-10"/>
-    </edge>
-  </node>
-  <node name="Review Completed" x="311" y="553" width="265" height="36">
-    <edge>
-      <label x="5" y="-10"/>
-    </edge>
-    <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-365" h1="2" w2="-368" h2="453"/>
-      <bendpoint w1="-365" h1="-295" w2="-368" h2="156"/>
-      <bendpoint w1="-366" h1="-451" w2="-369" h2="0"/>
     </edge>
   </node>
   <node name="Ready For Review" x="323" y="206" width="245" height="36">
@@ -24,11 +13,13 @@
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="-276" h1="0" w2="-279" h2="-223"/>
+      <bendpoint w1="-373" h1="104" w2="-376" h2="-119"/>
       <bendpoint w1="-273" h1="230" w2="-276" h2="7"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="-180" h1="3" w2="-181" h2="107"/>
+      <bendpoint w1="-199" h1="-52" w2="-200" h2="52"/>
       <bendpoint w1="-182" h1="-97" w2="-183" h2="7"/>
     </edge>
   </node>
@@ -42,13 +33,13 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="216" h1="37" w2="-242" h2="39"/>
+      <label x="-60" y="-9"/>
+      <bendpoint w1="296" h1="35" w2="-330" h2="37"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="-208" h1="-2" w2="-207" h2="209"/>
-      <bendpoint w1="-209" h1="-116" w2="-208" h2="95"/>
+      <bendpoint w1="-243" h1="-124" w2="-242" h2="87"/>
       <bendpoint w1="-208" h1="-216" w2="-207" h2="-5"/>
     </edge>
   </node>
@@ -57,25 +48,37 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="224" h1="36" w2="-235" h2="37"/>
+      <label x="-60" y="-3"/>
+      <bendpoint w1="319" h1="43" w2="-295" h2="42"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="-243" h1="0" w2="-241" h2="327"/>
+      <bendpoint w1="-273" h1="-153" w2="-271" h2="174"/>
       <bendpoint w1="-246" h1="-320" w2="-244" h2="7"/>
     </edge>
   </node>
-  <node name="Provide Additional Info for First Review" x="751" y="311" width="308" height="36">
+  <node name="Provide Additional Info for First Review" x="912" y="302" width="308" height="36">
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-245" h1="-36" w2="213" h2="-38"/>
+      <label x="-79" y="-23"/>
+      <bendpoint w1="-313" h1="-46" w2="313" h2="-48"/>
     </edge>
   </node>
-  <node name="Provide Additional Info for Second Review" x="756" y="428" width="303" height="36">
+  <node name="Provide Additional Info for Second Review" x="911" y="430" width="303" height="36">
+    <edge>
+      <label x="-52" y="-26"/>
+      <bendpoint w1="-314" h1="-42" w2="300" h2="-41"/>
+    </edge>
+  </node>
+  <node name="Review Completed" x="311" y="553" width="265" height="36">
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="-247" h1="-42" w2="212" h2="-43"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-365" h1="2" w2="-368" h2="453"/>
+      <bendpoint w1="-426" h1="-295" w2="-429" h2="156"/>
+      <bendpoint w1="-366" h1="-451" w2="-369" h2="0"/>
     </edge>
   </node>
   <node name="Locked" x="324" y="651" width="250" height="36"/>

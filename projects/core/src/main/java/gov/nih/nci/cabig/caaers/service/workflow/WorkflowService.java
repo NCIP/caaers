@@ -1,5 +1,7 @@
-package gov.nih.nci.cabig.caaers.workflow;
+package gov.nih.nci.cabig.caaers.service.workflow;
 
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ public interface WorkflowService{
 	/*
 	 *  This method is used to create a bunch of TaskInstances for the actors involved
 	 */
-	public void createTaskInstances(ExecutionContext context, ArrayList<String> taskAssigneesList);
+	public void createTaskInstances(ExecutionContext context, List<User> taskAssigneesList);
 	
 	/*
 	 *  This method returns the list of active tasks for a given userId
@@ -51,5 +53,21 @@ public interface WorkflowService{
 	public void setSessionFactory(SessionFactory sessionFactory);
 	
 	public List<String> nextTransitions(String workflowDefinitionName, Long workflowId);
+	
+	/**
+	 * This method is used to identify the assignees configured on the task. 
+	 * @param taskNodeName
+	 * @return
+	 */
+	public List<User> findTaskAssignees(String workflowDefinitionName, String taskNodeName);
+	
+	/**
+	 * This method returns the task configuration identified by the taskNodeName, 
+	 * associated to the workflow identified ty workflowDefinitionName
+	 * @param workflowDefinitionName
+	 * @param taskNodeName
+	 * @return
+	 */
+	public TaskConfig findTaskConfig(String workflowDefinitionName, String taskNodeName);
 	
 }

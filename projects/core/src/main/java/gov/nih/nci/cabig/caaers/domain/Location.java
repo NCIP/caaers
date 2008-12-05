@@ -10,7 +10,9 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  * @author Sameer Sawant
  */
 public enum Location implements CodedEnum<Integer> {
-	STUDY_SITE(1), COORDINATING_CENTER(2), ALL(3);
+	STUDY_SITE(1), 
+	COORDINATING_CENTER(2), 
+	ALL(3);
 
     private Integer code;
 

@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
 
 /**
@@ -23,7 +22,6 @@ import org.hibernate.annotations.Parameter;
  * @author biju
  * @author Sameer Sawant
  */
-
 @Entity
 @Table(name = "workflow_configuration")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_workflow_configuration_id")})
@@ -54,9 +52,8 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	
 	@OneToMany
     @JoinColumn(name = "workflow_config_id", nullable = false)
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
 	public List<TaskConfig> getTaskConfigs() {
-		if(this.taskConfigs == null)this.taskConfigs = new ArrayList<TaskConfig>();
 		return taskConfigs;
 	}
 	
@@ -65,7 +62,8 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	}
 	
 	public void addTaskConfigs(TaskConfig taskConfig){
-		getTaskConfigs().add(taskConfig);
+		if(taskConfigs == null) this.taskConfigs = new ArrayList<TaskConfig>();
+		taskConfigs.add(taskConfig);
 	}
 	
 	public Boolean getEnabled() {
@@ -79,17 +77,20 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	@Transient
 	public boolean isTaskActive(String name){
 		for(TaskConfig tc: getTaskConfigs()){
-			if(tc.getStatusName().equals(name) && tc.getApplicable())
+			if(tc.getTaskName().equals(name) && tc.getApplicable())
 				return true;
 		}
 		return false;
 	}
 	
-	@Transient
-	public List<NotificationRecipient> getNotificationRecipientsForTask(String taskName){
-		for(TaskConfig tc: getTaskConfigs()){
-			if(tc.getStatusName().equals(taskName))
-				return tc.getNotificationRecipients();
+	/**
+	 * This method returns the task configuration, identified by the <b>taskNodeName</b>.
+	 * @param taskNodeName
+	 * @return
+	 */
+	public TaskConfig findTaskConfig(String taskNodeName){
+		for(TaskConfig taskConfig : getTaskConfigs()){
+			if(taskConfig.getTaskName().equals(taskNodeName)) return taskConfig;
 		}
 		return null;
 	}
