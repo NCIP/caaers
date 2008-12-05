@@ -24,7 +24,7 @@ public class SearchStudyAjaxFacadeTest extends WebTestCase {
         StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
         studySiteAjaxableDomainObject.setNciInstituteCode("NCI");
         
-        participantAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
+      //  participantAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
         
         //searchStudyAjaxFacade.setParticipantAjaxableDomainObjectRepository(participantAjaxableDomainObjectRepository);
     }
