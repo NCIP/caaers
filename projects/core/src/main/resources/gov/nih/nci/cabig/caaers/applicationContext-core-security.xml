@@ -330,20 +330,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <constructor-arg value="ACCESS"/>
     </bean>
 
-<!--
-    <bean id="studySiteSiteSecurityAuthorizationCheckProvider"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSiteSecurityCSMGroupAuthorizationCheckProvider">
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
-    </bean>
-
-    <bean id="participantSecurityCSMGroupAuthorizationCheckProvider"
-          class="gov.nih.nci.cabig.caaers.accesscontrol.ParticipantSecurityCSMGroupAuthorizationCheckProvider">
-        <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="csmGroupAuthorizationCheck" ref="csmGroupAuthorizationCheck"/>
-    </bean>
--->
-
+     
     <bean id="participantSiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ParticipantSiteSecurityFilterer">
           <property name="researchStaffDao" ref="researchStaffDao"/>
@@ -364,16 +351,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="studySiteSecurityFilterer"/>
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
-               
-                                                       
-               <!--
-        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"        
-               value-ref="studySiteSiteSecurityCSMGroupAuthorizationCheckProvider"/>               
-        <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
-               value-ref="participantSecurityCSMGroupAuthorizationCheckProvider"/>  
-        <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
-               value-ref="participantSecurityCSMGroupAuthorizationCheckProvider"/> 
-               -->                            
     </util:map>
 
     <!--> oraganization security beans end here  -->
