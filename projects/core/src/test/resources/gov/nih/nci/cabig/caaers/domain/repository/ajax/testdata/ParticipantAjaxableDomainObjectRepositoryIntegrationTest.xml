@@ -9,6 +9,7 @@
     <!-- TEMP: purge LUT to avoid constraint violations -->
     <ctc_grades/>
     <!-- TEMP: purge LUT to avoid constraint violations -->
+    
     <PARTICIPANTS
             id="-99"
             instituitional_patient_number="P001"
@@ -63,14 +64,14 @@
             nci_institute_code="NCI"/>
     <ORGANIZATIONS
             id="-1002"
-            name="DCP "
+            name="D C P "
             nci_institute_code="DCP"/>
 
     <STUDIES
             id="-2001"
             multi_institution_indicator="0"
             short_title="New Study"
-            long_title="Long Title"
+            long_title="New Title"
             description="Description"
             load_status="1"
             />
@@ -112,8 +113,8 @@
 
     <STUDY_ORGANIZATIONS
             id="-3001"
-            site_id="-1001"
-            study_id="-2001"
+            site_id="-1002"
+            study_id="-2000"
             type="SST"
             />
     <STUDY_ORGANIZATIONS
@@ -133,8 +134,8 @@
     <PARTICIPANT_ASSIGNMENTS
             id="-11"
             date_of_enrollment="2006-12-12"
-            participant_id="-99"
-            study_site_id="-3000"
+            participant_id="-100"
+            study_site_id="-3001"
             load_status="1"/>
 
     <!-- stu_id="-999" to overcome metadata on first row issue -->
@@ -177,6 +178,29 @@
             participant_id="-99"
             system_name="system name2"
             discriminator_column="2"/>
+            
+    <research_staffs
+    	id = "-1"
+    	site_id = "-1002"
+    	email_address = "sr@yahoo.com"
+    	phone_number = "123-098-0980"
+    />
+    <research_staffs
+    	id = "-2"
+    	site_id = "-1002"
+    	email_address = "sr@gmail.com"
+    	phone_number = "123-098-0980"    	
+    />    
+    <study_personnel
+    	id = "-111"
+    	research_staffs_id = "-1"
+    	study_sites_id = "-3000"
+    />
+    <study_personnel
+    	id = "-112"
+    	research_staffs_id = "-2"
+    	study_sites_id = "-3001"
+    />
 
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs/>
