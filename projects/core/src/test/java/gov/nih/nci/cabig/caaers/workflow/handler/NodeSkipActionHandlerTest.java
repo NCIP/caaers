@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.workflow.handler;
 
-import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -21,7 +21,7 @@ import org.jbpm.graph.exe.Token;
  * @author Biju Joseph
  *
  */
-public class NodeSkipActionHandlerTest extends CaaersNoSecurityTestCase {
+public class NodeSkipActionHandlerTest extends AbstractTestCase {
 	
 	
 	private String taskDefName = "MyTask";
@@ -106,9 +106,5 @@ public class NodeSkipActionHandlerTest extends CaaersNoSecurityTestCase {
 		
 	}
 	
-	public void testDependencyInjectionOnBean(){
-		handler = (NodeSkipActionHandler)getDeployedApplicationContext().getBean("nodeSkipActionHandler");
-		assertTrue(handler.getWorkflowService() != null);
-	}
-
+	
 }
