@@ -125,8 +125,10 @@ public class StudySearchableAjaxableDomainObjectQuery extends AbstractAjaxableDo
 
     public void filterByParticipant(Integer participantId) {
 
-        leftJoin("ss.studyParticipantAssignments as spa join spa.participant as p");
+        leftJoin("ss.studyParticipantAssignments as spa left join spa.participant as p");
+        //to get reserch staff for sites not part of assignment 
         andWhere("p.id =:" + PARTICIPANT_ID);
+        //andWhere("(p.id =:" + PARTICIPANT_ID +" or p.id is null)");
         setParameter(PARTICIPANT_ID, participantId);
 
     }

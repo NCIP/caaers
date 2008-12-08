@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
@@ -18,6 +21,8 @@ import org.acegisecurity.userdetails.User;
 public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 	
 	private ResearchStaffDao researchStaffDao;
+	private StudyDao studyDao;
+
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		
@@ -109,11 +114,28 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		return false;
 	}
 	private boolean isAuthorized(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
-		if (study.getStudyPersonnelIds().contains(researchStaffId)) return true;
+		// TODO
+		// Query is not doing outer join on research staff , need to fix the query. 
+		// temp fix is getting study object for DAO.
+		//if (study.getStudyPersonnelIds().contains(researchStaffId)) return true;
+		
+		Study s = studyDao.getById(study.getId()) ;
+		List<StudyOrganization> soList = s.getStudyOrganizations();
+		for (StudyOrganization so:soList) {
+			List<StudyPersonnel> spList = so.getStudyPersonnels();
+			for (StudyPersonnel sp:spList) {
+				if (sp.getResearchStaff().getId().equals(researchStaffId)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
+	}
+	public void setStudyDao(StudyDao studyDao) {
+		this.studyDao = studyDao;
 	}
 
 }
