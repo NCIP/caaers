@@ -56,7 +56,7 @@ public class ParticipantAjaxableDomainObjectRepositoryIntegrationTest extends Ca
         // partial identifier type
         participantAjaxableDomainObjectQuery = new ParticipantAjaxableDomainObjectQuery();
         participantAjaxableDomainObjectQuery.filterByStudy(-2000);
-        participantAjaxableDomainObjectQuery.filterParticipantsWithMatchingText("Scott");
+        participantAjaxableDomainObjectQuery.filterParticipantsWithMatchingText("cosey");
         participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(participantAjaxableDomainObjectQuery);
 
         assertEquals("Wrong number of results", 1, participantAjaxableDomainObjects.size());
@@ -83,7 +83,7 @@ public class ParticipantAjaxableDomainObjectRepositoryIntegrationTest extends Ca
 
         // lastName
         participantAjaxableDomainObjectQuery = new ParticipantAjaxableDomainObjectQuery();
-        participantAjaxableDomainObjectQuery.filterParticipantsWithMatchingText("scott");
+        participantAjaxableDomainObjectQuery.filterParticipantsWithMatchingText("cosey");
 
         participantAjaxableDomainObjects = participantAjaxableDomainObjectRepository.findParticipants(participantAjaxableDomainObjectQuery);
 
