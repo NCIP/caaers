@@ -339,6 +339,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="studySiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSecurityFilterer">
         <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="studyDao" ref="studyDao"/>
     </bean>
             
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
