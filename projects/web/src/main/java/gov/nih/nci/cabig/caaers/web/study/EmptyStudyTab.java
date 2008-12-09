@@ -19,8 +19,7 @@ public class EmptyStudyTab extends StudyTab {
       
     	Map<String, Object> refdata = super.referenceData();
     	SolicitedEventTabTable table = new SolicitedEventTabTable(study);
-    	refdata.put("listOfSolicitedAERows",table.getListOfSolicitedAERows());  
-        System.out.println("listOfSolicitedAERows:"+ table.getListOfSolicitedAERows());
+    	refdata.put("listOfSolicitedAERows", table.getListOfSolicitedAERows());  
     	return refdata;
     }
     

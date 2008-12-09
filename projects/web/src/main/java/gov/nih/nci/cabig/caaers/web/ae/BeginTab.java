@@ -7,6 +7,8 @@ import java.util.Map;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Rhett Sutphin
  */
@@ -23,6 +25,11 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         super("Select subject and study", "Begin", "ae/selectAssignment");
         this.instructions = instructions;
 
+    }
+
+    public void onBind(HttpServletRequest request, T command, Errors errors) {
+        super.onBind(request, command, errors);
+        command.getStudy().getExpectedAECtcTerms().size();
     }
 
     @Override

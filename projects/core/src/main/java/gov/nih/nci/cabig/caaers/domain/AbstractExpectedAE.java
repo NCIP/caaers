@@ -13,11 +13,11 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "study_terms")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_study_term_id")})
+@Table(name = "expected_aes")
+@GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_expected_aes_id")})
 @DiscriminatorColumn(name = "term_type", discriminatorType = DiscriminatorType.STRING)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public abstract class AbstractStudyTerm<T extends DomainObject> extends AbstractMutableDomainObject {
+public abstract class AbstractExpectedAE<T extends DomainObject> extends AbstractMutableDomainObject {
     private T term;
     private Study study;
 
@@ -41,13 +41,16 @@ public abstract class AbstractStudyTerm<T extends DomainObject> extends Abstract
     }
 
     @Transient
+    public abstract boolean isOtherRequired();
+    
+    @Transient
     public abstract boolean isMedDRA();
 
     @Transient
     public abstract String getFullName();
 
-    public AbstractStudyTerm copy() {
-        AbstractStudyTerm abstractAdverseEventTerm = (AbstractStudyTerm) BeanUtils.instantiateClass(getClass());
+    public AbstractExpectedAE copy() {
+        AbstractExpectedAE abstractAdverseEventTerm = (AbstractExpectedAE) BeanUtils.instantiateClass(getClass());
         BeanUtils.copyProperties(this, abstractAdverseEventTerm, new String[]{"id", "gridId", "version", "study"});
         return abstractAdverseEventTerm;
     }

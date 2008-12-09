@@ -133,8 +133,7 @@ public class PatientDetailsTab extends AeTab {
      * 
      */
     private void createGeneralFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-    	  creator.createFieldGroup("participant", null, "participantHistory",
-    	            createParticipantMeasureField("height", "Height",
+    	  creator.createFieldGroup("participant", null, "participantHistory", createParticipantMeasureField("height", "Height",
     	            		WebUtils.collectOptions(configurationProperty.getMap().get("heightUnitsRefData"), "code", "desc")),
     	            createParticipantMeasureField("weight", "Weight",
     	            		WebUtils.collectOptions(configurationProperty.getMap().get("weightUnitsRefData"), "code", "desc"))
@@ -251,9 +250,7 @@ public class PatientDetailsTab extends AeTab {
             
         );
 
-        creator.createRepeatingFieldGroup("ptAgent", "saeReportPriorTherapies",
-        		InputFieldFactory.createTextField("priorTherapyAgents.chemoAgent", "Agent", false)	
-        );
+        creator.createRepeatingFieldGroup("ptAgent", "saeReportPriorTherapies", InputFieldFactory.createTextField("priorTherapyAgents.chemoAgent", "Agent", false));
     }
     
     

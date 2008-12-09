@@ -21,9 +21,12 @@
     			  So the Term column will have 3 fields when the term is OtherSpecify (for observed AE)  
     	--%>
 <tr class="ae-section ${index % 2 gt 0 ? 'odd' : 'even'}" id="ae-section-${index}" >
+
 <c:if test="${aeTermIndex gt 0}">
 	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
 </c:if>	
+
+
 <c:if test="${renderSubmittedFlag}">
 	<c:if test="${adverseEvent.submitted == true}">
 		<td><img id="ae-section-${index}-submitted-image" src="<chrome:imageUrl name="../aeSubmitted.png" />" alt="This adverse event has already been reported. An ammendment will be required if a change is made to this adverse event." title="Submitted" style="border:0" /></td>
@@ -33,63 +36,67 @@
 	</c:if>
 </c:if>
 
-	<c:if test="${isAETermOtherSpecify}">
-		<td>
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
-			<div class="divOtherMeddra">
-			<c:if test="${not isSolicitedAE}">
-				<tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
-				<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
-				<script>
-					if(${adverseEvent.lowLevelTerm != null})
-						$('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.meddraTerm}'; 
-					var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
-					AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
-					function(autocompleter, text) {
-							createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-														autocompleter.setChoices(values)})
-					},
-					function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
-					
-				</script>
-			</c:if>
-			<%-- <c:if test="${isSolicitedAE}">
-				<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeTerm"/>
-			</c:if> --%>	
-			</div>
-			<div class="divNotes">
-			${fieldGroups[mainGroup].fields[aeTermIndex + 2].displayName}
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 2]}" cssClass="aeNotes" />
-			</div>
-		</td>
-        <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
-            <caaers:renderFilter elementID="${field.propertyName}">
-                <td>
-                	<div class="${lpIdx.index gt 3 ? 'shortselectdiv' : 'selectdiv'}">
-                		<tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}" />
-					<script>
-						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
-							hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true) 
-						});
-						Element.observe('${field.propertyName}', 'change' ,function(evt){ 
-							hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false) 
-						});
-						Element.observe('${field.propertyName}', 'mouseup' ,function(evt){ 
-							showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true) 
-						});
-						Element.observe('${field.propertyName}', 'mousedown' ,function(evt){ 
-							showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false) 
-						} );
-					</script>
 
-					</div>
-				</td>
-            </caaers:renderFilter>
-        </c:forEach>
-	</c:if>
-	<c:if test="${not isAETermOtherSpecify}">
+<c:if test="${isAETermOtherSpecify}">
+    <td>
+        <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
+        <div class="divOtherMeddra">
+        <c:if test="${not isSolicitedAE}">
+            <tags:requiredIndicator/>${fieldGroups[mainGroup].fields[aeTermIndex + 1].displayName}
+            <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeOtherMeddra om${adverseEvent.adverseEventTerm.term.id}" />
+            <script>
+                if(${adverseEvent.lowLevelTerm != null})
+                    $('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}' + '-input').value = '${adverseEvent.lowLevelTerm.meddraTerm}';
+
+                var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
+                AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
+                function(autocompleter, text) {
+                        createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+                                                    autocompleter.setChoices(values)})
+                },
+                function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
+
+            </script>
+        </c:if>
+        <%-- <c:if test="${isSolicitedAE}">
+            <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 1]}" cssClass="aeTerm"/>
+        </c:if> --%>
+        </div>
+        <div class="divNotes">
+        ${fieldGroups[mainGroup].fields[aeTermIndex + 2].displayName}
+        <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex + 2]}" cssClass="aeNotes" />
+        </div>
+    </td>
+    <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 3 }" varStatus="lpIdx">
+        <caaers:renderFilter elementID="${field.propertyName}">
+            <td>
+                <div class="${lpIdx.index gt 3 ? 'shortselectdiv' : 'selectdiv'}">
+                    <tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}" />
+                <script>
+                    Element.observe('${field.propertyName}', 'blur' ,function(evt){
+                        hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true)
+                    });
+                    Element.observe('${field.propertyName}', 'change' ,function(evt){
+                        hideBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false)
+                    });
+                    Element.observe('${field.propertyName}', 'mouseup' ,function(evt){
+                        showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", true)
+                    });
+                    Element.observe('${field.propertyName}', 'mousedown' ,function(evt){
+                        showBigDropdown(evt, "${lpIdx.index gt 3 ? 'shortselectbox' : 'selectbox'}", false)
+                    } );
+                </script>
+
+                </div>
+            </td>
+        </caaers:renderFilter>
+    </c:forEach>
+</c:if>
+
+
+    <c:if test="${not isAETermOtherSpecify}">
 		<td>
-			<tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
+            <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
 			<c:if test="${renderNotes}">
 				<div class="divNotes">
 				${fieldGroups[mainGroup].fields[1].displayName}
@@ -100,7 +107,7 @@
 		<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" begin="${aeTermIndex + 2}" varStatus="lpIdx">
 		  <caaers:renderFilter elementID="${field.propertyName}">
 			<td>
-				<div class="${lpIdx.index gt 2 ? 'shortselectdiv' : 'selectdiv'}">
+                <div class="${lpIdx.index gt 2 ? 'shortselectdiv' : 'selectdiv'}">
 					<tags:renderInputs field="${field}" cssClass="${lpIdx.index gt 2 ? 'shortselectbox' : 'selectbox'}"/>
 					<script>
 						Element.observe('${field.propertyName}', 'blur' ,function(evt){ 
@@ -125,7 +132,7 @@
 	<c:if test="${not isSolicitedAE}">
 		<c:if test="${not hideDeleteCtrl}">
 			<td>
-				<a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
+                <a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
 			</td>
 		</c:if>
 	</c:if>

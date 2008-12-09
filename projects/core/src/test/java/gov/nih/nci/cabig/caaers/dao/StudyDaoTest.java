@@ -4,7 +4,6 @@ import static edu.nwu.bioinformatics.commons.testing.CoreTestCase.assertContains
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.*;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.StudyQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
@@ -701,18 +700,18 @@ assertTrue(true);
 
     public void testLoadCtcBasedTerm() throws Exception {
         Study loaded = getDao().getById(-2);
-        assertNotNull("Ctc Term List is null", loaded.getStudyCTCTerms());
-        assertEquals("This StudyTerm is not Ctc", true, loaded.getStudyCTCTerms().get(0) instanceof StudyCtcTerm);
-        assertEquals("This term is not CtcTerm", true, loaded.getStudyCTCTerms().get(0).getTerm() instanceof CtcTerm);
-        assertEquals("Wrong Ctc Id", 3012, loaded.getStudyCTCTerms().get(0).getTerm().getId().intValue());
+        assertNotNull("Ctc Term List is null", loaded.getExpectedAECtcTerms());
+        assertEquals("This StudyTerm is not Ctc", true, loaded.getExpectedAECtcTerms().get(0) instanceof ExpectedAECtcTerm);
+        assertEquals("This term is not CtcTerm", true, loaded.getExpectedAECtcTerms().get(0).getTerm() instanceof CtcTerm);
+        assertEquals("Wrong Ctc Id", 3012, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
     }
 
     public void testLoadMeddraBasedTerm() throws Exception {
         Study loaded = getDao().getById(-3);
-        assertNotNull("Meddra Term List is null", loaded.getStudyMeddraTerms());
-        assertEquals("This term is not MedDRA", true, loaded.getStudyMeddraTerms().get(0) instanceof StudyMeddraLowLevelTerm);
-        assertEquals("This term is not LowLevelTerm", true, loaded.getStudyMeddraTerms().get(0).getTerm() instanceof LowLevelTerm);
-        assertEquals("Wrong Meddra Id", -11, loaded.getStudyMeddraTerms().get(0).getTerm().getId().intValue());
+        assertNotNull("Meddra Term List is null", loaded.getExpectedAEMeddraLowLevelTerms());
+        assertEquals("This term is not MedDRA", true, loaded.getExpectedAEMeddraLowLevelTerms().get(0) instanceof ExpectedAEMeddraLowLevelTerm);
+        assertEquals("This term is not LowLevelTerm", true, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm() instanceof LowLevelTerm);
+        assertEquals("Wrong Meddra Id", -11, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm().getId().intValue());
     }
 
 }

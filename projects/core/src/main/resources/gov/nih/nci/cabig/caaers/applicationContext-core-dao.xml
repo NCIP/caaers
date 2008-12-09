@@ -161,9 +161,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.report.ReportContent</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyCondition</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Condition</value>
-                <value>gov.nih.nci.cabig.caaers.domain.AbstractStudyTerm</value>
-                <value>gov.nih.nci.cabig.caaers.domain.StudyCtcTerm</value>
-                <value>gov.nih.nci.cabig.caaers.domain.StudyMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->

@@ -1,36 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.AgentDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseCategoryDao;
-import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
-import gov.nih.nci.cabig.caaers.dao.InvestigationalNewDrugDao;
-import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.SiteInvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.Agent;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCategory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.Epoch;
-import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
-import gov.nih.nci.cabig.caaers.domain.Investigator;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
-import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
+import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,43 +32,34 @@ import org.springframework.web.servlet.mvc.AbstractFormController;
 /**
  * @author Rhett Sutphin
  * @author Krikor Krumlian
+ * @author Ion C. Olaru
  */
 public class CreateStudyAjaxFacade {
 
     public static final String AJAX_REQUEST_PARAMETER = "_isAjax";
-
     public static final String AJAX_INDEX_PARAMETER = "index";
-
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
-
-    public static final String CREATE_STUDY_FORM_NAME = CreateStudyController.class.getName()
-                    + ".FORM.command";
-
-    public static final String EDIT_STUDY_FORM_NAME = EditStudyController.class.getName()
-                    + ".FORM.command";
-
-    public static final String CREATE_STUDY_REPLACED_FORM_NAME = CREATE_STUDY_FORM_NAME
-                    + ".to-replace";
-
+    public static final String CREATE_STUDY_FORM_NAME = CreateStudyController.class.getName() + ".FORM.command";
+    public static final String EDIT_STUDY_FORM_NAME = EditStudyController.class.getName() + ".FORM.command";
+    public static final String CREATE_STUDY_REPLACED_FORM_NAME = CREATE_STUDY_FORM_NAME + ".to-replace";
     public static final String EDIT_STUDY_REPLACED_FORM_NAME = EDIT_STUDY_FORM_NAME + ".to-replace";
-
     private static final Log log = LogFactory.getLog(CreateStudyAjaxFacade.class);
 
+    private static Class<?>[] CONTROLLERS = {CreateStudyController.class, EditStudyController.class};
+    public Class<?>[] controllers() {
+        return CONTROLLERS;
+    }
+    
     private AgentDao agentDao;
-
     private DiseaseCategoryDao diseaseCategoryDao;
-
     private DiseaseTermDao diseaseTermDao;
-
     private SiteInvestigatorDao siteInvestigatorDao;
-
     private ResearchStaffDao researchStaffDao;
-
     private OrganizationDao organizationDao;
-
     private InvestigationalNewDrugDao investigationalNewDrugDao;
-
     private StudyDao studyDao;
+    protected LowLevelTermDao lowLevelTermDao;
+    protected CtcTermDao ctcTermDao;
 
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
@@ -497,5 +473,194 @@ public class CreateStudyAjaxFacade {
 
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
+    }
+
+    protected void saveCommand(Object study) {
+        WebContext webContext = WebContextFactory.get();
+        Object command = null;
+
+        for (Class<?> controllerClass : controllers()) {
+            String formSessionAttributeName = controllerClass.getName() + ".FORM.command" + ".to-replace";
+            command = webContext.getSession().getAttribute(formSessionAttributeName);
+            if (command != null) webContext.getSession().setAttribute(formSessionAttributeName, study);
+            else {
+                String formSessionAttributeNameNew = controllerClass.getName() + ".FORM.command";
+                command = webContext.getSession().getAttribute(formSessionAttributeNameNew);
+                if (command != null) webContext.getSession().setAttribute(formSessionAttributeNameNew, study);
+            }
+        }
+    }
+
+    protected Object extractCommand() {
+        WebContext webContext = WebContextFactory.get();
+        Object command = null;
+        for (Class<?> controllerClass : controllers()) {
+            String formSessionAttributeName = controllerClass.getName() + ".FORM.command" + ".to-replace";
+            command = webContext.getSession().getAttribute(formSessionAttributeName);
+            if (command == null) {
+                String formSessionAttributeNameNew = controllerClass.getName() + ".FORM.command";
+                log.debug("Command not found using name " + formSessionAttributeName + ", checking for " + formSessionAttributeNameNew);
+//                System.out.println("Command not found using name " + formSessionAttributeName + ", checking for " + formSessionAttributeNameNew);
+                command = webContext.getSession().getAttribute(formSessionAttributeNameNew);
+                 if (command == null) {
+                     log.debug("Command not found using name " + formSessionAttributeNameNew);
+//                     System.out.println("Command not found using name " + formSessionAttributeNameNew);
+                 } else {
+                     log.debug("Command found using name " + formSessionAttributeNameNew);
+//                     System.out.println("Command found using name " + formSessionAttributeNameNew);
+                     break;
+                 }
+            } else {
+                log.debug("Command found using name " + formSessionAttributeName);
+//                System.out.println("Command found using name " + formSessionAttributeName);
+                break;
+            }
+        }
+        if (command == null) {
+            throw new CaaersSystemException("Could not find command in session");
+        } else {
+            return command;
+        }
+    }
+
+    private String createQueryString(Map<String, String> params) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sb.append(entry.getKey()).append('=').append(entry.getValue()).append('&');
+        }
+        return sb.toString().substring(0, sb.length() - 1);
+    }
+
+    protected String renderAjaxView(String viewName, Integer studyId, Map<String, String> params) {
+        WebContext webContext = WebContextFactory.get();
+
+        if (studyId != null) params.put("studyId", studyId.toString());
+        params.put(StudyController.AJAX_SUBVIEW_PARAMETER, viewName);
+
+        String url = String.format("%s?%s", getCurrentPageContextRelative(webContext), createQueryString(params));
+        log.debug("Attempting to return contents of " + url);
+        try {
+            String html = webContext.forwardToString(url);
+            if (log.isDebugEnabled()) log.debug("Retrieved HTML:\n" + html);
+            return html;
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e);
+        }
+    }
+
+    public AjaxOutput removeStudyTerm(int _index) {
+        Study study = (Study) extractCommand();
+        boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
+        List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
+        // System.out.println("Removing element " + _index + " out of " + studyTerms.size());
+        studyTerms.remove(_index);
+        // System.out.println("Element removed. The new size is " + studyTerms.size() + "\n\r\n\r");
+
+        int index = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms().size() : study.getExpectedAECtcTerms().size();
+        Map<String, String> params = new LinkedHashMap<String, String>();
+        index--;
+        params.put("index", Integer.toString(index));
+        params.put("isSingle", Boolean.toString(false));
+
+        AjaxOutput ajaxOutput = new AjaxOutput();
+        ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", study.getId(), params));
+
+        return ajaxOutput;
+    }
+
+    public AjaxOutput addExpectedAE(int[] listOfTermIDs) {
+
+        AjaxOutput ajaxOutput = new AjaxOutput();
+        Study study = (Study) extractCommand();
+        boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
+
+        List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
+        int index = studyTerms.size();
+
+        List<Integer> filteredTermIDs = new ArrayList<Integer>();
+        // List<String> removedTerms = new ArrayList<String>();
+
+        // the list of terms to be added
+        // filter off the terms that are already present
+        for (int id : listOfTermIDs) {
+            filteredTermIDs.add(id);
+        }
+
+/*
+        //remove from filteredTermIds, the ones that are avaliable in the Study
+        if (isMeddra) {
+            for (ExpectedAEMeddraLowLevelTerm ast : (List<ExpectedAEMeddraLowLevelTerm>) studyTerms) {
+                boolean removed = filteredTermIDs.remove(ast.getTerm().getId());
+                if (removed) removedTerms.add(ast.getFullName());
+            }
+        } else {
+            for (ExpectedAECtcTerm ast : (List<ExpectedAECtcTerm>) studyTerms) {
+                // was removed because of duplicate
+                boolean removed = filteredTermIDs.remove(ast.getTerm().getId());
+                if (removed) removedTerms.add(ast.getFullName());
+            }
+        }
+*/
+
+        if (filteredTermIDs.isEmpty()) return ajaxOutput;
+
+        for (int id : filteredTermIDs) {
+            if (isMeddra) {
+                // populate MedDRA term
+                LowLevelTerm llt = lowLevelTermDao.getById(id);
+                ExpectedAEMeddraLowLevelTerm studyllt = new ExpectedAEMeddraLowLevelTerm();
+                studyllt.setLowLevelTerm(llt);
+                study.addExpectedAEMeddraLowLevelTerm(studyllt);
+                studyllt.setStudy(study);
+            } else {
+                // properly set CTCterm
+                CtcTerm ctc = ctcTermDao.getById(id);
+                ExpectedAECtcTerm studyCtc = new ExpectedAECtcTerm();
+                studyCtc.setCtcTerm(ctc);
+                study.addExpectedAECtcTerm(studyCtc);
+                studyCtc.setStudy(study);
+            }
+        }
+
+        Study mergeStudy = study;
+        if (study.getId() != null) {
+             mergeStudy = studyDao.merge(study);
+             saveCommand(mergeStudy);
+        }
+
+        // 
+/*
+        if (!removedTerms.isEmpty()) {
+            String[] removedTermsArray = removedTerms.toArray(new String[]{});
+            ajaxOutput.setObjectContent(removedTermsArray);
+        }
+*/
+
+        Integer[] indexes = new Integer[]{index};
+        Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
+        
+        params.put("index", Integer.toString(index));
+        params.put("isSingle", Boolean.toString(true));
+        ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", mergeStudy.getId(), params));
+
+        return ajaxOutput;
+    }
+
+    public LowLevelTermDao getLowLevelTermDao() {
+        return lowLevelTermDao;
+    }
+
+    public void setLowLevelTermDao(LowLevelTermDao lowLevelTermDao) {
+        this.lowLevelTermDao = lowLevelTermDao;
+    }
+
+    public CtcTermDao getCtcTermDao() {
+        return ctcTermDao;
+    }
+
+    public void setCtcTermDao(CtcTermDao ctcTermDao) {
+        this.ctcTermDao = ctcTermDao;
     }
 }

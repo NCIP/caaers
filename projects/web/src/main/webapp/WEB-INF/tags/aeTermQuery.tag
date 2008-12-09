@@ -39,11 +39,15 @@
                 width:wWidth,
                 height:wHeight,
                 onShow:this.show.bind(this),
-                onBeforeShow:this.beforeShow.bind(this)});
+                recenterAuto:true,
+                resizable: false,
+                minimizable : false,
+                maximizable: false,
+                onBeforeShow:this.beforeShow.bind(this)
+            });
 			this.win = win;
 			win.setContent('chooseCategory');
-			win.show(true);
-			
+            win.showCenter(true);
 		},
 		initializeAutoCompleter: function() {
 
@@ -257,7 +261,7 @@
 			<input id="addTermsBtn" type="button" value="Add Terms" onClick="catSel.finishMultiTermsSelection();" />
 			</c:if>
 			 <jsp:invoke fragment="localButtons"/>
-		</div>		
+		</div>
 	</chrome:box>
 	</div>
 	</c:if>

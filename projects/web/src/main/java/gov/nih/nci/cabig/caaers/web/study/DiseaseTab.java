@@ -112,11 +112,11 @@ public class DiseaseTab extends StudyTab {
     @Override
     @SuppressWarnings("unchecked")
     public Map<String, InputFieldGroup> createFieldGroups(Study command) {
-
         return super.createFieldGroups(command);
     }
 
     private boolean checkDuplicateConditionById(Map conditions, String conditionName) {
+        if (conditionMap == null) return false;
         return (conditionMap.containsKey(conditionName));
     }
 

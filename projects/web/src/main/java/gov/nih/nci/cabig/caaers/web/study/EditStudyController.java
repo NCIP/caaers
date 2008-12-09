@@ -104,7 +104,7 @@ public class EditStudyController extends StudyController<Study> {
         flow.addTab(new TreatmentAssignmentTab());
         flow.addTab(new DiseaseTab());
         flow.addTab(new SolicitedAdverseEventTab());
-//        flow.addTab(new ExpectedAEsTab());
+        flow.addTab(new ExpectedAEsTab());
         flow.addTab(new SitesTab());
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());

@@ -12,7 +12,7 @@ import org.hibernate.annotations.CascadeType;
  */
 @Entity
 @DiscriminatorValue("meddra")
-public class StudyMeddraLowLevelTerm extends AbstractStudyTerm<LowLevelTerm> {
+public class ExpectedAEMeddraLowLevelTerm extends AbstractExpectedAE<LowLevelTerm> {
 
     private String meddraCode;
 
@@ -44,8 +44,8 @@ public class StudyMeddraLowLevelTerm extends AbstractStudyTerm<LowLevelTerm> {
     }
 
     @Override
-    public StudyMeddraLowLevelTerm copy() {
-        return (StudyMeddraLowLevelTerm) super.copy();
+    public ExpectedAEMeddraLowLevelTerm copy() {
+        return (ExpectedAEMeddraLowLevelTerm) super.copy();
     }
 
     @Override
@@ -53,4 +53,11 @@ public class StudyMeddraLowLevelTerm extends AbstractStudyTerm<LowLevelTerm> {
     public boolean isMedDRA() {
     	return true;
     }
+
+    @Override
+    @Transient
+    public boolean isOtherRequired() {
+        return false;
+    }
+
 }

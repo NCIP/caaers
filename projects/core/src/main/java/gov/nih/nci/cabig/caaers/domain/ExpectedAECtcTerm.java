@@ -5,13 +5,17 @@ import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+
 /**
  * @author Ion C. Olaru
  */
 @Entity
 @DiscriminatorValue("ctep")
-public class StudyCtcTerm extends AbstractStudyTerm<CtcTerm> {
+public class ExpectedAECtcTerm extends AbstractExpectedAE<CtcTerm> {
 
+    private LowLevelTerm otherMeddraTerm;
+    
     @OneToOne
     @JoinColumn(name = "term_id")
     @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.LOCK, CascadeType.EVICT})
@@ -44,13 +48,30 @@ public class StudyCtcTerm extends AbstractStudyTerm<CtcTerm> {
     }
 
     @Override
-    public StudyCtcTerm copy() {
-        return (StudyCtcTerm) super.copy();
+    public ExpectedAECtcTerm copy() {
+        return (ExpectedAECtcTerm) super.copy();
     }
 
     @Override
     @Transient
     public boolean isMedDRA() {
     	return false;
+    }
+
+    @Override
+    @Transient
+    public boolean isOtherRequired() {
+        if (getTerm() == null) return false;
+        return getTerm().isOtherRequired();
+    }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "low_level_term_id")
+    public LowLevelTerm getOtherMeddraTerm() {
+        return otherMeddraTerm;
+    }
+
+    public void setOtherMeddraTerm(LowLevelTerm otherMeddraTerm) {
+        this.otherMeddraTerm = otherMeddraTerm;
     }
 }

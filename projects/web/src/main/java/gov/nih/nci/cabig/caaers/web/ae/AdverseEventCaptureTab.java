@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
@@ -95,14 +91,18 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 * AdversEvent related field groups,
                 *  the fields are different for Meddra study, Ctc study and Observed AEs
                 */
+
+            Study study = cmd.getStudy();
+
             mainFieldFactory = new MultipleFieldGroupFactory(MAIN_FIELD_GROUP, "adverseEvents");
-            boolean isMeddraStudy = cmd.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+            boolean isMeddraStudy = study.getAeTerminology().getTerm() == Term.MEDDRA;
 
             int size = cmd.getAdverseEvents().size();
             for (int i = 0; i < size; i++) {
                 AdverseEvent ae = cmd.getAdverseEvents().get(i);
                 if (ae == null) continue;
-               
+
+                if (ae.getExpected() == null) if (study.hasCTCTerm(ae.getAdverseEventCtcTerm().getCtcTerm())) ae.setExpected(true);
                 mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term", true)); //Term
 
                 if (!ae.getSolicited()) {
@@ -123,16 +123,14 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
                 //grade
                 if (isMeddraStudy) {
-                        mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Meddra")));
+                    mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Meddra")));
                 } else {
-                        mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Ctc")));
+                    mainFieldFactory.addField(InputFieldFactory.createSelectField("grade", "Grade", false, createGradeOptions(ae, "Ctc")));
                 }
 
-               	mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization",
-                        "Hospitalization", false, createHospitalizationOptions()));
-                mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false,
-                        createExpectedOptions()));
+                mainFieldFactory.addField(InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions()));
+                mainFieldFactory.addField(InputFieldFactory.createSelectField("hospitalization", "Hospitalization", false, createHospitalizationOptions()));
+                mainFieldFactory.addField(InputFieldFactory.createSelectField("expected", "Expected", false, createExpectedOptions()));
                 mainFieldFactory.addField(InputFieldFactory.createSelectField("serious", "Serious", false, createSeriousOptions()));
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
                 mainFieldFactory.addFieldGroup(fieldGroup);

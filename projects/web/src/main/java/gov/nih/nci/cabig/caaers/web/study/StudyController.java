@@ -42,7 +42,8 @@ import org.springframework.web.servlet.ModelAndView;
 public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
 
     private static final Log log = LogFactory.getLog(StudyController.class);
-
+    public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
+    
     protected StudyDao studyDao;
     private OrganizationDao organizationDao;
     private AgentDao agentDao;
@@ -95,6 +96,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
         ControllerTools.registerDomainObjectEditor(binder, ctcDao);
         ControllerTools.registerDomainObjectEditor(binder, investigationalNewDrugDao);
         ControllerTools.registerDomainObjectEditor(binder, meddraVersionDao);
+        ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
         ControllerTools.registerEnumEditor(binder, Term.class);
         ControllerTools.registerEnumEditor(binder, Design.class);
         ControllerTools.registerEnumEditor(binder, INDType.class);
@@ -111,7 +113,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 
     @Override
     protected String getViewName(final HttpServletRequest request, final Object command, final int page) {
-        Object subviewName = findInRequest(request, "_subview");
+        Object subviewName = findInRequest(request, StudyController.AJAX_SUBVIEW_PARAMETER);
         if (subviewName != null) {
             return "study/ajax/" + subviewName;
         } else {

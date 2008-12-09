@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain;
 import gov.nih.nci.cabig.caaers.utils.ProjectedList;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import org.apache.commons.collections15.functors.InstantiateFactory;
 import org.apache.commons.lang.StringUtils;
@@ -15,7 +14,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 /**
  * Domain object representing Study(Protocol)
@@ -65,8 +63,9 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<MeddraStudyDisease> meddraStudyDiseases = new ArrayList<MeddraStudyDisease>();
     private List<StudyCondition> studyConditions = new ArrayList<StudyCondition>();
 
-    private List<StudyMeddraLowLevelTerm> studyMeddraTerms = new ArrayList<StudyMeddraLowLevelTerm>();
-    private List<StudyCtcTerm> studyCTCTerms = new ArrayList<StudyCtcTerm>();
+    private List<AbstractExpectedAE> expectedAEs = new ArrayList<AbstractExpectedAE>();
+    private List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms = new ArrayList<ExpectedAEMeddraLowLevelTerm>();
+    private List<ExpectedAECtcTerm> expectedAECTCTerms = new ArrayList<ExpectedAECtcTerm>();
 
     private final LazyListHelper lazyListHelper;
 
@@ -86,32 +85,20 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // Investigators page)
 
     private Boolean drugAdministrationTherapyType = Boolean.FALSE;
-
     private Boolean radiationTherapyType = Boolean.FALSE;
-
     private Boolean deviceTherapyType = Boolean.FALSE;
-
     private Boolean surgeryTherapyType = Boolean.FALSE;
-
     private Boolean behavioralTherapyType = Boolean.FALSE;
-
     private Boolean caaersXMLType = Boolean.FALSE;
-
     private Boolean adeersPDFType = Boolean.FALSE;
-
     private Boolean medwatchPDFType = Boolean.FALSE;
-
     private Boolean dcpSAEPDFType = Boolean.FALSE;
-
     private Boolean ciomsPDFType = Boolean.FALSE;
-
     private Boolean ciomsSaePDFType = Boolean.FALSE;
-
     private Integer loadStatus = LoadStatus.COMPLETE.getCode();
 
     // Used to facilitate import of a coordinating center / funding sponsor
     private FundingSponsor fundingSponsor;
-
     private CoordinatingCenter coordinatingCenter;
 
     // DCP specific properties
@@ -973,19 +960,18 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @OneToMany
     @JoinColumn(name = "study_id", nullable = false)
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
-    @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than ones")
     @Where(clause = "term_type = 'ctep'")
-    public List<StudyCtcTerm> getStudyCTCTerms() {
-        return studyCTCTerms;
+    public List<ExpectedAECtcTerm> getExpectedAECtcTerms() {
+        return expectedAECTCTerms;
     }
 
-    public void setStudyCTCTerms(List<StudyCtcTerm> studyCTCTerms) {
-        this.studyCTCTerms = studyCTCTerms;
+    public void setExpectedAECtcTerms(List<ExpectedAECtcTerm> expectedAECTCTerms) {
+        this.expectedAECTCTerms = expectedAECTCTerms;
     }
 
-    public void addStudyCTCTerms(final StudyCtcTerm studyCtcTerm) {
-        studyCtcTerm.setStudy(this);
-        studyCTCTerms.add(studyCtcTerm);
+    public void addExpectedAECtcTerm(final ExpectedAECtcTerm expectedAECtcTerm) {
+        expectedAECtcTerm.setStudy(this);
+        expectedAECTCTerms.add(expectedAECtcTerm);
     }
 
     @OneToMany
@@ -993,17 +979,17 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicate - Same term is associated to the study more than ones")
     @Where(clause = "term_type = 'meddra'")    
-    public List<StudyMeddraLowLevelTerm> getStudyMeddraTerms() {
-        return studyMeddraTerms;
+    public List<ExpectedAEMeddraLowLevelTerm> getExpectedAEMeddraLowLevelTerms() {
+        return expectedAEMeddraTerms;
     }
 
-    public void setStudyMeddraTerms(List<StudyMeddraLowLevelTerm> studyMeddraTerms) {
-        this.studyMeddraTerms = studyMeddraTerms;
+    public void setExpectedAEMeddraLowLevelTerms(List<ExpectedAEMeddraLowLevelTerm> expectedAEMeddraTerms) {
+        this.expectedAEMeddraTerms = expectedAEMeddraTerms;
     }
 
-    public void addStudyMeddraTerms(final StudyMeddraLowLevelTerm studyMeddraLowLevelTerm) {
-        studyMeddraLowLevelTerm.setStudy(this);
-        studyMeddraTerms.add(studyMeddraLowLevelTerm);
+    public void addExpectedAEMeddraLowLevelTerm(final ExpectedAEMeddraLowLevelTerm expectedAEMeddraLowLevelTerm) {
+        expectedAEMeddraLowLevelTerm.setStudy(this);
+        expectedAEMeddraTerms.add(expectedAEMeddraLowLevelTerm);
     }
     
     
@@ -1050,6 +1036,13 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         	
         return true;
     }
-    
+
+    public boolean hasCTCTerm(CtcTerm ast) {
+        List<ExpectedAECtcTerm> expectedAECtcTerms = this.getExpectedAECtcTerms();
+        for (ExpectedAECtcTerm expectedAECtcTerm : expectedAECtcTerms) {
+            if (expectedAECtcTerm.getTerm().getId().intValue() == ast.getId().intValue()) return true;
+        }
+        return false;
+    }
 
 }
