@@ -13,8 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 /**
  * Domain object representing Study(Protocol)
  *
@@ -1043,6 +1043,26 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
             if (expectedAECtcTerm.getTerm().getId().intValue() == ast.getId().intValue()) return true;
         }
         return false;
+    }
+
+    public AbstractExpectedAE checkExpectedAEUniqueness() {
+        List expectedAEs = null;
+        if (this.getAeTerminology().getMeddraVersion() != null) expectedAEs = this.getExpectedAEMeddraLowLevelTerms();
+        else if (this.getAeTerminology().getCtcVersion() != null) expectedAEs = this.getExpectedAECtcTerms();
+
+        if (expectedAEs == null || expectedAEs.size() == 0) return null;
+
+        Iterator it = expectedAEs.iterator();
+        List aes = new ArrayList();
+        while (it.hasNext()) {
+            AbstractExpectedAE expectedAE = (AbstractExpectedAE)it.next();
+            StringBuffer key = new StringBuffer(expectedAE.getTerm().getId().toString());
+            if (expectedAE.isOtherRequired()) key.append(((ExpectedAECtcTerm)expectedAE).getOtherMeddraTerm().getId().toString());
+            if (aes.contains(key.toString())) return expectedAE;
+            aes.add(key.toString());
+        }
+
+        return null;
     }
 
 }
