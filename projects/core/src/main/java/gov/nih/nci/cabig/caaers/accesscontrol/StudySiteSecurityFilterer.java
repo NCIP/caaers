@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
@@ -110,7 +111,18 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		if (studySite.getNciInstituteCode().equals(study.getCoordinatingCenterCode())) return true;
 		
 		//if not co-ordinating center check for study sites.
-		if (study.getStudySites().contains(studySite)) return true;
+		//if (study.getStudySites().contains(studySite)) return true;
+		// Query is not doing outer join if particpant id is passed , need to fix the query. 
+		// temp fix is getting study object for DAO.		
+		Study s = studyDao.getById(study.getId()) ;
+		List<StudyOrganization> soList = s.getStudyOrganizations();
+		for (StudyOrganization so:soList) {
+			if (so instanceof StudySite) {
+				if (studySite.getNciInstituteCode().equals(so.getOrganization().getNciInstituteCode())) {
+					return true;
+				}
+			}			
+		}
 		return false;
 	}
 	private boolean isAuthorized(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
