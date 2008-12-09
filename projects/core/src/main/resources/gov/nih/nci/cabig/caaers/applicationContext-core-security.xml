@@ -348,7 +348,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <bean id="expeditedAdverseEventReportSiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
         <property name="researchStaffDao" ref="researchStaffDao"/>
-        <property name="studyDao" ref="studyDao"/>
     </bean>
 
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
