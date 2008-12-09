@@ -51,6 +51,8 @@
                        if (errMsg != '') alert(errMsg + " - is already present.");
                    }
 
+                   // $('termsDiv').innerHTML = ajaxOutput.htmlContent;
+                   
                    $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
                    // if ($('observedEmptyRow')) $('observedEmptyRow').remove();
 

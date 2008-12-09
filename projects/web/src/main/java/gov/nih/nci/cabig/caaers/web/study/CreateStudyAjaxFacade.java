@@ -577,7 +577,7 @@ public class CreateStudyAjaxFacade {
         boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
 
         List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
-        int index = studyTerms.size();
+        int firstIndex = studyTerms.size();
 
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
         // List<String> removedTerms = new ArrayList<String>();
@@ -637,11 +637,10 @@ public class CreateStudyAjaxFacade {
             ajaxOutput.setObjectContent(removedTermsArray);
         }
 */
-
-        Integer[] indexes = new Integer[]{index};
+        int lastIndex = studyTerms.size() - 1;
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
-        
-        params.put("index", Integer.toString(index));
+        params.put("firstIndex", Integer.toString(firstIndex));
+        params.put("lastIndex", Integer.toString(lastIndex));
         params.put("isSingle", Boolean.toString(true));
         ajaxOutput.setHtmlContent(renderAjaxView("expectedAEsSection", mergeStudy.getId(), params));
 
