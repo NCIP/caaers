@@ -17,15 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 /**
  * Study Controller for 'Create' Workflow
  * 
- * @author Priyatam
  */
 public class CreateStudyController extends StudyController<Study> {
 
     /**
      * Layout Tabs
-     * 
-     * @param request -
-     *                flow the Flow object
+     * @param flow - flow the Flow object
      */
 
     @Override
