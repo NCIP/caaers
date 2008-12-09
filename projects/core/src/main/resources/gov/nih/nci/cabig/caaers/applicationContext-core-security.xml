@@ -138,6 +138,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.dao.StudyDao+.match*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ParticipantDao+.search*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
                               "/>
 
 
@@ -210,7 +211,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.find*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-               
+
+        <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.search*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+                              
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>               
 
@@ -341,17 +345,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="researchStaffDao" ref="researchStaffDao"/>
         <property name="studyDao" ref="studyDao"/>
     </bean>
-            
+    <bean id="expeditedAdverseEventReportSiteSecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="studyDao" ref="studyDao"/>
+    </bean>
+
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
                value-ref="studySiteSecurityFilterer"/>
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject"
                value-ref="participantSiteSecurityFilterer"/>   
+        <entry key="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"
+               value-ref="expeditedAdverseEventReportSiteSecurityFilterer"/>                 
         <entry key="gov.nih.nci.cabig.caaers.domain.Study"
                value-ref="studySiteSecurityFilterer"/>
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
+               
     </util:map>
 
     <!--> oraganization security beans end here  -->
