@@ -4,7 +4,6 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -23,7 +22,6 @@ import org.acegisecurity.userdetails.User;
 public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainObjectSecurityFilterer {
 	
 	private ResearchStaffDao researchStaffDao;
-	private StudyDao studyDao;
 
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
@@ -56,9 +54,6 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
         ResearchStaff researchStaff = rsList.get(0);
         Organization organization = researchStaff.getOrganization();
         
-		//StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
-		//studySite.setNciInstituteCode(organization.getNciInstituteCode());
-		
 		boolean studyFilteringRequired = false ; 
 		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
         //check if user is  SLRR
@@ -71,22 +66,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
         }
         
 		boolean isAuthorizedOnThisStudy = true;
-		/*
-		if (returnObject instanceof ExpeditedAdverseEventReport) {			
-			// study level filtering for SLRR
-			if (studyFilteringRequired) {
-				if (!isAuthorized(researchStaff.getId(),(StudySearchableAjaxableDomainObject)returnObject)) {
-					isAuthorizedOnThisStudy=false;
-				}
-			}
-			// if not SLRR , or SLRR is authorized , then apply site level filtering.
-			if (isAuthorized(studySite,(StudySearchableAjaxableDomainObject)returnObject) && isAuthorizedOnThisStudy) {
-				return returnObject;
-			} else {
-				return null;
-			}
-		}
-		*/
+
 		Filterer filterer = (Filterer)returnObject;
 		Iterator collectionIter = filterer.iterator();
 		
@@ -142,8 +122,6 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}
-	public void setStudyDao(StudyDao studyDao) {
-		this.studyDao = studyDao;
-	}
+
 
 }
