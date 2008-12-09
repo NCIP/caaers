@@ -63,7 +63,7 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
         //check if user is  SLRR
         for (int i=0; i<grantedAuthorities.length; i++) {
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
         		studyFilteringRequired = true;
         		break;
         	}
