@@ -4,6 +4,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -11,8 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +93,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
 		while (collectionIter.hasNext()) {
         	Object domainObject = collectionIter.next();
         	ExpeditedAdverseEventReport expeditedAdverseEventReport = (ExpeditedAdverseEventReport)domainObject;
+
         	
         	isAuthorizedOnThisStudy = true;
         	// study level filtering for SLRR
