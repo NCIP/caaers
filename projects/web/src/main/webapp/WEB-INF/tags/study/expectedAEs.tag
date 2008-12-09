@@ -45,8 +45,8 @@
                                    <td style="text-align:center;"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;""></td>
                                </tr>
                            </c:forEach>
-                    </tbody>
                     <tr id="observedBlankRow" />
+                   </tbody>
                </table>
 
     </chrome:division>

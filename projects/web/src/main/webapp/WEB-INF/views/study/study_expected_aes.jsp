@@ -19,8 +19,6 @@
            createStudy.removeStudyTerm(index, function(ajaxOutput) {
                $('termsDiv').innerHTML = ajaxOutput.htmlContent;
            });
-           Element.remove("STUDY_TERM_-" + index);
-
        }
 
        Object.extend(RPCreatorClass.prototype, {
@@ -53,7 +51,7 @@
                        if (errMsg != '') alert(errMsg + " - is already present.");
                    }
 
-                   $('termsDiv').insert({after: ajaxOutput.htmlContent});
+                   $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
                    // if ($('observedEmptyRow')) $('observedEmptyRow').remove();
 
                }.bind(this));

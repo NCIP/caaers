@@ -6,7 +6,6 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 
 <td>
-
 <c:set var="ctcTerm" value="expectedAECtcTerms[${index}]" />
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here..."/>
