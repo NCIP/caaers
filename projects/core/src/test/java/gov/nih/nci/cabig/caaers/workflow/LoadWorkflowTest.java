@@ -40,12 +40,12 @@ public class LoadWorkflowTest extends CaaersDbTestCase {
 		actionHandler = (NodeSkipActionHandler) getDeployedApplicationContext().getBean("nodeSkipActionHandler");
 	}
 	
-/*	public void testLoadWorkflow() throws Exception {
+	public void testLoadWorkflow() throws Exception {
 		ApplicationContext ctx = getDeployedApplicationContext();
 		Object o = ctx.getBean("jbpmTemplate");
 		assertNotNull(o);
 	}
-	
+/*	
 	public void testFetchNextTransitionsMultiple() throws Exception {
 		WorkflowConfig wc = createWorkFlowConfig();
 		//ProcessDefinition pDefinition = (ProcessDefinition)getDeployedApplicationContext().getBean("routineFlow");
