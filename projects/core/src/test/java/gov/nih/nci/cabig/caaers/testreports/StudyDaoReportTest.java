@@ -1,3 +1,4 @@
+
 package gov.nih.nci.cabig.caaers.testreports;
 
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
@@ -19,7 +20,7 @@ import java.util.List;
  * 
  */
 
-public class StudyDaoTest extends DaoNoSecurityTestCase {
+public class StudyDaoReportTest extends DaoNoSecurityTestCase {
 
     private StudyDao studyDao;
 
