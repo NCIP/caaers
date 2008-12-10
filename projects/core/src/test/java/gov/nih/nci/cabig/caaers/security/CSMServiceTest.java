@@ -3,6 +3,7 @@
  */
 package gov.nih.nci.cabig.caaers.security;
 
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.authorization.domainobjects.Privilege;
@@ -21,7 +22,6 @@ import java.util.Set;
 import junit.framework.TestCase;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
@@ -47,8 +47,7 @@ public class CSMServiceTest extends TestCase {
     }
 
     public void init() {
-        this.ctx = new ClassPathXmlApplicationContext(
-                        new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml" });
+    	this.ctx = CaaersContextLoader.getApplicationContext();
     }
 
     public void testCreateRemovePolicy() {
