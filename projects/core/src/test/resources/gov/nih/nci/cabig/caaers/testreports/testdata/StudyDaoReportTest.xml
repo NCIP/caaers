@@ -23,8 +23,8 @@
         <CTC_TERMS id="3012" category_id="302" term="Tinnitus" ctep_term="Tinnitus" ctep_code="10043882" other_required="0" />
         <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
 
-        <STUDY_TERMS id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
-        <STUDY_TERMS id="-9" study_id="-3" term_id="-11" term_type="meddra" />
+        <EXPECTED_AES id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
+        <EXPECTED_AES id="-9" study_id="-3" term_id="-11" term_type="meddra" />
 
     <!-- END STUDY-TERMS-->
 
