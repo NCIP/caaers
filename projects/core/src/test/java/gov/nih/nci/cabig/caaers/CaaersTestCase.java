@@ -1,22 +1,13 @@
 package gov.nih.nci.cabig.caaers;
 
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
-import gov.nih.nci.cabig.caaers.security.stub.AspectJSecurityInterceptorStub;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
-import gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect;
 
-import org.acegisecurity.afterinvocation.AfterInvocationProviderManager;
-import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
+import java.util.Date;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.mock.jndi.SimpleNamingContextBuilder;
-
-import javax.naming.NamingException;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Rhett Sutphin
@@ -42,14 +33,14 @@ public abstract class CaaersTestCase extends AbstractTestCase {
         
         // JAP: need this to ensure that security aspect is initialized by Spring before it is applied by AspectJ.
         // RMS: This is needed often enough that we'll just do it everywhere.
-    	 ApplicationContext ctx = getDeployedApplicationContext();
-    	 authorizationOnByDefault = SecurityTestUtils.enableAuthorization(true, ctx);
+    	 authorizationOnByDefault = SecurityTestUtils.enableAuthorization(true, applicationContext);
          SecurityTestUtils.switchToSuperuser();
     }
     
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        applicationContext = getDeployedApplicationContext();
         setUpAuditing();
         setUpTestAuthorization();
     }
@@ -60,8 +51,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
      */
     protected void tearDownTestAuthorization(){
     	 SecurityTestUtils.switchToNoUser();
-         ApplicationContext ctx = getDeployedApplicationContext();
-         SecurityTestUtils.enableAuthorization(true, ctx);
+         SecurityTestUtils.enableAuthorization(true, applicationContext);
     }
     
     protected void tearDownAuditing(){
@@ -75,25 +65,7 @@ public abstract class CaaersTestCase extends AbstractTestCase {
     }
     
     public synchronized  ApplicationContext getDeployedApplicationContext() {
-        if (acLoadFailure == null && applicationContext == null) {
-            // This might not be the right place for this
-            try {
-                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-            } catch (NamingException e) {
-                throw new RuntimeException("", e);
-            }
-
-            try {
-                log.debug("Initializing test version of deployed application context");
-                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-            } catch (RuntimeException e) {
-                acLoadFailure = e;
-                throw e;
-            }
-        } else if (acLoadFailure != null) {
-            throw new CaaersSystemException("Application context loading already failed.  Will not retry.  " + "Original cause attached.", acLoadFailure);
-        }
-        return applicationContext;
+    	return CaaersContextLoader.getApplicationContext();
     }
     
     /**

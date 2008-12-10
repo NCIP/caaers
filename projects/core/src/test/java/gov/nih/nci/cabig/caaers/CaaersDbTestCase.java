@@ -78,8 +78,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-      
-        getDeployedApplicationContext();  //let the AspectJ runtime load properly
+        applicationContext = getDeployedApplicationContext();
         setUpAuthorization();
         setUpAuditing();
         setUpSession();
@@ -221,27 +220,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     
     
     public synchronized  ApplicationContext getDeployedApplicationContext() {
-        if (acLoadFailure == null && applicationContext == null) {
-            // This might not be the right place for this
-            try {
-                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-            } catch (NamingException e) {
-                throw new RuntimeException("", e);
-            }
-
-            try {
-                log.debug("Initializing test version of deployed application context");
-                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-            } catch (RuntimeException e) {
-                acLoadFailure = e;
-                throw e;
-            }
-        } else if (acLoadFailure != null) {
-            throw new CaaersSystemException(
-                "Application context loading already failed.  Will not retry.  " +
-                    "Original cause attached.", acLoadFailure);
-        }
-        return applicationContext;
+    	return CaaersContextLoader.getApplicationContext();
     }
     
     /**
