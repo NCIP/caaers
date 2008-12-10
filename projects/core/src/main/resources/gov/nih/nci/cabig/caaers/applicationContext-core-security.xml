@@ -139,6 +139,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository+.find*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ParticipantDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.dao.OrganizationDao+.getBySubnames*(..))
                               "/>
 
 
@@ -214,7 +215,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-                              
+ 
+         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.OrganizationDao+.getBySubnames*(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+                                            
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.ParticipantDao.search*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>               
 
@@ -256,6 +260,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.dao.OrganizationDao.*=CSM_AUTHN_CHECK
             </value>
         </property>
         <property name="accessDecisionManager">
@@ -349,7 +354,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
         <property name="researchStaffDao" ref="researchStaffDao"/>
     </bean>
-
+    <bean id="organizationSecurityFilterer"
+          class="gov.nih.nci.cabig.caaers.accesscontrol.OrganizationSecurityFilterer">
+        <property name="researchStaffDao" ref="researchStaffDao"/>
+    </bean>
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
         <entry key="gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject"
@@ -362,6 +370,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                value-ref="studySiteSecurityFilterer"/>
         <entry key="gov.nih.nci.cabig.caaers.domain.Participant"
                value-ref="participantSiteSecurityFilterer"/>  
+        <entry key="gov.nih.nci.cabig.caaers.domain.Organization"
+               value-ref="organizationSecurityFilterer"/>  
+               
                
     </util:map>
 
