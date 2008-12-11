@@ -186,15 +186,11 @@ public class CreateStudyAjaxFacade {
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         return getOutputFromJsp(url);
     }
-    private int generateNextEpochOrderNumber()
-    {
+
+    private int generateNextEpochOrderNumber() {
     	Study study = getStudyCommand(getHttpServletRequest());
-        
     	List<Epoch> listOfEpochs = study.getEpochs();
-    	
-    	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;  
-    	
-    	    	
+    	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;
     }
     
     
@@ -222,8 +218,7 @@ public class CreateStudyAjaxFacade {
         }
 
         request.setAttribute("type", type);
-        setRequestAttributes(request, study.getIdentifiersLazy().size() - 1, index,
-                        "studyIdentifierSection");
+        setRequestAttributes(request, study.getIdentifiersLazy().size() - 1, index, "studyIdentifierSection");
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         String html = getOutputFromJsp(url);
         request.setAttribute(AJAX_INDEX_PARAMETER, index);

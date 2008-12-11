@@ -25,8 +25,7 @@ import java.util.List;
 
 @Entity
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_adverse_events_id")})
-public class AdverseEvent extends AbstractMutableDomainObject implements
-        ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
+public class AdverseEvent extends AbstractMutableDomainObject implements ExpeditedAdverseEventReportChild, RoutineAdverseEventReportChild {
     private AbstractAdverseEventTerm adverseEventTerm;
 
     private String detailsForOther;
@@ -280,8 +279,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         if (adverseEventTerm == null) {
             this.adverseEventTerm = new AdverseEventCtcTerm();
             adverseEventTerm.setAdverseEvent(this);
-        } else if (!adverseEventTerm.getClass().getName().equals(
-                "gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
+        } else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm")) {
             return new AdverseEventCtcTerm();
         }
 
@@ -299,8 +297,7 @@ public class AdverseEvent extends AbstractMutableDomainObject implements
         if (adverseEventTerm == null) {
             this.adverseEventTerm = new AdverseEventMeddraLowLevelTerm();
             adverseEventTerm.setAdverseEvent(this);
-        } else if (!adverseEventTerm.getClass().getName().equals(
-                "gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
+        } else if (!adverseEventTerm.getClass().getName().equals("gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm")) {
             return new AdverseEventMeddraLowLevelTerm();
         }
         return (AdverseEventMeddraLowLevelTerm) adverseEventTerm;

@@ -244,6 +244,7 @@ right:20px;
  		  	//get the HTML to add from server
  		  	var notAddedTerms = new Array();   
  		  	captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput){
+/*
  	 		  	var notAddedTerms = ajaxOutput.objectContent;
  	 			if(notAddedTerms != null){
  	 				//show alert message for terms not added
@@ -255,8 +256,9 @@ right:20px;
  	 					alert(errMsg + " - is already present.");
  	 				}			
 				}
- 	 		  	
-				$('observedBlankRow').insert({after: ajaxOutput.htmlContent});
+*/
+
+        		$('observedBlankRow').insert({after: ajaxOutput.htmlContent});
 				if( $('observedEmptyRow')) $('observedEmptyRow').remove();
 				this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
  		  	}.bind(this));

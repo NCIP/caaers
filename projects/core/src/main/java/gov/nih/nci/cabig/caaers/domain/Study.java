@@ -1057,7 +1057,10 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
         while (it.hasNext()) {
             AbstractExpectedAE expectedAE = (AbstractExpectedAE)it.next();
             StringBuffer key = new StringBuffer(expectedAE.getTerm().getId().toString());
-            if (expectedAE.isOtherRequired()) key.append(((ExpectedAECtcTerm)expectedAE).getOtherMeddraTerm().getId().toString());
+            if (expectedAE.isOtherRequired()) {
+                if (((ExpectedAECtcTerm)expectedAE).getOtherMeddraTerm() == null) continue;
+                key.append(((ExpectedAECtcTerm)expectedAE).getOtherMeddraTerm().getId().toString());
+            }
             if (aes.contains(key.toString())) return expectedAE;
             aes.add(key.toString());
         }

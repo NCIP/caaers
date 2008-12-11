@@ -11,12 +11,7 @@ import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * @author Biju Joseph
@@ -212,11 +207,44 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             command.refreshAssignment(Integer.parseInt(rpId));
     }
 
-    @Override
-    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean,
-                            Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    public AdverseEvent checkAEsUniqueness(CaptureAdverseEventInputCommand command) {
+        List AEs = null;
+        AEs = command.getAdverseEventReportingPeriod().getAdverseEvents();
+        
+        if (AEs == null || AEs.size() == 0) return null;
 
-    	// If grade is greater than 2 then hospitalization cannot be null.
+        Iterator it = AEs.iterator();
+        List aes = new ArrayList();
+        while (it.hasNext()) {
+            AdverseEvent ae = (AdverseEvent)it.next();
+            StringBuffer key = new StringBuffer(ae.getAdverseEventTerm().getTerm().getId().toString());
+            if (ae.getAdverseEventTerm().isOtherRequired()) {
+                if (ae.getLowLevelTerm() == null) continue;
+                key.append(ae.getLowLevelTerm().getId().toString());
+            }
+            if (aes.contains(key.toString())) return ae;
+            aes.add(key.toString());
+        }
+
+        return null;
+    }
+    
+    @Override
+    protected void validate(CaptureAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+
+        // START -> AE VALIDATION //
+        boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+        AdverseEvent adverseEvent = checkAEsUniqueness(command);
+        if (adverseEvent == null) return;
+
+        String name = null;
+        name = adverseEvent.getAdverseEventTerm().getFullName();
+        if (adverseEvent.getAdverseEventTerm().isOtherRequired()) name = name + ", " + adverseEvent.getLowLevelTerm().getMeddraTerm();
+        errors.reject("DUPLICATE_EXPECTED_AE", new Object[] {name}, "ERR.");
+
+        // STOP -> AE VALIDATION //
+
+        // If grade is greater than 2 then hospitalization cannot be null.
     	if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()){
     		for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
     			if (!ae.getSolicited() && ae.getGrade() != null) {

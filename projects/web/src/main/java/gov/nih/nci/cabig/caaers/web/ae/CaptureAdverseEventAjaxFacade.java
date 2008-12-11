@@ -79,50 +79,58 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
-        List<String> removedTerms = new ArrayList<String>();
+//        List<String> removedTerms = new ArrayList<String>();
         //filter off the terms that are already present
         for(int id : listOfTermIDs){
         	filteredTermIDs.add(id);
         }
+
         //remove from filteredTermIds, the ones that are avaliable in AE
+/*
         for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
         	boolean removed = filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
         	if(removed) removedTerms.add(ae.getAdverseEventTerm().getFullName());
         }
+*/
+
+/*
         if(!removedTerms.isEmpty()){
         	String[] removedTermsArray = removedTerms.toArray(new String[]{});
         	ajaxOutput.setObjectContent(removedTermsArray);
         }
+*/
+
         if(filteredTermIDs.isEmpty()) return ajaxOutput;
         
         boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
-        for(int id: filteredTermIDs){
-        	AdverseEvent ae = new AdverseEvent();
-        	ae.setSolicited(false);
-        	ae.setRequiresReporting(false);
-        	
-        	if(isMeddra){
-        		//populate MedDRA term
-        		LowLevelTerm llt = lowLevelTermDao.getById(id);
-        		AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
-        		aellt.setLowLevelTerm(llt);
-        		ae.setAdverseEventMeddraLowLevelTerm(aellt);
-        		aellt.setAdverseEvent(ae);
-        	}else{
-        		//properly set CTCterm
-        		CtcTerm ctc =ctcTermDao.getById(id);
-        		AdverseEventCtcTerm aeCtc = new AdverseEventCtcTerm();
-        		aeCtc.setCtcTerm(ctc);
-        		ae.setAdverseEventCtcTerm(aeCtc);
-        		aeCtc.setAdverseEvent(ae);
+        for (int id : filteredTermIDs) {
+            AdverseEvent ae = new AdverseEvent();
+            ae.setSolicited(false);
+            ae.setRequiresReporting(false);
+
+            if (isMeddra) {
+                //populate MedDRA term
+                LowLevelTerm llt = lowLevelTermDao.getById(id);
+                AdverseEventMeddraLowLevelTerm aellt = new AdverseEventMeddraLowLevelTerm();
+                aellt.setLowLevelTerm(llt);
+                ae.setAdverseEventMeddraLowLevelTerm(aellt);
+                aellt.setAdverseEvent(ae);
+            } else {
+                //properly set CTCterm
+                CtcTerm ctc = ctcTermDao.getById(id);
+                AdverseEventCtcTerm aeCtc = new AdverseEventCtcTerm();
+                aeCtc.setCtcTerm(ctc);
+                ae.setAdverseEventCtcTerm(aeCtc);
+                aeCtc.setAdverseEvent(ae);
                 if (command.getStudy().hasCTCTerm(ctc)) {
                     ae.setExpected(new Boolean(Boolean.TRUE));
                 }
             }
-        	
-        	ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
-        	command.getAdverseEvents().add(ae);
+
+            ae.setReportingPeriod(command.getAdverseEventReportingPeriod());
+            command.getAdverseEvents().add(ae);
         }
+        
         Map<String, String> params = new LinkedHashMap<String, String>(); // preserve order for testing
     	params.put("adverseEventReportingPeriod", "" + command.getAdverseEventReportingPeriod());
     	params.put("index", Integer.toString(index));
