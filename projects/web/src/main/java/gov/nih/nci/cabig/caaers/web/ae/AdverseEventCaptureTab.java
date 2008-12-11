@@ -235,13 +235,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // START -> AE VALIDATION //
         boolean isMeddraStudy = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
         AdverseEvent adverseEvent = checkAEsUniqueness(command);
-        if (adverseEvent == null) return;
-
-        String name = null;
-        name = adverseEvent.getAdverseEventTerm().getFullName();
-        if (adverseEvent.getAdverseEventTerm().isOtherRequired()) name = name + ", " + adverseEvent.getLowLevelTerm().getMeddraTerm();
-        errors.reject("DUPLICATE_EXPECTED_AE", new Object[] {name}, "ERR.");
-
+        if (adverseEvent != null) {
+            String name = null;
+            name = adverseEvent.getAdverseEventTerm().getFullName();
+            if (adverseEvent.getAdverseEventTerm().isOtherRequired()) name = name + ", " + adverseEvent.getLowLevelTerm().getMeddraTerm();
+            errors.reject("DUPLICATE_EXPECTED_AE", new Object[]{name}, "ERR.");
+        }
         // STOP -> AE VALIDATION //
 
         // If grade is greater than 2 then hospitalization cannot be null.
@@ -255,7 +254,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     	}
 
         // If grade = "Please Select" then other attributes cannot be modified. They should be "Please Select"
-        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+/*        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
             if (ae.getSolicited()) {
                 if (ae.getGrade() == null || ae.getGrade().equals(Grade.NOT_EVALUATED)) {
                     if (ae.getAttributionSummary() != null || ae.getHospitalization() != null || ae.getExpected() != null) {
@@ -268,7 +267,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
                 }
             }
-        }
+        }*/
     }
     
 }
