@@ -286,7 +286,6 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	 * 
 	 * This method populates the SelectedAesMap member of the command object. The adverse events that were serious on triggering of the rules are set to true in this
 	 * Map. All the adverse events in the reporting period are keys in this map.
-	 * @param command
 	 */
 	public void refreshSelectedAesMap(){
 		selectedAesMap.clear();
@@ -330,7 +329,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	/**
 	 * Updates the requires reporting indicator of this AE.
-	 * @param selectedAesMap
+	 * @param ae
 	 */
 	public void updateRequiresReportingFlag(AdverseEvent ae){
 		if(seriousAdverseEvents == null || seriousAdverseEvents.isEmpty())return;
