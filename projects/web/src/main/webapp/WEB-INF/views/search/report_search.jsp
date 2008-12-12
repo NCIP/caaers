@@ -101,13 +101,13 @@ function buildTable(form) {
 <chrome:box title="Subject Criteria" cssClass="paired" autopad="true">
 		     <div class="row">
 		    	<div class="label"> Identifier :&nbsp; </div>
-		    	<div class="value"><input id="prop6" type="firstName"/></div>
+		    	<div class="value"><input id="prop6" type="text" name="identifier"/></div>
 		    </div>
 		    
 		    
 		     <div class="row">
 		    	<div class="label"> First Name :&nbsp; </div>
-		    	<div class="value"><input id="prop7" type="firstName"/></div>
+		    	<div class="value"><input id="prop7" type="text" name="firstname"/></div>
 		    </div>
 		    
 		    <div class="row">
