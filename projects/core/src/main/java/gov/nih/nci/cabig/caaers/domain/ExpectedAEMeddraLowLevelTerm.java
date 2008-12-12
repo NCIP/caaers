@@ -32,7 +32,7 @@ public class ExpectedAEMeddraLowLevelTerm extends AbstractExpectedAE<LowLevelTer
 
     @OneToOne
     @JoinColumn(name = "term_id")
-    @Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.LOCK, CascadeType.EVICT})
+    //@Cascade(value = {CascadeType.SAVE_UPDATE, CascadeType.LOCK, CascadeType.EVICT})
     @Override
     public LowLevelTerm getTerm() {
         return super.getTerm();
