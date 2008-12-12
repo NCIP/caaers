@@ -92,7 +92,6 @@
 </head>
 <body>
 <study:summary />
-<p><tags:instructions code="study.study_investigator.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true" willSave="${not empty command.id}">
 <jsp:attribute name="singleFields">
  <input type="hidden" name="_action" value="">
