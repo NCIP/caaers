@@ -14,7 +14,7 @@
 </style>
 <script>
 	Event.observe(window, "load", function(){
-		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, false);
+		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, false, '${command.reportingPeriod.name}');
 		
 		$('ok-id').observe("click", function(){
 			window.parent.Windows.close(window.parent.rpCreator.win.getId());			

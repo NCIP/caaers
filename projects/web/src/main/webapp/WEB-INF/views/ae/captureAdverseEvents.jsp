@@ -138,7 +138,7 @@ right:20px;
 
 </style>
  
- <script>
+ <script><!--
 	var catSel = null;
 	var RPCreatorClass = Class.create();
 	var deleteIndex = 0;
@@ -213,9 +213,20 @@ right:20px;
  	 	 	 	this.rpEditCtrl.hide();
  	 	 	}
  		},
- 		refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails){
+ 		refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails, rpName){
+			//will add the reporting period into the dropdown, if it is newly added.
+			if(!fetchOnlyDetails){
+				var cntOptions = this.rpCtrl.options.length;
+ 				var optionNew = new Option(rpName, newRPId);
+ 				
+ 				var optionOld = this.rpCtrl.options[cntOptions - 1];
+ 				this.rpCtrl.add(optionNew, optionOld);
+ 				this.rpCtrl.selectedIndex = cntOptions - 1; 
+ 				
+			}
  	 		//will refresh the options of reporting period.
  	 		captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput){
+	/*
  	 	 		if(!fetchOnlyDetails){
  	 	 	 		//update the reporting period dropdown
  	 	 			this.rpCtrl.options.length = 1;
@@ -225,7 +236,7 @@ right:20px;
  	 	 			this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
  	 	 			this.rpCtrl.value = newRPId;	
  	 	 		}
- 	 	 		
+ 	 */	 		
  	 	 		
 	 	 	 	this.clearRPDetails();
  	 	 		this.showRPDetails(ajaxOutput.htmlContent);
@@ -458,7 +469,7 @@ right:20px;
 	}
  	
 
- </script>
+ --></script>
  
 </head>
  <body>
