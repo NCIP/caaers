@@ -6,6 +6,7 @@ import static org.easymock.EasyMock.expect;
 import java.util.ArrayList;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -23,6 +24,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
+	private StudyDao studyDao;
     private StudyParticipantAssignment assignment;
 	private EvaluationService evaluationService;
 	private StudySite  studySite;
@@ -36,6 +38,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
+		studyDao = registerDaoMockFor(StudyDao.class);
 		
 		assignment = registerMockFor(StudyParticipantAssignment.class);
         evaluationService = registerMockFor(EvaluationService.class);
@@ -66,7 +69,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	
 	
 	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand() {
-		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao );
+		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao , studyDao );
 		command.setStudy(new Study());
 		AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
 		
