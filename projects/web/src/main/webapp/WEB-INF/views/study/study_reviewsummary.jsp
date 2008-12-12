@@ -352,10 +352,10 @@
 			</tr>
 			<c:forEach items="${command.identifiersLazy}" var="identifier">
 			<tr class="results">
-				<c:if	test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<td>${identifier.organization}</td>
 				</c:if>
-				<c:if 	test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 					<td>${identifier.systemName}</td>
 				</c:if>
 				<td>${identifier.type}</td>
@@ -363,13 +363,11 @@
 			</tr>
 			</c:forEach>
 			<c:if test="${empty command.identifiersLazy}">
-			<tr>
-			  <td colspan="3">No identifier is assigned to this study</td>
-			</tr>
+			    <tr><td colspan="3">No identifier is assigned to this study</td></tr>
 			</c:if>
 			</table>
 			<br>
-			</chrome:division>
+    </chrome:division>
 			
 	<chrome:division title="Evaluation Period Types & Solicited Adverse Events">
   		<study:solicitedAETable displayOnly="true" />
