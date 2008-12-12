@@ -30,7 +30,7 @@ public class ExpectedAEMeddraLowLevelTerm extends AbstractExpectedAE<LowLevelTer
     	return getTerm().getFullName();
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "term_id")
     @Override
     public LowLevelTerm getTerm() {
