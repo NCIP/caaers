@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
@@ -50,6 +51,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private EvaluationService evaluationService;
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private StudyDao studyDao;
+	
 	private List<CtcCategory> ctcCategories;
 	private Integer primaryAdverseEventId;
 	
@@ -74,11 +77,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Set<AdverseEvent> seriousAdverseEvents;
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
-				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao){
+				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao){
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
 		this.reportDefinitionDao = reportDefinitionDao;
+		this.studyDao = studyDao;
 		
 		
 		this.selectedAesMap = new HashMap<Integer, Boolean>();
@@ -147,6 +151,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     
     
     public void refreshReportingPeriod(Integer reportingPeriodId){
+    	studyDao.lock(study);
     	assignmentDao.reassociate(getAssignment());
     	//reset the adverse event report in the command
     	setAdverseEventReportingPeriod(null);
@@ -158,6 +163,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	}
     }
 
+    
+    public void clearSession(){
+    	assignmentDao.clearSession();
+    }
+    
+    public void evictUnwantedObjects(){
+    	assignmentDao.evict(getAssignment());
+    }
   
     /**
      * This method will take care of initializing the lazy associations
