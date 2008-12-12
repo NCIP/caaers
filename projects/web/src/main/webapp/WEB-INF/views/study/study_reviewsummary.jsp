@@ -93,7 +93,7 @@
         	</div>
        </chrome:division>
     <chrome:division title="Report Formats">
-    	<table class="tablecontent" width="96%" >
+    	<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Report Format</th>
 		</tr>	
@@ -110,7 +110,7 @@
 		</table>
     </chrome:division>       
     <chrome:division title="Therapies">
-    	<table class="tablecontent" width="96%" >
+    	<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Therapy name</th>
 		</tr>	
@@ -127,7 +127,7 @@
 		</table>
     </chrome:division>
     <chrome:division title="Agents">
-		<table class="tablecontent" width="96%" >
+		<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Agent name</th>
 			<th scope="col">Agent NSC<br />number</th>
@@ -164,7 +164,7 @@
     </chrome:division>
          
     <chrome:division title="Treatment Assignments">
-        	<table class="tablecontent" width="96%" >
+        	<table class="tablecontent" width="100%" >
             	<tr>
                  <th scope="col">Code</th>
                  <th scope="col">Dose level order</th>
@@ -189,7 +189,7 @@
 		
 		       
     <chrome:division title="Sites">
-       		<table class="tablecontent" width="96%" >
+       		<table class="tablecontent" width="100%" >
 				<tr>
 					<th scope="col">Study Site</th>
 				</tr>
@@ -205,7 +205,7 @@
 	</chrome:division>
    	<chrome:division title="Investigators">
     	<c:set var="invCnt" value="0" />
-        <table class="tablecontent" width="96%" >
+        <table class="tablecontent" width="100%" >
             <tr>
                 <th scope="col">Investigator</th>
                 <th scope="col">Role</th>
@@ -231,7 +231,7 @@
    
     <chrome:division title="Personnel">
     	<c:set var="staffCnt" value="0" />
-        <table class="tablecontent" width="96%" >
+        <table class="tablecontent" width="100%" >
             <tr>
                 <th scope="col">Name</th>
                 <th scope="col">Role</th>
@@ -258,7 +258,7 @@
     <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
             <c:if test="${not empty command.meddraStudyDiseases}">
             <chrome:division title="Diseases">
-                <table class="tablecontent" width="96%" >
+                <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
                         <th scope="col">Disease Term</th>
@@ -280,7 +280,7 @@
     <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
             <c:if test="${not empty command.ctepStudyDiseases}">
             <chrome:division title="Diseases">
-                <table class="tablecontent" width="96%" >
+                <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
                         <th scope="col">Primary</th>
@@ -302,7 +302,7 @@
     <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
             <c:if test="${not empty command.studyConditions}">
             <chrome:division title="Diseases">
-                <table class="tablecontent" width="96%" >
+                <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
                         <th scope="col">Disease Term</th>
@@ -319,8 +319,32 @@
             </c:if>
     </c:if>
 
-	<chrome:division title="Identifiers">
-			<table class="tablecontent" width="96%">
+    <%-- START EXPECTED AEs --%>
+    <chrome:division title="Expected AEs">
+       <table class="tablecontent" width="100%" >
+           <br>
+
+           <c:if test="${command.aeTerminology.term eq 'MEDDRA'}">
+               <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
+           </c:if>
+
+           <c:if test="${command.aeTerminology.term eq 'CTC'}">
+               <c:set var="terms" value="${command.expectedAECtcTerms}" />
+           </c:if>
+
+           <tr><th scope="col">Expected AEs</th></tr>
+           <c:forEach items="${terms}" var="term">
+               <tr class="results">
+                   <td>${term.fullName} <c:if test="${command.aeTerminology.term eq 'CTC' && term.otherMeddraTerm != null}">(${term.otherMeddraTerm.fullName})</c:if></td>
+               </tr>
+           </c:forEach>
+       </table>
+       <br>
+    </chrome:division>
+    <%-- STOP EXPECTED AEs --%>
+
+    <chrome:division title="Identifiers">
+			<table class="tablecontent" width="100%">
 			<tr>
 				<th scope="col">Assigning Authority</th>
 				<th scope="col">Identifier Type</th>
