@@ -148,8 +148,17 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     public Map<String, Object> referenceData(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
         // Setup the categories list for aeTermQuery tag.
         boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
-        if (isCTCStudy)
+
+        // initialize lazy
+        if (isCTCStudy) {
             command.getCtcCategories();
+            if (command.getAdverseEvents() != null)
+                for (AdverseEvent ae: command.getAdverseEvents()) {
+                    ae.getAdverseEventTerm().isOtherRequired();
+                    ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
+                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+                }
+        }
 
         //initalize the seriousness outcome indicators
         command.initializeOutcome();

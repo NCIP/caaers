@@ -292,8 +292,34 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		
 		return cmd;
 	}
-	
-	@Override
+
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        int currPage = getCurrentPage(request);
+    	int targetPage = getTargetPage(request, currPage);
+
+        /*
+        * This is to treat the first page as a fresh start of the flow
+        *
+        * */
+        if (currPage !=0 && targetPage == 0) {
+            String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
+
+/*
+            CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
+            String particpiantID = "";
+            String studyID = "";
+            if (cmd != null) {
+                particpiantID = cmd.getParticipant().getId().toString();
+                studyID = cmd.getStudy().getId().toString();
+            }
+*/
+            
+            response.sendRedirect(url); // + "?participant=" + particpiantID + "&study=" + studyID);
+        }
+        return super.handleRequestInternal(request, response);
+    }
+
+    @Override
 	public FlowFactory<CaptureAdverseEventInputCommand> getFlowFactory() {
 		return new FlowFactory<CaptureAdverseEventInputCommand>() {
 			public Flow<CaptureAdverseEventInputCommand> createFlow(CaptureAdverseEventInputCommand cmd) {
@@ -302,8 +328,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
             	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
             	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
             	 */
-				
-				
 				Flow<CaptureAdverseEventInputCommand> flow = new Flow<CaptureAdverseEventInputCommand>("Enter AEs || Select Subject and Study");
 				flow.addTab(new BeginTab<CaptureAdverseEventInputCommand>());
 				flow.addTab(new AdverseEventCaptureTab());

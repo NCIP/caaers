@@ -109,8 +109,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 	protected Map<Object, Object> createAttributionOptions() {
         Map<Object, Object> attributionOptions = new LinkedHashMap<Object, Object>();
         attributionOptions.put("", "Please select");
-        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution
-                        .values()), "name", "displayName"));
+        attributionOptions.putAll(WebUtils.collectOptions(Arrays.asList(Attribution.values()), "name", "displayName"));
         return attributionOptions;
     }
 	
