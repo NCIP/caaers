@@ -33,7 +33,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         super.onBind(request, command, errors);
         // to fix lazy loading
         if (command.getStudy() != null) {
-                command.getStudy().getExpectedAECtcTerms().size();
+//                command.getStudy().getExpectedAECtcTerms().size();
                 boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
                 if (isCTCStudy)
                 if (((CaptureAdverseEventInputCommand)command).getAdverseEvents() != null)
