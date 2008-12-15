@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -75,9 +76,9 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	
-	
-	
-	public CaptureAdverseEventController(){
+	private Logger log = Logger.getLogger(getClass());
+
+    public CaptureAdverseEventController(){
 		setBindOnNewForm(true);
 		setCommandClass(CaptureAdverseEventInputCommand.class);
 	}
@@ -294,28 +295,23 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	}
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        int currPage = getCurrentPage(request);
-    	int targetPage = getTargetPage(request, currPage);
-
         /*
         * This is to treat the first page as a fresh start of the flow
         *
         * */
-        if (currPage !=0 && targetPage == 0) {
-            String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
-
-/*
-            CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
-            String particpiantID = "";
-            String studyID = "";
-            if (cmd != null) {
-                particpiantID = cmd.getParticipant().getId().toString();
-                studyID = cmd.getStudy().getId().toString();
+        int currPage = 0;
+        int targetPage = 0;
+        try {
+            currPage = getCurrentPage(request);
+            targetPage = getTargetPage(request, currPage);
+            if (currPage !=0 && targetPage == 0) {
+                String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
+                response.sendRedirect(url);
             }
-*/
-            
-            response.sendRedirect(url); // + "?participant=" + particpiantID + "&study=" + studyID);
+        } catch (Exception e) {
+            log.debug("Error while trying to read the current & target page from the request.");
         }
+
         return super.handleRequestInternal(request, response);
     }
 
