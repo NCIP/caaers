@@ -510,6 +510,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		return study;
 	}
 
+	public Participant getParticipantID() {
+		return participant;
+	}
+
+	public Study getStudyID() {
+		return study;
+	}
+
 	public String getTreatmentDescriptionType() {
 		// TODO Auto-generated method stub
 		return null;
@@ -525,6 +533,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 
 	public void setStudy(Study study) {
+		this.study = study;
+	}
+
+	public void setParticipantID(Participant participant) {
+		this.participant = participant;
+	}
+
+	public void setStudyID(Study study) {
 		this.study = study;
 	}
 
