@@ -273,6 +273,10 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder, final CaptureAdverseEventInputCommand command) throws Exception {
 		ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
+
+		ControllerTools.registerDomainObjectEditor(binder, "participantID", participantDao);
+        ControllerTools.registerDomainObjectEditor(binder, "studyID", studyDao);
+
         ControllerTools.registerDomainObjectEditor(binder, "adverseEvent", adverseEventDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, ctcCategoryDao);
@@ -304,15 +308,28 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         try {
             currPage = getCurrentPage(request);
             targetPage = getTargetPage(request, currPage);
+
             if (currPage !=0 && targetPage == 0) {
                 String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
-                response.sendRedirect(url);
+                CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
+
+                String particpiantID = "";
+                String studyID = "";
+                
+                if (cmd != null) {
+                    particpiantID = cmd.getParticipant().getId().toString();
+                    studyID = cmd.getStudy().getId().toString();
+                }
+
+                response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
+                return null;
+            } else {
+                return super.handleRequestInternal(request, response);
             }
         } catch (Exception e) {
             log.debug("Error while trying to read the current & target page from the request.");
+            return super.handleRequestInternal(request, response); 
         }
-
-        return super.handleRequestInternal(request, response);
     }
 
     @Override
