@@ -64,3 +64,27 @@ div.row, build-name, main {
 	background-image: url(../images/blue/header_bg.jpg);
 	background-position: top;
 }
+
+.overlay_dialog {
+	filter:alpha(opacity=60);
+}
+
+.overlay___invisible__ {
+	filter:alpha(opacity=0);
+}
+
+.overlay_alphacube {
+	background-color: #85BBEF;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+}
+
+.alphacube_wired_frame {
+	background: #FFF;
+	filter:alpha(opacity=60);
+	-moz-opacity: 0.6;
+	opacity: 0.6;
+}
+
+
