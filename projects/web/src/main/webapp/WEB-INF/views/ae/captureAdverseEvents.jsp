@@ -3,16 +3,12 @@
 <script type="text/javascript" src="/caaers/js/dropdown_menu.js"></script>
 <html>
  <head>
- <tags:includePrototypeWindow />
- <tags:includeScriptaculous/>
- <tags:stylesheetLink name="ae"/>
- <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
- <tags:stylesheetLink name="aeTermQuery_box" />
+    <tags:includePrototypeWindow />
+    <tags:stylesheetLink name="ae"/>
+    <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
+    <tags:stylesheetLink name="aeTermQuery_box" />
  
- <tags:stylesheetLink name="extremecomponents"/>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-
-<style type="text/css"> 
+<style type="text/css">
 .selectdiv
 {	
 	width:170px;
@@ -138,11 +134,15 @@ right:20px;
 
 </style>
  
- <script><!--
+ <script>
 	var catSel = null;
 	var RPCreatorClass = Class.create();
 	var deleteIndex = 0;
- 	Object.extend(RPCreatorClass.prototype, {
+    var hasChanges = false;
+
+    var oldSignatures = new Array();
+
+     Object.extend(RPCreatorClass.prototype, {
  	 	/*
  	 		rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
  	 		rpDetailsDiv - The DIV element where the content of selected reporting period is shown.
@@ -326,8 +326,6 @@ right:20px;
  		Event.observe('flow-prev', 'click', checkSubmittedAEs);
  		Event.observe('flow-update', 'click', checkSubmittedAEs);
  		
- 		
- 		
  		var url = document.addRoutineAeForm.action;
  		var stripped_url = '';
  		var index = -1;
@@ -340,45 +338,76 @@ right:20px;
  		
  	});
 
-	function checkSubmittedAEs(event){
-		var reportIdArray = new Array();
-		var totalReportIdCount = 0;
-		var listOfAEIndexes = $$('.submittedAERow');
-		for(var i = 0 ; i < listOfAEIndexes.length ; i++)
-		{
-			var signature = createSignature(listOfAEIndexes[i].value);
-			var oldSignatureId = 'ae-section-' + listOfAEIndexes[i].value + '-signature';
-			var oldSignature = document.getElementById(oldSignatureId).value;
-			if(signature != oldSignature){
-				// The ae was modified.
-				var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
-				reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
-			}
-		}
-		if(totalReportIdCount != 0){
-			var form = document.getElementById('command');
-			form._action.value = 'amendmentRequired';
-			displayAmendPopup(event, reportIdArray);
-		}
-		document.getElementById('command')._amendReportIds.value = reportIdArray;
-	}
-	
-	function createSignature(index){
+    // ----------------------------------------------------------------------------------------------------------------
+
+    function getSignatures(cssIdentifier) {
+        var arr = new Array();
+        var listOfAEIndexes = $$(cssIdentifier);
+        for (var i = 0; i < listOfAEIndexes.length; i++) {
+            var signature = createSignature(i);
+            arr[i] = signature;
+        }
+        return arr;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+    function checkSubmittedAEs(event) {
+
+        var newSignatures = new Array();
+        newSignatures = getSignatures('.ae-section');
+
+        if (oldSignatures.length != newSignatures.length) hasChanges = true;
+        
+        for (var i = 0; i < oldSignatures.length; i++) {
+            if (oldSignatures[i] != newSignatures[i]) hasChanges = true;
+        }
+
+        var reportIdArray = new Array();
+        var totalReportIdCount = 0;
+        var listOfAEIndexes = $$('.submittedAERow');
+
+        for (var i = 0; i < listOfAEIndexes.length; i++) {
+            var signature = createSignature(listOfAEIndexes[i].value);
+            var oldSignatureId = 'ae-section-' + listOfAEIndexes[i].value + '-signature';
+            var oldSignature = document.getElementById(oldSignatureId).value;
+            if (signature != oldSignature) {
+                hasChanges = true;
+
+                // The ae was modified.
+                var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
+                reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
+            }
+        }
+
+        if (totalReportIdCount != 0) {
+            var form = document.getElementById('command');
+            form._action.value = 'amendmentRequired';
+            displayAmendPopup(event, reportIdArray);
+        }
+        document.getElementById('command')._amendReportIds.value = reportIdArray;
+    }
+
+    // ----------------------------------------------------------------------------------------------------------------
+    
+    function createSignature(index){
 		var signature = '';
-		var otherMeddraId = 'adverseEvents[' + index + '].lowLevelTerm-input';
+
+        var otherMeddraId = 'adverseEvents[' + index + '].lowLevelTerm-input';
 		var verbatimId = 'adverseEvents[' + index + '].detailsForOther';
 		var gradeId = 'adverseEvents[' + index + '].grade';
 		var attributionId = 'adverseEvents[' + index + '].attributionSummary';
 		var hospitalizationId = 'adverseEvents[' + index + '].hospitalization';
 		var expectedId = 'adverseEvents[' + index + '].expected';
 		var seriousId = 'adverseEvents[' + index + '].serious';
-		signature = document.getElementById(verbatimId).value + '$$' + // verbatim input
+
+		signature = $(verbatimId).value + '$$' + // verbatim input
 					document.getElementById(gradeId).value + '$$' + // grade input
 					document.getElementById(attributionId).value + '$$' + // attribution input
 					document.getElementById(hospitalizationId).value + '$$' + // hospitalization input
 					document.getElementById(expectedId).value; // expected input
-					 
-		// If otherMeddraId element exists append otherMeddra Value to the signature.
+
+        // If otherMeddraId element exists append otherMeddra Value to the signature.
 		if(document.getElementById(otherMeddraId) != null)
 			signature = signature + '$$' + document.getElementById(otherMeddraId).value;// otherMeddra input
 		else
@@ -390,11 +419,13 @@ right:20px;
 			signature = signature + '$$' + document.getElementById(seriousId).value;
 		else
 			signature = signature + '$$';	
-		
-		return signature;
+
+        return signature;
 	}
-	
-	function deleteOrAmendAndSubmit(){
+
+    // ----------------------------------------------------------------------------------------------------------------
+    
+    function deleteOrAmendAndSubmit(){
 		Windows.close('amend-popup-id');
 		var form = document.getElementById('command');
 		if(form._action.value == 'amendmentRequired'){
@@ -430,8 +461,10 @@ right:20px;
  	 		
 		}
 	}
-	
-	function displayAmendPopup(event, reportIdArray){
+
+    // ----------------------------------------------------------------------------------------------------------------
+    
+    function displayAmendPopup(event, reportIdArray){
 		//alert('Inside displayAmendPopup, reportIdArray = ' + reportIdArray);
 		var form = document.getElementById('command');
 		if(form._action.value == 'amendmentRequired')
@@ -443,13 +476,10 @@ right:20px;
 			$('amend-aeReport-' + reportIdArray[i]).show();
 		}
 		
-		var contentWin = new Window({className:"alphacube", 
- 	 	 			destroyOnClose:true, id:"amend-popup-id",
- 	 	 			width:700,  height:530, 
- 					top: 30, left: 300});
-     		contentWin.setContent( 'display_amend_popup' );
-      		contentWin.showCenter(true);
-      		popupObserver = {
+		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"amend-popup-id", width:700,  height:530, top: 30, left: 300});
+        contentWin.setContent( 'display_amend_popup' );
+        contentWin.showCenter(true);
+        popupObserver = {
       			onDestroy: function(eventName, win) {
       				if (win == contentWin) {
       					$('display_amend_popup').style.display='none';
@@ -464,12 +494,25 @@ right:20px;
       				}
       			}
       		}
-      		Windows.addObserver(popupObserver);
-      		
+        Windows.addObserver(popupObserver);
 	}
- 	
 
- --></script>
+    // ----------------------------------------------------------------------------------------------------------------
+
+    Event.observe(window, "load", function(e) {
+        oldSignatures = getSignatures('.ae-section');
+        
+        Event.observe(window, "beforeunload", function(e) {
+            if (hasChanges) {
+                e.returnValue = "You have unsaved information.";
+            }
+        });
+        
+    });
+
+    // ----------------------------------------------------------------------------------------------------------------
+
+ </script>
  
 </head>
  <body>
