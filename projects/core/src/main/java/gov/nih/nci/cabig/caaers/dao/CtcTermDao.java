@@ -71,6 +71,20 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
         return findBySubname(subnames, extraConds.toString(), extraParams,
                         SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
     }
+    
+    /**
+     * Get the List if CtcTerms matching the provided ctepCode and Version
+     * @param ctepCode
+     * @param versionId
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public List<CtcTerm> getByCtepCodeandVersion(String ctepCode, int versionId){
+    	
+    	return getHibernateTemplate().find("select term from CtcTerm term join term.category as category join category.ctc as ctcversion where term.ctepCode = ? and ctcversion.id = ? ",
+    			new Object[] {ctepCode,versionId});
+    	
+    }
 
     /**
      * 
@@ -95,8 +109,6 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
         }
         List<CtcTerm> ctcTerms = findBySubname(subnames, extraConds.toString(), extraParams,
                         EMPTY_PROPERTIES, EXACT_MATCH_PROPERTIES);
-        System.out.println("Size of ctcTerms returned : " + ctcTerms.size() + subnames.toString()
-                        + " : " + ctcVersionId.toString());
         return ctcTerms.isEmpty() ? null : ctcTerms.get(0);
     }
 

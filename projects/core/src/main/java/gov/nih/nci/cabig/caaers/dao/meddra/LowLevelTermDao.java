@@ -51,6 +51,19 @@ public class LowLevelTermDao extends CaaersDao<LowLevelTerm> {
         return getHibernateTemplate().find("from LowLevelTerm llt where meddraCode=?",
                         new Object[] { meddraCode });
     }
+    
+    /**
+     * Get low level meddra terms given the meddra code & version.
+     * 
+     * @param meddraCode
+     *                The meddra code.
+     * @return The low level meddra term.
+     */
+    @SuppressWarnings("unchecked")
+    public List<LowLevelTerm> getByMeddraCodeandVersion(String meddraCode, int versionId) {
+        return getHibernateTemplate().find("from LowLevelTerm llt where meddraCode=? and version_id=?",
+                        new Object[] { meddraCode, versionId });
+    }
 
     /**
      * Get the list of low level meddra terms matching the name fragments.
