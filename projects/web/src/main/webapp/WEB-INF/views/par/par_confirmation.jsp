@@ -155,7 +155,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="label" style="text-align:left;"><tags:message key="primary.site.of.disease"/>&nbsp;</div>
-                                    <div class="value">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name}</div>
+                                    <div class="value">
+                                        <c:if test="${assignment.diseaseHistory.codedPrimaryDiseaseSite.id == 110}">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name} - ${assignment.diseaseHistory.otherPrimaryDiseaseSite}</c:if>
+                                        <c:if test="${assignment.diseaseHistory.codedPrimaryDiseaseSite.id != 110}">${assignment.diseaseHistory.codedPrimaryDiseaseSite.name}</c:if>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="label" style="text-align:left;"><tags:message key="date.of.initial.diagnosis"/>&nbsp;</div>
@@ -175,7 +178,7 @@
                                 </c:if>
                                 <c:forEach items="${assignment.diseaseHistory.metastaticDiseaseSites}" var="mds" varStatus="status">
                                     <c:if test="${mds.codedSite.id != 110}">${mds.codedSite.name}</c:if>
-                                    <c:if test="${mds.codedSite.id == 110}">${mds.otherSite}</c:if>
+                                    <c:if test="${mds.codedSite.id == 110}">${mds.codedSite.name} - ${mds.otherSite}</c:if>
                                     <br/>
                                 </c:forEach>
                             </td>
