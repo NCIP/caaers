@@ -9,6 +9,12 @@
 		meddra_code="123"
 		meddra_term="123"
 		meddra_pt_id="122"
+		version_id="1"/>
+	<meddra_llt
+		id="-12"
+		meddra_code="-123"
+		meddra_term="Abruption"
+		meddra_pt_id="124"
 		version_id="1"
 	/>
 	<meddra_llt
@@ -34,6 +40,12 @@
 		id="122"
 		meddra_code="123"
 		meddra_term="123"
+		version_id="1"
+	/>
+	<meddra_pt 
+		id="124"
+		meddra_code="-123"
+		meddra_term="Test Abruption"
 		version_id="1"
 	/>
 
