@@ -10,6 +10,7 @@
 <%@taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
 <%@taglib prefix="display" uri="http://displaytag.sf.net/el"%>
 <%@taglib prefix="page" uri="http://www.opensymphony.com/sitemesh/page" %>
+<%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons"%>
 
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
