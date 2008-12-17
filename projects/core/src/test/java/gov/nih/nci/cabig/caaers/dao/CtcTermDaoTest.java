@@ -7,6 +7,8 @@ import gov.nih.nci.cabig.caaers.domain.CtcGrade;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+
 import java.util.List;
 
 /**
@@ -60,4 +62,48 @@ public class CtcTermDaoTest extends DaoTestCase<CtcTermDao> {
         assertEquals("Wrong grade", Grade.LIFE_THREATENING, actual.getGrade());
         assertEquals("Wrong text", "On fire", actual.getText());
     }
+    
+    public void testGetCtcTerm(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "Rash: dermatitis associated with radiation" });
+    	assertNotNull(ctcTerm);
+    }
+    
+    public void testGetCtcTerm_1a(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "1a_Rash: dermatitis associated with radiation" });
+    	assertNull(ctcTerm);
+    }
+    
+    public void testGetAll(){
+    	List<CtcTerm> ctcTerms = getDao().getAll();
+    	assertNotNull(ctcTerms);
+    	assertTrue(ctcTerms.size() > 0);
+    }
+    
+    public void testGetByCtepCodeandVersion() throws Exception {
+        List<CtcTerm> ctcTerms = getDao().getByCtepCodeandVersion("10016241",3);
+        assertEquals(1, ctcTerms.size());
+        assertEquals("Atrophy, subcutaneous fat", ctcTerms.get(0).getTerm());
+    }
+    
+    public void testGetCtcTerm_1(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "Rash: dermatitis associated with radiation" },null,null);
+    	assertNotNull(ctcTerm);
+    	assertEquals("Rash: dermatitis associated with radiation", ctcTerm.getTerm());
+    }
+    public void testGetCtcTerm_2(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "Rash: dermatitis associated with radiation" },new Integer(3),null);
+    	assertNotNull(ctcTerm);
+    	assertEquals("Rash: dermatitis associated with radiation", ctcTerm.getTerm());
+    }
+    public void testGetCtcTerm_3(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "Rash: dermatitis associated with radiation" },new Integer(3),new Integer(301));
+    	assertNotNull(ctcTerm);
+    	assertEquals("Rash: dermatitis associated with radiation", ctcTerm.getTerm());
+    }
+    
+    public void testGetCtcTerm_4(){
+    	CtcTerm ctcTerm = getDao().getCtcTerm(new String[] { "1_Rash: dermatitis associated with radiation" },new Integer(3),new Integer(301));
+    	assertNull(ctcTerm);
+    }
+    
 }
