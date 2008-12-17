@@ -1,8 +1,5 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="commons" uri="http://bioinformatics.northwestern.edu/taglibs/commons"%>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <title>Configure caAERS</title>
