@@ -14,7 +14,15 @@
 </style>
 
 <chrome:division title="" collapsable="true" id="studyTermsID">
-<p><tags:instructions code="instruction_ae_oae"/></p>
+    <c:if test="${not empty command.aeTerminology.meddraVersion}">
+        <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
+		<p><tags:instructions code="study_expectedaes_meddra"/></p>
+    </c:if>
+
+    <c:if test="${not empty command.aeTerminology.ctcVersion}">
+        <c:set var="terms" value="${command.expectedAECtcTerms}" />
+		<p><tags:instructions code="study_expectedaes_ctc"/></p>
+    </c:if>
                <tags:aeTermQuery
                        isMeddra="${not empty command.aeTerminology.meddraVersion}"
                        noBackground="true"
@@ -24,14 +32,6 @@
                        version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}"
                        title="">
                </tags:aeTermQuery>
-
-    <c:if test="${not empty command.aeTerminology.meddraVersion}">
-        <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
-    </c:if>
-
-    <c:if test="${not empty command.aeTerminology.ctcVersion}">
-        <c:set var="terms" value="${command.expectedAECtcTerms}" />
-    </c:if>
 
                <table id="termsTable" width="100%" class="tablecontent">
                    <tr>
