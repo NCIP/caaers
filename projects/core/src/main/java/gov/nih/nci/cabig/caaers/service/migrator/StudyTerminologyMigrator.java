@@ -36,6 +36,12 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
                 aeTerminology.setTerm(Term.CTC);
                 aeTerminology.setCtcVersion(ctc);
                 outcome.ifNullObject(ctc, DomainObjectImportOutcome.Severity.ERROR, "CTC is either Empty or Not Valid");
+                
+            	if(source.getOtherMeddra() != null){
+                	MeddraVersion otherMeddraVersion = meddraVersionDao.getMeddraByName(source.getOtherMeddra().getName()).get(0);
+                	destination.setOtherMeddra(otherMeddraVersion);
+                	outcome.ifNullObject(otherMeddraVersion, DomainObjectImportOutcome.Severity.ERROR, "otherMeddraVersion is either Empty or Not Valid");
+                }
             }
             
             if (srcAeTerminology.getMeddraVersion() != null) {
