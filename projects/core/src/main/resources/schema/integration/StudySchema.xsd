@@ -108,6 +108,13 @@
                     </xs:element>
                     </xs:choice>
                     
+                    <xs:element name="evaluationPeriods" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="evaluationPeriod" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
 
                 </xs:sequence>
             </xs:extension>
@@ -466,6 +473,7 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="name" type="StudyCtcVersionType"/>
+                    <xs:element name="otherMeddraVersion" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -481,6 +489,60 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
+
+
+	  <xs:element name="evaluationPeriod" type="EvaluationPeriodType"/>
+    <xs:complexType name="EvaluationPeriodType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="name" type="EvalPeriodType"/>
+                    <xs:element name="descriptionText" type="xs:string" minOccurs="0"/>
+                    <xs:element name="epochOrder" type="xs:int"/>
+                    <xs:element name="arms" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="arm" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    
+   	<xs:element name="arm" type="ArmType"/>
+    <xs:complexType name="ArmType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="name" type="EvalPeriodType"/>
+                    <xs:element name="descriptionText" type="xs:string" minOccurs="0"/>
+                    <xs:element name="solicitedAdverseEvents" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element ref="solicitedAdverseEvent" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
+	<xs:element name="solicitedAdverseEvent" type="SolicitedAdverseEventType"/>
+    <xs:complexType name="SolicitedAdverseEventType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="ctcTerm" type="xs:string" minOccurs="0"/>
+                    <xs:element name="lowLevelTerm" type="xs:string" minOccurs="0"/>
+                    <xs:element name="otherTerm" type="xs:string"  minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+
 
     <!-- FIXED Types  -->
     
@@ -581,6 +643,15 @@
             <xs:enumeration value="DCP_IND"/>
             <xs:enumeration value="OTHER"/>
             <xs:enumeration value="CTEP_IND"/>
+        </xs:restriction>
+    </xs:simpleType>
+    
+    <xs:simpleType name="EvalPeriodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Baseline"/>
+            <xs:enumeration value="Pre-Treatment"/>
+            <xs:enumeration value="Treatment"/>
+            <xs:enumeration value="Post-treatment"/>
         </xs:restriction>
     </xs:simpleType>
     
