@@ -128,6 +128,11 @@ This applicationContext contains the definition of the concrete services
 		<property name="lowLevelTermDao" ref="lowLevelTermDao" />
 	</bean>
 	<bean id="studyTreatmentMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.TreatmentAssignmentMigrator" />
+	<bean id="studyEvaluationPeriodsMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyEvaluationPeriodsMigrator">
+		<property name="ctcTermDao" ref="ctcTermDao" />
+		<property name="lowLevelTermDao" ref="lowLevelTermDao" />
+	</bean>
+	
 	<bean id="studyMigrator" class="gov.nih.nci.cabig.caaers.service.migrator.StudyMigrator">
 		<constructor-arg>
 			<list>
@@ -139,6 +144,7 @@ This applicationContext contains the definition of the concrete services
 				<ref bean="studyAgentMigrator"/>
 				<ref bean="studyDiseaseMigrator" />
 				<ref bean="studyTreatmentMigrator" />
+				<ref bean="studyEvaluationPeriodsMigrator" />
 			</list>
 		</constructor-arg>
 	</bean>
