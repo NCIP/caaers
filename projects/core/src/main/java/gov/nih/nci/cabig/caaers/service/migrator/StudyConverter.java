@@ -3,13 +3,16 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import gov.nih.nci.cabig.caaers.domain.Design;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -21,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
 import gov.nih.nci.cabig.caaers.domain.StudyAgentINDAssociation;
@@ -30,17 +34,19 @@ import gov.nih.nci.cabig.caaers.domain.StudyInvestigator;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
-import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.webservice.ArmType;
 import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
 import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
+import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
 import gov.nih.nci.cabig.caaers.webservice.IndType;
 import gov.nih.nci.cabig.caaers.webservice.InvestigationalNewDrugType;
 import gov.nih.nci.cabig.caaers.webservice.MeddraStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.OrganizationAssignedIdentifierType;
 import gov.nih.nci.cabig.caaers.webservice.SiteInvestigatorType;
+import gov.nih.nci.cabig.caaers.webservice.SolicitedAdverseEventType;
 import gov.nih.nci.cabig.caaers.webservice.StudyAgentINDAssociationType;
 import gov.nih.nci.cabig.caaers.webservice.StudyAgentType;
 import gov.nih.nci.cabig.caaers.webservice.StudyInvestigatorType;
@@ -48,6 +54,7 @@ import gov.nih.nci.cabig.caaers.webservice.StudyPersonnelType;
 import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
 import gov.nih.nci.cabig.caaers.webservice.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.webservice.Study.CtepStudyDiseases;
+import gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods;
 import gov.nih.nci.cabig.caaers.webservice.Study.Identifiers;
 import gov.nih.nci.cabig.caaers.webservice.Study.MeddraStudyDiseases;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyAgents;
@@ -113,6 +120,8 @@ public class StudyConverter {
 			populateStudyAgents(studyDto, study);
 			//Populate StudyDiseases
 			populateStudyDiseases(studyDto, study);
+			//Populate EvaluationPeriods
+			populateStudyEvaluationPeriods(studyDto, study);
 			
 		}catch(Exception e){
 			throw new CaaersSystemException("Exception while StudyDto Conversion",e);
@@ -185,13 +194,20 @@ public class StudyConverter {
 	private void populateAeTerminology(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
 		
 		if(studyDto.getAeTerminology() != null){
-			AeTerminology aeTerminology = null; 
+			AeTerminology aeTerminology = null;
+			
 			if(studyDto.getAeTerminology().getCtcVersion() != null){
 				aeTerminology = new AeTerminology();
 				Ctc ctcVersion = new Ctc();
 				ctcVersion.setName(studyDto.getAeTerminology().getCtcVersion().getName());
 				aeTerminology.setCtcVersion(ctcVersion);
 				study.setAeTerminology(aeTerminology);
+				if(! "".equals(studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion()) && studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion() != null){
+					MeddraVersion otherMeddra = null;
+					otherMeddra = new MeddraVersion();
+					otherMeddra.setName(studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion());
+					study.setOtherMeddra(otherMeddra);
+				}
 			}
 			if (studyDto.getAeTerminology().getMeddraVersion() != null) {
 				aeTerminology = new AeTerminology();
@@ -471,6 +487,66 @@ public class StudyConverter {
 				}
 				study.setMeddraStudyDiseases(meddraStudyDiseaseList);
 			}
+		}
+	}
+	
+	private void populateStudyEvaluationPeriods(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+		EvaluationPeriods evaluationPeriods = studyDto.getEvaluationPeriods();
+		if(evaluationPeriods != null){
+			List<EvaluationPeriodType> evalutionPeriodTypeList = evaluationPeriods.getEvaluationPeriod();
+			List<Epoch> epochs = study.getEpochs();
+			if(evalutionPeriodTypeList != null && !evalutionPeriodTypeList.isEmpty()){
+				Epoch epoch = null;
+				for(EvaluationPeriodType evaluationPeriodType : evalutionPeriodTypeList){
+					epoch = new Epoch();
+					epoch.setName(evaluationPeriodType.getName().value());
+					epoch.setDescriptionText(evaluationPeriodType.getDescriptionText());
+					epoch.setEpochOrder(evaluationPeriodType.getEpochOrder());
+					if(evaluationPeriodType.getArms() != null){
+						List<ArmType> armTypeList = evaluationPeriodType.getArms().getArm();
+						List<Arm> arms = epoch.getArms();
+						if(armTypeList != null && !armTypeList.isEmpty()){
+							Arm arm = null;
+							for(ArmType armType : armTypeList){
+								arm = new Arm();
+								arm.setName(armType.getName().value());
+								arm.setDescriptionText(armType.getDescriptionText());
+								if(armType.getSolicitedAdverseEvents() != null){
+									List<SolicitedAdverseEventType> solicitedAdverseEventTypeList = armType.getSolicitedAdverseEvents().getSolicitedAdverseEvent();
+									List<SolicitedAdverseEvent> solicitedAdverseEvents = arm.getSolicitedAdverseEvents();
+									if(solicitedAdverseEventTypeList != null & !solicitedAdverseEventTypeList.isEmpty()){
+										SolicitedAdverseEvent solicitedAdverseEvent = null;
+										for(SolicitedAdverseEventType solicitedAdverseEventType : solicitedAdverseEventTypeList){
+											solicitedAdverseEvent = new SolicitedAdverseEvent();
+											if(solicitedAdverseEventType.getCtcTerm() != null && !"".equals(solicitedAdverseEventType.getCtcTerm())){
+												CtcTerm ctcTerm = new CtcTerm();
+												ctcTerm.setCtepCode(solicitedAdverseEventType.getCtcTerm());
+												solicitedAdverseEvent.setCtcterm(ctcTerm);
+											}
+											if(solicitedAdverseEventType.getLowLevelTerm() != null && !"".equals(solicitedAdverseEventType.getLowLevelTerm()) ){
+												LowLevelTerm meddraTerm = new LowLevelTerm();
+												meddraTerm.setMeddraCode(solicitedAdverseEventType.getLowLevelTerm());
+												solicitedAdverseEvent.setLowLevelTerm(meddraTerm);
+											}
+											if(solicitedAdverseEventType.getOtherTerm() != null && !"".equals(solicitedAdverseEventType.getOtherTerm())){
+												LowLevelTerm otherTerm = new LowLevelTerm();
+												otherTerm.setMeddraCode(solicitedAdverseEventType.getOtherTerm());
+												solicitedAdverseEvent.setOtherTerm(otherTerm);
+											}
+											solicitedAdverseEvents.add(solicitedAdverseEvent);
+										}
+										arm.setSolicitedAdverseEvents(solicitedAdverseEvents);
+									}
+								}
+								arms.add(arm);
+							}
+							epoch.setArms(arms);
+						}
+					}
+					epochs.add(epoch);
+				}
+			}
+			study.setEpochs(epochs);
 		}
 	}
 }
