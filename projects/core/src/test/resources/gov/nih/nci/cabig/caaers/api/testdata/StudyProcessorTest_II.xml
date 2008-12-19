@@ -1,0 +1,320 @@
+<dataset>
+    
+    <ORGANIZATIONS
+        id="-1001"
+        name="Cancer Therapy Evaluation Program"
+        nci_institute_code="CTEP"
+        grid_id="gridSite_1"/>
+        
+    <ORGANIZATIONS
+        id="-1002"
+        name="Cancer and Leukemia Group B"
+        nci_institute_code="CALGB"
+        grid_id="gridSite_2"/>
+    	
+    <ORGANIZATIONS
+    id="-1003"
+    name="Johns Hopkins University"
+    nci_institute_code="MD017"
+    grid_id="gridSite_3"/>	
+    
+     <ORGANIZATIONS
+    id="-1004"
+    name="Division of Cancer Prevention"
+    nci_institute_code="DCP"
+    grid_id="gridSite_4"/>
+    
+    
+    <!-- Cancer Therapy Evaluation Program -->
+    <RESEARCH_STAFFS
+    	id="-2001"
+    	first_name="Mike"
+    	last_name="Conway"
+    	site_id="-1001"
+    	email_address="mike@ctep.com"
+    	phone_number="3013011111"/>
+    
+    <!-- University of Jonathan Dean -->	
+   <RESEARCH_STAFFS
+    	id="-2002"
+    	first_name="Allan"
+    	last_name="Border"
+    	site_id="-1003"
+    	email_address="allan.b@gmail.com"
+    	phone_number="3013011112"/>
+    	
+    <!-- University of Jonathan Dean -->	
+   <RESEARCH_STAFFS
+    	id="-2004"
+    	first_name="Roger"
+    	last_name="Keith"
+    	site_id="-1003"
+    	email_address="allan.b@gmail.com"
+    	phone_number="3013011113"/>
+    
+    <!-- Sydney Hospital -->	
+    <RESEARCH_STAFFS
+    	id="-2003"
+    	first_name="Monish"
+    	last_name="Dombla"
+    	site_id="-1004"
+    	email_address="monish.dombla@semanticbits.com"
+    	phone_number="3013011113"/>
+    
+    	
+    <INVESTIGATORS
+    	id="-3001"
+    	first_name="Gerry"
+    	last_name="Elbridge"
+    	email_address="ge@nci.com"
+    	phone_number="555-555-3333"/>
+    	
+    <INVESTIGATORS
+    	id="-3002"
+    	first_name="George"
+    	last_name="Clinton"
+    	email_address="gc@nci.com"
+    	phone_number="555-555-3333"/>
+    	
+    <INVESTIGATORS
+    	id="-3003"
+    	first_name="James"
+    	last_name="Madison"
+    	email_address="jm@testemail.com"
+    	phone_number="555-555-5555"/>
+    	
+    <INVESTIGATORS
+    	id="-3004"
+    	first_name="Aaron"
+    	last_name="Burr"
+    	email_address="ab@nci.com"
+    	phone_number="555-555-5555"/>
+    	
+    <INVESTIGATORS
+    	id="-3005"
+    	first_name="David"
+    	last_name="Algor"
+    	email_address="da@nci.com"
+    	phone_number="555-555-5555"/>
+   
+   <!--George  Clinton   to   Cancer Therapy Evaluation Program--> 	
+    <SITE_INVESTIGATORS
+    	id="-4001"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3002"/>
+    
+    <!--Gerry Elbridge   to  Cancer Therapy Evaluation Program-->	
+    <SITE_INVESTIGATORS
+    	id="-4002"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3001"/>
+    	
+    <!--David Algor   to  Cancer Therapy Evaluation Program-->	
+    <SITE_INVESTIGATORS
+    	id="-4005"
+    	status_code="ACT"
+    	site_id="-1001"
+    	investigator_id="-3005"/>
+    
+    <!--James Madison  to  Wake Forest Comprehensive Cancer Center -->	
+     <SITE_INVESTIGATORS
+    	id="-4003"
+    	status_code="ACT"
+    	site_id="-1002"
+    	investigator_id="-3003"/>
+    
+    
+    <!-- Aaron Burr   to  University of Jonathan Dean-->	
+    <SITE_INVESTIGATORS
+    	id="-4004"
+    	status_code="ACT"
+    	site_id="-1003"
+    	investigator_id="-3004"/> 
+    
+    
+    <DISEASE_CATEGORIES
+    	id="-5001"
+    	name="Bone Neoplasm"/>
+    
+    <DISEASE_CATEGORIES
+    	id="-5002"
+    	parent_id="-5001"
+    	name="Chondrosarcoma"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5003"
+    	parent_id=""
+    	name="CNS Neoplasm (Primary Tumor)"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5004"
+    	parent_id="-5003"
+    	name="Embryonal Tumors of the CNS"/>
+    	
+    <DISEASE_CATEGORIES
+    	id="-5005"
+    	parent_id="-5001"
+    	name="Osteosarcoma"/>
+    	
+    <DISEASE_TERMS
+    	id="-6001"
+    	term="Chondrosarcoma"
+    	ctep_term="Chondrosarcoma"
+    	category_id="-5001"
+    	medra_code="10008737"/>
+    	
+    <DISEASE_TERMS
+    	id="-6002"
+    	term="Medulloblastoma"
+    	ctep_term="Medulloblastoma"
+    	category_id="-5004"
+    	medra_code="10027107"/>
+    	
+    <DISEASE_TERMS
+    	id="-6003"
+    	term="Osteosarcoma"
+    	ctep_term="Osteosarcoma"
+    	category_id="-5005"
+    	medra_code="10031291"/>
+    	
+    <MEDDRA_VERSIONS
+    	id="9"
+    	name="MedDRA v9"/>
+    	
+    <MEDDRA_LLT
+    	id="10000002"
+    	meddra_code="10000002"
+    	version_id="9"/>
+    	
+    <MEDDRA_LLT
+		id="10000003"
+		meddra_code="10000003"
+		version_id="9"/>
+		
+    <MEDDRA_LLT
+		id="10000004"
+		meddra_code="10000004"
+		version_id="9"/>
+		
+	<AGENTS
+		id="-7001"
+		name="1-Aminocyclopentane"
+		nsc="1026"/>
+	
+	<AGENTS
+		id="-7002"
+		name="17-Methyltestosterone"
+		nsc="9701"/>	
+		
+	<INVESTIGATIONAL_NEW_DRUGS
+		id="-8001"
+		ind_number="-111"
+		grid_id="IND111"/>
+		
+	<INVESTIGATIONAL_NEW_DRUGS
+		id="-8002"
+		ind_number="-222"
+		grid_id="IND222"/>
+		
+	<IND_HOLDERS 
+		id="-9001"
+		dtype="ORG" 
+		org_id="-1001"
+		drug_id="-8001" />
+   	
+   	<IND_HOLDERS
+   		 id="-9002"
+   		 dtype="ORG"
+   		 org_id="-1001"
+   		 drug_id="-8002" />
+   	
+   	<CTC_VERSIONS
+   		id="3"
+   		name="CTCAE v3.0"/>
+   		
+   	<CTC_CATEGORIES
+        id="301"
+        version_id="3"
+        name="DERMATOLOGY/SKIN"/>
+        
+    <CTC_CATEGORIES
+        id="302"
+        version_id="3"
+        name="INFECTION"/>
+        
+    <CTC_TERMS
+        id="3001"
+        category_id="301"
+        term="Burn"
+        ctep_term=""
+        select_ae=""
+        ctep_code="-17"
+        other_required="1"/>
+    <CTC_TERMS
+        id="3002"
+        category_id="301"
+        term="Dry skin"
+        other_required="0"/>
+    <CTC_TERMS
+        id="3003"
+        category_id="301"
+        term="Atrophy, subcutaneous fat"
+        ctep_code="10016241"
+        other_required="0"/>
+    <CTC_TERMS
+        id="3004"
+        category_id="301"
+        term="Rash: dermatitis associated with radiation"
+        select_ae="Chemoradiation"
+        other_required="0"/>
+    <CTC_TERMS
+        id="3005"
+        category_id="301"
+        term="Rash: dermatitis associated with radiation"
+        select_ae="Radiation"
+        other_required="0"/>
+    <CTC_TERMS
+        id="3010"
+        category_id="302"
+        term="Infection (documented clinically or microbiologically) with Grade 3 or 4 neutrophils (ANC &lt;1.0 x 10e9/L)"
+        select_ae="Skin (cellulitis)"
+        ctep_term="Skin infection"
+        ctep_code="90030270"
+        other_required="0"/>
+    <CTC_GRADES
+        id="30103"
+        term_id="3010"
+        grade_code="3"
+        grade_text="Mostly mild"/>
+    <CTC_GRADES
+        id="30104"
+        term_id="3010"
+        grade_code="4"
+        grade_text="On fire"/>
+   		
+   	<!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+   	<studies />
+    <investigational_new_drugs />
+    <ind_holders />
+	<research_staffs />
+	<disease_terminologies/>
+	<epochs/>
+	<identifiers/>
+	<study_therapy/>
+	<treatment_assignment/>
+	<study_agents/>
+	<study_agent_inds/>
+	<study_diseases/>
+	<study_organizations/>
+	<study_investigators/>
+	<study_personnel/>
+	<arms/>
+	<solicited_events/>
+	<ae_reporting_periods/>
+	<ae_reports/>
+	<ae_labs/>
+	<treatments/>
+	<terminologies/>
+</dataset>
