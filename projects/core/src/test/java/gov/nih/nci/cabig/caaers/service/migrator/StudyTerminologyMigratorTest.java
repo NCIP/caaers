@@ -80,7 +80,9 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_WithCorrectMeddraVersion() {
 		 AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
-	     EasyMock.expect(meddraVersionDao.getById(Integer.parseInt(medDRATerminology.getMeddraVersion().getName()))).andReturn(medDRATerminology.getMeddraVersion());
+	     List<MeddraVersion> mvs = new ArrayList<MeddraVersion>();
+	     mvs.add(medDRATerminology.getMeddraVersion());
+	     EasyMock.expect(meddraVersionDao.getMeddraByName(medDRATerminology.getMeddraVersion().getName())).andReturn(mvs).anyTimes();
 	     replayMocks();
         
         migrator.migrate(xstreamStudy, dest, outcome);
@@ -93,7 +95,7 @@ public class StudyTerminologyMigratorTest extends AbstractTestCase {
 	
 	public void testMigrate_WithIncorrectMeddraVersion() {
 		 AeTerminology medDRATerminology = Fixtures.createMedDRATerminology(xstreamStudy);
-	     EasyMock.expect(meddraVersionDao.getById(Integer.parseInt(medDRATerminology.getMeddraVersion().getName()))).andReturn(null);
+	     EasyMock.expect(meddraVersionDao.getMeddraByName(medDRATerminology.getMeddraVersion().getName())).andReturn(null).anyTimes();
 	     replayMocks();
         
         migrator.migrate(xstreamStudy, dest, outcome);

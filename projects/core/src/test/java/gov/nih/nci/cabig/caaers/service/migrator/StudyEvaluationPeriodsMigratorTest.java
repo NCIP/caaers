@@ -13,7 +13,6 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.service.DomainObjectImportOutcome;
-import gov.nih.nci.cabig.caaers.service.migrator.StudyEvaluationPeriodsMigrator; 
 
 import java.util.ArrayList;
 import java.util.List;
@@ -144,60 +143,6 @@ public class StudyEvaluationPeriodsMigratorTest extends AbstractTestCase {
         assertEquals(1, dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
         assertEquals("meddraTerm_1", dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().get(0).getLowLevelTerm().getMeddraTerm());
         assertEquals("meddraCode_1", dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().get(0).getLowLevelTerm().getMeddraCode());
-        
-	}
-	
-	
-	public void testMigrateEvaluationPeriods_OtherTerm(){
-		AeTerminology aeTerminology = Fixtures.createMedDRATerminology(xmlStudy);
-		MeddraVersion meddra = new MeddraVersion();
-		meddra.setId(4);
-		meddra.setName("MedDRA v9");
-		aeTerminology.setMeddraVersion(meddra);
-        xmlStudy.setOtherMeddra(meddra);
-        xmlStudy.setAeTerminology(aeTerminology);
-        
-        dest.setAeTerminology(aeTerminology);
-        dest.setOtherMeddra(meddra);
-        
-        Epoch epoch = new Epoch();
-        epoch.setName("EPOCH_BASELINE");
-        epoch.setDescriptionText("EPOCH_BASELINE_DESC");
-        epoch.setEpochOrder(1);
-        Arm arm1 = new Arm();
-        arm1.setName("ARM_BASELINE");
-        arm1.setDescriptionText("ARM_BASELINE_DESC");
-        SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
-        LowLevelTerm llt = new LowLevelTerm();
-        llt.setMeddraTerm("otherTerm_1");
-        llt.setMeddraCode("otherCode_1");
-        sAE1.setOtherTerm(llt);
-        arm1.getSolicitedAdverseEvents().add(sAE1);
-        epoch.getArms().add(arm1);
-        xmlStudy.getEpochs().add(epoch);
-        
-        //For EasyMock Return 
-        List<LowLevelTerm> llts = new ArrayList<LowLevelTerm>();
-        llts.add(llt);
-        
-        EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt.getMeddraCode(),aeTerminology.getMeddraVersion().getId())).andReturn(llts).anyTimes();
-        replayMocks();
-        
-        migrator.migrate(xmlStudy, dest, outcome);
-        
-        verifyMocks();
-        
-        assertNotNull(dest.getEpochs());
-        assertEquals(1, dest.getEpochs().size());
-        assertEquals("EPOCH_BASELINE", dest.getEpochs().get(0).getName());
-        assertEquals("EPOCH_BASELINE_DESC", dest.getEpochs().get(0).getDescriptionText());
-        assertEquals(new Integer(1), dest.getEpochs().get(0).getEpochOrder());
-        assertEquals(1, dest.getEpochs().get(0).getArms().size());
-        assertEquals("ARM_BASELINE", dest.getEpochs().get(0).getArms().get(0).getName());
-        assertEquals("ARM_BASELINE_DESC", dest.getEpochs().get(0).getArms().get(0).getDescriptionText());
-        assertEquals(1, dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().size());
-        assertEquals("otherTerm_1", dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().get(0).getOtherTerm().getMeddraTerm());
-        assertEquals("otherCode_1", dest.getEpochs().get(0).getArms().get(0).getSolicitedAdverseEvents().get(0).getOtherTerm().getMeddraCode());
         
 	}
 	
