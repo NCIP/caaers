@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -106,10 +107,23 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	if( setOfEpochNames.size() != listOfEpochNames.size())
     		errors.reject("name","There is a duplicate evaluation period type. Modify or delete the evaluation period types so they are all unique.");
     	
-    	// Validate otherMeddra for ctc terminology.
+    	
+    	HashSet<SolicitedAdverseEvent> solicitedAEsWithinEpochSet = new HashSet<SolicitedAdverseEvent>();
+    	
+    	
     	HashMap<String, Boolean> otherMeddraErrorMap = new HashMap<String, Boolean>(); // This is used to avoid repeating the error messages.
     	for(Epoch epoch: command.getEpochs()){
+    		solicitedAEsWithinEpochSet.clear();
+    		
     		for(SolicitedAdverseEvent sae: epoch.getArms().get(0).getSolicitedAdverseEvents()){
+    			//check within an arm if terms are duplicated
+    			if(!solicitedAEsWithinEpochSet.add(sae)){
+    				//this is a dup.
+    				String termName = (sae.getCtcterm() != null) ? sae.getCtcterm().getTerm() : sae.getLowLevelTerm().getMeddraTerm();
+    				errors.reject("STU_001", new Object[]{termName, epoch.getName()}, "Duplicate term added in evaluation period");
+    			}
+    			
+    			// Validate otherMeddra for ctc terminology.
     			if(sae.getCtcterm() != null && sae.getCtcterm().isOtherRequired()){
     				if(sae.getOtherTerm() == null && !otherMeddraErrorMap.containsKey(sae.getCtcterm().getTerm())){
     					errors.reject("otherMeddraRequired", "Other medDRA term is required for the term " + sae.getCtcterm().getTerm());
