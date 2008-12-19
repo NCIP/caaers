@@ -36,7 +36,6 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.caaers.webservice.ArmType;
 import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
 import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
@@ -213,6 +212,7 @@ public class StudyConverter {
 				aeTerminology = new AeTerminology();
 				MeddraVersion meddraVersion = new MeddraVersion();
 				meddraVersion.setName(studyDto.getAeTerminology().getMeddraVersion().getName());
+				aeTerminology.setMeddraVersion(meddraVersion);
             	study.setAeTerminology(aeTerminology);
             }
 		}
@@ -494,59 +494,45 @@ public class StudyConverter {
 		EvaluationPeriods evaluationPeriods = studyDto.getEvaluationPeriods();
 		if(evaluationPeriods != null){
 			List<EvaluationPeriodType> evalutionPeriodTypeList = evaluationPeriods.getEvaluationPeriod();
-			List<Epoch> epochs = study.getEpochs();
 			if(evalutionPeriodTypeList != null && !evalutionPeriodTypeList.isEmpty()){
 				Epoch epoch = null;
 				for(EvaluationPeriodType evaluationPeriodType : evalutionPeriodTypeList){
 					epoch = new Epoch();
-					epoch.setName(evaluationPeriodType.getName().value());
+					epoch.setName(evaluationPeriodType.getName());
 					epoch.setDescriptionText(evaluationPeriodType.getDescriptionText());
 					epoch.setEpochOrder(evaluationPeriodType.getEpochOrder());
-					if(evaluationPeriodType.getArms() != null){
-						List<ArmType> armTypeList = evaluationPeriodType.getArms().getArm();
-						List<Arm> arms = epoch.getArms();
-						if(armTypeList != null && !armTypeList.isEmpty()){
-							Arm arm = null;
-							for(ArmType armType : armTypeList){
-								arm = new Arm();
-								arm.setName(armType.getName().value());
-								arm.setDescriptionText(armType.getDescriptionText());
-								if(armType.getSolicitedAdverseEvents() != null){
-									List<SolicitedAdverseEventType> solicitedAdverseEventTypeList = armType.getSolicitedAdverseEvents().getSolicitedAdverseEvent();
-									List<SolicitedAdverseEvent> solicitedAdverseEvents = arm.getSolicitedAdverseEvents();
-									if(solicitedAdverseEventTypeList != null & !solicitedAdverseEventTypeList.isEmpty()){
-										SolicitedAdverseEvent solicitedAdverseEvent = null;
-										for(SolicitedAdverseEventType solicitedAdverseEventType : solicitedAdverseEventTypeList){
-											solicitedAdverseEvent = new SolicitedAdverseEvent();
-											if(solicitedAdverseEventType.getCtcTerm() != null && !"".equals(solicitedAdverseEventType.getCtcTerm())){
-												CtcTerm ctcTerm = new CtcTerm();
-												ctcTerm.setCtepCode(solicitedAdverseEventType.getCtcTerm());
-												solicitedAdverseEvent.setCtcterm(ctcTerm);
-											}
-											if(solicitedAdverseEventType.getLowLevelTerm() != null && !"".equals(solicitedAdverseEventType.getLowLevelTerm()) ){
-												LowLevelTerm meddraTerm = new LowLevelTerm();
-												meddraTerm.setMeddraCode(solicitedAdverseEventType.getLowLevelTerm());
-												solicitedAdverseEvent.setLowLevelTerm(meddraTerm);
-											}
-											if(solicitedAdverseEventType.getOtherTerm() != null && !"".equals(solicitedAdverseEventType.getOtherTerm())){
-												LowLevelTerm otherTerm = new LowLevelTerm();
-												otherTerm.setMeddraCode(solicitedAdverseEventType.getOtherTerm());
-												solicitedAdverseEvent.setOtherTerm(otherTerm);
-											}
-											solicitedAdverseEvents.add(solicitedAdverseEvent);
-										}
-										arm.setSolicitedAdverseEvents(solicitedAdverseEvents);
-									}
+					Arm arm = new Arm();
+					arm.setName(epoch.getName());
+					arm.setDescriptionText(epoch.getDescriptionText());
+					if(evaluationPeriodType.getSolicitedAdverseEvents() != null){
+						List<SolicitedAdverseEventType> solicitedAdverseEventTypeList = evaluationPeriodType.getSolicitedAdverseEvents().getSolicitedAdverseEvent();
+						if(solicitedAdverseEventTypeList != null & !solicitedAdverseEventTypeList.isEmpty()){
+							SolicitedAdverseEvent solicitedAdverseEvent = null;
+							for(SolicitedAdverseEventType solicitedAdverseEventType : solicitedAdverseEventTypeList){
+								solicitedAdverseEvent = new SolicitedAdverseEvent();
+								if(solicitedAdverseEventType.getCtepCode() != null && !"".equals(solicitedAdverseEventType.getCtepCode())){
+									CtcTerm ctcTerm = new CtcTerm();
+									ctcTerm.setCtepCode(solicitedAdverseEventType.getCtepCode());
+									solicitedAdverseEvent.setCtcterm(ctcTerm);
 								}
-								arms.add(arm);
+								if(solicitedAdverseEventType.getMeddraCode() != null && !"".equals(solicitedAdverseEventType.getMeddraCode()) ){
+									LowLevelTerm meddraTerm = new LowLevelTerm();
+									meddraTerm.setMeddraCode(solicitedAdverseEventType.getMeddraCode());
+									solicitedAdverseEvent.setLowLevelTerm(meddraTerm);
+								}
+								if(solicitedAdverseEventType.getOtherMeddraCode() != null && !"".equals(solicitedAdverseEventType.getOtherMeddraCode())){
+									LowLevelTerm otherTerm = new LowLevelTerm();
+									otherTerm.setMeddraCode(solicitedAdverseEventType.getOtherMeddraCode());
+									solicitedAdverseEvent.setOtherTerm(otherTerm);
+								}
+								arm.getSolicitedAdverseEvents().add(solicitedAdverseEvent);
 							}
-							epoch.setArms(arms);
 						}
 					}
-					epochs.add(epoch);
+					epoch.getArms().add(arm);
+					study.getEpochs().add(epoch);
 				}
 			}
-			study.setEpochs(epochs);
 		}
 	}
 }

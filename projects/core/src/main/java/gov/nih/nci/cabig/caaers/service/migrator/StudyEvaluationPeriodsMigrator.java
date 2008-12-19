@@ -20,10 +20,16 @@ public class StudyEvaluationPeriodsMigrator implements Migrator<Study> {
 	public void migrate(Study src, Study dest,
 			DomainObjectImportOutcome<Study> outcome) {
 		
+		boolean isBaseLineEpochPresent = false;
+		boolean onlyOtherMeddraTermPresent = false; 
+		
 		List<Epoch> xmlEpochs = src.getEpochs();
 		if(xmlEpochs != null && !xmlEpochs.isEmpty()){
 			Epoch domainEpoch = null;
 			for(Epoch xmlEpoch : xmlEpochs){
+				if("Baseline".equals(xmlEpoch.getName())){
+					isBaseLineEpochPresent = true;
+				}
 				domainEpoch = new Epoch();
 				domainEpoch.setName(xmlEpoch.getName());
 				domainEpoch.setDescriptionText(xmlEpoch.getDescriptionText());
@@ -37,6 +43,12 @@ public class StudyEvaluationPeriodsMigrator implements Migrator<Study> {
 						if(xmlArm.getSolicitedAdverseEvents() != null && !xmlArm.getSolicitedAdverseEvents().isEmpty()){
 							SolicitedAdverseEvent domainSolicitedAdverseEvent = null;
 							for(SolicitedAdverseEvent xmlSolicitedAdverseEvent : xmlArm.getSolicitedAdverseEvents()){
+								if(xmlSolicitedAdverseEvent.getOtherTerm() != null){
+									if(xmlSolicitedAdverseEvent.getLowLevelTerm() == null && xmlSolicitedAdverseEvent.getCtcterm() == null){
+										onlyOtherMeddraTermPresent = true;
+										break;
+									}
+								}
 								domainSolicitedAdverseEvent = new SolicitedAdverseEvent();
 								if(xmlSolicitedAdverseEvent.getCtcterm() != null && !"".equals(xmlSolicitedAdverseEvent.getCtcterm().getCtepCode())){
 									if(dest.getAeTerminology().getCtcVersion() != null){
@@ -70,6 +82,14 @@ public class StudyEvaluationPeriodsMigrator implements Migrator<Study> {
 				}
 				dest.getEpochs().add(domainEpoch);
 			}
+		}
+	
+		
+		if(dest.getEpochs()!= null && !dest.getEpochs().isEmpty() && !isBaseLineEpochPresent){
+			outcome.addErrorMessage("One EvaluationPeriod with name as \"Baseline\" is mandatory", DomainObjectImportOutcome.Severity.ERROR);
+		}
+		if(dest.getEpochs()!= null && !dest.getEpochs().isEmpty() && onlyOtherMeddraTermPresent){
+			outcome.addErrorMessage("SolicitedAdverseEvent with only otherMeddraCode is not allowed", DomainObjectImportOutcome.Severity.ERROR);
 		}
 	}
 
