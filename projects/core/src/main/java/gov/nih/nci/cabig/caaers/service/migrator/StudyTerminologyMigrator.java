@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.service.migrator;
 
+import java.util.List;
+
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao.MedDRA;
@@ -46,8 +48,11 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
             
             if (srcAeTerminology.getMeddraVersion() != null) {
             	AeTerminology aeTerminology = destination.getAeTerminology();
-            	int meddraVersionId = Integer.parseInt(srcAeTerminology.getMeddraVersion().getName());
-                MeddraVersion meddraVersion = meddraVersionDao.getById(meddraVersionId);
+            	List<MeddraVersion> mvs = meddraVersionDao.getMeddraByName(srcAeTerminology.getMeddraVersion().getName());
+            	MeddraVersion meddraVersion = null;
+            	if(mvs != null && !mvs.isEmpty()){
+            		meddraVersion = meddraVersionDao.getMeddraByName(srcAeTerminology.getMeddraVersion().getName()).get(0);
+            	}
                 aeTerminology.setTerm(Term.MEDDRA);
                 aeTerminology.setMeddraVersion(meddraVersion);
                 outcome.ifNullObject(meddraVersion, DomainObjectImportOutcome.Severity.ERROR, "MedDRA Version is either Empty or Not Valid");
