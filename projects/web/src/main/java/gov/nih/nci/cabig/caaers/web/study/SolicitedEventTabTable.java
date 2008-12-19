@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.utils.CustomLinkedSet;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet; 
@@ -23,7 +24,7 @@ import java.util.Set;
  */
 public class SolicitedEventTabTable{
 	
-	private Set<SolicitedAdverseEvent> consolidatedListOfSolicitedAEsForAllEpochs = new LinkedHashSet<SolicitedAdverseEvent>();
+	private Set<SolicitedAdverseEvent> consolidatedListOfSolicitedAEsForAllEpochs = new CustomLinkedSet<SolicitedAdverseEvent>();
 	private LinkedList<LinkedList<Object>> listOfSolicitedAERows = new LinkedList<LinkedList<Object>>();
 	private List<Epoch> listOfEpochs;
 	private int numOfnewlyAddedRows;
