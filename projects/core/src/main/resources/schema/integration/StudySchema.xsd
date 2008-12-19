@@ -491,34 +491,18 @@
     </xs:complexType>
 
 
-	  <xs:element name="evaluationPeriod" type="EvaluationPeriodType"/>
+	<xs:element name="evaluationPeriod" type="EvaluationPeriodType"/>
+	<xs:annotation>
+            <xs:documentation>One EvaluationPeriod with name as "Baseline" is mandatory</xs:documentation>
+    </xs:annotation>
     <xs:complexType name="EvaluationPeriodType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="name" type="EvalPeriodType"/>
+                    <xs:element name="name" type="xs:string"/>
                     <xs:element name="descriptionText" type="xs:string" minOccurs="0"/>
                     <xs:element name="epochOrder" type="xs:int"/>
-                    <xs:element name="arms" minOccurs="0">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="arm" maxOccurs="unbounded"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                </xs:sequence>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    
-   	<xs:element name="arm" type="ArmType"/>
-    <xs:complexType name="ArmType">
-        <xs:complexContent>
-            <xs:extension base="MutableDomainObject">
-                <xs:sequence>
-                    <xs:element name="name" type="EvalPeriodType"/>
-                    <xs:element name="descriptionText" type="xs:string" minOccurs="0"/>
-                    <xs:element name="solicitedAdverseEvents" minOccurs="0">
+                     <xs:element name="solicitedAdverseEvents" minOccurs="0">
                         <xs:complexType>
                             <xs:sequence>
                                 <xs:element ref="solicitedAdverseEvent" maxOccurs="unbounded"/>
@@ -529,15 +513,15 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
+    
 	<xs:element name="solicitedAdverseEvent" type="SolicitedAdverseEventType"/>
     <xs:complexType name="SolicitedAdverseEventType">
         <xs:complexContent>
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
-                    <xs:element name="ctcTerm" type="xs:string" minOccurs="0"/>
-                    <xs:element name="lowLevelTerm" type="xs:string" minOccurs="0"/>
-                    <xs:element name="otherTerm" type="xs:string"  minOccurs="0"/>
+                    <xs:element name="ctepCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="meddraCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="otherMeddraCode" type="xs:string"  minOccurs="0"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
