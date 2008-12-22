@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns="urn:jbpm.org:jpdl-3.2"  name="reporting">
+
+
+	<description>
+		This is the parent workflow defined in caAERS for the Routine AE review and reporting. 
+	</description>
+
+
+	<start-state name="Start Routine Report Flow">
+		<transition to="Publish Report For Review"></transition>
+	</start-state>
+
+	<node name="Ready For Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<description>
+			This node will immediately transition to one of its next state, based on the job data vairables.
+State associated with this Node is READY4REVIEW
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+				 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 1 Review" name="Level 1 Review"></transition>
+		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Publish Report For Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<event type="node-leave">
+		<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+		 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    		<factoryKey>jbpmConfiguration</factoryKey>
+		</action>
+		</event>
+		<transition to="Ready For Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Perform Level 1 Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+				 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 2 Review" name="Level 2 Review"></transition>
+		<transition to="Provide Additional Info for First Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Perform Level 2 Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+				 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Review Completed" name="Review Complete"></transition>
+		<transition to="Provide Additional Info for Second Review" name="Additional Info Needed"></transition>
+		<transition to="Publish Report For Review" name="Cancel Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for First Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+				 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Perform Level 1 Review" name="Publish For Review"></transition>
+	</node>
+
+	<node name="Provide Additional Info for Second Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>
+		<event type="node-leave">
+		<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+			 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    			<factoryKey>jbpmConfiguration</factoryKey>
+		</action>
+		</event>
+		<transition to="Perform Level 2 Review" name="Publish For Review"></transition>
+	</node>
+
+	<state name="Review Completed">
+		<description>
+			This state node is invoked when the routine report review is completed. This is a long wait state, at some point in time, the data entry person can add more AE information and send it to review again. 
+When the Routine Period (is locked), it can go to end state. 
+The state associated with this task is &quot;REVIEW_COMPLETE&quot;
+		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean" name="taskCloseActionHandler">
+				 	<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+    				<factoryKey>jbpmConfiguration</factoryKey>
+			</action>
+		</event>
+		<transition to="Locked" name="Lock"></transition>
+		<transition to="Publish Report For Review" name="To Draft/Info"></transition>
+	</state>
+
+	<end-state name="Locked">
+		<description>
+			This is the end state.
+		</description>
+	</end-state>
+
+
+</process-definition>

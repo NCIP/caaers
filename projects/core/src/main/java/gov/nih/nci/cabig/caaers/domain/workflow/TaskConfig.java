@@ -98,4 +98,9 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	
+	@Override
+	public String toString() {
+		return "TaskConfig [" + taskName + ", " + statusName + " , " + applicable + " ]";
+	}
 }

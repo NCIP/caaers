@@ -18,7 +18,7 @@ public class LowLevelTerm extends AbstractMeddraDomainObject {
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "meddra_pt_id")
-    @Cascade(value = { CascadeType.ALL })
+    @Cascade(value = { CascadeType.LOCK })
     public PreferredTerm getPreferredTerm(){
     	return preferredTerm;
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="routineflow" width="1221" height="688">
+<root-container name="reporting" width="1221" height="688">
   <node name="Start Routine Report Flow" x="301" y="8" width="288" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -33,14 +33,11 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="-60" y="-9"/>
-      <bendpoint w1="296" h1="35" w2="-330" h2="37"/>
+      <label x="5" y="-10"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="-208" h1="-2" w2="-207" h2="209"/>
-      <bendpoint w1="-243" h1="-124" w2="-242" h2="87"/>
-      <bendpoint w1="-208" h1="-216" w2="-207" h2="-5"/>
+      <bendpoint w1="200" h1="-114" w2="201" h2="97"/>
     </edge>
   </node>
   <node name="Perform Level 2 Review" x="309" y="429" width="279" height="36">
@@ -48,26 +45,23 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="-60" y="-3"/>
-      <bendpoint w1="319" h1="43" w2="-295" h2="42"/>
+      <label x="5" y="-10"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
-      <bendpoint w1="-243" h1="0" w2="-241" h2="327"/>
-      <bendpoint w1="-273" h1="-153" w2="-271" h2="174"/>
-      <bendpoint w1="-246" h1="-320" w2="-244" h2="7"/>
+      <bendpoint w1="-250" h1="-168" w2="-248" h2="159"/>
     </edge>
   </node>
   <node name="Provide Additional Info for First Review" x="912" y="302" width="308" height="36">
     <edge>
-      <label x="-79" y="-23"/>
-      <bendpoint w1="-313" h1="-46" w2="313" h2="-48"/>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-321" h1="-44" w2="298" h2="-55"/>
     </edge>
   </node>
   <node name="Provide Additional Info for Second Review" x="911" y="430" width="303" height="36">
     <edge>
-      <label x="-52" y="-26"/>
-      <bendpoint w1="-314" h1="-42" w2="300" h2="-41"/>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-321" h1="-55" w2="293" h2="-54"/>
     </edge>
   </node>
   <node name="Review Completed" x="311" y="553" width="265" height="36">
@@ -77,7 +71,7 @@
     <edge>
       <label x="5" y="-10"/>
       <bendpoint w1="-365" h1="2" w2="-368" h2="453"/>
-      <bendpoint w1="-426" h1="-295" w2="-429" h2="156"/>
+      <bendpoint w1="-433" h1="-297" w2="-436" h2="154"/>
       <bendpoint w1="-366" h1="-451" w2="-369" h2="0"/>
     </edge>
   </node>

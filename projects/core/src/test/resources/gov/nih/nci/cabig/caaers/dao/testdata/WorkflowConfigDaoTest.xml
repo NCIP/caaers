@@ -1,34 +1,38 @@
 <dataset>
 	<workflow_configuration
 		id="1000"
-		workflow_definition_name="routineFlow"
+		workflow_definition_name="reporting"
 		default_assignee="system_admin"
-		enabled="true"/>
+		enabled="1"
+		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"
+		/>
 
 	<workflow_configuration
 		id="2000"
-		workflow_definition_name="reportingPeriodFlow"
+		workflow_definition_name="reporting"
 		default_assignee="system_admin"
-		enabled="true"/>
+		enabled="1"
+		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"
+		/>
 		
 	<task_configuration
 		id="1001"
 		task_name="Level 1 Review"
-		applicable="true"
+		applicable="1"
 		location="1"
 		workflow_config_id="1000" message="welcome to workflow" status_name="L1R" />
 		
 	<task_configuration
 		id="1002"
 		task_name="Level 2 Review" status_name="L1R"
-		applicable="true"
+		applicable="1"
 		location="1"
 		workflow_config_id="1000"/>
 		
 	<task_configuration
 		id="1003"
 		task_name="Review Complete" status_name="L1R"
-		applicable="true"
+		applicable="1"
 		location="1"
 		workflow_config_id="1000" />
 	

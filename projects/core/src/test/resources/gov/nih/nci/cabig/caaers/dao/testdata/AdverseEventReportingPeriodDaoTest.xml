@@ -38,12 +38,18 @@
         other_required="0"
         />
     <ctc_grades/> <!-- to delete in case of existing refs -->
+    
 	 <studies
         id="1001"
         short_title="That one"
         load_status="1"
         />
-        
+	 <studies
+        id="1002"
+        short_title="That one"
+        load_status="1"
+        />      
+          
      <study_organizations
         id="1003"
         site_id="1002"
@@ -51,6 +57,13 @@
         type="SST"
         />
         
+          
+     <study_organizations
+        id="1004"
+        site_id="1002"
+        study_id="1002"
+        type="SST"
+        />
 
         
     <participants
@@ -68,6 +81,38 @@
         middle_name="m"
         maiden_name="m"
         load_status="1" />
+        
+      <participants
+        id="1005"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="George"
+        last_name="Milan"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+
+      <participants
+        id="1006"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Joseph"
+        last_name="Tom"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
 
     <participant_assignments
         id="-14"
@@ -76,20 +121,78 @@
         date_of_enrollment="2006-09-30"
         load_status="1"
         />
-        
+
+    <participant_assignments
+        id="-15"
+        study_site_id="1004"
+        participant_id="1005"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+
+    <participant_assignments
+        id="-16"
+        study_site_id="1003"
+        participant_id="1004"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+      <participant_assignments
+        id="-17"
+        study_site_id="1003"
+        participant_id="1006"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
      <epochs
      	id="-1010"
      	name="test epoch 1"
      	order_no="1"
      	study_id="1001"
      	/>
-     	
+     <epochs
+     	id="-1011"
+     	name="test epoch 2"
+     	order_no="1"
+     	study_id="1002"
+     	/>
+     	     	
      <treatment_assignment
      	id="1001"
      	code="adverseEventReportingPeriodCode"
      	study_id="1001"
      	/>
-     	 
+		
+	 <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="1001"
+   		/>	
+   		
+   	<DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="1001"
+    	/>
+    	
+		
+	 <TERMINOLOGIES
+   		id="-12"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="1002"
+   		/>	
+   		
+   	<DISEASE_TERMINOLOGIES
+    	id="-12"
+    	term_code="1"
+    	study_id="1002"
+    	/>    	     
+    	
+    	
+    	
+    		 
 	<ae_reporting_periods
 		id="1001"
 		start_date="2008-05-23"
@@ -97,7 +200,8 @@
 		description="test object 1001"
 		treatment_assignment_id="1001"
 		assignment_id="-14"
-		epoch_id="-1010"
+		epoch_id="-1010" 
+		review_status_code="1"
 		/>
 		
 	 <ADVERSE_EVENTS
@@ -109,7 +213,7 @@
     <ADVERSE_EVENTS
         id="-11"
         reporting_period_id="1001"
-        reporting_period_list_index="1"
+        routine_list_index="1"
         />
         
      <AE_TERMS
@@ -125,19 +229,143 @@
     	term_id="3007" 
     	term_type="ctep"
     	/>   
+
+
 		
-	 <TERMINOLOGIES
-   		id="-11"
-   		term_code="1"
-   		ctc_id="3"
-   		study_id="1001"
-   		/>	
-   		
-   	<DISEASE_TERMINOLOGIES
-    	id="-11"
-    	term_code="1"
-    	study_id="1001"
+	<ae_reporting_periods
+		id="1002"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-16"
+		epoch_id="-1010" 
+		review_status_code="2"
+		/>
+
+        
+    <ADVERSE_EVENTS
+        id="-71"
+        reporting_period_id="1002"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-131"
+    	adverse_event_id="-71"
+    	term_id="3007" 
+    	term_type="ctep"
     	/>
+
+
+
+	<ae_reporting_periods
+		id="1003"
+		start_date="2008-06-23"
+		end_date="2008-06-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-16"
+		epoch_id="-1010" review_status_code="2"
+		/>
+
+        
+    <ADVERSE_EVENTS
+        id="-72"
+        reporting_period_id="1003"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-13"
+    	adverse_event_id="-72"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+		
+		
+	<ae_reporting_periods
+		id="1004"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-15"
+		epoch_id="-1011" review_status_code="1"
+		/>
+
+        
+    <ADVERSE_EVENTS
+        id="-73"
+        reporting_period_id="1004"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-14"
+    	adverse_event_id="-73"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+		
+
+
+
+
+
+	<ae_reporting_periods
+		id="1005"
+		start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-17"
+		epoch_id="-1010" review_status_code="1"
+		/>
+		
+        
+    <ADVERSE_EVENTS
+        id="-74"
+        reporting_period_id="1005"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-15"
+    	adverse_event_id="-74"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+		
+		
+
+
+	<ae_reporting_periods
+		id="1006"
+		start_date="2008-06-23"
+		end_date="2008-06-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		assignment_id="-17"
+		epoch_id="-1010" review_status_code="2"
+		/>
+		
+        
+    <ADVERSE_EVENTS
+        id="-75"
+        reporting_period_id="1006"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-16"
+    	adverse_event_id="-74"
+    	term_id="3007" 
+    	term_type="ctep"
+    	/>
+		
+		
+		
 	 <ind_holders />
 	 <SPA_DISEASE_HISTORIES />
 </dataset>

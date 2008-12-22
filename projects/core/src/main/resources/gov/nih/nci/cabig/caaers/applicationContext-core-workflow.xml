@@ -3,14 +3,21 @@
     "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-lazy-init="true">
-	 <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean">
+   	<!--  
+   		The workflow definition for Routine Flow 
+   	-->
+	<bean id="reporting" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
+        <property name="definitionLocation" value="classpath:/workflow/reporting/processdefinition.xml"/>
+    </bean>
+    
+	 <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean" depends-on="reporting">
 	 
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="configuration" value="classpath:/jbpm.cfg.xml"/>
         
        <property name="processDefinitions">
             <list>
-                <ref local="routineFlow"/>
+                <ref local="reporting"/>
             </list>
         </property>
         
@@ -20,18 +27,21 @@
     
      <bean id="jbpmTemplate" class="org.springmodules.workflow.jbpm31.JbpmTemplate">
     			<constructor-arg index="0" ref="jbpmConfiguration" />
-    			<constructor-arg index="1" ref="routineFlow" />
 	</bean> 
 	
    <bean id="nodeSkipActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.NodeSkipActionHandler">
    		<property name="workflowService" ref="workflowService"/>
    </bean>
-   
-   <bean id="workflowService"
-        class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl">
-        <property name="jbpmConfiguration" ref="jbpmConfiguration"/>
-        <property name="routineFlowProcessDefinition" ref="routineFlow"/>
-        <property name="sessionFactory" ref="sessionFactory"/>
+   <bean id="taskCloseActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.TaskCloseActionHandler">
+   		<property name="workflowService" ref="workflowService"/>
+   </bean>
+   <bean id="workflowService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl" depends-on="reporting">
+        <property name="jbpmTemplate" ref="jbpmTemplate"/>
+         <property name="processDefinitions">
+            <list>
+                <ref local="reporting"/>
+            </list>
+        </property>
         <property name="caaersJavaMailSender" ref="mailer"/>
         <property name="possibleTransitionsResolver" ref="possibleTransitionsResolver"/>
         <property name="workflowConfigDao" ref="workflowConfigDao"/>
@@ -39,11 +49,6 @@
    
    <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>
     
-   	<!--  
-   		The workflow definition for Routine Flow 
-   	-->
-	<bean id="routineFlow" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
-        <property name="definitionLocation" value="classpath:/workflow/routineflow/processdefinition.xml"/>
-    </bean>
+
 	  
 </beans>

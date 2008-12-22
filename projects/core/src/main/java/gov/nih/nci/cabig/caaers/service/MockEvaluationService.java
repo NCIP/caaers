@@ -108,9 +108,10 @@ public class MockEvaluationService implements EvaluationService {
         return new ArrayList<ExpeditedReportSection>();
     }
 
-    public void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
+    public List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData,
                     Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion) {
         // TODO Auto-generated method stub
+    	return null;
 
     }
 

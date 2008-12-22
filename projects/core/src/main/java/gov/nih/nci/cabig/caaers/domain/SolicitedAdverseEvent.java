@@ -60,24 +60,29 @@ public class SolicitedAdverseEvent  extends AbstractMutableDomainObject {
 				+ ((medraterm == null) ? 0 : medraterm.getId());
 		return result;
 	}
+	
+	
 	@Override
 	public boolean equals(Object obj) {
-		
-		System.out.println("Equals method called on this : " + this + " , obj : " + obj );
 
-		if( obj != null && this.getClass().equals(obj.getClass()))
-		{
-			if( this.getCtcterm() != null && ((SolicitedAdverseEvent)obj).getCtcterm() != null )
-			{
-				return this.getCtcterm().getId().equals( ((SolicitedAdverseEvent)obj).getCtcterm().getId() );
-			}
-			else if( this.getLowLevelTerm() != null && ((SolicitedAdverseEvent)obj).getLowLevelTerm() != null)
-			{
-				return this.getLowLevelTerm().getId().equals( ((SolicitedAdverseEvent)obj).getLowLevelTerm().getId() );
-			}
-			
-		}
-		return false;
+	       if (obj != null && this.getClass().equals(obj.getClass())) {
+	           SolicitedAdverseEvent object = (SolicitedAdverseEvent)obj;
+
+	           if ((this.getCtcterm() != null && object.getCtcterm() == null) || (this.getCtcterm() == null && object.getCtcterm() != null)) return false;
+	           if ((this.getLowLevelTerm() != null && object.getLowLevelTerm() == null) || (this.getLowLevelTerm() == null && object.getLowLevelTerm() != null)) return false;
+
+	           if (this.getCtcterm() == null && object.getCtcterm() == null) {
+	               if (this.getLowLevelTerm() == null && object.getLowLevelTerm() == null) return true;
+	               else return this.getLowLevelTerm().equals(object.getLowLevelTerm());
+	           } else {
+	               if (!this.getCtcterm().equals(object.getCtcterm())) return false;
+	               if ((this.getOtherTerm() == null && object.getOtherTerm() != null) || ((this.getOtherTerm() != null && object.getOtherTerm() == null))) return false;
+	                              if (this.getOtherTerm() == null && object.getOtherTerm() == null) return true;
+	               else return this.getOtherTerm().equals(object.getOtherTerm());
+	           }
+	           
+	       }
+	       return false; 
 	}
 	
 	@Transient

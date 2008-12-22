@@ -2,12 +2,17 @@ package gov.nih.nci.cabig.caaers.domain.report;
 
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Submitter;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.OrderBy;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -25,7 +30,7 @@ import java.util.*;
 @Entity
 @Table(name = "REPORT_SCHEDULES")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_report_schedules_id") })
-public class Report extends AbstractMutableDomainObject implements Serializable {
+public class Report extends AbstractMutableDomainObject implements Serializable, WorkflowAware {
     private boolean required;
 
     private ExpeditedAdverseEventReport aeReport;
@@ -56,6 +61,10 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
 
 
     private List<ReportDelivery> deliveries;
+    
+    private ReviewStatus reviewStatus;
+    private Integer workflowId;
+    private List<ReportReviewComment> reviewComments;
 
     // //// LOGIC
 
@@ -390,5 +399,35 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
     	return false;
     }
     
-   
+    @Column(name = "review_status_code")
+    @Type(type = "reviewStatus")
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+    
+    public void setReviewStatus(ReviewStatus reviewStatus){
+    	this.reviewStatus = reviewStatus;
+    }
+    
+    public Integer getWorkflowId() {
+    	return workflowId;
+    }
+    
+    public void setWorkflowId(Integer workflowId){
+    	this.workflowId = workflowId;
+    }
+    
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = true)
+    @IndexColumn(name = "list_index", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy(clause = "created_date desc")
+    public List<ReportReviewComment> getReviewComments() {
+		return reviewComments;
+	}
+    
+    public void setReviewComments(
+			List<ReportReviewComment> reviewComments) {
+		this.reviewComments = reviewComments;
+	}
 }

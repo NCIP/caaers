@@ -32,16 +32,15 @@ public abstract class AbstractAjaxableDomainObjectRepository extends HibernateDa
         log.debug("::: " + queryString);
         List<Object[]> objectArray = (List<Object[]>) getHibernateTemplate().execute(new HibernateCallback() {
 
-            public Object doInHibernate(final Session session) throws HibernateException,
-                    SQLException {
+            public Object doInHibernate(final Session session) throws HibernateException,SQLException {
+            	
                 org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
                 Map<String, Object> queryParameterMap = query.getParameterMap();
-               // hiberanteQuery.setMaxResults(null);
+               
+                // hiberanteQuery.setMaxResults(null);
                 for (String key : queryParameterMap.keySet()) {
                     Object value = queryParameterMap.get(key);
                     hiberanteQuery.setParameter(key, value);
-
-
                 }
                 return hiberanteQuery.list();
             }

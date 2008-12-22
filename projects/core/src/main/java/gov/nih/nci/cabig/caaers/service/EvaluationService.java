@@ -83,7 +83,7 @@ public interface EvaluationService {
      * @param reportDefs -
      *                A list of ReportDefinitions
      */
-    void addOptionalReports(ExpeditedAdverseEventReport expeditedData,
+    List<Report> addOptionalReports(ExpeditedAdverseEventReport expeditedData,
                     Collection<ReportDefinition> reportDefs, Boolean useDefaultVersion);
 
     /**

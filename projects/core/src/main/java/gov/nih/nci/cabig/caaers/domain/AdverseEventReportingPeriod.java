@@ -1,5 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
+import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,23 +19,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Sort;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.Where;
-
-import gov.nih.nci.cabig.caaers.domain.report.Report;
-import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 /**
  * This class represents the Reporting Period associated to StudyParticipant Associations
@@ -40,14 +38,14 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 @Entity
 @Table(name = "ae_reporting_periods")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_ae_reporting_periods_id") })
-public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
+public class AdverseEventReportingPeriod extends AbstractMutableDomainObject implements WorkflowAware{
 	private static final String BASELINE_REPORTING_TYPE = "Baseline";
 	
 	private String description;
 	
 	private Integer cycleNumber;
 	
-	private Long workflowId;
+	private Integer workflowId;
 	
 	private ReviewStatus reviewStatus;
 	
@@ -87,6 +85,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 	
 	// Reportable adverse Events (not associated to any report)
 	private List<AdverseEvent> reportableAdverseEvents;
+	
+	private List<ReportingPeriodReviewComment> reviewComments;
+	
 	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
@@ -232,11 +233,11 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
 		this.cycleNumber = cycleNumber;
 	}
     
-    public Long getWorkflowId() {
+    public Integer getWorkflowId() {
     	return workflowId;
     }
     
-    public void setWorkflowId(Long workflowId){
+    public void setWorkflowId(Integer workflowId){
     	this.workflowId = workflowId;
     }
     
@@ -268,6 +269,21 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     
     public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
 		this.aeReports = aeReports;
+	}
+    
+    // This is annotated this way so that the IndexColumn will work with
+    // the bidirectional mapping.  See section 2.4.6.2.3 of the hibernate annotations docs.
+    @OneToMany
+    @JoinColumn(name = "rp_id", nullable = true)
+    @IndexColumn(name = "list_index", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @org.hibernate.annotations.OrderBy(clause="created_date desc")
+    public List<ReportingPeriodReviewComment> getReviewComments() {
+		return reviewComments;
+	}
+    
+    public void setReviewComments(List<ReportingPeriodReviewComment> reviewComments) {
+		this.reviewComments = reviewComments;
 	}
     
     public void addAeReport(ExpeditedAdverseEventReport aeReport){
@@ -306,6 +322,14 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject{
     	for(ExpeditedAdverseEventReport report: this.getAeReports()){
     		count += report.getReports().size();
     	}
+    	return count;
+    }
+    
+    @Transient
+    public int getNumberOfAEs(){
+    	int count = 0;
+    	for(ExpeditedAdverseEventReport aeReport : getAeReports())
+    		count += aeReport.getNumberOfAes();
     	return count;
     }
     

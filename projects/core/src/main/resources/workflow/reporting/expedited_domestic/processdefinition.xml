@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="expedited_domestic">
+
+
+	<description>
+		Expedited report flow:
+   (domestic) Site CRA (entry) -&gt; Physician (review) -&gt; Site CRA (submit) -&gt; CALGB Central Office (review) -&gt; Submit to AdEERS
+	</description>
+
+
+	<start-state name="Start Expedited Domestic Flow">
+		<transition to="Submit Report To Physician"></transition>
+	</start-state>
+
+
+	<node name="Submit Report To Physician">
+		<description>
+			This task is assigned to the CRA for Data entry associated to the report.
+		</description>
+		<transition to="Physician Review" name="Send to Physician"></transition>
+	</node>
+
+	<node name="Physician Review">
+		<description>
+			This task is assigned to the Physican, to review the report submitted by the CRA. The Physican may approve the report (sign off) or will request additional information. 
+		</description>
+		<transition to="Submit Report To Central Office" name="SignOff Report"></transition>
+		<transition to="Provide Additional Information To Physician" name="Request Additional Information"></transition>
+	</node>
+
+	<node name="Submit Report To Central Office">
+		<description>
+			This task is assigned to the CRA, the Physican has approved the report. The CRA now have to submit the report to Central office for further review. 
+		</description>
+		<transition to="Central Office Review" name="Send to Central Office"></transition>
+	</node>
+
+	<node name="Provide Additional Information To Physician">
+		<description>
+			This task is assigned to the CRA, the Physican has request for additional information. The CRA has to provide that information and submit the report to Physican for review
+		</description>
+		<transition to="Physician Review" name="Send to Physician"></transition>
+	</node>
+
+	<node name="Central Office Review">
+		<description>
+			This taks is associated to the Personnel at Central office. The central office personal may approve the report, of will send it back to the submitter (CRA) asking additional information. 
+		</description>
+		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
+		<transition to="Submit Report To AdEERS" name="Approve Report"></transition>
+	</node>
+
+	<node name="Provide Additional Information To Central Office">
+		<description>
+			This task is associated to the CRA, the central office has requested for additional information. The CRA must complete the information and send it to Central office for further review. 
+		</description>
+		<transition to="Central Office Review" name="Send to Central Office"></transition>
+	</node>
+
+	<node name="Submit Report To AdEERS">
+		<description>
+			This task is assigned to a personel at central office, the report has to be submitted to AdEERS.
+		</description>
+		<transition to="End Expedited Domestic Flow"></transition>
+	</node>
+
+
+	<end-state name="End Expedited Domestic Flow"></end-state>
+
+
+</process-definition>

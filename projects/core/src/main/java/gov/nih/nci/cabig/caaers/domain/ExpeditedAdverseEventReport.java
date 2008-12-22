@@ -50,8 +50,6 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     private ParticipantHistory participantHistory;
     private DiseaseHistory diseaseHistory;
     private AdverseEventReportingPeriod reportingPeriod;
-    private Integer workflowId;
-    private ReviewStatus reviewStatus;
 
     private List<Report> reports;
     private static final Log log = LogFactory.getLog(ExpeditedAdverseEventReport.class);
@@ -596,15 +594,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         if (reporter != null) reporter.setExpeditedReport(this);
     }
     
-    @Column(name = "review_status_code")
-    @Type(type = "reviewStatus")
-    public ReviewStatus getReviewStatus() {
-        return reviewStatus;
-    }
-    
-    public void setReviewStatus(ReviewStatus reviewStatus){
-    	this.reviewStatus = reviewStatus;
-    }
+
 
     // non-total cascade allows us to skip saving if the physician hasn't been filled in yet
     @OneToOne(mappedBy = "expeditedReport", fetch=FetchType.LAZY)
@@ -677,13 +667,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
         report.setAeReport(this);
     }
     
-    public Integer getWorkflowId() {
-    	return workflowId;
-    }
-    
-    public void setWorkflowId(Integer workflowId){
-    	this.workflowId = workflowId;
-    }
+   
 
     public Timestamp getCreatedAt() {
         return createdAt;

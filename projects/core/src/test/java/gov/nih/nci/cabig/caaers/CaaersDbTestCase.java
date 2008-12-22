@@ -38,6 +38,7 @@ import edu.nwu.bioinformatics.commons.testing.HsqlDataTypeFactory;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
 import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.caaers.security.stub.AspectJSecurityInterceptorStub;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.ctms.audit.DataAuditInfo;
 import gov.nih.nci.security.acegi.csm.aop.SecurityInterceptorAspect;
 
@@ -79,6 +80,7 @@ public abstract class CaaersDbTestCase extends DbTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         applicationContext = getDeployedApplicationContext();
+        ((CaaersJavaMailSender)applicationContext.getBean("mailer")).SUPRESS_MAIL_SEND_EXCEPTION = true;
         setUpAuthorization();
         setUpAuditing();
         setUpSession();

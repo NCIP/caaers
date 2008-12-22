@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
 /**
  * 
@@ -23,7 +24,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 	}
 
 	public void testGetByWorkflowDefinitionName() throws Exception {
-		WorkflowConfig workflowConfig = getDao().getByWorkflowDefinitionName("routineFlow");
+		WorkflowConfig workflowConfig = getDao().getByWorkflowDefinitionName(WorkflowService.WORKFLOW_REPORTING);
 		assertEquals(3, workflowConfig.getTaskConfigs().size());
         TaskConfig t = workflowConfig.findTaskConfig("Level 1 Review");
         assertNotNull(t);

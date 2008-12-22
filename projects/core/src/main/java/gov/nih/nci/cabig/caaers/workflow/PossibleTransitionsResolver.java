@@ -36,8 +36,8 @@ public class PossibleTransitionsResolver{
 	 * @param pInstance (ProcessInstance)
 	 * @return List<String>, A list of all the possible transitions from the current node based on the applicable states and user-role.
 	 */
-	public static List<String> fetchNextTransitions(WorkflowConfig wConfig, ProcessInstance pInstance){
-		List<String> nextTransitions = new ArrayList<String>();
+	public  List<Transition> fetchNextTransitions(WorkflowConfig wConfig, ProcessInstance pInstance){
+		List<Transition> nextTransitions = new ArrayList<Transition>();
 		
 		// Get a handle to the currentNode of the processInstance.
 		// Step(a) in the algorithm above.
@@ -59,7 +59,7 @@ public class PossibleTransitionsResolver{
 			// Step(c) in the algorithm above.
 			for(Transition t: otherLeavingTransitions){
 				if(wConfig.isTaskActive(t.getTo().getName()))
-					nextTransitions.add(t.getName());
+					nextTransitions.add(t);
 			}
 			
 			// Step(d) in the algorithm above.
@@ -72,7 +72,7 @@ public class PossibleTransitionsResolver{
 			}
 			
 			// Step(e) in the algorithm above.
-			nextTransitions.add(currentNode.getDefaultLeavingTransition().getName());
+			nextTransitions.add(currentNode.getDefaultLeavingTransition());
 			
 		}
 		

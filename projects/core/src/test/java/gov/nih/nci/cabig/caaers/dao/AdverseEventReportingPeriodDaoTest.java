@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -10,10 +11,12 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * 
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 
 public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<AdverseEventReportingPeriodDao> {
@@ -35,6 +38,7 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
                         .getEndDate());
         CoreTestCase.assertEquals("test object 1001", reportingPeriod.getDescription());
         CoreTestCase.assertEquals("adverseEventReportingPeriodCode", reportingPeriod.getTreatmentAssignment().getCode());
+        System.out.println(reportingPeriod.getReviewStatus());
     }
     
     public void testSave() throws Exception {
@@ -70,4 +74,40 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
         CoreTestCase.assertEquals(1, p.getAdverseEvents().size());
     }
     
+    public void testFindAdverseEventReportingPeriods() {
+    	AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+    	query.filterByParticipant(1006);
+    	List<AdverseEventReportingPeriod> reportingPeriods = getDao().findAdverseEventReportingPeriods(query);
+    	assertNotNull(reportingPeriods);
+    	assertEquals(2, reportingPeriods.size());
+    	assertEquals(-17, (int)reportingPeriods.get(0).getAssignment().getId());
+    }
+    
+    public void testFindAdverseEventReportingPeriods_WithStudyAswell() {
+    	AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+    	query.filterByParticipant(1006);
+    	query.filterByStudy(1001);
+    	List<AdverseEventReportingPeriod> reportingPeriods = getDao().findAdverseEventReportingPeriods(query);
+    	assertNotNull(reportingPeriods);
+    	assertEquals(2, reportingPeriods.size());
+    	assertEquals(-17, (int)reportingPeriods.get(0).getAssignment().getId());
+    }
+
+    public void testFindAdverseEventReportingPeriods_WithNonExistingStudy() {
+    	AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+    	query.filterByParticipant(1006);
+    	query.filterByStudy(1008);
+    	List<AdverseEventReportingPeriod> reportingPeriods = getDao().findAdverseEventReportingPeriods(query);
+    	assertNotNull(reportingPeriods);
+    	assertEquals(0, reportingPeriods.size());
+    }
+    
+    public void testFindAdverseEventReportingPeriods_WithOnlyStudy() {
+    	AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
+    	query.filterByStudy(1001);
+    	System.out.println(query.getQueryString());
+    	List<AdverseEventReportingPeriod> reportingPeriods = getDao().findAdverseEventReportingPeriods(query);
+    	assertNotNull(reportingPeriods);
+    	assertEquals(5, reportingPeriods.size());
+    }
 }

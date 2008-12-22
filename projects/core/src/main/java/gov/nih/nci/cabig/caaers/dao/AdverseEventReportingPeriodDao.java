@@ -1,9 +1,12 @@
 package gov.nih.nci.cabig.caaers.dao;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.LockModeType;
 
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Agent;
@@ -11,7 +14,10 @@ import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -23,8 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional(readOnly = true)
-public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseEventReportingPeriod>
-                implements MutableDomainObjectDao<AdverseEventReportingPeriod>{
+public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseEventReportingPeriod> implements MutableDomainObjectDao<AdverseEventReportingPeriod>{
 	
     /**
      * Get the Class representation of the domain object that this DAO is representing.
@@ -60,5 +65,22 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     @Override
     public void reassociate(AdverseEventReportingPeriod o) {
     	getHibernateTemplate().lock(o, LockMode.NONE);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<AdverseEventReportingPeriod> findAdverseEventReportingPeriods(final AdverseEventReportingPeriodForReviewQuery query){
+         log.debug("::: " + query.getQueryString());
+         return (List<AdverseEventReportingPeriod>) getHibernateTemplate().execute(new HibernateCallback(){
+        	  public Object doInHibernate(final Session session) throws HibernateException,SQLException {
+        		  org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+        		  Map<String, Object> queryParameterMap = query.getParameterMap();
+        		  for (String key : queryParameterMap.keySet()) {
+        			  Object value = queryParameterMap.get(key);
+        			  hiberanteQuery.setParameter(key, value);
+
+        		  }
+        		  return hiberanteQuery.list();
+        	  } 
+         });
     }
 }

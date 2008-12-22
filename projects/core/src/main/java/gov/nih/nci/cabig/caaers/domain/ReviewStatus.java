@@ -31,9 +31,10 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     }
     
     private ReviewStatus(Integer code, String longName, String nodeName){
-    	this.code = code;
+    	this(code);
     	this.displayName = longName;
     	this.nodeName = nodeName;
+    	
     }
     
     public static ReviewStatus getByCode(int code){

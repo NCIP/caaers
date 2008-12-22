@@ -164,6 +164,9 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -498,6 +501,11 @@ This applicationContext contains the definition of the DAOs
           class="gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository"
           parent="daoTemplate">
     </bean>
+    
+    <bean id="studySiteAjaxableDomainObjectRepository"
+          class="gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository"
+          parent="daoTemplate">
+    </bean>
 
     <bean id="csmUserRepository" class="gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl"
           lazy-init="true" autowire="byType">
@@ -531,6 +539,12 @@ This applicationContext contains the definition of the DAOs
     <bean id="labLoadRepository" class="gov.nih.nci.cabig.caaers.domain.repository.LabLoadRepository">
         <property name="labLoadDao" ref="labLoadDao"></property>
     </bean>
+    <bean id="adverseEventRoutingAndReviewRepository" class="gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl">
+    	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
+    	<property name="routingAndReviewFactory" ref="routingAndReviewFactory" />
+    	<property name="reportDao" ref="reportDao" />
+    	<property name="workflowService" ref="workflowService" />
+    </bean>
     <!-- Repository beans end here-->
 
 
@@ -540,6 +554,9 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
+    <bean id="routingAndReviewFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory">
+    	<property name="workflowService" ref="workflowService"/>
+    </bean>
 
     <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
 

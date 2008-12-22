@@ -26,6 +26,9 @@ import org.apache.commons.lang.StringUtils;
  * @author Biju Joseph
  */
 public class CaaersJavaMailSender extends JavaMailSenderImpl implements InitializingBean {
+	
+	public static boolean SUPRESS_MAIL_SEND_EXCEPTION = false;
+	
     private Configuration configuration;
 
     public String getHost() {
@@ -125,6 +128,7 @@ public class CaaersJavaMailSender extends JavaMailSenderImpl implements Initiali
 			send(message);
 		    
 		} catch (Exception e) {
+			 if(SUPRESS_MAIL_SEND_EXCEPTION) return; //supress the excetion related to email sending
 			 throw new CaaersSystemException("Error while sending email", e);
 		}
 	}
