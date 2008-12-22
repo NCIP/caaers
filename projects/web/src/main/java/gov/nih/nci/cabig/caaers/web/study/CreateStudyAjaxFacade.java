@@ -3,8 +3,11 @@ package gov.nih.nci.cabig.caaers.web.study;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.*;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySiteAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySiteAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
@@ -60,6 +63,8 @@ public class CreateStudyAjaxFacade {
     private StudyDao studyDao;
     protected LowLevelTermDao lowLevelTermDao;
     protected CtcTermDao ctcTermDao;
+
+    StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository;
 
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
@@ -138,6 +143,16 @@ public class CreateStudyAjaxFacade {
         }
     }
 
+    public List<StudySiteAjaxableDomainObject> matchSites(final String text, final Integer studyId){
+    	if(studyId == null) 
+    		return new ArrayList<StudySiteAjaxableDomainObject>();
+    	
+    	StudySiteAjaxableDomainObjectQuery query = new StudySiteAjaxableDomainObjectQuery();
+    	query.filterByStudy(studyId);
+    	return studySiteAjaxableDomainObjectRepository.findStudySites(query);
+    	
+    }
+    
     public List<Agent> matchAgents(final String text) {
         List<Agent> agents = agentDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(agents, "id", "name", "nscNumber", "description");
@@ -469,8 +484,14 @@ public class CreateStudyAjaxFacade {
     public void setStudyDao(StudyDao studyDao) {
         this.studyDao = studyDao;
     }
-
-    protected void saveCommand(Object study) {
+    public StudySiteAjaxableDomainObjectRepository getStudySiteAjaxableDomainObjectRepository() {
+		return studySiteAjaxableDomainObjectRepository;
+            }
+    public void setStudySiteAjaxableDomainObjectRepository(	StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository) {
+		this.studySiteAjaxableDomainObjectRepository = studySiteAjaxableDomainObjectRepository;
+    }
+    
+      protected void saveCommand(Object study) {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
 

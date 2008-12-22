@@ -15,7 +15,9 @@
                   ref="studySearchableAjaxableDomainObjectRepository"/>
         <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
-
+	
+	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade">
+	</bean>
     <bean id="captureAeAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade"/>
 
@@ -24,8 +26,9 @@
         <property name="auditHistoryRepository" ref="auditHistoryRepository"/>
     </bean>
 
-    <bean id="studyAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade"/>
+    <bean id="studyAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.study.CreateStudyAjaxFacade">
+    	<property name="studySiteAjaxableDomainObjectRepository" ref="studySiteAjaxableDomainObjectRepository"/>
+    </bean>
 
     <bean id="participantAjaxFacade"
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">

@@ -38,8 +38,7 @@ public class TreatmentTab extends AeTab {
     @Override
     protected void createFieldGroups(AeInputFieldCreator creator,
                     ExpeditedAdverseEventInputCommand command) {
-        InputField assignmentField = InputFieldFactory.createSelectField("treatmentAssignment",
-                        "Treatment assignment code", false,
+        InputField assignmentField = InputFieldFactory.createSelectField("treatmentAssignment", "Treatment assignment code", false,
                         collectTreatmentAssignmentCodes(command));
         InputFieldAttributes.setSize(assignmentField, 20);
         assignmentField.getAttributes().put(InputField.HELP,
@@ -75,8 +74,7 @@ public class TreatmentTab extends AeTab {
                         adverseEventCourse_dateField,  eventCourseField, totalCourseField);
 
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent",
-                        false, WebUtils.collectOptions(
-                                        command.getStudy().getStudyAgents(), "id", "agentName", "Please select"));
+                        false, WebUtils.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName", "Please select"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount",
                         "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);

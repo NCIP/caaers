@@ -3,6 +3,10 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<html>
+<head>
+<title>Routing & Review</title>
+
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <script src="js/prototype.js"></script>
 <script src="js/common.js"></script>
@@ -12,11 +16,11 @@
 <script src="js/scriptaculous/controls.js"></script>
 <script src="js/scriptaculous/dragdrop.js"></script>
 <script src="js/common-scriptaculous.js"></script>
-<html>
-<head>
-<title>Routing & Review</title>
+
+<tags:includePrototypeWindow />
 <tags:stylesheetLink name="extremecomponents"/>
-<tags:dwrJavascriptLink objects="createAE"/>
+<tags:dwrJavascriptLink objects="routingAndReview"/>
+
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">
@@ -180,14 +184,57 @@ background-color:#ffdada;
 .eXtremeTable a:hover{
 color:#0033FF;
 }
+.divNotes, .divOtherMeddra {
+float:left;
+font-size:8pt;
+margin-top:5px;
+}
 </style>
+<script type="text/javascript">
+	var curWin;
+	function displayPopup(ety, etyId){
+		var url = "listReviewComments?entity=#{entity}&entityId=#{entityId}&subview".interpolate({entity:ety, entityId:etyId});
+	 	curWin = new Window({className:"alphacube",destroyOnClose:true,title:"",url: url, width: 800, height: 550,   recenterAuto:true});
+        curWin.showCenter(true);
+        
+	}
+
+	function advanceWorkflow(selectBox,wfId, entityId, entityType){
+		var sb = $(selectBox);
+		var newStatus = sb.value;
+		sb.disable();
+		
+		routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
+			
+			if(output.objectContent){
+					sb.options.length = 0;
+					var i = 0;
+					for(i = 0; i< output.objectContent.length; i++){
+						var status = output.objectContent[i];
+						var opt = new Option(status.displayName, status.name);
+						sb.options.add(opt);
+					}
+					sb.enable();	
+					
+			}
+		});
+		
+	}
+	
+</script>
 </head>
 <body>
-	<div class="eXtremeTable" >
-  <c:if test="${fn:length(command.assignmentList) gt 0}">
-  	<c:forEach items="${command.assignmentList}" var="assignment" varStatus="assignmentStatus">
-  		<c:if test="${fn:length(assignment.reportingPeriods) gt 0}">	
-  		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
+<div class="eXtremeTable" >
+
+  <c:if test="${command.searchResultsDTO.resultCount gt 0}">
+	<div>
+		${command.searchCriteriaParticipantCentric  ? 'Subject' : 'Study'} : ${command.searchResultsDTO.header}
+    </div>    
+	<c:forEach items="${command.searchResultsDTO.resultMap}" var="resultEntry">
+		<div>
+			${command.searchCriteriaParticipantCentric  ? 'Study' : 'Participant'} : ${resultEntry.value.header}
+		</div>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tableRegion">
    	  		<thead>
       			<tr align="center" class="label">
        		 		<td width="2%" class="tableHeader"></td>
@@ -199,15 +246,15 @@ color:#0033FF;
         			<td width="16%" class="tableHeader">Review Status</td>
       			</tr>
     		</thead>
-    		
-      			<c:forEach items="${assignment.reportingPeriods}" var="reportingPeriod" varStatus="rpStatus">
-        			<ae:oneRoutingReportingPeriodRow reportingPeriod="${reportingPeriod}" index="${rpStatus.index}"/>
-      			</c:forEach>
-    		
-  		</table>
-  		</c:if>
-  	</c:forEach>	
-  </c:if>	
+			<c:forEach items="${resultEntry.value.results}" var="rp" varStatus="rpStatus">
+				<ae:oneRoutingReportingPeriodRow index="${rpStatus.index}" reportingPeriod="${rp}" />
+			</c:forEach>
+		</table>
+	</c:forEach>
+  </c:if>
+  <c:if test="${command.searchResultsDTO.resultCount lt 1}">
+		No result found!
+  </c:if>
 </div>
 </body>
 </html>

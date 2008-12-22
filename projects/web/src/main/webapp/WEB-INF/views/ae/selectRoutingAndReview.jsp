@@ -1,8 +1,4 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
+<%@ include file="/WEB-INF/views/taglibs.jsp"%>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -22,12 +18,10 @@
         }
 
     </style>
-    <c:if test="${empty tab}">
-        <tags:stylesheetLink name="tabbedflow"/>
-        <tags:javascriptLink name="tabbedflow"/>
-    </c:if>
+   
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
+	<tags:dwrJavascriptLink objects="createStudy"/>
     <script type="text/javascript">
         var participantAutocompleterProps = {
             basename: "participant",
@@ -94,7 +88,7 @@
                 $(mode.basename + "-input").value = ""
             })
         }
-
+/*
         Event.observe(window, "load", function() {
             acCreate(participantAutocompleterProps)
             acCreate(studyAutocompleterProps)
@@ -104,57 +98,82 @@
             updateSelectedDisplay(siteAutocompleterProps)
             initSearchField()
         })
-    </script>
+*/  
+	</script>
 </head>
 <body>
-<p>
-    <tags:instructions code="instruction_ae_assignment"/>
-</p>
-<form:form method="post" cssClass="standard autoclear">
-    <tags:tabFields tab="${tab}"/>
-    <div class="autoclear">
-        <chrome:box title="Select subject" id="participant-entry" cssClass="paired" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_subject"/></p>
-            <form:hidden path="participant"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="participant-input" value="${command.participant.fullName}" class="autocomplete"/>
-            <input type="button" id="participant-clear" value="Clear"/>
-            <tags:indicator id="participant-indicator"/>
-            <div id="participant-choices" class="autocomplete"></div>
-            <tags:errors path="participant"/>
-            <p id="participant-selected" style="display: none">
-                You have selected the subject <span id="participant-selected-name"></span>.
-            </p>
-        </chrome:box>
-        <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
-            <form:hidden path="study"/>
-            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-            <input type="button" id="study-clear" value="Clear"/>
-            <tags:indicator id="study-indicator"/>
-            <tags:errors path="study"/>
-            <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">
-                You have selected the study <span id="study-selected-name"></span>.
-            </p>
-        </chrome:box>
-        <chrome:box title="Select Study Site" id="site-entry" cssClass="paired" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
-            <form:hidden path="studySite"/>
-            <input type="text" id="site-input" value="${command.studySite}" class="autocomplete"/>
-            <input type="button" id="site-clear" value="Clear"/>
-            <tags:indicator id="site-indicator"/>
-            <tags:errors path="study"/>
-            <div id="site-choices" class="autocomplete"></div>
-            <p id="site-selected" style="display: none">
-                You have selected the site <span id="site-selected-name"></span>.
-            </p>
-        </chrome:box>
-        <chrome:box title="Select Review Status" id="status-entry" cssClass="paired" autopad="true">
-        	<p><tags:instructions code="instruction_ae_select_study"/></p>
-        	<ui:select options="${reviewStatusOptions}" path="reviewStatus"></ui:select>
-        </chrome:box>
-    </div>
+
+<tags:standardForm title="Choose Search Criteria">
+	<jsp:attribute name="instructions"><tags:instructions code="instruction_ae_assignment"/></jsp:attribute>
+	<jsp:attribute name="singleFields">
+			<ui:row path="participant">
+				<jsp:attribute name="label">Subject
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:autocompleter path="participant"  initialDisplayValue="${empty command.participant  ? 'Begin typing here...' : command.participant.fullName}" 
+						enableClearButton="true" size="50">
+							<jsp:attribute name="populatorJS">
+								function(autocompleter, text) {
+                					createAE.matchParticipants(text, $('study').value, function(values) {
+                    					autocompleter.setChoices(values)
+                					})
+           						}
+							</jsp:attribute>
+							<jsp:attribute name="selectorJS">
+								function(obj) {
+                					return obj.displayName
+            					}
+							</jsp:attribute>
+						</ui:autocompleter>
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="Study">
+				<jsp:attribute name="label">Study
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:autocompleter path="study"  initialDisplayValue="${empty command.study  ? 'Begin typing here...' : command.study.shortTitle}" enableClearButton="true" size="50">
+							<jsp:attribute name="populatorJS">
+								function(autocompleter, text) {
+                					createAE.matchStudies(text, $('participant').value, ${command.ignoreCompletedStudy}, function(values) {
+                    					autocompleter.setChoices(values)
+                					})
+            					}
+							</jsp:attribute>
+							<jsp:attribute name="selectorJS">
+								function(obj) {
+               						 return obj.displayName;
+            					}
+							</jsp:attribute>
+					</ui:autocompleter>	
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="Study site">
+				<jsp:attribute name="label">Study site
+				</jsp:attribute>
+				<jsp:attribute name="value">
+					<ui:autocompleter path="studySite"  initialDisplayValue="${empty command.studySite  ? 'Begin typing here...' : command.studySite.organization.fullName}" enableClearButton="true" size="50">
+							<jsp:attribute name="populatorJS">
+								function(autocompleter, text){
+        							createStudy.matchSites(text, $('study').value, function(values) {
+        								autocompleter.setChoices(values)
+        							})
+        						}
+							</jsp:attribute>
+							<jsp:attribute name="selectorJS">
+								function(obj) {
+        							return obj.name;
+        						}
+							</jsp:attribute>
+					</ui:autocompleter>			
+				</jsp:attribute>
+			</ui:row>
+			<ui:row path="Review status">
+				<jsp:attribute name="label">Review status
+				</jsp:attribute>
+				<jsp:attribute name="value">
+				<ui:select options="${command.reviewStatusOptionsMap}" path="reviewStatus"></ui:select>
+				</jsp:attribute>
+			</ui:row>
     <c:choose>
         <c:when test="${empty tab}">
             <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
@@ -163,6 +182,9 @@
             <tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
         </c:otherwise>
     </c:choose>
-</form:form>
+
+	</jsp:attribute>
+</tags:standardForm>
+
 </body>
 </html>

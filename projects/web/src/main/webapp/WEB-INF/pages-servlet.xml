@@ -373,6 +373,7 @@
 	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>
 	
   <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>	
+  <bean name="/ae/listReviewComments" id="listReviewCommentsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewCommentController" />
   <bean name="/ae/captureRoutine" id="captureAdverseEventController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventController"/>
   <bean name="/ae/createReportingPeriod" id="createReportingPeriodController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.CreateReportingPeriodController"/>
 	

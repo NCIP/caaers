@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
@@ -191,21 +192,27 @@ public class CreateReportingPeriodController extends SimpleFormController {
                 reportingPeriod.addAdverseEvent(adverseEvent);
             }
         }
-        adverseEventReportingPeriodDao.save(reportingPeriod);
-        // TODO check if workflow has been enabled.
-        // create a workflow instance.
-        // set the workflowID in reportingPeriod and save it again.
-        /*Long workflowId = workflowService.createProcessInstance("routineFlow");
-        ProcessInstance pInstance = workflowService.fetchProcessInstance(workflowId);
-        pInstance.getContextInstance().setVariable("workflowConfigDao", workflowConfigDao);
-        pInstance.getContextInstance().setVariable("userDao", userDao);
-        pInstance.getContextInstance().setVariable("workflowDefinitionName", "routineFlow");
-        pInstance.getContextInstance().setVariable("workflowService", workflowService);
-        pInstance.signal();
         
-        reportingPeriod.setWorkflowId(workflowId);
         adverseEventReportingPeriodDao.save(reportingPeriod);
-        */
+        
+        
+        
+        //Call workflow to instatiate the reporting period flow.
+        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
+        if(pInstance != null){
+        	Long workflowId = pInstance.getId();
+        	
+        	reportingPeriod.setWorkflowId(workflowId.intValue());
+        	reportingPeriod.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+        	adverseEventReportingPeriodDao.save(reportingPeriod);
+        }
+        
+       
+        
+        
+        
+        
+        
         Map map = new LinkedHashMap();
         map.putAll(createFieldGroups(command));
 

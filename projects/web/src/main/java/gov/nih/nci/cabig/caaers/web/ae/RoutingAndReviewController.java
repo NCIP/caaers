@@ -1,16 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -21,19 +11,35 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**
  * @author Sameer Sawant
+ * @author Biju Joseph
  */
 public class RoutingAndReviewController extends SimpleFormController{
     private ParticipantDao participantDao;
@@ -44,8 +50,10 @@ public class RoutingAndReviewController extends SimpleFormController{
     
     private StudyParticipantAssignmentDao assignmentDao;
     
-    Map<Object,Object> reviewStatusOptionsMap;
     private WorkflowService workflowService;
+    
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
     static{
@@ -71,128 +79,95 @@ public class RoutingAndReviewController extends SimpleFormController{
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, studySiteDao);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
-        binder.registerCustomEditor(ReviewStatus.class, new EnumByNameEditor(
-        		ReviewStatus.class));
+        binder.registerCustomEditor(ReviewStatus.class, new EnumByNameEditor(ReviewStatus.class));
     }
     
+    /**
+     * It is a form submission, if participant, or (study & study site) is available 
+     */
     @Override
     @SuppressWarnings("unchecked")
     protected boolean isFormSubmission(HttpServletRequest request) {
+    	
     	Set<String> paramNames = request.getParameterMap().keySet();
-        boolean hasParticipant = paramNames.contains("participant");
+        
+    	boolean hasParticipant = paramNames.contains("participant");
         boolean hasStudy = paramNames.contains("study");
-        boolean hasReviewStatus = paramNames.contains("reviewStatus");
         boolean hasStudySite = paramNames.contains("studySite");
-
-        return hasParticipant || hasStudy && hasStudySite;
+        return (hasParticipant) || (hasParticipant && hasStudy) || (hasStudy && hasStudySite);
     }
     
-    
+   
     @Override
-    protected void onBind(HttpServletRequest request, Object cmd, BindException errors) throws Exception{
-    	super.onBind(request, cmd, errors);
+    protected ModelAndView processFormSubmission(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
+    	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
     	
-    	RoutingAndReviewCommand command = (RoutingAndReviewCommand) cmd;
-    	Participant participant = command.getParticipant();
-    	Study study = command.getStudy();
-    	StudySite site = command.getStudySite();
-    	if(command.getAssignmentList() != null)
-    		command.getAssignmentList().clear();
-    	
-    	if(study != null && participant != null){
-    		command.getAssignmentList().add(assignmentDao.getAssignment(participant, study));
-    	}else if(study != null && site != null){
-    		command.getAssignmentList().addAll(site.getStudyParticipantAssignments());
-    	}else if(participant != null){
-    		command.getAssignmentList().addAll(participant.getAssignments());
+    	if(!errors.hasErrors()){
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus());
+        	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
+        	cmd.setSearchResultsDTO(searchResultsDTO);
     	}
     	
-    	// reset attributes of command
-    	command.setStudy(study);
-    	command.setParticipant(participant);
-    	command.setStudySite(site);
+    	ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
+    	return modelAndView;
+    	
     }
     
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object cmd,
-    				BindException errors) throws Exception {
-    	/*super.onBindAndValidate(request, cmd, errors);
-    	RoutingAndReviewCommand command = (RoutingAndReviewCommand)cmd;
-    	boolean noStudy = command.getStudy() == null;
-    	boolean noParticipant = command.getParticipant() == null;
-    	boolean noSite = command.getStudySite() == null;
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
+    	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
+    	if(!cmd.criteriaHasParticipant() && !cmd.criteriaHasStudy() ){
+    		errors.reject("RAR_001", "Missing study and participant information");
+    		return;
+    	}
     	
-    	if(!noSite && noStudy)
-    		errors.reject("REQUIRED", "Study is required.");
-    	if(noSite && noStudy && noParticipant)
-    		errors.reject("REQUIRED", "Insuffient data entered.");
-    	if(!noStudy && noSite)
-    		errors.reject("REQUIRED", "Site is required.");*/
+    	if(!cmd.criteriaHasParticipant() && cmd.criteriaHasStudy() && !cmd.criteriaHasSite()){
+    		errors.reject("RAR_002", "Missing study site information");
+    		return;
+    	}
+    	
+    	
     }
     
-    /*@Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors) throws Exception {
-        super.onBindAndValidate(request, command, errors);
-        ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
-        boolean noStudy = listAECmd.getStudy() == null;
-        boolean noParticipant = listAECmd.getParticipant() == null;
-        if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
-        if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
-        if (!(noStudy || noParticipant) && listAECmd.getAssignment() == null) {
-            errors.reject("REQUIRED", "The subject is not assigned to the provided study");
-        }
-        
-        if(!errors.hasErrors()){
-        	//if there is no validation error, update the report submitability
-        	listAECmd.updateSubmittability();
-        }
-    }
-*/
+
 
     @Override
     @SuppressWarnings("unchecked")
     protected Map referenceData(HttpServletRequest request, Object cmd, Errors errors)
                     throws Exception {
-    	RoutingAndReviewCommand command = (RoutingAndReviewCommand) cmd;
-        Map<String, Object> refdata = new HashMap<String, Object>();
-        Map<Integer, List<String>> reportingPeriodMap = new HashMap<Integer, List<String>>();
-        Map<Integer, List<String>> reportMap = new HashMap<Integer, List<String>>();
-        if(command.getParticipant() != null && command.getStudy() != null)
-        	refdata.put("singleAssignment", Boolean.TRUE);
-        else if(command.getParticipant() != null)
-        	refdata.put("singleParticipant", Boolean.TRUE);
-        else if(command.getStudy() != null)
-        	refdata.put("singleStudy", Boolean.TRUE);
-        if(!command.getAssignmentList().isEmpty()){
-        	for(StudyParticipantAssignment assignment: command.getAssignmentList()){
-        		if(!assignment.getReportingPeriods().isEmpty()){
-        			for(AdverseEventReportingPeriod reportingPeriod: assignment.getReportingPeriods()){
-        				if(reportingPeriod.getWorkflowId() != null){
-        					List<String> states = workflowService.nextTransitions("routineFlow", reportingPeriod.getWorkflowId());
-        					if(!reportingPeriodMap.containsKey(reportingPeriod.getId()))
-        						reportingPeriodMap.put(reportingPeriod.getId(), states);
-        				}
-        			}
-        		}
-        	}
-        }
-        refdata.put("reviewStatusOptions", initializeReviewStatusOptions());
-        refdata.put("pageTitle", "Routing & Review || Enter Search Parameters");
-        refdata.put("bodyTitle", "Routing & Review: Enter Search Parameters");
-        refdata.put("instructions","Please enter the search parameters (Update this instruction).");
-        return refdata;
+    	return null;
+//    	RoutingAndReviewCommand command = (RoutingAndReviewCommand) cmd;
+//        Map<String, Object> refdata = new HashMap<String, Object>();
+//        Map<Integer, List<String>> reportingPeriodMap = new HashMap<Integer, List<String>>();
+//        Map<Integer, List<String>> reportMap = new HashMap<Integer, List<String>>();
+//        if(command.getParticipant() != null && command.getStudy() != null)
+//        	refdata.put("singleAssignment", Boolean.TRUE);
+//        else if(command.getParticipant() != null)
+//        	refdata.put("singleParticipant", Boolean.TRUE);
+//        else if(command.getStudy() != null)
+//        	refdata.put("singleStudy", Boolean.TRUE);
+//        if(!command.getAssignmentList().isEmpty()){
+//        	for(StudyParticipantAssignment assignment: command.getAssignmentList()){
+//        		if(!assignment.getReportingPeriods().isEmpty()){
+//        			for(AdverseEventReportingPeriod reportingPeriod: assignment.getReportingPeriods()){
+//        				if(reportingPeriod.getWorkflowId() != null){
+//        					List<String> states = workflowService.nextTransitions( reportingPeriod.getWorkflowId());
+//        					if(!reportingPeriodMap.containsKey(reportingPeriod.getId()))
+//        						reportingPeriodMap.put(reportingPeriod.getId(), states);
+//        				}
+//        			}
+//        		}
+//        	}
+//        }
+//        refdata.put("reviewStatusOptions", initializeReviewStatusOptions());
+//        refdata.put("pageTitle", "Routing & Review || Enter Search Parameters");
+//        refdata.put("bodyTitle", "Routing & Review: Enter Search Parameters");
+//        refdata.put("instructions","Please enter the search parameters (Update this instruction).");
+//        return refdata;
     }
     
     
-    
-    public Map<Object,Object> initializeReviewStatusOptions(){
-    	reviewStatusOptionsMap = new HashMap<Object,Object>();
-    	reviewStatusOptionsMap.put("", "Please Select..");
-    	reviewStatusOptionsMap.putAll(WebUtils.collectCustomOptions(REVIEW_STATUS, "name", "code", "displayName", ":  "));
-    	reviewStatusOptionsMap.putAll(WebUtils.collectOptions(REVIEW_STATUS, "name", "displayName"));
-    	return reviewStatusOptionsMap;
-    }
+   
     
     public void setParticipantDao(ParticipantDao participantDao) {
         this.participantDao = participantDao;
@@ -213,4 +188,12 @@ public class RoutingAndReviewController extends SimpleFormController{
     public void setWorkflowService(WorkflowService workflowService){
     	this.workflowService = workflowService;
     }
+    
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
+	}
+    public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	}
 }

@@ -3,10 +3,12 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -17,6 +19,7 @@ import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
@@ -42,6 +45,7 @@ public class ReporterTab extends AeTab {
     protected NowFactory nowFactory;
 
     private EvaluationService evaluationService;
+    private WorkflowService workflowService;
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter",
@@ -214,12 +218,27 @@ public class ReporterTab extends AeTab {
 
             // Create the newly Selected Reports that need to be created.
             if (newReportDefs.size() > 0) {
+            	List<Report> newlyCreatedReports = null;
             	// Incase of amend and createNew the new reportVersion is incremented and assigned to the reports created 
             	// Incase of edit the currentVersion number is assigned to the new reports created.
             	if(StringUtils.equals(action, "amendReport") || StringUtils.equals(action, "createNew"))
-            		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
+            		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
             	else
-            		evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
+            		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
+            	
+            	//enact the workflow
+            	if(newlyCreatedReports != null){
+            		for(Report report : newlyCreatedReports){
+            			  //enact workflow
+            	        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
+            	        if(pInstance != null){
+            	        	Long lwfId = pInstance.getId();
+            	        	int workflowId = lwfId.intValue();
+            	        	report.setWorkflowId(workflowId);
+            	        	report.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+            	        }
+            		}
+            	}
             }
 
             // Withdraw the reports to be withdrawn
@@ -280,7 +299,13 @@ public class ReporterTab extends AeTab {
     public void setNowFactory(NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
-
+    
+    public WorkflowService getWorkflowService() {
+		return workflowService;
+	}
+    public void setWorkflowService(WorkflowService workflowService) {
+		this.workflowService = workflowService;
+	}
     /**
      * Returns the value associated with the <code>attributeName</code>, if present in
      * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
