@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition  xmlns=""  name="reportingperiod_mainmember">
+
+
+	<description>
+		This represents the workflow associated to reporting periods. 
+Site CRA -&gt; Main Member Data Coordinator -&gt; CALGB Data Coordinator -&gt; Finalize
+	</description>
+
+
+	<start-state name="Start Reporting Period Flow">
+		<transition to="Submit Reporting Period For Main Member Review"></transition>
+	</start-state>
+
+
+	<node name="Submit Reporting Period For Main Member Review">
+		<description>
+			This task is executed by the CRA.
+		</description>
+		<transition to="Main Member Review" name="Send to Main Member"></transition>
+	</node>
+
+	<node name="Main Member Review">
+		<description>
+			This task is executed by the main member data coordinator
+		</description>
+		<transition to="Provide Additional Information To Main Member" name="Request Additional Information"></transition>
+		<transition to="Central Office Review" name="Send to Central Office"></transition>
+	</node>
+
+	<node name="Provide Additional Information To Main Member">
+		<description>
+			This task is executed by the CRA, 
+		</description>
+		<transition to="Main Member Review"></transition>
+	</node>
+
+	<node name="Central Office Review">
+		<description>
+			This task is executed by the Central office
+		</description>
+		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
+		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
+	</node>
+
+	<node name="Provide Additional Information To Central Office">
+		<description>
+			This task is executed by the CRA
+		</description>
+		<transition to="Central Office Review" name="Send to Central Office"></transition>
+	</node>
+
+	<node name="Finalize Reporting Period">
+		<description>
+			This task is executec by the Central office
+		</description>
+		<transition to="Finish Reporting Period Flow"></transition>
+	</node>
+
+
+	<end-state name="Finish Reporting Period Flow"></end-state>
+
+
+</process-definition>
