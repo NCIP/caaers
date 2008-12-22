@@ -261,10 +261,7 @@ public class EventDescriptionBusinessRulesTest extends AbstractBusinessRulesExec
         aeReport.getResponseDescription().setPresentStatus(PostAdverseEventStatus.DEAD);
         aeReport.getResponseDescription().setDateRemovedFromProtocol(new Date());
         ValidationErrors errors = fireRules(aeReport);
-
-        assertEquals(
-                        "There should not be any error, when DateRemovedFromProtocol is not null, and present status is  DEAD",
-                        0, errors.getErrorCount());
+        assertEquals("There should not be any error, when DateRemovedFromProtocol is not null, and present status is  DEAD",0, errors.getErrorCount());
     }
 
     /**
