@@ -146,4 +146,117 @@ public class StudyEvaluationPeriodsMigratorTest extends AbstractTestCase {
         
 	}
 	
+	
+	public void testMigrateEvaluationPeriods_Baseline_OnlyOtherTerm(){
+		AeTerminology aeTerminology = Fixtures.createCtcV3Terminology(xmlStudy);
+		MeddraVersion otherMeddra = new MeddraVersion();
+		otherMeddra.setId(4);
+		otherMeddra.setName("MedDRA v9");
+        xmlStudy.setOtherMeddra(otherMeddra);
+        xmlStudy.setAeTerminology(aeTerminology);
+        
+        dest.setAeTerminology(aeTerminology);
+        dest.setOtherMeddra(otherMeddra);
+        
+        Epoch epoch = new Epoch();
+        epoch.setName("Baseline");
+        epoch.setDescriptionText("EPOCH_BASELINE_DESC");
+        epoch.setEpochOrder(1);
+        Arm arm1 = new Arm();
+        arm1.setName("ARM_BASELINE");
+        arm1.setDescriptionText("ARM_BASELINE_DESC");
+        SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
+        LowLevelTerm llt = new LowLevelTerm();
+        llt.setMeddraTerm("meddraTerm_1");
+        llt.setMeddraCode("meddraCode_1");
+        sAE1.setOtherTerm(llt);
+        arm1.getSolicitedAdverseEvents().add(sAE1);
+        epoch.getArms().add(arm1);
+        xmlStudy.getEpochs().add(epoch);
+        
+        migrator.migrate(xmlStudy, dest, outcome);
+        
+        assertEquals(1, outcome.getMessages().size());
+	}
+	
+	
+	public void testMigrateEvaluationPeriods_Baseline_NoOtherMeddra(){
+		AeTerminology aeTerminology = Fixtures.createCtcV3Terminology(xmlStudy);
+		MeddraVersion otherMeddra = new MeddraVersion();
+		otherMeddra.setId(4);
+		otherMeddra.setName("MedDRA v9");
+        xmlStudy.setAeTerminology(aeTerminology);
+        
+        dest.setAeTerminology(aeTerminology);
+        
+        Epoch epoch = new Epoch();
+        epoch.setName("Baseline");
+        epoch.setDescriptionText("EPOCH_BASELINE_DESC");
+        epoch.setEpochOrder(1);
+        Arm arm1 = new Arm();
+        arm1.setName("ARM_BASELINE");
+        arm1.setDescriptionText("ARM_BASELINE_DESC");
+        SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
+        LowLevelTerm llt = new LowLevelTerm();
+        llt.setMeddraTerm("meddraTerm_1");
+        llt.setMeddraCode("meddraCode_1");
+        sAE1.setOtherTerm(llt);
+        CtcTerm ctcTerm = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        sAE1.setCtcterm(ctcTerm);
+        arm1.getSolicitedAdverseEvents().add(sAE1);
+        epoch.getArms().add(arm1);
+        xmlStudy.getEpochs().add(epoch);
+        
+        migrator.migrate(xmlStudy, dest, outcome);
+        
+        assertEquals(1, outcome.getMessages().size());
+	}
+	
+	public void testMigrateEvaluationPeriods_Baseline_OtherMeddra(){
+		AeTerminology aeTerminology = Fixtures.createCtcV3Terminology(xmlStudy);
+		MeddraVersion otherMeddra = new MeddraVersion();
+		otherMeddra.setId(4);
+		otherMeddra.setName("MedDRA v9");
+        xmlStudy.setAeTerminology(aeTerminology);
+        
+        dest.setAeTerminology(aeTerminology);
+        dest.setOtherMeddra(otherMeddra);
+        
+        Epoch epoch = new Epoch();
+        epoch.setName("Baseline");
+        epoch.setDescriptionText("EPOCH_BASELINE_DESC");
+        epoch.setEpochOrder(1);
+        Arm arm1 = new Arm();
+        arm1.setName("ARM_BASELINE");
+        arm1.setDescriptionText("ARM_BASELINE_DESC");
+        SolicitedAdverseEvent sAE1 = new SolicitedAdverseEvent();
+        LowLevelTerm llt = new LowLevelTerm();
+        llt.setMeddraTerm("meddraTerm_1");
+        llt.setMeddraCode("meddraCode_1");
+        sAE1.setOtherTerm(llt);
+        CtcTerm ctcTerm = Fixtures.createCtcTerm("ctepTerm_1", "ctepCode_1");
+        sAE1.setCtcterm(ctcTerm);
+        arm1.getSolicitedAdverseEvents().add(sAE1);
+        epoch.getArms().add(arm1);
+        xmlStudy.getEpochs().add(epoch);
+        
+      //For EasyMock Return 
+        List<CtcTerm> ctcTerms = new ArrayList<CtcTerm>();
+        ctcTerms.add(ctcTerm);
+        
+        EasyMock.expect(ctcTermDao.getByCtepCodeandVersion(ctcTerm.getCtepCode(),aeTerminology.getCtcVersion().getId())).andReturn(ctcTerms).anyTimes();
+        
+      //For EasyMock Return 
+        List<LowLevelTerm> llts = new ArrayList<LowLevelTerm>();
+        llts.add(llt);
+        
+        EasyMock.expect(lowLevelTermDao.getByMeddraCodeandVersion(llt.getMeddraCode(),dest.getOtherMeddra().getId())).andReturn(llts).anyTimes();
+        replayMocks();
+        
+        migrator.migrate(xmlStudy, dest, outcome);
+        
+        verifyMocks();
+        
+	}
+	
 }
