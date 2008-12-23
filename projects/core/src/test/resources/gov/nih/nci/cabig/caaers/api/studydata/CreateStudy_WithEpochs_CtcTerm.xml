@@ -9,6 +9,7 @@
         <status>Active - Trial is open to accrual</status>
         <multiInstitutionIndicator>true</multiInstitutionIndicator>
         <adeersReporting>true</adeersReporting>
+        <otherMeddra>MedDRA v9</otherMeddra>
         <p:aeTerminology>
             <p:ctcVersion>
                 <name>3</name>
