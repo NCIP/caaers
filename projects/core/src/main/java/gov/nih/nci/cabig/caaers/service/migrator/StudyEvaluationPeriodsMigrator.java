@@ -72,6 +72,9 @@ public class StudyEvaluationPeriodsMigrator implements Migrator<Study> {
 										if(lowLevelTerms != null && !lowLevelTerms.isEmpty()){
 											domainSolicitedAdverseEvent.setOtherTerm(lowLevelTerms.get(0));
 										}
+									}else{
+										outcome.addErrorMessage("otherMeddra is either Empty or InValid", DomainObjectImportOutcome.Severity.ERROR);
+										break;
 									}
 								}
 								domainArm.getSolicitedAdverseEvents().add(domainSolicitedAdverseEvent);

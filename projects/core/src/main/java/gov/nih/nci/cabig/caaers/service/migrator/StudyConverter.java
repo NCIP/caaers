@@ -13,6 +13,8 @@ import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
 import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
 import gov.nih.nci.cabig.caaers.domain.INDType;
 import gov.nih.nci.cabig.caaers.domain.Identifier;
@@ -40,6 +42,8 @@ import gov.nih.nci.cabig.caaers.webservice.CtepStudyDiseaseType;
 import gov.nih.nci.cabig.caaers.webservice.DesignCodeType;
 import gov.nih.nci.cabig.caaers.webservice.DiseaseCodeType;
 import gov.nih.nci.cabig.caaers.webservice.EvaluationPeriodType;
+import gov.nih.nci.cabig.caaers.webservice.ExpectedAECtcTermType;
+import gov.nih.nci.cabig.caaers.webservice.ExpectedAEMeddraTermType;
 import gov.nih.nci.cabig.caaers.webservice.IndType;
 import gov.nih.nci.cabig.caaers.webservice.InvestigationalNewDrugType;
 import gov.nih.nci.cabig.caaers.webservice.MeddraStudyDiseaseType;
@@ -54,6 +58,8 @@ import gov.nih.nci.cabig.caaers.webservice.StudySiteType;
 import gov.nih.nci.cabig.caaers.webservice.TreatmentAssignmentType;
 import gov.nih.nci.cabig.caaers.webservice.Study.CtepStudyDiseases;
 import gov.nih.nci.cabig.caaers.webservice.Study.EvaluationPeriods;
+import gov.nih.nci.cabig.caaers.webservice.Study.ExpectedAECtcTerms;
+import gov.nih.nci.cabig.caaers.webservice.Study.ExpectedAEMeddraTerms;
 import gov.nih.nci.cabig.caaers.webservice.Study.Identifiers;
 import gov.nih.nci.cabig.caaers.webservice.Study.MeddraStudyDiseases;
 import gov.nih.nci.cabig.caaers.webservice.Study.StudyAgents;
@@ -99,6 +105,14 @@ public class StudyConverter {
 			study.setRadiationTherapyType(studyDto.isRadiationTherapyType());
 			study.setSurgeryTherapyType(studyDto.isSurgeryTherapyType());
 			study.setBehavioralTherapyType(studyDto.isBehavioralTherapyType());
+			
+			if(! "".equals(studyDto.getOtherMeddra()) && studyDto.getOtherMeddra() != null){
+				MeddraVersion otherMeddra = null;
+				otherMeddra = new MeddraVersion();
+				otherMeddra.setName(studyDto.getOtherMeddra());
+				study.setOtherMeddra(otherMeddra);
+			}
+			
 			//Populate DesignCode
 			populateDesignCode(studyDto, study);
 			//populate AeTerminology
@@ -121,6 +135,8 @@ public class StudyConverter {
 			populateStudyDiseases(studyDto, study);
 			//Populate EvaluationPeriods
 			populateStudyEvaluationPeriods(studyDto, study);
+			//populate Expected AE's
+			populateStudyExpectedAEs(studyDto, study);
 			
 		}catch(Exception e){
 			throw new CaaersSystemException("Exception while StudyDto Conversion",e);
@@ -201,12 +217,6 @@ public class StudyConverter {
 				ctcVersion.setName(studyDto.getAeTerminology().getCtcVersion().getName());
 				aeTerminology.setCtcVersion(ctcVersion);
 				study.setAeTerminology(aeTerminology);
-				if(! "".equals(studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion()) && studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion() != null){
-					MeddraVersion otherMeddra = null;
-					otherMeddra = new MeddraVersion();
-					otherMeddra.setName(studyDto.getAeTerminology().getCtcVersion().getOtherMeddraVersion());
-					study.setOtherMeddra(otherMeddra);
-				}
 			}
 			if (studyDto.getAeTerminology().getMeddraVersion() != null) {
 				aeTerminology = new AeTerminology();
@@ -531,6 +541,50 @@ public class StudyConverter {
 					}
 					epoch.getArms().add(arm);
 					study.getEpochs().add(epoch);
+				}
+			}
+		}
+	}
+	
+	
+	private void populateStudyExpectedAEs(gov.nih.nci.cabig.caaers.webservice.Study studyDto, Study study) throws Exception{
+		ExpectedAECtcTerms expectedAECtcTerms = studyDto.getExpectedAECtcTerms();
+		if(expectedAECtcTerms != null){
+			ExpectedAECtcTerm expectedAECtcTerm = null;
+			CtcTerm ctcTerm = null;
+			LowLevelTerm otherMeddraTerm = null;
+			for(ExpectedAECtcTermType expectedAECtcTermType : expectedAECtcTerms.getExpectedAECtcTerm()){
+				if(expectedAECtcTermType.getCtepCode() != null && !"".equals(expectedAECtcTermType.getCtepCode())){
+					expectedAECtcTerm = new ExpectedAECtcTerm();
+					ctcTerm = new CtcTerm();
+					ctcTerm.setCtepCode(expectedAECtcTermType.getCtepCode());
+					expectedAECtcTerm.setCtcTerm(ctcTerm);
+				}
+				if(expectedAECtcTermType.getOtherMeddraCode() != null && !"".equals(expectedAECtcTermType.getOtherMeddraCode())){
+					if(expectedAECtcTerm == null){
+						expectedAECtcTerm = new ExpectedAECtcTerm();
+					}
+					otherMeddraTerm = new LowLevelTerm();
+					otherMeddraTerm.setMeddraCode(expectedAECtcTermType.getOtherMeddraCode());
+					expectedAECtcTerm.setOtherMeddraTerm(otherMeddraTerm);
+				}
+				if(expectedAECtcTerm != null){
+					study.getExpectedAECtcTerms().add(expectedAECtcTerm);
+				}
+			}
+		}else{
+			ExpectedAEMeddraTerms expectedAEMeddraTerms = studyDto.getExpectedAEMeddraTerms();
+			if(expectedAEMeddraTerms != null){
+				ExpectedAEMeddraLowLevelTerm expectedAEMeddraLowLevelTerm = null;
+				LowLevelTerm meddraTerm = null;
+				for(ExpectedAEMeddraTermType expectedAEMeddraTermType : expectedAEMeddraTerms.getExpectedAEMeddraTerm()){
+					if(expectedAEMeddraTermType.getMeddraCode() != null && !"".equals(expectedAEMeddraTermType.getMeddraCode())){
+						expectedAEMeddraLowLevelTerm = new ExpectedAEMeddraLowLevelTerm();
+						meddraTerm = new LowLevelTerm();
+						meddraTerm.setMeddraCode(expectedAEMeddraTermType.getMeddraCode());
+						expectedAEMeddraLowLevelTerm.setLowLevelTerm(meddraTerm);
+						study.getExpectedAEMeddraLowLevelTerms().add(expectedAEMeddraLowLevelTerm);
+					}
 				}
 			}
 		}
