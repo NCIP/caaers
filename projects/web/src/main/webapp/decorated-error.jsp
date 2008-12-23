@@ -166,27 +166,22 @@
                                         }
                                 %>
                           <tr>
-                            <td><font color="blue"><%=name%></font><br><%=value%></td>
-                            <!--<td></td>-->
+                            <td><font color="blue"><%=name%></font></td>
+                            <td><%=value%></td>
                           </tr>
                           <%
                                     }
                                 %>
                           <tr>
                             <td colspan="2"><b>StackTrace :</b><br />
-
-                                <div style="overflow:auto; width:880; height:400">
-
                               <pre>
                                          <%
                                              exception.printStackTrace(new PrintWriter(out));
                                          %>
                               </pre>
-                                </div>
                             </td>
                           </tr>
                         </table>
-
 
                     </div>
                 </td>
