@@ -43,10 +43,11 @@
                     <xs:element name="status" type="StatusType" />
                     <xs:element name="multiInstitutionIndicator" type="xs:boolean" />
                     <xs:element name="adeersReporting" type="xs:boolean" />
+                    <xs:element name="otherMeddra" type="xs:string" minOccurs="0"/>
                     <xs:element ref="aeTerminology"/>
+                    
                     <xs:element ref="diseaseTerminology"/>
                     <xs:element name="design" type="DesignCodeType" minOccurs="0"/>
-                               
                     <xs:element name="drugAdministrationTherapyType" type="xs:boolean"  minOccurs="1"/>
                     <xs:element name="deviceTherapyType" type="xs:boolean"  minOccurs="1"/>
                     <xs:element name="radiationTherapyType" type="xs:boolean"  minOccurs="1"/>
@@ -91,21 +92,21 @@
                     </xs:element>
 
                     <xs:choice minOccurs="0">
-                    <xs:element name="ctepStudyDiseases">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="ctepStudyDisease"  maxOccurs="unbounded"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
-                    
-                    <xs:element name="meddraStudyDiseases">
-                        <xs:complexType>
-                            <xs:sequence>
-                                <xs:element ref="meddraStudyDisease" maxOccurs="unbounded"/>
-                            </xs:sequence>
-                        </xs:complexType>
-                    </xs:element>
+	                    <xs:element name="ctepStudyDiseases">
+	                        <xs:complexType>
+	                            <xs:sequence>
+	                                <xs:element ref="ctepStudyDisease"  maxOccurs="unbounded"/>
+	                            </xs:sequence>
+	                        </xs:complexType>
+	                    </xs:element>
+	                    
+	                    <xs:element name="meddraStudyDiseases">
+	                        <xs:complexType>
+	                            <xs:sequence>
+	                                <xs:element ref="meddraStudyDisease" maxOccurs="unbounded"/>
+	                            </xs:sequence>
+	                        </xs:complexType>
+	                    </xs:element>
                     </xs:choice>
                     
                     <xs:element name="evaluationPeriods" minOccurs="0">
@@ -115,7 +116,25 @@
                             </xs:sequence>
                         </xs:complexType>
                     </xs:element>
-
+					
+                    <xs:choice minOccurs="0">
+	                    <xs:element name="expectedAECtcTerms">
+	                        <xs:complexType>
+	                            <xs:sequence>
+	                                <xs:element ref="expectedAECtcTerm"  maxOccurs="unbounded"/>
+	                            </xs:sequence>
+	                        </xs:complexType>
+	                    </xs:element>
+	                    
+	                    <xs:element name="expectedAEMeddraTerms">
+	                        <xs:complexType>
+	                            <xs:sequence>
+	                                <xs:element ref="expectedAEMeddraTerm" maxOccurs="unbounded"/>
+	                            </xs:sequence>
+	                        </xs:complexType>
+	                    </xs:element>
+                    </xs:choice>
+					
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -473,7 +492,6 @@
             <xs:extension base="MutableDomainObject">
                 <xs:sequence>
                     <xs:element name="name" type="StudyCtcVersionType"/>
-                    <xs:element name="otherMeddraVersion" type="xs:string"/>
                 </xs:sequence>
             </xs:extension>
         </xs:complexContent>
@@ -526,7 +544,30 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-
+	
+	<xs:element name="expectedAECtcTerm" type="ExpectedAECtcTermType"/>
+    <xs:complexType name="ExpectedAECtcTermType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="ctepCode" type="xs:string" minOccurs="0"/>
+                    <xs:element name="otherMeddraCode" type="xs:string"  minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+	
+	<xs:element name="expectedAEMeddraTerm" type="ExpectedAEMeddraTermType"/>
+    <xs:complexType name="ExpectedAEMeddraTermType">
+        <xs:complexContent>
+            <xs:extension base="MutableDomainObject">
+                <xs:sequence>
+                    <xs:element name="meddraCode" type="xs:string" minOccurs="0"/>
+                </xs:sequence>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+	
 
     <!-- FIXED Types  -->
     
