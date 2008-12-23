@@ -197,4 +197,52 @@ public class StudyProcessorTest_II extends CaaersDbNoSecurityTestCase {
         }
         return testDataStream;
     }
+    
+    public void testCreateStudy_WithExpectedAE_CtcTerms() throws Exception {
+    	
+    	createStudy("studydata/CreateStudy_WithExpectedAE_CtcTerms.xml");
+        interruptSession();
+        createdStudy = studyDao.getByShortTitle("Study_PCS");
+        assertNotNull(createdStudy);
+
+        createdStudy = studyDao.getStudyDesignById(createdStudy.getId());
+
+        assertNotNull(createdStudy);
+
+        assertEquals("Pancreatic Cancer Study ph 5", createdStudy.getLongTitle());
+        assertEquals("Precis", createdStudy.getPrecis());
+        assertEquals("Test Study", createdStudy.getDescription());
+        assertNotNull(createdStudy.getExpectedAECtcTerms());
+        assertEquals(2, createdStudy.getExpectedAECtcTerms().size());
+        assertEquals(0, createdStudy.getExpectedAEMeddraLowLevelTerms().size());
+    }
+    
+    public void testCreateStudy_WithExpectedAE_WithOnlyOtherTerm() throws Exception {
+    	studies = (gov.nih.nci.cabig.caaers.webservice.Studies) unmarshaller.unmarshal(createInputStream("studydata/CreateStudy_WithExpectedAE_WithOnlyOtherTerm.xml"));
+        gov.nih.nci.cabig.caaers.webservice.CaaersServiceResponse res = studyProcessor.createStudy(studies);
+        assertNotNull(res);
+        assertNotNull(res.getResponse());
+        assertNotNull(res.getResponse().getMessage());
+        assertEquals("ExpectedAECtcTerm cannot contain only otherMeddraCode", res.getResponse().getMessage().get(0));
+    }
+    
+    public void testCreateStudy_WithExpectedAE_LowLevelTerms() throws Exception {
+    	
+    	createStudy("studydata/CreateStudy_WithExpectedAE_LowLevelTerms.xml");
+        interruptSession();
+        createdStudy = studyDao.getByShortTitle("Study_PCS");
+        assertNotNull(createdStudy);
+
+        createdStudy = studyDao.getStudyDesignById(createdStudy.getId());
+
+        assertNotNull(createdStudy);
+
+        assertEquals("Pancreatic Cancer Study ph 5", createdStudy.getLongTitle());
+        assertEquals("Precis", createdStudy.getPrecis());
+        assertEquals("Test Study", createdStudy.getDescription());
+        assertNotNull(createdStudy.getExpectedAEMeddraLowLevelTerms());
+        assertEquals(2, createdStudy.getExpectedAEMeddraLowLevelTerms().size());
+        assertEquals(0, createdStudy.getExpectedAECtcTerms().size());
+    }
+    
 }
