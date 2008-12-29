@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -33,6 +35,8 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	private String defaultAssignee; //loginId of the user, who will be the default assignee,
 							 		//when the Role (assignee) cannot be derived.
 	private Boolean enabled;
+	
+	private StudySite studySite;
 	
 	public String getName() {
 		return name;
@@ -80,6 +84,16 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 	
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
+	}
+	
+	@OneToOne
+	@JoinColumn(name="study_site_id")
+	@Cascade(value={CascadeType.LOCK})
+	public StudySite getStudySite() {
+		return studySite;
+	}
+	public void setStudySite(StudySite studySite) {
+		this.studySite = studySite;
 	}
 	
 	@Transient
