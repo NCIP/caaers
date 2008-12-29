@@ -27,11 +27,19 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_workflow_configuration_id")})
 public class WorkflowConfig extends AbstractMutableDomainObject{
 	
+	private String name; // a customized name for this workflow
 	private String workflowDefinitionName; // the workflow definition name (used in getting the workflow definition file)
 	private List<TaskConfig> taskConfigs; //list of the tasks that are applicable in the workflow (configured by the admin)
 	private String defaultAssignee; //loginId of the user, who will be the default assignee,
 							 		//when the Role (assignee) cannot be derived.
 	private Boolean enabled;
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	
 	public String getWorkflowDefinitionName() {
 		return workflowDefinitionName;
