@@ -4,8 +4,7 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@attribute name="index" required="true" type="java.lang.Integer"%>
-<%@attribute name="identifier" required="true"
-	type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment"%>
+<%@attribute name="identifier" required="true" type="gov.nih.nci.cabig.caaers.domain.TreatmentAssignment"%>
 <%@attribute name="style"%>
 <%@attribute name="title"%>
 <%@attribute name="sectionClass" required="true"%>

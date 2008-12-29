@@ -37,7 +37,7 @@
             	this.index = index;
             	this.siteIndex = $F('studySiteIndex');
             	this.sitePersonnelName = sitePersonnelName;
-            	this.sitePersonnelPropertyName = "studyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
+            	this.sitePersonnelPropertyName = "study.studyOrganizations["  + this.siteIndex + "].studyPersonnels[" + index + "].researchStaff";
             	this.sitePersonnelInputId = this.sitePersonnelPropertyName + "-input";
             	if(sitePersonnelName) $(this.sitePersonnelInputId).value = sitePersonnelName;
             	AE.createStandardAutocompleter(this.sitePersonnelPropertyName, 
@@ -99,7 +99,7 @@ margin:5px;
 <body>
 <study:summary />
 <p><tags:instructions code="study.study_personnel.top" /></p>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="form" willSave="${not empty command.id}">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="form" willSave="${not empty command.study.id}">
   <jsp:attribute name="singleFields">
 	<input type="hidden" name="_action" value="">
 	<input type="hidden" name="_selectedPersonnel" value="">
@@ -121,7 +121,7 @@ margin:5px;
 	    </td>
       	<td valign="top" width="25%">
 			<chrome:box title="Summary" id="participant-entry2"  autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.studyOrganizations}">
+ 				<c:forEach var="studySite" varStatus="status" items="${command.study.studyOrganizations}">
  					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
 						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>

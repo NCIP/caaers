@@ -26,68 +26,68 @@
 <p><tags:instructions code="study.study_overview.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
-       <c:if test="${(empty command.id) or ( command.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
+       <c:if test="${(empty command.study.id) or ( command.study.id le 0) }"><input type="hidden" name="_finish" value="true"/></c:if>
         <chrome:division>
         	<div class="leftpanel">
         		<div class="row">
                 	<div class="label">Primary identifier</div>
-                	<div class="value">${command.primaryIdentifier.value} </div>
+                	<div class="value">${command.study.primaryIdentifier.value} </div>
             	</div>
            		<div class="row">
                 	<div class="label">Short title</div>
-                	<div class="value">${command.shortTitle} </div>
+                	<div class="value">${command.study.shortTitle} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Long Title</div>
-                	<div class="value">${command.longTitle} </div>
+                	<div class="value">${command.study.longTitle} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Precis</div>
-                	<div class="value">${command.precis} </div>
+                	<div class="value">${command.study.precis} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Description</div>
-                	<div class="value">${command.description} </div>
+                	<div class="value">${command.study.description} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Primary sponsor</div>
-                	<div class="value">${command.primaryFundingSponsorOrganization.name} </div>
+                	<div class="value">${command.study.primaryFundingSponsorOrganization.name} </div>
             	</div>
 				<div class="row">
                 	<div class="label">Coordinating center</div>
-                	<div class="value">${command.studyCoordinatingCenter.organization.name} </div>
+                	<div class="value">${command.study.studyCoordinatingCenter.organization.name} </div>
             	</div>
             </div>
         	<div class="rightpanel">
         		<div class="row">
                 	<div class="label">Phase code</div>
-                	<div class="value">${command.phaseCode} </div>
+                	<div class="value">${command.study.phaseCode} </div>
             	</div>
             	<div class="row">
                 	<div class="label">Status</div>
-                	<div class="value">${command.status} </div>
+                	<div class="value">${command.study.status} </div>
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology</div>
-                	<div class="value">${command.aeTerminology.term} </div>
+                	<div class="value">${command.study.aeTerminology.term} </div>
             	</div>	
             	<div class="row">
                 	<div class="label">Terminology Version</div>
-                	<div class="value">${command.aeTerminology.term eq 'CTC' ? command.aeTerminology.ctcVersion.name : command.aeTerminology.meddraVersion.name} </div>
+                	<div class="value">${command.study.aeTerminology.term eq 'CTC' ? command.study.aeTerminology.ctcVersion.name : command.study.aeTerminology.meddraVersion.name} </div>
             	</div>
-            	<c:if test="${command.aeTerminology.term eq 'CTC'}">
+            	<c:if test="${command.study.aeTerminology.term eq 'CTC'}">
             	<div class="row">
 	            	<div class="label">Other MedDRA</div>
-	            	<div class="value">${command.otherMeddra.name}</div>
+	            	<div class="value">${command.study.otherMeddra.name}</div>
 	            </div>
             	</c:if>
             	<div class="row">
                 	<div class="label">Multi institutional</div>
-                	<div class="value">${command.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
+                	<div class="value">${command.study.multiInstitutionIndicator ? 'Yes' : 'No'} </div>
             	</div>
             	<div class="row">
                 	<div class="label">AdEERS reporting</div>
-                	<div class="value">${command.adeersReporting ? 'Yes' : 'No'} </div>
+                	<div class="value">${command.study.adeersReporting ? 'Yes' : 'No'} </div>
             	</div>	
             		
         	</div>
@@ -97,12 +97,12 @@
 		<tr >						
 			<th scope="col">Report Format</th>
 		</tr>	
-		<c:forEach items="${command.reportFormats}" var="report">
+		<c:forEach items="${command.study.reportFormats}" var="report">
 		<tr class="results">
 			<td>${report.reportFormatType.displayName}</td>
 		</tr>
 		</c:forEach>
-		<c:if test="${empty command.reportFormats}">
+		<c:if test="${empty command.study.reportFormats}">
 		<tr>
 		 <td>No report format is selected for this study</td>
 		</tr>
@@ -114,12 +114,12 @@
 		<tr >						
 			<th scope="col">Therapy name</th>
 		</tr>	
-		<c:forEach items="${command.studyTherapies}" var="therapy">
+		<c:forEach items="${command.study.studyTherapies}" var="therapy">
 		<tr class="results">
 			<td>${therapy.studyTherapyType.displayName}</td>
 		</tr>
 		</c:forEach>
-		<c:if test="${empty command.studyTherapies}">
+		<c:if test="${empty command.study.studyTherapies}">
 		<tr>
 		 <td>No therapy is selected for this study</td>
 		</tr>
@@ -137,7 +137,7 @@
 			<th scope="col">Part of <br />lead IND?</th>	
 		</tr>																			
 	 	    
-		<c:forEach items="${command.studyAgents}" var="studyAgent">
+		<c:forEach items="${command.study.studyAgents}" var="studyAgent">
 			<tr>						
 				<td>${studyAgent.agentName}</td>
 				<td>${studyAgent.agent.nscNumber}</td>
@@ -155,7 +155,7 @@
 				<td>${studyAgent.partOfLeadIND ? 'Yes' : 'No' }</td>
 			</tr>
 		</c:forEach>				
-		<c:if test="${empty command.studyAgents}">
+		<c:if test="${empty command.study.studyAgents}">
 			<tr class="results">
 				<td colspan="5">No agents are associated to this study</td>
 			</tr>
@@ -171,7 +171,7 @@
                  <th scope="col">Description</th>
                  <th scope="col">Comments</th>
             	</tr>
-            	<c:forEach items="${command.treatmentAssignments}" var="treatmentAssignment" >
+            	<c:forEach items="${command.study.treatmentAssignments}" var="treatmentAssignment" >
                     <tr class="results">
                         <td>${treatmentAssignment.code}</td>
                         <td>${treatmentAssignment.doseLevelOrder}</td>
@@ -179,7 +179,7 @@
                         <td>${treatmentAssignment.comments}</td>
                     </tr>
             	</c:forEach>
-            	<c:if test="${empty command.treatmentAssignments}">
+            	<c:if test="${empty command.study.treatmentAssignments}">
             	 <tr class="results">
             	  <td colspan="4">No treatment assignment code(TAC) is available to this study</td>
             	 </tr>
@@ -193,12 +193,12 @@
 				<tr>
 					<th scope="col">Study Site</th>
 				</tr>
-				<c:forEach items="${command.studySites}" var="studySite">
+				<c:forEach items="${command.study.studySites}" var="studySite">
 				<tr class="results">
 					<td>${studySite.organization.name}</td>
 				</tr>
 				</c:forEach>
-				<c:if test="${empty command.studySites}">
+				<c:if test="${empty command.study.studySites}">
 				<tr><td class="results">No sites are associated to this study</td></tr>
 				</c:if>
 			</table>	
@@ -211,7 +211,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studyOrganizations}" var="studySite" >
+            <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyInvestigators}" var="studyInvestigator" >
                     <tr class="results">
                         <td>${studyInvestigator.siteInvestigator.investigator.fullName}</td>
@@ -237,7 +237,7 @@
                 <th scope="col">Role</th>
                 <th scope="col">Status</th>
             </tr>
-            <c:forEach items="${command.studyOrganizations}" var="studySite" >
+            <c:forEach items="${command.study.studyOrganizations}" var="studySite" >
                 <c:forEach items="${studySite.studyPersonnels}" var="studyPersonnel">
                     <tr class="results">
                         <td>${studyPersonnel.researchStaff.fullName}</td>
@@ -255,8 +255,8 @@
         </table>
     </chrome:division>
 
-    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
-            <c:if test="${not empty command.meddraStudyDiseases}">
+    <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
+            <c:if test="${not empty command.study.meddraStudyDiseases}">
             <chrome:division title="Diseases">
                 <table class="tablecontent" width="100%" >
                     <br>
@@ -265,7 +265,7 @@
                         <th scope="col">MedDRA Code</th>
                     </tr>
 
-                    <c:forEach items="${command.meddraStudyDiseases}" var="studyDisease">
+                    <c:forEach items="${command.study.meddraStudyDiseases}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.term.meddraTerm}</td>
                             <td>${studyDisease.term.meddraCode}</td>
@@ -277,8 +277,8 @@
             </c:if>
     </c:if>
 
-    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
-            <c:if test="${not empty command.ctepStudyDiseases}">
+    <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
+            <c:if test="${not empty command.study.ctepStudyDiseases}">
             <chrome:division title="Diseases">
                 <table class="tablecontent" width="100%" >
                     <br>
@@ -287,7 +287,7 @@
                         <th scope="col">Disease Term</th>
                     </tr>
 
-                    <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease">
+                    <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.leadDisease ? '&times;' : ''}</td>
                             <td>${studyDisease.term.ctepTerm}</td>
@@ -299,8 +299,8 @@
             </c:if>
     </c:if>
 
-    <c:if test="${command.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
-            <c:if test="${not empty command.studyConditions}">
+    <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
+            <c:if test="${not empty command.study.studyConditions}">
             <chrome:division title="Diseases">
                 <table class="tablecontent" width="100%" >
                     <br>
@@ -308,7 +308,7 @@
                         <th scope="col">Disease Term</th>
                     </tr>
 
-                    <c:forEach items="${command.studyConditions}" var="studyDisease">
+                    <c:forEach items="${command.study.studyConditions}" var="studyDisease">
                         <tr class="results">
                             <td>${studyDisease.term.conditionName}</td>
                         </tr>
@@ -324,18 +324,18 @@
        <table class="tablecontent" width="100%" >
            <br>
 
-           <c:if test="${command.aeTerminology.term eq 'MEDDRA'}">
-               <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
+           <c:if test="${command.study.aeTerminology.term eq 'MEDDRA'}">
+               <c:set var="terms" value="${command.study.expectedAEMeddraLowLevelTerms}" />
            </c:if>
 
-           <c:if test="${command.aeTerminology.term eq 'CTC'}">
-               <c:set var="terms" value="${command.expectedAECtcTerms}" />
+           <c:if test="${command.study.aeTerminology.term eq 'CTC'}">
+               <c:set var="terms" value="${command.study.expectedAECtcTerms}" />
            </c:if>
 
            <tr><th scope="col">Expected AEs</th></tr>
            <c:forEach items="${terms}" var="term">
                <tr class="results">
-                   <td>${term.fullName} <c:if test="${command.aeTerminology.term eq 'CTC' && term.otherMeddraTerm != null}">(${term.otherMeddraTerm.fullName})</c:if></td>
+                   <td>${term.fullName} <c:if test="${command.study.aeTerminology.term eq 'CTC' && term.otherMeddraTerm != null}">(${term.otherMeddraTerm.fullName})</c:if></td>
                </tr>
            </c:forEach>
        </table>
@@ -350,7 +350,7 @@
 				<th scope="col">Identifier Type</th>
 				<th scope="col">Identifier</th>
 			</tr>
-			<c:forEach items="${command.identifiersLazy}" var="identifier">
+			<c:forEach items="${command.study.identifiersLazy}" var="identifier">
 			<tr class="results">
 				<c:if test="${(identifier.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<td>${identifier.organization}</td>
@@ -362,7 +362,7 @@
 				<td>${identifier.value}</td>
 			</tr>
 			</c:forEach>
-			<c:if test="${empty command.identifiersLazy}">
+			<c:if test="${empty command.study.identifiersLazy}">
 			    <tr><td colspan="3">No identifier is assigned to this study</td></tr>
 			</c:if>
 			</table>

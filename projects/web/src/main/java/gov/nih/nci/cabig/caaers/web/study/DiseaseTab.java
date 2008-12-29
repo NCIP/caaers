@@ -45,10 +45,10 @@ public class DiseaseTab extends StudyTab {
      * study.getDiseaseLlt() 2. Throw error, saying that the selected disease already present.
      */
     @Override
-    protected void validate(Study command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
 
         HashMap<String, DiseaseTerm> ctepTermMap = new HashMap<String, DiseaseTerm>();
-        for (CtepStudyDisease ctepDisease : command.getCtepStudyDiseases()) {
+        for (CtepStudyDisease ctepDisease : command.getStudy().getCtepStudyDiseases()) {
             ctepTermMap.put(ctepDisease.getTerm().getId().toString(), ctepDisease.getDiseaseTerm());
         }
 
@@ -62,7 +62,7 @@ public class DiseaseTab extends StudyTab {
         }
 
         HashMap<String, LowLevelTerm> medraTermMap = new HashMap<String, LowLevelTerm>();
-        for (MeddraStudyDisease meddraStudyDisease : command.getMeddraStudyDiseases()) {
+        for (MeddraStudyDisease meddraStudyDisease : command.getStudy().getMeddraStudyDiseases()) {
             medraTermMap.put(meddraStudyDisease.getTerm().getId().toString(), meddraStudyDisease.getTerm());
         }
 
@@ -79,39 +79,40 @@ public class DiseaseTab extends StudyTab {
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+    public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
         if (!errors.hasErrors()) {
-            handleStudyDiseaseAction(errors, command, request.getParameter("_action"), request.getParameter("_selected"), request);
-            command.setDiseaseLlt(null);
+            handleStudyDiseaseAction(errors, command.getStudy(), request.getParameter("_action"), request.getParameter("_selected"), request);
+            command.getStudy().setDiseaseLlt(null);
         }
     }
 
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request, Study command) {
+    public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(command);
+        Study study = command.getStudy();
 
         // this will hold the Study Conditions' IDs as keys
         conditionMap = new HashMap<String, Condition>();
-        for (StudyCondition studyCondition : command.getStudyConditions()) {
+        for (StudyCondition studyCondition : study.getStudyConditions()) {
             conditionMap.put(studyCondition.getTerm().getId().toString(), studyCondition.getTerm());
         }
 
         String diseaseTerminology = "MEDDRA";
-        if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) diseaseTerminology = "CTEP";
-        else if (command.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.OTHER) diseaseTerminology = "OTHER";
+        if (study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) diseaseTerminology = "CTEP";
+        else if (study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.OTHER) diseaseTerminology = "OTHER";
         refdata.put("diseaseTerminology", diseaseTerminology);
 
-        if(command.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)) {
-        	refdata.put("meddraVersionId", command.getDiseaseTerminology().getMeddraVersion().getId());
-        	refdata.put("meddraVersion", command.getDiseaseTerminology().getMeddraVersion().getName());
+        if(study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)) {
+        	refdata.put("meddraVersionId", study.getDiseaseTerminology().getMeddraVersion().getId());
+        	refdata.put("meddraVersion", study.getDiseaseTerminology().getMeddraVersion().getName());
         }
         return refdata;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(StudyCommand command) {
         return super.createFieldGroups(command);
     }
 

@@ -39,7 +39,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Priyatam
  * @author Biju Joseph
  */
-public abstract class StudyController<C extends Study> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
+public abstract class StudyController<C extends StudyCommand> extends AutomaticSaveAjaxableFormController<C, Study, StudyDao> {
 
     private static final Log log = LogFactory.getLog(StudyController.class);
     public static final String AJAX_SUBVIEW_PARAMETER = "_subview";
@@ -60,7 +60,7 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
     protected WebControllerValidator webControllerValidator;
 
     public StudyController() {
-        setCommandClass(Study.class);
+        setCommandClass(StudyCommand.class);
         Flow<C> flow = new Flow<C>("Enter Study");
         layoutTabs(flow);
         setFlow(flow);
@@ -70,8 +70,8 @@ public abstract class StudyController<C extends Study> extends AutomaticSaveAjax
 
     // /LOGIC
     @Override
-    protected Study getPrimaryDomainObject(final C command) {
-        return command;
+    protected Study getPrimaryDomainObject(final C studyCommand) {
+        return studyCommand.getStudy();
     }
 
     @Override

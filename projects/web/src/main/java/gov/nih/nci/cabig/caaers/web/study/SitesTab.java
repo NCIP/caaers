@@ -31,51 +31,45 @@ class SitesTab extends StudyTab {
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+    public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         String action = request.getParameter("_action");
 
         if ("removeSite".equals(action)) {
 
             int index = Integer.parseInt(request.getParameter("_selected"));
-            StudySite site = command.getStudySites().get(index);
+            StudySite site = command.getStudy().getStudySites().get(index);
 
             if (CollectionUtils.isNotEmpty(site.getStudyInvestigators())) {
-                errors.reject("site.notempty",
-                                "The site is associated to investigators, so unable to delete");
+                errors.reject("site.notempty", "The site is associated to investigators, so unable to delete");
             }
             if (CollectionUtils.isNotEmpty(site.getStudyPersonnels())) {
-                errors.reject("site.notempty",
-                                "The site is associated to research staffs, so unable to delete");
+                errors.reject("site.notempty", "The site is associated to research staffs, so unable to delete");
             }
 
-            if (!errors.hasErrors()) command.getStudySites().remove(index);
+            if (!errors.hasErrors()) command.getStudy().getStudySites().remove(index);
         }
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(StudyCommand command) {
         if (rfgFactory == null) {
-            rfgFactory = new RepeatingFieldGroupFactory("main", "studySites");
-            InputField siteField = InputFieldFactory.createAutocompleterField("organization",
-                            "Site", true);
+            rfgFactory = new RepeatingFieldGroupFactory("main", "study.studySites");
+            InputField siteField = InputFieldFactory.createAutocompleterField("organization", "Site", true);
             siteField.getAttributes().put(InputField.ENABLE_CLEAR, true);
-            // siteField.getAttributes().put(InputField.DETAILS,"Enter a portion of the site name
-            // you are looking for");
             rfgFactory.addField(siteField);
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
-        Study study = command;
+        Study study = command.getStudy();
         map.addRepeatingFieldGroupFactory(rfgFactory, study.getStudySites().size());
         return map;
     }
 
     @Override
-    protected void validate(Study command, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
         // check if there are duplicate sites.
         HashSet<String> set = new HashSet<String>();
-        int size = command.getStudySites().size();
+        int size = command.getStudy().getStudySites().size();
         for (int i = 0; i < size; i++) {
             List<InputField> fields = fieldGroups.get("main" + i).getFields();
             if (!set.add(fieldValuesAsString(fields, commandBean))) {

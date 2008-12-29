@@ -31,29 +31,29 @@ public class StudyTherapiesTab extends StudyTab {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
         if (fieldGroup == null) {
             // set up the fields
             fieldGroup = new DefaultInputFieldGroup("studyTherapies");
             List<InputField> fields = fieldGroup.getFields();
 
-            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField("drugAdministrationTherapyType", "Agent");
+            InputField drugAdministrationTherapyTypeField = InputFieldFactory.createCheckboxField("study.drugAdministrationTherapyType", "Agent");
             InputFieldAttributes.setSize(drugAdministrationTherapyTypeField, 50);
             fields.add(drugAdministrationTherapyTypeField);
 
-            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("deviceTherapyType", "Device");
+            InputField deviceTherapyTypeField = InputFieldFactory.createCheckboxField("study.deviceTherapyType", "Device");
             InputFieldAttributes.setSize(deviceTherapyTypeField, 50);
             fields.add(deviceTherapyTypeField);
 
-            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField("radiationTherapyType", "Radiation");
+            InputField radiationTherapyTypeField = InputFieldFactory.createCheckboxField("study.radiationTherapyType", "Radiation");
             InputFieldAttributes.setSize(radiationTherapyTypeField, 50);
             fields.add(radiationTherapyTypeField);
 
-            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("surgeryTherapyType", "Surgery");
+            InputField surgeryTherapyTypeField = InputFieldFactory.createCheckboxField("study.surgeryTherapyType", "Surgery");
             InputFieldAttributes.setSize(surgeryTherapyTypeField, 50);
             fields.add(surgeryTherapyTypeField);
 
-            InputField behavioralTypeField = InputFieldFactory.createCheckboxField("behavioralTherapyType", "Behavioral");
+            InputField behavioralTypeField = InputFieldFactory.createCheckboxField("study.behavioralTherapyType", "Behavioral");
             fields.add(behavioralTypeField);
         }
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -62,9 +62,9 @@ public class StudyTherapiesTab extends StudyTab {
     }
 
     @Override
-    public void onBind(HttpServletRequest request, Study study, Errors errors) {
-        super.onBind(request, study, errors);
-        updateStudyTherapies(study);
+    public void onBind(HttpServletRequest request, StudyCommand cmd, Errors errors) {
+        super.onBind(request, cmd, errors);
+        updateStudyTherapies(cmd.getStudy());
     }
 
     protected void updateStudyTherapies(final Study study) {
@@ -78,6 +78,7 @@ public class StudyTherapiesTab extends StudyTab {
         } else if (!study.getDrugAdministrationTherapyType() && study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DRUG_ADMINISTRATION));
         }
+
         if (study.getDeviceTherapyType() && study.getStudyTherapy(StudyTherapyType.DEVICE) == null) {
             StudyTherapy deviceTherapy = new StudyTherapy();
             deviceTherapy.setStudy(study);
@@ -87,6 +88,7 @@ public class StudyTherapiesTab extends StudyTab {
                         && study.getStudyTherapy(StudyTherapyType.DEVICE) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.DEVICE));
         }
+
         if (study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) == null) {
             StudyTherapy radiationTherapy = new StudyTherapy();
             radiationTherapy.setStudy(study);
@@ -95,6 +97,7 @@ public class StudyTherapiesTab extends StudyTab {
         } else if (!study.getRadiationTherapyType() && study.getStudyTherapy(StudyTherapyType.RADIATION) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.RADIATION));
         }
+
         if (study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) == null) {
             StudyTherapy surgeryTherapy = new StudyTherapy();
             surgeryTherapy.setStudy(study);
@@ -103,6 +106,7 @@ public class StudyTherapiesTab extends StudyTab {
         } else if (!study.getSurgeryTherapyType() && study.getStudyTherapy(StudyTherapyType.SURGERY) != null) {
             studyTherapies.remove(study.getStudyTherapy(StudyTherapyType.SURGERY));
         }
+
         if (study.getBehavioralTherapyType() && study.getStudyTherapy(StudyTherapyType.BEHAVIORAL) == null) {
             StudyTherapy behavioralTherapy = new StudyTherapy();
             behavioralTherapy.setStudy(study);
@@ -114,19 +118,19 @@ public class StudyTherapiesTab extends StudyTab {
     }
     
     @Override
-    public void beforeBind(HttpServletRequest request, Study command) {
+    public void beforeBind(HttpServletRequest request, StudyCommand command) {
     	// TODO Auto-generated method stub
     	super.beforeBind(request, command);
     }
     
     @Override
-    public void onDisplay(HttpServletRequest request, Study command) {
+    public void onDisplay(HttpServletRequest request, StudyCommand command) {
     	// TODO Auto-generated method stub
     	super.onDisplay(request, command);
     }
     
     @Override
-    public void postProcess(HttpServletRequest request, Study command,
+    public void postProcess(HttpServletRequest request, StudyCommand command,
     		Errors errors) {
     	// TODO Auto-generated method stub
     	super.postProcess(request, command, errors);

@@ -21,9 +21,9 @@
             	si[index] = this;            	
             	
             	
-            	if($('identifiersLazy['  + index + '].organization'))
+            	if($('study.identifiersLazy['  + index + '].organization'))
             	{
-            	this.organizationName = "identifiersLazy["  + index + "].organization";
+            	this.organizationName = "study.identifiersLazy["  + index + "].organization";
                 this.organizationInputId = this.organizationName + "-input";
             	this.orgName = orgName;
             	if(orgName) $(this.organizationInputId).value = orgName;
@@ -38,7 +38,7 @@
             	}        	
             	
             	 //only one primary indicator is possible, by default Coordinating center identifier is primary
-            	 this.indicator = "identifiersLazy["  + index + "].primaryIndicator";
+            	 this.indicator = "study.identifiersLazy["  + index + "].primaryIndicator";
             	 Event.observe(this.indicator, "click", function() {
             	 	for(i = 0; i < si.length; i++){
             	 		if(i == this.index){
@@ -77,7 +77,7 @@
 	  
     Event.observe(window, "load", function() {
         	
-      		<c:forEach varStatus="status" items="${command.identifiersLazy}" var="si">
+      		<c:forEach varStatus="status" items="${command.study.identifiersLazy}" var="si">
         		<c:if test="${(si.class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					new jsIdentifier(${status.index}, '${si.organization.fullName}');
 				</c:if>
@@ -151,8 +151,8 @@ margin:5px;
     				<th class="tableHeader" >&nbsp;</th>
     			</tr>
     			<c:set var="cntOrg">0</c:set>
-            	<c:forEach items="${command.identifiersLazy}" varStatus="status">
-				  <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
+            	<c:forEach items="${command.study.identifiersLazy}" varStatus="status">
+				  <c:if test="${(command.study.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier') }">
 					<study:oneStudyChildRow cssClass="organization-section-row" index="${status.index}" idSuffix="${cntOrg}" exclusions="System Name" 
 					identifiers="true" disableDelete="${status.index < 2}" />
 					<c:set var="cntOrg">${cntOrg + 1}</c:set>
@@ -170,12 +170,12 @@ margin:5px;
     				<th class="tableHeader" ><tags:requiredIndicator />Primary indicator</th>
     				<th class="tableHeader" >&nbsp;</th>
     			</tr>
-				<c:if  test="${fn:length(command.systemAssignedIdentifiers) lt 1}">
+				<c:if  test="${fn:length(command.study.systemAssignedIdentifiers) lt 1}">
 	   			 <tr id="si-empty-row" class="si-empty-row"><td colspan="4">No system assigned an ID available to this study</td></tr>
 	  			</c:if>    			
     			<c:set var="cntSys">0</c:set>
-            	<c:forEach items="${command.identifiersLazy}" varStatus="status" >
-            	 <c:if test="${(command.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
+            	<c:forEach items="${command.study.identifiersLazy}" varStatus="status" >
+            	 <c:if test="${(command.study.identifiersLazy[status.index].class.name =='gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier') }">
 				  <study:oneStudyChildRow cssClass="system-section-row" index="${status.index}" idSuffix="${cntSys}"
 				  identifiers="true" exclusions="Organization" />
 				  <c:set var="cntSys">${cntSys + 1}</c:set>

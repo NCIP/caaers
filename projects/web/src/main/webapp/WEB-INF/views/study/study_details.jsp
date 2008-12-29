@@ -16,39 +16,39 @@
 
 	Event.observe(window, "load", function() {
 
-        if ($('aeTerminology.term').options[0].selected) {
-            $('aeTerminology.ctcVersion-row').style.display = "";
-            $('otherMeddra-row').style.display = "";
-            $('aeTerminology.meddraVersion-row').style.display = "none";
-            $('aeTerminology.meddraVersion').options.selectedIndex = 0;
+        if ($('study.aeTerminology.term').options[0].selected) {
+            $('study.aeTerminology.ctcVersion-row').style.display = "";
+            $('study.otherMeddra-row').style.display = "";
+            $('study.aeTerminology.meddraVersion-row').style.display = "none";
+            $('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
         } else {
-            $('aeTerminology.ctcVersion-row').style.display = "none";
-            $('otherMeddra-row').style.display = "none";
-            $('aeTerminology.meddraVersion-row').style.display = "";
-            $('aeTerminology.ctcVersion').options.selectedIndex = 0;
+            $('study.aeTerminology.ctcVersion-row').style.display = "none";
+            $('study.otherMeddra-row').style.display = "none";
+            $('study.aeTerminology.meddraVersion-row').style.display = "";
+            $('study.aeTerminology.ctcVersion').options.selectedIndex = 0;
         }
-        Event.observe("aeTerminology.term", "change", function() { showTerms(); })
+        Event.observe("study.aeTerminology.term", "change", function() { showTerms(); })
 		
 		function showTerms(){
-			$('aeTerminology.meddraVersion-row').style.display="none";
-			$('aeTerminology.ctcVersion-row').style.display="none";
-			$('otherMeddra-row').style.display="none";
-			if($('aeTerminology.term').options[0].selected){
-				Effect.toggle($('aeTerminology.ctcVersion-row'), 'slide');
-				Effect.toggle($('otherMeddra-row'), 'slide');
-				$('aeTerminology.meddraVersion').options.selectedIndex = 0;
+			$('study.aeTerminology.meddraVersion-row').style.display="none";
+			$('study.aeTerminology.ctcVersion-row').style.display="none";
+			$('study.otherMeddra-row').style.display="none";
+			if($('study.aeTerminology.term').options[0].selected){
+				Effect.toggle($('study.aeTerminology.ctcVersion-row'), 'slide');
+				Effect.toggle($('study.otherMeddra-row'), 'slide');
+				$('study.aeTerminology.meddraVersion').options.selectedIndex = 0;
 			}else{
-				Effect.toggle($('aeTerminology.meddraVersion-row'), 'slide');
-				$('aeTerminology.ctcVersion').options.selectedIndex = 0;
-				$('otherMeddra').options.selectedIndex = 0;
+				Effect.toggle($('study.aeTerminology.meddraVersion-row'), 'slide');
+				$('study.aeTerminology.ctcVersion').options.selectedIndex = 0;
+				$('study.otherMeddra').options.selectedIndex = 0;
 			}
 		}
 		
-		Event.observe("diseaseTerminology.diseaseCodeTerm", "change", function(){ showDiseaseMeddraTerms(); })
+		Event.observe("study.diseaseTerminology.diseaseCodeTerm", "change", function(){ showDiseaseMeddraTerms(); })
 		
 		function showDiseaseMeddraTerms(){
 			var row = document.getElementById('diseaseMeddraOption');
-			if ($('diseaseTerminology.diseaseCodeTerm').options[1].selected){
+			if ($('study.diseaseTerminology.diseaseCodeTerm').options[1].selected){
                 row.style.display = '';
 			} else{
                 row.style.display = 'none';
@@ -57,47 +57,40 @@
         showDiseaseMeddraTerms();
 
 		//Calls CreateStudyAjaxFacade:matchOrganization(..)
-		AE.createStandardAutocompleter('primaryFundingSponsorOrganization',
+		AE.createStandardAutocompleter('study.primaryFundingSponsorOrganization',
 			 function(autocompleter, text) {
 				createStudy.matchOrganization(text, function(values) {
 				  autocompleter.setChoices(values)
 				 })
 			 },
 			 function(organization) { 
-				 var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
-            							 " ( " + organization.nciInstituteCode + " ) ";
+				 var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
 			   return organization.name + nciInstituteCode
 
 			 }
 
 		);
-		AE.createStandardAutocompleter('studyCoordinatingCenter.organization',
 
-			 function(autocompleter, text) {
+        AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
+                function(autocompleter, text) {
+                    createStudy.matchOrganization(text, function(values) {
+                        autocompleter.setChoices(values)
+                    })
 
-				createStudy.matchOrganization(text, function(values) {
+                },
 
-				  autocompleter.setChoices(values)
-
-				 })
-
-			 },
-
-			 function(organization) { 
-			   var nciInstituteCode = organization.nciInstituteCode == null ? "" : 
-            							 " ( " + organization.nciInstituteCode + " ) ";
-			   return organization.name + nciInstituteCode  
-
-			 }
-
-		);
+                function(organization) {
+                    var nciInstituteCode = organization.nciInstituteCode == null ? "" : " ( " + organization.nciInstituteCode + " ) ";
+                    return organization.name + nciInstituteCode
+                }
+                );
 
 		//populate the name of the associated organization in sponsor & coordinating center field
-		<c:if test="${not empty command.primaryFundingSponsorOrganization.fullName}">
-		$('primaryFundingSponsorOrganization-input').value = '${command.primaryFundingSponsorOrganization.fullName}';
+		<c:if test="${not empty command.study.primaryFundingSponsorOrganization.fullName}">
+		    $('study.primaryFundingSponsorOrganization-input').value = '${command.study.primaryFundingSponsorOrganization.fullName}';
 		</c:if>
-		<c:if test="${not empty command.studyCoordinatingCenter.organization.fullName}">
-		$('studyCoordinatingCenter.organization-input').value = '${command.studyCoordinatingCenter.organization.fullName}';
+		<c:if test="${not empty command.study.studyCoordinatingCenter.organization.fullName}">
+		    $('study.studyCoordinatingCenter.organization-input').value = '${command.study.studyCoordinatingCenter.organization.fullName}';
 		</c:if>
 	});
 

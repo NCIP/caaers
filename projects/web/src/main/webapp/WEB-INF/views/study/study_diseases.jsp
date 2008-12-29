@@ -7,10 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
         .leftpanel { margin:1px 0px 5px; }
-		#build-name {
-			position: relative;
-			clear: left;
-		}        
+		#build-name { position: relative; clear: left; }        
 </style>
 
 <title>${tab.longTitle}</title>
@@ -27,7 +24,7 @@ Event.observe(window, "load", function() {
 
 function fireAction(action, selected) {
     if (action == 'addMeddraStudyDisease') {
-        if (!$F('diseaseLlt')) return;
+        if (!$F('study.diseaseLlt')) return;
     }
 
     if (action == 'addOtherCondition') {
@@ -59,7 +56,7 @@ function hover(index)
 }
 
 var diseaseAutocompleterProps = {
-    basename: "diseaseCategoryAsText",
+    basename: "study.diseaseCategoryAsText",
     populator: function(autocompleter, text) {
         createStudy.matchDiseaseCategories(text, '', function(values) {
             autocompleter.setChoices(values)
@@ -95,8 +92,7 @@ function acCreate(mode) {
         ctcDiseaseField.value = 'Begin typing here...';
     });
 
-    new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices",
-            mode.populator, {
+    new Autocompleter.DWR(mode.basename + "-input", mode.basename + "-choices", mode.populator, {
         valueSelector: mode.valueSelector,
         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
             acPostSelect(mode, selectedChoice)
@@ -201,8 +197,7 @@ function addDiseasesToCart() {
     synchronizeSelects(diseaseSelected, diseaseSelectedHidden);
 }
 
-function synchronizeSelects(selectFrom, selectTo)
-{
+function synchronizeSelects(selectFrom, selectTo) {
     // Delete everything from the target
     selectTo.options.length = 0;
     // iterate over the source and add to target
@@ -213,19 +208,16 @@ function synchronizeSelects(selectFrom, selectTo)
     }
 }
 
-function removeDiseasesFromCart()
-{
+function removeDiseasesFromCart() {
     var diseaseSelected = $("disease-sel");
     var diseaseSelectedHidden = $("disease-sel-hidden");
 
-    for (i = 0; i < diseaseSelected.length; i++)
-    {
+    for (i = 0; i < diseaseSelected.length; i++) {
         if (diseaseSelected.options[i].selected) {
             diseaseSelected.options[i] = null
         }
     }
     synchronizeSelects(diseaseSelected, diseaseSelectedHidden)
-
 }
 
 
@@ -245,7 +237,7 @@ Event.observe(window, "load", function() {
 
 <c:if test="${diseaseTerminology == 'MEDDRA' }">
     var meddraVersionId = ${meddraVersionId};
-    AE.createStandardAutocompleter('diseaseLlt',
+    AE.createStandardAutocompleter('study.diseaseLlt',
             function(autocompleter, text) {
                 createAE.matchLowLevelTermsByCode(meddraVersionId, text, function(values) {
                     autocompleter.setChoices(values)
@@ -301,7 +293,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
 
-					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
+					<ui:autocompleter path="study.diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
                     
                     <p id="disease-selected" style="display: none"></p>
 
@@ -327,7 +319,7 @@ Event.observe(window, "load", function() {
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
                     </select> 
-                <form:select id="disease-sel-hidden" size="1" path="diseaseTermIds"></form:select>
+                <form:select id="disease-sel-hidden" size="1" path="study.diseaseTermIds"></form:select>
                        
             </chrome:division>
             </c:if>
@@ -335,7 +327,7 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
-					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
+					<ui:autocompleter path="study.diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
                     <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
             </chrome:division>
             </c:if>
@@ -364,14 +356,14 @@ Event.observe(window, "load", function() {
     				<th scope="col" width="10%" align="left"><b>Primary</b> </th>
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
-    			 <c:forEach items="${command.ctepStudyDiseases}" var="studyDisease" varStatus="status">
+    			 <c:forEach items="${command.study.ctepStudyDiseases}" var="studyDisease" varStatus="status">
     			<tr>    				
             		<td><div class="label">${studyDisease.term.ctepTerm}</div></td>
-            		<td><div class="label"><form:checkbox  path="ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
+            		<td><div class="label"><form:checkbox  path="study.ctepStudyDiseases[${status.index}].leadDisease" /></div></td>
             		<td><div class="label"><a href="javascript:fireAction('removeStudyDisease', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.ctepStudyDiseases) == 0}" >
+            	 <c:if test="${fn:length(command.study.ctepStudyDiseases) == 0}" >
             	 	<td><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
              </table>
@@ -389,7 +381,7 @@ Event.observe(window, "load", function() {
     				<th scope="col" align="left"><b>MedDRA disease term</b> </th>
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
-    			<c:forEach items="${command.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
+    			<c:forEach items="${command.study.meddraStudyDiseases}" var="meddraStudyDisease" varStatus="status">
     			<tr>    				
             		<td><div class="label">${meddraStudyDisease.term.meddraTerm}</div></td>
             		<td><div class="label">
@@ -398,7 +390,7 @@ Event.observe(window, "load", function() {
                     </td>
             	</tr>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.meddraStudyDiseases) == 0}" >
+            	 <c:if test="${fn:length(command.study.meddraStudyDiseases) == 0}" >
             	 	<td><div class="label"><i>No terms selected</i></div></td>
             	 </c:if>
             	
@@ -417,13 +409,13 @@ Event.observe(window, "load", function() {
     				<th scope="col" align="left"><b>Other Conditions</b> </th>
     				<th scope="col" width="5%" align="left"></th>
     			</tr>
-    			<c:forEach items="${command.studyConditions}" var="studyConditions" varStatus="status">
+    			<c:forEach items="${command.study.studyConditions}" var="studyConditions" varStatus="status">
     			<tr>
             		<td align="left"><div class="label">${studyConditions.term.conditionName}</div></td>
             		<td><div class="label"><a href="javascript:fireAction('removeOtherCondition', ${status.index});"><img src="<c:url value="/images/checkno.gif"/>" border="0" alt="Delete"></a></div></td>
             	</tr>
             	</c:forEach>
-            	 <c:if test="${fn:length(command.studyConditions) == 0}" >
+            	 <c:if test="${fn:length(command.study.studyConditions) == 0}" >
             	 	<tr><td colspan="2"><div class="label"><i>No terms selected</i></div></td></tr>
             	 </c:if>
 
@@ -433,7 +425,7 @@ Event.observe(window, "load", function() {
 			</c:if>
         </chrome:box>
         </div>
-    <tags:tabControls tab="${tab}" flow="${flow}" willSave="${not empty command.id}"/> 
+    <tags:tabControls tab="${tab}" flow="${flow}" willSave="${not empty command.study.id}"/>
     </form:form>
  </div>
 </body>

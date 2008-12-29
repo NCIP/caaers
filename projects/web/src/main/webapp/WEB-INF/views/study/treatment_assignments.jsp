@@ -34,7 +34,7 @@
 		addFirstAfter: "identifierbookmark",
 		deletable: true,
         removeParameters:['Treatment Assignment']
-	   },'treatmentAssignments');
+	   },'study.treatmentAssignments');
 		               	
     });
 	
@@ -48,9 +48,8 @@
     <p><tags:instructions code="study.study_treatments.top" /></p>
 		 <input type="hidden" name="_action" value="">
 		 <input type="hidden" name="_selected" value="">
-		<c:forEach varStatus="status" items="${command.treatmentAssignments}">
-		  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" 
-				sectionClass="si-section" index="${status.index}" identifier="${command.treatmentAssignments[status.index]}" />
+		<c:forEach varStatus="status" items="${command.study.treatmentAssignments}">
+		  <study:treatmentAssignment title="Treatment Assignment ${status.index + 1}" sectionClass="si-section" index="${status.index}" identifier="${command.study.treatmentAssignments[status.index]}" />
 		</c:forEach>	
 		    <span id="identifierbookmark"></span>
     </jsp:attribute>

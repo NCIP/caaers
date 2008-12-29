@@ -32,84 +32,68 @@ class PersonnelTab extends StudyTab {
     }
 
     @Override
-    public Map<String, Object> referenceData(HttpServletRequest request, Study study) {
-        Map<String, Object> refdata = super.referenceData(request, study);
+    public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
+        Map<String, Object> refdata = super.referenceData(request, command);
         return refdata;
     }
 
     @Override
-    public void postProcess(HttpServletRequest request, Study study, Errors errors) {
+    public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         String action = request.getParameter("_action");
         String selectedPersonnel = request.getParameter("_selectedPersonnel");
         String prevSiteIndex = request.getParameter("_prevSite");
-        int selectedIndex = study.getStudySiteIndex();
+        int selectedIndex = command.getStudySiteIndex();
         if ("removeStudyPersonnel".equals(action) && selectedIndex >= 0) {
-            study.getStudyOrganizations().get(study.getStudySiteIndex()).getStudyPersonnels()
-                            .remove(Integer.parseInt(selectedPersonnel));
+            command.getStudy().getStudyOrganizations().get(command.getStudySiteIndex()).getStudyPersonnels().remove(Integer.parseInt(selectedPersonnel));
         } else if ("changeSite".equals(action) && errors.hasErrors()) {
             int siteIndex = Integer.parseInt(prevSiteIndex);
-            study.setStudySiteIndex(siteIndex);
+            command.setStudySiteIndex(siteIndex);
             if (siteIndex >= 0) {
-                study.getStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
+                command.getStudy().getStudyOrganizations().get(siteIndex).getStudyPersonnels().get(0);
             }
         }
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(StudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
         InputFieldGroup siteFieldGroup = new DefaultInputFieldGroup("site");
-        siteFieldGroup.getFields().add(
-                        InputFieldFactory.createSelectField("studySiteIndex", "Site", true,
-                        		WebUtils.collectOptions(
-                                                        collectStudyOrganizations(command), "code",
-                                                        "desc")));
+        siteFieldGroup.getFields().add(InputFieldFactory.createSelectField("studySiteIndex", "Site", true, WebUtils.collectOptions(collectStudyOrganizations(command.getStudy()), "code", "desc")));
         map.addInputFieldGroup(siteFieldGroup);
 
         if (fields == null) {
             fields = new ArrayList<InputField>();
-            InputField investigatorField = InputFieldFactory.createAutocompleterField(
-                            "researchStaff", "Research Staff", true);
-            // sponsorField.getAttributes().put(InputField.DETAILS,"Enter a portion of the
-            // investigator name you are looking for");
+            InputField investigatorField = InputFieldFactory.createAutocompleterField("researchStaff", "Research Staff", true);
             fields.add(investigatorField);
-            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true,
-                            collectOptionsFromConfig("studyPersonnelRoleRefData", "desc", "desc")));
-            fields.add(InputFieldFactory
-                            .createSelectField("statusCode", "Status", true,
-                                            collectOptionsFromConfig("studyPersonnelStatusRefData",
-                                                            "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("roleCode", "Role", true, collectOptionsFromConfig("studyPersonnelRoleRefData", "desc", "desc")));
+            fields.add(InputFieldFactory.createSelectField("statusCode", "Status", true, collectOptionsFromConfig("studyPersonnelStatusRefData", "desc", "desc")));
         }
 
         int ssIndex = command.getStudySiteIndex();
         if (ssIndex >= 0) {
-            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main",
-                            "studyOrganizations[" + ssIndex + "].studyPersonnels");
+            RepeatingFieldGroupFactory rfgFactory = new RepeatingFieldGroupFactory("main", "study.studyOrganizations[" + ssIndex + "].studyPersonnels");
 
             for (InputField f : fields) {
                 rfgFactory.addField(f);
             }
-            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudyOrganizations().get(
-                            ssIndex).getStudyPersonnels().size());
+            map.addRepeatingFieldGroupFactory(rfgFactory, command.getStudy().getStudyOrganizations().get(ssIndex).getStudyPersonnels().size());
         }
         return map;
     }
 
     @Override
-    protected void validate(Study study, BeanWrapper commandBean,
-                    Map<String, InputFieldGroup> fieldGroups, Errors errors) {
-        super.validate(study, commandBean, fieldGroups, errors);
+    protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+        super.validate(command, commandBean, fieldGroups, errors);
         int soIndex = -1;
 
-        for (StudyOrganization studyOrg : study.getStudyOrganizations()) {
+        for (StudyOrganization studyOrg : command.getStudy().getStudyOrganizations()) {
             soIndex++;
             int spIndex = -1;
             HashSet<StudyPersonnel> hSet = new HashSet<StudyPersonnel>();
             for (StudyPersonnel sp : studyOrg.getStudyPersonnels()) {
                 spIndex++;
                 if (!hSet.add(sp)) {
-                    errors.rejectValue("studyOrganizations[" + soIndex + "].studyPersonnels["
-                                    + spIndex + "].researchStaff", "DUPLICATE", "Duplicate entry");
+                    errors.rejectValue("study.studyOrganizations[" + soIndex + "].studyPersonnels[" + spIndex + "].researchStaff", "DUPLICATE", "Duplicate entry");
                 }
             }
 

@@ -30,19 +30,19 @@ public class TreatmentAssignmentTab extends StudyTab {
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Study command, final Errors errors) {
+    public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
         String action = request.getParameter("_action");
         String selected = request.getParameter("_selected");
         if ("removeTreatmentAssignment".equals(action)) {
-            Study study = command;
+            Study study = command.getStudy();
             study.getTreatmentAssignments().remove(Integer.parseInt(selected));
         }
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
         if (rfgFactory == null) {
-            rfgFactory = new RepeatingFieldGroupFactory("main", "treatmentAssignments");
+            rfgFactory = new RepeatingFieldGroupFactory("main", "study.treatmentAssignments");
             InputField codeField = InputFieldFactory.createTextField("code", "Code", true);
             InputFieldAttributes.setSize(codeField, 20);
             rfgFactory.addField(codeField);
@@ -61,7 +61,7 @@ public class TreatmentAssignmentTab extends StudyTab {
             rfgFactory.addField(commentsField);
 
         }
-        Study study = command;
+        Study study = command.getStudy();
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addRepeatingFieldGroupFactory(rfgFactory, study.getTreatmentAssignments().size());
 
@@ -69,10 +69,10 @@ public class TreatmentAssignmentTab extends StudyTab {
     }
 
     @Override
-    protected void validate(final Study command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+    protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
-        List<TreatmentAssignment> treatmentAssignments = command.getTreatmentAssignments();
+        List<TreatmentAssignment> treatmentAssignments = command.getStudy().getTreatmentAssignments();
 
         for (int j = 0; j < treatmentAssignments.size(); j++) {
             TreatmentAssignment treatmentAssignment = treatmentAssignments.get(j);

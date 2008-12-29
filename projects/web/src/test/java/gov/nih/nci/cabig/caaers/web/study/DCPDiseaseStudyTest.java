@@ -56,8 +56,11 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         request.setParameter("_page", "5");
         EasyMock.expect(conditionDao.getById(5)).andReturn(condition);
         replayMocks();
-        
-        diseaseTab.postProcess(request, study, errors);
+
+        StudyCommand command  = new StudyCommand();
+        command.setStudy(study);
+
+        diseaseTab.postProcess(request, command, errors);
 
         verifyMocks();
         assertEquals(new Integer(5), study.getStudyConditions().get(0).getTerm().getId());

@@ -17,44 +17,43 @@
   function fireDelete(selected, trClass){
 		var confirmation = confirm("Do you really want to delete?");
 		if(!confirmation) return; //return if not agreed.
-	fireAction('removeInv',selected);
+	    fireAction('removeInv', selected);
   }
 	
   function fireAction(action, selectedInvestigator){
-	if(action == 'addInv'){
-		
-	}else{
-		ValidationManager.validate = false;
-		var form = document.getElementById('command')
-		form._target.name='_noname';
-		form._action.value=action;
-		form._selectedInvestigator.value=selectedInvestigator;
-		form.submit();
-	}
+      if (action == 'addInv') {
+
+      } else {
+          ValidationManager.validate = false;
+          var form = document.getElementById('command')
+          form._target.name = '_noname';
+          form._action.value = action;
+          form._selectedInvestigator.value = selectedInvestigator;
+          form.submit();
+      }
   }
 
   var jsInvestigator = Class.create();
   Object.extend(jsInvestigator.prototype, {
            initialize: function(index, siteInvestigatorName) {
-            	this.index = index;
+                this.index = index;
             	this.siteIndex = $F('studySiteIndex');
-            	this.siteInvestigatorName = siteInvestigatorName;
-            	this.siteInvestigatorPropertyName = "studyOrganizations["  + this.siteIndex + "].studyInvestigators[" + index + "].siteInvestigator";
-            	this.siteInvestigatorInputId = this.siteInvestigatorPropertyName + "-input";
-            	if(siteInvestigatorName) $(this.siteInvestigatorInputId).value = siteInvestigatorName;
-            	AE.createStandardAutocompleter(this.siteInvestigatorPropertyName, 
-            		this.siteInvestigatorPopulator.bind(this),
-            		this.siteInvestigagorSelector.bind(this)
-            	);
-            },            
+                this.siteInvestigatorName = siteInvestigatorName;
+            	this.siteInvestigatorPropertyName = "study.studyOrganizations["  + this.siteIndex + "].studyInvestigators[" + index + "].siteInvestigator";
+
+                this.siteInvestigatorInputId = this.siteInvestigatorPropertyName + "-input";
+            	if (siteInvestigatorName) $(this.siteInvestigatorInputId).value = siteInvestigatorName;
+            	AE.createStandardAutocompleter(this.siteInvestigatorPropertyName, this.siteInvestigatorPopulator.bind(this), this.siteInvestigagorSelector.bind(this));
+            },
+      
             siteInvestigatorPopulator: function(autocompleter, text) {
-         		createStudy.matchSiteInvestigator(text,this.siteIndex, function(values) {
+         		createStudy.matchSiteInvestigator(text, this.siteIndex, function(values) {
          			autocompleter.setChoices(values)
          		})
         	},
         	
         	siteInvestigagorSelector: function(sInvestigator) { 
-        		return sInvestigator.investigator.fullName
+        		return sInvestigator.investigator.fullName;
         	}
         	
   });
@@ -68,13 +67,13 @@
 	 });
 
 	 //init the list editor
-	 invListEditor = new ListEditor('ssi-table-row',createStudy, "Investigator",{
+	 invListEditor = new ListEditor('ssi-table-row', createStudy, "Investigator",{
              addParameters: [],
              addFirstAfter: "ssi-table-head",
              addCallback: function(nextIndex) {
           	   new jsInvestigator(nextIndex);
-          	   if($('ssi-empty-row')){
-                	Effect.Fade('ssi-empty-row');
+          	   if ($('ssi-empty-row')){
+                    Effect.Fade('ssi-empty-row');
                }
              }
          
@@ -92,7 +91,7 @@
 </head>
 <body>
 <study:summary />
-<tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true" willSave="${not empty command.id}">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="studyInvestigatorForm" hideErrorDetails="true" willSave="${not empty command.study.id}">
 <jsp:attribute name="singleFields">
  <input type="hidden" name="_action" value="">
  <input type="hidden" name="_prevSite" value="${command.studySiteIndex}">
@@ -106,22 +105,20 @@
 		<br />
 		<hr>
 		<div id="content-section">
-			<c:if test="${command.studySiteIndex > -1 }">
+            <c:if test="${command.studySiteIndex > -1 }">
 				<study:oneStudySiteInvestigator index="${command.studySiteIndex}"/>
 			</c:if>
             <div id="addInvBtn" style="${command.studySiteIndex > -1 ? '' : 'display:none'}"><tags:listEditorAddButton divisionClass="ssi-table-row" label="Add Investigator" /></div>
 			<span id="ss-bookmark" />
 		</div>
 	    </td>
-      	<td valign="top" width="25%">
+      	<td valign="top" width="45%">
 			<chrome:box title="Summary" id="participant-entry2" autopad="true">
- 				<c:forEach var="studySite" varStatus="status" items="${command.studyOrganizations}">
- 					<div class =""><a href="#" onClick="javascript:chooseSitesfromSummary(${status.index});" 
-						title="click here to edit investigator assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
+ 				<c:forEach var="studySite" varStatus="status" items="${command.study.studyOrganizations}">
+ 					<div class ="">
+                         <a href="#" onClick="javascript:chooseSitesfromSummary(${status.index});" title="click here to edit investigator assigned to study"> <font size="-1"> <b>${studySite.organization.name}</b></font></a>
  					</div>
- 					<div class="">Investigators Assigned: <b> ${fn:length(studySite.studyInvestigators)} </b>
- 					</div>
- 				
+                     <div class="">Investigators Assigned: <b> ${fn:length(studySite.studyInvestigators)}</b></div>
  				</c:forEach>
  				<div>
  				   <img src="<c:url value="/images/chrome/spacer.gif" />" width="1" height="150" />
@@ -132,9 +129,10 @@
 	  </tr>
 	</table>
  </jsp:attribute>	
- <jsp:attribute name="localButtons">
-  
- </jsp:attribute> 
+
+    <jsp:attribute name="localButtons">
+    </jsp:attribute>
+
 </tags:tabForm>
 </body>
 </html>

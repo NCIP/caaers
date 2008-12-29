@@ -4,7 +4,7 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="displayOnly" required="true" type="java.lang.Boolean" %>
 <%@attribute name="eachRow" required="true" type="java.util.LinkedList"%>
-<c:set var="terminologyVersionId" value="${empty command.otherMeddra.id ? 0 : command.otherMeddra.id}" />
+<c:set var="terminologyVersionId" value="${empty command.study.otherMeddra.id ? 0 : command.study.otherMeddra.id}" />
 <c:set var="initialDisplayValue" value="${eachRow[2] == null ? 'Begin typing here...' : eachRow[2].fullName}" />
 
 <c:if test="${eachRow[2].class.name eq 'gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm'}">

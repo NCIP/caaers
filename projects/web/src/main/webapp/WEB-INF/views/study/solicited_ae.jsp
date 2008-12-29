@@ -386,7 +386,7 @@
  
   <form:form name="solicitedAEForm">
     <p><tags:instructions code="study.study_evalpdtypes.top" /></p>
-  	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="false" isAjaxable="true"/>
+  	<tags:aeTermQuery title="Choose CTC terms" isMeddra="${not empty command.study.aeTerminology.meddraVersion}" callbackFunctionName="myCallback" version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}" ignoreOtherSpecify="false" isAjaxable="true"/>
   	
   	<!--  Idea is copied from tabForm.tag -->
   	<chrome:box title="${tab.longTitle}" >

@@ -22,28 +22,28 @@ public class ExpectedAEsTab extends StudyTab {
         super("Expected AEs", "Expected AEs", "study/study_expected_aes");
     }
 
-    public Map<String, Object> referenceData(HttpServletRequest request, Study command) {
-        boolean isCTCStudy = command.getAeTerminology().getTerm() == Term.CTC;
+    public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand command) {
+        boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
         if (isCTCStudy) {
-            command.getAeTerminology().getCtcVersion().getCategories();
+            command.getStudy().getAeTerminology().getCtcVersion().getCategories();
         }
         return super.referenceData(request, command);
     }
 
-    public void postProcess(HttpServletRequest request, Study command, Errors errors) {
+    public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
         System.out.println();
     }
 
-    protected void validate(Study command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
 
-        AbstractExpectedAE aee = command.checkExpectedAEUniqueness();
+        AbstractExpectedAE aee = command.getStudy().checkExpectedAEUniqueness();
         if (aee == null) return;
 
         String name = null;
-        if (command.getAeTerminology().getMeddraVersion() != null) name = ((ExpectedAEMeddraLowLevelTerm)aee).getTerm().getFullName();
-        if (command.getAeTerminology().getCtcVersion() != null) {
+        if (command.getStudy().getAeTerminology().getMeddraVersion() != null) name = ((ExpectedAEMeddraLowLevelTerm)aee).getTerm().getFullName();
+        if (command.getStudy().getAeTerminology().getCtcVersion() != null) {
             name = ((ExpectedAECtcTerm)aee).getTerm().getFullName();
             if (aee.isOtherRequired()) name = name + ", " + ((ExpectedAECtcTerm)aee).getOtherMeddraTerm().getMeddraTerm();
         }

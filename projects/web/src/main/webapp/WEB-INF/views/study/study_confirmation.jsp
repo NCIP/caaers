@@ -27,23 +27,23 @@
            </div>
             <div class="row">
               <div class="label">Short Title:</div>
-              <div class="value">${command.shortTitle}</div>
+              <div class="value">${command.study.shortTitle}</div>
            </div>
            <div class="row">
               <div class="label">Primary Identifier:</div>
-              <div class="value">${command.primaryIdentifier}</div>
+              <div class="value">${command.study.primaryIdentifier}</div>
            </div>
            <div class="row">
               <div class="label">Coordinating center:</div>
-              <div class="value">${command.studyCoordinatingCenter.organization.name}</div>
+              <div class="value">${command.study.studyCoordinatingCenter.organization.name}</div>
            </div>
            <div class="row">
               <div class="label">Funding sponsor:</div>
-              <div class="value">${command.primaryFundingSponsorOrganization.name}</div>
+              <div class="value">${command.study.primaryFundingSponsorOrganization.name}</div>
            </div>
            <div class="row">
               <div class="label">Phase:</div>
-              <div class="value">${command.phaseCode}</div>
+              <div class="value">${command.study.phaseCode}</div>
            </div>
            <div>
  			<img src="/caaers/images/chrome/spacer.gif" width="900" height="1" />

@@ -95,9 +95,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private String diseaseLlt;
     private String condition;
 
-    private int studySiteIndex = -1; // represents the studysite, selected in the (add
-    // Investigators page)
-
     private Boolean drugAdministrationTherapyType = Boolean.FALSE;
     private Boolean radiationTherapyType = Boolean.FALSE;
     private Boolean deviceTherapyType = Boolean.FALSE;
@@ -301,16 +298,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // / BEAN PROPERTIES
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
-
-    @Transient
-    public int getStudySiteIndex() {
-        return studySiteIndex; // returns the index of the study site selected in investigators
-        // page
-    }
-
-    public void setStudySiteIndex(final int studySiteIndex) {
-        this.studySiteIndex = studySiteIndex;
-    }
 
     @Transient
     public String[] getDiseaseTermIds() {

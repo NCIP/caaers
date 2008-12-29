@@ -18,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
  * Study Controller for 'Create' Workflow
  * 
  */
-public class CreateStudyController extends StudyController<Study> {
+public class CreateStudyController extends StudyController<StudyCommand> {
 
     /**
      * Layout Tabs
@@ -26,7 +26,7 @@ public class CreateStudyController extends StudyController<Study> {
      */
 
     @Override
-    protected void layoutTabs(final Flow<Study> flow) {
+    protected void layoutTabs(final Flow<StudyCommand> flow) {
     	/**
     	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
     	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
@@ -51,7 +51,11 @@ public class CreateStudyController extends StudyController<Study> {
      */
     @Override
     protected Object formBackingObject(final HttpServletRequest request) throws ServletException {
+
+        StudyCommand cmd = new StudyCommand();
         Study study = new Study();
+        cmd.setStudy(study);
+
         StudyFundingSponsor sponsor = new StudyFundingSponsor();
         sponsor.setPrimary(true);
         study.addStudyFundingSponsor(sponsor);
@@ -70,17 +74,18 @@ public class CreateStudyController extends StudyController<Study> {
         study.addEpoch(new Epoch(Epoch.NAME_BASELINE, 0));
         study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
         study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
-        return study;
+        
+        return cmd;
     }
 
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
 
-        Study study = (Study) command;
+        StudyCommand cmd = (StudyCommand) command;
         // saveResearchStaff the study by calling merge, as the study might be assocated
         // to different copy of same object (eg: Organization, with same id)
         // in different screens (hibernate session)
-        studyDao.merge(study);
+        studyDao.merge(cmd.getStudy());
 
         ModelAndView mv = new ModelAndView("forward:view?type=confirm", errors.getModel());
 

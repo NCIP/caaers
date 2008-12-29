@@ -14,22 +14,22 @@
 </style>
 
 <chrome:division title="" collapsable="true" id="studyTermsID">
-    <c:if test="${not empty command.aeTerminology.meddraVersion}">
-        <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
+    <c:if test="${not empty command.study.aeTerminology.meddraVersion}">
+        <c:set var="terms" value="${command.study.expectedAEMeddraLowLevelTerms}" />
 		<p><tags:instructions code="study_expectedaes_meddra"/></p>
     </c:if>
 
-    <c:if test="${not empty command.aeTerminology.ctcVersion}">
-        <c:set var="terms" value="${command.expectedAECtcTerms}" />
+    <c:if test="${not empty command.study.aeTerminology.ctcVersion}">
+        <c:set var="terms" value="${command.study.expectedAECtcTerms}" />
 		<p><tags:instructions code="study_expectedaes_ctc"/></p>
     </c:if>
                <tags:aeTermQuery
-                       isMeddra="${not empty command.aeTerminology.meddraVersion}"
+                       isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
                        noBackground="true"
                        callbackFunctionName="rpCreator.addStudyTerm"
                        ignoreOtherSpecify="false"
                        isAjaxable="true"
-                       version="${not empty command.aeTerminology.meddraVersion ? command.aeTerminology.meddraVersion.id : command.aeTerminology.ctcVersion.id}"
+                       version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
                        title="">
                </tags:aeTermQuery>
 

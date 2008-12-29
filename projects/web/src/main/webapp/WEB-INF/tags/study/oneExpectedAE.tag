@@ -6,7 +6,7 @@
 <%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 
 <td>
-<c:set var="ctcTerm" value="expectedAECtcTerms[${index}]" />
+<c:set var="ctcTerm" value="study.expectedAECtcTerms[${index}]" />
 <c:if test="${isOtherSpecify}">
                 <c:set var="initValue" value="Begin typing here..."/>
                 <c:if test="${not empty studyTerm.otherMeddraTerm && not empty studyTerm.otherMeddraTerm.meddraTerm}">
@@ -14,10 +14,10 @@
                 </c:if>
                 <%--<tags:requiredIndicator/>--%>
                 <c:out value="${studyTerm.fullName}" /><br>
-                <ui:autocompleter path="expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
+                <ui:autocompleter path="study.expectedAECtcTerms[${index}].otherMeddraTerm" initialDisplayValue="${initValue}">
                     <jsp:attribute name="populatorJS">
                             function(autocompleter, text) {
-                                    var terminologyVersionId = ${empty command.otherMeddra.id ? 0 : command.otherMeddra.id};
+                                    var terminologyVersionId = ${empty command.study.otherMeddra.id ? 0 : command.study.otherMeddra.id};
                                     createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values)
                                     {
                                         autocompleter.setChoices(values)

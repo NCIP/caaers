@@ -238,7 +238,7 @@
 			<jsp:attribute name="value">
 			  <div id="categories-div-id" class="categories-div" onScroll="catSel.OnDivScroll('categories');" >
 			    <select name="categories" id="categories" style="width:500px; height:175px;" onChange="catSel.showTerms('categories', catSel.ignoreOtherSpecify);" onFocus="catSel.onSelectFocus('categories');" class="categories" multiple >
-				  <c:forEach var="cat" items="${command.ctcCategories}">
+				  <c:forEach var="cat" items="${command.study.ctcCategories}">
 					<option value="${cat.id}">${cat.name}</option>
 				  </c:forEach>
 			    </select>

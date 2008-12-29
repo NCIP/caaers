@@ -59,61 +59,55 @@ public class AgentsTab extends StudyTab {
     }
 
     @Override
-    public void postProcess(final HttpServletRequest request, final Study command,
-                    final Errors errors) {
-        handleStudyAgentAction(command, request.getParameter("_action"), request
-                        .getParameter("_selected"), request.getParameter("_selectedInd"));
+    public void postProcess(final HttpServletRequest request, final StudyCommand command, final Errors errors) {
+        handleStudyAgentAction(command.getStudy(), request.getParameter("_action"), request.getParameter("_selected"), request.getParameter("_selectedInd"));
     }
 
     @Override
-    protected void validate(final Study command, final BeanWrapper commandBean,
-                    final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
+    protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 
         boolean isAgentEmpty = false;
         StudyAgent studyAgent = null;
-        List<StudyAgent> studyAgents = command.getStudyAgents();
-        for (int i = 0; i < command.getStudyAgents().size(); i++) {
+        List<StudyAgent> studyAgents = command.getStudy().getStudyAgents();
+
+        for (int i = 0; i < command.getStudy().getStudyAgents().size(); i++) {
             studyAgent = studyAgents.get(i);
             if (studyAgent.getAgent() == null && studyAgent.getOtherAgent() == null) {
                 isAgentEmpty = true;
-                errors.rejectValue("studyAgents[" + i + "].otherAgent", "REQUIRED",
-                                "Select either Agent or Other ");
+                errors.rejectValue("studyAgents[" + i + "].otherAgent", "REQUIRED","Select either Agent or Other ");
             }
+
             if (studyAgent.getAgent() != null) {
                 studyAgent.setOtherAgent(null);
             }
-
         }
 
         if (isAgentEmpty) {
-            errors.rejectValue("studyAgents", "REQUIRED",
-                            "One or more Agents are missing or not in list");
+            errors.rejectValue("studyAgents", "REQUIRED", "One or more Agents are missing or not in list");
         }
 
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(final Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(final StudyCommand command) {
         InputFieldGroupMap map = new InputFieldGroupMap();
-        String baseName = "studyAgents";
+        String baseName = "study.studyAgents";
         int i = -1;
-        for (StudyAgent sa : command.getStudyAgents()) {
+
+        for (StudyAgent sa : command.getStudy().getStudyAgents()) {
             i++;
             InputFieldGroup fieldGrp = new DefaultInputFieldGroup("main" + i);
             List<InputField> fields = fieldGrp.getFields();
-            InputField agentField = InputFieldFactory.createAutocompleterField(baseName + "[" + i
-                            + "].agent", "Agent", false);
+            InputField agentField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].agent", "Agent", false);
             InputFieldAttributes.setSize(agentField, 70);
             agentField.getAttributes().put(InputField.ENABLE_CLEAR, false);
             fields.add(agentField);
 
-            InputField otherAgentField = InputFieldFactory.createTextField(baseName + "[" + i
-                            + "].otherAgent", "Other", false);
+            InputField otherAgentField = InputFieldFactory.createTextField(baseName + "[" + i + "].otherAgent", "Other", false);
             InputFieldAttributes.setSize(otherAgentField, 70);
             fields.add(otherAgentField);
 
-            InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i
-                            + "].indType", "Enter IND information", indTypeMap);
+            InputField indTypeField = InputFieldFactory.createSelectField(baseName + "[" + i + "].indType", "Enter IND information", indTypeMap);
             fields.add(indTypeField);
             if (sa.getStudyAgentINDAssociations() != null) {
                 int j = -1;
@@ -124,25 +118,21 @@ public class AgentsTab extends StudyTab {
                         continue;
                     }
                     j++;
-                    InputField indField = InputFieldFactory.createAutocompleterField(baseName + "["
-                                    + i + "].studyAgentINDAssociations[" + j
-                                    + "].investigationalNewDrug", "IND #", true);
+                    InputField indField = InputFieldFactory.createAutocompleterField(baseName + "[" + i + "].studyAgentINDAssociations[" + j + "].investigationalNewDrug", "IND #", true);
                     indField.getAttributes().put(InputField.ENABLE_CLEAR, true);
                     InputFieldAttributes.setSize(indField, 11);
                     fields.add(indField);
                 }
             }// ~if
 
-            InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "["
-                            + i + "].partOfLeadIND", "Lead IND ?");
+            InputField partOfLeadIND = InputFieldFactory.createBooleanSelectField(baseName + "[" + i + "].partOfLeadIND", "Lead IND ?");
             fields.add(partOfLeadIND);
             map.addInputFieldGroup(fieldGrp);
         }
         return map;
     }
 
-    private void handleStudyAgentAction(final Study study, final String action,
-                    final String selected, final String selectedInd) {
+    private void handleStudyAgentAction(final Study study, final String action, final String selected, final String selectedInd) {
         if ("addStudyAgent".equals(action)) {
             StudyAgent studyAgent = new StudyAgent();
             studyAgent.setAgent(new Agent());

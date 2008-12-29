@@ -27,10 +27,9 @@ import org.springframework.web.servlet.view.RedirectView;
  * @author Priyatam
  * @author <a href="mailto:biju.joseph@semanticbits.com">Biju Joseph</a>
  */
-public class EditStudyController extends StudyController<Study> {
+public class EditStudyController extends StudyController<StudyCommand> {
 
     private static final Log log = LogFactory.getLog(EditStudyController.class);
-
     private Task task;
 
     public EditStudyController() {
@@ -56,20 +55,23 @@ public class EditStudyController extends StudyController<Study> {
             log.debug("Retrieved Study :" + String.valueOf(study));
         }
 
-        return study;
+        StudyCommand cmd = new StudyCommand();
+        cmd.setStudy(study);
+        return cmd;
     }
 
     @Override
-    protected Study save(final Study study, final Errors errors) {
+    protected StudyCommand save(final StudyCommand cmd, final Errors errors) {
+        Study study = cmd.getStudy();
+
         if (errors.hasErrors()) {
-            return study;
+            return cmd;
         }
         Study mergedStudy = getDao().merge(study);
-
         getDao().initialize(mergedStudy);
 
         // update the studySiteIndex
-        mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
+        // mergedStudy.setStudySiteIndex(study.getStudySiteIndex());
 
         // now check for study therapies.
         mergedStudy.setDrugAdministrationTherapyType(study.getDrugAdministrationTherapyType());
@@ -83,7 +85,9 @@ public class EditStudyController extends StudyController<Study> {
         mergedStudy.setCiomsSaePDFType(study.getCiomsSaePDFType());
         mergedStudy.setDcpSAEPDFType(study.getDcpSAEPDFType());
         mergedStudy.setMedwatchPDFType(study.getMedwatchPDFType());
-        return mergedStudy;
+
+        cmd.setStudy(mergedStudy);
+        return cmd;
     }
 
     @Override
@@ -92,7 +96,7 @@ public class EditStudyController extends StudyController<Study> {
     }
 
     @Override
-    protected void layoutTabs(final Flow<Study> flow) {
+    protected void layoutTabs(final Flow<StudyCommand> flow) {
     	/**
     	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
     	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
@@ -118,7 +122,9 @@ public class EditStudyController extends StudyController<Study> {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
 
         refdata.put("currentTask", task);
-        Study study = (Study) command;
+        StudyCommand cmd = (StudyCommand) command;
+        Study study = cmd.getStudy();
+        
         if (isSummaryEnabled()) {
             List<ListValues> summary = new ArrayList<ListValues>();
             if (study.getShortTitle() != null) {
@@ -151,13 +157,13 @@ public class EditStudyController extends StudyController<Study> {
 
     @Override
     protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
-        Study study = (Study) command;
+        Study study = ((StudyCommand)command).getStudy();
         studyDao.merge(study);
         return new ModelAndView(new RedirectView("search"));
     }
 
     @Override
-    protected boolean shouldSave(final HttpServletRequest request, final Study command, final Tab<Study> tab) {
+    protected boolean shouldSave(final HttpServletRequest request, final StudyCommand command, final Tab<StudyCommand> tab) {
         // supress for ajax and delete requests
         Object isAjax = findInRequest(request, "_isAjax");
         if (isAjax != null) {
@@ -168,9 +174,11 @@ public class EditStudyController extends StudyController<Study> {
         if (StringUtils.equals(action, "removeInv") || StringUtils.equals(action, "removeSite")) {
             return true;
         }
+
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
             return false;
         }
+
         return super.shouldSave(request, command, tab) && tab.getNumber() != 0; // dont study if it
         // is overview page
     }

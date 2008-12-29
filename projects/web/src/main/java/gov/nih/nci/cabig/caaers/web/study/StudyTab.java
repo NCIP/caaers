@@ -24,7 +24,7 @@ import org.springframework.validation.Errors;
 /**
  * @author Rhett Sutphin, Priyatam
  */
-public abstract class StudyTab extends TabWithFields<Study> {
+public abstract class StudyTab extends TabWithFields<StudyCommand> {
     // TODO: This should be named after the class, but the existing context instance
     // is named like this. Alternate TODO: get rid of this bogus class entirely.
 
@@ -62,7 +62,7 @@ public abstract class StudyTab extends TabWithFields<Study> {
     }
 
     @Override
-    public Map<String, InputFieldGroup> createFieldGroups(Study command) {
+    public Map<String, InputFieldGroup> createFieldGroups(StudyCommand command) {
         return new InputFieldGroupMap();
     }
 

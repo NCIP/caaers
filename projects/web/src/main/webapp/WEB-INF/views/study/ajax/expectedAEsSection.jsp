@@ -3,12 +3,12 @@
 <%@taglib prefix="study" tagdir="/WEB-INF/tags/study"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<c:if test="${not empty command.aeTerminology.meddraVersion}">
-    <c:set var="terms" value="${command.expectedAEMeddraLowLevelTerms}" />
+<c:if test="${not empty command.study.aeTerminology.meddraVersion}">
+    <c:set var="terms" value="${command.study.expectedAEMeddraLowLevelTerms}" />
 </c:if>
 
-<c:if test="${not empty command.aeTerminology.ctcVersion}">
-    <c:set var="terms" value="${command.expectedAECtcTerms}" />
+<c:if test="${not empty command.study.aeTerminology.ctcVersion}">
+    <c:set var="terms" value="${command.study.expectedAECtcTerms}" />
 </c:if>
 <%--${param.index} <c:out value="${fn:length(command.expectedAECTCTerms)}"/><c:out value="${fn:length(command.expectedAEMeddraTerms)}"/>--%>
 

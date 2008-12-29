@@ -68,8 +68,8 @@ public class CreateStudyAjaxFacade {
 
     public List<SiteInvestigator> matchSiteInvestigator(final String text, final int indexId) {
         String[] arr = new String[] { text };
-        Study study = getStudyCommand(getHttpServletRequest());
-        int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
+        StudyCommand studyCommand = getStudyCommand(getHttpServletRequest());
+        int siteId = studyCommand.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
         List<SiteInvestigator> siteInvestigators = siteInvestigatorDao.getBySubnames(arr, siteId);
 
         return ObjectTools.reduceAll(siteInvestigators,
@@ -82,63 +82,68 @@ public class CreateStudyAjaxFacade {
 
     public List<ResearchStaff> matchResearch(final String text, final int indexId) {
 
-        Study study = getStudyCommand(getHttpServletRequest());
-        int siteId = study.getStudyOrganizations().get(indexId).getOrganization().getId();
-        List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text },
-                        siteId);
+        StudyCommand command = getStudyCommand(getHttpServletRequest());
+        int siteId = command.getStudy().getStudyOrganizations().get(indexId).getOrganization().getId();
+        List<ResearchStaff> researchStaff = researchStaffDao.getBySubnames(new String[] { text }, siteId);
         return ObjectTools.reduceAll(researchStaff, "id", "firstName", "lastName");
     }
 
-    private Study getStudyFromSession(final HttpServletRequest request) {
+    private StudyCommand getStudyFromSession(final HttpServletRequest request) {
 
-        Study study = (Study) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
+        StudyCommand command = (StudyCommand) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
 
-        if (study == null) {
-            study = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
-        }
-        if (study == null) {
-            study = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
+        if (command == null) {
+            command = (StudyCommand) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
         }
 
-        if (study == null) {
-            study = (Study) request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
+        if (command == null) {
+            command = (StudyCommand) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
         }
 
-        return study;
+        if (command == null) {
+            command = (StudyCommand) request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
+        }
+
+        return command;
 
     }
 
-    private Study getStudyCommand(final HttpServletRequest request) {
-        Study study = getStudyFromSession(request);
-        request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, study);
-        return study;
+    private StudyCommand getStudyCommand(final HttpServletRequest request) {
+        StudyCommand command = getStudyFromSession(request);
+        request.setAttribute(AbstractFormController.DEFAULT_COMMAND_NAME, command);
+        return command;
     }
 
     // TODO: Need to refactor this to a different class (may be a common super class)
-    private void replaceStudyInSessionWithNew(HttpServletRequest request, Study oldStudy) {
+    private void updateStudyCommand(HttpServletRequest request, StudyCommand studyCommand) {
 
-        if (oldStudy.getId() == null) return;
+        System.out.println("... updateStudyCommand.");
+        if (studyCommand.getStudy().getId() == null) return;
 
-        Study study = studyDao.getStudyDesignById(oldStudy.getId());
+        Study study = studyDao.getStudyDesignById(studyCommand.getStudy().getId());
+        studyCommand.setStudy(study);
 
-        Study s = (Study) request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
-        if (s != null) {
-            request.getSession().setAttribute(CREATE_STUDY_REPLACED_FORM_NAME, study);
+        StudyCommand command = (StudyCommand)request.getSession().getAttribute(CREATE_STUDY_REPLACED_FORM_NAME);
+        if (command != null) {
+            request.getSession().setAttribute(CREATE_STUDY_REPLACED_FORM_NAME, studyCommand);
             return;
         }
-        s = (Study) request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
-        if (s != null) {
-            request.getSession().setAttribute(CREATE_STUDY_FORM_NAME, study);
+
+        command = (StudyCommand)request.getSession().getAttribute(CREATE_STUDY_FORM_NAME);
+        if (command != null) {
+            request.getSession().setAttribute(CREATE_STUDY_FORM_NAME, studyCommand);
             return;
         }
-        s = (Study) request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
-        if (s != null) {
-            request.getSession().setAttribute(EDIT_STUDY_REPLACED_FORM_NAME, study);
+
+        command = (StudyCommand)request.getSession().getAttribute(EDIT_STUDY_REPLACED_FORM_NAME);
+        if (command != null) {
+            request.getSession().setAttribute(EDIT_STUDY_REPLACED_FORM_NAME, studyCommand);
             return;
         }
-        s = (Study) request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
-        if (s != null) {
-            request.getSession().setAttribute(EDIT_STUDY_FORM_NAME, study);
+        
+        command = (StudyCommand)request.getSession().getAttribute(EDIT_STUDY_FORM_NAME);
+        if (command != null) {
+            request.getSession().setAttribute(EDIT_STUDY_FORM_NAME, studyCommand);
             return;
         }
     }
@@ -203,8 +208,8 @@ public class CreateStudyAjaxFacade {
     }
 
     private int generateNextEpochOrderNumber() {
-    	Study study = getStudyCommand(getHttpServletRequest());
-    	List<Epoch> listOfEpochs = study.getEpochs();
+    	StudyCommand command = getStudyCommand(getHttpServletRequest());
+    	List<Epoch> listOfEpochs = command.getStudy().getEpochs();
     	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;
     }
     
@@ -218,22 +223,22 @@ public class CreateStudyAjaxFacade {
     }
 
     public boolean deleteStudySite(final int index) {
-        Study study = getStudyCommand(getHttpServletRequest());
-        return study.getStudySites().remove(index) != null;
+        StudyCommand command = getStudyCommand(getHttpServletRequest());
+        return command.getStudy().getStudySites().remove(index) != null;
     }
 
     public String addIdentifier(final int index, final int type) {
         HttpServletRequest request = getHttpServletRequest();
-        Study study = getStudyCommand(request);
+        StudyCommand command = getStudyCommand(request);
 
         if (type == 1) {
-            study.getIdentifiersLazy().add(new SystemAssignedIdentifier());
+            command.getStudy().getIdentifiersLazy().add(new SystemAssignedIdentifier());
         } else if (type == 2) {
-            study.getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
+            command.getStudy().getIdentifiersLazy().add(new OrganizationAssignedIdentifier());
         }
 
         request.setAttribute("type", type);
-        setRequestAttributes(request, study.getIdentifiersLazy().size() - 1, index, "studyIdentifierSection");
+        setRequestAttributes(request, command.getStudy().getIdentifiersLazy().size() - 1, index, "studyIdentifierSection");
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         String html = getOutputFromJsp(url);
         request.setAttribute(AJAX_INDEX_PARAMETER, index);
@@ -243,8 +248,8 @@ public class CreateStudyAjaxFacade {
 
     public String addTreatmentAssignment(final int index) {
         HttpServletRequest request = getHttpServletRequest();
-        Study study = getStudyCommand(request);
-        study.addTreatmentAssignment(new TreatmentAssignment());
+        StudyCommand command = getStudyCommand(request);
+        command.getStudy().addTreatmentAssignment(new TreatmentAssignment());
 
         setRequestAttributes(request, index, -1, "treatmentAssignmentSection");
 
@@ -254,15 +259,15 @@ public class CreateStudyAjaxFacade {
     }
 
     public boolean deleteIdentifier(final int index) {
-        Study study = getStudyCommand(getHttpServletRequest());
-        return study.getIdentifiersLazy().remove(index) != null;
+        StudyCommand command = getStudyCommand(getHttpServletRequest());
+        return command.getStudy().getIdentifiersLazy().remove(index) != null;
     }
 
     public String addStudyAgent(final int index) {
         HttpServletRequest request = getHttpServletRequest();
-        Study study = getStudyCommand(request);
+        StudyCommand command = getStudyCommand(request);
         // pre-initialize the agent at index
-        study.getStudyAgents().get(index);
+        command.getStudy().getStudyAgents().get(index);
         setRequestAttributes(request, index, -1, "studyAgentSection");
         String url = getCurrentPageContextRelative(WebContextFactory.get());
         return getOutputFromJsp(url);
@@ -273,11 +278,12 @@ public class CreateStudyAjaxFacade {
      */
     public String addIND(final int index, final int indIndex, final int indType) {
         HttpServletRequest request = getHttpServletRequest();
-        Study study = getStudyCommand(request);
-        StudyAgent sa = study.getStudyAgents().get(index);
+        StudyCommand command = getStudyCommand(request);
+        StudyAgent sa = command.getStudy().getStudyAgents().get(index);
         List<StudyAgentINDAssociation> aList = sa.getStudyAgentINDAssociations();
         aList.clear(); // we are sure there is only 1 IND as of now
         String html = "";
+
         if (AgentsTab.IND_TYPE_CTEP == indType) {
             InvestigationalNewDrug ind = investigationalNewDrugDao.fetchCtepInd();
             aList.get(0).setInvestigationalNewDrug(ind);
@@ -288,7 +294,7 @@ public class CreateStudyAjaxFacade {
             AgentsTab agentTab = new AgentsTab();
             // pre-initialize one IND
             aList.get(0);
-            request.setAttribute("fieldGroups", agentTab.createFieldGroups(study));
+            request.setAttribute("fieldGroups", agentTab.createFieldGroups(command));
             request.setAttribute(AJAX_INDEX_PARAMETER, index);
             request.setAttribute("indIndex", indIndex);
             String url = "/pages/study/studyAgentIND";
@@ -328,7 +334,8 @@ public class CreateStudyAjaxFacade {
     @SuppressWarnings( { "unchecked" })
     public AjaxOutput remove(String listProperty, int indexToDelete, String displayName) {
         HttpServletRequest request = getHttpServletRequest();
-        Study command = getStudyCommand(request);
+        StudyCommand command = getStudyCommand(request);
+
         List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (indexToDelete >= list.size()) {
             log.debug("Attempted to delete beyond the end; " + indexToDelete + " >= " + list.size());
@@ -340,12 +347,13 @@ public class CreateStudyAjaxFacade {
         }
         List<IndexChange> changes = createDeleteChangeList(indexToDelete, list.size(), displayName);
         Object o = list.remove(indexToDelete);
+        
         try {
-            saveIfAlreadyPersistent(command);
+            saveIfAlreadyPersistent(command.getStudy());
         } catch (DataIntegrityViolationException die) {
             log.error("Error occured while deleting [listProperty :" + listProperty + ", indexToDelete :" + indexToDelete + ", displayName :" + displayName + "]", die);
             list.add(indexToDelete, o);
-            replaceStudyInSessionWithNew(request, command);
+            updateStudyCommand(request, command);
             return new AjaxOutput("Unable to delete. The object being removed is referenced elsewhere.");
         }
 
@@ -490,19 +498,19 @@ public class CreateStudyAjaxFacade {
     public void setStudySiteAjaxableDomainObjectRepository(	StudySiteAjaxableDomainObjectRepository studySiteAjaxableDomainObjectRepository) {
 		this.studySiteAjaxableDomainObjectRepository = studySiteAjaxableDomainObjectRepository;
     }
-    
-      protected void saveCommand(Object study) {
+
+    protected void saveCommand(Object cmd) {
         WebContext webContext = WebContextFactory.get();
         Object command = null;
 
         for (Class<?> controllerClass : controllers()) {
             String formSessionAttributeName = controllerClass.getName() + ".FORM.command" + ".to-replace";
             command = webContext.getSession().getAttribute(formSessionAttributeName);
-            if (command != null) webContext.getSession().setAttribute(formSessionAttributeName, study);
+            if (command != null) webContext.getSession().setAttribute(formSessionAttributeName, cmd);
             else {
                 String formSessionAttributeNameNew = controllerClass.getName() + ".FORM.command";
                 command = webContext.getSession().getAttribute(formSessionAttributeNameNew);
-                if (command != null) webContext.getSession().setAttribute(formSessionAttributeNameNew, study);
+                if (command != null) webContext.getSession().setAttribute(formSessionAttributeNameNew, cmd);
             }
         }
     }
@@ -567,7 +575,8 @@ public class CreateStudyAjaxFacade {
     }
 
     public AjaxOutput removeStudyTerm(int _index) {
-        Study study = (Study) extractCommand();
+        Study study = ((StudyCommand)extractCommand()).getStudy();
+        
         boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
         List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
         // System.out.println("Removing element " + _index + " out of " + studyTerms.size());
@@ -589,10 +598,10 @@ public class CreateStudyAjaxFacade {
     public AjaxOutput addExpectedAE(int[] listOfTermIDs) {
 
         AjaxOutput ajaxOutput = new AjaxOutput();
-        Study study = (Study) extractCommand();
-        boolean isMeddra = study.getAeTerminology().getTerm() == Term.MEDDRA;
+        StudyCommand command = (StudyCommand)extractCommand();
+        boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
 
-        List studyTerms = (isMeddra) ? study.getExpectedAEMeddraLowLevelTerms() : study.getExpectedAECtcTerms();
+        List studyTerms = (isMeddra) ? command.getStudy().getExpectedAEMeddraLowLevelTerms() : command.getStudy().getExpectedAECtcTerms();
         int firstIndex = studyTerms.size();
 
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
@@ -604,22 +613,6 @@ public class CreateStudyAjaxFacade {
             filteredTermIDs.add(id);
         }
 
-/*
-        //remove from filteredTermIds, the ones that are avaliable in the Study
-        if (isMeddra) {
-            for (ExpectedAEMeddraLowLevelTerm ast : (List<ExpectedAEMeddraLowLevelTerm>) studyTerms) {
-                boolean removed = filteredTermIDs.remove(ast.getTerm().getId());
-                if (removed) removedTerms.add(ast.getFullName());
-            }
-        } else {
-            for (ExpectedAECtcTerm ast : (List<ExpectedAECtcTerm>) studyTerms) {
-                // was removed because of duplicate
-                boolean removed = filteredTermIDs.remove(ast.getTerm().getId());
-                if (removed) removedTerms.add(ast.getFullName());
-            }
-        }
-*/
-
         if (filteredTermIDs.isEmpty()) return ajaxOutput;
 
         for (int id : filteredTermIDs) {
@@ -628,22 +621,23 @@ public class CreateStudyAjaxFacade {
                 LowLevelTerm llt = lowLevelTermDao.getById(id);
                 ExpectedAEMeddraLowLevelTerm studyllt = new ExpectedAEMeddraLowLevelTerm();
                 studyllt.setLowLevelTerm(llt);
-                study.addExpectedAEMeddraLowLevelTerm(studyllt);
-                studyllt.setStudy(study);
+                command.getStudy().addExpectedAEMeddraLowLevelTerm(studyllt);
+                studyllt.setStudy(command.getStudy());
             } else {
                 // properly set CTCterm
                 CtcTerm ctc = ctcTermDao.getById(id);
                 ExpectedAECtcTerm studyCtc = new ExpectedAECtcTerm();
                 studyCtc.setCtcTerm(ctc);
-                study.addExpectedAECtcTerm(studyCtc);
-                studyCtc.setStudy(study);
+                command.getStudy().addExpectedAECtcTerm(studyCtc);
+                studyCtc.setStudy(command.getStudy());
             }
         }
 
-        Study mergeStudy = study;
-        if (study.getId() != null) {
-             mergeStudy = studyDao.merge(study);
-             saveCommand(mergeStudy);
+        Study mergeStudy = command.getStudy();
+        if (command.getStudy().getId() != null) {
+            mergeStudy = studyDao.merge(command.getStudy());
+            command.setStudy(mergeStudy);
+            saveCommand(command);
         }
 
         // 

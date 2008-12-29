@@ -21,8 +21,7 @@ public class StudyController extends SearchController {
         setSuccessView("search/study_search");
     }
 
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         log.debug(" In initBinder " + isFormSubmission(request));
         if (!isFormSubmission(request)) {

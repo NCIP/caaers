@@ -41,9 +41,9 @@ td#linkPosition a img {
             	jsAgents[index] = this;
             	this.index = index;
             	this.agentName = agentName;
-            	this.agentPropertyName = "studyAgents["  + index + "].agent";
+            	this.agentPropertyName = "study.studyAgents["  + index + "].agent";
             	
-            	this.otherProperty = "studyAgents["  + index + "].otherAgent";
+            	this.otherProperty = "study.studyAgents["  + index + "].otherAgent";
             	
             	
                 if (agentName) $(this.agentPropertyName + "-input").value = agentName
@@ -63,44 +63,44 @@ td#linkPosition a img {
             	
             	
             	//disable part of lead IND if necessary
-            	var indTypeValue = $('studyAgents['  + index + '].indType').value;
+            	var indTypeValue = $('study.studyAgents['  + index + '].indType').value;
             	if(indTypeValue == 'NA' || indTypeValue == 'NA_COMMERCIAL' || indTypeValue == 'IND_EXEMPT'){
-					  $('studyAgents[' + this.index + '].partOfLeadIND').value='false';
-					  $('studyAgents[' + this.index + '].partOfLeadIND').disable();
-					  $('studyAgents[' + this.index + '].partOfLeadIND-row').hide();
+					  $('study.studyAgents[' + this.index + '].partOfLeadIND').value='false';
+					  $('study.studyAgents[' + this.index + '].partOfLeadIND').disable();
+					  $('study.studyAgents[' + this.index + '].partOfLeadIND-row').hide();
 				}
             	
             	//observe on the change event on IND Type (usage) dropdown.
-				Event.observe('studyAgents['  + index + '].indType',"change", function(event){
+				Event.observe('study.studyAgents['  + index + '].indType',"change", function(event){
 					
 					//disable the part of lead IND
 					if(event.target.value == 'NA' || event.target.value == 'NA_COMMERCIAL' || event.target.value == 'IND_EXEMPT'){
-					  $('studyAgents[' + index + '].partOfLeadIND').value='false';
-					  $('studyAgents[' + index + '].partOfLeadIND').disable();
-					  $('studyAgents[' + index + '].partOfLeadIND-row').hide();
+					  $('study.studyAgents[' + index + '].partOfLeadIND').value='false';
+					  $('study.studyAgents[' + index + '].partOfLeadIND').disable();
+					  $('study.studyAgents[' + index + '].partOfLeadIND-row').hide();
 					}else{
-					  $('studyAgents[' + index + '].partOfLeadIND-row').show();
-					  $('studyAgents[' + index + '].partOfLeadIND').enable();
+					  $('study.studyAgents[' + index + '].partOfLeadIND-row').show();
+					  $('study.studyAgents[' + index + '].partOfLeadIND').enable();
 					}
 					
 					//enable disable lead IND
 					if(event.target.value == 'OTHER'){
 					  	createStudy.addIND(index, 0, 2,function(html){
-     						new Insertion.After($('studyAgents[' + index + '].indType-row'), html);
-     						AE.slideAndShow('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+     						new Insertion.After($('study.studyAgents[' + index + '].indType-row'), html);
+     						AE.slideAndShow('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
      						//setup auto completer
     						jsAgents[index].initINDAutoCompleter(0);
 				     	});
 					}else if(event.target.value == 'CTEP_IND'){
 						createStudy.addIND(index, 0, 1,function(html){
-							var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+							var el = $('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
 							if(el){
 								el.parentNode.removeChild(el);
 							}	
 						});
 					}else if(event.target.value == 'DCP_IND'){
 						createStudy.addIND(index, 0, 5,function(html){
-							var el = $('studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
+							var el = $('study.studyAgents[' + index + '].studyAgentINDAssociations[0].investigationalNewDrug-row')
 							if(el){
 								el.parentNode.removeChild(el);
 							}	
@@ -137,7 +137,7 @@ td#linkPosition a img {
                 }
             },
             initINDAutoCompleter:function(indIndex, indNumber ,indHolderName){
-                  var indPropName = "studyAgents["+this.index+"].studyAgentINDAssociations["+indIndex+"].investigationalNewDrug";
+                  var indPropName = "study.studyAgents["+this.index+"].studyAgentINDAssociations["+indIndex+"].investigationalNewDrug";
                   var indPropInput = $(indPropName + "-input");
                   if(!indPropInput) return; 
                   if(indHolderName)	indPropInput.value = indNumber;
@@ -168,7 +168,7 @@ td#linkPosition a img {
 	  
     Event.observe(window, "load", function() {
    
-        <c:forEach varStatus="status" items="${command.studyAgents}" var="sa">
+        <c:forEach varStatus="status" items="${command.study.studyAgents}" var="sa">
       		new jsStudyAgent(${status.index}, "${sa.agent.nscNumber}${sa.agent.name ne null ? '::':''}${sa.agent.name}" );
       		<c:forEach varStatus="indStatus" items="${sa.studyAgentINDAssociations}" var="sai">
       			jsAgents[${status.index}].initINDAutoCompleter(${indStatus.index},'${sai.investigationalNewDrug.indNumber}','${sai.investigationalNewDrug.holderName}');
@@ -184,14 +184,14 @@ td#linkPosition a img {
              },
              deletable: true,
              removeParameters:['Study Agent']
-      	},"studyAgents");  
+      	},"study.studyAgents");
                  
       })
       
       //Function to add a row of IND numbers.
      function insertINDRow(index, prop){
      	var indIndex = $$("." + "ind"+index).length - 2;
-     	var indRow = 'studyAgents[' + index + '].studyAgentINDAssociations[' + indIndex +'].investigationalNewDrug-row';
+     	var indRow = 'study.studyAgents[' + index + '].studyAgentINDAssociations[' + indIndex +'].investigationalNewDrug-row';
      	createStudy.addIND(index, indIndex,function(html){
      		new Insertion.After($$(".ind"+index ).last(), html);
      		AE.slideAndShow(indRow)
@@ -223,7 +223,7 @@ td#linkPosition a img {
 		</div>	
 		<p id="instructions"></p>
 
-        <c:forEach var="sa" varStatus="status" items="${command.studyAgents}">
+        <c:forEach var="sa" varStatus="status" items="${command.study.studyAgents}">
 		<study:oneStudyAgent title="Study Agent ${status.index + 1}"
 				sectionClass="sa-section" index="${status.index}">
 		  </study:oneStudyAgent>

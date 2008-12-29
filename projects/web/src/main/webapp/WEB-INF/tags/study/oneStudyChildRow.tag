@@ -9,15 +9,17 @@
 <%@attribute name="disableDelete" type="java.lang.Boolean"  %>
 <%@attribute name="identifiers" type="java.lang.Boolean"  %>
 <%@attribute name="exclusions" %>
+
 <c:set var="mainGroup">main${index}</c:set>
 <c:set var="css">${cssClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
 <tr id="${cssClass}-${empty idSuffix ? index : idSuffix}" class="${css}" onmouseout="this.className='${css}'" onmouseover="this.className='highlight'" style="${style}" valign="top">
-	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="fstatus">
-		<c:if test="${not fn:contains(exclusions, field.displayName)}">
-		<td style="border-right:none;"><tags:renderInputs field="${field}" disabled="${ identifiers and (index lt 2) and (fstatus.index ne 4)}"/></td>
+    <c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="fstatus">
+        <c:if test="${not fn:contains(exclusions, field.displayName)}">
+		    <td style="border-right:none;"><tags:renderInputs field="${field}" disabled="${ identifiers and (index lt 2) and (fstatus.index ne 4)}"/></td>
 		</c:if>
 	</c:forEach>
-	<c:if test="${not disableDelete}">
+
+    <c:if test="${not disableDelete}">
 	<td style="border-left:none;">
 	
 	<a id="del-${empty idSuffix ? index : idSuffix}" class="del-${cssClass}" href="javascript:fireDelete(${index},'${cssClass}-${index}');">

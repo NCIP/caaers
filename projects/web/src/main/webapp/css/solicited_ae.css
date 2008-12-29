@@ -28,14 +28,13 @@ background-color:#E4E4E4;
 border:1px solid #ccc;
 	width: 22em;
 	height : 3em;
-	vertical-align: CENTER;
-	horizontal-align: center;
+	vertical-align: middle;
 }
 .sae th.epoch {
 background-color:#E4E4E4;
 border:1px solid #ccc;
 	width: 10em;
-	vertical-align: center;
+	vertical-align: middle;
 }
 .sae th.reportingperiod {
 background-color:#E4E4E4;
