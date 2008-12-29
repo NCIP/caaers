@@ -226,7 +226,7 @@ public class ReporterTab extends AeTab {
             	else
             		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
             	
-            	//enact the workflow
+/*            	//enact the workflow
             	if(newlyCreatedReports != null){
             		for(Report report : newlyCreatedReports){
             			  //enact workflow
@@ -239,6 +239,7 @@ public class ReporterTab extends AeTab {
             	        }
             		}
             	}
+*/
             }
 
             // Withdraw the reports to be withdrawn

@@ -27,7 +27,7 @@
 				<div class="eXtremeTable">
 					<table width="100%" border="0" cellspacing="0" class="rpTableRegion" align="center" >
 						<c:forEach items="${reportingPeriod.evaluatedAdverseEvents}" var="adverseEvent" varStatus="statusAdverseEvent">
-							<ae:oneRoutingAndReviewListAeRow index="${statusAdverseEvent.index}" ae="${adverseEvent}" width="35%"/>
+							<ae:oneRoutingAndReviewListAeRow index="${statusAdverseEvent.index}" ae="${adverseEvent}" width="35%" isDCPStudy="${isDCPStudy}"/>
 						</c:forEach>
 					</table>
 				</div>		

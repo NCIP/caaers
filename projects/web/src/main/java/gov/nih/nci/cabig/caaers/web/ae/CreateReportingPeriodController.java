@@ -197,7 +197,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         
         
         
-        //Call workflow to instatiate the reporting period flow.
+/*        //Call workflow to instatiate the reporting period flow.
         ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
         if(pInstance != null){
         	Long workflowId = pInstance.getId();
@@ -206,7 +206,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         	reportingPeriod.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
         	adverseEventReportingPeriodDao.save(reportingPeriod);
         }
-        
+   */     
        
         
         
