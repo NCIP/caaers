@@ -8,13 +8,13 @@
   </node>
   <node name="Submit Reporting Period For Main Member Review" x="31" y="130" width="364" height="36">
     <edge>
-      <label x="2" y="-32"/>
+      <label x="5" y="-10"/>
     </edge>
   </node>
   <node name="Main Member Review" x="96" y="260" width="227" height="36">
     <edge>
-      <label x="-87" y="-25"/>
-      <bendpoint w1="226" h1="-29" w2="-247" h2="-40"/>
+      <label x="-53" y="-7"/>
+      <bendpoint w1="215" h1="32" w2="-258" h2="21"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
@@ -22,23 +22,23 @@
   </node>
   <node name="Provide Additional Information To Main Member" x="508" y="271" width="348" height="36">
     <edge>
-      <label x="5" y="-10"/>
-      <bendpoint w1="-239" h1="37" w2="234" h2="48"/>
+      <label x="-38" y="-21"/>
+      <bendpoint w1="-257" h1="-30" w2="216" h2="-19"/>
     </edge>
   </node>
   <node name="Data Coordinator Review" x="99" y="408" width="228" height="36">
     <edge>
-      <label x="-97" y="-24"/>
-      <bendpoint w1="240" h1="-27" w2="-277" h2="-26"/>
+      <label x="-68" y="-3"/>
+      <bendpoint w1="232" h1="24" w2="-315" h2="25"/>
     </edge>
     <edge>
-      <label x="15" y="7"/>
+      <label x="5" y="-10"/>
     </edge>
   </node>
   <node name="Provide Additional Information To Data Coordinator" x="563" y="407" width="394" height="36">
     <edge>
-      <label x="-69" y="2"/>
-      <bendpoint w1="-266" h1="33" w2="251" h2="32"/>
+      <label x="-75" y="-26"/>
+      <bendpoint w1="-316" h1="-25" w2="231" h2="-26"/>
     </edge>
   </node>
   <node name="Finalize Reporting Period" x="121" y="543" width="200" height="36">

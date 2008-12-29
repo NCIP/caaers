@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="expedited_domestic" width="892" height="781">
+<root-container name="expedited_domestic" width="1337" height="781">
   <node name="Start Expedited Domestic Flow" x="478" y="29" width="268" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -16,8 +16,8 @@
       <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="-106" y="-27"/>
-      <bendpoint w1="-179" h1="-54" w2="183" h2="-48"/>
+      <label x="-145" y="-5"/>
+      <bendpoint w1="-196" h1="34" w2="166" h2="40"/>
     </edge>
   </node>
   <node name="Submit Report To Central Office" x="469" y="425" width="296" height="36">
@@ -27,14 +27,14 @@
   </node>
   <node name="Provide Additional Information To Physician" x="86" y="280" width="325" height="36">
     <edge>
-      <label x="-64" y="2"/>
-      <bendpoint w1="182" h1="54" w2="-180" h2="48"/>
+      <label x="-64" y="-21"/>
+      <bendpoint w1="176" h1="-39" w2="-186" h2="-45"/>
     </edge>
   </node>
   <node name="Central Office SAE Coordinator Review" x="475" y="545" width="290" height="36">
     <edge>
-      <label x="-103" y="-29"/>
-      <bendpoint w1="-211" h1="-43" w2="197" h2="-52"/>
+      <label x="-66" y="-21"/>
+      <bendpoint w1="-196" h1="-49" w2="201" h2="-45"/>
     </edge>
     <edge>
       <label x="5" y="-10"/>
@@ -42,14 +42,12 @@
   </node>
   <node name="Provide Additional Information To Central Office" x="53" y="541" width="340" height="36">
     <edge>
-      <label x="-172" y="2"/>
-      <bendpoint w1="206" h1="38" w2="-194" h2="70"/>
+      <label x="-100" y="-6"/>
+      <bendpoint w1="214" h1="53" w2="-183" h2="49"/>
     </edge>
     <edge>
-      <label x="-179" y="8"/>
-      <bendpoint w1="1" h1="-155" w2="-386" h2="100"/>
-      <bendpoint w1="182" h1="-154" w2="-205" h2="101"/>
-      <bendpoint w1="352" h1="-155" w2="-35" h2="100"/>
+      <label x="5" y="-10"/>
+      <bendpoint w1="3" h1="-94" w2="-384" h2="161"/>
     </edge>
   </node>
   <node name="Submit Report To Sponsor" x="494" y="666" width="256" height="36">

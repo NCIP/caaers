@@ -15,31 +15,103 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 
 
 	<node name="Submit Reporting Period for Data Coordinator Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>	
 		<description>
 			This task is executed by the CRA.
 		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
 		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 	</node>
 
 	<node name="Data Coordinator Review">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>	
 		<description>
 			This task is executed by the Central office
 		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
 		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Data Coordinator">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>	
 		<description>
 			This task is executed by the CRA
 		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
 		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 	</node>
 
 	<node name="Finalize Reporting Period">
+		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
+			<targetBean>
+				nodeSkipActionHandler
+			</targetBean>
+			<factoryKey>
+				jbpmConfiguration
+			</factoryKey>
+		</action>	
 		<description>
 			This task is executec by the Central office
 		</description>
+		<event type="node-leave">
+			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
+				<targetBean>
+					taskCloseActionHandler
+				</targetBean>
+				<factoryKey>
+					jbpmConfiguration
+				</factoryKey>
+			</action>
+		</event>		
 		<transition to="Finish Reporting Period Flow" name="Finalize Reporting Period"></transition>
 	</node>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="reportingperiod_mainmember" width="920" height="553">
+<root-container name="reportingperiod_mainmember" width="1355" height="780">
   <node name="Start Reporting Period Flow" x="64" y="48" width="277" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -8,22 +8,22 @@
   </node>
   <node name="Submit Reporting Period for Data Coordinator Review" x="28" y="151" width="374" height="36">
     <edge>
-      <label x="3" y="-28"/>
+      <label x="4" y="-20"/>
     </edge>
   </node>
   <node name="Data Coordinator Review" x="98" y="275" width="228" height="36">
     <edge>
-      <label x="-97" y="-24"/>
-      <bendpoint w1="240" h1="-27" w2="-277" h2="-26"/>
+      <label x="-47" y="-22"/>
+      <bendpoint w1="229" h1="-37" w2="-299" h2="-36"/>
     </edge>
     <edge>
-      <label x="15" y="7"/>
+      <label x="5" y="-10"/>
     </edge>
   </node>
   <node name="Provide Additional Information To Data Coordinator" x="562" y="274" width="357" height="36">
     <edge>
-      <label x="-69" y="2"/>
-      <bendpoint w1="-266" h1="33" w2="251" h2="32"/>
+      <label x="-51" y="-1"/>
+      <bendpoint w1="-300" h1="32" w2="228" h2="31"/>
     </edge>
   </node>
   <node name="Finalize Reporting Period" x="120" y="410" width="200" height="36">
