@@ -26,7 +26,8 @@ import java.util.List;
 public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
     private CreateStudyAjaxFacade facade;
 
-    protected Study command;
+    protected Study study;
+    protected StudyCommand command;
 
     private SiteInvestigatorDao siteInvestigatorDao;
 
@@ -41,9 +42,10 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
         facade.setSiteInvestigatorDao(siteInvestigatorDao);
         facade.setInvestigationalNewDrugDao(investigationalNewDrugDao);
 
-        command = new Study();
-        request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command",
-                        command);
+        command = new StudyCommand();
+        study = new Study();
+        command.setStudy(study);
+        request.getSession().setAttribute(CreateStudyController.class.getName() + ".FORM.command", command);
     }
 
     public void testSiteInvestigatorsReduced() throws Exception {
@@ -56,10 +58,9 @@ public class CreateStudyAjaxFacadeTest extends DwrFacadeTestCase {
 
         StudySite studySite = new StudySite();
         studySite.setOrganization(setId(6, new Organization()));
-        command.addStudySite(studySite);
+        study.addStudySite(studySite);
 
-        expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(
-                        Arrays.asList(expectedInvestigator));
+        expect(siteInvestigatorDao.getBySubnames(aryEq(new String[] { "foo" }), eq(6))).andReturn(Arrays.asList(expectedInvestigator));
         replayMocks();
         List<SiteInvestigator> results = facade.matchSiteInvestigator("foo", 0);
         verifyMocks();
