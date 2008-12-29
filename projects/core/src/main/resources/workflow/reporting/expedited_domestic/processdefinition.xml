@@ -18,14 +18,14 @@
 		<description>
 			This task is assigned to the CRA for Data entry associated to the report.
 		</description>
-		<transition to="Physician Review" name="Send to Physician"></transition>
+		<transition to="Physician Review" name="Submit For Physician Review"></transition>
 	</node>
 
 	<node name="Physician Review">
 		<description>
 			This task is assigned to the Physican, to review the report submitted by the CRA. The Physican may approve the report (sign off) or will request additional information. 
 		</description>
-		<transition to="Submit Report To Central Office" name="SignOff Report"></transition>
+		<transition to="Submit Report To Central Office" name="Approve Report"></transition>
 		<transition to="Provide Additional Information To Physician" name="Request Additional Information"></transition>
 	</node>
 
@@ -33,36 +33,37 @@
 		<description>
 			This task is assigned to the CRA, the Physican has approved the report. The CRA now have to submit the report to Central office for further review. 
 		</description>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Physician">
 		<description>
 			This task is assigned to the CRA, the Physican has request for additional information. The CRA has to provide that information and submit the report to Physican for review
 		</description>
-		<transition to="Physician Review" name="Send to Physician"></transition>
+		<transition to="Physician Review" name="Submit For Physician Review"></transition>
 	</node>
 
-	<node name="Central Office Review">
+	<node name="Central Office SAE Coordinator Review">
 		<description>
 			This taks is associated to the Personnel at Central office. The central office personal may approve the report, of will send it back to the submitter (CRA) asking additional information. 
 		</description>
 		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
-		<transition to="Submit Report To AdEERS" name="Approve Report"></transition>
+		<transition to="Submit Report To Sponsor" name="Approve Report"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Central Office">
 		<description>
 			This task is associated to the CRA, the central office has requested for additional information. The CRA must complete the information and send it to Central office for further review. 
 		</description>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Central Office SAE Coordinator Review" name="Submit to Central Office SAE Coordinator"></transition>
+		<transition to="Physician Review" name="Submit for Physician Review"></transition>
 	</node>
 
-	<node name="Submit Report To AdEERS">
+	<node name="Submit Report To Sponsor">
 		<description>
 			This task is assigned to a personel at central office, the report has to be submitted to AdEERS.
 		</description>
-		<transition to="End Expedited Domestic Flow"></transition>
+		<transition to="End Expedited Domestic Flow" name="Submit Report to Sponsor"></transition>
 	</node>
 
 

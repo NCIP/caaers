@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="reportingperiod_mainmember" width="899" height="686">
-  <node name="Start Reporting Period Flow" x="64" y="48" width="277" height="36">
+<root-container name="reportingperiod_mainmember" width="958" height="686">
+  <node name="Start Reporting Period Flow" x="76" y="33" width="277" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Submit Reporting Period For Main Member Review" x="61" y="130" width="291" height="36">
+  <node name="Submit Reporting Period For Main Member Review" x="31" y="130" width="364" height="36">
     <edge>
       <label x="2" y="-32"/>
     </edge>
@@ -26,7 +26,7 @@
       <bendpoint w1="-239" h1="37" w2="234" h2="48"/>
     </edge>
   </node>
-  <node name="Central Office Review" x="99" y="408" width="228" height="36">
+  <node name="Data Coordinator Review" x="99" y="408" width="228" height="36">
     <edge>
       <label x="-97" y="-24"/>
       <bendpoint w1="240" h1="-27" w2="-277" h2="-26"/>
@@ -35,7 +35,7 @@
       <label x="15" y="7"/>
     </edge>
   </node>
-  <node name="Provide Additional Information To Central Office" x="563" y="407" width="335" height="36">
+  <node name="Provide Additional Information To Data Coordinator" x="563" y="407" width="394" height="36">
     <edge>
       <label x="-69" y="2"/>
       <bendpoint w1="-266" h1="33" w2="251" h2="32"/>

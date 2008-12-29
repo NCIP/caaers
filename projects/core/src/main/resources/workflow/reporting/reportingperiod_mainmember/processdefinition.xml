@@ -26,7 +26,7 @@ Site CRA -&gt; Main Member Data Coordinator -&gt; CALGB Data Coordinator -&gt; F
 			This task is executed by the main member data coordinator
 		</description>
 		<transition to="Provide Additional Information To Main Member" name="Request Additional Information"></transition>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Data Coordinator Review" name="Submit For Data Coordinator Review"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Main Member">
@@ -36,19 +36,19 @@ Site CRA -&gt; Main Member Data Coordinator -&gt; CALGB Data Coordinator -&gt; F
 		<transition to="Main Member Review"></transition>
 	</node>
 
-	<node name="Central Office Review">
+	<node name="Data Coordinator Review">
 		<description>
 			This task is executed by the Central office
 		</description>
-		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
+		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
 	</node>
 
-	<node name="Provide Additional Information To Central Office">
+	<node name="Provide Additional Information To Data Coordinator">
 		<description>
 			This task is executed by the CRA
 		</description>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Data Coordinator Review" name="Submit For Data Coordinator Review"></transition>
 	</node>
 
 	<node name="Finalize Reporting Period">

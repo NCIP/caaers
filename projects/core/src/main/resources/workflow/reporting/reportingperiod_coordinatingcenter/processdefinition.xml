@@ -10,37 +10,37 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 
 
 	<start-state name="Start Reporting Period Flow">
-		<transition to="Submit Reporting Period For Central Office Review"></transition>
+		<transition to="Submit Reporting Period for Data Coordinator Review"></transition>
 	</start-state>
 
 
-	<node name="Submit Reporting Period For Central Office Review">
+	<node name="Submit Reporting Period for Data Coordinator Review">
 		<description>
 			This task is executed by the CRA.
 		</description>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 	</node>
 
-	<node name="Central Office Review">
+	<node name="Data Coordinator Review">
 		<description>
 			This task is executed by the Central office
 		</description>
-		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
+		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
 	</node>
 
-	<node name="Provide Additional Information To Central Office">
+	<node name="Provide Additional Information To Data Coordinator">
 		<description>
 			This task is executed by the CRA
 		</description>
-		<transition to="Central Office Review" name="Send to Central Office"></transition>
+		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 	</node>
 
 	<node name="Finalize Reporting Period">
 		<description>
 			This task is executec by the Central office
 		</description>
-		<transition to="Finish Reporting Period Flow"></transition>
+		<transition to="Finish Reporting Period Flow" name="Finalize Reporting Period"></transition>
 	</node>
 
 

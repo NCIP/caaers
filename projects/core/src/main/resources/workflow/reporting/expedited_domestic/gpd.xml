@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="expedited_domestic" width="766" height="781">
-  <node name="Start Expedited Domestic Flow" x="467" y="56" width="268" height="36">
+<root-container name="expedited_domestic" width="892" height="781">
+  <node name="Start Expedited Domestic Flow" x="478" y="29" width="268" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Submit Report To Physician" x="465" y="142" width="272" height="36">
+  <node name="Submit Report To Physician" x="475" y="147" width="272" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
@@ -31,7 +31,7 @@
       <bendpoint w1="182" h1="54" w2="-180" h2="48"/>
     </edge>
   </node>
-  <node name="Central Office Review" x="487" y="545" width="262" height="36">
+  <node name="Central Office SAE Coordinator Review" x="475" y="545" width="290" height="36">
     <edge>
       <label x="-103" y="-29"/>
       <bendpoint w1="-211" h1="-43" w2="197" h2="-52"/>
@@ -42,11 +42,17 @@
   </node>
   <node name="Provide Additional Information To Central Office" x="53" y="541" width="340" height="36">
     <edge>
-      <label x="-74" y="-1"/>
+      <label x="-172" y="2"/>
       <bendpoint w1="206" h1="38" w2="-194" h2="70"/>
     </edge>
+    <edge>
+      <label x="-179" y="8"/>
+      <bendpoint w1="1" h1="-155" w2="-386" h2="100"/>
+      <bendpoint w1="182" h1="-154" w2="-205" h2="101"/>
+      <bendpoint w1="352" h1="-155" w2="-35" h2="100"/>
+    </edge>
   </node>
-  <node name="Submit Report To AdEERS" x="494" y="666" width="256" height="36">
+  <node name="Submit Report To Sponsor" x="494" y="666" width="256" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
