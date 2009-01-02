@@ -100,7 +100,7 @@ public class CreateParticipantTabTest extends AbstractTabTestCase<CreateParticip
     }
 
     public void testValidateDateOfBirth() throws Exception {
-        newParticipantCommand.getParticipant().setDateOfBirth(new DateValue(2009));
+        newParticipantCommand.getParticipant().setDateOfBirth(new DateValue(2011));
         doValidate();
         assertFieldRequiredCustomErrorMessageRaised("participant.dateOfBirth",
                 "Incorrect Date Of Birth");
