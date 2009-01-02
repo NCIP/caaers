@@ -39,8 +39,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     /**
      * A variation of {@link #findBySubname} that does not allow for extra conditions
      */
-    protected List<T> findBySubname(String[] subnames, List<String> substringMatchProperties,
-                    List<String> exactMatchProperties) {
+    protected List<T> findBySubname(String[] subnames, List<String> substringMatchProperties, List<String> exactMatchProperties) {
         return findBySubname(subnames, null, null, substringMatchProperties, exactMatchProperties);
     }
 
@@ -48,18 +47,16 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * @see findBySubname
      */
     @SuppressWarnings("unchecked")
-    protected List<T> findBySubname(String[] subnames, String extraConditions,
-                    List<Object> extraParameters, List<String> substringMatchProperties,
-                    List<String> exactMatchProperties, String joins) {
+    protected List<T> findBySubname(String[] subnames, String extraConditions, List<Object> extraParameters, List<String> substringMatchProperties, List<String> exactMatchProperties, String joins) {
         if (subnames == null || subnames.length == 0) {
             return Collections.emptyList();
         }
 
-        StringBuilder query = new StringBuilder(" select distinct o from ").append(
-                        domainClass().getName()).append(" o ");
+        StringBuilder query = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(" o ");
         if (joins != null) {
             query.append(joins).append(" where ");
         }
+        
         if (extraConditions != null) {
             query.append(extraConditions).append(" and ");
         }
@@ -70,8 +67,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         }
 
         for (int i = 0; i < subnames.length; i++) {
-            buildSubnameQuery(subnames[i], query, params, substringMatchProperties,
-                            exactMatchProperties, false);
+            buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, false);
             if (i < subnames.length - 1) {
                 query.append(" and ");
             }
@@ -84,8 +80,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
-    private void buildSubQuery(String subname, StringBuilder query, List<Object> params,
-                    String substringMatchProperties) {
+    private void buildSubQuery(String subname, StringBuilder query, List<Object> params, String substringMatchProperties) {
         query.append('(');
         String prop = substringMatchProperties;
         query.append("LOWER(").append(prop).append(") LIKE ?");
@@ -112,18 +107,16 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
      * @return a list of matching domain object instances
      */
     @SuppressWarnings("unchecked")
-    protected List<T> findBySubname(String[] subnames, String extraConditions,
-                    List<Object> extraParameters, List<String> substringMatchProperties,
-                    List<String> exactMatchProperties) {
+    protected List<T> findBySubname(String[] subnames, String extraConditions, List<Object> extraParameters, List<String> substringMatchProperties, List<String> exactMatchProperties) {
         if (subnames == null || subnames.length == 0) {
             return Collections.emptyList();
         }
 
-        StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(
-                        " o where ");
+        StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(" o where ");
         if (extraConditions != null && extraConditions.length() > 0) {
             query.append(extraConditions).append(" and ");
         }
+        
         List<Object> params = new LinkedList<Object>();
         if (extraParameters != null) {
             params.addAll(extraParameters);

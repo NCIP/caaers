@@ -16,7 +16,6 @@ public class EmptyStudyTab extends StudyTab {
     
     @Override
     public Map<String, Object> referenceData(HttpServletRequest request, StudyCommand cmd) {
-      
     	Map<String, Object> refdata = super.referenceData();
     	SolicitedEventTabTable table = new SolicitedEventTabTable(cmd.getStudy());
     	refdata.put("listOfSolicitedAERows", table.getListOfSolicitedAERows());  

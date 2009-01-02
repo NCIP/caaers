@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class CtcTermDao extends CaaersDao<CtcTerm> {
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term",
-                    "ctepTerm", "select");
-
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
     private static final List<String> EXACT_MATCH_PROPERTIES = Arrays.asList("term", "ctepCode");
@@ -68,8 +66,7 @@ public class CtcTermDao extends CaaersDao<CtcTerm> {
             extraConds.append(" and o.category.id = ?");
             extraParams.add(ctcCategoryId);
         }
-        return findBySubname(subnames, extraConds.toString(), extraParams,
-                        SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
+        return findBySubname(subnames, extraConds.toString(), extraParams, SUBSTRING_MATCH_PROPERTIES, EMPTY_PROPERTIES);
     }
     
     /**

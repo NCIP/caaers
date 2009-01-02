@@ -60,3 +60,4 @@ public class CtcDaoTest extends DaoTestCase<CtcDao> {
     }
 
 }
+

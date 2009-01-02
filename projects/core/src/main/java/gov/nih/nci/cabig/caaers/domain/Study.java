@@ -239,8 +239,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
 
     @Transient
     public List<StudyCoordinatingCenter> getStudyCoordinatingCenters() {
-        return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations,
-                StudyCoordinatingCenter.class);
+        return new ProjectedList<StudyCoordinatingCenter>(studyOrganizations, StudyCoordinatingCenter.class);
     }
 
     @Transient
