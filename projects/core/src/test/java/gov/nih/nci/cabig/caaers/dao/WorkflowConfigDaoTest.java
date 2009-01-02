@@ -43,6 +43,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 			 assertEquals(-1000, oldSite.getId().intValue());
 			 StudySite site = new StudySite();
 			 site.setId(-1003);
+			 site.setVersion(0);
 			 workflowConfig.setStudySite(site);
 			
 			 getDao().save(workflowConfig);
