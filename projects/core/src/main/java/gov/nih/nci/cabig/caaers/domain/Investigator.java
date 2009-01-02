@@ -22,25 +22,14 @@ import org.hibernate.annotations.Parameter;
  * 
  * @author Kulasekaran
  * @author Priyatam
+ * @author Biju Joseph
  */
 @Entity
 @Table(name = "investigators")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_investigators_id") })
-public class Investigator extends AbstractMutableDomainObject {
-
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
+public class Investigator extends User {
 
     private String nciIdentifier;
-
-    private String emailAddress;
-
-    private String phoneNumber;
-
-    private String faxNumber;
 
     private final LazyListHelper lazyListHelper;
 
@@ -97,21 +86,8 @@ public class Investigator extends AbstractMutableDomainObject {
      */
 
     // bean methods
-    public String getFirstName() {
-        return firstName;
-    }
+ 
 
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
-    }
 
     public String getNciIdentifier() {
         return nciIdentifier;
@@ -140,38 +116,7 @@ public class Investigator extends AbstractMutableDomainObject {
         setSiteInvestigatorsInternal(investigators);
     }
 
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(final String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getEmailAddress() {
-        return emailAddress;
-    }
-
-    public String getFaxNumber() {
-        return faxNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(final String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public void setEmailAddress(final String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
-
-    public void setFaxNumber(final String faxNumber) {
-        this.faxNumber = faxNumber;
-    }
-
+ 
     // /OBJECT METHODS
 
     @Override
@@ -181,23 +126,16 @@ public class Investigator extends AbstractMutableDomainObject {
 
         Investigator that = (Investigator) o;
 
-        if (emailAddress != null ? !emailAddress.equals(that.emailAddress) : that.emailAddress != null) return false;
-        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) return false;
         if (nciIdentifier != null ? !nciIdentifier.equals(that.nciIdentifier) : that.nciIdentifier != null)
             return false;
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
 
-        return true;
+        return true && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        int result = firstName != null ? firstName.hashCode() : 0;
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        int result = super.hashCode();
         result = 31 * result + (nciIdentifier != null ? nciIdentifier.hashCode() : 0);
-        result = 31 * result + (emailAddress != null ? emailAddress.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         return result;
     }
 }
