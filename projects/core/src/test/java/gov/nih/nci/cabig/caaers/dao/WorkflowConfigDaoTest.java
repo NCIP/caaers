@@ -40,7 +40,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 			 workflowConfig.setDefaultAssignee("sysadm");
 			 StudySite oldSite = workflowConfig.getStudySite();
 			 assertNotNull(oldSite);
-			 assertEquals(-1001, oldSite.getId().intValue());
+			 assertEquals(-1000, oldSite.getId().intValue());
 			 StudySite site = new StudySite();
 			 site.setId(-1003);
 			 workflowConfig.setStudySite(site);
