@@ -20,8 +20,10 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     private String phaseCode;
     List<Integer> studyPersonnelIds = new ArrayList<Integer>();
     List<StudySiteAjaxableDomainObject> studySites = new ArrayList<StudySiteAjaxableDomainObject>();
+    List<StudySiteAjaxableDomainObject> assignedStudySites = new ArrayList<StudySiteAjaxableDomainObject>();
 
-    public String getStatus() {
+
+	public String getStatus() {
         return status;
     }
 
@@ -64,6 +66,17 @@ public class StudySearchableAjaxableDomainObject extends StudyAjaxableDomainObje
     public List<StudySiteAjaxableDomainObject> getStudySites() {
         return studySites;
     }
+
+    public void addAssignedStudySite(StudySiteAjaxableDomainObject studySiteAjaxableDomainObject) {
+        if (getObjectById(this.getAssignedStudySites(), studySiteAjaxableDomainObject.getId()) == null) {
+        	getAssignedStudySites().add(studySiteAjaxableDomainObject);
+        }
+
+    }
+    
+    public List<StudySiteAjaxableDomainObject> getAssignedStudySites() {
+		return assignedStudySites;
+	}
 
     public String getDisplayName() {
         String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" : " ( " + this.getPrimaryIdentifierValue() + " ) ";
