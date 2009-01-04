@@ -200,7 +200,7 @@
 	  </property>
 	</bean>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Subjects" p:mainController="createParticipantController">
+	      p:displayName="Subjects" p:mainController="searchParticipantController">
 	  <property name="pathMapping"><value>/participant/**</value></property>
 	  <property name="tasks">
 	    <list>
@@ -266,7 +266,7 @@
 	  </property>
 	</bean>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType"
-	      p:displayName="Advanced Search" p:mainController="studyController">
+	      p:displayName="Advanced Search" p:mainController="reportController">
 	  <property name="pathMapping"><value>/search/**</value></property>
 	  <property name="tasks">
 	    <list>
