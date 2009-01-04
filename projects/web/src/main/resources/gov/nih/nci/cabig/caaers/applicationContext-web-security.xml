@@ -27,7 +27,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/participant/assignStudy"
 			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
 		<entry key="/pages/participant/assignParticipant"
-			value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE" />
+			value="gov.nih.nci.cabig.caaers.domain.Participant:READ" />
 		<entry key="/pages/participant/search" 
 			value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 
@@ -48,6 +48,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/captureRoutine"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
+
 		<entry key="/pages/ae/createReportingPeriod"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE" />
 		<entry key="/pages/ae/createAeReportingPeriod"
@@ -58,7 +59,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE" />
 		<entry key="/pages/ae/list"
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
+
 		<entry key="/pages/ae/routingAndReview"
+
 			value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ" />
 
 		<!--========== TODO: REPORT ===========-->
@@ -103,10 +106,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="/pages/rule/notification/import" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		
 		<!--========= SEARCH ========-->
+		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 		<entry key="/pages/search/participant" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-		<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
-		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
+		<!--<entry key="/pages/search/adverseEvent" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>-->
+		
 		<entry key="/pages/search/routineReport" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 
 	</util:map>
@@ -146,11 +150,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <util:map id="sectionObjectPrivilegeMap">
 		<entry key="/pages/ae/list" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 		<entry key="/pages/study/search" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
-		<entry key="/pages/participant/create" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
+		<entry key="/pages/participant/search" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
 		<entry key="/pages/report/notImplemented" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/rule/create" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
 		<entry key="/pages/admin/configure" value="gov.nih.nci.cabig.caaers.domain.Rule:CREATE"/>
-		<entry key="/pages/search/study" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+		<entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
 	</util:map>
 	
 	<bean id="sectionPrivilegeAndObjectIdGenerator"
