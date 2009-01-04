@@ -66,17 +66,18 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     	//updateParticipantStudySite(participantAjaxableDomainObject, o);
     	updateStudy(participantAjaxableDomainObject, o);
     }
- /*   
-    private void updateParticipantStudySite(T participantAjaxableDomainObject, Object[] o) {
-    	if (!StringUtils.isBlank((String) o[12]) && (StringUtils.equals((String) o[14], "SST") || StringUtils.equals((String) o[14], "SCC"))) {
+    
+    private void updateAssignedStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
+        if (!StringUtils.isBlank((String) o[18])) {
             StudySiteAjaxableDomainObject studySiteAjaxableDomainObject = new StudySiteAjaxableDomainObject();
-            studySiteAjaxableDomainObject.setId((Integer) o[13]);
-            studySiteAjaxableDomainObject.setName((String) o[12]);
-            studySiteAjaxableDomainObject.setNciInstituteCode((String) o[15]);
-            participantAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
+            studySiteAjaxableDomainObject.setId((Integer) o[17]);
+            studySiteAjaxableDomainObject.setName((String) o[18]);
+            studySiteAjaxableDomainObject.setNciInstituteCode((String) o[19]);
+            studySiteAjaxableDomainObject.setStudyId((Integer) o[9]);
+            studySearchableAjaxableDomainObject.addAssignedStudySite(studySiteAjaxableDomainObject);
         }
     }
- */   
+    
     private void updateStudySite(StudySearchableAjaxableDomainObject studySearchableAjaxableDomainObject, Object[] o) {
         //if (!StringUtils.isBlank((String) o[12]) && StringUtils.equals((String) o[14], "SST")) {
         if (!StringUtils.isBlank((String) o[12]) && (StringUtils.equals((String) o[14], "SST") || StringUtils.equals((String) o[14], "SCC"))) {
@@ -85,6 +86,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
             studySiteAjaxableDomainObject.setName((String) o[12]);
             studySiteAjaxableDomainObject.setNciInstituteCode((String) o[15]);
             studySiteAjaxableDomainObject.setStudyId((Integer) o[9]);
+            studySiteAjaxableDomainObject.setType((String) o[14]);
             studySearchableAjaxableDomainObject.addStudySite(studySiteAjaxableDomainObject);
         }
     }
@@ -104,6 +106,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                 	study.addStudyPersonnelId((Integer) o[16]);
                 }
                 updateStudySite(study, o);
+                updateAssignedStudySite(study, o);
                 participantAjaxableDomainObject.addStudy(study);
         	} else {
         		if (o[11] != null && (Boolean) o[11]) {
@@ -113,6 +116,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                 	studySearchableAjaxableDomainObject.addStudyPersonnelId((Integer) o[16]);
                 }
         		updateStudySite(studySearchableAjaxableDomainObject,o);
+        		updateAssignedStudySite(studySearchableAjaxableDomainObject, o);
         		participantAjaxableDomainObject.addStudy(studySearchableAjaxableDomainObject);
         	}
             
