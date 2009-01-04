@@ -2,13 +2,13 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
@@ -55,11 +55,12 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
         Organization organization = researchStaff.getOrganization();
         
 		boolean studyFilteringRequired = false ; 
-		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
+		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator or study co..
         //check if user is  SLRR
         for (int i=0; i<grantedAuthorities.length; i++) {
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
+        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd")) {
         		studyFilteringRequired = true;
         		break;
         	}
@@ -77,46 +78,46 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
         	
         	isAuthorizedOnThisStudy = true;
         	// study level filtering for SLRR
-        	Study study = expeditedAdverseEventReport.getStudy();     	
+     //   	Study study = expeditedAdverseEventReport.getStudy();     	
         	
 			if (studyFilteringRequired) {
-				if (!isAuthorized(researchStaff.getId(),study)) {
+				if (!isAuthorized(researchStaff.getId(),expeditedAdverseEventReport.getAssignment())) {
 					isAuthorizedOnThisStudy=false;
 				}
 			}
 			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-        	if (!isAuthorized(organization,study) || !isAuthorizedOnThisStudy) {
+        	if (!isAuthorized(organization,expeditedAdverseEventReport.getAssignment()) || !isAuthorizedOnThisStudy) {
         		filterer.remove(expeditedAdverseEventReport);
         	}
         }
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(Organization studySite, Study study) {
+	private boolean isAuthorized(Organization studySite, StudyParticipantAssignment assignment) {
 		// check if user is part of co-ordinating center 
-		if (studySite.getNciInstituteCode().equals(study.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+		if (studySite.getNciInstituteCode().equals(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		
-		List<StudyOrganization> soList = study.getStudyOrganizations();
-		for (StudyOrganization so:soList) {
-			if (so instanceof StudySite) {
-				if (studySite.getNciInstituteCode().equals(so.getOrganization().getNciInstituteCode())) {
+		Organization organization = assignment.getStudySite().getOrganization();
+		//for (StudyOrganization so:soList) {
+			//if (so instanceof StudySite) {
+				if (studySite.getNciInstituteCode().equals(organization.getNciInstituteCode())) {
 					return true;
 				}
-			}			
-		}
+			//}			
+		//}
 		return false;
 	}
-	private boolean isAuthorized(Integer researchStaffId, Study study) {
+	private boolean isAuthorized(Integer researchStaffId, StudyParticipantAssignment assignment) {
 
-		List<StudyOrganization> soList = study.getStudyOrganizations();
-		for (StudyOrganization so:soList) {
+		StudyOrganization so = assignment.getStudySite();//.getOrganization();
+		//for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
 			for (StudyPersonnel sp:spList) {
 				if (sp.getResearchStaff().getId().equals(researchStaffId)) {
 					return true;
 				}
 			}
-		}
+		//}
 		return false;
 	}
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {

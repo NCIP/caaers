@@ -51,18 +51,27 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
 		studySite.setNciInstituteCode(organization.getNciInstituteCode());
         
         boolean studyFilteringRequired = false ; 
-        //check if user is AE Coordinator or Subject Coordinator  ...
+        boolean isSiteCoodinator = false;
+        //check if user is AE Coordinator or Subject Coordinator  or study coo...
         for (int i=0; i<grantedAuthorities.length; i++) {
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")) {
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
+        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd")) {
         		studyFilteringRequired = true;
         		break;
         	}
         }	
+        for (int i=0; i<grantedAuthorities.length; i++) {
+        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_site_cd")) {
+        		isSiteCoodinator = true;
+        		break;
+        	}
+        }
 
 		if (returnObject instanceof ParticipantAjaxableDomainObject) {
 			ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject)returnObject;
-			if (isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired))) {
+			if (isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired),isSiteCoodinator)) {
 				return returnObject;
 			} else {
 				return null;
@@ -75,7 +84,7 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
         	Object domainObject = collectionIter.next();
         	ParticipantAjaxableDomainObject participant = (ParticipantAjaxableDomainObject)domainObject;
 
-        	if (!isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired))) {
+        	if (!isAuthorized(studySite,getAuthorizedStudies(participant,researchStaff.getId(),studyFilteringRequired),isSiteCoodinator)) {
         		filterer.remove(participant);
         	}
         }
@@ -98,11 +107,20 @@ public class ParticipantSiteSecurityFilterer implements DomainObjectSecurityFilt
 		}	
 		return authorizedStudies;
 	}
-	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, List <StudySearchableAjaxableDomainObject> authorizedStudies) {
+	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, List <StudySearchableAjaxableDomainObject> authorizedStudies, boolean isSiteCoodinator) {
 		//get all studySites.
 		List <StudySiteAjaxableDomainObject> allSites = new ArrayList<StudySiteAjaxableDomainObject>();		
 		for (StudySearchableAjaxableDomainObject study:authorizedStudies) {
-			allSites.addAll(study.getStudySites());
+			//allSites.addAll(study.getStudySites());
+			allSites.addAll(study.getAssignedStudySites());
+			// add coordinating center ... 
+			if (isSiteCoodinator) {
+				for (StudySiteAjaxableDomainObject scc : study.getStudySites()) {
+					if (scc.getType().equals("SCC")) {
+						allSites.add(scc);
+					}
+				}
+			}
 		}
 		if (allSites.contains(studySite)) return true;
 		return false;

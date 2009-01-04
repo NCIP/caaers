@@ -21,11 +21,11 @@ public class SiteSecurityAfterInvocationCollectionFilteringProvider implements
 
     private String processConfigAttribute;
 
-    private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
-    
     private gov.nih.nci.security.acegi.csm.authorization.AuthorizationSwitch authorizationSwitch;
 
-    private Logger log = Logger
+    private LinkedHashMap domainObjectSiteSecurityAuhthorizationCheckProvidersMap;
+
+	private Logger log = Logger
                     .getLogger(SiteSecurityAfterInvocationCollectionFilteringProvider.class);
     
 
