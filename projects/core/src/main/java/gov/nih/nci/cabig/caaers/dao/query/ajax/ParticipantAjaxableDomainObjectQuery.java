@@ -20,6 +20,7 @@ public class ParticipantAjaxableDomainObjectQuery extends AbstractAjaxableDomain
     		",study.shortTitle as st , study.id as studyId"+
     		",sIdentifier.value, sIdentifier.primaryIndicator "+
     		",studyOrgs.organization.name,studyOrgs.id,studyOrgs.class,studyOrgs.organization.nciInstituteCode , stper.researchStaff.id " +
+    		",ss.organization.id as assignedSiteId ,ss.organization.name as assignedSite , ss.organization.nciInstituteCode as assignedSiteCode " +
             "from Participant participant "+
             "left join participant.identifiers as identifier "+
             "left join participant.assignments as spa join spa.studySite as ss "+
