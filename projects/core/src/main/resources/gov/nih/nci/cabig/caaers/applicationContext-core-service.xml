@@ -173,7 +173,8 @@ This applicationContext contains the definition of the concrete services
 	<bean id="studyOrganizationSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyOrganizationSynchronizer"/>
 	<bean id="studyTherapySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyTherapySynchronizer"/>
 	<bean id="studyAgentsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyAgentsSynchronizer"/>
-
+	<bean id="studyEvaluationPeriodsSynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudyEvaluationPeriodsSynchronizer"/>
+	
 	<bean id="studySynchronizer" class="gov.nih.nci.cabig.caaers.service.synchronizer.StudySynchronizer">
 		<constructor-arg>
 			<list>
@@ -183,6 +184,7 @@ This applicationContext contains the definition of the concrete services
 				<ref bean="studyOrganizationSynchronizer"/>
 				<ref bean="studyTherapySynchronizer"/>
 				<ref bean="studyAgentsSynchronizer"/>
+				<ref bean="studyEvaluationPeriodsSynchronizer"/>
 			</list>
 		</constructor-arg>
 	</bean>
