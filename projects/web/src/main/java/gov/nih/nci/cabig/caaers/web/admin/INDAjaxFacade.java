@@ -38,7 +38,9 @@ public class INDAjaxFacade {
         List<Organization> orgs = organizationDao.getBySubnames(new String[] { text });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
     }
-    
+    /*
+     * added this method to call this wherever any security filtering on organization is required
+     */
     public List<Organization> restrictOrganization(String text) {
         List<Organization> orgs = organizationDao.restrictBySubnames(new String[] { text });
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
