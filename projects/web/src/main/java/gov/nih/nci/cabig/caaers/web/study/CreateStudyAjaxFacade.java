@@ -168,7 +168,14 @@ public class CreateStudyAjaxFacade {
                         .findByIds(new String[] { text });
         return ObjectTools.reduceAll(inds, "id", "strINDNo", "holderName");
     }
-
+    /*
+     * added this method to call this wherever any security filtering on organization is required
+     */
+    public List<Organization> restrictOrganizations(final String text) {
+        List<Organization> orgs = organizationDao.restrictBySubnames(extractSubnames(text));
+        return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
+    }
+    
     public List<Organization> matchOrganization(final String text) {
         List<Organization> orgs = organizationDao.getBySubnames(extractSubnames(text));
         return ObjectTools.reduceAll(orgs, "id", "name", "nciInstituteCode");
