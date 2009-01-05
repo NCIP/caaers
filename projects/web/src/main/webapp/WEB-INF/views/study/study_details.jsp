@@ -73,7 +73,7 @@
 
         AE.createStandardAutocompleter('study.studyCoordinatingCenter.organization',
                 function(autocompleter, text) {
-                    createStudy.matchOrganization(text, function(values) {
+                    createStudy.restrictOrganizations(text, function(values) {
                         autocompleter.setChoices(values)
                     })
 
