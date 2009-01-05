@@ -53,7 +53,10 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
     public void save(final ResearchStaff researchStaff) {
         getHibernateTemplate().saveOrUpdate(researchStaff);
     }
-
+    @SuppressWarnings( { "unchecked" })
+    public List<ResearchStaff> findResearchStaff(final ResearchStaffQuery query) {
+    	return searchResearchStaff(query);
+    }
     /**
      * Search for research staffs using query.
      * 
