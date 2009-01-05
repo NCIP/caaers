@@ -1,11 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.Cell;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.view.html.ColumnBuilder;
-import org.apache.commons.beanutils.BeanUtils;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 
 /**
  * @author Biju Joseph
@@ -22,7 +22,7 @@ public class SelectedParticipantCell implements Cell {
         inputBuilder.tdStart();
 
         try {
-            Participant bean = (Participant) model.getCurrentRowBean();
+        	ParticipantAjaxableDomainObject bean = (ParticipantAjaxableDomainObject) model.getCurrentRowBean();
             Integer id = bean.getId();
             inputBuilder.getHtmlBuilder().input("radio")
                     .name("participant" + id.intValue())
