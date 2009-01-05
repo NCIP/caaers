@@ -108,6 +108,17 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     }
 
     /**
+     * Get the list of organizations matching the name fragments.
+     * 
+     * @param subnames
+     *                the name fragments to search on.
+     * @return List of matching organizations.
+     */
+    public List<Organization> restrictBySubnames(final String[] subnames) {
+        return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+    }
+    
+    /**
      * Save or update the organization in the db.
      * 
      * @param organization
