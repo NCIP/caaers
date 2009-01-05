@@ -829,7 +829,7 @@ public class SearchStudyAjaxFacade {
         }
 
         try {
-            researchStaffs = researchStaffDao.searchResearchStaff(query);
+            researchStaffs = researchStaffDao.findResearchStaff(query);
         }
         catch (Exception e) {
             throw new RuntimeException("Formatting Error", e);
