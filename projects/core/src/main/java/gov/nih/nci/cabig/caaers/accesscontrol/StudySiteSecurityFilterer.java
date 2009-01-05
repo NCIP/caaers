@@ -70,7 +70,7 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
         }
         
 		boolean isAuthorizedOnThisStudy = true;
-		
+		/*
 		if (returnObject instanceof StudySearchableAjaxableDomainObject) {			
 			// study level filtering for SLRR
 			if (studyFilteringRequired) {
@@ -85,37 +85,57 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 				return null;
 			}
 		}
+		*/
 		Filterer filterer = (Filterer)returnObject;
 		Iterator collectionIter = filterer.iterator();
 		
 		while (collectionIter.hasNext()) {
         	Object domainObject = collectionIter.next();
-        	StudySearchableAjaxableDomainObject study = (StudySearchableAjaxableDomainObject)domainObject;
-        	isAuthorizedOnThisStudy = true;
-        	// study level filtering for SLRR
-			if (studyFilteringRequired) {
-				if (!isAuthorized(researchStaff.getId(),study)) {
-					isAuthorizedOnThisStudy=false;
+        	if (domainObject instanceof Study) {
+        		Study studyDomainObj = (Study)domainObject;
+        		isAuthorizedOnThisStudy = true;
+            	// study level filtering for SLRR
+    			if (studyFilteringRequired) {
+    				if (!isAuthorized(researchStaff.getId(),studyDomainObj)) {
+    					isAuthorizedOnThisStudy=false;
+    				}
+    			}
+    			//if not SLRR , or SLRR is authorized , then apply site level filtering.
+            	if (!isAuthorized(studySite, null, studyDomainObj) || !isAuthorizedOnThisStudy) {
+            		filterer.remove(studyDomainObj);
+            	}
+        	} else {
+	        	StudySearchableAjaxableDomainObject study = (StudySearchableAjaxableDomainObject)domainObject;
+	        	isAuthorizedOnThisStudy = true;
+	        	// study level filtering for SLRR
+				if (studyFilteringRequired) {
+					if (!isAuthorized(researchStaff.getId(),study)) {
+						isAuthorizedOnThisStudy=false;
+					}
 				}
-			}
-			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-        	if (!isAuthorized(studySite,study) || !isAuthorizedOnThisStudy) {
-        		filterer.remove(study);
+				//if not SLRR , or SLRR is authorized , then apply site level filtering.
+	        	if (!isAuthorized(studySite,study, null) || !isAuthorizedOnThisStudy) {
+	        		filterer.remove(study);
+	        	}
         	}
         }
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, StudySearchableAjaxableDomainObject study) {
+	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, StudySearchableAjaxableDomainObject study, Study studyDomainObj) {
 		// check if user is part of co-ordinating center 
-		if (studySite.getNciInstituteCode().equals(study.getCoordinatingCenterCode())) return true;
+		if (studyDomainObj == null ) {
+			if (studySite.getNciInstituteCode().equals(study.getCoordinatingCenterCode())) return true;
+			studyDomainObj = studyDao.getById(study.getId()) ;
+		} else  {
+			if (studySite.getNciInstituteCode().equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+		}
+		return isAuthorized(studySite,studyDomainObj);
 		
-		//if not co-ordinating center check for study sites.
-		//if (study.getStudySites().contains(studySite)) return true;
-		// Query is not doing outer join if particpant id is passed , need to fix the query. 
-		// temp fix is getting study object for DAO.		
-		Study s = studyDao.getById(study.getId()) ;
-		List<StudyOrganization> soList = s.getStudyOrganizations();
+	}
+
+	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, Study study) {
+		List<StudyOrganization> soList = study.getStudyOrganizations();
 		for (StudyOrganization so:soList) {
 			if (so instanceof StudySite) {
 				if (studySite.getNciInstituteCode().equals(so.getOrganization().getNciInstituteCode())) {
@@ -126,13 +146,16 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		return false;
 	}
 	private boolean isAuthorized(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
+		Study s = studyDao.getById(study.getId()) ;
+		return isAuthorized(researchStaffId,s);
+
+	}
+	private boolean isAuthorized(Integer researchStaffId, Study study) {
 		// TODO
 		// Query is not doing outer join on research staff , need to fix the query. 
 		// temp fix is getting study object for DAO.
-		//if (study.getStudyPersonnelIds().contains(researchStaffId)) return true;
-		
-		Study s = studyDao.getById(study.getId()) ;
-		List<StudyOrganization> soList = s.getStudyOrganizations();
+		//if (study.getStudyPersonnelIds().contains(researchStaffId)) return true;		
+		List<StudyOrganization> soList = study.getStudyOrganizations();
 		for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
 			for (StudyPersonnel sp:spList) {
@@ -143,6 +166,7 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		}
 		return false;
 	}
+	
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
 		this.researchStaffDao = researchStaffDao;
 	}
