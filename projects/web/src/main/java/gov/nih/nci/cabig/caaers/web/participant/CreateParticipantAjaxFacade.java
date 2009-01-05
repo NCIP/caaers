@@ -2,19 +2,20 @@ package gov.nih.nci.cabig.caaers.web.participant;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.OrganizationAssignedIdentifier;
 import gov.nih.nci.cabig.caaers.domain.SystemAssignedIdentifier;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.repository.ParticipantRepository;
+import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,18 +24,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
-import org.springframework.web.servlet.mvc.BaseCommandController;
-import org.springframework.beans.factory.annotation.Required;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
-import org.extremecomponents.table.core.TableConstants;
-import org.extremecomponents.table.bean.Table;
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.bean.Export;
 import org.extremecomponents.table.bean.Row;
-import org.extremecomponents.table.bean.Column;
+import org.extremecomponents.table.bean.Table;
+import org.extremecomponents.table.context.Context;
+import org.extremecomponents.table.context.HttpServletRequestContext;
+import org.extremecomponents.table.core.TableConstants;
+import org.extremecomponents.table.core.TableModel;
+import org.extremecomponents.table.core.TableModelImpl;
 import org.extremecomponents.table.view.CsvView;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.servlet.mvc.BaseCommandController;
 
 /**
  * @author Saurabh Agrawal
@@ -53,14 +54,14 @@ public class CreateParticipantAjaxFacade {
 
     private OrganizationDao organizationDao;
 
-    private ParticipantRepository participantRepository;
+    private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
 
     /*
     * Ajax Call hits this method to generate table
     */
     public String getParticipantTable(final Map parameterMap, final String type, final String text, final HttpServletRequest request) {
 
-        List<Participant> participants = new ArrayList<Participant>();
+        List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
         if (type != null && text != null) {
             participants = constructExecuteParticipantQuery(type, text);
         }
@@ -184,29 +185,42 @@ public class CreateParticipantAjaxFacade {
     }
 
     @SuppressWarnings("finally")
-    private List<Participant> constructExecuteParticipantQuery(final String searchType, final String searchText) {
+    private List<ParticipantAjaxableDomainObject> constructExecuteParticipantQuery(final String searchType, final String searchText) {
+    	
+    	StringTokenizer typeToken = new StringTokenizer(searchType, ",");
+        StringTokenizer textToken = new StringTokenizer(searchText, ",");
+        log.debug("type :: " + searchType);
+        log.debug("text :: " + searchText);
+        String sType, sText;
+        
+        List<ParticipantAjaxableDomainObject> participants = new ArrayList<ParticipantAjaxableDomainObject>();
+        
+        
+        ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
 
-        if (searchText != null && searchType != null && !searchText.trim().equals("")) {
-
-            ParticipantQuery participantQuery = new ParticipantQuery();
-            if ("fn".equals(searchType)) {
-                participantQuery.filterByFirstName(searchText);
-            } else if ("ln".equals(searchType)) {
-                participantQuery.filterByLastName(searchText);
-            } else if ("idtf".equals(searchType)) {
-                participantQuery.leftJoinFetchOnIdentifiers();
-                participantQuery.filterByIdentifierValue(searchText);
+        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
+            sType = typeToken.nextToken();
+            sText = textToken.nextToken();
+            
+            if (sType.equals("fn")) {
+            	query.filterByFirstName(sText);
+            } else if (sType.equals("idtf")) {
+            	query.filterByParticipantIdentifierValue(sText);                
+            } else if (sType.equals("ln")) {
+            	query.filterByLastName(sText);
             }
-
-            try {
-                return participantRepository.searchParticipant(participantQuery);
-            } catch (Exception e) {
-                log.error("Error while searching participants", e);
-            }
-
+        }
+        
+        try {
+            participants = participantAjaxableDomainObjectRepository.findParticipants(query);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Formatting Error", e);
+        }
+        finally {
+            return participants;
         }
 
-        return new ArrayList<Participant>();
     }
 
 
@@ -303,9 +317,10 @@ public class CreateParticipantAjaxFacade {
     }
 
     @Required
-    public void setParticipantRepository(ParticipantRepository participantRepository) {
-        this.participantRepository = participantRepository;
-    }
+	public void setParticipantAjaxableDomainObjectRepository(
+			ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository) {
+		this.participantAjaxableDomainObjectRepository = participantAjaxableDomainObjectRepository;
+	}
 
 
 }
