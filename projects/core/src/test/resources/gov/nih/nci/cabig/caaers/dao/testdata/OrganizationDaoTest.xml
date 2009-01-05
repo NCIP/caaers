@@ -1,4 +1,12 @@
 <dataset>
+	    
+    <ORGANIZATIONS
+        id="-1004"
+        name="Radiation Therapy Oncology Group"
+        grid_id="RTOGGridSite"
+        nci_institute_code="RTOG"
+    />
+
     <ORGANIZATIONS
         id="-1001"
         name="New Site"
@@ -10,6 +18,13 @@
         name="Another Site"
         grid_id="anotherGridSite"
     />
+    
+    <ORGANIZATIONS
+        id="-1003"
+        name="default"
+        grid_id="defaultGridSite"
+    />
+    
     <!--  We have some investigational new drugs pre-loaded for CTEP -->
     <investigational_new_drugs />    
     <ind_holders />
