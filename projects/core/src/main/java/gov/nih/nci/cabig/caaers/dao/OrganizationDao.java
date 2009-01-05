@@ -54,11 +54,10 @@ public class OrganizationDao extends GridIdentifiableDao<Organization> implement
     public Organization getDefaultOrganization() {
         List<Organization> results = getHibernateTemplate().find("from Organization where name=?",
                         Organization.DEFAULT_SITE_NAME);
-        if (results.size() == 0) {
-            log.debug("No default site in database (should have a organization named '"
-                            + Organization.DEFAULT_SITE_NAME + "')");
+        if (results.size() > 0) {
+        	return results.get(0);
         }
-        return results.get(0);
+        return null;
     }
 
     /**
