@@ -559,7 +559,12 @@
                     <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
                 </PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
-
+            
+            <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
+                <PRIMARY_ANATOMIC_SITE>
+                    <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
+                </PRIMARY_ANATOMIC_SITE>
+            </xsl:if>
 
             <xsl:if test="DiseaseHistory/otherPrimaryDisease != ''">
                 <DISEASE_NAME_NOT_LISTED>
