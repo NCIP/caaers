@@ -35,7 +35,7 @@
   	 if($('organization')){
   		AE.createStandardAutocompleter('organization', 
   		     	function(autocompleter, text) {
-  		    		createIND.matchOrganization(text, function(values) {
+  		    		createIND.restrictOrganization(text, function(values) {
   		      	 		autocompleter.setChoices(values)
   		      		})
   		    	},
