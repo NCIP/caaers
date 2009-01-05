@@ -117,25 +117,4 @@ public class StudyTherapiesTab extends StudyTab {
         }
     }
     
-    @Override
-    public void beforeBind(HttpServletRequest request, StudyCommand command) {
-    	// TODO Auto-generated method stub
-    	super.beforeBind(request, command);
-    }
-    
-    @Override
-    public void onDisplay(HttpServletRequest request, StudyCommand command) {
-    	// TODO Auto-generated method stub
-    	super.onDisplay(request, command);
-    }
-    
-    @Override
-    public void postProcess(HttpServletRequest request, StudyCommand command,
-    		Errors errors) {
-    	// TODO Auto-generated method stub
-    	super.postProcess(request, command, errors);
-    }
-    
-    
-
 }
