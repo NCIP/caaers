@@ -140,6 +140,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ParticipantDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao+.search*(..))
         ||execution(public * gov.nih.nci.cabig.caaers.dao.OrganizationDao+.getBySubnames*(..))
+        ||execution(public * gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))
                               "/>
 
 
@@ -224,6 +225,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment.setParticipant(gov.nih.nci.cabig.caaers.domain.Participant))"
                value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+               
+        <entry key="execution(* gov.nih.nci.cabig.caaers.domain.repository.StudyRepository+.find(..))"
+               value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
+
 
     </util:map>
 
@@ -261,6 +266,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.ParticipantDao.*=CSM_AUTHN_CHECK
                 gov.nih.nci.cabig.caaers.dao.OrganizationDao.*=CSM_AUTHN_CHECK
+                gov.nih.nci.cabig.caaers.domain.repository.StudyRepository.*=CSM_AUTHN_CHECK
             </value>
         </property>
         <property name="accessDecisionManager">
