@@ -1,15 +1,9 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 import java.util.Iterator;
 import java.util.List;
@@ -25,8 +19,8 @@ public class OrganizationSecurityFilterer implements DomainObjectSecurityFiltere
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		
-		return ((Filterer)returnObject).getFilteredObject();
-		/*
+		//return ((Filterer)returnObject).getFilteredObject();
+		
 		//get user
 		User user = (User)authentication.getPrincipal();
 		
@@ -65,7 +59,7 @@ public class OrganizationSecurityFilterer implements DomainObjectSecurityFiltere
         }
 		
 		return filterer.getFilteredObject();
-		*/
+		
 	}
 
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
