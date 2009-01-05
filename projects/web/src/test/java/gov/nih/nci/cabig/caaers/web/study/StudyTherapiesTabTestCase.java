@@ -25,9 +25,6 @@ public class StudyTherapiesTabTestCase extends AbstractStudyWebTestCase {
 
     protected StudyTab createTab() {
         StudyTherapiesTab tab = new StudyTherapiesTab();
-        tab.setConfigurationProperty(new ConfigProperty());
-
-        Map<String, List<Lov>> map = new HashMap<String, List<Lov>>();
         return tab;
     }
 
