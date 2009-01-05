@@ -33,7 +33,7 @@
     <bean id="participantAjaxFacade"
           class="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantAjaxFacade">
         <property name="organizationDao" ref="organizationDao"/>
-        <property name="participantRepository" ref="participantRepository"/>
+        <property name="participantAjaxableDomainObjectRepository" ref="participantAjaxableDomainObjectRepository"/>
     </bean>
 
     <bean id="assignParticipantFacade" autowire="byType"
