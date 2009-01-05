@@ -243,7 +243,7 @@
  	
  		Event.observe('flow-next', 'click', checkSubmittedAEs);
  		Event.observe('flow-prev', 'click', checkSubmittedAEs);
- 		Event.observe('flow-update', 'click', checkSubmittedAEs);
+// 		Event.observe('flow-update', 'click', checkSubmittedAEs);
  		
  		var url = document.addRoutineAeForm.action;
  		var stripped_url = '';
