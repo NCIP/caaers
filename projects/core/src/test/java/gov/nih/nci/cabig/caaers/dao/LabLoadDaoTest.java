@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class LabLoadDaoTest extends DaoTestCase<LabLoadDao> {
+public class LabLoadDaoTest extends DaoNoSecurityTestCase<LabLoadDao> {
 	
 	private StudyParticipantAssignmentDao assignmentDao = (StudyParticipantAssignmentDao) getApplicationContext().getBean("studyParticipantAssignmentDao");
 	

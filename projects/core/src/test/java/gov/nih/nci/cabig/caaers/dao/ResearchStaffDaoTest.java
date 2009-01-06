@@ -3,14 +3,14 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.STUDY_ABSTRACTION;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
 /**
  * @author Kulasekaran
  */
 @CaaersUseCases( { CREATE_STUDY, STUDY_ABSTRACTION })
-public class ResearchStaffDaoTest extends DaoTestCase<ResearchStaffDao> {
+public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao> {
     private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
                     "organizationDao");
 
