@@ -391,5 +391,14 @@
 	        assignment_id="-14"
 	        dismissed="0"
 	/>
+	
+	<LABS
+			id="-1002"
+	        name="New Lab 2"
+	        result="901"
+	        units="cpq1"
+	        assignment_id="-14"
+	        dismissed="0"
+	/>
 
 </dataset>
