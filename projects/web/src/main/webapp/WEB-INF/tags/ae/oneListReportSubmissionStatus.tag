@@ -18,14 +18,14 @@
 
 <script>
     function showToolTip(text, title) {
-        Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, false);
+        Tip(text, WIDTH, 300, TITLE, title, SHADOW, false, FADEIN, 300, FADEOUT, 300, STICKY, 1, CLOSEBTN, true, CLICKCLOSE, true);
     }
 </script>
 
 <c:set var="detailsEnabled" value="${(reportStatus eq 'COMPLETED') or (reportStatus eq 'INPROCESS') or (reportStatus eq 'FAILED')  }" />
 
 <c:if test="${detailsEnabled}">
-	<span class="dueOn"><a style="cursor:pointer;" onclick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u>${lastVersion.statusAsString}</u></i></a></span>
+	<span class="dueOn"><a style="cursor:pointer;" onClick="showToolTip(($('_ctx_${theReport.id}').innerHTML), '${lastVersion.statusAsString}')"><i><u>${lastVersion.statusAsString}</u></i></a></span>
 	<div id="_table${theReport.id}"	style="position: absolute; display: none; width:400px; left: 520px;">
         <div id="_ctx_${theReport.id}">
         <c:choose>
