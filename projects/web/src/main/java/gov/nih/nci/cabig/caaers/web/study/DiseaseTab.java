@@ -103,17 +103,11 @@ public class DiseaseTab extends StudyTab {
         else if (study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.OTHER) diseaseTerminology = "OTHER";
         refdata.put("diseaseTerminology", diseaseTerminology);
 
-        if(study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)) {
-        	refdata.put("meddraVersionId", study.getDiseaseTerminology().getMeddraVersion().getId());
-        	refdata.put("meddraVersion", study.getDiseaseTerminology().getMeddraVersion().getName());
+        if (study.getDiseaseTerminology().getDiseaseCodeTerm().equals(DiseaseCodeTerm.MEDDRA)) {
+            refdata.put("meddraVersionId", study.getDiseaseTerminology().getMeddraVersion().getId());
+            refdata.put("meddraVersion", study.getDiseaseTerminology().getMeddraVersion().getName());
         }
         return refdata;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, InputFieldGroup> createFieldGroups(StudyCommand command) {
-        return super.createFieldGroups(command);
     }
 
     private boolean checkDuplicateConditionById(Map conditions, String conditionName) {

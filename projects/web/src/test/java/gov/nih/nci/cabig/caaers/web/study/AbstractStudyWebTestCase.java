@@ -9,6 +9,9 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
+import gov.nih.nci.cabig.caaers.dao.ConditionDao;
+import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
@@ -40,12 +43,19 @@ public abstract class AbstractStudyWebTestCase extends WebTestCase {
 
     protected CtcDao ctcDao;
     protected MeddraVersionDao meddraVersionDao;
+    protected DiseaseTermDao diseaseTermDao;
+    protected LowLevelTermDao lowLevelTermDao;
+    protected ConditionDao conditionDao;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        
         ctcDao = registerDaoMockFor(CtcDao.class);
         meddraVersionDao = registerDaoMockFor(MeddraVersionDao.class);
+        diseaseTermDao = registerDaoMockFor(DiseaseTermDao.class);
+        lowLevelTermDao = registerDaoMockFor(LowLevelTermDao.class);
+        conditionDao = registerDaoMockFor(ConditionDao.class);
 
         tab = createTab();
 
