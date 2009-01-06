@@ -62,29 +62,24 @@ public class SolicitedAdverseEventTab extends StudyTab {
         Map<String, Object> refdata = super.referenceData();
     	SolicitedEventTabTable table = null;
     	
-    	if(request.getParameter( AJAX_REQUEST_ADDEPOCH ) != null || request.getParameter( AJAX_REQUEST_DELETEEPOCH ) != null )
-    	{
+    	if(request.getParameter(AJAX_REQUEST_ADDEPOCH ) != null || request.getParameter( AJAX_REQUEST_DELETEEPOCH ) != null ) {
     		String[] termIDs = request.getParameterValues("eachRowTermID");
     		table = new SolicitedEventTabTable(study , termIDs, ctcTermDao, lowLevelTermDao );
-    	}
-    	else if( request.getParameter(AJAX_REQUEST_PARAMETER) == null && request.getAttribute(AJAX_REQUEST_PARAMETER) == null )
-    	{
+    	} else if (request.getParameter(AJAX_REQUEST_PARAMETER) == null && request.getAttribute(AJAX_REQUEST_PARAMETER) == null ) {
             table = new SolicitedEventTabTable(study);
-    	}
-        else
-    	{
+    	} else {
     		// Executes when we try to add one or more rows
     		
     		String[] termIDs = (String[])request.getAttribute("listOfTermIDs");
     		String[] terms = (String[])request.getAttribute("listOfTerms");
-    		table = new SolicitedEventTabTable( study, termIDs, terms, ctcTermDao );
+    		table = new SolicitedEventTabTable(study, termIDs, terms, ctcTermDao );
     		refdata.put("numOfnewlyAddedRows", table.getNumOfnewlyAddedRows());
     	}	
-    	refdata.put("listOfSolicitedAERows",table.getListOfSolicitedAERows());  
+
+        refdata.put("listOfSolicitedAERows", table.getListOfSolicitedAERows());
 
         return refdata;
     }
-    
     
     @Override
     protected void validate(final StudyCommand command, final BeanWrapper commandBean, final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
@@ -160,7 +155,6 @@ public class SolicitedAdverseEventTab extends StudyTab {
 
     }
 
-
     @Override
     public void onBind(HttpServletRequest request, StudyCommand command, Errors errors) {
     	// TODO Auto-generated method stub
@@ -176,37 +170,33 @@ public class SolicitedAdverseEventTab extends StudyTab {
     	for (Epoch e : command.getStudy().getEpochs()){
     		List<SolicitedAdverseEvent> listOfSolicitedAEs = new ArrayList<SolicitedAdverseEvent>();
     		String[] termIDs = request.getParameterValues( "epoch[" + indexOfEpoch + "]" );
-    		
-    		Term term = command.getStudy().getAeTerminology().getTerm();
-    		if( termIDs != null )
-	    		for( String termID : termIDs )
-	    		{
-	      		  if( term.equals( Term.CTC ) )
-	    		  {
-	    			  CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
-	      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
-	      			  solicitedAE.setCtcterm( ctcterm );
-	      			  // Add otherMeddra term if exists
-	      			  if(ctcterm.isOtherRequired()){
-	      				  String attributeName = "otherMeddra-" + ctcterm.getId();
-	      				  String lowLevelTermIdString = (String)findInRequest(request, attributeName);
-	      				  if(!lowLevelTermIdString.equals("")){
-	      					  LowLevelTerm lowLevelTerm = lowLevelTermDao.getById(Integer.parseInt(lowLevelTermIdString));
-	      					  solicitedAE.setOtherTerm(lowLevelTerm);
-	      				  }
-	      			  }
-	      			  listOfSolicitedAEs.add( solicitedAE );
-	    		  }
-	      		  else
-	    		  {
-	      			  LowLevelTerm medraterm = lowLevelTermDao.getById(Integer.parseInt(termID));
-	      			  SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
-	      			  solicitedAE.setLowLevelTerm( medraterm );
-	                  listOfSolicitedAEs.add( solicitedAE );
-	    		  }
-	    		}
-    		
-    		List<SolicitedAdverseEvent> listOfOldSolicitedAEs = e.getArms().get(0).getSolicitedAdverseEvents();
+
+            Term term = command.getStudy().getAeTerminology().getTerm();
+            if (termIDs != null)
+                for (String termID : termIDs) {
+                    if (term.equals(Term.CTC)) {
+                        CtcTerm ctcterm = ctcTermDao.getById(Integer.parseInt(termID));
+                        SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+                        solicitedAE.setCtcterm(ctcterm);
+                        // Add otherMeddra term if exists
+                        if (ctcterm.isOtherRequired()) {
+                            String attributeName = "otherMeddra-" + ctcterm.getId();
+                            String lowLevelTermIdString = (String) findInRequest(request, attributeName);
+                            if (!lowLevelTermIdString.equals("")) {
+                                LowLevelTerm lowLevelTerm = lowLevelTermDao.getById(Integer.parseInt(lowLevelTermIdString));
+                                solicitedAE.setOtherTerm(lowLevelTerm);
+                            }
+                        }
+                        listOfSolicitedAEs.add(solicitedAE);
+                    } else {
+                        LowLevelTerm medraterm = lowLevelTermDao.getById(Integer.parseInt(termID));
+                        SolicitedAdverseEvent solicitedAE = new SolicitedAdverseEvent();
+                        solicitedAE.setLowLevelTerm(medraterm);
+                        listOfSolicitedAEs.add(solicitedAE);
+                    }
+                }
+
+            List<SolicitedAdverseEvent> listOfOldSolicitedAEs = e.getArms().get(0).getSolicitedAdverseEvents();
     		listOfOldSolicitedAEs.clear();
     		listOfOldSolicitedAEs.addAll( listOfSolicitedAEs );
     		indexOfEpoch++;
@@ -226,10 +216,13 @@ public class SolicitedAdverseEventTab extends StudyTab {
         return attr;
     }
     
-    /*
+/*
+    */
+/*
      * 
      * For future use...
      */
+/*
     public String[] getSortedTerms(String[] termIDs) {
         ArrayList<Integer> listOfTermIDS = new ArrayList<Integer>();
 
@@ -243,7 +236,8 @@ public class SolicitedAdverseEventTab extends StudyTab {
 
         return termIDs;
     }
-    
+*/
+
 	public CtcTermDao getCtcTermDao() {
 		return ctcTermDao;
 	}
@@ -264,18 +258,17 @@ public class SolicitedAdverseEventTab extends StudyTab {
 	 *  For future use
 	 */
 
-	private int generateNextEpochOrderNumber( Study study)
-    {
-    	List<Epoch> listOfEpochs = study.getEpochs();
-    	return listOfEpochs.get(listOfEpochs.size()-1).getEpochOrder() + 1;
+    private int generateNextEpochOrderNumber(Study study) {
+        List<Epoch> listOfEpochs = study.getEpochs();
+        return listOfEpochs.get(listOfEpochs.size() - 1).getEpochOrder() + 1;
     }
-    
-	public ModelAndView addEpoch(HttpServletRequest request, Object command, Errors error) {        
+
+    public ModelAndView addEpoch(HttpServletRequest request, Object command, Errors error) {
         Study study = ((StudyCommand)command).getStudy();
         int newOrderNumber = generateNextEpochOrderNumber(study);
         log.debug("newOrderNumber: " + newOrderNumber);
         Epoch newEpoch = new Epoch("Enter name here", newOrderNumber );
-    	study.addEpoch( newEpoch );
+    	study.addEpoch(newEpoch);
     	return new ModelAndView(getAjaxViewName(request), new java.util.HashMap());
 	}
 
