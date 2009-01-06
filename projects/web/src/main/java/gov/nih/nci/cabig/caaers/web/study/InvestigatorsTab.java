@@ -46,10 +46,8 @@ class InvestigatorsTab extends StudyTab {
         String selectedInvestigator = request.getParameter("_selectedInvestigator");
         String prevSiteIndex = request.getParameter("_prevSite");
         int selectedIndex = command.getStudySiteIndex();
-        System.out.println("selectedIndex=" + selectedIndex);
         
         if ("removeInv".equals(action) && selectedIndex >= 0) {
-        	
          StudyOrganization studyOrg = command.getStudy().getStudyOrganizations().get(selectedIndex);
 	         if(studyOrg != null){
 	        	 StudyInvestigator rmStudyInvestigator = studyOrg.getStudyInvestigators().remove(Integer.parseInt(selectedInvestigator));

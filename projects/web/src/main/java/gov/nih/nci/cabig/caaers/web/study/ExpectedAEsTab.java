@@ -32,7 +32,6 @@ public class ExpectedAEsTab extends StudyTab {
 
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
-        System.out.println();
     }
 
     protected void validate(StudyCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
