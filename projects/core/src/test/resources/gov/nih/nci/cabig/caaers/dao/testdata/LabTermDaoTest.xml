@@ -1,0 +1,45 @@
+<dataset>
+	<lab_versions
+		id="-1"
+		name="Version 1"
+	/>
+	
+	<lab_categories
+		id="-1001"
+		version_id="-1"
+		name="Bone Marrow Biopsy"
+	/>
+	<lab_categories
+		id="-1002"
+		version_id="-1"
+		name="Chemistry"
+	/>
+	<lab_categories
+		id="-1003"
+		version_id="-1"
+		name="Respiratory"
+	/>
+	
+	<lab_terms
+		id="-10001"
+		category_id="-1001"
+		term="Bone Marrow Cellularity"
+	/>
+	<lab_terms
+		id="-10002"
+		category_id="-1001"
+		term="Bone Marrow blasts"
+	/>
+	<lab_terms
+		id="-10003"
+		category_id="-1002"
+		term="Albumin - blood"
+	/>
+	<lab_terms
+		id="-10004"
+		category_id="-1002"
+		term="Amylase - blood"
+	/>
+	
+
+</dataset>
