@@ -36,7 +36,6 @@ public class IdentifiersTab extends StudyTab {
     public Map<String, Object> referenceData(final HttpServletRequest request, final StudyCommand command) {
         Map<String, Object> refdata = super.referenceData(request, command);
         Map<String, List<Lov>> configMap = getConfigurationProperty().getMap();
-
         refdata.put("identifiersTypeRefData", configMap.get("identifiersType"));
         return refdata;
     }
