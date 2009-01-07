@@ -560,9 +560,9 @@
                 </PRIMARY_SITE_OF_DISEASE>
             </xsl:if>
             
-            <xsl:if test="DiseaseHistory/AnatomicSite/name != ''">
+            <xsl:if test="DiseaseHistory/AnatomicSite/category != ''">
                 <PRIMARY_ANATOMIC_SITE>
-                    <xsl:value-of select="DiseaseHistory/AnatomicSite/name"/>
+                    <xsl:value-of select="DiseaseHistory/AnatomicSite/category"/>
                 </PRIMARY_ANATOMIC_SITE>
             </xsl:if>
 
