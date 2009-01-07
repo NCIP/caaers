@@ -43,7 +43,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     private AgentAdjustment agentAdjustment;
     
-    //private Dose modifiedDose; 
+    private Dose modifiedDose; 
 
     private Date lastAdministeredDate;
 
@@ -146,7 +146,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
     public void setDose(Dose dose) {
         this.dose = dose;
     }
-    /*
+    
     @Deprecated
     @Embedded
     @AttributeOverrides({
@@ -161,7 +161,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
     public void setModifiedDose(Dose modifiedDose) {
         this.modifiedDose = modifiedDose;
     }
-	*/
+	
     public String getDurationAndSchedule() {
         return durationAndSchedule;
     }
