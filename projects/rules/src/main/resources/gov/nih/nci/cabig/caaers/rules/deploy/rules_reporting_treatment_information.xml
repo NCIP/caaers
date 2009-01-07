@@ -92,59 +92,7 @@
 		</rhs>
 	</rule>
 
-	<!-- ==========================================================================
-	RuleName : PAG_BR1A_CHK
-	Logic :  'Duration of Delay' must be provided when 'Dose' is 'Delayed
-	Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
-	Error Code PAG_BR1A_ERR
-	Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
-	============================================================================= -->
-	<rule name="PAG_BR1A_CHK">
-		<lhs>
-			<pattern identifier="aeReport"
-				object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors"
-				object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>new ExpeditedAdverseEventValidator(){ public boolean
-				validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-				TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
-				SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
-				ca : ti.getCourseAgents()){ i++; if(ca.isDoseModified() &amp;&amp;
-				ca.getAdministrationDelayAmount() == null ){
-				errors.addValidationError("PAG_BR1A_ERR", "'Duration of Delay' must be provided when
-				'Dose' is 'Delayed.",i); } } return errors.hasErrors() ? FAIL : SUCCESS; }
-				}.validate(aeReport, errors)</eval>
-		</lhs>
-		<rhs>
-			<!--  Error message is already populated -->
-		</rhs>
-	</rule>
-	<!-- ==========================================================================
-	RuleName : PAG_BR1B_CHK
-	Logic :  " 'Duration of Delay' must not be provided if 'Dose' is not 'Delayed'"
-	Translated Logic : 'Administration delay' must not be provided if 'Dose modified' is not checked
-	Error Code PAG_BR1B_ERR
-	Error Message : DELAY_UOM must not be provided if the AGENT_DELAYED is not "Yes"
-	============================================================================= -->
-	<rule name="PAG_BR1B_CHK">
-		<lhs>
-			<pattern identifier="aeReport"
-				object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
-			<pattern identifier="errors"
-				object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-			<eval>new ExpeditedAdverseEventValidator(){ public boolean
-				validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-				TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
-				SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
-				ca : ti.getCourseAgents()){ i++; if( ca.getAdministrationDelayAmount() != null
-				&amp;&amp; !ca.isDoseModified() ){ errors.addValidationError("PAG_BR1B_ERR",
-				"'Duration of Delay' must not be provided when 'Dose' is not 'Delayed'.",i); } }
-				return errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
-		</lhs>
-		<rhs>
-			<!--  Error message is already populated -->
-		</rhs>
-	</rule>
+	
 
 	<!-- ==========================================================================
 	RuleName : PAG_BR3_CHK
