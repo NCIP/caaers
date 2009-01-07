@@ -60,7 +60,7 @@ public class TreatmentTabTest extends AeTabTestCase {
                                                                             // doesn't have a base
                                                                             // prop
                         "aeReport.treatmentInformation.courseAgents[2].comments",
-                        "aeReport.treatmentInformation.courseAgents[2].modifiedDose");
+                        "aeReport.treatmentInformation.courseAgents[2].agentAdjustment");
     }
 
     public void testTotalDoseAdministered() throws Exception {
@@ -101,6 +101,7 @@ public class TreatmentTabTest extends AeTabTestCase {
      * "aeReport.treatmentInformation.courseAgents[7].dose.route",
      * subfields.get(2).getPropertyName()); }
      */
+    /* modified does field does not exist any more 
     @SuppressWarnings( { "unchecked" })
     public void testModDoseSubfields() throws Exception {
         InputField modDoseField = getFieldGroup("courseAgent7").getFields().get(8); // modifiedDose
@@ -111,7 +112,7 @@ public class TreatmentTabTest extends AeTabTestCase {
         assertEquals("Wrong subfield 0", "aeReport.treatmentInformation.courseAgents[7].modifiedDose.amount", subfields.get(0).getPropertyName());
         assertEquals("Wrong subfield 1", "aeReport.treatmentInformation.courseAgents[7].modifiedDose.units", subfields.get(1).getPropertyName());
 
-    }
+    }*/
 
     @SuppressWarnings( { "unchecked" })
     public void testAdminDelaySubfields() throws Exception {
