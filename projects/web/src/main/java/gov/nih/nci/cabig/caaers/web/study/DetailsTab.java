@@ -192,10 +192,12 @@ public class DetailsTab extends StudyTab {
                 errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
             }
 
+/*
             if (command.getStudy().getOtherMeddra() == null) {
                 InputField field = fieldGroups.get("scFieldGroup").getFields().get(3);
                 errors.rejectValue(field.getPropertyName(), "REQUIRED", "Missing " + field.getDisplayName());
             }
+*/
         }
 
         // Disease coding terminology
