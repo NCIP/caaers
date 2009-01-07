@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
@@ -9,8 +10,6 @@ import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;
@@ -21,7 +20,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
 
 /**
@@ -88,8 +86,11 @@ public class TreatmentTab extends AeTab {
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
         InputFieldAttributes.setRows(commentsField, 4);
-        InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
-        modifiedDoseField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
+        //InputField modifiedDoseField = createDoseField("modifiedDose", "Modified dose", false, true);
+        InputField modifiedDoseField = InputFieldFactory.createSelectField("agentAdjustment",
+                "Dose Modification?", false,
+                WebUtils.collectOptions(Arrays.asList(AgentAdjustment.values()), null, "displayName","Please Select"));
+       // modifiedDoseField.getAttributes().put(InputField.HELP,"ae.treatment.aeReport.treatmentInformation.courseAgents.modifiedDose");
         
         creator.createRepeatingFieldGroup("courseAgent", 
         		"treatmentInformation.courseAgents", 
@@ -105,21 +106,19 @@ public class TreatmentTab extends AeTab {
                 modifiedDoseField);
     }
 
-    private CompositeField createDoseField(String doseProperty, String displayName,
-                    boolean required, boolean hideRoute) {
-    	FieldValidator[] validators = (required) ? new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR} : new FieldValidator[]{FieldValidator.NUMBER_VALIDATOR};
-        DefaultInputFieldGroup group = new DefaultInputFieldGroup(null, displayName).addField(
-                        InputFieldFactory.createTextField("amount", "", validators)).addField(
-                        InputFieldFactory.createSelectField("units", "units", false,
-                        		WebUtils.collectOptions(configurationProperty
-                                                        .getMap().get("agentDoseUMORefData"),
-                                                        "code", "desc", "Please Select")));
-        if (!hideRoute) {
-            group.addField(InputFieldFactory
-                            .createTextField("route", "route", false /* never required */));
-        }
-        return new CompositeField(doseProperty, group);
-    }
+ //   private CompositeField createDoseField(String doseProperty, String displayName,
+   //                 boolean required, boolean hideRoute) {
+    //	FieldValidator[] validators = (required) ? new FieldValidator[]{FieldValidator.NOT_NULL_VALIDATOR, FieldValidator.NUMBER_VALIDATOR} : new FieldValidator[]{FieldValidator.NUMBER_VALIDATOR};
+      //  DefaultInputFieldGroup group = new DefaultInputFieldGroup(null, displayName).addField(
+        //                InputFieldFactory.createTextField("amount", "", validators)).addField(
+          //              InputFieldFactory.createSelectField("units", "units", false,
+            //            		WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select")));
+        //if (!hideRoute) {
+          //  group.addField(InputFieldFactory
+            //                .createTextField("route", "route", false /* never required */));
+        //}
+        //return new CompositeField(doseProperty, group);
+    //}
 
     private Map<Object, Object> collectTreatmentAssignmentCodes(
                     ExpeditedAdverseEventInputCommand command) {
