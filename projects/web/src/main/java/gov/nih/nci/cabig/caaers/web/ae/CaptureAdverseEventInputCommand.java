@@ -17,6 +17,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -189,6 +190,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			if(this.assignment != null)
 				this.assignment.getParticipant().getIdentifiers();
 		}
+    }
+    
+    public void initializeObjectsInCommand(){
+    	if(study == null) return;
+    	 if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
+         boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
+         if (isCTCStudy){
+        	 List<AdverseEvent> aes = getAdverseEvents();
+        	 if(aes != null){
+        		 for (AdverseEvent ae: aes) {
+                     ae.getAdverseEventTerm().isOtherRequired();
+                     ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
+                     ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+                 }
+        	 }
+         }
+             
     }
     
     /**
