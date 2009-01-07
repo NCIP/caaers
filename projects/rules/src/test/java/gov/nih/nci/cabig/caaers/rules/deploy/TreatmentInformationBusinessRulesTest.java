@@ -324,13 +324,14 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
      */
+    /* these rules are disabled , so no need of this rule
     public void testModifiedDose_Alone() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
             Dose d = new Dose();
             d.setAmount(new BigDecimal(9));
             d.setUnits("KK");
-         //   ca.setModifiedDose(d);
+            ca.setModifiedDose(d);
         }
         ValidationErrors errors = fireRules(aeReport);
 
@@ -339,13 +340,14 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertEquals("There should be 2 errors", 2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR1A_ERR", errors.getErrorAt(0).getCode());
 
-    }
+    }*/
 
     /**
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
      * Translated Logic : 'Administration delay' must be provided if 'Dose modified' is checked
      * Error Code PAG_BR1A_ERR Error Message : DELAY must be provided if the AGENT_DELAYED is "Yes"
      */
+    /* these rules are disabled , so no need of this rule
     public void testModifiedDose_Alone_For_OneOutOfTwo() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         int i = 0;
@@ -355,7 +357,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
             Dose d = new Dose();
             d.setAmount(new BigDecimal(9));
             d.setUnits("KK");
-          //  ca.setModifiedDose(d);
+            ca.setModifiedDose(d);
         }
         ValidationErrors errors = fireRules(aeReport);
 
@@ -366,7 +368,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertEquals("Error replacement value should be 1", 2, errors.getErrorAt(0)
                 .getReplacementVariables()[0]);
 
-    }
+    }*/
 
     /**
      * RuleName : PAG_BR1A_CHK Logic : 'Duration of Delay' must be provided when 'Dose' is 'Delayed
@@ -378,6 +380,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
      * is not checked Error Code PAG_BR1B_ERR Error Message : DELAY_UOM must not be provided if the
      * AGENT_DELAYED is not "Yes"
      */
+    /* these rules are disabled , so no need of this rule
     public void testAdminDelay_Alone() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
@@ -391,7 +394,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
         assertEquals("There should be 2 errors", 2, errors.getErrorCount());
         assertEquals("Error code should be same", "PAG_BR1B_ERR", errors.getErrorAt(0).getCode());
 
-    }
+    }*/
 
     /**
      * RuleName : PAG_BR3_CHK Rule : 'Date Last Administered' must be provided for an
