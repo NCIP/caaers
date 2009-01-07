@@ -931,14 +931,9 @@
     <field name="dose" type="gov.nih.nci.cabig.caaers.domain.Dose">
       <bind-xml name="Dose"/>
     </field>
-    <field name="modifiedDose" type="gov.nih.nci.cabig.caaers.domain.Dose">
-      <bind-xml name="ModifiedDose"/>
+    <field name="agentAdjustment" type="gov.nih.nci.cabig.caaers.domain.AgentAdjustment">
+      <bind-xml name="AgentAdjustment"/>
     </field>
-    <!-- 
-    <field name="TreatmentInformation" type="gov.nih.nci.cabig.caaers.domain.TreatmentInformation">
-      <bind-xml name="TreatmentInformation"/>
-    </field>
-    -->
     <field name="StudyAgent" type="gov.nih.nci.cabig.caaers.domain.StudyAgent">
       <bind-xml name="StudyAgent"/>
     </field>
