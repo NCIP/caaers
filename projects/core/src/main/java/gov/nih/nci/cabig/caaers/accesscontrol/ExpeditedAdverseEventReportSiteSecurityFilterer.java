@@ -6,11 +6,9 @@ import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
-import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 import java.util.Iterator;
 import java.util.List;
@@ -81,21 +79,21 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
      //   	Study study = expeditedAdverseEventReport.getStudy();     	
         	
 			if (studyFilteringRequired) {
-				if (!isAuthorized(researchStaff.getId(),expeditedAdverseEventReport.getAssignment())) {
+				if (!isResearchStaffOrganizationPartOfStudySites(researchStaff.getId(),expeditedAdverseEventReport.getAssignment())) {
 					isAuthorizedOnThisStudy=false;
 				}
 			}
 			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-        	if (!isAuthorized(organization,expeditedAdverseEventReport.getAssignment()) || !isAuthorizedOnThisStudy) {
+        	if (!isAuthorized(organization,expeditedAdverseEventReport.getAssignment(),organization.getNciInstituteCode()) || !isAuthorizedOnThisStudy) {
         		filterer.remove(expeditedAdverseEventReport);
         	}
         }
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(Organization studySite, StudyParticipantAssignment assignment) {
+	private boolean isAuthorized(Organization studySite, StudyParticipantAssignment assignment, String researchStaffOrganozation) {
 		// check if user is part of co-ordinating center 
-		if (studySite.getNciInstituteCode().equals(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+		if (researchStaffOrganozation.equals(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		
 		Organization organization = assignment.getStudySite().getOrganization();
 		//for (StudyOrganization so:soList) {
@@ -107,17 +105,19 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer implements DomainOb
 		//}
 		return false;
 	}
-	private boolean isAuthorized(Integer researchStaffId, StudyParticipantAssignment assignment) {
+	private boolean isResearchStaffOrganizationPartOfStudySites(Integer researchStaffId, StudyParticipantAssignment assignment) {
 
-		StudyOrganization so = assignment.getStudySite();//.getOrganization();
-		//for (StudyOrganization so:soList) {
+		//StudyOrganization so = assignment.getStudySite();//.getOrganization();
+		List<StudyOrganization> soList = assignment.getStudySite().getStudy().getStudyOrganizations();
+
+		for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
 			for (StudyPersonnel sp:spList) {
 				if (sp.getResearchStaff().getId().equals(researchStaffId)) {
 					return true;
 				}
 			}
-		//}
+		}
 		return false;
 	}
 	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {

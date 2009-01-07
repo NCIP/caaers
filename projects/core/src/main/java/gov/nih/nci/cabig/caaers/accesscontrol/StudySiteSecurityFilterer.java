@@ -55,8 +55,8 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
         ResearchStaff researchStaff = rsList.get(0);
         Organization organization = researchStaff.getOrganization();
         
-		StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
-		studySite.setNciInstituteCode(organization.getNciInstituteCode());
+		//StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
+		//studySite.setNciInstituteCode(organization.getNciInstituteCode());
 		
 		boolean studyFilteringRequired = false ; 
 		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
@@ -96,12 +96,12 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
         		isAuthorizedOnThisStudy = true;
             	// study level filtering for SLRR
     			if (studyFilteringRequired) {
-    				if (!isAuthorized(researchStaff.getId(),studyDomainObj)) {
+    				if (!isResearchStaffAssignedToStudy(researchStaff.getId(),studyDomainObj)) {
     					isAuthorizedOnThisStudy=false;
     				}
     			}
     			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-            	if (!isAuthorized(studySite, null, studyDomainObj) || !isAuthorizedOnThisStudy) {
+            	if (!isAuthorized(organization.getNciInstituteCode(), null, studyDomainObj) || !isAuthorizedOnThisStudy) {
             		filterer.remove(studyDomainObj);
             	}
         	} else {
@@ -109,12 +109,12 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 	        	isAuthorizedOnThisStudy = true;
 	        	// study level filtering for SLRR
 				if (studyFilteringRequired) {
-					if (!isAuthorized(researchStaff.getId(),study)) {
+					if (!checkResearchStaff(researchStaff.getId(),study)) {
 						isAuthorizedOnThisStudy=false;
 					}
 				}
 				//if not SLRR , or SLRR is authorized , then apply site level filtering.
-	        	if (!isAuthorized(studySite,study, null) || !isAuthorizedOnThisStudy) {
+	        	if (!isAuthorized(organization.getNciInstituteCode(), study, null) || !isAuthorizedOnThisStudy) {
 	        		filterer.remove(study);
 	        	}
         	}
@@ -122,35 +122,35 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, StudySearchableAjaxableDomainObject study, Study studyDomainObj) {
+	private boolean isAuthorized(String researchStaffOrganization, StudySearchableAjaxableDomainObject study, Study studyDomainObj) {
 		// check if user is part of co-ordinating center 
 		if (studyDomainObj == null ) {
-			if (studySite.getNciInstituteCode().equals(study.getCoordinatingCenterCode())) return true;
+			if (researchStaffOrganization.equals(study.getCoordinatingCenterCode())) return true;
 			studyDomainObj = studyDao.getById(study.getId()) ;
 		} else  {
-			if (studySite.getNciInstituteCode().equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+			if (researchStaffOrganization.equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		}
-		return isAuthorized(studySite,studyDomainObj);
+		return isResearchStaffOrganizationPartOfStudySites(researchStaffOrganization,studyDomainObj);
 		
 	}
 
-	private boolean isAuthorized(StudySiteAjaxableDomainObject studySite, Study study) {
+	private boolean isResearchStaffOrganizationPartOfStudySites( String researchStaffOrganization, Study study) {
 		List<StudyOrganization> soList = study.getStudyOrganizations();
 		for (StudyOrganization so:soList) {
 			if (so instanceof StudySite) {
-				if (studySite.getNciInstituteCode().equals(so.getOrganization().getNciInstituteCode())) {
+				if (researchStaffOrganization.equals(so.getOrganization().getNciInstituteCode())) {
 					return true;
 				}
 			}			
 		}
 		return false;
 	}
-	private boolean isAuthorized(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
+	private boolean checkResearchStaff(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
 		Study s = studyDao.getById(study.getId()) ;
-		return isAuthorized(researchStaffId,s);
+		return isResearchStaffAssignedToStudy(researchStaffId,s);
 
 	}
-	private boolean isAuthorized(Integer researchStaffId, Study study) {
+	private boolean isResearchStaffAssignedToStudy(Integer researchStaffId, Study study) {
 		// TODO
 		// Query is not doing outer join on research staff , need to fix the query. 
 		// temp fix is getting study object for DAO.
