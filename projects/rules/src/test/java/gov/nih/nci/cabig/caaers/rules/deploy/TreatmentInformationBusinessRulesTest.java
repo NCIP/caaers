@@ -310,7 +310,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
             Dose d = new Dose();
             d.setAmount(new BigDecimal(9));
             d.setUnits("KK");
-            ca.setModifiedDose(d);
+           // ca.setModifiedDose(d);
         }
 
         ValidationErrors errors = fireRules(aeReport);
@@ -330,7 +330,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
             Dose d = new Dose();
             d.setAmount(new BigDecimal(9));
             d.setUnits("KK");
-            ca.setModifiedDose(d);
+         //   ca.setModifiedDose(d);
         }
         ValidationErrors errors = fireRules(aeReport);
 
@@ -355,7 +355,7 @@ public class TreatmentInformationBusinessRulesTest extends AbstractBusinessRules
             Dose d = new Dose();
             d.setAmount(new BigDecimal(9));
             d.setUnits("KK");
-            ca.setModifiedDose(d);
+          //  ca.setModifiedDose(d);
         }
         ValidationErrors errors = fireRules(aeReport);
 
