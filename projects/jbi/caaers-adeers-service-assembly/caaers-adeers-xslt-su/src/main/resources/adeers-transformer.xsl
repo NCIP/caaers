@@ -694,18 +694,22 @@
                 </xsl:if>
 
 
-                <xsl:if test="ModifiedDose/amount">
-                    <xsl:variable name="adjusted" select="ModifiedDose/amount"/>
-                    <xsl:if test="$adjusted &gt; $totalDose">
-                        <AGENT_ADJUSTMENT>Dose increased</AGENT_ADJUSTMENT>
-                    </xsl:if>
-                    <xsl:if test="$adjusted = $totalDose">
-                        <AGENT_ADJUSTMENT>Dose not changed</AGENT_ADJUSTMENT>
-                    </xsl:if>
-                    <xsl:if test="$adjusted &lt; $totalDose">
-                        <AGENT_ADJUSTMENT>Dose reduced</AGENT_ADJUSTMENT>
-                    </xsl:if>
+                <xsl:if test="AgentAdjustment='DOSE_INCREASED'">
+                	<AGENT_ADJUSTMENT>Dose increased</AGENT_ADJUSTMENT>
                 </xsl:if>
+                <xsl:if test="AgentAdjustment='DOSE_NOTCHANGED'">
+                	<AGENT_ADJUSTMENT>Dose not changed</AGENT_ADJUSTMENT>
+                </xsl:if>
+                <xsl:if test="AgentAdjustment='DOSE_REDUCED'">
+                	<AGENT_ADJUSTMENT>Dose reduced</AGENT_ADJUSTMENT>
+                </xsl:if>
+                <xsl:if test="AgentAdjustment='DRUG_WITHDRAWN'">
+                	<AGENT_ADJUSTMENT>Drug withdrawn</AGENT_ADJUSTMENT>
+                </xsl:if>
+                <xsl:if test="AgentAdjustment='NA'">
+                	<AGENT_ADJUSTMENT>Not applicable</AGENT_ADJUSTMENT>
+                </xsl:if>
+                
                 <xsl:choose>
                     <xsl:when test="administrationDelayAmount">
                         <AGENT_DELAYED>Yes</AGENT_DELAYED>
