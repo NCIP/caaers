@@ -137,7 +137,7 @@ public class Fixtures {
     }
     
     public static ReportMandatoryFieldDefinition  createMandatoryField(String path, Mandatory m){
-    	ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition();
+    	ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
     	mf.setFieldPath(path);
     	mf.setMandatory(m);
     	return mf;
@@ -339,7 +339,7 @@ public class Fixtures {
         return studyCoordinatingCenter;
     }
     
-    private static Investigator createInvestigator(String name){
+    public static Investigator createInvestigator(String name){
     	Investigator inv = new Investigator();
     	inv.setFirstName("FN" + name);
     	inv.setLastName("LN" + name);

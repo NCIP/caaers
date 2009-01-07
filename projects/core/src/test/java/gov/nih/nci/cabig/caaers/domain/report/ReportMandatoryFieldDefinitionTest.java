@@ -11,7 +11,7 @@ public class ReportMandatoryFieldDefinitionTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        def = new ReportMandatoryFieldDefinition();
+        def = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
     }
 
     public void testIsMandatoryWithNullMandatoryField() throws Exception {

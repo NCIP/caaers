@@ -116,7 +116,7 @@ public class ReportDefinitionConverter {
 		List<ReportMandatoryFieldDefinition> mandatoryFields = new ArrayList<ReportMandatoryFieldDefinition>();
 		
 		for(gov.nih.nci.cabig.caaers.reportdefinition.ReportMandatoryFieldDefinition repoDefinition : reportDefinitionDto.getMandatoryField()){
-			reportMandatoryFieldDefinition = new ReportMandatoryFieldDefinition();
+			reportMandatoryFieldDefinition = new ReportMandatoryFieldDefinition("", Mandatory.OPTIONAL);
 			reportMandatoryFieldDefinition.setFieldPath(repoDefinition.getFieldPath());
 			if("OPTIONAL".equals(repoDefinition.getMandatory())){
 				reportMandatoryFieldDefinition.setMandatory(Mandatory.OPTIONAL);

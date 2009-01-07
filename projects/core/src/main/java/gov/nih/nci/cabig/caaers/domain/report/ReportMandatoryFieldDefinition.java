@@ -24,7 +24,6 @@ public class ReportMandatoryFieldDefinition extends AbstractMutableDomainObject 
     private Mandatory mandatory;
 
     public ReportMandatoryFieldDefinition() {
-        this("", Mandatory.OPTIONAL);
     }
 
     public ReportMandatoryFieldDefinition(String fieldPath) {
