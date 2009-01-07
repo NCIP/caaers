@@ -50,11 +50,12 @@ public class CourseAgentTest extends AbstractTestCase {
 
         studyAgent = new StudyAgent();
         studyAgent.setId(1);
+        /*
         modifiedDose = new Dose();
         modifiedDose.setAmount(new BigDecimal(4));
         modifiedDose.setRoute("route");
         modifiedDose.setUnits("units");
-
+		*/
         dose = new Dose();
         dose.setAmount(new BigDecimal(4));
         dose.setRoute("route");
@@ -76,11 +77,12 @@ public class CourseAgentTest extends AbstractTestCase {
         courseAgent.setGridId("grid id");
         courseAgent.setVersion(2);
 
-        courseAgent.setModifiedDose(modifiedDose);
+    //    courseAgent.setModifiedDose(modifiedDose);
         courseAgent.setLastAdministeredDate(lastAdministeredDate);
         courseAgent.setTotalDoseAdministeredThisCourse(totalDoseAdministeredThisCourse);
         courseAgent.setStudyAgent(studyAgent);
         courseAgent.setTreatmentInformation(treatmentInformation);
+        courseAgent.setAgentAdjustment(AgentAdjustment.DOSE_INCREASED);
 
         courseAgent.setDose(dose);
 
@@ -102,7 +104,7 @@ public class CourseAgentTest extends AbstractTestCase {
         assertEquals("formulation must be same", formulation, copiedCourseAgent.getFormulation());
         assertEquals("solicited must be same", lastAdministeredDate, copiedCourseAgent.getLastAdministeredDate());
         assertEquals("totalDoseAdministeredThisCourse must be same", totalDoseAdministeredThisCourse, copiedCourseAgent.getTotalDoseAdministeredThisCourse());
-
+ 
     }
 
     public void testCopyTreatmentInformation() {
@@ -122,7 +124,7 @@ public class CourseAgentTest extends AbstractTestCase {
 
 
     }
-
+/*
     public void testCopyModifiedDose() {
 
         CourseAgent copiedCourseAgent = courseAgent.copy();
@@ -136,7 +138,7 @@ public class CourseAgentTest extends AbstractTestCase {
 
 
     }
-
+*/
     public void testCopyDose() {
 
         CourseAgent copiedCourseAgent = courseAgent.copy();
@@ -215,7 +217,7 @@ public class CourseAgentTest extends AbstractTestCase {
         assertEquals(DelayUnits.MINUTES, courseAgent.getAdministrationDelayUnits());
         assertEquals("4258.3", courseAgent.getAdministrationDelayAmount().toString());
     }
-
+    
     public void testGetDisplayNameWhenBlank() throws Exception {
         courseAgent = new CourseAgent();
         assertEquals("[no agent]", courseAgent.getDisplayName());
@@ -235,7 +237,7 @@ public class CourseAgentTest extends AbstractTestCase {
         courseAgent.getDose().setRoute("oral");
         assertEquals("Witch hazel (532.1L oral)", courseAgent.getDisplayName());
     }
-
+/*
     public void testIsModifiedDoseWhenNotModified() throws Exception {
         courseAgent.getDose().setAmount(new BigDecimal(37));
         courseAgent.getDose().setRoute("shampoo");
@@ -289,5 +291,10 @@ public class CourseAgentTest extends AbstractTestCase {
         courseAgent.getModifiedDose().setUnits("g");
 
         assertTrue(courseAgent.isDoseModified());
+    }
+    */
+    public void testGetAgentAdjustment() throws Exception {
+        courseAgent.setAgentAdjustment(AgentAdjustment.DOSE_NOTCHANGED);
+        assertEquals(AgentAdjustment.DOSE_NOTCHANGED,courseAgent.getAgentAdjustment());
     }
 }
