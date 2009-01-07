@@ -31,18 +31,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
 
     public void onBind(HttpServletRequest request, T command, Errors errors) {
         super.onBind(request, command, errors);
-        // to fix lazy loading
-        if (command.getStudy() != null) {
-//                command.getStudy().getExpectedAECtcTerms().size();
-                boolean isCTCStudy = command.getStudy().getAeTerminology().getTerm() == Term.CTC;
-                if (isCTCStudy)
-                if (((CaptureAdverseEventInputCommand)command).getAdverseEvents() != null)
-                    for (AdverseEvent ae: ((CaptureAdverseEventInputCommand)command).getAdverseEvents()) {
-                        ae.getAdverseEventTerm().isOtherRequired();
-                        ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                        ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
-                    }
-        }
+        ((CaptureAdverseEventInputCommand)command).initializeObjectsInCommand();
     }
 
     @Override
