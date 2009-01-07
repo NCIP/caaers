@@ -968,13 +968,5 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     	return hasAmendableReport;
     }
     
-    /**
-     * This returns the string that is used as a name in ProcessInstance and TaskInstance (workflow related tables)
-     * 
-     * @return String
-     */
-    @Transient
-    public String getWorkflowIdentifier(){
-    	return "reportFlow-" + getId();
-    }
+    
 }
