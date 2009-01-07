@@ -47,8 +47,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
         Condition condition = new Condition();
         errors = new BindException(new BeanPropertyBindingResult(study, "command"));
         condition.setId(5);
-        study.setCondition("5");
-        
+
         request.setMethod("POST");
         request.setParameter("condition", "5");
         request.setParameter("_action", "addOtherCondition");
@@ -59,6 +58,7 @@ public class DCPDiseaseStudyTest extends WebTestCase {
 
         StudyCommand command  = new StudyCommand();
         command.setStudy(study);
+        command.setCondition("5");
 
         diseaseTab.postProcess(request, command, errors);
 

@@ -89,14 +89,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     private List<CtcCategory> ctcCategories = new ArrayList<CtcCategory>();
 
     // TODO move into Command Object
-    private String[] diseaseTermIds;
-
-    private String diseaseCategoryAsText;
-    private String diseaseLlt;
-    private String condition;
-
-    @Deprecated
-    private int studySiteIndex = -1; // represents the studysite, selected in the (add
     // Investigators page)
 
     private Boolean drugAdministrationTherapyType = Boolean.FALSE;
@@ -301,54 +293,6 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     // / BEAN PROPERTIES
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
-
-    @Transient
-    @Deprecated
-    public int getStudySiteIndex() {
-        return studySiteIndex; // returns the index of the study site selected in investigators
-        // page
-    }
-
-    @Deprecated
-    public void setStudySiteIndex(final int studySiteIndex) {
-        this.studySiteIndex = studySiteIndex;
-    }
-
-    @Transient
-    public String[] getDiseaseTermIds() {
-        return diseaseTermIds;
-    }
-
-    public void setDiseaseTermIds(final String[] diseaseTermIds) {
-        this.diseaseTermIds = diseaseTermIds;
-    }
-
-    @Transient
-    public String getDiseaseCategoryAsText() {
-        return diseaseCategoryAsText;
-    }
-
-    public void setDiseaseCategoryAsText(final String diseaseCategoryAsText) {
-        this.diseaseCategoryAsText = diseaseCategoryAsText;
-    }
-
-    @Transient
-    public String getDiseaseLlt() {
-        return diseaseLlt;
-    }
-
-    public void setDiseaseLlt(final String diseaseLlt) {
-        this.diseaseLlt = diseaseLlt;
-    }
-
-    @Transient
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(final String condition) {
-        this.condition = condition;
-    }
 
     @Deprecated
     @Transient

@@ -44,6 +44,10 @@ public class StudyCommand {
 
     private Study study;
     private int studySiteIndex = -1; 
+    private String[] diseaseTermIds;
+    private String diseaseCategoryAsText;
+    private String diseaseLlt;
+    private String condition;
 
     // ----------------------------------------------------------------------------------------------------------------
     
@@ -59,12 +63,6 @@ public class StudyCommand {
     private DiseaseTerminology diseaseTerminology;
     private String status;
 
-    // TODO move into Command Object
-    private String[] diseaseTermIds;
-
-    private String diseaseCategoryAsText;
-    private String diseaseLlt;
-    private String condition;
 
 
     private Boolean drugAdministrationTherapyType = Boolean.FALSE;
@@ -93,42 +91,6 @@ public class StudyCommand {
     }
 
     // TODO: this stuff should really, really not be in here. It's web-view/entry specific.
-
-    @Transient
-    public String[] getDiseaseTermIds() {
-        return diseaseTermIds;
-    }
-
-    public void setDiseaseTermIds(final String[] diseaseTermIds) {
-        this.diseaseTermIds = diseaseTermIds;
-    }
-
-    @Transient
-    public String getDiseaseCategoryAsText() {
-        return diseaseCategoryAsText;
-    }
-
-    public void setDiseaseCategoryAsText(final String diseaseCategoryAsText) {
-        this.diseaseCategoryAsText = diseaseCategoryAsText;
-    }
-
-    @Transient
-    public String getDiseaseLlt() {
-        return diseaseLlt;
-    }
-
-    public void setDiseaseLlt(final String diseaseLlt) {
-        this.diseaseLlt = diseaseLlt;
-    }
-
-    @Transient
-    public String getCondition() {
-        return condition;
-    }
-
-    public void setCondition(final String condition) {
-        this.condition = condition;
-    }
 
     public String getDescription() {
         return description;
@@ -234,6 +196,42 @@ public class StudyCommand {
 
     public void setStudySiteIndex(final int studySiteIndex) {
         this.studySiteIndex = studySiteIndex;
+    }
+
+    @Transient
+    public String[] getDiseaseTermIds() {
+        return diseaseTermIds;
+    }
+
+    public void setDiseaseTermIds(final String[] diseaseTermIds) {
+        this.diseaseTermIds = diseaseTermIds;
+    }
+
+    @Transient
+    public String getDiseaseCategoryAsText() {
+        return diseaseCategoryAsText;
+    }
+
+    public void setDiseaseCategoryAsText(final String diseaseCategoryAsText) {
+        this.diseaseCategoryAsText = diseaseCategoryAsText;
+    }
+
+    @Transient
+    public String getDiseaseLlt() {
+        return diseaseLlt;
+    }
+
+    public void setDiseaseLlt(final String diseaseLlt) {
+        this.diseaseLlt = diseaseLlt;
+    }
+
+    @Transient
+    public String getCondition() {
+        return condition;
+    }
+
+    public void setCondition(final String condition) {
+        this.condition = condition;
     }
 
 

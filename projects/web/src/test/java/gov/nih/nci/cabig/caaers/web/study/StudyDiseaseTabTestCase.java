@@ -213,7 +213,7 @@ public class StudyDiseaseTabTestCase extends AbstractStudyWebTestCase {
         study.setDiseaseTerminology(new DiseaseTerminology());
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.MEDDRA);
 
-        study.setDiseaseLlt("5");
+        command.setDiseaseLlt("5");
         request.setParameter("_action", "addMeddraStudyDisease");
 
         LowLevelTerm llt = new LowLevelTerm();
@@ -233,7 +233,7 @@ public class StudyDiseaseTabTestCase extends AbstractStudyWebTestCase {
         study.setDiseaseTerminology(new DiseaseTerminology());
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 
-        study.setDiseaseTermIds(new String[] {"1", "2"});
+        command.setDiseaseTermIds(new String[] {"1", "2"});
         request.setParameter("_action", "addStudyDisease");
 
         DiseaseTerm t1 = new DiseaseTerm();
@@ -258,7 +258,7 @@ public class StudyDiseaseTabTestCase extends AbstractStudyWebTestCase {
         study.setDiseaseTerminology(new DiseaseTerminology());
         study.getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.OTHER);
 
-        study.setCondition("8");
+        command.setCondition("8");
         request.setParameter("_action", "addOtherCondition");
 
         Condition c = new Condition();

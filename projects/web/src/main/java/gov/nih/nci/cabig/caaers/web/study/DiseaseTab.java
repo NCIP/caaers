@@ -82,8 +82,8 @@ public class DiseaseTab extends StudyTab {
     public void postProcess(HttpServletRequest request, StudyCommand command, Errors errors) {
         super.postProcess(request, command, errors);
         if (!errors.hasErrors()) {
-            handleStudyDiseaseAction(errors, command.getStudy(), request.getParameter("_action"), request.getParameter("_selected"), request);
-            command.getStudy().setDiseaseLlt(null);
+            handleStudyDiseaseAction(errors, command, request.getParameter("_action"), request.getParameter("_selected"), request);
+            command.setDiseaseLlt(null);
         }
     }
 
@@ -124,18 +124,18 @@ public class DiseaseTab extends StudyTab {
         return false;
     }
 
-    private void handleStudyDiseaseAction(Errors errors, Study study, String action, String selected, HttpServletRequest request) {
+    private void handleStudyDiseaseAction(Errors errors, StudyCommand command, String action, String selected, HttpServletRequest request) {
 
-        if ("addMeddraStudyDisease".equals(action) && study.getDiseaseLlt().length() > 0 && study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
-            String diseaseCode = study.getDiseaseLlt();
+        if ("addMeddraStudyDisease".equals(action) && command.getDiseaseLlt().length() > 0 && command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.MEDDRA) {
+            String diseaseCode = command.getDiseaseLlt();
             MeddraStudyDisease meddraStudyDisease = new MeddraStudyDisease();
             // meddraStudyDisease.setMeddraCode(diseaseCode);
             meddraStudyDisease.setTerm(lowLevelTermDao.getById(Integer.parseInt(diseaseCode)) == null ? lowLevelTermDao.getById(1): lowLevelTermDao.getById(Integer.parseInt(diseaseCode)));
-            study.addMeddraStudyDisease(meddraStudyDisease);
+            command.getStudy().addMeddraStudyDisease(meddraStudyDisease);
         }
 
         if ("removeMeddraStudyDisease".equals(action)) {
-            study.getMeddraStudyDiseases().remove(Integer.parseInt(selected));
+            command.getStudy().getMeddraStudyDiseases().remove(Integer.parseInt(selected));
         }
 
         if (action.equals("addOtherCondition")) {
@@ -144,7 +144,7 @@ public class DiseaseTab extends StudyTab {
             int _c = 0;
 
             try {
-                _c = Integer.parseInt(study.getCondition());
+                _c = Integer.parseInt(command.getCondition());
             } catch (NumberFormatException e) {
                 log.warn("Incorrect ID for the Condition Object.");
                 e.printStackTrace();
@@ -168,30 +168,30 @@ public class DiseaseTab extends StudyTab {
                 }
                 
             }
-            if (!errors.hasErrors()) study.addStudyCondition(studyCondition);
+            if (!errors.hasErrors()) command.getStudy().addStudyCondition(studyCondition);
         }
 
         if (action.equals("removeOtherCondition")) {
             try {
-                study.getStudyConditions().remove(Integer.parseInt(selected));
+                command.getStudy().getStudyConditions().remove(Integer.parseInt(selected));
                 System.out.println("Removing a Condition.");
             } catch (IndexOutOfBoundsException e) {
                 log.warn("No <StudyCondition> at the position: " + selected);
             }
         }
 
-        if ("addStudyDisease".equals(action) && study.getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) {
-            String[] diseases = study.getDiseaseTermIds();
-            log.debug("Study Diseases Size : " + study.getCtepStudyDiseases().size());
+        if ("addStudyDisease".equals(action) && command.getStudy().getDiseaseTerminology().getDiseaseCodeTerm() == DiseaseCodeTerm.CTEP) {
+            String[] diseases = command.getDiseaseTermIds();
+            log.debug("Study Diseases Size : " + command.getStudy().getCtepStudyDiseases().size());
             for (String diseaseId : diseases) {
                 log.debug("Disease Id : " + diseaseId);
                 CtepStudyDisease ctepStudyDisease = new CtepStudyDisease();
                 ctepStudyDisease.setTerm(diseaseTermDao.getById(Integer.parseInt(diseaseId)));
-                study.addCtepStudyDisease(ctepStudyDisease);
+                command.getStudy().addCtepStudyDisease(ctepStudyDisease);
 
             }
         } else if ("removeStudyDisease".equals(action)) {
-            study.getCtepStudyDiseases().remove(Integer.parseInt(selected));
+            command.getStudy().getCtepStudyDiseases().remove(Integer.parseInt(selected));
         }
     }
 

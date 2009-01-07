@@ -24,7 +24,7 @@ Event.observe(window, "load", function() {
 
 function fireAction(action, selected) {
     if (action == 'addMeddraStudyDisease') {
-        if (!$F('study.diseaseLlt')) return;
+        if (!$F('diseaseLlt')) return;
     }
 
     if (action == 'addOtherCondition') {
@@ -56,7 +56,7 @@ function hover(index)
 }
 
 var diseaseAutocompleterProps = {
-    basename: "study.diseaseCategoryAsText",
+    basename: "diseaseCategoryAsText",
     populator: function(autocompleter, text) {
         createStudy.matchDiseaseCategories(text, '', function(values) {
             autocompleter.setChoices(values)
@@ -237,7 +237,7 @@ Event.observe(window, "load", function() {
 
 <c:if test="${diseaseTerminology == 'MEDDRA' }">
     var meddraVersionId = ${meddraVersionId};
-    AE.createStandardAutocompleter('study.diseaseLlt',
+    AE.createStandardAutocompleter('diseaseLlt',
             function(autocompleter, text) {
                 createAE.matchLowLevelTermsByCode(meddraVersionId, text, function(values) {
                     autocompleter.setChoices(values)
@@ -293,7 +293,7 @@ Event.observe(window, "load", function() {
             <chrome:division title="CTEP Disease Terms" id="disease">
                     <p><tags:instructions code="study.study_disease.ctep" /></p>
 
-					<ui:autocompleter path="study.diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
+					<ui:autocompleter path="diseaseCategoryAsText" size="45" enableClearButton="true" initialDisplayValue="Begin typing here..."></ui:autocompleter>
                     
                     <p id="disease-selected" style="display: none"></p>
 
@@ -319,7 +319,7 @@ Event.observe(window, "load", function() {
                     <select multiple size="10" id="disease-sel">
                         <option value="">No Selected Diseases</option>
                     </select> 
-                <form:select id="disease-sel-hidden" size="1" path="study.diseaseTermIds"></form:select>
+                <form:select id="disease-sel-hidden" size="1" path="diseaseTermIds"></form:select>
                        
             </chrome:division>
             </c:if>
@@ -327,7 +327,7 @@ Event.observe(window, "load", function() {
             <c:if test="${diseaseTerminology == 'MEDDRA' }">
             <chrome:division title="${meddraVersion} Terms">
 					<p><tags:instructions code="study.study_disease.meddra" /></p>
-					<ui:autocompleter path="study.diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
+					<ui:autocompleter path="diseaseLlt" enableClearButton="true" initialDisplayValue="Begin typing here..." size="38"/>
                     <input class='ibutton' type='button' onClick="fireAction('addMeddraStudyDisease','0');" value='Add disease'  title='Add disease'/>
             </chrome:division>
             </c:if>

@@ -36,6 +36,10 @@ public class ExpectedAETabTestCase extends AbstractStudyWebTestCase {
     }
 
     public void testReferenceData() {
+        study.setAeTerminology(new AeTerminology());
+        study.getAeTerminology().setCtcVersion(new Ctc());
+        study.getAeTerminology().setTerm(Term.CTC);
+
         replayMocks();
         Map<String, Object> output = tab.referenceData(request, command);
         verifyMocks();
