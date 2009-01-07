@@ -1,13 +1,24 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.springframework.beans.BeanUtils;
-
-import javax.persistence.*;
-import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * This class represents the CourseAgent domain object associated with the Adverse event report.
@@ -30,7 +41,9 @@ public class CourseAgent extends AbstractMutableDomainObject {
 
     private DelayUnits administrationDelayUnits;
 
-    private Dose modifiedDose;
+    private AgentAdjustment agentAdjustment;
+    
+    //private Dose modifiedDose; 
 
     private Date lastAdministeredDate;
 
@@ -91,12 +104,15 @@ public class CourseAgent extends AbstractMutableDomainObject {
         }
         return sb.toString();
     }
-
+    
+    @Deprecated
     @Transient
+    // nee to delete this method . 
     public boolean isDoseModified() {
-        return getModifiedDose().getAmount() != null && !getDose().equals(getModifiedDose());
+        return false;
+    	//return getModifiedDose().getAmount() != null && !getDose().equals(getModifiedDose());
     }
-
+	
     // //// BEAN PROPERTIES
 
     // This is annotated this way so that the IndexColumn in the parent
@@ -130,7 +146,8 @@ public class CourseAgent extends AbstractMutableDomainObject {
     public void setDose(Dose dose) {
         this.dose = dose;
     }
-
+    /*
+    @Deprecated
     @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "amount", column = @Column(name = "modified_dose_amount")),
@@ -140,11 +157,11 @@ public class CourseAgent extends AbstractMutableDomainObject {
         if (modifiedDose == null) modifiedDose = new Dose();
         return modifiedDose;
     }
-
+    @Deprecated
     public void setModifiedDose(Dose modifiedDose) {
         this.modifiedDose = modifiedDose;
     }
-
+	*/
     public String getDurationAndSchedule() {
         return durationAndSchedule;
     }
@@ -211,18 +228,26 @@ public class CourseAgent extends AbstractMutableDomainObject {
     public void setFormulation(String formulation) {
         this.formulation = formulation;
     }
+    
+    @Column(name = "agent_adjustment_code")
+	public AgentAdjustment getAgentAdjustment() {
+		return agentAdjustment;
+	}
 
+	public void setAgentAdjustment(AgentAdjustment agentAdjustment) {
+		this.agentAdjustment = agentAdjustment;
+	}
 
     public CourseAgent copy() {
         CourseAgent courseAgent = new CourseAgent();
         BeanUtils.copyProperties(this, courseAgent,
                 new String[]{"id", "gridId", "version",
-                        "primaryTreatmentApproximateTime", "adverseEventCourse", "courseAgentsInternal", "treatmentInformation"
-                        , "modifiedDose", "dose"});
+                        "primaryTreatmentApproximateTime", "adverseEventCourse", "courseAgentsInternal", "treatmentInformation","dose"});
 
-        courseAgent.setModifiedDose(getModifiedDose().copy());
         courseAgent.setDose(getDose().copy());
         return courseAgent;
 
     }
+
+
 }
