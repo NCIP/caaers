@@ -117,11 +117,26 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
+    public void onDisplay(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd) {
+    	EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
         super.onDisplay(request, command);
 
         boolean severe = true;
         request.setAttribute("oneOrMoreSevere", severe);
+        
+        //only process if we are editing the expedited report (ammend or edit flow)
+        if (command.getAeReport().getId() != null) {
+        	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
+            if(StringUtils.equals("amendReport", action) || StringUtils.equals("editReport", action)){
+            	
+            	//process the ammend and editflow
+            	processEditAndAmmendReportFlow(command, StringUtils.equals("amendReport", action));
+            	
+            	// Remove the attributes from the session
+                request.getSession().removeAttribute(ACTION_PARAMETER);
+            }
+        }
+        
     }
 
     @SuppressWarnings("deprecation")
@@ -139,132 +154,147 @@ public class ReporterTab extends AeTab {
     public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd,
                             Errors errors) {
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
-        // only do postProcess, if we are moving forward or if the AE report is already persistent
-        if ((command.getNextPage() >= getNumber()) || command.getAeReport().getId() != null) {
-
-            List<ReportDefinition> newReportDefs = new ArrayList<ReportDefinition>();
-            List<Report> amendReportList = new ArrayList<Report>();
-            List<Report> withdrawReportList = new ArrayList<Report>();
-
-            String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
-            //command.initializeNewlySelectedReportDefinitions();
-            command.setNewlySelectedDefs(command.getSelectedReportDefinitions());
-            command.classifyNewlySelectedReportsDefinitons();
-            Map<ReportDefinition, ReportStatus> existingReportMap = initilizeExistingReportMap(command);
-
-            // Logic for CREATE-NEW FLOW
-            if (StringUtils.equals("createNew", action)) {
-                newReportDefs.addAll(command.getNewlySelectedDefs());
-            }
-
-            // Logic for EDIT-FLOW
-            // CASE(A) Newly selected amendable sponsor report is earlier
-            //         - withdraw the existing amendable sponsor report
-            // CASE(B) Newly selected amendable sponsor report is later
-            //         - ignore the newly selected amendable sponsor report
-
-            // - add all non-amendable reports if they don't exist or are already submitted/withdrawn
-            // - add all non-organizational reports if they don't exist or are already submitted/withdrawn.
-            if (StringUtils.equals("editReport", action)) {
-                if (command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
-                    if (command.isNewlySelectedReportEarlier()) {
-                        // This is CASE(A)
-                        // Firstly, Withdraw the pending amendable sponsor reports.
-                        Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
-                        for (ReportDefinition reportDefinition : command.getNewlySelectedSponsorReports())
-                            sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
-
-                        String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-
-                        for (Report report : command.getAeReport().getReports()) {
-                            if (report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
-                                    && report.getReportDefinition().getAmendable()) {
-                                existingReportMap.remove(report.getReportDefinition());
-                                withdrawReportList.add(report);
-                            }
-                        }
-                    } else {
-                        // This is CASE(B)
-                        // Here we ignore the newlySelectedSponsorReports.
-                        // So we set the newlySelectedDefs with OtherSelectedReports
-                        command.setNewlySelectedDefs(command.getOtherSelectedReports());
-                    }
-                }
-            }
-
-            if (StringUtils.equals("amendReport", action) || StringUtils.equals("editReport", action)) {
-                // For Sponsor/amendable newlySelectedReport take the following action
-                //        - create New report if it doesnt exist
-                //        - amend if it exists (also instantiate Notifications)
-
-                // For other reports take the following action
-                //         - create New report if it doesnt exist
-                //         - amend if it exists and has status = SUBMITTED/WITHDRAWN
-                //         - ignore if it exists and the status = PENDING.
-                for (ReportDefinition reportDefinition : command.getNewlySelectedDefs()) {
-                    if (!existingReportMap.containsKey(reportDefinition))
-                        newReportDefs.add(reportDefinition);
-                    else {
-                        if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
-                                existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
-                            for (Report report : command.getAeReport().getReports()) {
-                                if (report.getReportDefinition().equals(reportDefinition))
-                                    amendReportList.add(report);
-                            }
-                    }
-                }
-            }
-
-
-            // Create the newly Selected Reports that need to be created.
-            if (newReportDefs.size() > 0) {
-            	List<Report> newlyCreatedReports = null;
-            	// Incase of amend and createNew the new reportVersion is incremented and assigned to the reports created 
-            	// Incase of edit the currentVersion number is assigned to the new reports created.
-            	if(StringUtils.equals(action, "amendReport") || StringUtils.equals(action, "createNew"))
-            		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
-            	else
-            		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
-            	
-/*            	//enact the workflow
-            	if(newlyCreatedReports != null){
-            		for(Report report : newlyCreatedReports){
-            			  //enact workflow
-            	        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
-            	        if(pInstance != null){
-            	        	Long lwfId = pInstance.getId();
-            	        	int workflowId = lwfId.intValue();
-            	        	report.setWorkflowId(workflowId);
-            	        	report.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
-            	        }
-            		}
-            	}
-*/
-            }
-
-            // Withdraw the reports to be withdrawn
-            command.withdrawReports(withdrawReportList);
-
-            // Amend the reports to be amended
-            command.amendReports(amendReportList);
-
-            if (command.getAeReport().getReports().size() > 0) {
-                command.save();
-            }
-
-            // find the new mandatory sections
-            command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
-
-            // refresh the mandatory fields
-            command.refreshMandatoryProperties();
-
-            command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
-
-            // Remove the attributes from the session
+        String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
+        if (StringUtils.equals("createNew", action)) {
+        	processForCreateNewFlow(command);
+        	// Remove the attributes from the session
             request.getSession().removeAttribute(ACTION_PARAMETER);
         }
+       
     }
+    
+    
+    public void refreshMandatorySectionsAndProperties(EditExpeditedAdverseEventCommand command) {
+    	// find the new mandatory sections
+        command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
 
+        // refresh the mandatory fields
+        command.refreshMandatoryProperties();
+    }
+    
+    
+    public void processEditAndAmmendReportFlow(EditExpeditedAdverseEventCommand command, boolean isAmmendFlow){
+    	 List<ReportDefinition> newReportDefs = new ArrayList<ReportDefinition>();
+         List<Report> amendReportList = new ArrayList<Report>();
+         List<Report> withdrawReportList = new ArrayList<Report>();
+
+         //command.initializeNewlySelectedReportDefinitions();
+         command.setNewlySelectedDefs(command.getSelectedReportDefinitions());
+         command.classifyNewlySelectedReportsDefinitons();
+         Map<ReportDefinition, ReportStatus> existingReportMap = initilizeExistingReportMap(command);
+
+    
+
+         // Logic for EDIT-FLOW
+         // CASE(A) Newly selected amendable sponsor report is earlier
+         //         - withdraw the existing amendable sponsor report
+         // CASE(B) Newly selected amendable sponsor report is later
+         //         - ignore the newly selected amendable sponsor report
+
+         // - add all non-amendable reports if they don't exist or are already submitted/withdrawn
+         // - add all non-organizational reports if they don't exist or are already submitted/withdrawn.
+         if(!isAmmendFlow){
+        	 if (command.getNewlySelectedDefs() != null && !command.getNewlySelectedDefs().isEmpty()) {
+                 if (command.isNewlySelectedReportEarlier()) {
+                     // This is CASE(A)
+                     // Firstly, Withdraw the pending amendable sponsor reports.
+                     Map<ReportDefinition, Boolean> sponsorNewlySelectedMap = new HashMap<ReportDefinition, Boolean>();
+                     for (ReportDefinition reportDefinition : command.getNewlySelectedSponsorReports())
+                         sponsorNewlySelectedMap.put(reportDefinition, Boolean.TRUE);
+
+                     String nciInstituteCode = command.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+
+                     for (Report report : command.getAeReport().getReports()) {
+                         if (report.getLastVersion().getReportStatus().equals(ReportStatus.PENDING) && report.isSponsorReport(nciInstituteCode)
+                                 && report.getReportDefinition().getAmendable()) {
+                             existingReportMap.remove(report.getReportDefinition());
+                             withdrawReportList.add(report);
+                         }
+                     }
+                 } else {
+                     // This is CASE(B)
+                     // Here we ignore the newlySelectedSponsorReports.
+                     // So we set the newlySelectedDefs with OtherSelectedReports
+                     command.setNewlySelectedDefs(command.getOtherSelectedReports());
+                 }
+             }
+         }
+
+
+         // For Sponsor/amendable newlySelectedReport take the following action
+         //        - create New report if it doesnt exist
+         //        - amend if it exists (also instantiate Notifications)
+
+         // For other reports take the following action
+         //         - create New report if it doesnt exist
+         //         - amend if it exists and has status = SUBMITTED/WITHDRAWN
+         //         - ignore if it exists and the status = PENDING.
+         for (ReportDefinition reportDefinition : command.getNewlySelectedDefs()) {
+             if (!existingReportMap.containsKey(reportDefinition))
+                 newReportDefs.add(reportDefinition);
+             else {
+                 if (existingReportMap.get(reportDefinition).equals(ReportStatus.COMPLETED) ||
+                         existingReportMap.get(reportDefinition).equals(ReportStatus.WITHDRAWN))
+                     for (Report report : command.getAeReport().getReports()) {
+                         if (report.getReportDefinition().equals(reportDefinition))
+                             amendReportList.add(report);
+                     }
+             }
+         }
+     
+
+         // Create the newly Selected Reports that need to be created.
+         if (newReportDefs.size() > 0) {
+         	List<Report> newlyCreatedReports = null;
+         	// Incase of amend the new reportVersion is incremented and assigned to the reports created 
+         	// Incase of edit the currentVersion number is assigned to the new reports created.
+         	if(isAmmendFlow)
+         		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
+         	else
+         		newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, true);
+         	
+//         	enactWorkflow(newlyCreatedReports);
+         }
+         
+         // Withdraw the reports to be withdrawn
+         command.withdrawReports(withdrawReportList);
+
+         // Amend the reports to be amended
+         command.amendReports(amendReportList);
+
+         if (command.getAeReport().getReports().size() > 0) {
+             command.save();
+         }
+         
+         //refresh the mandatory sections and properties
+         refreshMandatorySectionsAndProperties(command);
+
+         command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
+    }
+    
+    public void processForCreateNewFlow(EditExpeditedAdverseEventCommand command){
+    	
+    	//command.initializeNewlySelectedReportDefinitions();
+        command.setNewlySelectedDefs(command.getSelectedReportDefinitions());
+        command.classifyNewlySelectedReportsDefinitons();
+        
+    	List<ReportDefinition> newReportDefs = new ArrayList<ReportDefinition>();
+    	newReportDefs.addAll(command.getNewlySelectedDefs());
+        // Create the newly Selected Reports that need to be created.
+        if (newReportDefs.size() > 0) {
+        	List<Report> newlyCreatedReports = null;
+        	// Incase createNew the new reportVersion is incremented and assigned to the reports created 
+        	newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
+//        	enactWorkflow(newlyCreatedReports);
+        	
+        	command.save();
+        }
+        //figureout the mandatory sections
+        refreshMandatorySectionsAndProperties(command);
+        
+        command.setSelectedReportDefinitions(new ArrayList<ReportDefinition>());
+    }
+    
     /**
      * It creates a map with the reportDefinitons of the "command.aeReport.reports" as the key
      * and "command.aeReport.report.lastVersion.reportStatus" as the value.
@@ -281,6 +311,25 @@ public class ReporterTab extends AeTab {
         }
 
         return map;
+    }
+    
+    /**
+     * This method will spawn the workflow for newly created reports
+     * @param newlyCreatedReports
+     */
+    public void enactWorkflow(List<Report> newlyCreatedReports){
+    	if(newlyCreatedReports != null){
+    		for(Report report : newlyCreatedReports){
+    			  //enact workflow
+    	        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
+    	        if(pInstance != null){
+    	        	Long lwfId = pInstance.getId();
+    	        	int workflowId = lwfId.intValue();
+    	        	report.setWorkflowId(workflowId);
+    	        	report.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+    	        }
+    		}
+    	}
     }
 
     @Required
