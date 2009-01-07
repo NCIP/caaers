@@ -9,6 +9,7 @@ AE.tabbedFlowUpdateTarget = function(evt) {
     }else{
     	if ($('command')._finish) $('command')._finish.disable()
     }
+    AE.checkForModification = false;
     AE.tabbedFlowDisableTarget(evt);
 }
 
@@ -19,6 +20,7 @@ AE.tabbedFlowSelectAndSubmit = function(click) {
 }
 
 AE.tabbedFlowDisableTarget = function(click) {
+	AE.checkForModification = false;
 	//click.target.disble() - the event submission process stops in case of IE7,so using hide().
 	/*
 	var btn = $(click.target);

@@ -3,6 +3,10 @@ var AE = { }
 
 AE.INDICATOR_REF_COUNTS = { };
 AE.hash = new Hash();
+// This is checked when the user tries to go away from the captureAdverseEvents page.
+// If the user clicks "Save and Continue" or "Save" or "Save and Back" then the check need not be performed
+// and hence the flag 'checkForModification is set to "false" in that case.
+AE.checkForModification = true; 
 
 // this stuff should technically be synchronized.  Let see if it causes a problem.
 AE.showIndicator = function(id) {

@@ -109,7 +109,7 @@
             Element.insert(this.rpDetailsDiv, rpDetails);
             Effect.Appear(this.rpDetailsDiv);
             this.showOrHideEditRPCtrl();
-
+			oldSignatures = getSignatures('.ae-section');
         },
 
         clearRPDetails :function() {
@@ -268,19 +268,23 @@
         }
         return arr;
     }
+    
+    function checkForModificationsOnPage(event){
+    	if(AE.checkForModification){
+	    	var newSignatures = new Array();
+   	    	newSignatures = getSignatures('.ae-section');
+   	    	
+        	if (oldSignatures.length != newSignatures.length) hasChanges = true;
+        
+       		for (var i = 0; i < oldSignatures.length; i++) {
+            	if (oldSignatures[i] != newSignatures[i]) hasChanges = true;
+        	}
+    	}
+    }
 
     // ----------------------------------------------------------------------------------------------------------------
 
     function checkSubmittedAEs(event) {
-
-        var newSignatures = new Array();
-        newSignatures = getSignatures('.ae-section');
-
-        if (oldSignatures.length != newSignatures.length) hasChanges = true;
-        
-        for (var i = 0; i < oldSignatures.length; i++) {
-            if (oldSignatures[i] != newSignatures[i]) hasChanges = true;
-        }
 
         var reportIdArray = new Array();
         var totalReportIdCount = 0;
@@ -415,13 +419,16 @@
       		}
         Windows.addObserver(popupObserver);
 	}
+	
 
     // ----------------------------------------------------------------------------------------------------------------
 
     Event.observe(window, "load", function(e) {
+        // Reset the value of flag AE.checkForModification to false.
         oldSignatures = getSignatures('.ae-section');
         
         Event.observe(window, "beforeunload", function(e) {
+        	checkForModificationsOnPage(e);
             if (hasChanges) {
                 e.returnValue = "You have unsaved information.";
             }
