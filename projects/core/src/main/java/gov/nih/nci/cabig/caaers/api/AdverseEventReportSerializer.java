@@ -718,7 +718,8 @@ public class AdverseEventReportSerializer {
 		    		ca1.setAdministrationDelayAmount(ca.getAdministrationDelayAmount());
 		    		ca1.setAdministrationDelayUnits(ca.getAdministrationDelayUnits());
 		    		ca1.setDose(ca.getDose());
-		    		ca1.setModifiedDose(ca.getModifiedDose());
+		    		//ca1.setModifiedDose(ca.getModifiedDose());
+		    		ca1.setAgentAdjustment(ca.getAgentAdjustment());
 		    		ca1.setStudyAgent(getStudyAgent(ca.getStudyAgent()));
 		    		ca1.setTotalDoseAdministeredThisCourse(ca.getTotalDoseAdministeredThisCourse());
 		    		ca1.setFormulation(ca.getFormulation());
