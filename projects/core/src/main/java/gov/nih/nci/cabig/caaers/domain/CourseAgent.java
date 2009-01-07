@@ -109,8 +109,7 @@ public class CourseAgent extends AbstractMutableDomainObject {
     @Transient
     // nee to delete this method . 
     public boolean isDoseModified() {
-        return false;
-    	//return getModifiedDose().getAmount() != null && !getDose().equals(getModifiedDose());
+    	return getModifiedDose().getAmount() != null && !getDose().equals(getModifiedDose());
     }
 	
     // //// BEAN PROPERTIES
