@@ -125,4 +125,21 @@
 			<!-- Already Populated Error Message-->
        	</rhs>
 	</rule>
+	<!-- ==========================================================================
+	RuleName : "AER_PRESENT_CHK"
+	Logic : Atleast one adverse event must be present
+	Error Code : AER_PRESENT_ERR
+	Error Message :  Atleast one adverse event must be present
+	============================================================================= -->
+	<rule name="AER_PRESENT_CHK">
+		<lhs>
+			<pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
+			<pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
+			<eval>NullSafeFieldExtractor.extractFieldLength(aeReport, "adverseEvents") == 0</eval>
+		</lhs>
+		<rhs>
+			<!-- Populate Error Message-->
+			errors.addValidationError("AER_PRESENT_ERR","Atleast one adverse event must be present");
+		</rhs>
+	</rule>
 </package>

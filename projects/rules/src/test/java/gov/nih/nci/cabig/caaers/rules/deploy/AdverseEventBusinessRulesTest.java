@@ -266,4 +266,28 @@ public class AdverseEventBusinessRulesTest extends AbstractBusinessRulesExecutio
                         .getReplacementVariables()[1]);
     }
 
+    public void testSingleAeTerm() throws Exception {
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getAdverseEvents().remove(1);
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+    	assertNoErrors(errors,"AeReport has one adverse event");
+    }
+    
+    public void testMultipleAeTerms() throws Exception {
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+    	assertNoErrors(errors, "AeReport has multiple adverse events");
+    	
+    }
+    
+    public void testNoAeTerms() throws Exception {
+    	ExpeditedAdverseEventReport aeReport = createAEReport();
+    	aeReport.getAdverseEvents().clear();
+    	
+    	ValidationErrors errors = fireRules(aeReport);
+    	assertSameErrorCount(errors, 1);
+    	assertCorrectErrorCode(errors, "AER_PRESENT_ERR");
+    }
 }
