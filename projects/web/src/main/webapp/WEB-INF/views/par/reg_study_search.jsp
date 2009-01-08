@@ -45,6 +45,10 @@
             if ($('ids')) $('ids').show();
         }
 
+        function resetStudyAndSitesById(id) {
+            $('command').studySite.value = id;
+            if ($('ids')) $('ids').show();
+        }
 
         function onKey(e) {
             var keynum = getKeyNum(e);
@@ -165,7 +169,7 @@
                 <chrome:division title="Study Subject Identifier">
                     <p><tags:instructions code="instruction_subject_enter.choosestudy.sid"/></p>
                     <label for="studySubjectIdentifierInput"><tags:requiredIndicator/>&nbsp;Study subject identifier</label>
-                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="" name="studySubjectIdentifierInput"/>
+                    <input id="studySubjectIdentifierInput" type="text" maxlength="2000" value="${command.studySubjectIdentifier}" name="studySubjectIdentifierInput"/>
                 </chrome:division>
 
             </div>
@@ -173,8 +177,7 @@
         </form:form>
 
     </chrome:box>
-
-
+        
 <%--STANDARD FORM --%>
             <form:form  id="command">
                 <tags:tabFields tab="${tab}"/>
@@ -192,6 +195,10 @@
 <script>
     Event.observe(window, "load", function(){
         buildTable('assembler', false);
+        var _ss = ${command.studySite.id};
+        if (_ss > 0) {
+            resetStudyAndSitesById(_ss);
+        }
     })
 </script>
 

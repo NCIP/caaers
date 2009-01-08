@@ -74,9 +74,6 @@ public class AssignStudyTab extends TabWithFields<AssignParticipantStudyCommand>
 
         if (StringUtils.isEmpty(command.getStudySubjectIdentifier())) {
             errors.rejectValue("assignment.studySubjectIdentifier", "PT_003", "Specify the Study Subject Identifier");
-
-            // this is because the previewsly selected study is not selected anymore in the radiobuttons, causing the error on continue
-            command.setStudySite(null);
         }
 
 
