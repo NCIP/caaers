@@ -183,8 +183,17 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
     		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
-    		
-			this.adverseEventReportingPeriod.getStudy().getStudyOrganizations().size();
+    		Study study = adverseEventReportingPeriod.getStudy();
+			study.getStudyOrganizations().size();
+			if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
+			boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
+			if(isCTCStudy){
+				for(AdverseEvent ae : getAdverseEvents()){
+					ae.getAdverseEventTerm().isOtherRequired();
+                    ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
+                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+				}
+			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
 			if(this.assignment != null)
@@ -192,22 +201,20 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		}
     }
     
-    public void initializeObjectsInCommand(){
-    	if(study == null) return;
-    	 if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
-         boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
-         if (isCTCStudy){
-        	 List<AdverseEvent> aes = getAdverseEvents();
-        	 if(aes != null){
-        		 for (AdverseEvent ae: aes) {
-                     ae.getAdverseEventTerm().isOtherRequired();
-                     ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                     ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
-                 }
-        	 }
-         }
-             
-    }
+//    public void initializeObjectsInCommand(){
+//    	if(study == null) return;
+//    	 if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
+//         boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
+//         if (isCTCStudy){
+//        	 List<AdverseEvent> aes = getAdverseEvents();
+//        	 if(aes != null){
+//        		 for (AdverseEvent ae: aes) {
+//                     
+//                 }
+//        	 }
+//         }
+//             
+//    }
     
     /**
      * This method will find all avaliable report definitions for all the StudyOrganizations. 

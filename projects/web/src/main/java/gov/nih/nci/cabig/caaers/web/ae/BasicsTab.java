@@ -76,7 +76,8 @@ public abstract class BasicsTab extends AeTab {
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(1);
-        if (command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
+        
+        if (command.getAeReport().getAdverseEvents().size() > 0 && command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
             errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED", firstStartDateField.getDisplayName() + " required for primary AE");
         }
 

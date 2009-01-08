@@ -31,7 +31,6 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
 
     public void onBind(HttpServletRequest request, T command, Errors errors) {
         super.onBind(request, command, errors);
-        ((CaptureAdverseEventInputCommand)command).initializeObjectsInCommand();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -18,10 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
+	 
+	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 
 	 @Override
 	public Class<?>[] controllers() {
@@ -79,30 +84,15 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
-//        List<String> removedTerms = new ArrayList<String>();
         //filter off the terms that are already present
         for(int id : listOfTermIDs){
         	filteredTermIDs.add(id);
         }
 
-        //remove from filteredTermIds, the ones that are avaliable in AE
-/*
-        for(AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()){
-        	boolean removed = filteredTermIDs.remove(ae.getAdverseEventTerm().getTerm().getId());
-        	if(removed) removedTerms.add(ae.getAdverseEventTerm().getFullName());
-        }
-*/
-
-/*
-        if(!removedTerms.isEmpty()){
-        	String[] removedTermsArray = removedTerms.toArray(new String[]{});
-        	ajaxOutput.setObjectContent(removedTermsArray);
-        }
-*/
 
         if(filteredTermIDs.isEmpty()) return ajaxOutput;
         
-        boolean isMeddra = command.getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
+        boolean isMeddra = command.getAdverseEventReportingPeriod().getStudy().getAeTerminology().getTerm() == Term.MEDDRA;
         for (int id : filteredTermIDs) {
             AdverseEvent ae = new AdverseEvent();
             ae.setSolicited(false);
@@ -122,7 +112,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
                 aeCtc.setCtcTerm(ctc);
                 ae.setAdverseEventCtcTerm(aeCtc);
                 aeCtc.setAdverseEvent(ae);
-                if (command.getStudy().hasCTCTerm(ctc)) {
+                if (command.getAdverseEventReportingPeriod().getStudy().hasCTCTerm(ctc)) {
                     ae.setExpected(new Boolean(Boolean.TRUE));
                 }
             }
@@ -141,40 +131,49 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput deleteAdverseEvent(int index, String reportId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	
     	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
+    	
+    	//Remove the AE from expedited report, if needed
+    	if(deletedAe.getReport() != null){
+    		ExpeditedAdverseEventReport ammendedReport = null;
+			for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
+				if(aeReport.getId().equals(deletedAe.getReport().getId())){
+					ammendedReport = aeReport;
+					aeReport.getAdverseEvents().remove(deletedAe);
+					break;
+				}
+			}
+			
+			//ammend the report if needed
+			if(StringUtils.isNotEmpty(reportId) && ammendedReport != null){
+				Boolean useDefaultVersion = false;
+				for(Report report: ammendedReport.getReports()){
+					if(report.getReportDefinition().getAmendable()){
+						reportRepository.amendReport(report, useDefaultVersion);
+						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
+						// and just incremented for the 1st one in the list.
+						useDefaultVersion = true;
+					}
+				}
+			}
+			
+			deletedAe.setReport(null);
+		}
+    
     	// Remove the adverseEvent from the list of AEs assosicated to the report which has id = deletedId
     	command.getAdverseEvents().remove(index);
+    	deletedAe.setReportingPeriod(null);
     	
-    	if(!reportId.equals("")){
-    		Integer repId = Integer.decode(reportId);
-    		for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
-    			if(repId.equals(aeReport.getId())){
-    				//Delete the adverseEvent
-    				aeReport.getAdverseEvents().remove(deletedAe);
-    				Boolean useDefaultVersion = false;
-    				for(Report report: aeReport.getReports()){
-    					if(report.getReportDefinition().getAmendable()){
-    						reportRepository.amendReport(report, useDefaultVersion);
-    						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
-    						// and just incremented for the 1st one in the list.
-    						useDefaultVersion = true;
-    					}
-    				}
-    			}
-    		}
-    	}else{
-    		// Check if the ae was part of any report (non-submitted).
-    		// then it should be removed from that report as well.
-    		if(deletedAe.getReport() != null){
-    			for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
-    				if(aeReport.getId().equals(deletedAe.getReport().getId())){
-    					aeReport.getAdverseEvents().remove(deletedAe);
-    				}
-    			}
-    		}
-    	}
-    	
+    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
     	
     	return new AjaxOutput();
     }
+    
+    @Required
+    public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
 }
