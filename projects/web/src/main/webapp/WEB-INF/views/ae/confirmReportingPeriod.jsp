@@ -1,23 +1,21 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
-
+<page:applyDecorator name="standardNoHeader">
 <html>
 <head>
- <standard:head/>
+ 
  <tags:stylesheetLink name="standard-form" />
 
  <style type="text/css">
-  	#confirmbox {  width: 98%;}
-  	body {background: none; text-align:left;}
-  	div.row div.label {width: 12em;}
-	div.row div.value, div.row div.extra { margin-left: 13em; }
-	div.row div.value { font-weight:normal;	white-space: normal; }
-</style>
+		body {background: none; text-align:left;}
+		div.row div.label {width: 12em;}
+	 	div.row div.value, div.row div.extra { margin-left: 13em; }
+        div.hr {font-size:1px; height: 1px;}
+	</style>
 <script>
 	Event.observe(window, "load", function(){
 		window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, false, '${command.reportingPeriod.name}');
-		
 		$('ok-id').observe("click", function(){
-			window.parent.Windows.close(window.parent.rpCreator.win.getId());			
+			window.parent.Windows.close(window.parent.rpCreator.win.getId());
 		});
 	});
 </script>
@@ -26,7 +24,7 @@
 <body>
 <tags:standardForm title="Confirmation">
 	<jsp:attribute name="flashMessage">
-			<div><b>Evaluation period details saved successfully</b></div>
+		<div><b>Evaluation period details saved successfully</b></div>
 	</jsp:attribute>
 	<jsp:attribute name="singleFields">
 		<tags:renderRow field="${ReportingPeriod.fields[0]}">
@@ -73,3 +71,4 @@
 
 </body>
 </html>
+</page:applyDecorator>

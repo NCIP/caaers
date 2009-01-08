@@ -132,12 +132,9 @@
             //will add the reporting period into the dropdown, if it is newly added.
             if (!fetchOnlyDetails) {
                 var cntOptions = this.rpCtrl.options.length;
-                var optionNew = new Option(rpName, newRPId);
-
-                var optionOld = this.rpCtrl.options[cntOptions - 1];
-                this.rpCtrl.add(optionNew, optionOld);
+                this.rpCtrl.options[cntOptions - 1] = new Option(rpName, newRPId);
                 this.rpCtrl.selectedIndex = cntOptions - 1;
-
+                this.addOptionToSelectBox(this.rpCtrl, 'Create New', '-1');
             }
             //will refresh the options of reporting period.
             captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput) {
@@ -152,7 +149,6 @@
                  this.rpCtrl.value = newRPId;
                  }
                  */
-
                 this.clearRPDetails();
                 this.showRPDetails(ajaxOutput.htmlContent);
                 AE.registerCalendarPopups("detailSection");
