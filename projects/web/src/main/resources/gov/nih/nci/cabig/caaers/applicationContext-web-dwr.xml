@@ -19,7 +19,9 @@
 	<bean id="routingAndReviewAjaxFacade" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewAjaxFacade">
 	</bean>
     <bean id="captureAeAjaxFacade" autowire="byType"
-          class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade"/>
+          class="gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventAjaxFacade" parent="createAeAjaxFacade">
+    	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao"></property>
+    </bean>
 
     <bean id="adverseEventHistoryAjaxFacade" autowire="byType"
           class="gov.nih.nci.cabig.caaers.web.ae.AdverseEventHistoryAjaxFacade">
