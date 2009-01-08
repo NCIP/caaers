@@ -67,11 +67,11 @@ id="nf-${index}" cssClass="nf-section" autopad="true">
  </div>
 </div>
 <div class="row">
- <div class="label"><label for="subject">Subject Line</label></div>
+ <div class="label"><tags:requiredIndicator/><label for="subject">Subject Line</label></div>
  <div class="value"><form:input path="emailNotifications[${index}].subjectLine" size="100" cssStyle="width:96%;" onfocus="lastElement = this;" /></div>
 </div>
 <div class="row">
- <div class="label"><label for="message">Message</label></div>
+ <div class="label"><tags:requiredIndicator/><label for="message">Message</label></div>
  <div class="value"><form:textarea cssStyle="width:96%; height:300px"  path="emailNotifications[${index}].notificationBodyContent.body" onfocus="lastElement = this;"/></div>
 </div>
 <div class="content buttons autoclear">

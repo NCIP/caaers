@@ -169,22 +169,17 @@
 			  	<option value="${role.key}">${role.value}</option>
 			  </c:forEach>
       		  </select>
-	      	<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
-            		id="remove-action-image" style="border: 0px none ;" 
-                    onClick="javascript:{removeRecipient(this.parentNode)}"/>
+	      	<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	</div>
 		<!-- hidden direct recipient div -->
 		<div id="div_recipient_direct" style="display: none">
   			<input type="text" name="directRecipient" id="email" size="40" class="rInput"/>
-			<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" 
-                		id="remove-action-image" style="border: 0px none ;" 
-                        onClick="javascript:{removeRecipient(this.parentNode)}"/>
+			<input type="image" src="/caaers/images/rule/remove_condition.gif" align="absmiddle" id="remove-action-image" style="border: 0px none ;" onClick="javascript:{removeRecipient(this.parentNode)}"/>
     	</div> 
     	<div id="div_matter">
 	   			<!-- This box contains the body-->
     	
-    			<tags:tabForm tab="${tab}" flow="${flow}" 
-    				title="Configure Notification for ${command.reportDefinition.timeScaleUnitType} : ${command.pointOnScale}">
+    			<tags:tabForm tab="${tab}" flow="${flow}" title="Configure Notification for ${command.reportDefinition.timeScaleUnitType} : ${command.pointOnScale}">
     			  
 				  <jsp:attribute name="singleFields">
 		          	<c:forEach var="curNF" items="${command.emailNotifications}"  varStatus="status">

@@ -57,8 +57,7 @@ public class NotificationsTab extends TabWithFields<ReportDefinitionCommand> {
             int indexToDelete = NumberUtils.toInt(cmd.getIndexToDelete());
             int indexOnTimeScale = NumberUtils.toInt(cmd.getPointOnScale());
             int i = 0;
-            for (Iterator<PlannedNotification> it = cmd.getReportDefinition()
-                            .getPlannedNotifications().iterator(); it.hasNext();) {
+            for (Iterator<PlannedNotification> it = cmd.getReportDefinition().getPlannedNotifications().iterator(); it.hasNext();) {
                 PlannedNotification pen = it.next();
                 if (pen.getIndexOnTimeScale() == indexOnTimeScale) {
                     if (i == indexToDelete) {
