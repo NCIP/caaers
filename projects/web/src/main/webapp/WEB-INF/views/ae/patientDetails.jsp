@@ -283,7 +283,6 @@
     <p>
 	 <tags:instructions code="instruction_ae_patientdetails_general"/>
 	</p>
-		<tags:hasErrorsMessage path="aeReport.participantHistory.baselinePerformanceStatus" />
 		<a name="anchorGeneral" />
 		<div id="anchorGeneral">
 			<table width="100%">
@@ -353,7 +352,7 @@
     <p>
       <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
     </p>
-    <tags:hasErrorsMessage path="aeReport.diseaseHistory.*" />
+    
     <a name="anchorDiseaseInfo" />
     <div id="anchorDiseaseInfo">
       <ui:row path="${fieldGroups['disease'].fields[0].propertyName}">
@@ -422,7 +421,7 @@
     <p>
       <tags:instructions code="instruction_ae_patientdetails_metadiseasesite"/>
     </p>
-    <tags:hasErrorsMessage path="aeReport.diseaseHistory.metastaticDiseaseSites.*" />
+    
     <tags:hasErrorsMessage path="metastaticDiseaseSite" />
     <table class="tablecontent" width="80%">
       <tr>
@@ -459,8 +458,8 @@
     <p>
       <tags:instructions code="instruction_ae_patientdetails_precond"/>
     </p>
-    <tags:hasErrorsMessage path="aeReport.saeReportPreExistingConditions.*" />
-    <tags:hasErrorsMessage path="preExistingCondition" />
+   
+   
     <table class="tablecontent" width="80%">
       <tr>
         <td width="90%"><ui:select options="${preExistingConditionOptions}" path="preExistingCondition"></ui:select>
@@ -487,8 +486,7 @@
     <p>
       <tags:instructions code="instruction_ae_patientdetails_conmeds"/>
     </p>
-    <tags:hasErrorsMessage path="aeReport.concomitantMedications.*" />
-    <tags:hasErrorsMessage path="concomitantMedication" />
+
     <table class="tablecontent" width="80%">
       <tr>
         <td width="90%"><ui:text path="concomitantMedication" size="50" />
@@ -515,9 +513,7 @@
     <p>
       <tags:instructions code="instruction_ae_patientdetails_priortherapies"/>
     </p>
-    <tags:hasErrorsMessage path="aeReport.saeReportPriorTherapies.*" />
-    <tags:hasErrorsMessage path="priorTherapyAgents" />
-    <tags:hasErrorsMessage path="priorTherapy" />
+
     <table class="tablecontent" width="80%">
       <tr>
         <td width="90%"><ui:select options="${priorTherapyOptions}" path="priorTherapy" />
