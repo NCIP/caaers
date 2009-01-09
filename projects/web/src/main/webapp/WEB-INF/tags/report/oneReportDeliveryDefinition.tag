@@ -7,9 +7,11 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="originalIndex" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
+
 <c:set var="mainGroup">main${originalIndex}</c:set>
 <c:set var="divisionClass">${(rdd.entityType == 1)? 'rdd-sys-row':'rdd-email-row'}</c:set>
 <c:set var="cssClass">${divisionClass} ${index % 2 ne 0 ? 'even' : 'odd'} ${sectionClass}</c:set>
+
 <tr id="${divisionClass}-${index}" class="${cssClass}" onmouseout="this.className='${cssClass}'" onmouseover="this.className='highlight'">
 	<c:forEach items="${fieldGroups[mainGroup].fields}" var="field" varStatus="status">
 	 

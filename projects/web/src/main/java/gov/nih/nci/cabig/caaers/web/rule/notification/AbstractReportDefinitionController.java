@@ -64,8 +64,7 @@ public abstract class AbstractReportDefinitionController extends
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerDomainObjectEditor(binder, organizationDao);
@@ -76,8 +75,7 @@ public abstract class AbstractReportDefinitionController extends
     }
 
     @Override
-    protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res,
-                    Object cmd, BindException arg3) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest req, HttpServletResponse res, Object cmd, BindException arg3) throws Exception {
         ReportDefinitionCommand rpDefCmd = (ReportDefinitionCommand) cmd;
         reportDefinitionDao.save(rpDefCmd.getReportDefinition());
         Map<String, Object> model = new ModelMap();
@@ -107,6 +105,7 @@ public abstract class AbstractReportDefinitionController extends
 
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
+        if (StringUtils.equals(request.getParameter("_action"), "deleteDelivery")) return true;
         return isAjaxAddRequest(request) ? true : super.suppressValidation(request, command);
     }
 
@@ -114,11 +113,9 @@ public abstract class AbstractReportDefinitionController extends
         return findInRequest(request, AJAX_REQUEST_PARAMETER) != null;
     }
 
-    protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList,
-                    TreeNode node) {
+    protected void populateMandatoryFields(List<ReportMandatoryFieldDefinition> mfList, TreeNode node) {
         if (StringUtils.isNotEmpty(node.getPropertyPath())) {
-            ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node
-                            .getPropertyPath());
+            ReportMandatoryFieldDefinition mf = new ReportMandatoryFieldDefinition(node.getPropertyPath());
             mfList.add(mf);
         }
         if (node.getChildren() != null) {

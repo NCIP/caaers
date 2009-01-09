@@ -7,7 +7,7 @@
     <style type="text/css">
         .eXtremeTable select { width: 150px; }
     </style>
-    <tags:includeScriptaculous/>
+
     <tags:dwrJavascriptLink objects="reportDef"/>
     
     <title>Report Delivery Configuration</title>
@@ -68,7 +68,7 @@
 </head>
 <body>
     <chrome:division>
-	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="true">
+	    <tags:tabForm tab="${tab}" flow="${flow}"  hideErrorDetails="false">
 	     <jsp:attribute name="instructions">
         	You are entering final report delivery information for <b>${command.reportDefinition.name}</b>.
    		 </jsp:attribute>

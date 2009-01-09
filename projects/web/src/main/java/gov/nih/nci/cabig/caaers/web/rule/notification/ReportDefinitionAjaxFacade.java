@@ -21,24 +21,14 @@ import org.directwebremoting.WebContextFactory;
 import org.springframework.web.servlet.mvc.AbstractFormController;
 
 public class ReportDefinitionAjaxFacade {
+
     public static final String AJAX_SUBVIEW_PARAMETER = "subview";
-
     public static final String AJAX_INDEX_PARAMETER = "index";
-
     public static final String AJAX_REQUEST_PARAMETER = "isAjax";
-
     public static final String AJAX_ORIGINAL_INDEX_PARAMETER = "originalIndex";
-
-    public static final String CREATE_FLOW_COMMAND_KEY = CreateReportDefinitionController.class
-                    .getName()
-                    + ".FORM.command";
-
-    public static final String EDIT_FLOW_COMMAND_KEY = EditReportDefinitionController.class
-                    .getName()
-                    + ".FORM.command";
-
+    public static final String CREATE_FLOW_COMMAND_KEY = CreateReportDefinitionController.class.getName() + ".FORM.command";
+    public static final String EDIT_FLOW_COMMAND_KEY = EditReportDefinitionController.class.getName() + ".FORM.command";
     private static final Log log = LogFactory.getLog(ReportDefinitionAjaxFacade.class);
-
     private OrganizationDao orgDao;
 
     // /LOGIC
@@ -46,8 +36,7 @@ public class ReportDefinitionAjaxFacade {
         WebContext webCtx = WebContextFactory.get();
         HttpServletRequest request = webCtx.getHttpServletRequest();
         ReportDefinitionCommand cmd = getCommand(request);
-        List<ReportDeliveryDefinition> deliveries = cmd.getReportDefinition()
-                        .getDeliveryDefinitions();
+        List<ReportDeliveryDefinition> deliveries = cmd.getReportDefinition().getDeliveryDefinitions();
 
         int originalIndex = (deliveries == null) ? 0 : deliveries.size();
         ReportDeliveryDefinition rdd = deliveries.get(originalIndex);
@@ -85,15 +74,13 @@ public class ReportDefinitionAjaxFacade {
     }
 
     public List<Organization> matchOrganization(String text) {
-        return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name",
-                        "nciInstituteCode");
+        return ObjectTools.reduceAll(orgDao.getBySubnames(text.split("\\s+")), "id", "name", "nciInstituteCode");
     }
 
     // / HELPER METHODS
     public ReportDefinitionCommand getCommand(HttpServletRequest request) {
         String commandName = CREATE_FLOW_COMMAND_KEY;
-        ReportDefinitionCommand cmd = (ReportDefinitionCommand) request.getSession().getAttribute(
-                        commandName);
+        ReportDefinitionCommand cmd = (ReportDefinitionCommand) request.getSession().getAttribute(commandName);
         if (cmd == null) {
             commandName = EDIT_FLOW_COMMAND_KEY;
             cmd = (ReportDefinitionCommand) request.getSession().getAttribute(commandName);
