@@ -16,20 +16,22 @@ public class ExpeditedFlowFactoryTest extends AbstractTestCase {
     private ExpeditedAdverseEventInputCommand command;
 
     private Study study;
-
+    private Term term;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         study = Fixtures.createStudy("Kilo");
         study.getAeTerminology().setTerm(Term.CTC);
         study.setAdeersReporting(Boolean.TRUE);
+        term = Term.CTC;
 
         command = registerMockFor(ExpeditedAdverseEventInputCommand.class);
-        expect(command.getStudy()).andReturn(study).anyTimes();
-        replayMocks();
+        
     }
 
     public void testTabCount() throws Exception {
+    	expect(command.getStudyTerminologyTerm()).andReturn(term).anyTimes();
+    	replayMocks();
         assertEquals(13, factory.createFlow(command).getTabCount());
     }
 
@@ -49,19 +51,23 @@ public class ExpeditedFlowFactoryTest extends AbstractTestCase {
     }
 */
     public void testMeddraBasicsTabUsedWhenAppropriate() throws Exception {
-        study.getAeTerminology().setTerm(Term.MEDDRA);
+    	term = Term.MEDDRA;
+    	expect(command.getStudyTerminologyTerm()).andReturn(term).anyTimes();
+    	replayMocks();
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertTrue("Wrong basics tab", flow.getTab(1) instanceof MeddraBasicsTab);
     }
 
     public void testCtcTabUsedWhenExplicitlyRequired() throws Exception {
+    	expect(command.getStudyTerminologyTerm()).andReturn(term).anyTimes();
+    	replayMocks();
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
         assertTrue("Wrong basics tab", flow.getTab(1) instanceof CtcBasicsTab);
     }
 
     public void testCtcTabUsedByDefault() throws Exception {
         resetMocks();
-        expect(command.getStudy()).andReturn(null).anyTimes();
+        expect(command.getStudyTerminologyTerm()).andReturn(term).anyTimes();
         replayMocks();
 
         Flow<ExpeditedAdverseEventInputCommand> flow = factory.createFlow(command);
