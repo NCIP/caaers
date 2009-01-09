@@ -81,6 +81,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     protected void onBindOnNewForm(HttpServletRequest request, Object cmd) throws Exception {
         super.onBindOnNewForm(request, cmd);
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
+        
         String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
         List<AdverseEvent> aeList = (List<AdverseEvent>) request.getSession().getAttribute(AE_LIST_PARAMETER);
         AdverseEventReportingPeriod reportingPeriod = (AdverseEventReportingPeriod) request.getSession().getAttribute(REPORTING_PERIOD_PARAMETER);

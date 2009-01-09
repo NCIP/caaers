@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -55,13 +56,15 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private List<String> chemoAgents;
     private ChemoAgent chemoAgent;
     private String concomitantMedication;
+    
+    private Term studyTerminologyTerm;
 
     // //// LOGIC
 
 
     public void initialize(){
-    	getAeReport().getAssignment().getLabLoads();
-    	getAeReport().getParticipant().getIdentifiers();
+    	Study study = getStudy();
+    	if(study != null) study.getAeTerminology().getTerm();
     }
     
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
@@ -338,5 +341,12 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	
 	public void setNewlySelectedDefs(List<ReportDefinition> newlySelectedDefs) {
 		this.newlySelectedDefs = newlySelectedDefs;
+	}
+	
+	public Term getStudyTerminologyTerm() {
+		if(studyTerminologyTerm == null){
+			studyTerminologyTerm = getStudy().getAeTerminology().getTerm();
+		}
+		return studyTerminologyTerm;
 	}
 }

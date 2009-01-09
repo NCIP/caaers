@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
@@ -73,4 +74,5 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
 
     int getNextPage();
     Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm);
+    Term getStudyTerminologyTerm();
 }
