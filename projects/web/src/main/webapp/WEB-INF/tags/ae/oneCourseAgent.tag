@@ -16,16 +16,7 @@
  <tags:renderRow field="${fieldGroup.fields[5]}"/>
  <tags:renderRow field="${fieldGroup.fields[6]}"/>
  <tags:renderRow field="${fieldGroup.fields[7]}"/>
-    <!--
-    <div class="row">
-        <div class="value">
-            <label>
-                <input type="checkbox" id="dose-mod-checkbox-${index}" class="dose-mod-checkbox" ${command.aeReport.treatmentInformation.courseAgents[index].doseModified ? "checked='checked'" : ''}/>
-                Dose modified?
-            </label>
-        </div>
-    </div>
-    -->
+
     <div id="modified-dose-fields-${index}">
     <c:forEach begin="8" end="${fn:length(fieldGroup.fields) - 1}" var="i">
         <tags:renderRow field="${fieldGroup.fields[i]}"/>
