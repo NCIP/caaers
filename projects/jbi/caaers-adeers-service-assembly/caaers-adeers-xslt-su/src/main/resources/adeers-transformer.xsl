@@ -162,7 +162,7 @@
             </xsl:if>
             
 			<xsl:variable name="flg">
-	  			<xsl:for-each select="StudyParticipantAssignment/StudySite/Study/StudyAgent">
+	  			<xsl:for-each select="CourseAgent/StudyAgent">
 	  				<xsl:if test="INDType = 'DCP_IND'">Yes</xsl:if>
 	  				<xsl:if test="INDType = 'CTEP_IND'">Yes</xsl:if>
 	  				<xsl:if test="INDType = 'OTHER'">Yes</xsl:if>
