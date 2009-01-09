@@ -270,12 +270,13 @@
 	    	var newSignatures = new Array();
    	    	newSignatures = getSignatures('.ae-section');
    	    	
-        	if (oldSignatures.length != newSignatures.length) hasChanges = true;
+        	if (oldSignatures.length != newSignatures.length) return true;
         
        		for (var i = 0; i < oldSignatures.length; i++) {
-            	if (oldSignatures[i] != newSignatures[i]) hasChanges = true;
+            	if (oldSignatures[i] != newSignatures[i]) return true;
         	}
     	}
+    	return false;
     }
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -348,6 +349,7 @@
 		Windows.close('amend-popup-id');
 		var form = document.getElementById('command');
 		if(form._action.value == 'amendmentRequired'){
+			AE.checkForModification = false;
 			form.submit();
 		}else if(form._action.value == 'deleteAE'){
 			captureAE.deleteAdverseEvent(deleteIndex, document.getElementById('command')._amendReportIds.value, function(ajaxOutput){
@@ -424,8 +426,7 @@
         oldSignatures = getSignatures('.ae-section');
         
         Event.observe(window, "beforeunload", function(e) {
-        	checkForModificationsOnPage(e);
-            if (hasChanges) {
+            if (checkForModificationsOnPage(e)) {
                 e.returnValue = "You have unsaved information.";
             }
         });
