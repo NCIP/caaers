@@ -56,27 +56,18 @@
             }
         }
 
-        function registerDoseModHandler(index) {
-            var checkbox = $('dose-mod-checkbox-' + index)
-            checkbox.observe('click', switchModifiedHandler)
-            enableModified(index, checkbox.checked)
-        }
 
         Element.observe(window, "load", function() {
             new ListEditor("courseAgent", createAE, "CourseAgent", {
                 addParameters: [aeReportId],
                 addFirstAfter: "single-fields",
                 addCallback: function(index) {
-                    registerDoseModHandler(index)
                     AE.registerCalendarPopups("courseAgent-" + index)
                 },
                 deletable: true
             }, 'aeReport.treatmentInformation.courseAgents')
             Event.observe("command", "submit", renableModified)
-            $$('.dose-mod-checkbox').each(function(elt) {
-                var index = elt.id.substring(18)
-                registerDoseModHandler(index)
-            })
+          
 			//push the description into the array
 			<c:forEach items="${command.aeReport.study.treatmentAssignments}" var="ta">
         	descArray.push("${ta.escapedDescription}");
