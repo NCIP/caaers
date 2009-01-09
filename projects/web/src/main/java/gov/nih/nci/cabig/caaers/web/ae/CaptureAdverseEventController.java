@@ -306,30 +306,36 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         int currPage = 0;
         int targetPage = 0;
         try {
-            currPage = getCurrentPage(request);
-            targetPage = getTargetPage(request, currPage);
+        	
+			try {
+				currPage = getCurrentPage(request);
+				targetPage = getTargetPage(request, currPage);
+			} catch (Exception e) {
+				return super.handleRequestInternal(request, response);
+			}
 
-            if (currPage !=0 && targetPage == 0) {
-                String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
-                CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
+			if (currPage !=0 && targetPage == 0) {
+				String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
+				CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
 
-                String particpiantID = "";
-                String studyID = "";
-                
-                if (cmd != null) {
-                    particpiantID = cmd.getParticipant().getId().toString();
-                    studyID = cmd.getStudy().getId().toString();
-                }
+				String particpiantID = "";
+				String studyID = "";
+				
+				if (cmd != null) {
+				    particpiantID = cmd.getParticipant().getId().toString();
+				    studyID = cmd.getStudy().getId().toString();
+				}
 
-                response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
-                return null;
-            } else {
-                return super.handleRequestInternal(request, response);
-            }
-        } catch (Exception e) {
-            log.debug("Error while trying to read the current & target page from the request.");
-            return super.handleRequestInternal(request, response); 
-        }
+				response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
+				return null;
+			} else {
+			    return super.handleRequestInternal(request, response);
+			}
+		} catch (Exception e) {
+			log.error("Error while handling the request", e);
+			throw e;
+		}
+        
     }
 
     @Override

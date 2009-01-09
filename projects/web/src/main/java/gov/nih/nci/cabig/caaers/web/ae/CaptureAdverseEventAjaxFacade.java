@@ -79,8 +79,8 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         
     	AjaxOutput ajaxOutput = new AjaxOutput();
     	
-    	
         CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+        command.reassociate();
         int index = command.getAdverseEvents().size();
         
         List<Integer> filteredTermIDs = new ArrayList<Integer>();
@@ -126,6 +126,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	params.put("index", Integer.toString(index));
     	 
     	ajaxOutput.setHtmlContent(renderAjaxView("observedAdverseEventSection", 0, params));
+    	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
         return ajaxOutput;
     }
     
