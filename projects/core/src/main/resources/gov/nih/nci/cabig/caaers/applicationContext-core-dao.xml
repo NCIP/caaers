@@ -24,8 +24,7 @@ This applicationContext contains the definition of the DAOs
 
     <!-- HIBERNATE CONFIGURATION -->
 
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
-          autowire="byName">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" autowire="byName">
         <property name="mappingLocations">
             <list>
                 <value>classpath:gov/nih/nci/cabig/caaers/domain/hibernate/typedefs.hbm.xml</value>
@@ -36,6 +35,7 @@ This applicationContext contains the definition of the DAOs
         <property name="namingStrategy">
             <bean class="gov.nih.nci.cabig.caaers.tools.hibernate.WonderfulNamingStrategy"/>
         </property>
+
         <property name="annotatedClasses">
             <list>
                 <value>gov.nih.nci.cabig.caaers.domain.AdverseEvent</value>

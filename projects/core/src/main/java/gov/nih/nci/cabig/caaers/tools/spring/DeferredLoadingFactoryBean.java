@@ -18,14 +18,10 @@ import java.util.List;
  * 
  * @author Rhett Sutphin
  */
-public class DeferredLoadingFactoryBean implements FactoryBean, BeanNameAware,
-                ApplicationContextAware {
+public class DeferredLoadingFactoryBean implements FactoryBean, BeanNameAware, ApplicationContextAware {
     private static final Log log = LogFactory.getLog(DeferredLoadingFactoryBean.class);
-
     private ApplicationContext applicationContext;
-
     private List<String> beanNames;
-
     private String beanName;
 
     public Object getObject() throws Exception {

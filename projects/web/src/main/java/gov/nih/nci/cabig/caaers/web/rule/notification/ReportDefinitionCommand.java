@@ -56,9 +56,7 @@ public class ReportDefinitionCommand {
     	
     }
     
-    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao,
-                    ConfigProperty configurationProperty) {
-
+    public ReportDefinitionCommand(ReportDefinition rpDef, ReportDefinitionDao rpDefDao, ConfigProperty configurationProperty) {
         this.rpDef = rpDef;
         this.rpDefDao = rpDefDao;
         this.configurationProperty = configurationProperty;
@@ -67,10 +65,8 @@ public class ReportDefinitionCommand {
 
     @SuppressWarnings("unchecked")
     public List<PlannedNotification> getEmailNotifications() {
-        List<PlannedNotification> plannedNotifications = rpDef.fetchPlannedNotification(Integer
-                        .parseInt(indexToFetch));
-        return LazyList.decorate(plannedNotifications, new PlannedEmailNotificationFactory(
-                        this.rpDef.getPlannedNotifications()));
+        List<PlannedNotification> plannedNotifications = rpDef.fetchPlannedNotification(Integer.parseInt(indexToFetch));
+        return LazyList.decorate(plannedNotifications, new PlannedEmailNotificationFactory(this.rpDef.getPlannedNotifications()));
     }
 
     // /LOGIC
@@ -88,12 +84,9 @@ public class ReportDefinitionCommand {
     protected Map<Object, Object> collectRoleOptions() {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
         options.put("", "Please select");
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
-                        "reportingRolesRefData"), "code", "desc"));
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
-                        "invRoleCodeRefData"), "code", "desc"));
-        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get(
-                        "studyPersonnelRoleRefData"), "code", "desc"));
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("reportingRolesRefData"), "code", "desc"));
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("invRoleCodeRefData"), "code", "desc"));
+        options.putAll(WebUtils.collectOptions(configurationProperty.getMap().get("studyPersonnelRoleRefData"), "code", "desc"));
 
         return options;
     }
