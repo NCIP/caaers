@@ -14,13 +14,14 @@
     		<fileset file="${basedir}/rules/ivy-build.xml" />
     		<fileset file="${basedir}/web/ivy-build.xml" />
     		
+    		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
+    			<include name="include"/>
+    			<exclude name="exclude"/>
+			</fileset>
+
     		<fileset file="${basedir}/grid/registration-consumer/ivy-build.xml" />
     		<fileset file="${basedir}/grid/study-consumer/ivy-build.xml" />
     		 <fileset file="${basedir}/grid/introduce/AdverseEventConsumerService1.2/ivy-build.xml" /> 
-    		<fileset file="${basedir}/excelstudyloader/ivy-build.xml">
-    <include name="include"/>
-    <exclude name="exclude"/>
-</fileset>
 
     	</ivy:buildlist>
   		<property name="buildlist.done" value="true" />
