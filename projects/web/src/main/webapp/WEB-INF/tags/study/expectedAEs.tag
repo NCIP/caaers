@@ -35,7 +35,7 @@
 
                <table id="termsTable" width="100%" class="tablecontent">
                    <tr>
-                       <th scope="col" align="left"><b>Term Full Name</b></th>
+                       <th scope="col" align="left"><b>Term</b></th>
                        <th scope="col" align="right"><b></b></th>
                    </tr>
                    <tbody id="termsDiv">
