@@ -6,7 +6,9 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,10 +24,11 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
     public List<T> findStudies(final AbstractAjaxableDomainObjectQuery query) {
 
         List<Object[]> objects = super.find(query);
-        List<T> studySearchableAjaxableDomainObjects = new ArrayList<T>();
-
+        Map<Integer, T> existingStudyMap = new HashMap<Integer, T>();
         for (Object[] o : objects) {
-            T studySearchableAjaxableDomainObject = (T) getObjectById(studySearchableAjaxableDomainObjects, (Integer) o[0]);
+        	
+        	
+            T studySearchableAjaxableDomainObject = existingStudyMap.get((Integer) o[0]);
 
             if (studySearchableAjaxableDomainObject == null) {
                 studySearchableAjaxableDomainObject = (T) BeanUtils.instantiateClass(getObjectClass());
@@ -37,7 +40,8 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
 
                 addAdditionalProperties(studySearchableAjaxableDomainObject, o);
 
-                studySearchableAjaxableDomainObjects.add(studySearchableAjaxableDomainObject);
+                existingStudyMap.put(studySearchableAjaxableDomainObject.getId(), studySearchableAjaxableDomainObject);
+                
 
             } else {
                 updateAdditionalProperties(studySearchableAjaxableDomainObject, o);
@@ -46,7 +50,7 @@ public class StudySearchableAjaxableDomainObjectRepository<T extends StudySearch
 
 
         }
-        return studySearchableAjaxableDomainObjects;
+        return new ArrayList<T>(existingStudyMap.values());
 
     }
 
