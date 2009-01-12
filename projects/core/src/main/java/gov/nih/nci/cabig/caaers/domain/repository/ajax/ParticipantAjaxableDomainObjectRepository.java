@@ -7,7 +7,9 @@ import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -22,10 +24,9 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
     
 	public List<T> findParticipants(ParticipantAjaxableDomainObjectQuery query) {
         List<Object[]> objects = super.find(query);
-        List<T> participantAjaxableDomainObjects = new ArrayList<T>();
-
+        Map<Integer,T> existingParticipantsMap = new HashMap<Integer, T>();
         for (Object[] o : objects) {
-            T participantAjaxableDomainObject = (T) getObjectById(participantAjaxableDomainObjects, (Integer) o[0]);
+            T participantAjaxableDomainObject = existingParticipantsMap.get((Integer) o[0]);
 
             if (participantAjaxableDomainObject == null) {
                 participantAjaxableDomainObject = (T) BeanUtils.instantiateClass(getObjectClass());
@@ -39,7 +40,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
                     participantAjaxableDomainObject.setPrimaryIdentifierValue((String) o[6]);
                 }
                 addAdditionalProperties(participantAjaxableDomainObject, o);
-                participantAjaxableDomainObjects.add(participantAjaxableDomainObject);
+                existingParticipantsMap.put(participantAjaxableDomainObject.getId(),participantAjaxableDomainObject);
                 
 
             } else  {
@@ -48,7 +49,7 @@ public class ParticipantAjaxableDomainObjectRepository<T extends ParticipantAjax
             }
 
         }
-        return participantAjaxableDomainObjects;
+        return new ArrayList<T>(existingParticipantsMap.values());
 
     }
     
