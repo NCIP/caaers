@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<aeNotification xmlns="http://semanticbits.com/aeNotification"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://semanticbits.com/aeNotification file:/Users/joshua/dev/svn/caaers/trunk/projects/grid/AdverseEventConsumer/schema/AdverseEventConsumer/aeNotification.xsd"
- registrationGridId="NOT-SMALL">
-    <detectionDate>2006-05-04</detectionDate>
-    <description>description0</description>
-</aeNotification>
