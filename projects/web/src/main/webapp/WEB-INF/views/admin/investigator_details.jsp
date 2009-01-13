@@ -102,7 +102,7 @@ Event.observe(window, "load", function() {
  
 
 <tags:tabForm tab="${tab}" flow="${flow}" formName="createInvestigatorForm"
-	hideErrorDetails="true" willSave="false">
+	 willSave="false">
 
 	<jsp:attribute name="singleFields">
 	<div><input type="hidden" name="_action" id="_action" value="">
@@ -127,6 +127,10 @@ Event.observe(window, "load", function() {
 		    <c:forEach begin="4" end="6" items="${fieldGroups.investigator.fields}" var="field">
               <tags:renderRow field="${field}" />
             </c:forEach>
+            
+            <c:if test="${authenticationMode == 'webSSO'}">
+               <tags:renderRow field="${fieldGroups.investigator.fields[7]}"/>
+            </c:if>
 		</div>
 		<div id="test-row" class="row"></div>
 	</chrome:division>

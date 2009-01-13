@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.user;
 
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.security.PasswordManagerService;
 import org.springframework.beans.factory.annotation.Required;
@@ -34,9 +35,12 @@ public class ResetPasswordController extends SimpleFormController {
     @Override
     protected ModelAndView onSubmit(Object command, BindException errors) throws Exception {
         UserName userName = (UserName) command;
-        String token = passwordManagerService.requestToken(userName.getUserName());
+        
+        //find the user object, preference given to researchstaff
+        
+        User user = passwordManagerService.requestToken(userName.getUserName());
         csmUserRepository.sendUserEmail(userName.getUserName(), "Reset caAERS Password", emailPretext
-                + userName.getURL() + "&token=" + token + emailPosttext);
+                + userName.getURL() + "&token=" + user.getToken() + emailPosttext);
         return new ModelAndView("user/emailSent");
     }
 

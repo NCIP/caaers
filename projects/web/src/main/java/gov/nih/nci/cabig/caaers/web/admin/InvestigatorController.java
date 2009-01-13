@@ -4,9 +4,12 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
+import gov.nih.nci.cabig.caaers.web.user.ResetPasswordController;
 import gov.nih.nci.cabig.ctms.editors.DaoBasedEditor;
 import gov.nih.nci.cabig.ctms.web.tabs.AutomaticSaveFlowFormController;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
@@ -38,10 +41,12 @@ public abstract class InvestigatorController<C extends Investigator> extends
     private static final Log log = LogFactory.getLog(InvestigatorController.class);
 
     protected InvestigatorDao investigatorDao;
+    protected InvestigatorRepository investigatorRepository;
 
     protected OrganizationDao organizationDao;
 
     protected ConfigProperty configurationProperty;
+    private String authenticationMode;
 
     public InvestigatorController() {
         setCommandClass(Investigator.class);
@@ -72,6 +77,7 @@ public abstract class InvestigatorController<C extends Investigator> extends
     protected Map referenceData(final HttpServletRequest request, final Object command,
                     final Errors errors, final int page) throws Exception {
         Map<String, Object> refdata = super.referenceData(request, command, errors, page);
+        refdata.put("authenticationMode", getAuthenticationMode());
         return refdata;
 
     }
@@ -135,7 +141,9 @@ public abstract class InvestigatorController<C extends Investigator> extends
         if ("addSiteInvestigator".equals(action)) {
         } else if ("removeInvestigator".equals(action)) {
         } else {
-            investigatorDao.save(investigator);
+            investigatorRepository.save(investigator, ResetPasswordController.getURL(request
+                    .getScheme(), request.getServerName(), request.getServerPort(), request
+                    .getContextPath()));
             request.setAttribute("statusMessage", "Successfully saved the investigator");
             ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
             modelAndView.addAllObjects(errors.getModel());
@@ -179,5 +187,22 @@ public abstract class InvestigatorController<C extends Investigator> extends
     protected InvestigatorDao getDao() {
         return investigatorDao;
     }
+
+	public String getAuthenticationMode() {
+		return authenticationMode;
+	}
+
+	public void setAuthenticationMode(String authenticationMode) {
+		this.authenticationMode = authenticationMode;
+	}
+    
+    public InvestigatorRepository getInvestigatorRepository() {
+		return investigatorRepository;
+	}
+    
+    public void setInvestigatorRepository(
+			InvestigatorRepository investigatorRepository) {
+		this.investigatorRepository = investigatorRepository;
+	}
 
 }

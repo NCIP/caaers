@@ -4,14 +4,18 @@ import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+
+import org.apache.axis.utils.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +35,7 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     private ConfigProperty configurationProperty;
 
     private OrganizationDao organizationDao;
-
+    private CSMUserRepository csmUserRepository;
     public ConfigProperty getConfigurationProperty() {
         return configurationProperty;
     }
@@ -134,7 +138,11 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
         faxNumberField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
         // InputFieldAttributes.setSize(faxNumberField, 30);
         investigatorFieldGroup.getFields().add(faxNumberField);
-
+        
+        InputField loginIdField = InputFieldFactory.createTextField("loginId", "Grid identity", false);
+        InputFieldAttributes.setSize(loginIdField, 30);
+        investigatorFieldGroup.getFields().add(loginIdField);
+        
         InputFieldGroupMap map = new InputFieldGroupMap();
         map.addInputFieldGroup(investigatorFieldGroup);
         map.addRepeatingFieldGroupFactory(rfgFactory, command.getSiteInvestigators().size());
@@ -143,11 +151,20 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     }
 
     @Override
-    protected void validate(final Investigator object, final BeanWrapper commandBean,
+    protected void validate(final Investigator command, final BeanWrapper commandBean,
                             final Map<String, InputFieldGroup> fieldGroups, final Errors errors) {
 
-        super.validate(object, commandBean, fieldGroups, errors);
-        List<SiteInvestigator> investigators = object.getSiteInvestigators();
+        super.validate(command, commandBean, fieldGroups, errors);
+        
+        if (command ==null || command.getId() == null) {
+        	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
+            boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
+            if(loginIdExists){
+            	 errors.reject("USR_001", new Object[]{loginId},  "Login ID or Email address already in use..!");
+            }
+        }
+        
+        List<SiteInvestigator> investigators = command.getSiteInvestigators();
         for (int i = 0; i < investigators.size(); i++) {
             SiteInvestigator siteInvestigator = investigators.get(i);
             if (siteInvestigator.getOrganization() == null) {
@@ -171,4 +188,9 @@ public class InvestigatorTab extends TabWithFields<Investigator> {
     public void setOrganizationDao(final OrganizationDao organizationDao) {
         this.organizationDao = organizationDao;
     }
+    
+    @Required
+    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
+		this.csmUserRepository = csmUserRepository;
+	}
 }

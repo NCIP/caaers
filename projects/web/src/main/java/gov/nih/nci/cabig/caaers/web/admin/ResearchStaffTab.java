@@ -1,10 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.web.fields.*;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+
+import org.apache.axis.utils.StringUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,7 +31,7 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     private static final String SITE_FIELD_GROUP = "site";
 
     private static final UserGroupType[] ASSIGNABLE_USER_GROUP_TYPES = {UserGroupType.caaers_ae_cd, UserGroupType.caaers_participant_cd, UserGroupType.caaers_site_cd, UserGroupType.caaers_study_cd};
-    private ResearchStaffDao researchStaffDao;
+    private CSMUserRepository csmUserRepository;
 
     public ResearchStaffTab() {
         super("Research Staff Details", "Details", "admin/research_staff_details");
@@ -63,16 +67,14 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
         HashSet<String> set = new HashSet<String>();
         List<UserGroupType> userGroupTypes = command.getUserGroupTypes();
         if (userGroupTypes == null || userGroupTypes.isEmpty()) {
-            errors.reject("REQUIRED", "You must select at least one user role..!");
+            errors.reject("USR_002", "You must select at least one user role..!");
 
         }
-        if (command ==null || command.getId() == null)
-        {
-            ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
-            researchStaffQuery.filterByLoginId(command.getEmailAddress());
-            List<ResearchStaff> researchStaffList = researchStaffDao.searchResearchStaff(researchStaffQuery);
-                if (researchStaffList!=null && !researchStaffList.isEmpty()) {
-                    errors.reject("REQUIRED", "Email address already exits in database..!");
+        if (command ==null || command.getId() == null) {
+        	String loginId = (StringUtils.isEmpty(command.getLoginId())) ? command.getEmailAddress() : command.getLoginId();
+            boolean loginIdExists = csmUserRepository.loginIDInUse(loginId);
+            if(loginIdExists){
+            	 errors.reject("USR_001", new Object[]{loginId},  "Login ID or Email address already in use..!");
             }
         }
     }
@@ -129,9 +131,10 @@ public class ResearchStaffTab extends TabWithFields<ResearchStaff> {
     }
 
 
+    
     @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-        this.researchStaffDao = researchStaffDao;
-    }
+    public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
+		this.csmUserRepository = csmUserRepository;
+	}
 
 }
