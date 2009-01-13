@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -116,5 +117,16 @@ public class ResearchStaffDao extends GridIdentifiableDao<ResearchStaff> impleme
         		NCIIDENTIFIER_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
   
-
+    /**
+     * Get the user who has specified email address.
+     * 
+     * @param loginId
+     *                The loginId of the user.
+     * @return The user.
+     */
+    public ResearchStaff getByLoginId(String loginId) {
+        List<ResearchStaff> results = getHibernateTemplate().find(
+                        "from ResearchStaff where loginId= ?", loginId);
+        return results.size() > 0 ? results.get(0) : null;
+    }
 }

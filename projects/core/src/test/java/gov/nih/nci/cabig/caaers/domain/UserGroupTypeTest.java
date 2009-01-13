@@ -11,7 +11,7 @@ public class UserGroupTypeTest extends TestCase {
 	}
 
 	public void testGetByCode() {
-		assertSame(grpType, UserGroupType.getByCode(-15));
+		assertSame(grpType, UserGroupType.getByCode(-8));
 	}
 
 	public void testToString() {
@@ -29,6 +29,6 @@ public class UserGroupTypeTest extends TestCase {
 	}
 	
 	public void testGetCode(){
-		assertEquals(-15, grpType.getCode().intValue());
+		assertEquals(-8, grpType.getCode().intValue());
 	}
 }

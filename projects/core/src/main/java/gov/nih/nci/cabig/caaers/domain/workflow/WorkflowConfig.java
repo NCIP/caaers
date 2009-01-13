@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -86,7 +87,7 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 		this.enabled = enabled;
 	}
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="study_site_id")
 	@Cascade(value={CascadeType.LOCK})
 	public StudySite getStudySite() {

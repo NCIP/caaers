@@ -40,19 +40,6 @@ public class ResearchStaffDomainObjectValidatorTest extends CaaersDbTestCase{
 		assertEquals(0,errors.size());
 	}
 	
-	public void testResearchStaffInValid(){
-		
-		rStaff.setFirstName("Bill");
-		rStaff.setLastName("Gates");
-		rStaff.setEmailAddress("abc@def.com");
-		rStaff.setPhoneNumber("123-456-789");
-		rStaff.setFaxNumber("111-111-1112");
-		rStaff.setNciIdentifier("nci id");
-		rStaff.setOrganization(organization);
-		
-		errors = domainObjectValidator.validate(rStaff);
-		
-		assertEquals(1,errors.size());
-	}
+	
 
 }

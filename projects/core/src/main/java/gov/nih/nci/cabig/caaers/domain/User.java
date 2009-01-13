@@ -66,7 +66,6 @@ public abstract class User extends AbstractMutableDomainObject {
         this.loginId = loginId;
     }
     
-    @UniqueResearchStaffEmailAddress(message = "EmailAddress already in use")
     public String getEmailAddress() {
         return emailAddress;
     }

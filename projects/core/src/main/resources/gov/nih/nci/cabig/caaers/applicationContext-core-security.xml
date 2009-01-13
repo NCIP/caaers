@@ -206,6 +206,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.get*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
+               
         <entry key="execution(* gov.nih.nci.cabig.caaers.dao.StudyDao.match*(..))"
                value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
 

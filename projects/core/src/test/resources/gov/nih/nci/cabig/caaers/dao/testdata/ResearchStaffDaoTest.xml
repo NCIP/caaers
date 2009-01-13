@@ -12,7 +12,8 @@
         email_address="abc@def.com"
         phone_number="123-456-789"
         nci_identifier="nci id"
-        site_id="-1000"/>
+        site_id="-1000"
+        login_id="abcd"/>
     <RESEARCH_STAFFS
         id="-1001"
         version="1"

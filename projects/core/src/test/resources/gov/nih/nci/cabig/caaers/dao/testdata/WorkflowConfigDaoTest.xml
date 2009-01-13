@@ -82,4 +82,5 @@
 		workflow_config_id="1000" />
 	
 	<wf_assignees />
+	<ind_holders />
 </dataset>

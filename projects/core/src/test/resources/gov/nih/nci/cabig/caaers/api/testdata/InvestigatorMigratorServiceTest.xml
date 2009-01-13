@@ -24,5 +24,6 @@
         grid_id="gridSite_3"/> 
         <ind_holders/>
         <SITE_INVESTIGATORS />
+        <study_investigators />
         
 </dataset>

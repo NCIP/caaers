@@ -1,26 +1,35 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
-import gov.nih.nci.security.UserProvisioningManager;
 import static org.easymock.EasyMock.expect;
+
+import org.easymock.classextension.EasyMock;
+
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.security.UserProvisioningManager;
 
 /**
  * @author Jared Flatow
  */
-public class CSMUserRepositoryTest extends CaaersTestCase {
+public class CSMUserRepositoryTest extends AbstractTestCase {
 
     private CSMUserRepositoryImpl csmUserRepository;
-
-    private UserDao userDao;
 
     private UserProvisioningManager userProvisioningManager;
 
     private User user;
+    
+    InvestigatorDao investigatorDao;
+    ResearchStaffDao researchStaffDao;
 
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 
@@ -29,46 +38,55 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        userDao = registerDaoMockFor(UserDao.class);
         userProvisioningManager = registerMockFor(UserProvisioningManager.class);
 
         csmUserRepository = new CSMUserRepositoryImpl();
-        csmUserRepository.setUserDao(userDao);
         csmUserRepository.setUserProvisioningManager(userProvisioningManager);
 
         userName = "somebody@betterbethere.com";
         user = new ResearchStaff();
         user.setEmailAddress(userName);
+        user.setLoginId(userName);
 
         csmUser = registerMockFor(gov.nih.nci.security.authorization.domainobjects.User.class);
+        
+        researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
+        investigatorDao = registerDaoMockFor(InvestigatorDao.class);
+        csmUserRepository.setResearchStaffDao(researchStaffDao);
+        csmUserRepository.setInvestigatorDao(investigatorDao);
     }
 
     public void testGetUserByName() throws Exception {
-        expect(userDao.getByLoginId("nobody@betterbethere.com")).andReturn(null);
-        expect(userDao.getByLoginId(userName)).andReturn(user);
-
+    	String invalidUserId = "nodbody@nobody.com";
+        expect(researchStaffDao.getByLoginId(invalidUserId)).andReturn(null);
+        expect(investigatorDao.getByLoginId(invalidUserId)).andReturn(null);
+      
         replayMocks();
         try {
-            csmUserRepository.getUserByName("nobody@betterbethere.com");
+            csmUserRepository.getUserByName(invalidUserId);
             fail("User service should not have found a user.");
         } catch (CaaersSystemException e) { /* good */
         }
-        User actual = csmUserRepository.getUserByName(userName);
         verifyMocks();
 
-        assertSame(user, actual);
+    }
+    
+    public void testGetByUserName_validUser() throws Exception{
+    	  expect(researchStaffDao.getByLoginId(userName)).andReturn((ResearchStaff)user);
+    	  replayMocks();
+          User actual = csmUserRepository.getUserByName(userName);
+          verifyMocks();
+
+          assertSame(user, actual);
     }
 
     public void testUserChangePassword() throws Exception {
-        expect(userDao.getByLoginId(userName)).andReturn(user);
-        expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);
         expect(csmUser.getPassword()).andReturn("old_password");
         csmUser.setPassword("new_password");
-        userDao.save(user);
         userProvisioningManager.modifyUser(csmUser);
-
+        expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);
         replayMocks();
-        csmUserRepository.userChangePassword(userName, "new_password", 5);
+        csmUserRepository.userChangePassword(user, "new_password", 5);
         verifyMocks();
 
         assert (user.getPasswordHistory().size() > 0);
@@ -92,12 +110,50 @@ public class CSMUserRepositoryTest extends CaaersTestCase {
     }
 
     public void testUserCreateToken() throws Exception {
-        expect(userDao.getByLoginId(userName)).andReturn(user);
-        userDao.save(user);
-
         replayMocks();
-        assertNotNull(csmUserRepository.userCreateToken(userName));
+        assertNotNull(csmUserRepository.userCreateToken(user));
         assertNotNull(user.getTokenTime());
         verifyMocks();
     }
+    
+    public void testCreateOrUpdateCSMUserAndGroupsForInvestigator_ExistingCSMUser() throws Exception{
+    	Investigator inv = Fixtures.createInvestigator("Joel");
+    	Organization org = Fixtures.createOrganization("test", "TEST");
+    	SiteInvestigator siteInv = Fixtures.createSiteInvestigator(org, inv);
+    	
+    	String emailAddress = "abc@kk.com";
+    	inv.setEmailAddress(emailAddress);
+    	inv.setLoginId(emailAddress);
+    	
+    	expect(userProvisioningManager.getUser(emailAddress)).andReturn(csmUser);
+    	replayMocks();
+    	try {
+			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(inv, "www.joe.com");
+			fail("should thorw exception");
+		} catch (CaaersSystemException e) {
+			
+		}
+    	
+    }
+    
+    
+    public void testLoginIDInUse(){
+    	expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);
+    	
+    	replayMocks();
+    	
+    	boolean inUse = csmUserRepository.loginIDInUse(userName);
+    	assertTrue(inUse);
+    }
+    public void testLoginIDInUse_NoUser(){
+    	expect(userProvisioningManager.getUser(userName)).andReturn(null);
+    	expect(researchStaffDao.getByLoginId(userName)).andReturn(null);
+    	expect(investigatorDao.getByLoginId(userName)).andReturn(null);
+    	replayMocks();
+    	
+    	boolean inUse = csmUserRepository.loginIDInUse(userName);
+    	assertFalse(inUse);
+    }
+    
+  
 }

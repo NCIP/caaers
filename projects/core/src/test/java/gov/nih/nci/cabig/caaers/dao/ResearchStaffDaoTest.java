@@ -26,6 +26,12 @@ public class ResearchStaffDaoTest extends DaoNoSecurityTestCase<ResearchStaffDao
         assertEquals("Wrong last name", "Gates", researchStaff.getLastName());
         assertEquals("Wrong first name", "Bill", researchStaff.getFirstName());
     }
+    
+    public void testGetByLoginId(){
+    	ResearchStaff researchStaff = getDao().getByLoginId("abcd");
+    	assertNotNull(researchStaff);
+    	assertEquals("Bill", researchStaff.getFirstName());
+    }
 
     public void testSaveNewResearchStaff() throws Exception {
         interruptSession();

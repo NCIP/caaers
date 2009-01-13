@@ -20,6 +20,12 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
         assertEquals("Wrong last name", "Scott", investigator.getLastName());
         assertEquals("Wrong first name", "Dilbert", investigator.getFirstName());
     }
+    
+    public void testGetByLoginId() {
+    	Investigator inv = getDao().getByLoginId("abcd");
+    	assertNotNull(inv);
+    	assertEquals("karthik", inv.getFirstName());
+    }
 
     public void testSaveNewInvestigator() throws Exception {
         Integer savedId;

@@ -514,8 +514,8 @@ This applicationContext contains the definition of the DAOs
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="userDao" ref="userDao"/>
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="investigatorDao" ref="investigatorDao" />
+        <property name="researchStaffDao" ref="researchStaffDao" />
     </bean>
 
 
@@ -523,8 +523,14 @@ This applicationContext contains the definition of the DAOs
         <property name="researchStaffDao" ref="researchStaffDao"/>
         <property name="csmUserRepository" ref="csmUserRepository"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
+        <property name="authenticationMode" ref="authenticationMode"/>
     </bean>
-
+	<bean id="investigatorRepository" class="gov.nih.nci.cabig.caaers.domain.repository.InvestigatorRepositoryImpl">
+		<property name="authenticationMode" ref="authenticationMode"/>
+		<property name="csmUserRepository" ref="csmUserRepository"/>
+		<property name="investigatorDao" ref="investigatorDao" />
+		
+	</bean>
     <bean id="reportRepository" class="gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl">
         <property name="nowFactory" ref="nowFactory"/>
         <property name="expeditedReportTree" ref="expeditedReportTree"/>

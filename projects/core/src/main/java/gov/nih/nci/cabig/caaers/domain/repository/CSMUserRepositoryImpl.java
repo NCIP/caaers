@@ -1,9 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
+import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.UserDao;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.security.UserProvisioningManager;
@@ -13,53 +17,71 @@ import gov.nih.nci.security.dao.GroupSearchCriteria;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
 import gov.nih.nci.security.util.StringEncrypter;
-import org.apache.log4j.Logger;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 public class CSMUserRepositoryImpl implements CSMUserRepository {
 
     private UserProvisioningManager userProvisioningManager;
-    private UserDao userDao;
-    private ResearchStaffDao researchStaffDao;
     private CSMObjectIdGenerator siteObjectIdGenerator;
     private MailSender mailSender;
     private SimpleMailMessage accountCreatedTemplateMessage;
     private String authenticationMode;
+    private ResearchStaffDao researchStaffDao;
+    private InvestigatorDao investigatorDao;
+    
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
-        /* this should be done by a validator */
-        if (researchStaff.getEmailAddress() == null) {
-            throw new CaaersSystemException("Email address is required");
-        } else if (researchStaff.getId() == null) {
-            csmUser = createCSMUserForResearchStaff(researchStaff, changeURL);
+        
+        if (researchStaff.getId() == null) {
+            csmUser = createCSMUser(researchStaff, changeURL);
         } else {
-            csmUser = updateCSMUserForResearchStaff(researchStaff);
+            csmUser = updateCSMUser(researchStaff);
         }
-        createCSMUserGroupsForResearchStaff(csmUser, researchStaff);
+        List<Organization> associatedOrgList = new ArrayList<Organization>();
+        associatedOrgList.add(researchStaff.getOrganization());
+        createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
     }
 
-    private void createCSMUserGroupsForResearchStaff(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final ResearchStaff researchStaff) {
+    public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser;
+    	if(investigator.getId() == null){
+    		csmUser = createCSMUser(investigator, changeURL);
+    	}else{
+    		csmUser = updateCSMUser(investigator);
+    	}
+    	List<Organization> associatedOrgList = new ArrayList<Organization>();
+    	for(SiteInvestigator siteInv : investigator.getSiteInvestigatorsInternal()){
+    		associatedOrgList.add(siteInv.getOrganization());
+    	}
+        createCSMUserGroups(csmUser, investigator, associatedOrgList);
+    }
+    
+    private void createCSMUserGroups(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final User user, List<Organization> allowedOrgs) {
         try {
             List<String> groupIds = new ArrayList<String>();
-            for (UserGroupType group : researchStaff.getUserGroupTypes()) {
+            for (UserGroupType group : user.getUserGroupTypes()) {
                 groupIds.add(group.getCode().toString());
             }
-            String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(researchStaff.getOrganization().getNciInstituteCode()));
-            groupIds.add(organizationGroupId);
+            for(Organization org :  allowedOrgs){
+            	String organizationGroupId = getGroupIdByName(siteObjectIdGenerator.generateId(org.getNciInstituteCode()));
+                groupIds.add(organizationGroupId);
+            }
+            
             if (csmUser.getUserId() == null) {
                 throw new CaaersSystemException("ID has not been assigned to CSM user.");
             }
@@ -86,45 +108,50 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         // or this? csmUser.setOrganization(researchStaff.getOrganization().getNciInstituteCode());
     }
 
-    private gov.nih.nci.security.authorization.domainobjects.User createCSMUserForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
+    private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user, String changeURL) {
         // assumes research staff id is null
-        String emailId = researchStaff.getEmailAddress();
+        String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
+        
+    	csmUser = getCSMUserByName(loginId);
+    	if(csmUser != null)  throw new CaaersSystemException("Couldn't add user: " + loginId + ": already exists.");
+    	
+    	//we can create a new user
+    	csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
+        copyUserToCSMUser(user, csmUser);
+        csmUser.setPassword(encryptString(user.getSalt() + "obscurity"));
+        userCreateToken(user);
+        //create a csm user
         try {
-            getCSMUserByName(emailId);
-            throw new CaaersSystemException("Couldn't add user: " + emailId + ": already exists.");
-        } catch (CaaersNoSuchUserException e) {
-            csmUser = new gov.nih.nci.security.authorization.domainobjects.User();
-            copyUserToCSMUser(researchStaff, csmUser);
-            csmUser.setPassword(encryptString(researchStaff.getSalt() + "obscurity"));
-            createCSMUser(csmUser);
-            if (StringUtils.isBlank(researchStaff.getLoginId())) {
-                researchStaff.setLoginId(researchStaff.getEmailAddress());
-            }
-            researchStaffDao.save(researchStaff);
-            if ("local".equals(getAuthenticationMode())) {
-                sendUserEmail(emailId, "Your new caAERS account", "A new caAERS account has been created for you.\n"
-                        + "Your username is follows:\n"
-                        + "Username: " + researchStaff.getLoginId()
-                        + "\n"
-                        + "You must change your password before you can login. In order to do so please visit this URL:\n"
-                        + "\n"
-                        + changeURL + "&token=" + userCreateToken(emailId) + "\n"
-                        + "\n"
-                        + "Regards\n"
-                        + "The caAERS Notification System.\n");
-            }
-            return csmUser;
+            userProvisioningManager.createUser(csmUser);
+        } catch (CSTransactionException e2) {
+        	log.error("Error creating csm user",e2);
+            throw new CaaersSystemException("Could not create user", e2);
         }
+        
+        //send out an email
+        if ("local".equals(getAuthenticationMode())) {
+            sendUserEmail(user.getEmailAddress(), "Your new caAERS account", "A new caAERS account has been created for you.\n"
+                    + "Your username is follows:\n"
+                    + "Username: " + user.getLoginId()
+                    + "\n"
+                    + "You must change your password before you can login. In order to do so please visit this URL:\n"
+                    + "\n"
+                    + changeURL + "&token=" + user.getToken() + "\n"
+                    + "\n"
+                    + "Regards\n"
+                    + "The caAERS Notification System.\n");
+        }
+        return csmUser;
     }
-
-    private gov.nih.nci.security.authorization.domainobjects.User updateCSMUserForResearchStaff(final ResearchStaff researchStaff) {
-        String loginId = researchStaff.getLoginId();
+    
+    private gov.nih.nci.security.authorization.domainobjects.User updateCSMUser(final User user) {
+        String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
-        copyUserToCSMUser(researchStaff, csmUser);
+        copyUserToCSMUser(user, csmUser);
         saveCSMUser(csmUser);
-        researchStaffDao.save(researchStaff);
-        sendUserEmail(loginId, "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
+       // researchStaffDao.save(researchStaff);
+        sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
         return csmUser;
     }
 
@@ -144,20 +171,24 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         return returnGroup.getGroupId().toString();
     }
 
-    // jf
-    private void createCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
-        try {
-            userProvisioningManager.createUser(csmUser);
-        } catch (CSTransactionException e) {
-            throw new CaaersSystemException("Could not create user", e);
-        }
+    
+    public boolean loginIDInUse(String loginId) {
+    	if(getCSMUserByName(loginId) != null ) return true;
+    	try {
+			if(getUserByName(loginId) != null)
+				return true;
+		} catch (CaaersNoSuchUserException e) {
+		}
+		return false;
     }
+    // jf
+  
 
     private gov.nih.nci.security.authorization.domainobjects.User getCSMUserByName(String userName) {
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = userProvisioningManager.getUser(userName);
-        if (csmUser == null) throw new CaaersNoSuchUserException("No such CSM user.");
-        return csmUser;
+        return userProvisioningManager.getUser(userName);
     }
+    
+   
 
     private void saveCSMUser(gov.nih.nci.security.authorization.domainobjects.User csmUser) {
         try {
@@ -168,34 +199,31 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public User getUserByName(String userName) {
-        User user = userDao.getByLoginId(userName);
-        if (user == null) throw new CaaersNoSuchUserException("No such user.");
+    	User user = researchStaffDao.getByLoginId(userName);
+    	if(user == null){
+    		user = investigatorDao.getByLoginId(userName);
+    	}
+    	if(user == null){
+    		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
+    	}
         return user;
     }
 
-    public void saveUser(User user) {
-        // this should be the way its done, but its not
-        userDao.save(user);
-        // get the csm user, save or create
-    }
-
-    public String userCreateToken(String userName) {
-        User user = getUserByName(userName);
-        user.setTokenTime(new Timestamp(new Date().getTime()));
+    public String userCreateToken(User user) {
+    	user.setTokenTime(new Timestamp(new Date().getTime()));
         user.setToken(encryptString(user.getSalt() + user.getTokenTime().toString()
                 + "random_string").replaceAll("\\W", "Q"));
-        userDao.save(user);
         return user.getToken();
     }
 
-    public void userChangePassword(String userName, String password, int maxHistorySize) {
-        User user = getUserByName(userName);
-        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(userName);
+    
+
+    public void userChangePassword(User user, String password, int maxHistorySize) {
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());
         user.resetToken();
         user.setPasswordLastSet(new Timestamp(new Date().getTime()));
         user.addPasswordToHistory(csmUser.getPassword(), maxHistorySize);
         csmUser.setPassword(user.getSalt() + password);
-        userDao.save(user);
         saveCSMUser(csmUser);
     }
 
@@ -208,9 +236,9 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         return getUserByName(userName).getPasswordHistory().contains(encryptString(password));
     }
 
-    public void sendUserEmail(String userName, String subject, String text) {
+    public void sendUserEmail(String emailAddress, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(getUserByName(userName).getEmailAddress());
+        message.setTo(emailAddress);
         message.setSubject(subject);
         message.setText(text);
         mailSender.send(message);
@@ -246,23 +274,15 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     public void setSiteObjectIdGenerator(final CSMObjectIdGenerator siteObjectIdGenerator) {
         this.siteObjectIdGenerator = siteObjectIdGenerator;
     }
-
     @Required
-    public void setUserDao(final UserDao userDao) {
-        this.userDao = userDao;
-    }
-
+    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
+	}
     @Required
-    public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
-        this.researchStaffDao = researchStaffDao;
-    }
-
-    public class CaaersNoSuchUserException extends CaaersSystemException {
-        public CaaersNoSuchUserException(String message) {
-            super(message);
-        }
-    }
-
+    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
+		this.researchStaffDao = researchStaffDao;
+	}
+   
     @Required
     public String getAuthenticationMode() {
         return authenticationMode;

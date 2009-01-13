@@ -6,6 +6,7 @@
 		nci_identifier="222"
         email_address="ki@def.com"
         phone_number="123-456-789"
+        login_id="abcd"
        />
 	<INVESTIGATORS
         id="-100"

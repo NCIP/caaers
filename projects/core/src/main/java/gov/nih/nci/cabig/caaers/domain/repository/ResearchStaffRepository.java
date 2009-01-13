@@ -10,12 +10,15 @@ import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Group;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.mail.MailException;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class ResearchStaffRepository {
 
 
     private UserProvisioningManager userProvisioningManager;
+    private String authenticationMode;
 
     private static final Log logger = LogFactory.getLog(ResearchStaffRepository.class);
 
@@ -42,7 +46,7 @@ public class ResearchStaffRepository {
         ResearchStaffQuery researchStaffQuery = new ResearchStaffQuery();
         return researchStaffDao.searchResearchStaff(researchStaffQuery);
     }
-
+    
     /**
      * Saves or update the research staff.
      *
@@ -51,7 +55,25 @@ public class ResearchStaffRepository {
      */
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void save(final ResearchStaff researchStaff, String changeURL) {
+    	
+    	boolean createMode = researchStaff.getId() == null;
+    	boolean webSSOAuthentication = authenticationMode.equals("webSSO");
+    	
+    	if (researchStaff.getEmailAddress() == null) {
+            throw new CaaersSystemException("Email address is required");
+        }
+    	if( webSSOAuthentication && StringUtils.isBlank(researchStaff.getLoginId())){
+    		throw new CaaersSystemException("Login Id cannot be null in webSSO mode");
+    	}
+    	//update the loginId to email address if this is not webSSO mode
+    	if(createMode && !webSSOAuthentication){
+    		researchStaff.setLoginId(researchStaff.getEmailAddress());
+    	}
+    	
         csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+        researchStaffDao.save(researchStaff);
+        
+        
     }
 
     public ResearchStaff getById(final int id) {
@@ -101,5 +123,15 @@ public class ResearchStaffRepository {
     @Required
     public void setUserProvisioningManager(final UserProvisioningManager userProvisioningManager) {
         this.userProvisioningManager = userProvisioningManager;
+    }
+    
+
+    @Required
+    public String getAuthenticationMode() {
+        return authenticationMode;
+    }
+
+    public void setAuthenticationMode(String authenticationMode) {
+        this.authenticationMode = authenticationMode;
     }
 }

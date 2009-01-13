@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
 import java.sql.SQLException;
@@ -116,6 +117,21 @@ public class InvestigatorDao extends GridIdentifiableDao<Investigator> implement
             }
 
         });
+    }
+    
+    /**
+     * Get the user who has specified email address.
+     * 
+     * @param loginId
+     *                The loginId of the user.
+     * @return The user.
+     */
+    public Investigator getByLoginId(String loginId) {
+        List<Investigator> results = getHibernateTemplate().find(
+                        "from Investigator where loginId= ?", loginId);
+        Investigator investigator =  results.size() > 0 ? results.get(0) : null;
+        if(investigator != null) initialize(investigator);
+        return investigator;
     }
 
 }
