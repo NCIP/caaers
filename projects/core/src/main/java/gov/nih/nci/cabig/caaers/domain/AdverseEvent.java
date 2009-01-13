@@ -90,8 +90,9 @@ public class AdverseEvent extends AbstractMutableDomainObject implements Expedit
     }
 
     // //// BOUND PROPERTIES
-
-    @OneToOne(fetch = FetchType.LAZY)
+    // annotated to EAGER as LAZY was not working properly in oracle , 
+    // dont make it LAZY , oracle is giving problems.
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "low_level_term_id")
     public LowLevelTerm getLowLevelTerm() {
         return lowLevelTerm;
