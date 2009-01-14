@@ -197,6 +197,8 @@
             	<include name="ReportDefinition.xsd"/>
             	<include name="AENotification.xsd"/>
             	<include name="caAERSCommonTypes.xsd"/>
+            	<include name="Investigator.xsd"/>
+            	<include name="ResearchStaff.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 
