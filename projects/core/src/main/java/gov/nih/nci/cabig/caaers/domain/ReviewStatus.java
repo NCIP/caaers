@@ -12,17 +12,19 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
  */
 public enum ReviewStatus implements CodedEnum<Integer> {
 	
-    DRAFTINCOMPLETE(1, "Draft/Incomplete", "Publish Report For Review"), 
-    READYFORREVIEW(2, "Ready for Review", "Ready For Review"), 
-    LEVEL1REVIEW(3, "Level 1 Review", "Perform Level 1 Review"), 
-    LEVEL2REVIEW(4, "Level 2 Review", "Perform Level 2 Review"), 
-    INFO1REVIEW(5, "Additional Info for 1st Review" , "Provide Additional Info for First Review"), 
-    INFO2REVIEW(6, "Additional Info for 2nd Review", "Provide Additional Info for Second Review"),
-    REVIEWCOMPLETE(7, "Review Completed","Review Completed");
+    DRAFT_INCOMPLETE (1, "Draft/Incomplete"), 
+    PHYSICIAN_REVIEW (2, "Physician Review"), 
+    PHYSICIAN_ADDITIONAL_INFO (3, "Additional Info Requested by Physician"),
+    PHYSICIAN_APPROVED (4, "Approved by Physician "), 
+    CENTRAL_OFFICE_REVIEW (5, "Central Office SAE Coordinator Review"), 
+    CENTRAL_OFFICE_ADDITIONAL_INFO (6, "Additional Info Request by Central Office"), 
+    SUBMIT_TO_SPONSOR (7, "Ready for Submission to Sponsor "),
+    DATA_COORDINATOR_REVIEW(8, "Data Coordinator Review"),
+    DATA_COORDINATOR_ADDITIONAL_INFO(9,"Additional Info Requested By Data Coordinator"),
+    READY_FOR_FINALIZE(10, "Ready For Finalizing");
     
     private Integer code;
     private String displayName;
-    private String nodeName;
     
     
     private ReviewStatus(Integer code) {
@@ -30,10 +32,9 @@ public enum ReviewStatus implements CodedEnum<Integer> {
         register(this);
     }
     
-    private ReviewStatus(Integer code, String longName, String nodeName){
+    private ReviewStatus(Integer code, String longName){
     	this(code);
     	this.displayName = longName;
-    	this.nodeName = nodeName;
     	
     }
     
@@ -41,15 +42,6 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     	return getByClassAndCode(ReviewStatus.class, code);
     }
     
-    public static ReviewStatus getByNodeName(String nodeName){
-    	for(ReviewStatus rs : values()){
-    		if(nodeName.equals(rs.getNodeName())){
-    			return rs;
-    		}
-    	}
-    	
-    	return null;
-    }
 
     public Integer getCode() {
         return code;
@@ -66,11 +58,6 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     public String getString() {
         return toString();
     }
-    
-    public String getNodeName() {
-		return nodeName;
-	}
-    
     
     @Override
     public String toString() {

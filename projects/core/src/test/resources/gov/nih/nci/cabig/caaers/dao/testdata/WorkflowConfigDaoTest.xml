@@ -42,8 +42,8 @@
             type="SST"/>
 	<workflow_configuration
 		id="1000"
-		workflow_definition_name="reporting"
-		name="reporting"
+		workflow_definition_name="reportingperiod_coordinating_center"
+		name="Evaluation Period Coordinating Center Workflow"
 		default_assignee="system_admin"
 		enabled="1"
 		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"
@@ -52,8 +52,8 @@
 
 	<workflow_configuration
 		id="2000"
-		workflow_definition_name="reporting"
-		name="reporting"
+		workflow_definition_name="expedited_domestic"
+		name="Expedited Reporting Domestic Workflow"
 		default_assignee="system_admin"
 		enabled="1"
 		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"

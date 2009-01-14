@@ -29,9 +29,9 @@
         site_id="-1000"
         login_id="bush@def.com"/>
         
-	<workflow_configuration id="-11" workflow_definition_name="reporting"	default_assignee="system_admin"	enabled="1" />
+	<workflow_configuration id="-11" workflow_definition_name="reportingperiod_coordinating_center"	default_assignee="system_admin"	enabled="1" />
 	 
-	 <task_configuration id="-1" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Publish Report For Review" applicable="1"  message="abcd"/>
+	 <task_configuration id="-1" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Submit Reporting Period for Data Coordinator Review" applicable="1"  message="abcd"/>
 	 <task_configuration id="-2" status_name="READYFORREVIEW" workflow_config_id="-11" location="1" task_name="Ready For Review" applicable="1"  message="efg"/>
 	 <task_configuration id="-3" status_name="LEVEL1REVIEW" workflow_config_id="-11" location="1" task_name="Perform Level 1 Review" applicable="1" message="abcdefg"/>
 	 <task_configuration id="-4" status_name="LEVEL2REVIEW" workflow_config_id="-11" location="1" task_name="Perform Level 2 Review" applicable="1" message="hijklmnop"/>

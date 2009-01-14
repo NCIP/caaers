@@ -53,8 +53,8 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		
 		int workflowId = 55;
 		List<ReviewStatus> statuses = new ArrayList<ReviewStatus>();
-		statuses.add(ReviewStatus.DRAFTINCOMPLETE);
-		statuses.add(ReviewStatus.INFO1REVIEW);
+		statuses.add(ReviewStatus.DRAFT_INCOMPLETE);
+		statuses.add(ReviewStatus.PHYSICIAN_REVIEW);
 		r.setWorkflowId(workflowId);
 		rp.setWorkflowId(workflowId);
 		rp.setStartDate(new Date());
@@ -81,8 +81,8 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	public void testCreateAdverseEventReportDT0(){
 		int workflowId = 55;
 		List<ReviewStatus> statuses = new ArrayList<ReviewStatus>();
-		statuses.add(ReviewStatus.DRAFTINCOMPLETE);
-		statuses.add(ReviewStatus.INFO1REVIEW);
+		statuses.add(ReviewStatus.DRAFT_INCOMPLETE);
+		statuses.add(ReviewStatus.PHYSICIAN_REVIEW);
 		
 		Report r = Fixtures.createReport("test");
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();

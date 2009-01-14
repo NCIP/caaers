@@ -33,7 +33,10 @@ public interface WorkflowService{
 	
 	
 	String WORKFLOW_REPORTING = "reporting";
-	
+	String WORKFLOW_EXPEDITED_FLOW_INTERNATIONAL = "";
+	String WORKFLOW_EXPEDITED_FLOW_DOMESTIC = "expedited_domestic";
+	String WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER = "reportingperiod_coordinating_center";
+	String WORKFLOW_EVALUATION_PERIOD_MAIN_MEMBER = "";
 	
 	
 	/**

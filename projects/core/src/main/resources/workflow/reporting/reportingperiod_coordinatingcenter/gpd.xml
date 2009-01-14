@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="reportingperiod_mainmember" width="1355" height="780">
+<root-container name="reportingperiod_coordinating_center" width="920" height="553">
   <node name="Start Reporting Period Flow" x="64" y="48" width="277" height="36">
     <edge>
       <label x="5" y="-10"/>

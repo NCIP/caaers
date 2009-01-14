@@ -57,7 +57,7 @@ public class LoadWorkflowTest extends CaaersTestCase {
 		assertEquals("expedited_domestic", defExpeditedReportDomestic.getName());
 		ProcessDefinition defReportingPeriodCC = (ProcessDefinition)ctx.getBean("reportingperiod_coordinatingcenter");
 		assertNotNull(defReportingPeriodCC);
-		assertEquals("reportingperiod_mainmember", defReportingPeriodCC.getName());
+		assertEquals("reportingperiod_coordinating_center", defReportingPeriodCC.getName());
 	}
 /*	
 	public void testFetchNextTransitionsMultiple() throws Exception {

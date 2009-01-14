@@ -108,14 +108,14 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		Report r = Fixtures.createReport("abc");
 		r.setWorkflowId(1);
-		r.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE); 
+		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE); 
 		aeReport.addReport(r);
 		rp.addAeReport(aeReport);
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
 		reportingPeriods.add(rp);
 		
-		rp.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+		rp.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		rp.setWorkflowId(1);
 		
 		
@@ -149,17 +149,17 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 
 	public void testIsEntityHavingSpecifiedReviewStatus() {
 		Report r = Fixtures.createReport("abc");
-		r.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
 		boolean result = impl.isEntityHavingSpecifiedReviewStatus(null, r);
 		assertTrue(result);
 		
 		r.setReviewStatus(null);
-		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFTINCOMPLETE, r);
+		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, r);
 		assertFalse(result);
 		
-		r.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
-		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFTINCOMPLETE, r);
+		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		result = impl.isEntityHavingSpecifiedReviewStatus(ReviewStatus.DRAFT_INCOMPLETE, r);
 		assertTrue(result);
 		
 	}
@@ -167,7 +167,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	public void testAdvanceReportWorkflow(){
 		Integer id = 5;
 		Integer wfId = 5;
-		ReviewStatus rs = ReviewStatus.DRAFTINCOMPLETE;
+		ReviewStatus rs = ReviewStatus.DRAFT_INCOMPLETE;
 		List<ReviewStatus> rtStatuses = new ArrayList<ReviewStatus>();
 		Report r = Fixtures.createReport("test");
 		
@@ -185,7 +185,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	public void testAdvanceReportingPeriodWorkflow(){
 		Integer id = 5;
 		Integer wfId = 5;
-		ReviewStatus rs = ReviewStatus.DRAFTINCOMPLETE;
+		ReviewStatus rs = ReviewStatus.DRAFT_INCOMPLETE;
 		List<ReviewStatus> rtStatuses = new ArrayList<ReviewStatus>();
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		

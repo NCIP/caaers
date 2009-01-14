@@ -25,7 +25,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 	}
 
 	public void testGetByWorkflowDefinitionName() throws Exception {
-		WorkflowConfig workflowConfig = getDao().getByWorkflowDefinitionName(WorkflowService.WORKFLOW_REPORTING);
+		WorkflowConfig workflowConfig = getDao().getByWorkflowDefinitionName(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
 		assertEquals(3, workflowConfig.getTaskConfigs().size());
         TaskConfig t = workflowConfig.findTaskConfig("Level 1 Review");
         assertNotNull(t);
