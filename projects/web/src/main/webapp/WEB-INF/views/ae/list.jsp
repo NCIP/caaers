@@ -18,7 +18,7 @@
 <tags:stylesheetLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="createAE"/>
 <tags:dwrJavascriptLink objects="adverseEventHistory"/>
-<tags:labs labs="${command.assignment.labLoads}"/>
+<!-- <tags:labs labs="${command.assignment.labLoads}"/> -->
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">

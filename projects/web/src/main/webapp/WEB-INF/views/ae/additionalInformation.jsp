@@ -14,7 +14,7 @@
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    <tags:labs labs="${command.assignment.labLoads}"/>
+    <!-- <tags:labs labs="${command.assignment.labLoads}"/> -->
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section17attachments">

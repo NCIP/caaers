@@ -13,7 +13,7 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     
-    <tags:labs labs="${command.assignment.labLoads}"/>
+    <!-- <tags:labs labs="${command.assignment.labLoads}"/> -->
     <style type="text/css">
         hr.attrib-divider {
             border: 2px solid #6E81A6;

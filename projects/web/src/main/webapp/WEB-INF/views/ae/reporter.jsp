@@ -10,7 +10,7 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    <tags:labs labs="${command.assignment.labLoads}"/>
+   <!--   <tags:labs labs="${command.assignment.labLoads}"/> -->
     <script type="text/javascript">
         var NAME_FIELDS = [
             'firstName', 'middleName', 'lastName','title', 'address.street', 'address.city', 'address.state', 'address.zip'
