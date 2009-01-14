@@ -247,20 +247,43 @@
 	<!-- ==========================================================
 				target : drop-rules-tables
 				drop the rules tables
-			=============================================================-->
+	=============================================================-->
 	<target name="drop-rules-tables" description="drop the rules tables">
 				<subant target="drop-rules-tables" buildpath="core/ivy-build.xml" />
 	</target>
+	
+	<!-- ==========================================================
+				target : importexcel
+				Used to import Study Data From an Excel Sheet.
+	=============================================================-->
 	
 	<target name="importexcel">
 		<subant target="importexcel" buildpath="excelstudyloader/ivy-build.xml" />
 	</target>
 	
 	<!-- ==========================================================
-					target : load-rules
-					drop the rules tables
-				=============================================================-->
-		<target name="load-rules" description="Uses a test case class to load the rules">
-					<subant target="load-rules" buildpath="rules/ivy-build.xml" />
-				</target>
+		target : load-rules
+		drop the rules tables
+	=============================================================-->
+	<target name="load-rules" description="Uses a test case class to load the rules">
+		<subant target="load-rules" buildpath="rules/ivy-build.xml" />
+	</target>
+	
+	<!-- ==========================================================
+		target : set.review.reports
+		This target is used to set run.review.reports=true
+	=============================================================-->
+    <target name="set-run-review-reports" description="--> This target is used to set run.review.reports=true">
+    	<property name="skip.review.reports" value="false"/>
+    </target>
+	
+	<!-- ==========================================================
+		target : auto-build-ci
+		This target is for Continious Integration useage.
+		This target Cleans Relevant Folders , Recreate's the db in hudson
+	=============================================================-->
+    <target name="autobuild-ci" description="--> Tasks Related to Continious Integration"
+    	depends="set-run-review-reports,debug-info,clean,migrate,insert-csm-policy,publish-all">
+    </target>
+	
 </project>
