@@ -1,0 +1,253 @@
+#entire-slider {
+    width: auto;
+    /* height: auto;*/
+	min-height:224px;
+    background-repeat: no-repeat;
+    background-position:top left;
+    position: absolute;
+	bottom:1px;
+	z-index:1;
+	text-align:left;
+	top: 140px;
+	right:1px;
+}
+#entire-slider ul {
+	margin:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
+}
+#entire-slider h2 span {
+	font-size:125%;
+	font-weight:normal !important;
+}
+#entire-slider h2 {
+	color:#FFFFFF;
+	font-size:110%;
+	font-family:arial;
+	margin:10px 10px 10px 10px;
+	font-weight:bold !important;
+}
+#sideBarTab {
+	float:left;
+}
+#slider-pane {
+    width:949px;
+    height: 100%;
+    margin-left: 0px;
+    background-color: #ffee9f;
+	position:relative;
+	display:block;
+	/*border-bottom:2px solid #d34100;*/
+	border-top:2px solid #d34100;
+	/*border-left:2px solid #d34100;*/
+	float:left;
+	/*overflow:hidden !important;*/
+}
+#slider-tabs {
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:15px;
+	left:20px;
+	list-style:none;
+}
+#slider-tabs li {
+	float:left;
+	margin-right:4px;
+}
+#entire-slider a.slidertab {
+	padding:4px 15px;
+	background-image:url(../images/blue/eXtableheader_bg.png);
+	background-repeat:repeat-x;
+	background-color:#2b4186;
+	color:white;
+	text-decoration:none;
+}
+#entire-slider a.slidertab:hover {
+	text-decoration:underline;
+}
+#entire-slider a.slidertab.selected {
+	background-image:url(../images/blue/eXtable_allAE_header_bg.png);
+	background-color:#de5900;
+}
+#window-controls {
+	margin:0;
+	padding:0;
+	position:absolute;
+	top:7px;
+	right:20px;
+	list-style:none;
+}
+#window-controls li {
+	float:left;
+	margin-right:5px;
+}
+#slider-content {
+	position:relative;
+	background-color:#f7cc7f;
+	width:100%;
+	height:95%;
+	top:35px;
+	border-top:2px solid #d34100;
+	border-bottom:2px solid #d34100;
+	border-left:2px solid #d34100;
+}
+a#one-fourth {
+	height:0px;
+	width:21px;
+	background-image:url(../images/sidebar/size-control-buttons.png);
+	background-position:0 0;
+	background-repeat:no-repeat;
+	display:block;
+	padding-top:21px;
+	overflow:hidden;
+}
+a#one-fourth:hover {
+	background-position:0 -63px;
+}
+a#one-fourth:active {
+	background-position:0 -126px;
+}
+a#one-half {
+	height:0px;
+	width:21px;
+	background-image:url(../images/sidebar/size-control-buttons.png);
+	background-position:0 -21px;
+	background-repeat:no-repeat;
+	display:block;
+	padding-top:21px;
+	overflow:hidden;
+}
+a#one-half:hover {
+	background-position:0 -84px;
+}
+a#one-half:active {
+	background-position:0 -147px;
+}
+a#maximize {
+	height:0px;
+	width:21px;
+	background-image:url(../images/sidebar/size-control-buttons.png);
+	background-position:0 -42px;
+	background-repeat:no-repeat;
+	display:block;
+	padding-top:21px;
+	overflow:hidden;
+}
+a#maximize:hover {
+	background-position:0 -105px;
+}
+a#maximize:active {
+	background-position:0 -168px;
+}
+#comments-window {
+	display:block;
+	height:74%;
+	top:25px;
+	left:20px;
+	width:500px;
+	background-color:white;
+	overflow-y:scroll;
+	position:relative;
+}
+.comment {
+	padding:5px;
+	background-image:url(../images/blue/report_set_bg.png);
+	background-position:bottom;
+	background-color:#cfd5ff;
+	background-repeat:repeat-x;
+	border:1px solid #999;
+	margin:10px;
+	position:relative;
+}
+#comments-window .title {
+	font-weight:bolder;
+	margin-bottom:5px;
+}
+#comments-window .date {
+	color:#666;
+}
+.comment .controls .minimize {
+	width:14px;
+	height:0;
+	padding-top:14px;
+	overflow:hidden;
+	display:block;
+	background-image:url(images/b-minus.gif);
+}
+.comment .controls {
+	position:absolute;
+	top:2px;
+	right:2px;
+}
+.comment .controls a {
+	float:left;
+	margin-right:5px;
+	text-decoration:none;
+}
+#collapse-all-comments {
+	position:absolute;
+	top:6px;
+	left:328px;
+}
+#slider-pane #right-panel {
+	position:absolute;
+	top:8px;
+	left:540px;
+	height:85%;
+	width:400px;
+}
+#enter-comment-text {
+	width:392px;
+	height:60%;
+}
+#add-a-comment {
+	font-size:17px;
+	font-weight:bolder;
+	color:#333366;
+	margin-bottom:5px;
+}
+#add-btn {
+	float:right;
+	margin-top:5px;
+}
+
+/* Below is the css from livepipe */
+
+/* Subsection Tabs
+--------------------*/
+#slider-pane ul.subsection_tabs {
+	list-style:none;
+	margin:0 0 5px 0;
+	padding:0;
+	clear:both;
+	border-bottom:1px solid #ccc;
+	height:20px;
+	clear:both;
+}
+
+#slider-pane ul.subsection_tabs li.tab-class {
+	float:left;
+	margin-right:7px;
+	text-align:center;
+}
+
+#slider-pane ul.subsection_tabs li.tab-class a {
+	padding:4px 15px;
+	background-image:url(../images/blue/eXtableheader_bg.png);
+	background-repeat:repeat-x;
+	background-color:#2b4186;
+	color:white;
+	text-decoration:none;
+}
+
+#slider-pane ul.subsection_tabs li.tab-class a:hover {
+	text-decoration:underline;
+}
+
+#slider-pane ul.subsection_tabs li.tab-class a.active {
+	background-image:url(../images/blue/eXtable_allAE_header_bg.png);
+	background-color:#de5900;}
+
+#slider-pane ul.subsection_tabs li.source_code {
+	float:right;
+}

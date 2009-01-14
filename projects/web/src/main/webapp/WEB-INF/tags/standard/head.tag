@@ -22,8 +22,6 @@
 <tags:javascriptLink name="validation"/>
 <tags:javascriptLink name="commons-validation"/>
 
-<tags:javascriptLink name="tigra-menu/tigra-menu"/>
-<tags:javascriptLink name="tigra-menu/tigra-menu_tpl"/>
 <tags:javascriptLink name="side-bar/side-bar"/>
 
 <!-- SCRIPACULOUS START -->
@@ -37,6 +35,12 @@
 <tags:javascriptLink name="date"/>
 
 <!-- SCRIPACULOUS END -->
+
+<!-- LIVEPIPE START -->
+<tags:javascriptLink name="livepipe/livepipe"/>
+<tags:javascriptLink name="livepipe/tabs"/>
+
+<!-- LIVEPIPE END -->
 
 <tags:javascriptLink name="ccts-hotlinks"/>
 <script type="text/javascript">

@@ -154,7 +154,8 @@ Object.extend(Event, (function() {
 					return false;
 
 			Event.extend(event);
-			handler.call(element, event);
+			if(handler)
+				handler.call(element, event);
 		};
 		
 		//begin extension

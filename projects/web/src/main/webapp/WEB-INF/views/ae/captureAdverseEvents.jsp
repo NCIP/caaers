@@ -1,5 +1,7 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
 
+<%@ page import = "java.util.ArrayList" %>
+
 <script type="text/javascript" src="/caaers/js/dropdown_menu.js"></script>
 <html>
  <head>
@@ -7,7 +9,19 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
     <tags:stylesheetLink name="aeTermQuery_box" />
-
+    <tags:slider>
+    	<jsp:attribute name="comments">
+    		<div id="comments-id" style="display:none;">
+    			Here is the comments's DIV
+    		</div>
+    	</jsp:attribute>
+    	<jsp:attribute name="labs">
+    		<div id="labs-id" style="display:none;">
+    			Here is the lab's DIV
+    		</div>
+    	</jsp:attribute>
+    </tags:slider>
+	<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
     <style type="text/css">
         .selectdiv { width: 170px; overflow: hidden; }
         .shortselectdiv { width: 115px; overflow: hidden; }
@@ -459,7 +473,9 @@
 					<ae:reportingPeriodAEDetails />
 				</c:if>
 			</div>
+    			
        </jsp:attribute>
     </tags:tabForm>
+    
  </body>
 </html>
