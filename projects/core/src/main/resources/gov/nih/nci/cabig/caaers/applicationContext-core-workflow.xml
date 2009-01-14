@@ -6,18 +6,24 @@
    	<!--  
    		The workflow definition for Routine Flow 
    	-->
-	<bean id="reporting" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
-        <property name="definitionLocation" value="classpath:/workflow/reporting/processdefinition.xml"/>
+	<bean id="reportingperiod_coordinatingcenter" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean">
+        <property name="definitionLocation" value="classpath:/workflow/reporting/reportingperiod_coordinatingcenter/processdefinition.xml"/>
     </bean>
     
-	 <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean" depends-on="reporting">
+    <!--  Workflow definition for expedited flow -->
+	<bean id="expedited_domestic" class="org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean" depends-on="reportingperiod_coordinatingcenter">
+        <property name="definitionLocation" value="classpath:/workflow/reporting/expedited_domestic/processdefinition.xml"/>
+    </bean>
+        
+	 <bean id="jbpmConfiguration" class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean" depends-on="expedited_domestic">
 	 
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="configuration" value="classpath:/jbpm.cfg.xml"/>
         
        <property name="processDefinitions">
             <list>
-                <ref local="reporting"/>
+                <ref local="reportingperiod_coordinatingcenter"/>
+                <ref local="expedited_domestic"/>
             </list>
         </property>
         
@@ -35,11 +41,12 @@
    <bean id="taskCloseActionHandler" class="gov.nih.nci.cabig.caaers.workflow.handler.TaskCloseActionHandler">
    		<property name="workflowService" ref="workflowService"/>
    </bean>
-   <bean id="workflowService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl" depends-on="reporting">
+   <bean id="workflowService" class="gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl" depends-on="expedited_domestic">
         <property name="jbpmTemplate" ref="jbpmTemplate"/>
          <property name="processDefinitions">
             <list>
-                <ref local="reporting"/>
+                <ref local="reportingperiod_coordinatingcenter"/>
+                <ref local="expedited_domestic"/>
             </list>
         </property>
         <property name="caaersJavaMailSender" ref="mailer"/>

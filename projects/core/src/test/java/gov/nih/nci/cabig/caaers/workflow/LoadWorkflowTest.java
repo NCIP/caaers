@@ -29,8 +29,12 @@ import org.jbpm.graph.exe.Token;
 import org.springframework.context.ApplicationContext;
 import org.springmodules.workflow.jbpm31.definition.ProcessDefinitionFactoryBean;
 import static org.easymock.EasyMock.isA;
-
-public class LoadWorkflowTest extends CaaersDbTestCase {
+/**
+ * 
+ * @author Biju Joseph
+ *
+ */
+public class LoadWorkflowTest extends CaaersTestCase {
 	private NodeSkipActionHandler actionHandler;
 	static JbpmConfiguration jbpmConfiguration = null;
 	private WorkflowService workflowService = new WorkflowServiceImpl();
@@ -44,6 +48,16 @@ public class LoadWorkflowTest extends CaaersDbTestCase {
 		ApplicationContext ctx = getDeployedApplicationContext();
 		Object o = ctx.getBean("jbpmTemplate");
 		assertNotNull(o);
+	}
+	
+	public void testLoadWorkflowHasCorrectProcessDefinitions(){
+		ApplicationContext ctx = getDeployedApplicationContext();
+		ProcessDefinition defExpeditedReportDomestic = (ProcessDefinition)ctx.getBean("expedited_domestic");
+		assertNotNull(defExpeditedReportDomestic);
+		assertEquals("expedited_domestic", defExpeditedReportDomestic.getName());
+		ProcessDefinition defReportingPeriodCC = (ProcessDefinition)ctx.getBean("reportingperiod_coordinatingcenter");
+		assertNotNull(defReportingPeriodCC);
+		assertEquals("reportingperiod_mainmember", defReportingPeriodCC.getName());
 	}
 /*	
 	public void testFetchNextTransitionsMultiple() throws Exception {
