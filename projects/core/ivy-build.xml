@@ -192,7 +192,11 @@
             <arg line="-npa
 	    			   -Xcollection-setter-injector"/>
             <schema dir="${main.src.resources}/schema/integration">
-                <include name="*.xsd"/>
+                <include name="StudySchema.xsd"/>
+            	<include name="ParticipantSchema.xsd"/>
+            	<include name="ReportDefinition.xsd"/>
+            	<include name="AENotification.xsd"/>
+            	<include name="caAERSCommonTypes.xsd"/>
             </schema>
             <produces dir="${generated.src.dir}" includes="**/schema/integration/**/*.java"/>
 
