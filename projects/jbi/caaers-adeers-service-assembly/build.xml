@@ -29,7 +29,7 @@
     <property name="eip.comp.build.dir" value="${comp.build.dir}/eip"/>
     <property name="xslt.comp.build.dir" value="${comp.build.dir}/xslt"/>
     <property name="jms.comp.build.dir" value="${comp.build.dir}/jms"/>
-	<property name="junit.results.dir" value="${build.dir}/test-results"/>
+	<property name="junit.results.dir" value="${build.dir}/test-result"/>
 	<property name="test.src.dir" value="${basedir}/caaers-adeers-webservice-su/src/test/java"/>
 	<property name="tests.jar" value="caaers-adeers-sa-tests.jar"/>
 	
