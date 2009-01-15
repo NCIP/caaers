@@ -326,7 +326,7 @@ public class ReporterTab extends AeTab {
     	        	Long lwfId = pInstance.getId();
     	        	int workflowId = lwfId.intValue();
     	        	report.setWorkflowId(workflowId);
-    	        	report.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
+    	        	report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
     	        }
     		}
     	}
