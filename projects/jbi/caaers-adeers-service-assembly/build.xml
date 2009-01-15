@@ -158,7 +158,7 @@
             basedir="${su.build.dir}"> </zip>
     </target>
 
-    <target name="all" depends="build-sa" description="Main target to build the project"> </target>
+    <target name="all" depends="build-sa,jarTests" description="Main target to build the project"> </target>
 	<target name="compileTests" >
 		<mkdir dir="${build.dir}/test-classes" />
 		<javac srcdir="${test.src.dir}" classpathref="build.classpath" destdir="${build.dir}/test-classes" debug="${java.debug}" deprecation="${deprecation}" />
@@ -172,7 +172,7 @@
 		<jar jarfile="${build.dir}/test-jar/${tests.jar}" basedir="${build.dir}/test-classes"/>
 	</target>	
 
-	<target name="test" depends="all,jarTests" description="Runs the service's tests.">
+	<target name="test" depends="all" description="Runs the service's tests.">
 		<echo message="Test results dir: ${junit.results.dir}" />
 		<mkdir dir="${junit.results.dir}" />
 		
