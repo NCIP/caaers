@@ -1,0 +1,35 @@
+<dataset>
+    <disease_categories
+        id="-5"
+        name="Category Five"
+        />
+
+    <disease_categories
+        id="-6"
+        name="Category Six"
+        />
+
+    <disease_terms
+        id="-1"
+        term="Term One"
+        ctep_term="CTEP Term name 01"
+        category_id="-5"
+        medra_code="medra code one"
+        />
+
+    <disease_terms
+        id="-2"
+        term="Term Two"
+        ctep_term="CTEP Term name 02"
+        category_id="-5"
+        medra_code="medra code two"
+        />
+
+    <disease_terms
+        id="-3"
+        term="Term Three"
+        ctep_term="CTEP Term name 03"
+        category_id="-6"
+        medra_code="medra code three"
+        />
+</dataset>

@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CtcTermDao extends CaaersDao<CtcTerm> {
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("term", "ctepTerm", "select");
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
-
     private static final List<String> EXACT_MATCH_PROPERTIES = Arrays.asList("term", "ctepCode");
 
     /**

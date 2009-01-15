@@ -46,8 +46,7 @@ public class DiseaseCategoryDao extends CaaersDao<DiseaseCategory> {
      */
     @SuppressWarnings("unchecked")
     public List<DiseaseCategory> getByParentId(Integer parentId) {
-        return getHibernateTemplate().find("from DiseaseCategory dc where dc.parentCategory.id =?",
-                        new Object[] { parentId });
+        return getHibernateTemplate().find("from DiseaseCategory dc where dc.parentCategory.id =?", new Object[] { parentId });
     }
 
     /**
@@ -55,21 +54,20 @@ public class DiseaseCategoryDao extends CaaersDao<DiseaseCategory> {
      * 
      * @param subnames
      *                the name fragments to search on.
-     * @param diseaseCategoryId
-     *                The category ID of the disease.
+     * @param parentDiseaseCategoryId
+     * *                The category ID of the disease.
      * @return List of matching disease categories.
      */
-    public List<DiseaseCategory> getBySubname(String[] subnames, Integer diseaseCategoryId) {
+    public List<DiseaseCategory> getBySubname(String[] subnames, Integer parentDiseaseCategoryId) {
         List<Object> extraParams = new LinkedList<Object>();
         StringBuilder extraConds = new StringBuilder("");
-        if (diseaseCategoryId != null) {
+        if (parentDiseaseCategoryId != null) {
             extraConds.append(" o.parentCategory.id = ?");
-            extraParams.add(diseaseCategoryId);
+            extraParams.add(parentDiseaseCategoryId);
         } else {
             extraConds.append(" o.parentCategory is null");
         }
-        return findBySubname(subnames, extraConds.toString(), extraParams,
-                        SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
+        return findBySubname(subnames, extraConds.toString(), extraParams, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
     }
 
 }

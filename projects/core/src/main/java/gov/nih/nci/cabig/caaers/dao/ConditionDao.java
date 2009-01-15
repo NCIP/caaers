@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.orm.hibernate3.HibernateTemplate;
+
 /**
  * @author Ion C. Olaru
  */
@@ -20,12 +22,16 @@ public class ConditionDao extends CaaersDao<Condition> {
 
     @SuppressWarnings("unchecked")
     public List<Condition> getAll() {
-        return getHibernateTemplate().find("from Condition");
+        HibernateTemplate ht;
+        ht = getHibernateTemplate();
+        return ht.find("from Condition");
     }
 
     @SuppressWarnings("unchecked")
     public List<Condition> getAllByText(String text) {
-        return getHibernateTemplate().find("from Condition c where lower(c.conditionName) like ?", "%" + text.toLowerCase() + "%");
+        HibernateTemplate ht;
+        ht = getHibernateTemplate();
+        return ht.find("from Condition c where lower(c.conditionName) like ?", "%" + text.toLowerCase() + "%");
     }
 
     @Override

@@ -29,6 +29,11 @@ public class CtcDaoTest extends DaoTestCase<CtcDao> {
         assertContains(ids, 304);
     }
 
+    public void testAll() throws Exception {
+        List all = getDao().getAll();
+        assertEquals(2, all.size());
+    }
+
     public void testGetV2() throws Exception {
         Ctc v2 = getDao().getCtcV2();
         assertNotNull("V2 not found", v2);

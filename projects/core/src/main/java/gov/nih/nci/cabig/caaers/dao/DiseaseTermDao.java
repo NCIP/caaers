@@ -37,8 +37,7 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
      */
     @SuppressWarnings("unchecked")
     public List<DiseaseTerm> getByCategoryId(Integer parentId) {
-        return getHibernateTemplate().find("from DiseaseTerm dt where dt.category.id =?",
-                        new Object[] { parentId });
+        return getHibernateTemplate().find("from DiseaseTerm dt where dt.category.id =?", new Object[] { parentId });
     }
 
     /**
@@ -50,8 +49,7 @@ public class DiseaseTermDao extends CaaersDao<DiseaseTerm> {
      */
     @SuppressWarnings("unchecked")
     public DiseaseTerm getByTermName(final String name) {
-        List<DiseaseTerm> results = getHibernateTemplate().find(
-                        "from " + domainClass().getName() + " where term= ?", name);
+        List<DiseaseTerm> results = getHibernateTemplate().find("from " + domainClass().getName() + " where term= ?", name);
         return results.size() > 0 ? results.get(0) : null;
     }
 
