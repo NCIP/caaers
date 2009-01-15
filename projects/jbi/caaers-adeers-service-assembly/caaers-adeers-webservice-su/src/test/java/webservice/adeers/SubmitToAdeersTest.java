@@ -22,6 +22,10 @@ public class SubmitToAdeersTest extends BaseCaller {
 		displayErrors(aeReportJobInfo.getJobExceptions()); 
 		assertEquals("PRIOR_THERAPY must be unique.", aeReportJobInfo.getJobExceptions()[0].getDescription().toString());
 	}
+	public void test5876MultipleLabs() throws Exception {
+		String caaersXMLFile = "Study-5876-labs.xml"; 		
+		transformAndSubmitSuccessPath(caaersXMLFile);
+	}
 	public void testN027DRadiation() throws Exception {
 		String caaersXMLFile = "Study-N027D-radiation.xml"; 		
 		transformAndSubmitSuccessPath(caaersXMLFile);
