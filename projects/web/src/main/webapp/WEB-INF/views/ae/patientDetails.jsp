@@ -7,7 +7,19 @@
 <tags:includePrototypeWindow />
 <tags:javascriptLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="createAE"/>
-<!-- <tags:labs labs="${command.assignment.labLoads}"/> -->
+<tags:slider>
+   		<jsp:attribute name="comments">
+    		<div id="comments-id" style="display:none;">
+    			Here is the comments's DIV
+    		</div>
+    	</jsp:attribute>
+    	<jsp:attribute name="labs">
+    		<div id="labs-id" style="display:none;">
+    			<tags:labs labs="${command.assignment.labLoads}"/>
+    		</div>
+    	</jsp:attribute>
+    </tags:slider>
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
 
 <script type="text/javascript">
 		var mHistory = null;
