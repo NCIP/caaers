@@ -283,7 +283,7 @@
 		This target Cleans Relevant Folders , Recreate's the db in hudson
 	=============================================================-->
     <target name="autobuild-ci" description="--> Tasks Related to Continious Integration"
-    	depends="set-run-review-reports,debug-info,clean,migrate,insert-csm-policy,publish-all">
+    	depends="set-run-review-reports,debug-info,clean,recreate-db-hudson,migrate,insert-csm-policy,publish-all">
     </target>
 	
 </project>
