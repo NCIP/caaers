@@ -18,7 +18,7 @@ public class SubmitToAdeersTest extends BaseCaller {
 	}
 	public void test5876DuplicatePriorTherapies() throws Exception {
 		String caaersXMLFile = "Study-5876-duplicate-prior-therapies.xml"; 		
-		AEReportJobInfo aeReportJobInfo = transformAndSubmitSuccessPath(caaersXMLFile);
+		AEReportJobInfo aeReportJobInfo = transformAndSubmit(caaersXMLFile);
 		assertEquals("SUCCESS", aeReportJobInfo.getReportStatus().toString());
 	}
 	public void testN027DRadiation() throws Exception {
