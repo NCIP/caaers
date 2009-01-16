@@ -34,11 +34,11 @@ public class OrganizationSecurityFilterer extends BaseSecurityFilterer implement
              
         
         // get research staff and associated organization.
-		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-    	rsQuery.filterByLoginId(user.getUsername());
-        List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
+		//ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	//rsQuery.filterByLoginId(user.getUsername());
+        //List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
-        ResearchStaff researchStaff = rsList.get(0);
+        ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
         Organization userOrganization = researchStaff.getOrganization();
         
 		Filterer filterer = (Filterer)returnObject;

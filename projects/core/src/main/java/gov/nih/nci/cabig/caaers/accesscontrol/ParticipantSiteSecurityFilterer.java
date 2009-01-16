@@ -37,10 +37,10 @@ public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implem
     		}			
 		}
         // get research staff and associated organization.
-		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-    	rsQuery.filterByLoginId(user.getUsername());
-    	List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);        
-        ResearchStaff researchStaff = rsList.get(0);
+		//ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	//rsQuery.filterByLoginId(user.getUsername());
+    	//List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);        
+		ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
         Organization organization = researchStaff.getOrganization();
                 
 		StudySiteAjaxableDomainObject researchStaffOrganization = new StudySiteAjaxableDomainObject();

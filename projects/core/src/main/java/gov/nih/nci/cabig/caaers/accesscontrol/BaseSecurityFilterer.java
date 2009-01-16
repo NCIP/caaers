@@ -1,5 +1,9 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
+import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+
 import java.util.List;
 
 import org.acegisecurity.GrantedAuthority;
@@ -53,8 +57,8 @@ public abstract class BaseSecurityFilterer {
 		
 		return studyFilteringRequired;
 	}
-	/*
-	public gov.nih.nci.cabig.caaers.domain.User getCaaersUser (User user , ResearchStaffDao researchStaffDao) {
+	
+	public gov.nih.nci.cabig.caaers.domain.ResearchStaff getCaaersUser (User user , ResearchStaffDao researchStaffDao) {
 		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
     	rsQuery.filterByLoginId(user.getUsername());
         List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
@@ -62,5 +66,5 @@ public abstract class BaseSecurityFilterer {
         ResearchStaff researchStaff = rsList.get(0);        
         return researchStaff;
 	}
-	*/
+	
 }

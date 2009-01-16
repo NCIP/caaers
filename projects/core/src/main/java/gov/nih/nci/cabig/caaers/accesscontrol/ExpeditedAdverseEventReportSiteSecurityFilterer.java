@@ -2,7 +2,6 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -15,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.User;
 
 public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
@@ -41,11 +39,11 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
              
         
         // get research staff and associated organization.
-		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
-    	rsQuery.filterByLoginId(user.getUsername());
-        List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
+		//ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	//rsQuery.filterByLoginId(user.getUsername());
+        //List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
-        ResearchStaff researchStaff = rsList.get(0);
+ 		ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
         Organization organization = researchStaff.getOrganization();
         
         /*
