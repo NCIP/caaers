@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,8 +34,7 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 		User user = (User)authentication.getPrincipal();
 		
 		//no filtering if super user
-        GrantedAuthority[] grantedAuthorities = user.getAuthorities();
-
+ 
 		if (isSuperUser(user)) {
     		if (returnObject instanceof Filterer) {
     			return ((Filterer)returnObject).getFilteredObject();
@@ -54,7 +54,7 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         
 		//StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
 		//studySite.setNciInstituteCode(organization.getNciInstituteCode());
-		
+		/*
 		boolean studyFilteringRequired = false ; 
 		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
         //check if user is  SLRR
@@ -67,7 +67,13 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         		break;
         	}
         }
+        */
         
+        //study filtering is required only for ROLE_caaers_participant_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
+
+        String[] roles = {UserRole.STUDYCOORDINATOR.getDisplayName(),UserRole.SITECOORDINATOR.getDisplayName(),UserRole.PHYSICIAN.getDisplayName()};
+        List<String> rolesToExclude = Arrays.asList(roles);
+        boolean studyFilteringRequired = studyFilteringRequired(user, rolesToExclude);
 		boolean isAuthorizedOnThisStudy = true;
 		/*
 		if (returnObject instanceof StudySearchableAjaxableDomainObject) {			
