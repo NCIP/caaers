@@ -52,8 +52,8 @@ public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implem
         //check if user is AE Coordinator or Subject Coordinator  or study coo...
         for (int i=0; i<grantedAuthorities.length; i++) {
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
-        			//|| grantedAuthority.getAuthority().equals("ROLE_caaers_physician") 
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") 
+        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
         			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd")) {
         		studyFilteringRequired = true;
         		break;

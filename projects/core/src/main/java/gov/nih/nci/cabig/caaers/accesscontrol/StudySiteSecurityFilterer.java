@@ -62,7 +62,6 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
         	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") 
         			|| grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd") 
-        			//|| grantedAuthority.getAuthority().equals("ROLE_caaers_physician")
         			) {
         		studyFilteringRequired = true;
         		break;
