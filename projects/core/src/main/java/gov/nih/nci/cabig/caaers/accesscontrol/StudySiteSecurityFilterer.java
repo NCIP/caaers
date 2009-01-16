@@ -10,16 +10,15 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 
 import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.User;
 
-public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
+public class StudySiteSecurityFilterer extends BaseSecurityFilterer
+				implements DomainObjectSecurityFilterer {
 	
 	private ResearchStaffDao researchStaffDao;
 	private StudyDao studyDao;
@@ -33,45 +32,26 @@ public class StudySiteSecurityFilterer implements DomainObjectSecurityFilterer {
 		User user = (User)authentication.getPrincipal();
 		
 		//no filtering if super user
-        GrantedAuthority[] grantedAuthorities = user.getAuthorities();
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_super_user")) {
-        		if (returnObject instanceof Filterer) {
-        			return ((Filterer)returnObject).getFilteredObject();
-        		} else {
-        			return returnObject;
-        		}
-        		
-        	}
-        }
-             
-        
-        // get research staff and associated organization.
+		if (isSuperUser(user)) {
+    		if (returnObject instanceof Filterer) {
+    			return ((Filterer)returnObject).getFilteredObject();
+    		} else {
+    			return returnObject;
+    		}			
+		}
+
+		// get research staff and associated organization.
 		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
     	rsQuery.filterByLoginId(user.getUsername());
         List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
         ResearchStaff researchStaff = rsList.get(0);
         Organization organization = researchStaff.getOrganization();
-        
-		//StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
-		//studySite.setNciInstituteCode(organization.getNciInstituteCode());
-		
-		boolean studyFilteringRequired = false ; 
+
 		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator 
-        //check if user is  SLRR
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") 
-        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd") 
-        			//|| grantedAuthority.getAuthority().equals("ROLE_caaers_physician")
-        			) {
-        		studyFilteringRequired = true;
-        		break;
-        	}
-        }
-        
+        //check if user is  SLRR		
+		boolean studyFilteringRequired = this.studyFilteringRequired(user) ; 
+       
 		boolean isAuthorizedOnThisStudy = true;
 		/*
 		if (returnObject instanceof StudySearchableAjaxableDomainObject) {			

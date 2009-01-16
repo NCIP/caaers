@@ -9,10 +9,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.User;
 
-public class ResearchStaffSecurityFilterer implements DomainObjectSecurityFilterer {
+public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implements DomainObjectSecurityFilterer {
 	
 	private ResearchStaffDao researchStaffDao;
 
@@ -25,18 +24,13 @@ public class ResearchStaffSecurityFilterer implements DomainObjectSecurityFilter
 		User user = (User)authentication.getPrincipal();
 		
 		//no filtering if super user
-        GrantedAuthority[] grantedAuthorities = user.getAuthorities();
-        for (int i=0; i<grantedAuthorities.length; i++) {
-        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_super_user")) {
-        		if (returnObject instanceof Filterer) {
-        			return ((Filterer)returnObject).getFilteredObject();
-        		} else {
-        			return returnObject;
-        		}
-        		
-        	}
-        }
+		if (isSuperUser(user)) {
+    		if (returnObject instanceof Filterer) {
+    			return ((Filterer)returnObject).getFilteredObject();
+    		} else {
+    			return returnObject;
+    		}			
+		}
              
         
         // get research staff and associated organization.
