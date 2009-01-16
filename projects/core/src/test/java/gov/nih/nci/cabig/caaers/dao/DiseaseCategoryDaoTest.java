@@ -27,11 +27,17 @@ public class DiseaseCategoryDaoTest extends DaoTestCase<DiseaseCategoryDao> {
     public void testGetAll() throws Exception {
         List all = getDao().getAll();
         assertNotNull(all);
-        assertEquals(5, all.size());
+        assertEquals(4, all.size());
+    }
+
+    public void testGetBySubnameNoParent() throws Exception {
+        List all = getDao().getBySubname(new String[] {"Category One"}, null);
+        assertNotNull(all);
+        assertEquals(0, all.size());
     }
 
     public void testGetBySubname() throws Exception {
-        List all = getDao().getBySubname(new String[] {"Category Three"}, null);
+        List all = getDao().getBySubname(new String[] {"Category Three"}, new Integer(-10));
         assertNotNull(all);
         assertEquals(1, all.size());
     }
