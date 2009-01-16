@@ -17,9 +17,6 @@ public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implem
 
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
-		
-		//return ((Filterer)returnObject).getFilteredObject();
-		
 		//get user
 		User user = (User)authentication.getPrincipal();
 		

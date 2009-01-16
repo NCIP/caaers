@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
+import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.userdetails.User;
 
 public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
@@ -29,6 +30,8 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 		User user = (User)authentication.getPrincipal();
 		
 		//no filtering if super user
+        GrantedAuthority[] grantedAuthorities = user.getAuthorities();
+
 		if (isSuperUser(user)) {
     		if (returnObject instanceof Filterer) {
     			return ((Filterer)returnObject).getFilteredObject();
@@ -46,7 +49,18 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
         ResearchStaff researchStaff = rsList.get(0);
         Organization organization = researchStaff.getOrganization();
         
-        boolean studyFilteringRequired = studyFilteringRequired(user) ;	
+		boolean studyFilteringRequired = false ; 
+		// study level restricted roles(SLRR) - AE Coordinator or Subject Coordinator or study co..
+        //check if user is  SLRR
+        for (int i=0; i<grantedAuthorities.length; i++) {
+        	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") || grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd")
+        			//|| grantedAuthority.getAuthority().equals("ROLE_caaers_physician") 
+        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd")) {
+        		studyFilteringRequired = true;
+        		break;
+        	}
+        }
         
 		boolean isAuthorizedOnThisStudy = true;
 

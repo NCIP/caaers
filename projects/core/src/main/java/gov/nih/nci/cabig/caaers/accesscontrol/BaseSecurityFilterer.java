@@ -19,14 +19,14 @@ public abstract class BaseSecurityFilterer {
 		
 		return superUser;
 	}
-	
+	/*
 	public boolean studyFilteringRequired(User user) {
 		boolean studyFilteringRequired = false ; 
 		GrantedAuthority[] grantedAuthorities = user.getAuthorities();
 		for (int i=0; i<grantedAuthorities.length; i++) {
         	GrantedAuthority grantedAuthority = (GrantedAuthority)grantedAuthorities[i];
-        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_participant_cd") 
-        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_ae_cd") 
+        	if ( grantedAuthority.getAuthority().equals("ROLE_caaers_site_cd") 
+        			|| grantedAuthority.getAuthority().equals("ROLE_caaers_study_cd") 
         			//|| grantedAuthority.getAuthority().equals("ROLE_caaers_physician")
         			) {
         		return true;
@@ -35,4 +35,14 @@ public abstract class BaseSecurityFilterer {
 		
 		return studyFilteringRequired;
 	}
+	
+	public gov.nih.nci.cabig.caaers.domain.User getCaaersUser (User user , ResearchStaffDao researchStaffDao) {
+		ResearchStaffQuery rsQuery = new ResearchStaffQuery();
+    	rsQuery.filterByLoginId(user.getUsername());
+        List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
+        
+        ResearchStaff researchStaff = rsList.get(0);        
+        return researchStaff;
+	}
+	*/
 }
