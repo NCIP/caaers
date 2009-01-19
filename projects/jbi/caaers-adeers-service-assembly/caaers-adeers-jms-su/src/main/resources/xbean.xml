@@ -44,7 +44,7 @@
 			<bean
 				class="org.apache.activemq.ActiveMQConnectionFactory">
 				<property name="brokerURL"
-					value="tcp://localhost:61616" />
+					value="tcp://localhost:61616?wireFormat.maxInactivityDuration=0" />
 			</bean>
 		</property>
 	</bean>
