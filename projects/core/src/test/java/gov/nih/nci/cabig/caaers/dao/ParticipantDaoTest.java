@@ -9,6 +9,7 @@ import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Person;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
@@ -207,9 +208,10 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
     }
 
     public void testSearchParticipantPropertyExistance() throws Exception {
+    	Class person = Person.class;
+    	assertNotNull(person.getDeclaredField("firstName"));
+    	assertNotNull(person.getDeclaredField("lastName"));
         Class participant = gov.nih.nci.cabig.caaers.domain.Participant.class;
-        assertNotNull(participant.getDeclaredField("firstName"));
-        assertNotNull(participant.getDeclaredField("lastName"));
         assertNotNull(participant.getDeclaredField("gender"));
         assertNotNull(participant.getDeclaredField("ethnicity"));
 

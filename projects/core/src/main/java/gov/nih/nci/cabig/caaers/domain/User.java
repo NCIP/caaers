@@ -1,8 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain;
 
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueResearchStaffEmailAddress;
-import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,8 +14,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
@@ -36,7 +31,7 @@ import org.hibernate.annotations.Parameter;
 @GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
 //@SequenceGenerator(name = "seq_research_staffs_id", sequenceName = "seq_research_staffs_id")
 
-public abstract class User extends AbstractMutableDomainObject {
+public abstract class User extends Person {
 	
 	private Integer id;
 	
@@ -49,12 +44,6 @@ public abstract class User extends AbstractMutableDomainObject {
     private String phoneNumber;
 
     private String faxNumber;
-
-    private String firstName;
-
-    private String middleName;
-
-    private String lastName;
 
     private String salt;
 
@@ -188,7 +177,8 @@ public abstract class User extends AbstractMutableDomainObject {
     public void setFailedLoginAttempts(int numFailedLogins) {
         this.numFailedLogins = numFailedLogins;
     }
-
+    
+    
     /* end password stuff */
 
     public boolean equals(Object o) {
@@ -273,27 +263,4 @@ public abstract class User extends AbstractMutableDomainObject {
         return name.toString();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
-    }
 }

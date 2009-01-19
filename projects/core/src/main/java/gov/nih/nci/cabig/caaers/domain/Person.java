@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 /**
  * @author Kulasekaran
@@ -39,7 +40,9 @@ public abstract class Person extends AbstractIdentifiableDomainObject {
     public void setMiddleName(String middleName) {
         this.middleName = middleName;
     }
-
+    
+    //the subclass should override this annotation if needed
+    @Transient
 	public String getTitle() {
 		return title;
 	}

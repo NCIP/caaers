@@ -26,18 +26,12 @@ import java.util.List;
 @Table
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_participants_id")})
 @Where(clause = "load_status > 0")
-public class Participant extends AbstractIdentifiableDomainObject {
+public class Participant extends Person {
     private String institutionalPatientNumber;
 
     private String institution;
 
-    private String firstName;
-
-    private String middleName;
-
     private String maidenName;
-
-    private String lastName;
 
     private DateValue dateOfBirth;
 
@@ -165,14 +159,7 @@ public class Participant extends AbstractIdentifiableDomainObject {
         this.institution = institution;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(final String firstName) {
-        this.firstName = firstName;
-    }
-
+    
     public String getMaidenName() {
         return maidenName;
     }
@@ -181,21 +168,6 @@ public class Participant extends AbstractIdentifiableDomainObject {
         this.maidenName = maidenName;
     }
 
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(final String middleName) {
-        this.middleName = middleName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(final String lastName) {
-        this.lastName = lastName;
-    }
 
     @Embedded
     @AttributeOverrides( { @AttributeOverride(name = "day", column = @Column(name = "birth_day")),
@@ -280,40 +252,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
     public void setLoadStatus(Integer loadStatus) {
         this.loadStatus = loadStatus;
     }
-
-//    @Override
-//    public boolean equals(final Object o) {
-//        if (this == o) {
-//            return true;
-//        }
-//        if (o == null || getClass() != o.getClass()) {
-//            return false;
-//        }
-//
-//        final Participant that = (Participant) o;
-//
-//        if (dateOfBirth != null ? !dateOfBirth.equals(that.dateOfBirth) : that.dateOfBirth != null) {
-//            return false;
-//        }
-//        if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
-//            return false;
-//        }
-//        if (gender != null ? !gender.equals(that.gender) : that.gender != null) {
-//            return false;
-//        }
-//        if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
-//            return false;
-//        }
-//        if (assignments != null ? !assignments.equals(that.assignments) : that.assignments != null) {
-//            return false;
-//        }
-//        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-//            return false;
-//        }
-//
-//        return true;
-//    }
     
+
     @Override
     public boolean equals(Object obj) {
     	boolean found = false;
@@ -349,8 +289,8 @@ public class Participant extends AbstractIdentifiableDomainObject {
     @Override
     public int hashCode() {
         int result;
-        result = firstName != null ? firstName.hashCode() : 0;
-        result = 29 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = getFirstName() != null ? getFirstName().hashCode() : 0;
+        result = 29 * result + (getLastName() != null ? getLastName().hashCode() : 0);
         result = 29 * result + (dateOfBirth != null ? dateOfBirth.hashCode() : 0);
         result = 29 * result + (gender != null ? gender.hashCode() : 0);
         return result;

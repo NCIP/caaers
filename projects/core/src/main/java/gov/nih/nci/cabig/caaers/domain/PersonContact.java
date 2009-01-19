@@ -74,4 +74,15 @@ public abstract class PersonContact extends Person {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
+	
+	@Override
+	public String getTitle() {
+		// TODO Auto-generated method stub
+		return super.getTitle();
+	}
+	@Override
+	public void setTitle(String title) {
+		// TODO Auto-generated method stub
+		super.setTitle(title);
+	}
 }
