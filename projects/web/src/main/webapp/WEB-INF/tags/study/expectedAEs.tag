@@ -33,9 +33,7 @@
                        title="">
                </tags:aeTermQuery>
 
-    <table width="100%" cellpadding="0" cellspacing="0">
-    <tr>
-    <td bgcolor="#cccccc" id="termsDiv">
+        <tags:table bgColor="#AAAAAA" contentID="termsDiv">
 
                <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
                    <tr bgcolor="#E4E4E4">
@@ -50,8 +48,6 @@
                 <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                </table>
 
-    </td>
-    </tr>
-    </table>
-    
+        </tags:table>
+
     </chrome:division>
