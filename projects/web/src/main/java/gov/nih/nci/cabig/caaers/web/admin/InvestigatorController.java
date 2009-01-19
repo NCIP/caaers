@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.mail.MailException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -137,14 +138,20 @@ public abstract class InvestigatorController<C extends Investigator> extends
         int selected = Integer.parseInt(request.getParameter("_selected"));
         String action = request.getParameter("_action");
         Investigator investigator = (Investigator) command;
-
+        boolean sentEmail = true;
         if ("addSiteInvestigator".equals(action)) {
         } else if ("removeInvestigator".equals(action)) {
         } else {
-            investigatorRepository.save(investigator, ResetPasswordController.getURL(request
-                    .getScheme(), request.getServerName(), request.getServerPort(), request
-                    .getContextPath()));
-            request.setAttribute("statusMessage", "Successfully saved the investigator");
+            try {
+				investigatorRepository.save(investigator, ResetPasswordController.getURL(request
+				        .getScheme(), request.getServerName(), request.getServerPort(), request
+				        .getContextPath()));
+            } catch (MailException e) {
+                logger.error("Could not send email to user.", e);
+                sentEmail = false;
+            }
+            request.setAttribute("statusMessage", "Successfully saved the investigator"
+            		+ ((sentEmail) ? "." : ". But we could not send email to user."));
             ModelAndView modelAndView = new ModelAndView("admin/investigator_review");
             modelAndView.addAllObjects(errors.getModel());
             modelAndView.addObject("investigator", investigator);

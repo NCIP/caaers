@@ -42,16 +42,15 @@ public class RoutingAndReviewAjaxFacade {
 		}
 	 }
 	 
-	public AjaxOutput advanceWorkflow(Integer workflowId, String toStatus, Integer id, String entity){
+	public AjaxOutput advanceWorkflow(Integer workflowId, String toTransition, Integer id, String entity){
 		AjaxOutput output = new AjaxOutput();
-		List<ReviewStatus> statuses = null;
-		ReviewStatus reviewStatus = ReviewStatus.valueOf(toStatus);
+		List<String> transitions = null;
 		if(entity.equals("report")){
-			statuses = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, reviewStatus, id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, id);
 		}else if(entity.equals("reportingPeriod")){
-			statuses = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, reviewStatus, id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, id);
 		}
-		output.setObjectContent(statuses);
+		output.setObjectContent(transitions);
 		return output;
 	}
 	 
