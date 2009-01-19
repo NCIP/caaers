@@ -47,8 +47,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     }
 
     @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
-                    throws Exception {
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
         ControllerTools.registerGridDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerGridDomainObjectEditor(binder, "assignment", assignmentDao);
@@ -58,10 +57,8 @@ public class ListAdverseEventsController extends SimpleFormController {
     @SuppressWarnings("unchecked")
     protected boolean isFormSubmission(HttpServletRequest request) {
         Set<String> paramNames = request.getParameterMap().keySet();
-        boolean hasParticipant = paramNames.contains("participant") || paramNames.contains("mrn")
-                        || paramNames.contains("assignment");
-        boolean hasStudy = paramNames.contains("study") || paramNames.contains("nciIdentifier")
-                        || paramNames.contains("assignment");
+        boolean hasParticipant = paramNames.contains("participant") || paramNames.contains("mrn") || paramNames.contains("assignment");
+        boolean hasStudy = paramNames.contains("study") || paramNames.contains("nciIdentifier") || paramNames.contains("assignment");
         boolean hasStudySubjectGridId = paramNames.contains("studySubjectGridId");
         return (hasParticipant && hasStudy) || hasStudySubjectGridId;
     }
@@ -104,8 +101,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     }
 
     @Override
-    protected void onBindAndValidate(HttpServletRequest request, Object command,
-                    BindException errors) throws Exception {
+    protected void onBindAndValidate(HttpServletRequest request, Object command, BindException errors) throws Exception {
         super.onBindAndValidate(request, command, errors);
         ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
         boolean noStudy = listAECmd.getStudy() == null;
@@ -124,8 +120,7 @@ public class ListAdverseEventsController extends SimpleFormController {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected Map referenceData(HttpServletRequest request, Object command, Errors errors)
-                    throws Exception {
+    protected Map referenceData(HttpServletRequest request, Object command, Errors errors) throws Exception {
     	ListAdverseEventsCommand listAECmd = (ListAdverseEventsCommand) command;
         Map<String, Object> refdata = new HashMap<String, Object>();
         refdata.put("pageTitle", "Manage Reports || Select Subject and Study");

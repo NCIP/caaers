@@ -72,9 +72,11 @@ public class AgentsTab extends StudyTab {
 
         for (int i = 0; i < command.getStudy().getStudyAgents().size(); i++) {
             studyAgent = studyAgents.get(i);
+            
             if (studyAgent.getAgent() == null && studyAgent.getOtherAgent() == null) {
                 isAgentEmpty = true;
-                errors.rejectValue("studyAgents[" + i + "].otherAgent", "REQUIRED","Select either Agent or Other ");
+                errors.rejectValue("study.studyAgents[" + i + "].otherAgent", "REQUIRED","Select either Agent or Other ");
+                continue;
             }
 
             if (studyAgent.getAgent() != null) {
@@ -83,7 +85,7 @@ public class AgentsTab extends StudyTab {
         }
 
         if (isAgentEmpty) {
-            errors.rejectValue("studyAgents", "REQUIRED", "One or more Agents are missing or not in list");
+            errors.rejectValue("study.studyAgents", "REQUIRED", "One or more Agents are missing or not in list");
         }
 
     }
