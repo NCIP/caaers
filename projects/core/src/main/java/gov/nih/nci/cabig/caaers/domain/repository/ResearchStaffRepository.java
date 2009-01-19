@@ -69,10 +69,14 @@ public class ResearchStaffRepository {
     	if(createMode && !webSSOAuthentication){
     		researchStaff.setLoginId(researchStaff.getEmailAddress());
     	}
-    	
-        csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
-        researchStaffDao.save(researchStaff);
-        
+    	MailException mailException = null;
+    	try{
+    		csmUserRepository.createOrUpdateCSMUserAndGroupsForResearchStaff(researchStaff, changeURL);
+    	}catch(MailException e){
+    		mailException = e;
+    	}
+    	researchStaffDao.save(researchStaff);
+        if(mailException != null) throw mailException;
         
     }
 

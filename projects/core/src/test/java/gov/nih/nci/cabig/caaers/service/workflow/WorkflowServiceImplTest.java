@@ -1,30 +1,42 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.easymock.classextension.EasyMock;
+import org.jbpm.JbpmContext;
 import org.jbpm.JbpmException;
+import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
+import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.graph.exe.Token;
+import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
+import org.springmodules.workflow.jbpm31.JbpmCallback;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
 /**
  * 
  * @author Biju Joseph
  *
  */
-public class WorkflowServiceImplTest extends CaaersTestCase {
+public class WorkflowServiceImplTest extends AbstractTestCase {
 	
 	WorkflowServiceImpl wfService;
 	WorkflowConfigDao wfConfigDao;
@@ -88,7 +100,7 @@ public class WorkflowServiceImplTest extends CaaersTestCase {
 	public void testCreateProcessInstance() {
 		try {
 			EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName((String) EasyMock.anyObject())).andReturn(wfConfig);
-//			EasyMock.expect(template.saveProcessInstance((ProcessInstance) EasyMock.anyObject())).andReturn(1L);
+			EasyMock.expect(template.saveProcessInstance((ProcessInstance) EasyMock.anyObject())).andReturn(1L);
 			replayMocks();
 			ProcessInstance l = wfService.createProcessInstance("test");
 			assertNotNull(l);
@@ -121,16 +133,79 @@ public class WorkflowServiceImplTest extends CaaersTestCase {
 		assertEquals(tConfig.getTaskName() , "a1");
 		
 	}
-	
-	public void testFindWorkflowConfigForDomainObject(){
-		Class klass = AdverseEventReportingPeriod.class;
-		EasyMock.expect(wfConfigDao.getByDomainObject(klass)).andReturn(wfConfig);
+	public void testFindTaskConfigThrowingException() {
+		
+		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(wfConfig.getWorkflowDefinitionName())).andReturn(null);
 		replayMocks();
-		WorkflowConfig config = wfService.findWorkflowConfigForDomainObject(klass);
-		verifyMocks();
-		assertNotNull(config);
+		try {
+			wfService.findTaskConfig("Test", "a1");
+			fail("must throw exception");
+		} catch (CaaersSystemException e) {
+			assertEquals("WF-0011", e.getErrorCode());
+		}
+		
+		
 	}
+	
 
+	public void testFetchProcessInstance(){
+		Long processInstanceId = new Long(5);
+		ProcessInstance pInstance = new ProcessInstance();
+		EasyMock.expect(template.findProcessInstance(processInstanceId)).andReturn(pInstance);
+		replayMocks();
+		ProcessInstance pInstanceReturned = wfService.fetchProcessInstance(processInstanceId);
+		verifyMocks();
+		assertSame(pInstance, pInstanceReturned);
+	}
+	
+	public void testCreatTaskInstances() {
+		String nodeName = "a1";
+		
+		List<User> taskAssigneesList = new ArrayList<User>();
+		Investigator inv1 = Fixtures.createInvestigator("test1");
+		inv1.setEmailAddress("joel1@abc.com");
+		inv1.setLoginId("joel1@abc.com");
+		
+		Investigator inv2 = Fixtures.createInvestigator("test2");
+		inv2.setEmailAddress("joel2@abc.com");
+		inv2.setLoginId("joel2@abc.com");
+		
+		taskAssigneesList.add(inv1);
+		taskAssigneesList.add(inv2);
+		
+
+		ProcessDefinition processDefinition = new ProcessDefinition();
+		processDefinition.setName("Test");
+		ProcessInstance pInstance = new ProcessInstance();
+		pInstance.setProcessDefinition(processDefinition);
+		
+		final Node node = new Node();
+		node.setName(nodeName);
+		
+		Token token = new Token();
+		token.setNode(node);
+		token.setProcessInstance(pInstance);
+		final TaskMgmtInstance taskMgmtInstance = registerMockFor(TaskMgmtInstance.class);
+		
+		ExecutionContext executionContext = new ExecutionContext(token){
+			@Override
+			public TaskMgmtInstance getTaskMgmtInstance() {
+				return taskMgmtInstance;
+			}
+		};
+		
+		
+		CaaersJavaMailSender caaersJavaMailSender = registerMockFor(CaaersJavaMailSender.class);
+		CreateTaskJbpmCallback callback = new CreateTaskJbpmCallback(executionContext, taskAssigneesList);
+		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
+		EasyMock.expect(template.execute(callback)).andReturn(null);
+		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
+		replayMocks();
+		wfService.setCaaersJavaMailSender(caaersJavaMailSender);
+		wfService.createTaskInstances(callback);
+		verifyMocks();
+	}
+	
 	
 
 }

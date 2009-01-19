@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.workflow.handler;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
+import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This action handler is responsible to determine whether this node should act as an auto-node or not. 
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 
 @SuppressWarnings("serial")
+@Transactional
 public class NodeSkipActionHandler extends Action{
 	
 	private WorkflowService workflowService;
@@ -43,13 +47,13 @@ public class NodeSkipActionHandler extends Action{
 		String taskNodeName = currentNode.getName();
 		
 		TaskConfig taskConfig = workflowService.findTaskConfig(workflowDefinitionName, taskNodeName);
-		if(BooleanUtils.isNotTrue(taskConfig.getApplicable())){
+		if(taskConfig == null || BooleanUtils.isNotTrue(taskConfig.getApplicable())){
 			//not applicable
 			currentNode.leave(context);
 		}else {
 			//applicable, so create tasks
 			List<User> assignees = workflowService.findTaskAssignees(workflowDefinitionName, taskNodeName);
-			workflowService.createTaskInstances(context, assignees);	
+			workflowService.createTaskInstances(new CreateTaskJbpmCallback(context, assignees));	
 		}
 		
 	}
@@ -61,8 +65,6 @@ public class NodeSkipActionHandler extends Action{
 		this.workflowService = workflowService;
 	}
 	
-	public WorkflowService getWorkflowService() {
-		return workflowService;
-	}
+
 	
 }

@@ -61,8 +61,8 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
+		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 	</node>
 
 	<node name="Provide Additional Information To Data Coordinator">

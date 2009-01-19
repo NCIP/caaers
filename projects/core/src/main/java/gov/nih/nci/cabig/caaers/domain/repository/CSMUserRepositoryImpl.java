@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
@@ -38,37 +39,56 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     private MailSender mailSender;
     private SimpleMailMessage accountCreatedTemplateMessage;
     private String authenticationMode;
-    private ResearchStaffDao researchStaffDao;
-    private InvestigatorDao investigatorDao;
+    private UserDao userDao;
+    
+    //private ResearchStaffDao researchStaffDao;
+    //private InvestigatorDao investigatorDao;
     
     private Logger log = Logger.getLogger(CSMUserRepositoryImpl.class);
 
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
     public void createOrUpdateCSMUserAndGroupsForResearchStaff(final ResearchStaff researchStaff, String changeURL) {
-        gov.nih.nci.security.authorization.domainobjects.User csmUser;
+        gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
+        MailException mailException = null;
         
-        if (researchStaff.getId() == null) {
-            csmUser = createCSMUser(researchStaff, changeURL);
-        } else {
-            csmUser = updateCSMUser(researchStaff);
-        }
+        try {
+			if (researchStaff.getId() == null) {
+			    csmUser = createCSMUser(researchStaff);
+			    sendCreateAccountEmail(researchStaff, changeURL);
+			} else {
+			    csmUser = updateCSMUser(researchStaff);
+			    sendUpdateAccountEmail(researchStaff);
+			}
+		} catch (MailException e) {
+			mailException = e;
+		}
         List<Organization> associatedOrgList = new ArrayList<Organization>();
         associatedOrgList.add(researchStaff.getOrganization());
         createCSMUserGroups(csmUser, researchStaff, associatedOrgList);
+        if(mailException != null) throw mailException;
     }
 
     public void createOrUpdateCSMUserAndGroupsForInvestigator(Investigator investigator, String changeURL) {
-    	gov.nih.nci.security.authorization.domainobjects.User csmUser;
-    	if(investigator.getId() == null){
-    		csmUser = createCSMUser(investigator, changeURL);
-    	}else{
-    		csmUser = updateCSMUser(investigator);
-    	}
+    	gov.nih.nci.security.authorization.domainobjects.User csmUser = null;
+    	MailException mailException = null;
+    	
+    	try {
+			if(investigator.getId() == null){
+				csmUser = createCSMUser(investigator);
+				sendCreateAccountEmail(investigator, changeURL);
+			}else{
+				csmUser = updateCSMUser(investigator);
+				sendUpdateAccountEmail(investigator);
+			}
+		} catch (MailException e) {
+			mailException = e;
+		}
     	List<Organization> associatedOrgList = new ArrayList<Organization>();
     	for(SiteInvestigator siteInv : investigator.getSiteInvestigatorsInternal()){
     		associatedOrgList.add(siteInv.getOrganization());
     	}
         createCSMUserGroups(csmUser, investigator, associatedOrgList);
+        if(mailException != null) throw mailException;
     }
     
     private void createCSMUserGroups(final gov.nih.nci.security.authorization.domainobjects.User csmUser, final User user, List<Organization> allowedOrgs) {
@@ -108,7 +128,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         // or this? csmUser.setOrganization(researchStaff.getOrganization().getNciInstituteCode());
     }
 
-    private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user, String changeURL) {
+    private gov.nih.nci.security.authorization.domainobjects.User createCSMUser(final User user) {
         // assumes research staff id is null
         String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser;
@@ -129,6 +149,11 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
             throw new CaaersSystemException("Could not create user", e2);
         }
         
+        return csmUser;
+    }
+    
+    private void sendCreateAccountEmail(User user, String changeURL){
+
         //send out an email
         if ("local".equals(getAuthenticationMode())) {
             sendUserEmail(user.getEmailAddress(), "Your new caAERS account", "A new caAERS account has been created for you.\n"
@@ -142,16 +167,15 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
                     + "Regards\n"
                     + "The caAERS Notification System.\n");
         }
-        return csmUser;
     }
-    
+    private void sendUpdateAccountEmail(User user){
+    	sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
+    }
     private gov.nih.nci.security.authorization.domainobjects.User updateCSMUser(final User user) {
         String loginId = user.getLoginId();
         gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
         copyUserToCSMUser(user, csmUser);
         saveCSMUser(csmUser);
-       // researchStaffDao.save(researchStaff);
-        sendUserEmail(user.getEmailAddress(), "Your updated caAERS account", "Your caAERS account has been updated");  // annoying for development
         return csmUser;
     }
 
@@ -199,10 +223,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     }
 
     public User getUserByName(String userName) {
-    	User user = researchStaffDao.getByLoginId(userName);
-    	if(user == null){
-    		user = investigatorDao.getByLoginId(userName);
-    	}
+    	User user = userDao.getByLoginId(userName);
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
     	}
@@ -275,12 +296,8 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
         this.siteObjectIdGenerator = siteObjectIdGenerator;
     }
     @Required
-    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
-    @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
    
     @Required

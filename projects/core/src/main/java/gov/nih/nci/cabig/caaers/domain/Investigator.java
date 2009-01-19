@@ -26,7 +26,6 @@ import org.hibernate.annotations.Parameter;
  */
 @Entity
 @Table(name = "investigators")
-@GenericGenerator(name = "id-generator", strategy = "native", parameters = { @Parameter(name = "sequence", value = "seq_investigators_id") })
 public class Investigator extends User {
 
     private String nciIdentifier;

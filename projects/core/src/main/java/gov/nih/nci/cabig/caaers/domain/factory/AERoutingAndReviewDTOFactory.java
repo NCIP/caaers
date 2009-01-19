@@ -42,7 +42,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
 		dto.setReviewStatus(rp.getReviewStatus());
-		dto.setPossibleReivewStatuses(workflowService.nextStatuses(rp.getWorkflowId()));
+		dto.setPossibleActions(workflowService.nextTransitionNames(rp.getWorkflowId()));
 		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
 		
 		//set the dcp sponsored study flag
@@ -65,7 +65,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setStatus(report.getLastVersion().getReportStatus());
 		dto.setReportVersionId(report.getLastVersion().getReportVersionId());
 		dto.setReviewStatus(report.getReviewStatus());
-		dto.setPossibleReivewStatuses(workflowService.nextStatuses(report.getWorkflowId()));
+		dto.setPossibleActions(workflowService.nextTransitionNames(report.getWorkflowId()));
 		dto.setReviewComments(createReviewComments(report.getReviewComments()));
 		return dto;
 	}

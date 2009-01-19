@@ -76,10 +76,11 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.User</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
-                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
@@ -241,10 +242,11 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseCategory</value>
                 <value>gov.nih.nci.cabig.caaers.domain.DiseaseTerm</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Notification</value>
+                <value>gov.nih.nci.cabig.caaers.domain.User</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Investigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.SiteInvestigator</value>
                 <value>gov.nih.nci.cabig.caaers.domain.StudyInvestigator</value>
-                <value>gov.nih.nci.cabig.caaers.domain.ResearchStaff</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Person</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Reporter</value>
                 <value>gov.nih.nci.cabig.caaers.domain.Physician</value>
@@ -514,8 +516,7 @@ This applicationContext contains the definition of the DAOs
         <property name="accountCreatedTemplateMessage" ref="accountCreatedTemplateMessage"/>
         <property name="userProvisioningManager" ref="csmUserProvisioningManager"/>
         <property name="siteObjectIdGenerator" ref="sitePrivilegeAndObjectIdGenerator"/>
-        <property name="investigatorDao" ref="investigatorDao" />
-        <property name="researchStaffDao" ref="researchStaffDao" />
+        <property name="userDao" ref="userDao" />
     </bean>
 
 

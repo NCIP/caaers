@@ -61,18 +61,18 @@ public interface AdverseEventRoutingAndReviewRepository {
 	/**
 	 * Will advance the workflow to its next step, for the Report
 	 * @param workflowId
-	 * @param reviewStatus
+	 * @param transition
 	 * @param id
 	 * @return
 	 */
-	public List<ReviewStatus> advanceReportWorkflow(Integer workflowId, ReviewStatus reviewStatus, Integer id);
+	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Integer id);
 	
 	/**
 	 * Will advance the workflow to its next step, for the reporting period
 	 * @param workflowId
-	 * @param reviewStatus
+	 * @param transition
 	 * @param id
 	 * @return
 	 */
-	public List<ReviewStatus> advanceReportingPeriodWorkflow(Integer workflowId, ReviewStatus reviewStatus, Integer id);
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, Integer id);
 }

@@ -29,12 +29,8 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
 
     private CSMUserRepositoryImpl csmUserRepository;
 
-   // private UserDao userDao;
+    private UserDao userDao;
     
-    private InvestigatorDao investigatorDao;
-    
-    private ResearchStaffDao researchStaffDao;
-
     private UserProvisioningManager userProvisioningManager;
 
     private User user;
@@ -75,23 +71,19 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
         passwordManagerService.setPasswordPolicyService(passwordPolicyService);
         passwordManagerService.setCsmUserRepository(csmUserRepository);
         
-       investigatorDao = registerDaoMockFor(InvestigatorDao.class);
-       researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
-       passwordManagerService.setInvestigatorDao(investigatorDao);
-       passwordManagerService.setResearchStaffDao(researchStaffDao);
+       userDao = registerDaoMockFor(UserDao.class);
+       passwordManagerService.setUserDao(userDao);
+       csmUserRepository.setUserDao(userDao);
        
-       csmUserRepository.setResearchStaffDao(researchStaffDao);
-       csmUserRepository.setInvestigatorDao(investigatorDao);
        
     }
 
     public void testRequestToken() throws Exception {
 //        userDao.save(user);
-        expect(researchStaffDao.getByLoginId(userName)).andReturn(null);
         Investigator inv = Fixtures.createInvestigator("tester");
         inv.setLoginId(userName);
-        expect(investigatorDao.getByLoginId(userName)).andReturn(inv);
-        investigatorDao.save(inv);
+        expect(userDao.getByLoginId(userName)).andReturn(inv);
+        userDao.save(inv);
         replayMocks();
         assertNotNull(passwordManagerService.requestToken(userName));
         verifyMocks();
@@ -102,12 +94,11 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
         csmUser.setPassword("v@l1d_Password");
 
         userProvisioningManager.modifyUser(csmUser);
-        expect(researchStaffDao.getByLoginId(userName)).andReturn(null).anyTimes();
         Investigator inv = Fixtures.createInvestigator("tester");
         inv.setLoginId(userName);
         inv.setEmailAddress(userName);
-        expect(investigatorDao.getByLoginId(userName)).andReturn(inv).anyTimes();
-        investigatorDao.save(inv);
+        expect(userDao.getByLoginId(userName)).andReturn(inv).anyTimes();
+        userDao.save(inv);
         expectLastCall().times(3);
         replayMocks();
         User user = passwordManagerService.requestToken(userName);

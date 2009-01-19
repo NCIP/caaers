@@ -50,10 +50,14 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     		//login id should be email id , if it is non websso mode
     		if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
     	}
-    	
-        csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+    	MailException mailException = null;
+        try {
+			csmUserRepository.createOrUpdateCSMUserAndGroupsForInvestigator(investigator, changeURL);
+		} catch (MailException e) {
+			mailException = e;
+		}
         investigatorDao.save(investigator);
-        
+        if(mailException != null) throw mailException;
         
 	}
 	

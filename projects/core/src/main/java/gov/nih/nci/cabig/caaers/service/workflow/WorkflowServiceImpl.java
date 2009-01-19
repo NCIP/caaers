@@ -11,12 +11,15 @@ import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver;
+import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.jbpm.JbpmContext;
 import org.jbpm.JbpmException;
 import org.jbpm.graph.def.Node;
@@ -27,6 +30,7 @@ import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
+import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springmodules.workflow.jbpm31.JbpmCallback;
@@ -37,7 +41,7 @@ import org.springmodules.workflow.jbpm31.JbpmTemplate;
  * @author Sameer
  * @author Biju Joseph
  */
-
+@Transactional(readOnly = true)
 public class WorkflowServiceImpl implements WorkflowService {
 	private JbpmTemplate jbpmTemplate;
 	private List<ProcessDefinition> processDefinitions;
@@ -59,6 +63,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**
 	 * This method is used to create and persist processInstance
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public ProcessInstance createProcessInstance(String workflowDefinitionName){
 		
 		//check if workflow is enabled
@@ -74,13 +79,13 @@ public class WorkflowServiceImpl implements WorkflowService {
 			
 			//instantiate the process, then jump to the first node
 			ProcessInstance pInstance = new ProcessInstance(pDefinition);
-			
+			Long processId =  jbpmTemplate.saveProcessInstance(pInstance);
+			assert processId != null;
 			Token token = pInstance.getRootToken();
 	        token.signal();
 			
-	        Long processId =  jbpmTemplate.saveProcessInstance(pInstance);
-			assert processId != null;
-			
+	        processId =  jbpmTemplate.saveProcessInstance(pInstance);
+						
 			return pInstance;	
 		}
 		return null;
@@ -96,76 +101,65 @@ public class WorkflowServiceImpl implements WorkflowService {
 		return possibleTransitionsResolver.fetchNextTransitions(wfConfig, processInstance);
 	}
 	
-	
 	/**
-	 * This method lists the {@link ReviewStatus} to which the workflow can transition to. 
+	 * This method will return the list of all possible transitions available at a given time on a specific process instance
 	 */
-	public List<ReviewStatus> nextStatuses(Integer workflowId) {
-		ProcessInstance processInstance = fetchProcessInstance(workflowId.longValue());
-		String workflowDefinitionName = processInstance.getProcessDefinition().getName();
-		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
-		List<Transition> transitions = possibleTransitionsResolver.fetchNextTransitions(wfConfig, processInstance);
-		
-		List<ReviewStatus> statuses = new ArrayList<ReviewStatus>();
+	public List<String> nextTransitionNames(Integer workflowId) {
+		List<Transition> transitions = nextTransitions(workflowId);
+		List<String> transitionNames = new ArrayList<String>();
 		for(Transition transition : transitions){
-			TaskConfig tConfig = wfConfig.findTaskConfig(transition.getTo().getName());
-			statuses.add(ReviewStatus.valueOf(tConfig.getStatusName()));
+			transitionNames.add(transition.getName());
 		}
-		
-		return statuses;
+		return transitionNames;
 	}
 	
+
 	/**
-	 * @see WorkflowService#advanceWorkflow(Integer, ReviewStatus)
+	 * @see WorkflowService#advanceWorkflow(Integer, String)
 	 */
 	/*
 	 * Will fetch the workflow process
 	 * Get the current node, 
 	 *   Find the next nodes, and see if the status mentioned is associated to that task.
 	 */
-	public List<ReviewStatus> advanceWorkflow(Integer workflowId,ReviewStatus toStatus) {
+	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+	public ReviewStatus advanceWorkflow(Integer workflowId,String leavingTransitionName) {
 		
+		//fetch the process instance
 		ProcessInstance processInstance = fetchProcessInstance(workflowId.longValue());
-		String workflowDefName = processInstance.getProcessDefinition().getName();
-		
-		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefName);
-		
 		Token token = processInstance.getRootToken();
-		Node rootNode = token.getNode();
 		
-		//find all leaving nodes
-		Transition defaultTransition = rootNode.getDefaultLeavingTransition();
-		List<Transition> leavingTransitions = rootNode.getLeavingTransitions();
-		
-		//combine the default and the leaving transitions.
-		List<Transition> allLeavingTransitions = new ArrayList<Transition>();
-		allLeavingTransitions.add(defaultTransition);
-		allLeavingTransitions.addAll(leavingTransitions);
-		
-		Transition transitionToTake = defaultTransition; //make it the default transition
-		for(Transition transition : allLeavingTransitions){
-			Node targetNode = transition.getTo();
-			TaskConfig tConfig = wfConfig.findTaskConfig(targetNode.getName());
-			if(tConfig.getStatusName().equals(toStatus.getName())){
+		//figure out the transition to take, based upon our crude logic of applicable/not applicable, 
+		//the leavingTransitionName, may not be a valid leaving transition in the current workflow node.
+		Transition transitionToTake = token.getNode().getDefaultLeavingTransition();
+		for(Iterator it = token.getNode().getLeavingTransitions().iterator(); it.hasNext(); ){
+			Transition transition = (Transition) it.next();
+			if(StringUtils.equals(transition.getName(), leavingTransitionName)){
 				transitionToTake = transition;
 				break;
 			}
 		}
 		
-		//proceed through the transition
+		//leave through the transition
 		token.signal(transitionToTake);
+		jbpmTemplate.saveProcessInstance(processInstance);
 		
-		//save the workflow instance
-		Long processId =  jbpmTemplate.saveProcessInstance(processInstance);
+		//now fetch the node where we are at after the transition.
+		Node currentNode =  processInstance.getRootToken().getNode();
+		String workflowDefinitionName =processInstance.getProcessDefinition().getName();
 		
-		List<ReviewStatus> nextStatuses =  nextStatuses(processId.intValue());
+		//fetch the current nodes status from task config
+		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
+		if(wfConfig == null){
+			throw new CaaersSystemException("WF-0011", "Workflow is not configured for [" + workflowDefinitionName + "]");
+		}
 		
-		//prepend, the current status, to the list of statuses
-		LinkedHashSet<ReviewStatus> statuses = new LinkedHashSet<ReviewStatus>();
-		statuses.add(toStatus);
-		statuses.addAll(nextStatuses);
-		return new ArrayList<ReviewStatus>(statuses);
+		TaskConfig taskConfig = wfConfig.findTaskConfig(currentNode.getName());
+		assert taskConfig != null;
 		
+		String reviewStatusName =  taskConfig.getStatusName();
+		return ReviewStatus.valueOf(reviewStatusName);
 	}
 	
 	/*
@@ -178,40 +172,19 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/*
 	 *  This method is used to create a bunch of TaskInstances for the actors involved
 	 */
-	public void createTaskInstances(final ExecutionContext context, final List<User> taskAssigneesList){
-		
-		final Node curNode = context.getNode();
-		jbpmTemplate.execute(new JbpmCallback(){
-			
-			public Object doInJbpm(JbpmContext jbpmContext) throws JbpmException {
-				
-				Node curNode = context.getNode();
-				TaskMgmtInstance tmi = context.getTaskMgmtInstance();
-				TaskInstance tInstance = tmi.createTaskInstance(null, context);
-				tInstance.setName(curNode.getName());
-
-				int userCount = taskAssigneesList.size();
-				String[] pooleActorIds = new String[userCount];
-				int i = 0;
-				for(User user : taskAssigneesList){
-					pooleActorIds[i] = user.getLoginId();
-					i++;
-				}
-				tInstance.setPooledActors(pooleActorIds);
-
-				return null;
-			}
-		});
-		
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
+	public void createTaskInstances(CreateTaskJbpmCallback createTaskCallback){
+		jbpmTemplate.execute(createTaskCallback);
 		
 		// Send Notifications
-		notifiyTaskAssignees(context.getProcessDefinition().getName(), curNode.getName(), taskAssigneesList);
+		notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList());
 	}
 	
 	/**
 	 * This method will close all the open task instances
 	 */
 	@SuppressWarnings("unchecked")
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void closeAllOpenTaskInstances(ExecutionContext executionContext) {
 		List<TaskInstance> taskInstances = jbpmTemplate.findTaskInstancesByToken(executionContext.getToken());
 		for(TaskInstance tInstance : taskInstances){
@@ -225,7 +198,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 *  This method returns the list of active tasks for a given userId
 	 */
 	public List<TaskInstance> fetchTaskInstances(String actorId){
-		return (List<TaskInstance>)jbpmTemplate.findTaskInstances(actorId);
+		return (List<TaskInstance>)jbpmTemplate.findPooledTaskInstances(actorId);
 	}
 	
 	/**
@@ -254,12 +227,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public TaskConfig findTaskConfig(String workflowDefinitionName,	String taskNodeName) {
 		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
 		if(wfConfig == null){
-			throw new CaaersConfigurationException("The workflow is not configured for " + workflowDefinitionName);
+			throw new CaaersSystemException("WF-0011", "Workflow is not configured for [" + workflowDefinitionName + "]");
 		}
 		
-		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
-		if(taskConfig == null) throw new CaaersConfigurationException("The task [" + taskNodeName + "] is not configured for workflow [" + workflowDefinitionName + "]");
-		return taskConfig;
+		return wfConfig.findTaskConfig(taskNodeName);
 	}
 	
 	/**
@@ -278,12 +249,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		caaersJavaMailSender.sendMail(to, subject, message, new String[0]);
 	}
 	
-	/**
-	 * This method will return the {@link WorkflowConfig} associated to a domain object type
-	 */
-	public WorkflowConfig findWorkflowConfigForDomainObject(Class<? extends DomainObject> klass) {
-		return workflowConfigDao.getByDomainObject(klass);
-	}
+
 	
 	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender){
 		this.caaersJavaMailSender = caaersJavaMailSender;
@@ -298,16 +264,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 		this.workflowConfigDao = workflowConfigDao;
 	}
 	
-	public JbpmTemplate getJbpmTemplate() {
-		return jbpmTemplate;
-	}
 	
 	public void setJbpmTemplate(JbpmTemplate jbpmTemplate) {
 		this.jbpmTemplate = jbpmTemplate;
 	}
-	public List<ProcessDefinition> getProcessDefinitions() {
-		return processDefinitions;
-	}
+
 	public void setProcessDefinitions(List<ProcessDefinition> processDefinitions) {
 		this.processDefinitions = processDefinitions;
 	}

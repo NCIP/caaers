@@ -9,22 +9,37 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CollectionOfElements;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Parameter;
 
 /**
  * This class represents the User domain object associated with the Adverse event report.
  *
  * @author Saurabh Agrawal
  */
-@MappedSuperclass
-public abstract class User extends AbstractMutableDomainObject {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@GenericGenerator(name = "id-generator", strategy = "sequence", parameters = { @Parameter(name = "sequence", value = "seq_users_id") })
+//@SequenceGenerator(name = "seq_research_staffs_id", sequenceName = "seq_research_staffs_id")
 
+public abstract class User extends AbstractMutableDomainObject {
+	
+	private Integer id;
+	
     private String loginId;
 
     private List<UserGroupType> userGroupTypes;
@@ -57,7 +72,17 @@ public abstract class User extends AbstractMutableDomainObject {
         userGroupTypes = new ArrayList<UserGroupType>();
         passwordHistory = new ArrayList<String>();
     }
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id-generator")
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+    
     public String getLoginId() {
         return loginId;
     }

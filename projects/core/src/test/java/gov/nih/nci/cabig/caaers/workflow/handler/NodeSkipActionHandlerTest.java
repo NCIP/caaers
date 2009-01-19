@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
+import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +84,8 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		tConfig = Fixtures.createTaskConfig(taskDefName, true);
 		
 		ExecutionContext context = registerMockFor(ExecutionContext.class);
-		EasyMock.expect(context.getProcessDefinition()).andReturn(pDef);
+		EasyMock.expect(context.getProcessDefinition()).andReturn(pDef).anyTimes();
+		EasyMock.expect(context.getNode()).andReturn(n).anyTimes();
 		EasyMock.expect(context.getProcessInstance()).andReturn(pInstance);
 		EasyMock.expect(pInstance.getRootToken()).andReturn(token);
 		EasyMock.expect(token.getNode()).andReturn(n);
@@ -98,9 +100,9 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		
 		EasyMock.expect(wfService.findTaskAssignees(wfDefName, taskDefName)).andReturn(users);
 		
-		wfService.createTaskInstances(context, users);
-		
+		wfService.createTaskInstances((CreateTaskJbpmCallback)EasyMock.anyObject());
 		replayMocks();
+		
 		handler.execute(context);
 		verifyMocks();
 		

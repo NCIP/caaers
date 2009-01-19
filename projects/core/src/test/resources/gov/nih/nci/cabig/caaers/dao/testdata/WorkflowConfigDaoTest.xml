@@ -46,7 +46,6 @@
 		name="Evaluation Period Coordinating Center Workflow"
 		default_assignee="system_admin"
 		enabled="1"
-		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"
 		study_site_id="-1000"
 		/>
 
@@ -56,7 +55,6 @@
 		name="Expedited Reporting Domestic Workflow"
 		default_assignee="system_admin"
 		enabled="1"
-		domain_object="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod"
 		study_site_id="-1000"
 		/>
 		

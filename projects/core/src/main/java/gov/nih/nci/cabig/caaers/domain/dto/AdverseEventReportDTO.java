@@ -24,7 +24,7 @@ public class AdverseEventReportDTO {
 	private String reportVersionId;
 	
 	private ReviewStatus reviewStatus;
-	private List<ReviewStatus> possibleReivewStatuses;
+	private List<String> possibleActions;
 	private List<ReviewCommentsDTO> reviewComments;
 	
 	private Study study;
@@ -57,13 +57,7 @@ public class AdverseEventReportDTO {
 	public void setReviewStatus(ReviewStatus reviewStatus) {
 		this.reviewStatus = reviewStatus;
 	}
-	public List<ReviewStatus> getPossibleReivewStatuses() {
-		return possibleReivewStatuses;
-	}
-	public void setPossibleReivewStatuses(
-			List<ReviewStatus> possibleReivewStatuses) {
-		this.possibleReivewStatuses = possibleReivewStatuses;
-	}
+
 	public List<ReviewCommentsDTO> getReviewComments() {
 		return reviewComments;
 	}
@@ -106,5 +100,12 @@ public class AdverseEventReportDTO {
 	}
 	public void setWorkflowId(Integer workflowId) {
 		this.workflowId = workflowId;
+	}
+	
+	public List<String> getPossibleActions() {
+		return possibleActions;
+	}
+	public void setPossibleActions(List<String> possibleActions) {
+		this.possibleActions = possibleActions;
 	}
 }

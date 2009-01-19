@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
@@ -81,6 +82,9 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 		
 	}
 	
-	
+	public void testGetDomainClass() {
+		assertEquals(WorkflowConfig.class, getDao().domainClass());
+	}
+		
 	
 }

@@ -28,9 +28,8 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
 
     private User user;
     
-    InvestigatorDao investigatorDao;
-    ResearchStaffDao researchStaffDao;
-
+    UserDao userDao;
+    
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 
     private String userName;
@@ -50,16 +49,13 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
 
         csmUser = registerMockFor(gov.nih.nci.security.authorization.domainobjects.User.class);
         
-        researchStaffDao = registerDaoMockFor(ResearchStaffDao.class);
-        investigatorDao = registerDaoMockFor(InvestigatorDao.class);
-        csmUserRepository.setResearchStaffDao(researchStaffDao);
-        csmUserRepository.setInvestigatorDao(investigatorDao);
+        userDao = registerDaoMockFor(UserDao.class);
+        csmUserRepository.setUserDao(userDao);
     }
 
     public void testGetUserByName() throws Exception {
     	String invalidUserId = "nodbody@nobody.com";
-        expect(researchStaffDao.getByLoginId(invalidUserId)).andReturn(null);
-        expect(investigatorDao.getByLoginId(invalidUserId)).andReturn(null);
+        expect(userDao.getByLoginId(invalidUserId)).andReturn(null).anyTimes();
       
         replayMocks();
         try {
@@ -72,7 +68,7 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
     }
     
     public void testGetByUserName_validUser() throws Exception{
-    	  expect(researchStaffDao.getByLoginId(userName)).andReturn((ResearchStaff)user);
+    	  expect(userDao.getByLoginId(userName)).andReturn(user);
     	  replayMocks();
           User actual = csmUserRepository.getUserByName(userName);
           verifyMocks();
@@ -145,10 +141,10 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
     	boolean inUse = csmUserRepository.loginIDInUse(userName);
     	assertTrue(inUse);
     }
+    
     public void testLoginIDInUse_NoUser(){
     	expect(userProvisioningManager.getUser(userName)).andReturn(null);
-    	expect(researchStaffDao.getByLoginId(userName)).andReturn(null);
-    	expect(investigatorDao.getByLoginId(userName)).andReturn(null);
+    	expect(userDao.getByLoginId(userName)).andReturn(null).anyTimes();
     	replayMocks();
     	
     	boolean inUse = csmUserRepository.loginIDInUse(userName);

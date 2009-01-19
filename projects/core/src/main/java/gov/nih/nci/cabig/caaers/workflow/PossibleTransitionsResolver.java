@@ -28,7 +28,7 @@ public class PossibleTransitionsResolver{
 	 *          c. For all non-default transitions check if the target NODE is available.
 	 *          	c.1 If the target NODE is available, add the corresponding transition to the list of possible transitions (result)
 	 *          	c.2 If the target NODE is unavailable, ignore the corresponding transition.
-	 *          d. Follow the process-definition graph taking the default-transitions on each step, till you hit an available NODE.
+	 *          d.For the default leaving transition, Follow the process-definition graph taking the default-transitions on each step, till you hit an available NODE.
 	 *          e. Add the transition that enters into this active NODE (found in step d) to the final list of possible transitions (result)
 	 *          f. Return.
 	 *

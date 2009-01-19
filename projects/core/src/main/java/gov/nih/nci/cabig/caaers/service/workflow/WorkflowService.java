@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
+import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.jbpm.JbpmConfiguration;
+import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
@@ -56,36 +58,29 @@ public interface WorkflowService{
 	/*
 	 *  This method is used to create a bunch of TaskInstances for the actors involved
 	 */
-	public void createTaskInstances(ExecutionContext context, List<User> taskAssigneesList);
+	public void createTaskInstances(CreateTaskJbpmCallback createTaskCallback);
 	
 	/*
 	 *  This method returns the list of active tasks for a given userId
 	 */
 	public List<TaskInstance> fetchTaskInstances(String actorId);
 	
+	/**
+	 * This method will close all the open tasks, within an execution context.
+	 * @param executionContext
+	 */
 	public void closeAllOpenTaskInstances(ExecutionContext executionContext);
 	
-	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender);
 	
-	
+
 	/**
-	 * Will list out all the possible states that the current workflow can transition into.
-	 * This internally finds the possible transitions, the status associated to the target node of those
-	 * transitions are returned.
-	 * 
-	 * @param workflowId
-	 * @return
-	 */
-	public List<ReviewStatus> nextStatuses(Integer workflowId);
-	
-	/**
-	 * This will advance the workflow, to the next step (identified by the status), and will return the statuses associated to 
+	 * This will advance the workflow, to the next step (identified by the transition), and will return the statuses associated to 
 	 * the current node.
 	 * @param workflowId
-	 * @param toStatus
+	 * @param transition
 	 * @return
 	 */
-	public List<ReviewStatus> advanceWorkflow(Integer workflowId, ReviewStatus toStatus);
+	public ReviewStatus advanceWorkflow(Integer workflowId, String transition);
 	
 	/**
 	 * Lists all the available transitions of the workflow. 
@@ -94,6 +89,13 @@ public interface WorkflowService{
 	 * @return
 	 */
 	public List<Transition> nextTransitions(Integer workflowId);
+	
+	/**
+	 * List all the available transitions of the workflow
+	 * @param workflowId
+	 * @return
+	 */
+	public List<String> nextTransitionNames(Integer workflowId);
 	
 	/**
 	 * This method is used to identify the assignees configured on the task. 
@@ -118,12 +120,5 @@ public interface WorkflowService{
 	 */
 	public void notifiyTaskAssignees(String workflowDefinitionName, String taskNodeName,List<User> recipients);
 
-	/**
-	 *  This method will figure out the workflow definition to use for the given domain object.
-	 * eg: For {@link AdverseEventReportingPeriod} "routineflow", which is the name given to the &lt;process-definition /&gt; tag.
-	 * @param klass
-	 * @return
-	 */
-	public WorkflowConfig findWorkflowConfigForDomainObject(Class<? extends DomainObject> klass);
-	
+
 }

@@ -21,7 +21,9 @@ public enum ReviewStatus implements CodedEnum<Integer> {
     SUBMIT_TO_SPONSOR (7, "Ready for Submission to Sponsor "),
     DATA_COORDINATOR_REVIEW(8, "Data Coordinator Review"),
     DATA_COORDINATOR_ADDITIONAL_INFO(9,"Additional Info Requested By Data Coordinator"),
-    READY_FOR_FINALIZE(10, "Ready For Finalizing");
+    READY_FOR_FINALIZE(10, "Ready For Finalizing"),
+    FINALIZED(11, "Finalized"),
+    SUBMITTED_TO_SPONSOR(12, "Submitted to Sponsor");
     
     private Integer code;
     private String displayName;

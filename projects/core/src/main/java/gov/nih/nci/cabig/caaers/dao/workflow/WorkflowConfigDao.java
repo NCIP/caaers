@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.dao.workflow;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import gov.nih.nci.cabig.caaers.dao.CaaersDao;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -16,7 +18,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
  * 
  * @author Sameer Sawant
  */
-
+@Transactional
 public class WorkflowConfigDao extends GridIdentifiableDao<WorkflowConfig>
 implements MutableDomainObjectDao<WorkflowConfig>{	
 	/**
@@ -37,16 +39,6 @@ implements MutableDomainObjectDao<WorkflowConfig>{
         return (results == null || results.size() < 1) ? null : results.get(0);
     }
     
-    /**
-     * This method will return the workflow configured against a give domain object type.
-     * @param klass
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-	public WorkflowConfig getByDomainObject(Class<? extends DomainObject> klass){
-    	List<WorkflowConfig> configs = getHibernateTemplate().find("from WorkflowConfig where domainObject= ?" , klass.getName());
-    	if(configs != null && configs.size() > 0) return configs.get(0);
-    	return null;
-    }
+   
 
 }

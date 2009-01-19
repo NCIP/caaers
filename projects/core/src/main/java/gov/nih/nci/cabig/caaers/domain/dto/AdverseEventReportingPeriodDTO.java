@@ -22,7 +22,7 @@ public class AdverseEventReportingPeriodDTO {
 	private boolean dcpSponsoredStudy;
 	
 	private ReviewStatus reviewStatus;
-	private List<ReviewStatus> possibleReivewStatuses;
+	private List<String> possibleActions;
 	private List<ReviewCommentsDTO> reviewComments;
 	
 	private List<AdverseEventReportDTO> reports;
@@ -44,9 +44,9 @@ public class AdverseEventReportingPeriodDTO {
 		reviewComments.add(reviewComment);
 	}
 	
-	public void addPossibleReviewStatus(ReviewStatus status){
-		if(possibleReivewStatuses == null) possibleReivewStatuses = new ArrayList<ReviewStatus>();
-		possibleReivewStatuses.add(status);
+	public void addPossibleActions(String transition){
+		if(possibleActions == null) possibleActions = new ArrayList<String>();
+		possibleActions.add(transition);
 	}
 	
 	public Integer getId() {
@@ -79,12 +79,11 @@ public class AdverseEventReportingPeriodDTO {
 	public void setNoOfReport(Integer noOfReport) {
 		this.noOfReport = noOfReport;
 	}
-	public void setPossibleReivewStatuses(
-			List<ReviewStatus> possibleReivewStatuses) {
-		this.possibleReivewStatuses = possibleReivewStatuses;
+	public List<String> getPossibleActions() {
+		return possibleActions;
 	}
-	public List<ReviewStatus> getPossibleReivewStatuses() {
-		return possibleReivewStatuses;
+	public void setPossibleActions(List<String> possibleActions) {
+		this.possibleActions = possibleActions;
 	}
 	public List<ReviewCommentsDTO> getReviewComments() {
 		return reviewComments;

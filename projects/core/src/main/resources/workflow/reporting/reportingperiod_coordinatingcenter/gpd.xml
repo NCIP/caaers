@@ -13,11 +13,11 @@
   </node>
   <node name="Data Coordinator Review" x="98" y="275" width="228" height="36">
     <edge>
-      <label x="-47" y="-22"/>
-      <bendpoint w1="229" h1="-37" w2="-299" h2="-36"/>
+      <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
+      <label x="-47" y="-12"/>
+      <bendpoint w1="214" h1="-30" w2="-314" h2="-29"/>
     </edge>
   </node>
   <node name="Provide Additional Information To Data Coordinator" x="562" y="274" width="357" height="36">

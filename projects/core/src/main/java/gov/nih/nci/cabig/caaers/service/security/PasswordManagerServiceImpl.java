@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.CaaersNoSuchUserException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
@@ -24,46 +25,29 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
 
     private CSMUserRepository csmUserRepository;
     
-    private InvestigatorDao investigatorDao;
-    
-    private ResearchStaffDao researchStaffDao;
-    
+    private UserDao userDao;
 
     public User requestToken(String userName) throws CaaersSystemException {
-    	User user = researchStaffDao.getByLoginId(userName);
-    	if(user == null){
-    		user = investigatorDao.getByLoginId(userName);
-    	}
+    	User user = userDao.getByLoginId(userName);
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
     	}
         //get the token
     	csmUserRepository.userCreateToken(user);
-    	if(user instanceof ResearchStaff){
-    		researchStaffDao.save((ResearchStaff)user);
-    	}else if (user instanceof Investigator){
-    		investigatorDao.save((Investigator)user);
-    	}
+    	userDao.save(user);
     	return user;
     }
 
     public void setPassword(String userName, String password, String token)
             throws CaaersSystemException {
-    	User user = researchStaffDao.getByLoginId(userName);
-    	if(user == null){
-    		user = investigatorDao.getByLoginId(userName);
-    	}
+    	User user = userDao.getByLoginId(userName);
+    	
     	if(user == null){
     		new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
     	}
         validateToken(user, token);
         validateAndSetPassword(user, password);
-        
-        if(user instanceof ResearchStaff){
-    		researchStaffDao.save((ResearchStaff)user);
-    	}else if (user instanceof Investigator){
-    		investigatorDao.save((Investigator)user);
-    	}
+        userDao.save(user);
         
     }
 
@@ -94,15 +78,8 @@ public class PasswordManagerServiceImpl implements PasswordManagerService {
     public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
         this.csmUserRepository = csmUserRepository;
     }
-    
-    
     @Required
-    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
-	}
-    
-    @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 }

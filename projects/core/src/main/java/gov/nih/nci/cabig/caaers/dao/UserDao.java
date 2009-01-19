@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class implements the Data access related operations for the User domain object.
@@ -46,7 +45,7 @@ public class UserDao extends GridIdentifiableDao<User> implements MutableDomainO
      */
     public User getByEmailAddress(String emailAddress) {
         List<User> results = getHibernateTemplate().find(
-                        "from ResearchStaff where emailAddress= ?", emailAddress);
+                        "from User where emailAddress= ?", emailAddress);
         return results.size() > 0 ? results.get(0) : null;
     }
     
@@ -59,7 +58,7 @@ public class UserDao extends GridIdentifiableDao<User> implements MutableDomainO
      */
     public User getByLoginId(String loginId) {
         List<User> results = getHibernateTemplate().find(
-                        "from ResearchStaff where loginId= ?", loginId);
+                        "from User where loginId= ?", loginId);
         return results.size() > 0 ? results.get(0) : null;
     }
 }

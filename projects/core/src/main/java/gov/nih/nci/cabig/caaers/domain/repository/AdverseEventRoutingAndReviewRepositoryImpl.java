@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.jbpm.graph.def.Transition;
+
 public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventRoutingAndReviewRepository {
 	
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
@@ -60,22 +62,20 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		adverseEventReportingPeriodDao.save(rp);
 	}
 	
-	public List<ReviewStatus> advanceReportingPeriodWorkflow(
-			Integer workflowId, ReviewStatus reviewStatus, Integer id) {
-		List<ReviewStatus> nextStatuses = workflowService.advanceWorkflow(workflowId, reviewStatus);
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id) {
+		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
-		reportingPeriod.setReviewStatus(reviewStatus);
+		reportingPeriod.setReviewStatus(nextStatus);
 		adverseEventReportingPeriodDao.save(reportingPeriod);
-		return nextStatuses;
+		return workflowService.nextTransitionNames(workflowId);
 	}
 	
-	public List<ReviewStatus> advanceReportWorkflow(Integer workflowId,
-			ReviewStatus reviewStatus, Integer id) {
-		List<ReviewStatus> nextStatuses = workflowService.advanceWorkflow(workflowId, reviewStatus);
+	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Integer id) {
+		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		Report report = reportDao.getById(id);
-		report.setReviewStatus(reviewStatus);
+		report.setReviewStatus(nextStatus);
 		reportDao.save(report);
-		return nextStatuses;
+		return workflowService.nextTransitionNames(workflowId);
 	}
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();

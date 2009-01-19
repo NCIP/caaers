@@ -1,0 +1,71 @@
+<dataset>
+    <ORGANIZATIONS
+        id="-1000"
+        name="New Site"
+        grid_id="gridSite"/>
+
+    <RESEARCH_STAFFS
+        id="-1000"
+        version="1"
+        first_name="Bill"
+        last_name="Gates"
+        email_address="1000@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1000"
+        login_id="1000@def.com"/>
+    <RESEARCH_STAFFS
+        id="-1001"
+        version="1"
+        first_name="George"
+        last_name="Bush"
+        email_address="1001@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1000"
+        login_id="1001@def.com"/>
+    <RESEARCH_STAFFS
+        id="-1002"
+        version="1"
+        first_name="Benjamin"
+        last_name="Franklin"
+        email_address="1002@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1000"
+        login_id="1002@def.com"/>
+    <RESEARCH_STAFFS
+        id="-1003"
+        version="1"
+        first_name="JF"
+        last_name="Kennedy"
+        email_address="1003@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1000"
+        login_id="1003@def.com"/>
+        
+        <INVESTIGATORS
+        id="-200"
+        first_name="karthik"
+        last_name="iyer"
+		nci_identifier="222"
+        email_address="inv200@def.com"
+        phone_number="123-456-789"
+        login_id="inv200@def.com"
+       />
+	<INVESTIGATORS
+        id="-100"
+        first_name="Dilbert"
+        last_name="Scott"
+        email_address="inv100@def.com"
+        phone_number="123-456-789"
+       login_id="inv100@def.com"
+       />
+    <!--  We have some investigational new drugs pre-loaded for CTEP (for organizations table delete) -->
+    <investigational_new_drugs />    
+    <ind_holders />	
+    <site_investigators />	
+	
+        
+</dataset>

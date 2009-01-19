@@ -16,9 +16,6 @@ public class TaskCloseActionHandler extends Action{
 		workflowService.closeAllOpenTaskInstances(executionContext);
  	}
 	
-	public WorkflowService getWorkflowService() {
-		return workflowService;
-	}
 	
 	public void setWorkflowService(WorkflowService workflowService) {
 		this.workflowService = workflowService;

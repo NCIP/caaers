@@ -45,6 +45,7 @@ public class InvestigatorDaoTest extends DaoTestCase<InvestigatorDao> {
         interruptSession();
 
         {
+        	System.out.println(savedId);
             Investigator loaded = getDao().getById(savedId);
             assertNotNull("Could not reload investigator id " + savedId, loaded);
             assertEquals("Wrong firstname", "Jeff", loaded.getFirstName());
