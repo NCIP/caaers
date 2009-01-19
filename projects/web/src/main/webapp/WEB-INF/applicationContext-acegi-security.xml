@@ -52,7 +52,7 @@
     <util:map id="filterObjectPrivilegeMap" map-class="java.util.LinkedHashMap">
         <entry key="/pages/participant/create.*" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>
         <entry key="/pages/participant/view.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
-        <entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:UPDATE"/>
+        <entry key="/pages/participant/assign.*" value="gov.nih.nci.cabig.caaers.domain.Participant:READ"/>
         <entry key="/pages/study/create.*" value="gov.nih.nci.cabig.caaers.domain.Study:CREATE"/>
         <entry key="/pages/study/edit.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
         <entry key="/pages/study/search.*" value="gov.nih.nci.cabig.caaers.domain.Study:READ"/>
