@@ -33,20 +33,25 @@
                        title="">
                </tags:aeTermQuery>
 
-               <table id="termsTable" width="100%" class="tablecontent">
-                   <tr>
-                       <th scope="col" align="left"><b>Term</b></th>
-                       <th scope="col" align="right"><b></b></th>
+    <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+    <td bgcolor="#cccccc" id="termsDiv">
+
+               <table id="termsTable" width="100%" border="0" cellspacing="1" cellpadding="3">
+                   <tr bgcolor="#E4E4E4">
+                       <th scope="col" align="left" colspan="2"><b>Term</b></th>
                    </tr>
-                   <tbody id="termsDiv">
-                           <c:forEach items="${terms}" var="studyTerm" varStatus="status">
-                               <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" >
-                                   <study:oneExpectedAE isOtherSpecify="${studyTerm.otherRequired}" index="${status.index}" studyTerm="${studyTerm}"/>
-                                   <td style="text-align:center;"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;""></td>
-                               </tr>
-                           </c:forEach>
-                    <tr id="observedBlankRow" />
-                   </tbody>
+                   <c:forEach items="${terms}" var="studyTerm" varStatus="status">
+                       <tr class="ae-section ${status.index % 2 gt 0 ? 'odd' : 'even'}" id="STUDY_TERM_-${status.index}" bgcolor="white">
+                           <study:oneExpectedAE isOtherSpecify="${studyTerm.otherRequired}" index="${status.index}" studyTerm="${studyTerm}"/>
+                           <td style="text-align:center;"><img src="<c:url value="/images/checkno.gif" />" id="DELETE_<c:out value="${status.index}" />" onclick="removeTerm(${status.index})" style="cursor:pointer;""></td>
+                       </tr>
+                   </c:forEach>
+                <tr id="observedBlankRow" style="display:none;"><td></td></tr>
                </table>
 
+    </td>
+    </tr>
+    </table>
+    
     </chrome:division>
