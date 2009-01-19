@@ -151,7 +151,24 @@
             type="MRN"
             system_name="system name"
             organization_id="-1003"
-            discriminator_column="2"/>
+            discriminator_column="2"
+            primary_indicator="0"/>
+    <IDENTIFIERS
+            id="-300"
+            stu_id="-4"
+            value="abcd"
+            type="MRN"
+            organization_id="-1003"
+            discriminator_column="1"
+            primary_indicator="1"/>   
+     <IDENTIFIERS
+            id="-301"
+            stu_id="-4"
+            value="efg"
+            type="local"
+            organization_id="-1003"
+            discriminator_column="1"
+            primary_indicator="1"/>               
     <!-- the stu_id column really ought to be called study_id -->
     <IDENTIFIERS
             id="-15"
