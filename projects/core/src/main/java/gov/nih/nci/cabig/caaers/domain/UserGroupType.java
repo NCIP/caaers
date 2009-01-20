@@ -50,6 +50,10 @@ public enum UserGroupType implements CodedEnum<Integer> {
     public String toString() {
         return csmName;
     }
+    
+    public String getSecurityRoleName() {
+    	return "ROLE_"+csmName;
+    }
 
     public static final String[] strValues() {
         UserGroupType[] groupTypes = UserGroupType.values();
