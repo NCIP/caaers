@@ -123,7 +123,7 @@ public class ParticipantSiteSecurityFilterer extends BaseSecurityFilterer implem
 			//}
 		}
 		for (StudySiteAjaxableDomainObject studySiteAjaxableDomainObject:allSites){
-			if (userOrganizations.contains(studySiteAjaxableDomainObject.getNciInstituteCode()));
+			if (userOrganizations.contains(studySiteAjaxableDomainObject.getNciInstituteCode())) return true;
 		}
 		//if (allSites.contains(researchStaffOrganization)) return true;
 		return false;
