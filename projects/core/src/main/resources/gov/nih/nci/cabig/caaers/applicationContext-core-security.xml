@@ -355,25 +355,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
      
     <bean id="participantSiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ParticipantSiteSecurityFilterer">
-          <property name="researchStaffDao" ref="researchStaffDao"/>
+          <property name="userDao" ref="userDao"/>
     </bean>    
 
     <bean id="studySiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.StudySiteSecurityFilterer">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userDao" ref="userDao"/>
         <property name="studyDao" ref="studyDao"/>
     </bean>
     <bean id="expeditedAdverseEventReportSiteSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ExpeditedAdverseEventReportSiteSecurityFilterer">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
     <bean id="organizationSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.OrganizationSecurityFilterer">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
     <bean id="researchStaffSecurityFilterer"
           class="gov.nih.nci.cabig.caaers.accesscontrol.ResearchStaffSecurityFilterer">
-        <property name="researchStaffDao" ref="researchStaffDao"/>
+        <property name="userDao" ref="userDao"/>
     </bean>
     <util:map id="domainObjectSiteSecurityAuhthorizationCheckProvidersMap"
               map-class="java.util.LinkedHashMap">
