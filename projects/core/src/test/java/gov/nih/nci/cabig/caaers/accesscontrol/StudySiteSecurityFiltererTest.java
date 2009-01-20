@@ -49,4 +49,23 @@ public class StudySiteSecurityFiltererTest extends DaoTestCase {
 		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
 		assertEquals(filteredList.size(),3);
 	}
+	
+	public void testFilterAsAdverseEventCoordinator() {
+		//disable security before query 
+		disableAuthorization();
+		StudySearchableAjaxableDomainObjectQuery query = new StudySearchableAjaxableDomainObjectQuery();
+		List<StudySearchableAjaxableDomainObject> studies = studySearchableAjaxableDomainObjectRepository.findStudies(query);
+		assertEquals(studies.size(),3);
+		
+		//enable security 
+		enableAuthorization();		
+		//login as Study Coordinator.
+		SecurityTestUtils.switchUser("1000@def.com", "ROLE_caaers_ae_cd");
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Filterer filterer = new CollectionFilterer(studies); 
+		ArrayList filteredList = (ArrayList)studySiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
+		assertEquals(filteredList.size(),1);		
+	}
+	
 }
