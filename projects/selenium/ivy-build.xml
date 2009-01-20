@@ -1,0 +1,104 @@
+
+<project name="caaers-web" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<property name="parent.dir" value="${basedir}/.." />
+	<property file="${parent.dir}/build.properties" />
+	
+	<!-- Logic that finds the conf to be used while making war -->
+	<condition property="webConf" value="distGrid" else="dist">
+		<istrue value="${cctsWAR}"/>
+	</condition>
+	
+	<import file="${parent.dir}/common.xml"/>
+
+	<!-- ==============================================================
+		target: resolve-dist
+	================================================================== -->
+	 <target name="resolve-dist" depends="load-ivy"
+	    	description="--> resolve and retrieve dist conf dependencies with ivy">
+	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
+	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
+	  </target>
+	
+	<!-- ==================================================================
+		target: init-war
+	======================================================================= -->
+	<target name="init-war" description="creates the directories necessary for the exploded war">
+	 	<mkdir dir="${war.dir}"/>
+	 	<mkdir dir="${war.dir}/WEB-INF" />
+	 	<mkdir dir="${war.dir}/WEB-INF/lib"/>
+	 	<mkdir dir="${war.dir}/WEB-INF/classes" />
+		<mkdir dir="${war.dir}/WEB-INF/classes/META-INF" />
+		<mkdir dir="${war.dir}/WEB-INF/classes/META-INF/xfire" />
+	</target>
+	 	
+	<!-- =========================================================
+		target: clean-war 
+			Cleans the directory associated to keep exploded caaers files
+	=============================================================-->
+	 <target name="clean-war">
+	 	<delete dir="${dist.dir}/${war.filename}" />
+	 	<deltree dir="${war.dir}" />
+	 </target>	
+	 
+	 	
+	 <target name="war" depends="clean-war, init-war, resolve-dist">
+		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
+	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
+	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
+	 	
+	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}"
+	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
+	 	</war>
+	 	
+	 	
+	</target>
+	<!-- =================================================================
+		target : jar
+			In addition to the jar responsibility, this will also invoke war
+	======================================================================-->
+	<target name="jar" depends="common.jar, war">
+			<echo message="Executing jar in ${ant.project.name}" />
+	</target>
+	<target name="clean" depends="common.clean, clean-war, undeploy-caaers">
+		
+	</target>
+	
+	<target name="copy-caaers-context">
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/classes" />
+		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
+		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes"  filter="false" />
+		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib"  filter="false" />
+		<echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml">&lt;Context path="/caaers" docBase="${main.src}/../webapp/" reloadable="true" debug="9" /></echo>
+	</target>
+	
+	<!--=================================================================
+		target :undeploy-caaers
+	==================================================================== -->
+	<target name="undeploy-caaers">
+		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml"/>
+		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
+		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
+	</target>
+
+	<!--=================================================================
+		target :deploy-caaers
+	==================================================================== -->
+	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
+		
+<target name="TomStart">
+    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
+    </java>
+</target>
+
+<target name="TomStop">
+    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
+        <arg line="stop"/>
+    </java>
+</target>
+
+</project>
