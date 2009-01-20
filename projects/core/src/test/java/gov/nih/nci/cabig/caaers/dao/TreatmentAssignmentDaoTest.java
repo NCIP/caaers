@@ -18,4 +18,21 @@ public class TreatmentAssignmentDaoTest extends DaoTestCase<TreatmentAssignmentD
         assertNotNull("There should be TreatmentAssignments", tas);
         assertEquals("Incorrect treatment assignment count", 1, tas.size());
     }
+    
+    public void testGetAll(){
+    	List<TreatmentAssignment> tas = getDao().getAll();
+    	assertNotNull("There should be Treatment Assignments", tas);
+    	assertEquals("Incorrect treatment assignment count", 3, tas.size());
+    }
+    
+    public void testGetAssignmentByStudyIdExactMatch(){
+    	TreatmentAssignment t = getDao().getAssignmentsByStudyIdExactMatch("TAC-12345", -2);
+    	assertNotNull("There should be Treatment Assignment", t);
+    	assertEquals("Incorrect treatment assignment fetched", "TAC-12345", t.getCode());
+    }
+    
+    public void testGetAssignmentByStudyIdExactMatchNoResults(){
+    	TreatmentAssignment t = getDao().getAssignmentsByStudyIdExactMatch("test-code", -2);
+    	assertNull(t);
+    }
 }
