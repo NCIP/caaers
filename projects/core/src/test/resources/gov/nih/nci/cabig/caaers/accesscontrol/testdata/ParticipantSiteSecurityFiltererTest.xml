@@ -1,0 +1,208 @@
+<dataset>
+   	<ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+        
+     <ORGANIZATIONS
+            id="-1002"
+            version="1"
+            name="CALGB"
+            description_text="CALGB"
+            nci_institute_code="CALGB"
+            />       
+
+    <RESEARCH_STAFFS
+        id="-1000"
+        version="1"
+        first_name="Bill"
+        last_name="Gates"
+        email_address="1000@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1002"
+        login_id="1000@def.com"/>
+                
+	<ctc_versions
+        id="3"
+        name="CTCAE v3.0"
+        />
+    <ctc_categories/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_terms/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <ctc_grades/> <!-- TEMP: purge LUT to avoid constraint violations -->
+    <PARTICIPANTS
+        id="-99"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+       birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="0" /> <!--  loadStatus = 0 means it is not comitted yet -->
+    <PARTICIPANTS
+        id="-100"
+        instituitional_patient_number="P001"
+        institution="Hospital"
+        first_name="Dilbert"
+        last_name="Scott"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Female"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m" 
+        load_status="1" />
+    <PARTICIPANTS
+        id="-101"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+       birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+ 
+    <STUDIES 
+    	id="-2001" 
+    	multi_institution_indicator="0"
+    	short_title="New Study"
+    	long_title="Long Title" 
+    	description="Description" 
+    	load_status="1"
+    	/>
+    
+    <STUDIES 
+    	id="-2000" 
+    	multi_institution_indicator="0" 
+    	short_title="Short Title"
+    	long_title="Long Title" 
+    	description="Description" 
+    	load_status="1"
+    	/>
+     <STUDIES id="-999" short_title="dummy" load_status="0" /> <!-- To overcome, dbunit metadat issue on identifiers  -->    
+     <DISEASE_TERMINOLOGIES
+    	id="-11"
+    	term_code="1"
+    	study_id="-2000"
+    	/>  
+     <DISEASE_TERMINOLOGIES
+    	id="-12"
+    	term_code="1"
+    	study_id="-2001"
+    	/>  		
+    	
+     <TERMINOLOGIES
+   		id="-11"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2000"
+   		/>
+   	
+   	<TERMINOLOGIES
+   		id="-12"
+   		term_code="1"
+   		ctc_id="3"
+   		study_id="-2001"
+   		/>	 		   	
+    
+    <STUDY_ORGANIZATIONS
+        id="-3001"
+        site_id="-1002"
+        study_id="-2001"
+        type="SST"
+        />
+    <STUDY_ORGANIZATIONS
+        id="-3000"
+        site_id="-1002"
+        study_id="-2000"
+        type="SST"
+        />
+    <study_personnel 
+			id="-1"
+			research_staffs_id="-1000"
+			study_sites_id="-3000"
+			role_code="Adverse Event Coordinator"
+			status_code="Active"
+	/>
+    <PARTICIPANT_ASSIGNMENTS
+        id="-10"
+        date_of_enrollment="2006-12-12"
+        participant_id="-100"
+        study_site_id="-3000" 
+        load_status="1" />
+        
+    <PARTICIPANT_ASSIGNMENTS
+        id="-11"
+        date_of_enrollment="2006-12-12"
+        participant_id="-99"
+        study_site_id="-3000" 
+        load_status="0" />
+        
+     <!-- stu_id="-999" to overcome metadata on first row issue -->
+     <IDENTIFIERS
+        id="-200"
+        participant_id="-100"
+        stu_id="-999"
+        value="13js77"
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"	/>
+        
+        <IDENTIFIERS
+        id="-201"
+        stu_id="-2000"
+        value="nci_test"
+        type="MRN"
+        system_name="system name"
+        discriminator_column="2"/>	
+        <IDENTIFIERS
+        id="-208"
+        value="11112"
+        type="MRN"
+        participant_id="-100"
+        system_name="system name"
+        discriminator_column="2"/>
+        
+        <IDENTIFIERS
+        id="-210"
+        value="11111"
+        type="MRN"
+        participant_id="-99"
+        system_name="system name"
+        discriminator_column="2"/>	
+       
+       <IDENTIFIERS
+        id="-211"
+        value="nci_test2"
+        type="MRNs"
+        participant_id="-99"
+        system_name="system name2"
+        discriminator_column="2"/>	
+        
+    <!--  We have some investigational new drugs pre-loaded for CTEP -->
+    <investigational_new_drugs />    
+    <ind_holders />
+    <ae_reports />
+	<ae_radiation_interventions />    
+	 <spa_disease_histories />
+     <SPA_PRIOR_THERAPIES />
+     <SPA_CONCOMITANT_MEDICATIONS />
+     <SPA_PRE_EXISTING_CONDS />
+</dataset>
