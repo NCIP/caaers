@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 
 import java.util.Arrays;
@@ -15,24 +14,26 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.userdetails.User;
+import org.acegisecurity.GrantedAuthority;
 
 public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
 	
-	private ResearchStaffDao researchStaffDao;
+	private UserDao userDao;
 	private StudyDao studyDao;
 
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
-		
-		System.out.println("filtering from new classes ");
-		
 		//get user
-		User user = (User)authentication.getPrincipal();
+
+		String userName = getUserName(authentication);
+		GrantedAuthority[] grantedAuthorities = getGrantedAuthorities(authentication);
+		
+		
+		//User user = (User)authentication.getPrincipal();
 		
 		//no filtering if super user
  
-		if (isSuperUser(user)) {
+		if (isSuperUser(grantedAuthorities)) {
     		if (returnObject instanceof Filterer) {
     			return ((Filterer)returnObject).getFilteredObject();
     		} else {
@@ -46,8 +47,10 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
     	//rsQuery.filterByLoginId(user.getUsername());
         //List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
-		ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
-        Organization organization = researchStaff.getOrganization();
+		gov.nih.nci.cabig.caaers.domain.User caaersUser = getCaaersUser(userName,userDao);
+		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
+		
+        //Organization organization = researchStaff.getOrganization();
         
 		//StudySiteAjaxableDomainObject studySite = new StudySiteAjaxableDomainObject();
 		//studySite.setNciInstituteCode(organization.getNciInstituteCode());
@@ -68,9 +71,9 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         
         //study filtering is required only for ROLE_caaers_participant_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
 
-        String[] roles = {UserRole.STUDYCOORDINATOR.getDisplayName(),UserRole.SITECOORDINATOR.getDisplayName(),UserRole.PHYSICIAN.getDisplayName()};
+        String[] roles = {UserGroupType.caaers_study_cd.getSecurityRoleName(),UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_physician.getSecurityRoleName()};
         List<String> rolesToExclude = Arrays.asList(roles);
-        boolean studyFilteringRequired = studyFilteringRequired(user, rolesToExclude);
+        boolean studyFilteringRequired = studyFilteringRequired(grantedAuthorities, rolesToExclude);
 		boolean isAuthorizedOnThisStudy = true;
 		/*
 		if (returnObject instanceof StudySearchableAjaxableDomainObject) {			
@@ -98,12 +101,12 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
         		isAuthorizedOnThisStudy = true;
             	// study level filtering for SLRR
     			if (studyFilteringRequired) {
-    				if (!isResearchStaffAssignedToStudy(researchStaff.getId(),studyDomainObj)) {
+    				if (!isUserAssignedToStudy(caaersUser.getId(),studyDomainObj)) {
     					isAuthorizedOnThisStudy=false;
     				}
     			}
     			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-            	if (!isAuthorized(organization.getNciInstituteCode(), null, studyDomainObj) || !isAuthorizedOnThisStudy) {
+            	if (!isAuthorized(userOrganizationCodes, null, studyDomainObj) || !isAuthorizedOnThisStudy) {
             		filterer.remove(studyDomainObj);
             	}
         	} else {
@@ -111,12 +114,12 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 	        	isAuthorizedOnThisStudy = true;
 	        	// study level filtering for SLRR
 				if (studyFilteringRequired) {
-					if (!checkResearchStaff(researchStaff.getId(),study)) {
+					if (!checkResearchStaff(caaersUser.getId(),study)) {
 						isAuthorizedOnThisStudy=false;
 					}
 				}
 				//if not SLRR , or SLRR is authorized , then apply site level filtering.
-	        	if (!isAuthorized(organization.getNciInstituteCode(), study, null) || !isAuthorizedOnThisStudy) {
+	        	if (!isAuthorized(userOrganizationCodes, study, null) || !isAuthorizedOnThisStudy) {
 	        		filterer.remove(study);
 	        	}
         	}
@@ -124,35 +127,37 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(String researchStaffOrganization, StudySearchableAjaxableDomainObject study, Study studyDomainObj) {
+	private boolean isAuthorized(List<String> userOrganizations, StudySearchableAjaxableDomainObject study, Study studyDomainObj) {
 		// check if user is part of co-ordinating center 
 		if (studyDomainObj == null ) {
-			if (researchStaffOrganization.equals(study.getCoordinatingCenterCode())) return true;
+			//if (researchStaffOrganization.equals(study.getCoordinatingCenterCode())) return true;
+			if (userOrganizations.contains((study.getCoordinatingCenterCode()))) return true;
 			studyDomainObj = studyDao.getById(study.getId()) ;
 		} else  {
-			if (researchStaffOrganization.equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+			//if (researchStaffOrganization.equals(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+			if (userOrganizations.contains(studyDomainObj.getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		}
-		return isResearchStaffOrganizationPartOfStudySites(researchStaffOrganization,studyDomainObj);
+		return isUserOrganizationPartOfStudySites(userOrganizations,studyDomainObj);
 		
 	}
 
-	private boolean isResearchStaffOrganizationPartOfStudySites( String researchStaffOrganization, Study study) {
+	private boolean isUserOrganizationPartOfStudySites( List<String> userOrganizations , Study study) {
 		List<StudyOrganization> soList = study.getStudyOrganizations();
 		for (StudyOrganization so:soList) {
 			if (so instanceof StudySite) {
-				if (researchStaffOrganization.equals(so.getOrganization().getNciInstituteCode())) {
+				if (userOrganizations.contains(so.getOrganization().getNciInstituteCode())) {
 					return true;
 				}
 			}			
 		}
 		return false;
 	}
-	private boolean checkResearchStaff(Integer researchStaffId, StudySearchableAjaxableDomainObject study) {
+	private boolean checkResearchStaff(Integer userId, StudySearchableAjaxableDomainObject study) {
 		Study s = studyDao.getById(study.getId()) ;
-		return isResearchStaffAssignedToStudy(researchStaffId,s);
+		return isUserAssignedToStudy(userId,s);
 
 	}
-	private boolean isResearchStaffAssignedToStudy(Integer researchStaffId, Study study) {
+	private boolean isUserAssignedToStudy(Integer userId, Study study) {
 		// TODO
 		// Query is not doing outer join on research staff , need to fix the query. 
 		// temp fix is getting study object for DAO.
@@ -161,7 +166,7 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 		for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
 			for (StudyPersonnel sp:spList) {
-				if (sp.getResearchStaff().getId().equals(researchStaffId)) {
+				if (sp.getResearchStaff().getId().equals(userId)) {
 					return true;
 				}
 			}
@@ -169,11 +174,12 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 		return false;
 	}
 	
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
-	}
+
 	public void setStudyDao(StudyDao studyDao) {
 		this.studyDao = studyDao;
+	}
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 }

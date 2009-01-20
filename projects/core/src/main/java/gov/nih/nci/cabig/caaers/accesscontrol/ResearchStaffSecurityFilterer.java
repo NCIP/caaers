@@ -1,25 +1,26 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.userdetails.User;
+import org.acegisecurity.GrantedAuthority;
 
 public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implements DomainObjectSecurityFilterer {
 	
-	private ResearchStaffDao researchStaffDao;
+	private UserDao userDao;
 
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		//get user
-		User user = (User)authentication.getPrincipal();
+		String userName = getUserName(authentication);
+		GrantedAuthority[] grantedAuthorities = getGrantedAuthorities(authentication);
 		
 		//no filtering if super user
-		if (isSuperUser(user)) {
+		if (isSuperUser(grantedAuthorities)) {
     		if (returnObject instanceof Filterer) {
     			return ((Filterer)returnObject).getFilteredObject();
     		} else {
@@ -33,8 +34,9 @@ public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implem
     	//rsQuery.filterByLoginId(user.getUsername());
         //List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
-		ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
-        Organization userOrganization = researchStaff.getOrganization();
+		gov.nih.nci.cabig.caaers.domain.User caaersUser = getCaaersUser(userName,userDao);
+		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
+ 
         
 		Filterer filterer = (Filterer)returnObject;
 		Iterator collectionIter = filterer.iterator();
@@ -42,7 +44,8 @@ public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implem
 		while (collectionIter.hasNext()) {
         	Object domainObject = collectionIter.next();
         	ResearchStaff researchStaffResultObject = (ResearchStaff)domainObject;
-        	if (!researchStaffResultObject.getOrganization().getNciInstituteCode().equals(userOrganization.getNciInstituteCode())) {
+        	//if (!researchStaffResultObject.getOrganization().getNciInstituteCode().equals(userOrganization.getNciInstituteCode())) {
+        	if (!userOrganizationCodes.contains(researchStaffResultObject.getOrganization().getNciInstituteCode())) {
         		filterer.remove(researchStaffResultObject);
         	}
         }
@@ -51,8 +54,8 @@ public class ResearchStaffSecurityFilterer  extends BaseSecurityFilterer  implem
 		
 	}
 
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 

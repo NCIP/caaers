@@ -1,35 +1,33 @@
 
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 import org.acegisecurity.Authentication;
-import org.acegisecurity.userdetails.User;
+import org.acegisecurity.GrantedAuthority;
 
 public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurityFilterer implements DomainObjectSecurityFilterer {
 	
-	private ResearchStaffDao researchStaffDao;
+	private UserDao userDao;
 
 
 	public Object filter(Authentication authentication, String permission, Object returnObject) {
 		
-		System.out.println("filtering from new classes ");
-		
-		//get user
-		User user = (User)authentication.getPrincipal();
+		String userName = getUserName(authentication);
+		GrantedAuthority[] grantedAuthorities = getGrantedAuthorities(authentication);
 		
 		//no filtering if super user
- 		if (isSuperUser(user)) {
+ 		if (isSuperUser(grantedAuthorities)) {
     		if (returnObject instanceof Filterer) {
     			return ((Filterer)returnObject).getFilteredObject();
     		} else {
@@ -43,8 +41,8 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
     	//rsQuery.filterByLoginId(user.getUsername());
         //List<ResearchStaff> rsList = researchStaffDao.searchResearchStaff(rsQuery);
         
- 		ResearchStaff researchStaff = getCaaersUser(user,researchStaffDao);
-        Organization organization = researchStaff.getOrganization();
+		gov.nih.nci.cabig.caaers.domain.User caaersUser = getCaaersUser(userName,userDao);
+		List<String> userOrganizationCodes = getUserOrganizations(caaersUser);
         
         /*
 		boolean studyFilteringRequired = false ; 
@@ -62,9 +60,9 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
         */
         
 	    //study filtering is required only for ROLE_caaers_participant_cd , ROLE_caaers_study_cd and ROLE_caaers_ae_cd , study filtering is not requred if uses role is one of the following         
-        String[] roles = {UserRole.SITECOORDINATOR.getDisplayName(),UserRole.PHYSICIAN.getDisplayName()};
+        String[] roles = {UserGroupType.caaers_site_cd.getSecurityRoleName(),UserGroupType.caaers_physician.getSecurityRoleName()};
         List<String> rolesToExclude = Arrays.asList(roles);
-        boolean studyFilteringRequired = studyFilteringRequired(user, rolesToExclude);
+        boolean studyFilteringRequired = studyFilteringRequired(grantedAuthorities, rolesToExclude);
 
         
 		boolean isAuthorizedOnThisStudy = true;
@@ -82,33 +80,33 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
      //   	Study study = expeditedAdverseEventReport.getStudy();     	
         	
 			if (studyFilteringRequired) {
-				if (!isResearchStaffOrganizationPartOfStudySites(researchStaff.getId(),expeditedAdverseEventReport.getAssignment())) {
+				if (!isUserOrganizationPartOfStudySites(caaersUser.getId(),expeditedAdverseEventReport.getAssignment())) {
 					isAuthorizedOnThisStudy=false;
 				}
 			}
 			//if not SLRR , or SLRR is authorized , then apply site level filtering.
-        	if (!isAuthorized(organization,expeditedAdverseEventReport.getAssignment(),organization.getNciInstituteCode()) || !isAuthorizedOnThisStudy) {
+        	if (!isAuthorized(userOrganizationCodes,expeditedAdverseEventReport.getAssignment()) || !isAuthorizedOnThisStudy) {
         		filterer.remove(expeditedAdverseEventReport);
         	}
         }
 		
 		return filterer.getFilteredObject();
 	}
-	private boolean isAuthorized(Organization studySite, StudyParticipantAssignment assignment, String researchStaffOrganozation) {
+	private boolean isAuthorized(List<String> userOrganizations , StudyParticipantAssignment assignment) {
 		// check if user is part of co-ordinating center 
-		if (researchStaffOrganozation.equals(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
+		if (userOrganizations.contains(assignment.getStudySite().getStudy().getStudyCoordinatingCenter().getOrganization().getNciInstituteCode())) return true;
 		
-		Organization organization = assignment.getStudySite().getOrganization();
+		Organization studySite = assignment.getStudySite().getOrganization();
 		//for (StudyOrganization so:soList) {
 			//if (so instanceof StudySite) {
-				if (studySite.getNciInstituteCode().equals(organization.getNciInstituteCode())) {
+				if (userOrganizations.contains(studySite.getNciInstituteCode())) {
 					return true;
 				}
 			//}			
 		//}
 		return false;
 	}
-	private boolean isResearchStaffOrganizationPartOfStudySites(Integer researchStaffId, StudyParticipantAssignment assignment) {
+	private boolean isUserOrganizationPartOfStudySites(Integer researchStaffId, StudyParticipantAssignment assignment) {
 
 		//StudyOrganization so = assignment.getStudySite();//.getOrganization();
 		List<StudyOrganization> soList = assignment.getStudySite().getStudy().getStudyOrganizations();
@@ -123,8 +121,8 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 		}
 		return false;
 	}
-	public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-		this.researchStaffDao = researchStaffDao;
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 
