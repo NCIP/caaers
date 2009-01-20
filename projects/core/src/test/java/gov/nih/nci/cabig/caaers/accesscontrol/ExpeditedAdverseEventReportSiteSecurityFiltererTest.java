@@ -72,7 +72,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFiltererTest extends DaoTest
 		assertEquals(filteredList.size(),1);		
 	}*/
 	public void testTemp(){
-		
+		System.out.println("test");
 	}
 	
 }
