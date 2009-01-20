@@ -356,6 +356,7 @@
                site_investigators_id="-4005"
                study_sites_id="-1000"
                />
+               
 
 
     <STUDY_ORGANIZATIONS
@@ -437,6 +438,8 @@
             site_id="-1002"
             type="SCC"
             />
+            
+            
 
     <STUDY_DISEASES id="-4" study_id="-2" term_type="dcp" meddra_code="1233212"/>
 
@@ -460,7 +463,13 @@
 	<study_agents />
     <ind_holders/>
     <study_agent_inds/>
-    <research_staffs/>
+	<study_personnel 
+			id="-1"
+			research_staffs_id="-1000"
+			study_sites_id="-1000"
+			role_code="Adverse Event Coordinator"
+			status_code="Active"
+	/>
     <treatment_assignment/>
     <epochs/>
     <arms/>
