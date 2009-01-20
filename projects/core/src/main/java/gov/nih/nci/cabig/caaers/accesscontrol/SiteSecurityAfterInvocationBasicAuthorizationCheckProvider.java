@@ -1,17 +1,17 @@
 package gov.nih.nci.cabig.caaers.accesscontrol;
 
-import gov.nih.nci.cabig.caaers.domain.ajax.AbstractAjaxableDomainObject;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 import gov.nih.nci.security.constants.Constants;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+
 import org.acegisecurity.AccessDeniedException;
 import org.acegisecurity.Authentication;
 import org.acegisecurity.ConfigAttribute;
 import org.acegisecurity.ConfigAttributeDefinition;
 import org.acegisecurity.afterinvocation.AfterInvocationProvider;
 import org.apache.log4j.Logger;
-
-import java.util.LinkedHashMap;
-import java.util.Collection;
 
 /**
  * Created by IntelliJ IDEA. User: Biju Joseph Date: Oct 8, 2007 Time: 11:39:45 AM To change this
