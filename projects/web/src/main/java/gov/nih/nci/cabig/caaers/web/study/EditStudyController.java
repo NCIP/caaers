@@ -172,7 +172,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
         String action = (String) super.findInRequest(request, "_action");
         if (StringUtils.equals(action, "removeInv") || StringUtils.equals(action, "removeSite")) {
-            return true;
+            return false;
         }
 
         if (org.apache.commons.lang.StringUtils.isNotEmpty(action)) {
