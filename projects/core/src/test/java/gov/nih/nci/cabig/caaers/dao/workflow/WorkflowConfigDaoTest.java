@@ -1,4 +1,4 @@
-package gov.nih.nci.cabig.caaers.dao;
+package gov.nih.nci.cabig.caaers.dao.workflow;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;

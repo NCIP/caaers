@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="reportingperiod_coordinating_center" width="949" height="553">
-  <node name="Start Reporting Period Flow" x="64" y="48" width="277" height="36">
+<root-container name="reportingperiod_coordinating_center" width="992" height="636">
+  <node name="Start Reporting Period Flow" x="136" y="48" width="277" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Submit Reporting Period for Data Coordinator Review" x="28" y="151" width="374" height="36">
+  <node name="Submit Reporting Period for Data Coordinator Review" x="100" y="151" width="374" height="36">
     <edge>
       <label x="4" y="-20"/>
     </edge>
   </node>
-  <node name="Data Coordinator Review" x="98" y="275" width="228" height="36">
+  <node name="Data Coordinator Review" x="170" y="275" width="228" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
@@ -20,16 +20,26 @@
       <bendpoint w1="214" h1="-30" w2="-314" h2="-29"/>
     </edge>
   </node>
-  <node name="Provide Additional Information To Data Coordinator" x="562" y="274" width="357" height="36">
+  <node name="Provide Additional Information To Data Coordinator" x="634" y="274" width="357" height="36">
     <edge>
       <label x="-51" y="-1"/>
       <bendpoint w1="-300" h1="32" w2="228" h2="31"/>
     </edge>
   </node>
-  <node name="Finalize Reporting Period" x="120" y="410" width="200" height="36">
+  <node name="Finalize Reporting Period" x="192" y="410" width="200" height="36">
     <edge>
       <label x="5" y="-10"/>
     </edge>
   </node>
-  <node name="Finish Reporting Period Flow" x="115" y="516" width="211" height="36"/>
+  <node name="end-state1" x="249" y="599" width="132" height="36"/>
+  <node name="Finalized" x="235" y="518" width="132" height="36">
+    <edge>
+      <label x="5" y="-10"/>
+      <bendpoint w1="-253" h1="-2" w2="-239" h2="365"/>
+      <bendpoint w1="-259" h1="-368" w2="-245" h2="-1"/>
+    </edge>
+    <edge>
+      <label x="5" y="-10"/>
+    </edge>
+  </node>
 </root-container>

@@ -51,6 +51,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param userId
 	 */
 	public void addReportReviewComment(Integer reportId, String comment, String userId);
+	public void addReportReviewComment(Report report, String comment, String userId);
 	
 	/**
 	 * Will add a review comment against the reporting period
@@ -59,6 +60,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param userId
 	 */
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId);
+	public void addReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId);
 	
 	/**
 	 * Will advance the workflow to its next step, for the Report
@@ -68,6 +70,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Integer id);
+	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Report report);
 	
 	/**
 	 * Will advance the workflow to its next step, for the reporting period
@@ -77,6 +80,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, Integer id);
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, AdverseEventReportingPeriod reportingPeriod);
 	
 	/**
 	 * This method will enact a new workflow, for the expedited report

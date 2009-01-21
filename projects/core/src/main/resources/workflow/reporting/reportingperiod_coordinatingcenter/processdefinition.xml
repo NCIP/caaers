@@ -111,12 +111,17 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 					jbpmConfiguration
 				</factoryKey>
 			</action>
-		</event>		
-		<transition to="Finish Reporting Period Flow" name="Finalize Reporting Period"></transition>
+		</event>
+		<transition to="Finalized" name="Finalize Reporting Period"></transition>
 	</node>
 
+	<state name="Finalized">
+		<transition to="Submit Reporting Period for Data Coordinator Review" name="Modify Reporting Period"></transition>
+		<transition to="end-state1" name="end"></transition>
+	</state>
 
-	<end-state name="Finish Reporting Period Flow"></end-state>
+
+	<end-state name="end-state1"></end-state>
 
 
 </process-definition>

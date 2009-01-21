@@ -1,0 +1,70 @@
+<dataset>
+<ORGANIZATIONS
+            id="-1001"
+            version="1"
+            name="National Cancer Institute"
+            description_text="NCI"
+            nci_institute_code="NCI"
+            />
+<STUDIES
+            grid_id="gridStudy"
+            id="-2"
+            multi_institution_indicator="0"
+            short_title="Shortest"
+            long_title="Event Lengthier Title"
+            description="Yet another different description"
+            load_status="1"
+            />
+    <IDENTIFIERS
+            id="-1001"
+            stu_id="-2"
+            value="1138-43"
+            type="local"
+            organization_id="-1001"
+            discriminator_column="1"/>            
+            
+<STUDY_ORGANIZATIONS
+            id="-1000"
+            version="1"
+            status_code="active"
+            start_date="01-01-2001"
+            end_date="01-01-2002"
+            study_id="-2"
+            site_id="-1001"
+            type="SST" />
+
+<workflow_configuration
+		id="-1000"
+		workflow_definition_name="reportingperiod_coordinating_center"
+		name="Evaluation Period Coordinating Center Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>
+
+<workflow_configuration
+		id="-2000"
+		workflow_definition_name="expedited_domestic"
+		name="Expedited Reporting Domestic Workflow"
+		default_assignee="system_admin"
+		enabled="1"
+		/>   
+<workflow_configuration
+		id="-3000"
+		workflow_definition_name="my_test"
+		name="MyTest"
+		default_assignee="system_admin"
+		enabled="1"
+		/>          
+<site_workflow_configs 
+		site_id="-1000"
+		wf_config_id="-1000"
+		wf_entity="reportingPeriod"
+ 		/>
+<site_workflow_configs 
+		site_id="-1000"
+		wf_config_id="-2000"
+		wf_entity="report"
+ 		/>
+ 
+<ind_holders />
+</dataset> 		
