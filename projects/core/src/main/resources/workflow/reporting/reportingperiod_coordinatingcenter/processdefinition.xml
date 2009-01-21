@@ -10,7 +10,7 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 
 
 	<start-state name="Start Reporting Period Flow">
-		<transition to="Submit Reporting Period for Data Coordinator Review"></transition>
+		<transition to="Submit Reporting Period for Data Coordinator Review" name="start"></transition>
 	</start-state>
 
 

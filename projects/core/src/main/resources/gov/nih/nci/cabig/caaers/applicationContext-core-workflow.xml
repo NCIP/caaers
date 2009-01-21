@@ -52,6 +52,8 @@
         <property name="caaersJavaMailSender" ref="mailer"/>
         <property name="possibleTransitionsResolver" ref="possibleTransitionsResolver"/>
         <property name="workflowConfigDao" ref="workflowConfigDao"/>
+        <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
+        <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
    </bean>
    
    <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>

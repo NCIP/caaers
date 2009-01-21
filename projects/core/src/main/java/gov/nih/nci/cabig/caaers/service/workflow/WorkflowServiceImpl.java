@@ -2,11 +2,25 @@ package gov.nih.nci.cabig.caaers.service.workflow;
 
 import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
+import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
@@ -18,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.jbpm.JbpmContext;
@@ -43,12 +58,19 @@ import org.springmodules.workflow.jbpm31.JbpmTemplate;
  */
 @Transactional(readOnly = true)
 public class WorkflowServiceImpl implements WorkflowService {
+	
 	private JbpmTemplate jbpmTemplate;
+	
 	private List<ProcessDefinition> processDefinitions;
 	
+	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+	
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	private CaaersJavaMailSender caaersJavaMailSender;
+	
 	private WorkflowConfigDao workflowConfigDao;
+	
 	private PossibleTransitionsResolver possibleTransitionsResolver;
 	
 	protected ProcessDefinition findProcessDefinitionByName(String wfDefName){
@@ -78,17 +100,21 @@ public class WorkflowServiceImpl implements WorkflowService {
 			
 			
 			//instantiate the process, then jump to the first node
-			ProcessInstance pInstance = new ProcessInstance(pDefinition);
-			Long processId =  jbpmTemplate.saveProcessInstance(pInstance);
+			ProcessInstance processInstance = new ProcessInstance(pDefinition);
+			Long processId =  saveProcessInstance(processInstance);
 			assert processId != null;
-			Token token = pInstance.getRootToken();
+			Token token = processInstance.getRootToken();
 	        token.signal();
 			
-	        processId =  jbpmTemplate.saveProcessInstance(pInstance);
+	        processId =  saveProcessInstance(processInstance);
 						
-			return pInstance;	
+			return processInstance;	
 		}
 		return null;
+	}
+	
+	public Long saveProcessInstance(ProcessInstance processInstance) {
+		return jbpmTemplate.saveProcessInstance(processInstance);
 	}
 	
 	/**
@@ -202,15 +228,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	/**
-	 * @see WorkflowService#findTaskAssignees(String)
+	 * @see WorkflowService#findTaskAssignees(ProcessInstance, String)
 	 */
-	public List<User> findTaskAssignees(String workflowDefinitionName, String taskNodeName) {
+	public List<User> findTaskAssignees(ProcessInstance pInstance, String taskNodeName) {
 		List<User> assignees = new ArrayList<User>();
-		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
+		TaskConfig taskConfig = findTaskConfig(pInstance.getProcessDefinition().getName(), taskNodeName);
 		for(Assignee assignee : taskConfig.getAssignees()){
 			
 			if(assignee.isRole()){
-				//TODO : We need to figure out the API for this
+				RoleAssignee roleAssignee = (RoleAssignee) assignee;
+				
+				assignees.addAll(findUsersHavingRole(roleAssignee.getUserRole(), pInstance));
+				
 			}else if(assignee.isUser()) {
 				User user = ((PersonAssignee) assignee).getUser();
 				assignees.add(user);
@@ -249,6 +278,90 @@ public class WorkflowServiceImpl implements WorkflowService {
 		caaersJavaMailSender.sendMail(to, subject, message, new String[0]);
 	}
 	
+	
+	public List<User> findUsersHavingRole(PersonRole personRole,  ProcessInstance pInstance ){
+		List<User> users = new ArrayList<User>();
+		Map<Object, Object> contextVariables = pInstance.getContextInstance().getVariables(); 
+		
+		Integer studyId = (Integer) contextVariables.get(VAR_STUDY_ID);
+		String wfType = (String)contextVariables.get(VAR_WF_TYPE);
+		Integer reportingPeriodId = (Integer) contextVariables.get(VAR_REPORTING_PERIOD_ID);
+		Integer expeditedReportId = (Integer) contextVariables.get(VAR_EXPEDITED_REPORT_ID);
+		
+		ExpeditedAdverseEventReport aeReport = null;
+		Study study = null;
+		AdverseEventReportingPeriod reportingPeriod = null;
+		StudyParticipantAssignment assignment = null;
+		StudySite site = null;
+		if(StringUtils.equals(wfType, Report.class.getName())){
+			aeReport = expeditedAdverseEventReportDao.getById(expeditedReportId);
+			reportingPeriod = aeReport.getReportingPeriod();
+			assignment = reportingPeriod.getAssignment();
+			site = assignment.getStudySite();
+			study = site.getStudy();
+		}else if (StringUtils.equals(wfType, AdverseEventReportingPeriod.class.getName())){
+			reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
+			assignment = reportingPeriod.getAssignment();
+			site = assignment.getStudySite();
+			study = site.getStudy();
+		}
+		
+		switch(personRole){
+			case ADVERSE_EVENT_COORDINATOR:
+				List<User> aeCoordinators = site.findUsersByRole(personRole);
+				users.addAll(aeCoordinators);
+				break;
+			case CENTRAL_OFFICE_SAE_COORDINATOR:
+				StudyCoordinatingCenter centralOffice = study.getStudyCoordinatingCenter();
+				if(centralOffice != null){
+					List<User> saeCoordinators = centralOffice.findUsersByRole(personRole);
+					users.addAll(saeCoordinators);
+				}
+				break;
+			case COORDINATING_CENTER_DATA_COORDINATOR:
+				StudyCoordinatingCenter coordinatingCenter = study.getStudyCoordinatingCenter();
+				if(coordinatingCenter != null){
+					List<User> saeCoordinators = coordinatingCenter.findUsersByRole(personRole);
+					users.addAll(saeCoordinators);
+				}
+				break;
+			case PARTICIPANT_COORDINATOR:
+				List<User> participantCoordinators = site.findUsersByRole(personRole);
+				users.addAll(participantCoordinators);
+				break;
+			case PHYSICIAN:
+				User physician = aeReport.getPhysician().getUser();
+				if(physician != null){
+					users.add(physician);
+				}
+				break;
+			case PRINCIPAL_INVESTIGATOR:
+				List<User> principalInvestigators = site.findUsersByRole(personRole);
+				users.addAll(principalInvestigators);
+				break;
+			case REPORTER:
+				User reporter = aeReport.getReporter().getUser();
+				if(reporter != null){
+					users.add(reporter);
+				}
+				break;
+			case SITE_CRA:
+				List<User> siteCRAs = site.findUsersByRole(personRole);
+				users.addAll(siteCRAs);
+				break;
+			case SITE_INVESTIGATOR:
+				List<User> siteInvestigators = site.findUsersByRole(personRole);
+				users.addAll(siteInvestigators);
+				break;
+			case SITE_PRINCIPAL_INVESTIGATOR:
+				List<User> sitePrincipalInvestigators = site.findUsersByRole(personRole);
+				users.addAll(sitePrincipalInvestigators);
+				break;
+			case STUDY_COORDINATOR:
+				break;
+		}
+		return users;
+	}
 
 	
 	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender){
@@ -273,4 +386,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 		this.processDefinitions = processDefinitions;
 	}
 	
+	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+		return expeditedAdverseEventReportDao;
+	}
+	public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao() {
+		return adverseEventReportingPeriodDao;
+	}
+	public void setAdverseEventReportingPeriodDao(
+			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
 }

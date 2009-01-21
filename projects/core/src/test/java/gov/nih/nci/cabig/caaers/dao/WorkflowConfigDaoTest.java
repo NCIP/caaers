@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
@@ -39,23 +40,12 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 		{
 			 WorkflowConfig workflowConfig = getDao().getById(1000);
 			 workflowConfig.setDefaultAssignee("sysadm");
-			 StudySite oldSite = workflowConfig.getStudySite();
-			 assertNotNull(oldSite);
-			 assertEquals(-1000, oldSite.getId().intValue());
-			 StudySite site = new StudySite();
-			 site.setId(-1003);
-			 site.setVersion(0);
-			 workflowConfig.setStudySite(site);
-			
 			 getDao().save(workflowConfig);
 		}
 		interruptSession();
 		{
 			WorkflowConfig workflowConfig = getDao().getById(1000);
 			assertEquals("sysadm", workflowConfig.getDefaultAssignee());
-			StudySite oldSite = workflowConfig.getStudySite();
-			 assertNotNull(oldSite);
-			 assertEquals(-1003, oldSite.getId().intValue());
 			
 		}
 	}
@@ -68,7 +58,7 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 			 t.setApplicable(Boolean.FALSE);
 			 RoleAssignee a = new RoleAssignee();
 			 a.setName("test");
-			 a.setUserRole(UserGroupType.caaers_admin);
+			 a.setUserRole(PersonRole.CENTRAL_OFFICE_SAE_COORDINATOR);
 			 t.addAssignee(a);
 			 getDao().save(workflowConfig);
 		}

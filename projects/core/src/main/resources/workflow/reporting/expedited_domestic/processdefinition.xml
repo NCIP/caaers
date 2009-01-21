@@ -10,7 +10,7 @@
 
 
 	<start-state name="Start Expedited Domestic Flow">
-		<transition to="Submit Report To Physician"></transition>
+		<transition to="Submit Report To Physician" name="start"></transition>
 	</start-state>
 
 

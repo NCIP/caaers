@@ -9,7 +9,7 @@
 
 
 	<start-state name="Start Routine Report Flow">
-		<transition to="Publish Report For Review"></transition>
+		<transition to="Publish Report For Review" name="start"></transition>
 	</start-state>
 
 	<node name="Ready For Review">

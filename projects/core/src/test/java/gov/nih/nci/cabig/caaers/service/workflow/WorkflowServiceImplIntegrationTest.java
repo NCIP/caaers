@@ -160,7 +160,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		assertNotNull(pInstance);
 		assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
 		
-		List<User> assignees = wfService.findTaskAssignees(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, "Submit Reporting Period for Data Coordinator Review");
+		List<User> assignees = wfService.findTaskAssignees(pInstance, "Submit Reporting Period for Data Coordinator Review");
 		assertNotNull(assignees);
 		assertEquals(2, assignees.size());
 		assertEquals("abc@def.com", assignees.get(0).getLoginId());

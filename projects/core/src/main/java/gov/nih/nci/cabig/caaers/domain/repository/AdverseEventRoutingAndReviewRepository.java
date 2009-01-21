@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
@@ -10,6 +8,10 @@ import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
+
+import java.util.List;
+
+import org.jbpm.graph.exe.ProcessInstance;
 /**
  * This interface has methods to save and retrieve the {@link ReviewComment}s, and to change the review state of {@link Report} and {@link AdverseEventReportingPeriod} 
  * 
@@ -75,4 +77,19 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, Integer id);
+	
+	/**
+	 * This method will enact a new workflow, for the expedited report
+	 * @param aeReport
+	 * @return
+	 */
+	public ProcessInstance enactReportWorkflow(Report report);
+	
+	
+	/**
+	 * This method will enact a new workflow, for the evaluation period
+	 * @param reportingPeriod
+	 * @return
+	 */
+	public ProcessInstance enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod);
 }

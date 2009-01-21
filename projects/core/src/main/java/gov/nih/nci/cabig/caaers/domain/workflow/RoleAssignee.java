@@ -7,6 +7,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 /**
@@ -18,7 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 @DiscriminatorValue("r") 
 public class RoleAssignee extends Assignee {
 	
-	private UserGroupType userRole;
+	private PersonRole userRole;
 	
 	@Override
 	@Transient
@@ -32,12 +33,12 @@ public class RoleAssignee extends Assignee {
 		return false;
 	}
 	
-	@Type(type = "userGroupType")
+	@Type(type = "personRoleType")
 	@Column(name = "user_role_id")
-	public UserGroupType getUserRole() {
+	public PersonRole getUserRole() {
 		return userRole;
 	}
-	public void setUserRole(UserGroupType userRole) {
+	public void setUserRole(PersonRole userRole) {
 		this.userRole = userRole;
 	}
 	

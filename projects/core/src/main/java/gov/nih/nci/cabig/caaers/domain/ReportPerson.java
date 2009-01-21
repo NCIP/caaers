@@ -24,6 +24,8 @@ public abstract class ReportPerson extends PersonContact {
     private ExpeditedAdverseEventReport expeditedReport;
 
     private ReportVersion report;
+    
+    private User user;
 
     // //// BOUND PROPERTIES
 
@@ -48,6 +50,15 @@ public abstract class ReportPerson extends PersonContact {
     public void setExpeditedReport(ExpeditedAdverseEventReport expeditedReport) {
         this.expeditedReport = expeditedReport;
     }
+    
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    public User getUser() {
+		return user;
+	}
+    public void setUser(User user) {
+		this.user = user;
+	}
 
     public ReportPerson copy() {
         ReportPerson reportPerson = (ReportPerson) BeanUtils.instantiateClass(getClass());

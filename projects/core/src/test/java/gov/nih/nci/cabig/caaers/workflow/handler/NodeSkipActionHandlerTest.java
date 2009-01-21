@@ -98,7 +98,7 @@ public class NodeSkipActionHandlerTest extends AbstractTestCase {
 		u1.setLoginId("joel@efg.com");
 		users.add(u1);
 		
-		EasyMock.expect(wfService.findTaskAssignees(wfDefName, taskDefName)).andReturn(users);
+		EasyMock.expect(wfService.findTaskAssignees(pInstance, taskDefName)).andReturn(users);
 		
 		wfService.createTaskInstances((CreateTaskJbpmCallback)EasyMock.anyObject());
 		replayMocks();

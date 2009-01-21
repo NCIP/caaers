@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
@@ -17,14 +18,21 @@ import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.jbpm.graph.def.Transition;
-
+import org.jbpm.graph.exe.ProcessInstance;
+/**
+ * 
+ * @author Biju Joseph
+ *
+ */
 public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventRoutingAndReviewRepository {
 	
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
@@ -32,6 +40,76 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private ReportDao reportDao;
 	
 	private WorkflowService workflowService;
+	
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#enactReportingPeriodWorkflow(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod)
+	 * 
+	 * Algorithm :-
+	 * 1. Find the site from assignment
+	 * 2. Find the workflow from site (configured)
+	 * 3. Enact the workflow
+	 */
+	public ProcessInstance enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod) {
+		assert reportingPeriod.getId() != null;
+		StudyParticipantAssignment assignment = reportingPeriod.getAssignment();
+		StudySite studySite = assignment.getStudySite();
+		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("reportingPeriod");
+		
+		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName());
+		
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
+		variables.put(WorkflowService.VAR_WF_TYPE, AdverseEventReportingPeriod.class.getName());
+		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
+		pInstance.getContextInstance().addVariables(variables);
+		
+		workflowService.saveProcessInstance(pInstance);
+		
+		reportingPeriod.setWorkflowId((int) pInstance.getId());
+		reportingPeriod.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		
+		adverseEventReportingPeriodDao.save(reportingPeriod);
+		
+		return pInstance;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#enactReportWorkflow(gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport)
+	 * 
+	 * Algorithm :-
+	 *  1. Find the Site from assignment
+	 *  2. Find the workflow from site (configured)
+	 *  3. Enact the workflow, 
+	 */
+	public ProcessInstance enactReportWorkflow(Report report) {
+		
+		assert report.getId() != null;
+		
+		ExpeditedAdverseEventReport aeReport = report.getAeReport();
+		StudyParticipantAssignment assignment = aeReport.getAssignment();
+		StudySite studySite = assignment.getStudySite();
+		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("report");
+		
+		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName());
+		
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
+		variables.put(WorkflowService.VAR_WF_TYPE, Report.class.getName());
+		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
+		pInstance.getContextInstance().addVariables(variables);
+		
+		workflowService.saveProcessInstance(pInstance);
+		
+		report.setWorkflowId((int)pInstance.getId());
+		report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
+		
+		reportDao.save(report);
+		
+		return pInstance;
+	}
+	
 	
 	public List<? extends ReviewComment> fetchReviewCommentsForReport(Integer reportId) {
 		return reportDao.getById(reportId).getReviewComments();

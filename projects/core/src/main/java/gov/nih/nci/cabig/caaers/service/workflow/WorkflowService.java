@@ -40,6 +40,13 @@ public interface WorkflowService{
 	String WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER = "reportingperiod_coordinating_center";
 	String WORKFLOW_EVALUATION_PERIOD_MAIN_MEMBER = "";
 	
+	//variable names
+	String VAR_STUDY_ID = "var_study_id";
+	String VAR_REPORTING_PERIOD_ID = "var_rpperiod_id";
+	String VAR_EXPEDITED_REPORT_ID = "var_expedited_report_id";
+	String VAR_REPORT_ID = "var_report_id";
+	String VAR_WF_TYPE = "var_wf_type";
+	
 	
 	/**
 	 * This method will create an instance of a workflow definition.
@@ -48,7 +55,12 @@ public interface WorkflowService{
 	 * @return
 	 */
 	public ProcessInstance createProcessInstance(String workflowDefinitionName);
-		
+	
+	/**
+	 * This method will save a process instance. 
+	 * @param processInstance
+	 */
+	public Long saveProcessInstance(ProcessInstance processInstance);
 	
 	/*
 	 * This method is used to fetch the processInstance given the processInstance identifier
@@ -102,7 +114,7 @@ public interface WorkflowService{
 	 * @param taskNodeName
 	 * @return
 	 */
-	public List<User> findTaskAssignees(String workflowDefinitionName, String taskNodeName);
+	public List<User> findTaskAssignees(ProcessInstance pInstance, String taskNodeName);
 	
 	/**
 	 * This method returns the task configuration identified by the taskNodeName, 

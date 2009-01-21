@@ -115,8 +115,12 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 
 	public void testFindTaskAssignees() {
 		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(wfConfig.getWorkflowDefinitionName())).andReturn(wfConfig);
+		ProcessInstance pInstance = registerMockFor(ProcessInstance.class);
+		ProcessDefinition def = new ProcessDefinition();
+		def.setName(wfConfig.getWorkflowDefinitionName());
+		EasyMock.expect(pInstance.getProcessDefinition()).andReturn(def).anyTimes();
 		replayMocks();
-		List<User> assignees = wfService.findTaskAssignees("Test", "a1");
+		List<User> assignees = wfService.findTaskAssignees(pInstance, "a1");
 		verifyMocks();
 		assertNotNull(assignees);
 		assertEquals(1, assignees.size());
@@ -206,6 +210,8 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-	
+	public void testFindUsersHavingRole(){
+		fail("Not implemented");
+	}
 
 }

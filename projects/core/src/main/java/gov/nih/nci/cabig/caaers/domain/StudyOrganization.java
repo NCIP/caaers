@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
@@ -16,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -124,7 +126,27 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
     @Transient
     public abstract String getRoleName();
     
-    
+    /**
+     * This method will return the list of users having a specific role.
+     * @param personRole
+     * @return
+     */
+    @Transient
+    public List<User> findUsersByRole(PersonRole personRole){
+    	List<User> users = new ArrayList<User>();
+    	for(StudyInvestigator studyInvestigator : getStudyInvestigators()){
+    		if(StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getRoleCode())){
+    			users.add(studyInvestigator.getSiteInvestigator().getInvestigator());
+    		}
+    	}
+    	
+    	for(StudyPersonnel studyPerson : getStudyPersonnels()){
+    		if(StringUtils.equals(studyPerson.getRoleCode(), personRole.getRoleCode())){
+    			users.add(studyPerson.getResearchStaff());
+    		}
+    	}
+    	return users;
+    }
     
     @Override
     public int hashCode() {

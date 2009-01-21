@@ -87,16 +87,7 @@ public class WorkflowConfig extends AbstractMutableDomainObject{
 		this.enabled = enabled;
 	}
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="study_site_id")
-	@Cascade(value={CascadeType.LOCK})
-	public StudySite getStudySite() {
-		return studySite;
-	}
-	public void setStudySite(StudySite studySite) {
-		this.studySite = studySite;
-	}
-	
+
 	@Transient
 	public boolean isTaskActive(String name){
 		for(TaskConfig tc: getTaskConfigs()){

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="expedited_domestic" width="1337" height="781">
+<root-container name="expedited_domestic" width="949" height="781">
   <node name="Start Expedited Domestic Flow" x="478" y="29" width="268" height="36">
     <edge>
       <label x="5" y="-10"/>

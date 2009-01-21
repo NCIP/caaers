@@ -52,7 +52,7 @@ public class NodeSkipActionHandler extends Action{
 			currentNode.leave(context);
 		}else {
 			//applicable, so create tasks
-			List<User> assignees = workflowService.findTaskAssignees(workflowDefinitionName, taskNodeName);
+			List<User> assignees = workflowService.findTaskAssignees(pInstance, taskNodeName);
 			workflowService.createTaskInstances(new CreateTaskJbpmCallback(context, assignees));	
 		}
 		
