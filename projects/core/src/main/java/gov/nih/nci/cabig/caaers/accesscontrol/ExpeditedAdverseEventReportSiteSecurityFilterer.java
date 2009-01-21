@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -106,7 +107,7 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 		//}
 		return false;
 	}
-	private boolean isUserOrganizationPartOfStudySites(Integer researchStaffId, StudyParticipantAssignment assignment) {
+	private boolean isUserOrganizationPartOfStudySites(Integer userId, StudyParticipantAssignment assignment) {
 
 		//StudyOrganization so = assignment.getStudySite();//.getOrganization();
 		List<StudyOrganization> soList = assignment.getStudySite().getStudy().getStudyOrganizations();
@@ -114,10 +115,17 @@ public class ExpeditedAdverseEventReportSiteSecurityFilterer extends BaseSecurit
 		for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
 			for (StudyPersonnel sp:spList) {
-				if (sp.getResearchStaff().getId().equals(researchStaffId)) {
+				if (sp.getResearchStaff().getId().equals(userId)) {
 					return true;
 				}
 			}
+			/* FUTURE REQUIREMENT .. check for investigators also , physician role dont need study level filtering now , but this code covers the future requirement if any 
+			List<StudyInvestigator> studyInvList = so.getStudyInvestigators();
+			for (StudyInvestigator studyInv:studyInvList) {
+				if (studyInv.getSiteInvestigator().getInvestigator().getId().equals(userId)) {
+					return true;
+				}
+			}*/
 		}
 		return false;
 	}

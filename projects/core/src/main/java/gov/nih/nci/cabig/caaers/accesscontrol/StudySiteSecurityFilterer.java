@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -159,9 +160,7 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 	}
 	private boolean isUserAssignedToStudy(Integer userId, Study study) {
 		// TODO
-		// Query is not doing outer join on research staff , need to fix the query. 
-		// temp fix is getting study object for DAO.
-		//if (study.getStudyPersonnelIds().contains(researchStaffId)) return true;		
+		
 		List<StudyOrganization> soList = study.getStudyOrganizations();
 		for (StudyOrganization so:soList) {
 			List<StudyPersonnel> spList = so.getStudyPersonnels();
@@ -170,6 +169,14 @@ public class StudySiteSecurityFilterer extends BaseSecurityFilterer implements D
 					return true;
 				}
 			}
+			/* FUTURE REQUIREMENT .. check for investigators also , physician role dont need study level filtering now , but this code covers the future requirement if any 
+			List<StudyInvestigator> studyInvList = so.getStudyInvestigators();
+			for (StudyInvestigator studyInv:studyInvList) {
+				if (studyInv.getSiteInvestigator().getInvestigator().getId().equals(userId)) {
+					return true;
+				}
+			}*/
+			
 		}
 		return false;
 	}

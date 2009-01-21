@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.Iterator;
 import java.util.List;

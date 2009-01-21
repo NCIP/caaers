@@ -5,6 +5,7 @@ import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
