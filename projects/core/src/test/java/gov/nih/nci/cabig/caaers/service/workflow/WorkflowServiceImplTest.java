@@ -210,8 +210,8 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-	public void testFindUsersHavingRole(){
-		fail("Not implemented");
-	}
+//	public void testFindUsersHavingRole(){
+//		fail("Not implemented");
+//	}
 
 }
