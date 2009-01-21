@@ -22,6 +22,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyConditionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AgentAdjustment;
@@ -50,6 +51,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -91,7 +93,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected StudyAgentDao studyAgentDao;
 
     protected CtepStudyDiseaseDao ctepStudyDiseaseDao;
+    
     protected MeddraStudyDiseaseDao meddraStudyDiseaseDao;
+    
     protected StudyConditionDao studyConditionDao;
 
     protected AnatomicSiteDao anatomicSiteDao;
@@ -126,6 +130,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     
     protected ReportRepository reportRepository;
     
+    protected UserDao userDao;
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -169,6 +174,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, labTermDao);
         ControllerTools.registerDomainObjectEditor(binder, chemoAgentDao);
         ControllerTools.registerDomainObjectEditor(binder, interventionSiteDao);
+        ControllerTools.registerDomainObjectEditor(binder, userDao);
+        
+        
         binder.registerCustomEditor(Date.class, ControllerTools.getDateEditor(false));
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         ControllerTools.registerEnumEditor(binder, Grade.class);
@@ -474,4 +482,9 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     public void setStudyConditionDao(StudyConditionDao studyConditionDao) {
         this.studyConditionDao = studyConditionDao;
     }
+    
+    @Required
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
+	}
 }

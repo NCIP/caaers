@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
@@ -45,7 +46,7 @@ public class ReporterTab extends AeTab {
     protected NowFactory nowFactory;
 
     private EvaluationService evaluationService;
-    private WorkflowService workflowService;
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
     public ReporterTab() {
         super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter",
@@ -285,9 +286,9 @@ public class ReporterTab extends AeTab {
         	List<Report> newlyCreatedReports = null;
         	// Incase createNew the new reportVersion is incremented and assigned to the reports created 
         	newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
-//        	enactWorkflow(newlyCreatedReports);
-        	
         	command.save();
+        	//call workflow
+        	enactWorkflow(newlyCreatedReports);
         }
         //figureout the mandatory sections
         refreshMandatorySectionsAndProperties(command);
@@ -320,14 +321,7 @@ public class ReporterTab extends AeTab {
     public void enactWorkflow(List<Report> newlyCreatedReports){
     	if(newlyCreatedReports != null){
     		for(Report report : newlyCreatedReports){
-    			  //enact workflow
-    	        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
-    	        if(pInstance != null){
-    	        	Long lwfId = pInstance.getId();
-    	        	int workflowId = lwfId.intValue();
-    	        	report.setWorkflowId(workflowId);
-    	        	report.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
-    	        }
+    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
     		}
     	}
     }
@@ -350,12 +344,16 @@ public class ReporterTab extends AeTab {
         this.nowFactory = nowFactory;
     }
     
-    public WorkflowService getWorkflowService() {
-		return workflowService;
+   
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
 	}
-    public void setWorkflowService(WorkflowService workflowService) {
-		this.workflowService = workflowService;
+    
+    public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
+    
     /**
      * Returns the value associated with the <code>attributeName</code>, if present in
      * HttpRequest parameter, if not available, will check in HttpRequest attribute map.

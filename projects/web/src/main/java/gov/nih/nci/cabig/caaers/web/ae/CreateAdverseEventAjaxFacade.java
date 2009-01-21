@@ -84,6 +84,7 @@ public class CreateAdverseEventAjaxFacade {
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
     private ConditionDao conditionDao;
+    private InvestigatorDao investigatorDao;
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -218,7 +219,12 @@ public class CreateAdverseEventAjaxFacade {
         ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
         return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
-
+    
+    public Investigator getInvestigator(String text){
+    	Investigator investigator = investigatorDao.getById(Integer.parseInt(text));
+    	return reduce(investigator, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
+    }
+    
     public List<ParticipantAjaxableDomainObject> matchParticipants(String text, Integer studyId) {
 
         ParticipantAjaxableDomainObjectQuery query = new ParticipantAjaxableDomainObjectQuery();
@@ -960,4 +966,8 @@ public class CreateAdverseEventAjaxFacade {
     public void setConditionDao(ConditionDao conditionDao) {
         this.conditionDao = conditionDao;
     }
+    @Required
+    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
+		this.investigatorDao = investigatorDao;
+	}
 }

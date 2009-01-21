@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
@@ -68,7 +69,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private TreatmentAssignmentDao treatmentAssignmentDao;
     private StudyDao studyDao;
     private EpochDao epochDao;
-    private WorkflowService workflowService;
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private WorkflowConfigDao workflowConfigDao;
 	private UserDao userDao;
 
@@ -195,23 +196,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
         
         adverseEventReportingPeriodDao.save(reportingPeriod);
         
-        
-        
-/*        //Call workflow to instatiate the reporting period flow.
-        ProcessInstance pInstance = workflowService.createProcessInstance(WorkflowService.WORKFLOW_REPORTING);
-        if(pInstance != null){
-        	Long workflowId = pInstance.getId();
-        	
-        	reportingPeriod.setWorkflowId(workflowId.intValue());
-        	reportingPeriod.setReviewStatus(ReviewStatus.DRAFTINCOMPLETE);
-        	adverseEventReportingPeriodDao.save(reportingPeriod);
-        }
-   */     
-       
-        
-        
-        
-        
+        //call workflow, to enact
+        adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
         
         Map map = new LinkedHashMap();
         map.putAll(createFieldGroups(command));
@@ -378,13 +364,13 @@ public class CreateReportingPeriodController extends SimpleFormController {
         this.treatmentAssignmentDao = treatmentAssignmentDao;
     }
     
-    public WorkflowService getWorkflowService() {
-		return workflowService;
-	}
-    
-    public void setWorkflowService(WorkflowService workflowService) {
-		this.workflowService = workflowService;
-	}
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+    	return adverseEventRoutingAndReviewRepository;
+    }
+    public void setAdverseEventRoutingAndReviewRepository(
+		AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+    	this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+    }
     
     public void setWorkflowConfigDao (WorkflowConfigDao workflowConfigDao){
     	this.workflowConfigDao = workflowConfigDao;
