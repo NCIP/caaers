@@ -2,16 +2,7 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
 
 public class ExpeditedAdverseEventReportSiteSecurityFiltererTest extends DaoTestCase {
 	
@@ -70,9 +61,10 @@ public class ExpeditedAdverseEventReportSiteSecurityFiltererTest extends DaoTest
 		Filterer filterer = new CollectionFilterer(expeditedAdverseEventReports); 
 		ArrayList filteredList = (ArrayList)expeditedAdverseEventReportSiteSecurityFilterer.filter(authentication, "ACCESS", filterer);
 		assertEquals(filteredList.size(),1);		
-	}*/
-	public void testTemp(){
-		System.out.println("test");
+	}
+	*/
+	public void testTemp() {
+		System.out.print("");
 	}
 	
 }

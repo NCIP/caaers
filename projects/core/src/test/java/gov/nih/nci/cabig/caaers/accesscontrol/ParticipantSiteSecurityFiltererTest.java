@@ -2,9 +2,12 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +46,7 @@ public class ParticipantSiteSecurityFiltererTest extends DaoTestCase {
 		//enable security 
 		enableAuthorization();		
 		//login as Study Coordinator.
-		SecurityTestUtils.switchUser("1000@def.com", "ROLE_caaers_study_cd");
+		SecurityTestUtils.switchUser("1000@def.com", UserGroupType.caaers_study_cd.getSecurityRoleName());
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(participants); 
@@ -61,7 +64,7 @@ public class ParticipantSiteSecurityFiltererTest extends DaoTestCase {
 		//enable security 
 		enableAuthorization();		
 		//login as Study Coordinator.
-		SecurityTestUtils.switchUser("1000@def.com", "ROLE_caaers_ae_cd");
+		SecurityTestUtils.switchUser("1000@def.com", UserGroupType.caaers_ae_cd.getSecurityRoleName());
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(participants); 

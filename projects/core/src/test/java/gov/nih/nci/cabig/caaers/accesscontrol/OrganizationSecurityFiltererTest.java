@@ -3,7 +3,10 @@ package gov.nih.nci.cabig.caaers.accesscontrol;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.security.SecurityTestUtils;
+import gov.nih.nci.cabig.caaers.utils.CollectionFilterer;
+import gov.nih.nci.cabig.caaers.utils.Filterer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +43,8 @@ public class OrganizationSecurityFiltererTest extends DaoTestCase {
 		
 		//enable security 
 		enableAuthorization();		
-		//login as Study Coordinator.
-		SecurityTestUtils.switchUser("1000@def.com", "ROLE_caaers_site_cd");
+		//login as Site Coordinator.
+		SecurityTestUtils.switchUser("1000@def.com", UserGroupType.caaers_site_cd.getSecurityRoleName());
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Filterer filterer = new CollectionFilterer(organizations); 
