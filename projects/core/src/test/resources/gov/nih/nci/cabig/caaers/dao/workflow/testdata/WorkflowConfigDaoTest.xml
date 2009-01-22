@@ -79,4 +79,5 @@
 	
 	<wf_assignees />
 	<ind_holders />
+	<disease_terminologies />
 </dataset>
