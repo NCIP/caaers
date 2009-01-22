@@ -440,7 +440,9 @@ public class AdverseEventReportSerializer {
 		    	diseaseHistory.setOtherPrimaryDisease(dh.getOtherPrimaryDisease());
 		    	diseaseHistory.setOtherPrimaryDiseaseSite(dh.getOtherPrimaryDiseaseSite());
 		    	diseaseHistory.setDiagnosisDate(dh.getDiagnosisDate());
-		    	diseaseHistory.setCodedPrimaryDiseaseSite(getAnatomicSite(dh.getCodedPrimaryDiseaseSite()));
+		    	if (dh.getCodedPrimaryDiseaseSite() != null) {
+		    		diseaseHistory.setCodedPrimaryDiseaseSite(getAnatomicSite(dh.getCodedPrimaryDiseaseSite()));
+		    	}
 		    	diseaseHistory.setAbstractStudyDisease(dh.getCtepStudyDisease() == null ?
 		    			dh.getMeddraStudyDisease() : dh.getCtepStudyDisease());
 		    	List<MetastaticDiseaseSite> mdsList = dh.getMetastaticDiseaseSites();
