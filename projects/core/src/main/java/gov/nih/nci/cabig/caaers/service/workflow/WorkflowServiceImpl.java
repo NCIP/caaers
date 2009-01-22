@@ -9,10 +9,12 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Location;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
@@ -238,7 +240,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			if(assignee.isRole()){
 				RoleAssignee roleAssignee = (RoleAssignee) assignee;
 				
-				assignees.addAll(findUsersHavingRole(roleAssignee.getUserRole(), pInstance));
+				assignees.addAll(findUsersHavingRole(roleAssignee.getUserRole(), pInstance, taskConfig.getLocation()));
 				
 			}else if(assignee.isUser()) {
 				User user = ((PersonAssignee) assignee).getUser();
@@ -279,11 +281,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	
-	public List<User> findUsersHavingRole(PersonRole personRole,  ProcessInstance pInstance ){
+	public List<User> findUsersHavingRole(PersonRole personRole,  ProcessInstance pInstance , Location location){
 		List<User> users = new ArrayList<User>();
 		Map<Object, Object> contextVariables = pInstance.getContextInstance().getVariables(); 
 		
-		Integer studyId = (Integer) contextVariables.get(VAR_STUDY_ID);
 		String wfType = (String)contextVariables.get(VAR_WF_TYPE);
 		Integer reportingPeriodId = (Integer) contextVariables.get(VAR_REPORTING_PERIOD_ID);
 		Integer expeditedReportId = (Integer) contextVariables.get(VAR_EXPEDITED_REPORT_ID);
@@ -306,27 +307,30 @@ public class WorkflowServiceImpl implements WorkflowService {
 			study = site.getStudy();
 		}
 		
+		List<StudyOrganization> studyOrganizations = new ArrayList<StudyOrganization>();
+		switch(location){
+		
+		case COORDINATING_CENTER:
+			StudyCoordinatingCenter coordinatingCenter = study.getStudyCoordinatingCenter();
+			if(coordinatingCenter != null) studyOrganizations.add(coordinatingCenter);
+			break;
+		case STUDY_SITE:
+			studyOrganizations.add(site);
+			break;
+		case ALL:
+			studyOrganizations.add(site);
+			StudyCoordinatingCenter coordinatingCenter2 = study.getStudyCoordinatingCenter();
+			if(coordinatingCenter2 != null) studyOrganizations.add(coordinatingCenter2);
+			break;
+		}
+		
 		switch(personRole){
 			case ADVERSE_EVENT_COORDINATOR:
-				List<User> aeCoordinators = site.findUsersByRole(personRole);
+				List<User> aeCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(aeCoordinators);
 				break;
-			case CENTRAL_OFFICE_SAE_COORDINATOR:
-				StudyCoordinatingCenter centralOffice = study.getStudyCoordinatingCenter();
-				if(centralOffice != null){
-					List<User> saeCoordinators = centralOffice.findUsersByRole(personRole);
-					users.addAll(saeCoordinators);
-				}
-				break;
-			case COORDINATING_CENTER_DATA_COORDINATOR:
-				StudyCoordinatingCenter coordinatingCenter = study.getStudyCoordinatingCenter();
-				if(coordinatingCenter != null){
-					List<User> saeCoordinators = coordinatingCenter.findUsersByRole(personRole);
-					users.addAll(saeCoordinators);
-				}
-				break;
 			case PARTICIPANT_COORDINATOR:
-				List<User> participantCoordinators = site.findUsersByRole(personRole);
+				List<User> participantCoordinators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(participantCoordinators);
 				break;
 			case PHYSICIAN:
@@ -336,7 +340,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 				}
 				break;
 			case PRINCIPAL_INVESTIGATOR:
-				List<User> principalInvestigators = site.findUsersByRole(personRole);
+				List<User> principalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(principalInvestigators);
 				break;
 			case REPORTER:
@@ -345,16 +349,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 					users.add(reporter);
 				}
 				break;
-			case SITE_CRA:
-				List<User> siteCRAs = site.findUsersByRole(personRole);
-				users.addAll(siteCRAs);
-				break;
 			case SITE_INVESTIGATOR:
-				List<User> siteInvestigators = site.findUsersByRole(personRole);
+				List<User> siteInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(siteInvestigators);
 				break;
 			case SITE_PRINCIPAL_INVESTIGATOR:
-				List<User> sitePrincipalInvestigators = site.findUsersByRole(personRole);
+				List<User> sitePrincipalInvestigators = fetchUsersHavingRoleFromStudyOrganizations(studyOrganizations, personRole);
 				users.addAll(sitePrincipalInvestigators);
 				break;
 			case STUDY_COORDINATOR:
@@ -362,7 +362,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		return users;
 	}
-
+	
+	private List<User> fetchUsersHavingRoleFromStudyOrganizations(List<StudyOrganization> studyOrganizations, PersonRole role){
+		List<User> users = new ArrayList<User>();
+		for(StudyOrganization studyOrg : studyOrganizations){
+			users.addAll(studyOrg.findUsersByRole(role));
+		}
+		return users;
+	}
 	
 	public void setCaaersJavaMailSender(CaaersJavaMailSender caaersJavaMailSender){
 		this.caaersJavaMailSender = caaersJavaMailSender;

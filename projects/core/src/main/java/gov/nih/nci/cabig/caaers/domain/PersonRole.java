@@ -18,10 +18,10 @@ public enum PersonRole implements CodedEnum<Integer>{
 	STUDY_COORDINATOR(5, "Study Coordinator","SC"),
 	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "AEC"),
 	REPORTER(7, "Reporter", "PC"),
-	PHYSICIAN (8, "Physician", "SI"),
-	CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office SAE Coordinator","AEC"),
-	COORDINATING_CENTER_DATA_COORDINATOR(10, "Coordinating Center Data Coordinator", "AEC"),
-	SITE_CRA(11, "Site Clinical Research Assistant", "PC")
+	PHYSICIAN (8, "Physician", "SI")
+	//CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office SAE Coordinator","AEC"),
+	//COORDINATING_CENTER_DATA_COORDINATOR(10, "Coordinating Center Data Coordinator", "AEC"),
+	//SITE_CRA(11, "Site Clinical Research Assistant", "PC")
 	;
 	
 	private Integer code;

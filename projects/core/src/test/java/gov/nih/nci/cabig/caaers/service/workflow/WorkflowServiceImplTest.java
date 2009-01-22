@@ -1,14 +1,19 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.Location;
+import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
@@ -17,19 +22,19 @@ import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.easymock.classextension.EasyMock;
-import org.jbpm.JbpmContext;
 import org.jbpm.JbpmException;
+import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
-import org.springmodules.workflow.jbpm31.JbpmCallback;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
 /**
  * 
@@ -42,6 +47,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	WorkflowConfigDao wfConfigDao;
 	WorkflowConfig wfConfig;
 	UserDao userDao;
+	AdverseEventReportingPeriodDao reportingPeriodDao;
 	
 	ResearchStaff r1;
 	
@@ -75,6 +81,9 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		
 		template = registerMockFor(JbpmTemplate.class);
 		wfService.setJbpmTemplate(template);
+		
+		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
+		wfService.setAdverseEventReportingPeriodDao(reportingPeriodDao);
 		
 	}
 	
@@ -210,8 +219,37 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		verifyMocks();
 	}
 	
-//	public void testFindUsersHavingRole(){
-//		fail("Not implemented");
-//	}
+	public void testFindUsersHavingRole(){
+		
+		List<User> users = new ArrayList<User>();
+		Investigator inv = Fixtures.createInvestigator("Joel");
+		users.add(inv);
+		
+		PersonRole personRole = PersonRole.ADVERSE_EVENT_COORDINATOR;
+		ProcessInstance pInstance = registerMockFor(ProcessInstance.class);
+		ContextInstance ctxInstance = registerMockFor(ContextInstance.class);
+		expect(pInstance.getContextInstance()).andReturn(ctxInstance);
+		Map<String, Object> ctxVariableMap = new HashMap<String, Object>();
+		ctxVariableMap.put(WorkflowService.VAR_WF_TYPE, AdverseEventReportingPeriod.class.getName());
+		ctxVariableMap.put(WorkflowService.VAR_REPORTING_PERIOD_ID, 5);
+		expect(ctxInstance.getVariables()).andReturn(ctxVariableMap);
+		
+		AdverseEventReportingPeriod reportingPeriod = registerMockFor(AdverseEventReportingPeriod.class);
+		expect(reportingPeriodDao.getById(5)).andReturn(reportingPeriod);
+		StudyParticipantAssignment assignment = registerMockFor(StudyParticipantAssignment.class);
+		expect(reportingPeriod.getAssignment()).andReturn(assignment);
+		StudySite site = registerMockFor(StudySite.class);
+		gov.nih.nci.cabig.caaers.domain.Study study = registerMockFor(gov.nih.nci.cabig.caaers.domain.Study.class);
+		expect(assignment.getStudySite()).andReturn(site);
+		expect(site.getStudy()).andReturn(study);
+		expect(site.findUsersByRole(PersonRole.ADVERSE_EVENT_COORDINATOR)).andReturn(users);
+		
+		replayMocks();
+		List<User> returnedUsers = wfService.findUsersHavingRole(personRole, pInstance, Location.STUDY_SITE);
+		verifyMocks();
+		assertNotNull(returnedUsers);
+		assertEquals(1, returnedUsers.size());
+		assertSame(users.get(0), returnedUsers.get(0));
+	}
 
 }

@@ -117,11 +117,11 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 
 	<state name="Finalized">
 		<transition to="Submit Reporting Period for Data Coordinator Review" name="Modify Reporting Period"></transition>
-		<transition to="end-state1" name="end"></transition>
+		<transition to="End State" name="end"></transition>
 	</state>
 
 
-	<end-state name="end-state1"></end-state>
+	<end-state name="End State"></end-state>
 
 
 </process-definition>

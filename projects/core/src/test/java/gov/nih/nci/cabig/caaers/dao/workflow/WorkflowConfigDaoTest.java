@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.dao.workflow;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.Location;
 import gov.nih.nci.cabig.caaers.domain.PersonRole;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
@@ -58,8 +59,9 @@ public class WorkflowConfigDaoTest extends DaoTestCase<WorkflowConfigDao> {
 			 t.setApplicable(Boolean.FALSE);
 			 RoleAssignee a = new RoleAssignee();
 			 a.setName("test");
-			 a.setUserRole(PersonRole.CENTRAL_OFFICE_SAE_COORDINATOR);
+			 a.setUserRole(PersonRole.ADVERSE_EVENT_COORDINATOR);
 			 t.addAssignee(a);
+			 t.setLocation(Location.COORDINATING_CENTER);
 			 getDao().save(workflowConfig);
 		}
 		interruptSession();

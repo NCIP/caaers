@@ -32,7 +32,7 @@ public class PersonAssignee extends Assignee {
 	}
 	
 	@ManyToOne
-    @JoinColumn(name = "research_staffs_id")
+    @JoinColumn(name = "user_id")
 	public ResearchStaff getResearchStaff() {
 		return researchStaff;
 	}

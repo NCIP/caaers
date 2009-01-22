@@ -53,8 +53,8 @@
 	 <task_configuration id="-1000" status_name="FINALIZED" workflow_config_id="-11" location="1" task_name="Finish Reporting Period Flow" applicable="1" message="hijklmnop"/>
 	 <task_configuration id="-999" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Start Reporting Period Flow" applicable="1" message="abcd" />
 	  
-	 <wf_assignees id="-1" name="Bill" research_staffs_id="-1000" task_config_id="-1" dtype="p"/>
-	 <wf_assignees id="-2" name="Bush" research_staffs_id="-1001" task_config_id="-1" dtype="p"/>
+	 <wf_assignees id="-1" name="Bill" user_id="-1000" task_config_id="-1" dtype="p"/>
+	 <wf_assignees id="-2" name="Bush" user_id="-1001" task_config_id="-1" dtype="p"/>
 	 
 	<!--  
 	 <wf_assignees id="-5" name="DC" research_staffs_id="-1002" task_config_id="-3" dtype="p"/>
@@ -62,7 +62,7 @@
 	 <wf_assignees id="-8" name="Bush" research_staffs_id="-1001" task_config_id="-5" dtype="p"/>
 	 -->
 	 
-	 <wf_assignees id="-9" name="DC" research_staffs_id="-1002" task_config_id="-7" dtype="p"/>
+	 <wf_assignees id="-9" name="DC" user_id="-1002" task_config_id="-7" dtype="p"/>
 
 	 <jbpm_moduleinstance />
 	 <jbpm_taskinstance />
