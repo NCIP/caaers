@@ -1317,9 +1317,9 @@ public class SearchStudyAjaxFacade {
             if (sType.equals("firstName")) {
             	query.filterByFirstName(sText);
             } else if (sType.equals("identifier")) {
-                query.filterByLastName(sText);
+            	query.filterByParticipantIdentifierValue(sText);
             } else if (sType.equals("lastName")) {
-                query.filterByParticipantIdentifierValue(sText);
+            	query.filterByLastName(sText);
             }
         }
 
