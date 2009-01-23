@@ -28,11 +28,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.jbpm.graph.exe.ProcessInstance;
+import org.springframework.transaction.annotation.Transactional;
 /**
  * 
  * @author Biju Joseph
  *
  */
+@Transactional
 public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventRoutingAndReviewRepository {
 	
 	private AERoutingAndReviewDTOFactory routingAndReviewFactory;
@@ -176,6 +178,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		reportDao.save(report);
 		return workflowService.nextTransitionNames(workflowId);
 	}
+	
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		
