@@ -21,3 +21,7 @@ ALTER TABLE site_workflow_configs ADD CONSTRAINT fk_wfc_site_site_id FOREIGN KEY
 ALTER TABLE site_workflow_configs  ADD CONSTRAINT fk_wfc_site_wf_config_id FOREIGN KEY (wf_config_id) references workflow_configuration (id);
 
 drop table temp_n3;
+
+drop sequence SEQ_TASK_CONFIGURATION_ID;
+
+create sequence SEQ_TASK_CONFIGURATION_ID start with 50000;
