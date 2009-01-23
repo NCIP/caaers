@@ -1,104 +1,120 @@
 
-<project name="caaers-web" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="selenium-tests" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
-	
-	<!-- Logic that finds the conf to be used while making war -->
-	<condition property="webConf" value="distGrid" else="dist">
-		<istrue value="${cctsWAR}"/>
-	</condition>
-	
-	<import file="${parent.dir}/common.xml"/>
+	<property name="test.dir" value="${basedir}/src/test" />
+	<property name="test.resources" value="${test.dir}/resources" />
+	<property name="local.lib.dir" value="${test.dir}/lib/" />
 
-	<!-- ==============================================================
-		target: resolve-dist
-	================================================================== -->
-	 <target name="resolve-dist" depends="load-ivy"
-	    	description="--> resolve and retrieve dist conf dependencies with ivy">
-	    	<echo message="Executing ${ant.project.name} : resolve-dist on conf : ${webConf}" />
-	 		<ivy:resolve file="${ivy.file}" conf="${webConf}" haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	 		<ivy:retrieve pattern="${war.dir}/WEB-INF/lib/[artifact]-[revision].[ext]"  haltonfailure="false" settingsRef="caaers.ivy.instance"/>
-	  </target>
-	
-	<!-- ==================================================================
-		target: init-war
-	======================================================================= -->
-	<target name="init-war" description="creates the directories necessary for the exploded war">
-	 	<mkdir dir="${war.dir}"/>
-	 	<mkdir dir="${war.dir}/WEB-INF" />
-	 	<mkdir dir="${war.dir}/WEB-INF/lib"/>
-	 	<mkdir dir="${war.dir}/WEB-INF/classes" />
-		<mkdir dir="${war.dir}/WEB-INF/classes/META-INF" />
-		<mkdir dir="${war.dir}/WEB-INF/classes/META-INF/xfire" />
-	</target>
-	 	
-	<!-- =========================================================
-		target: clean-war 
-			Cleans the directory associated to keep exploded caaers files
-	=============================================================-->
-	 <target name="clean-war">
-	 	<delete dir="${dist.dir}/${war.filename}" />
-	 	<deltree dir="${war.dir}" />
-	 </target>	
-	 
-	 	
-	 <target name="war" depends="clean-war, init-war, resolve-dist">
-		<copy-resources src="${classes.dir}" dest="${war.dir}/WEB-INF/classes" filter="false"/>
-	 	<copy-resources src="${main.src}/../webapp" dest="${war.dir}"  filter="false" />
-	 	<copy-resources src="${main.src.resources}/xfire" dest="${war.dir}/WEB-INF/classes/META-INF/xfire"  filter="false" />
-	 	
-	 	<war destfile="${dist.dir}/${war.filename}" basedir="${war.dir}"
-	 		webxml="${main.src}/../webapp/WEB-INF/web.xml">	 		
-	 	</war>
-	 	
-	 	
-	</target>
-	<!-- =================================================================
-		target : jar
-			In addition to the jar responsibility, this will also invoke war
-	======================================================================-->
-	<target name="jar" depends="common.jar, war">
-			<echo message="Executing jar in ${ant.project.name}" />
-	</target>
-	<target name="clean" depends="common.clean, clean-war, undeploy-caaers">
-		
-	</target>
-	
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
+		</classpath>
+	</taskdef>
+	<import file="${parent.dir}/common.xml" />
+
+	<!--
 	<target name="copy-caaers-context">
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
 		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
 		<mkdir dir="${main.src}/../webapp/WEB-INF/classes" />
 		<mkdir dir="${main.src}/../webapp/WEB-INF/lib" />
-		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes"  filter="false" />
-		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib"  filter="false" />
+		<copy-resources src="${classes.dir}" dest="${main.src}/../webapp/WEB-INF/classes" filter="false" />
+		<copy-resources src="${lib.dir}" dest="${main.src}/../webapp/WEB-INF/lib" filter="false" />
 		<echo file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml">&lt;Context path="/caaers" docBase="${main.src}/../webapp/" reloadable="true" debug="9" /></echo>
 	</target>
-	
+-->
 	<!--=================================================================
 		target :undeploy-caaers
 	==================================================================== -->
-	<target name="undeploy-caaers">
-		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml"/>
+	<!--	<target name="undeploy-caaers">
+		<delete file="${env.CATALINA_HOME}/conf/Catalina/localhost/caaers.xml" />
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
 		<delete dir="${main.src}/../webapp/WEB-INF/lib" />
 	</target>
-
+-->
 	<!--=================================================================
 		target :deploy-caaers
 	==================================================================== -->
-	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
-		
-<target name="TomStart">
-    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
-        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
-    </java>
-</target>
+	<!--	<target name="deploy-caaers" depends="undeploy-caaers, compile, copy-caaers-context" />
 
-<target name="TomStop">
-    <java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
-        <jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}"/>
-        <arg line="stop"/>
-    </java>
-</target>
+	<target name="TomStart">
+		<java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+			<jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}" />
+		</java>
+	</target>
+
+	<target name="TomStop">
+		<java jar="${env.CATALINA_HOME}/bin/bootstrap.jar" fork="true">
+			<jvmarg value="-Dcatalina.home=${env.CATALINA_HOME}" />
+			<arg line="stop" />
+		</java>
+	</target>
+	-->
+	<!-- ================================= 
+          target: test-ui              
+         ================================= -->
+	<target name="test-ui" depends="start-selenium-server, resolve,common.test-report, shutdown-selenium-server" description="---> test caaers UI using selenium">
+		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
+			<classpath location="${test.dir}/java" />
+			<classpath refid="${java.class.path}" />
+			<classpath refid="test.classpath"/>
+			<formatter type="plain" />
+			<formatter type="xml" />
+			<test name="CaaersStudyTestCase"/>
+		</junit>
+		<antcall target="shutdown-selenium-server" /-->
+	</target>
+	<!-- ================================= 
+          target: reset-db              
+         ================================= -->
+	<target name="reset-db" description="reset the db to a good baseline dump.">
+		<scp trust="true" todir="oracle:Oracle123!@sbhost02.semanticbits.com:/home/oracle">
+			<fileset dir="${test.resources}">
+				<include name="refreshSelenium.sql" />
+				<include name="refreshSeleniumDB.sh" />
+			</fileset>
+		</scp>
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
+	</target>
+	<!-- ================================= 
+          target: start-selenium-server              
+         ================================= -->
+	<target name="start-selenium-server" description="description">
+		<condition property="selenium.on" value="true">
+			<http url="http://localhost:4444" errorsbeginat="500" />
+		</condition>
+		<echo message="Status of selenium server: ${selenium.on}" />
+		<if>
+			<not>
+				<equals arg1="${selenium.on}" arg2="true" />
+			</not>
+			<then>
+				<java jar="${local.lib.dir}/selenium-server.jar" fork="true" spawn="true">
+					<arg value="-firefoxProfileTemplate" />
+					<arg value="${test.resources}/firefox-profile" />
+				</java>
+			</then>
+		</if>
+	</target>
+	<!-- ================================= 
+          target: shutdown-selenium-server              
+         ================================= -->
+	<target name="shutdown-selenium-server" description="description">
+		<echo message="shutdown failed" file="selenium-shutdown-result.txt" />
+		<get src="http://localhost:4444/selenium-server/driver/?cmd=shutDown" dest="selenium-shutdown-result.txt" ignoreerrors="true" />
+		<loadfile property="selenium.shutdown.results" srcfile="selenium-shutdown-result.txt" />
+		<echo message="selenium shutdown status: ${selenium.shutdown.results}" />
+	</target>
+	<!-- ================================= 
+          target: test-local              
+         ================================= -->
+	<target name="test-local" description="---> Used for testing build scripts. Do not invoke in normal usage.">
+		<condition property="selenium.on" value="true">
+			<http url="http://localhost:4444" errorsbeginat="500" />
+		</condition>
+		<echo message="${selenium.on}" />
+	</target>
 
 </project>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project name="LexWikiCore" basedir="." >
+	<description>
+		  + ============================================ +
+		  +                Caaers                        +
+		  +         Automated Selenium Test Suite        +
+		  +                CaAERS QA                     +
+		  +               Semanticbits                   +
+		  + ============================================ +
+    </description>
+
+	<property file="lexwiki.properties" />
+
+
+
+	<property name="lib.dir" value="${basedir}/lib" />
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${lib.dir}/ant-contrib-0.6.jar" />
+		</classpath>
+	</taskdef>
+
+	<taskdef resource="net/sf/incanto/antlib.xml">
+		<classpath>
+			<pathelement location="${lib.dir}/incanto-0.2.4.jar" />
+		</classpath>
+	</taskdef>
+
+
+
+	<!-- ================================= 
+          target: temp              
+         ================================= -->
+	<target name="temp" description="---> Used for testing. Do not invoke in normal usage.">
+		<!--sqlplus logon="caaers_qa/caaers_qa@sbhost02.semanticbits.com as default">
+			<![CDATA[
+       	select * from nls_database_parameters
+       	     ]]>
+		</sqlplus-->
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB"/>
+	</target>
+	<!-- ================================= 
+          target: test-ui              
+         ================================= -->
+	<target name="test-ui" description="---> Runs the selenium tests.">
+	
+	</target>
+
+</project>
