@@ -321,7 +321,7 @@ public class ReporterTab extends AeTab {
     public void enactWorkflow(List<Report> newlyCreatedReports){
     	if(newlyCreatedReports != null){
     		for(Report report : newlyCreatedReports){
-    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
+//    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
     		}
     	}
     }
