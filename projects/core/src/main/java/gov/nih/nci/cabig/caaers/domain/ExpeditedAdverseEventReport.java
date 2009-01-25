@@ -2,6 +2,8 @@ package gov.nih.nci.cabig.caaers.domain;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
 import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
 import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
@@ -36,7 +38,7 @@ import java.util.Map;
                 @Parameter(name = "sequence", value = "seq_ae_reports_id")
         }
 )
-public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
+public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject implements  WorkflowAware {
     private Timestamp createdAt;
     private LazyListHelper lazyListHelper;
 
@@ -59,6 +61,11 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
 
     // This gives the primary report in the expeditedReport (Data Collection)
     private Report primaryReport;
+    
+    private ReviewStatus reviewStatus;
+    private Integer workflowId;
+    private List<ReportReviewComment> reviewComments;
+
 
     // TODO
     // private List<MedicalDevice> medicalDevices;
@@ -969,4 +976,36 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject {
     }
     
     
+    @Column(name = "review_status_code")
+    @Type(type = "reviewStatus")
+    public ReviewStatus getReviewStatus() {
+        return reviewStatus;
+    }
+    
+    public void setReviewStatus(ReviewStatus reviewStatus){
+    	this.reviewStatus = reviewStatus;
+    }
+    
+    public Integer getWorkflowId() {
+    	return workflowId;
+    }
+    
+    public void setWorkflowId(Integer workflowId){
+    	this.workflowId = workflowId;
+    }
+    
+    
+    @OneToMany
+    @JoinColumn(name = "report_id", nullable = true)
+    @IndexColumn(name = "list_index", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @OrderBy(value = "createdDate DESC")
+    public List<ReportReviewComment> getReviewComments() {
+		return reviewComments;
+	}
+    
+    public void setReviewComments(
+			List<ReportReviewComment> reviewComments) {
+		this.reviewComments = reviewComments;
+	}
 }

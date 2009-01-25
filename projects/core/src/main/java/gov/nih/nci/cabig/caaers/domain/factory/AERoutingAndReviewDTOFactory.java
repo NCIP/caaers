@@ -7,9 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
-import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReviewCommentsDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
@@ -52,21 +54,20 @@ public class AERoutingAndReviewDTOFactory {
 		
 	}
 	
-	public AdverseEventReportDTO createAdverseEventReportDTO(Report report, ExpeditedAdverseEventReport aeReport){
-		if(report == null) return null;
-		AdverseEventReportDTO dto = new AdverseEventReportDTO();
-		dto.setWorkflowId(report.getWorkflowId());
-		dto.setReport(report);
+	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport){
+		if(aeReport == null) return null;
+		ExpeditedAdverseEventReportDTO dto = new ExpeditedAdverseEventReportDTO();
+		dto.setWorkflowId(aeReport.getWorkflowId());
+		dto.setAeReport(aeReport);
 		dto.setStudy(aeReport.getStudy());
 		dto.setParticipant(aeReport.getParticipant());
-		dto.setId(report.getId());
-		dto.setName(report.getName());
+		dto.setId(aeReport.getId());
+		dto.setName("Expedited Report");
 		dto.setNoOfAe(aeReport.getNumberOfAes());
-		dto.setStatus(report.getLastVersion().getReportStatus());
-		dto.setReportVersionId(report.getLastVersion().getReportVersionId());
-		dto.setReviewStatus(report.getReviewStatus());
-		dto.setPossibleActions(workflowService.nextTransitionNames(report.getWorkflowId()));
-		dto.setReviewComments(createReviewComments(report.getReviewComments()));
+		dto.setReviewStatus(aeReport.getReviewStatus());
+		dto.setPossibleActions(workflowService.nextTransitionNames(aeReport.getWorkflowId()));
+		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
+		dto.setReportDTOs(createReportDTOs(aeReport));
 		return dto;
 	}
 	
@@ -83,7 +84,19 @@ public class AERoutingAndReviewDTOFactory {
 		return commentDtos;
 	}
 	
-	
+	protected List<ReportDTO> createReportDTOs(ExpeditedAdverseEventReport aeReport){
+		ArrayList<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
+		for(Report report : aeReport.getReports()){
+			ReportDTO dto = new ReportDTO();
+			dto.setId(report.getId());
+			dto.setName(report.getName());
+			ReportVersion lastVersion = report.getLastVersion();
+			dto.setReportVersionId(lastVersion.getId());
+			dto.setReviewStatus(aeReport.getReviewStatus());
+			reportDTOs.add(dto);
+		}
+		return reportDTOs;
+	}
 	
 	public WorkflowService getWorkflowService() {
 		return workflowService;

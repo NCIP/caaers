@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
@@ -7,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +17,7 @@ import java.util.Map;
  * @author Biju Joseph
  *
  */
-public class AdverseEventReportDTO {
+public class ExpeditedAdverseEventReportDTO {
 	private Integer id;
 	private Integer workflowId;
 	private Integer noOfAe;
@@ -29,7 +31,8 @@ public class AdverseEventReportDTO {
 	
 	private Study study;
 	private Participant participant;
-	private Report report;
+	private ExpeditedAdverseEventReport aeReport;
+	private List<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
 	
 	
 	public Integer getId() {
@@ -76,11 +79,11 @@ public class AdverseEventReportDTO {
 	public void setParticipant(Participant participant) {
 		this.participant = participant;
 	}
-	public Report getReport() {
-		return report;
+	public ExpeditedAdverseEventReport getAeReport() {
+		return aeReport;
 	}
-	public void setReport(Report report) {
-		this.report = report;
+	public void setAeReport(ExpeditedAdverseEventReport aeReport) {
+		this.aeReport = aeReport;
 	}
 	public ReportStatus getStatus() {
 		return status;
@@ -107,5 +110,14 @@ public class AdverseEventReportDTO {
 	}
 	public void setPossibleActions(List<String> possibleActions) {
 		this.possibleActions = possibleActions;
+	}
+	public void addReportDTO(ReportDTO reportDTO){
+		reportDTOs.add(reportDTO);
+	}
+	public List<ReportDTO> getReportDTOs() {
+		return reportDTOs;
+	}
+	public void setReportDTOs(List<ReportDTO> reports) {
+		this.reportDTOs = reports;
 	}
 }

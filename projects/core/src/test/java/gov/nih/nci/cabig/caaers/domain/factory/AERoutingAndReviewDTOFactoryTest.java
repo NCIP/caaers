@@ -15,7 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
-import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -44,9 +44,6 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	public void testCreateAdverseEventEvalutionPeriodDTO() {
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		Report r = Fixtures.createReport("test");
-		r.setAeReport(aeReport);
-		aeReport.addReport(r);
 		
 		rp.addAeReport(aeReport);
 		aeReport.setReportingPeriod(rp);
@@ -56,7 +53,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		actions.add("action1");
 		actions.add("action2");
 		
-		r.setWorkflowId(workflowId);
+		aeReport.setWorkflowId(workflowId);
 		rp.setWorkflowId(workflowId);
 		rp.setStartDate(new Date());
 		rp.setEndDate(new Date());
@@ -76,7 +73,7 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 	
 	
 	public void testCreateAdverseEventReportDT0_4Null(){
-		assertNull(factory.createAdverseEventReportDTO(null, null));
+		assertNull(factory.createAdverseEventReportDTO(null));
 	}
 	
 	public void testCreateAdverseEventReportDT0(){
@@ -85,21 +82,18 @@ public class AERoutingAndReviewDTOFactoryTest extends CaaersNoSecurityTestCase {
 		actions.add("action1");
 		actions.add("action2");
 		
-		Report r = Fixtures.createReport("test");
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		aeReport.setReportingPeriod(rp);
-		r.setAeReport(aeReport);
 		
-		r.setId(7);
-		r.setWorkflowId(workflowId);
-		Fixtures.createReportVersion(r);
+		aeReport.setId(7);
+		aeReport.setWorkflowId(workflowId);
 		
 		EasyMock.expect(workflowService.nextTransitionNames(workflowId)).andReturn(actions);
 		replayMocks();
 		
-		AdverseEventReportDTO dto = factory.createAdverseEventReportDTO(r, aeReport);
-		assertSame(r,dto.getReport());
+		ExpeditedAdverseEventReportDTO dto = factory.createAdverseEventReportDTO( aeReport);
+		assertSame(aeReport,dto.getAeReport());
 		
 	}
 	

@@ -25,7 +25,7 @@ public class AdverseEventReportingPeriodDTO {
 	private List<String> possibleActions;
 	private List<ReviewCommentsDTO> reviewComments;
 	
-	private List<AdverseEventReportDTO> reports;
+	private List<ExpeditedAdverseEventReportDTO> reports;
 	
 	
 	
@@ -34,8 +34,8 @@ public class AdverseEventReportingPeriodDTO {
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	
 	
-	public void addAdverseEventReportDTO(AdverseEventReportDTO report){
-		if(reports == null) reports = new ArrayList<AdverseEventReportDTO>();
+	public void addAdverseEventReportDTO(ExpeditedAdverseEventReportDTO report){
+		if(reports == null) reports = new ArrayList<ExpeditedAdverseEventReportDTO>();
 		reports.add(report);
 	}
 	
@@ -104,7 +104,7 @@ public class AdverseEventReportingPeriodDTO {
 		this.participant = participant;
 	}
 	
-	public List<AdverseEventReportDTO> getReports() {
+	public List<ExpeditedAdverseEventReportDTO> getReports() {
 		return reports;
 	}
 	

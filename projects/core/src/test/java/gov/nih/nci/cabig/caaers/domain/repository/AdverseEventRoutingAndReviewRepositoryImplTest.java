@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.CaaersNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -12,7 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -39,7 +40,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	
 	
 	AdverseEventReportingPeriodDao rpDao;
-	ReportDao rDao;
+	ExpeditedAdverseEventReportDao rDao;
 	AERoutingAndReviewDTOFactory factory;
 	WorkflowService wfService;
 	AdverseEventRoutingAndReviewRepositoryImpl impl;
@@ -50,7 +51,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		rDao = registerDaoMockFor(ReportDao.class);
+		rDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		rpDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		factory = registerMockFor(AERoutingAndReviewDTOFactory.class);
 		wfService = registerMockFor(WorkflowService.class);
@@ -60,12 +61,12 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		impl = new AdverseEventRoutingAndReviewRepositoryImpl();
 		impl.setAdverseEventReportingPeriodDao(rpDao);
 		impl.setRoutingAndReviewFactory(factory);
-		impl.setReportDao(rDao);
+		impl.setExpeditedAdverseEventReportDao(rDao);
 		impl.setWorkflowService(wfService);
 	}
 	
 	public void testFetchReviewCommentsForReport() {
-		Report r = Fixtures.createReport("test");
+		ExpeditedAdverseEventReport r = Fixtures.createSavableExpeditedReport();
 		List<ReportReviewComment> reviewComments = new ArrayList<ReportReviewComment>();
 		r.setReviewComments(reviewComments);
 		Integer reportId = 5;
@@ -94,7 +95,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		String comment = "mycomment";
 		String userId = "userId";
 		
-		Report r = Fixtures.createReport("test");
+		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
 		r.setReviewComments(new ArrayList<ReportReviewComment>());
 		EasyMock.expect(rDao.getById(reportId)).andReturn(r);
 		rDao.save(r);
@@ -166,10 +167,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	public void testFindAdverseEventReportingPeriods() {
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
-		Report r = Fixtures.createReport("abc");
-		r.setWorkflowId(1);
-		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE); 
-		aeReport.addReport(r);
+		aeReport.setWorkflowId(1);
+		aeReport.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE); 
 		rp.addAeReport(aeReport);
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = new ArrayList<AdverseEventReportingPeriod>();
@@ -180,11 +179,11 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		
 		AdverseEventReportingPeriodDTO rpDto = new AdverseEventReportingPeriodDTO();
-		AdverseEventReportDTO rDto = new AdverseEventReportDTO();
+		ExpeditedAdverseEventReportDTO rDto = new ExpeditedAdverseEventReportDTO();
 		EasyMock.expect(rpDao.findAdverseEventReportingPeriods((AdverseEventReportingPeriodForReviewQuery) EasyMock.anyObject())).andReturn(reportingPeriods);
 	
 		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp)).andReturn(rpDto);
-		EasyMock.expect(factory.createAdverseEventReportDTO(r, aeReport)).andReturn(rDto);
+		EasyMock.expect(factory.createAdverseEventReportDTO(aeReport)).andReturn(rDto);
 		replayMocks();
 		
 		Participant participant = Fixtures.createParticipant("Joel", "biju");
@@ -208,7 +207,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 
 	public void testIsEntityHavingSpecifiedReviewStatus() {
-		Report r = Fixtures.createReport("abc");
+		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
 		r.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
 		boolean result = impl.isEntityHavingSpecifiedReviewStatus(null, r);
@@ -229,7 +228,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		Integer wfId = 5;
 		String transitionToTake = "abcd";
 		ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
-		Report r = Fixtures.createReport("test");
+		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
 		List<String> transitionNames = new ArrayList<String>();
 		
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
@@ -288,10 +287,9 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	
 	public void testEnactReportWorkflow(){
 		long processId = 5;
-		Report report = Fixtures.createReport("test");
-		report.setId(55);
 		StudyParticipantAssignment assignment = Fixtures.createAssignment();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+		aeReport.setId(55);
 		AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
 		WorkflowConfig workflowConfig = Fixtures.createWorkflowConfig("test");
 		StudySite site = assignment.getStudySite();
@@ -300,16 +298,15 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		site.setWorkflowConfigs(workflowConfigs);
 		reportingPeriod.addAeReport(aeReport);
 		aeReport.setAssignment(assignment);
-		aeReport.addReport(report);
 		
 		EasyMock.expect(wfService.createProcessInstance("test")).andReturn(processInstance);
 		EasyMock.expect(processInstance.getContextInstance()).andReturn(contextInstance);
 	    contextInstance.addVariables((Map)EasyMock.anyObject());
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
 	    EasyMock.expect(wfService.saveProcessInstance(processInstance)).andReturn(processId);
-	    rDao.save(report);
+	    rDao.save(aeReport);
 		replayMocks();
-		impl.enactReportWorkflow(report);
+		impl.enactReportWorkflow(aeReport);
 		verifyMocks();
 	}
 }

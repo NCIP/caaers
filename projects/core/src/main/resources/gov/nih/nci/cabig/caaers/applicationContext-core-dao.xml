@@ -549,7 +549,7 @@ This applicationContext contains the definition of the DAOs
     <bean id="adverseEventRoutingAndReviewRepository" class="gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl">
     	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
     	<property name="routingAndReviewFactory" ref="routingAndReviewFactory" />
-    	<property name="reportDao" ref="reportDao" />
+    	<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
     	<property name="workflowService" ref="workflowService" />
     </bean>
     <!-- Repository beans end here-->
