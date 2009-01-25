@@ -58,6 +58,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private String concomitantMedication;
     
     private Term studyTerminologyTerm;
+    
+    private boolean workflowEnabled;
 
     // //// LOGIC
 
@@ -349,4 +351,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		}
 		return studyTerminologyTerm;
 	}
+	
+	public boolean getWorkflowEnabled(){
+		//TODO check if the report has a valid workflow-id.
+		return true;
+	}
+	
 }

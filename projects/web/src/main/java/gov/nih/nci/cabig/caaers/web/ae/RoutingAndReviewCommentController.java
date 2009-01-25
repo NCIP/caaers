@@ -1,10 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 
 import java.util.List;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -22,8 +25,12 @@ import org.springframework.web.servlet.mvc.SimpleFormController;
  *
  */
 public class RoutingAndReviewCommentController extends SimpleFormController {
-	
+	public static final String AJAX_SUBVIEW_PARAMETER = "subview";
+	public static final String AJAX_ENTITY = "entity";
+	public static final String AJAX_ENTITY_ID = "entityId";
+	public static final String AJAX_ACTION = "action";
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	public RoutingAndReviewCommentController() {
 		setCommandClass(RoutingAndReviewCommentCommand.class);
@@ -39,6 +46,10 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	
 	@Override
 	protected boolean isFormSubmission(HttpServletRequest request) {
+		Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+		if(isAjax != null)
+			return true;
+		
 		String comment = request.getParameter("comment");
 		return comment != null;
 	}
@@ -73,9 +84,11 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
 		super.onBindAndValidate(request, command, errors);
 		RoutingAndReviewCommentCommand cmd = (RoutingAndReviewCommentCommand) command;
-		
-		if(cmd.getComment() == null){
-			errors.reject("RAR_003", "Invalid comment");
+		Object action = findInRequest(request, AJAX_ACTION);
+		if(action == null){
+			if(cmd.getComment() == null){
+				errors.reject("RAR_003", "Invalid comment");
+			}
 		}
 	}
 	
@@ -87,10 +100,26 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		Integer id = cmd.getEntityId();
 		String comment = cmd.getComment();
 		String userId = cmd.getUserId();
-		if("report".equals(entity)){
-			adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
-		}else if("reportingPeriod".equals(entity)){
-			adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(id, comment, userId);
+		Object action = findInRequest(request, AJAX_ACTION);
+		if(action == null){
+			if("report".equals(entity)){
+				adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
+			}else if("reportingPeriod".equals(entity)){
+				AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
+				adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
+			}
+		}else{
+			Object ajaxSubview = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+			if(ajaxSubview != null && ((String)action).equals("fetchComments")){
+				mv.setViewName("ae/ajax/" + ajaxSubview);
+				List<? extends ReviewComment> prevComments = null;
+				if("report".equals(entity)){
+					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
+				} else if("reportingPeriod".equals(entity)){
+					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
+				}
+				cmd.setPreviousComments(prevComments);
+			}
 		}
 		return mv;
 	}
@@ -102,4 +131,25 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
+	
+	public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao){
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+	
+	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao(){
+		return adverseEventReportingPeriodDao;
+	}
+	
+	/**
+     * Returns the value associated with the <code>attributeName</code>, if present in
+     * HttpRequest parameter, if not available, will check in HttpRequest attribute map.
+     */
+    protected Object findInRequest(final ServletRequest request, final String attributName) {
+
+        Object attr = request.getParameter(attributName);
+        if (attr == null) {
+            attr = request.getAttribute(attributName);
+        }
+        return attr;
+    }
 }

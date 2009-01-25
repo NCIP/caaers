@@ -39,6 +39,7 @@
 <!-- LIVEPIPE START -->
 <tags:javascriptLink name="livepipe/livepipe"/>
 <tags:javascriptLink name="livepipe/tabs"/>
+<tags:javascriptLink name="livepipe/scrollbar"/>
 
 <!-- LIVEPIPE END -->
 

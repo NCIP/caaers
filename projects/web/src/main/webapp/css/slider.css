@@ -1,7 +1,8 @@
 #entire-slider {
     width: auto;
     /* height: auto;*/
-	min-height:224px;
+    height:225px;
+	/*min-height:225px;*/
     background-repeat: no-repeat;
     background-position:top left;
     position: absolute;
@@ -146,7 +147,7 @@ a#maximize:active {
 	left:20px;
 	width:500px;
 	background-color:white;
-	overflow-y:scroll;
+	/*overflow-y:scroll;*/
 	position:relative;
 }
 .comment {
@@ -206,10 +207,25 @@ a#maximize:active {
 	color:#333366;
 	margin-bottom:5px;
 }
+#edit-a-comment {
+	font-size:17px;
+	font-weight:bolder;
+	color:#333366;
+	margin-bottom:5px;
+}
 #add-btn {
 	float:right;
 	margin-top:5px;
 }
+#cancel-btn {
+	float:right;
+	margin-top:5px;
+}
+#edit-btn {
+	float:right;
+	margin-top:5px;
+}
+
 
 /* Below is the css from livepipe */
 
@@ -251,3 +267,36 @@ a#maximize:active {
 #slider-pane ul.subsection_tabs li.source_code {
 	float:right;
 }
+
+/* Below is the css from livepipe for the scrollbar */
+#scrollbar_container {
+	position:relative;
+	width:500px;
+}
+
+#scrollbar_track {
+	position:absolute;
+	top:0;
+	right:0;
+	height:100%;
+	width:10px;
+	background-color:transparent;
+	cursor:move;
+}
+
+#scrollbar_handle {
+	width:10px;
+	background-color:#5c92e7;
+	cursor:move;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	opacity:0.9;
+    -moz-opacity:0.9;
+}
+
+#scrollbar_content {
+	overflow:hidden;
+	width:485px;
+	height: 180px;
+}
+

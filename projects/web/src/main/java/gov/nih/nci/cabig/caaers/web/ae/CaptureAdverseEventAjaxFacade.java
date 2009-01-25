@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -10,16 +11,25 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.userdetails.User;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
@@ -28,10 +38,21 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 	 
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 
+	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	 
 	 @Override
 	public Class<?>[] controllers() {
 		return CONTROLLERS;
 	}
+	 
+	 public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+			return adverseEventRoutingAndReviewRepository;
+	 }
+	
+	 public void setAdverseEventRoutingAndReviewRepository(
+				AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+			this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	 }
 	 
     /**
      * This function is called to fetch the content associated to a reporting period
@@ -171,6 +192,71 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	
     	return new AjaxOutput();
     }
+    
+    public String addReviewComment(String comment){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId);
+    	
+        return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
+    }
+    
+    public String editReviewComment(String comment, Integer commentId){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.editReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId, commentId);
+    	
+    	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
+    }
+    
+    public String fetchPreviousComments(Integer entityId, String userId){
+		Map params = new HashMap<String, String>();
+		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "reportingPeriod");
+        params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, entityId.toString());
+        params.put("userId", userId);
+        params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
+        params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
+
+		return renderCommentsAjaxView(params);
+	}
+    
+    public String retrieveReportingPeriodReviewComments(){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
+    }
+    
+    /*public AjaxOutput fetchPreviousComments(){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+		Map params = new HashMap<String, String>();
+		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "reportingPeriod");
+        params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, command.getAdverseEventReportingPeriod().getId().toString());
+        params.put("userId", getUserId());
+        params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
+        params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
+        
+        return renderCommentsAjaxView(params);
+	}*/
+    
+    private String renderCommentsAjaxView(Map<String, String> params){
+    	WebContext webContext = getWebContext();
+    	String url = String.format("%s?%s",
+    			"/pages/ae/listReviewComments", createQueryString(params));
+        try {
+            String html = webContext.forwardToString(url);
+            return html;
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e);
+        }
+    }
+    
+    protected String getUserId(){
+		WebContext webContext = getWebContext();
+		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		return userId;
+	}
     
     @Required
     public void setAdverseEventReportingPeriodDao(

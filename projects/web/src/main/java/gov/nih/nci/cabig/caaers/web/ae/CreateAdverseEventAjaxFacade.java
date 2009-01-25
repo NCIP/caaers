@@ -731,10 +731,13 @@ public class CreateAdverseEventAjaxFacade {
             throw new CaaersSystemException(e);
         }
     }
-
+    
+    protected WebContext getWebContext(){
+    	return WebContextFactory.get();
+    }
 
     protected Object extractCommand() {
-        WebContext webContext = WebContextFactory.get();
+        WebContext webContext = getWebContext();
         Object command = null;
         for (Class<?> controllerClass : controllers()) {
             String formSessionAttributeName = controllerClass.getName() + ".FORM.command";
@@ -769,7 +772,7 @@ public class CreateAdverseEventAjaxFacade {
 
 
     // TODO: there's got to be a library version of this somewhere
-    private String createQueryString(Map<String, String> params) {
+    protected String createQueryString(Map<String, String> params) {
         StringBuilder sb = new StringBuilder();
         for (Map.Entry<String, String> entry : params.entrySet()) {
             sb.append(entry.getKey()).append('=').append(entry.getValue())

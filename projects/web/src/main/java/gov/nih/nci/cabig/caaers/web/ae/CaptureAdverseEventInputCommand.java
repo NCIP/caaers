@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
+import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.service.ReportSubmittability;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
@@ -76,6 +77,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Ctc ctcVersion;
 	
 	private Set<AdverseEvent> seriousAdverseEvents;
+	
+	private boolean workflowEnabled;
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
 				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao){
@@ -184,7 +187,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	if(adverseEventReportingPeriod != null){
     		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
     		Study study = adverseEventReportingPeriod.getStudy();
-			study.getStudyOrganizations().size();
+			if(study.getStudyOrganizations() != null) study.getStudyOrganizations().size();
 			if(study.getExpectedAECtcTerms() != null)	 study.getExpectedAECtcTerms().size();
 			boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
 			if(isCTCStudy){
@@ -196,6 +199,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
+			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
+			if(reviewCommentList != null)
+				this.adverseEventReportingPeriod.getReviewComments().size();
 			if(this.assignment != null)
 				this.assignment.getParticipant().getIdentifiers();
 		}
@@ -482,15 +488,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.allReportDefinitions = allReportDefinitions;
     }
     
- 
-   
-    
     public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
     
-
 	public Ctc getCtcVersion() {
 		return ctcVersion;
 	}
@@ -638,4 +640,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	return selectedAesList;
 	}
     
+    public boolean getWorkflowEnabled(){
+    	//TODO First check if there is a workflow for the reporting period
+    	//if(adverseEventReportingPeriod != null && adverseEventReportingPeriod.getWorkflowId() != null)
+    	//	return true;
+    	return true;
+    }
 }

@@ -7,17 +7,12 @@
  <head>
     <tags:includePrototypeWindow />
     <tags:stylesheetLink name="ae"/>
-    <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE"/>
+    <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
     <tags:stylesheetLink name="aeTermQuery_box" />
-    <tags:slider>
+    <tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			Here is the comments's DIV
-    		</div>
-    	</jsp:attribute>
-    	<jsp:attribute name="labs">
-    		<div id="labs-id" style="display:none;">
-    			Here is the lab's DIV
+    			<tags:routingAndReviewComments domainObjectType="reportingPeriod"/>
     		</div>
     	</jsp:attribute>
     </tags:slider>
@@ -167,6 +162,15 @@
                 this.showRPDetails(ajaxOutput.htmlContent);
                 AE.registerCalendarPopups("detailSection");
             }.bind(this));
+            
+            //refresh the comments popup with the previous comments
+            captureAE.retrieveReportingPeriodReviewComments(
+					function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text').value = "";
+					}) ;
+			document.getElementById('entire-slider').style.display='';		
         },
 
         addAdverseEvents:function(selectedTerms) {
@@ -265,6 +269,16 @@
 		}
  		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
  		
+ 		//Check if reportingPeriod is selected and enable the slider.
+ 		if(document.getElementById('adverseEventReportingPeriod').value != '' && ${command.workflowEnabled}){
+ 			captureAE.retrieveReportingPeriodReviewComments( 
+					function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text'). value = "";
+					}) ;
+			document.getElementById('entire-slider').style.display = '';
+ 		}
  	});
 
     // ----------------------------------------------------------------------------------------------------------------
@@ -473,9 +487,10 @@
 					<ae:reportingPeriodAEDetails />
 				</c:if>
 			</div>
-    			
+      		
+					
        </jsp:attribute>
+       
     </tags:tabForm>
-    
  </body>
 </html>

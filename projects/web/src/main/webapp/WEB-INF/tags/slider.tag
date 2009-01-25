@@ -4,33 +4,38 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@attribute name="comments" fragment="true" %>
 <%@attribute name="labs" fragment="true" %>
+<%@attribute name="renderComments" type="java.lang.Boolean" required="true" description="True, if comments is to be displayed" %>
+<%@attribute name="renderAlerts" type="java.lang.Boolean" required="true" description="True, if alerts is to be displayed" %>
+<%@attribute name="display" type="java.lang.String" required="true" %>
 
 <script language="JavaScript1.2">
 	//document.observe('dom:loaded',function(){
 	Event.observe(window, "load", function(){		
 	//example 1
 	new Control.Tabs('slider-tabs');
+	
 	});	
+	
 </script>
 
-<div id="entire-slider" style="top:200px; z-index:100;">
+<div id="entire-slider" style="top:200px; z-index:100; display:${display}">
 
 	<a id="sideBarTab"><img src="<c:url value="/images/sidebar/main_tab.png" />" alt="" title="sideBar" /></a>
 	<!--BEGIN Slider -->
 		<div id="slider-pane" style="display:none;">
 			<ul id="slider-tabs" class="subsection_tabs">
-				<c:if test="${not empty comments}">
+				<c:if test="${renderComments and not empty comments}">
 					<li id="slidertab-comments" class="tab-class"><a href="#comments-id">Comments</a></li>
 				</c:if>
-				<c:if test="${not empty labs}">  
+				<c:if test="${renderAlerts and not empty labs}">  
 					<li id="slidertab-labs" class="tab-class"><a href="#labs-id">Labs</a></li>
 				</c:if>  
 			</ul>
 			<div id="slider-content">
-				<c:if test="${not empty comments}">
+				<c:if test="${renderComments and not empty comments}">
 						<jsp:invoke fragment="comments"/>
 				</c:if>
-				<c:if test="${not empty labs}">
+				<c:if test="${renderAlerts and not empty labs}">
 						<jsp:invoke fragment="labs"/>
 				</c:if>
 			</div>
