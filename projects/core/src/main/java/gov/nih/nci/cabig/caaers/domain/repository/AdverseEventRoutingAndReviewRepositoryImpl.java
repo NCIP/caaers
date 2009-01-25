@@ -121,12 +121,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return adverseEventReportingPeriodDao.getById(rpId).getReviewComments();
 	}
 	
+	//TODO These methods needs to be uddated to add/edit comments to aeReport instead of a report.
 	public void addReportReviewComment(Integer reportId, String comment, String userId){
 		Report report = reportDao.getById(reportId);
 		this.addReportReviewComment(report, comment, userId);
 	}
-	
-	public void addReportReviewComment(Report report, String comment, String userId) {
+	public void addReportReviewComment(Report report, String comment, String userId){
 		
 		ReportReviewComment reviewComment = new ReportReviewComment();
 		reviewComment.setUserComment(comment);
@@ -135,16 +135,25 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		report.getReviewComments().add(reviewComment);
 		
 		reportDao.save(report);
-		
 	}
 	
-	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
-		AdverseEventReportingPeriod rp = adverseEventReportingPeriodDao.getById(reportingPeriodId);
-		this.addReportingPeriodReviewComment(rp, comment, userId);
-	}
-	public void addReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment,
-			String userId) {
+	/*public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId){
+		Report report = reportDao.getById(reportId);
+		for(ReportReviewComment reviewComment: report.getReviewComments()){
+			if(reviewComment.getId().equals(commentId)){
+				reviewComment.setUserComment(comment);
+				reviewComment.setCreatedDate(new Date());
+			}
+		}
 		
+		reportDao.save(report);
+	}*/
+	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
+		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
+		this.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
+	}
+	
+	public void addReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId){
 		ReportingPeriodReviewComment reviewComment = new ReportingPeriodReviewComment();
 		reviewComment.setUserComment(comment);
 		reviewComment.setCreatedDate(new Date());
@@ -152,7 +161,22 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		reportingPeriod.getReviewComments().add(reviewComment);
 		adverseEventReportingPeriodDao.save(reportingPeriod);
+	}
+	
+	public void editReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId, Integer commentId){
+		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
+		this.editReportingPeriodReviewComment(reportingPeriod, comment, userId, commentId);
+	}
+	
+	public void editReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId, Integer commentId){
+		for(ReportingPeriodReviewComment reviewComment: reportingPeriod.getReviewComments()){
+			if(reviewComment.getId().equals(commentId)){
+				reviewComment.setUserComment(comment);
+				reviewComment.setCreatedDate(new Date());
+			}
+		}
 		
+		adverseEventReportingPeriodDao.save(reportingPeriod);
 	}
 	
 	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id) {
@@ -160,7 +184,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return this.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod);
 	}
 	
-	public List<String> advanceReportingPeriodWorkflow(Integer workflowId,String toTransition, AdverseEventReportingPeriod reportingPeriod) {
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, AdverseEventReportingPeriod reportingPeriod){
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		reportingPeriod.setReviewStatus(nextStatus);
 		adverseEventReportingPeriodDao.save(reportingPeriod);
@@ -172,7 +196,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return this.advanceReportWorkflow(workflowId, toTransition, report);
 	}
 	
-	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Report report) {
+	public List<String> advanceReportWorkflow(Integer workflowId, String toTransition, Report report){
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		report.setReviewStatus(nextStatus);
 		reportDao.save(report);

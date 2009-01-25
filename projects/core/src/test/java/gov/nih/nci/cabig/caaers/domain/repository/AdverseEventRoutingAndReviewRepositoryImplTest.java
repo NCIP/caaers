@@ -89,7 +89,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		assertSame(reviewComments, comments);
 	}
 
-	public void testAddReportReviewComment() {
+	/*public void testAddReportReviewComment() {
 		Integer reportId = 5;
 		String comment = "mycomment";
 		String userId = "userId";
@@ -101,9 +101,18 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		impl.addReportReviewComment(reportId, comment, userId);
 		verifyMocks();
+	}*/
+	
+	public void testAddReportingPeriodReviewCommentWithObject(){
+		String comment = "mycomment";
+		String userId = "userId";
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		rp.setReviewComments(new ArrayList<ReportingPeriodReviewComment>());
+		impl.addReportingPeriodReviewComment(rp, comment, userId);
+		assertEquals("Incorrect number of comments", 1, rp.getReviewComments().size());
 	}
 
-	public void testAddReportingPeriodReviewComment() {
+	public void testAddReportingPeriodReviewCommentWithId() {
 		Integer reportingPeriodId = 5;
 		String comment = "mycomment";
 		String userId = "userId";
@@ -115,7 +124,43 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		replayMocks();
 		impl.addReportingPeriodReviewComment(reportingPeriodId, comment, userId);
 		verifyMocks();
+	}
+	
+	public void testEditReportingPeriodReviewCommentWithoutObject(){
+		String newComment = "new Comment";
+		String userId = "userId";
+		Integer commentId = 2;
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		ReportingPeriodReviewComment comment = Fixtures.createReportingPeriodReviewComment(1, "comment 1");
+		ArrayList<ReportingPeriodReviewComment> commentsList = new ArrayList<ReportingPeriodReviewComment>();
+		commentsList.add(comment);
+		comment = Fixtures.createReportingPeriodReviewComment(2, "comment 2");
+		commentsList.add(comment);
+		rp.setReviewComments(commentsList);
+		impl.editReportingPeriodReviewComment(rp, newComment, userId, commentId);
+		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewComments().get(1).getUserComment());
+	}
+	
+	public void testEditReportingPeriodReviewCommentWithId(){
+		Integer reportingPeriodId = 5;
+		String newComment = "new Comment";
+		String userId = "userId";
+		Integer commentId = 2;
 		
+		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
+		ReportingPeriodReviewComment comment = Fixtures.createReportingPeriodReviewComment(1, "comment 1");
+		ArrayList<ReportingPeriodReviewComment> commentsList = new ArrayList<ReportingPeriodReviewComment>();
+		commentsList.add(comment);
+		comment = Fixtures.createReportingPeriodReviewComment(2, "comment 2");
+		commentsList.add(comment);
+		rp.setReviewComments(commentsList);
+		EasyMock.expect(rpDao.getById(reportingPeriodId)).andReturn(rp);
+		rpDao.save(rp);
+		replayMocks();
+		impl.editReportingPeriodReviewComment(reportingPeriodId, newComment, userId, commentId);
+		verifyMocks();
+		
+		assertEquals("Edit comment isnt working correctly", "new Comment", rp.getReviewComments().get(1).getUserComment());
 	}
 
 	public void testFindAdverseEventReportingPeriods() {

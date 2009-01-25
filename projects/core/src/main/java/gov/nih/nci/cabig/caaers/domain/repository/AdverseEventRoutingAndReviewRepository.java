@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.repository;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -50,6 +51,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param comment
 	 * @param userId
 	 */
+	//TODO This has to change to accept aeReport instead of a report.
 	public void addReportReviewComment(Integer reportId, String comment, String userId);
 	public void addReportReviewComment(Report report, String comment, String userId);
 	
@@ -61,6 +63,45 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 */
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId);
 	public void addReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId);
+	
+	/**
+	 * Will edit a review comment against the {@link aeReport}
+	 * @param reportId
+	 * @param comment
+	 * @param userId
+	 * @param commentId
+	 */
+	//TODO This method needs an implementation once the data model changes have been made.
+	//public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId);
+	
+	/**
+	 * Will edit a review comment against the {@link aeReport}
+	 * @param aeReport
+	 * @param comment
+	 * @param userId
+	 * @param commentId
+	 */
+	//TODO This method needs an implementation once the data model changes have been made.
+	//public void editReportReviewComment(ExpeditedAdverseEventReport aeReport, String comment, String userId, Integer commentId);
+	
+	
+	/**
+	 * Will edit a review comment against the {@link reportingPeriod}
+	 * @param reportingPeriodId
+	 * @param comment
+	 * @param userId
+	 * @param commentId
+	 */
+	public void editReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId, Integer commentId);
+	
+	/**
+	 * Will edit a review comment against the {@link reportingPeriod}
+	 * @param reportingPeriod
+	 * @param comment
+	 * @param userId
+	 * @param commentId
+	 */
+	public void editReportingPeriodReviewComment(AdverseEventReportingPeriod reportingPeriod, String comment, String userId, Integer commentId);
 	
 	/**
 	 * Will advance the workflow to its next step, for the Report
