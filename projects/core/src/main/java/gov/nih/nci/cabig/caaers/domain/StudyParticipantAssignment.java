@@ -411,6 +411,18 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
         }
 
     }
-
+    
+    @Transient
+    public Integer getMaxCycleNumber() {
+    	Integer maxCycleNumber = null;
+    	if(reportingPeriods != null){
+    		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
+    			Integer rpCycle = reportingPeriod.getCycleNumber();
+    			if(rpCycle == null) continue;
+    			if(maxCycleNumber == null || rpCycle > maxCycleNumber) maxCycleNumber = rpCycle;
+        	}	
+    	}
+    	return maxCycleNumber;
+    }
 
 }
