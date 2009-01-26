@@ -6,9 +6,9 @@
 	<!-- set global properties for this build -->
 	<property url="http://demo.semanticbits.com/installer/caaers-online-properties.properties" />
 	<property file="${user.home}/.gridenv.properties" />
-	<property name="tomcat.download.url" value="http://www.eng.lsu.edu/mirrors/apache/tomcat/tomcat-5/v5.5.25/bin/apache-tomcat-5.5.25.zip" />
-	<property name="tomcat.file.name" value="apache-tomcat-5.5.25.zip" />
-	<property name="tomcat.version" value="apache-tomcat-5.5.25" />
+	<property name="tomcat.download.url" value="http://www.eng.lsu.edu/mirrors/apache/tomcat/tomcat-5/v5.5.27/bin/apache-tomcat-5.5.27.zip" />
+	<property name="tomcat.file.name" value="apache-tomcat-5.5.27.zip" />
+	<property name="tomcat.version" value="apache-tomcat-5.5.27" />
 	<!--
 
   <property name="caaers.download.url" value="http://download.bioinformatics.northwestern.edu/maven2/gov/nih/nci/cabig/caaers/caaers-web/0.7.1/caaers-web-0.7.1.war"/>
