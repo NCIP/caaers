@@ -57,6 +57,12 @@ public interface WorkflowService{
 	public ProcessInstance createProcessInstance(String workflowDefinitionName);
 	
 	/**
+	 * This method will make a default transition in the workflow
+	 * @param id
+	 */
+	public void makeDefaultTransition(Long id);
+	
+	/**
 	 * This method will save a process instance. 
 	 * @param processInstance
 	 */

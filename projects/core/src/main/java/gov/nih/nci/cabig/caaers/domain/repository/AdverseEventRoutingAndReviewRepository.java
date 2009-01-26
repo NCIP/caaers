@@ -71,7 +71,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param commentId
 	 */
 	//TODO This method needs an implementation once the data model changes have been made.
-	//public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId);
+	public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId);
 	
 	/**
 	 * Will edit a review comment against the {@link aeReport}
@@ -81,7 +81,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param commentId
 	 */
 	//TODO This method needs an implementation once the data model changes have been made.
-	//public void editReportReviewComment(ExpeditedAdverseEventReport aeReport, String comment, String userId, Integer commentId);
+	public void editReportReviewComment(ExpeditedAdverseEventReport aeReport, String comment, String userId, Integer commentId);
 	
 	
 	/**

@@ -65,7 +65,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
 		pInstance.getContextInstance().addVariables(variables);
 		
-		workflowService.saveProcessInstance(pInstance);
+		workflowService.makeDefaultTransition(pInstance.getId());
 		
 		reportingPeriod.setWorkflowId((int) pInstance.getId());
 		reportingPeriod.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
@@ -100,7 +100,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
 		pInstance.getContextInstance().addVariables(variables);
 		
-		workflowService.saveProcessInstance(pInstance);
+		//workflowService.saveProcessInstance(pInstance);
+		workflowService.makeDefaultTransition(pInstance.getId());
 		
 		aeReport.setWorkflowId((int)pInstance.getId());
 		aeReport.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
@@ -137,17 +138,22 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		expeditedAdverseEventReportDao.save(report);
 	}
 	
-	/*public void editReportReviewComment(Integer reportId, String comment, String userId, Integer commentId){
-		Report report = reportDao.getById(reportId);
-		for(ReportReviewComment reviewComment: report.getReviewComments()){
+	public void editReportReviewComment(Integer aeReportId, String comment, String userId, Integer commentId){
+		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(aeReportId);
+		this.editReportReviewComment(aeReport, comment, userId, commentId);
+	}
+	
+	public void editReportReviewComment(ExpeditedAdverseEventReport aeReport, String comment, String userId, Integer commentId){
+		for(ReportReviewComment reviewComment: aeReport.getReviewComments()){
 			if(reviewComment.getId().equals(commentId)){
 				reviewComment.setUserComment(comment);
 				reviewComment.setCreatedDate(new Date());
 			}
 		}
 		
-		reportDao.save(report);
-	}*/
+		expeditedAdverseEventReportDao.save(aeReport);
+	}
+	
 	public void addReportingPeriodReviewComment(Integer reportingPeriodId, String comment, String userId){
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriodId);
 		this.addReportingPeriodReviewComment(reportingPeriod, comment, userId);

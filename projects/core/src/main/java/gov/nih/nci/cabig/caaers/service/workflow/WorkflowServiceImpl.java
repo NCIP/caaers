@@ -105,14 +105,17 @@ public class WorkflowServiceImpl implements WorkflowService {
 			ProcessInstance processInstance = new ProcessInstance(pDefinition);
 			Long processId =  saveProcessInstance(processInstance);
 			assert processId != null;
-			Token token = processInstance.getRootToken();
-	        token.signal();
-			
-	        processId =  saveProcessInstance(processInstance);
-						
 			return processInstance;	
 		}
 		return null;
+	}
+	
+	public void makeDefaultTransition(Long workflowId) {
+		ProcessInstance processInstance = fetchProcessInstance(workflowId.longValue());
+		Token token = processInstance.getRootToken();
+        token.signal();
+		
+        saveProcessInstance(processInstance);
 	}
 	
 	public Long saveProcessInstance(ProcessInstance processInstance) {
@@ -268,6 +271,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * Will notifiy the assignees about the creation of a task. 
 	 */
 	public void notifiyTaskAssignees(String workflowDefinitionName,	String taskNodeName, List<User> recipients) {
+		if(recipients.isEmpty())
+			return;
 		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
 		String message = taskConfig.getMessage();
 		String subject = "Task : " + taskNodeName;
