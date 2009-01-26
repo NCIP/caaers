@@ -13,10 +13,11 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     
-    <tags:slider>
-   		<jsp:attribute name="comments">
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			Here is the comments's DIV
+    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -25,7 +26,6 @@
     		</div>
     	</jsp:attribute>
     </tags:slider>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
     <style type="text/css">
         hr.attrib-divider {
             border: 2px solid #6E81A6;

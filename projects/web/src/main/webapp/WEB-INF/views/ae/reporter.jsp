@@ -10,10 +10,11 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
-	<%-- <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="true">
-   		<jsp:attribute name="comments">
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="report"/>
+    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -21,8 +22,8 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    </tags:slider>
+    
     <script type="text/javascript">
         var NAME_FIELDS = [
             'firstName', 'middleName', 'lastName','title', 'address.street', 'address.city', 'address.state', 'address.zip'
@@ -93,6 +94,13 @@
         Event.observe(window, "load", function() {
             $('staff').observe("change", chooseStaff)
             $('physician-same').observe("click", updatePhysicianSame)
+            
+            createAE.retrieveReportReviewComments(
+					function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text').value = "";
+					}) ;
         })
 
     </script>

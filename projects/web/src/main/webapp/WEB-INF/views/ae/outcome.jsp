@@ -11,10 +11,11 @@
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-	<tags:slider>
-   		<jsp:attribute name="comments">
+	<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			Here is the comments's DIV
+    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -22,8 +23,7 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />    
+    </tags:slider>  
     <script type="text/javascript">
    
       Event.observe(window, "load", function() {
