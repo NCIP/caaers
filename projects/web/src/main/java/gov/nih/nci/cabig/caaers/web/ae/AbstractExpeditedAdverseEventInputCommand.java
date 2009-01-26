@@ -100,7 +100,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             ExpeditedAdverseEventReport merged = reportDao.merge(getAeReport());
             setAeReport(merged);
         }
-        //reportingPeriodDao.reassociate(getAeReport().getReportingPeriod());
     }
 
     public void setAeReport(ExpeditedAdverseEventReport aeReport) {
