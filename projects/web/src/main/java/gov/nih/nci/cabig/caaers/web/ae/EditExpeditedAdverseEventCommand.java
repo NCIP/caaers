@@ -14,6 +14,7 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -67,6 +68,16 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public void initialize(){
     	Study study = getStudy();
     	if(study != null) study.getAeTerminology().getTerm();
+    }
+    
+    public void initializeTreatmentInformation(){
+    	ExpeditedAdverseEventReport aeReport = getAeReport();
+    	TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
+    	treatmentInformation.setTreatmentAssignment(aeReport.getReportingPeriod().getTreatmentAssignment());
+    	treatmentInformation.setFirstCourseDate(aeReport.getAssignment().getStartDateOfFirstCourse());
+    	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
+    	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
+    	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
     }
     
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,

@@ -115,9 +115,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
     		
     		// Initialize the treatment assignment & start date of course
-            command.getAeReport().getTreatmentInformation().setTreatmentAssignment(command.getAeReport().getReportingPeriod().getTreatmentAssignment());
-            if(command.getAeReport().getAssignment().getStartDateOfFirstCourse() != null)
-            	command.getAeReport().getTreatmentInformation().setFirstCourseDate(command.getAeReport().getAssignment().getStartDateOfFirstCourse());
+           command.initializeTreatmentInformation();
            
         }
         

@@ -258,7 +258,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 		request.getSession().setAttribute(REPORT_DEFN_LIST_PARAMETER, command.getSelectedReportDefinitions());
 		request.getSession().setAttribute(REPORTING_PERIOD_PARAMETER, command.getAdverseEventReportingPeriod());
 		
-		
 	    return new ModelAndView("redirectToExpeditedAeEdit", model);
 	}
 	

@@ -60,10 +60,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
 
             //startDateOfFirstCourse - TextField, if it is empty in assignment
             InputField firstCourseDateField = null;
-            if (cmd.getAssignment().getStartDateOfFirstCourse() == null) {
-                firstCourseDateField = InputFieldFactory.createPastDateField("assignment.startDateOfFirstCourse", "Start date of first course", false);
+            if (cmd.getAdverseEventReportingPeriod().getAssignment().getStartDateOfFirstCourse() == null) {
+                firstCourseDateField = InputFieldFactory.createPastDateField("adverseEventReportingPeriod.assignment.startDateOfFirstCourse", "Start date of first course", false);
             } else {
-                firstCourseDateField = InputFieldFactory.createLabelField("assignment.startDateOfFirstCourse", "Start date of first course");
+                firstCourseDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.assignment.startDateOfFirstCourse", "Start date of first course");
             }
 
             treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentField);

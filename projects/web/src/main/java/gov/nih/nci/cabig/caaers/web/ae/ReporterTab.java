@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
@@ -288,7 +289,7 @@ public class ReporterTab extends AeTab {
         	newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
         	command.save();
         	//call workflow
-        	enactWorkflow(newlyCreatedReports);
+        	enactWorkflow(command.getAeReport());
         }
         //figureout the mandatory sections
         refreshMandatorySectionsAndProperties(command);
@@ -318,12 +319,9 @@ public class ReporterTab extends AeTab {
      * This method will spawn the workflow for newly created reports
      * @param newlyCreatedReports
      */
-    public void enactWorkflow(List<Report> newlyCreatedReports){
-    	if(newlyCreatedReports != null){
-    		for(Report report : newlyCreatedReports){
-//    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(report);
-    		}
-    	}
+    public void enactWorkflow(ExpeditedAdverseEventReport aeReport){
+    	adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
+    	
     }
 
     @Required
