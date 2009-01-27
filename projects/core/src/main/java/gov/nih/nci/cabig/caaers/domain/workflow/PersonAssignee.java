@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.domain.workflow;
 
-import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.User;
 
 import javax.persistence.DiscriminatorValue;
@@ -17,7 +16,7 @@ import javax.persistence.Transient;
 @DiscriminatorValue("p")
 public class PersonAssignee extends Assignee {
 	
-	private ResearchStaff researchStaff;
+	private User user;
 	
 	@Override
 	@Transient
@@ -33,20 +32,13 @@ public class PersonAssignee extends Assignee {
 	
 	@ManyToOne
     @JoinColumn(name = "user_id")
-	public ResearchStaff getResearchStaff() {
-		return researchStaff;
+	public User getUser() {
+		return user;
 	}
 	
-	public void setResearchStaff(ResearchStaff researchStaff) {
-		this.researchStaff = researchStaff;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
-	@Transient
-	public User getUser(){
-		return researchStaff;
-	}
-	@Transient
-	private void setUser(ResearchStaff user) {
-		this.researchStaff = user;
-	}
+
 }
