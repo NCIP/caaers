@@ -168,10 +168,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
+                
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -336,10 +333,7 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
-                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
+                
             </list>
         </property>
         <!--
