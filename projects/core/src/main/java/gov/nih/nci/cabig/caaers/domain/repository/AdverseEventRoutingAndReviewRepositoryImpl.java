@@ -42,6 +42,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	
 	private WorkflowService workflowService;
 	
+	public AdverseEventRoutingAndReviewRepositoryImpl() {
+		routingAndReviewFactory = new AERoutingAndReviewDTOFactory();
+		routingAndReviewFactory.setAdverseEventRoutingAndReviewRepository(this);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository#enactReportingPeriodWorkflow(gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod)
