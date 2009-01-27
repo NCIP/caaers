@@ -34,25 +34,40 @@
 
         function chooseStaff() {
             var id = document.getElementById("staff").value;
-            if (id == -1) {
+            if (id == '') {
                 clear('reporter');
-                if(isPhysicianSame()){
-                 clear('physician');
-                }
+               
             } else {
                 createAE.getResearchStaff(id, updateReporterFromStaff)
             }
         }
+
+        function choosePhysician(){
+			var id = document.getElementById("physician").value;
+			if (id == '') {
+                clear('physician');
+               
+            } else {
+                createAE.getInvestigator(id, updatePhysicianFromInvestigator)
+            }
+        }
 		/* IE7 fix:- null text is displayed when staff[field] is empty or null*/
         function updateReporterFromStaff(staff) {
+			updateUserData('aeReport.reporter', staff);			
+        }
+        
+        function updatePhysicianFromInvestigator(investigator) {
+            updateUserData('aeReport.physician', investigator);
+        }
+        
+        function updateUserData(prefix, user) {
             NAME_FIELDS.each(function(field) {
-            	if(staff[field] != null) updateFieldValue('aeReport.reporter.' + field, staff[field]);
+            	if(user[field] != null) updateFieldValue(prefix + '.' + field, user[field]);
             })
-			if(staff['emailAddress'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[e-mail]',staff['emailAddress']);
-			if(staff['phoneNumber'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[phone]',staff['phoneNumber']);
-			if(staff['faxNumber'] != null) updateFieldValue('aeReport.reporter.' + 'contactMechanisms[fax]',staff['faxNumber']);
+			if(user['emailAddress'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[e-mail]',user['emailAddress']);
+			if(user['phoneNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[phone]',user['phoneNumber']);
+			if(user['faxNumber'] != null) updateFieldValue(prefix + '.' + 'contactMechanisms[fax]',user['faxNumber']);
 			
-            updatePhysicianFromReporterIfSame()
         }
 
         function clear(person) {
@@ -61,28 +76,7 @@
             })
         }
 
-        function isPhysicianSame() {
-            return $('physician-same').checked
-        }
 
-        function updatePhysicianSame() {
-            if (isPhysicianSame()) {
-                updatePhysicianFromReporter()
-            } else {
-                clear('physician')
-            }
-        }
-
-        function updatePhysicianFromReporterIfSame() {
-            if (isPhysicianSame()) updatePhysicianFromReporter();
-        }
-
-        function updatePhysicianFromReporter() {
-            PERSON_FIELDS.each(function(field) {
-                var rField = $('aeReport.reporter.' + field);
-				if(rField) updateFieldValue('aeReport.physician.' + field, rField.value);
-            })
-        }
 
         function updateFieldValue(uiField, value){
 			var f = $(uiField);
@@ -93,7 +87,7 @@
 
         Event.observe(window, "load", function() {
             $('staff').observe("change", chooseStaff)
-            $('physician-same').observe("click", updatePhysicianSame)
+            $('physician').observe("change", choosePhysician)
             
             createAE.retrieveReportReviewComments(
 					function(ajaxOutput){
@@ -123,12 +117,10 @@
             <div class="row">
                 <div class="label">Research staff</div>
                 <div class="value">
-                    <select id="staff" name="staff">
-                        <option value=-1>please select--</option>
+                    <select id="staff" name="aeReport.reporter.user">
+                        <option value="">please select--</option>
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
-                            <option value="${person.id}">
-                                ${person.firstName} ${person.lastName}
-                            </option>
+                            <option value="${person.id}">${person.firstName} ${person.lastName}</option>
                         </c:forEach>
                     </select>
                 </div>
@@ -140,12 +132,15 @@
         </chrome:division>
 
         <chrome:division title="Treating Physician Details">
-            <div class="row">
+        <div class="row">
+                <div class="label">Physician</div>
                 <div class="value">
-                    <label>
-                        <input type="checkbox" id="physician-same" name="physician-same" />&nbsp;Physician
-                        is same as Reporter
-                    </label>
+                    <select id="physician" name="aeReport.physician.user">
+                        <option value="">please select--</option>
+                        <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
+                            <option value="${siteInv.investigator.id}">${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
+                        </c:forEach>
+                    </select>
                 </div>
             </div>
 
