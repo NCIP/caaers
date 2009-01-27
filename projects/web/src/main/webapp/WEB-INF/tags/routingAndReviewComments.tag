@@ -8,9 +8,10 @@
 <script language="JavaScript1.2">
 	//document.observe('dom:loaded',function(){
 	var edit_comment_id = 0;
+	var scrollbar;
 	Event.observe(window, "load", function(){		
 	//example 1
-	var scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
+	scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
 	
 	});	
 	
@@ -42,11 +43,21 @@
 	 
 	
 	function addComment(){
-		captureAE.addReviewComment(document.getElementById('enter-comment-text').value, function(ajaxOutput){
+		if('${domainObjectType}' == 'reportingPeriod'){
+			captureAE.addReviewComment(document.getElementById('enter-comment-text').value, function(ajaxOutput){
 						document.getElementById('scrollbar_content').innerHTML = "";
 						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
 						document.getElementById('enter-comment-text'). value = "";
 					}) ;
+		}
+		if('${domainObjectType}' == 'aeReport'){
+			alert('calling ajax method createAE.addReviewComment');
+			createAE.addReviewComment(document.getElementById('enter-comment-text').value, function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text'). value = "";
+					}) ;
+		}
 		//routingAndReview.addComment('${domainObjectType}', getWorkflowEntityId(), '${command.participant.id}', 
 		//			document.getElementById('enter-comment-text').value, function(ajaxOutput){
 		//				document.getElementById('scrollbar_content').innerHTML = "";
@@ -90,14 +101,25 @@
 	}
 	
 	function saveEditedComment(){
-		
-		captureAE.editReviewComment(document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
+		if('${domainObjectType}' == 'reportingPeriod'){
+			captureAE.editReviewComment(document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
 						document.getElementById('scrollbar_content').innerHTML = "";
 						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
 						document.getElementById('enter-comment-text'). value = "";
 						// Call cancelEdit() to adjust the UI back to "add comments" mode.
 						cancelEdit();
 					}) ;
+		}
+		
+		if('${domainObjectType}' == 'aeReport'){
+			createAE.editReviewComment(document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text'). value = "";
+						// Call cancelEdit() to adjust the UI back to "add comments" mode.
+						cancelEdit();
+					}) ;
+		}
 		//routingAndReview.editComment('domainObjectType', getWorkflowEntityId(), '${command.participant.id}', 
 		//			document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
 		//				document.getElementById('scrollbar_content').innerHTML = "";

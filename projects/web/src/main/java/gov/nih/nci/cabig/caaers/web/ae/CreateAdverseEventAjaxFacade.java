@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.TreeNode;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
@@ -24,6 +25,9 @@ import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
+
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.userdetails.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,6 +49,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,6 +90,8 @@ public class CreateAdverseEventAjaxFacade {
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
     private ConditionDao conditionDao;
     private InvestigatorDao investigatorDao;
+	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+
 
     public Class<?>[] controllers() {
         return CONTROLLERS;
@@ -769,6 +776,65 @@ public class CreateAdverseEventAjaxFacade {
             return page.substring(contextPath.length());
         }
     }
+    
+    // For RoutingAndReview - Report comments.
+    
+    public String addReviewComment(String comment){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	command.getStudy();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.addReportReviewComment(command.getAeReport(), comment, userId);
+    	
+        return fetchPreviousComments(command.getAeReport().getId(), userId);
+    }
+    
+    public String editReviewComment(String comment, Integer commentId){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	String userId = getUserId();
+    	adverseEventRoutingAndReviewRepository.editReportReviewComment(command.getAeReport(), comment, userId, commentId);
+    	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
+    }
+    
+    public String fetchPreviousComments(Integer entityId, String userId){
+		Map params = new HashMap<String, String>();
+		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "aeReport");
+        params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, entityId.toString());
+        params.put("userId", userId);
+        params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
+        params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
+
+		return renderCommentsAjaxView(params);
+	}
+    
+    public String retrieveReportReviewComments(){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
+    }
+    
+    protected String renderCommentsAjaxView(Map<String, String> params){
+    	WebContext webContext = getWebContext();
+    	String url = String.format("%s?%s",
+    			"/pages/ae/listReviewComments", createQueryString(params));
+        try {
+            String html = webContext.forwardToString(url);
+            return html;
+        } catch (ServletException e) {
+            throw new CaaersSystemException(e);
+        } catch (IOException e) {
+            throw new CaaersSystemException(e);
+        }
+    }
+    
+    protected String getUserId(){
+		WebContext webContext = getWebContext();
+		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		return userId;
+	}
+
+    // For RoutingAndReview - Report comments ends here.
 
 
     // TODO: there's got to be a library version of this somewhere
@@ -950,6 +1016,14 @@ public class CreateAdverseEventAjaxFacade {
         this.labLoadDao = labLoadDao;
     }
 
+    public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
+    }
+
+    public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+    }
 
     @Required
     public void setStudySearchableAjaxableDomainObjectRepository(StudySearchableAjaxableDomainObjectRepository studyAjaxableDomainObjectRepository) {

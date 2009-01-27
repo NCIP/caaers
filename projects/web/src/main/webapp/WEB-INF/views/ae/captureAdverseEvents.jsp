@@ -9,6 +9,7 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
     <tags:stylesheetLink name="aeTermQuery_box" />
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
     <tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
@@ -16,7 +17,7 @@
     		</div>
     	</jsp:attribute>
     </tags:slider>
-	<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+	
     <style type="text/css">
         .selectdiv { width: 170px; overflow: hidden; }
         .shortselectdiv { width: 115px; overflow: hidden; }
@@ -161,16 +162,17 @@
                 this.clearRPDetails();
                 this.showRPDetails(ajaxOutput.htmlContent);
                 AE.registerCalendarPopups("detailSection");
-            }.bind(this));
-            
-            //refresh the comments popup with the previous comments
-            captureAE.retrieveReportingPeriodReviewComments(
+                
+                captureAE.retrieveReportingPeriodReviewComments(
 					function(ajaxOutput){
 						document.getElementById('scrollbar_content').innerHTML = "";
 						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
 						document.getElementById('enter-comment-text').value = "";
 					}) ;
-			document.getElementById('entire-slider').style.display='';		
+				document.getElementById('entire-slider').style.display='';
+				scrollbar.recalculateLayout();
+            }.bind(this));
+            
         },
 
         addAdverseEvents:function(selectedTerms) {

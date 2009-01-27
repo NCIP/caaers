@@ -11,12 +11,21 @@
 <html>
 <head>
 <tags:stylesheetLink name="extremecomponents"/>
+<tags:dwrJavascriptLink objects="captureAE"/>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
 <tags:includeScriptaculous/>
 <tags:includePrototypeWindow />
+<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:slider renderComments="true" renderAlerts="false" display="none">
+    	<jsp:attribute name="comments">
+    		<div id="comments-id" style="display:none;">
+    			<tags:routingAndReviewComments domainObjectType="reportingPeriod"/>
+    		</div>
+    	</jsp:attribute>
+    </tags:slider>
 <script type="text/javascript">
 
 	Event.observe(window, "load", function() {
@@ -24,6 +33,17 @@
 		//Event.observe('flow-next', 'click', displayOptionsPopup);
 		
 		$('create-new-report').observe("click", function(){ createNewReport(); });
+		
+		//check if workflow is enabled
+ 		if(${command.workflowEnabled}){
+ 			captureAE.retrieveReportingPeriodReviewComments( 
+					function(ajaxOutput){
+						document.getElementById('scrollbar_content').innerHTML = "";
+						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
+						document.getElementById('enter-comment-text'). value = "";
+					}) ;
+			document.getElementById('entire-slider').style.display = '';
+ 		}
 		
 		
 		if($('manualselect2')){

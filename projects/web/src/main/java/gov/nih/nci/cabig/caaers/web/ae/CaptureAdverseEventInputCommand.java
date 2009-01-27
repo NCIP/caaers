@@ -126,10 +126,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 //		for(ReportDefinition repDef : allReportDefinitions){
 //			reportDefinitionDao.reassociate(repDef);
 //		}
-		
 		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
 			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
 		}
+		
 	}
 
 
@@ -189,9 +189,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
-			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
-			if(reviewCommentList != null)
-				this.adverseEventReportingPeriod.getReviewComments().size();
+			//List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
+			//if(reviewCommentList != null)
+			//	this.adverseEventReportingPeriod.getReviewComments().size();
 			if(this.assignment != null)
 				this.assignment.getParticipant().getIdentifiers();
 		}

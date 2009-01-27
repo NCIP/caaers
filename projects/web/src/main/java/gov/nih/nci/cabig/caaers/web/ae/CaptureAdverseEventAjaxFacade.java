@@ -195,6 +195,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public String addReviewComment(String comment){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId);
     	
@@ -203,6 +204,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public String editReviewComment(String comment, Integer commentId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.editReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId, commentId);
     	
@@ -224,39 +226,6 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
     }
-    
-    /*public AjaxOutput fetchPreviousComments(){
-    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-		Map params = new HashMap<String, String>();
-		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "reportingPeriod");
-        params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, command.getAdverseEventReportingPeriod().getId().toString());
-        params.put("userId", getUserId());
-        params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
-        params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
-        
-        return renderCommentsAjaxView(params);
-	}*/
-    
-    private String renderCommentsAjaxView(Map<String, String> params){
-    	WebContext webContext = getWebContext();
-    	String url = String.format("%s?%s",
-    			"/pages/ae/listReviewComments", createQueryString(params));
-        try {
-            String html = webContext.forwardToString(url);
-            return html;
-        } catch (ServletException e) {
-            throw new CaaersSystemException(e);
-        } catch (IOException e) {
-            throw new CaaersSystemException(e);
-        }
-    }
-    
-    protected String getUserId(){
-		WebContext webContext = getWebContext();
-		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
-		return userId;
-	}
     
     @Required
     public void setAdverseEventReportingPeriodDao(

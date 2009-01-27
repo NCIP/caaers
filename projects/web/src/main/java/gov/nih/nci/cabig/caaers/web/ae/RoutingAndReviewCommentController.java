@@ -68,7 +68,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		String entity = cmd.getEntity();
 		Integer id = cmd.getEntityId();
 		List<? extends ReviewComment> prevComments = null;
-		if("report".equals(entity)){
+		if("aeReport".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
 		} else if("reportingPeriod".equals(entity)){
 			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
@@ -102,7 +102,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		String userId = cmd.getUserId();
 		Object action = findInRequest(request, AJAX_ACTION);
 		if(action == null){
-			if("report".equals(entity)){
+			if("aeReport".equals(entity)){
 				adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
 			}else if("reportingPeriod".equals(entity)){
 				AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
@@ -113,7 +113,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 			if(ajaxSubview != null && ((String)action).equals("fetchComments")){
 				mv.setViewName("ae/ajax/" + ajaxSubview);
 				List<? extends ReviewComment> prevComments = null;
-				if("report".equals(entity)){
+				if("aeReport".equals(entity)){
 					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
 				} else if("reportingPeriod".equals(entity)){
 					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
