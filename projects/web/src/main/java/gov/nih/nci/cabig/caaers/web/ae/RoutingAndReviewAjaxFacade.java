@@ -46,9 +46,9 @@ public class RoutingAndReviewAjaxFacade {
 		AjaxOutput output = new AjaxOutput();
 		List<String> transitions = null;
 		if(entity.equals("report")){
-			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, id, null);
 		}else if(entity.equals("reportingPeriod")){
-			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, id, null);
 		}
 		output.setObjectContent(transitions);
 		return output;

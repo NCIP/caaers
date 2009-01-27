@@ -103,7 +103,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
     	
     	if(!errors.hasErrors()){
-    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus());
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), null);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
     	}
