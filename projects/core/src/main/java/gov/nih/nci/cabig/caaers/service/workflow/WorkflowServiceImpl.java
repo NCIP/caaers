@@ -270,6 +270,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**
 	 * Will notifiy the assignees about the creation of a task. 
 	 */
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
 	public void notifiyTaskAssignees(String workflowDefinitionName,	String taskNodeName, List<User> recipients) {
 		if(recipients.isEmpty())
 			return;
