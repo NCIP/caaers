@@ -165,6 +165,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	}
 
 	public void testFindAdverseEventReportingPeriods() {
+		String userId = "tester";
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
 		aeReport.setWorkflowId(1);
@@ -182,8 +183,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		ExpeditedAdverseEventReportDTO rDto = new ExpeditedAdverseEventReportDTO();
 		EasyMock.expect(rpDao.findAdverseEventReportingPeriods((AdverseEventReportingPeriodForReviewQuery) EasyMock.anyObject())).andReturn(reportingPeriods);
 	
-		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp)).andReturn(rpDto);
-		EasyMock.expect(factory.createAdverseEventReportDTO(aeReport)).andReturn(rDto);
+		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId)).andReturn(rpDto);
+		EasyMock.expect(factory.createAdverseEventReportDTO(aeReport, userId)).andReturn(rDto);
 		replayMocks();
 		
 		Participant participant = Fixtures.createParticipant("Joel", "biju");
@@ -191,7 +192,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		StudySite studySite = new StudySite();
 		ReviewStatus reviewStatus = null;
 		
-		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, studySite, reviewStatus);
+		List<AdverseEventReportingPeriodDTO> dtos = impl.findAdverseEventReportingPeriods(participant, study, studySite, reviewStatus, userId);
 		
 		verifyMocks();
 		

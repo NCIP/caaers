@@ -12,6 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReviewCommentsDTO;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 
@@ -23,10 +24,10 @@ import org.apache.log4j.Logger;
  */
 public class AERoutingAndReviewDTOFactory {
 	
-	private WorkflowService workflowService;
 	private static Logger log = Logger.getLogger(AERoutingAndReviewDTOFactory.class);
+	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	
-	public AdverseEventReportingPeriodDTO createAdverseEventEvalutionPeriodDTO(AdverseEventReportingPeriod rp){
+	public AdverseEventReportingPeriodDTO createAdverseEventEvalutionPeriodDTO(AdverseEventReportingPeriod rp, String userId){
 		if(rp == null) return null;
 		if(rp.getWorkflowId() == null) {
 			log.warn("The workflowID for AdverseEventReportingPeriod#" + rp.getId() + " is null");
@@ -44,7 +45,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
 		dto.setReviewStatus(rp.getReviewStatus());
-		dto.setPossibleActions(workflowService.nextTransitionNames(rp.getWorkflowId()));
+		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
 		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
 		
 		//set the dcp sponsored study flag
@@ -54,7 +55,7 @@ public class AERoutingAndReviewDTOFactory {
 		
 	}
 	
-	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport){
+	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){
 		if(aeReport == null) return null;
 		ExpeditedAdverseEventReportDTO dto = new ExpeditedAdverseEventReportDTO();
 		dto.setWorkflowId(aeReport.getWorkflowId());
@@ -65,7 +66,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setName("Expedited Report");
 		dto.setNoOfAe(aeReport.getNumberOfAes());
 		dto.setReviewStatus(aeReport.getReviewStatus());
-		dto.setPossibleActions(workflowService.nextTransitionNames(aeReport.getWorkflowId()));
+		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(aeReport.getWorkflowId(), userId));
 		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
 		dto.setReportDTOs(createReportDTOs(aeReport));
 		return dto;
@@ -98,10 +99,11 @@ public class AERoutingAndReviewDTOFactory {
 		return reportDTOs;
 	}
 	
-	public WorkflowService getWorkflowService() {
-		return workflowService;
+	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
+		return adverseEventRoutingAndReviewRepository;
 	}
-	public void setWorkflowService(WorkflowService workflowService) {
-		this.workflowService = workflowService;
+	public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
 }

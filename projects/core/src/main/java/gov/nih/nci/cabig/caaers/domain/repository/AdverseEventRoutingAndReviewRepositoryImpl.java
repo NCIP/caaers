@@ -214,7 +214,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return workflowService.nextTransitionNames(workflowId);
 	}
 	
-	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus){
+	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
 		
 		if(participant != null){
@@ -235,14 +235,14 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		List<AdverseEventReportingPeriodDTO> reportingPeriodDtos = new ArrayList<AdverseEventReportingPeriodDTO>();
 		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
 			if(reportingPeriod.getWorkflowId() != null && isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus)){
-				AdverseEventReportingPeriodDTO rpDto = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod);
+				AdverseEventReportingPeriodDTO rpDto = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod, userId);
 				reportingPeriodDtos.add(rpDto);	
 				
 				//check the Reports
 				if(reportingPeriod.getAeReports() != null){
 					for(ExpeditedAdverseEventReport aeReport : reportingPeriod.getAeReports()){
 						if(aeReport.getWorkflowId() == null) continue; //this report is prior to workflow integration
-						ExpeditedAdverseEventReportDTO rDto = routingAndReviewFactory.createAdverseEventReportDTO(aeReport);
+						ExpeditedAdverseEventReportDTO rDto = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
 						rpDto.addAdverseEventReportDTO(rDto);
 					}//aereport
 				}

@@ -562,7 +562,7 @@ This applicationContext contains the definition of the DAOs
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
     <bean id="routingAndReviewFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory">
-    	<property name="workflowService" ref="workflowService"/>
+    	<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository"/>
     </bean>
 
     <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
