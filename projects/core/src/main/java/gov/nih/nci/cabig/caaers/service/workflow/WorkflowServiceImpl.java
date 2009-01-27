@@ -299,7 +299,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		AdverseEventReportingPeriod reportingPeriod = null;
 		StudyParticipantAssignment assignment = null;
 		StudySite site = null;
-		if(StringUtils.equals(wfType, Report.class.getName())){
+		if(StringUtils.equals(wfType, ExpeditedAdverseEventReport.class.getName())){
 			aeReport = expeditedAdverseEventReportDao.getById(expeditedReportId);
 			reportingPeriod = aeReport.getReportingPeriod();
 			assignment = reportingPeriod.getAssignment();
