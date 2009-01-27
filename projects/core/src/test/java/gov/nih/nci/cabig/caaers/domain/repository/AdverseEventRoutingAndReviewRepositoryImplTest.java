@@ -236,7 +236,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		EasyMock.expect(wfService.nextTransitionNames(wfId)).andReturn(transitionNames);
 		rDao.save(r);
 		replayMocks();
-		List<String> transitions = impl.advanceReportWorkflow(wfId, transitionToTake, id);
+		List<String> transitions = impl.advanceReportWorkflow(wfId, transitionToTake, id, null);
 		
 		verifyMocks();
 		
@@ -256,7 +256,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		EasyMock.expect(rpDao.getById(id)).andReturn(rp);
 		rpDao.save(rp);
 		replayMocks();
-		List<String> transitions = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id);
+		List<String> transitions = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id, null);
 		
 		verifyMocks();
 		

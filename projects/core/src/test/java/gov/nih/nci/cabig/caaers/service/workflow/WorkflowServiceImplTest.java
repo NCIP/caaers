@@ -74,7 +74,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		r1  = new ResearchStaff();
 		r1.setEmailAddress("joel@abcd.com");
 		r1.setLoginId("joel");
-		a1.setResearchStaff(r1);
+		a1.setUser(r1);
 		tc.addAssignee(a1);
 		
 		wfService.setWorkflowConfigDao(wfConfigDao);

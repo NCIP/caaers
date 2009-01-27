@@ -185,28 +185,32 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		adverseEventReportingPeriodDao.save(reportingPeriod);
 	}
 	
-	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id) {
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, Integer id, String userId) {
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
-		return this.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod);
+		return this.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod, userId);
 	}
 	
-	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, AdverseEventReportingPeriod reportingPeriod){
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String toTransition, AdverseEventReportingPeriod reportingPeriod, String userId){
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		reportingPeriod.setReviewStatus(nextStatus);
 		adverseEventReportingPeriodDao.save(reportingPeriod);
 		return workflowService.nextTransitionNames(workflowId);
 	}
 	
-	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Integer id) {
+	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Integer id, String userId) {
 		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(id);
-		return this.advanceReportWorkflow(workflowId, toTransition, aeReport);
+		return this.advanceReportWorkflow(workflowId, toTransition, aeReport, userId);
 	}
 	
-	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, ExpeditedAdverseEventReport aeReport) {
+	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, ExpeditedAdverseEventReport aeReport, String userId) {
 
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		aeReport.setReviewStatus(nextStatus);
 		expeditedAdverseEventReportDao.save(aeReport);
+		return workflowService.nextTransitionNames(workflowId);
+	}
+	
+	public List<String> nextTransitionNames(Integer workflowId, String userId) {
 		return workflowService.nextTransitionNames(workflowId);
 	}
 	

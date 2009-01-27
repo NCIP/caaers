@@ -109,8 +109,8 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param id
 	 * @return
 	 */
-	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Integer id);
-	public List<String> advanceReportWorkflow(Integer workflowId, String transition, ExpeditedAdverseEventReport report);
+	public List<String> advanceReportWorkflow(Integer workflowId, String transition, Integer id, String userId);
+	public List<String> advanceReportWorkflow(Integer workflowId, String transition, ExpeditedAdverseEventReport report, String userId);
 	
 	/**
 	 * Will advance the workflow to its next step, for the reporting period
@@ -119,8 +119,8 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param id
 	 * @return
 	 */
-	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, Integer id);
-	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, AdverseEventReportingPeriod reportingPeriod);
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, Integer id, String userId);
+	public List<String> advanceReportingPeriodWorkflow(Integer workflowId, String transition, AdverseEventReportingPeriod reportingPeriod, String userId);
 	
 	/**
 	 * This method will enact a new workflow, for the expedited report
@@ -136,4 +136,11 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @return
 	 */
 	public ProcessInstance enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod);
+	
+	/**
+	 * This method will return the next workflow transitions, available for the user.
+	 * @param workflowId
+	 * @return
+	 */
+	public List<String> nextTransitionNames(Integer workflowId, String userId);
 }
