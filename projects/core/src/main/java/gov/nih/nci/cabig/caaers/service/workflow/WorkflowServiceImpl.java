@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jbpm.JbpmContext;
 import org.jbpm.JbpmException;
 import org.jbpm.graph.def.Node;
@@ -52,6 +54,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springmodules.workflow.jbpm31.JbpmCallback;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
+
+import sun.util.logging.resources.logging;
 
 /**
  * This class has methods, that deals with the JBPM workflow engine.
@@ -74,6 +78,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	private WorkflowConfigDao workflowConfigDao;
 	
 	private PossibleTransitionsResolver possibleTransitionsResolver;
+	
+	 private Logger log = Logger.getLogger(WorkflowServiceImpl.class);
 	
 	protected ProcessDefinition findProcessDefinitionByName(String wfDefName){
 		for(ProcessDefinition pd : processDefinitions){
@@ -208,7 +214,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 		jbpmTemplate.execute(createTaskCallback);
 		
 		// Send Notifications
-		notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList());
+		try {
+			notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList());
+		} catch (MailException e) {
+			log.error("Workflow Service : Error while sending email to task assignees", e);
+		}
 	}
 	
 	/**
