@@ -168,6 +168,10 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment</value>
                 <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
             </list>
         </property>
         <!--<property name="hibernateProperties" ref="hibernateProperties"/>-->
@@ -321,6 +325,21 @@ This applicationContext contains the definition of the DAOs
                 <value>gov.nih.nci.cabig.caaers.domain.InterventionSite</value>
                 <value>gov.nih.nci.cabig.caaers.domain.security.passwordpolicy.PasswordPolicy</value>
                 <value>gov.nih.nci.cabig.caaers.domain.ReportFormat</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Epoch</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Arm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent</value>
+                <value>gov.nih.nci.cabig.caaers.domain.StudyCondition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.Condition</value>
+                <value>gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner</value>
+                <value>gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner</value>
             </list>
         </property>
         <!--
@@ -548,7 +567,6 @@ This applicationContext contains the definition of the DAOs
     </bean>
     <bean id="adverseEventRoutingAndReviewRepository" class="gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepositoryImpl">
     	<property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
-    	<property name="routingAndReviewFactory" ref="routingAndReviewFactory" />
     	<property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
     	<property name="workflowService" ref="workflowService" />
     </bean>
@@ -561,9 +579,7 @@ This applicationContext contains the definition of the DAOs
     </bean>
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>
-    <bean id="routingAndReviewFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory">
-    	<property name="adverseEventRoutingAndReviewRepository" ref="adverseEventRoutingAndReviewRepository"/>
-    </bean>
+
 
     <bean id="conditionDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ConditionDao"/>
 
