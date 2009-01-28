@@ -91,12 +91,12 @@
             $('staff').observe("change", chooseStaff)
             $('physician').observe("change", choosePhysician)
             
-            createAE.retrieveReportReviewComments(
+           <%-- createAE.retrieveReportReviewComments(
 					function(ajaxOutput){
 						document.getElementById('scrollbar_content').innerHTML = "";
 						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
 						document.getElementById('enter-comment-text').value = "";
-					}) ;
+					}) ; --%>
         })
 
     </script>
