@@ -48,6 +48,7 @@ public class SubmitReportController extends AbstractAdverseEventInputController 
         String reportId = request.getParameter("reportId");
         command.setReportId(reportId);
         command.setFrom(request.getParameter("from"));
+        command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
         return command;
 
     }

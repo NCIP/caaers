@@ -16,10 +16,13 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
+import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
+import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
 import gov.nih.nci.cabig.ctms.web.tabs.Flow;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
@@ -38,6 +41,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindException;
@@ -75,6 +79,8 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private ReportDefinitionDao reportDefinitionDao;
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
+	
+	private Configuration configuration;
 	
 	private Logger log = Logger.getLogger(getClass());
 
@@ -293,7 +299,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
 		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao);
-		
+		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 		return cmd;
 	}
 
@@ -510,5 +516,12 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	public void setRenderDecisionManagerFactoryBean(RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean) {
 		this.renderDecisionManagerFactoryBean = renderDecisionManagerFactoryBean;
+	}
+	@Required
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }

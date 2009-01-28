@@ -36,6 +36,7 @@ import gov.nih.nci.cabig.caaers.domain.RadiationAdministration;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManagerFactoryBean;
@@ -131,6 +132,8 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected ReportRepository reportRepository;
     
     protected UserDao userDao;
+    
+    private Configuration configuration;
 	
     protected AbstractAdverseEventInputController() {
         setAllowDirtyBack(false);
@@ -486,5 +489,13 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     @Required
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+    
+	@Required
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }

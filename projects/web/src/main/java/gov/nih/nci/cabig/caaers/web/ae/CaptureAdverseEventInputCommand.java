@@ -67,7 +67,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	
 	private Set<AdverseEvent> seriousAdverseEvents;
 	
-	private boolean workflowEnabled;
+	private boolean workflowEnabled = false;
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
 				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao){
@@ -631,9 +631,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
     
     public boolean getWorkflowEnabled(){
-    	//TODO First check if there is a workflow for the reporting period
-    	//if(adverseEventReportingPeriod != null && adverseEventReportingPeriod.getWorkflowId() != null)
-    	//	return true;
-    	return true;
+    	return workflowEnabled;
     }
+    public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
+	}
 }

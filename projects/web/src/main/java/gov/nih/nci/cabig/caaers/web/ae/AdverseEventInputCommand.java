@@ -22,4 +22,6 @@ public interface AdverseEventInputCommand {
     public void setTreatmentDescriptionType(String type);
 
     public boolean getIgnoreCompletedStudy();
+    
+    public boolean getWorkflowEnabled();
 }

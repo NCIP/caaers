@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -72,6 +73,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     private WorkflowConfigDao workflowConfigDao;
 	private UserDao userDao;
+	
+	private Configuration configuration;
 
     public CreateReportingPeriodController() {
         setFormView("ae/createReportingPeriod");
@@ -91,7 +94,9 @@ public class CreateReportingPeriodController extends SimpleFormController {
         StudyParticipantAssignment assignment = (assignmentId > 0) ? assignmentDao.getById(assignmentId) : null;
         AdverseEventReportingPeriod reportingPeriod = (reportingPeriodId > 0) ? adverseEventReportingPeriodDao.getById(reportingPeriodId) : null;
 
-        return new ReportingPeriodCommand(assignment, reportingPeriod);
+        ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod);
+        command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
+        return command;
 
     }
 
@@ -382,5 +387,13 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
     public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
+	}
+    
+	@Required
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }

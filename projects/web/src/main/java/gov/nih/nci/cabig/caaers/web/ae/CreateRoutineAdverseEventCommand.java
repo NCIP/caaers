@@ -56,6 +56,8 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
     private String[] cats;
 
     private String[] ctcTermIds;
+    
+    private boolean workflowEnabled = false;
 
     public CreateRoutineAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao,
                     RoutineAdverseEventReportDao routineReportDao,
@@ -233,4 +235,12 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
         this.evaluationService = evaluationService;
     }
 
+	public boolean getWorkflowEnabled() {
+		return workflowEnabled;
+	}
+
+	public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
+	}
+    
 }

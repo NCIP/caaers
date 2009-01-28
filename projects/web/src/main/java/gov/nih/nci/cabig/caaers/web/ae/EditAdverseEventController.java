@@ -66,6 +66,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
     	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
+    	command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
     	if(action != null){
         	if(action.equals("createNew")){
         		ExpeditedAdverseEventReport aeReport = new ExpeditedAdverseEventReport();

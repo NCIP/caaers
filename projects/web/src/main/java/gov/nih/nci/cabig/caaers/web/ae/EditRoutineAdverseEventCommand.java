@@ -41,7 +41,7 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 
     private RoutineAdverseEventReportDao routineReportDao;
     private ExpeditedAdverseEventReportDao reportDao;
-
+    private boolean workflowEnabled = false;
     ////// LOGIC
 
     public EditRoutineAdverseEventCommand(RoutineAdverseEventReportDao routineReportDao,
@@ -194,5 +194,12 @@ public class EditRoutineAdverseEventCommand implements RoutineAdverseEventInputC
 	}
 	public boolean getIgnoreCompletedStudy() {
 		return true;
+	}
+	public boolean getWorkflowEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
 	}
 }

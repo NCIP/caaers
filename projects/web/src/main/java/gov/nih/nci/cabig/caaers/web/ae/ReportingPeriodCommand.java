@@ -19,6 +19,7 @@ public class ReportingPeriodCommand {
     private Study study;
     private StudyParticipantAssignment assignment;
     private boolean editFlow;
+    private boolean workflowEnabled = false;
    
     
     /**
@@ -73,4 +74,14 @@ public class ReportingPeriodCommand {
     public boolean isEditFlow() {
 		return editFlow;
 	}
+
+	public boolean isWorkflowEnabled() {
+		return workflowEnabled;
+	}
+
+	public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
+	}
+    
+    
 }

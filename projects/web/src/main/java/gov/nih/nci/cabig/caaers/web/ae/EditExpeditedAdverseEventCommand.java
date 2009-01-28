@@ -363,9 +363,11 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		return studyTerminologyTerm;
 	}
 	
-	public boolean getWorkflowEnabled(){
-		//TODO check if the report has a valid workflow-id.
-		return true;
+	public boolean getWorkflowEnabled() {
+		return false;
+	}
+	public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
 	}
 	
 }
