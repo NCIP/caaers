@@ -140,6 +140,16 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     }
     
     public void testGetMaxCycleNumber(){
-    	fail("Not implemented");
+    	
+    	AdverseEventReportingPeriod rp1 = Fixtures.createReportingPeriod();
+    	AdverseEventReportingPeriod rp2 = Fixtures.createReportingPeriod();
+    	AdverseEventReportingPeriod rp3 = Fixtures.createReportingPeriod();
+    	assignment.addReportingPeriod(rp1);
+    	assignment.addReportingPeriod(rp2);
+    	assignment.addReportingPeriod(rp3);
+    	rp1.setCycleNumber(5);
+    	rp2.setCycleNumber(4);
+    	Integer maxCycle = assignment.getMaxCycleNumber();
+    	assertEquals(new Integer(5), maxCycle);
     }
 }
