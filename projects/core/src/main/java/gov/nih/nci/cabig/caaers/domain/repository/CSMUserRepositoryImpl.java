@@ -227,6 +227,24 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
     	if(user == null){
     		throw new CaaersNoSuchUserException("User with login Id :" + userName + " unknowon");
     	}
+    	
+    	//populate the UserGroupTypes
+    	try {
+			gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(user.getLoginId());
+			if(csmUser != null){
+				Set groups = userProvisioningManager.getGroups(csmUser.getUserId().toString());
+				if(groups != null){
+					for(java.util.Iterator it = groups.iterator(); it.hasNext(); ){
+						Group group = (Group) it.next();
+						UserGroupType userGroupType = UserGroupType.getByCode(group.getGroupId().intValue());
+						if(userGroupType != null) user.addUserGroupType(userGroupType);
+					}
+				}
+			}
+		} catch (CSObjectNotFoundException e) {
+			log.warn("The groups for csmUser (" + user.getLoginId() + ") unable to fetch, something is wrong", e);
+		}
+    	
         return user;
     }
 

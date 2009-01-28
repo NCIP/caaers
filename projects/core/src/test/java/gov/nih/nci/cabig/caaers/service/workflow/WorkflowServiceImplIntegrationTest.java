@@ -78,8 +78,58 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
 		}
 	}
+	public void testNextTransitionNames() {
+		Integer id = null;
+		String loginId = "SYSTEM_ADMIN";
+		{
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER,variables);
+			Long l = pInstance.getId();
+			id = new Integer(l.intValue());
+		}
+		interruptSession();
+		{
+			List<String> nextTransitions = wfService.nextTransitionNames(id, loginId);
+			assertNotNull(nextTransitions);
+			assertFalse(nextTransitions.isEmpty());
+			assertEquals(1, nextTransitions.size());
+			assertEquals("Approve Reporting Period", nextTransitions.get(0));
+		}
+	}
+	public void testNextTransitions_SiteCRA() {
+		Integer id = null;
+		String loginId = "pc@def.com";
+		{
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
+			Long l = pInstance.getId();
+			id = new Integer(l.intValue());
+		}
+		interruptSession();
+		{
+			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
+			assertNotNull(nextTransitions);
+			assertFalse(nextTransitions.isEmpty());
+			assertEquals(1, nextTransitions.size());
+			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
+			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
+		}
+	}
 	
 	
+	public void testNextTransitions_DataCoordinator() {
+		Integer id = null;
+		String loginId = "aec@def.com";
+		{
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
+			Long l = pInstance.getId();
+			id = new Integer(l.intValue());
+		}
+		interruptSession();
+		{
+			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
+			assertNotNull(nextTransitions);
+			assertTrue(nextTransitions.isEmpty());
+		}
+	}
 	
 	public void testAdvanceWorkflow(){
 		String loginId = "SYSTEM_ADMIN";

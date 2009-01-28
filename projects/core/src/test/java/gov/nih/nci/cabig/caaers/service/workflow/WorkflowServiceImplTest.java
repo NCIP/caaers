@@ -252,5 +252,6 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		assertEquals(1, returnedUsers.size());
 		assertSame(users.get(0), returnedUsers.get(0));
 	}
+	
 
 }

@@ -63,4 +63,13 @@ public enum UserGroupType implements CodedEnum<Integer> {
         }
         return strUserGroupTypes;
     }
+    
+    public static final int[] codes(){
+    	UserGroupType[] groupTypes = UserGroupType.values();
+    	int[] codes = new int[groupTypes.length];
+    	for(int i =0; i < codes.length; i++){
+    		codes[i] = groupTypes[i].code;
+    	}
+    	return codes;
+    }
 }

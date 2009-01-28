@@ -173,8 +173,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 				}else{
 					RoleTransitionOwner roleOwner = (RoleTransitionOwner) owner;
 					PersonRole ownerRole = roleOwner.getUserRole();
+					UserGroupType[] ownerGroupTypes = ownerRole.getUserGroups();
+					
 					for(UserGroupType userGroupType : user.getUserGroupTypes()){
-						if(ArrayUtils.contains(ownerRole.getUserGroups(), userGroupType)){
+						if(ArrayUtils.contains(ownerGroupTypes, userGroupType)){
 							filteredTransitions.add(transition);
 							break;
 						}
@@ -188,6 +190,15 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 	}
 	
+	
+	public List<String> nextTransitionNames(Integer workflowId, String loginId) {
+		List<Transition> transitions = nextTransitions(workflowId, loginId);
+		List<String> transitionNames = new ArrayList<String>();
+		for(Transition transition : transitions){
+			transitionNames.add(transition.getName());
+		}
+		return transitionNames;
+	}
 
 	/**
 	 * @see WorkflowService#advanceWorkflow(Integer, String)

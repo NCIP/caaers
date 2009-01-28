@@ -3,7 +3,6 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
-import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -11,14 +10,12 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.User;
-import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
+import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
-import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -29,7 +26,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -61,7 +57,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	 * 2. Find the workflow from site (configured)
 	 * 3. Enact the workflow
 	 */
-	public ProcessInstance enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod) {
+	public Long enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod) {
 		assert reportingPeriod.getId() != null;
 		StudyParticipantAssignment assignment = reportingPeriod.getAssignment();
 		StudySite studySite = assignment.getStudySite();
@@ -79,7 +75,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		adverseEventReportingPeriodDao.save(reportingPeriod);
 		
-		return pInstance;
+		return pInstance.getId();
 	}
 	
 	/*
@@ -91,7 +87,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	 *  2. Find the workflow from site (configured)
 	 *  3. Enact the workflow, 
 	 */
-	public ProcessInstance enactReportWorkflow(ExpeditedAdverseEventReport aeReport) {
+	public Long enactReportWorkflow(ExpeditedAdverseEventReport aeReport) {
 		
 		assert aeReport.getId() != null;
 		
@@ -112,7 +108,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		expeditedAdverseEventReportDao.save(aeReport);
 		
-		return pInstance;
+		return pInstance.getId();
 	}
 	
 	
@@ -214,13 +210,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		return nextTransitionNames(workflowId, userId);
 	}
 	
-	public List<String> nextTransitionNames(Integer workflowId, String userId) {
-		List<Transition> transitions = workflowService.nextTransitions(workflowId, userId);
-		List<String> transitionNames = new ArrayList<String>();
-		for(Transition transition : transitions){
-			transitionNames.add(transition.getName());
-		}
-		return transitionNames;
+	public List<String> nextTransitionNames(Integer workflowId, String loginId) {
+		return workflowService.nextTransitionNames(workflowId, loginId);
 	}
 	
 

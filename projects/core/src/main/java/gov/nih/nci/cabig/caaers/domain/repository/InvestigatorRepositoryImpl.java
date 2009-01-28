@@ -47,6 +47,7 @@ public class InvestigatorRepositoryImpl implements InvestigatorRepository {
     	//if this is a new one, add the default group, set the login id if websso mode
     	if(createMode){
     		investigator.addUserGroupType(UserGroupType.caaers_physician);
+    		investigator.addUserGroupType(UserGroupType.caaers_user);
     		//login id should be email id , if it is non websso mode
     		if(!webSSOAuthentication) investigator.setLoginId(investigator.getEmailAddress());
     	}

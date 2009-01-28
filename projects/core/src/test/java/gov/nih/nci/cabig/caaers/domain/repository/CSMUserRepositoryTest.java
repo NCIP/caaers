@@ -2,6 +2,9 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 
 import static org.easymock.EasyMock.expect;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.easymock.classextension.EasyMock;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
@@ -16,6 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.SiteInvestigator;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.security.UserProvisioningManager;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 
 /**
  * @author Jared Flatow
@@ -33,6 +37,8 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 
     private String userName;
+    
+    private Set<Group> groups;
 
     @Override
     protected void setUp() throws Exception {
@@ -51,6 +57,11 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
         
         userDao = registerDaoMockFor(UserDao.class);
         csmUserRepository.setUserDao(userDao);
+        
+        Group group = new Group();
+        group.setGroupId( -2L);
+        groups = new HashSet<Group>();
+        groups.add(group);
     }
 
     public void testGetUserByName() throws Exception {
@@ -69,6 +80,9 @@ public class CSMUserRepositoryTest extends AbstractTestCase {
     
     public void testGetByUserName_validUser() throws Exception{
     	  expect(userDao.getByLoginId(userName)).andReturn(user);
+    	  expect(userProvisioningManager.getUser(userName)).andReturn(csmUser);
+    	  expect(csmUser.getUserId()).andReturn(5L);
+    	  expect(userProvisioningManager.getGroups("5")).andReturn(groups);
     	  replayMocks();
           User actual = csmUserRepository.getUserByName(userName);
           verifyMocks();

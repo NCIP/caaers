@@ -127,7 +127,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param aeReport
 	 * @return
 	 */
-	public ProcessInstance enactReportWorkflow(ExpeditedAdverseEventReport report);
+	public Long enactReportWorkflow(ExpeditedAdverseEventReport report);
 	
 	
 	/**
@@ -135,7 +135,7 @@ public interface AdverseEventRoutingAndReviewRepository {
 	 * @param reportingPeriod
 	 * @return
 	 */
-	public ProcessInstance enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod);
+	public Long enactReportingPeriodWorkflow(AdverseEventReportingPeriod reportingPeriod);
 	
 	/**
 	 * This method will return the next workflow transitions, available for the user.

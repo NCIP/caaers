@@ -1,9 +1,13 @@
 package gov.nih.nci.cabig.caaers.service.security;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
-import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.security.passwordpolicy.PasswordPolicyDao;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -13,13 +17,12 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.service.security.passwordpolicy.PasswordPolicyServiceImpl;
 import gov.nih.nci.security.UserProvisioningManager;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
+import gov.nih.nci.security.authorization.domainobjects.Group;
 
 /**
  * @author Jared Flatow
  */
-public class PasswordManagerServiceTest extends CaaersTestCase {
+public class PasswordManagerServiceTest extends AbstractTestCase {
 
     private PasswordManagerServiceImpl passwordManagerService;
 
@@ -38,6 +41,8 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
     private gov.nih.nci.security.authorization.domainobjects.User csmUser;
 
     private String userName;
+    
+    private Set<Group> groups;
 
     @Override
     protected void setUp() throws Exception {
@@ -75,7 +80,10 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
        passwordManagerService.setUserDao(userDao);
        csmUserRepository.setUserDao(userDao);
        
-       
+       Group group = new Group();
+       group.setGroupId( -2L);
+       groups = new HashSet<Group>();
+       groups.add(group);
     }
 
     public void testRequestToken() throws Exception {
@@ -91,8 +99,9 @@ public class PasswordManagerServiceTest extends CaaersTestCase {
 
     public void testSetPassword() throws Exception {
         expect(csmUser.getPassword()).andReturn("old_password").atLeastOnce();
+        expect(csmUser.getUserId()).andReturn(5L).anyTimes();
         csmUser.setPassword("v@l1d_Password");
-
+        expect(userProvisioningManager.getGroups("5")).andReturn(groups).anyTimes();
         userProvisioningManager.modifyUser(csmUser);
         Investigator inv = Fixtures.createInvestigator("tester");
         inv.setLoginId(userName);

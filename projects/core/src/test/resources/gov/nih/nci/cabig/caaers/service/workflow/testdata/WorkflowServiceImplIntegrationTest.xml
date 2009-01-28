@@ -1,7 +1,14 @@
 <dataset>
+ 	<ORGANIZATIONS
+        id="-1000"
+        name="New Site"
+        grid_id="gridSite"/>
 
-<!--  CSM Data -->
-<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
+	<ind_holders />
+	
+<!--  =============== CSM Data and User data ===================== -->
+	<!--  System Admin -->
+	<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
 		FIRST_NAME="SYSTEM_ADMIN" LAST_NAME="SYSTEM_ADMIN"
 		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
 		EMAIL_ID="system_admin@caaers.org" 
@@ -16,13 +23,72 @@
 	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-1"
 		PROTECTION_ELEMENT_ID="-1" USER_ID="-1" UPDATE_DATE="2007-01-27" />
 		
+	<!--  Participant Coordinator   -->	
+	<CSM_USER USER_ID="-4" LOGIN_NAME="pc@def.com"
+		FIRST_NAME="Site CRA" LAST_NAME="Coordinator1"
+		PASSWORD="OI/ZpclGdfXCOfcyX1L/EA==" 
+		EMAIL_ID="pc@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	
+	<RESEARCH_STAFFS
+        id="-900"
+        version="1"
+        first_name="Site CRA"
+        last_name="Coordinator1"
+        email_address="pc@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id pc"
+        site_id="-1000"
+        login_id="pc@def.com"/>
+        
+    <!--  associated to caaers_user, caaers_participant_cd -->  
+    <CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-10" USER_ID="-4" GROUP_ID="-5" /> 
+	
+	<!--  Data Coordinator or SAE Coordinator -->
+	<CSM_USER USER_ID="-2" LOGIN_NAME="aec@def.com"
+		FIRST_NAME="Data Coordinator" LAST_NAME="Coordinator1"
+		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
+		EMAIL_ID="aec@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	<RESEARCH_STAFFS
+        id="-901"
+        version="1"
+        first_name="Data Coordinator"
+        last_name="Coordinator1"
+        email_address="aec@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id aec"
+        site_id="-1000"
+        login_id="aec@def.com"/>
+        
+ 	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-2" GROUP_ID="-13" />
+	
+	<!-- Physician -->
+    <CSM_USER USER_ID="-3" LOGIN_NAME="physician@def.com"
+		FIRST_NAME="Physician" LAST_NAME="Site Inv"
+		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
+		EMAIL_ID="physician@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	<INVESTIGATORS
+        id="-902"
+        first_name="Physician"
+        last_name="Site Inv"
+		nci_identifier="222"
+        email_address="physician@def.com"
+        phone_number="123-456-789"
+        login_id="physician@def.com"
+       />
+       <SITE_INVESTIGATORS
+            id="-4004"
+            status_code="ACT"
+            site_id="-1000"
+            investigator_id="-902"/>
+      <CSM_USER_GROUP USER_GROUP_ID="-16" USER_ID="-2" GROUP_ID="-2" />
+	  <CSM_USER_GROUP USER_GROUP_ID="-17" USER_ID="-2" GROUP_ID="-8" />      	    	   	
 <!-- =========================================== -->
- 	<ORGANIZATIONS
-        id="-1000"
-        name="New Site"
-        grid_id="gridSite"/>
 
-	<ind_holders />
 
     <RESEARCH_STAFFS
         id="-1000"
@@ -68,7 +134,7 @@
 	-->
 	
 	 <task_configuration id="-7" status_name="READY_FOR_FINALIZE" workflow_config_id="-11" location="1" task_name="Finalize Reporting Period" applicable="1" message="hello biju"/>
-	 <task_configuration id="-1000" status_name="FINALIZED" workflow_config_id="-11" location="1" task_name="Finish Reporting Period Flow" applicable="1" message="hijklmnop"/>
+	 <task_configuration id="-1000" status_name="FINALIZED" workflow_config_id="-11" location="1" task_name="Finalized" applicable="1" message="hijklmnop"/>
 	 <task_configuration id="-999" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Start Reporting Period Flow" applicable="1" message="abcd" />
 	  
 	 <wf_assignees id="-1" name="Bill" user_id="-1000" task_config_id="-1" dtype="p"/>
@@ -81,8 +147,19 @@
 	 -->
 	 
 	 <wf_assignees id="-9" name="DC" user_id="-1002" task_config_id="-7" dtype="p"/>
-	 <wf_transition_configs />
-	 <wf_transition_owners />
+	 
+	 <wf_transition_configs id="-1" transition_name="Approve Reporting Period" task_config_id="-1" />
+	 <wf_transition_configs id="-2" transition_name="Finalize Reporting Period" task_config_id="-7" />
+	 <wf_transition_configs id="-3" transition_name="Modify Reporting Period" task_config_id="-1000" />
+	 
+	 <wf_transition_owners id="-1" user_id="-1000" user_role_id="1" transition_config_id="-1" dtype="p"/>
+	 <wf_transition_owners id="-2" user_id="-1001"  transition_config_id="-1" dtype="p"/>
+	 <wf_transition_owners id="-3"  user_role_id="4" transition_config_id="-1" dtype="r"/>
+	 
+	 <wf_transition_owners id="-4" user_id="-1002" transition_config_id="-2" dtype="p"/>
+	 <wf_transition_owners id="-5"  user_role_id="6" transition_config_id="-2" dtype="r"/>
+	 <wf_transition_owners id="-6"  user_role_id="4" transition_config_id="-3" dtype="r"/>
+	 
 	 <jbpm_moduleinstance />
 	 <jbpm_taskinstance />
 	 <jbpm_pooledactor />

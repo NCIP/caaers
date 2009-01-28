@@ -102,7 +102,15 @@ public interface WorkflowService{
 	 * @param workflowId - A process instance ID
 	 * @return
 	 */
-	public List<Transition> nextTransitions(Integer workflowId, String userId);
+	public List<Transition> nextTransitions(Integer workflowId, String loginId);
+	
+	/**
+	 * List all the available transitions of the workflow
+	 * @param workflowId
+	 * @return
+	 */
+	public List<String> nextTransitionNames(Integer workflowId, String loginId);
+	
 	
 	/**
 	 * This method is used to identify the assignees configured on the task. 
