@@ -203,19 +203,25 @@ margin-top:5px;
 		var sb = $(selectBox);
 		var newStatus = sb.value;
 		sb.disable();
-		
+		var indicatorId = 'reportingPeriod-' + entityId + '-indicator';
+		$(indicatorId).style.display='';
 		routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
 			
 			if(output.objectContent){
 					sb.options.length = 0;
+					var pleaseSelectOpt = new Option('Please Select', 'Please Select');
+					sb.options.add(pleaseSelectOpt);
 					var i = 0;
 					for(i = 0; i< output.objectContent.length; i++){
 						var status = output.objectContent[i];
-						var opt = new Option(status.displayName, status.name);
+						var opt = new Option(status, status);
+						
 						sb.options.add(opt);
 					}
 					sb.enable();	
-					
+					$(indicatorId).style.display='none';
+					var entityStatusId = entityType + '-' + entityId + '-status';
+					$(entityStatusId).innerHTML = output.htmlContent;
 			}
 		});
 		
@@ -238,12 +244,11 @@ margin-top:5px;
    	  		<thead>
       			<tr align="center" class="label">
        		 		<td width="2%" class="tableHeader"></td>
-        			<td width="18%" class="tableHeader">Evaluation Period</td>
-        			<td width="16%" class="centerTableHeader">Evaluation Period Type</td>
-        			<td width="16%" class="centerTableHeader"># of AEs</td>
-        			<td width="16%" class="tableHeader"># of Reports</td>
-        			<td width="16%" class="tableHeader">Review Comments</td>
-        			<td width="16%" class="tableHeader">Review Status</td>
+        			<td width="25%" class="tableHeader">Evaluation Period</td>
+        			<td width="20%" class="centerTableHeader">Evaluation Period Type</td>
+        			<td width="20%" class="centerTableHeader">Review Status</td>
+        			<td width="8%" class="tableHeader">Comments</td>
+        			<td width="25%" class="centerTableHeader">Action</td>
       			</tr>
     		</thead>
 			<c:forEach items="${resultEntry.value.results}" var="rp" varStatus="rpStatus">

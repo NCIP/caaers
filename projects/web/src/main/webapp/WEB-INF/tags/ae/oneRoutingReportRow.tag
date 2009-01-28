@@ -3,7 +3,7 @@
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="rpIndex" required="true" type="java.lang.Integer" description="The index of the Report"%>
-<%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportDTO" description="The report that is printed by this row." %>
+<%@attribute name="report" required="true" type="gov.nih.nci.cabig.caaers.domain.dto.ReportDTO" description="The report that is printed by this row." %>
 
 <c:set var="repcurrClass" value="${rpIndex %2 gt 0 ? 'odd' : 'even'}" />
 
@@ -14,24 +14,26 @@
 		${report.name}
 	</td>
 	<td align="center" width="10%">${report.reportVersionId}</td>
-	<td align="center" width="20%">${report.status.displayName }</td>
+	<td align="center" width="20%" id="report-${reportingPeriod.id}-status">${report.status.displayName }</td>
 	<td width="10%">${report.noOfAe}</td>
+	<%-- <td width="10%">${report.report.aeReport.reviewStatus.displayName}</td>
 	<td>
 		<a href="#" onClick="displayPopup('report', ${report.id})">
 			<img src="<chrome:imageUrl name="../edit.png" />" />
 		</a>
 	</td>
 
-	<td>
+	<td/>
+	   <td>
 
-		<select onChange="advanceWorkflow(this,${report.workflowId }, ${report.id }, 'report')" class="wf${report.workflowId }">
-			<option value="${ report.reviewStatus.name}">${report.reviewStatus.displayName}</option>
-			<c:forEach items="${report.possibleReivewStatuses}" var="rStatus">
-				<option value="${rStatus.name }">${rStatus.displayName}</option>
+		<select onChange="advanceWorkflow(this,${report.report.aeReport.workflowId }, ${report.report.aeReport.id }, 'report')" class="wf${report.report.aeReport.workflowId }">
+			<option value="Please select">Please Select</option>
+			<c:forEach items="${report.report.aeReport.possibleActions}" var="rStatus">
+				<option value="${rStatus }">${rStatus}</option>
 			</c:forEach>
 		</select>
 
-	</td>
+	</td> --%>
 </tr>
 
 <tr id="reptable${report.id}" style="display:none;">
