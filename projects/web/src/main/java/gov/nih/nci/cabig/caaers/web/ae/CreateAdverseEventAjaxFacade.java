@@ -1,11 +1,56 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
+import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.AgentDao;
+import gov.nih.nci.cabig.caaers.dao.AnatomicSiteDao;
+import gov.nih.nci.cabig.caaers.dao.ChemoAgentDao;
+import gov.nih.nci.cabig.caaers.dao.ConditionDao;
+import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.CtepStudyDiseaseDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.InterventionSiteDao;
+import gov.nih.nci.cabig.caaers.dao.LabCategoryDao;
+import gov.nih.nci.cabig.caaers.dao.LabLoadDao;
+import gov.nih.nci.cabig.caaers.dao.LabTermDao;
+import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
+import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
+import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
+import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.Agent;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.CodedGrade;
+import gov.nih.nci.cabig.caaers.domain.Condition;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
+import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReportChild;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.InterventionSite;
+import gov.nih.nci.cabig.caaers.domain.Investigator;
+import gov.nih.nci.cabig.caaers.domain.LabCategory;
+import gov.nih.nci.cabig.caaers.domain.LabLoad;
+import gov.nih.nci.cabig.caaers.domain.LabTerm;
+import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
+import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudyAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -18,16 +63,23 @@ import gov.nih.nci.cabig.caaers.domain.repository.ajax.ParticipantAjaxableDomain
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
 import gov.nih.nci.cabig.caaers.service.InteroperationService;
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduce;
-import static gov.nih.nci.cabig.caaers.tools.ObjectTools.reduceAll;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 import gov.nih.nci.cabig.caaers.web.dwr.IndexChange;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+
 import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.userdetails.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -45,15 +97,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.OptimisticLockingFailureException;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 /**
  * @author Rhett Sutphin
  */
@@ -69,7 +112,6 @@ public class CreateAdverseEventAjaxFacade {
     protected CtcDao ctcDao;
     protected LowLevelTermDao lowLevelTermDao;
     protected ExpeditedAdverseEventReportDao aeReportDao;
-    protected ResearchStaffDao researchStaffDao;
     protected AnatomicSiteDao anatomicSiteDao;
     protected InteroperationService interoperationService;
     protected PriorTherapyDao priorTherapyDao;
@@ -89,8 +131,8 @@ public class CreateAdverseEventAjaxFacade {
     private StudySearchableAjaxableDomainObjectRepository studySearchableAjaxableDomainObjectRepository;
     private ParticipantAjaxableDomainObjectRepository participantAjaxableDomainObjectRepository;
     private ConditionDao conditionDao;
-    private InvestigatorDao investigatorDao;
 	private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+	private UserDao userDao;
 
 
     public Class<?>[] controllers() {
@@ -222,14 +264,14 @@ public class CreateAdverseEventAjaxFacade {
     }
 
 
-    public ResearchStaff getResearchStaff(String text) {
-        ResearchStaff researchStaff = researchStaffDao.getById(Integer.parseInt(text));
-        return reduce(researchStaff, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
+    public User getResearchStaff(String text) {
+        User user = userDao.getById(Integer.parseInt(text));
+        return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
     
-    public Investigator getInvestigator(String text){
-    	Investigator investigator = investigatorDao.getById(Integer.parseInt(text));
-    	return reduce(investigator, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
+    public User getInvestigator(String text){
+    	User user = userDao.getById(Integer.parseInt(text));
+        return reduce(user, "id", "firstName", "lastName", "middleName", "emailAddress", "phoneNumber", "faxNumber");
     }
     
     public List<ParticipantAjaxableDomainObject> matchParticipants(String text, Integer studyId) {
@@ -830,7 +872,7 @@ public class CreateAdverseEventAjaxFacade {
     protected String getUserId(){
 		WebContext webContext = getWebContext();
 		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
 		return userId;
 	}
 
@@ -883,11 +925,6 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setAeReportDao(ExpeditedAdverseEventReportDao aeReportDao) {
         this.aeReportDao = aeReportDao;
-    }
-
-    @Required
-    public void setResearchStaffDao(ResearchStaffDao researchStaffDao) {
-        this.researchStaffDao = researchStaffDao;
     }
 
     @Required
@@ -1044,7 +1081,7 @@ public class CreateAdverseEventAjaxFacade {
         this.conditionDao = conditionDao;
     }
     @Required
-    public void setInvestigatorDao(InvestigatorDao investigatorDao) {
-		this.investigatorDao = investigatorDao;
+    public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 }
