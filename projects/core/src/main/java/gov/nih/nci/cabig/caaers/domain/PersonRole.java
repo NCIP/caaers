@@ -11,14 +11,14 @@ import gov.nih.nci.cabig.ctms.domain.CodedEnum;
 public enum PersonRole implements CodedEnum<Integer>{
 	
 	
-	SITE_PRINCIPAL_INVESTIGATOR(1, "Site Principal Investigator","SPI"),
-	SITE_INVESTIGATOR(2, "Site Investigator","SI"),
-	PRINCIPAL_INVESTIGATOR(3, "Principal Investigator","PI"),
-	PARTICIPANT_COORDINATOR(4, "Participant Coordinator","PC"),
-	STUDY_COORDINATOR(5, "Study Coordinator","SC"),
-	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "AEC"),
-	REPORTER(7, "Reporter", "PC"),
-	PHYSICIAN (8, "Physician", "SI")
+	SITE_PRINCIPAL_INVESTIGATOR(1, "Site Principal Investigator","SPI", UserGroupType.caaers_physician),
+	SITE_INVESTIGATOR(2, "Site Investigator","SI", UserGroupType.caaers_physician),
+	PRINCIPAL_INVESTIGATOR(3, "Principal Investigator","PI", UserGroupType.caaers_physician),
+	PARTICIPANT_COORDINATOR(4, "Participant Coordinator","PC", UserGroupType.caaers_participant_cd),
+	STUDY_COORDINATOR(5, "Study Coordinator","SC", UserGroupType.caaers_study_cd),
+	ADVERSE_EVENT_COORDINATOR(6, "Adverse Event Coordinator", "AEC", UserGroupType.caaers_ae_cd),
+	REPORTER(7, "Reporter", "PC", UserGroupType.caaers_participant_cd),
+	PHYSICIAN (8, "Physician", "SI", UserGroupType.caaers_physician)
 	//CENTRAL_OFFICE_SAE_COORDINATOR(9, "Central Office SAE Coordinator","AEC"),
 	//COORDINATING_CENTER_DATA_COORDINATOR(10, "Coordinating Center Data Coordinator", "AEC"),
 	//SITE_CRA(11, "Site Clinical Research Assistant", "PC")
@@ -27,11 +27,13 @@ public enum PersonRole implements CodedEnum<Integer>{
 	private Integer code;
 	private String displayName;
 	private String roleCode;
+	private UserGroupType[] userGroups;
 	
-	private PersonRole(Integer code, String displayName, String roleCode){
+	private PersonRole(Integer code, String displayName, String roleCode , UserGroupType... userGroups){
 		this.code = code;
 		this.displayName = displayName;
 		this.roleCode = roleCode;
+		this.userGroups = userGroups;
 		register(this);
 	}
 	
@@ -48,6 +50,10 @@ public enum PersonRole implements CodedEnum<Integer>{
 	
 	public String getRoleCode(){
 		return roleCode;
+	}
+	
+	public UserGroupType[] getUserGroups() {
+		return userGroups;
 	}
 	
 }

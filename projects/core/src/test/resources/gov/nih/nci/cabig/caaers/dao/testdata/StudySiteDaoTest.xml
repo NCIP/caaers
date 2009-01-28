@@ -68,5 +68,7 @@
  
 <ind_holders />
 <task_configuration />
+<wf_transition_configs />
+<wf_transition_owners />
 <wf_assignees />
 </dataset> 		

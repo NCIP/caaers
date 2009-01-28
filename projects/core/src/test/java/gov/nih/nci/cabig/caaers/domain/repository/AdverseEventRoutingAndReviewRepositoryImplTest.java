@@ -30,6 +30,7 @@ import java.util.Map;
 
 import org.easymock.classextension.EasyMock;
 import org.jbpm.context.exe.ContextInstance;
+import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
 /**
  * 
@@ -46,6 +47,8 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	AdverseEventRoutingAndReviewRepositoryImpl impl;
 	ProcessInstance processInstance;
 	ContextInstance contextInstance;
+	
+	Map<String, Object> variables = new HashMap<String, Object>();
 	
 	
 	@Override
@@ -228,16 +231,17 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		Integer id = 5;
 		Integer wfId = 5;
 		String transitionToTake = "abcd";
+		String loginId = "SYSTEM_ADMIN";
 		ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
 		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
-		List<String> transitionNames = new ArrayList<String>();
+		List<Transition> transitions = new ArrayList<Transition>();
 		
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
 		EasyMock.expect(rDao.getById(id)).andReturn(r);
-		EasyMock.expect(wfService.nextTransitionNames(wfId)).andReturn(transitionNames);
+		EasyMock.expect(wfService.nextTransitions(wfId, loginId)).andReturn(transitions);
 		rDao.save(r);
 		replayMocks();
-		List<String> transitions = impl.advanceReportWorkflow(wfId, transitionToTake, id, null);
+		List<String> transitionsNames = impl.advanceReportWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
 		
@@ -247,17 +251,18 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 	public void testAdvanceReportingPeriodWorkflow(){
 		Integer id = 5;
 		Integer wfId = 5;
+		String loginId = "SYSTEM_ADMIN";
 		String transitionToTake = "abcd";
-		List<String> transitionNames = new ArrayList<String>();
+		List<Transition> transitions = new ArrayList<Transition>();
 		ReviewStatus rs = ReviewStatus.DRAFT_INCOMPLETE;
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
 		
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(rs);
-		EasyMock.expect(wfService.nextTransitionNames(wfId)).andReturn(transitionNames);
+		EasyMock.expect(wfService.nextTransitions(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(rpDao.getById(id)).andReturn(rp);
 		rpDao.save(rp);
 		replayMocks();
-		List<String> transitions = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id, null);
+		List<String> transitionNames = impl.advanceReportingPeriodWorkflow(wfId, transitionToTake, id, loginId);
 		
 		verifyMocks();
 		
@@ -275,11 +280,13 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		site.setWorkflowConfigs(wfConfigMap);
 		reportingPeriod.setAssignment(assignment);
 		
-		EasyMock.expect(wfService.createProcessInstance("test")).andReturn(processInstance);
-		EasyMock.expect(processInstance.getContextInstance()).andReturn(contextInstance);
-	    contextInstance.addVariables((Map)EasyMock.anyObject());
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(WorkflowService.VAR_STUDY_ID, site.getStudy().getId());
+		variables.put(WorkflowService.VAR_WF_TYPE, AdverseEventReportingPeriod.class.getName());
+		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
+		
+		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
-	    EasyMock.expect(wfService.saveProcessInstance(processInstance)).andReturn(processId);
 	    rpDao.save(reportingPeriod);
 		replayMocks();
 		impl.enactReportingPeriodWorkflow(reportingPeriod);
@@ -300,11 +307,13 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		reportingPeriod.addAeReport(aeReport);
 		aeReport.setAssignment(assignment);
 		
-		EasyMock.expect(wfService.createProcessInstance("test")).andReturn(processInstance);
-		EasyMock.expect(processInstance.getContextInstance()).andReturn(contextInstance);
-	    contextInstance.addVariables((Map)EasyMock.anyObject());
+		Map<String, Object> variables = new HashMap<String, Object>();
+		variables.put(WorkflowService.VAR_STUDY_ID, site.getStudy().getId());
+		variables.put(WorkflowService.VAR_WF_TYPE, ExpeditedAdverseEventReport.class.getName());
+		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
+		
+		EasyMock.expect(wfService.createProcessInstance("test", variables)).andReturn(processInstance);
 	    EasyMock.expect(processInstance.getId()).andReturn(processId).anyTimes();
-	    EasyMock.expect(wfService.saveProcessInstance(processInstance)).andReturn(processId);
 	    rDao.save(aeReport);
 		replayMocks();
 		impl.enactReportWorkflow(aeReport);

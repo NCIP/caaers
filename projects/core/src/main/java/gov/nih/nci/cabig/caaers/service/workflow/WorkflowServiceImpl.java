@@ -19,12 +19,18 @@ import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
+import gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner;
 import gov.nih.nci.cabig.caaers.domain.workflow.RoleAssignee;
+import gov.nih.nci.cabig.caaers.domain.workflow.RoleTransitionOwner;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
+import gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig;
+import gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver;
@@ -37,6 +43,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jbpm.JbpmContext;
@@ -79,7 +86,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	private PossibleTransitionsResolver possibleTransitionsResolver;
 	
-	 private Logger log = Logger.getLogger(WorkflowServiceImpl.class);
+	private CSMUserRepository csmUserRepository;
+	
+	private Logger log = Logger.getLogger(WorkflowServiceImpl.class);
 	
 	protected ProcessDefinition findProcessDefinitionByName(String wfDefName){
 		for(ProcessDefinition pd : processDefinitions){
@@ -94,7 +103,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * This method is used to create and persist processInstance
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-	public ProcessInstance createProcessInstance(String workflowDefinitionName){
+	public ProcessInstance createProcessInstance(String workflowDefinitionName, Map<String, Object> contextVariables){
 		
 		//check if workflow is enabled
 		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
@@ -109,20 +118,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 			
 			//instantiate the process, then jump to the first node
 			ProcessInstance processInstance = new ProcessInstance(pDefinition);
+			processInstance.getContextInstance().addVariables(contextVariables);
 			Long processId =  saveProcessInstance(processInstance);
+			
 			assert processId != null;
-			return processInstance;	
+			
+			Token token = processInstance.getRootToken();
+	        token.signal();
+			
+	        saveProcessInstance(processInstance);
+	        return processInstance;	
 		}
 		return null;
 	}
-	
-	public void makeDefaultTransition(Long workflowId) {
-		ProcessInstance processInstance = fetchProcessInstance(workflowId.longValue());
-		Token token = processInstance.getRootToken();
-        token.signal();
-		
-        saveProcessInstance(processInstance);
-	}
+
 	
 	public Long saveProcessInstance(ProcessInstance processInstance) {
 		return jbpmTemplate.saveProcessInstance(processInstance);
@@ -131,23 +140,52 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/**
 	 * This method, return the list of possible transitions available at a given time on a specific workflow process instance
 	 */
-	public List<Transition> nextTransitions( Integer workflowId){
+	public List<Transition> nextTransitions( Integer workflowId, String loginId){
 		ProcessInstance processInstance = fetchProcessInstance(workflowId.longValue());
 		String workflowDefinitionName = processInstance.getProcessDefinition().getName();
 		WorkflowConfig wfConfig = workflowConfigDao.getByWorkflowDefinitionName(workflowDefinitionName);
-		return possibleTransitionsResolver.fetchNextTransitions(wfConfig, processInstance);
-	}
-	
-	/**
-	 * This method will return the list of all possible transitions available at a given time on a specific process instance
-	 */
-	public List<String> nextTransitionNames(Integer workflowId) {
-		List<Transition> transitions = nextTransitions(workflowId);
-		List<String> transitionNames = new ArrayList<String>();
-		for(Transition transition : transitions){
-			transitionNames.add(transition.getName());
+		List<Transition> possibleTransitions =  possibleTransitionsResolver.fetchNextTransitions(wfConfig, processInstance);
+		//now filter based on login roles
+		
+		//super user should see everything.
+		if(csmUserRepository.isSuperUser(loginId)) return possibleTransitions;
+		
+		String taskNodeName = processInstance.getRootToken().getNode().getName();
+		TaskConfig taskConfig = wfConfig.findTaskConfig(taskNodeName);
+		if(taskConfig == null )  return possibleTransitions; // task is not configured
+		
+		User user = csmUserRepository.getUserByName(loginId);
+		
+		ArrayList<Transition> filteredTransitions = new ArrayList<Transition>();
+		for(Transition transition : possibleTransitions){
+			TransitionConfig transitionConfig = taskConfig.findTransitionConfig(transition.getName());
+			if(transitionConfig == null) continue; //transition is not configured so no body can move it expect sysadmin
+			
+			List<TransitionOwner> owners = transitionConfig.getOwners();
+			if(owners == null) continue; //no body owns the transition
+			
+			for(TransitionOwner owner : owners){
+				if(owner.isUser()){
+					PersonTransitionOwner personOwner = (PersonTransitionOwner) owner;
+					if(StringUtils.equals(personOwner.getUser().getLoginId(), loginId)) {
+						filteredTransitions.add(transition);
+					}
+				}else{
+					RoleTransitionOwner roleOwner = (RoleTransitionOwner) owner;
+					PersonRole ownerRole = roleOwner.getUserRole();
+					for(UserGroupType userGroupType : user.getUserGroupTypes()){
+						if(ArrayUtils.contains(ownerRole.getUserGroups(), userGroupType)){
+							filteredTransitions.add(transition);
+							break;
+						}
+					}
+					
+				}
+			}
 		}
-		return transitionNames;
+		
+		return filteredTransitions;
+		
 	}
 	
 
@@ -422,5 +460,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void setAdverseEventReportingPeriodDao(
 			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+	public CSMUserRepository getCsmUserRepository() {
+		return csmUserRepository;
+	}
+	
+	public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
+		this.csmUserRepository = csmUserRepository;
 	}
 }

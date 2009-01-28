@@ -54,6 +54,7 @@
         <property name="workflowConfigDao" ref="workflowConfigDao"/>
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
         <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
+        <property name="csmUserRepository" ref="csmUserRepository" />
    </bean>
    
    <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>

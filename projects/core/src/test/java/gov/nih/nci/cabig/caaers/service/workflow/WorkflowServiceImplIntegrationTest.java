@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import gov.nih.nci.cabig.caaers.CaaersDbTestCase;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
@@ -19,21 +21,23 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 	
 	
 	WorkflowServiceImpl wfService;
+	Map<String, Object > variables = new HashMap<String, Object>();
 	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		wfService = (WorkflowServiceImpl)getDeployedApplicationContext().getBean("workflowService");
+		
 	}
 	
 	public void testCreateProcessInstance() {
-		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
 		assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
 	}
 	
 	public void testFetchTaskInstances() {
-		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
 		assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
 		List<TaskInstance>tasks = wfService.fetchTaskInstances("bush@def.com");
@@ -45,7 +49,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 	public void testFetchProcessInstance() {
 		Long id = null;
 		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 			assertNotNull(pInstance);
 			id = pInstance.getId();
 		}
@@ -58,14 +62,15 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 
 	public void testNextTransitions() {
 		Integer id = null;
+		String loginId = "SYSTEM_ADMIN";
 		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 			Long l = pInstance.getId();
 			id = new Integer(l.intValue());
 		}
 		interruptSession();
 		{
-			List<Transition> nextTransitions = wfService.nextTransitions(id);
+			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertNotNull(nextTransitions);
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(1, nextTransitions.size());
@@ -74,34 +79,20 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 	}
 	
-	public void testNextTransitionNames() {
-		Integer id = null;
-		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
-			Long l = pInstance.getId();
-			id = new Integer(l.intValue());
-		}
-		interruptSession();
-		{
-			List<String> nextTransitions = wfService.nextTransitionNames(id);
-			assertNotNull(nextTransitions);
-			assertFalse(nextTransitions.isEmpty());
-			assertEquals(1, nextTransitions.size());
-			assertEquals("Approve Reporting Period", nextTransitions.get(0));
-		}
-	}
+	
 	
 	public void testAdvanceWorkflow(){
+		String loginId = "SYSTEM_ADMIN";
 		Integer id = null;
 		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 			Long l = pInstance.getId();
 			id = new Integer(l.intValue());
 		}
 		interruptSession();
 		String nextTransition = null;
 		{
-			List<Transition> nextTransitions = wfService.nextTransitions(id);
+			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
 			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
 			nextTransition = "Approve Reporting Period";
@@ -128,7 +119,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		}
 		
 		{
-			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 			assertNotNull(pInstance);
 			id = pInstance.getId();
 			assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
@@ -156,7 +147,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 	
 	
 	public void testFindTaskAssignees() {
-		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER);
+		ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
 		assertNotNull(pInstance);
 		assertEquals( "Submit Reporting Period for Data Coordinator Review" ,pInstance.getRootToken().getNode().getName());
 		

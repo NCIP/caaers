@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
+import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -10,12 +11,14 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.factory.AERoutingAndReviewDTOFactory;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
+import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowAware;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
@@ -26,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.springframework.transaction.annotation.Transactional;
 /**
@@ -41,6 +45,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
 	private WorkflowService workflowService;
+	
 	
 	public AdverseEventRoutingAndReviewRepositoryImpl() {
 		routingAndReviewFactory = new AERoutingAndReviewDTOFactory();
@@ -62,15 +67,12 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		StudySite studySite = assignment.getStudySite();
 		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("reportingPeriod");
 		
-		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName());
-		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
 		variables.put(WorkflowService.VAR_WF_TYPE, AdverseEventReportingPeriod.class.getName());
 		variables.put(WorkflowService.VAR_REPORTING_PERIOD_ID, reportingPeriod.getId());
-		pInstance.getContextInstance().addVariables(variables);
 		
-		workflowService.makeDefaultTransition(pInstance.getId());
+		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName(), variables);
 		
 		reportingPeriod.setWorkflowId((int) pInstance.getId());
 		reportingPeriod.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
@@ -97,17 +99,14 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		StudySite studySite = assignment.getStudySite();
 		WorkflowConfig wfConfig = studySite.getWorkflowConfigs().get("report");
 		
-		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName());
-		
 		Map<String, Object> variables = new HashMap<String, Object>();
 		variables.put(WorkflowService.VAR_STUDY_ID, studySite.getStudy().getId());
 		variables.put(WorkflowService.VAR_WF_TYPE, ExpeditedAdverseEventReport.class.getName());
 		variables.put(WorkflowService.VAR_EXPEDITED_REPORT_ID, aeReport.getId());
-		pInstance.getContextInstance().addVariables(variables);
 		
-		//workflowService.saveProcessInstance(pInstance);
-		workflowService.makeDefaultTransition(pInstance.getId());
+		ProcessInstance pInstance = workflowService.createProcessInstance(wfConfig.getWorkflowDefinitionName(), variables);
 		
+
 		aeReport.setWorkflowId((int)pInstance.getId());
 		aeReport.setReviewStatus(ReviewStatus.DRAFT_INCOMPLETE);
 		
@@ -199,7 +198,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		reportingPeriod.setReviewStatus(nextStatus);
 		adverseEventReportingPeriodDao.save(reportingPeriod);
-		return workflowService.nextTransitionNames(workflowId);
+		return nextTransitionNames(workflowId, userId);
 	}
 	
 	public List<String> advanceReportWorkflow(Integer workflowId,String toTransition, Integer id, String userId) {
@@ -212,12 +211,19 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		ReviewStatus nextStatus = workflowService.advanceWorkflow(workflowId, toTransition);
 		aeReport.setReviewStatus(nextStatus);
 		expeditedAdverseEventReportDao.save(aeReport);
-		return workflowService.nextTransitionNames(workflowId);
+		return nextTransitionNames(workflowId, userId);
 	}
 	
 	public List<String> nextTransitionNames(Integer workflowId, String userId) {
-		return workflowService.nextTransitionNames(workflowId);
+		List<Transition> transitions = workflowService.nextTransitions(workflowId, userId);
+		List<String> transitionNames = new ArrayList<String>();
+		for(Transition transition : transitions){
+			transitionNames.add(transition.getName());
+		}
+		return transitionNames;
 	}
+	
+
 	
 	public List<AdverseEventReportingPeriodDTO> findAdverseEventReportingPeriods(Participant participant, Study study, StudySite studySite, ReviewStatus reviewStatus, String userId){
 		AdverseEventReportingPeriodForReviewQuery query = new AdverseEventReportingPeriodForReviewQuery();
@@ -322,4 +328,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 	public void setWorkflowService(WorkflowService workflowService) {
 		this.workflowService = workflowService;
 	}
+
+	
+	
 }

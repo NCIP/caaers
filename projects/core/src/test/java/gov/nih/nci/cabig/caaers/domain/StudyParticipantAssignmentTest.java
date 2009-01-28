@@ -138,4 +138,8 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
 
     }
+    
+    public void testGetMaxCycleNumber(){
+    	fail("Not implemented");
+    }
 }

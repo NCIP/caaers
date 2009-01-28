@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.domain.repository;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 
 /**
  * This service interface is used to manage user access to the caaers UI.
@@ -45,5 +46,12 @@ public interface CSMUserRepository {
     public void sendUserEmail(String emailAddress, String subject, String text);
     
     public boolean loginIDInUse(String loginId);
+    /**
+     * Returns true, if the user is a Super user, ie associated to roles
+     * {@link UserGroupType}caaers_admin or caaers_super_user
+     * @param loginId
+     * @return
+     */
+    public boolean isSuperUser(String loginId);
   
 }

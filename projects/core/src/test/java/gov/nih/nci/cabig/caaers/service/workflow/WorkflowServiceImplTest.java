@@ -48,6 +48,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	WorkflowConfig wfConfig;
 	UserDao userDao;
 	AdverseEventReportingPeriodDao reportingPeriodDao;
+	Map<String, Object> variables = new HashMap<String, Object>();
 	
 	ResearchStaff r1;
 	
@@ -99,7 +100,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		try {
 			EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName((String) EasyMock.anyObject())).andReturn(wfConfig);
 			replayMocks();
-			wfService.createProcessInstance("abcd");
+			wfService.createProcessInstance("abcd", variables);
 			fail("create process should throw exception");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -111,7 +112,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 			EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName((String) EasyMock.anyObject())).andReturn(wfConfig);
 			EasyMock.expect(template.saveProcessInstance((ProcessInstance) EasyMock.anyObject())).andReturn(1L);
 			replayMocks();
-			ProcessInstance l = wfService.createProcessInstance("test");
+			ProcessInstance l = wfService.createProcessInstance("test", variables);
 			assertNotNull(l);
 			verifyMocks();
 		} catch (JbpmException e) {

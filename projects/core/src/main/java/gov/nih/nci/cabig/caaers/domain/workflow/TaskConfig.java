@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,6 +29,8 @@ import org.hibernate.annotations.Type;
 @Table(name = "task_configuration")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_task_configuration_id")})
 public class TaskConfig extends AbstractMutableDomainObject{
+	
+	private List<TransitionConfig> transitions;
 	
 	private List<Assignee> assignees; // List of NotificationRecipient (USERIDs) /ROLES who will receive notifications on the task creation and will be assigned
 								// the tasks too.
@@ -85,6 +88,20 @@ public class TaskConfig extends AbstractMutableDomainObject{
 		assignees.add(assignee);
 	}
 	
+	@OneToMany
+    @JoinColumn(name = "task_config_id", nullable = false)
+    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+	public List<TransitionConfig> getTransitions() {
+		return transitions;
+	}
+	public void setTransitions(List<TransitionConfig> transitions) {
+		this.transitions = transitions;
+	}
+	public void addTransition(TransitionConfig transitionConfig){
+		if(transitions == null) transitions = new ArrayList<TransitionConfig>();
+		transitions.add(transitionConfig);
+	}
+	
 	public String getStatusName() {
 		return statusName;
 	}
@@ -102,5 +119,15 @@ public class TaskConfig extends AbstractMutableDomainObject{
 	@Override
 	public String toString() {
 		return "TaskConfig [" + taskName + ", " + statusName + " , " + applicable + " ]";
+	}
+	
+	public TransitionConfig findTransitionConfig(String transitionName){
+		if(transitions == null || transitions.isEmpty()) return null;
+		for(TransitionConfig transitionConfig : transitions) {
+			if(StringUtils.equals(transitionName, transitionConfig.getTransitionName())){
+				return transitionConfig;
+			}
+		}
+		return null;
 	}
 }

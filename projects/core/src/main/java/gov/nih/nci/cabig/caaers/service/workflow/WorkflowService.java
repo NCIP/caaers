@@ -11,6 +11,7 @@ import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.SessionFactory;
 import org.jbpm.JbpmConfiguration;
@@ -54,13 +55,8 @@ public interface WorkflowService{
 	 * @param workflowDefinitionName
 	 * @return
 	 */
-	public ProcessInstance createProcessInstance(String workflowDefinitionName);
+	public ProcessInstance createProcessInstance(String workflowDefinitionName, Map<String , Object> contextVariables);
 	
-	/**
-	 * This method will make a default transition in the workflow
-	 * @param id
-	 */
-	public void makeDefaultTransition(Long id);
 	
 	/**
 	 * This method will save a process instance. 
@@ -106,14 +102,7 @@ public interface WorkflowService{
 	 * @param workflowId - A process instance ID
 	 * @return
 	 */
-	public List<Transition> nextTransitions(Integer workflowId);
-	
-	/**
-	 * List all the available transitions of the workflow
-	 * @param workflowId
-	 * @return
-	 */
-	public List<String> nextTransitionNames(Integer workflowId);
+	public List<Transition> nextTransitions(Integer workflowId, String userId);
 	
 	/**
 	 * This method is used to identify the assignees configured on the task. 

@@ -76,6 +76,9 @@
 		applicable="1"
 		location="1"
 		workflow_config_id="1000" />
+		
+		<wf_transition_configs />
+		<wf_transition_owners />
 	
 	<wf_assignees />
 	<ind_holders />
