@@ -130,6 +130,21 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertTrue(nextTransitions.isEmpty());
 		}
 	}
+	public void testNextTransitions_NullUser() {
+		Integer id = null;
+		String loginId = null;
+		{
+			ProcessInstance pInstance  = wfService.createProcessInstance(WorkflowService.WORKFLOW_EVALUATION_PERIOD_COORDINATING_CENTER, variables);
+			Long l = pInstance.getId();
+			id = new Integer(l.intValue());
+		}
+		interruptSession();
+		{
+			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
+			assertNotNull(nextTransitions);
+			assertTrue(nextTransitions.isEmpty());
+		}
+	}
 	
 	public void testAdvanceWorkflow(){
 		String loginId = "SYSTEM_ADMIN";

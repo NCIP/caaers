@@ -295,6 +295,7 @@ public class CSMUserRepositoryImpl implements CSMUserRepository {
   
     public boolean isSuperUser(String loginId) {
        try {
+		if(StringUtils.isEmpty(loginId)) return false;
 		
 		gov.nih.nci.security.authorization.domainobjects.User csmUser = getCSMUserByName(loginId);
 		if(csmUser == null) return false;

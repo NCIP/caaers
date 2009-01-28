@@ -46,6 +46,12 @@ public class Configuration extends DatabaseBackedConfiguration {
 
     public static final ConfigurationProperty<String> SYSTEM_FROM_EMAIL = PROPERTIES
                     .add(new ConfigurationProperty.Text("systemFromEmail"));
+    
+    public static final ConfigurationProperty<String> CAAERS_BASE_URL = PROPERTIES
+    	.add(new ConfigurationProperty.Text("caaersBaseUrl"));
+    
+    public static final ConfigurationProperty<Boolean> ENABLE_WORKFLOW = PROPERTIES
+    	.add(new ConfigurationProperty.Bool("enableWorkflow"));
 
     public ConfigurationProperties getProperties() {
         return PROPERTIES;
