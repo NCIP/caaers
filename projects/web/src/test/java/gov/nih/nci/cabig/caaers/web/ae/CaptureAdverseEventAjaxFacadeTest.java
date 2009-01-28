@@ -134,7 +134,8 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-
+        
+        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN");
@@ -158,6 +159,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
         
+        adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth).anyTimes();
         expect(auth.getPrincipal()).andReturn(user).anyTimes();
         expect(user.getUsername()).andReturn("SYSTEM_ADMIN").anyTimes();
