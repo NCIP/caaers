@@ -30,6 +30,10 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.userdetails.User;
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -101,9 +105,11 @@ public class RoutingAndReviewController extends SimpleFormController{
     @Override
     protected ModelAndView processFormSubmission(HttpServletRequest request,HttpServletResponse response, Object command, BindException errors)	throws Exception {
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
-    	
+
+    	SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
     	if(!errors.hasErrors()){
-    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), null);
+    		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), userId);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
         	cmd.setSearchResultsDTO(searchResultsDTO);
     	}

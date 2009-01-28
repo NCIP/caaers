@@ -3,11 +3,17 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
+import org.acegisecurity.context.SecurityContext;
+import org.acegisecurity.userdetails.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.directwebremoting.WebContext;
@@ -17,6 +23,10 @@ public class RoutingAndReviewAjaxFacade {
 	
 	 private static final Log log = LogFactory.getLog(RoutingAndReviewAjaxFacade.class);
 	 private static Class<?>[] CONTROLLERS = {RoutingAndReviewController.class};
+	 
+	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	 
+	 private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	 
 	 
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
@@ -46,12 +56,27 @@ public class RoutingAndReviewAjaxFacade {
 		AjaxOutput output = new AjaxOutput();
 		List<String> transitions = null;
 		if(entity.equals("report")){
-			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, id, null);
+			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, aeReport, getUserId());
+			output.setHtmlContent(aeReport.getReviewStatus().getDisplayName());
 		}else if(entity.equals("reportingPeriod")){
-			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, id, null);
+			AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
+			transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(workflowId, toTransition, reportingPeriod, getUserId());
+			output.setHtmlContent(reportingPeriod.getReviewStatus().getDisplayName());
 		}
 		output.setObjectContent(transitions);
 		return output;
+	}
+	
+	protected WebContext getWebContext(){
+    	return WebContextFactory.get();
+    }
+	
+	protected String getUserId(){
+		WebContext webContext = getWebContext();
+		SecurityContext context = (SecurityContext)webContext.getHttpServletRequest().getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		return userId;
 	}
 	 
 	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {
@@ -60,5 +85,21 @@ public class RoutingAndReviewAjaxFacade {
 	public void setAdverseEventRoutingAndReviewRepository(
 			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	}
+	
+	public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao){
+		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+	
+	public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao(){
+		return adverseEventReportingPeriodDao;
+	}
+	
+	public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao){
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+	
+	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao(){
+		return expeditedAdverseEventReportDao;
 	}
 }

@@ -47,7 +47,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	@Override
 	protected boolean isFormSubmission(HttpServletRequest request) {
 		Object isAjax = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
-		if(isAjax != null)
+		if(isAjax != null && !isAjax.equals(""))
 			return true;
 		
 		String comment = request.getParameter("comment");
@@ -84,6 +84,9 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 	protected void onBindAndValidate(HttpServletRequest request,Object command, BindException errors) throws Exception {
 		super.onBindAndValidate(request, command, errors);
 		RoutingAndReviewCommentCommand cmd = (RoutingAndReviewCommentCommand) command;
+		SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		cmd.setUserId(userId);
 		Object action = findInRequest(request, AJAX_ACTION);
 		if(action == null){
 			if(cmd.getComment() == null){
