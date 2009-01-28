@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.domain.dto;
 
+import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 
 /**
  * 
@@ -11,8 +13,9 @@ public class ReportDTO {
 	private String name;
 	private Integer id;
 	private Integer reportVersionId;
-	private Long workflowId;
-	private ReviewStatus reviewStatus;
+	private Integer noOfAe;
+	private ReportStatus status;
+	private Report report;
 	
 	public Integer getId() {
 		return id;
@@ -32,16 +35,28 @@ public class ReportDTO {
 	public Integer getReportVersionId() {
 		return reportVersionId;
 	}
-	public ReviewStatus getReviewStatus() {
-		return reviewStatus;
+	
+	public ReportStatus getStatus(){
+		return status;
 	}
-	public void setReviewStatus(ReviewStatus reviewStatus) {
-		this.reviewStatus = reviewStatus;
+	
+	public void setStatus(ReportStatus status){
+		this.status = status;
 	}
-	public void setWorkflowId(Long workflowId) {
-		this.workflowId = workflowId;
+	
+	public void setReport(Report report){
+		this.report = report;
 	}
-	public Long getWorkflowId() {
-		return workflowId;
+	
+	public Report getReport(){
+		return report;
+	}
+	
+	public Integer getNoOfAe(){
+		return noOfAe;
+	}
+	
+	public void setNoOfAe(Integer noOfAe){
+		this.noOfAe = noOfAe;
 	}
 }

@@ -32,7 +32,7 @@ public class ExpeditedAdverseEventReportDTO {
 	private Study study;
 	private Participant participant;
 	private ExpeditedAdverseEventReport aeReport;
-	private List<ReportDTO> reportDTOs = new ArrayList<ReportDTO>();
+	private List<ReportDTO> reports = new ArrayList<ReportDTO>();
 	
 	
 	public Integer getId() {
@@ -112,12 +112,12 @@ public class ExpeditedAdverseEventReportDTO {
 		this.possibleActions = possibleActions;
 	}
 	public void addReportDTO(ReportDTO reportDTO){
-		reportDTOs.add(reportDTO);
+		reports.add(reportDTO);
 	}
-	public List<ReportDTO> getReportDTOs() {
-		return reportDTOs;
+	public List<ReportDTO> getReports() {
+		return reports;
 	}
-	public void setReportDTOs(List<ReportDTO> reports) {
-		this.reportDTOs = reports;
+	public void setReports(List<ReportDTO> reports) {
+		this.reports = reports;
 	}
 }

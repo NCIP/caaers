@@ -245,7 +245,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 					for(ExpeditedAdverseEventReport aeReport : reportingPeriod.getAeReports()){
 						if(aeReport.getWorkflowId() == null) continue; //this report is prior to workflow integration
 						ExpeditedAdverseEventReportDTO rDto = routingAndReviewFactory.createAdverseEventReportDTO(aeReport, userId);
-						rpDto.addAdverseEventReportDTO(rDto);
+						rpDto.addAdverseEventAeReportDTO(rDto);
 					}//aereport
 				}
 				

@@ -135,13 +135,13 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
     public List<User> findUsersByRole(PersonRole personRole){
     	List<User> users = new ArrayList<User>();
     	for(StudyInvestigator studyInvestigator : getStudyInvestigators()){
-    		if(StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getRoleCode())){
+    		if(StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getRoleCode()) || StringUtils.equals(studyInvestigator.getRoleCode(), personRole.getDisplayName())){
     			users.add(studyInvestigator.getSiteInvestigator().getInvestigator());
     		}
     	}
     	
     	for(StudyPersonnel studyPerson : getStudyPersonnels()){
-    		if(StringUtils.equals(studyPerson.getRoleCode(), personRole.getRoleCode())){
+    		if(StringUtils.equals(studyPerson.getRoleCode(), personRole.getRoleCode())|| StringUtils.equals(studyPerson.getRoleCode(), personRole.getDisplayName())){
     			users.add(studyPerson.getResearchStaff());
     		}
     	}

@@ -44,6 +44,13 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
+		List<ExpeditedAdverseEventReportDTO> reports = new ArrayList<ExpeditedAdverseEventReportDTO>();
+		for(ExpeditedAdverseEventReport aeReport: rp.getAeReports()){
+			ExpeditedAdverseEventReportDTO aeReportDTO = createAdverseEventReportDTO(aeReport, userId);
+			if(aeReportDTO != null)
+				reports.add(aeReportDTO);
+		}
+		dto.setReports(reports);
 		dto.setReviewStatus(rp.getReviewStatus());
 		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
 		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
@@ -57,6 +64,10 @@ public class AERoutingAndReviewDTOFactory {
 	
 	public ExpeditedAdverseEventReportDTO createAdverseEventReportDTO(ExpeditedAdverseEventReport aeReport, String userId){
 		if(aeReport == null) return null;
+		if(aeReport.getWorkflowId() == null) {
+			log.warn("The workflowID for ExpeditedAdverseEventReport#" + aeReport.getId() + " is null");
+			return null;
+		}
 		ExpeditedAdverseEventReportDTO dto = new ExpeditedAdverseEventReportDTO();
 		dto.setWorkflowId(aeReport.getWorkflowId());
 		dto.setAeReport(aeReport);
@@ -68,7 +79,7 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setReviewStatus(aeReport.getReviewStatus());
 		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(aeReport.getWorkflowId(), userId));
 		dto.setReviewComments(createReviewComments(aeReport.getReviewComments()));
-		dto.setReportDTOs(createReportDTOs(aeReport));
+		dto.setReports(createReportDTOs(aeReport));
 		return dto;
 	}
 	
@@ -93,7 +104,9 @@ public class AERoutingAndReviewDTOFactory {
 			dto.setName(report.getName());
 			ReportVersion lastVersion = report.getLastVersion();
 			dto.setReportVersionId(lastVersion.getId());
-			dto.setReviewStatus(aeReport.getReviewStatus());
+			dto.setStatus(report.getStatus());
+			dto.setNoOfAe(aeReport.getNumberOfAes());
+			dto.setReport(report);
 			reportDTOs.add(dto);
 		}
 		return reportDTOs;

@@ -200,7 +200,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		verifyMocks();
 		
 		assertEquals(1, dtos.size());
-		assertEquals(1, dtos.get(0).getReports().size());
+		assertEquals(1, dtos.get(0).getAeReports().size());
 	}
 
 	public void testIsReportingPeriodHavingSpecifiedReviewStatus() {
