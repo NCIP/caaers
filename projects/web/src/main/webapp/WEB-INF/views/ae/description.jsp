@@ -10,7 +10,7 @@
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    <%-- <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
     			<tags:routingAndReviewComments domainObjectType="aeReport"/>
@@ -21,7 +21,7 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
     
     <style type="text/css">
         

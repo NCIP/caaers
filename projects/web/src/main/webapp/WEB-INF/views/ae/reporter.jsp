@@ -11,18 +11,20 @@
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
     <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    <%-- <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    	<c:if test="${command.aeReport.id != null">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
     			<tags:routingAndReviewComments domainObjectType="aeReport"/>
     		</div>
     	</jsp:attribute>
+    	</c:if>
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider>
+    </tags:slider> --%>
     
     <script type="text/javascript">
         var NAME_FIELDS = [
