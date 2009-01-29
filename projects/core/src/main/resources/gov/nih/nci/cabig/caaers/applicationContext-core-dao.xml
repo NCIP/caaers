@@ -576,6 +576,7 @@ This applicationContext contains the definition of the DAOs
     <!-- Factor beans starts here-->
     <bean id="reportFactory" class="gov.nih.nci.cabig.caaers.domain.factory.ReportFactory">
         <property name="nowFactory" ref="nowFactory"></property>
+        <property name="freeMarkerService" ref="freeMarkerService" />
     </bean>
 
     <bean id="aeNotificationFactory" class="gov.nih.nci.cabig.caaers.domain.factory.AENotificationFactory"></bean>

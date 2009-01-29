@@ -55,6 +55,8 @@
         <property name="expeditedAdverseEventReportDao" ref="expeditedAdverseEventReportDao" />
         <property name="adverseEventReportingPeriodDao" ref="adverseEventReportingPeriodDao" />
         <property name="csmUserRepository" ref="csmUserRepository" />
+        <property name="freeMarkerService" ref="freeMarkerService" />
+        <property name="configuration" ref="configuration" />
    </bean>
    
    <bean id="possibleTransitionsResolver" class="gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver"/>

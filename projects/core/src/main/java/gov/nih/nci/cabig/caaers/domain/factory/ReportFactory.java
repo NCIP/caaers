@@ -1,18 +1,13 @@
 package gov.nih.nci.cabig.caaers.domain.factory;
 
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.report.*;
+import gov.nih.nci.cabig.caaers.service.FreeMarkerService;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.*;
 
 /**
@@ -21,6 +16,8 @@ import java.util.*;
 public class ReportFactory {
 
     private NowFactory nowFactory;
+    
+    private FreeMarkerService freeMarkerService;
 
     public Report createReport(final ReportDefinition reportDefinition, final ExpeditedAdverseEventReport aeReport, Boolean useDefaultVersion) {
         assert reportDefinition != null : "ReportDefinition must be not null. Unable to create a Report";
@@ -98,7 +95,7 @@ public class ReportFactory {
     	
     	Date now = nowFactory.getNow();
         Calendar cal = GregorianCalendar.getInstance();
-
+        Map<Object, Object> variableMap = report.getContextVariables();
         if (reportDefinition.getPlannedNotifications() != null) {
 
             for (PlannedNotification plannedNotification : reportDefinition.getPlannedNotifications()) {
@@ -117,13 +114,13 @@ public class ReportFactory {
                         ScheduledEmailNotification senf = penf.createScheduledNotification(to);
                         scheduledNotification = senf;
                         if (subjectLine == null) {
-                            subjectLine = applyRuntimeReplacementsForReport(penf.getSubjectLine(), report);
+                            subjectLine = freeMarkerService.applyRuntimeReplacementsForReport(penf.getSubjectLine(), variableMap);
                         }
                         senf.setSubjectLine(subjectLine);
                     }
 
                     if (bodyContent == null) {
-                        bodyContent = applyRuntimeReplacementsForReport(plannedNotification.getNotificationBodyContent().getBody(), report);
+                        bodyContent = freeMarkerService.applyRuntimeReplacementsForReport(plannedNotification.getNotificationBodyContent().getBody(), variableMap);
                     }
                     scheduledNotification.setBody(bodyContent);
 
@@ -142,22 +139,12 @@ public class ReportFactory {
     }
 
 
-    private String applyRuntimeReplacementsForReport(String rawText, Report report) {
-        Configuration cfg = new Configuration();
-        try {
-            Template t = new Template("message", new StringReader(rawText), cfg);
-            Map<Object, Object> map = report.getContextVariables();
-            StringWriter writer = new StringWriter();
-            t.process(map, writer);
-            return writer.toString();
-        } catch (TemplateException e) {
-            throw new CaaersSystemException("Error while applying freemarker template [PlannedNotificatiton.body]", e);
-        } catch (IOException e) {
-            throw new CaaersSystemException("Error while applying freemarker template [PlannedNotificatiton.body]", e);
-        }
-    }
-
     public void setNowFactory(final NowFactory nowFactory) {
         this.nowFactory = nowFactory;
     }
+    @Required
+    public void setFreeMarkerService(FreeMarkerService freeMarkerService) {
+		this.freeMarkerService = freeMarkerService;
+	}
+    
 }

@@ -60,5 +60,8 @@ public class CreateTaskJbpmCallback implements JbpmCallback {
 	public List<User> getTaskAssigneesList() {
 		return taskAssigneesList;
 	}
+	public ExecutionContext getContext() {
+		return context;
+	}
 	
 }

@@ -1,11 +1,8 @@
 package gov.nih.nci.cabig.caaers.service.workflow;
 
-import gov.nih.nci.cabig.caaers.CaaersConfigurationException;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
-import gov.nih.nci.cabig.caaers.dao.StudyDao;
-import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -16,13 +13,10 @@ import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyCoordinatingCenter;
 import gov.nih.nci.cabig.caaers.domain.StudyOrganization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyPersonnel;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
-import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
-import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepositoryImpl;
 import gov.nih.nci.cabig.caaers.domain.workflow.Assignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonTransitionOwner;
@@ -32,22 +26,21 @@ import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.TransitionConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.TransitionOwner;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.service.FreeMarkerService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.PossibleTransitionsResolver;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.jbpm.JbpmContext;
-import org.jbpm.JbpmException;
 import org.jbpm.graph.def.Node;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.def.Transition;
@@ -55,14 +48,10 @@ import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
 import org.springframework.mail.MailException;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springmodules.workflow.jbpm31.JbpmCallback;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
-
-import sun.util.logging.resources.logging;
 
 /**
  * This class has methods, that deals with the JBPM workflow engine.
@@ -87,6 +76,10 @@ public class WorkflowServiceImpl implements WorkflowService {
 	private PossibleTransitionsResolver possibleTransitionsResolver;
 	
 	private CSMUserRepository csmUserRepository;
+	
+	private FreeMarkerService freeMarkerService;
+	
+	private Configuration configuration;
 	
 	private Logger log = Logger.getLogger(WorkflowServiceImpl.class);
 	
@@ -264,7 +257,22 @@ public class WorkflowServiceImpl implements WorkflowService {
 		
 		// Send Notifications
 		try {
-			notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList());
+			ExecutionContext context = createTaskCallback.getContext();
+			String expediteReportUrl = " -- ";
+			String reportingPeriodUrl = "--" ;
+			Map variablesMap = context.getContextInstance().getVariables();
+			
+			if(variablesMap != null){
+				expediteReportUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_EXPEDITED_REPORT + String.valueOf(variablesMap.get(VAR_EXPEDITED_REPORT_ID));
+				reportingPeriodUrl = configuration.get(Configuration.CAAERS_BASE_URL) + URL_REPORTING_PERIOD + String.valueOf(variablesMap.get(VAR_REPORTING_PERIOD_ID));
+					
+			}
+			
+			Map<Object, Object> contextVariables = new HashMap<Object, Object>();
+			contextVariables.put(REPLACEMENT_EXPEDITED_REPORT_LINK, expediteReportUrl);
+			contextVariables.put(REPLACEMENT_REPORTING_PERIOD_LINK, reportingPeriodUrl);
+			
+			notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList(),contextVariables);
 		} catch (MailException e) {
 			log.error("Workflow Service : Error while sending email to task assignees", e);
 		}
@@ -330,11 +338,11 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * Will notifiy the assignees about the creation of a task. 
 	 */
 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED, noRollbackFor = MailException.class)
-	public void notifiyTaskAssignees(String workflowDefinitionName,	String taskNodeName, List<User> recipients) {
+	public void notifiyTaskAssignees(String workflowDefinitionName,	String taskNodeName, List<User> recipients, Map<Object, Object> contextVariables) {
 		if(recipients.isEmpty())
 			return;
 		TaskConfig taskConfig = findTaskConfig(workflowDefinitionName, taskNodeName);
-		String message = taskConfig.getMessage();
+		String message = freeMarkerService.applyRuntimeReplacementsForReport(taskConfig.getMessage(), contextVariables);
 		String subject = "Task : " + taskNodeName;
 		String[] to = new String[recipients.size()];
 		int i = 0;
@@ -478,5 +486,18 @@ public class WorkflowServiceImpl implements WorkflowService {
 	
 	public void setCsmUserRepository(CSMUserRepository csmUserRepository) {
 		this.csmUserRepository = csmUserRepository;
+	}
+	
+	public FreeMarkerService getFreeMarkerService() {
+		return freeMarkerService;
+	}
+	public void setFreeMarkerService(FreeMarkerService freeMarkerService) {
+		this.freeMarkerService = freeMarkerService;
+	}
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 }

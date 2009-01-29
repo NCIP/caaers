@@ -48,6 +48,13 @@ public interface WorkflowService{
 	String VAR_REPORT_ID = "var_report_id";
 	String VAR_WF_TYPE = "var_wf_type";
 	
+	//Replacement key for emails
+	String REPLACEMENT_REPORTING_PERIOD_LINK = "REPORTING_PERIOD_LINK";
+	String REPLACEMENT_EXPEDITED_REPORT_LINK = "EXPEDITED_REPORT_LINK";
+	
+	String URL_REPORTING_PERIOD = "/pages/ae/reviewResolver?adverseEventReportingPeriod=";
+	String URL_EXPEDITED_REPORT = "/pages/ae/reviewResolver?aeReport=";
+	
 	
 	/**
 	 * This method will create an instance of a workflow definition.
@@ -133,7 +140,7 @@ public interface WorkflowService{
 	 * @param workflowDefinitionName
 	 * @param taskNodeName
 	 */
-	public void notifiyTaskAssignees(String workflowDefinitionName, String taskNodeName,List<User> recipients);
+	public void notifiyTaskAssignees(String workflowDefinitionName, String taskNodeName,List<User> recipients, Map<Object, Object> contextVariables);
 
 
 }

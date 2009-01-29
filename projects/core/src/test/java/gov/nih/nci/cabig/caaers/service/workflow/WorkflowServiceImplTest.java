@@ -18,6 +18,8 @@ import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.workflow.PersonAssignee;
 import gov.nih.nci.cabig.caaers.domain.workflow.TaskConfig;
 import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
+import gov.nih.nci.cabig.caaers.service.FreeMarkerService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 import gov.nih.nci.cabig.caaers.workflow.callback.CreateTaskJbpmCallback;
 
@@ -53,6 +55,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 	ResearchStaff r1;
 	
 	JbpmTemplate template;
+	Configuration configuration;
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -85,6 +88,9 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		
 		reportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		wfService.setAdverseEventReportingPeriodDao(reportingPeriodDao);
+		wfService.setFreeMarkerService(new FreeMarkerService());
+		configuration = registerMockFor(Configuration.class);
+		wfService.setConfiguration(configuration);
 		
 	}
 	
@@ -206,6 +212,13 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 			public TaskMgmtInstance getTaskMgmtInstance() {
 				return taskMgmtInstance;
 			}
+			@Override
+			public ContextInstance getContextInstance() {
+				ContextInstance c = super.getContextInstance();
+				Map variables = new HashMap();
+				c.setVariables(variables);
+				return c;
+			}
 		};
 		
 		
@@ -214,6 +227,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
 		EasyMock.expect(template.execute(callback)).andReturn(null);
 		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
+		expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
 		replayMocks();
 		wfService.setCaaersJavaMailSender(caaersJavaMailSender);
 		wfService.createTaskInstances(callback);
