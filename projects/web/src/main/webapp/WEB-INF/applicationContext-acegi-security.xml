@@ -61,6 +61,8 @@
         <entry key="/pages/ae/list.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
         <entry key="/pages/ae/createRoutine.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/ae/captureRoutine.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+        <entry key="/pages/ae/reviewResolver.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+        <entry key="/pages/ae/reviewEvaluationPeriod.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
         <entry key="/pages/ae/routingAndReview.*" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
         <entry key="/pages/search/report" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:READ"/>
         <entry key="/pages/task" value="gov.nih.nci.cabig.caaers.Task:ACCESS"/>
