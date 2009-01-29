@@ -234,6 +234,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		String loginId = "SYSTEM_ADMIN";
 		ReviewStatus reviewStatus = ReviewStatus.DRAFT_INCOMPLETE;
 		ExpeditedAdverseEventReport  r = Fixtures.createSavableExpeditedReport();
+		r.setReviewComments(new ArrayList<ReportReviewComment>());
 		List<String> transitions = new ArrayList<String>();
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(reviewStatus);
@@ -255,7 +256,7 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		List<String> transitions = new ArrayList<String>();
 		ReviewStatus rs = ReviewStatus.DRAFT_INCOMPLETE;
 		AdverseEventReportingPeriod rp = Fixtures.createReportingPeriod();
-		
+		rp.setReviewComments(new ArrayList<ReportingPeriodReviewComment>());
 		EasyMock.expect(wfService.advanceWorkflow(wfId, transitionToTake)).andReturn(rs);
 		EasyMock.expect(wfService.nextTransitionNames(wfId, loginId)).andReturn(transitions);
 		EasyMock.expect(rpDao.getById(id)).andReturn(rp);

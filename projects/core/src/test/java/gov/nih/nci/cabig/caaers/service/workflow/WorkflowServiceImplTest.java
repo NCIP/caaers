@@ -227,7 +227,7 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
 		EasyMock.expect(template.execute(callback)).andReturn(null);
 		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
-		expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
+		//expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
 		replayMocks();
 		wfService.setCaaersJavaMailSender(caaersJavaMailSender);
 		wfService.createTaskInstances(callback);
