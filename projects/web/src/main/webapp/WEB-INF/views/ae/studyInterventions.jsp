@@ -10,12 +10,44 @@
         div.row div.label { width: 16em; }
         div.row div.value { margin-left: 17em;}
         textarea { width: 20em; height: 5em; }
+        img._boxImage_ { border : 1px blue dotted;}
     </style>
 </head>
 <body>
 
 <script>
+var divisions = new Hash();
+
+function refreshBoxes() {
+    registerAll();
+    closeAll();
+}
+
+function registerAll() {
+    var list = $$('div.division');
+    divisions = new Hash();
+    for (i=0; i<list.length; i++) {
+        divisions.set(list[i].id, true);
+    }
+}
+
+function closeAll() {
+    divisions.each(function(pair) {
+
+        var _id = pair.key;
+        panelDiv = $("contentOf-" + _id);
+        imageId= 'image-' + _id;
+        imageSource = $(imageId).src;
+        
+        CloseDown(panelDiv, arguments[1] || {});
+        document.getElementById(imageId).src = imageSource.replace('down','right');
+
+//        alert(pair.key + ' = "' + pair.value + '"');
+    });
+}
+
     Event.observe(window, "load", setupPage);
+    divisions = new Hash(); 
 
     function setupPage(){
         interventionInstance = new InterventionClass();
@@ -39,6 +71,8 @@
             Element.observe('btn-add-agent', 'click', function(e) {
                 this._addItem('agent', e.element(), null, '_agents');
             }.bind(interventionInstance));
+
+        refreshBoxes();
     }
     
     function fireAction(itemType, index, location, elementId, css) {
@@ -61,6 +95,7 @@
         },
 
         _addItem: function(itemType, src, val, location, options) {
+            refreshBoxes();
             var container = $(location);
             var paramHash = new Hash(); 
             paramHash.set('task', 'add');
@@ -94,7 +129,6 @@
             var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
             this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
             }.bind(this));
-            
         },
 
         _updateContent: function(container, url, params, onSuccessCallBack) {
@@ -103,6 +137,7 @@
                 onSuccess: function(transport) {
                     container.innerHTML = transport.responseText;
                     AE.registerCalendarPopups();
+//                    refreshBoxes();
                 }
             });
 
@@ -123,6 +158,10 @@
 <c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
 
 <form:form id="command">
+    <hr>
+      <tags:hasErrorsMessage />
+    <hr>
+    
     <c:if test="${hasAgent}">
         <chrome:box title="Agent" collapsable="true" autopad="true">
             <input type="button" value="Add Agent" id="btn-add-agent">

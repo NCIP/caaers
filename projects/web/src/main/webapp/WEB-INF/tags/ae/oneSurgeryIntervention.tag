@@ -8,8 +8,9 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 <%@attribute name="surgery" type="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention" %>
+<%@attribute name="collapsed" type="java.lang.Boolean" %>
 
-<ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'">
+<ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${collapsed}">
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
     <div class="row">
         <div class="label"><tags:renderLabel field="${fieldGroup.fields[0]}"/></div>
