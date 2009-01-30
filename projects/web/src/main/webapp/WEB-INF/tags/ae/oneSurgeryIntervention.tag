@@ -12,15 +12,6 @@
 
 <ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${collapsed}">
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
-    <div class="row">
-        <div class="label"><tags:renderLabel field="${fieldGroup.fields[0]}"/></div>
-        <div class="value">${fieldGroup.fields[0].attributes.details}</div>
-    </div>
-
-    <div class="row">
-        <div class="label"><tags:renderLabel field="${fieldGroup.fields[1]}"/></div>
-        <div class="value">${fieldGroup.fields[1].attributes.details}</div>
-    </div>
 
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionSite">
          <jsp:attribute name="label"><tags:renderLabel field="${fieldGroup.fields[2]}"/></jsp:attribute>
