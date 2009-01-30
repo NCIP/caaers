@@ -1,6 +1,9 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
+<%@include file="/WEB-INF/views/taglibs.jsp" %>
+
 <tags:noform>
-    <ae:oneSurgeryIntervention index="${param.index}" style="display: none"/>
+    <c:forEach items="${indexes}" var="index" varStatus="i">
+        <c:set var="surgery" value="${surgeries[index]}" />
+        <ae:oneSurgeryIntervention index="${index}" surgery="${surgery}"/>    
+    </c:forEach>
 </tags:noform>
 

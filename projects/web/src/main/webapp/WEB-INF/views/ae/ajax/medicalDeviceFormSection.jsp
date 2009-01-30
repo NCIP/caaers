@@ -1,6 +1,11 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
+<%@include file="/WEB-INF/views/taglibs.jsp" %>
+
 <tags:noform>
-    <ae:oneMedicalDevice index="${param.index}" style="display: none"/>
+    <c:forEach items="${indexes}" var="index" varStatus="i">
+        <c:set var="device" value="${devices[index]}" />
+        <ae:oneMedicalDevice index="${index}" device="${device}"/>
+    </c:forEach>
 </tags:noform>
+
+
 

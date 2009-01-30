@@ -1,10 +1,5 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="rd" tagdir="/WEB-INF/tags/report" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <tags:stylesheetLink name="ae"/>
@@ -25,19 +20,19 @@
 		<chrome:division title="Adverse event">
 			<rd:renderMandatoryFields key="ADVERSE_EVENT_SECTION~Adverse events" />
 		</chrome:division>
-		<chrome:division title="Course and agent">
+		<chrome:division title="">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" VALIGN="top">
 			  <tr>
 			  	  <td width="50%" VALIGN="top">
-			   		<chrome:division title=""  cssClass="paired" >
+			   		<chrome:division title="Course"  cssClass="paired" >
 					 <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION" />
 			   		</chrome:division>
 			 	  </td>
-			 	  <td width="50%" VALIGN="top">
-			   		<chrome:division title="" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents" />
-			    	  <rd:renderMandatoryFields key="TREATMENT_INFO_SECTION~Study Agents~Modified dose" heading="Modified dose" tabular="true" />
-			   		</chrome:division>
+			  	  <td width="50%" VALIGN="top">
+                        <chrome:division title="Agent" cssClass="paired" style="border-left-width: 1px; border-left-style: solid; border-color: #C9E3EB">
+                            <rd:renderMandatoryFields key="AGENTS_INTERVENTION_SECTION~Study Agents" />
+                            <rd:renderMandatoryFields key="AGENTS_INTERVENTION_SECTION~Study Agents~Modified dose" heading="Modified dose" tabular="true" />
+                        </chrome:division>
 			 	  </td>
 			  </tr>
 			</table>

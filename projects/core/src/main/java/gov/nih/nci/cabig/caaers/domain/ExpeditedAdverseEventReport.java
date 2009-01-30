@@ -84,8 +84,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     }
 
     private <T extends ExpeditedAdverseEventReportChild> void addReportChildLazyList(Class<T> klass) {
-        lazyListHelper.add(klass,
-                new ExpeditedAdverseEventReportChildFactory<T>(klass, this));
+        lazyListHelper.add(klass, new ExpeditedAdverseEventReportChildFactory<T>(klass, this));
     }
 
     ////// LOGIC

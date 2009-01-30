@@ -23,21 +23,14 @@ import java.util.List;
 @Table(name = "treatments")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_treatments_id")})
 public class TreatmentInformation extends AbstractExpeditedReportSingleChild {
+    
     private List<CourseAgent> courseAgentsInternal;
-
     private List<CourseAgent> courseAgents;
-
     private Date firstCourseDate;
-
     private CourseDate adverseEventCourse;
-
     private Integer totalCourses;
-
     private TreatmentAssignment treatmentAssignment;
-
     private String treatmentDescription;
-
-
 
     public TreatmentInformation() {
         setCourseAgentsInternal(new LinkedList<CourseAgent>());

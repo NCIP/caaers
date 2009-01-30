@@ -46,6 +46,7 @@ public class ExpeditedReportTree extends PropertylessNode {
         sections = new LinkedHashMap<ExpeditedReportSection, TreeNode>();
         add(
                         section(BASICS_SECTION),
+                        section(STUDY_INTERVENTIONS),
                         section(ADVERSE_EVENT_SECTION,
                         // TODO: figure out how to handle the MedDRA alternative here
                                 list("adverseEvents",
@@ -129,37 +130,33 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("eventReappear","Did event reappear after study drug was reintroduced?")
                             )
                         ),
+                        section(AGENTS_INTERVENTION_SECTION,
+                                property("treatmentInformation",
+                                    list("courseAgents","Study Agent",
+                                            property("studyAgent", "Study Agent"),
+                                            property("formulation","Formulation"),
+                                            property("lotNumber", "Lot # (if known)"),
+                                            property("dose",
+                                                    property("amount","Total dose administered this course"),
+                                                    property("units","Unit of measure")
+                                            ),
+                                            property("lastAdministeredDate","Date last administered"),
+                                            property("administrationDelayAmount","Administration Delay Amount"),
+                                            property("administrationDelayUnits","Administration Delay Units"),
+                                            property("comments", "Comments"),dosage("modifiedDose", "Modified dose")
+
+                                    )
+                                )
+                        ),
                         section(TREATMENT_INFO_SECTION,
                             property("treatmentInformation",
                                 property("treatmentAssignment","Treatment assignment code"),
 								property("treatmentAssignmentDescription","Description of treatment assignment or dose level"),
 								property("firstCourseDate","Start date of first course"),
-								// TODO: these should be a component instead
 								property("adverseEventCourse",
-										property("date","Start date of course associated with expedited report"),
-										property("number","Course number on which event occurred")
-								),
-								property("totalCourses","Total number of courses to date"),
-								// TODO : Need a display name creator????
-								list("courseAgents","Study Agent",
-										property("studyAgent", "Study Agent"),
-										property("formulation","Formulation"),
-										property("lotNumber", "Lot # (if known)"),
-										property("dose",
-												property("amount","Total dose administered this course"),
-												property("units","Unit of measure")
-										),
-										// property("durationAndSchedule",
-										// "Duration and schedule"),
-										property("lastAdministeredDate","Date last administered"),
-										// dosage("dose", "Dose"),
-										// //old Dose
-										// TODO: this is a component
-										property("administrationDelayAmount","Administration Delay Amount"),
-										property("administrationDelayUnits","Administration Delay Units"),
-										property("comments", "Comments"),dosage("modifiedDose", "Modified dose")
-
-								)
+                                        property("date","Start date of course associated with expedited report"),
+                                        property("number","Course number on which event occurred")),
+								property("totalCourses","Total number of courses to date")
 							)
 						), 
 						section(LABS_SECTION, 

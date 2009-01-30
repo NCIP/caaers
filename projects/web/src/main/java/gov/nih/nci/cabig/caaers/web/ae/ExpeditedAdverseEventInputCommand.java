@@ -23,21 +23,14 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     Integer ZERO = new Integer(0);
 
     String COURSE_AGENT_ATTRIBUTION_KEY = "courseAgent";
-
     String CONCOMITANT_MEDICATIONS_ATTRIBUTION_KEY = "conMed";
-
     String OTHER_CAUSES_ATTRIBUTION_KEY = "other";
-
     String DISEASE_ATTRIBUTION_KEY = "disease";
-
     String SURGERY_ATTRIBUTION_KEY = "surgery";
-
     String RADIATION_ATTRIBUTION_KEY = "radiation";
-
     String DEVICE_ATTRIBUTION_KEY = "device";
 
     ExpeditedAdverseEventReport getAeReport();
-
     List<Map<Integer, Boolean>> getOutcomes();
     List<String> getOutcomeOtherDetails();
     void updateOutcomes();
@@ -47,11 +40,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      * AdverseEventReport and AdverseEvent
      */
     Map<String, List<List<Attribution>>> getAttributionMap();
-
     void reassociate();
-
     Collection<ExpeditedReportSection> getMandatorySections();
-
     void setMandatorySections(Collection<ExpeditedReportSection> sections);
 
     // TODO: the caller should use the equivalent method in report service.
@@ -62,16 +52,11 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      * Pre-initalize the mandatory lazy added fields in mandatory sections. (This is a biz-rule)
      */
     void initializeMandatorySectionFields(ExpeditedReportTree tree);
-
     MandatoryProperties getMandatoryProperties();
-
     List<ReportDefinition> getInstantiatedReportDefinitions();
-
     void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);
     List<ReportDefinition> getSelectedReportDefinitions();
-
     void setNextPage(int page);
-
     int getNextPage();
     Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm);
     Term getStudyTerminologyTerm();

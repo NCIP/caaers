@@ -10,10 +10,9 @@ import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
  */
 
 public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventInputCommand> {
+    
     protected String flowName;
-
     private Flow<ExpeditedAdverseEventInputCommand> ctepFlow;
-
     private Flow<ExpeditedAdverseEventInputCommand> meddraFlow;
 
     public ExpeditedFlowFactory(String flowName) {
@@ -34,15 +33,18 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     	 */
     	flow.addTab(new TreatmentTab());
         flow.addTab(new DescriptionTab());
+        flow.addTab(new StudyInterventionsTab());
         flow.addTab(new PatientDetailsTab()); //flow.addTab(new MedicalInfoTab());
         //flow.addTab(new PreExistingConditionsTab());
         //flow.addTab(new PriorTherapyTab());
         //flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
 
-        flow.addTab(new RadiationInterventionTab());
-        flow.addTab(new SurgeryInterventionTab());
-        flow.addTab(new MedicalDeviceTab());
+// MOVED TO STUDY INTERVENTION TAB
+//        flow.addTab(new RadiationInterventionTab());
+//        flow.addTab(new SurgeryInterventionTab());
+//        flow.addTab(new MedicalDeviceTab());
+        
         flow.addTab(new LabsTab());
         flow.addTab(new AttributionTab());
         flow.addTab(new AdditionalInformationTab());
@@ -80,13 +82,6 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
             ctepFlow.addTab(new CtcBasicsTab());
             addPostBasicTabs(ctepFlow);
         }
-        /*if (command.getStudy() != null && !command.getStudy().getAdeersReporting() && ctepFlow != null && (ctepFlow.getTabCount() == 17 || ctepFlow.getTabCount() == 16)) {
-            ctepFlow = createEmptyFlow();
-            addPreBasicTabs(ctepFlow);
-            ctepFlow.addTab(new CtcBasicsOutcomeTab());
-            addPostBasicTabs(ctepFlow);
-        }*/
-
         return ctepFlow;
     }
 }

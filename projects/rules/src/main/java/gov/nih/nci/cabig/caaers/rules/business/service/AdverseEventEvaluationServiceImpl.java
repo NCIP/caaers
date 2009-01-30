@@ -157,8 +157,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         return map;
     }
 
-    public Collection<ExpeditedReportSection> mandatorySectionsForReport(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition)
-                    throws Exception {
+    public Collection<ExpeditedReportSection> mandatorySectionsForReport(ExpeditedAdverseEventReport aeReport, ReportDefinition reportDefinition) throws Exception {
         List<AdverseEvent> adverseEvents = aeReport.getAdverseEvents();
         Study study = aeReport.getStudy();
         Set<String> sections = new HashSet<String>();
@@ -169,8 +168,7 @@ public class AdverseEventEvaluationServiceImpl implements AdverseEventEvaluation
         for (AdverseEvent ae : adverseEvents) {
 
             // evaluate sponsor level rules
-            strSections = evaluateSponsorTarget(ae, study, reportDefinition,
-                            RuleType.MANDATORY_SECTIONS_RULES.getName(), aeReport);
+            strSections = evaluateSponsorTarget(ae, study, reportDefinition, RuleType.MANDATORY_SECTIONS_RULES.getName(), aeReport);
             if (!strSections.equals(CAN_NOT_DETERMINED)) {
                 sectionNames = RuleUtil.charSeparatedStringToStringArray(strSections, "\\|\\|");
                 sections.addAll(Arrays.asList(sectionNames));

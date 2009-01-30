@@ -1,6 +1,9 @@
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
+<%@include file="/WEB-INF/views/taglibs.jsp" %>
+
 <tags:noform>
-    <ae:oneRadiationIntervention index="${param.index}" style="display: none"/>
+    <c:forEach items="${indexes}" var="index" varStatus="i">
+        <c:set var="radiation" value="${radiations[index]}" />
+        <ae:oneRadiationIntervention index="${index}" radiation="${radiation}"/>
+    </c:forEach>
 </tags:noform>
 

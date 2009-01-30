@@ -29,28 +29,18 @@ import org.springframework.beans.BeanUtils;
 @Table(name = "course_agents")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_course_agents_id")})
 public class CourseAgent extends AbstractMutableDomainObject {
+
     private TreatmentInformation treatmentInformation;
-
     private StudyAgent studyAgent;
-
     private Dose dose;
-
     private String durationAndSchedule;
-
     private BigDecimal administrationDelayAmount;
-
     private DelayUnits administrationDelayUnits;
-
     private AgentAdjustment agentAdjustment;
-    
-    private Dose modifiedDose; 
-
+    private Dose modifiedDose;
     private Date lastAdministeredDate;
-
     private BigDecimal totalDoseAdministeredThisCourse;
-
     private String comments;
-
     private String lotNumber;
     private String formulation;
 

@@ -22,11 +22,8 @@ import java.util.Date;
 public class SurgeryIntervention extends AbstractExpeditedReportCollectionElementChild {
 
     private String treatmentArm;
-
     private String description;
-
     private InterventionSite interventionSite;
-
     private Date interventionDate;
 
     // //// LOGIC
@@ -70,12 +67,7 @@ public class SurgeryIntervention extends AbstractExpeditedReportCollectionElemen
 
     public SurgeryIntervention copy() {
         SurgeryIntervention surgeryIntervention = new SurgeryIntervention();
-        BeanUtils.copyProperties(this, surgeryIntervention, new String[]{"id", "gridId",
-                "version", "report"});
-
+        BeanUtils.copyProperties(this, surgeryIntervention, new String[]{"id", "gridId", "version", "report"});
         return surgeryIntervention;
-
     }
-
-
 }

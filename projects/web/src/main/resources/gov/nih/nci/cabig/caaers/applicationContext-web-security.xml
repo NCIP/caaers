@@ -232,8 +232,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.ReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.TreatmentTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.DescriptionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.PatientDetailsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.OtherCausesTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.StudyInterventionsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.PatientDetailsTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.OtherCausesTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.RadiationInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.SurgeryInterventionTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.MedicalDeviceTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:UPDATE"/>	

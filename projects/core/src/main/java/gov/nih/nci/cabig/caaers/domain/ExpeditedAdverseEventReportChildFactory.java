@@ -9,8 +9,7 @@ public class ExpeditedAdverseEventReportChildFactory<T extends ExpeditedAdverseE
                 extends InstantiateFactory<T> {
     private ExpeditedAdverseEventReport report;
 
-    public ExpeditedAdverseEventReportChildFactory(Class<T> classToInstantiate,
-                    ExpeditedAdverseEventReport parent) {
+    public ExpeditedAdverseEventReportChildFactory(Class<T> classToInstantiate, ExpeditedAdverseEventReport parent) {
         super(classToInstantiate);
         this.report = parent;
     }

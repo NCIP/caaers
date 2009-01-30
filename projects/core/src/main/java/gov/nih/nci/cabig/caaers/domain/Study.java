@@ -265,8 +265,7 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     @Transient
-    public void setOrganizationAssignedIdentifier(
-            final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
+    public void setOrganizationAssignedIdentifier(final OrganizationAssignedIdentifier organizationAssignedIdentifier) {
         this.organizationAssignedIdentifier = organizationAssignedIdentifier;
     }
 
@@ -288,6 +287,31 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
             }
         }
         return false;
+    }
+
+    @Transient
+    public boolean isSurgeryPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.SURGERY);
+    }
+
+    @Transient
+    public boolean isDevicePresent() {
+        return this.hasTherapyOfType(StudyTherapyType.DEVICE);
+    }
+
+    @Transient
+    public boolean isRadiationPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.RADIATION);
+    }
+
+    @Transient
+    public boolean isBehavioralPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.BEHAVIORAL);
+    }
+
+    @Transient
+    public boolean isDrugAdministrationPresent() {
+        return this.hasTherapyOfType(StudyTherapyType.DRUG_ADMINISTRATION);
     }
 
     // / BEAN PROPERTIES

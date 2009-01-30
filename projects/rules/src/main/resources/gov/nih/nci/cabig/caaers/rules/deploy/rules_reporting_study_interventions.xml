@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package  name="gov.nih.nci.cabig.caaers.rules.reporting_submit_report_section"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
+<package  name="gov.nih.nci.cabig.caaers.rules.reporting_study_interventions"  xmlns="http://drools.org/drools-4.0" xmlns:drools="http://drools.org/drools-4.0" xmlns:rules="http://drools.org/drools-4.0" 
 	xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:schemaLocation="http://drools.org/drools-4.0 drools-4.0.xsd">
 
 	<import name="gov.nih.nci.cabig.caaers.domain.*"/>

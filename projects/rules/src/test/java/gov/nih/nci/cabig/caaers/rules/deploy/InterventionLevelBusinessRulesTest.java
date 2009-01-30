@@ -8,7 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 
-public class ReportLevelBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
+public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
     @Override
     public String getBindUri() {
@@ -17,7 +17,7 @@ public class ReportLevelBusinessRulesTest extends AbstractBusinessRulesExecution
 
     @Override
     public String getRuleFile() {
-        return "rules_reporting_submit_report.xml";
+        return "rules_reporting_study_interventions.xml";
     }
 
     /**
