@@ -94,6 +94,7 @@
             var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
             this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
             }.bind(this));
+            
         },
 
         _updateContent: function(container, url, params, onSuccessCallBack) {
@@ -101,6 +102,7 @@
                 parameters: params.toQueryString(),
                 onSuccess: function(transport) {
                     container.innerHTML = transport.responseText;
+                    AE.registerCalendarPopups();
                 }
             });
 
