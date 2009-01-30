@@ -125,7 +125,7 @@ margin:5px;
  					<div class =""><a href="#" onclick="javascript:chooseSitesfromSummary(${status.index});" 
 						title="click here to edit research staff assigned to study"> <font size="2"> <b>  ${studySite.organization.name} </b> </font> </a>
  					</div>
- 					<div class="">Personnels Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
+ 					<div class="">Personnel Assigned: <b> ${fn:length(studySite.studyPersonnels)} </b>
  					</div>
  				
  				</c:forEach>
