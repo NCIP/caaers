@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.servlet.ModelAndView;
+
 /**
  * @author Ion C. Olaru
  */
@@ -115,5 +117,234 @@ public class InterventionsTabTest extends AeTabTestCase {
                         "aeReport.surgeryInterventions[7].interventionSite",
                         "aeReport.surgeryInterventions[7].interventionDate");
     }
-    
+
+    public void testSections() {
+        assertEquals(5, tab.section().length);
+    }
+
+    public void testAddSurgery() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getSurgeryInterventions().size();
+        assertEquals(0, size);
+
+        ModelAndView mvc = t.addSurgery(request, command, errors);
+        assertEquals(1, ((List)mvc.getModel().get("surgeries")).size());
+    }
+
+    public void testAddRadiation() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getRadiationInterventions().size();
+        assertEquals(0, size);
+
+        ModelAndView mvc = t.addRadiation(request, command, errors);
+        assertEquals(1, ((List)mvc.getModel().get("radiations")).size());
+    }
+
+    public void testAddDevice() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getMedicalDevices().size();
+        assertEquals(0, size);
+
+        ModelAndView mvc = t.addDevice(request, command, errors);
+        assertEquals(1, ((List)mvc.getModel().get("devices")).size());
+    }
+
+    public void testAddAgent() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getTreatmentInformation().getCourseAgents().size();
+        assertEquals(0, size);
+
+        ModelAndView mvc = t.addAgent(request, command, errors);
+        assertEquals(1, ((List)mvc.getModel().get("agents")).size());
+    }
+
+    public void testRemoveSurgeryOK() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getSurgeryInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addSurgery(request, command, errors);
+        mvc = t.addSurgery(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+        
+        request.addParameter("index", "1");
+        mvc = t.removeSurgery(request, command, errors);
+
+        assertEquals(1, ((List)mvc.getModel().get("surgeries")).size());
+    }
+
+    public void testRemoveSurgeryInvalidIndex() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getSurgeryInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addSurgery(request, command, errors);
+        mvc = t.addSurgery(request, command, errors);
+        assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+
+        request.addParameter("index", "invalidIndexValue");
+        mvc = t.removeSurgery(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+    }
+
+    public void testRemoveSurgeryIndexOutOfBoundaries() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getSurgeryInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addSurgery(request, command, errors);
+        mvc = t.addSurgery(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+
+        request.addParameter("index", "5");
+        mvc = t.removeSurgery(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+    }
+
+    public void testRemoveRadiationOK() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getRadiationInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addRadiation(request, command, errors);
+        mvc = t.addRadiation(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
+
+        request.addParameter("index", "1");
+        mvc = t.removeRadiation(request, command, errors);
+
+        assertEquals(1, ((List)mvc.getModel().get("radiations")).size());
+    }
+
+    public void testRemoveRadiationInvalidIndex() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getRadiationInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addRadiation(request, command, errors);
+        mvc = t.addRadiation(request, command, errors);
+        assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
+
+        request.addParameter("index", "invalidIndexValue");
+        mvc = t.removeRadiation(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
+    }
+
+    public void testRemoveRadiationIndexOutOfBoundaries() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getRadiationInterventions().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addRadiation(request, command, errors);
+        mvc = t.addRadiation(request, command, errors);
+        assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
+
+        request.addParameter("index", "5");
+        mvc = t.removeRadiation(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
+    }
+
+    public void testRemoveDeviceOK() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getMedicalDevices().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addDevice(request, command, errors);
+        mvc = t.addDevice(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("devices")).size());
+
+        request.addParameter("index", "1");
+        mvc = t.removeDevice(request, command, errors);
+
+        assertEquals(1, ((List)mvc.getModel().get("devices")).size());
+    }
+
+    public void testRemoveDeviceInvalidIndex() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getMedicalDevices().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addDevice(request, command, errors);
+        mvc = t.addDevice(request, command, errors);
+        assertEquals(2, ((List)mvc.getModel().get("devices")).size());
+
+        request.addParameter("index", "invalidIndexValue");
+        mvc = t.removeDevice(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("devices")).size());
+    }
+
+    public void testRemoveDeviceIndexOutOfBoundaries() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getMedicalDevices().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addDevice(request, command, errors);
+        mvc = t.addDevice(request, command, errors);
+        assertEquals(2, ((List)mvc.getModel().get("devices")).size());
+
+        request.addParameter("index", "5");
+        mvc = t.removeDevice(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("devices")).size());
+    }
+
+    public void testRemoveAgentOK() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getTreatmentInformation().getCourseAgents().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addAgent(request, command, errors);
+        mvc = t.addAgent(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("agents")).size());
+
+        request.addParameter("index", "1");
+        mvc = t.removeAgent(request, command, errors);
+
+        assertEquals(1, ((List)mvc.getModel().get("agents")).size());
+    }
+
+    public void testRemoveAgentInvalidIndex() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getTreatmentInformation().getCourseAgents().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addAgent(request, command, errors);
+        mvc = t.addAgent(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("agents")).size());
+
+        request.addParameter("index", "invalidIndexValue");
+        mvc = t.removeAgent(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("agents")).size());
+
+    }
+
+    public void testRemoveAgentIndexOutOfBoundaries() {
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        int size = command.getAeReport().getTreatmentInformation().getCourseAgents().size();
+        assertEquals(0, size);
+        ModelAndView mvc;
+        mvc = t.addAgent(request, command, errors);
+        mvc = t.addAgent(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("agents")).size());
+
+        request.addParameter("index", "5");
+        mvc = t.removeAgent(request, command, errors);
+
+        assertEquals(2, ((List)mvc.getModel().get("agents")).size());
+
+    }
+
 }

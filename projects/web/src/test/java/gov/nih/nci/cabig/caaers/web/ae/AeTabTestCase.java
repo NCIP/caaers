@@ -19,7 +19,7 @@ import java.util.*;
 public abstract class AeTabTestCase extends AeWebTestCase {
     private static final Log log = LogFactory.getLog(AeTabTestCase.class);
 
-    private AeTab tab;
+    protected AeTab tab;
 
     @Override
     protected void setUp() throws Exception {
