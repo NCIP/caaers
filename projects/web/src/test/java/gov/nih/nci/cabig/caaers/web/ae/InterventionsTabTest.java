@@ -347,4 +347,17 @@ public class InterventionsTabTest extends AeTabTestCase {
 
     }
 
+    public void testMethodInvocationRequest() {
+        request.setParameter("currentItem", "");
+        request.setParameter("task", "");
+        StudyInterventionsTab t = (StudyInterventionsTab)tab;
+        assertEquals(true, t.methodInvocationRequest(request));        
+    }
+
+    public void testGetMethodName() {
+        request.setParameter("currentItem", "device");
+        request.setParameter("task", "remove");
+        String methodName = ((StudyInterventionsTab)tab).getMethodName(request);
+        assertEquals("removeDevice", methodName);
+    }
 }
