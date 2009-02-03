@@ -119,7 +119,13 @@
 		</condition>
 		<echo message="${selenium.on}" />
 	</target>
-
+	<!-- ================================= 
+          target: upload-rules              
+         ================================= -->
+	<target name="upload-rules" description="upload rules">
+		<taskdef name="uploadRules" classname="gov.nih.nci.cabig.caaers.web.selenium.CaaersRulesTest" classpath="${parent.dir}/build" />
+		<uploadRules/>
+	</target>
 </project>
 <!-- TODO 
 1> Run through tests that have failed.

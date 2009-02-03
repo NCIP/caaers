@@ -429,7 +429,26 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 				
 	}
-	
+	public void uploadRules(String rulesDir) throws Exception{
+		selenium.open("/caaers/pages/task");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("firstlevelnav_createRuleController");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("//a[@id='secondlevelnav_importRuleController']/span");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml");
+		selenium.click("//input[@value='Import']");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml");
+		selenium.click("//input[@value='Import']");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml");
+		selenium.click("//input[@value='Import']");
+		selenium.waitForPageToLoad("30000");
+		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml");
+		selenium.click("//input[@value='Import']");
+		selenium.waitForPageToLoad("30000");
+	}
 	//public void editInvestigator(String ){}
 	/*public void testNew() throws Exception {
 

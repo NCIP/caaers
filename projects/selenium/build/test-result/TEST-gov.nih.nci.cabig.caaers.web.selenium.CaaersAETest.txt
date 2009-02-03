@@ -1,0 +1,43 @@
+Testsuite: gov.nih.nci.cabig.caaers.web.selenium.CaaersAETest
+Tests run: 5, Failures: 1, Errors: 2, Time elapsed: 523.625 sec
+------------- Standard Output ---------------
+
+ checking through: //span[@id='adverseEvents[0].adverseEventTerm.universalTerm']
+
+ checking through: //span[@id='adverseEvents[1].adverseEventTerm.universalTerm']
+
+ checking through: //span[@id='adverseEvents[2].adverseEventTerm.universalTerm']
+------------- ---------------- ---------------
+
+Testcase: testCreateRPFlow took 253.578 sec
+Testcase: testExecuteCAEFlow took 64.188 sec
+	Caused an ERROR
+ERROR: Element aeReport.reporter.firstName not found
+com.thoughtworks.selenium.SeleniumException: ERROR: Element aeReport.reporter.firstName not found
+	at com.thoughtworks.selenium.HttpCommandProcessor.doCommand(HttpCommandProcessor.java:73)
+	at com.thoughtworks.selenium.DefaultSelenium.type(DefaultSelenium.java:178)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAEFlowFixtures.executeCAEFlow(CaaersAEFlowFixtures.java:147)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAETest.testExecuteCAEFlow(CaaersAETest.java:34)
+	at com.thoughtworks.selenium.SeleneseTestCase.runBare(SeleneseTestCase.java:71)
+
+Testcase: testExecuteExpeditedAEFlow took 34.547 sec
+	Caused an ERROR
+ERROR: Element flow-next not found
+com.thoughtworks.selenium.SeleniumException: ERROR: Element flow-next not found
+	at com.thoughtworks.selenium.HttpCommandProcessor.doCommand(HttpCommandProcessor.java:73)
+	at com.thoughtworks.selenium.DefaultSelenium.click(DefaultSelenium.java:82)
+	at gov.nih.nci.cabig.caaers.web.selenium.AjaxWidgets.clickNext(AjaxWidgets.java:20)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAEFlowFixtures.executeExpeditedAEFlow(CaaersAEFlowFixtures.java:162)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAETest.testExecuteExpeditedAEFlow(CaaersAETest.java:44)
+	at com.thoughtworks.selenium.SeleneseTestCase.runBare(SeleneseTestCase.java:71)
+
+Testcase: testSubmitReport took 152.437 sec
+	FAILED
+Timed out waiting for element to be created: //select[@id='aeReport.reports[1].lastVersion.physicianSignoff']
+junit.framework.AssertionFailedError: Timed out waiting for element to be created: //select[@id='aeReport.reports[1].lastVersion.physicianSignoff']
+	at gov.nih.nci.cabig.caaers.web.selenium.AjaxWidgets.waitForElementPresent(AjaxWidgets.java:71)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAEFlowFixtures.submitReport(CaaersAEFlowFixtures.java:193)
+	at gov.nih.nci.cabig.caaers.web.selenium.CaaersAETest.testSubmitReport(CaaersAETest.java:52)
+	at com.thoughtworks.selenium.SeleneseTestCase.runBare(SeleneseTestCase.java:71)
+
+Testcase: testLogin took 18.828 sec
