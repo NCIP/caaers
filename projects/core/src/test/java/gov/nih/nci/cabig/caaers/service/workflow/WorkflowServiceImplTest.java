@@ -37,6 +37,7 @@ import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.taskmgmt.exe.TaskMgmtInstance;
+import org.springframework.mail.MailSendException;
 import org.springmodules.workflow.jbpm31.JbpmTemplate;
 /**
  * 
@@ -227,6 +228,64 @@ public class WorkflowServiceImplTest extends AbstractTestCase {
 		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
 		EasyMock.expect(template.execute(callback)).andReturn(null);
 		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
+		//expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
+		replayMocks();
+		wfService.setCaaersJavaMailSender(caaersJavaMailSender);
+		wfService.createTaskInstances(callback);
+		verifyMocks();
+	}
+	
+	
+	public void testCreatTaskInstances_ThrowingMailSendException() {
+		String nodeName = "a1";
+		
+		List<User> taskAssigneesList = new ArrayList<User>();
+		Investigator inv1 = Fixtures.createInvestigator("test1");
+		inv1.setEmailAddress("joel1@abc.com");
+		inv1.setLoginId("joel1@abc.com");
+		
+		Investigator inv2 = Fixtures.createInvestigator("test2");
+		inv2.setEmailAddress("joel2@abc.com");
+		inv2.setLoginId("joel2@abc.com");
+		
+		taskAssigneesList.add(inv1);
+		taskAssigneesList.add(inv2);
+		
+
+		ProcessDefinition processDefinition = new ProcessDefinition();
+		processDefinition.setName("Test");
+		ProcessInstance pInstance = new ProcessInstance();
+		pInstance.setProcessDefinition(processDefinition);
+		
+		final Node node = new Node();
+		node.setName(nodeName);
+		
+		Token token = new Token();
+		token.setNode(node);
+		token.setProcessInstance(pInstance);
+		final TaskMgmtInstance taskMgmtInstance = registerMockFor(TaskMgmtInstance.class);
+		
+		ExecutionContext executionContext = new ExecutionContext(token){
+			@Override
+			public TaskMgmtInstance getTaskMgmtInstance() {
+				return taskMgmtInstance;
+			}
+			@Override
+			public ContextInstance getContextInstance() {
+				ContextInstance c = super.getContextInstance();
+				Map variables = new HashMap();
+				c.setVariables(variables);
+				return c;
+			}
+		};
+		
+		
+		CaaersJavaMailSender caaersJavaMailSender = registerMockFor(CaaersJavaMailSender.class);
+		CreateTaskJbpmCallback callback = new CreateTaskJbpmCallback(executionContext, taskAssigneesList);
+		EasyMock.expect(wfConfigDao.getByWorkflowDefinitionName(processDefinition.getName())).andReturn(wfConfig);
+		EasyMock.expect(template.execute(callback)).andReturn(null);
+		caaersJavaMailSender.sendMail((String[])EasyMock.anyObject(), (String)EasyMock.anyObject(), (String) EasyMock.anyObject(), (String[])EasyMock.anyObject());
+		EasyMock.expectLastCall().andThrow(new MailSendException("Test"));
 		//expect(configuration.get(Configuration.CAAERS_BASE_URL)).andReturn("www.abcd.com");
 		replayMocks();
 		wfService.setCaaersJavaMailSender(caaersJavaMailSender);

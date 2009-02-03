@@ -61,7 +61,11 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 				</factoryKey>
 			</action>
 		</event>		
-		<transition to="Finalize Reporting Period" name="Approve Reporting Period"></transition>
+		<transition to="Approved" name="Approve Reporting Period">
+			<description>
+				This transition is performed by the Data Coordinator
+			</description>
+		</transition>
 		<transition to="Provide Additional Information To Data Coordinator" name="Request Additional Information"></transition>
 	</node>
 
@@ -90,33 +94,8 @@ Site CRA -&gt;  CALGB Data Coordinator -&gt; Finalize
 		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 	</node>
 
-	<node name="Finalize Reporting Period">
-		<action name="nodeSkipActionHandler" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" config-type="bean">
-			<targetBean>
-				nodeSkipActionHandler
-			</targetBean>
-			<factoryKey>
-				jbpmConfiguration
-			</factoryKey>
-		</action>	
-		<description>
-			This task is executec by the Central office
-		</description>
-		<event type="node-leave">
-			<action class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy" name="taskCloseActionHandler" config-type="bean">
-				<targetBean>
-					taskCloseActionHandler
-				</targetBean>
-				<factoryKey>
-					jbpmConfiguration
-				</factoryKey>
-			</action>
-		</event>
-		<transition to="Finalized" name="Finalize Reporting Period"></transition>
-	</node>
-
-	<state name="Finalized">
-		<transition to="Submit Reporting Period for Data Coordinator Review" name="Modify Reporting Period"></transition>
+	<state name="Approved">
+		<transition to="Data Coordinator Review" name="Submit to Data Coordinator"></transition>
 		<transition to="End State" name="end"></transition>
 	</state>
 

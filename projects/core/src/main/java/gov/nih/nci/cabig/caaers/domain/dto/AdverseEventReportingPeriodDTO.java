@@ -138,4 +138,14 @@ public class AdverseEventReportingPeriodDTO {
 	public void setDcpSponsoredStudy(boolean dcpSponsoredStudy) {
 		this.dcpSponsoredStudy = dcpSponsoredStudy;
 	}
+	
+	public boolean hasActionsToDo(){
+		boolean hasActions = possibleActions != null && possibleActions.size() > 0;
+		if(!hasActions && aeReports != null){
+			for(ExpeditedAdverseEventReportDTO aeReportDTO : aeReports){
+				hasActions |= aeReportDTO.hasActionsToDo();
+			}
+		}
+		return hasActions;
+	}
 }

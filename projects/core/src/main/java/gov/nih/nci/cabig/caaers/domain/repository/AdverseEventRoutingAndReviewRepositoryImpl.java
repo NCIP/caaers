@@ -245,12 +245,11 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 		
 		List<AdverseEventReportingPeriod> reportingPeriods = adverseEventReportingPeriodDao.findAdverseEventReportingPeriods(query);
 		
-		
+
 		List<AdverseEventReportingPeriodDTO> reportingPeriodDtos = new ArrayList<AdverseEventReportingPeriodDTO>();
 		for(AdverseEventReportingPeriod reportingPeriod : reportingPeriods){
 			if(reportingPeriod.getWorkflowId() != null && isReportingPeriodHavingSpecifiedReviewStatus(reportingPeriod, reviewStatus)){
 				AdverseEventReportingPeriodDTO rpDto = routingAndReviewFactory.createAdverseEventEvalutionPeriodDTO(reportingPeriod, userId);
-				reportingPeriodDtos.add(rpDto);	
 				
 				//check the Reports
 				if(reportingPeriod.getAeReports() != null){
@@ -261,6 +260,8 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 					}//aereport
 				}
 				
+				//only add the dto, if there is action to do.
+				if(rpDto.hasActionsToDo()) reportingPeriodDtos.add(rpDto);	
 			}
 			
 		}

@@ -181,7 +181,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     }
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @Cascade(value={CascadeType.MERGE})
+    @Cascade(value={CascadeType.MERGE, CascadeType.LOCK})
     public StudyParticipantAssignment getAssignment() {
         return assignment;
     }

@@ -184,6 +184,9 @@ public class AdverseEventRoutingAndReviewRepositoryImplTest extends CaaersNoSecu
 		
 		AdverseEventReportingPeriodDTO rpDto = new AdverseEventReportingPeriodDTO();
 		ExpeditedAdverseEventReportDTO rDto = new ExpeditedAdverseEventReportDTO();
+		List<String> possibleActions = new ArrayList<String>();
+		possibleActions.add("abc");
+		rDto.setPossibleActions(possibleActions);
 		EasyMock.expect(rpDao.findAdverseEventReportingPeriods((AdverseEventReportingPeriodForReviewQuery) EasyMock.anyObject())).andReturn(reportingPeriods);
 	
 		EasyMock.expect(factory.createAdverseEventEvalutionPeriodDTO(rp, userId)).andReturn(rpDto);

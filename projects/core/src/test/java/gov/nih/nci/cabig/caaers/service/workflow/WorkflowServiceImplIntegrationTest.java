@@ -75,7 +75,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(1, nextTransitions.size());
 			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
-			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
+			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
 		}
 	}
 	public void testNextTransitionNames() {
@@ -110,7 +110,7 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 			assertFalse(nextTransitions.isEmpty());
 			assertEquals(1, nextTransitions.size());
 			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
-			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
+			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
 		}
 	}
 	
@@ -145,18 +145,17 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		{
 			List<Transition> nextTransitions = wfService.nextTransitions(id, loginId);
 			assertEquals("Approve Reporting Period", nextTransitions.get(0).getName());
-			assertEquals("Finalize Reporting Period", nextTransitions.get(0).getTo().getName());
+			assertEquals("Approved", nextTransitions.get(0).getTo().getName());
 			nextTransition = "Approve Reporting Period";
 		}
 		interruptSession();
 		{
 			ReviewStatus status = wfService.advanceWorkflow(id, nextTransition);
-			assertEquals(ReviewStatus.READY_FOR_FINALIZE, status);
+			assertEquals(ReviewStatus.APPROVED, status);
 			List<TaskInstance> taskInstances = wfService.fetchTaskInstances("datacoordinator@abc.com");
 			assertNotNull(taskInstances);
-			assertFalse(taskInstances.isEmpty());
-			assertEquals("Finalize Reporting Period", taskInstances.get(0).getName());
-			assertEquals("Only one task to be created",1, taskInstances.size());
+			assertTrue(taskInstances.isEmpty());
+			
 		}
 		
 		
@@ -183,10 +182,10 @@ public class WorkflowServiceImplIntegrationTest extends CaaersDbTestCase {
 		String nextTransition ="Approve Reporting Period";
 		{
 			ReviewStatus status = wfService.advanceWorkflow(id.intValue(), nextTransition);
-			assertEquals(ReviewStatus.READY_FOR_FINALIZE, status);
+			assertEquals(ReviewStatus.APPROVED, status);
 			List<TaskInstance> taskInstances = wfService.fetchTaskInstances("datacoordinator@abc.com");
 			assertNotNull(taskInstances);
-			assertFalse(taskInstances.isEmpty());
+			assertTrue(taskInstances.isEmpty());
 		}
 		interruptSession();
 		{

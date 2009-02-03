@@ -133,31 +133,25 @@
 	 <task_configuration id="-5" status_name="DATA_COORDINATOR_ADDITIONAL_INFO" workflow_config_id="-11" location="1" task_name="Provide Additional Information To Data Coordinator" applicable="1" message="hello"/>
 	-->
 	
-	 <task_configuration id="-7" status_name="READY_FOR_FINALIZE" workflow_config_id="-11" location="1" task_name="Finalize Reporting Period" applicable="1" message="hello biju"/>
-	 <task_configuration id="-1000" status_name="FINALIZED" workflow_config_id="-11" location="1" task_name="Finalized" applicable="1" message="hijklmnop"/>
+	 <task_configuration id="-1000" status_name="APPROVED" workflow_config_id="-11" location="1" task_name="Approved" applicable="1" message="hijklmnop"/>
 	 <task_configuration id="-999" status_name="DRAFTINCOMPLETE" workflow_config_id="-11" location="1" task_name="Start Reporting Period Flow" applicable="1" message="abcd" />
 	  
-	 <wf_assignees id="-1" name="Bill" user_id="-1000" task_config_id="-1" dtype="p"/>
+	 <wf_assignees id="-1" name="Bill" user_id="-1000" user_role_id="0" task_config_id="-1" dtype="p"/>
 	 <wf_assignees id="-2" name="Bush" user_id="-1001" task_config_id="-1" dtype="p"/>
-	 
 	<!--  
 	 <wf_assignees id="-5" name="DC" research_staffs_id="-1002" task_config_id="-3" dtype="p"/>
 	 <wf_assignees id="-7" name="Bill" research_staffs_id="-1000" task_config_id="-5" dtype="p"/>
 	 <wf_assignees id="-8" name="Bush" research_staffs_id="-1001" task_config_id="-5" dtype="p"/>
 	 -->
 	 
-	 <wf_assignees id="-9" name="DC" user_id="-1002" task_config_id="-7" dtype="p"/>
 	 
 	 <wf_transition_configs id="-1" transition_name="Approve Reporting Period" task_config_id="-1" />
-	 <wf_transition_configs id="-2" transition_name="Finalize Reporting Period" task_config_id="-7" />
-	 <wf_transition_configs id="-3" transition_name="Modify Reporting Period" task_config_id="-1000" />
+	 <wf_transition_configs id="-3" transition_name="Submit to Data Coordinator" task_config_id="-1000" />
 	 
 	 <wf_transition_owners id="-1" user_id="-1000" user_role_id="1" transition_config_id="-1" dtype="p"/>
 	 <wf_transition_owners id="-2" user_id="-1001"  transition_config_id="-1" dtype="p"/>
 	 <wf_transition_owners id="-3"  user_role_id="4" transition_config_id="-1" dtype="r"/>
 	 
-	 <wf_transition_owners id="-4" user_id="-1002" transition_config_id="-2" dtype="p"/>
-	 <wf_transition_owners id="-5"  user_role_id="6" transition_config_id="-2" dtype="r"/>
 	 <wf_transition_owners id="-6"  user_role_id="4" transition_config_id="-3" dtype="r"/>
 	 
 	 <jbpm_moduleinstance />

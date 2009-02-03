@@ -120,4 +120,8 @@ public class ExpeditedAdverseEventReportDTO {
 	public void setReports(List<ReportDTO> reports) {
 		this.reports = reports;
 	}
+	
+	public boolean hasActionsToDo(){
+		return possibleActions != null && possibleActions.size() > 0;
+	}
 }

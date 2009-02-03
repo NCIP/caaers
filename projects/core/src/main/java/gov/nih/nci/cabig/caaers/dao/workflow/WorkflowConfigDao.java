@@ -39,6 +39,5 @@ implements MutableDomainObjectDao<WorkflowConfig>{
         return (results == null || results.size() < 1) ? null : results.get(0);
     }
     
-   
 
 }
