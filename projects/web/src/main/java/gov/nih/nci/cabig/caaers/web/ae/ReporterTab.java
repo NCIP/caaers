@@ -15,6 +15,7 @@ import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
@@ -22,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.validation.Errors;
 
@@ -363,5 +365,18 @@ public class ReporterTab extends AeTab {
             attr = request.getAttribute(attributName);
         }
         return attr;
+    }
+    
+    @Override
+    protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,	Errors errors) {
+    	super.validate(command, commandBean, fieldGroups, errors);
+    	if(command.getWorkflowEnabled()){
+    		if(command.getAeReport().getReporter().getUser() == null){
+    			errors.rejectValue("aeReport.reporter.user", "SAE_019","Reporter should be selected in the drop down");
+    		}
+    		if(command.getAeReport().getPhysician().getUser() == null){
+    			errors.rejectValue("aeReport.physician.user", "SAE_020", "Physician should be selected in the drop down");
+    		}
+    	}
     }
 }

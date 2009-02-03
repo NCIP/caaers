@@ -821,7 +821,7 @@ public class CreateAdverseEventAjaxFacade {
     
     // For RoutingAndReview - Report comments.
     
-    public String addReviewComment(String comment){
+    public AjaxOutput addReviewComment(String comment){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	command.getStudy();
@@ -831,7 +831,7 @@ public class CreateAdverseEventAjaxFacade {
         return fetchPreviousComments(command.getAeReport().getId(), userId);
     }
     
-    public String editReviewComment(String comment, Integer commentId){
+    public AjaxOutput editReviewComment(String comment, Integer commentId){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
@@ -839,20 +839,48 @@ public class CreateAdverseEventAjaxFacade {
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
     }
     
-    public String fetchPreviousComments(Integer entityId, String userId){
+    public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
 		Map params = new HashMap<String, String>();
 		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "aeReport");
         params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, entityId.toString());
         params.put("userId", userId);
         params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
         params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
-
-		return renderCommentsAjaxView(params);
+        AjaxOutput output = new AjaxOutput();
+		String html =  renderCommentsAjaxView(params);
+		output.setHtmlContent(html);
+		return output;
 	}
     
-    public String retrieveReportReviewComments(){
+    public AjaxOutput retrieveReviewComments(){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
+    }
+    
+    public AjaxOutput retrieveNextTransitions(){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	List<String> transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAeReport().getWorkflowId(), getUserId());
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(transitions.toArray());
+    	return output;
+    }
+    
+    public AjaxOutput retrieveReviewCommentsAndActions(){
+    	AjaxOutput output = retrieveReviewComments();
+    	AjaxOutput transitionOutput = retrieveNextTransitions();
+    	output.setObjectContent(transitionOutput.getObjectContent());
+    	return output;
+    	
+    }
+    
+    public AjaxOutput advanceWorkflow(String transitionToTake){
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	
+    	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), 
+    			transitionToTake, command.getAeReport(), getUserId());
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(transitions.toArray());
+    	return output;
     }
     
     protected String renderCommentsAjaxView(Map<String, String> params){

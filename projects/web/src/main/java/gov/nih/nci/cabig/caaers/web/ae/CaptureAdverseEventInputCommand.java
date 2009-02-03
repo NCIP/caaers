@@ -120,12 +120,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public void reassociate(){
-//BJ : commented as, we removed lock cascaded from reportingperiod to assignment
-//		//reassociate all report definitions
-//		if(allReportDefinitions != null)
-//		for(ReportDefinition repDef : allReportDefinitions){
-//			reportDefinitionDao.reassociate(repDef);
-//		}
+		//reassociate all report definitions
+		if(allReportDefinitions != null)
+		for(ReportDefinition repDef : allReportDefinitions){
+			reportDefinitionDao.reassociate(repDef);
+		}
 		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
 			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
 		}

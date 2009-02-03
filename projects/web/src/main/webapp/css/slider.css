@@ -226,6 +226,13 @@ a#maximize:active {
 	margin-top:5px;
 }
 
+#wf-action-div{
+	clear: both;
+}
+#wf-action-label{
+	font-weight: bold;
+	float: left;
+}
 
 /* Below is the css from livepipe */
 

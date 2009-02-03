@@ -3,24 +3,11 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="domainObjectType" required="true" %>
-
-
-<script language="JavaScript1.2">
-	//document.observe('dom:loaded',function(){
-	var edit_comment_id = 0;
-	var scrollbar;
-	Event.observe(window, "load", function(){		
-	//example 1
-	scrollbar = new Control.ScrollBar('scrollbar_content','scrollbar_track');
-	
-	});	
-	
-</script>
-
 <div>
 	<div id="collapse-all-comments">
-		<a href=""><img src="/caaers/images/b-plus.gif" alt="" /> Expand All</a>
-		<a href=""><img src="/caaers/images/b-minus.gif" alt="" /> Collapse All</a>
+		<a name="allBtnCtrl"></a>
+		<a href="#allBtnCtrl" onClick="javascript:expandAllComments();" ><img src="<c:url value="/images/b-plus.gif"/>" alt=""  /> Expand All</a>
+		<a href="#allBtnCtrl"  onClick="javascript:collapseAllComments();"><img src="<c:url value="/images/b-minus.gif"/>" alt=""/> Collapse All</a>
 	</div>
 	<div id="comments-window">
 		 <div id="scrollbar_container">  
@@ -33,9 +20,25 @@
 		<div id="add-a-comment">Add a Comment</div>
 		<div id="edit-a-comment" style="display:none">Edit Comment</div>
 		<textarea id="enter-comment-text"></textarea>
-		<a href="javascript:addComment();" id="add-btn"><img src="/caaers/images/sidebar/add_btn.png" alt="Add" /></a>
-		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="/caaers/images/sidebar/add_btn.png" alt="Edit" /></a>
-		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="/caaers/images/sidebar/add_btn.png" alt="Cancel" /></a>
+		<input type="hidden" id="edit_comment_id" name="edit_comment_id" value="" />
+		<a href="javascript:addComment();" id="add-btn">
+		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
+		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Edit" /></a>
+		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Cancel" /></a>
+		<div id="wf-action-div">
+			<div id="wf-action-label">
+			Next Action
+			</div>
+			<div id="wf-action-value">
+			&nbsp;&nbsp;
+			<select id="sliderWFAction" onChange="routingHelper.advanceWorkflow();">
+				<option value="">Please select</option>
+			</select>
+			<img id="sliderWFAction-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
+			</div>
+			 
+			
+		</div>
 	</div>
 </div>
 
@@ -43,91 +46,26 @@
 	 
 	
 	function addComment(){
-		if('${domainObjectType}' == 'reportingPeriod'){
-			captureAE.addReviewComment(document.getElementById('enter-comment-text').value, function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-					}) ;
-		}
-		if('${domainObjectType}' == 'aeReport'){
-			alert('calling ajax method createAE.addReviewComment');
-			createAE.addReviewComment(document.getElementById('enter-comment-text').value, function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-					}) ;
-		}
-		//routingAndReview.addComment('${domainObjectType}', getWorkflowEntityId(), '${command.participant.id}', 
-		//			document.getElementById('enter-comment-text').value, function(ajaxOutput){
-		//				document.getElementById('scrollbar_content').innerHTML = "";
-		//				document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-		//				document.getElementById('enter-comment-text'). value = "";
-		//			}) ;
+		routingHelper.addComment();
 	}
 	
 	function editComment(id){
-		// First of all set the variable edit_comment_id with the correct id of the comment
-		edit_comment_id = id;
-		
-		// Set the text-area with the contents of the comment to be edited.
-		document.getElementById('enter-comment-text').value = document.getElementById('userComment-' + id).innerHTML;
-		
-		// Hide the "Add a Comment" label and display "Edit Comment" label
-		document.getElementById('add-a-comment').style.display='none';
-		document.getElementById('edit-a-comment').style.display='';
-		
-		// Hide the 'Add' button and enable 'Cancel' and 'Edit' buttons
-		document.getElementById('add-btn').style.display='none';
-		document.getElementById('cancel-btn').style.display='';
-		document.getElementById('edit-btn').style.display='';
+		routingHelper.enableEditMode(id);
 	}
 	
 	function cancelEdit(){
-		// First of all clear the value of the edit_comment_id variable
-		edit_comment_id = 0;
-		
-		// clear the contents of the text-area
-		document.getElementById('enter-comment-text').value = '';
-		
-		// Replace the 'Edit Comment' label with 'Add a Comment' label
-		document.getElementById('edit-a-comment').style.display='none';
-		document.getElementById('add-a-comment').style.display='';
-		
-		// Hide the 'Edit' and 'Cancel' buttons. Enable the 'Add' button
-		document.getElementById('cancel-btn').style.display='none';
-		document.getElementById('edit-btn').style.display='none';
-		document.getElementById('add-btn').style.display='';
+		routingHelper.disableEditMode();
 	}
 	
 	function saveEditedComment(){
-		if('${domainObjectType}' == 'reportingPeriod'){
-			captureAE.editReviewComment(document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-						// Call cancelEdit() to adjust the UI back to "add comments" mode.
-						cancelEdit();
-					}) ;
-		}
-		
-		if('${domainObjectType}' == 'aeReport'){
-			createAE.editReviewComment(document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-						// Call cancelEdit() to adjust the UI back to "add comments" mode.
-						cancelEdit();
-					}) ;
-		}
-		//routingAndReview.editComment('domainObjectType', getWorkflowEntityId(), '${command.participant.id}', 
-		//			document.getElementById('enter-comment-text').value, edit_comment_id, function(ajaxOutput){
-		//				document.getElementById('scrollbar_content').innerHTML = "";
-		//				document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-		//				document.getElementById('enter-comment-text'). value = "";
-		//				// Call cancelEdit() to adjust the UI back to "add comments" mode.
-		//				cancelEdit();
-		//			}) ;
+		routingHelper.editComment();
+	}
+	function collapseAllComments(){
+		routingHelper.collapseAllComments();
+	}
+
+	function expandAllComments(){
+		routingHelper.expandAllComments();
 	}
 	
 	function getWorkflowEntityId(){

@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
@@ -25,6 +28,7 @@ import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.utils.Lov;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 
 /**
  * @author Rhett Sutphin
@@ -166,6 +170,17 @@ public class ReporterTabTest extends AeTabTestCase {
     	assertEquals(4, map.size());
     }
    
+    public void testValidate(){
+    	command.setWorkflowEnabled(true);
+    	replayMocks();
+    	BeanWrapper commandBean = new BeanWrapperImpl(command);
+    	InputFieldGroupMap fieldGroups = getTab().createFieldGroups(command);
+    	getTab().validate(command, commandBean, fieldGroups, errors);
+    	assertTrue(errors.hasErrors());
+    	assertEquals("SAE_019", errors.getFieldError("aeReport.reporter.user").getCode());
+    	verifyMocks();
+    }
+    
     public void addReportsToAeReport(){
     	for(int i = 0; i < 4; i++){
     		Report report = new Report();

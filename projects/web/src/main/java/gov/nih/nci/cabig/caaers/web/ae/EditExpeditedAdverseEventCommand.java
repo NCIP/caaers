@@ -364,7 +364,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 	}
 	
 	public boolean getWorkflowEnabled() {
-		return false;
+		return workflowEnabled;
 	}
 	public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;

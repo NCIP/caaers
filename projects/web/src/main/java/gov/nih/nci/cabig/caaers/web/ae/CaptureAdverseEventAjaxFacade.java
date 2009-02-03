@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.CaaersSystemException;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
@@ -15,21 +14,13 @@ import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRe
 import gov.nih.nci.cabig.caaers.tools.ObjectTools;
 import gov.nih.nci.cabig.caaers.web.dwr.AjaxOutput;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
-import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.userdetails.User;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
@@ -193,7 +184,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	return new AjaxOutput();
     }
     
-    public String addReviewComment(String comment){
+    public AjaxOutput addReviewComment(String comment){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
@@ -202,7 +193,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
         return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
     }
     
-    public String editReviewComment(String comment, Integer commentId){
+    public AjaxOutput editReviewComment(String comment, Integer commentId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
     	String userId = getUserId();
@@ -211,20 +202,42 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
     }
     
-    public String fetchPreviousComments(Integer entityId, String userId){
+    public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
 		Map params = new HashMap<String, String>();
 		params.put(RoutingAndReviewCommentController.AJAX_ENTITY, "reportingPeriod");
         params.put(RoutingAndReviewCommentController.AJAX_ENTITY_ID, entityId.toString());
         params.put("userId", userId);
         params.put(RoutingAndReviewCommentController.AJAX_ACTION, "fetchComments");
         params.put(CaptureAdverseEventController.AJAX_SUBVIEW_PARAMETER, "reviewCommentsList");
-
-		return renderCommentsAjaxView(params);
+        
+		String html = renderCommentsAjaxView(params);
+		AjaxOutput output = new AjaxOutput();
+		output.setHtmlContent(html);
+		return output;
 	}
     
-    public String retrieveReportingPeriodReviewComments(){
+    public AjaxOutput retrieveReviewComments(){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
+    }
+    
+    public AjaxOutput retrieveNextTransitions(){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	List<String> transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAdverseEventReportingPeriod().getWorkflowId(), getUserId());
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(transitions.toArray());
+    	return output;
+    }
+    
+    public AjaxOutput advanceWorkflow(String transitionToTake){
+    	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
+    	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(command.getAdverseEventReportingPeriod().getWorkflowId(), 
+    			transitionToTake, command.getAdverseEventReportingPeriod(), getUserId());
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(transitions.toArray());
+    	return output;
     }
     
     @Required

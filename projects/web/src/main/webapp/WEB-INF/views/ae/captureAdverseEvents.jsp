@@ -2,14 +2,15 @@
 
 <%@ page import = "java.util.ArrayList" %>
 
-<script type="text/javascript" src="/caaers/js/dropdown_menu.js"></script>
 <html>
  <head>
     <tags:includePrototypeWindow />
+    <tags:javascriptLink name="dropdown_menu" />
+    <tags:javascriptLink name="routing_and_review" />
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="captureAE,createStudy,createAE,routingAndReview"/>
     <tags:stylesheetLink name="aeTermQuery_box" />
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:stylesheetLink name="slider" />
     <tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
@@ -58,6 +59,7 @@
     var hasChanges = false;
 
     var oldSignatures = new Array();
+    var routingHelper = new RoutingAndReviewHelper(captureAE);
 
     Object.extend(RPCreatorClass.prototype, {
         /*
@@ -148,29 +150,14 @@
             }
             //will refresh the options of reporting period.
             captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput) {
-                /*
-                 if(!fetchOnlyDetails){
-                 //update the reporting period dropdown
-                 this.rpCtrl.options.length = 1;
-                 ajaxOutput.objectContent.each(function(rp){
-                 this.addOptionToSelectBox(this.rpCtrl,rp.name, rp.id);
-                 }.bind(this));
-                 this.addOptionToSelectBox(this.rpCtrl,'Create New', '-1');
-                 this.rpCtrl.value = newRPId;
-                 }
-                 */
+
                 this.clearRPDetails();
                 this.showRPDetails(ajaxOutput.htmlContent);
                 AE.registerCalendarPopups("detailSection");
                 
-                captureAE.retrieveReportingPeriodReviewComments(
-					function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text').value = "";
-					}) ;
-				document.getElementById('entire-slider').style.display='';
-				scrollbar.recalculateLayout();
+               //fetch the comments and next actions
+                routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+                
             }.bind(this));
             
         },
@@ -270,16 +257,12 @@
 			document.addRoutineAeForm.action = stripped_url;
 		}
  		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
+
+		
  		
  		//Check if reportingPeriod is selected and enable the slider.
- 		if(document.getElementById('adverseEventReportingPeriod').value != '' && ${command.workflowEnabled}){
- 			captureAE.retrieveReportingPeriodReviewComments( 
-					function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-					}) ;
-			document.getElementById('entire-slider').style.display = '';
+ 		if($('adverseEventReportingPeriod').value != '' && ${command.workflowEnabled}){
+            routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  		}
  	});
 
