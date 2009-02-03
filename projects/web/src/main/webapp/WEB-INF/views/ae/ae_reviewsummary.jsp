@@ -19,13 +19,6 @@
 <tags:includeScriptaculous/>
 <tags:includePrototypeWindow />
 <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <tags:slider renderComments="true" renderAlerts="false" display="none">
-    	<jsp:attribute name="comments">
-    		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="reportingPeriod"/>
-    		</div>
-    	</jsp:attribute>
-    </tags:slider>
 <script type="text/javascript">
 
 	Event.observe(window, "load", function() {

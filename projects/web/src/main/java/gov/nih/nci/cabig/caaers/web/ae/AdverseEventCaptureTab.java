@@ -140,6 +140,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     @Override
     public void beforeBind(HttpServletRequest request, CaptureAdverseEventInputCommand command) {
         super.beforeBind(request, command);
+        command.reassociate();
     }
 
 

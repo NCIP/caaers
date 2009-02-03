@@ -125,6 +125,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		for(ReportDefinition repDef : allReportDefinitions){
 			reportDefinitionDao.reassociate(repDef);
 		}
+		studyDao.lock(study);
 		if(this.adverseEventReportingPeriod != null && this.adverseEventReportingPeriod.getId() != null){
 			adverseEventReportingPeriodDao.reassociate(this.adverseEventReportingPeriod);
 		}
