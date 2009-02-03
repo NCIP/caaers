@@ -1,20 +1,41 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 import com.thoughtworks.selenium.*;
 
+import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
+
 import java.util.regex.Pattern;
+
+import org.apache.log4j.Logger;
 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	String studyId=null;
 	AjaxWidgets aw;
+	public final String BLAZING = "0";
+	public final String FAST = "1000";
+	public final String MEDIUM = "5000";
+	public final String SLOW = "10000";
+	
+	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
+	
 	public void setUp() throws Exception {
 		setUp("https://oracle.qa.semanticbits.com", "*chrome");
+		
+		/*selenium  = new DefaultSelenium("10.10.10.220", 4444, "*chrome", "https://oracle.qa.semanticbits.com" );
+		selenium.start();*/
+		//setUp("https://derek.herndon.semanticbits.com:7443", "*chrome");
 		aw=new AjaxWidgets(selenium);
+		selenium.setSpeed(FAST);
 		// DefaultSelenium selenium = new DefaultSelenium("localhost", 4444,
 		// "*chrome", "http://localhost:8080/ctcae");
 		// selenium.start();
 		
 	}
-
+	public void log(String message, Exception e){
+		log.debug(message, e);
+	}
+	public void log(String message){
+		this.log(message, null);
+	}
 	public void testLogin() throws Exception {
 		aw.login();
 		assertTrue("Login Failure", true);
@@ -404,7 +425,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type("lastName", lastName);
 		selenium.click("//input[@value='Search']");
 		aw.waitForElementPresent("//td[@title='Sort By First Name']");
-		Thread.sleep(2000);
+		
 
 				
 	}

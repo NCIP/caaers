@@ -1,5 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
+
 import junit.framework.*;
+
 import com.thoughtworks.selenium.*;
 
 /**
@@ -20,6 +22,11 @@ public class AjaxWidgets extends TestCase {
 	}
 
 	public void confirmOK(String confirmMessage) throws InterruptedException {
+		/*
+		 * confirmMessage should have the following format: original: Are you
+		 * sure you want to delete this? transformed: ^Are you sure you want to
+		 * delete this[\\s\\S]$
+		 */
 		for (int second = 0;; second++) {
 			if (second >= 60)
 				fail("timeout");
@@ -47,7 +54,9 @@ public class AjaxWidgets extends TestCase {
 	public void typeAutosuggest(String element, String text, String elemPresent)
 			throws InterruptedException {
 		selenium.click(element);
-		selenium.typeKeys(element, "");
+		String elemValue=selenium.getValue(element);
+		for(int i=0;i<elemValue.length();i++)
+			selenium.typeKeys(element, "\b");
 		selenium.typeKeys(element, text);
 		waitForElementPresent("//div[@id='" + elemPresent + "']/ul/li");
 
@@ -86,16 +95,91 @@ public class AjaxWidgets extends TestCase {
 		}
 	}
 
-	public void addPanel(String clickableElement, String waitForElementPresent) throws InterruptedException {
+	public void addPanel(String clickableElement, String waitForElementPresent)
+			throws InterruptedException {
 		selenium.click(clickableElement);
 		waitForElementPresent(waitForElementPresent);
 	}
-	
-	public void removePanel(String clickableElement, String waitForElementNotPresent, String confirmMessage) throws InterruptedException{
-	//Set confirmMessage to null if no confirmation dialog will appear
-	selenium.click(clickableElement);
-	if(confirmMessage!=null)
-		confirmOK(confirmMessage);
-	waitForElementNotPresent(waitForElementNotPresent);
+
+	public void removePanel(String clickableElement, String confirmMessage)
+			throws InterruptedException {
+		// clickableElement should be set to the delete 'X' used to delete
+		// panels
+		// Set confirmMessage to null if no confirmation dialog will appear
+		selenium.click(clickableElement);
+		if (confirmMessage != null)
+			confirmOK(confirmMessage);
+		waitForElementNotPresent(clickableElement);
+	}
+
+	public void removeLastPanel(String clickableElement, String confirmMessage)
+			throws Exception {
+		/*
+		 * Removes the last panel which has the clickable element. It should be
+		 * of the following form: Original: //input[@id=
+		 * 'participant.organizationIdentifiers[1].primaryIndicator']/parent::td/parent::tr/descendant::img[@alt='delete']
+		 * Use: //input[@id=
+		 * 'participant.organizationIdentifiers[?].primaryIndicator']/parent::td/parent::tr/descendant::img[@alt='delete']
+		 * 
+		 * ClickableElement should be set to the delete 'X' used to delete
+		 * panels. Set confirmMessage to null if no confirmation dialog will
+		 * appear.
+		 */
+		String latestClickableElement = computeLatestElement(clickableElement,
+				true);
+		selenium.click(latestClickableElement);
+		if (confirmMessage != null)
+			confirmOK(confirmMessage);
+		waitForElementNotPresent(latestClickableElement);
+	}
+
+	public void addLastPanel(String clickableElement,
+			String waitForElementPresent) throws Exception {
+		/*
+		 * waitForElementPresent should have an array index in the Name. For ex:
+		 * if element is://span[@id=
+		 * 'assignment.preExistingConditions[0].preExistingCondition.text'] then
+		 * fashion the string as//span[@id=
+		 * 'assignment.preExistingConditions[?].preExistingCondition.text']
+		 */
+		String latestElement = computeLatestElement(waitForElementPresent,
+				false);
+		selenium.click(clickableElement);
+		waitForElementPresent(latestElement);
+	}
+
+	public String computeLatestElement(String waitForElementPresent,
+			boolean exists) throws Exception {
+		if (waitForElementPresent.indexOf('?') == -1)
+			throw new Exception("Element is malformed. \n Value passed:\n"
+					+ waitForElementPresent
+					+ "\n does not have '?' character as required.");
+		String parts[] = waitForElementPresent.split("\\?");
+		boolean loop = true;
+		int i = 0;
+		for (i = 0; loop; i++) {
+			if (!(selenium.isElementPresent(parts[0] + i + parts[1])))
+				loop = false;
+			System.out.println("\n checking through: " + parts[0] + i
+					+ parts[1]);
+		}
+		i--;
+		if (exists) {
+			return parts[0] + (--i) + parts[1];
+		} else
+			return parts[0] + i + parts[1];
+	}
+
+	public void clickCalendar(String linkId) throws InterruptedException {
+		/*
+		 * selenium.clickAt("//a[@id='" + linkId + "']", "");
+		 * waitForElementPresent("//div[text()='Today']");
+		 * selenium.clickAt("//div[text()='Today']", "");
+		 * selenium.clickAt("//div[text()='Today']", "");
+		 */
+		selenium.click("//a[@id='participant.dateOfBirth-calbutton']");
+		waitForElementPresent("//div[text()='Today']");
+		selenium.click("//div[text()='Today']");
+		selenium.clickAt("//div[text()='Today']", "(0,0)");
 	}
 }
