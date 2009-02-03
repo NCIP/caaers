@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp"%>
+
 <page:applyDecorator name="standardNoHeader">
 <html>
  <head>
@@ -9,38 +10,56 @@
 	 	div.row div.value, div.row div.extra { margin-left: 13em; }
         div.hr {font-size:1px; height: 1px;}
 	</style>
- <script>
-
- 	var descArray = new Array();
- 	<c:forEach items="${command.study.treatmentAssignments}" var="ta">
- 	    descArray.push("${ta.escapedDescription}");
- 	</c:forEach>
-
- 	Event.observe(window, "load", function(){
- 	 	//make the TAC description non editable
- 		$('reportingPeriod.treatmentAssignment.description').setAttribute('readOnly',true);
-
- 		//catch the events on treatment assignment dropdown.
-		$('reportingPeriod.treatmentAssignment').observe("change", function(event){
-			selIndex = $('reportingPeriod.treatmentAssignment').selectedIndex;
-			$('reportingPeriod.treatmentAssignment.description').clear();
-			if(selIndex > 0){
-				$('reportingPeriod.treatmentAssignment.description').value = descArray[selIndex-1];
-			}
-		});
- 	})
- </script>
 </head>
 <body>
 
-<tags:standardForm title="Evaluation Period Details">
+<tags:standardForm title="Course Information">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
-        <c:forEach items="${fieldGroups.ReportingPeriod.fields}" var="field">
-           <tags:renderRow field="${field}"/>
-        </c:forEach>
+
+        <ui:row path="assignment.startDateOfFirstCourse">
+             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[0]}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="assignment.startDateOfFirstCourse" /></jsp:attribute>
+        </ui:row>
+
+        <ui:row path="reportingPeriod.startDate">
+             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[1]}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.startDate" /></jsp:attribute>
+        </ui:row>
+
+        <ui:row path="reportingPeriod.endDate">
+             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[2]}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:date path="reportingPeriod.endDate" /></jsp:attribute>
+        </ui:row>
+
+        <ui:row path="reportingPeriod.epoch">
+             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[3]}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:select path="${fieldGroups.ReportingPeriod.fields[3].propertyName}" options="${fieldGroups.ReportingPeriod.fields[3].attributes.options}"/></jsp:attribute>
+        </ui:row>
+
+        <ui:row path="reportingPeriod.cycleNumber">
+             <jsp:attribute name="label"><tags:renderLabel field="${fieldGroups.ReportingPeriod.fields[4]}" /></jsp:attribute>
+             <jsp:attribute name="value"><ui:text path="${fieldGroups.ReportingPeriod.fields[4].propertyName}" /></jsp:attribute>
+        </ui:row>
+
+        <tags:table bgColor="#cccccc" contentID="_ta">
+            <table width="100%" cellspacing="1" cellpadding="2" style="font-size:10pt;">
+                <tr bgcolor="#E4E4E4">
+                    <th><b>Treatment Assignment</b></th>
+                    <th><b>Description</b></th>
+                </tr>
+                <c:forEach items="${command.study.treatmentAssignments}" var="ta">
+                    <tr bgcolor="white">
+                        <td><ui:radio path="reportingPeriod.treatmentAssignment" value="${ta.id}" />&nbsp;${ta.code}
+                        <td>${ta.escapedDescription}
+                    </tr>
+                </c:forEach>
+                
+            </table>
+        </tags:table>
     </jsp:attribute>
-    <jsp:attribute name="navButtons"><input type="submit" value="Save" /></jsp:attribute>
+    <jsp:attribute name="navButtons"><div align="right"><input type="image" src="<c:url value="/images/blue/save_btn.png" />" id="flow-update" class="tab${tabNumber}" value="Save" alt="Save"/></div></jsp:attribute>
+
 </tags:standardForm>
 
 </body>

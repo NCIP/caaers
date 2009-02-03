@@ -63,7 +63,6 @@ public class CreateReportingPeriodController extends SimpleFormController {
     private static final String REPORTINGPERIOD_FIELD_GROUP = "ReportingPeriod";
     private InputFieldGroup reportingPeriodFieldGroup;
 
-
     private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
     private ParticipantDao participantDao;
@@ -115,6 +114,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
         ReportingPeriodCommand rpCommand = (ReportingPeriodCommand) command;
         refDataMap.put("fieldGroups", createFieldGroups(command));
+        refDataMap.put("treatmentAssignments", fetchTreatmentAssignmentOptions(command));
         return refDataMap;
     }
 
@@ -127,24 +127,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Evaluation Period Type", true, createEpochOptions(command)));
-
-        InputField descriptionField = InputFieldFactory.createTextArea("reportingPeriod.description", "Description", false);
-        InputFieldAttributes.setColumns(descriptionField, 45);
-        reportingPeriodFieldGroup.getFields().add(descriptionField);
-
-        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Cycle number", false);
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Period Type", true, createEpochOptions(command)));
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course number", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
-
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.treatmentAssignment", "Treatment assignment", true, fetchTreatmentAssignmentOptions(command)));
-
-        InputField tacDescriptionField = InputFieldFactory.createTextArea("reportingPeriod.treatmentAssignment.description", "Treatment description");
-        InputFieldAttributes.setColumns(tacDescriptionField, 45);
-        reportingPeriodFieldGroup.getFields().add(tacDescriptionField);
-
+        
         fieldMap.addInputFieldGroup(reportingPeriodFieldGroup);
         return fieldMap;
     }
@@ -225,15 +215,23 @@ public class CreateReportingPeriodController extends SimpleFormController {
         List<AdverseEventReportingPeriod> rPeriodList = command.getAssignment().getReportingPeriods();
         Date startDate = rPeriod.getStartDate();
         Date endDate = rPeriod.getEndDate();
-        InputField field = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(1);
+        InputField endDateField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(2);
 
         // Check for duplicate baseline Reporting Periods.
+        if (rPeriod.getEpoch() == null) {
+            return;
+        }
+
+        if (rPeriod.getTreatmentAssignment() == null || rPeriod.getTreatmentAssignment().getId() == null) {
+            errors.reject("", "Select the Treatment Assignment.");
+            return;
+        }
+
         if (rPeriod.getEpoch().getName().equals("Baseline")) {
             for (AdverseEventReportingPeriod aerp : rPeriodList) {
                 if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
-                    InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(2);
-                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED",
-                            "A Baseline Evaluation Period already exists");
+                    InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
+                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline Evaluation Period already exists");
                     return;
                 }
             }
@@ -241,16 +239,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
 
         // Check if the start date is equal to or before the end date.
         if (startDate != null && endDate != null && (endDate.getTime() - startDate.getTime() < 0)) {
-            errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                    "End date cannot be earlier than Start date");
+            errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "End date cannot be earlier than Start date");
         }
 
         // Check if the start date is equal to end date.
         // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
         if (!rPeriod.getEpoch().getName().equals("Baseline")) {
             if (startDate.equals(endDate)) {
-                errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                        "For Non-Baseline Evaluation Period Start date cannot be equal to End date");
+                errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "For Non-Baseline Evaluation Period Start date cannot be equal to End date");
             }
 
         }
@@ -265,8 +261,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                         ((sDate.getTime() - endDate.getTime() < 0) && (endDate.getTime() - eDate.getTime() < 0)) ||
                         ((startDate.getTime() - sDate.getTime() < 0) && (eDate.getTime() - endDate.getTime() < 0)) ||
                         (sDate.compareTo(startDate) == 0 && eDate.compareTo(endDate) == 0)) {
-                    errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                            "Evaluation Period cannot overlap with an existing Evaluation Period.");
+                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Evaluation Period cannot overlap with an existing Evaluation Period.");
                     break;
                 }
             }
@@ -280,16 +275,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
             if (rPeriod.getEpoch().getName().equals("Baseline")) {
                 if (!aerp.getEpoch().getName().equals("Baseline")) {
                     if (sDate.getTime() - startDate.getTime() < 0) {
-                        errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                                "Baseline Evaluation Period cannot start after an existing Non-Baseline Evaluation Period.");
+                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Baseline Evaluation Period cannot start after an existing Non-Baseline Evaluation Period.");
                         return;
                     }
                 }
             } else {
                 if (aerp.getEpoch().getName().equals("Baseline")) {
                     if (startDate.getTime() - sDate.getTime() < 0) {
-                        errors.rejectValue(field.getPropertyName(), "REQUIRED",
-                                "Non-Baseline Evaluation Period cannot start before an existing Baseline Evaluation Period.");
+                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Non-Baseline Evaluation Period cannot start before an existing Baseline Evaluation Period.");
                         return;
                     }
                 }

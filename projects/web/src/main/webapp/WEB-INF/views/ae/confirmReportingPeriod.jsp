@@ -1,4 +1,5 @@
 <%@ include file="/WEB-INF/views/taglibs.jsp" %>
+
 <page:applyDecorator name="standardNoHeader">
 <html>
 <head>
@@ -39,12 +40,12 @@
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[2]}">
    			  <jsp:attribute name="value">
-				${command.reportingPeriod.epoch.name}
+				<ui:value propertyName="${ReportingPeriod.fields[2].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[3]}">
    			  <jsp:attribute name="value">
-				<ui:value propertyName="${ReportingPeriod.fields[3].propertyName}" />
+				${command.reportingPeriod.epoch.name}
 			  </jsp:attribute>
 		</tags:renderRow>
         <tags:renderRow field="${ReportingPeriod.fields[4]}">
@@ -52,21 +53,18 @@
 				<ui:value propertyName="${ReportingPeriod.fields[4].propertyName}" />
 			  </jsp:attribute>
 		</tags:renderRow>
+<%--
         <tags:renderRow field="${ReportingPeriod.fields[5]}">
    			  <jsp:attribute name="value">
 				${command.reportingPeriod.treatmentAssignment.code}
 			  </jsp:attribute>
 		</tags:renderRow>
-        <tags:renderRow field="${ReportingPeriod.fields[6]}">
-   			  <jsp:attribute name="value">
-				<ui:value propertyName="${ReportingPeriod.fields[6].propertyName}" />
-			  </jsp:attribute>
-		</tags:renderRow>
+--%>
 
 	</jsp:attribute>
 	<jsp:attribute name="navButtons">
-		<input id="ok-id" type="button" value="OK" />
-	</jsp:attribute>
+		<input id="ok-id" type="image" value="OK" src="<c:url value="/images/blue/save_btn.png" />"/>
+    </jsp:attribute>
 </tags:standardForm>
 
 </body>
