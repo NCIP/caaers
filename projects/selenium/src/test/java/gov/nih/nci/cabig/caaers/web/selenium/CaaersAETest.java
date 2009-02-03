@@ -39,10 +39,10 @@ public class CaaersAETest extends CaaersSeleniumTestCase {
 
 	public void testExecuteExpeditedAEFlow() throws Exception {
 		checkLogin();
-		/*aeFixtures
-				.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=1");*/
 		aeFixtures
-		.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=21&study=1&participant=2");
+				.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=1");
+		/*aeFixtures
+		.executeExpeditedAEFlow("caaers/pages/ae/edit?aeReport=21&study=1&participant=2");*/
 		assertTrue("Expedited AE flow did not finish successfully", selenium
 				.isElementPresent("//h2[text()='Submit']"));
 	}
