@@ -23,8 +23,8 @@
 		<input type="hidden" id="edit_comment_id" name="edit_comment_id" value="" />
 		<a href="javascript:addComment();" id="add-btn">
 		<img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Add" /></a>
-		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Edit" /></a>
-		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="<c:url value="/images/sidebar/add_btn.png"/>" alt="Cancel" /></a>
+		<a href="javascript:saveEditedComment();" id="edit-btn" style="display:none"><img src="<c:url value="/images/sidebar/edit_btn.png"/>" alt="Edit" /></a>
+		<a href="javascript:cancelEdit();" id="cancel-btn" style="display:none"><img src="<c:url value="/images/sidebar/cancel_btn.png"/>" alt="Cancel" /></a>
 		<div id="wf-action-div">
 			<div id="wf-action-label">
 			Next Action
