@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 import com.thoughtworks.selenium.*;
 
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowServiceImpl;
 
 import java.util.regex.Pattern;
 

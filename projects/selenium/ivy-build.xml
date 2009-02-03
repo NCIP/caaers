@@ -122,9 +122,10 @@
 	<!-- ================================= 
           target: upload-rules              
          ================================= -->
-	<target name="upload-rules" description="upload rules">
-		<taskdef name="uploadRules" classname="gov.nih.nci.cabig.caaers.web.selenium.CaaersRulesTest" classpath="${parent.dir}/build" />
-		<uploadRules/>
+	<target name="upload-rules" description="upload rules" depends="resolve, resolve-test,compile-test">
+		<antcall target="test">
+			<property name="test" value="CaaersRulesTestBootstrap"/>
+		</antcall>
 	</target>
 </project>
 <!-- TODO 
