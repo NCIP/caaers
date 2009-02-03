@@ -251,7 +251,13 @@
 	<target name="drop-rules-tables" description="drop the rules tables">
 				<subant target="drop-rules-tables" buildpath="core/ivy-build.xml" />
 	</target>
-	
+	<!-- ================================= 
+          target: test-ui              
+         ================================= -->
+    <target name="test-ui" description="Test Caaers UI using selenium">
+    	<subant target="test-ui" buildpath="selenium/ivy-build.xml" />
+    </target>
+
 	<!-- ==========================================================
 				target : importexcel
 				Used to import Study Data From an Excel Sheet.
