@@ -69,6 +69,7 @@
           target: reset-db              
          ================================= -->
 	<target name="reset-db" description="reset the db to a good baseline dump.">
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/stopall.sh" />
 		<scp trust="true" todir="oracle:Oracle123!@sbhost02.semanticbits.com:/home/oracle">
 			<fileset dir="${test.resources}">
 				<include name="refreshSelenium.sql" />
@@ -77,6 +78,7 @@
 		</scp>
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/startall.sh" />
 	</target>
 	<!-- ================================= 
           target: start-selenium-server              
@@ -118,3 +120,7 @@
 	</target>
 
 </project>
+<!-- TODO 
+1> Run through tests that have failed.
+2> Set up Db data accordingly [possibly using selenium]
+-->
