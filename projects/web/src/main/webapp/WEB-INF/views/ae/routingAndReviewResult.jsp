@@ -24,6 +24,9 @@
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">
+.report-row {
+	background-color: #FFDADA;
+}
 .notify-unit.success {
 	color: #090;
 }
@@ -203,7 +206,7 @@ margin-top:5px;
 		var sb = $(selectBox);
 		var newStatus = sb.value;
 		sb.disable();
-		var indicatorId = 'reportingPeriod-' + entityId + '-indicator';
+		var indicatorId = entityType + '-' + entityId + '-indicator';
 		$(indicatorId).style.display='';
 		routingAndReview.advanceWorkflow(wfId, newStatus, entityId, entityType , function(output){
 			
@@ -244,9 +247,9 @@ margin-top:5px;
    	  		<thead>
       			<tr align="center" class="label">
        		 		<td width="2%" class="tableHeader"></td>
-        			<td width="25%" class="tableHeader">Evaluation Period</td>
-        			<td width="20%" class="centerTableHeader">Evaluation Period Type</td>
-        			<td width="20%" class="centerTableHeader">Review Status</td>
+        			<td width="18%" class="tableHeader">Evaluation Period</td>
+        			<td width="22%" class="centerTableHeader">Evaluation Period Type</td>
+        			<td width="25%" class="centerTableHeader">Review Status</td>
         			<td width="8%" class="tableHeader">Comments</td>
         			<td width="25%" class="centerTableHeader">Action</td>
       			</tr>
