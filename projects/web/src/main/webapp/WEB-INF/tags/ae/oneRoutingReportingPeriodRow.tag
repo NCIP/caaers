@@ -18,18 +18,18 @@
 	<td>
 		<chrome:collapsableElement targetID="rptable${reportingPeriod.id}" collapsed="true" id="rpID_${reportingPeriod.id}"/>
 	</td>
-	<td width="25%" align="left">
+	<td width="18%" align="left">
 		<a href="<c:url value="${reportingPeriodPageURL}"/>">${reportingPeriod.evaluationPeriodName}</a>
 		<%-- ${reportingPeriod.evaluationPeriodName} --%>
 	</td>
-	<td width="20%">${reportingPeriod.evaluationPeriodTypeName}</td>
-	<td width="20%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
+	<td width="22%">${reportingPeriod.evaluationPeriodTypeName}</td>
+	<td width="25%" id="reportingPeriod-${reportingPeriod.id}-status">${reportingPeriod.reviewStatus.displayName}</td>
 	<td>
 		<a href="#" onClick="displayPopup('reportingPeriod', ${reportingPeriod.id})">
 			<img src="<chrome:imageUrl name="../edit.png" />" /></td>
 		</a>
 	<td width="25%">
-		<select onChange="advanceWorkflow(this,${reportingPeriod.workflowId }, ${reportingPeriod.id }, 'reportingPeriod')" class="wf${reportingPeriod.workflowId }">
+		<select onChange="advanceWorkflow(this,${reportingPeriod.workflowId }, ${reportingPeriod.id }, 'reportingPeriod')" class="wf${reportingPeriod.workflowId }" style="width: 150px">
 			<option value="Please Select">Please Select</option>
 			<c:forEach items="${reportingPeriod.possibleActions}" var="aStatus">
 				<option value="${aStatus }">${aStatus}</option>
@@ -38,73 +38,32 @@
 		<img id="reportingPeriod-${reportingPeriod.id}-indicator" src="<c:url value="/images/indicator.white.gif"/>" alt="activity indicator" style="display:none;"/>
 	</td>
 </tr>
-
 <tr id="rptable${reportingPeriod.id}" style="display:none;" class="${currClass}">
 	<td></td>
 	<td></td>
-	<td colspan=5>
+	<td colspan=6>
 		<table width="100%" border="0" cellspacing="0"> <!-- This is the outer table -->
 			<tr>
 				<td width="100%">
-					<%--  
-					<div class="eXtremeTable">
-
-						<table width="100%" border="0" cellspacing="0" class="rpTableRegion">
-						  <c:choose>
-							<c:when test="${fn:length(reportingPeriod.aeReports) gt 0}">
-								<thead>
-									<tr align="center" class="label">
-										<td width="5%"/>
-										<td class="tableHeader" width="15%">Report Type</td>
-										<td class="centerTableHeader" width="10%">Report Version</td>
-										<td class="centerTableHeader" width="20%">Report Status</td>
-										<td class="centerTableHeader" width="10%"># of AEs</td>
-										<td class="tableHeader" width="10%">Review Status</td>
-										<td class="tableHeader" width="10%">Review Comments</td>
-										<td class="tableHeader" width="20%">Action</td>
-									</tr>
-								</thead>
-								<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="rStatus">
-									<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
-								</c:forEach>
-							</c:when>					
-							<c:otherwise>There are no reports for this reporting period.</c:otherwise>
-							</c:choose>
-						</table>
-
-					</div> --%>
 					<c:forEach items="${reportingPeriod.aeReports}" var="aeReport" varStatus="rStatus">
 						<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
 							<tr>
 								<td>
-									<div class="eXtremeTable" >
+									<%-- <div class="eXtremeTable" > --%>
 										<table width="100%" border="0" cellspacing="0" class="rpTableRegionOuter">
 											<thead>
-												<tr align="center" class="label">
-													<td width="5%"/>
-													<td class="tableHeader" width="15%">Report Type</td>
-													<td class="centerTableHeader" width="10%">Report Version</td>
-													<td class="centerTableHeader" width="20%">Report Status</td>
-													<td class="centerTableHeader" width="10%"># of AEs</td>
+												<tr class="label">
+													<td class="tableHeader" width="30%">Report Name</td>
+													<td class="centerTableHeader" width="15%">Format</td>
+													<td class="centerTableHeader" width="15%">Submission Status</td>
+													<td class="centerTableHeader" width="10%">Review Status</td>
+													<td class="centerTableHeader" width="5%">Comments</td>
+													<td class="centerTableHeader" width="25%">Action</td>
 												</tr>						
 											</thead>
-											<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
+												<ae:oneRoutingExpeditedReportRow aeReport="${aeReport}" index="${rStatus.index}" />
 										</table>
-									</div>
-								</td>
-								<td width="10%">${aeReport.reviewStatus.displayName}</td>
-								<td width="10%">
-									<a href="#" onClick="displayPopup('report', ${aeReport.id})">
-										<img src="<chrome:imageUrl name="../edit.png" />" />
-									</a>
-								</td>
-								<td width="20%">
-									<select onChange="advanceWorkflow(this,${aeReport.workflowId }, ${aeReport.id }, 'report')" class="wf${aeReport.workflowId }">
-										<option value="Please select">Please Select</option>
-										<c:forEach items="${aeReport.possibleActions}" var="rAction">
-											<option value="${rAction}">${rAction}</option>
-										</c:forEach>
-									</select>
+									<%-- </div> --%>
 								</td>
 							</tr>
 						</table>
