@@ -273,7 +273,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			contextVariables.put(REPLACEMENT_REPORTING_PERIOD_LINK, reportingPeriodUrl);
 			
 			notifiyTaskAssignees(createTaskCallback.getProcessDefinitionName(), createTaskCallback.getCurrentNode().getName(), createTaskCallback.getTaskAssigneesList(),contextVariables);
-		} catch (MailException e) {
+		} catch (CaaersSystemException e) {
 			log.error("Workflow Service : Error while sending email to task assignees", e);
 		}
 	}
