@@ -126,12 +126,12 @@
                         <option value="">please select--</option>
                         <optgroup label="Research Staffs">
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
-                            <option value="${person.id}">${person.firstName} ${person.lastName}</option>
+                            <option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
                         </c:forEach>
                         </optgroup>
                         <optgroup label="Investigators">
                         <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
-                            <option value="${siteInv.investigator.id}">${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
+                            <option value="${siteInv.investigator.id}" ${siteInv.investigator.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
                         </c:forEach>
                         </optgroup>
                     </select>
@@ -150,7 +150,7 @@
                     <select id="physician" name="aeReport.physician.user">
                         <option value="">please select--</option>
                         <c:forEach var="siteInv" items="${command.assignment.studySite.organization.siteInvestigators}">
-                            <option value="${siteInv.investigator.id}">${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
+                            <option value="${siteInv.investigator.id}" ${siteInv.investigator.id eq command.aeReport.physician.user.id ? 'SELECTED' : '' }>${siteInv.investigator.firstName} ${siteInv.investigator.lastName}</option>
                         </c:forEach>
                     </select>
                 </div>
