@@ -6,6 +6,18 @@
  <head>
  	<tags:stylesheetLink name="tabbedflow"/>
  	<tags:stylesheetLink name="ae"/>
+ 	<tags:javascriptLink name="routing_and_review" />
+ 	<tags:dwrJavascriptLink objects="reviewRP,captureAE"/>
+ 	<tags:stylesheetLink name="slider" />
+ 	
+ 	<tags:slider renderComments="true" renderAlerts="false" display="none">
+    	<jsp:attribute name="comments">
+    		<div id="comments-id" style="display:none;">
+    			<tags:routingAndReviewComments domainObjectType="reportingPeriod"/>
+    		</div>
+    	</jsp:attribute>
+    </tags:slider>
+ 	
  	 <style type="text/css">
         .selectdiv { width: 170px; overflow: hidden; }
         .shortselectdiv { width: 115px; overflow: hidden; }
@@ -38,9 +50,16 @@
         .selectbox4 { position: absolute; left: 180px; top: 165px; }
         .delete { position: absolute; right: 20px; }
     </style>
-    
+    <script>
+    	var routingHelper = new RoutingAndReviewHelper(reviewRP);
+    	
+		Event.observe(window, "load", function(){
+			routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+   		});
+    </script>
  </head>
 	<body>
+		
 		<chrome:box title="Adverse Events">
  							<form:form commandName="command">
 								<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">

@@ -24,39 +24,50 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractCommandController;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.mvc.AbstractFormController;
+import org.springframework.web.servlet.mvc.SimpleFormController;
 
 
 
-public class ReviewEvaluationPeriodController extends AbstractCommandController{
+public class ReviewEvaluationPeriodController extends SimpleFormController{
 
 	private static final String MAIN_FIELD_GROUP = "main";
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
 	public ReviewEvaluationPeriodController(){
 		setCommandClass(ReviewEvaluationPeriodCommand.class);
-		setCommandName("command");
+		setSessionForm(true);
+		setFormView("ae/reviewEvaluationPeriodDetails");
 	}
 	
-	protected ModelAndView handle(HttpServletRequest request, HttpServletResponse response,
-            Object arg2, BindException arg3) throws Exception {
-		ReviewEvaluationPeriodCommand command = (ReviewEvaluationPeriodCommand) arg2;
-		
+	@Override
+	public boolean isFormSubmission(HttpServletRequest request){
+		return false;
+	}
+	
+	@Override
+    protected Object formBackingObject(HttpServletRequest request) throws Exception {
+		ReviewEvaluationPeriodCommand command = new ReviewEvaluationPeriodCommand(adverseEventReportingPeriodDao);
 		String reportingPeriodId = request.getParameter("adverseEventReportingPeriod");
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodId));
 		command.setAdverseEventReportingPeriod(reportingPeriod);
-		command.setAdverseEvents(new IndexFixedList<AdverseEvent>(reportingPeriod.getAdverseEvents()));
-		Map<String, InputFieldGroup> groupMap = createFieldGroups(reportingPeriod);
-		
-		ModelAndView mv = new ModelAndView();
-		mv.getModel().put("fieldGroups", groupMap);
-		mv.getModel().put("command", command);
-		mv.setViewName("ae/reviewEvaluationPeriodDetails");
-		return mv;
+		command.initialize();
+		return command;
 	}
+	
+	@SuppressWarnings("unchecked")
+    @Override
+    protected Map referenceData(final HttpServletRequest request, final Object obj, final Errors errors) throws Exception {
+        Map<Object, Object> refDataMap = new LinkedHashMap<Object, Object>();
+        //CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) obj;
+        ReviewEvaluationPeriodCommand command = (ReviewEvaluationPeriodCommand) obj;
+        refDataMap.put("fieldGroups", createFieldGroups(command.getAdverseEventReportingPeriod()));
+        return refDataMap;
+    }
 	
 	private Map<String, InputFieldGroup> createFieldGroups(AdverseEventReportingPeriod reportingPeriod){
         InputFieldGroupMap map = new InputFieldGroupMap();
@@ -126,9 +137,6 @@ public class ReviewEvaluationPeriodController extends AbstractCommandController{
                 		mainFieldFactory.addField(InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)"));
                 	}
                 }
-                //InputField notesField = InputFieldFactory.createLabelField("detailsForOther", "Verbatim");
-                //InputFieldAttributes.setSize(notesField, 25);
-                //mainFieldFactory.addField(notesField); //Notes
 
                 //grade
                 mainFieldFactory.addField(InputFieldFactory.createLabelField("grade", "Grade"));

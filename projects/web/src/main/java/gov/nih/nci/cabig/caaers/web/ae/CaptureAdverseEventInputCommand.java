@@ -40,8 +40,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Participant participant; 
 	private Study study;
 	private EvaluationService evaluationService;
-	private AdverseEventReportingPeriod adverseEventReportingPeriod;
-	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	protected AdverseEventReportingPeriod adverseEventReportingPeriod;
+	protected AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private StudyDao studyDao;
 	
 	private List<CtcCategory> ctcCategories;
@@ -68,6 +68,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private Set<AdverseEvent> seriousAdverseEvents;
 	
 	private boolean workflowEnabled = false;
+	
+	public CaptureAdverseEventInputCommand(){
+	}
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
 				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao){
@@ -189,9 +192,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
-			//List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
-			//if(reviewCommentList != null)
-			//	this.adverseEventReportingPeriod.getReviewComments().size();
+			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
+			if(reviewCommentList != null)
+				this.adverseEventReportingPeriod.getReviewComments().size();
 			if(this.assignment != null)
 				this.assignment.getParticipant().getIdentifiers();
 		}

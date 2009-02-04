@@ -12,6 +12,9 @@
         <create javascript="captureAE" creator="spring">
         	<param name="beanName" value="captureAeAjaxFacade" />
         </create>
+        <create javascript="reviewRP" creator="spring">
+        	<param name="beanName" value="reviewRpAjaxFacade" />
+        </create>
         <!--
         <create creator="spring" javascript="participant">
             <param name="beanName" value="participantAjaxFacade"/>
