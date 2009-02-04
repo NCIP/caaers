@@ -44,13 +44,6 @@ public class AERoutingAndReviewDTOFactory {
 		dto.setEvaluationPeriodTypeName(rp.getEpoch().getName());
 		dto.setNoOfAe(rp.getNumberOfAEs());
 		dto.setNoOfReport(rp.getNumberOfReports());
-		List<ExpeditedAdverseEventReportDTO> reports = new ArrayList<ExpeditedAdverseEventReportDTO>();
-		for(ExpeditedAdverseEventReport aeReport: rp.getAeReports()){
-			ExpeditedAdverseEventReportDTO aeReportDTO = createAdverseEventReportDTO(aeReport, userId);
-			if(aeReportDTO != null)
-				reports.add(aeReportDTO);
-		}
-		dto.setReports(reports);
 		dto.setReviewStatus(rp.getReviewStatus());
 		dto.setPossibleActions(adverseEventRoutingAndReviewRepository.nextTransitionNames(rp.getWorkflowId(), userId));
 		dto.setReviewComments(createReviewComments(rp.getReviewComments()));
