@@ -55,7 +55,7 @@ public class RoutingAndReviewAjaxFacade {
 	public AjaxOutput advanceWorkflow(Integer workflowId, String toTransition, Integer id, String entity){
 		AjaxOutput output = new AjaxOutput();
 		List<String> transitions = null;
-		if(entity.equals("report")){
+		if(entity.equals("aeReport")){
 			ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(id);
 			transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(workflowId, toTransition, aeReport, getUserId());
 			output.setHtmlContent(aeReport.getReviewStatus().getDisplayName());
