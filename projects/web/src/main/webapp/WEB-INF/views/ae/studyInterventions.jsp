@@ -178,14 +178,14 @@ function closeAll() {
         </chrome:box>
     </c:if>
 
-    <c:if test="${hasSurgery}">
-        <chrome:box title="Surgery" collapsable="true" autopad="true">
-            <div align="left"><input type="button" value="Add Surgery" id="btn-add-surgery"></div>
-            <div id="_surgeries">
-                <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
-                <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
+    <c:if test="${hasDevice}">
+        <chrome:box title="Device" collapsable="true">
+            <div align="left"><input type="button" value="Add Device" id="btn-add-device"></div>
+            <div id="_devices">
+                <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
+                <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}"/>
+                    <ae:oneMedicalDevice index="${newIndex}" device="${device}"/>
                 </c:forEach>
             </div>
         </chrome:box>
@@ -204,14 +204,14 @@ function closeAll() {
         </chrome:box>
     </c:if>
 
-    <c:if test="${hasDevice}">
-        <chrome:box title="Device" collapsable="true">
-            <div align="right"><input type="button" value="Add Device" id="btn-add-device"></div>
-            <div id="_devices">
-                <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
-                <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
+    <c:if test="${hasSurgery}">
+        <chrome:box title="Surgery" collapsable="true" autopad="true">
+            <div align="left"><input type="button" value="Add Surgery" id="btn-add-surgery"></div>
+            <div id="_surgeries">
+                <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
+                <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneMedicalDevice index="${newIndex}" device="${device}"/>
+                    <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}"/>
                 </c:forEach>
             </div>
         </chrome:box>

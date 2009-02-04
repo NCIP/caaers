@@ -63,7 +63,7 @@
 
 	</jsp:attribute>
 	<jsp:attribute name="navButtons">
-		<input id="ok-id" type="image" value="OK" src="<c:url value="/images/blue/save_btn.png" />"/>
+		<input id="ok-id" type="image" value="OK" src="<c:url value="/images/blue/ok.png" />"/>
     </jsp:attribute>
 </tags:standardForm>
 
