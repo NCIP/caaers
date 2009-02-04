@@ -150,6 +150,7 @@ public class AdverseEventRoutingAndReviewRepositoryImpl implements AdverseEventR
 			if(reviewComment.getId().equals(commentId)){
 				reviewComment.setUserComment(comment);
 				reviewComment.setCreatedDate(new Date());
+				break;
 			}
 		}
 		

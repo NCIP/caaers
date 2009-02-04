@@ -13,5 +13,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("report")
 public class ReportReviewComment extends ReviewComment {
-
+	public ReportReviewComment() {
+		super();
+	}
 }
