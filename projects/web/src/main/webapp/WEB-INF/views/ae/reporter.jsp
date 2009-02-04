@@ -12,10 +12,11 @@
     <tags:javascriptLink name="routing_and_review" />
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
 	<tags:stylesheetLink name="slider" />
-	<tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
+    			<tags:routingAndReviewComments />
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -93,8 +94,11 @@
             $('staff').observe("change", chooseStaff)
             $('physician').observe("change", choosePhysician)
             
-            routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
-            
+            //only show the workflow tab, if it is associated to workflow
+            var associatedToWorkflow = ${command.associatedToWorkflow};
+            if(associatedToWorkflow){
+ 	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+            }
         })
 
     </script>

@@ -2,7 +2,6 @@
 <%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@ attribute name="domainObjectType" required="true" %>
 <div>
 	<div id="collapse-all-comments">
 		<a name="allBtnCtrl"></a>
@@ -68,8 +67,4 @@
 		routingHelper.expandAllComments();
 	}
 	
-	function getWorkflowEntityId(){
-		if('${domainObjectType}' == 'reportingPeriod')
-			return document.getElementById('adverseEventReportingPeriod').value;
-	}
 </script>

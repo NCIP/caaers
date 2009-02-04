@@ -7,6 +7,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
@@ -316,5 +317,14 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public List<ReportDefinition> getSelectedReportDefinitions() {
     	return selectedReportDefinitions;
     }
-
+    
+    //hasLabs
+    public boolean isAssociatedToLabAlerts(){
+    	 List<LabLoad> labs = getAssignment().getLabLoads();
+    	 return (labs != null) && !labs.isEmpty();
+    }
+    
+    public boolean isAssociatedToWorkflow(){
+    	return getAeReport().getWorkflowId() != null;
+    }
 }

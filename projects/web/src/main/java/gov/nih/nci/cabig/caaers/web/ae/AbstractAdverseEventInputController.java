@@ -272,11 +272,12 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     protected Object currentFormObject(HttpServletRequest request, Object oCommand) throws Exception {
+    	
     	log.debug("In currentFormObject :" + oCommand );
-        oCommand = super.currentFormObject(request, oCommand);
-        log.debug("After calling super class currentFormObject :" + oCommand);
-        ((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
+    	((ExpeditedAdverseEventInputCommand) oCommand).reassociate();
         log.debug("After calling reassociate");
+    	oCommand = super.currentFormObject(request, oCommand);
+        log.debug("After calling super class currentFormObject :" + oCommand);
         return oCommand;
     }
 

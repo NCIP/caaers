@@ -10,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Participant;
@@ -639,4 +640,14 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;
 	}
+    
+    //hasLabs
+    public boolean isAssociatedToLabAlerts(){
+    	 return false;
+    }
+    
+    public boolean isAssociatedToWorkflow(){
+    	if(getAdverseEventReportingPeriod() == null) return false;
+    	return getAdverseEventReportingPeriod().getWorkflowId() != null;
+    }
 }

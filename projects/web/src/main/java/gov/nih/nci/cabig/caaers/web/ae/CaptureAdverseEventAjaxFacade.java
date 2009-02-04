@@ -147,10 +147,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	command.reassociate();
     	
     	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
-    	
+    	boolean reportsGotAmmended = false;
+    	ExpeditedAdverseEventReport ammendedReport = null;
     	//Remove the AE from expedited report, if needed
     	if(deletedAe.getReport() != null){
-    		ExpeditedAdverseEventReport ammendedReport = null;
+    		
 			for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
 				if(aeReport.getId().equals(deletedAe.getReport().getId())){
 					ammendedReport = aeReport;
@@ -165,6 +166,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 				for(Report report: ammendedReport.getReports()){
 					if(report.getReportDefinition().getAmendable()){
 						reportRepository.amendReport(report, useDefaultVersion);
+						reportsGotAmmended = true;
 						// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
 						// and just incremented for the 1st one in the list.
 						useDefaultVersion = true;
@@ -180,6 +182,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	deletedAe.setReportingPeriod(null);
     	
     	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
+    	
+    	//enable new expedited report workflow, if the reports are ammended
+    	if(reportsGotAmmended){
+    		adverseEventRoutingAndReviewRepository.enactReportWorkflow(ammendedReport);    		
+    	}
     	
     	return new AjaxOutput();
     }

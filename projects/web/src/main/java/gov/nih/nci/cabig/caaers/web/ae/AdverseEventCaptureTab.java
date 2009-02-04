@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepositoryImpl;
 import gov.nih.nci.cabig.caaers.web.fields.*;
@@ -19,6 +20,8 @@ import java.util.*;
 public class AdverseEventCaptureTab extends AdverseEventTab {
 
     private static final String MAIN_FIELD_GROUP = "main";
+    
+    private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     public AdverseEventCaptureTab() {
         super("Enter Adverse Events", "Adverse Events", "ae/captureAdverseEvents");
@@ -187,6 +190,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         		if(!reportIdMap.containsKey(Integer.decode(repId)));
         			reportIdMap.put(Integer.parseInt(repId), Boolean.TRUE);
         	}
+        	Set<ExpeditedAdverseEventReport> aeReportsAmmended = new HashSet<ExpeditedAdverseEventReport>();
         	
         	for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
         		if(reportIdMap.containsKey(aeReport.getId())){
@@ -194,6 +198,8 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	    	for(Report report: aeReport.getReports()){
         	    		if(report.getReportDefinition().getAmendable() && report.getIsLatestVersion()){
         	    			reportRepository.amendReport(report, useDefaultVersion);
+        	    			aeReportsAmmended.add(aeReport);
+        	    			
         	    			// Set useDefaultVersion to true so that the reportVersionId is retained for all the reports 
         	    			// and just incremented for the 1st one in the list.
         	    			useDefaultVersion = true;
@@ -201,6 +207,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	    	}
         		}
         	}
+        	
+        	//update the workflow for every expedited report, whose Report is ammended
+        	for(ExpeditedAdverseEventReport aeReport : aeReportsAmmended){
+        		adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
+        	}
+        	
         }
     }
 
@@ -279,5 +291,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             }
         }*/
     }
+    
+    public void setAdverseEventRoutingAndReviewRepository(
+			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
+	}
     
 }

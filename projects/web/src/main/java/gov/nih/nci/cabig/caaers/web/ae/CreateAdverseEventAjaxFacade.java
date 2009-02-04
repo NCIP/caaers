@@ -854,6 +854,7 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput retrieveReviewComments(){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
+    	command.reassociate();
     	return fetchPreviousComments(command.getAeReport().getId(), getUserId());
     }
     
@@ -878,7 +879,7 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput advanceWorkflow(String transitionToTake){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	
+    	command.reassociate();
     	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportWorkflow(command.getAeReport().getWorkflowId(), 
     			transitionToTake, command.getAeReport(), getUserId());
     	AjaxOutput output = new AjaxOutput();
