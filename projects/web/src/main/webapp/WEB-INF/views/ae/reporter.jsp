@@ -9,24 +9,26 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
+    <tags:javascriptLink name="routing_and_review" />
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <%-- <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
-    	<c:if test="${command.aeReport.id != null">
+	<tags:stylesheetLink name="slider" />
+	<tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
     			<tags:routingAndReviewComments domainObjectType="aeReport"/>
     		</div>
     	</jsp:attribute>
-    	</c:if>
     	<jsp:attribute name="labs">
     		<div id="labs-id" style="display:none;">
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
+    </tags:slider>
+    
     
     <script type="text/javascript">
+    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    
         var NAME_FIELDS = [
             'firstName', 'middleName', 'lastName','title', 'address.street', 'address.city', 'address.state', 'address.zip'
         ]
@@ -91,17 +93,14 @@
             $('staff').observe("change", chooseStaff)
             $('physician').observe("change", choosePhysician)
             
-           <%-- createAE.retrieveReportReviewComments(
-					function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text').value = "";
-					}) ; --%>
+            routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+            
         })
 
     </script>
 </head>
 <body>
+
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3reporter">
     <jsp:attribute name="instructions">
         <c:choose>
