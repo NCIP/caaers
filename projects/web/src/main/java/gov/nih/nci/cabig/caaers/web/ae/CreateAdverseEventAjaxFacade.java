@@ -859,7 +859,10 @@ public class CreateAdverseEventAjaxFacade {
     
     public AjaxOutput retrieveNextTransitions(){
     	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) extractCommand();
-    	List<String> transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAeReport().getWorkflowId(), getUserId());
+    	List<String> transitions = new ArrayList<String>();
+    	if(command.getAeReport().getWorkflowId() != null){
+    		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAeReport().getWorkflowId(), getUserId());
+    	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
     	return output;

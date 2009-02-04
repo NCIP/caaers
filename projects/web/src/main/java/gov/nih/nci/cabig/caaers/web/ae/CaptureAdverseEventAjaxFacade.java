@@ -224,7 +224,10 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput retrieveNextTransitions(){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	List<String> transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAdverseEventReportingPeriod().getWorkflowId(), getUserId());
+    	List<String> transitions = new ArrayList<String>();
+    	if(command.getAdverseEventReportingPeriod().getWorkflowId() != null){
+    		transitions = adverseEventRoutingAndReviewRepository.nextTransitionNames(command.getAdverseEventReportingPeriod().getWorkflowId(), getUserId());
+    	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
     	return output;

@@ -27,18 +27,6 @@
 		
 		$('create-new-report').observe("click", function(){ createNewReport(); });
 		
-		//check if workflow is enabled
- 		if(${command.workflowEnabled}){
- 			captureAE.retrieveReportingPeriodReviewComments( 
-					function(ajaxOutput){
-						document.getElementById('scrollbar_content').innerHTML = "";
-						document.getElementById('scrollbar_content').innerHTML = ajaxOutput;
-						document.getElementById('enter-comment-text'). value = "";
-					}) ;
-			document.getElementById('entire-slider').style.display = '';
- 		}
-		
-		
 		if($('manualselect2')){
 			 
 		
