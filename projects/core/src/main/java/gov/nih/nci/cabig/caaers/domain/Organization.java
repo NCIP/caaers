@@ -154,7 +154,7 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     public List<SiteInvestigator> getSiteInvestigators() {
         return siteInvestigators;
     }
@@ -164,7 +164,7 @@ public class Organization extends AbstractMutableDomainObject {
     }
 
     @OneToMany(mappedBy = "organization", fetch = FetchType.LAZY)
-    @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN })
+    @Cascade(value = { CascadeType.DELETE, CascadeType.DELETE_ORPHAN })
     public List<ResearchStaff> getResearchStaffs() {
         return researchStaffs;
     }

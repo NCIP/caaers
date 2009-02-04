@@ -235,7 +235,7 @@ public class Participant extends Person {
     @OneToMany(mappedBy = "participant", fetch = FetchType.LAZY)
     @OrderBy
     // order by ID for testing consistency
-    @Cascade(value = {CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade(value = {CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
     @UniqueObjectInCollection(message = "Duplicate Assignement found in Assignments list")
     public List<StudyParticipantAssignment> getAssignments() {
         return assignments;
@@ -298,7 +298,7 @@ public class Participant extends Person {
 
     @Override
     @OneToMany
-    @Cascade({CascadeType.ALL, CascadeType.DELETE_ORPHAN})
+    @Cascade({CascadeType.DELETE, CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DELETE_ORPHAN})
     @JoinColumn(name = "participant_id")
     @UniqueIdentifierForParticipant
     @UniqueObjectInCollection(message = "Duplicate Identifier found in Identifiers list")
