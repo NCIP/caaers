@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -41,6 +42,8 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
     private static final String REPORTING_PERIOD_PARAMETER = "reportingPeriodParameter";
     private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
     private static final String REPORT_ID_PARAMETER = "reportId";
+    
+    private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	
     public EditAdverseEventController() {
         setCommandClass(EditExpeditedAdverseEventCommand.class);
@@ -111,8 +114,9 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         }
         
         if(StringUtils.equals("createNew", action)){
-    		command.getAeReport().setReportingPeriod(reportingPeriod);
-    		command.reassociate();
+        	AdverseEventReportingPeriod adverseEventReportingPeriod = adverseEventReportingPeriodDao.getById(reportingPeriod.getId());
+        	command.getAeReport().setReportingPeriod(adverseEventReportingPeriod);
+        	command.reassociate();
     		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
     		
     		// Initialize the treatment assignment & start date of course
@@ -243,5 +247,12 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         return attr;
     }
     
+    public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao){
+    	this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+    }
+    
+    public AdverseEventReportingPeriodDao getAdverseEventReportingPeriodDao(){
+    	return adverseEventReportingPeriodDao;
+    }
   
 }
