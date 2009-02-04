@@ -199,7 +199,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	String userId = getUserId();
     	adverseEventRoutingAndReviewRepository.editReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), comment, userId, commentId);
     	
-    	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
+    	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), userId);
     }
     
     public AjaxOutput fetchPreviousComments(Integer entityId, String userId){
