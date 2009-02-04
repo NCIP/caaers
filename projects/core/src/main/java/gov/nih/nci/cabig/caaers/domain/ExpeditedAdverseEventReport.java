@@ -1000,6 +1000,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
     @Cascade(value = { CascadeType.ALL, CascadeType.DELETE_ORPHAN})
     @OrderBy(value = "createdDate DESC")
     public List<ReportReviewComment> getReviewComments() {
+    	if(reviewComments == null) reviewComments = new ArrayList<ReportReviewComment>();
 		return reviewComments;
 	}
     
