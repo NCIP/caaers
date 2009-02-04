@@ -16,6 +16,11 @@
             font-style: italic;
             background-color: #CCE6FF;
         }
+        
+        #criteria-div{
+          width: 70%;
+          margin-left: 5em;
+        }
 
     </style>
    
@@ -106,7 +111,8 @@
 <tags:standardForm title="Choose Search Criteria">
 	<jsp:attribute name="instructions"><tags:instructions code="instruction_ae_assignment"/></jsp:attribute>
 	<jsp:attribute name="singleFields">
-			<ui:row path="participant">
+		<div id="criteria-div">
+					<ui:row path="participant">
 				<jsp:attribute name="label">Subject
 				</jsp:attribute>
 				<jsp:attribute name="value">
@@ -174,7 +180,8 @@
 				<ui:select options="${command.reviewStatusOptionsMap}" path="reviewStatus"></ui:select>
 				</jsp:attribute>
 			</ui:row>
-    <c:choose>
+		</div>
+		 <c:choose>
         <c:when test="${empty tab}">
             <tags:tabControls tabNumber="${0}" isLast="${false}" willSave="${false}"/>
         </c:when>
@@ -182,7 +189,7 @@
             <tags:tabControls tab="${tab}" flow="${flow}" willSave="${false}"/>
         </c:otherwise>
     </c:choose>
-
+		
 	</jsp:attribute>
 </tags:standardForm>
 

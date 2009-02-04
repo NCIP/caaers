@@ -24,124 +24,8 @@
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <style type="text/css">
-.report-row {
-	background-color: #FFDADA;
-}
-.notify-unit.success {
-	color: #090;
-}
-.notify-unit.failure {
-	color: #900;
-}
-.eXtremeTable .centerTableHeader {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 17px;
-	font-weight: bold;
-	text-align: center;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
-	background-image: url(../../images/blue/eXtableheader_bg.png);
-	background-repeat: repeat-x;
-	background-position: top;
-}
-.eXtremeTable .eXtremeTable {
-	border:1px solid silver;
-	padding:2px;
-	background-color:#FFFFFF;
-	font-size:12px;
-	font-weight:normal;
-}
-.eXtremeTable .eXtremeTable .even{
-background-color:#ffdada;
-}
-.eXtremeTable .odd td, .eXtremeTable .even td {
-	padding-top: 7px;
-	padding-right: 3px;
-	padding-bottom: 7px;
-	padding-left: 3px;
-	vertical-align: middle;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 16px;
-	font-weight:bold;
-}
-.eXtremeTable .eXtremeTable .odd td, .eXtremeTable .eXtremeTable .even td {
-	padding-top: 6px;
-	padding-right: 3px;
-	padding-bottom: 6px;
-	padding-left: 3px;
-	vertical-align: middle;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 12px;
-	font-weight: normal;
-	border-top:none;
-}
-.eXtremeTable .highlight td {
-	color: black;
-	padding-top: 7px;
-	padding-right: 3px;
-	padding-bottom: 7px;
-	padding-left: 3px;
-	vertical-align: middle;
-	background-color: #F09B5D;
-	font-size: 16px;
-	font-weight:bold;
-}
-.eXtremeTable .eXtremeTable .highlight td {
-	color:black;
-	padding-top: 6px;
-	padding-right: 3px;
-	padding-bottom: 6px;
-	padding-left: 3px;
-	vertical-align: middle;
-	background-color:#f09b5d;
-	font-size: 12px;
-	font-weight: normal;
-}
-.eXtremeTable .tableHeader {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 17px;
-	font-weight: bold;
-	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
-	background-image: url(../../images/blue/eXtableheader_bg.png);
-	background-repeat: repeat-x;
-	background-position: top;
-}
-.eXtremeTable .eXtremeTable .tableHeader {
-	background-color: #2b4186;
-	color: white;
-	font-family: Arial, verdana, helvetica, sans-serif;
-	font-size: 13px;
-	font-weight: normal;
-	text-align: left;
-	padding-right: 3px;
-	padding-left: 3px;
-	padding-top: 4px;
-	padding-bottom: 4px;
-	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
-	background-image: url(../../images/blue/eXtableheader_bg.png);
-	background-repeat: repeat-x;
-	background-position: top;
+.eXtremeTable select {
+	font-size: 11px;
 }
 .eXtremeTable .eXtremeTable .centerTableHeader {
 	background-color: #2b4186;
@@ -155,9 +39,6 @@ background-color:#ffdada;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	margin: 0px;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-color: white;
 	background-image: url(../../images/blue/eXtableheader_bg.png);
 	background-repeat: repeat-x;
 	background-position: top;
@@ -187,11 +68,7 @@ background-color:#ffdada;
 .eXtremeTable a:hover{
 color:#0033FF;
 }
-.divNotes, .divOtherMeddra {
-float:left;
-font-size:8pt;
-margin-top:5px;
-}
+
 </style>
 <script type="text/javascript">
 	var curWin;

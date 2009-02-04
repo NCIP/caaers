@@ -14,11 +14,11 @@
 			<tr align="center" class="label">
 				<td width="5%"><chrome:collapsableElement targetID="aetable${reportingPeriod.id}" collapsed="true" id="ID_03"/></td>
 				
-				<td class="tableHeader" width="35%">AE Term</td>
+				<td class="centerTableHeader" width="35%">AE Term</td>
 				<td class="centerTableHeader" width="10%">Grade</td>
-				<td class="tableHeader" width="20%">Attribution</td>
-				<c:if test="${isDCPStudy}"><td class="tableHeader" width="10%">Seriousness</td></c:if>
-				<td class="tableHeader" width="20%">Hospitalization</td>
+				<td class="centerTableHeader" width="20%">Attribution</td>
+				<c:if test="${isDCPStudy}"><td class="centerTableHeader" width="10%">Seriousness</td></c:if>
+				<td class="centerTableHeader" width="20%">Hospitalization</td>
 			</tr>
 		</thead>
 		<tr id="aetable${reportingPeriod.id}" style="display:none;">

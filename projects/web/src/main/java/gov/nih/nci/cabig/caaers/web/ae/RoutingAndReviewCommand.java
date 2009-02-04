@@ -4,7 +4,6 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
-import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedHashMap;
 
 /**
  * @author Sameer Sawant
@@ -27,7 +26,7 @@ public class RoutingAndReviewCommand{
     
     private ReviewStatus reviewStatus;
     
-    private HashMap<Object, Object> reviewStatusOptionsMap = new HashMap<Object,Object>();
+    private HashMap<Object, Object> reviewStatusOptionsMap = new LinkedHashMap<Object,Object>();
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
         
     private RoutingAndReviewSearchResultsDTO searchResultsDTO; 
