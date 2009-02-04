@@ -19,7 +19,7 @@
 	</td>
 	<td width="10%">${ae.grade.code}</td>
 	<td width="20%" >${ae.attributionSummary.displayName }</td>
-	<c:if test="${isDCPStudy}"><td width="10%" >${ae.attributionSummary.displayName }</td></c:if>
+	<c:if test="${isDCPStudy}"><td width="10%" >${ae.serious.displayName }</td></c:if>
 	<td width="20%" >${ae.hospitalization.code eq 0 ? 'None' : ae.hospitalization.displayName}</td>
 		
 </tr>

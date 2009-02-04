@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
@@ -15,6 +16,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.MultipleFieldGroupFactory;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +48,7 @@ public class ReviewEvaluationPeriodController extends AbstractCommandController{
 		String reportingPeriodId = request.getParameter("adverseEventReportingPeriod");
 		AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(Integer.parseInt(reportingPeriodId));
 		command.setAdverseEventReportingPeriod(reportingPeriod);
+		command.setAdverseEvents(new IndexFixedList<AdverseEvent>(reportingPeriod.getAdverseEvents()));
 		Map<String, InputFieldGroup> groupMap = createFieldGroups(reportingPeriod);
 		
 		ModelAndView mv = new ModelAndView();
@@ -87,8 +90,6 @@ public class ReviewEvaluationPeriodController extends AbstractCommandController{
             treatmentAssignmentFieldGroup.getFields().add(firstCourseDateField);
 
             // add reportingPeriod details group
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start date"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End date"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle number"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.description", "Description"));
@@ -112,30 +113,30 @@ public class ReviewEvaluationPeriodController extends AbstractCommandController{
                 if (ae == null) continue;
 
                 if (ae.getExpected() == null) if (study.hasCTCTerm(ae.getAdverseEventCtcTerm().getCtcTerm())) ae.setExpected(true);
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].adverseEventTerm.universalTerm", "Term")); //Term
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("adverseEventTerm.universalTerm", "Term")); //Term
 
                 if (!ae.getSolicited()) {
                     if (!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()) {//only if other is requrired
-                    	InputField otherMeddraField = InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].lowLevelTerm", "Other(MedDRA)");
+                    	InputField otherMeddraField = InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other(MedDRA)");
                     	InputFieldAttributes.setSize(otherMeddraField, 25);
                     	mainFieldFactory.addField(otherMeddraField);
                     }
                 }else{
                 	if(!isMeddraStudy && ae.getAdverseEventTerm().isOtherRequired()){
-                		mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].lowLevelTerm.meddraTerm", "Other (MedDRA)"));
+                		mainFieldFactory.addField(InputFieldFactory.createLabelField("lowLevelTerm.meddraTerm", "Other (MedDRA)"));
                 	}
                 }
-                InputField notesField = InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].detailsForOther", "Verbatim");
-                InputFieldAttributes.setSize(notesField, 25);
-                mainFieldFactory.addField(notesField); //Notes
+                //InputField notesField = InputFieldFactory.createLabelField("detailsForOther", "Verbatim");
+                //InputFieldAttributes.setSize(notesField, 25);
+                //mainFieldFactory.addField(notesField); //Notes
 
                 //grade
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].grade", "Grade"));
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("grade", "Grade"));
 
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].attributionSummary", "Attribution to study"));
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].hospitalization", "Hospitalization"));
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].expected", "Expected"));
-                mainFieldFactory.addField(InputFieldFactory.createLabelField("reportingPeriod.adverseEvents[i].serious", "Serious"));
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("attributionSummary", "Attribution to study"));
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("hospitalization", "Hospitalization"));
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("expected", "Expected"));
+                mainFieldFactory.addField(InputFieldFactory.createLabelField("serious", "Serious"));
                 
                 InputFieldGroup fieldGroup = mainFieldFactory.createGroup(i);
                 mainFieldFactory.addFieldGroup(fieldGroup);

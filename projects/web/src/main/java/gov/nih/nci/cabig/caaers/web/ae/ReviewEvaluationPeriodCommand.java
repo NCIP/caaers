@@ -1,6 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 /**
  *
@@ -8,6 +10,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
  */
 public class ReviewEvaluationPeriodCommand{
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
+	private IndexFixedList<AdverseEvent> adverseEvents;
 	
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod(){
 		return adverseEventReportingPeriod;
@@ -15,5 +18,12 @@ public class ReviewEvaluationPeriodCommand{
 	
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
+	}
+	
+	public IndexFixedList<AdverseEvent> getAdverseEvents() {
+		return adverseEvents;
+	}
+    public void setAdverseEvents(IndexFixedList<AdverseEvent> adverseEvents) {
+		this.adverseEvents = adverseEvents;
 	}
 }
