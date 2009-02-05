@@ -1,47 +1,53 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
+
 import com.thoughtworks.selenium.*;
 
-
+import java.io.File;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
-	String studyId=null;
+	String studyId = null;
 	AjaxWidgets aw;
 	public final String BLAZING = "0";
 	public final String FAST = "1000";
 	public final String MEDIUM = "5000";
 	public final String SLOW = "10000";
-	
+
 	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
-	
+
 	public void setUp() throws Exception {
-		setUp("https://oracle.qa.semanticbits.com", "*chrome");
-		
-		/*selenium  = new DefaultSelenium("10.10.10.220", 4444, "*chrome", "https://oracle.qa.semanticbits.com" );
-		selenium.start();*/
-		//setUp("https://derek.herndon.semanticbits.com:7443", "*chrome");
-		aw=new AjaxWidgets(selenium);
+		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
+		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
+		// "http://www.google.com" );
+		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
+		// "https://oracle.qa.semanticbits.com" );
+		selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
+				"https://oracle.qa.semanticbits.com");
+		selenium.start();
+		// setUp("https://derek.herndon.semanticbits.com:7443", "*chrome");
+		aw = new AjaxWidgets(selenium);
 		selenium.setSpeed(FAST);
 		// DefaultSelenium selenium = new DefaultSelenium("localhost", 4444,
 		// "*chrome", "http://localhost:8080/ctcae");
 		// selenium.start();
-		
+
 	}
-	public void log(String message, Exception e){
+
+	public void log(String message, Exception e) {
 		log.debug(message, e);
 	}
-	public void log(String message){
+
+	public void log(String message) {
 		this.log(message, null);
 	}
+
 	public void testLogin() throws Exception {
 		aw.login();
 		assertTrue("Login Failure", true);
 		assertTrue("Login Failure", selenium.isTextPresent("Regular Tasks"));
 	}
-
-	
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
@@ -51,7 +57,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.select("searchCriteria[0].searchType", "label=Identifier");
 		selenium.type("searchCriteria[0].searchText", studyId);
 		selenium.click("//input[@value='Search']");
-		aw.waitForElementPresent("//input[@name='ajaxTable_f_primaryIdentifierValue']");
+		aw
+				.waitForElementPresent("//input[@name='ajaxTable_f_primaryIdentifierValue']");
 		Thread.sleep(4000);
 	}
 
@@ -62,6 +69,28 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			aw.login();
 		}
 
+	}
+
+	public void waitForCaaersStartup() throws Exception {
+		selenium.open("caaers/public/login");
+		selenium.waitForPageToLoad("30000");
+		int maxAttempts = 20;
+		int attempt = 0;
+		for (attempt = 0; attempt < maxAttempts; attempt++) {
+			if (!(selenium.isTextPresent("Please Log in"))
+					&& !(selenium.isTextPresent("Log out"))) {
+				selenium.open("caaers/public/login");
+				selenium.waitForPageToLoad("30000");
+				System.out.println("Checking for caaers, attempt no: "
+						+ attempt);
+
+			} else {
+				aw.login();
+				break;
+			}
+		}
+		if (attempt >= maxAttempts)
+			throw new Exception("Timed out waiting for caaers to start.");
 	}
 
 	public void editStudy() throws InterruptedException {
@@ -75,7 +104,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		aw.clickNext("flow-next");
 		populateEditStudyEvalPeriod();
 		aw.clickNext("flow-next");
-		//populateEditStudySites();
+		// populateEditStudySites();
 		aw.clickNext("flow-next");
 		populateEditStudyInvestigators();
 		aw.clickNext("flow-next");
@@ -88,10 +117,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.click("add-organization-section-row-button");
 		aw.waitForElementPresent("study.identifiersLazy[2].value");
 		selenium.type("study.identifiersLazy[2].value", "N027D-test1");
-		selenium.select("study.identifiersLazy[2].type", "label=Site Identifier");
-		selenium.click("//select[@id='study.identifiersLazy[2].type']/option[2]");
-		aw.typeAutosuggest("study.identifiersLazy[2].organization-input", "mn003",
-				"study.identifiersLazy[2].organization-choices");
+		selenium.select("study.identifiersLazy[2].type",
+				"label=Site Identifier");
+		selenium
+				.click("//select[@id='study.identifiersLazy[2].type']/option[2]");
+		aw.typeAutosuggest("study.identifiersLazy[2].organization-input",
+				"mn003", "study.identifiersLazy[2].organization-choices");
 
 		selenium.click("//img[@alt='delete']");
 		selenium.waitForPageToLoad("30000");
@@ -105,12 +136,15 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		aw.confirmOK("^Do you really want to delete[\\s\\S]$");
 		selenium.click("add-ssi-table-row-button");
-		aw.waitForElementPresent("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input");
-		aw.typeAutosuggest(
-				"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input",
-				"john",
-				"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-choices");
-		selenium.select("study.studyOrganizations[2].studyInvestigators[0].roleCode",
+		aw
+				.waitForElementPresent("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input");
+		aw
+				.typeAutosuggest(
+						"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input",
+						"john",
+						"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-choices");
+		selenium.select(
+				"study.studyOrganizations[2].studyInvestigators[0].roleCode",
 				"label=Site Principal Investigator");
 		selenium.click("//option[@value='Site Principal Investigator']");
 		selenium.select(
@@ -185,11 +219,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		Thread.sleep(5000);
 		aw.clickNext("flow-next");
 		selenium.click("add-si-section-button");
-		aw.waitForElementPresent("//label[@for='study.treatmentAssignments[1].code']");
+		aw
+				.waitForElementPresent("//label[@for='study.treatmentAssignments[1].code']");
 
 		selenium.type("study.treatmentAssignments[1].code", "TAC2");
-		selenium
-				.type("study.treatmentAssignments[1].description", "TAC2 description");
+		selenium.type("study.treatmentAssignments[1].description",
+				"TAC2 description");
 		selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
 		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
 		Thread.sleep(4000);
@@ -197,10 +232,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void populateEditStudyDetails() {
 		selenium.type("study.shortTitle", "Some new title");
-		selenium.type("study.studyCoordinatingCenter.organization-input", "NC002");
+		selenium.type("study.studyCoordinatingCenter.organization-input",
+				"NC002");
 	}
 
-	public void createCTCStudy(String fundingSponsorIdentifier) throws InterruptedException {
+	public void createCTCStudy(String fundingSponsorIdentifier)
+			throws InterruptedException {
 		studyId = fundingSponsorIdentifier;
 		populateCreateStudyDetails();
 		aw.clickNext("flow-next");
@@ -226,16 +263,18 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		aw.clickNext("flow-next");
 		aw.clickNext("flow-next");
 	}
-	
-	public void createMeddraStudy(String fundingSponsorIdentifier) throws InterruptedException {
+
+	public void createMeddraStudy(String fundingSponsorIdentifier)
+			throws InterruptedException {
 		studyId = fundingSponsorIdentifier;
 		populateCreateStudyDetails();
 		{
 			selenium.select("study.aeTerminology.term", "label=MedDRA");
 			selenium.click("//option[@value='MEDDRA']");
 			Thread.sleep(1000);
-			selenium.select("study.aeTerminology.meddraVersion", "label=MedDRA v9");
-			
+			selenium.select("study.aeTerminology.meddraVersion",
+					"label=MedDRA v9");
+
 		}
 		aw.clickNext("flow-next");
 		populateCreateStudyTherapies();
@@ -260,6 +299,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		aw.clickNext("flow-next");
 		aw.clickNext("flow-next");
 	}
+
 	public void populateCreateStudyIdentifiers() {
 		selenium.click("study.identifiersLazy[0].primaryIndicator");
 	}
@@ -273,9 +313,15 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"label=University of Alabama at Birmingham (Site)");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("add-ssi-table-row-button");
-		aw.waitForElementPresent("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input");
-		aw.typeAutosuggest("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input", "fiveash", "study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-choices");
-		selenium.select("study.studyOrganizations[2].studyInvestigators[0].roleCode",
+		aw
+				.waitForElementPresent("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input");
+		aw
+				.typeAutosuggest(
+						"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input",
+						"fiveash",
+						"study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-choices");
+		selenium.select(
+				"study.studyOrganizations[2].studyInvestigators[0].roleCode",
 				"label=Site Investigator");
 		selenium.click("//option[@value='Site Investigator']");
 		selenium.select(
@@ -291,25 +337,27 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"study.studySites[0].organization-choices");
 	}
 
-	public void populateCreateStudyExpectedAEs(String aeTerm) throws InterruptedException {
-		//typeAutosuggest("termCode-input", "vasculitis", "termCode-choices");
+	public void populateCreateStudyExpectedAEs(String aeTerm)
+			throws InterruptedException {
+		// typeAutosuggest("termCode-input", "vasculitis", "termCode-choices");
 		aw.typeAutosuggest("termCode-input", aeTerm, "termCode-choices");
 		selenium.click("addSingleTermBtn");
-		if (selenium.isElementPresent("addMultiTermBtn")){
-		selenium.click("addMultiTermBtn");
-		aw.waitForElementPresent("//div[@id='categories-div-id']");
-		selenium.removeSelection("categories", "label=AUDITORY/EAR");
-		selenium.addSelection("categories", "label=CARDIAC GENERAL");
-		aw.waitForElementPresent("//option[@title='Hypertension']");
-		selenium.addSelection("terms", "label=Hypertension");
-		selenium.addSelection("terms", "label=Hypotension");
-		selenium.click("addTermsBtn");
+		if (selenium.isElementPresent("addMultiTermBtn")) {
+			selenium.click("addMultiTermBtn");
+			aw.waitForElementPresent("//div[@id='categories-div-id']");
+			selenium.removeSelection("categories", "label=AUDITORY/EAR");
+			selenium.addSelection("categories", "label=CARDIAC GENERAL");
+			aw.waitForElementPresent("//option[@title='Hypertension']");
+			selenium.addSelection("terms", "label=Hypertension");
+			selenium.addSelection("terms", "label=Hypotension");
+			selenium.click("addTermsBtn");
 		}
-		
+
 	}
 
-	public void populateCreateStudyEvalPeriods(String aeTerm) throws InterruptedException {
-		//typeAutosuggest("termCode-input", "nausea", "termCode-choices");
+	public void populateCreateStudyEvalPeriods(String aeTerm)
+			throws InterruptedException {
+		// typeAutosuggest("termCode-input", "nausea", "termCode-choices");
 		aw.typeAutosuggest("termCode-input", aeTerm, "termCode-choices");
 		selenium.click("addSingleTermBtn");
 		Thread.sleep(5000);
@@ -327,7 +375,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		Thread.sleep(2000);
 		selenium.removeSelection("disease-term", "label=All");
 		selenium.addSelection("disease-term", "label=Synovial sarcoma");
-		
+
 		selenium.click("//input[@value='Add disease']");
 		selenium.waitForPageToLoad("30000");
 	}
@@ -340,7 +388,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"study.studyAgents[0].agent-choices");
 		selenium.select("study.studyAgents[0].indType", "label=CTEP IND");
 		selenium.select("study.studyAgents[0].partOfLeadIND", "label=Yes");
-			}
+	}
 
 	public void populateCreateStudyTreatmentAssignments()
 			throws InterruptedException {
@@ -377,18 +425,19 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 						"study.description",
 						"A Phase I Study of CCI-779 and Temozolomide in Combination with Radiation Therapy in Glioblastoma Multiformexxxx");
 		selenium.select("study.phaseCode", "label=Phase I Trial");
-		selenium.select("study.status", "label=Active - Trial is open to accrual");
+		selenium.select("study.status",
+				"label=Active - Trial is open to accrual");
 		selenium.select("study.multiInstitutionIndicator", "label=Yes");
 		selenium.select("study.adeersReporting", "label=Yes");
 		selenium.select("study.aeTerminology.ctcVersion", "label=CTCAE v3.0");
 		selenium.select("study.otherMeddra", "label=MedDRA v9");
 		selenium.click("study.caaersXMLType");
 		selenium.click("study.adeersPDFType");
-		aw.typeAutosuggest("study.studyCoordinatingCenter.organization-input", "ncctg",
-				"study.studyCoordinatingCenter.organization-choices");
+		aw.typeAutosuggest("study.studyCoordinatingCenter.organization-input",
+				"ncctg", "study.studyCoordinatingCenter.organization-choices");
 		selenium.type("study.identifiers[1].value", studyId);
-		aw.typeAutosuggest("study.primaryFundingSponsorOrganization-input", "ctep",
-				"study.primaryFundingSponsorOrganization-choices");
+		aw.typeAutosuggest("study.primaryFundingSponsorOrganization-input",
+				"ctep", "study.primaryFundingSponsorOrganization-choices");
 		selenium.type("study.identifiers[0].value", studyId);
 	}
 
@@ -411,12 +460,14 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 
 	}
-	
-	public void searchInvestigator(String firstName, String lastName) throws Exception {
+
+	public void searchInvestigator(String firstName, String lastName)
+			throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_configurationController");
 		selenium.waitForPageToLoad("30000");
-		selenium.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
+		selenium
+				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("link=Search Investigator");
 		selenium.waitForPageToLoad("30000");
@@ -424,48 +475,45 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type("lastName", lastName);
 		selenium.click("//input[@value='Search']");
 		aw.waitForElementPresent("//td[@title='Sort By First Name']");
-		
 
-				
 	}
-	public void uploadRules(String rulesDir) throws Exception{
+
+	public void uploadRules(String rulesDir) throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("firstlevelnav_createRuleController");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("//a[@id='secondlevelnav_importRuleController']/span");
 		selenium.waitForPageToLoad("30000");
-		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml");
-		selenium.click("//input[@value='Import']");
-		selenium.waitForPageToLoad("30000");
-		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml");
-		selenium.click("//input[@value='Import']");
-		selenium.waitForPageToLoad("30000");
-		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml");
-		selenium.click("//input[@value='Import']");
-		selenium.waitForPageToLoad("30000");
-		selenium.type("ruleSetFile1", rulesDir+"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml");
-		selenium.click("//input[@value='Import']");
-		selenium.waitForPageToLoad("30000");
+		String files[] = {
+				"/gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
+				"/gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
+				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
+				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
+		for (int i = 0; i < files.length; i++) {
+			String absPath = new File(rulesDir+files[i]).getAbsolutePath();
+			System.out.println("Rule file being imported: "+absPath);
+			selenium.type("ruleSetFile1", absPath);
+			selenium.click("//input[@value='Import']");
+			selenium.waitForPageToLoad("30000");
+		}
 	}
-	//public void editInvestigator(String ){}
-	/*public void testNew() throws Exception {
-
-		selenium.click("firstlevelnav_listAdverseEventsController");
-		selenium.waitForPageToLoad("30000");
-		selenium.click("study-clear");
-		selenium.type("study-input", "n");
-		selenium.typeKeys("study-input", "027d");
-		fail("test");
-		selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",
-				"Temozolomide"), "10000");
-		selenium.click("//div[@id='study-choices']/ul/li[1]");
-		selenium.click("participant-input");
-		selenium.click("participant-clear");
-		selenium.typeKeys("participant-input", "Jones");
-		selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",
-				"Catherine"), "10000");
-		selenium.click("//div[@id='participant-choices']/ul/li[1]");
-		aw.clickNext("flow-next");
-	}*/
+	// public void editInvestigator(String ){}
+	/*
+	 * public void testNew() throws Exception {
+	 * 
+	 * selenium.click("firstlevelnav_listAdverseEventsController");
+	 * selenium.waitForPageToLoad("30000"); selenium.click("study-clear");
+	 * selenium.type("study-input", "n"); selenium.typeKeys("study-input",
+	 * "027d"); fail("test");
+	 * selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",
+	 * "Temozolomide"), "10000");
+	 * selenium.click("//div[@id='study-choices']/ul/li[1]");
+	 * selenium.click("participant-input"); selenium.click("participant-clear");
+	 * selenium.typeKeys("participant-input", "Jones");
+	 * selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",
+	 * "Catherine"), "10000");
+	 * selenium.click("//div[@id='participant-choices']/ul/li[1]");
+	 * aw.clickNext("flow-next"); }
+	 */
 }

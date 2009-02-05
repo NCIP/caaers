@@ -3,7 +3,7 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 public class CaaersInvestigatorTest extends CaaersSeleniumTestCase {
 	String firstName = "monica";
 	String lastName = "dubinsky";
-
+	
 	public void testCreateInvestigator() throws Exception {
 		aw.login();
 		createInvestigator();

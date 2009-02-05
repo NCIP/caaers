@@ -1,20 +1,39 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
+
+import java.io.File;
+
 import org.apache.tools.ant.*;
-public class CaaersRulesTest extends Task {
-	String rulesDir = "C:\\Documents and Settings\\Karthik Iyer\\Desktop\\caaers\\rules\\1.7";
-	
+
+public class CaaersRulesTestBootstrap extends Task {
+	String rulesDir = null;
+
+	public void setRulesDir(String rulesDir) {
+		this.rulesDir = rulesDir;
+	}
+
+	public void validate() {
+		if (rulesDir == null)
+			throw new BuildException("The rulesDir attribute has not been set");
+		File rulesLoc = new File(rulesDir);
+		if (!rulesLoc.exists())
+			throw new BuildException(
+					"The directory specified by the rulesDir attribute"
+							+ " does not exist");
+	}
 
 	public void execute() {
+		validate();
+		System.out.println("In task class");
 		CaaersSeleniumTestCase cstc = new CaaersSeleniumTestCase();
 		try {
 			cstc.setUp();
-			cstc.checkLogin();
+			cstc.waitForCaaersStartup();
 			cstc.uploadRules(rulesDir);
+			cstc.tearDown();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		
 	}
 
-	}
+}

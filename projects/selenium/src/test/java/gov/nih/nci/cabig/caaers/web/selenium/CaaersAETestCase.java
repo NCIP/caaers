@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 
 import junit.framework.TestCase;
 
-public class CaaersAETest extends CaaersSeleniumTestCase {
+public class CaaersAETestCase extends CaaersSeleniumTestCase {
 
 	AjaxWidgets aw;
 	CaaersAEFlowFixtures aeFixtures;
