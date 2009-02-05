@@ -75,6 +75,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		CaptureAdverseEventAjaxFacade facadeMock = registerMockFor(CaptureAdverseEventAjaxFacade.class);
 		
 		expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
+		 studyDao.lock(command.getStudy());
 		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
 		adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
 		replayMocks();
@@ -134,7 +135,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-        
+        studyDao.lock(command.getStudy());
         adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth);
         expect(auth.getPrincipal()).andReturn(user);
@@ -158,7 +159,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         session.setAttribute(CaptureAdverseEventController.class + ".FORM.command",command);
         session.setAttribute("ACEGI_SECURITY_CONTEXT",context);
         facade.setAdverseEventRoutingAndReviewRepository(repository);
-        
+        studyDao.lock(command.getStudy());
         adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
         expect(context.getAuthentication()).andReturn(auth).anyTimes();
         expect(auth.getPrincipal()).andReturn(user).anyTimes();
@@ -166,7 +167,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
         expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
         repository.editReportingPeriodReviewComment(command.getAdverseEventReportingPeriod(), "test Comment", "SYSTEM_ADMIN", 1);
         expect(webContext.forwardToString((String)EasyMock.anyObject())).andReturn("").once();
-
+       
         replayMocks();
         facade.editReviewComment("test Comment", 1);
         verifyMocks();
