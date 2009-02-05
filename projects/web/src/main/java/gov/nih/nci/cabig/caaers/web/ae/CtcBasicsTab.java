@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
@@ -39,8 +40,9 @@ public class CtcBasicsTab extends BasicsTab {
     public Map<String, Object> referenceData(HttpServletRequest request, ExpeditedAdverseEventInputCommand command) {
         Map<String, Object> refdata = super.referenceData(request,command);
        int ctcVersionId =  command.getAssignment().getStudySite().getStudy().getAeTerminology().getCtcVersion().getId();
-        refdata.put("ctcCategories", ctcDao.getById(ctcVersionId).getCategories());
-        return refdata;
+       Ctc ctc = ctcDao.getById(ctcVersionId);
+       refdata.put("ctcCategories", ctc.getCategories());
+       return refdata;
     }
 
     @Override
