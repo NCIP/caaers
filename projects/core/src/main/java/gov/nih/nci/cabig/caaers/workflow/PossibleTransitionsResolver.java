@@ -14,7 +14,7 @@ import org.jbpm.graph.exe.ProcessInstance;
  * state of the workflow. 
  * 
  * @author Sameer Sawant
- *
+ * @author Biju Joseph
  */
 public class PossibleTransitionsResolver{
 	
@@ -47,32 +47,34 @@ public class PossibleTransitionsResolver{
 		if(rootNode != null){
 			// Step(b) in the algorithm above.
 			Transition defaultTransition = rootNode.getDefaultLeavingTransition();
-			List<Transition> leavingTransitions = rootNode.getLeavingTransitions();
-			
-			// Remove the defaultTransition from the list of leavingTransitions and create a list otherLeavingTransitions.
-			List<Transition> otherLeavingTransitions = new ArrayList<Transition>();
-			for(Transition t: leavingTransitions){
-				if(!defaultTransition.equals(t))
-					otherLeavingTransitions.add(t);
+			if(defaultTransition != null){
+				List<Transition> leavingTransitions = rootNode.getLeavingTransitions();
+				
+				// Remove the defaultTransition from the list of leavingTransitions and create a list otherLeavingTransitions.
+				List<Transition> otherLeavingTransitions = new ArrayList<Transition>();
+				for(Transition t: leavingTransitions){
+					if(!defaultTransition.equals(t))
+						otherLeavingTransitions.add(t);
+				}
+				
+				// Step(c) in the algorithm above.
+				for(Transition t: otherLeavingTransitions){
+					if(wConfig.isTaskActive(t.getTo().getName()))
+						nextTransitions.add(t);
+				}
+				
+				// Step(d) in the algorithm above.
+				Node currentNode = rootNode;
+				Node nextNode = defaultTransition.getTo();
+				while(!wConfig.isTaskActive(nextNode.getName()) || currentNode.getDefaultLeavingTransition() == null){
+					currentNode = nextNode;
+					if(currentNode.getDefaultLeavingTransition() != null)
+						nextNode = currentNode.getDefaultLeavingTransition().getTo();
+				}
+				
+				// Step(e) in the algorithm above.
+				nextTransitions.add(currentNode.getDefaultLeavingTransition());
 			}
-			
-			// Step(c) in the algorithm above.
-			for(Transition t: otherLeavingTransitions){
-				if(wConfig.isTaskActive(t.getTo().getName()))
-					nextTransitions.add(t);
-			}
-			
-			// Step(d) in the algorithm above.
-			Node currentNode = rootNode;
-			Node nextNode = defaultTransition.getTo();
-			while(!wConfig.isTaskActive(nextNode.getName()) || currentNode.getDefaultLeavingTransition() == null){
-				currentNode = nextNode;
-				if(currentNode.getDefaultLeavingTransition() != null)
-					nextNode = currentNode.getDefaultLeavingTransition().getTo();
-			}
-			
-			// Step(e) in the algorithm above.
-			nextTransitions.add(currentNode.getDefaultLeavingTransition());
 			
 		}
 		

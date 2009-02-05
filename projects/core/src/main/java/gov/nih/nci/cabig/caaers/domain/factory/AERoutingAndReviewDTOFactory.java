@@ -1,11 +1,7 @@
 package gov.nih.nci.cabig.caaers.domain.factory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.ReportDTO;
@@ -14,7 +10,9 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReviewComment;
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 /**
