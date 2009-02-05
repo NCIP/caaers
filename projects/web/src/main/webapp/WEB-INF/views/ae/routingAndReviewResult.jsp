@@ -78,6 +78,16 @@ color:#0033FF;
         curWin.showCenter(true);
         
 	}
+	
+	function executeAction(reportId,url){
+    	var actions = $("actions-"+reportId)
+    	for ( i=0; i < actions.length; i++)
+        {
+        	if (actions.options[i].selected && actions.options[i].value != "none") {
+            	window.open(url + "&format="+ actions.options[i].value,"_self")
+            }
+         }
+     }
 
 	function advanceWorkflow(selectBox,wfId, entityId, entityType){
 		var sb = $(selectBox);

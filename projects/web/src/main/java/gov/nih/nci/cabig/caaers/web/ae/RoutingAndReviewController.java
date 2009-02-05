@@ -11,9 +11,12 @@ import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.User;
+import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.dto.AdverseEventReportingPeriodDTO;
 import gov.nih.nci.cabig.caaers.domain.dto.RoutingAndReviewSearchResultsDTO;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
+import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
 import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.tools.editors.EnumByNameEditor;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -31,9 +34,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.acegisecurity.context.SecurityContext;
-import org.acegisecurity.userdetails.User;
 import org.directwebremoting.WebContext;
 import org.directwebremoting.WebContextFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
@@ -57,6 +60,8 @@ public class RoutingAndReviewController extends SimpleFormController{
     private WorkflowService workflowService;
     
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
+    
+    private CSMUserRepository csmUserRepository;
 
     protected static final Collection<ReviewStatus> REVIEW_STATUS = new ArrayList<ReviewStatus>(7);
     
@@ -107,7 +112,7 @@ public class RoutingAndReviewController extends SimpleFormController{
     	RoutingAndReviewCommand cmd = (RoutingAndReviewCommand)command;
 
     	SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
-		String userId = ((User)context.getAuthentication().getPrincipal()).getUsername();
+		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
     	if(!errors.hasErrors()){
     		List<AdverseEventReportingPeriodDTO> rpDtos = adverseEventRoutingAndReviewRepository.findAdverseEventReportingPeriods(cmd.getParticipant(), cmd.getStudy(), cmd.getStudySite(), cmd.getReviewStatus(), userId);
         	RoutingAndReviewSearchResultsDTO searchResultsDTO = new RoutingAndReviewSearchResultsDTO(cmd.isSearchCriteriaStudyCentric(), cmd.getParticipant(), cmd.getStudy(), rpDtos);
@@ -115,6 +120,14 @@ public class RoutingAndReviewController extends SimpleFormController{
     	}
     	
     	ModelAndView modelAndView = super.processFormSubmission(request, response, command, errors);
+    	modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
+		if(!csmUserRepository.isSuperUser(userId)){
+			User user = csmUserRepository.getUserByName(userId);
+			if(user.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
+				modelAndView.getModel().put("enableReportLink", Boolean.TRUE);
+			}
+		}
+    	
     	return modelAndView;
     	
     }
@@ -202,4 +215,9 @@ public class RoutingAndReviewController extends SimpleFormController{
 			AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 		this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	}
+    
+    @Required
+    public void setCsmUserRepository(final CSMUserRepository csmUserRepository) {
+        this.csmUserRepository = csmUserRepository;
+    }
 }

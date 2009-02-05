@@ -3,16 +3,44 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@attribute name="index" type="java.lang.Integer" description="The index of the expedited adverse event"%>
 <%@attribute name="aeReport" type="gov.nih.nci.cabig.caaers.domain.dto.ExpeditedAdverseEventReportDTO" description="The expedited adverse event report DTO that is printed by this row." %>
+<c:set var="aeReportPageURL"
+	value="/pages/ae/reviewResolver?aeReport=${aeReport.id}" />
 <tr class="report-row">
 	<td colspan=3>
 		<table width="100%">
 		<c:forEach items="${aeReport.reports}" var="report" varStatus="rStatus">
 			<tr>
 				<td align="left" width="50%">
-					${report.name}
+					<c:if test="${enableReportLink == true }">
+						<a href="<c:url value="${aeReportPageURL}"/>">${report.name}</a>
+					</c:if>
+					<c:if test="${enableReportLink == false }">
+						${report.name }
+					</c:if>
 				</td>
 				<td width="25%">
-					format
+					<%-- <SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')"> --%>
+					<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id}, '<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${aeReport.id}'/>')">
+	     				<OPTION selected label="none" value="none">None</OPTION>
+	     				<c:if test="${command.study.caaersXMLType}">
+	     					<OPTION label="xml" value="xml">caAERS XML</OPTION>
+	     				</c:if>
+	     				<c:if test="${command.study.adeersPDFType}">
+	     					<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+	     				</c:if>
+	     				<c:if test="${command.study.medwatchPDFType}">
+	    			 		<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+	    			 	</c:if>
+	     				<c:if test="${command.study.dcpSAEPDFType}">
+	    			 		<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
+	    			 	</c:if>
+	    		 		<c:if test="${command.study.ciomsPDFType}">
+	     					<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
+	     				</c:if>
+	    			 	<c:if test="${command.study.ciomsSaePDFType}">
+	     					<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
+	     				</c:if>
+	 				</SELECT>
 				</td>
 				<td align="center" width="25%" id="report-${reportingPeriod.id}-status">
 					${report.status.displayName }

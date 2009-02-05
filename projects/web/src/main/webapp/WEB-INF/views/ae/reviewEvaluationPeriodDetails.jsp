@@ -13,7 +13,7 @@
  	<tags:slider renderComments="true" renderAlerts="false" display="none">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="reportingPeriod"/>
+    			<tags:routingAndReviewComments/>
     		</div>
     	</jsp:attribute>
     </tags:slider>

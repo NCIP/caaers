@@ -3,7 +3,9 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import java.util.List;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.User;
 import gov.nih.nci.cabig.caaers.domain.UserGroupType;
 import gov.nih.nci.cabig.caaers.domain.repository.CSMUserRepository;
@@ -23,6 +25,7 @@ public class RoutingAndReviewResolverController extends AbstractController{
 	
 	private CSMUserRepository csmUserRepository;
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
+	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
 	protected ModelAndView handleRequestInternal(HttpServletRequest request, 
 				HttpServletResponse response){
@@ -55,7 +58,18 @@ public class RoutingAndReviewResolverController extends AbstractController{
 	
 	private ModelAndView handleAeReportRequest(HttpServletRequest request, HttpServletResponse response,
 				String aeReportId){
-		return null;
+		ExpeditedAdverseEventReport aeReport = expeditedAdverseEventReportDao.getById(Integer.parseInt(aeReportId));
+		SecurityContext context = (SecurityContext)request.getSession().getAttribute("ACEGI_SECURITY_CONTEXT");
+		String userId = ((org.acegisecurity.userdetails.User)context.getAuthentication().getPrincipal()).getUsername();
+		String redirectUrl = "edit?aeReport=" + aeReportId;
+		if(!csmUserRepository.isSuperUser(userId)){
+			User user = csmUserRepository.getUserByName(userId);
+			if(user.getUserGroupTypes().contains(UserGroupType.caaers_ae_cd)){
+				redirectUrl = "edit?aeReport=" + aeReportId;
+			}
+		}
+		ModelAndView mv = new ModelAndView(new RedirectView(redirectUrl));
+		return mv;
 	}
 	
 	@Required
@@ -69,5 +83,13 @@ public class RoutingAndReviewResolverController extends AbstractController{
 	
 	public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao){
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
+	}
+	
+	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao(){
+		return expeditedAdverseEventReportDao;
+	}
+	
+	public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao){
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
 	}
 }
