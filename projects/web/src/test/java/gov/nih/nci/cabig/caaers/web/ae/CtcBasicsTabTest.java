@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
@@ -16,6 +17,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,21 +31,23 @@ public class CtcBasicsTabTest extends AeTabTestCase {
     private AdverseEvent ae0;
 
     private Ctc ctcae3;
-
+    private CtcDao ctcDao;
+    
     @Override
     protected void setUp() throws Exception {
+    	 ctcae3 = Fixtures.createCtcaeV3();
         super.setUp();
 
-        ctcae3 = Fixtures.createCtcaeV3();
+       
         AeTerminology t = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite()
                         .getStudy());
         command.getAssignment().getStudySite().getStudy().setAeTerminology(t);
         command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(
-                        Fixtures.createCtcaeV3());
+        		ctcae3);
 
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
-
+        
     }
 
     @Override
@@ -53,16 +57,22 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         ctcBasicsTab.setEvaluationService(evaluationServiceMock);
         EasyMock.expect(evaluationServiceMock.validateReportingBusinessRules(command.getAeReport(),
                                         ExpeditedReportSection.BASICS_SECTION)).andReturn(new ValidationErrors()).anyTimes();
+        ctcDao = registerDaoMockFor(CtcDao.class);
+        ctcBasicsTab.setCtcDao(ctcDao);
         return ctcBasicsTab;
     }
 
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
+    	 EasyMock.expect(ctcDao.getById(ctcae3.getId())).andReturn(ctcae3);
+    	replayMocks();
         List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(request, command).get("ctcCategories");
         assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
     public void testRefDataIncludesFieldGroups() throws Exception {
+    	 EasyMock.expect(ctcDao.getById(ctcae3.getId())).andReturn(ctcae3);
+    	replayMocks();
         assertTrue(getTab().referenceData(request, command).containsKey("fieldGroups"));
     }
 
