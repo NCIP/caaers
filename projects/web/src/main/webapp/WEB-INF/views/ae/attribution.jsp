@@ -13,11 +13,13 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <%-- <tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    <tags:javascriptLink name="routing_and_review" />
+	<tags:stylesheetLink name="slider" />
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
+    			<tags:routingAndReviewComments />
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -25,7 +27,7 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
+    </tags:slider>
     <style type="text/css">
         hr.attrib-divider {
             border: 2px solid #6E81A6;
@@ -95,6 +97,8 @@
         .attribution td.definite  { background-color: #6E81A6 }
     </style>
     <script type="text/javascript">
+    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    
         function updateCodeClass(evt) {
             var attrib_level = $F(Event.element(evt))
             var td = Event.findElement(evt, "TD")
@@ -110,6 +114,12 @@
                 updateCodeClass({ target: sel })
                 sel.observe("change", updateCodeClass)
             })
+            
+            //only show the workflow tab, if it is associated to workflow
+            var associatedToWorkflow = ${command.associatedToWorkflow};
+            if(associatedToWorkflow){
+ 	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+            }
         })
     </script>
 </head>

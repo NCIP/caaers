@@ -14,11 +14,13 @@
     </style>
     <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE"/>
-    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
-    <%--<tags:slider renderComments="${command.workflowEnabled}" renderAlerts="false" display="">
+    <tags:javascriptLink name="routing_and_review" />
+	<tags:stylesheetLink name="slider" />
+	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
+		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
     	<jsp:attribute name="comments">
     		<div id="comments-id" style="display:none;">
-    			<tags:routingAndReviewComments domainObjectType="aeReport"/>
+    			<tags:routingAndReviewComments />
     		</div>
     	</jsp:attribute>
     	<jsp:attribute name="labs">
@@ -26,7 +28,19 @@
     			<tags:labs labs="${command.assignment.labLoads}"/>
     		</div>
     	</jsp:attribute>
-    </tags:slider> --%>
+    </tags:slider>
+    <script type="text/javascript">
+    	var routingHelper = new RoutingAndReviewHelper(createAE);
+    	
+    	Event.observe(window, "load", function() {
+            
+            //only show the workflow tab, if it is associated to workflow
+            var associatedToWorkflow = ${command.associatedToWorkflow};
+            if(associatedToWorkflow){
+ 	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+            }
+        })
+    </script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section17attachments">

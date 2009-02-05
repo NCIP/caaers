@@ -9,8 +9,8 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:includeScriptaculous/>
-    <tags:javascriptLink name="routing_and_review" />
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
+    <tags:javascriptLink name="routing_and_review" />
 	<tags:stylesheetLink name="slider" />
 	<tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}" 
 		display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
