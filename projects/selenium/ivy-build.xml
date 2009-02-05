@@ -54,7 +54,7 @@
 	<!-- ================================= 
           target: test-ui              
          ================================= -->
-	<target name="test-ui" depends="start-selenium-server, resolve,common.test-report, shutdown-selenium-server" description="---> test caaers UI using selenium">
+	<target name="test-ui" depends="resolve,reset-db,upload-rules,common.test-report" description="---> test caaers UI using selenium">
 		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
 			<classpath location="${test.dir}/java" />
 			<classpath refid="${java.class.path}" />
@@ -78,6 +78,9 @@
 		</scp>
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/refreshqa" />
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10"/>
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/droprules.sh" />
 		<!--sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/startall.sh" /-->
 	</target>
@@ -117,15 +120,44 @@
 		<condition property="selenium.on" value="true">
 			<http url="http://localhost:4444" errorsbeginat="500" />
 		</condition>
+		<waitfor maxwait="10" maxwaitunit="second" timeoutproperty="caaers.timeout">
+			<http url="https://oracle.qa.semanticbits.com/caaers" errorsbeginat="400" />
+		</waitfor>
+		<fail message="one of the following failed
+			Is selenium on?: ${selenium.on}
+			Is caaers switched off?: ${caaers.timeout}">
+			<condition>
+				<or>
+					<not>
+						<equals arg1="${selenium.on}" arg2="true" />
+					</not>
+					<equals arg1="${caaers.timeout}" arg2="true" />
+				</or>
+			</condition>
+		</fail>
 		<echo message="${selenium.on}" />
+		<echo message="${caaers.timeout}" />
 	</target>
 	<!-- ================================= 
           target: upload-rules              
          ================================= -->
 	<target name="upload-rules" description="upload rules" depends="resolve, resolve-test,compile-test">
-		<antcall target="test">
-			<property name="test" value="CaaersRulesTestBootstrap"/>
-		</antcall>
+		<condition property="selenium.on" value="true">
+			<http url="http://${selenium.url}:${selenium.port}" errorsbeginat="500" />
+		</condition>
+
+		<echo message="Selenium is on at http://${selenium.url}:${selenium.port}?: ${selenium.on}" />
+		<fail message="Selenium is not running.">
+			<condition>
+				<not>
+					<equals arg1="${selenium.on}" arg2="true" />
+				</not>
+			</condition>
+		</fail>
+		<taskdef name="uploadRules" classname="gov.nih.nci.cabig.caaers.web.selenium.CaaersRulesTestBootstrap">
+			<classpath refid="test.run.classpath" />
+		</taskdef>
+		<uploadRules rulesdir="${test.resources}/rules" />
 	</target>
 </project>
 <!-- TODO 
