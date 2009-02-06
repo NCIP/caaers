@@ -50,7 +50,7 @@
 	<!-- ================================= 
           target: test-ui              
          ================================= -->
-	<target name="test-ui" depends="clean-classes-test, resolve,reset-db,upload-rules,test-report" description="---> test caaers UI using selenium">
+	<target name="test-ui" depends="clean-classes-test, resolve,resolve-test, reset-db,upload-rules,test-report" description="---> test caaers UI using selenium">
 		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
 			<classpath location="${test.dir}/java" />
 			<classpath refid="${java.class.path}" />
