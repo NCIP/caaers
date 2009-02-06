@@ -54,7 +54,7 @@
 	<!-- ================================= 
           target: test-ui              
          ================================= -->
-	<target name="test-ui" depends="resolve,reset-db,upload-rules,common.test-report" description="---> test caaers UI using selenium">
+	<target name="test-ui" depends="clean-classes-test, resolve,reset-db,upload-rules,test-report" description="---> test caaers UI using selenium">
 		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
 			<classpath location="${test.dir}/java" />
 			<classpath refid="${java.class.path}" />
@@ -78,11 +78,12 @@
 		</scp>
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
-		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/refreshqa" />
+		<!--sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" /-->
 		<echo message="Sleeping 10 seconds..." />
-		<sleep seconds="10"/>
+		<sleep seconds="10" />
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/droprules.sh" />
-		<!--sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/startall.sh" /-->
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10" />
 	</target>
 	<!-- ================================= 
           target: start-selenium-server              
@@ -117,26 +118,7 @@
           target: test-local              
          ================================= -->
 	<target name="test-local" description="---> Used for testing build scripts. Do not invoke in normal usage.">
-		<condition property="selenium.on" value="true">
-			<http url="http://localhost:4444" errorsbeginat="500" />
-		</condition>
-		<waitfor maxwait="10" maxwaitunit="second" timeoutproperty="caaers.timeout">
-			<http url="https://oracle.qa.semanticbits.com/caaers" errorsbeginat="400" />
-		</waitfor>
-		<fail message="one of the following failed
-			Is selenium on?: ${selenium.on}
-			Is caaers switched off?: ${caaers.timeout}">
-			<condition>
-				<or>
-					<not>
-						<equals arg1="${selenium.on}" arg2="true" />
-					</not>
-					<equals arg1="${caaers.timeout}" arg2="true" />
-				</or>
-			</condition>
-		</fail>
-		<echo message="${selenium.on}" />
-		<echo message="${caaers.timeout}" />
+		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="exp caaers_qa/caaers_qa Full=y File=caaers_oracle_qa.dmp COMPRESS=Y GRANTS=Y" />
 	</target>
 	<!-- ================================= 
           target: upload-rules              

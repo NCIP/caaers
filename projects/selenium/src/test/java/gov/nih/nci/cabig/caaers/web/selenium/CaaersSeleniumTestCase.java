@@ -446,9 +446,9 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium
 				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
 		selenium.waitForPageToLoad("30000");
-		selenium.type("firstName", "Monica");
-		selenium.type("lastName", "Dubinsky");
-		selenium.type("emailAddress", "monica.dubinsky@xxyy.com");
+		selenium.type("firstName", "Jack");
+		selenium.type("lastName", "Black");
+		selenium.type("emailAddress", "jack.black@xxyyzz.com");
 		selenium.type("phoneNumber", "0000000000");
 
 		aw.typeAutosuggest("siteInvestigators[0].organization-input", "nci",
