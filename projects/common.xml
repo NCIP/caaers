@@ -4,7 +4,7 @@
 	
 	<property environment="env" />
 	
-	<!-- Ivy jar location -->
+	<!-- Ivy jar location - -->
 	<!--property name="ivy.jar.dir" value="${user.home}/.ivy2/jars" />
 	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" /-->
 
