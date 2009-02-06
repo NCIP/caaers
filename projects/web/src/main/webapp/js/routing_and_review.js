@@ -101,6 +101,7 @@ Object.extend(RoutingAndReviewHelper.prototype, {
 		sboxIndicator.style.display='';
 		this.ajaxFacade.advanceWorkflow(sbox.value, function(ajaxOutput){
 			this.updateSelectBoxContent(sbox, sboxIndicator, ajaxOutput.objectContent);
+			this.retrieveReviewComments();
 		}.bind(this));
 	},
 	collapseAllComments : function(){
