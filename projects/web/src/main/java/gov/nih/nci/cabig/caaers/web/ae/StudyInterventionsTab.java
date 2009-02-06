@@ -52,7 +52,7 @@ public class StudyInterventionsTab extends AeTab {
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();
         statusOpts.put("", "Please select");
         statusOpts.putAll(collectOptions(Arrays.asList(RadiationAdministration.values()), null, "displayName"));
-        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit", "Unit of measure", false, WebUtils.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"));
+        InputField doseUOMField = InputFieldFactory.createSelectField("dosageUnit", "Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("radiationDoseUMORefData"), "code", "desc", "Please Select"), true));
         InputField fractionNumberField = createTextField("fractionNumber", "Schedule number of fractions", false);
         fractionNumberField.getAttributes().put(InputField.HELP, "ae.radiationIntervention.aeReport.radiationInterventions.fractionNumber");
 
