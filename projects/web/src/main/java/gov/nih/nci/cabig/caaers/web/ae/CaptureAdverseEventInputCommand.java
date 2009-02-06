@@ -20,6 +20,7 @@ import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.utils.IndexFixedList;
 
 import java.util.ArrayList;
@@ -89,6 +90,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionMap = new HashMap<Integer, Boolean>();
         this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
+        
         
         this.seriousAdverseEvents = new TreeSet<AdverseEvent>(new Comparator<AdverseEvent>(){
         	public int compare(AdverseEvent o1, AdverseEvent o2) {
@@ -634,10 +636,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	return selectedAesList;
 	}
     
-    public boolean getWorkflowEnabled(){
-    	return workflowEnabled;
-    }
-    public void setWorkflowEnabled(boolean workflowEnabled) {
+    public boolean isWorkflowEnabled() {
+		return workflowEnabled;
+	}
+
+	public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;
 	}
     
