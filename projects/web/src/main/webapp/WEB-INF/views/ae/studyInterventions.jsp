@@ -172,7 +172,7 @@ function closeAll() {
                 <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
                 <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneCourseAgent index="${newIndex}" agent="${agent}"/>
+                    <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="true"/>
                 </c:forEach>
             </div>
         </chrome:box>
@@ -185,7 +185,7 @@ function closeAll() {
                 <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
                 <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneMedicalDevice index="${newIndex}" device="${device}"/>
+                    <ae:oneMedicalDevice index="${newIndex}" device="${device}" collapsed="true"/>
                 </c:forEach>
             </div>
         </chrome:box>
@@ -198,7 +198,7 @@ function closeAll() {
                 <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
                 <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneRadiationIntervention index="${newIndex}" radiation="${radiation}"/>
+                    <ae:oneRadiationIntervention index="${newIndex}" radiation="${radiation}" collapsed="true"/>
                 </c:forEach>
             </div>
         </chrome:box>
@@ -211,7 +211,7 @@ function closeAll() {
                 <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
                 <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}"/>
+                    <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}" collapsed="true"/>
                 </c:forEach>
             </div>
         </chrome:box>
