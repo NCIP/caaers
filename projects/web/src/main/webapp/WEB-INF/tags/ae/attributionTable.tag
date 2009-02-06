@@ -13,7 +13,13 @@
 
 <c:if test="${offset > 0}"><hr class="attrib-divider"/></c:if>
 
-<table class="attribution" id="attribution-${offset}">
+<c:set var="hasSurgery" value="${command.study.surgeryPresent}" />
+<c:set var="hasDevice" value="${command.study.devicePresent}" />
+<c:set var="hasRadiation" value="${command.study.radiationPresent}" />
+<c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
+<c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
+
+<table class="attribution" id="attribution-${offset}" border="0" width="100%">
     <col class="cause"/>
     <colgroup>
         <c:forEach begin="1" end="${aeCols}">
@@ -37,19 +43,30 @@
         </c:forEach>
     </tr>
     <c:forEach items="${blocks}" var="block">
-        <tr class="subhead">
-            <th colspan="${cols}">${block.displayName}</th>
-        </tr>
-        <c:if test="${empty block.rows}">
-        <td colspan="${cols}">No ${fn:toLowerCase(block.displayName)} for this report.</td>
+        <c:set var="display" value="${  (block.displayName eq 'Course' && hasAgent) ||
+                        (block.displayName eq 'Surgery intervention' && hasSurgery) ||
+                        (block.displayName eq 'Radiation intervention' && hasRadiation) ||
+                        (block.displayName eq 'Medical device' && hasDevice) }" />
+
+        <c:if test="${block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
+            <c:set var="display" value="true" />
         </c:if>
-        <c:forEach items="${block.rows}" var="row">
-        <tr class="fields">
-            <th>${row.displayName}</th>
-            <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
-                <td><tags:renderInputs field="${row.fields[i]}"/></td>
+        
+        <c:if test="${display}">
+            <tr class="subhead">
+                <th colspan="${cols}">${block.displayName}</th>
+            </tr>
+            <c:if test="${empty block.rows}">
+                <td colspan="${cols}">No ${fn:toLowerCase(block.displayName)} for this report.</td>
+            </c:if>
+            <c:forEach items="${block.rows}" var="row">
+                <tr class="fields">
+                    <th>${row.displayName}</th>
+                    <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
+                        <td><tags:renderInputs field="${row.fields[i]}"/></td>
+                    </c:forEach>
+                </tr>
             </c:forEach>
-        </tr>
-        </c:forEach>
+        </c:if>
     </c:forEach>
 </table>

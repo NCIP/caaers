@@ -9,12 +9,15 @@ import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelect
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createPastDateField;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import static gov.nih.nci.cabig.caaers.web.utils.WebUtils.collectOptions;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.Errors;
+import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -24,7 +27,8 @@ import org.apache.commons.logging.LogFactory;
 
 public class StudyInterventionsTab extends AeTab {
     private static final Log log = LogFactory.getLog(StudyInterventionsTab.class);
-    
+    protected ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
+
     Map<String, String> methodNameMap = new HashMap<String, String>();
     private ConfigProperty configurationProperty;
     private static final String STUDY_INTERVENTION_SURGERY = "surgery";
@@ -77,7 +81,7 @@ public class StudyInterventionsTab extends AeTab {
         InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent", false, WebUtils.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName", "Please select"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
-        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"));
+        InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"), true));
         CompositeField adminDelayField = new CompositeField(null, new DefaultInputFieldGroup(null,"Administration delay").addField(InputFieldFactory.createTextField("administrationDelayAmount", "", false)).addField(InputFieldFactory.createSelectField("administrationDelayUnits", "", false,WebUtils.collectOptions(Arrays.asList(DelayUnits.values()), null, "displayName"))));
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 70);
@@ -253,7 +257,11 @@ public class StudyInterventionsTab extends AeTab {
 
         if (surgeries.size() - 1 < index) {
             log.debug("Wrong <index> for <surgeries> list.");
-        } else if (index >=0) surgeries.remove(surgeries.get(index));
+        } else if (index >=0) {
+            SurgeryIntervention object = (SurgeryIntervention)surgeries.get(index);
+            surgeries.remove(object);
+            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);        
+        }
 
         int size = surgeries.size();
     	Integer[] indexes = new Integer[size];
@@ -283,7 +291,11 @@ public class StudyInterventionsTab extends AeTab {
 
         if (radiations.size() - 1 < index) {
             log.debug("Wrong <index> for <radiations> list.");
-        } else if (index >=0) radiations.remove(radiations.get(index));
+        } else if (index >=0) {
+            RadiationIntervention object = (RadiationIntervention)radiations.get(index);
+            radiations.remove(object);
+            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+        }
 
         int size = radiations.size();
     	Integer[] indexes = new Integer[size];
@@ -313,7 +325,11 @@ public class StudyInterventionsTab extends AeTab {
 
         if (devices.size() - 1 < index) {
             log.debug("Wrong <index> for <devices> list.");
-        } else if (index >=0) devices.remove(devices.get(index));
+        } else if (index >=0) {
+            MedicalDevice object = (MedicalDevice)devices.get(index);
+            devices.remove(object);
+            deleteAttributions(object, (ExpeditedAdverseEventInputCommand)command);
+        }
 
         int size = devices.size();
     	Integer[] indexes = new Integer[size];
@@ -343,7 +359,10 @@ public class StudyInterventionsTab extends AeTab {
 
         if (agents.size() - 1 < index) {
             log.debug("Wrong <index> for <agents> list.");
-        } else if (index >=0) agents.remove(agents.get(index));
+        } else if (index >=0) {
+            agents.remove(agents.get(index));
+//            deleteAttributions((CourseAgent)agents.get(index), (ExpeditedAdverseEventInputCommand)command);
+        };
 
         int size = agents.size();
     	Integer[] indexes = new Integer[size];
@@ -355,6 +374,19 @@ public class StudyInterventionsTab extends AeTab {
         modelAndView.getModel().put("indexes", indexes);
 
         return modelAndView;
+    }
+
+    public void deleteAttributions(ExpeditedAdverseEventReportChild child, ExpeditedAdverseEventInputCommand command) {
+        expeditedAdverseEventReportDao.cascaeDeleteToAttributions((DomainObject) child, command.getAeReport());
+        child.setReport(null);
+    }
+
+    public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+        return expeditedAdverseEventReportDao;
+    }
+
+    public void setExpeditedAdverseEventReportDao(ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+        this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
 }

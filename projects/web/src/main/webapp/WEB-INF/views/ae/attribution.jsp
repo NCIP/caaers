@@ -1,12 +1,6 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae"%>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
 
 <c:set var="MAX_COLS" value="${4}"/>
-
 <html>
 <head>
     <title>${tab.longTitle}</title>
@@ -29,67 +23,22 @@
     	</jsp:attribute>
     </tags:slider>
     <style type="text/css">
-        hr.attrib-divider {
-            border: 2px solid #6E81A6;
-            margin: 0.4em 1em;
-        }
-        .attribution {
-            border-spacing: 0;
-            border-collapse: collapse;
-            margin: 1em 2em;
-        }
+        hr.attrib-divider { border: 2px solid #6E81A6; /*margin: 0.4em 1em;*/ }
+        .attribution { border-spacing: 0; border-collapse: collapse; /*margin: 1em 2em;*/ }
         .attribution col { border: 1px solid #6E81A6; }
-        .attribution col.cause {
-            width: 13em;
-        }
-        .attribution col.ae-attrib {
-            width: 16em;
-        }
-        .attribution th {
-            text-align: right;
-            padding: 2px 5px;
-            font-weight: normal;
-        }
-        .attribution tr.top th.ae, .attribution tr.fields td {
-            border: solid #6E81A6;
-            border-width: 0 1px;
-        }
-        .attribution tr.top th {
-            text-align: center;
-            vertical-align: top;
-        }
-        .attribution tr.top th.cause {
-            vertical-align: bottom;
-        }
-        .attribution tr.top th .index {
-            font-weight: normal;
-            border-bottom: 1px solid #6E81A6;
-        }
-        .attribution tr.top th .grade {
-        }
-        .attribution tr.top th .term {
-            font-weight: bold;
-            font-size: 120%;
-        }
-        .attribution tr.subhead th {
-            text-align: left;
-            font-weight: bold;
-            font-size: 120%;
-            background-color: #D7D9E3;
-            color: black;
-            border-top: 1px solid #6E81A6;
-        }
-        .attribution td {
-            text-align: center;
-            padding: 2px;
-        }
-        .attribution tr.fields:hover th {
-            background-color: #6E81A6;
-            color: white;
-        }
-        .attribution tr.fields td, .attribution tr.fields th {
-            border-bottom: 1px solid #6E81A6;
-        }
+        .attribution col.cause { width: 10em; }
+        .attribution col.ae-attrib { width: 10em; }
+        .attribution th { text-align: right; padding: 2px 5px; font-weight: normal; }
+        .attribution tr.top th.ae, .attribution tr.fields td { border: solid #6E81A6; border-width: 0 1px; }
+        .attribution tr.top th { text-align: center; vertical-align: top; }
+        .attribution tr.top th.cause { vertical-align: bottom; }
+        .attribution tr.top th .index { font-weight: normal; border-bottom: 1px solid #6E81A6; }
+        .attribution tr.top th .grade { }
+        .attribution tr.top th .term { font-weight: bold;/*font-size: 120%;*/ }
+        .attribution tr.subhead th { text-align: left; font-weight: bold; /*font-size: 120%;*/ background-color: #D7D9E3; color: black; border-top: 1px solid #6E81A6; }
+        .attribution td { text-align: center; padding: 2px; }
+        .attribution tr.fields:hover th { /*background-color: #6E81A6;*/ /*color: white;*/ }
+        .attribution tr.fields td, .attribution tr.fields th { border-bottom: 1px solid #6E81A6; }
         .attribution td.unrelated { background-color: #fff }
         .attribution td.unlikely  { background-color: #ccc }
         .attribution td.possible  { background-color: #A0BBF2 }
@@ -124,6 +73,7 @@
     </script>
 </head>
 <body>
+
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section16attribution">
     <jsp:attribute name="instructions">
     <tags:instructions code="instruction_ae_attribution" />

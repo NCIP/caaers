@@ -26,9 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
 	
 	 private static Class<?>[] CONTROLLERS = { 	CaptureAdverseEventController.class   };
-	 
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
-	 
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 
 	 @Override
@@ -40,8 +38,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 			return adverseEventRoutingAndReviewRepository;
 	 }
 	
-	 public void setAdverseEventRoutingAndReviewRepository(
-				AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
+	 public void setAdverseEventRoutingAndReviewRepository(AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository) {
 			this.adverseEventRoutingAndReviewRepository = adverseEventRoutingAndReviewRepository;
 	 }
 	 
@@ -243,16 +240,14 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     public AjaxOutput advanceWorkflow(String transitionToTake){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
     	command.reassociate();
-    	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(command.getAdverseEventReportingPeriod().getWorkflowId(), 
-    			transitionToTake, command.getAdverseEventReportingPeriod(), getUserId());
+    	List<String> transitions = adverseEventRoutingAndReviewRepository.advanceReportingPeriodWorkflow(command.getAdverseEventReportingPeriod().getWorkflowId(), transitionToTake, command.getAdverseEventReportingPeriod(), getUserId());
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(transitions.toArray());
     	return output;
     }
     
     @Required
-    public void setAdverseEventReportingPeriodDao(
-			AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
+    public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
 }

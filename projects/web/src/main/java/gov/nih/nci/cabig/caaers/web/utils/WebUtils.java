@@ -1,9 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.utils;
 
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +26,7 @@ public class WebUtils {
      *                The property of the collection's elements which should be used as as the
      *                displayed label for each item. If null, the result of
      *                <code>item.toString()</code> will be used instead.
-     * @return an options map suitable for use as the {@link InputField#OPTIONS} attribute
+     * @return an options map suitable for use as the {@link gov.nih.nci.cabig.caaers.web.fields.InputField#OPTIONS} attribute
      */
     public static Map<Object, Object> collectOptions(Collection<?> items, String itemValueProperty, String itemLabelProperty, String blankValue) {
         Map<Object, Object> options = new LinkedHashMap<Object, Object>();
@@ -112,4 +110,28 @@ public class WebUtils {
     	if(StringUtils.isEmpty(pg)) return -1;
     	return Integer.parseInt(pg);
     }
+
+    /*
+    * Sort a map
+    * 
+    * */
+    public static Map sortMapByKey(Map map, final boolean ignoreCase) {
+        List list = new LinkedList(map.entrySet());
+        Collections.sort(list, new Comparator() {
+            public int compare(Object o1, Object o2) {
+                if (ignoreCase)
+                    return ((Comparable) ((Map.Entry) (o1)).getKey().toString().toLowerCase()).compareTo(((Map.Entry) (o2)).getKey().toString().toLowerCase());
+                else
+                    return ((Comparable) ((Map.Entry) (o1)).getKey()).compareTo(((Map.Entry) (o2)).getKey());
+            }
+        });
+
+        Map result = new LinkedHashMap();
+        for (Iterator it = list.iterator(); it.hasNext();) {
+            Map.Entry entry = (Map.Entry) it.next();
+            result.put(entry.getKey(), entry.getValue());
+        }
+        return result;
+    }
+
 }
