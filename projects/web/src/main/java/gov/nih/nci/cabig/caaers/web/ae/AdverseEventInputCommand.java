@@ -23,5 +23,5 @@ public interface AdverseEventInputCommand {
 
     public boolean getIgnoreCompletedStudy();
     
-    public boolean isWorkflowEnabled();
+    public boolean getWorkflowEnabled();
 }

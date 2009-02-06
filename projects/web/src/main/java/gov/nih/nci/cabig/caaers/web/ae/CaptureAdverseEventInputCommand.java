@@ -636,7 +636,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	return selectedAesList;
 	}
     
-    public boolean isWorkflowEnabled() {
+    public boolean getWorkflowEnabled() {
 		return workflowEnabled;
 	}
 
