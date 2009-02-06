@@ -55,8 +55,9 @@ public class AjaxWidgets extends TestCase {
 			throws InterruptedException {
 		selenium.click(element);
 		String elemValue=selenium.getValue(element);
+		
 		for(int i=0;i<elemValue.length();i++)
-			selenium.typeKeys(element, "\b");
+		selenium.typeKeys(element, "\b");
 		selenium.typeKeys(element, text);
 		waitForElementPresent("//div[@id='" + elemPresent + "']/ul/li");
 

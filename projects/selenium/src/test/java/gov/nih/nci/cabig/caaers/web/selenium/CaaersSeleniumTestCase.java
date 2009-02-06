@@ -19,12 +19,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void setUp() throws Exception {
 		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
-		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
-		// "http://www.google.com" );
+		//selenium = new DefaultSelenium("10.10.10.220", 4444, "*iehta","https://oracle.qa.semanticbits.com" );
 		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
 		// "https://oracle.qa.semanticbits.com" );
-		selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
-				"https://oracle.qa.semanticbits.com");
+		selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",	"https://oracle.qa.semanticbits.com");
 		selenium.start();
 		// setUp("https://derek.herndon.semanticbits.com:7443", "*chrome");
 		aw = new AjaxWidgets(selenium);
@@ -213,9 +211,9 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		aw.typeAutosuggest("study.studyAgents[1].agent-input", "123127",
 				"study.studyAgents[1].agent-choices");
 
-		selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
-		selenium.click("//div[@id='sa-section-1']/div[1]/h3/div/a/img");
-		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
+		//selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
+		/*selenium.click("//div[@id='sa-section-1']/div[1]/h3/div/a/img");
+		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");*/
 		Thread.sleep(5000);
 		aw.clickNext("flow-next");
 		selenium.click("add-si-section-button");
@@ -225,13 +223,13 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type("study.treatmentAssignments[1].code", "TAC2");
 		selenium.type("study.treatmentAssignments[1].description",
 				"TAC2 description");
-		selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
-		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
+		/*selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
+		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");*/
 		Thread.sleep(4000);
 	}
 
 	public void populateEditStudyDetails() {
-		selenium.type("study.shortTitle", "Some new title");
+		selenium.type("//textarea[@id='study.precis']", "test precis");
 		selenium.type("study.studyCoordinatingCenter.organization-input",
 				"NC002");
 	}
@@ -497,6 +495,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			selenium.click("//input[@value='Import']");
 			selenium.waitForPageToLoad("30000");
 		}
+		selenium.close();
 	}
 	// public void editInvestigator(String ){}
 	/*
