@@ -6,13 +6,8 @@
 	<property name="test.resources" value="${test.dir}/resources" />
 	<property name="local.lib.dir" value="${test.dir}/lib/" />
 	<import file="${parent.dir}/common.xml" />
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath refid="test.run.classpath" />
-		<!--classpath>
-			<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
-		</classpath-->
-	</taskdef>
-	
+
+
 
 	<!--
 	<target name="copy-caaers-context">
@@ -70,6 +65,12 @@
           target: reset-db              
          ================================= -->
 	<target name="reset-db" description="reset the db to a good baseline dump.">
+		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+			<classpath refid="test.run.classpath" />
+			<!--classpath>
+					<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
+				</classpath-->
+		</taskdef>
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/stopall.sh" />
 		<scp trust="true" todir="oracle:Oracle123!@sbhost02.semanticbits.com:/home/oracle">
 			<fileset dir="${test.resources}">
