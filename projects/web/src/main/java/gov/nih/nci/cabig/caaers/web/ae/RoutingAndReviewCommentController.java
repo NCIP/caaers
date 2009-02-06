@@ -36,7 +36,7 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		setCommandClass(RoutingAndReviewCommentCommand.class);
 		setBindOnNewForm(true);
 		setFormView("ae/listReviewComments");
-        setSuccessView("ae/saveReviewComment");
+        setSuccessView("ae/listReviewComments");
 	}
 	
 	@Override
@@ -104,27 +104,50 @@ public class RoutingAndReviewCommentController extends SimpleFormController {
 		String comment = cmd.getComment();
 		String userId = cmd.getUserId();
 		Object action = findInRequest(request, AJAX_ACTION);
-		if(action == null){
-			if("aeReport".equals(entity)){
-				adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
-			}else if("reportingPeriod".equals(entity)){
-				AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
-				adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
-			}
-		}else{
-			Object ajaxSubview = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
-			if(ajaxSubview != null && ((String)action).equals("fetchComments")){
-				mv.setViewName("ae/ajax/" + ajaxSubview);
-				List<? extends ReviewComment> prevComments = null;
+		if(action != null){
+			if(action.equals("addPopupComment")){
 				if("aeReport".equals(entity)){
-					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
-				} else if("reportingPeriod".equals(entity)){
-					prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
+					adverseEventRoutingAndReviewRepository.addReportReviewComment(id, comment, userId);
+				}else if("reportingPeriod".equals(entity)){
+					AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
+					adverseEventRoutingAndReviewRepository.addReportingPeriodReviewComment(reportingPeriod, comment, userId);
 				}
-				cmd.setPreviousComments(prevComments);
+			
+				// Fetch the new list of comments again and set it up in the command.
+				cmd.setComment(""); // Clear the command so that it disappears from the textArea in the popup
+				populatePreviousComments(entity, id, cmd);
+			}else if(action.equals("editPopupComment")){
+				Integer commentId = cmd.getCommentId();
+				if("aeReport".equals(entity)){
+					adverseEventRoutingAndReviewRepository.editReportReviewComment(id, comment, userId, commentId);
+				}else if("reportingPeriod".equals(entity)){
+					AdverseEventReportingPeriod reportingPeriod = adverseEventReportingPeriodDao.getById(id);
+					adverseEventRoutingAndReviewRepository.editReportingPeriodReviewComment(reportingPeriod, comment, userId, commentId);
+				}
+				
+				// Fetch the new list of comments again and set it up in the command.
+				cmd.setComment("");
+				populatePreviousComments(entity, id, cmd);
+			}
+			else{
+				Object ajaxSubview = findInRequest(request, AJAX_SUBVIEW_PARAMETER);
+				if(ajaxSubview != null && ((String)action).equals("fetchComments")){
+					mv.setViewName("ae/ajax/" + ajaxSubview);
+					populatePreviousComments(entity, id, cmd);
+				}
 			}
 		}
 		return mv;
+	}
+	
+	public void populatePreviousComments(String entity, Integer id, RoutingAndReviewCommentCommand cmd){
+		List<? extends ReviewComment> prevComments = null;
+		if("aeReport".equals(entity)){
+			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReport(id);
+		} else if("reportingPeriod".equals(entity)){
+			prevComments = adverseEventRoutingAndReviewRepository.fetchReviewCommentsForReportingPeriod(id);
+		}
+		cmd.setPreviousComments(prevComments);
 	}
 	
 	public AdverseEventRoutingAndReviewRepository getAdverseEventRoutingAndReviewRepository() {

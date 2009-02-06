@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class RoutingAndReviewCommentCommand {
 	private Integer entityId;
+	private Integer commentId;
 	private String entity;
 	private String comment;
 	private String userId;
@@ -59,4 +60,11 @@ public class RoutingAndReviewCommentCommand {
 		this.userId = userId;
 	}
 	
+	public void setCommentId(Integer commentId){
+		this.commentId = commentId;
+	}
+	
+	public Integer getCommentId(){
+		return commentId;
+	}
 }
