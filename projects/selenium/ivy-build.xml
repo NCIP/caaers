@@ -5,13 +5,14 @@
 	<property name="test.dir" value="${basedir}/src/test" />
 	<property name="test.resources" value="${test.dir}/resources" />
 	<property name="local.lib.dir" value="${test.dir}/lib/" />
-
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
-		</classpath>
-	</taskdef>
 	<import file="${parent.dir}/common.xml" />
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath refid="test.run.classpath" />
+		<!--classpath>
+			<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
+		</classpath-->
+	</taskdef>
+	
 
 	<!--
 	<target name="copy-caaers-context">
