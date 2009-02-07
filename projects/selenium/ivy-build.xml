@@ -144,7 +144,7 @@
 			<classpath refid="test.run.classpath" />
 		</taskdef>
 		<!--uploadRules rulesdir="${test.resources}/rules" /-->
-		<uploadRules rulesdir="C:\\workspace\\caaers-trunk\\selenium\\src\\test\\resources" />
+		<uploadRules rulesdir="C:\workspace\caaers-trunk\selenium\src\test\resources" />
 	</target>
 </project>
 <!-- TODO 
