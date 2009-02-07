@@ -22,7 +22,7 @@ public class CaaersRulesTestBootstrap extends Task {
 	}
 
 	public void execute() {
-		validate();
+		//validate();
 		System.out.println("In task class");
 		CaaersSeleniumTestCase cstc = new CaaersSeleniumTestCase();
 		try {
