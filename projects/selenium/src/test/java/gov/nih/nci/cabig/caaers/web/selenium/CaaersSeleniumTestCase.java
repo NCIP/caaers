@@ -491,6 +491,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		for (int i = 0; i < files.length; i++) {
 			String absPath = new File(rulesDir+files[i]).getAbsolutePath();
 			System.out.println("Rule file being imported: "+absPath);
+			log("Uploading rule from: "+absPath);
 			selenium.type("ruleSetFile1", absPath);
 			selenium.click("//input[@value='Import']");
 			selenium.waitForPageToLoad("30000");
