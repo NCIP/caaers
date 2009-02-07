@@ -484,10 +484,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.click("//a[@id='secondlevelnav_importRuleController']/span");
 		selenium.waitForPageToLoad("30000");
 		String files[] = {
-				"/gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
-				"/gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
-				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
-				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
 		for (int i = 0; i < files.length; i++) {
 			//String absPath = new File(rulesDir+files[i]).getAbsolutePath();
 			String absPath = rulesDir+files[i];
