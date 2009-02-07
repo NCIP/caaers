@@ -489,7 +489,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
 				"/gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
 		for (int i = 0; i < files.length; i++) {
-			String absPath = new File(rulesDir+files[i]).getAbsolutePath();
+			//String absPath = new File(rulesDir+files[i]).getAbsolutePath();
+			String absPath = rulesDir+files[i];
 			System.out.println("Rule file being imported: "+absPath);
 			log("Uploading rule from: "+absPath);
 			selenium.type("ruleSetFile1", absPath);
