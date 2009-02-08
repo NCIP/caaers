@@ -1,17 +1,5 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="ec" uri="http://www.extremecomponents.org" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
-<script src="js/prototype.js"></script>
-<script src="js/common.js"></script>
-<script src="js/scriptaculous/effects.js"></script>
-<script src="js/scriptaculous/slider.js"></script>
-<script src="js/scriptaculous/builder.js"></script>
-<script src="js/scriptaculous/controls.js"></script>
-<script src="js/scriptaculous/dragdrop.js"></script>
-<script src="js/common-scriptaculous.js"></script>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
 <title>Manage Reports</title>

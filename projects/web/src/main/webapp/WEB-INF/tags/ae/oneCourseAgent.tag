@@ -24,6 +24,7 @@
          <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[1].propertyName}"/></jsp:attribute>
     </ui:row>
 --%>
+    <caaers:value path="${fieldGroup.fields[0].propertyName}.agent.name" />
 
  <tags:renderRow field="${fieldGroup.fields[0]}"/>
  <tags:renderRow field="${fieldGroup.fields[1]}"/>
@@ -45,3 +46,18 @@
     </script>
 
 </ae:fieldGroupDivision>
+
+<script>
+    function setTitleCourse_${index}() {
+        var titleID = "titleOf_courseAgent-" + ${index};
+        var fieldObject = $("aeReport.treatmentInformation.courseAgents[${index}].studyAgent");
+        var selectedOption = fieldObject.options[fieldObject.selectedIndex];
+        var selectedValue = selectedOption.text;
+        $(titleID).innerHTML = selectedValue; 
+    }
+
+    setTitleCourse_${index}.defer();
+    Event.observe($("aeReport.treatmentInformation.courseAgents[${index}].studyAgent"), "change", function() {
+         setTitleCourse_${index}();
+    });
+</script>

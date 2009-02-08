@@ -52,3 +52,18 @@
     </script>
 
 </ae:fieldGroupDivision>
+
+<script>
+    function setTitleRadiation_${index}() {
+        var titleID = "titleOf_radiationIntervention-" + ${index};
+        var fieldObject = $("aeReport.radiationInterventions[${index}].administration");
+        var selectedOption = fieldObject.options[fieldObject.selectedIndex];
+        var selectedValue = selectedOption.text;
+        $(titleID).innerHTML = selectedValue;
+    }
+
+    setTitleRadiation_${index}.defer();
+    Event.observe($("aeReport.radiationInterventions[${index}].administration"), "change", function() {
+        setTitleRadiation_${index}();
+    });
+</script>

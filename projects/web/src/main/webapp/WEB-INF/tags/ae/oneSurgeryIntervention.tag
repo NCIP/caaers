@@ -44,3 +44,18 @@
 </script>
 
 </ae:fieldGroupDivision>
+
+<script>
+    function setTitleSurgery_${index}() {
+        var titleID = "titleOf_surgeryIntervention-" + ${index};
+        var fieldObject = $("aeReport.surgeryInterventions[${index}].interventionSite-input");
+        var selectedValue = fieldObject.value;
+        if (selectedValue != "Begin typing here...")
+            $(titleID).innerHTML = selectedValue;
+    }
+
+    setTitleSurgery_${index}.defer();
+    Event.observe($("aeReport.surgeryInterventions[${index}].interventionSite-input"), "blur", function() {
+        setTitleSurgery_${index}();
+    });
+</script>

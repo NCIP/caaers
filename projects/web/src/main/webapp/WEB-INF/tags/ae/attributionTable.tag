@@ -48,7 +48,7 @@
                         (block.displayName eq 'Radiation intervention' && hasRadiation) ||
                         (block.displayName eq 'Medical device' && hasDevice) }" />
 
-        <c:if test="${block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
+        <c:if test="${block.displayName eq 'Disease' || block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medication' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
             <c:set var="display" value="true" />
         </c:if>
         

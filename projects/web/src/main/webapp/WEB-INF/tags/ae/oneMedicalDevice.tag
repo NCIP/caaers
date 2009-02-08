@@ -115,3 +115,17 @@
 </script>
     
 </ae:fieldGroupDivision>
+
+<script>
+    function setTitleDevice_${index}() {
+        var titleID = "titleOf_medicalDevice-" + ${index};
+        var fieldObject = $("aeReport.medicalDevices[${index}].brandName");
+        var selectedValue = fieldObject.value;
+        $(titleID).innerHTML = selectedValue;
+    }
+
+    setTitleDevice_${index}.defer();
+    Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
+        setTitleDevice_${index}();
+    });
+</script>
