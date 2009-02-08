@@ -2,10 +2,16 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 
 import com.thoughtworks.selenium.*;
 
+import gov.nih.nci.cabig.caaers.CaaersContextLoader;
+import gov.nih.nci.cabig.caaers.CaaersTestCase;
+import gov.nih.nci.cabig.caaers.web.selenium.AjaxWidgets;
+
 import java.io.File;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	String studyId = null;
@@ -18,6 +24,14 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
 
 	public void setUp() throws Exception {
+		//super.setUp();
+		Properties properties = (Properties) getDeployedApplicationContext().getBean("caaersDatasourceFactoryBean");
+		
+		String seleniumServerURL = properties.getProperty("selenium.url");
+		String seleniumServerPort = properties.getProperty("selenium.port");
+		
+		System.out.println(seleniumServerURL);
+		
 		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
 		//selenium = new DefaultSelenium("10.10.10.220", 4444, "*iehta","https://oracle.qa.semanticbits.com" );
 		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
@@ -32,6 +46,22 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		// selenium.start();
 
 	}
+	
+	   public synchronized  ApplicationContext getDeployedApplicationContext() {
+	    	return CaaersContextLoader.getApplicationContext();
+	    }
+	    
+	    /**
+	     * The sub classes(testclasses) can override the config locations at runtime. 
+	     * @return
+	     */
+	    public final String[] getConfigLocations() {
+	        return new String[] {
+	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
+	            "classpath*:applicationContext-test.xml"
+	        };
+	    }
+
 
 	public void log(String message, Exception e) {
 		log.debug(message, e);
