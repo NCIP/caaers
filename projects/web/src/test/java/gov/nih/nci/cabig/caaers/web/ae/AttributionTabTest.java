@@ -249,7 +249,7 @@ public class AttributionTabTest extends AeTabTestCase {
 
         AttributionTab.AttributionBlock block = getBlocks().get(1);
         assertEquals(1, block.getRows().size());
-        assertEquals("Course", block.getDisplayName());
+        assertEquals("Agent", block.getDisplayName());
     }
 
     public void testCreateStudyAgentsBlock() throws Exception {
@@ -258,7 +258,7 @@ public class AttributionTabTest extends AeTabTestCase {
 
         AttributionTab.AttributionBlock block = getBlocks().get(1);
         assertEquals(2, block.getRows().size());
-        assertEquals("Course", block.getDisplayName());
+        assertEquals("Agents", block.getDisplayName());
     }
 
     public void testCreateConMedBlock() throws Exception {
