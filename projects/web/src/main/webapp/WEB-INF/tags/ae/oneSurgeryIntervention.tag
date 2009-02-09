@@ -50,12 +50,19 @@
         var titleID = "titleOf_surgeryIntervention-" + ${index};
         var fieldObject = $("aeReport.surgeryInterventions[${index}].interventionSite-input");
         var selectedValue = fieldObject.value;
+        var surgeryInterventionDate = $("aeReport.surgeryInterventions[${index}].interventionDate").value;
+        
         if (selectedValue != "Begin typing here...")
-            $(titleID).innerHTML = selectedValue;
+            $(titleID).innerHTML = "Surgery: " + selectedValue + " (" + surgeryInterventionDate + ")";
+
     }
 
     setTitleSurgery_${index}.defer();
     Event.observe($("aeReport.surgeryInterventions[${index}].interventionSite-input"), "blur", function() {
+        setTitleSurgery_${index}();
+    });
+
+    Event.observe($("aeReport.surgeryInterventions[${index}].interventionDate"), "change", function() {
         setTitleSurgery_${index}();
     });
 </script>

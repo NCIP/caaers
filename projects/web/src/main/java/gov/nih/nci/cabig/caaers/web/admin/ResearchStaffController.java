@@ -33,8 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Saurabh
  */
-public abstract class ResearchStaffController<C extends ResearchStaff> extends
-        AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
+public abstract class ResearchStaffController<C extends ResearchStaff> extends AutomaticSaveAjaxableFormController<C, ResearchStaff, ResearchStaffDao> {
 
     private static final Log log = LogFactory.getLog(ResearchStaffController.class);
 
@@ -78,26 +77,19 @@ public abstract class ResearchStaffController<C extends ResearchStaff> extends
     protected abstract void layoutTabs(Flow<C> flow);
 
     @Override
-    protected void initBinder(final HttpServletRequest request,
-                              final ServletRequestDataBinder binder) throws Exception {
+    protected void initBinder(final HttpServletRequest request, final ServletRequestDataBinder binder) throws Exception {
         super.initBinder(request, binder);
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
         binder.registerCustomEditor(Organization.class, new DaoBasedEditor(organizationDao));
-
     }
 
     @Override
-    protected ModelAndView processFinish(final HttpServletRequest request,
-                                         final HttpServletResponse response, final Object command,
-                                         final BindException errors) throws Exception {
-
+    protected ModelAndView processFinish(final HttpServletRequest request, final HttpServletResponse response, final Object command, final BindException errors) throws Exception {
         ResearchStaff researchStaff = (ResearchStaff) command;
 
         String emailSendingErrorMessage = "";
         try {
-            researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request
-                    .getScheme(), request.getServerName(), request.getServerPort(), request
-                    .getContextPath()));
+            researchStaffRepository.save(researchStaff, ResetPasswordController.getURL(request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath()));
         } catch (MailException e) {
             emailSendingErrorMessage = "Could not send email to user.";
             logger.error("Could not send email to user.", e);

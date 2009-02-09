@@ -37,14 +37,28 @@
 <script>
     function setTitleCourse_${index}() {
         var titleID = "titleOf_courseAgent-" + ${index};
-        var fieldObject = $("aeReport.treatmentInformation.courseAgents[${index}].studyAgent");
-        var selectedOption = fieldObject.options[fieldObject.selectedIndex];
-        var selectedValue = selectedOption.text;
-        $(titleID).innerHTML = selectedValue; 
+
+        var fieldAgentName = $("aeReport.treatmentInformation.courseAgents[${index}].studyAgent");
+        var selectedAgentOption = fieldAgentName.options[fieldAgentName.selectedIndex];
+        var selectedAgentValue = selectedAgentOption.text;
+
+        var fieldAgentDoseAmount = $("aeReport.treatmentInformation.courseAgents[${index}].dose.amount");
+        var fieldAgentDoseAmountValue = fieldAgentDoseAmount.value;
+
+        var fieldAgentDoseUnit = $("aeReport.treatmentInformation.courseAgents[${index}].dose.units");
+        var fieldAgentDoseUnitValue = fieldAgentDoseUnit.options[fieldAgentDoseUnit.selectedIndex].value;
+
+        $(titleID).innerHTML = "Agent: " + selectedAgentValue + " (" + fieldAgentDoseAmountValue + ", " + fieldAgentDoseUnitValue + ")";
     }
 
     setTitleCourse_${index}.defer();
     Event.observe($("aeReport.treatmentInformation.courseAgents[${index}].studyAgent"), "change", function() {
+         setTitleCourse_${index}();
+    });
+    Event.observe($("aeReport.treatmentInformation.courseAgents[${index}].dose.amount"), "change", function() {
+         setTitleCourse_${index}();
+    });
+    Event.observe($("aeReport.treatmentInformation.courseAgents[${index}].dose.units"), "change", function() {
          setTitleCourse_${index}();
     });
 </script>

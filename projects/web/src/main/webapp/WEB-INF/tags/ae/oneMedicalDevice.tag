@@ -119,13 +119,21 @@
 <script>
     function setTitleDevice_${index}() {
         var titleID = "titleOf_medicalDevice-" + ${index};
-        var fieldObject = $("aeReport.medicalDevices[${index}].brandName");
-        var selectedValue = fieldObject.value;
-        $(titleID).innerHTML = selectedValue;
+        var fieldBrandName = $("aeReport.medicalDevices[${index}].brandName");
+        var brandNameValue = fieldBrandName.value;
+
+        var fieldCommonName = $("aeReport.medicalDevices[${index}].commonName");
+        var commonNameValue = fieldCommonName.value;
+
+        $(titleID).innerHTML = "Device: " + commonNameValue + " (" + brandNameValue + ")";
     }
 
     setTitleDevice_${index}.defer();
     Event.observe($("aeReport.medicalDevices[${index}].brandName"), "change", function() {
+        setTitleDevice_${index}();
+    });
+
+    Event.observe($("aeReport.medicalDevices[${index}].commonName"), "change", function() {
         setTitleDevice_${index}();
     });
 </script>

@@ -56,14 +56,26 @@
 <script>
     function setTitleRadiation_${index}() {
         var titleID = "titleOf_radiationIntervention-" + ${index};
-        var fieldObject = $("aeReport.radiationInterventions[${index}].administration");
-        var selectedOption = fieldObject.options[fieldObject.selectedIndex];
-        var selectedValue = selectedOption.text;
-        $(titleID).innerHTML = selectedValue;
+        var fieldRadiationType = $("aeReport.radiationInterventions[${index}].administration");
+        var radiationTypeValue = fieldRadiationType.options[fieldRadiationType.selectedIndex].text;
+
+        var radiationDosage = $("aeReport.radiationInterventions[${index}].dosage");
+        var radiationDosageValue = radiationDosage.value;
+
+        var radiationDosageUnit = $("aeReport.radiationInterventions[${index}].dosageUnit");
+        var radiationDosageUnitValue = radiationDosageUnit.options[radiationDosageUnit.selectedIndex].value;
+
+        $(titleID).innerHTML = "Radiation: " + radiationTypeValue + " (" + radiationDosageValue + ", " + radiationDosageUnitValue + ")";
     }
 
     setTitleRadiation_${index}.defer();
     Event.observe($("aeReport.radiationInterventions[${index}].administration"), "change", function() {
+        setTitleRadiation_${index}();
+    });
+    Event.observe($("aeReport.radiationInterventions[${index}].dosage"), "change", function() {
+        setTitleRadiation_${index}();
+    });
+    Event.observe($("aeReport.radiationInterventions[${index}].dosageUnit"), "change", function() {
         setTitleRadiation_${index}();
     });
 </script>
