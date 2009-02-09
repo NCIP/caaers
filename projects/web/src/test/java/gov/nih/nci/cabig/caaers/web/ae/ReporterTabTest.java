@@ -50,8 +50,7 @@ public class ReporterTabTest extends AeTabTestCase {
      
         super.setUp();
         ae0 = command.getAeReport().getAdverseEvents().get(0);
-        assertEquals("Test setup failure -- only expected 1 AE initially", 1, command.getAeReport()
-                        .getAdverseEvents().size());
+        assertEquals("Test setup failure -- only expected 1 AE initially", 1, command.getAeReport().getAdverseEvents().size());
     }
 
     @Override

@@ -13,19 +13,6 @@
 <ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}" enableDelete="true" deleteParams="'agent', ${index}, '_agents'" collapsed="${collapsed}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
     
-<%--
-    <ui:row path="aeReport.treatmentInformation.courseAgents[${index}].studyAgent">
-         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[0].propertyName}" text="${fieldGroup.fields[0].displayName}" required="false"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:select path="${fieldGroup.fields[0].propertyName}" options="${fieldGroup.fields[0].attributes.options}"/></jsp:attribute>
-    </ui:row>
-
-    <ui:row path="aeReport.treatmentInformation.courseAgents[${index}].dose.amount">
-         <jsp:attribute name="label"><ui:label path="${fieldGroup.fields[1].propertyName}" text="${fieldGroup.fields[1].displayName}" required="true"/></jsp:attribute>
-         <jsp:attribute name="value"><ui:text path="${fieldGroup.fields[1].propertyName}"/></jsp:attribute>
-    </ui:row>
---%>
-    <caaers:value path="${fieldGroup.fields[0].propertyName}.agent.name" />
-
  <tags:renderRow field="${fieldGroup.fields[0]}"/>
  <tags:renderRow field="${fieldGroup.fields[1]}"/>
  <tags:renderRow field="${fieldGroup.fields[2]}"/>

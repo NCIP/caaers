@@ -4,6 +4,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.DelayUnits;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
@@ -167,6 +168,9 @@ public class InterventionsTabTest extends AeTabTestCase {
         mvc = t.addSurgery(request, command, errors);
 
         assertEquals(2, ((List)mvc.getModel().get("surgeries")).size());
+
+        ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
+        t.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
         
         request.addParameter("index", "1");
         mvc = t.removeSurgery(request, command, errors);
@@ -215,6 +219,9 @@ public class InterventionsTabTest extends AeTabTestCase {
 
         assertEquals(2, ((List)mvc.getModel().get("radiations")).size());
 
+        ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
+        t.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
+        
         request.addParameter("index", "1");
         mvc = t.removeRadiation(request, command, errors);
 
@@ -261,6 +268,9 @@ public class InterventionsTabTest extends AeTabTestCase {
 
         assertEquals(2, ((List)mvc.getModel().get("devices")).size());
 
+        ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
+        t.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
+        
         request.addParameter("index", "1");
         mvc = t.removeDevice(request, command, errors);
 
@@ -307,6 +317,9 @@ public class InterventionsTabTest extends AeTabTestCase {
 
         assertEquals(2, ((List)mvc.getModel().get("agents")).size());
 
+        ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao = registerMockFor(ExpeditedAdverseEventReportDao.class);
+        t.setExpeditedAdverseEventReportDao(expeditedAdverseEventReportDao);
+        
         request.addParameter("index", "1");
         mvc = t.removeAgent(request, command, errors);
 
