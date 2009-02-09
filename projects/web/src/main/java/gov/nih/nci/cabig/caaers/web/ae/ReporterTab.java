@@ -291,7 +291,7 @@ public class ReporterTab extends AeTab {
         	newlyCreatedReports = evaluationService.addOptionalReports(command.getAeReport(), newReportDefs, false);
         	command.save();
         	//call workflow
-        	enactWorkflow(command.getAeReport());
+        	if(command.getWorkflowEnabled())   	enactWorkflow(command.getAeReport());
         }
         //figureout the mandatory sections
         refreshMandatorySectionsAndProperties(command);

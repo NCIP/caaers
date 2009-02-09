@@ -75,6 +75,8 @@ public class CreateStudyController extends StudyController<StudyCommand> {
         study.addEpoch(new Epoch(Epoch.NAME_TREATMENT, 1));
         study.addEpoch(new Epoch(Epoch.NAME_POSTTREATMENT, 2));
         
+        cmd.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+        
         return cmd;
     }
 

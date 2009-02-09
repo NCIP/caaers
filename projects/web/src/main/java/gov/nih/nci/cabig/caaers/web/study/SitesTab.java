@@ -1,7 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
+import gov.nih.nci.cabig.caaers.dao.workflow.WorkflowConfigDao;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
+import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
@@ -10,6 +12,7 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +28,8 @@ import org.springframework.validation.Errors;
 class SitesTab extends StudyTab {
 
     private RepeatingFieldGroupFactory rfgFactory;
-
+    private WorkflowConfigDao workflowConfigDao;
+    
     public SitesTab() {
         super("Sites", "Sites", "study/study_sites");
     }
@@ -47,6 +51,19 @@ class SitesTab extends StudyTab {
             }
 
             if (!errors.hasErrors()) command.getStudy().getStudySites().remove(index);
+        }else{
+        	Object isAjax = request.getAttribute("_isAjax");
+        	
+        	if(isAjax == null && command.isWorkflowEnabled()){
+        		for(StudySite site : command.getStudy().getStudySites()){
+            		Map<String, WorkflowConfig> configMap = site.getWorkflowConfigs();
+            		if(!configMap.isEmpty()) continue;
+            		
+            		configMap.put("reportingPeriod", workflowConfigDao.getByWorkflowDefinitionName("reportingperiod_coordinating_center"));
+            		configMap.put("report", workflowConfigDao.getByWorkflowDefinitionName("expedited_domestic"));
+            		
+            	}
+        	}
         }
     }
 
@@ -77,5 +94,9 @@ class SitesTab extends StudyTab {
             }
         }
     }
+    
+    public void setWorkflowConfigDao(WorkflowConfigDao workflowConfigDao) {
+		this.workflowConfigDao = workflowConfigDao;
+	}
 
 }

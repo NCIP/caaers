@@ -57,6 +57,8 @@ public class EditStudyController extends StudyController<StudyCommand> {
 
         StudyCommand cmd = new StudyCommand();
         cmd.setStudy(study);
+        
+        cmd.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
         return cmd;
     }
 
@@ -113,7 +115,7 @@ public class EditStudyController extends StudyController<StudyCommand> {
         flow.addTab(new InvestigatorsTab());
         flow.addTab(new PersonnelTab());
         flow.addTab(new IdentifiersTab());
-
+      
     }
 
     @Override

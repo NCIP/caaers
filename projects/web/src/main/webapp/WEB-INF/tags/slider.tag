@@ -9,10 +9,8 @@
 <%@attribute name="display" type="java.lang.String" required="true" %>
 
 <script language="JavaScript1.2">
-	//document.observe('dom:loaded',function(){
 	Event.observe(window, "load", function(){		
-	//example 1
-	new Control.Tabs('slider-tabs');
+		new Control.Tabs('slider-tabs');
 	
 	});	
 	

@@ -86,6 +86,8 @@ public class StudyCommand {
     private Design design;
 
     private List<Epoch> epochs=new ArrayList<Epoch>();
+    
+    private boolean workflowEnabled;
 
     public StudyCommand() {
     }
@@ -233,6 +235,11 @@ public class StudyCommand {
     public void setCondition(final String condition) {
         this.condition = condition;
     }
-
+    public boolean isWorkflowEnabled() {
+		return workflowEnabled;
+	}
+    public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
+	}
 
 }

@@ -279,6 +279,7 @@ a#maximize:active {
 #scrollbar_container {
 	position:relative;
 	width:500px;
+	
 }
 
 #scrollbar_track {
@@ -302,7 +303,7 @@ a#maximize:active {
 }
 
 #scrollbar_content {
-	overflow:hidden;
+	overflow:auto;
 	width:485px;
 	height: 180px;
 }

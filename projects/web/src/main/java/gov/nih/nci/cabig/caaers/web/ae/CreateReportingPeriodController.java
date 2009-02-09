@@ -192,7 +192,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         adverseEventReportingPeriodDao.save(reportingPeriod);
         
         //call workflow, to enact
-        adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
+        if(command.isWorkflowEnabled())  adverseEventRoutingAndReviewRepository.enactReportingPeriodWorkflow(reportingPeriod);
         
         Map map = new LinkedHashMap();
         map.putAll(createFieldGroups(command));

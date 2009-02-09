@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.StudyTherapy;
 import gov.nih.nci.cabig.caaers.domain.StudyTherapyType;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.Design;
+import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.AutomaticSaveAjaxableFormController;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.ControllerTools;
@@ -55,6 +56,8 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     private ConditionDao conditionDao;
 
     private LowLevelTermDao lowLevelTermDao;
+    
+    private Configuration configuration;
 
     // validator needs to be called in onBindAndValidate()
     protected WebControllerValidator webControllerValidator;
@@ -258,4 +261,12 @@ public abstract class StudyController<C extends StudyCommand> extends AutomaticS
     public void setConditionDao(ConditionDao conditionDao) {
         this.conditionDao = conditionDao;
     }
+    
+    @Required
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 }

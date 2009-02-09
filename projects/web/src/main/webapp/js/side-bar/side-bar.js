@@ -16,7 +16,7 @@ function slideSideBar(){
 
 function init() {
     if ($('sideBarTab')) {
-        Event.observe('sideBarTab', 'click', slideSideBar, true);
+        Event.observe('sideBarTab', 'click', slideSideBar);
     }
 }
 

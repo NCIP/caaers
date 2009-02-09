@@ -325,6 +325,6 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     }
     
     public boolean isAssociatedToWorkflow(){
-    	return getAeReport().getWorkflowId() != null;
+    	return getWorkflowEnabled() && getAeReport().getWorkflowId() != null;
     }
 }
