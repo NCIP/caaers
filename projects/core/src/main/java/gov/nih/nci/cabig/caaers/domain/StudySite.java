@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.workflow.WorkflowConfig;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -113,7 +114,9 @@ public class StudySite extends StudyOrganization {
     		joinColumns = @JoinColumn(name = "site_id"), inverseJoinColumns = @JoinColumn(name="wf_config_id"))
     @MapKey(columns = @Column(name = "wf_entity"))
     @Column(name = "wf_config_id")
+    @Cascade(value={CascadeType.MERGE, CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.DELETE_ORPHAN})
     public Map<String, WorkflowConfig> getWorkflowConfigs() {
+    	if(workflowConfigs == null) workflowConfigs = new HashMap<String, WorkflowConfig>();
 		return workflowConfigs;
 	}
     public void setWorkflowConfigs(Map<String, WorkflowConfig> workflowConfigs) {

@@ -1,0 +1,239 @@
+<dataset>
+ 	<ORGANIZATIONS
+        id="-1000"
+        name="New Site"
+        grid_id="gridSite"/>
+
+	<ind_holders />
+	
+<!--  =============== CSM Data and User data ===================== -->
+	<!--  System Admin -->
+	<CSM_USER USER_ID="-1" LOGIN_NAME="SYSTEM_ADMIN"
+		FIRST_NAME="SYSTEM_ADMIN" LAST_NAME="SYSTEM_ADMIN"
+		PASSWORD="yDq1c1nU4E7almNpMZNexg==" 
+		EMAIL_ID="system_admin@caaers.org" 
+		UPDATE_DATE="2007-01-27" />
+	
+	<CSM_USER_GROUP USER_GROUP_ID="-1" USER_ID="-1" GROUP_ID="-1" />
+	<CSM_USER_GROUP USER_GROUP_ID="-2" USER_ID="-1" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-3" USER_ID="-1" GROUP_ID="-3" />
+	<CSM_USER_GROUP USER_GROUP_ID="-4" USER_ID="-1" GROUP_ID="-4" />
+	<CSM_USER_GROUP USER_GROUP_ID="-5" USER_ID="-1" GROUP_ID="-5" />
+	
+	<CSM_USER_PE USER_PROTECTION_ELEMENT_ID="-1"
+		PROTECTION_ELEMENT_ID="-1" USER_ID="-1" UPDATE_DATE="2007-01-27" />
+		
+	<!--  Participant Coordinator   -->	
+	<CSM_USER USER_ID="-4" LOGIN_NAME="pc@def.com"
+		FIRST_NAME="Site CRA" LAST_NAME="Coordinator1"
+		PASSWORD="OI/ZpclGdfXCOfcyX1L/EA==" 
+		EMAIL_ID="pc@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	
+	<RESEARCH_STAFFS
+        id="-900"
+        version="1"
+        first_name="Reporter"
+        last_name="Coordinator1"
+        email_address="pc@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id pc"
+        site_id="-1000"
+        login_id="pc@def.com"/>
+        
+    <!--  associated to caaers_user, caaers_participant_cd -->  
+    <CSM_USER_GROUP USER_GROUP_ID="-9" USER_ID="-4" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-10" USER_ID="-4" GROUP_ID="-5" /> 
+	
+	<!--  Data Coordinator or SAE Coordinator -->
+	<CSM_USER USER_ID="-2" LOGIN_NAME="aec@def.com"
+		FIRST_NAME="SAE Coordinator" LAST_NAME="Coordinator1"
+		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
+		EMAIL_ID="aec@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	<RESEARCH_STAFFS
+        id="-901"
+        version="1"
+        first_name="SAE Coordinator"
+        last_name="Coordinator1"
+        email_address="aec@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id aec"
+        site_id="-1000"
+        login_id="aec@def.com"/>
+        
+ 	<CSM_USER_GROUP USER_GROUP_ID="-6" USER_ID="-2" GROUP_ID="-2" />
+	<CSM_USER_GROUP USER_GROUP_ID="-7" USER_ID="-2" GROUP_ID="-13" />
+	
+	<!-- Physician -->
+    <CSM_USER USER_ID="-3" LOGIN_NAME="physician@def.com"
+		FIRST_NAME="Physician" LAST_NAME="Site Inv"
+		PASSWORD="wWQipoB72NCthtxFP2ZrIA==" 
+		EMAIL_ID="physician@def.com" 
+		UPDATE_DATE="2007-01-27" />
+	<INVESTIGATORS
+        id="-902"
+        first_name="Physician"
+        last_name="Site Inv"
+		nci_identifier="222"
+        email_address="physician@def.com"
+        phone_number="123-456-789"
+        login_id="physician@def.com"
+       />
+       <SITE_INVESTIGATORS
+            id="-4004"
+            status_code="ACT"
+            site_id="-1000"
+            investigator_id="-902"/>
+      <CSM_USER_GROUP USER_GROUP_ID="-16" USER_ID="-2" GROUP_ID="-2" />
+	  <CSM_USER_GROUP USER_GROUP_ID="-17" USER_ID="-2" GROUP_ID="-8" />      	    	   	
+<!-- =========================================== -->
+
+
+    <RESEARCH_STAFFS
+        id="-1000"
+        version="1"
+        first_name="Bill"
+        last_name="Gates"
+        email_address="abc@def.com"
+        phone_number="123-456-789"
+        nci_identifier="nci id"
+        site_id="-1000"
+        login_id="abc@def.com"/>
+        
+     <RESEARCH_STAFFS
+        id="-1001"
+        version="1"
+        first_name="George"
+        last_name="Bush"
+        email_address="bush@def.com"
+        phone_number="123-456-788"
+        nci_identifier="nci id1"
+        site_id="-1000"
+        login_id="bush@def.com"/>
+        
+      <RESEARCH_STAFFS
+        id="-1002"
+        version="1"
+        first_name="Datacoordinator"
+        last_name="RP"
+        email_address="datacoordinator@abc.com"
+        phone_number="123-456-788"
+        nci_identifier="nci id2"
+        site_id="-1000"
+        login_id="datacoordinator@abc.com"/>
+     
+        
+	<workflow_configuration id="-11" workflow_definition_name="expedited_domestic"	default_assignee="SYSTEM_ADMIN"	enabled="1" />
+	 
+	 <task_configuration id="-1" 
+	 	status_name="DRAFTINCOMPLETE" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Start Expedited Domestic Flow" 
+	 	applicable="1"  message="abcd"/>
+	 	
+	 <wf_transition_configs id="-1" 
+	 	transition_name="start" 
+	 	task_config_id="-1" />
+	
+	<task_configuration id="-2" 
+	 	status_name="DRAFTINCOMPLETE" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Submit Report To Physician" 
+	 	applicable="1"  message="abcd"/>
+	 	
+	 <wf_transition_configs id="-2" 
+	 	transition_name="Submit For Physician Review" 
+	 	task_config_id="-2" />
+		 	
+	<task_configuration id="-3" 
+	 	status_name="PHYSICIAN_REVIEW" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Physician Review" 
+	 	applicable="1"  message="abcd"/>
+
+	 	
+	 <wf_transition_configs id="-3" 
+	 	transition_name="Approve Report" 
+	 	task_config_id="-3" />
+
+	 	
+	 <wf_transition_configs id="-4" 
+	 	transition_name="Request Additional Information" 
+	 	task_config_id="-3" />
+	
+	 	
+	<task_configuration id="-4" 
+	 	status_name="PHYSICIAN_APPROVED" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Submit Report To Central Office" 
+	 	applicable="1"  message="abcd"/>
+
+	 <wf_transition_configs id="-5" 
+	 	transition_name="Submit to Central Office SAE Coordinator" 
+	 	task_config_id="-4" />
+	 	
+	<task_configuration id="-5" 
+	 	status_name="PHYSICIAN_ADDITIONAL_INFO" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Provide Additional Information To Physician" 
+	 	applicable="1"  message="abcd"/>
+	
+	 <wf_transition_configs id="-6" 
+	 	transition_name="Submit For Physician Review" 
+	 	task_config_id="-5" />
+	 	
+	<task_configuration id="-6" 
+	 	status_name="CENTRAL_OFFICE_REVIEW" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Central Office SAE Coordinator Review" 
+	 	applicable="1"  message="abcd"/>
+	
+	 <wf_transition_configs id="-7" 
+	 	transition_name="Approve Report" 
+	 	task_config_id="-6" />
+	 	
+	 <wf_transition_configs id="-8" 
+	 	transition_name="Request Additional Information" 
+	 	task_config_id="-6" />	 	
+
+	 	
+	<task_configuration id="-7" 
+	 	status_name="CENTRAL_OFFICE_ADDITIONAL_INFO" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Provide Additional Information To Central Office" 
+	 	applicable="1"  message="abcd"/>
+
+	 	
+	 <wf_transition_configs id="-9" 
+	 	transition_name="Submit to Central Office SAE Coordinator" 
+	 	task_config_id="-7" />	 	
+	 	
+	 <wf_transition_configs id="-10" 
+	 	transition_name="Submit for Physician Review" 
+	 	task_config_id="-7" />	 	
+
+	 	
+	<task_configuration id="-8" 
+	 	status_name="SUBMIT_TO_SPONSOR" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="Submit Report To Sponsor" 
+	 	applicable="1"  message="abcd"/>
+	
+	<wf_transition_configs id="-11" 
+	 	transition_name="Submit Report to Sponsor" 
+	 	task_config_id="-8" />	 	
+	 	
+	<task_configuration id="-9" 
+	 	status_name="SUBMITTED_TO_SPONSOR" 
+	 	workflow_config_id="-11" location="1" 
+	 	task_name="End Expedited Domestic Flow" 
+	 	applicable="1"  message="abcd"/>
+
+	 <jbpm_moduleinstance />
+	 <jbpm_taskinstance />
+	 <jbpm_pooledactor />
+	 <jbpm_taskactorpool />
+	 <jbpm_log />
+	 
+</dataset>

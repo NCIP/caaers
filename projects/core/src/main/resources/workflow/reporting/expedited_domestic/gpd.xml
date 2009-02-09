@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<root-container name="expedited_domestic" width="949" height="781">
+<root-container name="expedited_domestic" width="843" height="781">
   <node name="Start Expedited Domestic Flow" x="478" y="29" width="268" height="36">
     <edge>
       <label x="5" y="-10"/>
@@ -33,11 +33,11 @@
   </node>
   <node name="Central Office SAE Coordinator Review" x="475" y="545" width="290" height="36">
     <edge>
-      <label x="-66" y="-21"/>
-      <bendpoint w1="-196" h1="-49" w2="201" h2="-45"/>
+      <label x="5" y="-10"/>
     </edge>
     <edge>
-      <label x="5" y="-10"/>
+      <label x="-61" y="-10"/>
+      <bendpoint w1="-219" h1="-57" w2="178" h2="-53"/>
     </edge>
   </node>
   <node name="Provide Additional Information To Central Office" x="53" y="541" width="340" height="36">

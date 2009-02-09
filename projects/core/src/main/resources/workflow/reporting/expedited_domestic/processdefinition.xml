@@ -136,9 +136,10 @@
 					jbpmConfiguration
 				</factoryKey>
 			</action>
-		</event>		
+		</event>	
+		<transition to="Submit Report To Sponsor" name="Approve Report"></transition>	
 		<transition to="Provide Additional Information To Central Office" name="Request Additional Information"></transition>
-		<transition to="Submit Report To Sponsor" name="Approve Report"></transition>
+		
 	</node>
 
 	<node name="Provide Additional Information To Central Office">
