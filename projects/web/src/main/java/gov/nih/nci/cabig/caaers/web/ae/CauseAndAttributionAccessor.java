@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
@@ -227,8 +228,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         }
     }
 
-    private static class SurgeryAccessor extends
-                    CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> {
+    private static class SurgeryAccessor extends CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.SURGERY_ATTRIBUTION_KEY;
@@ -259,7 +259,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(SurgeryIntervention surgery) {
-            return surgery.getDescription();
+            return (surgery.getInterventionSite().getName() + " (" + DateUtils.formatDate(surgery.getInterventionDate()) + ")");
         }
     }
 
@@ -294,7 +294,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(RadiationIntervention radiation) {
-            return radiation.getDescription();
+            return (radiation.getAdministration() != null ? radiation.getAdministration().getDisplayName() : "") + " (" + radiation.getDosage() + ", " + radiation.getDosageUnit() + ")";
         }
     }
 

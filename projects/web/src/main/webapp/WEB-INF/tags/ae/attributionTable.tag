@@ -43,30 +43,35 @@
         </c:forEach>
     </tr>
     <c:forEach items="${blocks}" var="block">
-        <c:set var="display" value="${  (block.displayName eq 'Course' && hasAgent) ||
+        <c:set var="display" value="${  (block.displayName eq 'Agent' && hasAgent) ||
+                        (block.displayName eq 'Agents' && hasAgent) ||
                         (block.displayName eq 'Surgery intervention' && hasSurgery) ||
+                        (block.displayName eq 'Surgery interventions' && hasSurgery) ||
                         (block.displayName eq 'Radiation intervention' && hasRadiation) ||
-                        (block.displayName eq 'Medical device' && hasDevice) }" />
+                        (block.displayName eq 'Radiation interventions' && hasRadiation) ||
+                        (block.displayName eq 'Medical device' && hasDevice) ||
+                        (block.displayName eq 'Medical devices' && hasDevice) }" />
 
         <c:if test="${block.displayName eq 'Disease' || block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medication' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
             <c:set var="display" value="true" />
         </c:if>
         
-        <c:if test="${display}">
-            <tr class="subhead">
-                <th colspan="${cols}">${block.displayName}</th>
-            </tr>
-            <c:if test="${empty block.rows}">
-                <td colspan="${cols}">No ${fn:toLowerCase(block.displayName)} for this report.</td>
-            </c:if>
-            <c:forEach items="${block.rows}" var="row">
-                <tr class="fields">
-                    <th>${row.displayName}</th>
-                    <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
-                        <td><tags:renderInputs field="${row.fields[i]}"/></td>
+        <c:if test="${not empty block.rows}">
+                <c:if test="${display}">
+                    <tr class="subhead">
+                        <th colspan="${cols}">${block.displayName}</th>
+                    </tr>
+
+                    <c:forEach items="${block.rows}" var="row">
+                        <tr class="fields">
+                            <th>${row.displayName}</th>
+                            <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
+                                <td><tags:renderInputs field="${row.fields[i]}"/></td>
+                            </c:forEach>
+                        </tr>
                     </c:forEach>
-                </tr>
-            </c:forEach>
+                </c:if>
         </c:if>
+
     </c:forEach>
 </table>
