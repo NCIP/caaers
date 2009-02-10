@@ -13,7 +13,7 @@ Note: -
 	<ae:reportingPeriodDetails />
 </chrome:division>
 
-<chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
+<chrome:division title="Adverse Events" collapsable="true" id="observedID">
 <p><tags:instructions code="instruction_ae_oae"/></p>
                <tags:aeTermQuery
                        isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
@@ -58,8 +58,8 @@ Note: -
                </table>
 
     </chrome:division>
-
-<chrome:division title="Solicited Adverse Event(s)" collapsable="true" id="solicitatedID">
+<c:if test="${command.havingSolicitedAEs}">
+<chrome:division title="Solicited Adverse Events" collapsable="true" id="solicitatedID">
 <p><tags:instructions code="instruction_ae_sae"/></p>
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
@@ -87,7 +87,7 @@ Note: -
    			</table>
    	</center>
  </chrome:division>
-
+</c:if>
 <div id="display_amend_popup" style="display:none;text-align:left" >
     	<chrome:box title="Amendments Required" id="popupId">
     		<c:if test="${not empty command.participant}">
