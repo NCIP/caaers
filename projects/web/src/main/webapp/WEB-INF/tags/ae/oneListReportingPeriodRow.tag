@@ -5,7 +5,7 @@
 
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
-<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The evaluation period that is being rendered" %>
+<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The course that is being rendered" %>
 
 <c:set var="currClass" value="${(index %2) eq 0 ? 'odd' : 'even'}" />
 <c:set var="reportingPeriodPageURL" 
