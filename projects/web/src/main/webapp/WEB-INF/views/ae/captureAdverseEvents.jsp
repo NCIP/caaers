@@ -156,8 +156,9 @@
                 AE.registerCalendarPopups("detailSection");
                 
                //fetch the comments and next actions
+               if(${command.workflowEnabled}){
                 routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
-                
+               }
             }.bind(this));
             
         },
