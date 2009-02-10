@@ -31,6 +31,7 @@
 
 <script language="JavaScript">
 var divisions = new Hash();
+var routingHelper = new RoutingAndReviewHelper(createAE);
 
 function refreshBoxes() {
     registerAll();
@@ -64,6 +65,12 @@ function closeAll() {
     divisions = new Hash(); 
 
     function setupPage(){
+        //only show the workflow tab, if it is associated to workflow
+        var associatedToWorkflow = ${command.associatedToWorkflow};
+        if(associatedToWorkflow){
+               routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
+        }
+        
         interventionInstance = new InterventionClass();
 
         if ($('btn-add-surgery'))
