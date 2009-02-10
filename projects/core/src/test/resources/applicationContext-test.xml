@@ -25,7 +25,7 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName">
-            <value>org.postgresql.Driver</value>
+            <value>s[datasource.driver]</value>
         </property>
         <property name="url">
             <value>s[datasource.url]</value>
