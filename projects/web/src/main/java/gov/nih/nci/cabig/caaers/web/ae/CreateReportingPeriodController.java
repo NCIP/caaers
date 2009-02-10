@@ -130,8 +130,8 @@ public class CreateReportingPeriodController extends SimpleFormController {
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true));
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course", true));
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Period Type", true, createEpochOptions(command)));
-        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course number", false);
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/Cycle number", false);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
         
@@ -231,7 +231,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
             for (AdverseEventReportingPeriod aerp : rPeriodList) {
                 if (!aerp.getId().equals(rPeriod.getId()) && aerp.getEpoch().getName().equals("Baseline")) {
                     InputField epochField = groups.get(REPORTINGPERIOD_FIELD_GROUP).getFields().get(3);
-                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline Evaluation Period already exists");
+                    errors.rejectValue(epochField.getPropertyName(), "REQUIRED", "A Baseline treatment type already exists");
                     return;
                 }
             }
@@ -246,7 +246,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         // This is allowed only for Baseline reportingPeriods and not for other reporting periods.
         if (!rPeriod.getEpoch().getName().equals("Baseline")) {
             if (startDate.equals(endDate)) {
-                errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "For Non-Baseline Evaluation Period Start date cannot be equal to End date");
+                errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "For Non-Baseline treatment type Start date cannot be equal to End date");
             }
 
         }
@@ -261,7 +261,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                         ((sDate.getTime() - endDate.getTime() < 0) && (endDate.getTime() - eDate.getTime() < 0)) ||
                         ((startDate.getTime() - sDate.getTime() < 0) && (eDate.getTime() - endDate.getTime() < 0)) ||
                         (sDate.compareTo(startDate) == 0 && eDate.compareTo(endDate) == 0)) {
-                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Evaluation Period cannot overlap with an existing Evaluation Period.");
+                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Course cannot overlap with an existing course.");
                     break;
                 }
             }
@@ -275,14 +275,14 @@ public class CreateReportingPeriodController extends SimpleFormController {
             if (rPeriod.getEpoch().getName().equals("Baseline")) {
                 if (!aerp.getEpoch().getName().equals("Baseline")) {
                     if (sDate.getTime() - startDate.getTime() < 0) {
-                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Baseline Evaluation Period cannot start after an existing Non-Baseline Evaluation Period.");
+                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Baseline treatment type cannot start after an existing Non-Baseline treatment type.");
                         return;
                     }
                 }
             } else {
                 if (aerp.getEpoch().getName().equals("Baseline")) {
                     if (startDate.getTime() - sDate.getTime() < 0) {
-                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Non-Baseline Evaluation Period cannot start before an existing Baseline Evaluation Period.");
+                        errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Non-Baseline treatment type cannot start before an existing Baseline treatment type.");
                         return;
                     }
                 }
