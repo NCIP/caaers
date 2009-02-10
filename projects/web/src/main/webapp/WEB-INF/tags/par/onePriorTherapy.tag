@@ -69,7 +69,7 @@
                 <td width="20%"><a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a></td>
             </tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="3">
 					<a name="anchorPriorTherapies[${index}].priorTherapyAgents" />
 					<div id="anchorPriorTherapies[${index}].priorTherapyAgents">
 						<c:set var="size" value="${fn:length(priorTherapy.priorTherapyAgents)}" />
