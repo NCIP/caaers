@@ -653,4 +653,12 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     	if(getAdverseEventReportingPeriod() == null) return false;
     	return getAdverseEventReportingPeriod().getWorkflowId() != null;
     }
+    
+    public boolean isHavingSolicitedAEs(){
+    	if(adverseEventReportingPeriod == null) return false;
+    	if(adverseEventReportingPeriod.getAdverseEvents() == null) return false;
+    	for(AdverseEvent ae : adverseEventReportingPeriod.getAdverseEvents())
+    		if(ae.getSolicited()) return true;
+    	return false;
+    }
 }
