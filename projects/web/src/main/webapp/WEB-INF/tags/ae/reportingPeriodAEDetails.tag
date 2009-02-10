@@ -9,7 +9,7 @@ Note: -
    This should work on the orginal adverse event list, and not on the decorated list in command
 --%>
 <c:if test='${not empty command.adverseEventReportingPeriod}'>
-<chrome:division id="rpd-div" title="Evaluation Period Details">
+<chrome:division id="rpd-div" title="Course Details">
 	<ae:reportingPeriodDetails />
 </chrome:division>
 
@@ -101,7 +101,7 @@ Note: -
           				<div class="summaryvalue">${command.study.longTitle}</div>
         			</div>
         			<div class="row">
-          				<div class="summarylabel">Evaluation period</div>
+          				<div class="summarylabel">Course</div>
           				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
         			</div>
       			</div>
