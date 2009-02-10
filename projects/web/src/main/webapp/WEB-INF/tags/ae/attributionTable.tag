@@ -57,7 +57,7 @@
         </c:if>
         
         <c:if test="${not empty block.rows}">
-                <c:if test="${display}">
+                <c:if test="${true || display}">
                     <tr class="subhead">
                         <th colspan="${cols}">${block.displayName}</th>
                     </tr>
