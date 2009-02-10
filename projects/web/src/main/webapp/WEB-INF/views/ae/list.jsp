@@ -305,7 +305,7 @@ color:#0033FF;
     <thead>
       <tr align="center" class="label">
         <td width="2%" class="tableHeader"></td>
-        <td width="18%" class="tableHeader">Evaluation Period</td>
+        <td width="18%" class="tableHeader">Course</td>
         <td width="16%" class="centerTableHeader"># of Reports</td>
         <td width="16%" class="centerTableHeader"># of AEs</td>
         <td width="16%" class="tableHeader">Data Entry Status</td>
@@ -320,7 +320,7 @@ color:#0033FF;
     </c:if>
   </table>
   <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target1=1&displayReportingPeriod=true&adverseEventReportingPeriod=null"/>
-  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No evaluation periods have been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
+  <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No course have been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
 </div>
 </body>
 </html>
