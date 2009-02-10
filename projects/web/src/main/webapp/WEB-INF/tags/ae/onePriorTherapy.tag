@@ -45,7 +45,7 @@
 				 	<td colspan="2" align="left"><b color="#2E3257">Therapy agent(s)</b></td>
 				</tr>
 				<tr>
-					<td width="90%">
+					<td width="70%">
 						<ui:autocompleter path="priorTherapyAgents[${index}]" >
 							<jsp:attribute name="populatorJS">
 								function(autocompleter, text){
@@ -60,11 +60,14 @@
 	        					}
 							</jsp:attribute>
 						</ui:autocompleter>
-						&nbsp;
-						<a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a>
+						
 					</td>
+					
 					<td width="10%">
 						<input id="priortherapy[${index}].agent-btn" type="button" value="Add"/>
+					</td>
+					<td width="20%">
+						<a href="#anchorPriorTherapyAgents_${index}_" onClick="showShowAllTable('_c33', 'priorTherapyAgents__${index}_')" id="_c33">Show All</a>
 					</td>
 				</tr>
 				<tr>
