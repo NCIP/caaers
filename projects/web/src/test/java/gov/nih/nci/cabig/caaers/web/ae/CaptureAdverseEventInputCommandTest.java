@@ -1,11 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.easymock.classextension.EasyMock;
-
-import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -14,17 +8,18 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import junit.framework.TestCase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
  * @author biju
  *
  */
-public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestCase {
+public class CaptureAdverseEventInputCommandTest extends AbstractTestCase {
 	
 	CaptureAdverseEventInputCommand command;
 	
@@ -66,8 +61,29 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		}
 		reportingPeriod.setId(5);
 		reportingPeriod.setAdverseEvents(aes);
-		
 		command.setAdverseEventReportingPeriod(reportingPeriod);
+		command.setAdverseEventReportingPeriod(reportingPeriod);
+	}
+	
+	public void testIsHavingSolicitedAEs(){
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setSolicited(false);
+		reportingPeriod.addAdverseEvent(ae1);
+		command = new CaptureAdverseEventInputCommand();
+		assertFalse(command.isHavingSolicitedAEs());
+		
+	}
+	public void testIsHavingSolicitedAEsYesOneSolicited(){
+		AdverseEvent ae1 = new AdverseEvent();
+		ae1.setSolicited(false);
+		reportingPeriod.addAdverseEvent(ae1);
+		AdverseEvent ae2 = new AdverseEvent();
+		ae2.setSolicited(true);
+		reportingPeriod.addAdverseEvent(ae2);
+		command = new CaptureAdverseEventInputCommand();
+		command.setAdverseEventReportingPeriod(reportingPeriod);
+		assertTrue(command.isHavingSolicitedAEs());
+		
 	}
 	
 	@Override
