@@ -134,8 +134,8 @@ color:#0033FF;
    	  		<thead>
       			<tr align="center" class="label">
        		 		<td width="2%" class="tableHeader"></td>
-        			<td width="18%" class="tableHeader">Evaluation Period</td>
-        			<td width="22%" class="centerTableHeader">Evaluation Period Type</td>
+        			<td width="18%" class="tableHeader">Course</td>
+        			<td width="22%" class="centerTableHeader">Treatment Type</td>
         			<td width="25%" class="centerTableHeader">Review Status</td>
         			<td width="8%" class="tableHeader">Comments</td>
         			<td width="25%" class="centerTableHeader">Action</td>
