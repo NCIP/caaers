@@ -23,6 +23,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.axis.utils.StringUtils;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
@@ -295,12 +296,15 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     
     @Transient
     public String getName() {
-		if(name == null || name.equals("")){
-			name = formatter.format(startDate) + " - " + formatter.format(endDate);
-			name.concat(", " + getEpoch().getName());
-			if(cycleNumber != null)
-				name.concat(", " + getCycleNumber());
- 		}
+    	
+    	if(StringUtils.isEmpty(name)){
+    		StringBuffer sb = new StringBuffer();
+    		sb.append((startDate != null) ? "Start Date :" + formatter.format(startDate) + ";" : "")
+    		.append((getTreatmentAssignment() != null) ? "TAC :" + getTreatmentAssignment().getCode() + ";" : "")
+    		.append((getCycleNumber() != null)? "Cycle # :" + getCycleNumber() : "");
+    		name = sb.toString();
+    	}
+    	
 		
 		return name;
 	}
