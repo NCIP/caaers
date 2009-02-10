@@ -166,7 +166,7 @@ background-color:#e5e8ff;
 <body>
 <c:if test='${not empty command.adverseEventReportingPeriod and not empty rpdAllTable}'>
   <div class="row">
-    <div class="summarylabel">Evaluation Period</div>
+    <div class="summarylabel">Course</div>
     <div class="summaryvalue">
       <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}"/>
       -
@@ -384,7 +384,7 @@ background-color:#e5e8ff;
           <div class="summaryvalue">${command.study.longTitle}</div>
         </div>
         <div class="row">
-          <div class="summarylabel">Evaluation period</div>
+          <div class="summarylabel">Course</div>
           <div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
         </div>
       </div>
@@ -480,7 +480,7 @@ background-color:#e5e8ff;
         </c:when>
         <c:otherwise>
           <table width="100%" border="0" cellspacing="0" class="tableRegion">
-            No reports are available to edit or amend in this evaluation period.
+            No reports are available to edit or amend in this course.
           </table>
         </c:otherwise>
       </c:choose>
