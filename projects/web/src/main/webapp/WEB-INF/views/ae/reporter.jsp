@@ -120,7 +120,7 @@
     <jsp:attribute name="repeatingFields">
         <chrome:division title="Reporter Details">
             <div class="row">
-                <div class="label">Research staff</div>
+                <div class="label">Reporter</div>
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.user">
                         <option value="">please select--</option>
