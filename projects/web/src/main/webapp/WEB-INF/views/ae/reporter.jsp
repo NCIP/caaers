@@ -124,7 +124,7 @@
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.user">
                         <option value="">please select--</option>
-                        <optgroup label="Research Staffs">
+                        <optgroup label="Research staff">
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
                             <option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
                         </c:forEach>
