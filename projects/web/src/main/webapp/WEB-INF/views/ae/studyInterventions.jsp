@@ -5,6 +5,20 @@
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
+    <tags:stylesheetLink name="slider" />
+    <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}"
+        display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
+        <jsp:attribute name="comments">
+            <div id="comments-id" style="display:none;">
+                <tags:routingAndReviewComments />
+            </div>
+        </jsp:attribute>
+        <jsp:attribute name="labs">
+            <div id="labs-id" style="display:none;">
+                <tags:labs labs="${command.assignment.labLoads}"/>
+            </div>
+        </jsp:attribute>
+    </tags:slider>
 
     <style type="text/css">
         div.row div.label { width: 16em; }
@@ -15,7 +29,7 @@
 </head>
 <body>
 
-<script>
+<script language="JavaScript">
 var divisions = new Hash();
 
 function refreshBoxes() {
