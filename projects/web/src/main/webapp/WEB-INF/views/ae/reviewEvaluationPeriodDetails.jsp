@@ -67,7 +67,7 @@
 										<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />
 									</jsp:attribute>
 								</tags:renderRow>
-								<chrome:division id="rpd-div" title="Evaluation Period Details">
+								<chrome:division id="rpd-div" title="Course Details">
 									<div class="leftpanel">
 										<div class="row">
 											<div class="label">
@@ -97,7 +97,7 @@
 									</div>
 								</chrome:division>
 				
-								<chrome:division title="Observed Adverse Event(s)" collapsable="true" id="observedID">
+								<chrome:division title="Adverse Events" collapsable="true" id="observedID">
 									<table id="observedTable" width="100%" class="tablecontent">
        	    	        				<tr>
        	    	            				<th scope="col" align="center" width="20px" />
