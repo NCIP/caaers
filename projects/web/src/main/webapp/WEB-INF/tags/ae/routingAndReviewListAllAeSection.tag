@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The evaluation period that is being rendered" %>
+<%@attribute name="reportingPeriod" type="gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod" required="true" description="The course that is being rendered" %>
 <%@attribute name="isDCPStudy" type="java.lang.Boolean" required="true" description="True, if it is a DCP study" %>
 
 <c:if test="${fn:length(reportingPeriod.evaluatedAdverseEvents) gt 0}">
