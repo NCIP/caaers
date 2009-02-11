@@ -9,6 +9,15 @@
 
 
 
+	<target name="upload-rules" depends="resolve, resolve-test,compile-test">
+		<delete file="${test.lib.dir}/ant-1.6.5.jar"/>
+		<antcall target="test" inheritall="false">
+			<param name="test" value="CaaersRulesSeleniumTestCase"/>
+
+		</antcall>
+		</target>
+	
+	
 	<!--
 	<target name="copy-caaers-context">
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
@@ -127,7 +136,7 @@
 	<!-- ================================= 
           target: upload-rules              
          ================================= -->
-	<target name="upload-rules" description="upload rules" depends="resolve, resolve-test,compile-test">
+	<target name="upload-rules-old" description="upload rules" depends="resolve, resolve-test,compile-test">
 		<condition property="selenium.on" value="true">
 			<http url="http://${selenium.url}:${selenium.port}" errorsbeginat="500" />
 		</condition>

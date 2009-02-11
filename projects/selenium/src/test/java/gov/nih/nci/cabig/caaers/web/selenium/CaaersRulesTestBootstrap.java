@@ -28,7 +28,7 @@ public class CaaersRulesTestBootstrap extends Task {
 		try {
 			cstc.setUp();
 			cstc.waitForCaaersStartup();
-			cstc.uploadRules(rulesDir); 
+			cstc.uploadRules(); 
 			//cstc.uploadRules("C:/workspace/caaers-trunk/selenium/src/test/resources");
 			cstc.tearDown();
 		} catch (Exception e) {

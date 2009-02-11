@@ -1,17 +1,21 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Properties;
 
 import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.AntClassLoader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
-
+import org.springframework.core.io.*; 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	
 	String studyId = null;
@@ -27,8 +31,13 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
     private  ApplicationContext applicationContext = null;
 	
-    
-    protected ApplicationContext getDeployedApplicationContext() {
+    String seleniumServerURL = null;
+	String seleniumServerPort = null;
+	String seleniumBrowser = null;
+	String caaersURL = null;
+	String seleniumSpeed = null;
+	String seleniumRulesDir = null;
+    protected ApplicationContext getDeployedApplicationContext() throws IOException {
         if (acLoadFailure == null && applicationContext == null) {
             try {
                 SimpleNamingContextBuilder.emptyActivatedContextBuilder();
@@ -39,6 +48,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
             try {
                 log.debug("Initializing test version of deployed application context");
                 applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+                
+                /*Resource resources[] = applicationContext.getResources("*");
+                for(int i=0;i<resources.length;i++){
+                System.out.println("\n "+i+": "+resources[i].getDescription());
+                }
+                System.out.println("\n Printing classpath:\n"+getClasspathString());*/
             } catch (RuntimeException e) {
                 acLoadFailure = e;
                 throw e;
@@ -48,7 +63,26 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
         }
         return applicationContext;
     }
-    
+    public String getClasspathString() {
+        StringBuffer classpath = new StringBuffer();
+        ClassLoader applicationClassLoader = this.getClass().getClassLoader();
+
+        if (applicationClassLoader == null) {
+            applicationClassLoader = ClassLoader.getSystemClassLoader();
+        }
+         if(applicationClassLoader instanceof URLClassLoader)
+         {URL[] urls = ((URLClassLoader)applicationClassLoader).getURLs();
+         for(int i=0; i < urls.length; i++) {
+
+             classpath.append(urls[i].getFile()).append("\r\n");
+         }   
+         return classpath.toString();
+         }
+         else{ 
+        	 return ((AntClassLoader)applicationClassLoader).getClasspath(); 
+         }
+         
+     }
 	/**
 	 * The sub classes(testclasses) can override the config locations at
 	 * runtime.
@@ -57,8 +91,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	 */
 	public final String[] getConfigLocations() {
 		return new String[] {
-	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
-	            "classpath*:applicationContext-test.xml"
+	           "classpath*:gov/nih/nci/cabig/caaers/applicationContext-selenium.xml"
 	        };
 	}
  
@@ -67,12 +100,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
     	Properties properties = (Properties) getDeployedApplicationContext()
 				.getBean("caaersDatasourceFactoryBean");
 
-		String seleniumServerURL = properties.getProperty("selenium.url");
-		String seleniumServerPort = properties.getProperty("selenium.port");
-		String seleniumBrowser = properties.getProperty("selenium.browser");
-		String caaersURL = properties.getProperty("selenium.caaersURL");
-		String seleniumSpeed = properties.getProperty("selenium.speed");
-
+		seleniumServerURL = properties.getProperty("selenium.url");
+		seleniumServerPort = properties.getProperty("selenium.port");
+		seleniumBrowser = properties.getProperty("selenium.browser");
+		caaersURL = properties.getProperty("selenium.caaersURL");
+		seleniumSpeed = properties.getProperty("selenium.speed");
+		seleniumRulesDir = properties.getProperty("selenium.rules.dir");
 		System.out.println(seleniumServerURL);
 		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
 		// selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",
@@ -93,11 +126,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		this.log(message, null);
 	}
 
-	public void testLogin() throws Exception {
+	/*public void testLogin() throws Exception {
 		aw.login();
 		assertTrue("Login Failure", true);
 		assertTrue("Login Failure", selenium.isTextPresent("Regular Tasks"));
-	}
+	}*/
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
@@ -532,7 +565,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	}
 
-	public void uploadRules(String rulesDir) throws Exception {
+	public void uploadRules() throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.waitForPageToLoad("30000");
 		selenium.click("firstlevelnav_createRuleController");
@@ -543,19 +576,19 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
-				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xm l" };
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
 		for (int i = 0; i < files.length; i++) {
 			// String absPath = new File(rulesDir+files[i]).getAbsolutePath();
-			String absPath = rulesDir + files[i];
+			String absPath =  seleniumRulesDir+ files[i];
 			System.out.println("Rule file being imported: " + absPath);
 			log("Uploading rule from: " + absPath);
 			selenium.type("ruleSetFile1", absPath);
 			selenium.click("//input[@value='Import']");
 			selenium.waitForPageToLoad("30000");
-			if(!selenium.isTextPresent("Rules imported successfully"))
+			if(!selenium.isElementPresent("//p[contains(text(),'Rules imported successfully')]"))
 			throw new Exception("Error when importing following rule xml: "+absPath);
 		}
-		selenium.close();
+		
 	}
 	// public void editInvestigator(String ){}
 	/*
