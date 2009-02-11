@@ -5,7 +5,7 @@ public class CaaersRulesSeleniumTestCase extends CaaersSeleniumTestCase {
 	
 		public void testUploadRules() throws Exception {
 			waitForCaaersStartup();
-			//uploadRules(); 	
+			uploadRules(); 	
 	}
 	
 }
