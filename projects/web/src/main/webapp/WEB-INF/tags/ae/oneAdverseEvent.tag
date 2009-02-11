@@ -7,14 +7,19 @@
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
+
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
-<c:set var="title"><c:choose>
-    <c:when test="${index == 0}">Primary adverse event</c:when>
-    <c:otherwise>Adverse event ${index + 1}</c:otherwise>
-</c:choose></c:set>
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
+
+<c:set var="title">
+    <c:choose>
+        <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term} (Primary)</c:when>
+        <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:otherwise>
+    </c:choose>
+</c:set>
+
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${index > 0}" collapsable="true">
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
         <div class="row">
            <div class="label">CTC version</div>
@@ -35,24 +40,19 @@
               </div>
             </div>
         </div>
-        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}"
-                        extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
+
+        <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
         
 		<div id="table${index}-outer" style="position: absolute; display: none;width:400px; left: 520px;  ">
 		<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
 		<tbody>
-		<tr class="titleRow">
-		  <td align="left" class="title">Select CTC term:</td><td width="20px"><a href="javascript:hideShowAllTable('table${index}-outer')">
-		       <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
-		      </a>
-		  </td>
-		</tr>
-		<tr>
-		<td colspan="2">
-		        <div id="table${index}" />
-		        
-		</td>
-		</tr>
+            <tr class="titleRow">
+              <td align="left" class="title">Select CTC term:</td><td width="20px"><a href="javascript:hideShowAllTable('table${index}-outer')">
+                   <img src="/caaers/images/rule/window-close.gif" id="close-image"/>
+                  </a>
+              </td>
+            </tr>
+            <tr><td colspan="2"><div id="table${index}" /></td></tr>
 		</tbody>
 		</table>
 		</div>

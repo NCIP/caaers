@@ -81,7 +81,7 @@
                 addParameters: [aeReportId],
                 reorderable: true,
                 deletable: true,
-                minimizeable: true,
+                minimizeable: false,
                 addCallback: function(nextIndex) {
                     new LowLevelTerm(nextIndex);
                 }

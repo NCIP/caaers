@@ -1,11 +1,6 @@
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>
-">
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
+<link rel="stylesheet" type="text/css" href="<c:url value="/css/extremecomponents.css"/>">
 <%@page contentType="text/html;charset=UTF-8" language="java"%>
 <html>
 <head>
@@ -327,7 +322,7 @@ div.row div.value, div.row div.extra {
                 },
                 reorderable: true,
                 deletable: true, 
-                minimizeable: true
+                minimizeable: false
             }, "aeReport.adverseEvents")
 
             // item-index attribute is added by the list editor and it's needed to start up each AESection

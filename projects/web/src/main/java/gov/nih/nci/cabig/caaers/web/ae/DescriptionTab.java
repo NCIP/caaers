@@ -18,16 +18,14 @@ import java.util.Map;
 public class DescriptionTab extends AeTab {
 
     public DescriptionTab() {
-        super("Event and response description", ExpeditedReportSection.DESCRIPTION_SECTION
-                .getDisplayName(), "ae/description");
+        super("Event and response description", ExpeditedReportSection.DESCRIPTION_SECTION.getDisplayName(), "ae/description");
         setAutoPopulateHelpKey(true);
 /*        addHelpKeyExclusion("presentStatus", "recoveryDate", "retreated");*/
     }
 
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                                     ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         String baseProp = "responseDescription";
 
         InputField desc = createTextArea(baseProp + ".eventDescription", "Description & treatment of event(s)", false);

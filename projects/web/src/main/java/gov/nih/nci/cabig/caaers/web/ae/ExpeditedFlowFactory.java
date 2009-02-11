@@ -33,18 +33,10 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     	 */
     	flow.addTab(new TreatmentTab());
         flow.addTab(new DescriptionTab());
+        flow.addTab(new PatientDetailsTab());
         flow.addTab(new StudyInterventionsTab());
-        flow.addTab(new PatientDetailsTab()); //flow.addTab(new MedicalInfoTab());
-        //flow.addTab(new PreExistingConditionsTab());
-        //flow.addTab(new PriorTherapyTab());
-        //flow.addTab(new ConcomitantMedicationsTab());
         flow.addTab(new OtherCausesTab());
 
-// MOVED TO STUDY INTERVENTION TAB
-//        flow.addTab(new RadiationInterventionTab());
-//        flow.addTab(new SurgeryInterventionTab());
-//        flow.addTab(new MedicalDeviceTab());
-        
         flow.addTab(new LabsTab());
         flow.addTab(new AttributionTab());
         flow.addTab(new AdditionalInformationTab());

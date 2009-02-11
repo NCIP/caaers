@@ -43,9 +43,11 @@ public abstract class BasicsTab extends AeTab {
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
 
+/*
         InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
         InputFieldAttributes.setColumns(commentsField, 80);
         InputFieldAttributes.setRows(commentsField, 5);
+*/
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
                 InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
@@ -54,10 +56,8 @@ public abstract class BasicsTab extends AeTab {
                 attributionField,
                 timeOfEventField,
                 InputFieldFactory.createTextField("eventLocation", "Where was the patient when the event occurred?"),
-                InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?", false,
-                        WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
-                exField,
-                commentsField);
+                InputFieldFactory.createSelectField("hospitalization", "Hospitalization or prolongation of existing hospitalization?", false, WebUtils.collectOptions(Arrays.asList(Hospitalization.values()), "name", "displayName")),
+                exField);
     }
 
     @Override

@@ -9,11 +9,13 @@
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
 <c:set var="mainGroup">main${index}</c:set>
+
 <c:set var="title"><c:choose>
-    <c:when test="${index == 0}">Primary adverse event</c:when>
-    <c:otherwise>Adverse event ${index + 1}</c:otherwise>
+    <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName} (Primary)</c:when>
+    <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName}</c:otherwise>
 </c:choose></c:set>
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}">
+
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${index > 0}">
     <div class="row">
       <div class="label">MedDRA Version</div>
       <div class="value">${command.assignment.studySite.study.aeTerminology.meddraVersion.name}</div>
