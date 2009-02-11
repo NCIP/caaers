@@ -37,7 +37,7 @@ public class ListAdverseEventsController extends SimpleFormController {
     public ListAdverseEventsController() {
         setCommandClass(ListAdverseEventsCommand.class);
         setBindOnNewForm(true);
-        setFormView("ae/selectAssignment");
+        setFormView("ae/selectAssignmentForList");
         setSuccessView("ae/list");
     }
 
