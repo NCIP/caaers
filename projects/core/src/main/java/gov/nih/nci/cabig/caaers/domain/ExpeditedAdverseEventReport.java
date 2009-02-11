@@ -261,6 +261,7 @@ public class ExpeditedAdverseEventReport extends AbstractMutableDomainObject imp
         // TODO: placeholders
         summary.put("Ticket number", null);
         summary.put("Next report due", null);
+        summary.put("Course", getReportingPeriod().getName());
 
         return summary;
     }
