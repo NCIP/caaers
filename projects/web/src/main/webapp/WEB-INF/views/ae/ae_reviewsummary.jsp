@@ -329,6 +329,7 @@ background-color:#e5e8ff;
             <tags:message key="instruction_ae_oaes_na" />
           </c:if>
         </chrome:division>
+        <c:if test="${command.havingSolicitedAEs}">
         <chrome:division title="Solicited Adverse Events" id="div-soaes"  collapsable="true">
           <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
             <table id="solicitedTable" width="100%" class="tablecontent">
@@ -356,6 +357,7 @@ background-color:#e5e8ff;
             <tags:message key="instruction_ae_soaes_na" />
           </c:if>
         </chrome:division>
+        </c:if>
       </div>
     
   </jsp:attribute>
