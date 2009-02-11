@@ -6,6 +6,8 @@
     <tags:stylesheetLink name="ae"/>
     <tags:dwrJavascriptLink objects="createAE"/>
     <tags:stylesheetLink name="slider" />
+
+<%--
     <tags:slider renderComments="${command.associatedToWorkflow }" renderAlerts="${command.associatedToLabAlerts}"
         display="${(command.associatedToWorkflow or command.associatedToLabAlerts) ? '' : 'none'}">
         <jsp:attribute name="comments">
@@ -19,6 +21,7 @@
             </div>
         </jsp:attribute>
     </tags:slider>
+--%>
 
     <style type="text/css">
         div.row div.label { width: 16em; }
@@ -31,7 +34,7 @@
 
 <script language="JavaScript">
 var divisions = new Hash();
-var routingHelper = new RoutingAndReviewHelper(createAE);
+//var routingHelper = new RoutingAndReviewHelper(createAE);
 
 function refreshBoxes() {
     registerAll();
@@ -66,11 +69,13 @@ function closeAll() {
 
     function setupPage(){
         //only show the workflow tab, if it is associated to workflow
+<%--
         var associatedToWorkflow = ${command.associatedToWorkflow};
         if(associatedToWorkflow){
                routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
         }
-        
+--%>
+
         interventionInstance = new InterventionClass();
 
         if ($('btn-add-surgery'))
