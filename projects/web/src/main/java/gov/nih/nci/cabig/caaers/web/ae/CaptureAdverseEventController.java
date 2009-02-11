@@ -220,7 +220,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
         summary.put("Study", (command.getStudy() == null) ? "" : command.getStudy().getShortTitle());
         //put summary only if page is greater than 0
         if(page > 0){
-        	referenceData.put("aesummary", summary);
+        	referenceData.put("routineAeSummary", summary);
         }
         
         RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
