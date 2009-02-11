@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -14,8 +15,10 @@ import gov.nih.nci.cabig.ctms.web.chrome.Task;
 import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Comparator;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -88,6 +91,24 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         
         String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
         List<AdverseEvent> aeList = (List<AdverseEvent>) request.getSession().getAttribute(AE_LIST_PARAMETER);
+        if(StringUtils.equals("createNew", action)){
+        	// Sort the aeList based on grade.
+        	// So that the ae with the highest grade is the primary ae of the aeReport created.
+        	if(aeList != null && aeList.size() > 0){
+        		Collections.sort(aeList, new Comparator(){
+        			public int compare(Object o1, Object o2) {
+                        AdverseEvent ae1 = (AdverseEvent) o1;
+                        AdverseEvent ae2 = (AdverseEvent) o2;
+                        if(ae1.getGrade().getCode() > ae2.getGrade().getCode())
+                        	return -1;
+                        else if(ae1.getGrade().getCode() < ae2.getGrade().getCode())
+                        	return 1;
+                        else
+                        	return 0;
+                    }
+        		});
+        	}
+        }
         AdverseEventReportingPeriod reportingPeriod = (AdverseEventReportingPeriod) request.getSession().getAttribute(REPORTING_PERIOD_PARAMETER);
         List<ReportDefinition> rdList = (List<ReportDefinition>) request.getSession().getAttribute(REPORT_DEFN_LIST_PARAMETER);
         
