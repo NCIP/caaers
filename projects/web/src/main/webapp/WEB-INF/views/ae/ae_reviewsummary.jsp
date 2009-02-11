@@ -374,7 +374,7 @@ background-color:#e5e8ff;
   </jsp:attribute>
 </tags:tabForm>
 <div id="display_options_popup" style="display:none;text-align:left" >
-  <chrome:box title="Create New / Edit / Amend Existing Report" id="popupId">
+  <chrome:box title="Edit / Amend Existing Report" id="popupId">
     <c:if test="${not empty command.participant}">
       <div align="left">
         <div class="row">
