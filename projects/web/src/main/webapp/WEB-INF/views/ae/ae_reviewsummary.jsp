@@ -113,7 +113,7 @@
 			var aeSelected = checkIfAeSelected();
 			if(!aeSelected && reportSelected)
 			{
-				alert('Reports cannot be selected without selecting an Adverse Event(s)');
+				alert('Reports cannot be selected without selecting adverse events');
 				return false;
 			}
 			var contentWin = new Window({className:"alphacube", 
@@ -273,7 +273,7 @@ background-color:#e5e8ff;
 
         <p><tags:message key="instruction_ae_note" /></p>
 
-        <chrome:division id="div-saes" title="Adverse Event(s) Requiring Reporting" collapsable="true" >
+        <chrome:division id="div-saes" title="Adverse Events Requiring Reporting" collapsable="true" >
           <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
             <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
@@ -300,7 +300,7 @@ background-color:#e5e8ff;
             <tags:message key="instruction_ae_saes_na" />
           </c:if>
         </chrome:division>
-        <chrome:division id="div-oaes" title="Observed Adverse Event(s)"  collapsable="true">
+        <chrome:division id="div-oaes" title="Adverse Events"  collapsable="true">
           <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
             <table id="observedTable" width="100%" class="tablecontent">
               <tr>
@@ -329,7 +329,7 @@ background-color:#e5e8ff;
             <tags:message key="instruction_ae_oaes_na" />
           </c:if>
         </chrome:division>
-        <chrome:division title="Solicited Adverse Event(s)" id="div-soaes"  collapsable="true">
+        <chrome:division title="Solicited Adverse Events" id="div-soaes"  collapsable="true">
           <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
             <table id="solicitedTable" width="100%" class="tablecontent">
               <tr>
