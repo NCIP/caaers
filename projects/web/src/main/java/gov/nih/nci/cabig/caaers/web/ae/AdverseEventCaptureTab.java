@@ -47,7 +47,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         // which collects the general information from the user (eg., TAC, TAC Description, Start date of first course etc.
         InputFieldGroup reportingPeriodFieldGroup = new DefaultInputFieldGroup("reportingPeriodFG");
         List<InputField> fields = reportingPeriodFieldGroup.getFields();
-        InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Evaluation period", true, fetchReportingPeriodsOptions(cmd));
+        InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Course", true, fetchReportingPeriodsOptions(cmd));
         fields.add(reportingPeriodsField);
         map.addInputFieldGroup(reportingPeriodFieldGroup);
 
@@ -77,8 +77,8 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             reportingPeriodDetailsFieldGroup.getFields().add(firstCourseDateField);
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start date"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End date"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Type"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Cycle number"));
+            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Treatment type"));
+            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Course/Cycle number"));
 
             // add the reportingPeriodFieldGroup to the map.
             map.addInputFieldGroup(treatmentAssignmentFieldGroup);
