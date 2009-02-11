@@ -78,7 +78,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start date"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End date"));
             reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Treatment type"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Course/Cycle number"));
+            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Course/cycle number"));
 
             // add the reportingPeriodFieldGroup to the map.
             map.addInputFieldGroup(treatmentAssignmentFieldGroup);
