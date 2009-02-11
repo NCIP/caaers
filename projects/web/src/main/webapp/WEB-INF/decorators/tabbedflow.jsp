@@ -79,7 +79,10 @@
 			    <div class="summarylabel">Study</div>
 			    <div class="summaryvalue">${routineAeSummary['Study']}</div>
 			  </div>
-			  
+			  <div class="row">
+			    <div class="summarylabel">Course</div>
+			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
+			  </div>
 			</div>
 		</div>
 		</c:if>
