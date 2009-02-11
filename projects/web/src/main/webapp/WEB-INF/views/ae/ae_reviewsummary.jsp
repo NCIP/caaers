@@ -99,39 +99,55 @@
 		}
 		
 		function displayOptionsPopup(){
-			enableReportsInPopup();
-
+			//First of all check if the evaluation period has any aeReports.
+			//If not present then the user has to select atleast one report and one adverse event to proceed.
+			//Alert messages are displayed to ask the user to select atleast one report and atleast one adverse event.
+			//And once they are selecte the user is directly taken to the reporter tab. The popup is skipped.
+			//If present then just continue with the existing logic.
 			var reportSelected = checkIfReportSelected();
-			if(reportSelected){
-				$('div-reports-and-create').show();
-				$('div-reports-not-selected').hide();
-			}else{
-				$('div-reports-and-create').hide();
-				$('div-reports-not-selected').show();
-			}
-			
 			var aeSelected = checkIfAeSelected();
+			
 			if(!aeSelected && reportSelected)
 			{
-				alert('Reports cannot be selected without selecting adverse events');
+				alert('Please select atleast one adverse event.');
 				return false;
 			}
-			var contentWin = new Window({className:"alphacube", 
- 	 	 			destroyOnClose:true, 
- 	 	 			width:700,  height:530, 
- 					top: 30, left: 300});
-     		contentWin.setContent( 'display_options_popup' );
-      		contentWin.showCenter(true);
-      		popupObserver = {
-      			onDestroy: function(eventName, win) {
-      				if (win == contentWin) {
-      					$('display_options_popup').style.display='none';
-      					contentWin = null;
-      					Windows.removeObserver(this);
+			
+			if(${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}){
+				enableReportsInPopup();
+
+				if(reportSelected){
+					$('div-reports-and-create').show();
+					$('div-reports-not-selected').hide();
+				}else{
+					$('div-reports-and-create').hide();
+					$('div-reports-not-selected').show();
+				}
+			
+				var contentWin = new Window({className:"alphacube", 
+ 	 	 				destroyOnClose:true, 
+ 	 	 				width:700,  height:530, 
+ 						top: 30, left: 300});
+     			contentWin.setContent( 'display_options_popup' );
+      			contentWin.showCenter(true);
+      			popupObserver = {
+      				onDestroy: function(eventName, win) {
+      					if (win == contentWin) {
+      						$('display_options_popup').style.display='none';
+      						contentWin = null;
+      						Windows.removeObserver(this);
+      					}
       				}
       			}
+      			Windows.addObserver(popupObserver);
+      		}else{
+      			if(!reportSelected)
+				{
+					alert('Please select atleast one report.');
+					return false;
+				}
+      			createNewReport();
       		}
-      		Windows.addObserver(popupObserver);
 	}
 
 		
@@ -366,7 +382,7 @@ background-color:#e5e8ff;
       <div class="flow-buttons"> <span class="prev">
         <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
         </span> <span class="next">
-        <a href="javascript:displayOptionsPopup()">
+        <a href="#" onClick="javascript:displayOptionsPopup();">
         	<img src="<chrome:imageUrl name="../blue/continue_btn.png" />"  alt="Continue" title="Continue" style="border:0" />
         </a>
         </span> </div>
