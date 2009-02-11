@@ -1,19 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-import com.thoughtworks.selenium.*;
-
-import gov.nih.nci.cabig.caaers.CaaersContextLoader;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.web.selenium.AjaxWidgets;
-
-import java.io.File;
 import java.util.Properties;
-import java.util.regex.Pattern;
+
+import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mock.jndi.SimpleNamingContextBuilder;
+
+import com.thoughtworks.selenium.DefaultSelenium;
+import com.thoughtworks.selenium.SeleneseTestCase;
 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
+	
 	String studyId = null;
 	AjaxWidgets aw;
 	public final String BLAZING = "0";
@@ -22,46 +22,68 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public final String SLOW = "10000";
 
 	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
-
-	public void setUp() throws Exception {
-		//super.setUp();
-		Properties properties = (Properties) getDeployedApplicationContext().getBean("caaersDatasourceFactoryBean");
-		
-		String seleniumServerURL = properties.getProperty("selenium.url");
-		String seleniumServerPort = properties.getProperty("selenium.port");
-		
-		System.out.println(seleniumServerURL);
-		
-		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
-		//selenium = new DefaultSelenium("10.10.10.220", 4444, "*iehta","https://oracle.qa.semanticbits.com" );
-		// selenium = new DefaultSelenium("10.10.10.220", 4444, "*chrome",
-		// "https://oracle.qa.semanticbits.com" );
-		selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",	"https://oracle.qa.semanticbits.com");
-		selenium.start();
-		// setUp("https://derek.herndon.semanticbits.com:7443", "*chrome");
-		aw = new AjaxWidgets(selenium);
-		selenium.setSpeed(FAST);
-		// DefaultSelenium selenium = new DefaultSelenium("localhost", 4444,
-		// "*chrome", "http://localhost:8080/ctcae");
-		// selenium.start();
-
-	}
 	
-	   public synchronized  ApplicationContext getDeployedApplicationContext() {
-	    	return CaaersContextLoader.getApplicationContext();
-	    }
-	    
-	    /**
-	     * The sub classes(testclasses) can override the config locations at runtime. 
-	     * @return
-	     */
-	    public final String[] getConfigLocations() {
-	        return new String[] {
+	private  RuntimeException acLoadFailure = null;
+
+    private  ApplicationContext applicationContext = null;
+	
+    
+    protected ApplicationContext getDeployedApplicationContext() {
+        if (acLoadFailure == null && applicationContext == null) {
+            try {
+                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            } catch (NamingException e) {
+                throw new RuntimeException("", e);
+            }
+
+            try {
+                log.debug("Initializing test version of deployed application context");
+                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
+            } catch (RuntimeException e) {
+                acLoadFailure = e;
+                throw e;
+            }
+        } else if (acLoadFailure != null) {
+            throw new RuntimeException("Application context loading already failed.  Will not retry.  " + "Original cause attached.", acLoadFailure);
+        }
+        return applicationContext;
+    }
+    
+	/**
+	 * The sub classes(testclasses) can override the config locations at
+	 * runtime.
+	 * 
+	 * @return
+	 */
+	public final String[] getConfigLocations() {
+		return new String[] {
 	            "classpath*:gov/nih/nci/cabig/caaers/applicationContext-*.xml",
 	            "classpath*:applicationContext-test.xml"
 	        };
-	    }
+	}
+ 
+    public void setUp() throws Exception {
+		// super.setUp();
+    	Properties properties = (Properties) getDeployedApplicationContext()
+				.getBean("caaersDatasourceFactoryBean");
 
+		String seleniumServerURL = properties.getProperty("selenium.url");
+		String seleniumServerPort = properties.getProperty("selenium.port");
+		String seleniumBrowser = properties.getProperty("selenium.browser");
+		String caaersURL = properties.getProperty("selenium.caaersURL");
+		String seleniumSpeed = properties.getProperty("selenium.speed");
+
+		System.out.println(seleniumServerURL);
+		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
+		// selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",
+		// "https://oracle.qa.semanticbits.com");
+		selenium = new DefaultSelenium(seleniumServerURL, Integer
+				.parseInt(seleniumServerPort), seleniumBrowser, caaersURL);
+		selenium.start();
+		aw = new AjaxWidgets(selenium);
+		selenium.setSpeed(seleniumSpeed);
+
+	}
 
 	public void log(String message, Exception e) {
 		log.debug(message, e);
@@ -241,9 +263,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		aw.typeAutosuggest("study.studyAgents[1].agent-input", "123127",
 				"study.studyAgents[1].agent-choices");
 
-		//selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
-		/*selenium.click("//div[@id='sa-section-1']/div[1]/h3/div/a/img");
-		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");*/
+		// selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
+		/*
+		 * selenium.click("//div[@id='sa-section-1']/div[1]/h3/div/a/img");
+		 * aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
+		 */
 		Thread.sleep(5000);
 		aw.clickNext("flow-next");
 		selenium.click("add-si-section-button");
@@ -253,8 +277,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type("study.treatmentAssignments[1].code", "TAC2");
 		selenium.type("study.treatmentAssignments[1].description",
 				"TAC2 description");
-		/*selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
-		aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");*/
+		/*
+		 * selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
+		 * aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
+		 */
 		Thread.sleep(4000);
 	}
 
@@ -517,15 +543,17 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.mandatory_sections_rules.xml",
-				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
+				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xm l" };
 		for (int i = 0; i < files.length; i++) {
-			//String absPath = new File(rulesDir+files[i]).getAbsolutePath();
-			String absPath = rulesDir+files[i];
-			System.out.println("Rule file being imported: "+absPath);
-			log("Uploading rule from: "+absPath);
+			// String absPath = new File(rulesDir+files[i]).getAbsolutePath();
+			String absPath = rulesDir + files[i];
+			System.out.println("Rule file being imported: " + absPath);
+			log("Uploading rule from: " + absPath);
 			selenium.type("ruleSetFile1", absPath);
 			selenium.click("//input[@value='Import']");
 			selenium.waitForPageToLoad("30000");
+			if(!selenium.isTextPresent("Rules imported successfully"))
+			throw new Exception("Error when importing following rule xml: "+absPath);
 		}
 		selenium.close();
 	}

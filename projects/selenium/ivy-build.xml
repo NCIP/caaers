@@ -65,8 +65,8 @@
           target: reset-db              
          ================================= -->
 	<target name="reset-db" description="reset the db to a good baseline dump.">
-		
-		<copy file="${test.dir}/lib/jsch-0.1.41.jar" todir="${ant.library.dir}"/>
+
+		<copy file="${test.dir}/lib/jsch-0.1.41.jar" todir="${ant.library.dir}" />
 		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
 			<classpath refid="test.run.classpath" />
 			<!--classpath>
@@ -140,8 +140,17 @@
 				</not>
 			</condition>
 		</fail>
+		<property name="win.classpath" refid="test.run.classpath" />
+		<echo message="saruabh classpath is ${win.classpath}" />
+
 		<taskdef name="uploadRules" classname="gov.nih.nci.cabig.caaers.web.selenium.CaaersRulesTestBootstrap">
 			<classpath refid="test.run.classpath" />
+			<classpath>
+				<fileset dir="${test.lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+
 		</taskdef>
 		<!--uploadRules rulesdir="${test.resources}/rules" /-->
 		<uploadRules rulesdir="C:\workspace\caaers-trunk\selenium\src\test\resources\rules" />

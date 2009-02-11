@@ -36,5 +36,10 @@ public class CaaersRulesTestBootstrap extends Task {
 		}
 
 	}
+	public static void main(String args[]){
+		CaaersRulesTestBootstrap crtb = new CaaersRulesTestBootstrap();
+		crtb.setRulesDir("C:\\workspace\\caaers-trunk\\selenium\\src\\test\\resources\\rules");
+		crtb.execute();
+	}
 
 }

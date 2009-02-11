@@ -28,8 +28,20 @@
         
         <!-- dependencies for the web module -->
         <dependencies>
+        	<dependency org="gov.nih.nci.cabig.caaers" name="caaers-web" rev="latest.integration" 
+				conf="test->*"/>
+				
+			<!-- Testing dependencies 
+			<dependency org="gov.nih.nci.cabig.caaers" name="caaers-core" conf="test->test(default)" rev="latest.integration" />
+        	-->
             <dependency org="org.openqa.selenium.client-drivers" name="selenium-java-client-driver" rev="0.9.2" conf="test->default(*)"/>
             <dependency org="ant-contrib" name="ant-contrib" rev="1.0b2" conf="test->default(*)"/>
             <dependency org="commons-logging" name="commons-logging" rev="1.1" conf="test->default(*)"/>
+           
+           
+           <!--  Spring and Spring Modules -->
+
+			<dependency org="org.springframework" name="spring-mock" rev="2.0.2" force="true" conf="test->default" />   
+           
         </dependencies>
 </ivy-module>
