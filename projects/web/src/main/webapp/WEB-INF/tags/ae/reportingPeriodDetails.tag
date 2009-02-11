@@ -3,13 +3,13 @@
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
 
-<div class="leftpanel">
+<div class="">
     <c:forEach items="${fieldGroups.reportingPeriodDetailsFG.fields}" var="field">
         <tags:renderRow field="${field}"/>
     </c:forEach>
 </div>
 
-<div class="rightpanel">
+<div class="">
     <c:forEach items="${fieldGroups.treatmentAssignmentFG.fields}" var="field">
         <tags:renderRow field="${field}"/>
     </c:forEach>

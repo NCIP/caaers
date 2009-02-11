@@ -9,23 +9,19 @@ Note: -
    This should work on the orginal adverse event list, and not on the decorated list in command
 --%>
 <c:if test='${not empty command.adverseEventReportingPeriod}'>
-<chrome:division id="rpd-div" title="Course Details">
-	<ae:reportingPeriodDetails />
-</chrome:division>
 
-<chrome:division title="Adverse Events" collapsable="true" id="observedID">
+<chrome:box title="Adverse Events" collapsable="true" id="observedID">
 <p><tags:instructions code="instruction_ae_oae"/></p>
-               <tags:aeTermQuery
-                       isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
-                       noBackground="true"
-                       callbackFunctionName="rpCreator.addAdverseEvents"
-                       ignoreOtherSpecify="false"
-                       isAjaxable="true"
-                       version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
-                       title="">
-               </tags:aeTermQuery>
-    
-               <table id="observedTable" width="100%" class="tablecontent">
+ 			<tags:aeTermQuery
+                       			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
+                       			noBackground="true"
+                       			callbackFunctionName="rpCreator.addAdverseEvents"
+                       			ignoreOtherSpecify="false"
+                       			isAjaxable="true"
+                       			version="${not empty command.study.aeTerminology.meddraVersion ? command.study.aeTerminology.meddraVersion.id : command.study.aeTerminology.ctcVersion.id}"
+                       		title="">
+            </tags:aeTermQuery>    
+            <table id="observedTable" width="100%" class="tablecontent">
                    <tr>
                        <th scope="col" align="center" width="20px" />
                        <th scope="col" align="left" width="200px"><b>Term</b> </th>
@@ -42,6 +38,7 @@ Note: -
                        <caaers:renderFilter elementID="adverseEvents[].serious"><th scope="col" align="left"><b>Serious</b> </th></caaers:renderFilter>
                     <th scope="col" align="left"> </th>
                    </tr>
+
                 <c:set var="noObservedAE" value="true" scope="request"/>
                    <tr id="observedBlankRow" />
                    <c:forEach items="${command.adverseEventReportingPeriod.adverseEvents}" varStatus="status" var="ae">
@@ -50,16 +47,19 @@ Note: -
                         <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="${ae.adverseEventTerm.otherRequired}" adverseEvent="${ae}" aeTermIndex="0" renderNotes="true" renderSubmittedFlag="true"/>
                     </c:if>
                    </c:forEach>
+                   
+                
                 <c:if test="${noObservedAE}">
                 <tr id="observedEmptyRow">
                     <td colspan="7">No adverse event added</td>
                 </tr>
                 </c:if>
-               </table>
+           </table>
 
-    </chrome:division>
+</chrome:box>
+
 <c:if test="${command.havingSolicitedAEs}">
-<chrome:division title="Solicited Adverse Events" collapsable="true" id="solicitatedID">
+<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID">
 <p><tags:instructions code="instruction_ae_sae"/></p>
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
@@ -86,7 +86,7 @@ Note: -
 				</c:if>
    			</table>
    	</center>
- </chrome:division>
+ </chrome:box>
 </c:if>
 <div id="display_amend_popup" style="display:none;text-align:left" >
     	<chrome:box title="Amendments Required" id="popupId">

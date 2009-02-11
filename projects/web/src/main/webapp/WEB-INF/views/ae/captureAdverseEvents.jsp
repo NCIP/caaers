@@ -454,20 +454,26 @@
 </head>
  <body>
 
-	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm">
+	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm" hideBox="true">
       	
       	<jsp:attribute name="singleFields">
          <p><tags:instructions code="instruction_ae_select_evaluation_period"/></p>
       		<input type="hidden" name="_action" id="_action" value="">
       		<input type="hidden" name="_amendReportIds" id="_amendReportIds" value="">
-			<div id="reportingPeriodSelector">      	
+      		
+      		<chrome:box id="rpd-div" title="Course Details" autopad="true">
+      			<div id="reportingPeriodSelector">      	
       				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
 						<jsp:attribute name="value">
 								<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />
     							<input id="edit_button" type="button" value="Edit" style="display:none;"/>
 						</jsp:attribute>
 					</tags:renderRow>
-      		</div>
+					<ae:reportingPeriodDetails />
+      			</div>
+				
+			</chrome:box>
+			
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
 					<ae:reportingPeriodAEDetails />
