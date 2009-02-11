@@ -123,7 +123,7 @@
        		          		  			</c:forEach>
        	            					<c:if test="${noObservedAE}">
             	    						<tr id="observedEmptyRow">
-               		     						<td colspan="7">No observed adverse event added</td>
+               		     						<td colspan="7">No adverse event added</td>
                 							</tr>
                 						</c:if>
             						</table>   
