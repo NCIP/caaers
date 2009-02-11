@@ -621,8 +621,13 @@ public class CreateAdverseEventAjaxFacade {
      */
     @SuppressWarnings({"unchecked"})
     public AjaxOutput reorder(String listProperty, int objectIndex, int targetIndex) {
-        Object command = extractCommand();
-        List<Object> list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
+    	List<IndexChange> changes = null;
+    	boolean changesApplied =false;
+    	 List<Object> list = null;
+    	try {
+    	Object cmd = extractCommand();
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+        list = (List<Object>) new BeanWrapperImpl(command).getPropertyValue(listProperty);
         if (targetIndex >= list.size()) {
             log.debug("Attempted to move past the end; " + targetIndex + " >= " + list.size());
             return new AjaxOutput("Unable to reorder. Attempted to delete beyond the end; " + targetIndex + " >= " + list.size());
@@ -639,17 +644,30 @@ public class CreateAdverseEventAjaxFacade {
             log.debug("No " + listProperty + " with index " + objectIndex);
             return new AjaxOutput();
         }
+        
+        command.reassociate();
+        
         Object o = list.remove(objectIndex);
         list.add(targetIndex, o);
-        List<IndexChange> changes = createMoveChangeList(objectIndex, targetIndex);
+        changesApplied = true;
+        
+        changes = createMoveChangeList(objectIndex, targetIndex);
         addDisplayNames(listProperty, changes);
-        try {
-            saveIfAlreadyPersistent((ExpeditedAdverseEventInputCommand) command);
+        
+            saveIfAlreadyPersistent(command);
         } catch (OptimisticLockingFailureException ole) {
             log.error("Error occured while reordering [listProperty :" + listProperty +
                     ", objectIndex :" + targetIndex +
                     ", targetIndex :" + targetIndex + "]", ole);
             return new AjaxOutput("Unable to reorder at this point. The same data is being modified by someone else, please restart the page flow");
+        }catch(Exception e){
+        	log.error("Error occured while moving", e);
+        	//revert the changes if they are applied.
+        	if(changesApplied){
+        		Object o = list.remove(targetIndex);
+        		list.add(objectIndex, o);
+        	}
+        	return new AjaxOutput("Unable to re-order, please try again after saving the report");
         }
         return new AjaxOutput(changes);
     }
