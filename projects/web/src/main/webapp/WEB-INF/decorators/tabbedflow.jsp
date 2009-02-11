@@ -61,7 +61,7 @@
 			  </div>
 			  <div class="row">
 			    <div class="summarylabel">Course</div>
-			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
+			    <div class="summaryvalue">${aesummary['Course']}</div>
 			  </div>
             </div>
 		</div>
