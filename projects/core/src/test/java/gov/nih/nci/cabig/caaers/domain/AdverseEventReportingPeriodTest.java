@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.domain;
 
+import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
+
 import java.util.Date;
 
-import junit.framework.TestCase;
-
-public class AdverseEventReportingPeriodTest extends TestCase {
+public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase {
 	
 	AdverseEventReportingPeriod reportingPeriod1;
 	AdverseEventReportingPeriod reportingPeriod2;
