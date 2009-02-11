@@ -165,7 +165,8 @@ Object.extend(ListEditor.prototype, {
             addParameters: [ ],
             reorderable: false,
             deletable: false,
-            minimizeable:false
+            minimizeable:false,
+            changeHeaderNames:false
         }, options)
 
         this.options.addButton = $(this.options.addButton)
@@ -475,15 +476,16 @@ Object.extend(ListEditor.prototype, {
                 }
             }.bind(this))
         }.bind(this))
-
-        $$("div." + this.divisionClass).each(function(div, index) {
-            var itemIndex = div.getAttribute("item-index")
-            changes.each(function(change) {
-                if (change.current == itemIndex) {
-                    div.getElementsBySelector("h3 .text")[0].innerHTML = change.currentDisplayName;
-                }
-            })
-        })
+        if(this.options.changeHeaderNames){
+        	$$("div." + this.divisionClass).each(function(div, index) {
+        		var itemIndex = div.getAttribute("item-index")
+        		changes.each(function(change) {
+        			if (change.current == itemIndex) {
+        				div.getElementsBySelector("h3 .text")[0].innerHTML = change.currentDisplayName;
+        			}
+        		})
+        	})
+        }
     },
 
     updateFirstAndLast: function() {
