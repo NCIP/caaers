@@ -81,7 +81,7 @@ public class CaaersSubjectFlowFixtures extends SeleneseTestCase {
 				"label=2 = Symptomatic, in bed less than 50% of time");
 		selenium.select("assignment.diseaseHistory.abstractStudyDisease",
 				"label=Synovial sarcoma");
-		selenium.click("//option[@value='103']");
+		//selenium.click("//option[@value='103']");
 		aw.typeAutosuggest(
 				"assignment.diseaseHistory.codedPrimaryDiseaseSite-input",
 				"hands",
