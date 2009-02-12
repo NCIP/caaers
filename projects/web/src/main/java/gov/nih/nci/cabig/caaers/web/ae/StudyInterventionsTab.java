@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
 import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createPastDateField;
@@ -18,6 +19,7 @@ import java.util.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.validation.Errors;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.BeanWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -58,7 +60,7 @@ public class StudyInterventionsTab extends AeTab {
 
         creator.createRepeatingFieldGroup("radiationIntervention", "radiationInterventions", new SimpleNumericDisplayNameCreator("Radiation"),
                 createSelectField("administration", "Type of radiation administration", false, statusOpts),
-                createTextField("dosage", "Total dose (to date)", false),
+                createTextField("dosage", "Total dose (to date)", FieldValidator.NUMBER_VALIDATOR),
                 doseUOMField,
                 createPastDateField("lastTreatmentDate", "Date of last treatment", false),
                 fractionNumberField,
