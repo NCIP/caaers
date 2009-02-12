@@ -168,12 +168,13 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		int maxAttempts = 20;
 		int attempt = 0;
+		System.out.println("Checking for caaers..."); 
 		for (attempt = 0; attempt < maxAttempts; attempt++) {
 			if (!(selenium.isTextPresent("Please Log in"))
 					&& !(selenium.isTextPresent("Log out"))) {
 				selenium.open("caaers/public/login");
 				selenium.waitForPageToLoad("30000");
-				System.out.println("Checking for caaers, attempt no: "
+				System.out.println("\t attempt no: "
 						+ attempt);
 
 			} else {
