@@ -161,8 +161,8 @@ public class AjaxWidgets extends TestCase {
 		for (; loop; i++) {
 			if (!(selenium.isElementPresent(parts[0] + i + parts[1])))
 				loop = false;
-			System.out.println("\n checking through: " + parts[0] + i
-					+ parts[1]);
+			/*System.out.println("\n checking through: " + parts[0] + i
+					+ parts[1]);*/
 		}
 		i--;
 		if (exists) {
