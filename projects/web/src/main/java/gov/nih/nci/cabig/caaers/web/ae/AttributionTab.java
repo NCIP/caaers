@@ -87,6 +87,8 @@ public class AttributionTab extends AeTab {
         for (int c = 0; c < causes.size(); c++) {
             DefaultInputFieldGroup newGroup = new DefaultInputFieldGroup(accessor.getKey() + c);
             newGroup.setDisplayName(accessor.getDisplayName(causes.get(c)));
+
+            if (accessor.getDisplayName(causes.get(c)) == CauseAndAttributionAccessor.DEFAULT_NAME) continue;
             for (int a = 0; a < report.getAdverseEvents().size(); a++) {
                 newGroup.getFields().add(createAttributionField(accessor.getKey(), a, c));
             }

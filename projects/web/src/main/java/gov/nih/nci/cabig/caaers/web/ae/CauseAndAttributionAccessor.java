@@ -36,21 +36,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public abstract class CauseAndAttributionAccessor<C extends DomainObject, A extends AdverseEventAttribution<C>> {
     private static final Map<String, CauseAndAttributionAccessor<?, ?>> KEY_TO_ACCESSOR = new LinkedHashMap<String, CauseAndAttributionAccessor<?, ?>>();
-
     public static final CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> COURSE_AGENT = new CourseAgentAccessor();
-
     public static final CauseAndAttributionAccessor<ConcomitantMedication, ConcomitantMedicationAttribution> CONCOMITANT_MEDICATION = new ConcomitantMedicationAccessor();
-
     public static final CauseAndAttributionAccessor<OtherCause, OtherCauseAttribution> OTHER_CAUSE = new OtherCauseAccessor();
-
     public static final CauseAndAttributionAccessor<DiseaseHistory, DiseaseAttribution> DISEASE = new DiseaseAccessor();
-
     public static final CauseAndAttributionAccessor<SurgeryIntervention, SurgeryAttribution> SURGERY = new SurgeryAccessor();
-
     public static final CauseAndAttributionAccessor<RadiationIntervention, RadiationAttribution> RADIATION = new RadiationAccessor();
-
     public static final CauseAndAttributionAccessor<MedicalDevice, DeviceAttribution> DEVICE = new DeviceAccessor();
-
+    public static final String DEFAULT_NAME = "DEFAULT_VALUE";
+    
     protected CauseAndAttributionAccessor() {
         KEY_TO_ACCESSOR.put(getKey(), this);
     }
@@ -259,6 +253,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(SurgeryIntervention surgery) {
+            if (surgery.getInterventionSite() == null && surgery.getInterventionDate() == null) return DEFAULT_NAME;
             return (surgery.getInterventionSite() != null ? surgery.getInterventionSite().getName() : "" + " (" + (surgery.getInterventionDate() != null ? DateUtils.formatDate(surgery.getInterventionDate()) : "") + ")");
         }
     }
@@ -294,6 +289,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(RadiationIntervention radiation) {
+            if (radiation.getAdministration() == null || StringUtils.isEmpty(radiation.getDosageUnit()) || StringUtils.isEmpty(radiation.getDosage())) return DEFAULT_NAME;
             return (radiation.getAdministration() != null ? radiation.getAdministration().getDisplayName() : "") + " (" + radiation.getDosage() + ", " + radiation.getDosageUnit() + ")";
         }
     }
@@ -321,6 +317,8 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(MedicalDevice device) {
+            if (StringUtils.isEmpty(device.getCommonName()) && StringUtils.isEmpty(device.getBrandName())) return DEFAULT_NAME;
+
             StringBuffer sb = new StringBuffer();
             if (!StringUtils.isEmpty(StringUtils.trim(device.getCommonName()))) sb.append(StringUtils.trim(device.getCommonName()));
             if (!StringUtils.isEmpty(StringUtils.trim(device.getBrandName()))) {

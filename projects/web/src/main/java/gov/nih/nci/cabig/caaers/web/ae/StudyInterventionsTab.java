@@ -137,7 +137,7 @@ public class StudyInterventionsTab extends AeTab {
                         modelNumber,
                         InputFieldFactory.createTextField("lotNumber", "Lot number", false),
                         InputFieldFactory.createTextField("catalogNumber", "Catalog number", false),
-                        InputFieldFactory.createPastDateField("expirationDate", "Expiration date", false),
+                        InputFieldFactory.createDateField("expirationDate", "Expiration date", false),
                         InputFieldFactory.createTextField("serialNumber", "Serial number", false),
                         InputFieldFactory.createTextField("otherNumber", "Other number", false),
                         InputFieldFactory.createSelectField("deviceOperator", "Device operator", false, WebUtils.collectOptions(Arrays.asList(DeviceOperator.values()),null, "displayName")),
