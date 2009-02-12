@@ -15,9 +15,10 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
-import org.springframework.core.io.*; 
+import org.springframework.core.io.*;
+
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
-	
+
 	String studyId = null;
 	AjaxWidgets aw;
 	public final String BLAZING = "0";
@@ -26,63 +27,73 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public final String SLOW = "10000";
 
 	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
-	
-	private  RuntimeException acLoadFailure = null;
 
-    private  ApplicationContext applicationContext = null;
-	
-    String seleniumServerURL = null;
+	private RuntimeException acLoadFailure = null;
+
+	private ApplicationContext applicationContext = null;
+
+	String seleniumServerURL = null;
 	String seleniumServerPort = null;
 	String seleniumBrowser = null;
 	String caaersURL = null;
 	String seleniumSpeed = null;
 	String seleniumRulesDir = null;
-    protected ApplicationContext getDeployedApplicationContext() throws IOException {
-        if (acLoadFailure == null && applicationContext == null) {
-            try {
-                SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-            } catch (NamingException e) {
-                throw new RuntimeException("", e);
-            }
 
-            try {
-                log.debug("Initializing test version of deployed application context");
-                applicationContext = new ClassPathXmlApplicationContext(getConfigLocations());
-                
-                /*Resource resources[] = applicationContext.getResources("*");
-                for(int i=0;i<resources.length;i++){
-                System.out.println("\n "+i+": "+resources[i].getDescription());
-                }
-                System.out.println("\n Printing classpath:\n"+getClasspathString());*/
-            } catch (RuntimeException e) {
-                acLoadFailure = e;
-                throw e;
-            }
-        } else if (acLoadFailure != null) {
-            throw new RuntimeException("Application context loading already failed.  Will not retry.  " + "Original cause attached.", acLoadFailure);
-        }
-        return applicationContext;
-    }
-    public String getClasspathString() {
-        StringBuffer classpath = new StringBuffer();
-        ClassLoader applicationClassLoader = this.getClass().getClassLoader();
+	protected ApplicationContext getDeployedApplicationContext()
+			throws IOException {
+		if (acLoadFailure == null && applicationContext == null) {
+			try {
+				SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+			} catch (NamingException e) {
+				throw new RuntimeException("", e);
+			}
 
-        if (applicationClassLoader == null) {
-            applicationClassLoader = ClassLoader.getSystemClassLoader();
-        }
-         if(applicationClassLoader instanceof URLClassLoader)
-         {URL[] urls = ((URLClassLoader)applicationClassLoader).getURLs();
-         for(int i=0; i < urls.length; i++) {
+			try {
+				log
+						.debug("Initializing test version of deployed application context");
+				applicationContext = new ClassPathXmlApplicationContext(
+						getConfigLocations());
 
-             classpath.append(urls[i].getFile()).append("\r\n");
-         }   
-         return classpath.toString();
-         }
-         else{ 
-        	 return ((AntClassLoader)applicationClassLoader).getClasspath(); 
-         }
-         
-     }
+				/*
+				 * Resource resources[] = applicationContext.getResources("*");
+				 * for(int i=0;i<resources.length;i++){
+				 * System.out.println("\n "+
+				 * i+": "+resources[i].getDescription()); }
+				 * System.out.println("\n Printing classpath:\n"
+				 * +getClasspathString());
+				 */
+			} catch (RuntimeException e) {
+				acLoadFailure = e;
+				throw e;
+			}
+		} else if (acLoadFailure != null) {
+			throw new RuntimeException(
+					"Application context loading already failed.  Will not retry.  "
+							+ "Original cause attached.", acLoadFailure);
+		}
+		return applicationContext;
+	}
+
+	public String getClasspathString() {
+		StringBuffer classpath = new StringBuffer();
+		ClassLoader applicationClassLoader = this.getClass().getClassLoader();
+
+		if (applicationClassLoader == null) {
+			applicationClassLoader = ClassLoader.getSystemClassLoader();
+		}
+		if (applicationClassLoader instanceof URLClassLoader) {
+			URL[] urls = ((URLClassLoader) applicationClassLoader).getURLs();
+			for (int i = 0; i < urls.length; i++) {
+
+				classpath.append(urls[i].getFile()).append("\r\n");
+			}
+			return classpath.toString();
+		} else {
+			return ((AntClassLoader) applicationClassLoader).getClasspath();
+		}
+
+	}
+
 	/**
 	 * The sub classes(testclasses) can override the config locations at
 	 * runtime.
@@ -90,14 +101,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	 * @return
 	 */
 	public final String[] getConfigLocations() {
-		return new String[] {
-	           "classpath*:gov/nih/nci/cabig/caaers/applicationContext-selenium.xml"
-	        };
+		return new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-selenium.xml" };
 	}
- 
-    public void setUp() throws Exception {
+
+	public void setUp() throws Exception {
 		// super.setUp();
-    	Properties properties = (Properties) getDeployedApplicationContext()
+		Properties properties = (Properties) getDeployedApplicationContext()
 				.getBean("caaersDatasourceFactoryBean");
 
 		seleniumServerURL = properties.getProperty("selenium.url");
@@ -126,11 +135,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		this.log(message, null);
 	}
 
-	/*public void testLogin() throws Exception {
-		aw.login();
-		assertTrue("Login Failure", true);
-		assertTrue("Login Failure", selenium.isTextPresent("Regular Tasks"));
-	}*/
+	/*
+	 * public void testLogin() throws Exception { aw.login();
+	 * assertTrue("Login Failure", true); assertTrue("Login Failure",
+	 * selenium.isTextPresent("Regular Tasks")); }
+	 */
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
@@ -176,10 +185,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			throw new Exception("Timed out waiting for caaers to start.");
 	}
 
-	public void editStudy() throws InterruptedException {
+	public void editStudy() throws Exception {
 		aw.clickNext("flow-next");
 		populateEditStudyDetails();
 		aw.clickNext("flow-next");
+		aw.clickNext("flow-next");
+		populateEditStudyAgents();
 		aw.clickNext("flow-next");
 		populateEditStudyTreatmentAssignments();
 		aw.clickNext("flow-next");
@@ -247,14 +258,15 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		Thread.sleep(1000);
 	}
 
-	public void populateEditStudySites() throws InterruptedException {
-		selenium.click("add-ss-section-button");
-		aw.waitForElementPresent("study.studySites[1].organization-clear");
-
-		selenium.click("study.studySites[1].organization-clear");
-		aw.typeAutosuggest("study.studySites[1].organization-input", "mn003",
-				"study.studySites[1].organization-choices");
-		selenium.click("//a[@id='del-1']/img");
+	public void populateEditStudySites() throws Exception {
+		aw.addLastPanel("add-ss-section-button", "study.studySites[?].organization-clear");
+		//selenium.click("add-ss-section-button");
+		//aw.waitForElementPresent("study.studySites[1].organization-clear");
+		int index = aw.computeLatestElementIndex("study.studySites[?].organization-clear", true);
+		selenium.click("study.studySites["+index+"].organization-clear");
+		aw.typeAutosuggest("study.studySites["+index+"].organization-input", "mn003",
+				"study.studySites["+index+"].organization-choices");
+		selenium.click("//a[@id='del-"+index+"']/img");
 		selenium.waitForPageToLoad("30000");
 		aw.confirmOK("^Do you really want to delete[\\s\\S]$");
 	}
@@ -286,35 +298,50 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	}
 
-	public void populateEditStudyTreatmentAssignments()
-			throws InterruptedException {
-		selenium.click("select-agent-0");
-		selenium.click("AddStudyAgent");
-		aw.waitForElementPresent("//div[@id='sa-section-1']");
+	public void populateEditStudyTreatmentAssignments() throws Exception {
+		aw.addLastPanel("add-si-section-button",
+				"//label[@for='study.treatmentAssignments[?].code']");
 
-		selenium.click("select-agent-1");
-		aw.typeAutosuggest("study.studyAgents[1].agent-input", "123127",
-				"study.studyAgents[1].agent-choices");
-
-		// selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
 		/*
-		 * selenium.click("//div[@id='sa-section-1']/div[1]/h3/div/a/img");
-		 * aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
+		 * selenium.click("add-si-section-button"); aw.waitForElementPresent(
+		 * "//label[@for='study.treatmentAssignments[1].code']");
 		 */
-		Thread.sleep(5000);
-		aw.clickNext("flow-next");
-		selenium.click("add-si-section-button");
-		aw
-				.waitForElementPresent("//label[@for='study.treatmentAssignments[1].code']");
-
-		selenium.type("study.treatmentAssignments[1].code", "TAC2");
-		selenium.type("study.treatmentAssignments[1].description",
-				"TAC2 description");
+		String study_treatmentAssignments_code = aw.computeLatestElement(
+				"study.treatmentAssignments[?].code", true);
+		String study_treatmentAssignments_description = aw
+				.computeLatestElement(
+						"study.treatmentAssignments[?].description", true);
+		selenium.type(study_treatmentAssignments_code, "TAC-1273812");
+		selenium.type(study_treatmentAssignments_description,
+				"TAC-1273812 description");
+		aw.removeLastPanel("//div[@id='si-section-?']/div[1]/h3/div/a/img", "^Are you sure you want to delete this[\\s\\S]$");
 		/*
 		 * selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
 		 * aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
 		 */
 		Thread.sleep(4000);
+	}
+
+	public void populateEditStudyAgents() throws Exception {
+		selenium.click("select-agent-0");
+		aw.addLastPanel("AddStudyAgent", "//div[@id='sa-section-?']");
+
+		// selenium.click("select-agent-2");
+		selenium.click(aw.computeLatestElement("select-agent-?", true));
+		String study_studyAgents_agent_input = aw.computeLatestElement(
+				"study.studyAgents[?].agent-input", true);
+		String study_studyAgents_agent_choices = aw.computeLatestElement(
+				"study.studyAgents[?].agent-choices", true);
+		/*
+		 * aw.typeAutosuggest("study.studyAgents[1].agent-input", "123127",
+		 * "study.studyAgents[2].agent-choices");
+		 */
+		aw.typeAutosuggest(study_studyAgents_agent_input, "123127",
+				study_studyAgents_agent_choices);
+		selenium.select("study.studyAgents[1].indType", "label=CTEP IND");
+		aw.removeLastPanel("//div[@id='sa-section-?']/div[1]/h3/div/a/img",
+				"^Are you sure you want to delete this[\\s\\S]$");
+
 	}
 
 	public void populateEditStudyDetails() {
@@ -579,16 +606,18 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.division_of_cancer_prevention.sae_reporting_rules.xml" };
 		for (int i = 0; i < files.length; i++) {
 			// String absPath = new File(rulesDir+files[i]).getAbsolutePath();
-			String absPath =  seleniumRulesDir+ files[i];
+			String absPath = seleniumRulesDir + files[i];
 			System.out.println("Rule file being imported: " + absPath);
 			log("Uploading rule from: " + absPath);
 			selenium.type("ruleSetFile1", absPath);
 			selenium.click("//input[@value='Import']");
 			selenium.waitForPageToLoad("30000");
-			if(!selenium.isElementPresent("//p[contains(text(),'Rules imported successfully')]"))
-			throw new Exception("Error when importing following rule xml: "+absPath);
+			if (!selenium
+					.isElementPresent("//p[contains(text(),'Rules imported successfully')]"))
+				throw new Exception("Error when importing following rule xml: "
+						+ absPath);
 		}
-		
+
 	}
 	// public void editInvestigator(String ){}
 	/*

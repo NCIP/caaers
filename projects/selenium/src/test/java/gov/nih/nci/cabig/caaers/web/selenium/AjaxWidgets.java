@@ -21,7 +21,7 @@ public class AjaxWidgets extends TestCase {
 		selenium.waitForPageToLoad("30000");
 	}
 
-	public void confirmOK(String confirmMessage) throws InterruptedException {
+	public void confirmOK(String expectedMessage) throws InterruptedException {
 		/*
 		 * confirmMessage should have the following format: original: Are you
 		 * sure you want to delete this? transformed: ^Are you sure you want to
@@ -37,9 +37,12 @@ public class AjaxWidgets extends TestCase {
 			}
 			Thread.sleep(1000);
 		}
-		String s = selenium.getConfirmation();
+		String actual = selenium.getConfirmation();
+		// selenium.chooseOkOnNextConfirmation();
 		// System.out.println(s+" confirmMessage: "+confirmMessage);
-		assertTrue(s.matches(confirmMessage));
+		assertTrue("Did not see matching confirm message. " + "\n Expected: "
+				+ expectedMessage + "\n Actual: " + actual, actual
+				.matches(expectedMessage));
 	}
 
 	public void login() throws Exception {
@@ -54,10 +57,10 @@ public class AjaxWidgets extends TestCase {
 	public void typeAutosuggest(String element, String text, String elemPresent)
 			throws InterruptedException {
 		selenium.click(element);
-		String elemValue=selenium.getValue(element);
-		
-		for(int i=0;i<elemValue.length();i++)
-		selenium.typeKeys(element, "\b");
+		String elemValue = selenium.getValue(element);
+
+		for (int i = 0; i < elemValue.length(); i++)
+			selenium.typeKeys(element, "\b");
 		selenium.typeKeys(element, text);
 		waitForElementPresent("//div[@id='" + elemPresent + "']/ul/li");
 
@@ -149,16 +152,13 @@ public class AjaxWidgets extends TestCase {
 		waitForElementPresent(latestElement);
 	}
 
-	public String computeLatestElement(String waitForElementPresent,
+	public int computeLatestElementIndex(String waitForElementPresent,
 			boolean exists) throws Exception {
-		if (waitForElementPresent.indexOf('?') == -1)
-			throw new Exception("Element is malformed. \n Value passed:\n"
-					+ waitForElementPresent
-					+ "\n does not have '?' character as required.");
-		String parts[] = waitForElementPresent.split("\\?");
+		String[] parts = split(waitForElementPresent);
+
 		boolean loop = true;
 		int i = 0;
-		for (i = 0; loop; i++) {
+		for (; loop; i++) {
 			if (!(selenium.isElementPresent(parts[0] + i + parts[1])))
 				loop = false;
 			System.out.println("\n checking through: " + parts[0] + i
@@ -166,9 +166,32 @@ public class AjaxWidgets extends TestCase {
 		}
 		i--;
 		if (exists) {
-			return parts[0] + (--i) + parts[1];
+			// return parts[0] + (--i) + parts[1];
+			return (--i);
 		} else
-			return parts[0] + i + parts[1];
+			return i;
+
+	}
+
+	public String[] split(String waitForElementPresent) throws Exception {
+		if (waitForElementPresent.indexOf('?') == -1)
+			throw new Exception("Element is malformed. \n Value passed:\n"
+					+ waitForElementPresent
+					+ "\n does not have '?' character as required.");
+		String parts[] = waitForElementPresent.split("\\?");
+		if (parts.length < 2) {
+			String temp[] = { parts[0], "" };
+			parts = temp;
+		}
+		return parts;
+	}
+
+	public String computeLatestElement(String waitForElementPresent,
+			boolean exists) throws Exception {
+		String parts[] = split(waitForElementPresent);
+		return parts[0]
+				+ computeLatestElementIndex(waitForElementPresent, exists)
+				+ parts[1];
 	}
 
 	public void clickCalendar(String linkId) throws InterruptedException {

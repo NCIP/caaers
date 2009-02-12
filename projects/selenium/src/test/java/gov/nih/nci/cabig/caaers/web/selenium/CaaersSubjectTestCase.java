@@ -2,7 +2,7 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 
 import java.util.Calendar;
 
-public class CaaersSubjectTest extends CaaersSeleniumTestCase {
+public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 	String firstName = "catherine";
 	String lastName = "jones";
 	CaaersSubjectFlowFixtures subFixtures;

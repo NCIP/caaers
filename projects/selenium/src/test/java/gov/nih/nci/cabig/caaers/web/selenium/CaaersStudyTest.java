@@ -32,7 +32,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 						.isTextPresent("Phase I Study of CCI-779 and Temozolomide in Combination with Radiation Therapy in Glioblastoma Multiforme"));
 	}
 
-	/*public void testEditStudy() throws Exception {
+	public void testEditStudy() throws Exception {
 		checkLogin();
 		//studyId=studyId+"-ctc";
 		studyId="N027D";
@@ -45,5 +45,5 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 		assertTrue("Create Study failure", true);
 		assertTrue("Create Study failure", selenium.isTextPresent("Information saved successfully"));
 	}
-*/
+
 }
