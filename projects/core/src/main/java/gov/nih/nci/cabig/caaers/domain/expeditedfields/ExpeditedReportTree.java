@@ -53,7 +53,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         new AdverseEventsDisplayNameCreator(),
                                         property("grade", "Grade"),
                                         property("adverseEventCtcTerm", property("term", "CTC term")),
-                                        property("detailsForOther","Other (specify)"),
+                                        property("detailsForOther","Verbatim"),
                                         property("startDate", "Start date"),
                                         property("endDate", "End date"), 
                                         property("attributionSummary","Attribution to study"),

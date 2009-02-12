@@ -60,21 +60,11 @@
         <tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[0]}" style="display: none">
         <jsp:attribute name="label">
             <label>
-                <input id="select-meddra-${index}" name="meddraOrVerbatim${index}" type="radio"/>
+                <%--<input id="select-meddra-${index}" namatchLowLevelTermsByCodeme="meddraOrVerbatim${index}" type="radio"/>--%>
                 ${fieldGroups[ctcOtherGroup].fields[0].displayName}
             </label>
         </jsp:attribute>
    		</tags:renderRow>
-   		
-   		<tags:renderRow field="${fieldGroups[ctcOtherGroup].fields[1]}" style="display: none">
-        <jsp:attribute name="label">
-            <label>
-                <input id="select-other-${index}" name="meddraOrVerbatim${index}" type="radio"/>
-                ${fieldGroups[ctcOtherGroup].fields[1].displayName}
-            </label>
-        </jsp:attribute>
-    </tags:renderRow>
-        
     </div>
 
     <div id="main-fields-${index}" class="main-fields">

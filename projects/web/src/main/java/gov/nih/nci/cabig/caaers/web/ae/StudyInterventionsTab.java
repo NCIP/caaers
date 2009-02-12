@@ -78,7 +78,7 @@ public class StudyInterventionsTab extends AeTab {
     }
 
     private void createAgentFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
-        InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study Agent", false, WebUtils.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName", "Please select"));
+        InputField agentField = InputFieldFactory.createSelectField("studyAgent", "Study agent", false, WebUtils.collectOptions(command.getStudy().getStudyAgents(), "id", "agentName", "Please select"));
         InputField totalDoseField = InputFieldFactory.createTextField("dose.amount", "Total dose administered this course", false);
         InputFieldAttributes.setSize(totalDoseField, 4);
         InputField totalUOMField = InputFieldFactory.createSelectField("dose.units","Unit of measure", false, WebUtils.sortMapByKey(WebUtils.collectOptions(configurationProperty.getMap().get("agentDoseUMORefData"),"code", "desc", "Please Select"), true));

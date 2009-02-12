@@ -65,7 +65,9 @@ div.row div.value, div.row div.extra {
 <script type="text/javascript">
 		var routingHelper = new RoutingAndReviewHelper(createAE);
         var aeReportId = ${empty command.aeReport.id ? 'null' : command.aeReport.id}
-        var terminologyVersionId = ${empty command.assignment.studySite.study.aeTerminology.meddraVersion.id ? command.assignment.studySite.study.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id} 
+
+        var AETerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.aeTerminology.ctcVersion.id : command.assignment.studySite.study.aeTerminology.meddraVersion.id}
+        var OtherMeddraTerminologyVersionID = ${not empty command.assignment.studySite.study.aeTerminology.ctcVersion ? command.assignment.studySite.study.otherMeddra.id : -1}
 
         var initialCtcTerm = [ ]
         <c:forEach items="${command.aeReport.adverseEvents}" var="ae" varStatus="aeStatus">
@@ -102,7 +104,6 @@ div.row div.value, div.row div.extra {
                 this.div = $(div)
                 AESections.push(this);
                 this.initialCtcTerm = ctcTerm;
-
                 this.resetTermText()
 
                 Event.observe(this._ctcCategoryId(), "change", this.clearSelectedTerm.bindAsEventListener(this))
@@ -113,30 +114,24 @@ div.row div.value, div.row div.extra {
                 
                 // Taking care of meddra or other 
                 this.initializeMeddraOrOther(this.initialCtcTerm)
-                
-                
-                Event.observe(this._selectMeddraId(), "click", this.updateMeddraOrOther.bindAsEventListener(this))
-                Event.observe(this._selectOtherId(), "click", this.updateMeddraOrOther.bindAsEventListener(this))
-                
-             
-               
-                
-                AE.createStandardAutocompleter(this._detailsForOtherLltId(),
-					function(autocompleter, text) {
-						createAE.matchLowLevelTermsByCode(terminologyVersionId,text, function(values) {
-													autocompleter.setChoices(values)})
-				},
-				function(lowLevelTerm) { return lowLevelTerm.fullName });
 
-                AE.createStandardAutocompleter(
-                    this._ctcTermId(), this.termPopulator.bind(this), termValueSelector, {
+                AE.createStandardAutocompleter(this._detailsForOtherLltId(),
+                        function(autocompleter, text) {
+                            createAE.matchLowLevelTermsByCode(OtherMeddraTerminologyVersionID, text, function(values) {autocompleter.setChoices(values)})
+                        },
+                        function(lowLevelTerm) {
+                            return lowLevelTerm.fullName
+                        });
+
+                AE.createStandardAutocompleter(this._ctcTermId(), this.termPopulator.bind(this), termValueSelector, {
                         afterUpdateElement: function(inputElement, selectedElement, selectedChoice) {
                             this.selectTerm(selectedChoice)
                         }.bind(this)
                     }
                 )
-                initSearchField()
-                AE.registerCalendarPopups(this.div.id)
+
+                initSearchField();
+                AE.registerCalendarPopups(this.div.id);
             },
 
             _index: function() { return +this.div.getAttribute("item-index"); },
@@ -159,15 +154,13 @@ div.row div.value, div.row div.extra {
 
             resetTermText: function() {
                 if (this.initialCtcTerm) {
-                    // select term first to work around a bug in showing the "other" row when the
-                    // element is only partially visible
                     this.selectTerm(this.initialCtcTerm)
                     $(this._ctcTermInputId()).value = termValueSelector(this.initialCtcTerm)
                 }
             },
             
             updateMeddraOrOther: function() {
-            	var isMeddra     = $(this._selectMeddraId()).checked
+            	var isMeddra     = true
                 var meddraRow    = $(this._detailsForOtherLltRowId())
                 var meddraRowInp = $(this._detailsForOtherLltInpId())
                 var meddra       = $(this._detailsForOtherLltId())
@@ -175,15 +168,9 @@ div.row div.value, div.row div.extra {
                 var other        = $(this._detailsForOtherId())
                 
                 if (isMeddra) {
-                	
-                    meddraRowInp.removeAttribute('readOnly')
-                    other.value=""
-                    other.setAttribute('readOnly',true);
                 } else {
-                	meddraRowInp.value=""
-                    meddraRowInp.setAttribute('readOnly',true);
-                    meddra.value=""
-                    other.removeAttribute('readOnly');
+                    meddraRowInp.value = ""
+                    meddra.value = ""
                 }
             	
             },
@@ -194,40 +181,26 @@ div.row div.value, div.row div.extra {
                 var meddraRowInp = $(this._detailsForOtherLltInpId())
                 var other        = $(this._detailsForOtherId())
                 
-            	if (this.initialCtcTerm != null ){
+            	if (this.initialCtcTerm != null ) {
             		var meddra = ctcTerm.lowLevelTermField
             		 if (meddra.length == 0) {
             		 	meddraRowInp.value=""
-                    	meddraRowInp.setAttribute('readOnly',true);
                     	meddra.value=""
-                    	other.removeAttribute('readOnly');
-            		 	
-            		 	
                 	 } else {
-                	 	$(this._selectMeddraId()).click()
-                	 	
-                	 	meddraRowInp.removeAttribute('readOnly')
-                    	other.value=""
-                    	other.setAttribute('readOnly',true);
-                	 	
+                	 	 this.updateMeddraOrOther();
                     }
-                }else{
-                	$(this._selectMeddraId()).click()
-                	
-                	meddraRowInp.removeAttribute('readOnly')
-                    other.value=""
-                    other.setAttribute('readOnly',true);
-                	
+                } else{
+                    this.updateMeddraOrOther();
                 }
             },
-            
-            
             
             clearSelectedTerm: function() {
                 $(this._ctcTermInputId()).className = 'pending-search'
                 $(this._ctcTermInputId()).value = '(Begin typing here)'
+/*
                 $(this._detailsForOtherId()).value = ""
                 AE.slideAndHide(this._detailsForOtherRowId())
+*/
             },
 
             selectTerm: function(newCtcTerm) {
@@ -240,17 +213,12 @@ div.row div.value, div.row div.extra {
                 $(this._ctcTermId()).value = newCtcTerm.id
                 if (newCtcTerm.otherRequired) {
                     if ($(this._ctcDetailsId()).visible()) {
-                        AE.slideAndShow(this._detailsForOtherRowId())
                         AE.slideAndShow(this._detailsForOtherLltRowId())
-                        
                     } else {
-                        $(this._detailsForOtherRowId()).show()
                         $(this._detailsForOtherLltRowId()).show()
                     }
                 } else {
-                    AE.slideAndHide(this._detailsForOtherRowId())
                     AE.slideAndHide(this._detailsForOtherLltRowId())
-                    $(this._detailsForOtherId()).value = ""
                     $(this._detailsForOtherLltId()).value = ""
                 }
 
@@ -283,7 +251,7 @@ div.row div.value, div.row div.extra {
             },
 
             termPopulator: function(autocompleter, text) {
-                createAE.matchTerms(text, terminologyVersionId, $F(this._ctcCategoryId()), 25, function(values) {
+                createAE.matchTerms(text, AETerminologyVersionID, $F(this._ctcCategoryId()), 25, function(values) {
                     autocompleter.setChoices(values)
                 })
             }
@@ -349,7 +317,6 @@ div.row div.value, div.row div.extra {
         function showAjaxTable(an, ctc, tableId, outerTableId) {
             var ctcId = ctc;
             var parameterMap = getParameterMap('command');
-            ;
 
             createAE.buildTermsTableByCategory(parameterMap, ctcId, tableId, showTable2);
             function showTable2(table) {
@@ -360,15 +327,14 @@ div.row div.value, div.row div.extra {
                 testDiv.innerHTML = table;
                 testDiv.show();
                 testOuterDiv.show();
-
             }
 
         }
 
-            function hideShowAllTable(popupTable) {
-               var popupTableDiv = $(popupTable);
-                popupTableDiv.hide();
-            }
+        function hideShowAllTable(popupTable) {
+            var popupTableDiv = $(popupTable);
+            popupTableDiv.hide();
+        }
 
         function buildTable(form, ctcId, tableId) {
             var parameterMap = getParameterMap(form);
@@ -380,8 +346,6 @@ div.row div.value, div.row div.extra {
                 testDiv.innerHTML = table;
                 
                 testDiv.show();
-
-
             }
         }
 
@@ -404,23 +368,18 @@ div.row div.value, div.row div.extra {
 
         function enableDisableAjaxTable(tableIndex) {
             var testDiv = $('table' + tableIndex);
-            if (!testDiv== '')
-            {
+            if (!testDiv == '') {
                 testDiv.hide()
             }
 
-            if ($('aeReport.adverseEvents[' + tableIndex + '].ctc-category').value == '')
-            {
+            if ($('aeReport.adverseEvents[' + tableIndex + '].ctc-category').value == '') {
                 $('showAllTerm' + tableIndex).hide()
-
             } else {
                 $('showAllTerm' + tableIndex).show()
-
             }
-
         }
 
-    </script>
+</script>
 </head>
 <body>
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">

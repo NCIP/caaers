@@ -43,13 +43,10 @@ public abstract class BasicsTab extends AeTab {
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
 
-/*
-        InputField commentsField = InputFieldFactory.createTextArea("comments", "Comments", false);
-        InputFieldAttributes.setColumns(commentsField, 80);
-        InputFieldAttributes.setRows(commentsField, 5);
-*/
+        InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther","Verbatim", false);
+        InputFieldAttributes.setColumns(otherVerbatimField, 49);
 
-        creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents",
+        creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
                 InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
                 InputFieldFactory.createPastDateField("startDate", "Start date", false),
                 InputFieldFactory.createPastDateField("endDate", "End date", false),
@@ -66,25 +63,21 @@ public abstract class BasicsTab extends AeTab {
     }
 
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean,
-                            Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
         super.validate(command, commandBean, fieldGroups, errors);
-        // TODO: validate that there is at least one AE
-        for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents()
-                .listIterator(); lit.hasNext();) {
+        
+        for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae = lit.next();
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
         }
-        InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(1);
+        InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);
         
         if (command.getAeReport().getAdverseEvents().size() > 0 && command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
             errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED", firstStartDateField.getDisplayName() + " required for primary AE");
         }
-
     }
 
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
-
     }
 
     protected void outcomeHelpKeyExclusion() {
