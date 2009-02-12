@@ -38,12 +38,9 @@ public class CtcBasicsTabTest extends AeTabTestCase {
     	 ctcae3 = Fixtures.createCtcaeV3();
         super.setUp();
 
-       
-        AeTerminology t = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite()
-                        .getStudy());
+        AeTerminology t = Fixtures.createCtcV3Terminology(command.getAssignment().getStudySite().getStudy());
         command.getAssignment().getStudySite().getStudy().setAeTerminology(t);
-        command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(
-        		ctcae3);
+        command.getAssignment().getStudySite().getStudy().getAeTerminology().setCtcVersion(ctcae3);
 
         ae0 = command.getAeReport().getAdverseEvents().get(0);
         assertNotNull(ae0.getAdverseEventCtcTerm().getAdverseEvent());
@@ -101,27 +98,20 @@ public class CtcBasicsTabTest extends AeTabTestCase {
         ae0.setLowLevelTerm(null);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].lowLevelTerm", "Other (MedDRA)");
-        assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther",
-                        "Other (verbatim)");
+        // assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].detailsForOther","Other (verbatim)");
     }
 
     @SuppressWarnings( { "unchecked" })
     public void testGradeFieldOptions() throws Exception {
         InputFieldGroup main = getFieldGroup("main0");
-        InputField gradeField = main.getFields().get(0);
-        assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField
-                        .getPropertyName());
+        InputField gradeField = main.getFields().get(1);
+        assertEquals("Field 0 is not grade", "aeReport.adverseEvents[0].grade", gradeField.getPropertyName());
         Map<Object, Object> options = InputFieldAttributes.getOptions(gradeField);
-        assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL
-                        .getName()));
-        assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL
-                        .toString()));
-        
+        assertFalse("Options should not contain grade 0", options.containsKey(Grade.NORMAL.getName()));
+        assertFalse("Options should not contain grade 0", options.containsValue(Grade.NORMAL.toString()));
         assertFalse("Options should not contain grade -1", options.containsKey(Grade.NOT_EVALUATED.toString()));
         assertFalse("Options should not contain grade -1", options.containsValue(Grade.NOT_EVALUATED.toString()));
-        
         assertEquals("Wrong number of options", 5, options.size());
-
         assertGradeOptionPresent(options, Grade.MILD);
         assertGradeOptionPresent(options, Grade.MODERATE);
         assertGradeOptionPresent(options, Grade.SEVERE);

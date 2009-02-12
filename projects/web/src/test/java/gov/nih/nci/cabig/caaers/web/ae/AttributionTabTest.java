@@ -3,25 +3,17 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudyAgent;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.CourseAgent;
-import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
-import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.DiseaseTerm;
-import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
-import gov.nih.nci.cabig.caaers.domain.OtherCause;
-import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
-import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.*;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
 
 /**
  * @author Rhett Sutphin
+ * @author Ion C. Olaru
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT })
 public class AttributionTabTest extends AeTabTestCase {
@@ -46,26 +38,18 @@ public class AttributionTabTest extends AeTabTestCase {
         assertNotNull(actualGroup0);
         assertEquals("Witch niece (56ug IV)", actualGroup0.getDisplayName());
         assertEquals(4, actualGroup0.getFields().size());
-        assertEquals("attributionMap[courseAgent][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][2][0]", actualGroup0.getFields().get(2)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][3][0]", actualGroup0.getFields().get(3)
-                        .getPropertyName());
+        assertEquals("attributionMap[courseAgent][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[courseAgent][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[courseAgent][2][0]", actualGroup0.getFields().get(2).getPropertyName());
+        assertEquals("attributionMap[courseAgent][3][0]", actualGroup0.getFields().get(3).getPropertyName());
 
         InputFieldGroup actualGroup1 = map.get("courseAgent1");
         assertNotNull(actualGroup1);
         assertEquals(4, actualGroup0.getFields().size());
-        assertEquals("attributionMap[courseAgent][0][1]", actualGroup1.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][1][1]", actualGroup1.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][2][1]", actualGroup1.getFields().get(2)
-                        .getPropertyName());
-        assertEquals("attributionMap[courseAgent][3][1]", actualGroup1.getFields().get(3)
-                        .getPropertyName());
+        assertEquals("attributionMap[courseAgent][0][1]", actualGroup1.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[courseAgent][1][1]", actualGroup1.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[courseAgent][2][1]", actualGroup1.getFields().get(2).getPropertyName());
+        assertEquals("attributionMap[courseAgent][3][1]", actualGroup1.getFields().get(3).getPropertyName());
     }
 
     public void testConMedFieldsIncluded() throws Exception {
@@ -78,32 +62,23 @@ public class AttributionTabTest extends AeTabTestCase {
         InputFieldGroup actualGroup0 = map.get("conMed0");
         assertNotNull(actualGroup0);
         assertEquals(3, actualGroup0.getFields().size());
-        assertEquals("attributionMap[conMed][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][2][0]", actualGroup0.getFields().get(2)
-                        .getPropertyName());
+        assertEquals("attributionMap[conMed][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[conMed][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[conMed][2][0]", actualGroup0.getFields().get(2).getPropertyName());
 
         InputFieldGroup actualGroup1 = map.get("conMed1");
         assertNotNull(actualGroup1);
         assertEquals(3, actualGroup1.getFields().size());
-        assertEquals("attributionMap[conMed][0][1]", actualGroup1.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][1][1]", actualGroup1.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][2][1]", actualGroup1.getFields().get(2)
-                        .getPropertyName());
+        assertEquals("attributionMap[conMed][0][1]", actualGroup1.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[conMed][1][1]", actualGroup1.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[conMed][2][1]", actualGroup1.getFields().get(2).getPropertyName());
 
         InputFieldGroup actualGroup2 = map.get("conMed2");
         assertNotNull(actualGroup2);
         assertEquals(3, actualGroup2.getFields().size());
-        assertEquals("attributionMap[conMed][0][2]", actualGroup2.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][1][2]", actualGroup2.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[conMed][2][2]", actualGroup2.getFields().get(2)
-                        .getPropertyName());
+        assertEquals("attributionMap[conMed][0][2]", actualGroup2.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[conMed][1][2]", actualGroup2.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[conMed][2][2]", actualGroup2.getFields().get(2).getPropertyName());
     }
 
     public void testOtherCauseFieldsIncluded() throws Exception {
@@ -116,13 +91,11 @@ public class AttributionTabTest extends AeTabTestCase {
         InputFieldGroup actualGroup0 = map.get("other0");
         assertNotNull(actualGroup0);
         assertEquals(1, actualGroup0.getFields().size());
-        assertEquals("attributionMap[other][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
+        assertEquals("attributionMap[other][0][0]", actualGroup0.getFields().get(0).getPropertyName());
         InputFieldGroup actualGroup1 = map.get("other1");
         assertNotNull(actualGroup1);
         assertEquals(1, actualGroup1.getFields().size());
-        assertEquals("attributionMap[other][0][1]", actualGroup1.getFields().get(0)
-                        .getPropertyName());
+        assertEquals("attributionMap[other][0][1]", actualGroup1.getFields().get(0).getPropertyName());
     }
 
     public void testCtepDiseaseFieldsIncluded() throws Exception {
@@ -135,18 +108,14 @@ public class AttributionTabTest extends AeTabTestCase {
 
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
         assertEquals("Wrong number of disease groups", 1, map.size());
-        assertTrue(
-                        "Map doesn't contain expected repeating group key. Actual keys: "
-                                        + map.keySet(), map.containsKey("disease0"));
+        assertTrue("Map doesn't contain expected repeating group key. Actual keys: "+ map.keySet(), map.containsKey("disease0"));
 
         InputFieldGroup actualGroup0 = map.get("disease0");
         assertNotNull(actualGroup0);
         assertEquals("Something", actualGroup0.getDisplayName());
         assertEquals(2, actualGroup0.getFields().size());
-        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
+        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1).getPropertyName());
     }
 
     public void testOtherDiseaseFieldsIncluded() throws Exception {
@@ -157,18 +126,14 @@ public class AttributionTabTest extends AeTabTestCase {
 
         Map<String, InputFieldGroup> map = getTab().createFieldGroups(command);
         assertEquals("Wrong number of disease groups", 1, map.size());
-        assertTrue(
-                        "Map doesn't contain expected repeating group key. Actual keys: "
-                                        + map.keySet(), map.containsKey("disease0"));
+        assertTrue("Map doesn't contain expected repeating group key. Actual keys: " + map.keySet(), map.containsKey("disease0"));
 
         InputFieldGroup actualGroup0 = map.get("disease0");
         assertNotNull(actualGroup0);
         assertEquals("Nose pain", actualGroup0.getDisplayName());
         assertEquals(2, actualGroup0.getFields().size());
-        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
+        assertEquals("attributionMap[disease][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[disease][1][0]", actualGroup0.getFields().get(1).getPropertyName());
     }
 
     public void testSurgeryFieldsIncluded() throws Exception {
@@ -182,16 +147,12 @@ public class AttributionTabTest extends AeTabTestCase {
         InputFieldGroup actualGroup0 = map.get("surgery0");
         assertNotNull(actualGroup0);
         assertEquals(3, actualGroup0.getFields().size());
-        assertEquals("attributionMap[surgery][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[surgery][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[surgery][2][0]", actualGroup0.getFields().get(2)
-                        .getPropertyName());
+        assertEquals("attributionMap[surgery][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[surgery][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[surgery][2][0]", actualGroup0.getFields().get(2).getPropertyName());
     }
 
     public void testRadiationFieldsIncluded() throws Exception {
-
         ensureRadiationInterventionCount(1);
         ensureAeCount(3);
 
@@ -201,12 +162,9 @@ public class AttributionTabTest extends AeTabTestCase {
         InputFieldGroup actualGroup0 = map.get("radiation0");
         assertNotNull(actualGroup0);
         assertEquals(3, actualGroup0.getFields().size());
-        assertEquals("attributionMap[radiation][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[radiation][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
-        assertEquals("attributionMap[radiation][2][0]", actualGroup0.getFields().get(2)
-                        .getPropertyName());
+        assertEquals("attributionMap[radiation][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[radiation][1][0]", actualGroup0.getFields().get(1).getPropertyName());
+        assertEquals("attributionMap[radiation][2][0]", actualGroup0.getFields().get(2).getPropertyName());
     }
 
     public void testDeviceFieldsIncluded() throws Exception {
@@ -219,10 +177,8 @@ public class AttributionTabTest extends AeTabTestCase {
         InputFieldGroup actualGroup0 = map.get("device0");
         assertNotNull(actualGroup0);
         assertEquals(2, actualGroup0.getFields().size());
-        assertEquals("attributionMap[device][0][0]", actualGroup0.getFields().get(0)
-                        .getPropertyName());
-        assertEquals("attributionMap[device][1][0]", actualGroup0.getFields().get(1)
-                        .getPropertyName());
+        assertEquals("attributionMap[device][0][0]", actualGroup0.getFields().get(0).getPropertyName());
+        assertEquals("attributionMap[device][1][0]", actualGroup0.getFields().get(1).getPropertyName());
     }
 
     public void testNoDiseaseFieldsWhenDiseaseBlank() throws Exception {
@@ -281,8 +237,7 @@ public class AttributionTabTest extends AeTabTestCase {
 
     @SuppressWarnings( { "unchecked" })
     private List<AttributionTab.AttributionBlock> getBlocks() {
-        return (List<AttributionTab.AttributionBlock>) getTab().referenceData(request, command)
-                        .get("blocks");
+        return (List<AttributionTab.AttributionBlock>) getTab().referenceData(request, command).get("blocks");
     }
 
     private void ensureAeCount(int count) {
@@ -307,19 +262,29 @@ public class AttributionTabTest extends AeTabTestCase {
 
     private void ensureRadiationInterventionCount(int count) {
         while (command.getAeReport().getRadiationInterventions().size() < count) {
-            command.getAeReport().addRadiationIntervention(new RadiationIntervention());
+            RadiationIntervention ri = new RadiationIntervention();
+            ri.setAdministration(RadiationAdministration.BT_HDR);
+            ri.setDosage("1");
+            ri.setDosageUnit("kg");
+            command.getAeReport().addRadiationIntervention(ri);
         }
     }
 
     private void ensureSurgeryInterventionCount(int count) {
         while (command.getAeReport().getSurgeryInterventions().size() < count) {
-            command.getAeReport().addSurgeryIntervention(new SurgeryIntervention());
+            SurgeryIntervention si = new SurgeryIntervention();
+            si.setInterventionDate(new Date(System.currentTimeMillis()));
+            si.setInterventionSite(new InterventionSite());
+            command.getAeReport().addSurgeryIntervention(si);
         }
     }
 
     private void ensureMedicalDeviceCount(int count) {
         while (command.getAeReport().getMedicalDevices().size() < count) {
-            command.getAeReport().addMedicalDevice(new MedicalDevice());
+            MedicalDevice md = new MedicalDevice();
+            md.setBrandName("BrandName " + command.getAeReport().getMedicalDevices().size());
+            md.setCommonName("CommonName " + command.getAeReport().getMedicalDevices().size());
+            command.getAeReport().addMedicalDevice(md);
         }
     }
 
