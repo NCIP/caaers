@@ -141,7 +141,11 @@ public class SolicitedAdverseEventTab extends StudyTab {
             while (iterator.hasNext()) {
                 Epoch epoch = iterator.next();
                 if (!unDeletedEpochs.contains(String.valueOf(epoch.getEpochOrder()))) {
-                    int count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
+
+                    int count = 0;
+                    if (epoch.getId() != null)
+                        count = epochDao.getCountReportingPeriodsByEpochId(epoch.getId());
+
                     // System.out.println("This epoch is assigned to (" + count + ") Reporting Periods.");
                     if (count == 0) iterator.remove(); else {
                         request.setAttribute("statusMessage", "wrongEpochDelete");
@@ -216,28 +220,6 @@ public class SolicitedAdverseEventTab extends StudyTab {
         return attr;
     }
     
-/*
-    */
-/*
-     * 
-     * For future use...
-     */
-/*
-    public String[] getSortedTerms(String[] termIDs) {
-        ArrayList<Integer> listOfTermIDS = new ArrayList<Integer>();
-
-        for (String termID : termIDs)
-            listOfTermIDS.add(Integer.valueOf(termID));
-
-        java.util.Collections.sort(listOfTermIDS);
-
-        for (int i = 0; i < termIDs.length; i++)
-            termIDs[i] = String.valueOf(listOfTermIDS.get(i));
-
-        return termIDs;
-    }
-*/
-
 	public CtcTermDao getCtcTermDao() {
 		return ctcTermDao;
 	}
@@ -276,7 +258,7 @@ public class SolicitedAdverseEventTab extends StudyTab {
  *  For future use
  */
 	public ModelAndView deleteEpoch(HttpServletRequest request, Object command, Errors error) {
-		Study study= ((StudyCommand)command).getStudy();
+		Study study = ((StudyCommand)command).getStudy();
         // the list of all epochs on the page (before deleting) except the # of the one to delete
         String[] epoch_ids = request.getParameterValues("epoch_id");
     	retainOnlyTheseEpochsInStudy(request, study, epoch_ids);

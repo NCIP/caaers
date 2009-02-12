@@ -226,6 +226,7 @@
     {
       var event_id = Event.element(event).id;
       var div_id = event_id.gsub(/(\w+)-id/,'#{1}-div');
+      div_id = "study." + div_id;
       var window_id = "window-"+div_id;
       
       if( setOfWindowsOpened.indexOf(window_id) != -1 )
