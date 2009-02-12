@@ -9,17 +9,19 @@
 
 
 
-	<target name="upload-rules" depends="compile-test">
-		<sleep seconds="10"/>
-		<delete dir="${test.lib.dir}" failonerror="false" verbose="true"/>
-		
-		<antcall target="test" inheritall="false">
-			<param name="test" value="CaaersRulesSeleniumTestCase"/>
+	<target name="upload-rules">
+		<echo message="Sleeping 10 seconds..." />
+		<sleep seconds="10" />
+
+		<!--delete dir="${test.lib.dir}" failonerror="false" verbose="true"/-->
+
+		<antcall target="test" inheritall="false" inheritrefs="false">
+			<param name="test" value="CaaersRulesSeleniumTestCase" />
 
 		</antcall>
-		</target>
-	
-	
+	</target>
+
+
 	<!--
 	<target name="copy-caaers-context">
 		<delete dir="${main.src}/../webapp/WEB-INF/classes" />
@@ -61,7 +63,7 @@
 	<!-- ================================= 
           target: test-ui              
          ================================= -->
-	<target name="test-ui" depends="clean-classes-test, resolve,resolve-test, reset-db,upload-rules,test-report" description="---> test caaers UI using selenium">
+	<target name="test-ui" depends="clean-classes-test, resolve,resolve-test, reset-db,upload-rules,test-report" description=" test caaers UI using selenium">
 		<!--junit printsummary="yes" errorproperty="sel.test.failed" failureproperty="sel.test.failed" showoutput="true" fork="true" forkmode="once" timeout="600000">
 			<classpath location="${test.dir}/java" />
 			<classpath refid="${java.class.path}" />
@@ -77,14 +79,16 @@
          ================================= -->
 	<target name="reset-db" description="reset the db to a good baseline dump.">
 
-		<copy file="${test.dir}/lib/jsch-0.1.41.jar" todir="${ant.library.dir}" />
+		<copy file="${test.resources}/lib/jsch-0.1.41.jar" todir="${ant.library.dir}" />
 		<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-			<classpath refid="test.run.classpath" />
-			<!--classpath>
-					<pathelement location="${local.lib.dir}/ant-contrib-0.6.jar" />
-				</classpath-->
+			<!--classpath refid="test.run.classpath" /-->
+			<classpath>
+				<pathelement location="${test.resources}/lib/ant-contrib-0.6.jar" />
+			</classpath>
 		</taskdef>
+
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/stopall.sh" />
+
 		<scp trust="true" todir="oracle:Oracle123!@sbhost02.semanticbits.com:/home/oracle">
 			<fileset dir="${test.resources}">
 				<include name="refreshSelenium.sql" />
@@ -93,7 +97,7 @@
 		</scp>
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
-		<!--sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" /-->
+		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" />
 		<echo message="Sleeping 10 seconds..." />
 		<sleep seconds="10" />
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/droprules.sh" />

@@ -8,7 +8,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 	String studyId = "N027D-test1-"+Calendar.getInstance().getTimeInMillis();
 	
 
-	public void testCreateCTCStudy() throws Exception {
+	public void testCreateCTCStudy() {
 		try {
 			checkLogin();
 			createCTCStudy(studyId+"-ctc");
@@ -17,11 +17,11 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail("test failed");
+			fail("test failed in testCreateCTCStudy");
 		}
 	}
 	
-	public void testCreateMeddraStudy() throws Exception {
+	public void testCreateMeddraStudy() {
 		try {
 			checkLogin();
 			createMeddraStudy(studyId+"-meddra");
@@ -30,10 +30,10 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail("test failed");
+			fail("test failed in testCreateMeddraStudy");
 		}
 	}
-	public void testSearchStudy() throws Exception {
+	public void testSearchStudy() {
 		try {
 			checkLogin();
 			studyId = "N027D";
@@ -45,11 +45,11 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			fail("test failed");
+			fail("test failed testSearchStudy");
 		}
 	}
 
-	public void testEditStudy() throws Exception {
+	public void testEditStudy() {
 		try {
 			checkLogin();
 			//studyId=studyId+"-ctc";
@@ -65,7 +65,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			fail("test failed");
+			fail("test failed in testEditStudy");
 		}
 	}
 
