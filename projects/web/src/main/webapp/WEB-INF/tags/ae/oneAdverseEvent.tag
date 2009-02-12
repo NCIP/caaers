@@ -14,7 +14,7 @@
 
 <c:set var="title">
     <c:choose>
-        <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term} (Primary)</c:when>
+        <c:when test="${index == 0}">${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:when>
         <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:otherwise>
     </c:choose>
 </c:set>
