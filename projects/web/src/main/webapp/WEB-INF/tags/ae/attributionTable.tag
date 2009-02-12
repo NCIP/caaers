@@ -43,23 +43,13 @@
         </c:forEach>
     </tr>
     <c:forEach items="${blocks}" var="block">
-<%--
-        <c:set var="display" value="${  (block.displayName eq 'Agent' && hasAgent) ||
-                        (block.displayName eq 'Agents' && hasAgent) ||
-                        (block.displayName eq 'Surgery intervention' && hasSurgery) ||
-                        (block.displayName eq 'Surgery interventions' && hasSurgery) ||
-                        (block.displayName eq 'Radiation intervention' && hasRadiation) ||
-                        (block.displayName eq 'Radiation interventions' && hasRadiation) ||
-                        (block.displayName eq 'Medical device' && hasDevice) ||
-                        (block.displayName eq 'Medical devices' && hasDevice) }" />
---%>
 
         <c:if test="${block.displayName eq 'Disease' || block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medication' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
             <c:set var="display" value="true" />
         </c:if>
         
         <c:if test="${not empty block.rows}">
-                <%--<c:if test="${true || display}">--%>
+
                     <tr class="subhead">
                         <th colspan="${cols}">${block.displayName}</th>
                     </tr>
@@ -72,7 +62,7 @@
                             </c:forEach>
                         </tr>
                     </c:forEach>
-                <%--</c:if>--%>
+
         </c:if>
 
     </c:forEach>
