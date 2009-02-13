@@ -45,6 +45,6 @@ public class PreExistingConditionDao extends CaaersDao<PreExistingCondition> {
      * @return return the list of pre-existing conditions.
      */
     public List<PreExistingCondition> getAll() {
-        return getHibernateTemplate().find("from PreExistingCondition");
+        return getHibernateTemplate().find("from PreExistingCondition pc order by lower(pc.text)");
     }
 }
