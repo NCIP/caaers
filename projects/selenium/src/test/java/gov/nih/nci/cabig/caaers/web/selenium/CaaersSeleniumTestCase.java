@@ -141,11 +141,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		this.log(message, null);
 	}
 
-	/*
-	 * public void testLogin() throws Exception { aw.login();
-	 * assertTrue("Login Failure", true); assertTrue("Login Failure",
-	 * selenium.isTextPresent("Regular Tasks")); }
-	 */
+	public void testLogin() throws Exception {
+		aw.login();
+		assertTrue("Login Failure", true);
+		assertTrue("Login Failure", selenium.isTextPresent("Regular Tasks"));
+	}
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
@@ -174,14 +174,13 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		int maxAttempts = 20;
 		int attempt = 0;
-		System.out.println("Checking for caaers..."); 
+		System.out.println("Checking for caaers...");
 		for (attempt = 0; attempt < maxAttempts; attempt++) {
 			if (!(selenium.isTextPresent("Please Log in"))
 					&& !(selenium.isTextPresent("Log out"))) {
 				selenium.open("caaers/public/login");
 				selenium.waitForPageToLoad("30000");
-				System.out.println("\t attempt no: "
-						+ attempt);
+				System.out.println("\t attempt no: " + attempt);
 
 			} else {
 				aw.login();
@@ -266,14 +265,17 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	}
 
 	public void populateEditStudySites() throws Exception {
-		aw.addLastPanel("add-ss-section-button", "study.studySites[?].organization-clear");
-		//selenium.click("add-ss-section-button");
-		//aw.waitForElementPresent("study.studySites[1].organization-clear");
-		int index = aw.computeLatestElementIndex("study.studySites[?].organization-clear", true);
-		selenium.click("study.studySites["+index+"].organization-clear");
-		aw.typeAutosuggest("study.studySites["+index+"].organization-input", "mn003",
-				"study.studySites["+index+"].organization-choices");
-		selenium.click("//a[@id='del-"+index+"']/img");
+		aw.addLastPanel("add-ss-section-button",
+				"study.studySites[?].organization-clear");
+		// selenium.click("add-ss-section-button");
+		// aw.waitForElementPresent("study.studySites[1].organization-clear");
+		int index = aw.computeLatestElementIndex(
+				"study.studySites[?].organization-clear", true);
+		selenium.click("study.studySites[" + index + "].organization-clear");
+		aw.typeAutosuggest(
+				"study.studySites[" + index + "].organization-input", "mn003",
+				"study.studySites[" + index + "].organization-choices");
+		selenium.click("//a[@id='del-" + index + "']/img");
 		selenium.waitForPageToLoad("30000");
 		aw.confirmOK("^Do you really want to delete[\\s\\S]$");
 	}
@@ -321,7 +323,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.type(study_treatmentAssignments_code, "TAC-1273812");
 		selenium.type(study_treatmentAssignments_description,
 				"TAC-1273812 description");
-		aw.removeLastPanel("//div[@id='si-section-?']/div[1]/h3/div/a/img", "^Are you sure you want to delete this[\\s\\S]$");
+		aw.removeLastPanel("//div[@id='si-section-?']/div[1]/h3/div/a/img",
+				"^Are you sure you want to delete this[\\s\\S]$");
 		/*
 		 * selenium.click("//div[@id='si-section-1']/div[1]/h3/div/a/img");
 		 * aw.confirmOK("^Are you sure you want to delete this[\\s\\S]$");
