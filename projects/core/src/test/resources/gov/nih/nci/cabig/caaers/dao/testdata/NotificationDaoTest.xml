@@ -1,0 +1,18 @@
+<dataset>
+    <notifications
+        id="-1"
+        content="This is supposed to be a meaningless content."
+        email="AB@no-email.com"
+        subject="no-subject"
+        name="no-name"
+        version="0"
+        />
+    <notifications
+        id="-2"
+        content="This is supposed to be an even meaningless content."
+        email="CD@no-email.com"
+        subject="no-subject"
+        name="no-name"
+        version="0"
+        />
+</dataset>
