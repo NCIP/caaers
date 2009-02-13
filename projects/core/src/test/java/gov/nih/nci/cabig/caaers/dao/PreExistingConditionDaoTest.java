@@ -29,5 +29,14 @@ public class PreExistingConditionDaoTest extends DaoTestCase<PreExistingConditio
         assertEquals("Wrong number of matches", 1, matches.size());
         assertEquals("Wrong match", 3001, (int) matches.get(0).getId());
     }
+    
+    public void testGetAll(){
+    	List<PreExistingCondition> conds = getDao().getAll();
+    	assertTrue(conds != null);
+    	assertFalse(conds.isEmpty());
+    	assertEquals(3, conds.size());
+    	assertEquals("Anemia", conds.get(0).getText());
+    	assertEquals("Jnemia" , conds.get(2).getText());
+    }
 
 }
