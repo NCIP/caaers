@@ -40,6 +40,9 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testGetByGridId() throws Exception {
         Study study = getDao().getByGridId("f2321");
         assertNotNull("Study not found", study);
+
+        Study study2 = getDao().getByGridId(study);
+        assertNotNull("Study not found", study2);
     }
 
     public void testSaveWithCtc() throws Exception {

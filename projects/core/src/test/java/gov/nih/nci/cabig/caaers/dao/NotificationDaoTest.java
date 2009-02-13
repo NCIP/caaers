@@ -25,7 +25,7 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
     public void testGetById() throws Exception {
         Notification notification = getDao().getById(-1);
         assertNotNull(notification);
-        assertEquals("Wrong Object", -18, (int) notification.getId());
+        assertEquals("Wrong Object", -1, (int) notification.getId());
     }
 
     public void testSave() throws Exception {
@@ -38,7 +38,7 @@ public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
 
     public void testGetAll() throws Exception {
         List<Notification> all = getDao().getAll();
-        assertEquals(3, all.size());
+        assertEquals(2, all.size());
     }
 
 }

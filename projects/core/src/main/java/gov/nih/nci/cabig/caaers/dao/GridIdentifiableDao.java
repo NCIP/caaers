@@ -10,8 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Rhett Sutphin
  */
 @Transactional(readOnly = true)
-public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifiable> extends
-                CaaersDao<T> implements gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao<T> {
+public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifiable> extends CaaersDao<T> implements gov.nih.nci.cabig.ctms.dao.GridIdentifiableDao<T> {
     /**
      * Get object of class&ltT&gt specified by the grid ID in the template.
      * 
@@ -42,10 +41,8 @@ public abstract class GridIdentifiableDao<T extends DomainObject & GridIdentifia
      */
     @SuppressWarnings("unchecked")
     public T getByGridId(String gridId) {
-        StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(
-                        " o where gridId = ?");
+        StringBuilder query = new StringBuilder("from ").append(domainClass().getName()).append(" o where gridId = ?");
         Object[] params = { gridId };
-        return (T) CollectionUtils.firstElement(getHibernateTemplate().find(query.toString(),
-                        params));
+        return (T) CollectionUtils.firstElement(getHibernateTemplate().find(query.toString(), params));
     }
 }
