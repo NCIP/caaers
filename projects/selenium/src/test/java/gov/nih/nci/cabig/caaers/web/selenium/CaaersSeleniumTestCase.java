@@ -143,7 +143,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad("40000");
 		selenium.click("firstlevelnav_searchStudyController");
 		selenium.waitForPageToLoad("30000");
 		selenium.select("searchCriteria[0].searchType", "label=Identifier");
