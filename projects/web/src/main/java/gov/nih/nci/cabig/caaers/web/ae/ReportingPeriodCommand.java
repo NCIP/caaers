@@ -20,6 +20,7 @@ public class ReportingPeriodCommand {
     private StudyParticipantAssignment assignment;
     private boolean editFlow;
     private boolean workflowEnabled = false;
+    private String mode;
    
     
     /**
@@ -27,7 +28,7 @@ public class ReportingPeriodCommand {
      * @param assignmentId
      * @param reportingPeriodId
      */
-    public ReportingPeriodCommand( StudyParticipantAssignment assignment, AdverseEventReportingPeriod reportingPeriod){
+    public ReportingPeriodCommand( StudyParticipantAssignment assignment, AdverseEventReportingPeriod reportingPeriod, String mode){
     	//store StudyParticipantAssignment
     	this.assignment = assignment;
     	
@@ -45,9 +46,7 @@ public class ReportingPeriodCommand {
     		this.reportingPeriod = reportingPeriod;
     		this.editFlow = true;
     	}
-    	
-    	
-    	
+    	this.mode = mode;
     }
     
     public void setAssignment(StudyParticipantAssignment assignment){
@@ -83,5 +82,7 @@ public class ReportingPeriodCommand {
 		this.workflowEnabled = workflowEnabled;
 	}
     
-    
+	public String getMode(){
+		return mode;
+	}
 }
