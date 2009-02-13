@@ -14,17 +14,17 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Rhett Sutphin
  */
-public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T> {
+public class BeginTab<T extends CaptureAdverseEventInputCommand> extends WorkFlowTab<T> {
 
     String instructions;
 
     public BeginTab() {
-        super("Select subject and study", "Begin", "ae/selectAssignment");
+      this(null);
 
     }
 
     public BeginTab(String instructions) {
-        super("Select subject and study", "Begin", "ae/selectAssignment");
+    	  super("Select subject,study and course", "Subject,Study &amps; Course", "ae/selectAssignment");
         this.instructions = instructions;
 
     }
@@ -49,8 +49,10 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
     public void validate(T command, Errors errors) {
         boolean noStudy = command.getStudy() == null;
         boolean noParticipant = command.getParticipant() == null;
+        boolean noAdverseEventReportingPeriod = command.getAdverseEventReportingPeriod() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
         if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
+        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course");
         if (!(noStudy || noParticipant) && command.getAssignment() == null) {
             errors.reject("NO_ASSIGNMENT", "The selected ");
         }

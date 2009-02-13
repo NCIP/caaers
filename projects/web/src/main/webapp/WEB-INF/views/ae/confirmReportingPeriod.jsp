@@ -14,8 +14,11 @@
         div.hr {font-size:1px; height: 1px;}
 	</style>
 <script>
-	window.parent.rpCreator.refreshRPCrlOptionsAndShowDetails(${command.reportingPeriod.id}, false, '${command.reportingPeriod.name}');
-	window.parent.Windows.close(window.parent.rpCreator.win.getId());
+		if('${command.mode}' == 'create')
+			window.parent.rpCreator.refreshRPCrlOptionsOnCreation(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');
+		else
+			window.parent.rpCreator.refreshRPCrlOptionsOnEdit(${command.reportingPeriod.id}, '${command.reportingPeriod.name}');
+		window.parent.Windows.close(window.parent.rpCreator.win.getId());
 </script>
 
 </head>

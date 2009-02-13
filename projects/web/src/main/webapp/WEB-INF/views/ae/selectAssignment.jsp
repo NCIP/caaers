@@ -1,3 +1,4 @@
+<%@ include file="/WEB-INF/views/taglibs.jsp" %>
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -5,6 +6,7 @@
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+	<tags:includePrototypeWindow />
     <title>${pageTitle}</title>
     <style type="text/css">
         input.autocomplete {
@@ -19,15 +21,131 @@
             font-style: italic;
             background-color: #CCE6FF;
         }
-
+        
+        #criteria-div{
+          width: 70%;
+          margin-left: 10em;
+        }
+        
     </style>
     <c:if test="${empty tab}">
         <tags:stylesheetLink name="tabbedflow"/>
         <tags:javascriptLink name="tabbedflow"/>
     </c:if>
     <tags:includeScriptaculous/>
-    <tags:dwrJavascriptLink objects="createAE"/>
+    <tags:dwrJavascriptLink objects="createAE,captureAE"/>
     <script type="text/javascript">
+    var rpCreator = null;
+    
+    var RPCreatorClass = Class.create();
+    Object.extend(RPCreatorClass.prototype, {
+        /*
+         rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
+         rpDetailsDiv - The DIV element where the content of selected reporting period is shown.
+         */
+        initialize : function(rpCtrl, rpEditCtrl) {
+
+            this.win = null;
+            this.rpCtrl = $(rpCtrl);
+            this.rpEditCtrl = $(rpEditCtrl);
+
+            this.showOrHideEditRPCtrl(); //determine edit-button visiblility
+
+            Event.observe(this.rpCtrl, 'change', this.rpCtrlOnChange.bindAsEventListener(this));
+            Event.observe(this.rpEditCtrl, 'click', this.rpEditCtrlClick.bindAsEventListener(this));
+        },
+
+        displayRPPopup:function() {
+            //will show the reporting period creation popup
+            rpId = this.rpCtrl.value;
+            sId = $('study').value;
+            pId = $('participant').value;
+            url = "createReportingPeriod?studyId=#{studyId}&participantId=#{participantId}&id=#{id}&subview".interpolate({studyId:sId , participantId:pId, id:rpId});
+            this.win = new Window({className:"alphacube",
+                destroyOnClose:true,
+                title:"",
+                url: url,
+                width: 600,
+                height: 450,
+                recenterAuto:true});
+            this.win.showCenter(true);
+        },
+        
+        refreshRPCrlOptionsOnCreation:function(newRPId, rpName) {
+        	// add the newly created course to the course dropdown
+        	var cntOptions = this.rpCtrl.options.length;
+            this.rpCtrl.options[cntOptions - 1] = new Option(rpName, newRPId);
+            this.rpCtrl.selectedIndex = cntOptions - 1;
+            this.addOptionToSelectBox(this.rpCtrl, 'Create New', '-1');
+            this.showOrHideEditRPCtrl();
+         },
+         
+         refreshRPCrlOptionsOnEdit:function(RPId, rpName) {
+         	this.rpCtrl.options[this.rpCtrl.selectedIndex].text = rpName;
+         },
+
+        addOptionToSelectBox:function(selBox, optLabel, optValue) {
+            //adds the option to specified select box.
+            opt = new Option(optLabel, optValue);
+            selBox.options.add(opt);
+        },
+
+        rpCtrlOnChange : function() {
+            if (this.rpCtrl.value == -1) {
+                this.displayRPPopup(); //create reporting period flow
+            }
+            this.showOrHideEditRPCtrl();
+        },
+        
+        rpEditCtrlClick:function() {
+            if (this.rpCtrl.value > 0) this.displayRPPopup();
+
+        },
+
+        showOrHideEditRPCtrl:function() {
+            //the edit reporting period button show/hide based on select box value
+            if (this.rpCtrl.value > 0) {
+                this.rpEditCtrl.show();
+                $('adverseEventReportingPeriod').value = this.rpCtrl.value;
+            } else {
+                this.rpEditCtrl.hide();
+            }
+        },
+        
+        clearRPCrlOptions:function(){
+        	// If the value in study or participant is cleared, then the course dropdown should be cleared.
+        	// This method takes care of clearing the contents of the course dropdown.
+        	this.rpCtrl.options.length = 0;
+        	this.addOptionToSelectBox(this.rpCtrl, 'Please Select', '');
+        },
+        
+        populateRPCrlOptions:function(){
+        	// If Both Study and Participant are selected then make the Ajax call to fetch course informtion
+        	// and populate the Course dropdown with the fetched values.
+        	if(this.isStudyParticipantSelected()){
+        		rpCreator.rpCtrl.disable();
+        		captureAE.fetchCourses($("study").value, $("participant").value, function(output){
+        			rpCreator.clearRPCrlOptions();
+					var i = 0;
+					for(i = 0; i< output.objectContent.length; i++){
+						var status = output.objectContent[i];
+						rpCreator.addOptionToSelectBox(rpCreator.rpCtrl, status.name, status.id);
+					}
+					rpCreator.addOptionToSelectBox(rpCreator.rpCtrl, 'Create New', '-1')
+					rpCreator.rpCtrl.enable();
+        		});
+        	}
+        },
+        
+        isStudyParticipantSelected:function(){
+        	if( $("study").value == "" || $("participant").value == "")
+        		return false;
+        	else
+	        	return true;
+        }
+    
+    });
+    
         var participantAutocompleterProps = {
             basename: "participant",
             populator: function(autocompleter, text) {
@@ -57,13 +175,15 @@
             $(mode.basename).value = selectedChoice.id;
             $(mode.basename + '-selected').show()
             new Effect.Highlight(mode.basename + "-selected")
+            rpCreator.populateRPCrlOptions();
         }
-
+        
         function updateSelectedDisplay(mode) {
             if ($(mode.basename).value) {
                 Element.update(mode.basename + "-selected-name", $(mode.basename + "-input").value)
                 $(mode.basename + '-selected').show()
             }
+            //rpCreator.populateRPCrlOptions();
         }
 
         function acCreate(mode) {
@@ -79,6 +199,7 @@
                 $(mode.basename + "-selected").hide()
                 $(mode.basename).value = ""
                 $(mode.basename + "-input").value = ""
+                rpCreator.clearRPCrlOptions();
             })
         }
 
@@ -88,6 +209,8 @@
             updateSelectedDisplay(participantAutocompleterProps)
             updateSelectedDisplay(studyAutocompleterProps)
             initSearchField()
+            rpCreator = new RPCreatorClass('course-input','edit_button');
+            rpCreator.populateRPCrlOptions();
         })
     </script>
 </head>
@@ -95,10 +218,11 @@
 <p>
     <tags:instructions code="instruction_ae_assignment"/>
 </p>
+
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
-    <div class="autoclear">
-        <chrome:box title="Select subject" id="participant-entry" cssClass="paired" autopad="true">
+    <div class="autoclear" id="criteria-div">
+        <chrome:box title="Select subject" id="participant-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
             <tags:requiredIndicator/>
@@ -111,7 +235,7 @@
                 You have selected the subject <span id="participant-selected-name"></span>.
             </p>
         </chrome:box>
-        <chrome:box title="Select study" id="study-entry" cssClass="paired" autopad="true">
+        <chrome:box title="Select study" id="study-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_study"/></p>
             <form:hidden path="study"/>
             <tags:requiredIndicator/>
@@ -123,6 +247,16 @@
             <p id="study-selected" style="display: none">
                 You have selected the study <span id="study-selected-name"></span>.
             </p>
+        </chrome:box>
+        <chrome:box title="Select course" id="course-entry" autopad="true">
+        	<p><tags:instructions code="instruction_ae_select_course"/></p>
+        	<form:hidden path="adverseEventReportingPeriod"/>
+        	<tags:requiredIndicator/>
+        	<select id="course-input" style="width:20em" value="${command.adverseEventReportingPeriod.id }">
+				<option value="">Please select</option>
+			</select>
+			<input id="edit_button" type="button" value="Edit" style="display:none;"/>
+			<tags:errors path="adverseEventReportingPeriod"/>
         </chrome:box>
     </div>
     <c:choose>

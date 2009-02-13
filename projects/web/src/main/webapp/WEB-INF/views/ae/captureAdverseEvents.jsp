@@ -62,105 +62,9 @@
     var routingHelper = new RoutingAndReviewHelper(captureAE);
 
     Object.extend(RPCreatorClass.prototype, {
-        /*
-         rpCtrl - ID of the reporting period control. The option 'Create New' will be added to this control.
-         rpDetailsDiv - The DIV element where the content of selected reporting period is shown.
-         */
-        initialize : function(rpCtrl, rpDetailsDiv, rpEditCtrl, rpCtrlValue) {
-
+        initialize : function(rpDetailsDiv) {
             this.win = null;
-            this.rpCtrl = $(rpCtrl);
-            this.rpCtrl.value = rpCtrlValue;
-            this.rpEditCtrl = $(rpEditCtrl);
             this.rpDetailsDiv = $(rpDetailsDiv);
-
-            this.showOrHideEditRPCtrl(); //determine edit-button visiblility
-
-            this.addOptionToSelectBox(this.rpCtrl, 'Create New', '-1');//add Create New option.
-            Event.observe(this.rpCtrl, 'change', this.rpCtrlOnChange.bindAsEventListener(this));
-            Event.observe(this.rpEditCtrl, 'click', this.rpEditCtrlClick.bindAsEventListener(this));
-        },
-
-        displayRPPopup:function() {
-            //will show the reporting period creation popup
-            rpId = this.rpCtrl.value;
-            url = "createReportingPeriod?assignmentId=#{assignmentId}&id=#{id}&subview".interpolate({assignmentId:"${command.assignment.id}" , id:rpId});
-            this.win = new Window({className:"alphacube",
-                destroyOnClose:true,
-                title:"",
-                url: url,
-                width: 600,
-                height: 450,
-                recenterAuto:true});
-            this.win.showCenter(true);
-        },
-
-        addOptionToSelectBox:function(selBox, optLabel, optValue) {
-            //adds the option to specified select box.
-            opt = new Option(optLabel, optValue);
-            selBox.options.add(opt);
-        },
-
-        rpCtrlOnChange : function() {
-            this.clearRPDetails(); //clear existing reporting period details
-            if (this.rpCtrl.value == -1) {
-                this.displayRPPopup(); //create reporting period flow
-            } else if (this.rpCtrl.value) {
-                this.refreshRPCrlOptionsAndShowDetails(this.rpCtrl.value, true); //show the reporting period details and AEs
-            }
-
-        },
-        
-        rpEditCtrlClick:function() {
-            if (this.rpCtrl.value > 0) this.displayRPPopup();
-
-        },
-
-        showRPDetails:function(rpDetails) {
-            //shows reporting period details , solicited and observed adverse events
-            Element.insert(this.rpDetailsDiv, rpDetails);
-            Effect.Appear(this.rpDetailsDiv);
-            this.showOrHideEditRPCtrl();
-			oldSignatures = getSignatures('.ae-section');
-        },
-
-        clearRPDetails :function() {
-            //will clear the content of details section & properly unregister events
-            this.rpDetailsDiv.hide();
-            this.rpDetailsDiv.innerHTML = "";
-            this.showOrHideEditRPCtrl();
-        },
-
-        showOrHideEditRPCtrl:function() {
-            //the edit reporting period button show/hide based on select box value
-            if (this.rpCtrl.value > 0) {
-                this.rpEditCtrl.show();
-            } else {
-                this.rpEditCtrl.hide();
-            }
-        },
-
-        refreshRPCrlOptionsAndShowDetails:function(newRPId, fetchOnlyDetails, rpName) {
-            //will add the reporting period into the dropdown, if it is newly added.
-            if (!fetchOnlyDetails) {
-                var cntOptions = this.rpCtrl.options.length;
-                this.rpCtrl.options[cntOptions - 1] = new Option(rpName, newRPId);
-                this.rpCtrl.selectedIndex = cntOptions - 1;
-                this.addOptionToSelectBox(this.rpCtrl, 'Create New', '-1');
-            }
-            //will refresh the options of reporting period.
-            captureAE.refreshReportingPeriodAndGetDetails(newRPId, fetchOnlyDetails, function(ajaxOutput) {
-
-                this.clearRPDetails();
-                this.showRPDetails(ajaxOutput.htmlContent);
-                AE.registerCalendarPopups("detailSection");
-                
-               //fetch the comments and next actions
-               if(${command.workflowEnabled}){
-                routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
-               }
-            }.bind(this));
-            
         },
 
         addAdverseEvents:function(selectedTerms) {
@@ -175,20 +79,6 @@
             //get the HTML to add from server
             var notAddedTerms = new Array();
             captureAE.addObservedAE(listOfTermIDs, function(ajaxOutput) {
-                /*
-                 var notAddedTerms = ajaxOutput.objectContent;
-                 if(notAddedTerms != null){
-                 //show alert message for terms not added
-                 var errMsg = '';
-                 var i;
-                 for(i = 0; i < notAddedTerms.length; i++) errMsg = errMsg + (i > 0 ? ',' : '') + notAddedTerms[i];
-
-                 if(errMsg != ''){
-                 alert(errMsg + " - is already present.");
-                 }
-                 }
-                 */
-
                 $('observedBlankRow').insert({after: ajaxOutput.htmlContent});
                 if ($('observedEmptyRow')) $('observedEmptyRow').remove();
                 this.initializeOtherMeddraAutoCompleters(listOfTermIDs);
@@ -257,12 +147,10 @@
 			stripped_url = url.substr(0,index);
 			document.addRoutineAeForm.action = stripped_url;
 		}
- 		rpCreator = new RPCreatorClass('adverseEventReportingPeriod','detailSection','edit_button', '${command.adverseEventReportingPeriod.id}');
+ 		rpCreator = new RPCreatorClass('detailSection');
 
-		
- 		
  		//Check if reportingPeriod is selected and enable the slider.
- 		if($('adverseEventReportingPeriod').value != '' && ${command.workflowEnabled}){
+ 		if(${command.workflowEnabled}){
             routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
  		}
  	});
@@ -460,19 +348,6 @@
          <p><tags:instructions code="instruction_ae_select_evaluation_period"/></p>
       		<input type="hidden" name="_action" id="_action" value="">
       		<input type="hidden" name="_amendReportIds" id="_amendReportIds" value="">
-      		
-      		<chrome:box id="rpd-div" title="Course Details" autopad="true">
-      			<div id="reportingPeriodSelector">      	
-      				<tags:renderRow field="${fieldGroups.reportingPeriodFG.fields[0]}">
-						<jsp:attribute name="value">
-								<tags:renderInputs field="${fieldGroups.reportingPeriodFG.fields[0]}" />
-    							<input id="edit_button" type="button" value="Edit" style="display:none;"/>
-						</jsp:attribute>
-					</tags:renderRow>
-					<ae:reportingPeriodDetails />
-      			</div>
-				
-			</chrome:box>
 			
       		<div id="detailSection">
 				<c:if test="${not empty command.adverseEventReportingPeriod}">
