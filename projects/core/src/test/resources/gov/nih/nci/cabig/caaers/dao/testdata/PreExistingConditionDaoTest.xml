@@ -2,10 +2,26 @@
 	<pre_existing_conditions
         id="3001"
         version="0"
+        condition_text="cnemia"
+        meddra_llt_code="10002034"
+        meddra_llt="haemoltic"
+        meddra_hlgt="cnemias non-haemoltic..."
+        />
+        <pre_existing_conditions
+        id="3002"
+        version="0"
         condition_text="Anemia"
         meddra_llt_code="10002034"
         meddra_llt="haemoltic"
         meddra_hlgt="Anemias non-haemoltic..."
+        />
+        <pre_existing_conditions
+        id="3003"
+        version="0"
+        condition_text="Jnemia"
+        meddra_llt_code="10002034"
+        meddra_llt="haemoltic"
+        meddra_hlgt="Jnemias non-haemoltic..."
         />
         <ae_pre_existing_conds />
 </dataset>
