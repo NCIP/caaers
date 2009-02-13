@@ -65,16 +65,6 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
 		return map;
 	}
 	
-	public Map<Object, Object> fetchReportingPeriodsOptions(CaptureAdverseEventInputCommand cmd){
-		Map<Object,Object> map = new LinkedHashMap<Object, Object>();
-		map.put("", "Please select");
-		List<AdverseEventReportingPeriod> reportingPeriodList = adverseEventReportingPeriodDao.getByAssignment(cmd.getAssignment()); 
-		for(AdverseEventReportingPeriod adverseEventReportingPeriod: reportingPeriodList){
-			map.put(adverseEventReportingPeriod.getId(), adverseEventReportingPeriod.getName());
-		}
-	    return map;
-	}
-	
 	public Map<Object, Object> fetchTreatmentAssignmentOptions(CaptureAdverseEventInputCommand cmd) {
 		return WebUtils.collectOptions(cmd.getStudy().getTreatmentAssignments(), "id", "code", "Please select");
 	}
