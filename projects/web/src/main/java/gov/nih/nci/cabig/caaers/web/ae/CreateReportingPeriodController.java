@@ -13,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -86,14 +87,25 @@ public class CreateReportingPeriodController extends SimpleFormController {
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
 
         //obtain assignmentId and  id from request parameters
-        int assignmentId = NumberUtils.toInt(request.getParameter("assignmentId"), 0);
         int reportingPeriodId = NumberUtils.toInt(request.getParameter("id"), 0);
+        int studyId = NumberUtils.toInt(request.getParameter("studyId"), 0);
+        int participantId = NumberUtils.toInt(request.getParameter("participantId"), 0);
 
         //load assignment
-        StudyParticipantAssignment assignment = (assignmentId > 0) ? assignmentDao.getById(assignmentId) : null;
+        Study study = (studyId > 0) ? studyDao.getById(studyId) : null;
+        Participant participant = (participantId > 0) ? participantDao.getById(participantId) : null;
+        StudyParticipantAssignment assignment = null;
+        if(study != null && participant != null)
+        	assignment = assignmentDao.getAssignment(participant, study);
+        
         AdverseEventReportingPeriod reportingPeriod = (reportingPeriodId > 0) ? adverseEventReportingPeriodDao.getById(reportingPeriodId) : null;
+        String mode = "";
+        if(reportingPeriod != null)
+        	mode = "edit";
+        else
+        	mode = "create";
 
-        ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod);
+        ReportingPeriodCommand command = new ReportingPeriodCommand(assignment, reportingPeriod, mode);
         command.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
         return command;
 

@@ -129,10 +129,6 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object command) throws Exception{
 		CaptureAdverseEventInputCommand aeCommand = (CaptureAdverseEventInputCommand) command;
 		ServletRequestDataBinder binder = super.createBinder(request, aeCommand);
-		Set<String> paramNames = request.getParameterMap().keySet();
-        boolean addReportingPeriodBinder = false;
-        addReportingPeriodBinder = paramNames.contains("addReportingPeriodBinder");
-        if (!addReportingPeriodBinder) binder.setDisallowedFields(new String[]{"adverseEventReportingPeriod"});
 		prepareBinder(binder);
 		initBinder(request,binder, aeCommand);
 		return binder;
@@ -282,6 +278,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	protected void initBinder(final HttpServletRequest request,final ServletRequestDataBinder binder, final CaptureAdverseEventInputCommand command) throws Exception {
 		ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
+        ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", adverseEventReportingPeriodDao);
 
 		ControllerTools.registerDomainObjectEditor(binder, "participantID", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "studyID", studyDao);
