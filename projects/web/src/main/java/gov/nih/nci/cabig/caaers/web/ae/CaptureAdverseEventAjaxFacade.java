@@ -7,7 +7,11 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.ajax.AdverseEventReportingPeriodAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
@@ -250,4 +254,23 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     public void setAdverseEventReportingPeriodDao(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao) {
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 	}
+    
+    public AjaxOutput fetchCourses(Integer studyId, Integer participantId){
+    	Study study = studyDao.getById(studyId);
+    	Participant participant = participantDao.getById(participantId);
+    	StudyParticipantAssignment assignment = assignmentDao.getAssignment(participant, study);
+    	List<AdverseEventReportingPeriodAjaxableDomainObject> courses = new ArrayList<AdverseEventReportingPeriodAjaxableDomainObject>();
+    	AdverseEventReportingPeriodAjaxableDomainObject rpAjaxable;
+    	if(assignment.getReportingPeriods() != null){
+    		for(AdverseEventReportingPeriod rp: assignment.getReportingPeriods()){
+    			rpAjaxable = new AdverseEventReportingPeriodAjaxableDomainObject();
+    			rpAjaxable.setId(rp.getId());
+    			rpAjaxable.setName(rp.getName());
+    			courses.add(rpAjaxable);
+    		}
+    	}
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(courses.toArray());
+    	return output;
+    }
 }

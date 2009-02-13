@@ -43,52 +43,12 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         MultipleFieldGroupFactory mainFieldFactory;
         List<SolicitedAdverseEvent> saeList;
 
-        // Creating the field groups for the first section of the page
-        // which collects the general information from the user (eg., TAC, TAC Description, Start date of first course etc.
-        InputFieldGroup reportingPeriodFieldGroup = new DefaultInputFieldGroup("reportingPeriodFG");
-        List<InputField> fields = reportingPeriodFieldGroup.getFields();
-        InputField reportingPeriodsField = InputFieldFactory.createSelectField("adverseEventReportingPeriod", "Course", true, fetchReportingPeriodsOptions(cmd));
-        fields.add(reportingPeriodsField);
-        map.addInputFieldGroup(reportingPeriodFieldGroup);
-
         //create the fields, consisting of reporting period details.
         if (cmd.getAdverseEventReportingPeriod() != null) {
-
-            InputFieldGroup treatmentAssignmentFieldGroup = new DefaultInputFieldGroup("treatmentAssignmentFG");
-            InputFieldGroup reportingPeriodDetailsFieldGroup = new DefaultInputFieldGroup("reportingPeriodDetailsFG");
-
-            //TAC fields groups
-            InputField treatmentAssignmentField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.code", "Treatment assignment");
-            InputField treatmentAssignmentDescField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.treatmentAssignment.description", "Treatment description");
-
-            //startDateOfFirstCourse - TextField, if it is empty in assignment
-            InputField firstCourseDateField = null;
-            if (cmd.getAdverseEventReportingPeriod().getAssignment().getStartDateOfFirstCourse() == null) {
-                firstCourseDateField = InputFieldFactory.createPastDateField("adverseEventReportingPeriod.assignment.startDateOfFirstCourse", "Start date of first course", false);
-            } else {
-                firstCourseDateField = InputFieldFactory.createLabelField("adverseEventReportingPeriod.assignment.startDateOfFirstCourse", "Start date of first course");
-            }
-
-            treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentField);
-            treatmentAssignmentFieldGroup.getFields().add(treatmentAssignmentDescField);
-           
-
-            // add reportingPeriod details group
-            reportingPeriodDetailsFieldGroup.getFields().add(firstCourseDateField);
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.startDate", "Start date"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.endDate", "End date"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.epoch.name", "Treatment type"));
-            reportingPeriodDetailsFieldGroup.getFields().add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.cycleNumber", "Course/cycle number"));
-
-            // add the reportingPeriodFieldGroup to the map.
-            map.addInputFieldGroup(treatmentAssignmentFieldGroup);
-            map.addInputFieldGroup(reportingPeriodDetailsFieldGroup);
-
-
             /*
-                * AdversEvent related field groups,
-                *  the fields are different for Meddra study, Ctc study and Observed AEs
-                */
+             * AdversEvent related field groups,
+             *  the fields are different for Meddra study, Ctc study and Observed AEs
+             */
 
             Study study = cmd.getAdverseEventReportingPeriod().getStudy();
 
@@ -220,9 +180,6 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
     @Override
     public void onBind(HttpServletRequest request, CaptureAdverseEventInputCommand command, Errors errors) {
         String rpId = request.getParameter("adverseEventReportingPeriod");
-        if (StringUtils.isEmpty(rpId)) {
-            command.setAdverseEventReportingPeriod(null);
-        }
         Set<String> paramNames = request.getParameterMap().keySet();
         boolean fromListPage = false;
         fromListPage = paramNames.contains("displayReportingPeriod");
