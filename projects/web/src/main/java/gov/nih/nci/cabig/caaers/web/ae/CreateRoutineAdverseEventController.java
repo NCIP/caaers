@@ -32,7 +32,7 @@ public class CreateRoutineAdverseEventController extends AbstractRoutineAdverseE
 
             @Override
             protected void addPreBasicTabs(Flow<RoutineAdverseEventInputCommand> flow) {
-                flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>(instructions));
+                //flow.addTab(new BeginTab<RoutineAdverseEventInputCommand>(instructions));
             }
         };
     }
