@@ -75,6 +75,13 @@
 		<antcall target="shutdown-selenium-server" /-->
 	</target>
 	<!-- ================================= 
+          target: test-ui-local              
+         ================================= -->
+    <target name="test-ui-local" depends="clean-classes-test, resolve,resolve-test, upload-rules,test-report" description=" Target for testing. Do not invoke in normal usage.">
+        
+    </target>
+
+	<!-- ================================= 
           target: reset-db              
          ================================= -->
 	<target name="reset-db" description="reset the db to a good baseline dump.">

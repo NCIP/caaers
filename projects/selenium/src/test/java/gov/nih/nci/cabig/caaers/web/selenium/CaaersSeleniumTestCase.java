@@ -105,25 +105,31 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	}
 
 	public void setUp() throws Exception {
-		// super.setUp();
-		Properties properties = (Properties) getDeployedApplicationContext()
-				.getBean("caaersDatasourceFactoryBean");
+		try {
+			// super.setUp();
+			Properties properties = (Properties) getDeployedApplicationContext()
+					.getBean("caaersDatasourceFactoryBean");
 
-		seleniumServerURL = properties.getProperty("selenium.url");
-		seleniumServerPort = properties.getProperty("selenium.port");
-		seleniumBrowser = properties.getProperty("selenium.browser");
-		caaersURL = properties.getProperty("selenium.caaersURL");
-		seleniumSpeed = properties.getProperty("selenium.speed");
-		seleniumRulesDir = properties.getProperty("selenium.rules.dir");
-		System.out.println(seleniumServerURL);
-		// setUp("https://oracle.qa.semanticbits.com", "*chrome");
-		// selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",
-		// "https://oracle.qa.semanticbits.com");
-		selenium = new DefaultSelenium(seleniumServerURL, Integer
-				.parseInt(seleniumServerPort), seleniumBrowser, caaersURL);
-		selenium.start();
-		aw = new AjaxWidgets(selenium);
-		selenium.setSpeed(seleniumSpeed);
+			seleniumServerURL = properties.getProperty("selenium.url");
+			seleniumServerPort = properties.getProperty("selenium.port");
+			seleniumBrowser = properties.getProperty("selenium.browser");
+			caaersURL = properties.getProperty("selenium.caaersURL");
+			seleniumSpeed = properties.getProperty("selenium.speed");
+			seleniumRulesDir = properties.getProperty("selenium.rules.dir");
+			System.out.println(seleniumServerURL);
+			// setUp("https://oracle.qa.semanticbits.com", "*chrome");
+			// selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",
+			// "https://oracle.qa.semanticbits.com");
+			selenium = new DefaultSelenium(seleniumServerURL, Integer
+					.parseInt(seleniumServerPort), seleniumBrowser, caaersURL);
+			selenium.start();
+			aw = new AjaxWidgets(selenium);
+			selenium.setSpeed(seleniumSpeed);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			fail(" failed in setUp method");
+		}
 
 	}
 
