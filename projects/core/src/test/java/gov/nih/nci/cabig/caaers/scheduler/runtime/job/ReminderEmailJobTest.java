@@ -83,6 +83,14 @@ public class ReminderEmailJobTest extends AbstractTestCase {
 		assertEquals(DeliveryStatus.DELIVERED, status);
 		verifyMocks();
 	}
+	
+	public void testProcessNotification_ThrowingException() {
+		expect(applicationContext.getBean("mailer")).andReturn(null);
+		replayMocks();
+		DeliveryStatus status = job.processNotification();
+		assertEquals(DeliveryStatus.ERROR, status);
+		verifyMocks();
+	}
 
 	public void testExecute() throws Exception {
 		expect(jobContext.getScheduler()).andReturn(scheduler);
@@ -144,6 +152,14 @@ public class ReminderEmailJobTest extends AbstractTestCase {
 		job.execute(jobContext);
 		verifyMocks();
 	}
+	
+	
+	public void testExecute_ExceptionThrowing() throws Exception{
+		replayMocks();
+		job.execute(null);
+		verifyMocks();
+	}
+
 
 	public void testVerifyAeReportStatus() {
 		
