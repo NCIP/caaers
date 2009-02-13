@@ -21,6 +21,7 @@ import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.TreatmentAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
@@ -107,6 +108,7 @@ public class CreateAdverseEventAjaxFacade {
 
     protected StudyDao studyDao;
     protected ParticipantDao participantDao;
+    protected StudyParticipantAssignmentDao assignmentDao;
     protected CtcTermDao ctcTermDao;
     protected CtcCategoryDao ctcCategoryDao;
     protected CtcDao ctcDao;
@@ -959,6 +961,11 @@ public class CreateAdverseEventAjaxFacade {
     @Required
     public void setParticipantDao(final ParticipantDao participantDao) {
         this.participantDao = participantDao;
+    }
+    
+    @Required
+    public void setAssignmentDao(StudyParticipantAssignmentDao assignmentDao){
+    	this.assignmentDao = assignmentDao;
     }
 
 
