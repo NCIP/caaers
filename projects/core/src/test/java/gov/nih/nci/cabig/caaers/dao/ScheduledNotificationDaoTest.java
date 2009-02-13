@@ -69,9 +69,26 @@ public class ScheduledNotificationDaoTest extends DaoTestCase<ScheduledNotificat
         ScheduledNotification snf = snDao.getById(-223);
         assertEquals("GridID is not the same", snf.getGridId(), "AK8282828");
         snf.setDeliveryStatus(DeliveryStatus.CREATED);
-
+        snf.setDeliveryStatus(DeliveryStatus.RETRY);
+        snDao.save(snf);
+        
+        interruptSession();
+        
+        ScheduledNotification snf2 = snDao.getById(-223);
+        assertEquals(DeliveryStatus.RETRY, snf2.getDeliveryStatus());
+        
     }
-
+    
+    
+    public void testUpdateDeliveryStatus(){
+    	ScheduledNotification snf1 = snDao.getById(-224);
+    	snDao.updateDeliveryStatus(snf1, DeliveryStatus.SCHEDULED, DeliveryStatus.ERROR);
+    	interruptSession();
+    	ScheduledNotification snf2 = snDao.getById(-224);
+    	
+    	assertEquals(DeliveryStatus.ERROR, snf2.getDeliveryStatus());
+    }
+    
     public void testRecallScheduledNotifications() {
         List<ScheduledNotification> notifications = new ArrayList<ScheduledNotification>();
         ScheduledNotification snf = null;
