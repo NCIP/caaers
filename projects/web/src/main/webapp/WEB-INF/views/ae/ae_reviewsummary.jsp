@@ -180,16 +180,6 @@ background-color:#e5e8ff;
 </style>
 </head>
 <body>
-<c:if test='${not empty command.adverseEventReportingPeriod and not empty rpdAllTable}'>
-  <div class="row">
-    <div class="summarylabel">Course</div>
-    <div class="summaryvalue">
-      <tags:formatDate value="${command.adverseEventReportingPeriod.startDate}"/>
-      -
-      <tags:formatDate value="${command.adverseEventReportingPeriod.endDate}" />
-      ; ${command.adverseEventReportingPeriod.epoch.name}</div>
-  </div>
-</c:if>
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">
   <tags:noform>
     <table class="tablecontent">
@@ -289,9 +279,8 @@ background-color:#e5e8ff;
 
         <p><tags:message key="instruction_ae_note" /></p>
 
-        <chrome:division id="div-saes" title="Adverse Events Requiring Reporting" collapsable="true" >
-          <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
-            <table id="seriousTable" width="100%" class="tablecontent">
+       <chrome:box title="Adverse Events" collapsable="true">
+         <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
@@ -304,76 +293,55 @@ background-color:#e5e8ff;
                 </caaers:renderFilter>
                 <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
               </tr>
+              
+              
+        <!--  begin serious aes -->
+          <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
+          
               <tr id="seriousBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${ae.requiresReporting}">
                   <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
-            </table>
           </c:if>
           <c:if test='${!displaySeriousTable}'>
             <tags:message key="instruction_ae_saes_na" />
           </c:if>
-        </chrome:division>
-        <chrome:division id="div-oaes" title="Adverse Events"  collapsable="true">
+         <!--  end serious aes --> 
+         <!--  begin observed aes -->  
           <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
-            <table id="observedTable" width="100%" class="tablecontent">
-              <tr>
-                <th scope="col" align="left"><b>Select</b></th>
-                <th scope="col" align="left" width="30%"><b>
-                  Term</b> </th>
-                <th scope="col" align="left"><b>
-                  Grade</b> </th>
-                <th scope="col" align="left"><b>Attribution</b> </th>
-                <th scope="col" align="left"><b>Hospitalization</b> </th>
-                <th scope="col" align="left"><b>Expected</b> </th>
-                <caaers:renderFilter elementID="adverseEvents[].serious">
-                  <th scope="col" align="left"><b>Serious</b> </th>
-                </caaers:renderFilter>
-                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
-              </tr>
               <tr id="observedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
                   <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
-            </table>
           </c:if>
           <c:if test='${!displayObservedTable}'>
             <tags:message key="instruction_ae_oaes_na" />
           </c:if>
-        </chrome:division>
+        
+        <!--  end observed aes -->
+        
+        <!--  begin solicied aes -->
         <c:if test="${command.havingSolicitedAEs}">
-        <chrome:division title="Solicited Adverse Events" id="div-soaes"  collapsable="true">
           <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
-            <table id="solicitedTable" width="100%" class="tablecontent">
-              <tr>
-                <th scope="col" align="left"><b>Select</b></th>
-                <th scope="col" align="left" width="30%"><b>Term</b> </th>
-                <th scope="col" align="left"><b>Grade</b> </th>
-                <th scope="col" align="left"><b>Attribution</b> </th>
-                <th scope="col" align="left"><b>Hospitalization</b> </th>
-                <th scope="col" align="left"><b>Expected</b> </th>
-                <caaers:renderFilter elementID="adverseEvents[].serious">
-                  <th scope="col" align="left"><b>Serious</b> </th>
-                </caaers:renderFilter>
-                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
-              </tr>
               <tr id="solicitedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
                   <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
-            </table>
           </c:if>
           <c:if test='${!displaySolicitedTable}'>
             <tags:message key="instruction_ae_soaes_na" />
           </c:if>
-        </chrome:division>
         </c:if>
+        <!--  end solicited aes -->
+        </table>
+       
+       </chrome:box>
       </div>
     
   </jsp:attribute>
