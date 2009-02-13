@@ -60,10 +60,17 @@ public abstract class ScheduledNotificationJobTemplate implements Job {
     public JobDetail getJobDetail() {
         return jobDetail;
     }
+    public void setJobDetail(JobDetail jobDetail) {
+		this.jobDetail = jobDetail;
+	}
 
     public Report getReportSchedule() {
         return report;
     }
+    
+    public void setReportSchedule(Report report) {
+		this.report = report;
+	}
 
     public ScheduledNotification getScheduledNotification() {
         return notification;
@@ -72,6 +79,10 @@ public abstract class ScheduledNotificationJobTemplate implements Job {
     public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
+    
+    public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
     public ReportDao getReportScheduleDao() {
         return reportDao;
@@ -92,7 +103,21 @@ public abstract class ScheduledNotificationJobTemplate implements Job {
     public void setNotificationDao(ScheduledNotificationDao notificationDao) {
         this.notificationDao = notificationDao;
     }
-
+    
+    public ScheduledNotification getNotification() {
+		return notification;
+	}
+    public void setNotification(ScheduledNotification notification) {
+		this.notification = notification;
+	}
+    
+    public Scheduler getScheduler() {
+		return scheduler;
+	}
+    public void setScheduler(Scheduler scheduler) {
+		this.scheduler = scheduler;
+	}
+    
     /**
      * Will reload the {@link Report} identified by <code>report.id</code> and
      * {@link ScheduledNotification} identified by <code>scheduledNotification.id</code>, in

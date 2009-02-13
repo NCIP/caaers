@@ -46,15 +46,7 @@ public class ReportDao extends GridIdentifiableDao<Report> {
         getHibernateTemplate().saveOrUpdate(rs);
     }
 
-    /**
-     * Get the list of all reports.
-     * 
-     * @return return the list of reports.
-     */
-    @SuppressWarnings("unchecked")
-    public List<Report> getAll() {
-        return getHibernateTemplate().find("from Report");
-    }
+   
 
     /**
      * Get the list of reports due by given date.
@@ -67,29 +59,7 @@ public class ReportDao extends GridIdentifiableDao<Report> {
         return getByDate(2, dueDate);
     }
 
-    /**
-     * Get the list of reports created on given date.
-     * 
-     * @param dueDate
-     *                The date of creation.
-     * @return The list of reports.
-     */
 
-    public List<Report> getAllByCreatedDate(Date dueDate) {
-        return getByDate(3, dueDate);
-    }
-
-    /**
-     * Get the list of reports submitted on given date.
-     * 
-     * @param dueDate
-     *                The date of submission.
-     * @return The list of reports.
-     */
-
-    public List<Report> getAllBySubmittedDate(Date dueDate) {
-        return getByDate(1, dueDate);
-    }
 
     @SuppressWarnings("unchecked")
     private List<Report> getByDate(int dateType, Date d) {
