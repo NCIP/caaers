@@ -12,7 +12,7 @@
         version="0"
         condition_text="Anemia"
         meddra_llt_code="10002034"
-        meddra_llt="haemoltic"
+        meddra_llt="ccc"
         meddra_hlgt="Anemias non-haemoltic..."
         />
         <pre_existing_conditions
@@ -20,7 +20,7 @@
         version="0"
         condition_text="Jnemia"
         meddra_llt_code="10002034"
-        meddra_llt="haemoltic"
+        meddra_llt="jj"
         meddra_hlgt="Jnemias non-haemoltic..."
         />
         <ae_pre_existing_conds />
