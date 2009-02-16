@@ -337,7 +337,7 @@ background-color:#e5e8ff;
 
         <p><tags:message key="instruction_ae_note" /></p>
 
-       <chrome:box id="box-aes" title="Adverse Events" collapsable="true" autopad="true">
+       <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
