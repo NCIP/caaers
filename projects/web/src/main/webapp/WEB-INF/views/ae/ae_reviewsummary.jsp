@@ -192,7 +192,7 @@ background-color:#e5e8ff;
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
         
-        <chrome:box title="Reports Identified by caAERS">
+        <chrome:box title="Reports Identified by caAERS" collapsable="true">
         	<p>
             <tags:message key="instruction_ae_require_reporting" />
           </p>
@@ -225,7 +225,7 @@ background-color:#e5e8ff;
         </chrome:box>
         </c:when>
         <c:otherwise>
-         <chrome:box title="Reports Identified by caAERS">
+         <chrome:box title="Reports Identified by caAERS" collapsable="true">
           <p>
             <tags:message key="instruction_ae_not_require_reporting"/>
           </p>
@@ -254,7 +254,7 @@ background-color:#e5e8ff;
         </c:otherwise>
       </c:choose>
       
-        <chrome:box title="Existing Reports">
+        <chrome:box title="Existing Reports" collapsable="true">
          <p>
             <tags:message key="instruction_ae_existing_reports"/>
           </p>
