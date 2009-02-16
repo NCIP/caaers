@@ -538,7 +538,8 @@ Ajax.InPlaceEditor = Class.create({
   createEditField: function() {
     var text = (this.options.loadTextURL ? this.options.loadingText : this.getText());
     var fld;
-    if (1 >= this.options.rows && !/\r|\n/.test(this.getText())) {
+
+    if (1 >= this.options.rows) {
       fld = document.createElement('input');
       fld.type = 'text';
       var size = this.options.size || this.options.cols || 0;

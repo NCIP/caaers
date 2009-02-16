@@ -17,12 +17,14 @@
 
     var symbol = '&';
     if ($("command").action.indexOf('?') == -1) symbol = '?';
-    var editor_${nPath} = new Ajax.InPlaceEditor('${nPath}-id',
-                                                document.URL + symbol +'subview',
+    var editor_${nPath} = new Ajax.InPlaceEditor('${nPath}-id', document.URL + symbol +'subview',
                                                 {   validations:'${validations}',
                                                     cancelLink:false,
                                                     cancelButton:true,
                                                     okText:'ok',
+                                                    rows:1,
+                                                    size:15,
+                                                    cols:15,
                                                     cancelText:'cancel',
                                                     highlightcolor: 'lavender',
 	 														 callback: function(form, value) {
