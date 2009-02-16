@@ -83,6 +83,7 @@
          
          refreshRPCrlOptionsOnEdit:function(RPId, rpName) {
          	this.rpCtrl.options[this.rpCtrl.selectedIndex].text = rpName;
+         	this.showOrHideEditRPCtrl();
          	$('edited-message').style.display = '';
          },
 
@@ -107,13 +108,28 @@
         },
 
         showOrHideEditRPCtrl:function() {
+        	$('adverseEventReportingPeriod').value = this.rpCtrl.value;
             //the edit reporting period button show/hide based on select box value
             if (this.rpCtrl.value > 0) {
                 this.rpEditCtrl.show();
+                this.fetchCourseDetails();
+                $('course-details').style.display='';
             } else {
                 this.rpEditCtrl.hide();
+                $('course-details').style.display='none';
             }
-            $('adverseEventReportingPeriod').value = this.rpCtrl.value;
+        },
+        
+        fetchCourseDetails:function() {
+        	captureAE.fetchCourseDetails($("adverseEventReportingPeriod").value, function(output){
+        		var course = output.objectContent;
+        		$('start-date-value').innerHTML = course.startDate;
+        		$('end-date-value').innerHTML = course.endDate;
+        		$('course-type-value').innerHTML = course.epochName;
+        		$('cycle-number-value').innerHTML = course.cycleNumber;
+        		$('treatment-assignment-value').innerHTML = course.tacCode;
+        		$('treatment-description-value').innerHTML = course.tacDescription;
+        	});
         },
         
         clearRPCrlOptions:function(){
@@ -121,6 +137,7 @@
         	// This method takes care of clearing the contents of the course dropdown.
         	this.rpCtrl.options.length = 0;
         	this.addOptionToSelectBox(this.rpCtrl, 'Please Select', '');
+        	$('course-details').style.display='none';
         },
         
         populateRPCrlOptions:function(){
@@ -262,6 +279,56 @@
 				<option value="">Please select</option>
 			</select>
 			<input id="edit_button" type="button" value="Edit" style="display:none;"/>
+			<div id="course-details" style="display:none">
+				<table width="100%">
+					<tr>
+						<td width="40%" align="left">
+							<table width="100%">
+								<tr>
+									<td>
+										<b>Start date</b>
+									</td>
+									<td id="start-date-value"></td>
+								</tr>
+								<tr>
+									<td>
+										<b>End date</b>
+									</td>
+									<td id="end-date-value"></td>
+								</tr>
+								<tr>
+									<td>
+										<b>Course type</b>
+									</td>
+									<td id="course-type-value"></td>
+								</tr>
+								<tr>
+									<td>
+										<b>Cycle number</b>
+									</td>
+									<td id="cycle-number-value"></td>
+								</tr>
+							</table>
+						</td>
+						<td width="60%" align="left">
+							<table width="100%">
+								<tr>
+									<td>
+										<b>Treatment assignment</b>
+									</td>
+									<td id="treatment-assignment-value"></td>
+								</tr>
+								<tr>
+									<td>
+										<b>Treatment description</b>
+									</td>
+									<td id="treatment-description-value"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
 			<tags:errors path="adverseEventReportingPeriod"/>
         </chrome:box>
     </div>

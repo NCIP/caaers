@@ -266,11 +266,32 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     			rpAjaxable = new AdverseEventReportingPeriodAjaxableDomainObject();
     			rpAjaxable.setId(rp.getId());
     			rpAjaxable.setName(rp.getName());
+    			rpAjaxable.setStartDate(rp.getStartDate());
+    			rpAjaxable.setEndDate(rp.getEndDate());
+    			rpAjaxable.setEpochName(rp.getEpoch().getName());
+    			rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
+    			rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
     			courses.add(rpAjaxable);
     		}
     	}
     	AjaxOutput output = new AjaxOutput();
     	output.setObjectContent(courses.toArray());
+    	return output;
+    }
+    
+    public AjaxOutput fetchCourseDetails(Integer id){
+    	AdverseEventReportingPeriod rp = adverseEventReportingPeriodDao.getById(id);
+    	AdverseEventReportingPeriodAjaxableDomainObject rpAjaxable = new AdverseEventReportingPeriodAjaxableDomainObject();
+    	rpAjaxable.setId(rp.getId());
+    	rpAjaxable.setStartDate(rp.getStartDate());
+    	rpAjaxable.setEndDate(rp.getEndDate());
+    	rpAjaxable.setEpochName(rp.getEpoch().getName());
+    	rpAjaxable.setCycleNumber(rp.getCycleNumber());
+    	rpAjaxable.setTacCode(rp.getTreatmentAssignment().getCode());
+    	rpAjaxable.setTacDescription(rp.getTreatmentAssignment().getDescription());
+    	
+    	AjaxOutput output = new AjaxOutput();
+    	output.setObjectContent(rpAjaxable);
     	return output;
     }
 }
