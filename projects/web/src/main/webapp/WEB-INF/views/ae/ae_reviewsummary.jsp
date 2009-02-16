@@ -1,10 +1,9 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
 <%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
@@ -12,7 +11,6 @@
 <head>
 <tags:stylesheetLink name="extremecomponents"/>
 <tags:dwrJavascriptLink objects="captureAE"/>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <title>${tab.longTitle}</title>
@@ -23,9 +21,6 @@
 
 	Event.observe(window, "load", function() {
 	
-		//Event.observe('flow-next', 'click', displayOptionsPopup);
-		
-		$('create-new-report').observe("click", function(){ createNewReport(); });
 		
 		if($('manualselect2')){
 			 
@@ -43,38 +38,66 @@
       	 	 });
 		}
 
+
+		//The below function will help showing the selected reports
+	     enableReportsInPopup();
 	});
-	
-		function createNewReport(){
-			forwardControl('createNew', '');
-		}
-		
-		function editReport(reportId){
-			forwardControl('editReport', reportId);
-		}
-		
-		function amendReport(aeReportId){
-			var form = document.getElementById('command');
-			form._action.value = 'amendReport';
-			form._reportId.value = aeReportId;
-			//form._repId.value = reportId;
-			form.submit();
-		}
-		
-		function forwardControl(task, reportId){
+
+		function selectReport(task, reportId){
 			var form = document.getElementById('command')
 			form._action.value=task;
 			form._reportId.value=reportId;
+		}
+	
+		
+		function forwardControl(){
+			var form = document.getElementById('command')
+			
+			if(form._action.value == ''){
+				alert('Please choose the report to Edit, Amend or Create');
+				return false;
+			}
+
+			var reportSelected = checkIfReportSelected();
+			var aeSelected = checkIfAeSelected();
+			var reportableAEs =  hasReportableAEs();
+
+			if(form._action.value == 'createNew'){
+				if(!aeSelected){
+					alert("Please select at least one adverse event.");
+					return false;
+				}
+				if(!reportSelected){
+					alert("Please select the kind of report that needs to be created, from 'Reports Identified by caAERS' section." );
+					return false;
+				}
+			}
+
+			if(form._action.value == 'amendReport'){
+				if(!aeSelected && reportableAEs){
+					var usrDecision = confirm("You have opted to Amend an existing report, but no adverse event is selected, Do you want to continue ?");
+					if(!usrDecision) return false;
+				}
+			}
+			if(form._action.value == 'editReport'){
+				if(!aeSelected && reportableAEs){
+					var usrDecision = confirm("You have opted to Edit an existing report, but no adverse event is selected, Do you want to continue ?");
+					if(!usrDecision) return false;
+				}
+			}
+			
+			
 			form.submit();
 		}
 		
 		function enableReportsInPopup(){
 			var chkboxElements = $('report-list').select('[type="checkbox"]');
 			for(var i=0; i < chkboxElements.length; i++){
-				if(chkboxElements[i].checked)
+				if(chkboxElements[i].checked){
 					$(chkboxElements[i].name + '-p').show();
-				else
+				}else{
 					$(chkboxElements[i].name + '-p').hide();
+				}
 			}	
 		}
 		
@@ -97,58 +120,12 @@
 			//}
 			return selected;
 		}
-		
-		function displayOptionsPopup(){
-			//First of all check if the evaluation period has any aeReports.
-			//If not present then the user has to select atleast one report and one adverse event to proceed.
-			//Alert messages are displayed to ask the user to select atleast one report and atleast one adverse event.
-			//And once they are selecte the user is directly taken to the reporter tab. The popup is skipped.
-			//If present then just continue with the existing logic.
-			var reportSelected = checkIfReportSelected();
-			var aeSelected = checkIfAeSelected();
-			
-			if(!aeSelected && reportSelected)
-			{
-				alert('Please select atleast one adverse event.');
-				return false;
-			}
-			
-			if(${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}){
-				enableReportsInPopup();
 
-				if(reportSelected){
-					$('div-reports-and-create').show();
-					$('div-reports-not-selected').hide();
-				}else{
-					$('div-reports-and-create').hide();
-					$('div-reports-not-selected').show();
-				}
-			
-				var contentWin = new Window({className:"alphacube", 
- 	 	 				destroyOnClose:true, 
- 	 	 				width:700,  height:530, 
- 						top: 30, left: 300});
-     			contentWin.setContent( 'display_options_popup' );
-      			contentWin.showCenter(true);
-      			popupObserver = {
-      				onDestroy: function(eventName, win) {
-      					if (win == contentWin) {
-      						$('display_options_popup').style.display='none';
-      						contentWin = null;
-      						Windows.removeObserver(this);
-      					}
-      				}
-      			}
-      			Windows.addObserver(popupObserver);
-      		}else{
-      			if(!reportSelected)
-				{
-					alert('Please select atleast one report.');
-					return false;
-				}
-      			createNewReport();
-      		}
-	}
+		function hasReportableAEs(){
+			var aeElements = $('div-aes').select('[type="checkbox"]');
+			return aeElements.length > 0;
+		}
+		
 
 		
 </script>
@@ -191,7 +168,8 @@ background-color:#e5e8ff;
       <c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">
         <tr>
           <td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
-          <td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/>
+          <td align="left">
+          <ui:checkbox path="${rdTable.value.field.propertyName}" cssClass="rpdChk" onclick="javascript:enableReportsInPopup();"></ui:checkbox>
             <tags:renderLabel field="${rdTable.value.field}"/></td>
           <td>${rdTable.value.status}</td>
         </tr>
@@ -199,7 +177,7 @@ background-color:#e5e8ff;
     </table>
   </tags:noform>
 </div>
-<tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report">
+<tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report" hideBox="true">
   <jsp:attribute name="instructions">
     <input type="hidden" name="_finish"/>
     <input type="hidden" name="_action" value="">
@@ -213,11 +191,12 @@ background-color:#e5e8ff;
   <jsp:attribute name="singleFields">
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
-          <p><strong>Reports Identified by caAERS</strong></p>
-          <p>
+        
+        <chrome:box title="Reports Identified by caAERS">
+        	<p>
             <tags:message key="instruction_ae_require_reporting" />
           </p>
-          <div align="center">
+           <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
               <!-- required reports -->
               <table class="tablecontent">
@@ -237,8 +216,16 @@ background-color:#e5e8ff;
               </table>
             </div>
           </div>
+          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
+	  		<div class="autoclear" align="center" style="padding-top: 10px;">
+   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+      		</div>
+      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+      	  </c:if>
+        </chrome:box>
         </c:when>
         <c:otherwise>
+         <chrome:box title="Reports Identified by caAERS">
           <p>
             <tags:message key="instruction_ae_not_require_reporting"/>
           </p>
@@ -257,14 +244,84 @@ background-color:#e5e8ff;
               <%--</c:forEach>--%>
             </table>
           </div>
+          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
+	  		<div class="autoclear" align="center" style="padding-top: 10px;">
+   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
+      		</div>
+      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+      	  </c:if>
+      	  </chrome:box>
         </c:otherwise>
       </c:choose>
-      <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-	  	<div class="autoclear" align="center" style="padding-top: 10px;">
-   			<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      	</div>
-      	<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
-      </c:if>
+      
+        <chrome:box title="Existing Reports">
+         <p>
+            <tags:message key="instruction_ae_existing_reports"/>
+          </p>
+        <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.aeReports)}" />
+       	
+       	 <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
+        	<c:if test="${aeReportsLength gt 0}">
+          	<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+             <tr id="existing-reports-row" class="${ ((statusAeReport.index % 2 ) gt 0 )? 'odd' : 'even'  }">
+               <td width="5%" align="left">
+               	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
+ 	                 		<input type="radio" value="Amend" name="report-radio"  onClick="javascript:selectReport('amendReport','${aeReport.id}');"/>&nbsp;Amend
+                </c:if>
+                <c:if test="${aeReport.allSponsorReportsCompleted == false}">
+                  		<input type="radio" value="Edit"  name="report-radio" onClick="javascript:selectReport('editReport','${aeReport.id}');"/>&nbsp;Edit
+                </c:if>
+              	</td>
+              	<td width="95%"><div class="eXtremeTable" >
+                  <table width="100%" border="0" cellspacing="0" class="tableRegion">
+                    <thead>
+                      <tr align="center" class="label">
+                        <td width="5%"/>
+                        <td class="tableHeader" width="15%">Report Type</td>
+                        <td class="centerTableHeader" width="10%">Report Version</td>
+                        <td class="centerTableHeader" width="10%"># of AEs</td>
+                        <td class="tableHeader" width="20%">Data Entry Status</td>
+                        <td class="tableHeader" width="20%">Submission Status</td>
+                      </tr>
+                    </thead>
+                    <ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
+                  </table>
+                </div></td>
+             </tr>
+          	</c:forEach>
+      	 	</c:if>
+      	 	
+      	 	
+      	 	<%-- Only shown if there are reportable adverse events--%>
+      	 	<c:if test="${fn:length(command.adverseEventReportingPeriod.reportableAdverseEvents) gt 0}">
+      	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
+      	 		<td width="10%" align="left">
+          			<input type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
+          		</td>
+        		<td>
+			        <div class="eXtremeTable">
+			          <table width="100%" border="0" cellspacing="0"  class="tableRegion">
+			            <thead>
+			              <tr align="center" class="label">
+			                <td class="tableHeader">Report</td>
+			                <td class="tableHeader">Status</td>
+			              </tr>
+			            </thead>
+			            <c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
+			              <tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
+			                <td align="left">${repDefn.label}</td>
+			                <td align="left">${command.reportStatusMap[repDefn.id]}</td>
+			              </tr>
+			            </c:forEach>
+			          </table>
+			        </div>
+        		</td>
+      	 	</tr>
+      	 	</c:if>
+      	 	
+      	 </table>   
+      	         
+        </chrome:box>
       <div id="div-aes">
         <c:if test='${!displaySeriousTable}'>
           <p>
@@ -276,6 +333,7 @@ background-color:#e5e8ff;
             	<tags:message key="instruction_ae_rulesengine_reports" />
         	</p>
         </c:if>
+        
 
         <p><tags:message key="instruction_ae_note" /></p>
 
@@ -297,45 +355,31 @@ background-color:#e5e8ff;
               
         <!--  begin serious aes -->
           <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
-          
-              <tr id="seriousBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${ae.requiresReporting}">
                   <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
           </c:if>
-          <c:if test='${!displaySeriousTable}'>
-            <tags:message key="instruction_ae_saes_na" />
-          </c:if>
          <!--  end serious aes --> 
          <!--  begin observed aes -->  
           <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
-              <tr id="observedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
                   <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
           </c:if>
-          <c:if test='${!displayObservedTable}'>
-            <tags:message key="instruction_ae_oaes_na" />
-          </c:if>
-        
         <!--  end observed aes -->
         
         <!--  begin solicied aes -->
         <c:if test="${command.havingSolicitedAEs}">
           <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
-              <tr id="solicitedBlankRow" />
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
                   <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
                 </c:if>
               </c:forEach>
-          </c:if>
-          <c:if test='${!displaySolicitedTable}'>
-            <tags:message key="instruction_ae_soaes_na" />
           </c:if>
         </c:if>
         <!--  end solicited aes -->
@@ -350,129 +394,14 @@ background-color:#e5e8ff;
       <div class="flow-buttons"> <span class="prev">
         <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
         </span> <span class="next">
-        <a href="#" onClick="javascript:displayOptionsPopup();">
+        <a href="#" onClick="javascript:forwardControl();">
         	<img src="<chrome:imageUrl name="../blue/continue_btn.png" />"  alt="Continue" title="Continue" style="border:0" />
         </a>
         </span> </div>
     </div>
   </jsp:attribute>
 </tags:tabForm>
-<div id="display_options_popup" style="display:none;text-align:left" >
-  <chrome:box title="Edit / Amend Existing Report" id="popupId">
-    <c:if test="${not empty command.participant}">
-      <div align="left">
-        <div class="row">
-          <div class="summarylabel">Subject</div>
-          <div class="summaryvalue">${command.participant.fullName}</div>
-        </div>
-        <div class="row">
-          <div class="summarylabel">Study</div>
-          <div class="summaryvalue">${command.study.longTitle}</div>
-        </div>
-        <div class="row">
-          <div class="summarylabel">Course</div>
-          <div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
-        </div>
-      </div>
-    </c:if>
-    <div id="div-reports-and-create" style="display:none;">
-      <hr/>
-      <p>
-        <tags:instructions code="instruction_ae_adverseevents"/>
-      </p>
-      <chrome:division title="Selected Reports" id="div-selected-reports" collapsable="false">
-        <table class="reportSet" width="100%">
-         <tr>
-          <td width="10%" align="left">
-          <input type="button" value="Create" id="create-new-report"/>
-          </td>
-        <td>
-        <div class="eXtremeTable">
-          <table width="100%" border="0" cellspacing="0"  class="tableRegion">
-            <thead>
-              <tr align="center" class="label">
-                <td class="tableHeader">Report</td>
-                <td class="tableHeader">Status</td>
-              </tr>
-            </thead>
-            <c:forEach items="${command.allReportDefinitions}"  var="repDefn" varStatus="rdStatus">
-              <tr id="reportDefinitionMap[${repDefn.id}]-p" style="display:none">
-                <td align="left">${repDefn.label}</td>
-                <td align="left">${command.reportStatusMap[repDefn.id]}</td>
-              </tr>
-            </c:forEach>
-          </table>
-        </div>
-         </tr>
-        </table>
-      </chrome:division>
-    </div>
-    <%-- The below div is only visible if there are no reports selected --%>
-    <div id="div-reports-not-selected">
-      <chrome:division title="Selected Reports" id="div-selected-reports-2" collapsable="false">
-        <div style="text-align: left;">
-          <div class="eXtremeTable">
-            <table width="60%" border="0" cellspacing="0" class="tableRegion">
-              <thead>
-                <tr align="center" class="label">
-                  <td class="tableHeader">Report</td>
-                  <td class="tableHeader">Status</td>
-                </tr>
-              </thead>
-              <tr>
-                <td><tags:message key="instruction_ae_no_reports" />
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </chrome:division>
-      <div style="margin-left:10px; margin-bottom:20px;"><tags:message key="instruction_ae_no_saes"  /></div>
-    </div>
-    <chrome:division title="Edit/Amend Existing Report" id="div-report-summary" collapsable="false">
-      <%-- <div class="eXtremeTable" > --%>
-      <c:choose>
-        <c:when test="${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}">
-          <c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
-            <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
-              <tr>
-	                <td width="10%" align="left">
-	                	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
-   	                 		<input type="button" value="Amend" id="amend-report" onClick="javascript:amendReport('${aeReport.id}');"/>
-                  		</c:if>
-                  		<c:if test="${aeReport.allSponsorReportsCompleted == false}">
-                    		<input type="button" value="Edit" id="edit-report" onClick="javascript:editReport('${aeReport.id}');"/>
-                  		</c:if>
-                	</td>
-                <td><div class="eXtremeTable" >
-                    <table width="100%" border="0" cellspacing="0" class="tableRegion">
-                      <thead>
-                        <tr align="center" class="label">
-                          <td width="5%"/>
-                          <td class="tableHeader" width="15%">Report Type</td>
-                          <td class="centerTableHeader" width="10%">Report Version</td>
-                          <td class="centerTableHeader" width="10%"># of AEs</td>
-                          <td class="tableHeader" width="20%">Data Entry Status</td>
-                          <td class="tableHeader" width="20%">Submission Status</td>
-                        </tr>
-                      </thead>
-                      <ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
-                    </table>
-                  </div></td>
-              </tr>
-            </table>
-            </table>
-          </c:forEach>
-        </c:when>
-        <c:otherwise>
-          <table width="100%" border="0" cellspacing="0" class="tableRegion">
-            No reports are available to edit or amend in this course.
-          </table>
-        </c:otherwise>
-      </c:choose>
-      <%-- </div> --%>
-    </chrome:division>
-  </chrome:box>
-</div>
+
+
 </body>
 </html>

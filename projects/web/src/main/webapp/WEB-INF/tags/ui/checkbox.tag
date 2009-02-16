@@ -12,11 +12,12 @@
 <%@attribute name="title" description="Specifies the alternate or tooltip title" %>
 <%@attribute name="disabled" type="java.lang.Boolean" description="(Deprecated) Specifies whether the field to be displayed in disabled mode" %>
 <%@attribute name="embededJS" description="A piece of javascript, that if specified will be embeded along with this input"%>
+<%@attribute name="onclick" description="A piece of javascript, that should be executed on onClick" %>
 
 <ui:fieldWrapper path="${path}" cssClass="${cssClass}" 
   validationJSClass="${validationJSClass}" readonly="${readonly}"  required="${required}" 
   displayNamePath="${displayNamePath}" title="${title}" embededJS="${embededJS}">
 <jsp:attribute name="field">
-<form:checkbox id="${path}" path="${path}" disabled="${disabled}" cssClass="${cssClass} ${validationCss}"  title="${title}" />
+<form:checkbox id="${path}" path="${path}" disabled="${disabled}" cssClass="${cssClass} ${validationCss}"  title="${title}" onclick="${onclick}" />
 </jsp:attribute>
 </ui:fieldWrapper>
