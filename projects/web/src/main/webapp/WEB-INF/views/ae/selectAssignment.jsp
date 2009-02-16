@@ -78,10 +78,12 @@
             this.rpCtrl.selectedIndex = cntOptions - 1;
             this.addOptionToSelectBox(this.rpCtrl, 'Create New', '-1');
             this.showOrHideEditRPCtrl();
+            $('created-message').style.display = '';
          },
          
          refreshRPCrlOptionsOnEdit:function(RPId, rpName) {
          	this.rpCtrl.options[this.rpCtrl.selectedIndex].text = rpName;
+         	$('edited-message').style.display = '';
          },
 
         addOptionToSelectBox:function(selBox, optLabel, optValue) {
@@ -95,6 +97,8 @@
                 this.displayRPPopup(); //create reporting period flow
             }
             this.showOrHideEditRPCtrl();
+            $('created-message').style.display = 'none';
+            $('edited-message').style.display = 'none';
         },
         
         rpEditCtrlClick:function() {
@@ -106,10 +110,10 @@
             //the edit reporting period button show/hide based on select box value
             if (this.rpCtrl.value > 0) {
                 this.rpEditCtrl.show();
-                $('adverseEventReportingPeriod').value = this.rpCtrl.value;
             } else {
                 this.rpEditCtrl.hide();
             }
+            $('adverseEventReportingPeriod').value = this.rpCtrl.value;
         },
         
         clearRPCrlOptions:function(){
@@ -249,6 +253,8 @@
             </p>
         </chrome:box>
         <chrome:box title="Select course" id="course-entry" autopad="true">
+			<div style="display:none" id="created-message"><b><font color="green">Course created successfully</font></b></div>
+			<div style="display:none" id="edited-message"><b><font color="green">Course details saved successfully</font></b></div>
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
         	<form:hidden path="adverseEventReportingPeriod"/>
         	<tags:requiredIndicator/>
