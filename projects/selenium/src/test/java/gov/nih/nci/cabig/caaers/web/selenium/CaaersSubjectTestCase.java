@@ -28,7 +28,7 @@ public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 						&& selenium.isTextPresent("regexpi:" + lastName));
 		selenium.open(selenium
 				.getAttribute("//a[text()='mrn-pt-test-001']@href"));
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.clickNext("flow-next");
 		selenium
 				.click("//td[text()='University of Alabama at Birmingham']/parent::tr/descendant::input");
@@ -58,17 +58,17 @@ public class CaaersSubjectTestCase extends CaaersSeleniumTestCase {
 		// ---------------------------
 		selenium.open("/caaers/pages/participant/search");
 		selenium.click("firstlevelnav_searchParticipantController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//a[@id='secondlevelnav_assignParticipantController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("searchText", "mrn-pt-test-001");
 		selenium.select("searchType", "label=Identifier");
 		selenium.click("//input[@value='Search']");
 		aw.waitForElementPresent("//td[text()='mrn-pt-test-001']/input");
 		selenium.click("//td[text()='mrn-pt-test-001']/input");
 		selenium.click("flow-next");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("searchText_", "n027d");
 		selenium.select("searchType", "label=Identifier");
 		selenium.click("//input[@value='Search']");

@@ -1,6 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-public class CaaersInvestigatorTest extends CaaersSeleniumTestCase {
+public class CaaersInvestigatorTestCase extends CaaersSeleniumTestCase {
 	String firstName = "monica";
 	String lastName = "dubinsky";
 	

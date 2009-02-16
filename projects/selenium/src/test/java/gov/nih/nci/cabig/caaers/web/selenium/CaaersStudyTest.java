@@ -10,6 +10,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 
 	public void testCreateCTCStudy() {
 		try {
+			System.out.println("In testCreateCTCStudy");
 			checkLogin();
 			createCTCStudy(studyId+"-ctc");
 			assertTrue("Create Study failure", selenium
@@ -23,6 +24,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 	
 	public void testCreateMeddraStudy() {
 		try {
+			System.out.println("In testCreateMeddraStudy");
 			checkLogin();
 			createMeddraStudy(studyId+"-meddra");
 			assertTrue("Create Study failure", selenium
@@ -35,6 +37,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 	}
 	public void testSearchStudy() {
 		try {
+			System.out.println("In testSearchStudy");
 			checkLogin();
 			studyId = "N027D";
 			searchStudy(studyId);
@@ -51,6 +54,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 
 	public void testEditStudy() {
 		try {
+			System.out.println("In testEditStudy");
 			checkLogin();
 			//studyId=studyId+"-ctc";
 			studyId="N027D";
@@ -58,7 +62,7 @@ public class CaaersStudyTest extends CaaersSeleniumTestCase {
 			String studyLink = selenium
 					.getAttribute("//a[text()='"+studyId+"']@href");
 			selenium.click("link="+studyId);
-			selenium.waitForPageToLoad("30000");
+			selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 			editStudy();
 			assertTrue("Create Study failure", true);
 			assertTrue("Create Study failure", selenium.isTextPresent("Information saved successfully"));

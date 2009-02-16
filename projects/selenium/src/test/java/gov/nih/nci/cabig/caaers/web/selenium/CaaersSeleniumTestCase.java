@@ -26,11 +26,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public final String MEDIUM = "5000";
 	public final String SLOW = "10000";
 
-	private Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
+	private static Logger log = Logger.getLogger(CaaersSeleniumTestCase.class);
 
-	private RuntimeException acLoadFailure = null;
+	private static RuntimeException acLoadFailure = null;
 
-	private ApplicationContext applicationContext = null;
+	private static ApplicationContext applicationContext = null;
 
 	String seleniumServerURL = null;
 	String seleniumServerPort = null;
@@ -38,9 +38,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	String caaersURL = null;
 	String seleniumSpeed = null;
 	String seleniumRulesDir = null;
-
-	protected ApplicationContext getDeployedApplicationContext()
+	static String waitTime = null;
+	protected static ApplicationContext getDeployedApplicationContext()
 			throws IOException {
+		System.out.println(acLoadFailure);
 		if (acLoadFailure == null && applicationContext == null) {
 			try {
 				SimpleNamingContextBuilder.emptyActivatedContextBuilder();
@@ -100,7 +101,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	 * 
 	 * @return
 	 */
-	public final String[] getConfigLocations() {
+	public static final String[] getConfigLocations() {
 		return new String[] { "classpath*:gov/nih/nci/cabig/caaers/applicationContext-selenium.xml" };
 	}
 
@@ -116,6 +117,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			caaersURL = properties.getProperty("selenium.caaersURL");
 			seleniumSpeed = properties.getProperty("selenium.speed");
 			seleniumRulesDir = properties.getProperty("selenium.rules.dir");
+			waitTime = properties.getProperty("selenium.wait.time");
 			System.out.println(seleniumServerURL);
 			// setUp("https://oracle.qa.semanticbits.com", "*chrome");
 			// selenium = new DefaultSelenium("10.10.10.154", 4444, "*chrome",
@@ -125,6 +127,8 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			selenium.start();
 			aw = new AjaxWidgets(selenium);
 			selenium.setSpeed(seleniumSpeed);
+			selenium.setTimeout(CaaersSeleniumTestCase.waitTime);
+			selenium.setBrowserLogLevel("info");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -149,9 +153,9 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void searchStudy(String studyId) throws InterruptedException {
 		selenium.open("/caaers/pages/task");
-		selenium.waitForPageToLoad("40000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("firstlevelnav_searchStudyController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.select("searchCriteria[0].searchType", "label=Identifier");
 		selenium.type("searchCriteria[0].searchText", studyId);
 		selenium.click("//input[@value='Search']");
@@ -162,7 +166,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void checkLogin() throws Exception {
 		selenium.open("/caaers/pages/task");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad("40000");
 		if (selenium.isTextPresent("Please Log in")) {
 			aw.login();
 		}
@@ -171,7 +175,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void waitForCaaersStartup() throws Exception {
 		selenium.open("caaers/public/login");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		int maxAttempts = 20;
 		int attempt = 0;
 		System.out.println("Checking for caaers...");
@@ -179,7 +183,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			if (!(selenium.isTextPresent("Please Log in"))
 					&& !(selenium.isTextPresent("Log out"))) {
 				selenium.open("caaers/public/login");
-				selenium.waitForPageToLoad("30000");
+				selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 				System.out.println("\t attempt no: " + attempt);
 
 			} else {
@@ -225,7 +229,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"mn003", "study.identifiersLazy[2].organization-choices");
 
 		selenium.click("//img[@alt='delete']");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 	}
 
 	public void populateEditStudyInvestigators() throws InterruptedException {
@@ -233,7 +237,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"label=University of Alabama at Birmingham (Site)");
 		Thread.sleep(5000);
 		selenium.click("//img[@alt='delete']");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.confirmOK("^Do you really want to delete[\\s\\S]$");
 		selenium.click("add-ssi-table-row-button");
 		aw
@@ -276,7 +280,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"study.studySites[" + index + "].organization-input", "mn003",
 				"study.studySites[" + index + "].organization-choices");
 		selenium.click("//a[@id='del-" + index + "']/img");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.confirmOK("^Do you really want to delete[\\s\\S]$");
 	}
 
@@ -293,10 +297,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.removeSelection("disease-term", "label=All");
 		selenium.addSelection("disease-term", "label=Osteosarcoma");
 		selenium.click("//input[@value='Add disease']");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//div[@id='contentOf-']/center/table/tbody/tr[3]/td[3]/div/a/img");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.clickNext("flow-next");
 		aw.typeAutosuggest("termCode-input", "nausea", "termCode-choices");
 
@@ -435,7 +439,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public void populateCreateStudyInvestigators() throws InterruptedException {
 		selenium.select("studySiteIndex",
 				"label=University of Alabama at Birmingham (Site)");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("add-ssi-table-row-button");
 		aw
 				.waitForElementPresent("study.studyOrganizations[2].studyInvestigators[0].siteInvestigator-input");
@@ -501,7 +505,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 		selenium.addSelection("disease-term", "label=Synovial sarcoma");
 
 		selenium.click("//input[@value='Add disease']");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 	}
 
 	public void populateCreateStudyAgents() throws InterruptedException {
@@ -533,9 +537,9 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public void populateCreateStudyDetails() throws InterruptedException {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_searchStudyController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("//a[@id='secondlevelnav_createStudyController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.type(
 						"study.shortTitle",
@@ -568,10 +572,10 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	public void createInvestigator() throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_configurationController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("firstName", "Jack");
 		selenium.type("lastName", "Black");
 		selenium.type("emailAddress", "jack.black@xxyyzz.com");
@@ -581,7 +585,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 				"siteInvestigators[0].organization-choices");
 		selenium.select("siteInvestigators[0].statusCode", "label=Active");
 		selenium.click("flow-next");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 
 	}
 
@@ -589,12 +593,12 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_configurationController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//a[@id='secondlevelnav_createInvestigatorController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("link=Search Investigator");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("firstName", firstName);
 		selenium.type("lastName", lastName);
 		selenium.click("//input[@value='Search']");
@@ -604,11 +608,11 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void uploadRules() throws Exception {
 		selenium.open("/caaers/pages/task");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("firstlevelnav_createRuleController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("//a[@id='secondlevelnav_importRuleController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		String files[] = {
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.mandatory_sections_rules.xml",
 				"\\gov.nih.nci.cabig.caaers.rules.sponsor.cancer_therapy_evaluation_program.sae_reporting_rules.xml",
@@ -621,7 +625,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 			log("Uploading rule from: " + absPath);
 			selenium.type("ruleSetFile1", absPath);
 			selenium.click("//input[@value='Import']");
-			selenium.waitForPageToLoad("30000");
+			selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 			if (!selenium
 					.isElementPresent("//p[contains(text(),'Rules imported successfully')]"))
 				throw new Exception("Error when importing following rule xml: "
@@ -634,7 +638,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	 * public void testNew() throws Exception {
 	 * 
 	 * selenium.click("firstlevelnav_listAdverseEventsController");
-	 * selenium.waitForPageToLoad("30000"); selenium.click("study-clear");
+	 * selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime); selenium.click("study-clear");
 	 * selenium.type("study-input", "n"); selenium.typeKeys("study-input",
 	 * "027d"); fail("test");
 	 * selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",

@@ -18,7 +18,7 @@ public class AjaxWidgets extends TestCase {
 
 	public void clickNext(String nextButton) {
 		selenium.click(nextButton);
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 	}
 
 	public void confirmOK(String expectedMessage) throws InterruptedException {
@@ -47,10 +47,11 @@ public class AjaxWidgets extends TestCase {
 
 	public void login() throws Exception {
 		selenium.open("/caaers/public/login");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("j_username", "SYSTEM_ADMIN");
 		selenium.type("j_password", "system_admin");
 		selenium.click("power_btn");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 
 	}
 

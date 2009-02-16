@@ -18,9 +18,9 @@ public class CaaersSubjectFlowFixtures extends SeleneseTestCase {
 	public void searchSubject(String firstName) throws InterruptedException {
 		selenium.open("/caaers/pages/participant/search");
 		selenium.click("firstlevelnav_searchParticipantController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("secondlevelnav_searchParticipantController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.type("prop1", "catherine");
 		selenium.click("//input[@value='Search']");
 		aw.waitForElementPresent("//td[@title='Sort By First Name']");
@@ -30,12 +30,12 @@ public class CaaersSubjectFlowFixtures extends SeleneseTestCase {
 	public void createSubjectDetails(String firstName, String lastName)
 			throws InterruptedException {
 		selenium.open("/caaers/pages/participant/search");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("firstlevelnav_searchParticipantController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium
 				.click("//a[@id='secondlevelnav_createParticipantController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.select("organization",
 				"label=University of Alabama at Birmingham ( AL002 )");
 		selenium.type("participant.firstName", firstName);

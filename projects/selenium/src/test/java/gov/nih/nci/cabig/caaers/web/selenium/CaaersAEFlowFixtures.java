@@ -19,9 +19,9 @@ public class CaaersAEFlowFixtures extends SeleneseTestCase {
 			String rpTo) throws Exception {
 		selenium.open("/caaers/pages/task");
 		selenium.click("firstlevelnav_listAdverseEventsController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		selenium.click("secondlevelnav_captureAdverseEventController");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.typeAutosuggest("participant-input", participant,
 				"participant-choices");
 		// selenium.type("participant-input", participant);
@@ -94,7 +94,7 @@ public class CaaersAEFlowFixtures extends SeleneseTestCase {
 		aw.clickNext("flow-next");
 		selenium
 				.click("//a[@id='secondlevelnav_listAdverseEventsController']/span");
-		selenium.waitForPageToLoad("30000");
+		selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
 		aw.typeAutosuggest("participant-input", participant,
 				"participant-choices");
 		aw.typeAutosuggest("study-input", studyId, "study-choices");
