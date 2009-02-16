@@ -10,7 +10,7 @@
 
 <tags:stylesheetLink name="extremecomponents"/>
 <tags:stylesheetLink name="calendar/calendar-blue"/>
-<tags:stylesheetLink name="common-search"/>
+
 <tags:stylesheetLink name="hoverhelp"/>
 
 <tags:stylesheetLink name="tigra-menu/tigra-menu"/>
