@@ -123,16 +123,18 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         }
 
         for (int i = 0; i < subnames.length; i++) {
-            buildSubnameQuery(subnames[i], query, params, substringMatchProperties,
-                            exactMatchProperties, true);
+            buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, true);
             if (i < subnames.length - 1) {
                 query.append(" and ");
             }
         }
+        
         getHibernateTemplate().setMaxResults(30);
         log.debug("query::" + query.toString());
+        
         List<T> result = getHibernateTemplate().find(query.toString(), params.toArray());
         getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        
         return result;
     }
 
@@ -220,8 +222,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     protected T findByIdentifier(final Identifier identifier) {
         return (T) CollectionUtils.firstElement(getHibernateTemplate().executeFind(
                         new HibernateCallback() {
-                            public Object doInHibernate(Session session) throws HibernateException,
-                                            SQLException {
+                            public Object doInHibernate(Session session) throws HibernateException, SQLException {
                                 Criteria criteria = session.createCriteria(domainClass())
                                                 .createCriteria("identifiers");
 

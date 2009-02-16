@@ -35,11 +35,8 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
     private static final List<String> EXACT_MATCH_TITLE_PROPERTIES = Arrays.asList("shortTitle");
 
-    private static final String JOINS = "join o.identifiers as identifier "
-            + "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
-
-    private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName()
-            + " s where shortTitle = :st";
+    private static final String JOINS = "join o.identifiers as identifier " + "join o.studyOrganizations as ss left outer join ss.studyParticipantAssignments as spa left outer join spa.participant as p left outer join p.identifiers as pIdentifier";
+    private static final String QUERY_BY_SHORT_TITLE = "select s from " + Study.class.getName() + " s where shortTitle = :st";
 
     /**
      * Get the Class representation of the domain object that this DAO is
@@ -307,16 +304,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
         log.debug("::: " + queryBuf.toString());
         getHibernateTemplate().setMaxResults(CaaersDao.DEFAULT_MAX_RESULTS_SIZE);
         return getHibernateTemplate().find(queryBuf.toString(), params.toArray());
-    }
-
-    /**
-     * @param subnames a set of substrings to match
-     * @return a list of participants such that each entry in <code>subnames</code> is a case-insensitive substring match of the
-     *         participant's name or other identifier
-     */
-    @SuppressWarnings("unchecked")
-    public List<Study> getByUniqueIdentifiers(final String[] subnames) {
-        return findBySubname(subnames, null, null, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
     }
 
     /**
