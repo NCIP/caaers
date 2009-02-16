@@ -192,6 +192,10 @@
             <tags:errors path="*"/>
             
 
+         <table border="0">
+            <tr>
+            <td valign="top">
+                
             <div class="row">
                 <label><form:radiobutton path="level" value="Sponsor" onchange="displayRuleTypeInput(this)"/>&nbsp;Sponsor rules</label>
             </div>
@@ -207,8 +211,11 @@
             <div class="row">
                 <label><form:radiobutton path="level" value="InstitutionDefinedStudy" onchange="displayRuleTypeInput(this)"/>&nbsp;Institution defined rules for a study</label>
             </div>  
-            
-			<c:choose>
+
+            </td>
+       <td valign="top">
+                       
+            <c:choose>
 				<c:when test='${command.level eq "Study"}'>
 					<c:set var="sponsorVisibility" value=""/>
 					<c:set var="studyVisibility" value=""/>
@@ -265,7 +272,12 @@
 	</div>
 	
 	</div>
-	</jsp:attribute>
+
+
+                                </td>
+		                </tr>
+            </table>
+    </jsp:attribute>
 
 
 
