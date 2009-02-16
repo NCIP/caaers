@@ -3,4 +3,8 @@
         id="9"
         name="MedDRA v9"
         />
+    <meddra_versions
+    	id="10"
+    	name="MedDRA v10"
+    	/>
 </dataset>
