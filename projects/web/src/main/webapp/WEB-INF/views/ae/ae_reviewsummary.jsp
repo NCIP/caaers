@@ -192,7 +192,7 @@ background-color:#e5e8ff;
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
         
-        <chrome:box title="Reports Identified by caAERS" collapsable="true">
+        <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
         	<p>
             <tags:message key="instruction_ae_require_reporting" />
           </p>
@@ -225,7 +225,7 @@ background-color:#e5e8ff;
         </chrome:box>
         </c:when>
         <c:otherwise>
-         <chrome:box title="Reports Identified by caAERS" collapsable="true">
+         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
           <p>
             <tags:message key="instruction_ae_not_require_reporting"/>
           </p>
@@ -254,7 +254,7 @@ background-color:#e5e8ff;
         </c:otherwise>
       </c:choose>
       
-        <chrome:box title="Existing Reports" collapsable="true">
+        <chrome:box id="box-existing-reports" title="Existing Reports" collapsable="true" autopad="true">
          <p>
             <tags:message key="instruction_ae_existing_reports"/>
           </p>
@@ -337,7 +337,7 @@ background-color:#e5e8ff;
 
         <p><tags:message key="instruction_ae_note" /></p>
 
-       <chrome:box title="Adverse Events" collapsable="true">
+       <chrome:box id="box-aes" title="Adverse Events" collapsable="true" autopad="true">
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
