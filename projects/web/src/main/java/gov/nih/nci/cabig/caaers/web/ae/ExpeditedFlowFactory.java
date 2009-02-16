@@ -31,10 +31,10 @@ public class ExpeditedFlowFactory implements FlowFactory<ExpeditedAdverseEventIn
     	 * Third level tabs are secured now , Any changes in this flow needs to reflect in 
     	 * applicationContext-web-security.xml <util:map id="tabObjectPrivilegeMap"> 
     	 */
+    	flow.addTab(new DescriptionTab());
     	flow.addTab(new TreatmentTab());
-        flow.addTab(new DescriptionTab());
-        flow.addTab(new PatientDetailsTab());
         flow.addTab(new StudyInterventionsTab());
+        flow.addTab(new PatientDetailsTab());
         flow.addTab(new OtherCausesTab());
 
         flow.addTab(new LabsTab());
