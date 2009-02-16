@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.dao;
 
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
-import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.*;
 
@@ -13,7 +11,7 @@ import java.util.List;
 
 public class NotificationDaoTest extends DaoTestCase<NotificationDao> {
 
-    /*
+  /*
    * Test the loading by ID functionality
    *
    * */
