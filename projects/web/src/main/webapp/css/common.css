@@ -113,7 +113,7 @@ p { margin: 1em 0; }
 	background-image: url(../images/blue/header_bg.jpg);
 	background-position: top;
 }
-#header .background-R { background: url(../images/chrome/header_BG_R.gif) no-repeat top right; }
+
 a#logo {
 	background-image: url(../images/blue/caAERSlogo.png);
 	height: 100px;
