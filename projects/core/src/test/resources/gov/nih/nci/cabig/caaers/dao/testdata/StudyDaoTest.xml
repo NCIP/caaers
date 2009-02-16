@@ -429,4 +429,10 @@
     <SPA_CONCOMITANT_MEDICATIONS/>
     <SPA_PRE_EXISTING_CONDS/>
 
+    <study_therapy id="-1" study_id="-3" study_therapy_type="1" />
+    <study_therapy id="-2" study_id="-3" study_therapy_type="2" />
+    <study_therapy id="-3" study_id="-3" study_therapy_type="3" />
+    <study_therapy id="-4" study_id="-3" study_therapy_type="4" />
+    <study_therapy id="-5" study_id="-3" study_therapy_type="5" />
+
 </dataset>

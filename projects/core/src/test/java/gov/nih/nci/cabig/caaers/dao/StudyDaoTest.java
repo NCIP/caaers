@@ -717,4 +717,21 @@ assertTrue(true);
         assertEquals("Wrong Meddra Id", -11, loaded.getExpectedAEMeddraLowLevelTerms().get(0).getTerm().getId().intValue());
     }
 
+    public void testGetStudyDesignById() throws Exception {
+        Study study = getDao().getStudyDesignById(-3);
+        assertNotNull(study);
+        assertEquals(Boolean.TRUE, study.getRadiationTherapyType());
+        assertEquals(Boolean.TRUE, study.getSurgeryTherapyType());
+        assertEquals(Boolean.TRUE, study.getBehavioralTherapyType());
+        assertEquals(Boolean.TRUE, study.getDrugAdministrationTherapyType());
+        assertEquals(Boolean.TRUE, study.getDeviceTherapyType());
+    }
+
+    public void testGetStudyDesignByIdentifier() throws Exception {
+        Identifier identifier = new Identifier();
+        identifier.setId(-15);
+        Study study = getDao().getStudyDesignByIdentifier(identifier);
+        assertNotNull(study);
+        assertEquals(-3, study.getId().intValue());
+    }
 }
