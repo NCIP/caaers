@@ -37,13 +37,17 @@
 
     <!-- box header -->
     <div class="header"><div class="background-L"><div class="background-R">
-      <h2>${title}</h2><c:if test="${!empty title}"><div class="hr"></div></c:if>
+      <h2>
+      <c:if test="${collapsable and not empty id}"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></c:if>
+      ${title}
+     </h2>
+      <c:if test="${!empty title}"><div class="hr"></div></c:if>
     </div></div></div>
     <!-- end box header -->
 
     <!-- inner border -->
     <div class="border-T"><div class="border-L"><div class="border-R"><div class="border-B"><div class="border-TL"><div class="border-TR"><div class="border-BL"><div class="border-BR">
-        <div class="interior">
+        <div class="interior" id="contentOf-${id}" style="display:${collapsed ? "none" : "inline"};">
             <c:if test="${autopad}"><div class="content"></c:if>
             <jsp:doBody/>
             <c:if test="${autopad}"></div></c:if>
