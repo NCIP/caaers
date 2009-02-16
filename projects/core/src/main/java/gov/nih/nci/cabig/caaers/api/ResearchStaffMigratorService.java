@@ -6,7 +6,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
-@WebService(name="ResearchStaffMigratorServiceIntf",targetNamespace="http://researchstaff.schema.integration.caaers.cabig.nci.nih.gov")
+@WebService(name="ResearchStaffMigratorServiceIntf",targetNamespace="http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff")
 public interface ResearchStaffMigratorService {
 
 	@WebMethod
