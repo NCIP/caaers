@@ -288,7 +288,7 @@ div.row div.value, div.row div.extra {
                    $("aeReport.adverseEvents["+original+"].startDate-indicator").innerHTML = $("aeReport.adverseEvents["+target+"].startDate-indicator").innerHTML;
                    $("aeReport.adverseEvents["+target+"].startDate-indicator").innerHTML = tempHTML;
                    $$('span.primary-indicator').each(function(el, indx){
-                       if(indx == 0) el.innerHTML='(primary)';
+                       if(indx == 0) el.innerHTML='[Primary]';
                        else el.innerHTML = '';
                    });
                 },
