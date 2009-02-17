@@ -19,7 +19,11 @@
     </c:choose>
 </c:set>
 
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${index > 0}" collapsable="true">
+<chrome:division title="${title}" id="ae-section-${index}" 
+	 	cssClass="ae-section" style="${style}" collapsed="${index > 0}" 
+		collapsable="true">
+	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '(primary)' }</span> </jsp:attribute>
+	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
         <div class="row">
            <div class="label">CTC version</div>
@@ -75,4 +79,5 @@
 		<ae:oneOutcome index="${index}" />
 		<tags:renderRow field="${fieldGroups[mainGroup].fields[len - 1]}"/>
     </div>
+    </jsp:body>
 </chrome:division>
