@@ -56,7 +56,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     private static final Log log = LogFactory.getLog(AbstractExpeditedAdverseEventInputCommand.class);
 //    private static final String REPORT_DEFN_LIST_PARAMETER ="reportDefnList";
-    private ExpeditedAdverseEventReport aeReport;
+    protected ExpeditedAdverseEventReport aeReport;
 
     private Map<String, List<List<Attribution>>> attributionMap;
     protected Collection<ExpeditedReportSection> mandatorySections;

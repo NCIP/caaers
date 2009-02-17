@@ -27,6 +27,7 @@ import gov.nih.nci.cabig.caaers.dao.UserDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Agent;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
@@ -609,11 +610,25 @@ public class CreateAdverseEventAjaxFacade {
         return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
     }
     
-    public void addAdverseEvent(){
-    	Object cmd = extractCommand();
-    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
-    	
-    	//create a new adverse event. 
+    public String addAdverseEvent( int index, Integer aeReportId ){
+    	try {
+			Object cmd = extractCommand();
+			ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+			
+			command.reassociate();
+			
+			//create a new adverse event. 
+			AdverseEvent ae = new AdverseEvent();
+			ae.setReport(command.getAeReport());
+			command.getAeReport().getReportingPeriod().addAdverseEvent(ae);
+			command.getAeReport().addAdverseEvent(ae);
+			command.saveReportingPeriod();
+			command.save();
+			return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "error";
     }
 
     /**

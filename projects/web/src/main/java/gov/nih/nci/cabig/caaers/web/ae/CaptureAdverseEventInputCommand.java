@@ -182,6 +182,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      *  - initializing the lazy associations
      */
     public void initialize(){
+    	//set the assignment into the command.
+    	this.assignment = this.adverseEventReportingPeriod.getAssignment();
+    	
     	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
     		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
