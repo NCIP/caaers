@@ -193,24 +193,27 @@ function closeAll() {
     
     <c:if test="${hasAgent}">
         <chrome:box title="Agent" collapsable="true">
-            <div style="padding-left:20px;">
-            <div align="left" style="padding-left:10px;"><input type="button" value="Add Agent" id="btn-add-agent"></div>
-            <div id="_agents">
-                <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
-                <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
-                    <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="true"/>
-                </c:forEach>
-            </div>
-            </div>
+            <jsp:attribute name="additionalTitle"><input type="button" value="Add Agent" id="btn-add-agent"></jsp:attribute>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                <div id="_agents">
+                    <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
+                    <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="true"/>
+                    </c:forEach>
+                </div>
+                </div>
+            </jsp:body>
         </chrome:box>
     </c:if>
 
     <c:if test="${hasDevice}">
         <chrome:box title="Device" collapsable="true">
-            <div style="padding-left:20px;">
-            <div align="left" style="padding-left:10px;"><input type="button" value="Add Device" id="btn-add-device"></div>
-            <div id="_devices">
+            <jsp:attribute name="additionalTitle"><input type="button" value="Add Device" id="btn-add-device"></jsp:attribute>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                <div id="_devices">
                 <c:set var="size" value="${fn:length(command.aeReport.medicalDevices)}" />
                 <c:forEach items="${command.aeReport.medicalDevices}" varStatus="status" var="device">
                     <c:set var="newIndex" value="${size - (status.index + 1)}" />
@@ -218,36 +221,41 @@ function closeAll() {
                 </c:forEach>
             </div>
             </div>
+            </jsp:body>
         </chrome:box>
     </c:if>
 
     <c:if test="${hasRadiation}">
         <chrome:box title="Radiation" collapsable="true">
-            <div style="padding-left:20px;">
-            <div align="left" style="padding-left:10px;"><input type="button" value="Add Radiation" id="btn-add-radiation"></div>
-            <div id="_radiations">
-                <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
-                <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
-                    <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneRadiationIntervention index="${newIndex}" radiation="${radiation}" collapsed="true"/>
-                </c:forEach>
-            </div>
-            </div>
+            <jsp:attribute name="additionalTitle"><input type="button" value="Add Radiation" id="btn-add-radiation"></jsp:attribute>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                <div id="_radiations">
+                    <c:set var="size" value="${fn:length(command.aeReport.radiationInterventions)}" />
+                    <c:forEach items="${command.aeReport.radiationInterventions}" varStatus="status" var="radiation">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <ae:oneRadiationIntervention index="${newIndex}" radiation="${radiation}" collapsed="true"/>
+                    </c:forEach>
+                </div>
+                </div>
+            </jsp:body>
         </chrome:box>
     </c:if>
 
     <c:if test="${hasSurgery}">
         <chrome:box title="Surgery" collapsable="true">
-            <div style="padding-left:20px;">
-            <div align="left" style="padding-left:10px;"><input type="button" value="Add Surgery" id="btn-add-surgery"></div>
-            <div id="_surgeries">
-                <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
-                <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
-                    <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                    <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}" collapsed="true"/>
-                </c:forEach>
-            </div>
-            </div>
+            <jsp:attribute name="additionalTitle"><input type="button" value="Add Surgery" id="btn-add-surgery"></jsp:attribute>
+            <jsp:body>
+                <div style="padding-left:20px;">
+                <div id="_surgeries">
+                    <c:set var="size" value="${fn:length(command.aeReport.surgeryInterventions)}" />
+                    <c:forEach items="${command.aeReport.surgeryInterventions}" varStatus="status" var="surgery">
+                        <c:set var="newIndex" value="${size - (status.index + 1)}" />
+                        <ae:oneSurgeryIntervention index="${newIndex}" surgery="${surgery}" collapsed="true"/>
+                    </c:forEach>
+                </div>
+                </div>
+            </jsp:body>
         </chrome:box>
     </c:if>
 

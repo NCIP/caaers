@@ -6,6 +6,7 @@
 <%@attribute name="cssClass"%>
 <%@attribute name="style"%>
 <%@attribute name="noBackground" required="false" %>
+<%@attribute name="additionalTitle" required="false" %>
 
 <%-- If this attribute is true, the provided contents will be wrapped in a .content div.
      Use it if the box will only need one content div -- i.e., it doesn't contain any
@@ -37,10 +38,10 @@
 
     <!-- box header -->
     <div class="header"><div class="background-L"><div class="background-R">
-      <h2>
-      <c:if test="${collapsable and not empty id}"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></c:if>
-      ${title}
-     </h2>
+        <table width="100%" border="0" cellpadding="1" cellspacing="0"><tr>
+            <td align="left"><h2><c:if test="${collapsable and not empty id}"><a style="cursor:pointer;" onClick="SwitchCollapsableState('contentOf-${id}', '${id}')"><img id="image-${id}" src="<c:url value="/images/arrow-${collapsed ? 'right' : 'down'}.png" />" border="0" style="padding-right:5px;"/></a></c:if>${title}</h2></td>
+            <td align="left" width="100%" style="padding-right:10px;">${additionalTitle}</td>
+        </tr></table>
       <c:if test="${!empty title}"><div class="hr"></div></c:if>
     </div></div></div>
     <!-- end box header -->

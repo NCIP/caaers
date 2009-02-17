@@ -48,7 +48,7 @@
         var fieldAgentDoseUnit = $("aeReport.treatmentInformation.courseAgents[${index}].dose.units");
         var fieldAgentDoseUnitValue = fieldAgentDoseUnit.options[fieldAgentDoseUnit.selectedIndex].value;
 
-        $(titleID).innerHTML = "Agent: " + selectedAgentValue + " (" + fieldAgentDoseAmountValue + ", " + fieldAgentDoseUnitValue + ")";
+        $(titleID).innerHTML = "" + selectedAgentValue + " (" + fieldAgentDoseAmountValue + " " + fieldAgentDoseUnitValue + ")";
     }
 
     setTitleCourse_${index}.defer();

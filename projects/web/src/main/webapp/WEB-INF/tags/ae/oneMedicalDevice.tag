@@ -125,7 +125,7 @@
         var fieldCommonName = $("aeReport.medicalDevices[${index}].commonName");
         var commonNameValue = fieldCommonName.value;
 
-        $(titleID).innerHTML = "Device: " + commonNameValue + " (" + brandNameValue + ")";
+        $(titleID).innerHTML = "" + commonNameValue + " (" + brandNameValue + ")";
     }
 
     setTitleDevice_${index}.defer();

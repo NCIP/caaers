@@ -65,7 +65,7 @@
         var radiationDosageUnit = $("aeReport.radiationInterventions[${index}].dosageUnit");
         var radiationDosageUnitValue = radiationDosageUnit.options[radiationDosageUnit.selectedIndex].value;
 
-        $(titleID).innerHTML = "Radiation: " + radiationTypeValue + " (" + radiationDosageValue + ", " + radiationDosageUnitValue + ")";
+        $(titleID).innerHTML = "" + radiationTypeValue + " (" + radiationDosageValue + " " + radiationDosageUnitValue + ")";
     }
 
     setTitleRadiation_${index}.defer();

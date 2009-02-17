@@ -53,7 +53,7 @@
         var surgeryInterventionDate = $("aeReport.surgeryInterventions[${index}].interventionDate").value;
         
         if (selectedValue != "Begin typing here...")
-            $(titleID).innerHTML = "Surgery: " + selectedValue + " (" + surgeryInterventionDate + ")";
+            $(titleID).innerHTML = "" + selectedValue + " (" + surgeryInterventionDate + ")";
 
     }
 
