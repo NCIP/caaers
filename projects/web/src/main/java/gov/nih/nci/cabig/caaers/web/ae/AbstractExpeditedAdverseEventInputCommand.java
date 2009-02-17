@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -72,10 +73,15 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 
     private int nextPage;
     
-    private List<Map<Integer, Boolean>> outcomes;
-    private List<String> outcomeOtherDetails; 
+    protected List<Map<Integer, Boolean>> outcomes;
+    protected List<String> outcomeOtherDetails; 
     protected List<ReportDefinition> selectedReportDefinitions;
+    private boolean workflowEnabled;
 
+    public AbstractExpeditedAdverseEventInputCommand(){
+    		aeReport = new ExpeditedAdverseEventReport();
+    }
+    
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
@@ -332,4 +338,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public boolean isAdditionAllowed() {
     	return false;
     }
+    
+    public boolean getWorkflowEnabled() {
+		return workflowEnabled;
+	}
+	public void setWorkflowEnabled(boolean workflowEnabled) {
+		this.workflowEnabled = workflowEnabled;
+	}
 }

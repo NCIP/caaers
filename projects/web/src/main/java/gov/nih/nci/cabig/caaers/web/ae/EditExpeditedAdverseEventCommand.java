@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
@@ -59,8 +60,8 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private String concomitantMedication;
     
     private Term studyTerminologyTerm;
+    private AdverseEventReportingPeriod adverseEventReportingPeriod;
     
-    private boolean workflowEnabled;
 
     // //// LOGIC
 
@@ -78,6 +79,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
     	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
     	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
+    }
+    
+    public EditExpeditedAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao){
+    	this.assignmentDao = assignmentDao;
     }
     
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
@@ -363,11 +368,10 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		return studyTerminologyTerm;
 	}
 	
-	public boolean getWorkflowEnabled() {
-		return workflowEnabled;
-	}
-	public void setWorkflowEnabled(boolean workflowEnabled) {
-		this.workflowEnabled = workflowEnabled;
+	public AdverseEventReportingPeriod getAdverseEventReportingPeriod(){
+		if(getAeReport() != null)
+			return getAeReport().getReportingPeriod();
+		return null;
 	}
 	
 }

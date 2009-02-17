@@ -156,6 +156,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         ControllerTools.registerDomainObjectEditor(binder, "participant", participantDao);
         ControllerTools.registerDomainObjectEditor(binder, "study", studyDao);
         ControllerTools.registerDomainObjectEditor(binder, "aeReport", reportDao);
+        ControllerTools.registerDomainObjectEditor(binder, "adverseEventReportingPeriod", reportingPeriodDao);
 
         ControllerTools.registerDomainObjectEditor(binder, ctcTermDao);
         ControllerTools.registerDomainObjectEditor(binder, lowLevelTermDao);
