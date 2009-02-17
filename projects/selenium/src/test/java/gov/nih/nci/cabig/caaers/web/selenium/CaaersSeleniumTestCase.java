@@ -39,6 +39,7 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	String seleniumSpeed = null;
 	String seleniumRulesDir = null;
 	static String waitTime = null;
+
 	protected static ApplicationContext getDeployedApplicationContext()
 			throws IOException {
 		System.out.println(acLoadFailure);
@@ -143,12 +144,6 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 
 	public void log(String message) {
 		this.log(message, null);
-	}
-
-	public void testLogin() throws Exception {
-		aw.login();
-		assertTrue("Login Failure", true);
-		assertTrue("Login Failure", selenium.isTextPresent("Regular Tasks"));
 	}
 
 	public void searchStudy(String studyId) throws InterruptedException {
@@ -638,9 +633,9 @@ public class CaaersSeleniumTestCase extends SeleneseTestCase {
 	 * public void testNew() throws Exception {
 	 * 
 	 * selenium.click("firstlevelnav_listAdverseEventsController");
-	 * selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime); selenium.click("study-clear");
-	 * selenium.type("study-input", "n"); selenium.typeKeys("study-input",
-	 * "027d"); fail("test");
+	 * selenium.waitForPageToLoad(CaaersSeleniumTestCase.waitTime);
+	 * selenium.click("study-clear"); selenium.type("study-input", "n");
+	 * selenium.typeKeys("study-input", "027d"); fail("test");
 	 * selenium.waitForCondition(String.format("selenium.isTextPresent('%s')",
 	 * "Temozolomide"), "10000");
 	 * selenium.click("//div[@id='study-choices']/ul/li[1]");

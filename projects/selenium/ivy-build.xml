@@ -104,9 +104,9 @@
 		</scp>
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="chmod 755 refreshSeleniumDB" />
 		<sshexec host="sbhost02.semanticbits.com" trust="true" username="oracle" password="Oracle123!" command="./refreshSeleniumDB" />
-	<!--	<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" />
+	<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/rebuild-caaers-selenium" />
 		<echo message="Sleeping 10 seconds..." />
-		<sleep seconds="10" /> -->
+		<sleep seconds="10" />
 		<sshexec host="derek.semanticbits.com" trust="true" username="caaers_ora" password="caaers_ora" command="/home/caaers_ora/droprules.sh" />
 		<echo message="Sleeping 10 seconds..." />
 		<sleep seconds="10" />
