@@ -183,7 +183,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public void initialize(){
     	//set the assignment into the command.
-    	this.assignment = this.adverseEventReportingPeriod.getAssignment();
+    	if(this.adverseEventReportingPeriod != null)
+    		this.assignment = this.adverseEventReportingPeriod.getAssignment();
     	
     	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
