@@ -19,7 +19,8 @@
 <c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
 <c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
 
-<table class="attribution" id="attribution-${offset}" border="0" width="100%">
+<center>
+<table class="attribution" id="attribution-${offset}" border="0" width="98%">
     <col class="cause"/>
     <colgroup>
         <c:forEach begin="1" end="${aeCols}">
@@ -67,3 +68,4 @@
 
     </c:forEach>
 </table>
+</center>
