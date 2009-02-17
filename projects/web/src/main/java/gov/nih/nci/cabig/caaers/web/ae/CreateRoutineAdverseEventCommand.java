@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -243,4 +244,9 @@ public class CreateRoutineAdverseEventCommand implements RoutineAdverseEventInpu
 		this.workflowEnabled = workflowEnabled;
 	}
     
+	public AdverseEventReportingPeriod getAdverseEventReportingPeriod(){
+		if(aeReport != null)
+			return aeReport.getReportingPeriod();
+		return null;
+	}
 }

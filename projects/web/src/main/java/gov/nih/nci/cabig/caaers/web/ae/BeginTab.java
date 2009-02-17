@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Rhett Sutphin
  */
-public class BeginTab<T extends CaptureAdverseEventInputCommand> extends WorkFlowTab<T> {
+public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T> {
 
     String instructions;
 
@@ -53,9 +53,6 @@ public class BeginTab<T extends CaptureAdverseEventInputCommand> extends WorkFlo
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
         if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
         if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course");
-        if (!(noStudy || noParticipant) && command.getAssignment() == null) {
-            errors.reject("NO_ASSIGNMENT", "The selected ");
-        }
     }
     
     
