@@ -201,6 +201,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				aeReport.getAllSponsorReportsCompleted();
 				aeReport.getHasAmendableReport();
 				aeReport.getHasSubmittedReport();
+				aeReport.getNumberOfAes();
 			}
 			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
 			if(reviewCommentList != null)
