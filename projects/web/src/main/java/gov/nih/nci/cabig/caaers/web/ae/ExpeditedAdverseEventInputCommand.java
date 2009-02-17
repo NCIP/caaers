@@ -60,4 +60,9 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     int getNextPage();
     Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm);
     Term getStudyTerminologyTerm();
+    /**
+     * If true, the add button on AdverseEvents page in expedited flow will be enabled.
+     * @return
+     */
+    boolean isAdditionAllowed();
 }

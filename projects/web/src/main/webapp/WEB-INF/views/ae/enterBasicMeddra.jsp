@@ -107,9 +107,9 @@
         </jsp:attribute>
 
         <jsp:attribute name="localButtons">
-        <%-- 
+         <c:if test="${command.additionAllowed}">
             <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/> 
-        --%>
+       	</c:if>
         </jsp:attribute>
     </tags:tabForm>
 </body>

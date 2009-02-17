@@ -327,4 +327,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public boolean isAssociatedToWorkflow(){
     	return getWorkflowEnabled() && getAeReport().getWorkflowId() != null;
     }
+    
+    /** By default addition of AEs is not allowed in expedited flow */
+    public boolean isAdditionAllowed() {
+    	return false;
+    }
 }
