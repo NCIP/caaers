@@ -16,6 +16,7 @@ public abstract class BasicsTab extends AeTab {
     protected static final String MAIN_FIELD_GROUP = "main";
 
     protected static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
+    protected static final Integer VERBATIM_MAX_SIZE = 65;
 
     static {
         EXPEDITED_GRADES.addAll(Arrays.asList(Grade.values()));
@@ -43,8 +44,8 @@ public abstract class BasicsTab extends AeTab {
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
 
-        InputField otherVerbatimField = InputFieldFactory.createTextArea("detailsForOther","Verbatim", false);
-        InputFieldAttributes.setColumns(otherVerbatimField, 49);
+        InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", true);
+        InputFieldAttributes.setSize(otherVerbatimField, 30);
 
         creator.createRepeatingFieldGroup(MAIN_FIELD_GROUP, "adverseEvents", otherVerbatimField,
                 InputFieldFactory.createLongSelectField("grade", "Grade", true, WebUtils.collectOptions(EXPEDITED_GRADES, "name", null)),
@@ -78,6 +79,10 @@ public abstract class BasicsTab extends AeTab {
     }
 
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
+        if (ae.getDetailsForOther() == null || ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
+            InputField verbatimField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(0);
+            errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
+        }
     }
 
     protected void outcomeHelpKeyExclusion() {
