@@ -178,24 +178,21 @@ background-color:#e5e8ff;
   </tags:noform>
 </div>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report" hideBox="true">
-  <jsp:attribute name="instructions">
-    <input type="hidden" name="_finish"/>
-    <input type="hidden" name="_action" value="">
-    <input type="hidden" name="_reportId" value="">
-    <input type="hidden" name="_repId" value="">
-    <c:set var="reportingPeriodType" value="${command.adverseEventReportingPeriod.epoch.name}" />
-    <c:if test="${reportingPeriodType != 'Baseline'}">
-      <tags:instructions code="instruction_ae_checkpoint" />
-    </c:if>
-  </jsp:attribute>
   <jsp:attribute name="singleFields">
+  
+	    <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.aeReports)}" />
+	    <input type="hidden" name="_finish"/>
+	    <input type="hidden" name="_action" value="${aeReportsLength gt 0 ? '' : 'createNew' }">
+	    <input type="hidden" name="_reportId" value="">
+	    <input type="hidden" name="_repId" value="">
+   
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
-        
+         
         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
-        	<p>
-            <tags:message key="instruction_ae_require_reporting" />
-          </p>
+       		<p style="color: red; font-weight: bold">
+            	<tags:message key="instruction_ae_require_reporting" />
+          	</p>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
               <!-- required reports -->
@@ -253,12 +250,11 @@ background-color:#e5e8ff;
       	  </chrome:box>
         </c:otherwise>
       </c:choose>
-      
-        <chrome:box id="box-existing-reports" title="Existing Reports" collapsable="true" autopad="true">
+       
+        <chrome:box id="box-existing-reports" title="Existing Reports" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
          <p>
             <tags:message key="instruction_ae_existing_reports"/>
           </p>
-        <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.aeReports)}" />
        	
        	 <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
         	<c:if test="${aeReportsLength gt 0}">
@@ -323,6 +319,10 @@ background-color:#e5e8ff;
       	         
         </chrome:box>
       <div id="div-aes">
+       
+
+       <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
+       
         <c:if test='${!displaySeriousTable}'>
           <p>
             <tags:message key="instruction_ae_no_rulesengine_reports" />
@@ -336,8 +336,6 @@ background-color:#e5e8ff;
         
 
         <p><tags:message key="instruction_ae_note" /></p>
-
-       <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
