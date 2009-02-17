@@ -84,7 +84,13 @@
                 minimizeable: false,
                 addCallback: function(nextIndex) {
                     new LowLevelTerm(nextIndex);
-                }
+                },
+                reorderCallback : function(original, target){
+                    $$('span.primary-indicator').each(function(el, indx){
+                        if(indx == 0) el.innerHTML='[Primary]';
+                        else el.innerHTML = '';
+                    });
+                 }
              })    
 			
 			 //only show the workflow tab, if it is associated to workflow
