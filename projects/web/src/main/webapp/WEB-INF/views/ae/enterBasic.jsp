@@ -287,6 +287,10 @@ div.row div.value, div.row div.extra {
                    var tempHTML = $("aeReport.adverseEvents["+original+"].startDate-indicator").innerHTML;
                    $("aeReport.adverseEvents["+original+"].startDate-indicator").innerHTML = $("aeReport.adverseEvents["+target+"].startDate-indicator").innerHTML;
                    $("aeReport.adverseEvents["+target+"].startDate-indicator").innerHTML = tempHTML;
+                   $$('span.primary-indicator').each(function(el, indx){
+                       if(indx == 0) el.innerHTML='(primary)';
+                       else el.innerHTML = '';
+                   });
                 },
                 reorderable: true,
                 deletable: true, 
