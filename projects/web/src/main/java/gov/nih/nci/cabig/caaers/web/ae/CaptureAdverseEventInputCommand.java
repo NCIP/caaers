@@ -18,6 +18,7 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.workflow.ReportingPeriodReviewComment;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -202,6 +203,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 				aeReport.getHasAmendableReport();
 				aeReport.getHasSubmittedReport();
 				aeReport.getNumberOfAes();
+				for(Report report : aeReport.getReports()){
+					report.getLastVersion().getVersion();	
+				}
 			}
 			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
 			if(reviewCommentList != null)

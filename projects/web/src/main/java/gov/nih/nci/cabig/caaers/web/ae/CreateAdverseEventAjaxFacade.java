@@ -608,6 +608,13 @@ public class CreateAdverseEventAjaxFacade {
     public double calculateBodySurfaceArea(double ht, String htUOM, double wt, String wtUOM) {
         return ParticipantHistory.bodySuraceArea(ht, htUOM, wt, wtUOM);
     }
+    
+    public void addAdverseEvent(){
+    	Object cmd = extractCommand();
+    	ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
+    	
+    	//create a new adverse event. 
+    }
 
     /**
      * Reorders the list property of the current session command, moving the element at
