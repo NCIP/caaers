@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcCategory;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
@@ -196,6 +197,11 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
 			this.adverseEventReportingPeriod.getAeReports();
+			for(ExpeditedAdverseEventReport aeReport : this.adverseEventReportingPeriod.getAeReports()){
+				aeReport.getAllSponsorReportsCompleted();
+				aeReport.getHasAmendableReport();
+				aeReport.getHasSubmittedReport();
+			}
 			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
 			if(reviewCommentList != null)
 				this.adverseEventReportingPeriod.getReviewComments().size();
