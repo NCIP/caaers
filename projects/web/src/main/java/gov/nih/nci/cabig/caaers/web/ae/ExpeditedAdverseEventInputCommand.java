@@ -65,4 +65,6 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
      * @return
      */
     boolean isAdditionAllowed();
+    
+    void saveReportingPeriod();
 }

@@ -46,6 +46,8 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         
 	}
 	
+	
+	
 	public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
 		return null;
     }
@@ -84,7 +86,6 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		this.participant = participant;
 	}
 	
-	@Override
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod(){
 		return adverseEventReportingPeriod;
 	}
@@ -97,4 +98,15 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     public void flush() {
     	reportDao.flush();
     }
+	
+	@Override
+	public boolean isAdditionAllowed() {
+		return true;
+	}
+	
+	public void saveReportingPeriod() {
+		if(adverseEventReportingPeriod != null)
+			reportingPeriodDao.save(adverseEventReportingPeriod);
+		
+	}
 }
