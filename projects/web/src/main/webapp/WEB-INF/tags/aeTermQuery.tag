@@ -211,7 +211,7 @@
   				<tr>
   					<td class="one">
   						<div>
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/><input id="addSingleTermBtn" type="button" value="Add"  onClick="catSel.finishSingleTermSelection();" />
+  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/><tags:button color="blue" icon="add" size="small" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
   						</div>
   						<div class="local-buttons">
   							
@@ -219,7 +219,7 @@
   					</td>
   					<c:if test="${not isMeddra}">
   					<td class="two">OR</td>
-  					<td class="three"><input type="button" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
+  					<td class="three"><tags:button type="button" color="blue" icon="add" size="small" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   					 &nbsp;&nbsp;&nbsp;&nbsp;click on "Add Multiple" to add several AE terms at once.
   					</td>
   					</c:if>

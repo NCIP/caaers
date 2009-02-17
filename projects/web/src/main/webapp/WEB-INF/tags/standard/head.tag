@@ -15,6 +15,7 @@
 
 <tags:stylesheetLink name="tigra-menu/tigra-menu"/>
 <tags:stylesheetLink name="side-bar"/>
+<tags:stylesheetLink name="buttons"/>
 
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>

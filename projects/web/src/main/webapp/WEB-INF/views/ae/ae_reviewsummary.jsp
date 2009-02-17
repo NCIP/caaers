@@ -190,9 +190,13 @@ background-color:#e5e8ff;
         <c:when test="${not empty rpdSelectedTable}">
          
         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
-       		<p style="color: red; font-weight: bold">
-            	<tags:message key="instruction_ae_require_reporting" />
-          	</p>
+    <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
+		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
+		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
+		<div>
+			<tags:message key="instruction_ae_require_reporting" />
+		</div>
+	</div>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
               <!-- required reports -->
@@ -388,17 +392,18 @@ background-color:#e5e8ff;
     
   </jsp:attribute>
   <jsp:attribute name="tabControls">
-    <div class="content buttons autoclear">
-      <div class="flow-buttons"> <span class="prev">
-        <input type="submit" value="« Back" class="tab1" id="flow-prev"/>
-        </span> <span class="next">
-        <a href="#" onClick="javascript:forwardControl();">
-        	<img src="<chrome:imageUrl name="../blue/continue_btn.png" />"  alt="Continue" title="Continue" style="border:0" />
-        </a>
-        </span> </div>
-    </div>
+      <div class="content buttons autoclear">
+          <div class="flow-buttons">
+              <span class="prev">
+              	<tags:button value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
+			  </span>
+			  <span class="next">
+			  	<tags:button type="button" onclick="forwardControl();" value="Continue Expedited Reporting" color="green" icon="continue" /></a>
+			  </span>
+          </div>
+      </div>
   </jsp:attribute>
-</tags:tabForm>
+  </tags:tabForm>
 
 
 </body>
