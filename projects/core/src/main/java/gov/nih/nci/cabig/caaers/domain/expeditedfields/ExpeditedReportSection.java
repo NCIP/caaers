@@ -18,7 +18,7 @@ public enum ExpeditedReportSection {
     CONCOMITANT_MEDICATION_SECTION("Conmeds"), 
     OTHER_CAUSE_SECTION("Other Causes"), 
     ATTRIBUTION_SECTION("Attribution", true), 
-    ADDITIONAL_INFO_SECTION("Attachments"), 
+    ADDITIONAL_INFO_SECTION("Additional Info"), 
     SUBMIT_REPORT_SECTION("Submit", true), 
     OUTCOME_SECTION("Outcome");
 
