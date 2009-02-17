@@ -20,7 +20,8 @@ import java.util.*;
 public class AdverseEventCaptureTab extends AdverseEventTab {
 
     private static final String MAIN_FIELD_GROUP = "main";
-    
+    private static final Integer VERBATIM_MAX_SIZE = 65;
+
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
     
     public AdverseEventCaptureTab() {
@@ -222,6 +223,16 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
             errors.reject("DUPLICATE_EXPECTED_AE", new Object[]{name}, "ERR.");
         }
         // STOP -> AE VALIDATION //
+
+        // CHECKING VERBATIM LENGTH
+        short i = 0;
+        for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
+            if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
+                InputField verbatimField = fieldGroups.get(MAIN_FIELD_GROUP + i++).getFields().get(1);
+                errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
+            }
+        }
+
 
         // If grade is greater than 2 then hospitalization cannot be null.
     	if(!command.getAdverseEventReportingPeriod().isBaselineReportingType()){

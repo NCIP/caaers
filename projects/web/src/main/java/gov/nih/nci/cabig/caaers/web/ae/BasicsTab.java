@@ -79,7 +79,7 @@ public abstract class BasicsTab extends AeTab {
     }
 
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
-        if (ae.getDetailsForOther() == null || ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
+        if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
             InputField verbatimField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(0);
             errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
         }
