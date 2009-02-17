@@ -22,7 +22,7 @@
 <chrome:division title="${title}" id="ae-section-${index}" 
 	 	cssClass="ae-section" style="${style}" collapsed="${index > 0}" 
 		collapsable="true">
-	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '(primary)' }</span> </jsp:attribute>
+	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
         <div class="row">
