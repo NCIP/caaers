@@ -10,7 +10,7 @@ Note: -
 --%>
 <c:if test='${not empty command.adverseEventReportingPeriod}'>
 
-<chrome:box title="Adverse Events" collapsable="true" id="observedID">
+<chrome:box title="Adverse Events" collapsable="true" id="observedID" autopad="true">
 <p><tags:instructions code="instruction_ae_oae"/></p>
  			<tags:aeTermQuery
                        			isMeddra="${not empty command.study.aeTerminology.meddraVersion}"
@@ -59,7 +59,7 @@ Note: -
 </chrome:box>
 
 <c:if test="${command.havingSolicitedAEs}">
-<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID">
+<chrome:box title="Solicited Adverse Events" collapsable="true" id="solicitatedID" autopad="true">
 <p><tags:instructions code="instruction_ae_sae"/></p>
 	<center>
 			<table id="solicitedTable" width="100%" class="tablecontent" border="0">
@@ -88,61 +88,5 @@ Note: -
    	</center>
  </chrome:box>
 </c:if>
-<div id="display_amend_popup" style="display:none;text-align:left" >
-    	<chrome:box title="Amendments Required" id="popupId">
-    		<c:if test="${not empty command.participant}">
-      			<div align="left">
-        			<div class="row">
-          				<div class="summarylabel">Subject</div>
-          				<div class="summaryvalue">${command.participant.fullName}</div>
-        			</div>
-        			<div class="row">
-          				<div class="summarylabel">Study</div>
-          				<div class="summaryvalue">${command.study.longTitle}</div>
-        			</div>
-        			<div class="row">
-          				<div class="summarylabel">Course</div>
-          				<div class="summaryvalue">${command.adverseEventReportingPeriod.name}</div>
-        			</div>
-      			</div>
-    		</c:if>
-    		<div id="div-reports-to-be-amended" style="text-align:left;">
-      			<hr/>
-      			<p>
-        			<tags:instructions code="instruction_ae_amendments_required"/>
-      			</p>
-      			<chrome:division title="Reports that will be Amended" id="div-selected-reports" collapsable="false">
-      				<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
-      					<div class="eXtremeTable" id="amend-aeReport-${aeReport.id}" style="display:none;text-align:left">
-                    		<table width="100%" border="0" cellspacing="0" class="tableRegion">
-                      			<thead>
-                        			<tr align="center" class="label">
-                          				<td width="5%"/>
-                          				<td class="tableHeader" width="15%">Report Type</td>
-                          				<td class="centerTableHeader" width="10%">Report Version</td>
-                          				<td class="centerTableHeader" width="10%"># of AEs</td>
-                          				<td class="tableHeader" width="20%">Data Entry Status</td>
-                          				<td class="tableHeader" width="20%">Submission Status</td>
-                       				</tr>
-                      			</thead>
-                      			<ae:oneReviewExpeditedReportRow aeReport="${aeReport}" index="${statusAeReport.index}" />
-                      		</table>
-        		        </div>
-              		</c:forEach>
-              		<br><br>
-                      		<table width="100%">	
-                      			<tr>
-                      				<td align="left">
-                      					<input type="submit" value="Amend" id="amendment-required-yes" onClick="javascript:window.parent.deleteOrAmendAndSubmit();"/>
-                      				</td>
-                      				<td align="right">
-	                      				<input type="submit" value="Don't Amend" id="amendment-required-no" onClick="javascript:window.parent.Windows.close('amend-popup-id');"/>
-                      				</td>
-                      			<tr>	
-		                    </table>
-      			</chrome:division>
-      		</div>
-    	</chrome:box>	
-    </div>
 
 </c:if>
