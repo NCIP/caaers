@@ -82,11 +82,11 @@
     <property name="taskList">
       <list>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-		  p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>
+		  p:displayName="Enter Adverse Events" p:linkName="captureAdverseEventController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		  p:displayName="Create Expedited Report" p:linkName="createAdverseEventController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
-	      p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+	      p:displayName="Manage Reports" p:linkName="listAdverseEventsController"/>
 	<bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType"
 		  p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>
       </list>
@@ -186,9 +186,9 @@
           <property name="pathMapping"><value>/ae/**</value></property>
           <property name="tasks">
             <list>
-            	  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter AEs" p:linkName="captureAdverseEventController"/>
+            	  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Enter Adverse Events" p:linkName="captureAdverseEventController"/>
             	  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Create Expedited Report" p:linkName="createAdverseEventController"/>
-                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage reports" p:linkName="listAdverseEventsController"/>
+                  <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Manage Reports" p:linkName="listAdverseEventsController"/>
                   <bean class="gov.nih.nci.cabig.ctms.web.chrome.Task" autowire="byType" p:displayName="Routing and Review" p:linkName="routingAndReviewController"/>
             </list>
           </property>
