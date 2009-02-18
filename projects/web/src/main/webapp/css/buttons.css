@@ -211,7 +211,6 @@ button.omnipotent-button.orange:active, button.omnipotent-button.orange.active, 
 
 /* Begin c3pr button type="anchor" size="small" core CSS*/
 a.omnipotent-button.small {
-	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 20px;
 	padding:3px 5px;
 	background-position:left;
