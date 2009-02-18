@@ -12,6 +12,7 @@
 <!--[if IE]>
 <tags:stylesheetLink name="ie"/>
 <![endif]-->
+<tags:stylesheetLink name="box"/>
 
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>

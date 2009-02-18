@@ -36,6 +36,7 @@
 	</c:if>
 </c:if>
 
+<c:if test="${adverseEvent.requiresReporting}"><td><img src="<c:url value="/images/error-yellow.png" />"></td></c:if>
 
 <c:if test="${isAETermOtherSpecify}">
     <td>
@@ -93,7 +94,6 @@
     </c:forEach>
 </c:if>
 
-
     <c:if test="${not isAETermOtherSpecify}">
 		<td>
             <tags:renderInputs field="${fieldGroups[mainGroup].fields[aeTermIndex]}" cssClass="aeTerm"/>
@@ -131,9 +131,7 @@
 	</c:if>
 	<c:if test="${not isSolicitedAE}">
 		<c:if test="${not hideDeleteCtrl}">
-			<td>
-                <a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a>
-			</td>
+			<td><a href="#" onClick="rpCreator.deleteAdverseEvent(${index})"><img src="<chrome:imageUrl name="../checkno.gif" />"  alt="Delete" title="Delete" style="border:0" /></a></td>
 		</c:if>
 	</c:if>
 	<input type="hidden" id="ae-section-${index}-signature" name="ae-section-${index}-signature" value="${adverseEvent.signature}"/>

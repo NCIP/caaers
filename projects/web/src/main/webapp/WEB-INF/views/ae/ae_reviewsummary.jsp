@@ -1,22 +1,16 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-"http://www.w3.org/TR/html4/loose.dtd">
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@taglib prefix="caaers" uri="http://gforge.nci.nih.gov/projects/caaers/tags" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome"%>
-<%@taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
-<tags:stylesheetLink name="extremecomponents"/>
-<tags:dwrJavascriptLink objects="captureAE"/>
-<link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>${tab.longTitle}</title>
-<tags:includeScriptaculous/>
-<tags:includePrototypeWindow />
-<link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <tags:stylesheetLink name="extremecomponents"/>
+    <tags:dwrJavascriptLink objects="captureAE"/>
+    <link rel="stylesheet" type="text/css" href="/caaers/css/ae.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>${tab.longTitle}</title>
+    <tags:includeScriptaculous/>
+    <tags:includePrototypeWindow />
+    <link rel="stylesheet" type="text/css" href="/caaers/css/slider.css" />
+    <style>.link {text-decoration:underline; color:blue;}</style>
 <script type="text/javascript">
 
 	Event.observe(window, "load", function() {
@@ -189,13 +183,11 @@ background-color:#e5e8ff;
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
          
-        <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
+        <chrome:box id="box-report-by-caaers" title="Select Expedited Reports" collapsable="true" autopad="true">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
 		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
 		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
-		<div>
-			<tags:message key="instruction_ae_require_reporting" />
-		</div>
+		<div><tags:instructions code="instruction_ae_require_reporting" /></div>
 	</div>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
@@ -218,18 +210,16 @@ background-color:#e5e8ff;
             </div>
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-	  		<div class="autoclear" align="center" style="padding-top: 10px;">
-   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      		</div>
-      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+              <tags:instructions code="instruction_ae_require_reporting" />
+              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
       	  </c:if>
         </chrome:box>
         </c:when>
         <c:otherwise>
-         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
-          <p>
-            <tags:message key="instruction_ae_not_require_reporting"/>
-          </p>
+         <chrome:box id="box-report-by-caaers" title="Select Expedited Reports" collapsable="true" autopad="true">
+             <tags:instructions code="instruction_ae_require_reporting" />
+             <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
+
           <div align="center" style="padding-bottom:5px;" id="report-list">
             <!-- optional reports -->
             <table class="tablecontent" width="80%">
@@ -238,28 +228,20 @@ background-color:#e5e8ff;
                 <th>Report</th>
                 <th>Status</th>
               </tr>
-              <%--<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">--%>
               <tr>
                 <td align="left" colspan="3">No reports required.</td>
               </tr>
-              <%--</c:forEach>--%>
             </table>
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-	  		<div class="autoclear" align="center" style="padding-top: 10px;">
-   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      		</div>
-      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
       	  </c:if>
       	  </chrome:box>
         </c:otherwise>
       </c:choose>
        
-        <chrome:box id="box-existing-reports" title="Existing Reports" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
-         <p>
-            <tags:message key="instruction_ae_existing_reports"/>
-          </p>
-       	
+        <chrome:box id="box-existing-reports" title="Select Reporting Method" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
+            <tags:instructions code="instruction_ae_existing_reports" />
+
        	 <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
         	<c:if test="${aeReportsLength gt 0}">
           	<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
@@ -328,14 +310,10 @@ background-color:#e5e8ff;
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
        
         <c:if test='${!displaySeriousTable}'>
-          <p>
-            <tags:message key="instruction_ae_no_rulesengine_reports" />
-          </p>
+            <tags:instructions code="instruction_ae_no_rulesengine_reports" />
         </c:if>
         <c:if test='${displaySeriousTable}'>
-       		<p>
-            	<tags:message key="instruction_ae_rulesengine_reports" />
-        	</p>
+       		<p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
         </c:if>
         
 
@@ -343,6 +321,7 @@ background-color:#e5e8ff;
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
+                <th scope="col" align="left"><b>Requires reporting</b></th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
                 <th scope="col" align="left"><b>Attribution</b> </th>
@@ -398,7 +377,7 @@ background-color:#e5e8ff;
               	<tags:button value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
 			  </span>
 			  <span class="next">
-			  	<tags:button type="button" onclick="forwardControl();" value="Continue Expedited Reporting" color="green" icon="continue" /></a>
+			  	<tags:button type="button" onclick="forwardControl();" value="Continue Expedited Reporting" color="green" icon="continue" />
 			  </span>
           </div>
       </div>

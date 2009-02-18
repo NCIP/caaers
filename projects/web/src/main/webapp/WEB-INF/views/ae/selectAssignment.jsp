@@ -235,9 +235,8 @@
     </script>
 </head>
 <body>
-<p>
-    <tags:instructions code="instruction_ae_assignment"/>
-</p>
+
+<p><tags:instructions code="instruction_ae_assignmentNote"/></p>
 
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
