@@ -151,13 +151,19 @@
 				    </fo:inline>	 
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Report Type :</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">  </fo:inline>	
+					<fo:inline xsl:use-attribute-sets="normal">  
+						<xsl:if test ="Report/ReportVersion/reportVersionId > 0 ">
+							Amended
+						</xsl:if>
+					</fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
 					<fo:inline xsl:use-attribute-sets="label" > Ticket #:</fo:inline>
 					<fo:inline xsl:use-attribute-sets="normal">   <xsl:value-of select="AdverseEventReport/Summary[@id='Ticket number']/value"/> </fo:inline>	
 					<xsl:text disable-output-escaping="yes">&amp;#160; &amp;#160; &amp;#160;  </xsl:text>
-					<fo:inline xsl:use-attribute-sets="label" > Amendment #:</fo:inline>
-					<fo:inline xsl:use-attribute-sets="normal">   </fo:inline>																	
+					<fo:inline xsl:use-attribute-sets="label" > Amendment #: </fo:inline>
+					<fo:inline xsl:use-attribute-sets="normal"> 
+						<xsl:value-of select="Report/ReportVersion/reportVersionId"/>  
+					</fo:inline>																	
 				</fo:block>
 				
 				<fo:block margin-left="4mm"> 
