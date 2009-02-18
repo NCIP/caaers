@@ -340,11 +340,23 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		for(AdverseEvent ae: adverseEventReportingPeriod.getReportableAdverseEvents()){
 			ae.setRequiresReporting(false);
 		}
+		
+		//reportingRequired boolean is set in the case when requiredReportDefinitionsMap is not empty (ie there are reports
+		//suggested by caAERS. In this case all the aes in the selectedAesMap will be set to true, so that all of them are checked
+		//on the review report page.
+		Boolean reportingRequired = false;
 		//reset the ones that are available below with true
 		for(Map.Entry<ReportDefinition, List<AdverseEvent>> entry : requiredReportDefinitionsMap.entrySet()){
+			reportingRequired = true;
 			for(AdverseEvent ae : entry.getValue()){
-				selectedAesMap.put(ae.getId(), true);
 				ae.setRequiresReporting(Boolean.TRUE);
+			}
+		}
+		
+		//Set all the aes in the reportingRequired map to true incase reportingRequired == true
+		if(reportingRequired){
+			for(Integer id: selectedAesMap.keySet()){
+				selectedAesMap.put(id, true);
 			}
 		}
 	}
