@@ -96,6 +96,7 @@ function closeAll() {
         if ($('btn-add-agent'))
             Element.observe('btn-add-agent', 'click', function(e) {
                 this._addItem('agent', e.element(), null, '_agents');
+                $('btn-add-agent').hide();
             }.bind(interventionInstance));
 
         refreshBoxes();
@@ -155,6 +156,8 @@ function closeAll() {
             var sectionHash = Form.serializeElements(this.formElementsInSection(container), true);
             this._updateContent(container, url, paramHash.merge(sectionHash), function (transport) {
             }.bind(this));
+
+            if (itemType == 'agent') $('btn-add-agent').show();
         },
 
         _updateContent: function(container, url, params, onSuccessCallBack) {
@@ -193,7 +196,9 @@ function closeAll() {
     
     <c:if test="${hasAgent}">
         <chrome:box title="Agent" collapsable="true">
-            <jsp:attribute name="additionalTitle"><input type="button" value="Add Agent" id="btn-add-agent"></jsp:attribute>
+            <jsp:attribute name="additionalTitle">
+                    <input type="button" value="Add Agent" id="btn-add-agent" style="display:<c:if test="${fn:length(command.aeReport.treatmentInformation.courseAgents) > 0}">none</c:if>">
+            </jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">
                 <div id="_agents">
