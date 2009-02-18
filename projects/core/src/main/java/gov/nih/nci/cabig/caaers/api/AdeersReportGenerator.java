@@ -91,6 +91,10 @@ public class AdeersReportGenerator {
     public String generateCaaersXml(ExpeditedAdverseEventReport aeReport) throws Exception{
     	return aeReportSerializer.serialize(aeReport);
     }
+
+    public String generateCaaersXml(ExpeditedAdverseEventReport aeReport,int reportId) throws Exception{
+    	return aeReportSerializer.serialize(aeReport,reportId );
+    }
     
     /**
      * This method will generate the PDF file and store it in the file system and return its path.

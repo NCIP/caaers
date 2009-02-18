@@ -36,6 +36,8 @@ import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentAssignment;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.domain.report.ReportVersion;
 import gov.nih.nci.cabig.caaers.utils.XmlMarshaller;
 
 import java.util.ArrayList;
@@ -65,13 +67,24 @@ public class AdverseEventReportSerializer {
 		   String xml = "";
 			XmlMarshaller marshaller = new XmlMarshaller();
 
-			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject);
+			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,0);
 			xml = marshaller.toXML(aer,getMappingFile());
 		
 
 			return xml;
 	   }
 
+	   public String serialize (ExpeditedAdverseEventReport adverseEventReportDataObject,int reportId) throws Exception{
+		   String xml = "";
+			XmlMarshaller marshaller = new XmlMarshaller();
+
+			ExpeditedAdverseEventReport aer = this.getAdverseEventReport(adverseEventReportDataObject,reportId);
+			xml = marshaller.toXML(aer,getMappingFile());
+		
+			System.out.println(xml);
+			return xml;
+	   }
+	   
 	   /**
 	    *
 	    * @param adverseEventReportId
@@ -94,7 +107,7 @@ public class AdverseEventReportSerializer {
 	    * @return
 	    * @throws Exception
 	    */
-	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport ) throws Exception{
+	   private ExpeditedAdverseEventReport getAdverseEventReport (ExpeditedAdverseEventReport hibernateAdverseEventReport , int reportId) throws Exception{
 
 		    ExpeditedAdverseEventReport aer = new ExpeditedAdverseEventReport();
 		    AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
@@ -197,6 +210,25 @@ public class AdverseEventReportSerializer {
 	    		aer.addOtherCause(getOtherCause(oc));
 	    	}
 	    	
+	    	//Build reports
+	    	List<Report> reports = hibernateAdverseEventReport.getReports();
+	    	for (Report report: reports) {
+	    		if (reportId > 0 ) {
+	    			// generate report data only for selected report (when submitting to AdEERS)
+	    			if (reportId == report.getId()) {
+	    				Report latestReport = getReport(report);
+	    				ReportVersion reportVersion = report.getLastVersion();
+	    				ReportVersion latestVersion = new ReportVersion();
+	    				latestVersion.setReportVersionId(reportVersion.getReportVersionId());
+	    				latestReport.addReportVersion(latestVersion);
+	    				aer.addReport(latestReport);
+	    			}
+	    		} 
+	    		//else {
+	    			//aer.addReport(getReport(report));
+	    		//}
+	    	}	    	
+	    	
 	    	/*
 			BJ:FIXME
 	    	List<Outcome> outcomes = hibernateAdverseEventReport.getOutcomes();
@@ -209,6 +241,34 @@ public class AdverseEventReportSerializer {
 	    	return aer;
 	   }
 	   
+	   private Report getReport(Report report) throws Exception {
+		   
+		   Report r = new Report();
+		   r.setId(report.getId());
+		   r.setAssignedIdentifer(report.getAssignedIdentifer());
+		   r.setSubmissionMessage(report.getSubmissionMessage());
+		 //  r.setAmmendmentNumber(report.getAmmendmentNumber());
+		   
+		   // if report is successfully submitted before , get the ticket id.
+//		   if (report.getAssignedIdentifer() != null) {
+	//		   return r;
+		//   }
+/*		   
+		   // check if any of the previous version is successfully submitted . if  so , ammend it for same ticket number.
+		   List<ReportVersion> rvs = report.getReportVersions();
+		   for (ReportVersion rv: rvs) {
+			   if (rv.getAssignedIdentifer() !=null ) {
+				   Report r1 = new Report();
+				   r1.setId(report.getId());
+				   r1.setAssignedIdentifer(rv.getAssignedIdentifer());
+				   r1.setSubmissionMessage(rv.getSubmissionMessage());
+				   return r1;
+			   }
+	    	}		   
+		   
+*/	   		   
+		   return r;
+	   }
 	   private AdditionalInformation getAdditionalInformation (AdditionalInformation additionalInformation) throws Exception {
 		   
 		   AdditionalInformation a = new AdditionalInformation();
