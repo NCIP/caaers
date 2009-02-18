@@ -355,8 +355,8 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		
 		//Set all the aes in the reportingRequired map to true incase reportingRequired == true
 		if(reportingRequired){
-			for(Integer id: selectedAesMap.keySet()){
-				selectedAesMap.put(id, true);
+			for(AdverseEvent ae: adverseEventReportingPeriod.getReportableAdverseEvents()){
+				selectedAesMap.put(ae.getId(), true);
 			}
 		}
 	}
