@@ -183,7 +183,7 @@ background-color:#e5e8ff;
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
          
-        <chrome:box id="box-report-by-caaers" title="Select Expedited Reports" collapsable="true" autopad="true">
+        <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
 		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
 		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
@@ -210,16 +210,16 @@ background-color:#e5e8ff;
             </div>
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-              <tags:instructions code="instruction_ae_require_reporting" />
+              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
               <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
       	  </c:if>
         </chrome:box>
         </c:when>
         <c:otherwise>
-         <chrome:box id="box-report-by-caaers" title="Select Expedited Reports" collapsable="true" autopad="true">
-             <tags:instructions code="instruction_ae_require_reporting" />
-             <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
+         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
 
+             <tags:instructions code="instruction_ae_not_require_reporting" />
+             
           <div align="center" style="padding-bottom:5px;" id="report-list">
             <!-- optional reports -->
             <table class="tablecontent" width="80%">
@@ -235,7 +235,9 @@ background-color:#e5e8ff;
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
       	  </c:if>
-      	  </chrome:box>
+             <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
+             <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
+            </chrome:box>
         </c:otherwise>
       </c:choose>
        
@@ -317,7 +319,7 @@ background-color:#e5e8ff;
         </c:if>
         
 
-        <p><tags:message key="instruction_ae_note" /></p>
+        <%--<p><tags:message key="instruction_ae_note" /></p>--%>
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
