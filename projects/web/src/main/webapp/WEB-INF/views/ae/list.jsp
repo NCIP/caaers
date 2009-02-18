@@ -319,7 +319,7 @@ color:#0033FF;
       </c:forEach>
     </c:if>
   </table>
-  <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target1=1&displayReportingPeriod=true&adverseEventReportingPeriod=null"/>
+  <c:set var="reportingPeriodPageURLNoPeriod" value="/pages/ae/captureRoutine?participant=${command.participant.id}&study=${command.study.id}&_page=0&_target0=0&displayReportingPeriod=true"/>
   <c:if test="${fn:length(command.assignment.reportingPeriods) le 0}">No course have been created for the selected Subject and Study combination. Click <a href="<c:url value="${reportingPeriodPageURLNoPeriod}"/>">here</a> to document AEs.</c:if>
 </div>
 </body>

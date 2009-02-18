@@ -140,7 +140,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
     protected boolean isFormSubmission(HttpServletRequest request) {
         Set<String> paramNames = request.getParameterMap().keySet();
         boolean fromListPage = false;
-        fromListPage = paramNames.contains("displayReportingPeriod");
+        fromListPage = paramNames.contains("displayReportingPeriod") && paramNames.contains("adverseEventReportingPeriod");
         if(fromListPage) 
         	return true;
         else
@@ -319,9 +319,21 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 			} catch (Exception e) {
 				return super.handleRequestInternal(request, response);
 			}
-
+			
+			String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
+			Set<String> paramNames = request.getParameterMap().keySet();
+			
+			// This is the case when there are no courses added to the assignment and the user clicks on the link
+			// in the Manage Reports page to create new courses.
+			if(paramNames.contains("displayReportingPeriod") && !paramNames.contains("addReportingPeriodBinder")){
+				String particpiantID = request.getParameter("participant");
+				String studyID = request.getParameter("study");
+				response.sendRedirect(url + "?participantID=" + particpiantID + "&studyID=" + studyID);
+				return null;
+			}
+			
+			
 			if (currPage !=0 && targetPage == 0) {
-				String url = request.getContextPath() + request.getServletPath() + request.getPathInfo();
 				CaptureAdverseEventInputCommand cmd =(CaptureAdverseEventInputCommand)getCommand(request);
 
 				String particpiantID = "";
