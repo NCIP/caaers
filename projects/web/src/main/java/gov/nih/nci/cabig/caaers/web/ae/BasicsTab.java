@@ -169,4 +169,14 @@ public abstract class BasicsTab extends AeTab {
         }
 
     }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {
+    	boolean primaryAEStartDateNotFilled = false;
+    	List<AdverseEvent> adverseEvents = command.getAeReport().getAdverseEvents();
+    	if(adverseEvents != null && adverseEvents.size() > 0){
+    		primaryAEStartDateNotFilled = adverseEvents.get(0).getStartDate() == null;
+    	}
+    	return super.hasEmptyMandatoryFields(command) || primaryAEStartDateNotFilled;
+    }
 }

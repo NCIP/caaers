@@ -51,7 +51,7 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     /**
      * Pre-initalize the mandatory lazy added fields in mandatory sections. (This is a biz-rule)
      */
-    void initializeMandatorySectionFields(ExpeditedReportTree tree);
+    void initializeMandatorySectionFields();
     MandatoryProperties getMandatoryProperties();
     List<ReportDefinition> getInstantiatedReportDefinitions();
     void setSelectedReportDefinitions(List<ReportDefinition> selectedReportDefinitions);

@@ -46,16 +46,30 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 	               
 	           @Override
 	           protected void addPreBasicTabs(Flow<ExpeditedAdverseEventInputCommand> flow) {
-	               flow.addTab(new BeginTab<ExpeditedAdverseEventInputCommand>(instructions));
+	               flow.addTab(new CreateExpeditedReportBeginTab<ExpeditedAdverseEventInputCommand>(instructions));
 	           }
 	       };
 	   }
 	   
+	   
 	   @Override
 	   protected Object formBackingObject(HttpServletRequest request) throws Exception {
+		   
+		   //remove the edit command from the session
+		   request.getSession(true).removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command");
+		   request.getSession().removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command.to-replace");
+		   
 		   RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-	    	CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree);
+		   CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao,
+				   reportingPeriodDao, expeditedReportTree,renderDecisionManager, evaluationService, reportRepository, studyDao);
+		   command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+	    	
 	    	return command;
+	   }
+	   
+	   @Override
+	   protected boolean shouldSave(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command,	Tab<ExpeditedAdverseEventInputCommand> tab) {
+		   return super.shouldSave(request, command, tab) && command.getAeReport().getId() != null;
 	   }
 
 	   @Override

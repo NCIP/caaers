@@ -69,6 +69,11 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
 
     @Override
     protected Object formBackingObject(HttpServletRequest request) throws Exception {
+    	
+    	 //remove the edit command from the session
+		request.getSession(true).removeAttribute(CreateAdverseEventController.class.getName() + ".FORM.command");
+		request.getSession().removeAttribute(CreateAdverseEventController.class.getName() + ".FORM.command.to-replace");
+		   
     	String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
     	RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
     	EditExpeditedAdverseEventCommand command = new EditExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, assignmentDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
@@ -173,7 +178,7 @@ public class EditAdverseEventController extends AbstractAdverseEventInputControl
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport(), rdList.toArray(new ReportDefinition[]{})));
         	
         	// pre-init the mandatory section fields
-            command.initializeMandatorySectionFields(expeditedReportTree);
+            command.initializeMandatorySectionFields();
         }else{
         	command.setMandatorySections(evaluationService.mandatorySections(command.getAeReport()));
         }

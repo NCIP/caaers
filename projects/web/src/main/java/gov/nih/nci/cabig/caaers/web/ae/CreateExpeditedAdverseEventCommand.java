@@ -1,20 +1,30 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.collections.ListUtils;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
+import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -29,19 +39,40 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	private AdverseEventReportingPeriod adverseEventReportingPeriod;
 	private Participant participant;
 	
+	// Added for Post processing in Confirmation page
+	private List<ReportDefinition> allReportDefinitions;
+
+	private Map<Integer, String> reportStatusMap;
+	private Map<Integer, Boolean> requiredReportDefinitionIndicatorMap;
+	private List<ReportDefinition> requiredReportDefinitions;
+	
+	private Map<Integer, Boolean> reportDefinitionMap;//will store user selection
+	
+	//this map is used for internal purpouses
+	private Map<Integer, ReportDefinition> reportDefinitionIndexMap;
+	
+	private EvaluationService evaluationService;
+	
+	private StudyDao studyDao;
+	
 	
 	
 	public CreateExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, 
-			AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
+			AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, 
+			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao) {
 		
+		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
+		this.aeReport = new ExpeditedAdverseEventReport();
 		
-		this.reportingPeriodDao = reportingPeriodDao;
-        this.reportDao = reportDao;
-        this.reportDefinitionDao = reportDefinitionDao;
-        this.expeditedReportTree = expeditedReportTree;
-        this.outcomeOtherDetails = new ArrayList<String>();
-        this.outcomes = new ArrayList<Map<Integer,Boolean>>();
-        this.selectedReportDefinitions = new ArrayList<ReportDefinition>();
+		this.evaluationService = evaluationService;
+		this.studyDao = studyDao;
+        
+        this.allReportDefinitions = new ArrayList<ReportDefinition>();
+        this.reportStatusMap = new HashMap<Integer, String>();
+        this.requiredReportDefinitionIndicatorMap = new HashMap<Integer, Boolean>();
+        this.reportDefinitionMap = new HashMap<Integer, Boolean>();
+        this.reportDefinitionIndexMap = new HashMap<Integer, ReportDefinition>();
+        this.requiredReportDefinitions = new ArrayList<ReportDefinition>();
         
 	}
 	
@@ -54,8 +85,28 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	@Override
     public void reassociate() {
-        //super.reassociate();
-        //assignmentDao.reassociate(getAssignment());
+		
+		//always reassociate the study
+		if(aeReport.getReportingPeriod() != null && aeReport.getStudy() != null){
+			studyDao.reassociate(aeReport.getStudy());
+		}
+		
+		//always reassociate the report definitions	
+		for (ReportDefinition definition : allReportDefinitions) {
+	            reportDefinitionDao.reassociate(definition);
+	    }
+		
+		//first reassociate the reporting period
+		if(aeReport.getReportingPeriod() != null){
+			reportingPeriodDao.reassociate(aeReport.getReportingPeriod());
+		}
+		
+		
+		//now reassociate the report only if it is persistent.
+		if(aeReport.getId() != null){
+			reportDao.reassociate(aeReport);
+		}
+		
     }
 	
 	public void saveReportingPeriod() {
@@ -67,7 +118,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
 	@Override
     public void save() {
-        //reportDao.save(getAeReport());
+        reportDao.save(aeReport);
     }
 	
 
@@ -75,6 +126,191 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
     public void flush() {
     	reportDao.flush();
     }
+	
+	/**
+	 * This method will take care of setting up the command object.
+	 */
+	public void initialize(){
+		//set the same to Expedited Report
+		this.aeReport.setReportingPeriod(adverseEventReportingPeriod);
+		
+		//create one AE by default.
+		if(aeReport.getId() == null){
+			//create a new adverse event. 
+			AdverseEvent ae = new AdverseEvent();
+			ae.setReport(aeReport);
+			aeReport.getReportingPeriod().addAdverseEvent(ae);
+			aeReport.addAdverseEvent(ae);
+			//save the reporting period.
+			saveReportingPeriod();
+			
+			// Initialize the treatment assignment & start date of course
+	        initializeTreatmentInformation();
+	        
+	        //update the outcomes map
+	        updateOutcomes();
+		}
+		
+		initializeNotApplicableFields();
+	}
+	
+	
+	@Override
+	public void initializeNotApplicableFields() {
+		
+		super.initializeNotApplicableFields();
+		
+		//special case, for non DCP studies, dont show DCP specific fields
+		if(!isDCPNonAdeersStudy()){
+			renderDecisionManager.conceal("aeReport.adverseEvents[].eventApproximateTime", 
+					"aeReport.adverseEvents[].outcomes", "aeReport.adverseEvents[].eventLocation"); //also no outcomes
+		}else{
+			renderDecisionManager.reveal("aeReport.adverseEvents[].eventApproximateTime",
+					"aeReport.adverseEvents[].eventLocation","aeReport.adverseEvents[].outcomes"); //event time not to be shown
+		}
+		
+	}
+	
+	
+	/**
+	 * This method will check if the study selected is a DCP sponsored study and is AdEERS submittable.
+	 * @return
+	 */
+	public boolean isDCPNonAdeersStudy(){
+		if(study == null) return false;
+		return (!study.getAdeersReporting()) && study.getPrimaryFundingSponsorOrganization().getNciInstituteCode().equals("DCP");
+	}
+	
+	
+	
+	  /**
+     * This method will find all avaliable report definitions for all the StudyOrganizations. 
+     */
+    public List<ReportDefinition> findAllReportDefintionNames(){
+    	// evalutate available report definitions per session.
+    	if(this.allReportDefinitions.isEmpty()){
+    		this.allReportDefinitions.addAll(evaluationService.applicableReportDefinitions(this.aeReport.getAssignment()));
+    		//upate the index map
+    		for(ReportDefinition repDef : allReportDefinitions){
+    			reportDefinitionIndexMap.put(repDef.getId(), repDef);
+    		}
+    	}
+    	return this.allReportDefinitions;
+    }
+    
+    public List<ReportDefinition> findRequiredReportDefinitions(){
+    	requiredReportDefinitions.clear();
+    	//if already available return that, as we will take care of clearing it when we quit this tab.
+    	if(!aeReport.getReportingPeriod().isBaselineReportingType()){
+    		requiredReportDefinitions.addAll(evaluationService.findRequiredReportDefinitions(aeReport, aeReport.getAdverseEvents(), aeReport.getStudy()));
+    	}
+    	return requiredReportDefinitions;
+    }
+
+
+    /**
+     * This method will return the ReportDefinition which are selected by user
+     * page.
+     */
+    public List<ReportDefinition> getSelectedReportDefinitions() {
+    	selectedReportDefinitions.clear();
+    	
+        for (Map.Entry<Integer, Boolean> entry : reportDefinitionMap.entrySet()) {
+            if (entry.getValue() != null && entry.getValue()) selectedReportDefinitions.add(reportDefinitionIndexMap.get(entry.getKey()));
+        }
+        return selectedReportDefinitions;
+   }
+    
+    /**
+     * This method will find the newly selected reports.
+     * @return
+     */
+    public  Collection<ReportDefinition> getNewlySelectedReportDefinitions(){
+    	List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
+    	List<ReportDefinition> instantiatedReportDefs = getInstantiatedReportDefinitions();
+    	
+    	//find difference  (selected - instantiated)
+    	Map<Integer, ReportDefinition> selectedMap = new HashMap<Integer, ReportDefinition>();
+    	for(ReportDefinition reportDef :selectedReportDefs){
+    		selectedMap.put(reportDef.getId(), reportDef);
+    	}
+    	for(ReportDefinition reportDef : instantiatedReportDefs){
+    		selectedMap.remove(reportDef.getId());
+    	}
+    	
+    	Collection<ReportDefinition> difference =  selectedMap.values();
+    	return difference;
+    }
+    /**
+     * This method will create new reports by calling evaluation service.
+     */
+    public void instantiateNewlySelectedReports(){
+    	Collection<ReportDefinition> newlySelectedReports = getNewlySelectedReportDefinitions();
+    	if(newlySelectedReports != null){
+    		evaluationService.addOptionalReports(aeReport, newlySelectedReports, false);
+    	}
+    }
+    
+    /**
+	 * This will remove all unselected report definitions from the report, by calling delete on the repository 
+	 * @param aeReport
+	 * @param removedDefinitions
+	 */
+	public void removeUnselectedReports() {
+		 List<Report> nonWitdrawnReports = aeReport.getNonWithdrawnReports();
+		 List<ReportDefinition> selectedReportDefs = getSelectedReportDefinitions();
+		 Map<Integer, Report> unselectedMap = new HashMap<Integer, Report>();
+		 //find difference (nonwithdrawn - selected)
+		 for(Report report : nonWitdrawnReports){
+			unselectedMap.put(report.getReportDefinition().getId(), report);
+		 }
+		 for(ReportDefinition reportDef : selectedReportDefs){
+			 unselectedMap.remove(reportDef.getId());
+		 }
+		 Collection<Report> reportsToDelete = unselectedMap.values();
+		 for(Report report : reportsToDelete){
+			 reportRepository.deleteReport(report);
+		 }
+		 
+	}
+    
+    
+   /**
+    * Will clear first the report definitions, then
+    *  add all report definitions, with value false, and updates the the value to true for selected ones.  
+    */
+   public void refreshReportDefinitionMap(){
+	   reportDefinitionMap.clear();
+	   for(ReportDefinition rpDef : allReportDefinitions){
+		   reportDefinitionMap.put(rpDef.getId(), false);
+	   }
+	   
+	   //rules engine said reports should be selected
+	   for(ReportDefinition rpDef : requiredReportDefinitions){
+		   reportDefinitionMap.put(rpDef.getId(), true);
+	   }
+   }
+    
+   
+    
+    public void refreshReportStatusMap(){
+    	reportStatusMap.clear();
+        
+    	//initialize every thing with empty
+    	for(ReportDefinition rpDef : allReportDefinitions){
+    		reportStatusMap.put(rpDef.getId(), rpDef.getExpectedDisplayDueDate());
+    	}
+    }
+    
+	public void refreshReportDefinitionRequiredIndicatorMap(){
+		this.requiredReportDefinitionIndicatorMap.clear();
+		for(ReportDefinition rpDef : allReportDefinitions){
+			requiredReportDefinitionIndicatorMap.put(rpDef.getId(), false);
+		}
+		for(ReportDefinition rpDef : requiredReportDefinitions){
+			requiredReportDefinitionIndicatorMap.put(rpDef.getId(), true);
+		}
+	}
 	
 	
 	//=============== mutators ==============================
@@ -124,8 +360,39 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	public void setAdverseEventReportingPeriod(AdverseEventReportingPeriod adverseEventReportingPeriod){
 		this.adverseEventReportingPeriod = adverseEventReportingPeriod;
 		
-		//set the same to Expedited Report
-		this.aeReport.setReportingPeriod(adverseEventReportingPeriod);
+	}
+
+	public List<ReportDefinition> getAllReportDefinitions() {
+		return allReportDefinitions;
+	}
+
+	public void setAllReportDefinitions(List<ReportDefinition> allReportDefinitions) {
+		this.allReportDefinitions = allReportDefinitions;
+	}
+
+	public Map<Integer, String> getReportStatusMap() {
+		return reportStatusMap;
+	}
+
+	public void setReportStatusMap(Map<Integer, String> reportStatusMap) {
+		this.reportStatusMap = reportStatusMap;
+	}
+
+	public Map<Integer, Boolean> getRequiredReportDefinitionIndicatorMap() {
+		return requiredReportDefinitionIndicatorMap;
+	}
+
+	public void setRequiredReportDefinitionIndicatorMap(
+			Map<Integer, Boolean> requiredReportDefinitionIndicatorMap) {
+		this.requiredReportDefinitionIndicatorMap = requiredReportDefinitionIndicatorMap;
+	}
+
+	public Map<Integer, Boolean> getReportDefinitionMap() {
+		return reportDefinitionMap;
+	}
+
+	public void setReportDefinitionMap(Map<Integer, Boolean> reportDefinitionMap) {
+		this.reportDefinitionMap = reportDefinitionMap;
 	}
 	
 	

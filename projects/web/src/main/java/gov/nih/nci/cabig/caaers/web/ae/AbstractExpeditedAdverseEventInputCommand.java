@@ -5,12 +5,16 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
@@ -20,6 +24,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Outcome;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
@@ -28,6 +33,7 @@ import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
+import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +48,8 @@ import java.util.Set;
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections15.FactoryUtils;
+import org.apache.commons.collections15.list.LazyList;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,19 +85,36 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     protected List<String> outcomeOtherDetails; 
     protected List<ReportDefinition> selectedReportDefinitions;
     private boolean workflowEnabled;
+    protected RenderDecisionManager renderDecisionManager;
+    
+    
+    private AnatomicSite metastaticDiseaseSite;
+    private PreExistingCondition preExistingCondition;
+    private PriorTherapy priorTherapy;
+    private List<String> chemoAgents;
+    private ChemoAgent chemoAgent;
+    private String concomitantMedication;
+    
+    private Term studyTerminologyTerm;
 
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
     }
     
-    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree) {
+    public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, 
+    		ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, 
+    		ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
         this.expeditedReportTree = expeditedReportTree;
+        this.renderDecisionManager = renderDecisionManager;
+        this.reportRepository = reportRepository;
+        
         this.outcomeOtherDetails = new ArrayList<String>();
         this.outcomes = new ArrayList<Map<Integer,Boolean>>();
         this.selectedReportDefinitions = new ArrayList<ReportDefinition>();
+        this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
     }
 
     public abstract StudyParticipantAssignment getAssignment();
@@ -157,7 +182,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
      */
 
     @SuppressWarnings("unchecked")
-    public void initializeMandatorySectionFields(ExpeditedReportTree tree) {
+    public void initializeMandatorySectionFields() {
         if (mandatorySections == null || mandatorySections.isEmpty()) {
             log.info("No mandatory sections available, so no fields will be pre initialized");
             return;
@@ -168,7 +193,7 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
         for (ExpeditedReportSection section : getMandatorySections()) {
             assert (section != null) : "A section is null in command.getManatorySections()";
 
-            TreeNode sectionNode = tree.getNodeForSection(section);
+            TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
             if (sectionNode == null) log.warn("Unable to fetch TreeNode for section"
                             + section.name());
 
@@ -345,4 +370,92 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 	public void setWorkflowEnabled(boolean workflowEnabled) {
 		this.workflowEnabled = workflowEnabled;
 	}
+	
+	 /**
+     * This method will intialize the render decision manager, with the field display status.
+     * @param reportDefs
+     */
+    public void initializeNotApplicableFields() {
+    	//find the list of report definitions associated to the existing AE report, and the ones that are newly selected.
+    	//Note:- Since there is a potential to throw LazyInit exception, we will use HashMap based logic to find the unique ReportDefinition.
+    	HashMap<Integer , ReportDefinition> map = new HashMap<Integer, ReportDefinition>();
+    	
+    	if(getSelectedReportDefinitions() != null){
+    		for(ReportDefinition rd : getSelectedReportDefinitions()){
+    			map.put(rd.getId(), rd);
+    		}
+    	}
+    	
+    	for(Report r : getAeReport().getReports()){
+    		ReportDefinition rd = r.getReportDefinition();
+    		map.put(rd.getId(), rd);
+    	}
+    	
+    	//reassociate them with current running session
+    	for(ReportDefinition rd : map.values()){
+    		reportDefinitionDao.reassociate(rd);
+    	}
+    	
+    	renderDecisionManager.updateRenderDecision(map.values());
+    	
+	}
+    
+    public void initializeTreatmentInformation(){
+    	ExpeditedAdverseEventReport aeReport = getAeReport();
+    	TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
+    	treatmentInformation.setTreatmentAssignment(aeReport.getReportingPeriod().getTreatmentAssignment());
+    	treatmentInformation.setFirstCourseDate(aeReport.getAssignment().getStartDateOfFirstCourse());
+    	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
+    	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
+    	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
+    }
+    
+    
+    public AnatomicSite getMetastaticDiseaseSite() {
+		return metastaticDiseaseSite;
+	}
+    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
+		this.metastaticDiseaseSite = metastaticDiseaseSite;
+	}
+    public PreExistingCondition getPreExistingCondition() {
+		return preExistingCondition;
+	}
+    public void setPreExistingCondition(PreExistingCondition preExistingCondition) {
+		this.preExistingCondition = preExistingCondition;
+	}
+    public PriorTherapy getPriorTherapy() {
+		return priorTherapy;
+	}
+    public void setPriorTherapy(PriorTherapy priorTherapy) {
+		this.priorTherapy = priorTherapy;
+	}
+    public List<String> getPriorTherapyAgents() {
+		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
+	}
+    public void setPriorTherapyAgents(List<String> chemoAgents) {
+		this.chemoAgents = chemoAgents;
+	}
+    
+    public String getConcomitantMedication() {
+		return concomitantMedication;
+	}
+    public void setConcomitantMedication(String concomitantMedication) {
+		this.concomitantMedication = concomitantMedication;
+	}
+    
+    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
+		this.chemoAgent = chemoAgent;
+	}
+    public ChemoAgent getPriorTherapyAgent() {
+		return chemoAgent;
+	}
+    
+    public Term getStudyTerminologyTerm() {
+		if(studyTerminologyTerm == null){
+			studyTerminologyTerm = getStudy().getAeTerminology().getTerm();
+		}
+		return studyTerminologyTerm;
+	}
+		
+       
 }

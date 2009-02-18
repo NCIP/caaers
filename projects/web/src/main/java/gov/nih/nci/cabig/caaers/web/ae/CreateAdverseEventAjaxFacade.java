@@ -105,7 +105,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
 public class CreateAdverseEventAjaxFacade {
 
     private static final Log log = LogFactory.getLog(CreateAdverseEventAjaxFacade.class);
-    private static Class<?>[] CONTROLLERS = {EditAdverseEventController.class};
+    private static Class<?>[] CONTROLLERS = {EditAdverseEventController.class, CreateAdverseEventController.class};
 
     protected StudyDao studyDao;
     protected ParticipantDao participantDao;
@@ -611,6 +611,14 @@ public class CreateAdverseEventAjaxFacade {
     }
     
     public String addAdverseEvent( int index, Integer aeReportId ){
+    	return addNewAdverseEvent("adverseEventFormSection", index, aeReportId);
+    }
+    
+    public String addAdverseEventMeddra(int index, Integer aeReportId){
+    	return addNewAdverseEvent("adverseEventMeddraFormSection", index, aeReportId);
+    }
+    
+    public String addNewAdverseEvent(String section, int index, Integer aeReportId){
     	try {
 			Object cmd = extractCommand();
 			ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) cmd;
@@ -622,9 +630,12 @@ public class CreateAdverseEventAjaxFacade {
 			ae.setReport(command.getAeReport());
 			command.getAeReport().getReportingPeriod().addAdverseEvent(ae);
 			command.getAeReport().addAdverseEvent(ae);
+			
+			command.updateOutcomes();
 			command.saveReportingPeriod();
-			command.save();
-			return renderIndexedAjaxView("adverseEventFormSection", index, aeReportId);
+			saveIfAlreadyPersistent(command);
+			
+			return renderIndexedAjaxView(section, index, aeReportId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -6,6 +6,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <script type="text/javascript" src="/caaers/js/extremecomponents.js"></script>
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
+<%@attribute name="collapsed" required="true" type="java.lang.Boolean" %>
 <%@attribute name="style"%>
 
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
@@ -20,7 +21,7 @@
 </c:set>
 
 <chrome:division title="${title}" id="ae-section-${index}" 
-	 	cssClass="ae-section" style="${style}" collapsed="${index > 0}" 
+	 	cssClass="ae-section" style="${style}" collapsed="${collapsed}" 
 		collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	

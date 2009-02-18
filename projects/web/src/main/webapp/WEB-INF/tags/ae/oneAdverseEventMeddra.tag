@@ -5,6 +5,7 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
+<%@attribute name="collapsed" required="true" type="java.lang.Boolean" %>
 <%@attribute name="style"%>
 <c:set var="ctcTermGroup">ctcTerm${index}</c:set>
 <c:set var="ctcOtherGroup">ctcOther${index}</c:set>
@@ -15,7 +16,7 @@
     <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName}</c:otherwise>
 </c:choose></c:set>
 
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${index > 0}">
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${collapsed}">
     <div class="row">
       <div class="label">MedDRA Version</div>
       <div class="value">${command.assignment.studySite.study.aeTerminology.meddraVersion.name}</div>

@@ -39,7 +39,7 @@ import org.apache.commons.collections15.list.LazyList;
  */
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
     private StudyParticipantAssignmentDao assignmentDao;
-    private RenderDecisionManager renderDecisionManager;
+   
 	
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
@@ -52,50 +52,18 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>();
     List<ReportDefinition> newlySelectedDefs = new ArrayList<ReportDefinition>();
     
-    private AnatomicSite metastaticDiseaseSite;
-    private PreExistingCondition preExistingCondition;
-    private PriorTherapy priorTherapy;
-    private List<String> chemoAgents;
-    private ChemoAgent chemoAgent;
-    private String concomitantMedication;
-    
-    private Term studyTerminologyTerm;
-    private AdverseEventReportingPeriod adverseEventReportingPeriod;
-    
 
     // //// LOGIC
 
 
-    public void initialize(){
-    	Study study = getStudy();
-    	if(study != null) study.getAeTerminology().getTerm();
-    }
-    
-    public void initializeTreatmentInformation(){
-    	ExpeditedAdverseEventReport aeReport = getAeReport();
-    	TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
-    	treatmentInformation.setTreatmentAssignment(aeReport.getReportingPeriod().getTreatmentAssignment());
-    	treatmentInformation.setFirstCourseDate(aeReport.getAssignment().getStartDateOfFirstCourse());
-    	treatmentInformation.getAdverseEventCourse().setDate(aeReport.getReportingPeriod().getStartDate());
-    	treatmentInformation.getAdverseEventCourse().setNumber(aeReport.getReportingPeriod().getCycleNumber());
-    	treatmentInformation.setTotalCourses(aeReport.getAssignment().getMaxCycleNumber());
-    }
-    
-    public EditExpeditedAdverseEventCommand(StudyParticipantAssignmentDao assignmentDao){
-    	this.assignmentDao = assignmentDao;
-    }
-    
     public EditExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao expeditedAeReportDao,
             ReportDefinitionDao reportDefinitionDao,
             StudyParticipantAssignmentDao assignmentDao,
             AdverseEventReportingPeriodDao reportingPeriodDao,
             ExpeditedReportTree expeditedReportTree, 
             RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
-    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree);
+    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository);
     	this.assignmentDao = assignmentDao;
-    	this.renderDecisionManager = renderDecisionManager;
-    	this.chemoAgents = new ArrayList<String>(); // new ArrayList<ChemoAgent>();
-    	this.reportRepository = reportRepository;
     }
 
     @Override
@@ -144,35 +112,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
     
-    /**
-     * This method will intialize the render decision manager, with the field display status.
-     * @param reportDefs
-     */
-    public void initializeNotApplicableFields() {
-    	//find the list of report definitions associated to the existing AE report, and the ones that are newly selected.
-    	//Note:- Since there is a potential to throw LazyInit exception, we will use HashMap based logic to find the unique ReportDefinition.
-    	HashMap<Integer , ReportDefinition> map = new HashMap<Integer, ReportDefinition>();
-    	
-    	if(getSelectedReportDefinitions() != null){
-    		for(ReportDefinition rd : getSelectedReportDefinitions()){
-    			map.put(rd.getId(), rd);
-    		}
-    	}
-    	
-    	for(Report r : getAeReport().getReports()){
-    		ReportDefinition rd = r.getReportDefinition();
-    		map.put(rd.getId(), rd);
-    	}
-    	
-    	//reassociate them with current running session
-    	for(ReportDefinition rd : map.values()){
-    		reportDefinitionDao.reassociate(rd);
-    	}
-    	
-    	renderDecisionManager.updateRenderDecision(map.values());
-    	
-	}
-       
     
     /**
      * This method classifies the newly selected reportDefinitions into 2 lists.
@@ -300,46 +239,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     public Integer getParentIndex() {
 		return parentIndex;
 	}
-    
-    public AnatomicSite getMetastaticDiseaseSite() {
-		return metastaticDiseaseSite;
-	}
-    public void setMetastaticDiseaseSite(AnatomicSite metastaticDiseaseSite) {
-		this.metastaticDiseaseSite = metastaticDiseaseSite;
-	}
-    public PreExistingCondition getPreExistingCondition() {
-		return preExistingCondition;
-	}
-    public void setPreExistingCondition(PreExistingCondition preExistingCondition) {
-		this.preExistingCondition = preExistingCondition;
-	}
-    public PriorTherapy getPriorTherapy() {
-		return priorTherapy;
-	}
-    public void setPriorTherapy(PriorTherapy priorTherapy) {
-		this.priorTherapy = priorTherapy;
-	}
-    public List<String> getPriorTherapyAgents() {
-		return LazyList.decorate(chemoAgents, FactoryUtils.nullFactory());
-	}
-    public void setPriorTherapyAgents(List<String> chemoAgents) {
-		this.chemoAgents = chemoAgents;
-	}
-    
-    public String getConcomitantMedication() {
-		return concomitantMedication;
-	}
-    public void setConcomitantMedication(String concomitantMedication) {
-		this.concomitantMedication = concomitantMedication;
-	}
-    
-    public void setPriorTherapyAgent(ChemoAgent chemoAgent) {
-		this.chemoAgent = chemoAgent;
-	}
-    public ChemoAgent getPriorTherapyAgent() {
-		return chemoAgent;
-	}
-		
+   
 	public void setNewlySelectedSponsorReports(
 			ArrayList<ReportDefinition> newlySelectedSponsorReports) {
 		this.newlySelectedSponsorReports = newlySelectedSponsorReports;
@@ -366,12 +266,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		this.newlySelectedDefs = newlySelectedDefs;
 	}
 	
-	public Term getStudyTerminologyTerm() {
-		if(studyTerminologyTerm == null){
-			studyTerminologyTerm = getStudy().getAeTerminology().getTerm();
-		}
-		return studyTerminologyTerm;
-	}
 	
 	public AdverseEventReportingPeriod getAdverseEventReportingPeriod(){
 		if(getAeReport() != null)

@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
+import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
@@ -112,5 +113,16 @@ public class AttributionTab extends AeTab {
     @Override
     public ExpeditedReportSection[] section() {
         return new ExpeditedReportSection[] {ExpeditedReportSection.ATTRIBUTION_SECTION};
+    }
+    
+    @Override
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {
+    	boolean hasEmptyFields = super.hasEmptyMandatoryFields(command);
+    	if(command.getAeReport().getId() != null){
+    		ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
+    		hasEmptyFields |= validationErrors.containsErrorWithCode("ATT_BR1_ERR");
+    	}
+    	
+    	return hasEmptyFields;
     }
 }

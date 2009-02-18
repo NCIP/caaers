@@ -108,7 +108,7 @@
         </jsp:attribute>
         <jsp:attribute name="repeatingFields">
             <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-                <ae:oneAdverseEventMeddra index="${status.index}"/>
+                <ae:oneAdverseEventMeddra index="${status.index}" collapsed="${status.index gt 0}"/>
             </c:forEach>
         </jsp:attribute>
 

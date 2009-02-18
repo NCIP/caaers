@@ -392,7 +392,7 @@ div.row div.value, div.row div.extra {
   </jsp:attribute>
   <jsp:attribute name="repeatingFields">
     <c:forEach items="${command.aeReport.adverseEvents}" varStatus="status">
-      <ae:oneAdverseEvent index="${status.index}"/>
+      <ae:oneAdverseEvent index="${status.index}" collapsed="${status.index gt 0}"/>
     </c:forEach>
   </jsp:attribute>
   <jsp:attribute name="localButtons">
