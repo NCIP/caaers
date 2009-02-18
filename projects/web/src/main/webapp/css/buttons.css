@@ -98,7 +98,7 @@ a.omnipotent-button.orange:active, a.omnipotent-button.orange:active .right {
 
 /* Begin c3pr button type="button" core CSS*/
 button.omnipotent-button {
-	behavior: url('/c3pr/js/button-pseudoclass-IE-hack.htc');
+	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 31px;
 	padding:3px 6px;
 	background-position:left;
@@ -211,7 +211,7 @@ button.omnipotent-button.orange:active, button.omnipotent-button.orange.active, 
 
 /* Begin c3pr button type="anchor" size="small" core CSS*/
 a.omnipotent-button.small {
-	behavior: url('/c3pr/js/button-pseudoclass-IE-hack.htc');
+	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 20px;
 	padding:3px 5px;
 	background-position:left;
@@ -302,7 +302,7 @@ a.omnipotent-button.small.orange:active, a.omnipotent-button.small.orange.active
 
 /* Begin c3pr button type="button" size="small" core CSS*/
 button.omnipotent-button.small {
-	behavior: url('/c3pr/js/button-pseudoclass-IE-hack.htc');
+	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 20px;
 	padding:1px 5px;
 	background-position:left;

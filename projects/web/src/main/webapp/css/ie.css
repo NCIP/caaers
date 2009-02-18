@@ -93,3 +93,45 @@ div.row, build-name, main {
 	width:485px;
 	height: 180px;
 }
+
+/* Buttons */
+button.omnipotent-button {
+	padding:2px 0 0 0;
+	margin-left:5px;
+}
+button.omnipotent-button .right {
+	right:0px;
+	top:0px;
+}
+button.omnipotent-button.small .right {
+	right:0;
+	top:0px;
+}
+button.omnipotent-button.small.no-icon {
+	padding:1px 5px 1px;
+}
+a.omnipotent-button .right {
+	background-color:white;
+	background-position:right center;
+	background-repeat:no-repeat;
+	display:block;
+	height:31px;
+	position:absolute;
+	right:0px;
+	top:8px;
+	width:3px;
+}
+a.omnipotent-button.no-icon{
+	padding-left:12px;
+}
+a.omnipotent-button.no-icon .right {
+	top:8px;
+}
+a.omnipotent-button.small .right {
+	right:0px;
+	top:3px;
+}
+a.omnipotent-button.small.no-icon .right {
+	right:0px;
+	top:4px;
+}

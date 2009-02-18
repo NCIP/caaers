@@ -34,7 +34,7 @@
             <c:if test="${not isLast}">
                 <c:set var="continueLabel" value="${continueLabel}Continue"/>
             </c:if>
-            <tags:button icon="${continueLabel}" color="green" id="flow-next" value="${continueLabel}"/>
+            <tags:button type="submit" icon="${continueLabel}" color="green" id="flow-next" value="${continueLabel}"/>
         </span>
     </div>
 </div>

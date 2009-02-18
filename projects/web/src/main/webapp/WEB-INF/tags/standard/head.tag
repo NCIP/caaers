@@ -3,19 +3,15 @@
 <tags:stylesheetLink name="debug"/>
 <tags:stylesheetLink name="common"/>
 <tags:stylesheetLink name="fields"/>
-
+<tags:stylesheetLink name="buttons"/>
+<tags:stylesheetLink name="extremecomponents"/>
+<tags:stylesheetLink name="calendar/calendar-blue"/>
+<tags:stylesheetLink name="hoverhelp"/>
+<tags:stylesheetLink name="tigra-menu/tigra-menu"/>
+<tags:stylesheetLink name="side-bar"/>
 <!--[if IE]>
 <tags:stylesheetLink name="ie"/>
 <![endif]-->
-
-<tags:stylesheetLink name="extremecomponents"/>
-<tags:stylesheetLink name="calendar/calendar-blue"/>
-
-<tags:stylesheetLink name="hoverhelp"/>
-
-<tags:stylesheetLink name="tigra-menu/tigra-menu"/>
-<tags:stylesheetLink name="side-bar"/>
-<tags:stylesheetLink name="buttons"/>
 
 <tags:javascriptLink name="calendar"/>
 <tags:javascriptLink name="prototype"/>

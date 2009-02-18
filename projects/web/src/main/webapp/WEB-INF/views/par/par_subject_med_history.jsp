@@ -279,6 +279,7 @@
 	</chrome:box>
 
 	<chrome:box id="assignment.diseaseHistory" title="Disease Information" collapsable="true">
+		
      <p><tags:instructions code="instruction_subject_enter.medhist.disease"/></p>
 		<tags:hasErrorsMessage path="assignment.diseaseHistory.*" />
 		<div id="anchorDiseaseInfo">
@@ -316,7 +317,7 @@
 					<ui:text path="assignment.diseaseHistory.otherPrimaryDisease"  />
 				</jsp:attribute>
 			</ui:row>
-
+<%--problem begins here--%>
 			<ui:row path="assignment.diseaseHistory.codedPrimaryDiseaseSite">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.codedPrimaryDiseaseSite" text="Primary site of disease" />
@@ -351,11 +352,14 @@
 							}
 						</jsp:attribute>
 					</ui:autocompleter>
-                    <a href="#anchorDiseaseInfo" onClick="showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</a>
-                    
+					<%-- The line below used to be an <a> tag but it was causing some bizzare issue in IE causing part of the chrome box to not render.
+							I (David) have changed it to a span as a workaround. I tried making it a button, but that caused another bizzare issue in IE.
+							In the future if you want to make this a button AND the 'Show All' in the box below this one a button also, you will need to resolve that IE issue--hovering on this button will cause the below button to dissappear.
+							Good luck.  --%>
+                    <span style="cursor:pointer; color:blue; text-decoration:underline;" onclick="javascript:showShowAllTable('_c1', 'codedPrimaryDiseaseSite')" id="_c1">Show All</span>
                 </jsp:attribute>
 			</ui:row>
-
+<%--problem ends here--%>
 			<ui:row path="assignment.diseaseHistory.otherPrimaryDiseaseSite" style="display:none;">
 				<jsp:attribute name="label">
 					<ui:label path="assignment.diseaseHistory.otherPrimaryDiseaseSite" text="Other (site of primary disease)" required="true" />
