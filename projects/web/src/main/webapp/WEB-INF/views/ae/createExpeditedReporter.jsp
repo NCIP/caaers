@@ -100,21 +100,22 @@
  	          	routingHelper.retrieveReviewCommentsAndActions.bind(routingHelper)();
             }
 
-        	if($('manualselect2')){
-   			 
-        		
-         		 Event.observe('manualselect2', "click", function() {
-         	 		var answer = confirm('Are you sure you want to bypass the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
-         	 	 	if(answer){
-         	 	 		$('manualselect2').disabled=true
-         	 	  	 	$('report-list').hide();
-         		   		$('report-list').innerHTML = $('report-list-full').innerHTML;
-         		   		$('report-list-full').innerHTML='';
-    			   		AE.slideAndShow($('report-list'));  
-    			  		// setUpEventObserving();	
-         	 	 	}	
-         	 	 });
-   			}
+
+    		if($('manualselect2')){
+    			 
+    		
+          		 Event.observe('manualselect2', "click", function() {
+          	 		var answer = confirm('Are you sure you want to bypass the caAERS-based report selection above and instead manually select from the list of all reports defined for this study?');
+          	 	 	if(answer){
+          	 	 		$('manualselect2').disabled=true
+          	 	  	 	$('report-list').hide();
+          		   		$('report-list').innerHTML = $('report-list-full').innerHTML;
+          		   		$('report-list-full').innerHTML='';
+     			   		AE.slideAndShow($('report-list'));  
+     			  		// setUpEventObserving();	
+          	 	 	}	
+          	 	 });
+    		}
                
         })
         
@@ -158,7 +159,7 @@
     <jsp:attribute name="repeatingFields">
     
         <%--  =================== Rules Engine Results  ===================================== --%>
-        
+  
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
          
@@ -166,9 +167,7 @@
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
 		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
 		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
-		<div>
-			<tags:message key="instruction_ae_require_reporting" />
-		</div>
+		<div><tags:instructions code="instruction_ae_require_reporting" /></div>
 	</div>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
@@ -191,18 +190,16 @@
             </div>
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-	  		<div class="autoclear" align="center" style="padding-top: 10px;">
-   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      		</div>
-      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
+              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
+              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
       	  </c:if>
         </chrome:box>
         </c:when>
         <c:otherwise>
          <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
-          <p>
-            <tags:message key="instruction_ae_not_require_reporting"/>
-          </p>
+
+             <tags:instructions code="instruction_ae_not_require_reporting" />
+             
           <div align="center" style="padding-bottom:5px;" id="report-list">
             <!-- optional reports -->
             <table class="tablecontent" width="80%">
@@ -211,22 +208,19 @@
                 <th>Report</th>
                 <th>Status</th>
               </tr>
-              <%--<c:forEach items="${rpdAllTable}"  var="rdTable" varStatus="rdStatus">--%>
               <tr>
                 <td align="left" colspan="3">No reports required.</td>
               </tr>
-              <%--</c:forEach>--%>
             </table>
           </div>
           <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-	  		<div class="autoclear" align="center" style="padding-top: 10px;">
-   				<input type="button" id="manualselect2" value="Manually Select Report(s)"  class="manualSelectBtn"/>
-      		</div>
-      		<p>Click "Manually Select Reports" above to manually select from the list of all reports available for this study.</p>
       	  </c:if>
-      	  </chrome:box>
+             <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
+             <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
+            </chrome:box>
         </c:otherwise>
       </c:choose>
+       
         
         <%-- ================================================================================  --%>
         <chrome:box title="Reporter Details">

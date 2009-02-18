@@ -17,6 +17,8 @@ import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Physician;
+import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
@@ -63,6 +65,8 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		
 		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
 		this.aeReport = new ExpeditedAdverseEventReport();
+		this.aeReport.setReporter(new Reporter());
+		this.aeReport.setPhysician(new Physician());
 		
 		this.evaluationService = evaluationService;
 		this.studyDao = studyDao;
@@ -135,7 +139,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		this.aeReport.setReportingPeriod(adverseEventReportingPeriod);
 		
 		//create one AE by default.
-		if(aeReport.getId() == null){
+		if(aeReport.getId() == null && aeReport.getReports().size() < 1){
 			//create a new adverse event. 
 			AdverseEvent ae = new AdverseEvent();
 			ae.setReport(aeReport);
