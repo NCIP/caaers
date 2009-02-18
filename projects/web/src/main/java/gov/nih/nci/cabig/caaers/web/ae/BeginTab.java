@@ -24,7 +24,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
     }
 
     public BeginTab(String instructions) {
-    	  super("Select subject,study and course", "Subject,&nbsp;Study &amp; Course", "ae/selectAssignment");
+    	  super("Select study, subject and course", "Study,&nbsp;Subject &amp; Course", "ae/selectAssignment");
         this.instructions = instructions;
 
     }
