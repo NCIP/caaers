@@ -128,7 +128,7 @@
         		$('course-type-value').innerHTML = course.epochName;
         		$('cycle-number-value').innerHTML = course.cycleNumber;
         		$('treatment-assignment-value').innerHTML = course.tacCode;
-        		$('treatment-description-value').innerHTML = course.tacDescription;
+        		$('treatment-description-value').innerHTML = '<b>Treatment description</b>&nbsp;&nbsp;&nbsp;&nbsp;' + course.tacDescription;
         	});
         },
         
@@ -243,6 +243,19 @@
 <form:form method="post" cssClass="standard autoclear">
     <tags:tabFields tab="${tab}"/>
     <div class="autoclear" id="criteria-div">
+    	<chrome:box title="Select study" id="study-entry" autopad="true">
+            <p><tags:instructions code="instruction_ae_select_study"/></p>
+            <form:hidden path="study"/>
+            <tags:requiredIndicator/>
+            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
+            <input type="button" id="study-clear" value="Clear"/>
+            <tags:indicator id="study-indicator"/>
+            <tags:errors path="study"/>
+            <div id="study-choices" class="autocomplete"></div>
+            <p id="study-selected" style="display: none">
+                You have selected the study <span id="study-selected-name"></span>.
+            </p>
+        </chrome:box>
         <chrome:box title="Select subject" id="participant-entry" autopad="true">
             <p><tags:instructions code="instruction_ae_select_subject"/></p>
             <form:hidden path="participant"/>
@@ -256,19 +269,6 @@
                 You have selected the subject <span id="participant-selected-name"></span>.
             </p>
         </chrome:box>
-        <chrome:box title="Select study" id="study-entry" autopad="true">
-            <p><tags:instructions code="instruction_ae_select_study"/></p>
-            <form:hidden path="study"/>
-            <tags:requiredIndicator/>
-            <input type="text" id="study-input" value="${command.study.shortTitle}" class="autocomplete"/>
-            <input type="button" id="study-clear" value="Clear"/>
-            <tags:indicator id="study-indicator"/>
-            <tags:errors path="study"/>
-            <div id="study-choices" class="autocomplete"></div>
-            <p id="study-selected" style="display: none">
-                You have selected the study <span id="study-selected-name"></span>.
-            </p>
-        </chrome:box>
         <chrome:box title="Select course" id="course-entry" autopad="true">
 			<div style="display:none" id="created-message"><b><font color="green">Course created successfully</font></b></div>
 			<div style="display:none" id="edited-message"><b><font color="green">Course details saved successfully</font></b></div>
@@ -279,53 +279,27 @@
 				<option value="">Please select</option>
 			</select>
 			<input id="edit_button" type="button" value="Edit" style="display:none;"/>
+			<br>
 			<div id="course-details" style="display:none">
 				<table width="100%">
 					<tr>
-						<td width="40%" align="left">
-							<table width="100%">
-								<tr>
-									<td>
-										<b>Start date</b>
-									</td>
-									<td id="start-date-value"></td>
-								</tr>
-								<tr>
-									<td>
-										<b>End date</b>
-									</td>
-									<td id="end-date-value"></td>
-								</tr>
-								<tr>
-									<td>
-										<b>Course type</b>
-									</td>
-									<td id="course-type-value"></td>
-								</tr>
-								<tr>
-									<td>
-										<b>Cycle number</b>
-									</td>
-									<td id="cycle-number-value"></td>
-								</tr>
-							</table>
-						</td>
-						<td width="60%" align="left">
-							<table width="100%">
-								<tr>
-									<td>
-										<b>Treatment assignment</b>
-									</td>
-									<td id="treatment-assignment-value"></td>
-								</tr>
-								<tr>
-									<td>
-										<b>Treatment description</b>
-									</td>
-									<td id="treatment-description-value"></td>
-								</tr>
-							</table>
-						</td>
+						<td width="20%" align="left"><b>Start date</b></td>
+						<td width="30%" align="left" id="start-date-value"/>
+						<td width="15%" align="left"><b>End date</b></td>
+						<td width="35%" align="left" id="end-date-value"/>
+					</tr>
+					<tr>
+						<td width="20%" align="left"><b>Treatment type</b></td>
+						<td width="30%" align="left" id="course-type-value"/>
+						<td width="15%" align="left"><b>Cycle #</b></td>
+						<td width="35%" align="left" id="cycle-number-value"/>
+					</tr>
+					<tr>
+						<td width="20%" align="left"><b>Treatment code</b></td>
+						<td width="80%" align="left" colspan="3" id="treatment-assignment-value"/>
+					</tr>
+					<tr>
+						<td width="100%" align="left" id="treatment-description-value" colspan="4"/>
 					</tr>
 				</table>
 			</div>
