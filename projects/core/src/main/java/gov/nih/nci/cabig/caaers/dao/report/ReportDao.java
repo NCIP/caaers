@@ -82,27 +82,7 @@ public class ReportDao extends GridIdentifiableDao<Report> {
         return count >= 1;
     }
 
-    /**
-     * Delete report from db.
-     * 
-     * @param rs
-     *                The report object to be deleted.
-     */
-    @Transactional(readOnly = false)
-    public void delete(Report rs) {
-        getHibernateTemplate().delete(rs);
-    }
-
-    /**
-     * Delete multiple reports.
-     * 
-     * @param c
-     *                The report collection.
-     */
-    @Transactional(readOnly = false)
-    public void delete(Collection<Report> c) {
-        getHibernateTemplate().deleteAll(c);
-    }
+   
 
     // because ScheduledNotifications require a transaction, we have reassociate using lock.
     /**

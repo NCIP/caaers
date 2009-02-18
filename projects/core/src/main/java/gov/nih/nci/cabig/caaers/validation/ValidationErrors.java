@@ -3,6 +3,8 @@ package gov.nih.nci.cabig.caaers.validation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class ValidationErrors {
     List<ValidationError> errors;
 
@@ -32,5 +34,12 @@ public class ValidationErrors {
 
     public ValidationError getErrorAt(int index) {
         return errors.get(index);
+    }
+    
+    public boolean containsErrorWithCode(String code){
+    	for(ValidationError error : errors){
+    		if(StringUtils.equals(error.getCode(),code)) return true;
+    	}
+    	return false;
     }
 }

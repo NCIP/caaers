@@ -372,4 +372,34 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
 		Report report = getDao().getById(-223);
 		assertTrue(report.isSubmitted());
     }
+    
+    public void testReassociate(){
+    	Report r = getDao().getById(-223);
+    	interruptSession();
+    	try{
+    		r.getReportDefinition().getName();
+    		fail("should throw lazy init exception");
+    	}catch(Exception e){
+    		
+    	}
+    	
+    	getDao().reassociate(r);
+    	assertNotNull(r.getReportDefinition().getName());
+    	
+    }
+    
+    public void testGetInitializedReportById(){
+    	Report r = getDao().getById(-223);
+    	interruptSession();
+    	try{
+    		r.getScheduledNotifications().size();
+    		fail("should throw lazy init exception");
+    	}catch(Exception e){
+    		
+    	}
+    	interruptSession();
+    	Report r2 = getDao().getInitializedReportById(-223);
+    	interruptSession();
+    	r2.getScheduledNotifications().size();
+    }
 }
