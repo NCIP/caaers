@@ -125,7 +125,6 @@
         		var course = output.objectContent;
         		$('start-date-value').innerHTML = course.startDate;
         		$('end-date-value').innerHTML = course.endDate;
-        		$('course-type-value').innerHTML = course.epochName;
         		$('cycle-number-value').innerHTML = course.cycleNumber;
         		$('treatment-assignment-value').innerHTML = course.tacCode;
         		$('treatment-description-value').innerHTML = '<b>Treatment description</b>&nbsp;&nbsp;&nbsp;&nbsp;' + course.tacDescription;
@@ -283,20 +282,16 @@
 			<div id="course-details" style="display:none">
 				<table width="100%">
 					<tr>
-						<td width="20%" align="left"><b>Start date</b></td>
+						<td width="20%" align="right"><b>Start date</b></td>
 						<td width="30%" align="left" id="start-date-value"/>
-						<td width="15%" align="left"><b>End date</b></td>
+						<td width="15%" align="right"><b>End date</b></td>
 						<td width="35%" align="left" id="end-date-value"/>
 					</tr>
 					<tr>
-						<td width="20%" align="left"><b>Treatment type</b></td>
-						<td width="30%" align="left" id="course-type-value"/>
-						<td width="15%" align="left"><b>Cycle #</b></td>
+						<td width="15%" align="right"><b>Cycle #</b></td>
 						<td width="35%" align="left" id="cycle-number-value"/>
-					</tr>
-					<tr>
-						<td width="20%" align="left"><b>Treatment code</b></td>
-						<td width="80%" align="left" colspan="3" id="treatment-assignment-value"/>
+						<td width="20%" align="right"><b>Treatment code</b></td>
+						<td width="30%" align="left" id="treatment-assignment-value"/>
 					</tr>
 					<tr>
 						<td width="100%" align="left" id="treatment-description-value" colspan="4"/>
