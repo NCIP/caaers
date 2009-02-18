@@ -56,9 +56,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
     public final C findCause(int i, ExpeditedAdverseEventReport aeReport) {
         List<C> causes = getCauseList(aeReport);
         if (causes.size() <= i) {
-            throw new CaaersSystemException("Could not locate cause " + i
-                            + " for report using accessor " + getClass().getSimpleName()
-                            + ".  This may indicate a problem in generating the attribution form.");
+            throw new CaaersSystemException("Could not locate cause " + i + " for report using accessor " + getClass().getSimpleName() + ".  This may indicate a problem in generating the attribution form.");
         }
         return causes.get(i);
     }
@@ -73,8 +71,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
     public abstract String getDisplayName(C c);
 
-    private static class CourseAgentAccessor extends
-                    CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
+    private static class CourseAgentAccessor extends CauseAndAttributionAccessor<CourseAgent, CourseAgentAttribution> {
         @Override
         public String getKey() {
             return ExpeditedAdverseEventInputCommand.COURSE_AGENT_ATTRIBUTION_KEY;
@@ -93,8 +90,7 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
         @Override
         protected List<CourseAgent> getCauseList(ExpeditedAdverseEventReport aeReport) {
             TreatmentInformation treatmentInformation = aeReport.getTreatmentInformation();
-            return treatmentInformation == null ? Collections.<CourseAgent> emptyList()
-                            : treatmentInformation.getCourseAgents();
+            return treatmentInformation == null ? Collections.<CourseAgent> emptyList() : treatmentInformation.getCourseAgents();
         }
 
         @Override
@@ -253,8 +249,14 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(SurgeryIntervention surgery) {
+            StringBuffer s = new StringBuffer();
             if (surgery.getInterventionSite() == null && surgery.getInterventionDate() == null) return DEFAULT_NAME;
-            return (surgery.getInterventionSite() != null ? surgery.getInterventionSite().getName() : "" + " (" + (surgery.getInterventionDate() != null ? DateUtils.formatDate(surgery.getInterventionDate()) : "") + ")");
+            
+            s.append(surgery.getInterventionSite().getName());
+            if (surgery.getInterventionDate() != null)
+                s.append(" (" + DateUtils.formatDate(surgery.getInterventionDate()) + ")");
+            
+            return s.toString();
         }
     }
 
@@ -289,8 +291,12 @@ public abstract class CauseAndAttributionAccessor<C extends DomainObject, A exte
 
         @Override
         public String getDisplayName(RadiationIntervention radiation) {
-            if (radiation.getAdministration() == null || StringUtils.isEmpty(radiation.getDosageUnit()) || StringUtils.isEmpty(radiation.getDosage())) return DEFAULT_NAME;
-            return (radiation.getAdministration() != null ? radiation.getAdministration().getDisplayName() : "") + " (" + radiation.getDosage() + ", " + radiation.getDosageUnit() + ")";
+            StringBuffer s =  new StringBuffer();
+            if (radiation.getAdministration() == null) return DEFAULT_NAME;
+            s.append(radiation.getAdministration().getDisplayName());
+            if (radiation.getDosage() != null && radiation.getDosageUnit() != null)
+                s.append(" (" + radiation.getDosage() + ", " + radiation.getDosageUnit() + ")");
+            return s.toString();
         }
     }
 
