@@ -94,6 +94,10 @@
     <field name="additionalInformation" type="gov.nih.nci.cabig.caaers.domain.AdditionalInformation">
       <bind-xml name="AdditionalInformation"/>
     </field>
+    <field name="reports"
+      type="gov.nih.nci.cabig.caaers.domain.report.Report" collection="arraylist">
+      <bind-xml name="Report"/>
+    </field>    
     <!--
     <field name="outcomes"
       type="gov.nih.nci.cabig.caaers.domain.Outcome" collection="arraylist">
@@ -102,6 +106,32 @@
     -->
   </class>
 
+  <class name="gov.nih.nci.cabig.caaers.domain.report.Report">
+    <map-to xml="Report"/>
+    <field name="id" type="integer">
+      <bind-xml name="id" node="element"/>
+    </field>
+    <field name="assignedIdentifer" type="string">
+      <bind-xml name="assignedIdentifer" node="element"/>
+    </field>
+    <field name="submissionMessage" type="string">
+      <bind-xml name="submissionMessage" node="element"/>
+    </field>
+
+    <field name="reportVersions"
+      type="gov.nih.nci.cabig.caaers.domain.report.ReportVersion" collection="arraylist">
+      <bind-xml name="ReportVersion"/>
+    </field>      
+  </class>
+
+  <class name="gov.nih.nci.cabig.caaers.domain.report.ReportVersion">
+    <map-to xml="ReportVersion"/>
+
+    <field name="reportVersionId" type="string">
+      <bind-xml name="reportVersionId" node="element"/>
+    </field>    
+  </class>
+    
   <class name="gov.nih.nci.cabig.caaers.domain.Outcome">
     <map-to xml="Outcome"/>
     <field name="id" type="integer">
