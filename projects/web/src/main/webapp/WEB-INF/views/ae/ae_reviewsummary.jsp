@@ -338,7 +338,7 @@ background-color:#e5e8ff;
           <c:if test='${command.adverseEventReportingPeriod != null && displaySeriousTable}'>
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${ae.requiresReporting}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="${ae.solicited}" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
                 </c:if>
               </c:forEach>
           </c:if>
@@ -347,7 +347,7 @@ background-color:#e5e8ff;
           <c:if test='${command.adverseEventReportingPeriod != null && displayObservedTable}'>
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(not ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
+                  <ae:oneSaeRow index="${status.index}" isSolicitedAE="false" isAETermOtherSpecify="false" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
                 </c:if>
               </c:forEach>
           </c:if>
@@ -358,7 +358,7 @@ background-color:#e5e8ff;
           <c:if test='${command.adverseEventReportingPeriod != null && displaySolicitedTable}'>
               <c:forEach items="${command.adverseEventReportingPeriod.reportableAdverseEvents}" varStatus="status" var="ae">
                 <c:if test="${(ae.solicited) and (not ae.requiresReporting)}">
-                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false"/>
+                  <ae:oneSaeRow index="${status.index}" isAETermOtherSpecify="false" isSolicitedAE="true" adverseEvent="${ae}" aeTermIndex="1" hideDeleteCtrl="true" renderNotes="false" renderSubmittedFlag="false" showRequiresReporting="true"/>
                 </c:if>
               </c:forEach>
           </c:if>

@@ -13,6 +13,7 @@
 <%@attribute name="aeTermIndex" type="java.lang.Integer" required="true" description="The index of aeTerm, explicitly set this to 0 or 1, this is to support checkbox in confirmation page" %>
 <%@attribute name="renderNotes" type="java.lang.Boolean" required="true" description="Display the render Notes section if this is set to true" %>
 <%@attribute name="renderSubmittedFlag" type="java.lang.Boolean" required="true" description="Determines whether to display the image indicating the adverse event has been successfully submitted" %>
+<%@attribute name="showRequiresReporting" type="java.lang.Boolean"%>
 
 <c:set var="mainGroup">main${index}</c:set>
     	<%--
@@ -36,7 +37,7 @@
 	</c:if>
 </c:if>
 
-<c:if test="${adverseEvent.requiresReporting}"><td><img src="<c:url value="/images/error-yellow.png" />"></td></c:if>
+<c:if test="${showRequiresReporting}"><td><c:if test="${adverseEvent.requiresReporting}"><img src="<c:url value="/images/error-yellow.png" />"></c:if></td></c:if>
 
 <c:if test="${isAETermOtherSpecify}">
     <td>
