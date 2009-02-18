@@ -21,7 +21,12 @@
         <SUBMITTER_EMAIL>
             <xsl:value-of select="SUBMITTER_EMAIL"/>
         </SUBMITTER_EMAIL>
+        <xsl:if test="Report/assignedIdentifer != '' and Report/ReportVersion/reportVersionId != ''" >
+			<TICKET_NUMBER><xsl:value-of select="Report/assignedIdentifer"/></TICKET_NUMBER>
+			<AMENDMENT_NUMBER><xsl:value-of select="Report/ReportVersion/reportVersionId"/></AMENDMENT_NUMBER>
+		</xsl:if>
 
+		
         <REPORTER_INFORMATION>
             <xsl:attribute name="FIRST_NAME">
                 <xsl:value-of select="Reporter/firstName"/>
