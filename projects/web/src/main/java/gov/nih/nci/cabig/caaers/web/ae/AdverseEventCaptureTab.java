@@ -228,9 +228,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         short i = 0;
         for (AdverseEvent ae : command.getAdverseEventReportingPeriod().getAdverseEvents()) {
             if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
-                InputField verbatimField = fieldGroups.get(MAIN_FIELD_GROUP + i++).getFields().get(1);
+                InputField verbatimField = fieldGroups.get(MAIN_FIELD_GROUP + i).getFields().get(1);
                 errors.rejectValue(verbatimField.getPropertyName(), "SAE_021", new Object[] {VERBATIM_MAX_SIZE}, "The size of the verbatim value should not exceed " +  VERBATIM_MAX_SIZE + " characters.");
             }
+            i++;
         }
 
 
