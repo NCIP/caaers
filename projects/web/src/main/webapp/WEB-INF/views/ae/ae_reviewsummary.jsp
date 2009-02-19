@@ -216,7 +216,7 @@ background-color:#e5e8ff;
                 <c:forEach items="${rpdSelectedTable}"  var="rdTable" varStatus="rdStatus">
                   <tr>
                     <td align="center"> ${rdTable.value.required ? 'Yes' : 'No' }</td>
-                    <td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk"/>
+                    <td align="left"><tags:renderInputs field="${rdTable.value.field}" cssClass="rpdChk" disabled="true"/>
                       <tags:renderLabel field="${rdTable.value.field}"/></td>
                     <td>${rdTable.value.status}</td>
                   </tr>
