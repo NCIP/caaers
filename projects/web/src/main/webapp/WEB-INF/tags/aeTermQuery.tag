@@ -206,18 +206,14 @@
 </script>
 
 <chrome:box title="Find &amp; Add AEs" noBackground="${noBackground}">
-					<c:if test="${not isMeddra}">
-  					<tags:button size="small" type="button" color="blue" icon="add" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
-  					</c:if>
-  						<div style="margin-top:15px">
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/>
-							<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
-  						</div>
-  						
-  					
-  					
-  					
-  		
+  		<div style="display:inline;">
+  			<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/>
+			<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
+  		</div>
+		<div style="margin:0 20px; display:inline;">or</div>
+  		<c:if test="${not isMeddra}">
+  			<tags:button size="small" type="button" color="blue" icon="window" value="Browse Terms" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
+  		</c:if>
   	</chrome:box>
   	<!-- the hidden window for category popup -->
   	<div style="display:none">
