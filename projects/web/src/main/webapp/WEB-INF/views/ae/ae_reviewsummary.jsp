@@ -244,9 +244,10 @@ background-color:#e5e8ff;
         <chrome:box id="box-existing-reports" title="Select Reporting Method" collapsable="true" autopad="true" style="display: ${aeReportsLength gt 0 ? '' : 'none'}">
             <tags:instructions code="instruction_ae_existing_reports" />
 
-       	 <table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
+       	 
         	<c:if test="${aeReportsLength gt 0}">
           	<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+          	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
              <tr id="existing-reports-row" class="${ ((statusAeReport.index % 2 ) gt 0 )? 'odd' : 'even'  }">
                <td width="5%" align="left">
                	<c:if test="${aeReport.allSponsorReportsCompleted == true and aeReport.hasAmendableReport == true}">
@@ -272,12 +273,14 @@ background-color:#e5e8ff;
                   </table>
                 </div></td>
              </tr>
+            </table>
           	</c:forEach>
       	 	</c:if>
       	 	
       	 	
       	 	<%-- Only shown if there are reportable adverse events--%>
       	 	<c:if test="${fn:length(command.adverseEventReportingPeriod.reportableAdverseEvents) gt 0}">
+      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
       	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
       	 		<td width="10%" align="left">
           			<input type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
@@ -301,9 +304,9 @@ background-color:#e5e8ff;
 			        </div>
         		</td>
       	 	</tr>
+      	 	</table>
       	 	</c:if>
       	 	
-      	 </table>   
       	         
         </chrome:box>
       <div id="div-aes">
