@@ -77,18 +77,12 @@ public class CtcBasicsTab extends BasicsTab {
         if (ctcTerm != null && ctcTerm.isOtherRequired() && ae.getDetailsForOther() == null && ae.getLowLevelTerm() == null) {
             InputField field0 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(0);
             errors.rejectValue(field0.getPropertyName(), "REQUIRED", "Missing " + field0.getDisplayName());
-
-
-// it should be moved
-/*
-            InputField field1 = groups.get(CTC_OTHER_FIELD_GROUP + index).getFields().get(1);
-            errors.rejectValue(field1.getPropertyName(), "REQUIRED", "Missing " + field1.getDisplayName());
-*/
         }
+        super.validateAdverseEvent(ae, index, groups, errors);
+
         // Inforce business Rule
         if (ctcTerm != null && !ctcTerm.isOtherRequired()) {
             ae.setLowLevelTerm(null);
-            // ae.setDetailsForOther(null);
         }
     }
 
