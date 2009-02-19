@@ -375,4 +375,18 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public String getWorkflowIdentifier(){
     	return "routineFlow-" + getId();
     }
+    
+    /**
+     *  Checks whether a different AE with the same term is avilable in this reporting period
+     * @param ae
+     * @return
+     */
+    public boolean hasDiffrentAEWithSameTerm(AdverseEvent otherAE){
+    	for(AdverseEvent ae : getAdverseEvents()){
+    		if(ae.getId().equals(otherAE.getId())) continue;
+    		if(ae.getAdverseEventCtcTerm() == null || otherAE.getAdverseEventTerm() == null)  continue;
+    		if(ae.getAdverseEventTerm().equals(otherAE.getAdverseEventTerm())) return true;
+    	}
+    	return false;
+    }
 }
