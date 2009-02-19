@@ -37,7 +37,7 @@
 	</c:if>
 </c:if>
 
-<c:if test="${showRequiresReporting}"><td align="center"><center><c:if test="${adverseEvent.requiresReporting}"><img src="<c:url value="/images/error-yellow.png" />"></c:if></center></td></c:if>
+<c:if test="${showRequiresReporting}"><td align="center"><center><c:if test="${adverseEvent.requiresReporting}"><span class="reportingYes">Yes</span></c:if><c:if test="${!adverseEvent.requiresReporting}"><span class="reportingNo">No</span></c:if></center></td></c:if>
 
 <c:if test="${isAETermOtherSpecify}">
     <td>

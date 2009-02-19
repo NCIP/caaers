@@ -652,3 +652,6 @@ a.help img { border: none; }
 .search select { font-size: 11px; }
 .search .field1 { border: 1px solid #CCCCCC; background: #FFFFFF; height: 18px; font-size: 11px; line-height: 18px; margin: 0; }
 .search .field2 { border: 1px solid #CCCCCC; background: #FFFFFF; width: 8px; height: 18px; font-size: 11px; line-height: 18px; margin: 0; }
+
+.reportingYes { color: red; font-weight:bold;}
+.reportingNo { color: gray; font-weight:bold;}

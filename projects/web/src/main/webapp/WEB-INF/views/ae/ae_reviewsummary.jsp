@@ -341,7 +341,7 @@ background-color:#e5e8ff;
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
-                <th scope="col" align="left"><b>Requires reporting</b></th>
+                <th scope="col" align="left"><b>Requires reporting ?</b></th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
                 <th scope="col" align="left"><b>Attribution</b> </th>
