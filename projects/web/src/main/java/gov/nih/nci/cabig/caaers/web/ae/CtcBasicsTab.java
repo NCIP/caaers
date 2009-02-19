@@ -88,7 +88,7 @@ public class CtcBasicsTab extends BasicsTab {
         // Inforce business Rule
         if (ctcTerm != null && !ctcTerm.isOtherRequired()) {
             ae.setLowLevelTerm(null);
-            ae.setDetailsForOther(null);
+            // ae.setDetailsForOther(null);
         }
     }
 
