@@ -70,9 +70,9 @@ public abstract class BasicsTab extends AeTab {
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae = lit.next();
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
-            if(command.getAeReport().getReportingPeriod().hasDiffrentAEWithSameTerm(ae)){
-            	errors.reject("SAE_022",new Object[] {ae.getAdverseEventTerm().getFullName()}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
-            }
+//            if(command.getAeReport().getReportingPeriod().hasDiffrentAEWithSameTerm(ae)){
+//            	errors.reject("SAE_022",new Object[] {ae.getAdverseEventTerm().getFullName()}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
+//            }
         }
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);
         
