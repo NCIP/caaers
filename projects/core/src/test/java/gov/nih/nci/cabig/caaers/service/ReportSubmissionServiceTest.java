@@ -117,8 +117,9 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	public void testSubmitReportExternalSystemPath() throws Exception {
 		Date now = nowFactory.getNow();
 		Report report = registerMockFor(Report.class);
+		EasyMock.expect(report.getId()).andReturn(5);
 		EasyMock.expect(report.getAeReport()).andReturn(aeReport);
-		EasyMock.expect(generator.generateCaaersXml(aeReport)).andReturn(xml);
+		EasyMock.expect(generator.generateCaaersXml(aeReport,5)).andReturn(xml);
 		EasyMock.expect(report.hasSystemDeliveries()).andReturn(true);
 		EasyMock.expect(report.getExternalSystemDeliveries()).andReturn(systemDeliveries);
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion).anyTimes();
@@ -138,7 +139,8 @@ public class ReportSubmissionServiceTest extends AbstractNoSecurityTestCase {
 	public void testSubmitReportOnlyEmailSubmission() throws Exception {
 		Date now = nowFactory.getNow();
 		Report report = registerMockFor(Report.class);
-		EasyMock.expect(generator.generateCaaersXml(aeReport)).andReturn(xml);
+		EasyMock.expect(report.getId()).andReturn(5);
+		EasyMock.expect(generator.generateCaaersXml(aeReport,5)).andReturn(xml);
 		EasyMock.expect(report.hasSystemDeliveries()).andReturn(false);
 		EasyMock.expect(report.getLastVersion()).andReturn(lastVersion).anyTimes();
 		EasyMock.expect(generator.generateExternalReports(report, xml)).andReturn(pdfFilePaths);
