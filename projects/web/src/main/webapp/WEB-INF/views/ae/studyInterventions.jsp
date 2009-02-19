@@ -197,7 +197,7 @@ function closeAll() {
     <c:if test="${hasAgent}">
         <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">
             <jsp:attribute name="additionalTitle">
-                    <input type="button" value="Add Agent" id="btn-add-agent" style="display:<c:if test="${fn:length(command.aeReport.treatmentInformation.courseAgents) > 0}">none</c:if>">
+                    <input type="button" value="Add Agent" id="btn-add-agent" >
             </jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">
