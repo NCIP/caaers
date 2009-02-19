@@ -249,7 +249,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasSurgery}">
-        <chrome:box title="${ (surgeryMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}RadiationSurgery" collapsable="true">
+        <chrome:box title="${ (surgeryMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Surgery" collapsable="true">
             <jsp:attribute name="additionalTitle"><input type="button" value="Add Surgery" id="btn-add-surgery"></jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">
