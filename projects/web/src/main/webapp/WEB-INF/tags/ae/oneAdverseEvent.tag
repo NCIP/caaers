@@ -20,9 +20,7 @@
     </c:choose>
 </c:set>
 
-<chrome:division title="${title}" id="ae-section-${index}" 
-	 	cssClass="ae-section" style="${style}" collapsed="${collapsed}" 
-		collapsable="true">
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${collapsed}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">
@@ -82,3 +80,9 @@
     </div>
     </jsp:body>
 </chrome:division>
+
+<script>
+    Event.observe($('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input'), "blur", function() {
+        $('titleOf_ae-section-${index}').innerHTML = $('aeReport.adverseEvents[${index}].adverseEventCtcTerm.ctcTerm-input').value;
+    });
+</script>
