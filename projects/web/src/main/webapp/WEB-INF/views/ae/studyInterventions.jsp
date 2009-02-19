@@ -195,7 +195,7 @@ function closeAll() {
       <tags:hasErrorsMessage />
     
     <c:if test="${hasAgent}">
-        <chrome:box title="Agent" collapsable="true">
+        <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">
             <jsp:attribute name="additionalTitle">
                     <input type="button" value="Add Agent" id="btn-add-agent" style="display:<c:if test="${fn:length(command.aeReport.treatmentInformation.courseAgents) > 0}">none</c:if>">
             </jsp:attribute>
@@ -214,7 +214,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasDevice}">
-        <chrome:box title="Device" collapsable="true">
+        <chrome:box title="${ (deviceMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Device" collapsable="true">
             <jsp:attribute name="additionalTitle"><input type="button" value="Add Device" id="btn-add-device"></jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">
@@ -231,7 +231,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasRadiation}">
-        <chrome:box title="Radiation" collapsable="true">
+        <chrome:box title="${ (radiationMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Radiation" collapsable="true">
             <jsp:attribute name="additionalTitle"><input type="button" value="Add Radiation" id="btn-add-radiation"></jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">
@@ -248,7 +248,7 @@ function closeAll() {
     </c:if>
 
     <c:if test="${hasSurgery}">
-        <chrome:box title="Surgery" collapsable="true">
+        <chrome:box title="${ (surgeryMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}RadiationSurgery" collapsable="true">
             <jsp:attribute name="additionalTitle"><input type="button" value="Add Surgery" id="btn-add-surgery"></jsp:attribute>
             <jsp:body>
                 <div style="padding-left:20px;">

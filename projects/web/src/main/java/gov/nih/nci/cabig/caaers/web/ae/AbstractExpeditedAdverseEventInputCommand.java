@@ -375,13 +375,13 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
      * This method will intialize the render decision manager, with the field display status.
      * @param reportDefs
      */
-    public void initializeNotApplicableFields() {
+    public void initializeNotApplicableFields(Collection<ReportDefinition> reportDefs) {
     	//find the list of report definitions associated to the existing AE report, and the ones that are newly selected.
     	//Note:- Since there is a potential to throw LazyInit exception, we will use HashMap based logic to find the unique ReportDefinition.
     	HashMap<Integer , ReportDefinition> map = new HashMap<Integer, ReportDefinition>();
     	
     	if(getSelectedReportDefinitions() != null){
-    		for(ReportDefinition rd : getSelectedReportDefinitions()){
+    		for(ReportDefinition rd : reportDefs){
     			map.put(rd.getId(), rd);
     		}
     	}
@@ -399,6 +399,12 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	renderDecisionManager.updateRenderDecision(map.values());
     	
 	}
+    
+    public void initializeNotApplicableFields(){
+    	initializeNotApplicableFields(this.getSelectedReportDefinitions());
+    }
+    
+    
     
     public void initializeTreatmentInformation(){
     	ExpeditedAdverseEventReport aeReport = getAeReport();
@@ -456,6 +462,11 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
 		}
 		return studyTerminologyTerm;
 	}
+    
+    public boolean isSectionMandatory(ExpeditedReportSection section) {
+    	if(mandatorySections == null || mandatorySections.isEmpty()) return false;
+    	return mandatorySections.contains(section);
+    }
 		
        
 }

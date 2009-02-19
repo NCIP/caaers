@@ -189,10 +189,8 @@
               </table>
             </div>
           </div>
-          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
               <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
               <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
-      	  </c:if>
         </chrome:box>
         </c:when>
         <c:otherwise>
@@ -213,8 +211,6 @@
               </tr>
             </table>
           </div>
-          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
-      	  </c:if>
              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
             </chrome:box>

@@ -47,6 +47,18 @@ public class StudyInterventionsTab extends AeTab {
         methodNameMap.put("add" + STUDY_INTERVENTION_AGENT, "addAgent");
         methodNameMap.put("remove" + STUDY_INTERVENTION_AGENT, "removeAgent");        
     }
+    
+    @Override
+    public Map<String, Object> referenceData(HttpServletRequest request,ExpeditedAdverseEventInputCommand command) {
+    	Map<String, Object> refData =  super.referenceData(request, command);
+    	refData.put("agentMandatorySection", command.isSectionMandatory(ExpeditedReportSection.AGENTS_INTERVENTION_SECTION));
+    	refData.put("radiationMandatorySection", command.isSectionMandatory(ExpeditedReportSection.RADIATION_INTERVENTION_SECTION));
+    	refData.put("surgeryMandatorySection", command.isSectionMandatory(ExpeditedReportSection.SURGERY_INTERVENTION_SECTION));
+    	refData.put("deviceMandatorySection", command.isSectionMandatory(ExpeditedReportSection.MEDICAL_DEVICE_SECTION));
+    	return refData;
+    }
+    
+    
 
     private void createRadiationFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
         Map<Object, Object> statusOpts = new LinkedHashMap<Object, Object>();

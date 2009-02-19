@@ -62,6 +62,7 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 		   RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
 		   CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao,
 				   reportingPeriodDao, expeditedReportTree,renderDecisionManager, evaluationService, reportRepository, studyDao);
+		   command.getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
 		   command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
 	    	
 	    	return command;

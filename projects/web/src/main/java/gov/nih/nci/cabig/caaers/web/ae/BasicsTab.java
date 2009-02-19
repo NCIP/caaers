@@ -70,6 +70,9 @@ public abstract class BasicsTab extends AeTab {
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae = lit.next();
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
+            if(command.getAeReport().getReportingPeriod().hasDiffrentAEWithSameTerm(ae)){
+            	errors.reject("SAE_022",new Object[] {ae.getAdverseEventTerm().getFullName()}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
+            }
         }
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);
         
@@ -77,7 +80,9 @@ public abstract class BasicsTab extends AeTab {
             errors.rejectValue(firstStartDateField.getPropertyName(), "REQUIRED", firstStartDateField.getDisplayName() + " required for primary AE");
         }
     }
-
+    
+    
+    
     protected void validateAdverseEvent(AdverseEvent ae, int index, Map<String, InputFieldGroup> groups, Errors errors) {
         if (ae.getDetailsForOther() != null && ae.getDetailsForOther().length() > VERBATIM_MAX_SIZE) {
             InputField verbatimField = groups.get(MAIN_FIELD_GROUP + index).getFields().get(0);

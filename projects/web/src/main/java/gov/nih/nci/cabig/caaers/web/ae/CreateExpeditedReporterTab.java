@@ -49,6 +49,11 @@ public class CreateExpeditedReporterTab extends AeTab{
 		// evalutate available report definitions per session.
 		command.findAllReportDefintionNames();
 		
+		//initialize the not applicable fileds based on all the report definitions (if selected report defs is empty)
+		if(command.getSelectedReportDefinitions().isEmpty()){
+			command.initializeNotApplicableFields(command.getAllReportDefinitions());
+		}
+		
 		//find the required report definitions (the map is refreshed by this)
 		command.findRequiredReportDefinitions();
 		
@@ -115,6 +120,9 @@ public class CreateExpeditedReporterTab extends AeTab{
 	        
 	        // refresh the mandatory fields
 	        command.refreshMandatoryProperties();
+	        
+	        //hide the not applicable fields
+	        command.initializeNotApplicableFields();
 
 		}
 	}

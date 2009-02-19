@@ -43,7 +43,8 @@ public interface ExpeditedAdverseEventInputCommand extends AdverseEventInputComm
     void reassociate();
     Collection<ExpeditedReportSection> getMandatorySections();
     void setMandatorySections(Collection<ExpeditedReportSection> sections);
-
+    boolean isSectionMandatory(ExpeditedReportSection section);
+    
     // TODO: the caller should use the equivalent method in report service.
     @Deprecated
     void refreshMandatoryProperties();
