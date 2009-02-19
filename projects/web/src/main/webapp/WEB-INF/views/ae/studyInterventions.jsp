@@ -192,7 +192,8 @@ function closeAll() {
 </div>
 
 <form:form id="command">
-      <tags:hasErrorsMessage />
+        <chrome:flashMessage/>
+        <tags:hasErrorsMessage />
     
     <c:if test="${hasAgent}">
         <chrome:box title="${ (agentMandatorySection) ? '<span class=\"required-indicator\">*</span> ' : ''}Agent" collapsable="true">

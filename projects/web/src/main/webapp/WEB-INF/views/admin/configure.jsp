@@ -4,42 +4,14 @@
 <head>
     <title>Configure caAERS</title>
     <style type="text/css">
-        div.row {
-            padding: 5px 3px;
-        }
-        .row .value {
-            margin-left: 22%;
-        }
-        .row .label {
-            width: 20%;
-            margin-left: 1em;
-            text-align: right;
-        }
-        p.description {
-            margin: 0.25em 0 0 1em;
-        }
-        div.submit {
-            text-align: right;
-        }
-        .value input[type=text] {
-            width: 80%;
-        }
-
-        form {
-            margin-top: 1em;
-        }
-
-        .updated {
-            border: #494 solid;
-            border-width: 1px 0;
-            background-color: #8C8;
-            padding: 1em 2em;
-            text-align: center;
-            margin: 1em 30%;
-            color: #fff;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
+        div.row { padding: 5px 3px; }
+        .row .value { margin-left: 22%; }
+        .row .label { width: 20%; margin-left: 1em; text-align: right; }
+        p.description { margin: 0.25em 0 0 1em; }
+        div.submit { text-align: right; }
+        .value input[type=text] { width: 80%; }
+        form { margin-top: 1em; }
+        .updated { border: #494 solid; border-width: 1px 0; background-color: #8C8; padding: 1em 2em; text-align: center; margin: 1em 30%; color: #fff; font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
 <body>

@@ -285,6 +285,7 @@
   <tags:instructions code="instruction_ae_patientdetails"/>
 </p>
 <form:form id="command">
+<chrome:flashMessage/>
   <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">
     <table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
       <tbody>
