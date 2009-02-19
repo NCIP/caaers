@@ -32,7 +32,7 @@ public class AdeersWebServiceImpl implements AdeersWebService {
 	
 	private String submitAEDataXMLAsAttachment(String aeReportWithCaaersId) throws Exception {
 		 
-		log.info("caAERS-adEERS-Service-Assembly processing report submitted by caAERS bering Report Id " + aeReportWithCaaersId);
+		log.info("caAERS-adEERS-Service-Assembly processing report submitted by caAERS"); 
 		String aeReport = detach(aeReportWithCaaersId);	
 		String adeersEPR = externalEPRs.split(",")[0];
 		String url=adeersEPR.split("::")[0];
