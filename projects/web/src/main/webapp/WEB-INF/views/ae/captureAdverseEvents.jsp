@@ -312,7 +312,6 @@
 	 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section2enteraes" formName="addRoutineAeForm" hideBox="true">
       	
       	<jsp:attribute name="singleFields">
-         <p><tags:instructions code="instruction_ae_select_evaluation_period"/></p>
       		<input type="hidden" name="_action" id="_action" value="">
       		<input type="hidden" name="_amendReportIds" id="_amendReportIds" value="">
 			

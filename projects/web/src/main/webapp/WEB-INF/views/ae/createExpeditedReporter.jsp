@@ -123,6 +123,9 @@
         
 
     </script>
+    <style type="text/css">
+    .link {text-decoration:underline; color:blue;}
+    </style>
 </head>
 <body>
 <div id="report-list-full" style="display:none; padding-bottom:5px;" align="center">

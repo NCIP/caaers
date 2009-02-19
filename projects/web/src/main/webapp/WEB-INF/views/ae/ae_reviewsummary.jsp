@@ -328,15 +328,7 @@ background-color:#e5e8ff;
        
 		<c:if test="${displayReportableAeTable}">
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
-       
-        <c:if test='${!displaySeriousTable}'>
-            <tags:instructions code="instruction_ae_no_rulesengine_reports" />
-        </c:if>
-        <c:if test='${displaySeriousTable}'>
        		<p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
-        </c:if>
-        
-
         <%--<p><tags:message key="instruction_ae_note" /></p>--%>
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
