@@ -395,7 +395,7 @@ background-color:#e5e8ff;
       <div class="content buttons autoclear">
           <div class="flow-buttons">
               <span class="prev">
-              	<tags:button value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
+              	<tags:button type="submit" value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
 			  </span>
 			  <c:if test="${aeReportsLength gt 0 or displayReportableAeTable}">
 				  <span class="next">

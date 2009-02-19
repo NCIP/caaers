@@ -16,7 +16,7 @@
 
 <tags:dwrJavascriptLink objects="createAE"/>
 <script type="text/javascript">
-  
+
  	//This object will store the reference of the Window, will also contains function
  	//that will be called from the loaded page, that has to interact with the parent page(opener page)
  	
@@ -206,27 +206,18 @@
 </script>
 
 <chrome:box title="Find &amp; Add AEs" noBackground="${noBackground}">
- 		<table id="fnd-0" class="query">
-  			<tbody>
-  				<tr>
-  					<td class="one">
-  						<div>
-  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/><tags:button color="blue" icon="add" size="small" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
-  						</div>
-  						<div class="local-buttons">
-  							
-  						</div>
-  					</td>
-  					<c:if test="${not isMeddra}">
-  					<td class="two">OR</td>
-  					<td class="three"><tags:button type="button" color="blue" icon="add" size="small" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
-  					 &nbsp;&nbsp;&nbsp;&nbsp;click on "Add Multiple" to add several AE terms at once.
-  					</td>
+					<c:if test="${not isMeddra}">
+  					<tags:button size="small" type="button" color="blue" icon="add" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   					</c:if>
+  						<div style="margin-top:15px">
+  							<tags:autocompleter displayName="abcd" propertyName="termCode" size="30" initialDisplayValue="Begin typing here"/>
+							<tags:button size="small" color="blue" icon="add" id="addSingleTermBtn" type="button" value="Add"  onclick="catSel.finishSingleTermSelection();" />
+  						</div>
+  						
   					
-  				</tr>
-  			</tbody>
-  		</table>
+  					
+  					
+  		
   	</chrome:box>
   	<!-- the hidden window for category popup -->
   	<div style="display:none">

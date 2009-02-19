@@ -97,7 +97,7 @@ a.omnipotent-button.orange:active, a.omnipotent-button.orange:active .right {
 /* #--------------------------------------------------------------------------
 
 /* Begin c3pr button type="button" core CSS*/
-button.omnipotent-button {
+ button.omnipotent-button {
 	behavior: url('/caaers/js/button-pseudoclass-IE-hack.htc');
 	height: 31px;
 	padding:3px 6px;
@@ -109,7 +109,7 @@ button.omnipotent-button {
 	font-size:19px;
 	color:white;
 	text-decoration:none;
-}
+} 
 button.omnipotent-button.red[disabled], button.omnipotent-button.red[disabled] .right,
 button.omnipotent-button.red[disabled]:hover, button.omnipotent-button.red[disabled]:hover .right,
 button.omnipotent-button.red[disabled]:active, button.omnipotent-button.red[disabled]:active .right,
@@ -186,7 +186,7 @@ button.omnipotent-button.green:active, button.omnipotent-button.green.active, bu
 /* END c3pr button type="button" color="green" */
 
 /* BEGIN c3pr button type="button" color="blue" */
-button.omnipotent-button.blue, button.omnipotent-button.blue .right {
+button.omnipotent-button.blue, button.omnipotent-button.blue .right, button.omnipotent-button.blue:link, button.omnipotent-button.blue:link .right {
 	background-image:url(../images/buttons/button-blue-link.png);
 }
 button.omnipotent-button.blue:hover, button.omnipotent-button.blue.hover, button.omnipotent-button.blue:hover .right, button.omnipotent-button.blue.hover .right {
@@ -308,7 +308,7 @@ button.omnipotent-button.small {
 	background-repeat:no-repeat;
 	border:none;
 	background-color:transparent;
-	position:relative;
+	/* position:relative; */
 	font-size:11px;
 	color:white;
 	text-decoration:none;
