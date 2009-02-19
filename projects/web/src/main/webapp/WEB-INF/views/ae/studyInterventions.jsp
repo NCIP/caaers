@@ -96,7 +96,6 @@ function closeAll() {
         if ($('btn-add-agent'))
             Element.observe('btn-add-agent', 'click', function(e) {
                 this._addItem('agent', e.element(), null, '_agents');
-                $('btn-add-agent').hide();
             }.bind(interventionInstance));
 
         refreshBoxes();
