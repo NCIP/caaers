@@ -248,8 +248,6 @@ background-color:#e5e8ff;
               </tr>
             </table>
           </div>
-          <c:if test='${displayReportableAeTable}'>
-      	  </c:if>
              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
              <c:if test="${displayReportableAeTable}">
              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
