@@ -2,15 +2,18 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 import gov.nih.nci.cabig.caaers.domain.Attribution;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.LabLoad;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
@@ -18,11 +21,7 @@ import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.StudyAgent;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Outcome;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
@@ -34,6 +33,8 @@ import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
+import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,16 +42,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections15.FactoryUtils;
 import org.apache.commons.collections15.list.LazyList;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -58,6 +56,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 
 public abstract class AbstractExpeditedAdverseEventInputCommand implements ExpeditedAdverseEventInputCommand {
@@ -69,7 +68,8 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private Map<String, List<List<Attribution>>> attributionMap;
     protected Collection<ExpeditedReportSection> mandatorySections;
     protected MandatoryProperties mandatoryProperties;
-
+    
+    protected StudyParticipantAssignmentDao assignmentDao;
     protected ExpeditedAdverseEventReportDao reportDao;
     protected AdverseEventReportingPeriodDao reportingPeriodDao;
     protected ReportDefinitionDao reportDefinitionDao;
@@ -96,6 +96,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     private String concomitantMedication;
     
     private Term studyTerminologyTerm;
+    
+    private Map<Object, Object> studyDiseasesMap;
+    private Integer index; //corresponds to the index of the item (eg: conmed[3])
+    private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
 
     public AbstractExpeditedAdverseEventInputCommand(){
     		aeReport = new ExpeditedAdverseEventReport();
@@ -103,7 +107,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     
     public AbstractExpeditedAdverseEventInputCommand(ExpeditedAdverseEventReportDao reportDao, 
     		ReportDefinitionDao reportDefinitionDao, AdverseEventReportingPeriodDao reportingPeriodDao, 
-    		ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
+    		ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, ReportRepository reportRepository,
+    		StudyParticipantAssignmentDao assignmentDao) {
+    	this.assignmentDao = assignmentDao;
     	this.reportingPeriodDao = reportingPeriodDao;
         this.reportDao = reportDao;
         this.reportDefinitionDao = reportDefinitionDao;
@@ -122,7 +128,15 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     public abstract Study getStudy();
     public abstract void save();
     public abstract void flush();
-
+    
+    
+    public void synchronizeAndSaveAssignment(){
+    	ExpeditedAdverseEventReport aeReport = getAeReport();
+    	StudyParticipantAssignment assignment = aeReport.getAssignment();
+    	assignment.synchronizeMedicalHistoryFromReportToAssignment(aeReport);
+    	assignmentDao.save(assignment);
+    }
+    
     public void reassociate() {
         for (ReportDefinition definition : selectedReportDefinitions) {
             reportDefinitionDao.reassociate(definition);
@@ -458,7 +472,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     
     public Term getStudyTerminologyTerm() {
 		if(studyTerminologyTerm == null){
-			studyTerminologyTerm = getStudy().getAeTerminology().getTerm();
+			if(getStudy() != null){
+				studyTerminologyTerm = getStudy().getAeTerminology().getTerm();
+			}
+			
 		}
 		return studyTerminologyTerm;
 	}
@@ -467,6 +484,41 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	if(mandatorySections == null || mandatorySections.isEmpty()) return false;
     	return mandatorySections.contains(section);
     }
-		
+    
+    public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
+        if (studyDiseasesMap == null) {
+            if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
+            } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getStudyConditions(), "id", "term.conditionName", "Please select");
+            } else {
+                studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(), "id", "term.term", "Please select");
+            }
+        }
+        return studyDiseasesMap;
+    }
+    
+    public Map<Object, Object> getStudyDiseasesMap() {
+		return studyDiseasesMap;
+	}
+    public void setStudyDiseasesMap(Map<Object, Object> studyDiseasesMap) {
+		this.studyDiseasesMap = studyDiseasesMap;
+	}
+    
+    public Integer getIndex() {
+		return index;
+	}
+    public void setIndex(Integer index) {
+		this.index = index;
+	}
+    public void setParentIndex(Integer parentIndex) {
+		this.parentIndex = parentIndex;
+	}
+    public Integer getParentIndex() {
+		return parentIndex;
+	}
+    public void deleteAttribution(DomainObject o){
+    	reportDao.cascaeDeleteToAttributions(o, getAeReport());
+    }
        
 }

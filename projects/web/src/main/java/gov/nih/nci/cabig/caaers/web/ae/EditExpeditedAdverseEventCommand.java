@@ -5,48 +5,30 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
-import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections15.FactoryUtils;
-import org.apache.commons.collections15.list.LazyList;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEventInputCommand {
-    private StudyParticipantAssignmentDao assignmentDao;
-   
 	
     private String currentItem; //currentItem - corresponds to the item that we are working on now (eg: conmed, priorTherapy). 
     private String task; // will tell the action we perform on the current item.
-    private Integer index; //corresponds to the index of the item (eg: conmed[3])
-    private Integer parentIndex; // corresponds to the index of the parent item (eg: priorTherapy[parentIndex].agents[index])
+   
     
-    private Map<Object, Object> studyDiseasesMap;
+   
     
     private List<ReportDefinition> newlySelectedSponsorReports = new ArrayList<ReportDefinition>();
     private List<ReportDefinition> otherSelectedReports = new ArrayList<ReportDefinition>();
@@ -62,8 +44,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
             AdverseEventReportingPeriodDao reportingPeriodDao,
             ExpeditedReportTree expeditedReportTree, 
             RenderDecisionManager renderDecisionManager, ReportRepository reportRepository) {
-    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository);
-    	this.assignmentDao = assignmentDao;
+    	super(expeditedAeReportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree , renderDecisionManager, reportRepository, assignmentDao);
     }
 
     @Override
@@ -87,31 +68,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	reportDao.flush();
     }
     
-    public void deleteAttribution(DomainObject o){
-    	reportDao.cascaeDeleteToAttributions(o, getAeReport());
-    }
-    
-    public void synchronizeAndSaveAssignment(){
-    	ExpeditedAdverseEventReport aeReport = getAeReport();
-    	StudyParticipantAssignment assignment = aeReport.getAssignment();
-    	assignment.synchronizeMedicalHistoryFromReportToAssignment(aeReport);
-    	assignmentDao.save(assignment);
-    }
-    
-    public Map<Object, Object> getStudyDiseasesOptions(DiseaseCodeTerm diseaseCodingTerm){
-        if (studyDiseasesMap == null) {
-            if (diseaseCodingTerm.equals(DiseaseCodeTerm.MEDDRA)) {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getMeddraStudyDiseases(), "id", "term.meddraTerm", "Please select");
-            } else if (diseaseCodingTerm.equals(DiseaseCodeTerm.OTHER)) {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getStudyConditions(), "id", "term.conditionName", "Please select");
-            } else {
-                studyDiseasesMap = WebUtils.collectOptions(getStudy().getCtepStudyDiseases(), "id", "term.term", "Please select");
-            }
-        }
-        return studyDiseasesMap;
-    }
-    
-    
+   
     
     /**
      * This method classifies the newly selected reportDefinitions into 2 lists.
@@ -199,12 +156,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
         return getAssignment().getStudySite().getStudy();
     }
     
-    public Map<Object, Object> getStudyDiseasesMap() {
-		return studyDiseasesMap;
-	}
-    public void setStudyDiseasesMap(Map<Object, Object> studyDiseasesMap) {
-		this.studyDiseasesMap = studyDiseasesMap;
-	}
     /**
      * Will tell which subitem that we are dealing with. 
      * @return
@@ -227,18 +178,6 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
 		this.task = task;
 	}
     
-    public Integer getIndex() {
-		return index;
-	}
-    public void setIndex(Integer index) {
-		this.index = index;
-	}
-    public void setParentIndex(Integer parentIndex) {
-		this.parentIndex = parentIndex;
-	}
-    public Integer getParentIndex() {
-		return parentIndex;
-	}
    
 	public void setNewlySelectedSponsorReports(
 			ArrayList<ReportDefinition> newlySelectedSponsorReports) {

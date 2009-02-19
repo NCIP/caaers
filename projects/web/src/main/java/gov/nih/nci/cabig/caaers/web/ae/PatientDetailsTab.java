@@ -9,24 +9,17 @@ import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.MetastaticDiseaseSite;
 import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.PriorTherapy;
 import gov.nih.nci.cabig.caaers.domain.PriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPreExistingCondition;
 import gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapyAgent;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.ae.AeTab.SimpleNumericDisplayNameCreator;
 import gov.nih.nci.cabig.caaers.web.fields.CompositeField;
 import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
 import gov.nih.nci.cabig.caaers.web.fields.validators.NumberRangeValidator;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
@@ -326,7 +319,7 @@ public class PatientDetailsTab extends AeTab {
     //----- Create/Edit/Save/Delete operations (tasks) ----------------- 
     
     public ModelAndView addMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/metastaticDiseaseSiteFormSection");
     	List<MetastaticDiseaseSite> sites = command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites();
     	modelAndView.getModel().put("metastaticDiseaseSites", sites);
@@ -344,7 +337,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView removeMetastaticDiseaseSite(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/metastaticDiseaseSiteFormSection");
     	List<MetastaticDiseaseSite> sites = command.getAeReport().getDiseaseHistory().getMetastaticDiseaseSites();
     	sites.remove(sites.get(command.getIndex())); //remove the object from command. 
@@ -361,7 +354,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView addPreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<SAEReportPreExistingCondition> preConditions = command.getAeReport().getSaeReportPreExistingConditions();
     	
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/preExistingCondFormSection");
@@ -379,7 +372,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView removePreExistingCondition(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<SAEReportPreExistingCondition> preConditions = command.getAeReport().getSaeReportPreExistingConditions();
     	preConditions.remove(preConditions.get(command.getIndex())); //remove the element
     	
@@ -398,7 +391,7 @@ public class PatientDetailsTab extends AeTab {
     }    
     
     public ModelAndView addConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<ConcomitantMedication> conmeds = command.getAeReport().getConcomitantMedications();
     	
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/conMedFormSection");
@@ -418,7 +411,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView removeConcomitantMedication(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<ConcomitantMedication> conmeds = command.getAeReport().getConcomitantMedications();
     	ConcomitantMedication conMed =conmeds.get(command.getIndex()); 
     	command.deleteAttribution(conMed);
@@ -439,7 +432,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView addPriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<SAEReportPriorTherapy> priorTherapies = command.getAeReport().getSaeReportPriorTherapies();
     	
     	ModelAndView modelAndView = new ModelAndView("ae/ajax/priorTherapyFormSection");
@@ -461,7 +454,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView removePriorTherapy(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	List<SAEReportPriorTherapy> priorTherapies = command.getAeReport().getSaeReportPriorTherapies();
     	priorTherapies.remove(priorTherapies.get(command.getIndex())); //remove the element
     	command.getPriorTherapyAgents().remove(command.getIndex()); //decrement the size of priortherapy agents by 1. 
@@ -481,7 +474,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView addPriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	SAEReportPriorTherapy priorTherapy = command.getAeReport().getSaeReportPriorTherapies().get(command.getParentIndex());
     	List<PriorTherapyAgent> priorTherapyAgents = priorTherapy.getPriorTherapyAgents();
     	
@@ -511,7 +504,7 @@ public class PatientDetailsTab extends AeTab {
     }
     
     public ModelAndView removePriorTherapyAgent(HttpServletRequest request , Object cmd, Errors errors){
-    	EditExpeditedAdverseEventCommand command =(EditExpeditedAdverseEventCommand)cmd;
+    	AbstractExpeditedAdverseEventInputCommand command =(AbstractExpeditedAdverseEventInputCommand)cmd;
     	SAEReportPriorTherapy priorTherapy = command.getAeReport().getSaeReportPriorTherapies().get(command.getParentIndex());
     	List<PriorTherapyAgent> priorTherapyAgents = priorTherapy.getPriorTherapyAgents();
     	
@@ -535,7 +528,7 @@ public class PatientDetailsTab extends AeTab {
     @Override
     public void postProcess(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command, Errors errors) {
     	if(!errors.hasErrors()){
-    		EditExpeditedAdverseEventCommand cmd =(EditExpeditedAdverseEventCommand)command;
+    		AbstractExpeditedAdverseEventInputCommand cmd =(AbstractExpeditedAdverseEventInputCommand)command;
     		cmd.synchronizeAndSaveAssignment();
     	}
     }

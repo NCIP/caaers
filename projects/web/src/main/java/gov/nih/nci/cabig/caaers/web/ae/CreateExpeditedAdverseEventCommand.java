@@ -1,34 +1,30 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections.ListUtils;
-
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.DiseaseCodeTerm;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.Term;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportTree;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.ReportRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -61,9 +57,9 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	public CreateExpeditedAdverseEventCommand(ExpeditedAdverseEventReportDao reportDao, ReportDefinitionDao reportDefinitionDao, 
 			AdverseEventReportingPeriodDao reportingPeriodDao, ExpeditedReportTree expeditedReportTree, RenderDecisionManager renderDecisionManager, 
-			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao) {
+			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao, StudyParticipantAssignmentDao assignmentDao) {
 		
-		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository);
+		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, assignmentDao);
 		this.aeReport = new ExpeditedAdverseEventReport();
 		this.aeReport.setReporter(new Reporter());
 		this.aeReport.setPhysician(new Physician());
@@ -84,7 +80,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	@Override
 	public boolean isAdditionAllowed() {
-		return true;
+		return aeReport.getId() == null;
 	}
 	
 	@Override
@@ -95,10 +91,8 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 			studyDao.reassociate(aeReport.getStudy());
 		}
 		
-		//always reassociate the report definitions	
-		for (ReportDefinition definition : allReportDefinitions) {
-	            reportDefinitionDao.reassociate(definition);
-	    }
+		//reassociated report definitions
+//		reassociateSelectedReportDefinitions();
 		
 		//first reassociate the reporting period
 		if(aeReport.getReportingPeriod() != null){
@@ -112,6 +106,13 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		}
 		
     }
+	
+	public void reassociateSelectedReportDefinitions(){
+		//always reassociate the report definitions	
+		for (ReportDefinition definition : selectedReportDefinitions) {
+	            reportDefinitionDao.reassociate(definition);
+	    }
+	}
 	
 	public void saveReportingPeriod() {
 		if(adverseEventReportingPeriod != null)
@@ -214,7 +215,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 
     /**
      * This method will return the ReportDefinition which are selected by user
-     * page.
+     * page. + the report definitions that are already instantiated
      */
     public List<ReportDefinition> getSelectedReportDefinitions() {
     	selectedReportDefinitions.clear();
@@ -222,6 +223,8 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
         for (Map.Entry<Integer, Boolean> entry : reportDefinitionMap.entrySet()) {
             if (entry.getValue() != null && entry.getValue()) selectedReportDefinitions.add(reportDefinitionIndexMap.get(entry.getKey()));
         }
+        
+        
         return selectedReportDefinitions;
    }
     
@@ -293,6 +296,17 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	   for(ReportDefinition rpDef : requiredReportDefinitions){
 		   reportDefinitionMap.put(rpDef.getId(), true);
 	   }
+	   
+	   //also the user selected ones should be checked. 
+	   // add the reports that are already instantiated
+       if(aeReport.getId() != null){
+       	List<Report> nonWithdrawnReports = aeReport.getNonWithdrawnReports();
+       	for(Report report : nonWithdrawnReports){
+       		ReportDefinition repDef = report.getReportDefinition();
+       		reportDefinitionMap.put(repDef.getId(), true);
+       	}
+       		
+       }
    }
     
    
@@ -318,14 +332,6 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	
 	//=============== mutators ==============================
-	
-	public Map<Object, Object> getStudyDiseasesOptions(
-			DiseaseCodeTerm diseaseCodingTerm) {
-		return null;
-	}
-	public Term getStudyTerminologyTerm() {
-		return null;
-	}
 	
 	@Override
     public Participant getParticipant() {
@@ -398,6 +404,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	public void setReportDefinitionMap(Map<Integer, Boolean> reportDefinitionMap) {
 		this.reportDefinitionMap = reportDefinitionMap;
 	}
+	
 	
 	
 

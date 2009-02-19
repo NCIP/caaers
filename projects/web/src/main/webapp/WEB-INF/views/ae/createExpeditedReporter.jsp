@@ -3,6 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
 <%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
+<%@taglib prefix="ui" tagdir="/WEB-INF/tags/ui" %>
 <%@page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -136,7 +137,7 @@
         <tr>
           <td align="center">${rdTable.value.required ? 'Yes' : 'No' }</td>
           <td align="left">
-          <ui:checkbox path="${rdTable.value.field.propertyName}" cssClass="rpdChk" onclick="javascript:enableReportsInPopup();"></ui:checkbox>
+          <ui:checkbox path="${rdTable.value.field.propertyName}" cssClass="rpdChk" ></ui:checkbox>
             <tags:renderLabel field="${rdTable.value.field}"/></td>
           <td>${rdTable.value.status}</td>
         </tr>
@@ -144,30 +145,30 @@
     </table>
   </tags:noform>
 </div>
-<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3reporter">
+<tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3reporter" hideBox="true" willSave="true">
     <jsp:attribute name="instructions">
         <c:choose>
             <c:when test="${oneOrMoreSevere}">
                <tags:instructions  code="instruction_ae_reporterAE"/>
+               <tags:instructions code="instruction_ae_create_reporterNote" heading="Note: " />
             </c:when>
             <c:otherwise>
             	<tags:instructions code="instruction_ae_reporterNoAE" />
-                <tags:instructions code="instruction_ae_reporterNote" heading="Note: " />
+                <tags:instructions code="instruction_ae_create_reporterNoAENote" heading="Note: " />
             </c:otherwise>
         </c:choose>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
     
         <%--  =================== Rules Engine Results  ===================================== --%>
-  
-      <c:choose>
+	<c:choose>
         <c:when test="${not empty rpdSelectedTable}">
          
         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
 		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
-		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
-		<div><tags:instructions code="instruction_ae_require_reporting" /></div>
+		<div style="font-size:20px; margin-bottom:5px;">Report Recommended!</div>
+		<div><tags:message key="instruction_ae_require_reporting" /></div>
 	</div>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
@@ -189,7 +190,6 @@
               </table>
             </div>
           </div>
-              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
               <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
         </chrome:box>
         </c:when>
@@ -211,7 +211,6 @@
               </tr>
             </table>
           </div>
-             <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
             </chrome:box>
         </c:otherwise>

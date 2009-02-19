@@ -1,19 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
-import gov.nih.nci.cabig.caaers.web.ae.AeTab.AeInputFieldCreator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -89,6 +87,7 @@ public class CreateExpeditedReporterTab extends AeTab{
 		}
 		refdata.put("rpdAllTable", allReportDefDisplayTableMap);
 		refdata.put("rpdSelectedTable", selectedReportDefDisplayTableMap);
+		refdata.put("oneOrMoreSevere", !command.getReportDefinitionMap().isEmpty() );
 		// TODO Auto-generated method stub
 		return refdata;
 	}
@@ -97,8 +96,8 @@ public class CreateExpeditedReporterTab extends AeTab{
 	protected void validate(ExpeditedAdverseEventInputCommand command,BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups,
 			Errors errors) {
 		if( (command.getNextPage() >= getNumber())){
-			if(command.getSelectedReportDefinitions().isEmpty()){
-				errors.reject("AT_LEAST_ONE_REPORT", "At least one expedited report must be selected to proceed");
+			if(command.getSelectedReportDefinitions().isEmpty() && command.getAeReport().getId() == null){
+				errors.reject("SAE_023", "At least one expedited report must be selected to proceed");
 			}
 		}
 	}
@@ -110,6 +109,11 @@ public class CreateExpeditedReporterTab extends AeTab{
 		
 		if(!errors.hasErrors() && (command.getNextPage() >= getNumber())){
 			command.removeUnselectedReports();
+			
+			//reassociate selected reports
+			command.reassociateSelectedReportDefinitions();
+			
+			//instantiate the newly selected reports
 			command.instantiateNewlySelectedReports();
 			
 			// find the new mandatory sections
