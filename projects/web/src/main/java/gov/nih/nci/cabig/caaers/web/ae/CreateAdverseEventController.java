@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.validation.validator.WebControllerValidator;
 import gov.nih.nci.cabig.caaers.web.RenderDecisionManager;
 import gov.nih.nci.cabig.ctms.web.chrome.Task;
@@ -71,6 +72,11 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 	  protected boolean suppressValidation(HttpServletRequest request,Object command) {
 	        if(super.suppressValidation(request, command)) return true;
 	        CreateExpeditedAdverseEventCommand aeCommand = (CreateExpeditedAdverseEventCommand) command;
+	        //special case, if it is attribution page, allow go back.
+	         if(getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle().equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName())){
+	        	 return super.getCurrentPage(request) > aeCommand.getNextPage();
+	         }
+	         
 	        if(aeCommand.getAeReport().getId() != null) return false;
 	        return super.getCurrentPage(request) > aeCommand.getNextPage(); 
 	  }
