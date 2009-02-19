@@ -169,6 +169,10 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		Boolean displaySeriousTable = false; // For Serious Adverse Events table
 		Boolean displayObservedTable = false; // For Observed Adverse Events table
 		Boolean displaySolicitedTable = false; // For Solicited Adverse Events table
+		Boolean displayReportableAeTable = false; // For "Select Adverse Events To Report" table.
+		
+		if(command.getAdverseEventReportingPeriod().getReportableAdverseEvents().size() > 0)
+			displayReportableAeTable = true;
 		
 		for(AdverseEvent ae: command.getAdverseEventReportingPeriod().getReportableAdverseEvents()){
 			if(BooleanUtils.isTrue(ae.getRequiresReporting()))
@@ -187,6 +191,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		refdata.put("displaySeriousTable", displaySeriousTable);
 		refdata.put("displayObservedTable", displayObservedTable);
 		refdata.put("displaySolicitedTable", displaySolicitedTable);
+		refdata.put("displayReportableAeTable", displayReportableAeTable);
 		
 		return refdata;
 	}

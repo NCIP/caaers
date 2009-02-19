@@ -85,6 +85,21 @@
 		}
 		
 		function enableReportsInPopup(){
+		
+			if(hasReportableAEs()){
+				if(checkIfReportSelected() == false){
+					$('create-new-report-table').style.display = 'none';
+					if(${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0})
+						$('box-existing-reports').style.display = '';
+					else
+						$('box-existing-reports').style.display = 'none';
+				}
+				else{
+					$('create-new-report-table').style.display = '';
+					$('box-existing-reports').style.display = '';
+				}
+			}
+							
 			var chkboxElements = $('report-list').select('[type="checkbox"]');
 			for(var i=0; i < chkboxElements.length; i++){
 				if(chkboxElements[i].checked){
@@ -209,7 +224,7 @@ background-color:#e5e8ff;
               </table>
             </div>
           </div>
-          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
+          <c:if test='${displayReportableAeTable}'>
               <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
               <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
       	  </c:if>
@@ -233,10 +248,12 @@ background-color:#e5e8ff;
               </tr>
             </table>
           </div>
-          <c:if test='${displaySeriousTable || displayObservedTable || displaySolicitedTable}'>
+          <c:if test='${displayReportableAeTable}'>
       	  </c:if>
              <%--<tags:instructions code="instruction_ae_require_reporting" />--%>
+             <c:if test="${displayReportableAeTable}">
              <p>Click <a id="manualselect2" style='cursor:pointer' class="link">here</a> to manually select from the list of all reports available for this study.</p>
+             </c:if>
             </chrome:box>
         </c:otherwise>
       </c:choose>
@@ -279,8 +296,8 @@ background-color:#e5e8ff;
       	 	
       	 	
       	 	<%-- Only shown if there are reportable adverse events--%>
-      	 	<c:if test="${fn:length(command.adverseEventReportingPeriod.reportableAdverseEvents) gt 0}">
-      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
+      	 	<c:if test="${displayReportableAeTable}">
+      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;" id="create-new-report-table">
       	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
       	 		<td width="10%" align="left">
           			<input type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
@@ -311,7 +328,7 @@ background-color:#e5e8ff;
         </chrome:box>
       <div id="div-aes">
        
-
+		<c:if test="${displayReportableAeTable}">
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
        
         <c:if test='${!displaySeriousTable}'>
@@ -372,6 +389,7 @@ background-color:#e5e8ff;
         </table>
        
        </chrome:box>
+       </c:if>
       </div>
     
   </jsp:attribute>
@@ -381,9 +399,11 @@ background-color:#e5e8ff;
               <span class="prev">
               	<tags:button value="Back" cssClass="tab1" color="blue" icon="back" id="flow-prev"/>
 			  </span>
-			  <span class="next">
-			  	<tags:button type="button" onclick="forwardControl();" value="Continue Expedited Reporting" color="green" icon="continue" />
-			  </span>
+			  <c:if test="${aeReportsLength gt 0 or displayReportableAeTable}">
+				  <span class="next">
+				  	<tags:button type="button" onclick="forwardControl();" value="Continue Expedited Reporting" color="green" icon="continue" />
+				  </span>
+			  </c:if>
           </div>
       </div>
   </jsp:attribute>
