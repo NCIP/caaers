@@ -239,7 +239,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     @Override
     protected boolean suppressValidation(HttpServletRequest request, Object command) {
         log.debug("In supressValidation");
-    	return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null;
+    	return request.getParameter(AJAX_SUBVIEW_PARAMETER) != null || isFinishRequest(request);
     }
 
     @Override
@@ -284,8 +284,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
 
     @Override
     @SuppressWarnings("unchecked")
-    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response,
-                    Object oCommand, BindException errors) throws Exception {
+    protected ModelAndView processFinish(HttpServletRequest request, HttpServletResponse response, Object oCommand, BindException errors) throws Exception {
     	log.debug("In processFinish");
         ExpeditedAdverseEventInputCommand command = (ExpeditedAdverseEventInputCommand) oCommand;
         save(command, errors);
