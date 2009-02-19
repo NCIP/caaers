@@ -37,7 +37,7 @@
 	</c:if>
 </c:if>
 
-<c:if test="${showRequiresReporting}"><td><c:if test="${adverseEvent.requiresReporting}"><img src="<c:url value="/images/error-yellow.png" />"></c:if></td></c:if>
+<c:if test="${showRequiresReporting}"><td align="center"><center><c:if test="${adverseEvent.requiresReporting}"><img src="<c:url value="/images/error-yellow.png" />"></c:if></center></td></c:if>
 
 <c:if test="${isAETermOtherSpecify}">
     <td>
@@ -53,8 +53,8 @@
                 var terminologyVersionId = ${empty command.assignment.studySite.study.otherMeddra.id ? 0 : command.assignment.studySite.study.otherMeddra.id}
                 AE.createStandardAutocompleter('${fieldGroups[mainGroup].fields[aeTermIndex + 1].propertyName}',
                 function(autocompleter, text) {
-                        createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
-                                                    autocompleter.setChoices(values)})
+                    createAE.matchLowLevelTermsByCode(terminologyVersionId, text, function(values) {
+                        autocompleter.setChoices(values)})
                 },
                 function(lowLevelTerm) { return lowLevelTerm.meddraTerm });
 

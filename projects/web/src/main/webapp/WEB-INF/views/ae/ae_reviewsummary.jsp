@@ -186,8 +186,8 @@ background-color:#e5e8ff;
         <chrome:box id="box-report-by-caaers" title="Reports Identified by caAERS" collapsable="true" autopad="true">
     <div style="border:1px solid #f00; height:100px; padding:9px; margin-bottom:10px;">
 		<img src="<chrome:imageUrl name="stop_sign.png" />" alt="Stop!" style="float:left; margin-right:30px; margin-left:80px;" />
-		<div style="font-size:20px; margin-bottom:5px;">Report Required!</div>
-		<div><tags:instructions code="instruction_ae_require_reporting" /></div>
+		<div style="font-size:20px; margin-bottom:5px;">Report Recommended!</div>
+		<div><tags:message key="instruction_ae_require_reporting" /></div>
 	</div>
            <div align="center">
             <div id="report-list" align="center" style="padding-bottom:5px;">
