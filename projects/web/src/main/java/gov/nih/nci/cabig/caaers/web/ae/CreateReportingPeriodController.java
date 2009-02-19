@@ -145,7 +145,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
-        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle number", true);
+        InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", true);
         InputFieldAttributes.setSize(cycleNumberField, 2);
         reportingPeriodFieldGroup.getFields().add(cycleNumberField);
         
