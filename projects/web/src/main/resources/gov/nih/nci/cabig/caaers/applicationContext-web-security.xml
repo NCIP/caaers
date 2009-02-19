@@ -221,9 +221,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<entry key="gov.nih.nci.cabig.caaers.web.participant.CreateParticipantReviewParticipantTab" value="gov.nih.nci.cabig.caaers.domain.Participant:CREATE"/>		
 		
 		<!-- AE FLOW , CREATE (assumption : user with CREATE would automatically have UPDATE )-->	
-		<entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.BeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReportBeginTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventCaptureTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
 		<entry key="gov.nih.nci.cabig.caaers.web.ae.AdverseEventConfirmTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>	
+		<entry key="gov.nih.nci.cabig.caaers.web.ae.CreateExpeditedReporterTab" value="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport:CREATE"/>
 
 
 		<!-- AE FLOW , UPDATE -->
