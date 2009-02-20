@@ -214,8 +214,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			List<ReportingPeriodReviewComment> reviewCommentList = this.adverseEventReportingPeriod.getReviewComments();
 			if(reviewCommentList != null)
 				this.adverseEventReportingPeriod.getReviewComments().size();
-			if(this.assignment != null)
-				this.assignment.getParticipant().getIdentifiers();
+			if(this.assignment != null){
+				if(assignment.getParticipant() != null)	this.assignment.getParticipant().getIdentifiers();
+			}
+				
 		}
     }
     
