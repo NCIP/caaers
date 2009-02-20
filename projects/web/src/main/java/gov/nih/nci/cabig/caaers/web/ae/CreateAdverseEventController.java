@@ -72,10 +72,12 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 	  protected boolean suppressValidation(HttpServletRequest request,Object command) {
 	        if(super.suppressValidation(request, command)) return true;
 	        CreateExpeditedAdverseEventCommand aeCommand = (CreateExpeditedAdverseEventCommand) command;
-	        //special case, if it is attribution page, allow go back.
-	         if(getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle().equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName())){
+	        //special case, if it is attribution page or intervention page, allow go back.
+	    	String shortTitle = getFlow(aeCommand).getTab(getCurrentPage(request)).getShortTitle();
+	        if(shortTitle.equals(ExpeditedReportSection.ATTRIBUTION_SECTION.getDisplayName()) || 
+	        		 shortTitle.equals(ExpeditedReportSection.STUDY_INTERVENTIONS.getDisplayName())){
 	        	 return super.getCurrentPage(request) > aeCommand.getNextPage();
-	         }
+	        }
 	         
 	        if(aeCommand.getAeReport().getId() != null) return false;
 	        return super.getCurrentPage(request) > aeCommand.getNextPage(); 
