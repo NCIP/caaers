@@ -100,6 +100,20 @@ public class StudyParticipantDiseaseHistory extends AbstractMutableDomainObject 
     }
 
     @Transient
+    public StudyCondition getOtherCondition() {
+        if (this.abstractStudyDisease instanceof StudyCondition) {
+            return (StudyCondition) abstractStudyDisease;
+        } else {
+            return null;
+        }
+    }
+
+    @Transient
+    public void setOtherCondition(StudyCondition studyCondition) {
+        this.abstractStudyDisease = studyCondition;
+    }
+
+    @Transient
     public void setCtepStudyDisease(CtepStudyDisease ctepStudyDisease) {
         this.abstractStudyDisease = ctepStudyDisease;
     }

@@ -126,15 +126,8 @@ public class PatientDetailsTab extends AeTab {
      * 
      */
     private void createGeneralFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
-    	  creator.createFieldGroup("participant", null, "participantHistory", createParticipantMeasureField("height", "Height",
-    	            		WebUtils.collectOptions(configurationProperty.getMap().get("heightUnitsRefData"), "code", "desc")),
-    	            createParticipantMeasureField("weight", "Weight",
-    	            		WebUtils.collectOptions(configurationProperty.getMap().get("weightUnitsRefData"), "code", "desc"))
-    	        );
-    	 creator.createFieldGroup("general", null, "participantHistory",
-    			 InputFieldFactory.createSelectField("baselinePerformanceStatus", "Baseline performance", false, 
-    					 WebUtils.collectOptions(configurationProperty.getMap().get("bpsRefData"), "code", "desc", "Please select"))
-    	);
+        creator.createFieldGroup("participant", null, "participantHistory", createParticipantMeasureField("height", "Height", WebUtils.collectOptions(configurationProperty.getMap().get("heightUnitsRefData"), "code", "desc")), createParticipantMeasureField("weight", "Weight", WebUtils.collectOptions(configurationProperty.getMap().get("weightUnitsRefData"), "code", "desc")));
+        creator.createFieldGroup("general", null, "participantHistory", InputFieldFactory.createSelectField("baselinePerformanceStatus", "Baseline performance", false, WebUtils.collectOptions(configurationProperty.getMap().get("bpsRefData"), "code", "desc", "Please select")));
     }
     
 

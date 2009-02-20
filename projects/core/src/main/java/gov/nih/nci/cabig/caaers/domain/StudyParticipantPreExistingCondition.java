@@ -104,15 +104,10 @@ public class StudyParticipantPreExistingCondition extends AbstractMutableDomainO
 
 
     public static StudyParticipantPreExistingCondition createAssignmentPreExistingCondition(SAEReportPreExistingCondition saeReportPreExistingCondition) {
-
         if (saeReportPreExistingCondition != null) {
             StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = new StudyParticipantPreExistingCondition();
-            BeanUtils.copyProperties(saeReportPreExistingCondition, studyParticipantPreExistingCondition, new String[]{"id", "gridId",
-                    "version", "assignment"});
-
-
+            BeanUtils.copyProperties(saeReportPreExistingCondition, studyParticipantPreExistingCondition, new String[]{"id", "gridId", "version", "assignment"});
             return studyParticipantPreExistingCondition;
-
         }
         return null;
 

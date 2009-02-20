@@ -24,6 +24,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OrderBy;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Where;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author Krikor Krumlian
@@ -306,14 +308,20 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
             throw new CaaersSystemException(String.format("Wrong uses of synchronizeMedicalHistoryFromReportToAssignment. " +
                     "This report %s does not belong to this assigment %s ", expeditedAdverseEventReport.getId(), this.getParticipant().getFullName()));
         }
+        
         //now synchronize from report to assignment
         syncrhonizePriorTherapies(expeditedAdverseEventReport.getSaeReportPriorTherapies());
         syncrhonizeConcomitantMedication(expeditedAdverseEventReport.getConcomitantMedications());
         syncrhonizeDiseaseHistory(expeditedAdverseEventReport.getDiseaseHistory());
         syncrhonizePreExistingCondition(expeditedAdverseEventReport.getSaeReportPreExistingConditions());
-
-
+        synchronizeBaselinePerformance(expeditedAdverseEventReport.getParticipantHistory().getBaselinePerformanceStatus());
     }
+
+    private void synchronizeBaselinePerformance(String baselinePerformanceStatus) {
+        if (StringUtils.isNotEmpty(baselinePerformanceStatus))
+            this.setBaselinePerformance(baselinePerformanceStatus);
+    }
+    
     /**
      * Will return true, if the priorTherapy is assigned to the PriorTherapy, via {@link StudyParticipantPriorTherapy}
      * @param priorTherapy
@@ -376,11 +384,29 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     
     private void syncrhonizeDiseaseHistory(final DiseaseHistory saeReportDiseaseHistory) {
 
+        // Disease name
+        DiseaseCodeTerm dct = saeReportDiseaseHistory.getReport().getStudy().getDiseaseTerminology().getDiseaseCodeTerm();
+        if (dct == DiseaseCodeTerm.MEDDRA) {
+            this.getDiseaseHistory().setMeddraStudyDisease(saeReportDiseaseHistory.getMeddraStudyDisease());
+        }
+        if (dct == DiseaseCodeTerm.CTEP) {
+            this.getDiseaseHistory().setCtepStudyDisease(saeReportDiseaseHistory.getCtepStudyDisease());
+        }
+        if (dct == DiseaseCodeTerm.OTHER) {
+            this.getDiseaseHistory().setOtherCondition(saeReportDiseaseHistory.getOtherCondition());
+        }
+
+        // Primary site of disease
+        this.getDiseaseHistory().setCodedPrimaryDiseaseSite(saeReportDiseaseHistory.getCodedPrimaryDiseaseSite());
+
+        // Date of initial diagnosis
+        this.getDiseaseHistory().setDiagnosisDate(saeReportDiseaseHistory.getDiagnosisDate());
+
+        //
         if (saeReportDiseaseHistory != null && getDiseaseHistory() != null) {
             for (MetastaticDiseaseSite metastaticDiseaseSite : saeReportDiseaseHistory.getMetastaticDiseaseSites()) {
                 if (!containsMetastaticDiseaseSite(metastaticDiseaseSite)) {
-                    StudyParticipantMetastaticDiseaseSite assignmentMetastaticDiseaseSite = StudyParticipantMetastaticDiseaseSite.
-                            createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite);
+                    StudyParticipantMetastaticDiseaseSite assignmentMetastaticDiseaseSite = StudyParticipantMetastaticDiseaseSite.createAssignmentMetastaticDiseaseSite(metastaticDiseaseSite);
                     getDiseaseHistory().addMetastaticDiseaseSite(assignmentMetastaticDiseaseSite);
                 }
             }
@@ -390,7 +416,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
     }
     /**
      * Will return true, if the {@link PreExistingCondition} is associated to this assignment via, {@link StudyParticipantPreExistingCondition}
-     * @param preCondition
+     * @param saePreCond
      * @return
      */
     public boolean containsPreExistingCondition(SAEReportPreExistingCondition saePreCond){
@@ -404,8 +430,7 @@ public class StudyParticipantAssignment extends AbstractMutableDomainObject {
 
         for (SAEReportPreExistingCondition saeReportPreExistingCondition : saeReportPreExistingConditions) {
             if (!containsPreExistingCondition(saeReportPreExistingCondition)) {
-                StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(
-                        saeReportPreExistingCondition);
+                StudyParticipantPreExistingCondition studyParticipantPreExistingCondition = StudyParticipantPreExistingCondition.createAssignmentPreExistingCondition(saeReportPreExistingCondition);
                 addPreExistingCondition(studyParticipantPreExistingCondition);
             }
         }
