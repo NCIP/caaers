@@ -121,8 +121,10 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
                 for (AdverseEvent ae: command.getAdverseEvents()) {
                 	if(ae == null) continue;
                     ae.getAdverseEventTerm().isOtherRequired();
-                    ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+                    if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
+                    	ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
+                        ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();	
+                    }
                 }
         }
 

@@ -113,7 +113,7 @@ public class AdverseEventTab extends TabWithFields<CaptureAdverseEventInputComma
         	gradeOptions.put(Grade.NORMAL.getName(), Grade.NORMAL.getCode() + ":  " + Grade.NORMAL.getDisplayName());
         }
         if(terminology.equals("Ctc")){
-        	List<CtcGrade> ctcGrades = ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+        	List<CtcGrade> ctcGrades = (ae.getAdverseEventCtcTerm().getCtcTerm() == null) ? null: ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
         	if(ctcGrades == null || ctcGrades.isEmpty()){
         		//no- add grades (1-5)
         		gradeOptions.putAll(WebUtils.collectCustomOptions(GRADES, "name", "code", "displayName", ":  "));

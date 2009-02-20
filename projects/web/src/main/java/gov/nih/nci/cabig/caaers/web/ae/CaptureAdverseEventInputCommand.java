@@ -174,7 +174,21 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     public void evictUnwantedObjects(){
     	assignmentDao.evict(getAssignment());
     }
-  
+    
+    
+    public void cleanEmptyAdverseEvents(){
+    	List<AdverseEvent> adverseEvents = adverseEventReportingPeriod.getAdverseEvents();
+    	List<AdverseEvent> unwantedAdverseEvents = new ArrayList<AdverseEvent>();
+    	for(AdverseEvent ae : adverseEvents){
+    		if(ae.getAdverseEventTerm() == null  || ae.getAdverseEventTerm().getTerm() == null) unwantedAdverseEvents.add(ae);
+    	}
+    	
+    	for(AdverseEvent ae : unwantedAdverseEvents){
+    		adverseEvents.remove(ae);
+    	}
+    	save();
+    }
+    
     /**
      * This method will take care of initializing the lazy associations
      * This method will take care of
@@ -183,9 +197,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
      */
     public void initialize(){
     	//set the assignment into the command.
-    	if(this.adverseEventReportingPeriod != null)
+    	if(this.adverseEventReportingPeriod != null){
     		this.assignment = this.adverseEventReportingPeriod.getAssignment();
-    	
+    		cleanEmptyAdverseEvents();
+    	}
     	adverseEvents = new IndexFixedList<AdverseEvent>(new ArrayList<AdverseEvent>());
     	if(adverseEventReportingPeriod != null){
     		adverseEvents = new IndexFixedList<AdverseEvent>(adverseEventReportingPeriod.getAdverseEvents());
@@ -195,9 +210,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 			boolean isCTCStudy = study.getAeTerminology().getTerm() == Term.CTC;
 			if(isCTCStudy){
 				for(AdverseEvent ae : getAdverseEvents()){
+					if(ae.getAdverseEventCtcTerm() == null) continue;//to handle special case when we deal with empty AEs added via CreateExpeditedFlow
+					
 					ae.getAdverseEventTerm().isOtherRequired();
-                    ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
-                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+					if(ae.getAdverseEventCtcTerm().getCtcTerm() != null){
+						ae.getAdverseEventCtcTerm().getCtcTerm().isOtherRequired();
+	                    ae.getAdverseEventCtcTerm().getCtcTerm().getContextualGrades();
+					}
 				}
 			}
 			this.adverseEventReportingPeriod.getAdverseEvents().size();
