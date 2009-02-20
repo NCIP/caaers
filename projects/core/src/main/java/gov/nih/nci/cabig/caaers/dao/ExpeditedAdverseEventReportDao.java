@@ -143,10 +143,10 @@ public class ExpeditedAdverseEventReportDao extends
         } else {
             getHibernateTemplate().lock(report.getPhysician(), LockMode.NONE);
         }
-        // delegate to ReportDao to reassociate reports so that it can control transactionality
-        for (Report r : report.getReports()) {
-            reportDao.reassociate(r);
-        }
+//        // delegate to ReportDao to reassociate reports so that it can control transactionality
+//        for (Report r : report.getReports()) {
+//            reportDao.reassociate(r);
+//        }
     }
 
     /**
