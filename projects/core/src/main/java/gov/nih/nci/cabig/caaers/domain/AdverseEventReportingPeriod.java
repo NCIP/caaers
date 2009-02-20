@@ -299,9 +299,9 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	
     	if(StringUtils.isEmpty(name)){
     		StringBuffer sb = new StringBuffer();
-    		sb.append((startDate != null) ? "Start Date: " + formatter.format(startDate) + ";" : "")
-    		.append((getTreatmentAssignment() != null) ? "TAC: " + getTreatmentAssignment().getCode() + ";" : "")
-    		.append((getCycleNumber() != null)? "Cycle #: " + getCycleNumber() : "");
+    		sb.append((getCycleNumber() != null)? "Cycle #: " + getCycleNumber() + "; " : "")
+    		// .append((getTreatmentAssignment() != null) ? "TAC: " + getTreatmentAssignment().getCode() + ";" : "")
+    		.append((startDate != null) ? "Start Date: " + formatter.format(startDate) : "");
     		name = sb.toString();
     	}
     	
