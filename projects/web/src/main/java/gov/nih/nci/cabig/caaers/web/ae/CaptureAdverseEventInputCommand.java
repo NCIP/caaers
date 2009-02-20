@@ -270,7 +270,10 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
         List<ReportDefinition> reportDefs = new ArrayList<ReportDefinition>();
         
         for (Map.Entry<Integer, Boolean> entry : reportDefinitionMap.entrySet()) {
-            if (entry.getValue() != null && entry.getValue()) reportDefs.add(reportDefinitionIndexMap.get(entry.getKey()));
+            if (entry.getValue() != null && entry.getValue()){
+            	ReportDefinition reportDef = reportDefinitionIndexMap.get(entry.getKey());
+            	if(reportDef != null) reportDefs.add(reportDef);
+            }
         }
         return reportDefs;
    }
