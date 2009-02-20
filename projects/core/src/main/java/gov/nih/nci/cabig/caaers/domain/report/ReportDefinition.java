@@ -323,11 +323,14 @@ public class ReportDefinition extends AbstractMutableDomainObject implements Ser
         }
         final ReportDefinition other = (ReportDefinition) obj;
 
+        if(getId()!= null && getId().equals(other.getId()))
+        	return true;
+        
         if (!ComparisonTools.nullSafeEquals(getDescription(), other.getDescription())) {
             if (trace) log.debug("!= descriptions");
             return false;
         }
-        if (getDuration() != other.getDuration()) {
+        if (getDuration() != null && !getDuration().equals(other.getDuration())) {
             if (trace) log.debug("!= durations");
             return false;
         }

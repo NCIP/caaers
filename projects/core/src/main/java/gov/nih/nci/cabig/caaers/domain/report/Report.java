@@ -143,7 +143,7 @@ public class Report extends AbstractMutableDomainObject implements Serializable 
         this.createdOn = createdOn;
     }
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "rct_id")
     @Cascade( { CascadeType.LOCK })
     public ReportDefinition getReportDefinition() {
