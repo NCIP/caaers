@@ -1022,6 +1022,8 @@ public class Study extends AbstractIdentifiableDomainObject implements Serializa
     }
 
     public boolean hasCTCTerm(CtcTerm ast) {
+    	if(ast == null) return false;
+    	
         List<ExpectedAECtcTerm> expectedAECtcTerms = this.getExpectedAECtcTerms();
         for (ExpectedAECtcTerm expectedAECtcTerm : expectedAECtcTerms) {
             if (expectedAECtcTerm.getTerm().getId().intValue() == ast.getId().intValue()) return true;
