@@ -24,7 +24,7 @@
 <tr class="ae-section ${index % 2 gt 0 ? 'odd' : 'even'}" id="ae-section-${index}" >
 
 <c:if test="${aeTermIndex gt 0}">
-	<td><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></td>
+	<td align="center"><center><tags:renderInputs field="${fieldGroups[mainGroup].fields[0]}" cssClass="cb${adverseEvent.adverseEventTerm.term.id} aeChk"/></center></td>
 </c:if>	
 
 

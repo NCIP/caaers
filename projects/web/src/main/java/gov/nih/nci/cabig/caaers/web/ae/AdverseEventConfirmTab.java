@@ -96,7 +96,6 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + attributionFieldName, ""));
 		String hospitalizationFieldName = (ae.getHospitalization() != null)? "hospitalization.displayName" : "hospitalization";
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "]." + hospitalizationFieldName, ""));
-		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displayExpected", ""));
 		fields.add(InputFieldFactory.createLabelField("adverseEventReportingPeriod.reportableAdverseEvents[" + i + "].displaySerious", ""));
 		//if(isModifiable){
 		//	fields.add(InputFieldFactory.createRadioButtonField("primaryAdverseEventId", "", ae.getId().toString()));

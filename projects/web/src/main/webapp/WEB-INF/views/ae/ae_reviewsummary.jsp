@@ -340,13 +340,12 @@ background-color:#e5e8ff;
          <p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
-                <th scope="col" align="left"><b>Select</b></th>
-                <th scope="col" align="left"><b>Requires reporting ?</b></th>
+                <th scope="col" align="center" style="text-align:center;"><b>Select</b></th>
+                <th scope="col" align="center" style="text-align:center;">Requires expedited reporting?</th>
                 <th scope="col" align="left" width="30%"><b>Term</b> </th>
                 <th scope="col" align="left"><b>Grade</b> </th>
                 <th scope="col" align="left"><b>Attribution</b> </th>
                 <th scope="col" align="left"><b>Hospitalization</b> </th>
-                <th scope="col" align="left"><b>Expected</b> </th>
                 <caaers:renderFilter elementID="adverseEvents[].serious">
                   <th scope="col" align="left"><b>Serious</b> </th>
                 </caaers:renderFilter>
