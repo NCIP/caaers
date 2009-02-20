@@ -149,7 +149,7 @@ public class AdverseEventConfirmTab extends AdverseEventTab{
 			ReportDefinitionDisplayTable rdTable = new ReportDefinitionDisplayTable(command.getReportStatusMap().get(rpDef.getId()),
 					command.getRequiredReportDefinitionIndicatorMap().get(rpDef.getId()), 
 					InputFieldFactory.createCheckboxField("reportDefinitionMap[" + rpDef.getId() + ']',
-                    		rpDef.getLabel() + " ("  + rpDef.getOrganization().getName()  + ')'));
+                    		rpDef.getLabel()));
 			
 			allReportDefDisplayTableMap.put(RPD_FIELD_GROUP + i, rdTable );
 			
