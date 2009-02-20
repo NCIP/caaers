@@ -1264,7 +1264,7 @@ div#createNew h3, div.section h3 {
                       </c:choose>
                       <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" /> <span>
-                      <form:select
+                      <form:select cssStyle="width: 100px;"
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].objectType"
 						onchange="handleDomainObjectonChange(this, ${ruleCount})">
                         <form:option value="">Please select Domain Object</form:option>
@@ -1276,7 +1276,7 @@ div#createNew h3, div.section h3 {
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].identifier" />
                       </span> <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" />
-                      <form:select
+                      <form:select cssStyle="width: 100px;"
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].fieldName"
 						onchange="handleFieldOnchange(this, ${ruleCount}, ${columnCount})">
                         <form:option value="">Please select Field</form:option>
@@ -1301,7 +1301,7 @@ div#createNew h3, div.section h3 {
                       <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].displayUri" />
                       <img src="/caaers/images/chrome/spacer.gif"
 						style="width:10px;height:10px" align="absmiddle" />
-                      <form:select
+                      <form:select cssStyle="width: 100px;"
 						path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].evaluator"
 						onchange="handleOperatorOnchange(this, ${ruleCount})">
                         <form:option value="">Please select operator</form:option>
@@ -1595,7 +1595,7 @@ div#createNew h3, div.section h3 {
                             <c:when
 									test="${empty command.ruleSet.rule[ruleCount].condition.column[columnCount].objectType ||
 																		                empty command.ruleSet.rule[ruleCount].condition.column[columnCount].fieldConstraint[0].fieldName}">
-                              <form:select
+                              <form:select cssStyle="width: 100px;"
 										path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 										multiple="false">
                                 <form:option value="">Please select value</form:option>
@@ -1619,7 +1619,7 @@ div#createNew h3, div.section h3 {
                                       <c:choose>
                                         <c:when
 															test='${ruleUi.condition[0].domainObject[domainObjectIndex].field[fieldIndex].fieldValue.inputType == "multiselect"}'>
-                                          <form:select
+                                          <form:select cssStyle="width: 100px;"
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="multiple" size="3"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, true)">
@@ -1630,7 +1630,7 @@ div#createNew h3, div.section h3 {
                                           <form:hidden path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].readableValue" />
                                         </c:when>
                                         <c:otherwise>
-                                          <form:select
+                                          <form:select cssStyle="width: 100px;"
 																path="ruleSet.rule[${ruleCount}].condition.column[${columnCount}].fieldConstraint[0].literalRestriction[0].value"
 																multiple="false"
 																onchange="handleValueOnselect(this, ${ruleCount}, ${fieldIndex}, false)">
@@ -1668,7 +1668,7 @@ div#createNew h3, div.section h3 {
                   </div>
                   <br />
                   <div id="action-template" style="margin-left:50px;"><img src="/caaers/images/chrome/spacer.gif" style="width:10px;height:10px" align="absmiddle" />
-                    <form:select path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
+                    <form:select cssStyle="width: 300px;" path="ruleSet.rule[${ruleCount}].action" multiple="multiple" size="3">
                       <c:choose>
                         <c:when test='${command.ruleSetName == "Mandatory Sections Rules"}'>
                           <c:forEach var="reportSectionName" items="${command.reportSectionNames}">
