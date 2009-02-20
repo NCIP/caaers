@@ -116,7 +116,7 @@
     	<table class="tablecontent">
     			<tr>
     				<th scope="col" align="left"><b>Report</b> </th>
-    				<th scope="col" align="left"><b>Report Version</b> </th>
+    				<th scope="col" align="left"><b>Amendment #</b> </th>
     				<th scope="col" align="left"><b>Ready to submit?</b> </th>
     				<th scope="col" align="left"><b>Status</b> </th>
     				<th scope="col" align="left"><b>Actions</b> </th>
