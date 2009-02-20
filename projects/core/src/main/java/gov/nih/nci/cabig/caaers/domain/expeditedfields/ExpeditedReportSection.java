@@ -11,7 +11,7 @@ public enum ExpeditedReportSection {
     DESCRIPTION_SECTION("Describe Event", true), 
     STUDY_INTERVENTIONS("Study Interventions", true),
     MEDICAL_INFO_SECTION("Subject Details", true), 
-    TREATMENT_INFO_SECTION("Course", true), 
+    TREATMENT_INFO_SECTION("Course", false), 
     LABS_SECTION("Labs", true), 
     PRIOR_THERAPIES_SECTION("Prior Therapies", true), 
     PRE_EXISTING_CONDITION_SECTION("Pre-existing Conditions", true), 
