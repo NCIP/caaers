@@ -182,7 +182,7 @@
   <bean id="sectionInterceptor" class="gov.nih.nci.cabig.ctms.web.chrome.SectionInterceptor">
     <property name="sections">
       <list>
-	    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType" p:displayName="Adverse Events" p:mainController="listAdverseEventsController">
+	    <bean class="gov.nih.nci.cabig.ctms.web.chrome.Section" autowire="byType" p:displayName="Adverse Events" p:mainController="captureAdverseEventController">
           <property name="pathMapping"><value>/ae/**</value></property>
           <property name="tasks">
             <list>
