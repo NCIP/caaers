@@ -117,7 +117,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         return false; 
     }
 
-    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
         MandatoryProperties props = command.getMandatoryProperties();
         if (props == null) return false;
         

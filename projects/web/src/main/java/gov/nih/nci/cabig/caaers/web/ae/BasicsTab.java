@@ -9,6 +9,8 @@ import org.springframework.validation.Errors;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Rhett Sutphin
  */
@@ -176,12 +178,12 @@ public abstract class BasicsTab extends AeTab {
     }
     
     @Override
-    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command) {
+    public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
     	boolean primaryAEStartDateNotFilled = false;
     	List<AdverseEvent> adverseEvents = command.getAeReport().getAdverseEvents();
     	if(adverseEvents != null && adverseEvents.size() > 0){
     		primaryAEStartDateNotFilled = adverseEvents.get(0).getStartDate() == null;
     	}
-    	return super.hasEmptyMandatoryFields(command) || primaryAEStartDateNotFilled;
+    	return super.hasEmptyMandatoryFields(command, request) || primaryAEStartDateNotFilled;
     }
 }

@@ -224,7 +224,7 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
             if (tab instanceof AeTab) {
                 AeTab aeTab = (AeTab) tab;
                 sbSections.append(",").append(aeTab.isMandatory(cmd) ? tab.getShortTitle() : "");
-                sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd) ? tab.getShortTitle() : "");
+                sb.append(",").append(aeTab.hasEmptyMandatoryFields(cmd, request) ? tab.getShortTitle() : "");
             }
         }
         refdata.put(MANDATORY_TAB_KEY, sbSections.toString());

@@ -80,7 +80,7 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 	
 	@Override
 	public boolean isAdditionAllowed() {
-		return aeReport.getId() == null;
+		return true;
 	}
 	
 	@Override
