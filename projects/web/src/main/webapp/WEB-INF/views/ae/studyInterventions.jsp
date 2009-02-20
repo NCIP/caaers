@@ -98,7 +98,7 @@ function closeAll() {
                 this._addItem('agent', e.element(), null, '_agents');
             }.bind(interventionInstance));
 
-        refreshBoxes();
+        // refreshBoxes();
     }
     
     function fireAction(itemType, index, location, elementId, css) {
@@ -202,10 +202,12 @@ function closeAll() {
             <jsp:body>
                 <div style="padding-left:20px;">
                 <div id="_agents">
+
                     <c:set var="size" value="${fn:length(command.aeReport.treatmentInformation.courseAgents)}" />
                     <c:forEach items="${command.aeReport.treatmentInformation.courseAgents}" varStatus="status" var="agent">
                         <c:set var="newIndex" value="${size - (status.index + 1)}" />
-                        <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="true"/>
+                        <c:set var="collapsed" value="${agent.studyAgent != null}" />
+                        <ae:oneCourseAgent index="${newIndex}" agent="${agent}" collapsed="${collapsed}"/>
                     </c:forEach>
                 </div>
                 </div>
