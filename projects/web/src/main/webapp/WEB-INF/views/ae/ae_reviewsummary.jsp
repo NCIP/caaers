@@ -326,10 +326,14 @@ background-color:#e5e8ff;
         </chrome:box>
       <div id="div-aes">
        
-		<c:if test="${displayReportableAeTable}">
+		
        <chrome:box id="box-aes" title="Select Adverse Events To Report" collapsable="true" autopad="true">
-       		<p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
-        <%--<p><tags:message key="instruction_ae_note" /></p>--%>
+       	
+       	<c:if test="${!displayReportableAeTable}">
+	        <p><tags:message key="instruction_ae_no_rulesengine_reports" /></p>
+        </c:if>
+         <c:if test="${displayReportableAeTable}">
+         <p><tags:instructions code="instruction_ae_rulesengine_reports" /></p>
          <table id="seriousTable" width="100%" class="tablecontent">
               <tr>
                 <th scope="col" align="left"><b>Select</b></th>
@@ -342,7 +346,6 @@ background-color:#e5e8ff;
                 <caaers:renderFilter elementID="adverseEvents[].serious">
                   <th scope="col" align="left"><b>Serious</b> </th>
                 </caaers:renderFilter>
-                <%-- <th scope="col" align="left"><b>Is primary?</b></th> --%>
               </tr>
               
               
@@ -377,9 +380,9 @@ background-color:#e5e8ff;
         </c:if>
         <!--  end solicited aes -->
         </table>
-       
-       </chrome:box>
        </c:if>
+       </chrome:box>
+       
       </div>
     
   </jsp:attribute>
