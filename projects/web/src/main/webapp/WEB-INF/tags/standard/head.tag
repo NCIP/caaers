@@ -12,6 +12,9 @@
 <!--[if IE]>
 <tags:stylesheetLink name="ie"/>
 <![endif]-->
+<!--[if lte IE 6]>
+<tags:stylesheetLink name="ie6"/>
+<![endif]-->
 <tags:stylesheetLink name="box"/>
 
 <tags:javascriptLink name="calendar"/>

@@ -371,11 +371,8 @@
 	  
 
 	<chrome:box id="aeReport.diseaseHistory" title="Disease Information" collapsable="true">
-    <p>
       <tags:instructions code="instruction_ae_patientdetails_diseaseinfo"/>
-    </p>
-    
-    <a name="anchorDiseaseInfo" />
+    <a name="anchorDiseaseInfo"></a>
     <div id="anchorDiseaseInfo">
       <ui:row path="${fieldGroups['disease'].fields[0].propertyName}">
         <jsp:attribute name="label">
@@ -436,7 +433,7 @@
       <tags:renderRow field="${opsField}" style="${command.aeReport.diseaseHistory.codedPrimaryDiseaseSite.id eq 110 ? '' :'display:none;'}"/>
       <tags:renderRow field="${fieldGroups['disease'].fields[4]}" />
     </div>
-    </div>
+    
   </chrome:box>
   <a name="anchorMetastaticDiseasesSection" />
   <chrome:box id="aeReport.diseaseHistory.metastaticDiseaseSites" title="Metastatic Disease Site" collapsable="true">
