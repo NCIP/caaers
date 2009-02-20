@@ -19,8 +19,7 @@
 <c:set var="hasAgent" value="${command.study.drugAdministrationPresent}" />
 <c:set var="hasBehavioral" value="${command.study.behavioralPresent}" />
 
-<center>
-<table class="attribution" id="attribution-${offset}" border="0" width="98%">
+<table class="attribution" id="attribution-${offset}" border="0">
     <col class="cause"/>
     <colgroup>
         <c:forEach begin="1" end="${aeCols}">
@@ -28,10 +27,10 @@
         </c:forEach>
     </colgroup>
     <tr class="top">
-        <th class="cause">Possible cause</th>
+        <th class="cause" width="170px">Possible cause</th>
         <c:forEach begin="${offset}" end="${offset + aeCols - 1}" var="i">
             <c:set var="ae" value="${adverseEvents[i]}"/>
-            <th class="ae">
+            <th class="ae" width="170px;">
                 <div class="index">
                     <c:choose>
                         <c:when test="${i == 0}">Primary AE</c:when>
@@ -68,4 +67,3 @@
 
     </c:forEach>
 </table>
-</center>
