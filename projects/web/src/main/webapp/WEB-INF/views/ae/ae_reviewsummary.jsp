@@ -86,28 +86,31 @@
 		
 		function enableReportsInPopup(){
 		
-			if(hasReportableAEs()){
+			if(hasReportableAEs() && ${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}){
 				if(checkIfReportSelected() == false){
 					$('create-new-report-table').style.display = 'none';
-					if(${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0})
-						$('box-existing-reports').style.display = '';
-					else
-						$('box-existing-reports').style.display = 'none';
+					$('create-new-report-statement').style.display = '';
+					if(document.getElementById('command')._action.value == 'createNew'){
+						document.getElementById('command')._action.value = '';
+						document.getElementById('command')._reportId.value = '';					
+					}
 				}
-				else{
-					$('create-new-report-table').style.display = '';
-					$('box-existing-reports').style.display = '';
-				}
-			}
+				$('box-existing-reports').style.display = '';
 							
-			var chkboxElements = $('report-list').select('[type="checkbox"]');
-			for(var i=0; i < chkboxElements.length; i++){
-				if(chkboxElements[i].checked){
-					$(chkboxElements[i].name + '-p').show();
-				}else{
-					$(chkboxElements[i].name + '-p').hide();
+				var chkboxElements = $('report-list').select('[type="checkbox"]');
+				for(var i=0; i < chkboxElements.length; i++){
+					if(chkboxElements[i].checked){
+						$(chkboxElements[i].name + '-p').show();
+					}else{
+						$(chkboxElements[i].name + '-p').hide();
+					}
 				}
 			}	
+		}
+		
+		function displayCreateNewReportTable(){
+			$('create-new-report-table').style.display = '';
+			$('create-new-report-statement').style.display = 'none';
 		}
 		
 		function checkIfReportSelected(){
@@ -293,9 +296,10 @@ background-color:#e5e8ff;
       	 	</c:if>
       	 	
       	 	
-      	 	<%-- Only shown if there are reportable adverse events--%>
-      	 	<c:if test="${displayReportableAeTable}">
-      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;" id="create-new-report-table">
+      	 	<%-- Only shown if there are reportable adverse events AND atleast one existing aeReport(dataCollection)--%>
+      	 	<c:if test="${displayReportableAeTable and aeReportsLength gt 0}">
+      	 	<div id="create-new-report-statement" >Click <a style='cursor:pointer' href="javascript:displayCreateNewReportTable()" class="link">here</a> to create a new report.</div>
+      	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;display:none" id="create-new-report-table">
       	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
       	 		<td width="10%" align="left">
           			<input type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
