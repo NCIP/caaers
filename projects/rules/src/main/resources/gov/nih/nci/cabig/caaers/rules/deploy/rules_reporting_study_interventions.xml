@@ -185,14 +185,26 @@
             <lhs>
                 <pattern identifier="aeReport" object-type="gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport"/>
                 <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
-                <eval>new ExpeditedAdverseEventValidator(){ public boolean
-                    validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                    TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
-                    SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; HashSet hSet =
-                    new HashSet(); for(CourseAgent ca : ti.getCourseAgents()){ i++;
-                    if(!hSet.add(ca.getStudyAgent().getId())){ errors.addValidationError("PAG_UK_ERR",
-                    "Protocol Agents must be unique", i,ca.getStudyAgent().getAgentName() ); } } return
-                    errors.hasErrors() ? FAIL : SUCCESS; } }.validate(aeReport, errors)</eval>
+                <eval>new ExpeditedAdverseEventValidator(){ 
+                	public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                    	TreatmentInformation ti = aeReport.getTreatmentInformation(); 
+                    	if(ti == null) return SUCCESS; 
+                    	if(ti.getCourseAgents() == null) return SUCCESS; 
+                    	int i = 0; 
+                    	HashSet hSet = new HashSet(); 
+                    	for(CourseAgent ca : ti.getCourseAgents()){ 
+                    		i++;
+                    		if(ca.getStudyAgent() == null) continue;
+                    		
+                    		if(!hSet.add(ca.getStudyAgent().getId())){ 
+                    			errors.addValidationError("PAG_UK_ERR", "Protocol Agents must be unique", 
+                    					i,ca.getStudyAgent().getAgentName() ); 
+                    		} 
+                    	} 
+                    	return errors.hasErrors() ? FAIL : SUCCESS; 
+                    } 
+                }.validate(aeReport, errors)
+               </eval>
             </lhs>
             <rhs>
                 <!--  Error message is already populated -->
@@ -216,6 +228,7 @@
                 TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
                 SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
                 ca : ti.getCourseAgents()){ i++;
+                if(ca.getStudyAgent() == null) continue;
                 if(ca.getStudyAgent().getInvestigationalNewDrugIndicator() &amp;&amp;
                 ca.getLastAdministeredDate() == null){ errors.addValidationError("PAG_BR3_ERR",
                 "'Date Last Administered' must be provided for an investigational agent.",i); } }
@@ -242,7 +255,9 @@
                 validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                 TreatmentInformation ti = aeReport.getTreatmentInformation(); if(ti == null) return
                 SUCCESS; if(ti.getCourseAgents() == null) return SUCCESS; int i = 0; for(CourseAgent
-                ca : ti.getCourseAgents()){ i++; if(ca.getDose().getAmount() != null
+                ca : ti.getCourseAgents()){ i++; 
+                if(ca.getStudyAgent() == null) continue;
+                if(ca.getDose().getAmount() != null
                 &amp;&amp; StringUtils.isEmpty(ca.getDose().getUnits()) ){
                     errors.addValidationError("PAG_BR2B_ERR", "'Unit of measure' must be provided if 'Total dose administered this course' is provided",i);
                      } } return errors.hasErrors() ? FAIL : SUCCESS;

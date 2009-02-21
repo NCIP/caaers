@@ -6,6 +6,7 @@ import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExecutionTestCase {
 
@@ -522,7 +523,59 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         ValidationErrors errors = fireRules(aeReport);
         assertNoErrors(errors, "When agents are unique");
     }
+    
+    /**
+     * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
+     * Message : PROTOCOL_AGENT must be unique
+     */
+    public void testDuplicateStudyAgents_OnlyOneEmptyAgent() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        List<CourseAgent> courseAgents = new ArrayList<CourseAgent>();
+        CourseAgent ca1 = new CourseAgent();
+        ca1.setTreatmentInformation(aeReport.getTreatmentInformation());
+        courseAgents.add(ca1);
+        
+        aeReport.getTreatmentInformation().setCourseAgentsInternal(courseAgents);
+        
+         ValidationErrors errors = fireRules(aeReport);
+         assertNoErrors(errors, "When only one empty agent is there are unique");
+    }
+    /**
+     * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
+     * Message : PROTOCOL_AGENT must be unique
+     */
+    public void testDuplicateStudyAgents_OnlyOneEmptyAgentAndOtherValidAgent() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        CourseAgent ca1 = new CourseAgent();
+        ca1.setTreatmentInformation(aeReport.getTreatmentInformation());
+        
+        aeReport.getTreatmentInformation().getCourseAgentsInternal().add(ca1);
+        
+         ValidationErrors errors = fireRules(aeReport);
+         assertNoErrors(errors, "When only one empty agent is there are unique");
+    }
+    /**
+     * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
+     * Message : PROTOCOL_AGENT must be unique
+     */
+    public void testDuplicateStudyAgents_WithOneAgentEmpty() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        for (CourseAgent ca : aeReport.getTreatmentInformation().getCourseAgents()) {
+            ca.getStudyAgent().setId(4);
+            Agent a = new Agent();
+            a.setName("xyz");
+            ca.getStudyAgent().setAgent(a);
+            ca.getStudyAgent().setOtherAgent(null);
+        }
+        
+        CourseAgent ca1 = new CourseAgent();
+        ca1.setTreatmentInformation(aeReport.getTreatmentInformation());
+        aeReport.getTreatmentInformation().getCourseAgentsInternal().add(1, ca1);
 
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "PAG_UK_ERR");
+        assertSameErrorCount(errors, 1);
+    }
     /**
      * RuleName : PAG_UK_CHK Rule : Protocol Agents must be unique" Error Code : PAG_UK_ERR Error
      * Message : PROTOCOL_AGENT must be unique
@@ -614,6 +667,8 @@ public class InterventionLevelBusinessRulesTest extends AbstractBusinessRulesExe
         assertEquals("Replacements (index) should be correct", 3, errors.getErrorAt(1).getReplacementVariables()[0]);
         assertEquals("Replacements (agentName) should be correct", "xyz", errors.getErrorAt(1).getReplacementVariables()[1]);
     }
+    
+    
 
     /**
      * RuleName : SEC_BR5B_CHK Rule : Protocol agents must be not be provided if Course Information
