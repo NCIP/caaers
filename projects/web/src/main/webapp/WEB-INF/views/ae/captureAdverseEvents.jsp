@@ -285,7 +285,40 @@
 		}
 	}
 
-  
+    // ----------------------------------------------------------------------------------------------------------------
+    
+    function displayAmendPopup(event, reportIdArray){
+		//alert('Inside displayAmendPopup, reportIdArray = ' + reportIdArray);
+		var form = document.getElementById('command');
+		if(form._action.value == 'amendmentRequired')
+			Event.stop(event);
+		
+		// Show the reports that are in the reportIdArray
+		for(var i = 0; i < reportIdArray.length; i++){
+			//alert('HERE... amend-aeReport-' + reportIdArray[i]);
+			$('amend-aeReport-' + reportIdArray[i]).show();
+		}
+		
+		var contentWin = new Window({className:"alphacube", destroyOnClose:true, id:"amend-popup-id", width:700,  height:530, top: 30, left: 300});
+        contentWin.setContent( 'display_amend_popup' );
+        contentWin.showCenter(true);
+        popupObserver = {
+      			onDestroy: function(eventName, win) {
+      				if (win == contentWin) {
+      					$('display_amend_popup').style.display='none';
+      					
+      					// Hide the reports that are in the reportIdArray
+						for(var i = 0; i < reportIdArray.length; i++){
+							$('amend-aeReport-' + reportIdArray[i]).hide();
+						}
+						
+      					contentWin = null;
+      					Windows.removeObserver(this);
+      				}
+      			}
+      		}
+        Windows.addObserver(popupObserver);
+	}
 	
 
     // ----------------------------------------------------------------------------------------------------------------

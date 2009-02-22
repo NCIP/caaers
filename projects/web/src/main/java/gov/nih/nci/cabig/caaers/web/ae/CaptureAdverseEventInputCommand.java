@@ -183,6 +183,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
     		if(ae.getAdverseEventTerm() == null  || ae.getAdverseEventTerm().getTerm() == null) unwantedAdverseEvents.add(ae);
     	}
     	
+    	
+    	if(unwantedAdverseEvents.isEmpty()) return;
+    	
     	for(AdverseEvent ae : unwantedAdverseEvents){
     		adverseEvents.remove(ae);
     	}
