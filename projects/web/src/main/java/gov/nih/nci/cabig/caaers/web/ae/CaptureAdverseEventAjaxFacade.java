@@ -184,9 +184,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	
     	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
     	
-    	//enable new expedited report workflow, if the reports are ammended
-    	if(reportsGotAmmended){
-    		adverseEventRoutingAndReviewRepository.enactReportWorkflow(ammendedReport);    		
+    	if(command.getWorkflowEnabled() && command.isAssociatedToWorkflow()){
+    		//enable new expedited report workflow, if the reports are ammended
+    		if(reportsGotAmmended){
+    			adverseEventRoutingAndReviewRepository.enactReportWorkflow(ammendedReport);    		
+    		}
     	}
     	
     	return new AjaxOutput();

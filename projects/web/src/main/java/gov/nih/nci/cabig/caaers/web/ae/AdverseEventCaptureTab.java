@@ -172,9 +172,11 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         		}
         	}
         	
-        	//update the workflow for every expedited report, whose Report is ammended
-        	for(ExpeditedAdverseEventReport aeReport : aeReportsAmmended){
-        		adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
+        	if(command.getWorkflowEnabled() && command.isAssociatedToWorkflow()){
+        		//update the workflow for every expedited report, whose Report is ammended
+        		for(ExpeditedAdverseEventReport aeReport : aeReportsAmmended){
+        			adverseEventRoutingAndReviewRepository.enactReportWorkflow(aeReport);
+        		}
         	}
         	
         }
