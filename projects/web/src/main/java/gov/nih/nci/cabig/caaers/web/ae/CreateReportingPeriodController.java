@@ -140,7 +140,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course associated with expedited report", true));
         InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course", true);
         endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
