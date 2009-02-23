@@ -158,6 +158,7 @@ public class AdverseEventCaptureTab extends AdverseEventTab {
         	
         	for(ExpeditedAdverseEventReport aeReport: command.getAdverseEventReportingPeriod().getAeReports()){
         		if(reportIdMap.containsKey(aeReport.getId())){
+        			command.reassociate(aeReport);
         			Boolean useDefaultVersion = false;
         	    	for(Report report: aeReport.getReports()){
         	    		if(report.getReportDefinition().getAmendable() && report.getIsLatestVersion()){

@@ -74,6 +74,7 @@ public class CreateExpeditedReportBeginTab<T extends AdverseEventInputCommand> e
     	CreateExpeditedAdverseEventCommand command = (CreateExpeditedAdverseEventCommand) cmd;
     	if(!errors.hasErrors()){
     		command.initialize();
+    		command.getAeReport().synchronizeMedicalHistoryFromAssignmentToReport();
     	}
     };
     

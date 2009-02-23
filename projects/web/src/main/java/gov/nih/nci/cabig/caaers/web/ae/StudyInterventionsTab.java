@@ -358,7 +358,7 @@ public class StudyInterventionsTab extends AeTab {
     // ----------------------------------------------------------------------------------------------------------------
 
     public ModelAndView removeAgent(HttpServletRequest request, Object command, Errors errors) {
-        ExpeditedAdverseEventInputCommand cmd = (ExpeditedAdverseEventInputCommand)command;
+        AbstractExpeditedAdverseEventInputCommand cmd = (AbstractExpeditedAdverseEventInputCommand)command;
         List<CourseAgent> agents = cmd.getAeReport().getTreatmentInformation().getCourseAgents();
 
         int index;
@@ -373,7 +373,7 @@ public class StudyInterventionsTab extends AeTab {
             log.debug("Wrong <index> for <agents> list.");
         } else if (index >=0) {
             agents.remove(agents.get(index));
-//            deleteAttributions((CourseAgent)agents.get(index), (ExpeditedAdverseEventInputCommand)command);
+            cmd.deleteAttribution(agents.get(index));
         };
 
         int size = agents.size();

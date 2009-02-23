@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -40,6 +41,7 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	private StudyParticipantAssignment assignment;
 	private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
+	private ExpeditedAdverseEventReportDao  aeReportDao;
 	
 	private Participant participant; 
 	private Study study;
@@ -77,12 +79,13 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 	}
 	
 	public CaptureAdverseEventInputCommand(AdverseEventReportingPeriodDao adverseEventReportingPeriodDao, 
-				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao){
+				StudyParticipantAssignmentDao assignmentDao, EvaluationService evaluationService, ReportDefinitionDao reportDefinitionDao, StudyDao studyDao, ExpeditedAdverseEventReportDao aeReportDao){
 		this.adverseEventReportingPeriodDao = adverseEventReportingPeriodDao;
 		this.assignmentDao = assignmentDao;
 		this.evaluationService = evaluationService;
 		this.reportDefinitionDao = reportDefinitionDao;
 		this.studyDao = studyDao;
+		this.aeReportDao = aeReportDao;
 		
 		
 		this.selectedAesMap = new HashMap<Integer, Boolean>();
@@ -128,6 +131,9 @@ public class CaptureAdverseEventInputCommand implements	AdverseEventInputCommand
 		if(this.getAdverseEventReportingPeriod() != null) adverseEventReportingPeriodDao.save(this.getAdverseEventReportingPeriod());
 	}
 	
+	public void reassociate(ExpeditedAdverseEventReport aeReport){
+		aeReportDao.reassociate(aeReport);
+	}
 	public void reassociate(){
 		//reassociate all report definitions
 		if(allReportDefinitions != null)

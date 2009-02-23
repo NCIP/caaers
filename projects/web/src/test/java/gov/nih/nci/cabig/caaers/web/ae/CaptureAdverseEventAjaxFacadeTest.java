@@ -3,6 +3,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.setId;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -40,6 +41,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
     private StudyParticipantAssignmentDao assignmentDao;
 	private ReportDefinitionDao reportDefinitionDao;
+	private ExpeditedAdverseEventReportDao aeReportDao;
 	private StudyDao studyDao;
     private StudyParticipantAssignment assignment;
 	private EvaluationService evaluationService;
@@ -55,6 +57,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		assignmentDao = registerDaoMockFor(StudyParticipantAssignmentDao.class);
 		reportDefinitionDao = registerDaoMockFor(ReportDefinitionDao.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
+		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
 		
 		assignment = registerMockFor(StudyParticipantAssignment.class);
         evaluationService = registerMockFor(EvaluationService.class);
@@ -92,7 +95,7 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 	}
 	
 	private CaptureAdverseEventInputCommand setupCaptureAdverseEventCommand() {
-		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao , studyDao );
+		CaptureAdverseEventInputCommand command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao , studyDao, aeReportDao);
 		command.setStudy(new Study());
 		AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
 		reportingPeriod.setId(1);

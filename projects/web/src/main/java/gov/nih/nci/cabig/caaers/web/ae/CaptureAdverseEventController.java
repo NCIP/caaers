@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.AdverseEventDao;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.CtcCategoryDao;
 import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
@@ -77,6 +78,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private EvaluationService evaluationService;
 	private ReportDefinitionDao reportDefinitionDao;
+	private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 	
 	private RenderDecisionManagerFactoryBean renderDecisionManagerFactoryBean;
 	
@@ -299,7 +301,7 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	
 	@Override
 	protected Object formBackingObject(HttpServletRequest request)	throws Exception {
-		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao);
+		CaptureAdverseEventInputCommand cmd = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao,assignmentDao, evaluationService, reportDefinitionDao, studyDao, expeditedAdverseEventReportDao);
 		cmd.setWorkflowEnabled(configuration.get(Configuration.ENABLE_WORKFLOW));
 		return cmd;
 	}
@@ -537,4 +539,13 @@ public class CaptureAdverseEventController extends AutomaticSaveAjaxableFormCont
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
+	
+	public void setExpeditedAdverseEventReportDao(
+			ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao) {
+		this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
+	}
+	public ExpeditedAdverseEventReportDao getExpeditedAdverseEventReportDao() {
+		return expeditedAdverseEventReportDao;
+	}
+	
 }

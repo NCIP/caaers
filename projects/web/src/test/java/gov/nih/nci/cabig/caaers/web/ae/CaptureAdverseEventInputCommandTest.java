@@ -2,6 +2,7 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
+import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
@@ -28,6 +29,7 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	private EvaluationService evaluationService;
 	private StudyDao studyDao;
+	private ExpeditedAdverseEventReportDao aeReportDao;
 	
 	List<AdverseEvent> aes;
 	List<ReportDefinition> reportdefs;
@@ -42,7 +44,8 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		adverseEventReportingPeriodDao = registerDaoMockFor(AdverseEventReportingPeriodDao.class);
 		evaluationService = registerMockFor(EvaluationService.class);
 		studyDao = registerDaoMockFor(StudyDao.class);
-		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao, studyDao );
+		aeReportDao = registerDaoMockFor(ExpeditedAdverseEventReportDao.class);
+		command = new CaptureAdverseEventInputCommand(adverseEventReportingPeriodDao, assignmentDao, evaluationService, reportDefinitionDao, studyDao,aeReportDao );
 		
 		reportingPeriod = Fixtures.createReportingPeriod();
 		
