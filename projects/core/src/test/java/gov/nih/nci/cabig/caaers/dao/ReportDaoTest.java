@@ -377,14 +377,14 @@ public class ReportDaoTest extends DaoTestCase<ReportDao> {
     	Report r = getDao().getById(-223);
     	interruptSession();
     	try{
-    		r.getReportDefinition().getName();
+    		r.getReportVersions().size();
     		fail("should throw lazy init exception");
     	}catch(Exception e){
     		
     	}
     	
     	getDao().reassociate(r);
-    	assertNotNull(r.getReportDefinition().getName());
+    	assertEquals(1, r.getReportVersions().size());
     	
     }
     
