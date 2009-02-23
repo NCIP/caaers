@@ -46,7 +46,7 @@
 
         <tags:renderRow field="${fieldGroups[ctcTermGroup].fields[0]}" extraParams="<a id=\"showAllTerm${index}\" href=\"javascript:showAjaxTable(this,$F('aeReport.adverseEvents[${index}].ctc-category'),'table${index}','table${index}-outer')\">Show All</a>" />
         
-		<div id="table${index}-outer" style="position: absolute; display: none;width:400px; left: 520px;  ">
+		<div id="table${index}-outer" style="position: absolute; display: none;width:400px; left: 520px; z-index:999;">
 		<table width="100%" class="eXtremeTable" frame="border" border-color="blue" bgcolor="white">
 		<tbody>
             <tr class="titleRow">
