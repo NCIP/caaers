@@ -137,7 +137,7 @@
  	
  		Event.observe('flow-next', 'click', checkSubmittedAEs);
  		Event.observe('flow-prev', 'click', checkSubmittedAEs);
-// 		Event.observe('flow-update', 'click', checkSubmittedAEs);
+ 		Event.observe('flow-update', 'click', checkSubmittedAEs);
  		
  		var url = document.addRoutineAeForm.action;
  		var stripped_url = '';
@@ -195,7 +195,6 @@
             var oldSignature = document.getElementById(oldSignatureId).value;
             if (signature != oldSignature) {
                 hasChanges = true;
-
                 // The ae was modified.
                 var reportElementId = 'ae-section-' + listOfAEIndexes[i].value + '-reportID';
                 reportIdArray[totalReportIdCount++] = document.getElementById(reportElementId).value;
