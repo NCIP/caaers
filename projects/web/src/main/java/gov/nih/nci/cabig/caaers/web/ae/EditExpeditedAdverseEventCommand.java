@@ -97,6 +97,9 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     	Boolean isSelectedReportEarlier = false;
     	Report earliestPendingSponsorReport = getAeReport().getEarliestPendingSponsorReport();
     	for(ReportDefinition reportDefinition: newlySelectedSponsorReports){
+    		
+    		if(reportDefinition.getExpectedDueDate() == null || earliestPendingSponsorReport.getDueOn() == null) continue;
+    		
     		if(reportDefinition.getExpectedDueDate().compareTo(earliestPendingSponsorReport.getDueOn()) < 0){
     			isSelectedReportEarlier = true;
     			break;
