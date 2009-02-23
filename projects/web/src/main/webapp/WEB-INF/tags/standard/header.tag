@@ -32,12 +32,14 @@
             <c:if test="${not empty currentSection.tasks}">
 				<c:set var="noOfTasks" value="${fn:length(currentSection.tasks)}" />
 				 <!-- test : ${noOfTasks} , ${fn:length(currentSection.tasks)}-->
+				 <ul>
                 <c:forEach items="${currentSection.tasks}" var="task">
 				<c:set var="lengthOfTask" value="${fn:length(task.displayName)}" />
                     <csmauthz:accesscontrol domainObject="${task}" authorizationCheckName="taskAuthorizationCheck">
-                    	 <a class="${(task == currentTask) || (task.displayName == currentTask.displayName) ?  ( noOfTasks gt 4 ? 'selected gt4' : 'selected lte4') : ( noOfTasks gt 4 ? 'gt4' : 'lte4')} ${(lengthOfTask gt 21 ? 'gt18' : '')}" id="secondlevelnav_${task.linkName}"  href="<c:url value="${task.url}"/>"><img class="${(lengthOfTask gt 21 ? 'imagegt18' : '')}" src="/caaers/images/blue/icons/${task.linkName}_icon.png" alt=""/><span class="spangt18">${task.displayName}</span></a>
+                    	 <li class="${noOfTasks gt 4 ? 'gt4' : 'lte4'}"><a class="${(task == currentTask) || (task.displayName == currentTask.displayName) ?  'selected' : '' } ${(lengthOfTask gt 21 ? 'gt18' : '')}" id="secondlevelnav_${task.linkName}"  href="<c:url value="${task.url}"/>"><img class="${(lengthOfTask gt 21 ? 'imagegt18' : '')}" src="/caaers/images/blue/icons/${task.linkName}_icon.png" alt=""/><span class="spangt18">${task.displayName}</span></a></li>
                     </csmauthz:accesscontrol>
                 </c:forEach>
+				</ul>
             </c:if>
         </div>
     </div>
