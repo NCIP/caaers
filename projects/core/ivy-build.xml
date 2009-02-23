@@ -142,7 +142,6 @@
         <sql driver="${datasource.driver}" userid="${datasource.username}" password="${datasource.password}"
              url="${datasource.url}"
              classpathref="main.classpath" onerror="abort" autocommit="true">
-        	${query0}
             ${query1}
             ${query2}
             ${query3}
