@@ -372,8 +372,8 @@ public class StudyInterventionsTab extends AeTab {
         if (agents.size() - 1 < index) {
             log.debug("Wrong <index> for <agents> list.");
         } else if (index >=0) {
+        	cmd.deleteAttribution(agents.get(index));
             agents.remove(agents.get(index));
-            cmd.deleteAttribution(agents.get(index));
         };
 
         int size = agents.size();
