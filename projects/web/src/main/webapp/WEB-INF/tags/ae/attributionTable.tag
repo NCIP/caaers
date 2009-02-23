@@ -44,10 +44,6 @@
     </tr>
     <c:forEach items="${blocks}" var="block">
 
-        <c:if test="${block.displayName eq 'Disease' || block.displayName eq 'Diseases' || block.displayName eq 'Concomitant medication' || block.displayName eq 'Concomitant medications' || block.displayName eq 'Other causes'}">
-            <c:set var="display" value="true" />
-        </c:if>
-        
         <c:if test="${not empty block.rows}">
 
                     <tr class="subhead">

@@ -30,12 +30,10 @@ import java.util.ListIterator;
  */
 public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
     public AttributionMap(ExpeditedAdverseEventReport aeReport) {
-        super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(
-                        aeReport));
+        super(new HashMap<String, List<List<Attribution>>>(), new AeAttributionListTransformer(aeReport));
     }
 
-    private static class AeAttributionListTransformer implements
-                    Transformer<String, List<List<Attribution>>> {
+    private static class AeAttributionListTransformer implements Transformer<String, List<List<Attribution>>> {
         private ExpeditedAdverseEventReport aeReport;
 
         public AeAttributionListTransformer(ExpeditedAdverseEventReport aeReport) {
@@ -45,8 +43,7 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
         public List<List<Attribution>> transform(String s) {
             CauseAndAttributionAccessor<?, ?> accessor = CauseAndAttributionAccessor.getByKey(s);
             if (accessor == null) {
-                throw new IllegalArgumentException("Don't know how to map " + s
-                                + " to a attributions collection");
+                throw new IllegalArgumentException("Don't know how to map " + s + " to a attributions collection");
             }
             return new AdverseEventsList(aeReport, accessor);
         }
@@ -57,8 +54,7 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
 
         private CauseAndAttributionAccessor<?, ?> accessor;
 
-        public AdverseEventsList(ExpeditedAdverseEventReport adverseEventReport,
-                        CauseAndAttributionAccessor<?, ?> accessor) {
+        public AdverseEventsList(ExpeditedAdverseEventReport adverseEventReport, CauseAndAttributionAccessor<?, ?> accessor) {
             this.adverseEventReport = adverseEventReport;
             this.accessor = accessor;
         }
@@ -70,16 +66,14 @@ public class AttributionMap extends LazyMap<String, List<List<Attribution>>> {
         }
     }
 
-    private static class AttributionsList<C extends DomainObject, A extends AdverseEventAttribution<C>>
-                    implements List<Attribution> {
+    private static class AttributionsList<C extends DomainObject, A extends AdverseEventAttribution<C>>implements List<Attribution> {
         private AdverseEvent adverseEvent;
 
         private CauseAndAttributionAccessor<C, A> accessor;
 
         private List<A> attributions;
 
-        public AttributionsList(AdverseEvent adverseEvent,
-                        CauseAndAttributionAccessor<C, A> accessor) {
+        public AttributionsList(AdverseEvent adverseEvent, CauseAndAttributionAccessor<C, A> accessor) {
             this.adverseEvent = adverseEvent;
             this.accessor = accessor;
         }

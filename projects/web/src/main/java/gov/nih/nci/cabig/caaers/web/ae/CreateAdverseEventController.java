@@ -48,19 +48,16 @@ public class CreateAdverseEventController extends AbstractAdverseEventInputContr
 	   
 	   @Override
 	   protected Object formBackingObject(HttpServletRequest request) throws Exception {
-		   
-		   //remove the edit command from the session
-		   request.getSession(true).removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command");
-		   request.getSession().removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command.to-replace");
-		   
-		   RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
-		   CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao,
-				   reportingPeriodDao, expeditedReportTree,renderDecisionManager, evaluationService, reportRepository, studyDao, assignmentDao);
-		   command.getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
-		   command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
-	    	
-	    	return command;
-	   }
+           //remove the edit command from the session
+           request.getSession(true).removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command");
+           request.getSession().removeAttribute(EditAdverseEventController.class.getName() + ".FORM.command.to-replace");
+
+           RenderDecisionManager renderDecisionManager = renderDecisionManagerFactoryBean.getRenderDecisionManager();
+           CreateExpeditedAdverseEventCommand command = new CreateExpeditedAdverseEventCommand(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, evaluationService, reportRepository, studyDao, assignmentDao);
+           command.getAeReport().setCreatedAt(nowFactory.getNowTimestamp());
+           command.setWorkflowEnabled(getConfiguration().get(getConfiguration().ENABLE_WORKFLOW));
+           return command;
+       }
 	   
 	   @Override
 	   protected boolean shouldSave(HttpServletRequest request,	ExpeditedAdverseEventInputCommand command,	Tab<ExpeditedAdverseEventInputCommand> tab) {

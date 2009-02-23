@@ -60,11 +60,9 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 			EvaluationService evaluationService, ReportRepository reportRepository, StudyDao studyDao, StudyParticipantAssignmentDao assignmentDao) {
 		
 		super(reportDao, reportDefinitionDao, reportingPeriodDao, expeditedReportTree, renderDecisionManager, reportRepository, assignmentDao);
-		this.aeReport = new ExpeditedAdverseEventReport();
-		this.aeReport.setReporter(new Reporter());
-		this.aeReport.setPhysician(new Physician());
-		
-		this.evaluationService = evaluationService;
+
+        this.setAeReport(new ExpeditedAdverseEventReport());
+        this.evaluationService = evaluationService;
 		this.studyDao = studyDao;
         
         this.allReportDefinitions = new ArrayList<ReportDefinition>();
