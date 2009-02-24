@@ -30,10 +30,9 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 	}
 
 	public void testGetName() {
-		assertEquals("Start Date: 03/02/00;TAC: acd;Cycle #: 1",  reportingPeriod1.getName());
-		assertEquals("TAC: acd;Cycle #: 5", reportingPeriod2.getName());
+		assertEquals("Cycle #: 1; Start Date: 03/02/00",  reportingPeriod1.getName());
+		assertEquals("Cycle #: 5; ", reportingPeriod2.getName());
 		assertEquals("", reportingPeriod3.getName());
-		
 	}
 
 }
