@@ -67,6 +67,7 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         StudySite ss = new StudySite();
         ss.setStudy(new Study());
         assignment.setStudySite(ss);
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
         report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
 
@@ -79,8 +80,6 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
         assertEquals("must not copy the prior therapy", 1, assignment.getPriorTherapies().size());
-
-
     }
 
     public void testSyncrhonizeDiseaseHistory() {
