@@ -180,8 +180,8 @@ public class ReportRepositoryImpl implements ReportRepository {
      */
     public void amendReport(Report report, Boolean useDefaultVersion){
     	
-    	reportDao.reassociate(report);
     	participantDao.lock(report.getAeReport().getParticipant());
+    	reportDao.reassociate(report);
     	studyDao.lock(report.getAeReport().getStudy());
     	
     	ReportVersion reportVersion = new ReportVersion();

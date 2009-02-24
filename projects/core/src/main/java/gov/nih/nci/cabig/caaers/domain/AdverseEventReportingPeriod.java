@@ -384,7 +384,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     public boolean hasDiffrentAEWithSameTerm(AdverseEvent otherAE){
     	for(AdverseEvent ae : getAdverseEvents()){
     		if(ae.getId().equals(otherAE.getId())) continue;
-    		if(ae.getAdverseEventCtcTerm() == null || otherAE.getAdverseEventTerm() == null)  continue;
+    		if(ae.getAdverseEventTerm() == null || otherAE.getAdverseEventTerm() == null)  continue;
     		if(ae.getAdverseEventTerm().equals(otherAE.getAdverseEventTerm())) return true;
     	}
     	return false;

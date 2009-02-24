@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.persistence.LockModeType;
 
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventExistQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
@@ -69,8 +71,13 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     
     @SuppressWarnings("unchecked")
 	public List<AdverseEventReportingPeriod> findAdverseEventReportingPeriods(final AdverseEventReportingPeriodForReviewQuery query){
+        return (List<AdverseEventReportingPeriod>) find(query);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public Object find(final AbstractQuery query){
          log.debug("::: " + query.getQueryString());
-         return (List<AdverseEventReportingPeriod>) getHibernateTemplate().execute(new HibernateCallback(){
+         return getHibernateTemplate().execute(new HibernateCallback(){
         	  public Object doInHibernate(final Session session) throws HibernateException,SQLException {
         		  org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
         		  Map<String, Object> queryParameterMap = query.getParameterMap();
@@ -82,5 +89,14 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
         		  return hiberanteQuery.list();
         	  } 
          });
+    }
+    
+    public boolean isAdverseEventPresent(AdverseEvent ae){
+    	AdverseEventExistQuery query = new AdverseEventExistQuery();
+    	query.filterByDifferentAdverseEventId(ae.getId());
+    	query.filterByAdverseEventTerm(ae.getAdverseEventTerm());
+    	query.filterByLowLevelTerm(ae.getLowLevelTerm());
+    	List<AdverseEvent> aeList = (List<AdverseEvent>) find(query);
+    	return (aeList != null && !aeList.isEmpty());
     }
 }

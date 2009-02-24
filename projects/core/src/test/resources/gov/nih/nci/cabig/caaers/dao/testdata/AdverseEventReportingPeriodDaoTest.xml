@@ -2,6 +2,9 @@
     <organizations
         id="1002"
         name="New Site"/> 
+        
+    <meddra_llt id="-1" meddra_code="abcd" meddra_term="efg" />    
+        
     <ctc_versions
         id="3"
         name="CTCAE v3.0"
@@ -208,6 +211,7 @@
         id="-70"
         reporting_period_id="1001"
         list_index="0"
+        low_level_term_id="-1"
         />
         
     <ADVERSE_EVENTS
@@ -359,8 +363,22 @@
         
      <AE_TERMS
     	id="-16"
-    	adverse_event_id="-74"
+    	adverse_event_id="-75"
     	term_id="3007" 
+    	term_type="ctep"
+    	/>
+    	
+    	
+    <ADVERSE_EVENTS
+        id="-76"
+        reporting_period_id="1006"
+        routine_list_index="2"
+        />
+        
+     <AE_TERMS
+    	id="-17"
+    	adverse_event_id="-76"
+    	term_id="3012" 
     	term_type="ctep"
     	/>
 		

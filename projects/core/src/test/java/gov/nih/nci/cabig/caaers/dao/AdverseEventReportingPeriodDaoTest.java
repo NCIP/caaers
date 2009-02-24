@@ -3,11 +3,14 @@ package gov.nih.nci.cabig.caaers.dao;
 import edu.nwu.bioinformatics.commons.DateUtils;
 import edu.nwu.bioinformatics.commons.testing.CoreTestCase;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.AdverseEventExistQuery;
 import gov.nih.nci.cabig.caaers.dao.query.AdverseEventReportingPeriodForReviewQuery;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
+import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
@@ -109,5 +112,113 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     	List<AdverseEventReportingPeriod> reportingPeriods = getDao().findAdverseEventReportingPeriods(query);
     	assertNotNull(reportingPeriods);
     	assertEquals(5, reportingPeriods.size());
+    }
+    
+
+    public void testIsAdverseEventPresent(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-999);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3014);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertFalse(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_SameAEId_DifferentTermId(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-76);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3017);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertFalse(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_SameAEId_SameTermId(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-76);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3012);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertFalse(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_DifferentAEId_SameTermId(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-766);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3012);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertTrue(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_DifferentAEId_SameTermId_DifferentLowLevelTerm(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-766);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3007);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	LowLevelTerm lowLevelTerm = new LowLevelTerm();
+    	lowLevelTerm.setId(88);
+    	ae1.setLowLevelTerm(lowLevelTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertFalse(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_DifferentAEId_SameTermId_SameLowLevelTerm(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-766);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3007);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	LowLevelTerm lowLevelTerm = new LowLevelTerm();
+    	lowLevelTerm.setId(-1);
+    	ae1.setLowLevelTerm(lowLevelTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertTrue(result);
+    	
+    }
+    
+    public void testIsAdverseEventPresent_SameAEId_SameTermId_SameLowLevelTerm(){
+    	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setId(-70);
+    	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
+    	CtcTerm term = new CtcTerm();
+    	term.setId(3007);
+    	ctcTerm.setTerm(term);
+    	ae1.setAdverseEventCtcTerm(ctcTerm);
+    	LowLevelTerm lowLevelTerm = new LowLevelTerm();
+    	lowLevelTerm.setId(-1);
+    	ae1.setLowLevelTerm(lowLevelTerm);
+    	
+    	boolean result = getDao().isAdverseEventPresent(ae1);
+    	assertFalse(result);
+    	
     }
 }
