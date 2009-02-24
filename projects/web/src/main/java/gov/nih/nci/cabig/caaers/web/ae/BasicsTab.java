@@ -1,15 +1,31 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.*;
+import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
+import gov.nih.nci.cabig.caaers.domain.Attribution;
+import gov.nih.nci.cabig.caaers.domain.Grade;
+import gov.nih.nci.cabig.caaers.domain.Hospitalization;
+import gov.nih.nci.cabig.caaers.domain.Outcome;
+import gov.nih.nci.cabig.caaers.domain.OutcomeType;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
-import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.web.fields.DefaultInputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.fields.InputField;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin
@@ -19,6 +35,7 @@ public abstract class BasicsTab extends AeTab {
 
     protected static final Collection<Grade> EXPEDITED_GRADES = new ArrayList<Grade>(5);
     protected static final Integer VERBATIM_MAX_SIZE = 65;
+    
 
     static {
         EXPEDITED_GRADES.addAll(Arrays.asList(Grade.values()));
@@ -66,15 +83,16 @@ public abstract class BasicsTab extends AeTab {
     }
 
     @Override
-    protected void validate(ExpeditedAdverseEventInputCommand command, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    protected void validate(ExpeditedAdverseEventInputCommand cmd, BeanWrapper commandBean, Map<String, InputFieldGroup> fieldGroups, Errors errors) {
+    	AbstractExpeditedAdverseEventInputCommand command = (AbstractExpeditedAdverseEventInputCommand) cmd;
         super.validate(command, commandBean, fieldGroups, errors);
         
         for (ListIterator<AdverseEvent> lit = command.getAeReport().getAdverseEvents().listIterator(); lit.hasNext();) {
             AdverseEvent ae = lit.next();
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
-//            if(command.getAeReport().getReportingPeriod().hasDiffrentAEWithSameTerm(ae)){
-//            	errors.reject("SAE_022",new Object[] {ae.getAdverseEventTerm().getFullName()}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
-//            }
+            if(command.isAdverseEventPresent(ae)){
+            	errors.reject("SAE_022",new Object[] {ae.getAdverseEventTerm().getFullName()}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
+            }
         }
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);
         
@@ -186,4 +204,5 @@ public abstract class BasicsTab extends AeTab {
     	}
     	return super.hasEmptyMandatoryFields(command, request) || primaryAEStartDateNotFilled;
     }
+    
 }

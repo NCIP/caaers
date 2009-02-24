@@ -102,7 +102,6 @@ public class CreateExpeditedAdverseEventCommand extends AbstractExpeditedAdverse
 		if(aeReport.getId() != null){
 			reportDao.reassociate(aeReport);
 		}
-		
     }
 	
 	public void reassociateSelectedReportDefinitions(){

@@ -373,9 +373,9 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	return getWorkflowEnabled() && getAeReport().getWorkflowId() != null;
     }
     
-    /** By default addition of AEs is not allowed in expedited flow */
+    /** By default addition of AEs is allowed in expedited flow */
     public boolean isAdditionAllowed() {
-    	return false;
+    	return true;
     }
     
     public boolean getWorkflowEnabled() {
@@ -413,6 +413,10 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
     	renderDecisionManager.updateRenderDecision(map.values());
     	
 	}
+    
+    boolean isAdverseEventPresent(AdverseEvent ae){
+    	return reportingPeriodDao.isAdverseEventPresent(ae);
+    }
     
     public void initializeNotApplicableFields(){
     	initializeNotApplicableFields(this.getSelectedReportDefinitions());
