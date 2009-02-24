@@ -3,7 +3,7 @@
 	font-size:2px;
 }
 #build-name {
-	bottom:-200px;
+	bottom:-300px;
 }
 #main div.row.instructions div.label {
 	width:4em;
@@ -13,7 +13,7 @@
 #main div.row.instructions div.value {
 	margin-left:60px;
 }
-a.omnipotent-button, button.omnipotent-button {
+/* a.omnipotent-button, button.omnipotent-button {
 	height: 31px;
 	padding:2px;
 	background-image:none;
@@ -39,4 +39,4 @@ a.omnipotent-button .right, button.omnipotent-button .right {
 	right:2px;
 	top:3px;
 	width:3px;
-}
+} */
