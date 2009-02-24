@@ -63,10 +63,15 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
     public void testSyncrhonizePriorTherapies() {
         report.addSaeReportPriorTherapies(saeReportPriorTherapy);
-        
+
+        StudySite ss = new StudySite();
+        ss.setStudy(new Study());
+        assignment.setStudySite(ss);
+        report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
+        report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the prior therapy", 1, assignment.getPriorTherapies().size());
-
         
         //create a fresh assignment, add one StudyParticipantPriorTherapy. 
         createAssignment();

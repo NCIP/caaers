@@ -26,7 +26,6 @@ public class AdverseEventReportingPeriodTest extends AbstractNoSecurityTestCase 
 		reportingPeriod2.setTreatmentAssignment(tac1);
 		
 		reportingPeriod3 = Fixtures.createReportingPeriod();
-		
 	}
 
 	public void testGetName() {
