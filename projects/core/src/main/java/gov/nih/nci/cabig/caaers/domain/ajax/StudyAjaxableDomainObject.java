@@ -6,16 +6,12 @@ package gov.nih.nci.cabig.caaers.domain.ajax;
  */
 public class StudyAjaxableDomainObject extends AbstractAjaxableDomainObject {
 
-
     private String shortTitle;
     private String primaryIdentifierValue;
 
     public String getDisplayName() {
-
-        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" :
-                " ( " + this.getPrimaryIdentifierValue() + " ) ";
+        String primaryIdentifier = this.getPrimaryIdentifierValue() == null ? "" : " ( " + this.getPrimaryIdentifierValue() + " ) ";
         return this.getShortTitle() + primaryIdentifier;
-
     }
 
 

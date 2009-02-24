@@ -49,16 +49,13 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
     public void testWrongUsesOfSyncrhonizeMethod() {
         report.setReportingPeriod(new AdverseEventReportingPeriod());
-        String message = String.format("Wrong uses of synchronizeMedicalHistoryFromReportToAssignment. " +
-                "This report %s does not belong to this assigment %s ", report.getId(), assignment.getParticipant().getFullName());
+        String message = String.format("Wrong uses of synchronizeMedicalHistoryFromReportToAssignment. " + "This report %s does not belong to this assigment %s ", report.getId(), assignment.getParticipant().getFullName());
         try {
             assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
             fail();
-
         } catch (CaaersSystemException e) {
             assertEquals(message, e.getMessage());
         }
-
     }
 
     public void testSyncrhonizePriorTherapies() {
@@ -70,12 +67,13 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
         report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
-
+        report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the prior therapy", 1, assignment.getPriorTherapies().size());
         
         //create a fresh assignment, add one StudyParticipantPriorTherapy. 
         createAssignment();
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         assignment.addPriorTherapy(existingPriorTherapy);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
@@ -85,11 +83,17 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
     public void testSyncrhonizeDiseaseHistory() {
         DiseaseHistory diseaseHistory = new DiseaseHistory();
         report.setDiseaseHistory(diseaseHistory);
+
+        StudySite ss = new StudySite();
+        ss.setStudy(new Study());
+        assignment.setStudySite(ss);
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
+        report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+        report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
+        
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
-        assertNull("must not copy the diseaseHistory", assignment.getDiseaseHistory());
-
         report.getDiseaseHistory().addMetastaticDiseaseSite(new MetastaticDiseaseSite());
-
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
@@ -97,54 +101,66 @@ public class StudyParticipantAssignmentTest extends AbstractNoSecurityTestCase {
 
         createAssignment();
         assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
-
         MetastaticDiseaseSite diseaseSite = new MetastaticDiseaseSite();
         diseaseSite.setId(2);
+        
         report.getDiseaseHistory().addMetastaticDiseaseSite(diseaseSite);
-
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
-
         assertEquals("must not copy the MetastaticDiseaseSite", 1, assignment.getDiseaseHistory().getMetastaticDiseaseSites().size());
-
-
     }
 
     public void testSyncrhonizePreExistingCondition() {
+        StudySite ss = new StudySite();
+        ss.setStudy(new Study());
+        assignment.setStudySite(ss);
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
+        report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+        report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
+
         report.addSaeReportPreExistingCondition(new SAEReportPreExistingCondition());
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the pre existing condition", 1, assignment.getPreExistingConditions().size());
 
         createAssignment();
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        
         SAEReportPreExistingCondition reportPreExistingCondition = new SAEReportPreExistingCondition();
         reportPreExistingCondition.setId(1);
         report.addSaeReportPreExistingCondition(reportPreExistingCondition);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
         assertEquals("must not copy the pre existing condition", 1, assignment.getPreExistingConditions().size());
-
-
     }
 
     public void testSyncrhonizeConcomitantMedication() {
     	ConcomitantMedication conMed = new ConcomitantMedication();
     	conMed.setAgentName("myagent");
         report.addConcomitantMedication(conMed);
+
+        StudySite ss = new StudySite();
+        ss.setStudy(new Study());
+        assignment.setStudySite(ss);
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        report.getStudy().setDiseaseTerminology(new DiseaseTerminology());
+        report.getStudy().getDiseaseTerminology().setDiseaseCodeTerm(DiseaseCodeTerm.CTEP);
+        report.getDiseaseHistory().setCtepStudyDisease(new CtepStudyDisease());
+
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
         assertEquals("must copy the concomitantMedication", 1, assignment.getConcomitantMedications().size());
 
         createAssignment();
+        assignment.setDiseaseHistory(new StudyParticipantDiseaseHistory());
+        
         ConcomitantMedication concomitantMedication = new ConcomitantMedication();
         concomitantMedication.setId(2);
         report.addConcomitantMedication(concomitantMedication);
         assignment.synchronizeMedicalHistoryFromReportToAssignment(report);
 
         assertEquals("must not copy the concomitantMedication", 1, assignment.getConcomitantMedications().size());
-
-
     }
     
     public void testGetMaxCycleNumber(){
-    	
     	AdverseEventReportingPeriod rp1 = Fixtures.createReportingPeriod();
     	AdverseEventReportingPeriod rp2 = Fixtures.createReportingPeriod();
     	AdverseEventReportingPeriod rp3 = Fixtures.createReportingPeriod();
