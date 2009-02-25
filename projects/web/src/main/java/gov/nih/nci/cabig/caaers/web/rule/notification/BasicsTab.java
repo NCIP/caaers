@@ -124,5 +124,10 @@ public class BasicsTab extends TabWithFields<ReportDefinitionCommand> {
             errors.rejectValue("reportDefinition.duration", "REQUIRED",
                             "Invalid Time Till Report Due");
         }
+        
+        //check for duplicate report definitions.
+        if(command.isSimilarReportDefinitionExist(command.getReportDefinition())){
+        	errors.rejectValue("reportDefinition.name","RPD_001","Duplicate Report Definition!.");
+        }
     }
 }

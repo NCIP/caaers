@@ -1,5 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.report.NotificationBodyContent;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedEmailNotification;
@@ -190,6 +191,14 @@ public class ReportDefinitionCommand {
 
     public boolean getHideErrors() {
         return this.hideErrors;
+    }
+    
+    public boolean isSimilarReportDefinitionExist(ReportDefinition reportDef){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(reportDef.getId());
+    	query.filterByName(reportDef.getName());
+    	int cnt = rpDefDao.noOfSimilarReportDefinitions(query);
+    	return cnt > 0;
     }
 
     class PlannedEmailNotificationFactory<T extends PlannedNotification> implements Factory<T> {
