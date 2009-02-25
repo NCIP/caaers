@@ -53,8 +53,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
     }
     
     public void saveReportingPeriod() {
-    	// TODO Auto-generated method stub
-    	throw new UnsupportedOperationException("Should not call reporting period save from edit expedited flow");
+    	reportingPeriodDao.save(aeReport.getReportingPeriod());
     }
     
     @Override
