@@ -2,13 +2,6 @@
 .hr {
 	font-size:2px;
 }
-#main {
-	margin-top:140px;
-}
-.workflow-tabs {
-	top:128px;
-	margin-top:13px;
-}
 #build-name {
 	bottom:-300px;
 }
@@ -20,23 +13,18 @@
 #main div.row.instructions div.value {
 	margin-left:60px;
 }
-/* a.omnipotent-button, button.omnipotent-button {
-	height: 31px;
-	padding:2px;
-	background-image:none;
-	background-repeat:no-repeat;
-	border:outset;
-	background-color:#ECE9D8;
-	position:fixed;
-	font-size:19px;
+a.omnipotent-button, button.omnipotent-button {
+	font-size:14px;
 	color:black;
 	text-decoration:none;
-	line-height:30px;
 	margin:0 2px;
 	display:block;
 	cursor:default;
 }
-a.omnipotent-button .right, button.omnipotent-button .right {
+a.omnipotent-button img, button.omnipotent-button img {
+	vertical-align:middle;
+}
+/* a.omnipotent-button .right, button.omnipotent-button .right {
 	background-color:transparent;
 	background-image:none;
 	background-repeat:no-repeat;

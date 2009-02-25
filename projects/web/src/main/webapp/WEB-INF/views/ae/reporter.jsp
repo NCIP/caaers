@@ -102,9 +102,15 @@
         })
 
     </script>
+	<!--[if lte IE 6]>
+<style>
+		.pane {
+			margin-top:40px;
+		}
+	</style>
+<![endif]-->
 </head>
 <body>
-
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section3reporter">
     <jsp:attribute name="instructions">
         <c:choose>
@@ -118,7 +124,12 @@
         </c:choose>
     </jsp:attribute>
     <jsp:attribute name="repeatingFields">
-        <chrome:division title="Reporter Details">
+        <chrome:division title="Reporter Details" id="reporter">
+        		<!--[if lte IE 6]>
+					<br/>
+					<br/>
+					<br/>
+				<![endif]-->
             <div class="row">
                 <div class="label">Reporter</div>
                 <div class="value">
@@ -143,7 +154,12 @@
             </c:forEach>
         </chrome:division>
 
-        <chrome:division title="Treating Physician Details">
+        <chrome:division title="Treating Physician Details" id="treating">
+        	<!--[if lte IE 6]>
+					<br/>
+					<br/>
+					<br/>
+				<![endif]-->
         <div class="row">
                 <div class="label">Physician</div>
                 <div class="value">
