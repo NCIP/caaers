@@ -7,6 +7,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_NOTIFICATION_RULES;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_REPORT_FORMAT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.Organization;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
@@ -140,7 +141,7 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
                 Organization org = rctLoaded.getOrganization();
                 assertNotNull("Organization should not be null", org);
                 assertEquals("Organization must be associated to ReportDefinition", org
-                                .getReportDefinitions().size(), 2);
+                                .getReportDefinitions().size(), 3);
                 PlannedEmailNotification nf = (PlannedEmailNotification) rctLoaded
                                 .getPlannedNotifications().get(0);
                 assertEquals("SubjectLine Equality failed:", "MySubjectline", nf.getSubjectLine());
@@ -170,7 +171,56 @@ public class ReportDefinitionDaoTest extends DaoTestCase<ReportDefinitionDao> {
 
     public void testGetAll() throws Exception {
         List<ReportDefinition> actual = getDao().getAll();
-        assertEquals("Wrong number found", 1, actual.size());
+        assertEquals("Wrong number found", 2, actual.size());
         assertEquals("Wrong one", -222, (int) actual.get(0).getId());
+    }
+    
+    public void testNoOfSimilarReportDefinitions(){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(33);
+    	query.filterByName("abcd");
+    	
+    	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
+    	System.out.println(cnt);
+    	assertEquals(0, cnt.intValue());
+    }
+    public void testNoOfSimilarReportDefinitions_SameId_SameName(){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(-222);
+    	query.filterByName("RCT-222");
+    	
+    	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
+    	System.out.println(cnt);
+    	assertEquals(0, cnt.intValue());
+    }
+    
+    public void testNoOfSimilarReportDefinitions_DifferentId_SameName(){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(-2223);
+    	query.filterByName("RCT-222");
+    	
+    	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
+    	System.out.println(cnt);
+    	assertEquals(1, cnt.intValue());
+    }
+    
+    public void testNoOfSimilarReportDefinitions_NoId_SameName(){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(-2223);
+    	query.filterByName("RCT-222");
+    	
+    	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
+    	System.out.println(cnt);
+    	assertEquals(1, cnt.intValue());
+    }
+    
+    public void testNoOfSimilarReportDefinitions_NoId_DifferentName(){
+    	ReportDefinitionExistsQuery query = new ReportDefinitionExistsQuery();
+    	query.filterByDifferentId(-2223);
+    	query.filterByName("RCT-222x");
+    	
+    	Integer cnt = rctDao.noOfSimilarReportDefinitions(query);
+    	System.out.println(cnt);
+    	assertEquals(0, cnt.intValue());
     }
 }

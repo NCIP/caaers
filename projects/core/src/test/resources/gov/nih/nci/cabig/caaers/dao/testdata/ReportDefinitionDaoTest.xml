@@ -35,7 +35,16 @@
         name="New Site"
         grid_id="gridSite"
     />
-	 
+	<report_calendar_templates 
+		id="-221"
+		name="RCT-221"
+		description="TestDescription"
+		duration="4"
+		time_scale_unit_code="2"
+		version="0"
+		org_id="-1001"
+		amendable="0"
+		/>
 	<report_calendar_templates 
 		id="-222"
 		name="RCT-222"

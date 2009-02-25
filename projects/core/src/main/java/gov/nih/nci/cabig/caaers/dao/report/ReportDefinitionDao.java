@@ -2,15 +2,21 @@ package gov.nih.nci.cabig.caaers.dao.report;
 
 import edu.nwu.bioinformatics.commons.CollectionUtils;
 import gov.nih.nci.cabig.caaers.dao.GridIdentifiableDao;
+import gov.nih.nci.cabig.caaers.dao.query.AbstractQuery;
+import gov.nih.nci.cabig.caaers.dao.query.ReportDefinitionExistsQuery;
 import gov.nih.nci.cabig.caaers.domain.report.PlannedNotification;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.Session;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,6 +102,8 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
         return CollectionUtils.firstElement((List<ReportDefinition>) getHibernateTemplate().find(
                         "from ReportDefinition t where t.name=?", new String[] { name }));
     }
+    
+    
 
     /**
      * Get the report definition for a given name and given organization.
@@ -187,6 +195,23 @@ public class ReportDefinitionDao extends GridIdentifiableDao<ReportDefinition> i
             super.initialize(nf.getRecipients());
             super.initialize(nf.getAttachments());
         }
+    }
+    
+    public Integer noOfSimilarReportDefinitions(final ReportDefinitionExistsQuery query){
+    	List<Long> results =  (List<Long>) getHibernateTemplate().execute(new HibernateCallback(){
+      	  public Object doInHibernate(final Session session) throws HibernateException,SQLException {
+      		  org.hibernate.Query hiberanteQuery = session.createQuery(query.getQueryString());
+      		  Map<String, Object> queryParameterMap = query.getParameterMap();
+      		  for (String key : queryParameterMap.keySet()) {
+      			  Object value = queryParameterMap.get(key);
+      			  hiberanteQuery.setParameter(key, value);
+
+      		  }
+      		  return hiberanteQuery.list();
+      	  } 
+       });
+    	
+    	return results.get(0).intValue();
     }
 
 }
