@@ -103,6 +103,11 @@
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
+    	<jsp:attribute name="additionalTitle">
+        	<c:if test="${command.additionAllowed}">
+   				 <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/> 
+  			</c:if>
+  		</jsp:attribute>
         <jsp:attribute name="instructions">
            <tags:instructions code="instruction_ae_enterBasics" />
         </jsp:attribute>
@@ -112,11 +117,6 @@
             </c:forEach>
         </jsp:attribute>
 
-        <jsp:attribute name="localButtons">
-         <c:if test="${command.additionAllowed}">
-            <tags:listEditorAddButton divisionClass="ae-section" label="Add another AE" buttonCssClass="ae-list-editor-button"/> 
-       	</c:if>
-        </jsp:attribute>
     </tags:tabForm>
 </body>
 </html>

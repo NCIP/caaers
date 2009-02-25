@@ -22,9 +22,11 @@
 <%@attribute name="noBackground" required="false" %>
 <%@attribute name="hideErrorDetails" type="java.lang.Boolean" %>
 <%@attribute name="hideBox" type="java.lang.Boolean" %>
+<%@attribute name="additionalTitle" required="false" fragment="false" %>
 <c:if test="${empty willSave}"><c:set var="willSave" value="${true}"/></c:if>
 <c:if test="${not hideBox}">
-<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}"  noBackground="${noBackground}">
+<chrome:box title="${empty title ? tab.shortTitle : title}" id="${boxId}" cssClass="${boxClass}"  
+noBackground="${noBackground}" additionalTitle="${additionalTitle}">
     <chrome:flashMessage/>
     <form:form name="${formName}" enctype="${enctype}" id="${formId}">
         <tags:tabFields tab="${tab}"/>
