@@ -208,40 +208,17 @@ public abstract class AbstractExpeditedAdverseEventInputCommand implements Exped
             assert (section != null) : "A section is null in command.getManatorySections()";
 
             TreeNode sectionNode = expeditedReportTree.getNodeForSection(section);
-            if (sectionNode == null) log.warn("Unable to fetch TreeNode for section"
-                            + section.name());
+            if (sectionNode == null) log.warn("Unable to fetch TreeNode for section" + section.name());
 
-            assert (sectionNode != null) : section.toString()
-                            + ", is not available in ExpeditedReportTree.";
+            assert (sectionNode != null) : section.toString()+ ", is not available in ExpeditedReportTree.";
             if (sectionNode.getChildren() == null) continue;
 
             for (TreeNode node : sectionNode.getChildren()) {
                 if (node.isList()) {
-                    log.info("Initialized '" + node.getPropertyName() + "' in section "
-                                    + section.name());
+                    log.info("Initialized '" + node.getPropertyName() + "' in section " + section.name());
                     wrapper.getPropertyValue(node.getPropertyName() + "[0]");
                 }
             }
-
-            // special case, when TreatmentInformation (course&agents tab) is mandatory.
-            // All StudyAgents associated with lead IND should be pre-initialized.
-            if (ExpeditedReportSection.TREATMENT_INFO_SECTION.equals(section)) {
-                List<CourseAgent> courseAgents = (List<CourseAgent>) wrapper.getPropertyValue(sectionNode.getChildren().get(0).getPropertyName() + ".courseAgents");
-                if (courseAgents.size() <= 0) {
-                    // first time, the user did not override system pre selection.
-                    int i = 0;
-
-                    for (StudyAgent agent : getAeReport().getStudy().getStudyAgents()) {
-                    	if (agent.getPartOfLeadIND() != null && agent.getPartOfLeadIND()) {
-                    		CourseAgent courseAgent = courseAgents.get(i);
-                    		courseAgent.setStudyAgent(agent);
-                    		i++;
-                    	}
-                    }
-                    
-                }
-            }
-
         }
 
     }

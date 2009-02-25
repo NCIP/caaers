@@ -10,7 +10,8 @@
 <%@attribute name="surgery" type="gov.nih.nci.cabig.caaers.domain.SurgeryIntervention" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
-<ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${collapsed}">
+<c:set var="v" value="aeReport.surgeryInterventions[${index}]" />
+<ae:fieldGroupDivision fieldGroupFactoryName="surgeryIntervention" index="${index}" enableDelete="true" deleteParams="'surgery', ${index}, '_surgeries'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.surgeryInterventions[${index}]"/>
 
     <ui:row path="aeReport.surgeryInterventions[${index}].interventionSite">

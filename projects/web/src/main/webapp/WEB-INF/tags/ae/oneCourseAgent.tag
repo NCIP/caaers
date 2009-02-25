@@ -10,7 +10,8 @@
 <%@attribute name="agent" type="gov.nih.nci.cabig.caaers.domain.CourseAgent" %>
 <%@attribute name="collapsed" type="java.lang.Boolean" %>
 
-<ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}" enableDelete="true" deleteParams="'agent', ${index}, '_agents'" collapsed="${collapsed}">
+<c:set var="v" value="aeReport.treatmentInformation.courseAgents[${index}]" />
+<ae:fieldGroupDivision fieldGroupFactoryName="courseAgent" index="${index}" style="${style}" enableDelete="true" deleteParams="'agent', ${index}, '_agents'" collapsed="${!empties[v]}">
     <tags:errors path="aeReport.treatmentInformation.courseAgents[${index}]"/>
     
  <tags:renderRow field="${fieldGroup.fields[0]}"/>

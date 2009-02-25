@@ -138,12 +138,10 @@
     </target>
 
     <target name="compile" description="Compile all java source" depends="resources,generate-bindings">
-        <javac destdir="${build-dir.main}" classpathref="cp.main"
-               debug="true" source="1.5">
+        <javac destdir="${build-dir.main}" classpathref="cp.main" debug="true" source="1.5">
             <src path="${src-dir.main}"/>
         </javac>
-        <javac destdir="${build-dir.unit-test}" classpathref="cp.unit-test"
-               debug="true" source="1.5">
+        <javac destdir="${build-dir.unit-test}" classpathref="cp.unit-test" debug="true" source="1.5">
             <src path="${src-dir.unit-test}"/>
         </javac>
     </target>

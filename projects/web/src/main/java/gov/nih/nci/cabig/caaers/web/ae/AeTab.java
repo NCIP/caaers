@@ -18,11 +18,7 @@ import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,6 +33,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     protected ReportRepository reportRepository;
     protected EvaluationService evaluationService;
     protected SchedulerService schedulerService;
+    protected List<String> mandatoryFieldNames;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -63,6 +60,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         Map<String, Object> refData = super.referenceData( request,command);
         Object fieldGroups = refData.get("fieldGroups");
         populateMandatoryFlag(fieldGroups, command, refData);
+        request.setAttribute("mandatoryFieldNames", mandatoryFieldNames);
         return refData;
     }
 
@@ -76,13 +74,19 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         // the fields
         // here can be avoided.
 
+        BeanWrapper bw = new BeanWrapperImpl(command);
+
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
 
+        mandatoryFieldNames = new ArrayList<String>();
         for (InputFieldGroup group : groupMap.values()) {
             for (InputField field : group.getFields()) {
                 if (isMandatory(command.getMandatoryProperties(), field)) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
+                    if (bw.getPropertyValue(field.getPropertyName()) == null) {
+                        mandatoryFieldNames.add(field.getPropertyName());
+                    }
                 }
             }
         }
@@ -91,7 +95,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     /**
      * Tells whether the given field is mandatory. In case of Composite fields, the given field
      * (parent) will be marked mandatory if any of its subfields are mandatory.
-     * 
+     *
      * @param field
      * @return
      */
@@ -114,21 +118,20 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         for(ExpeditedReportSection section : section()){
         	if(sections.contains(section)) return true;
         }
-        return false; 
+        return false;
     }
 
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command, HttpServletRequest request) {
         MandatoryProperties props = command.getMandatoryProperties();
         if (props == null) return false;
-        
+
         for(ExpeditedReportSection section : section()){
         	TreeNode node = expeditedReportTree.getNodeForSection(section);
             if (node == null) continue;
             List<UnsatisfiedProperty> unsatisfied = props.getUnsatisfied(node, command.getAeReport());
-            if(!unsatisfied.isEmpty()) return true; 
+            if(!unsatisfied.isEmpty()) return true;
         }
         return false;
-       
     }
 
     public abstract ExpeditedReportSection[] section();
@@ -143,21 +146,21 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
             }
         }
     }
-    
+
     public CompositeField createTimeField(String baseProperty, String displayName){
     	InputField hrField = InputFieldFactory.createTextField("hourString", "", FieldValidator.HOUR_VALIDATOR);
-    	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR); 
+    	InputField mmField = InputFieldFactory.createTextField("minuteString"," ", FieldValidator.MINUTE_VALIDATOR);
     	LinkedHashMap< Object, Object> amPmOption = new LinkedHashMap<Object, Object>();
     	amPmOption.put("0", "AM");
     	amPmOption.put("1", "PM");
     	InputField amPmField = InputFieldFactory.createSelectField("type", "",false, amPmOption);
     	InputFieldAttributes.setSize(hrField, 2);
     	InputFieldAttributes.setSize(mmField, 2);
-    	
+
     	return new CompositeField(baseProperty, new DefaultInputFieldGroup(null,displayName).addField(hrField).addField(mmField).addField(amPmField));
-    	
+
     }
-    
+
     public boolean isAssociatedToBusinessRules(){
     	for(ExpeditedReportSection section : section()){
     		if(section.isAssociatedToBusinessRules()) return true;
@@ -178,7 +181,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     public void setReportRepository(ReportRepository reportRepository) {
         this.reportRepository = reportRepository;
     }
-    
+
     public void setSchedulerService(SchedulerService schedulerService) {
 		this.schedulerService = schedulerService;
 	}
@@ -276,7 +279,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         /**
          * Directly add an input field group. This group should not contain any fields which
          * represent properties in the command's aeReport.
-         * 
+         *
          * @param group
          */
         public void addUnprocessedFieldGroup(InputFieldGroup group) {
