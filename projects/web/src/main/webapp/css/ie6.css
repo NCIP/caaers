@@ -2,6 +2,13 @@
 .hr {
 	font-size:2px;
 }
+#main {
+	margin-top:140px;
+}
+.workflow-tabs {
+	top:128px;
+	margin-top:13px;
+}
 #build-name {
 	bottom:-300px;
 }

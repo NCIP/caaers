@@ -5,7 +5,9 @@
 <%@ taglib prefix="study" tagdir="/WEB-INF/tags/study" %>
 
 <%@ taglib prefix="csmauthz" uri="http://csm.ncicb.nci.nih.gov/authz" %>
-
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head><title>Welcome to caAERS</title>
 <link rel="icon" href="../images/caaers.ico"/>

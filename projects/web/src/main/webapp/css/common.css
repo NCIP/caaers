@@ -11,7 +11,7 @@ body {
 }
 .workflow-tabs {
 	position: relative;
-	top: 140px;
+	top: 40px;
 	width:950px;
 	background-color: #666;
 	z-index: 0;
@@ -108,7 +108,7 @@ p { margin: 1em 0; }
 
 #header {
 	width: 980px;
-	position: absolute;
+	position: relative;
 	height: 100px;
 	background-image: url(../images/blue/header_bg.jpg);
 	background-position: top;
@@ -379,7 +379,7 @@ ul.tabs li {
 	padding-bottom: 20px;
 	padding-left: 18px;
 	position: relative;
-	margin-top: 140px;
+	margin-top: 50px;
 }
 #flash-message {
 	border: 1px solid #999;

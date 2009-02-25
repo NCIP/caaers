@@ -103,3 +103,6 @@ input.pending-search {
 table.split-date-wrap td label {
 	display:block;
 }
+input[type="text"].required, input[type="password"].required, select.required, textarea.required {
+	background-color:#FF9F9F;
+}
