@@ -33,7 +33,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
     protected ReportRepository reportRepository;
     protected EvaluationService evaluationService;
     protected SchedulerService schedulerService;
-    protected List<String> mandatoryFieldNames;
+    protected HashMap<String, Boolean> hm;
 
     public AeTab(String longTitle, String shortTitle, String viewName) {
         super(longTitle, shortTitle, viewName);
@@ -60,7 +60,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         Map<String, Object> refData = super.referenceData( request,command);
         Object fieldGroups = refData.get("fieldGroups");
         populateMandatoryFlag(fieldGroups, command, refData);
-        request.setAttribute("mandatoryFieldNames", mandatoryFieldNames);
+        request.setAttribute("empties", hm);
         return refData;
     }
 
@@ -79,17 +79,19 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
         Map<String, InputFieldGroup> groupMap = (Map<String, InputFieldGroup>) fieldGroups;
         if (groupMap == null) return;
 
-        mandatoryFieldNames = new ArrayList<String>();
+        hm = new HashMap<String, Boolean>();
         for (InputFieldGroup group : groupMap.values()) {
             for (InputField field : group.getFields()) {
                 if (isMandatory(command.getMandatoryProperties(), field)) {
                     field.getAttributes().put(MANDATORY_FIELD_ATTR, true);
                     if (bw.getPropertyValue(field.getPropertyName()) == null) {
-                        mandatoryFieldNames.add(field.getPropertyName());
+                        String subName = field.getPropertyName().substring(0, field.getPropertyName().indexOf("].") + 1).toString();
+                        hm.put(subName, Boolean.TRUE);
                     }
                 }
             }
         }
+
     }
 
     /**

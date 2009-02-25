@@ -9,8 +9,9 @@
 <%@attribute name="collapsed" required="true" description="Tells whether to display collapsed"%>
 <%@attribute name="priorTherapy" required="true" type="gov.nih.nci.cabig.caaers.domain.SAEReportPriorTherapy" %>
 <div>
-<c:set var="mainGroup">priorTherapy${index}</c:set>
- <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${collapsed or empty priorTherapy.name}" collapsable="true"
+ <c:set var="v" value="aeReport.saeReportPriorTherapies[${index}]" />
+ <c:set var="mainGroup">priorTherapy${index}</c:set>
+ <chrome:division id="aeReport.saeReportPriorTherapies[${index}]" collapsed="${!empties[v]}" collapsable="true"
   deleteParams="'priorTherapy',${index}, 'anchorPriorTherapy', {}" enableDelete="true">
 	
 	<jsp:attribute name="titleFragment">
