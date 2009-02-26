@@ -75,6 +75,7 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
     public void testGradeRequired() throws Exception {
         ae0.setGrade(null);
+        EasyMock.expect(reportingPeriodDao.isAdverseEventPresent(ae0)).andReturn(false);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].grade", "Grade");
     }
@@ -83,17 +84,20 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
     public void testCtcTermRequired() throws Exception {
         ae0.getAdverseEventCtcTerm().setCtcTerm(null);
+        EasyMock.expect(reportingPeriodDao.isAdverseEventPresent(ae0)).andReturn(false);
         doValidate();
         assertFieldRequiredErrorRaised("aeReport.adverseEvents[0].adverseEventCtcTerm.ctcTerm",
                         "CTC term");
     }
 
     public void testOtherNotRequiredIfTermDoesNotRequireIt() throws Exception {
+    	 EasyMock.expect(reportingPeriodDao.isAdverseEventPresent(ae0)).andReturn(false);
         doValidate();
         assertEquals(0, getErrors().getFieldErrorCount("aeReport.adverseEvents[0].detailsForOther"));
     }
 
     public void testOtherRequiredIfTermRequiresIt() throws Exception {
+    	 EasyMock.expect(reportingPeriodDao.isAdverseEventPresent(ae0)).andReturn(false);
         ae0.getAdverseEventCtcTerm().getCtcTerm().setOtherRequired(true);
         ae0.setLowLevelTerm(null);
         doValidate();
