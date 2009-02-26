@@ -164,6 +164,7 @@
     </script>
 </head>
 <body>
+
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section15labs">
     <jsp:attribute name="instructions">
     	<tags:instructions code="instruction_ae_labs" />

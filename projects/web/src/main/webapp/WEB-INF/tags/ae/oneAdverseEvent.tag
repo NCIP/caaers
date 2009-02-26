@@ -19,8 +19,8 @@
         <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventCtcTerm.ctcTerm.term}</c:otherwise>
     </c:choose>
 </c:set>
-
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${collapsed}" collapsable="true">
+<c:set var="v" value="aeReport.adverseEvents[${index}]" />
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsed="${!empties[v]}" collapsable="true">
 	<jsp:attribute name="titleFragment">&nbsp;<span id="title-frag-${index}" class="primary-indicator">${ index gt 0 ? '' : '[Primary]' }</span> </jsp:attribute>
 	<jsp:body>	
     <div id="aeReport.adverseEvents[${index}].ctc-details" class="ctc-details">

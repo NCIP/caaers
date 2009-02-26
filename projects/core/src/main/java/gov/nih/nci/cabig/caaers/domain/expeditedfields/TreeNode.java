@@ -25,8 +25,7 @@ public abstract class TreeNode {
 
     public static TreeNode property(String propertyName, String displayName, TreeNode... children) {
         TreeNode f = new PropertyNode(propertyName);
-        f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(
-                        displayName));
+        f.setDisplayNameCreator(displayName == null ? null : new StaticDisplayNameCreator(displayName));
         return f.add(children);
     }
 
@@ -38,8 +37,7 @@ public abstract class TreeNode {
         return list(propertyName, new DefaultListDisplayNameCreator(baseDisplayName), children);
     }
 
-    public static TreeNode list(String propertyName, DisplayNameCreator creator,
-                    TreeNode... children) {
+    public static TreeNode list(String propertyName, DisplayNameCreator creator, TreeNode... children) {
         TreeNode f = new ListPropertyNode(propertyName).add(children);
         f.setDisplayNameCreator(creator);
         return f;
@@ -49,10 +47,8 @@ public abstract class TreeNode {
         return new SectionNode(section).add(children);
     }
 
-    public static TreeNode codedOrOther(String codedPropertyName, String codedDisplayName,
-                    String otherPropertyName, String otherDisplayName) {
-        CodedOrOtherPropertyNode node = new CodedOrOtherPropertyNode(codedPropertyName,
-                        otherPropertyName);
+    public static TreeNode codedOrOther(String codedPropertyName, String codedDisplayName, String otherPropertyName, String otherDisplayName) {
+        CodedOrOtherPropertyNode node = new CodedOrOtherPropertyNode(codedPropertyName, otherPropertyName);
         node.setCodedDisplayName(codedDisplayName);
         node.setOtherDisplayName(otherDisplayName);
         return node;
@@ -124,8 +120,7 @@ public abstract class TreeNode {
     public String getQualifiedDisplayName() {
         String name = (parent != null) ? parent.getQualifiedDisplayName() : "";
         String displayName = getDisplayName();
-        if (displayName != null && displayName.length() > 0) name += ((name.length() > 0) ? "~"
-                        + displayName : displayName);
+        if (displayName != null && displayName.length() > 0) name += ((name.length() > 0) ? "~" + displayName : displayName);
         return name;
     }
 
@@ -173,8 +168,7 @@ public abstract class TreeNode {
 
     @Override
     public String toString() {
-        return new StringBuilder(getClass().getSimpleName()).append('[').append(getPropertyName())
-                        .append(", ").append(getDisplayName()).append(']').toString();
+        return new StringBuilder(getClass().getSimpleName()).append('[').append(getPropertyName()).append(", ").append(getDisplayName()).append(']').toString();
     }
 
     public boolean isAncestorOf(TreeNode node) {

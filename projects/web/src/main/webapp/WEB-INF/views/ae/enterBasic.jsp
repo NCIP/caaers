@@ -386,6 +386,7 @@ div.row div.value, div.row div.extra {
 </script>
 </head>
 <body>
+
 <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="ae_captureRoutine">
   <jsp:attribute name="additionalTitle">
         <c:if test="${command.additionAllowed}">

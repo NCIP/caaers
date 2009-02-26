@@ -1,9 +1,5 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <title>${tab.longTitle}</title>

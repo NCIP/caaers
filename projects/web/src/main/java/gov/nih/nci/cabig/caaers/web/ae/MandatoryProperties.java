@@ -62,8 +62,7 @@ public class MandatoryProperties {
         return mandatory;
     }
 
-    public List<UnsatisfiedProperty> getUnsatisfied(TreeNode section,
-                    ExpeditedAdverseEventReport aeReport) {
+    public List<UnsatisfiedProperty> getUnsatisfied(TreeNode section, ExpeditedAdverseEventReport aeReport) {
         List<TreeNode> filtered = new LinkedList<TreeNode>();
         for (TreeNode node : getMandatoryNodes()) {
             if (section.isAncestorOf(node)) filtered.add(node);

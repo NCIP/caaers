@@ -161,7 +161,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 						), 
 						section(LABS_SECTION, 
 							list("labs", new LabsDisplayNameCreator(),
-                                 codedOrOther("labTerm", "Lab test name", "other","Other test name"), 
+                                 codedOrOther("labTerm", "Lab test name", "other","Other test name"),
                                  property("units","Units"), 
                                  labValue("baseline", "Baseline"),
                                  labValue("nadir", "Worst"),
@@ -171,8 +171,7 @@ public class ExpeditedReportTree extends PropertylessNode {
                                  property("infectiousAgent","Infectious agent")
                            )
                         ),
-                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses",
-                                                        property("text", "Cause"))),
+                        section(OTHER_CAUSE_SECTION, list("otherCauses", "OtherCauses", property("text", "Cause"))),
                         section(ATTRIBUTION_SECTION), // TODO: how to fill this??
                         section(ADDITIONAL_INFO_SECTION),// TODO: additional info section
                         section(SUBMIT_REPORT_SECTION),// TODO: just a space filler section
@@ -183,14 +182,12 @@ public class ExpeditedReportTree extends PropertylessNode {
                                         property("other", "Comments (prior therapy)"), 
                                         property("startDate", "Therapy start date"), 
                                         property("endDate", "Therapy end date"), 
-                                        list("priorTherapyAgents", "PriorTherapyAgent",
-                                              property("chemoAgent", "Agent")
+                                        list("priorTherapyAgents", "PriorTherapyAgent", property("chemoAgent", "Agent")
                                         )
                                 )
                             ),
                         section(PRE_EXISTING_CONDITION_SECTION, 
-                        		list("saeReportPreExistingConditions","Pre-existing condition", 
-                        				codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)")
+                        		list("saeReportPreExistingConditions","Pre-existing condition", codedOrOther("preExistingCondition","Pre-existing condition", "other","Other (pre-existing)")
                         		)
                         ),
                         section(CONCOMITANT_MEDICATION_SECTION, 
@@ -285,8 +282,7 @@ public class ExpeditedReportTree extends PropertylessNode {
     public ExpeditedReportSection getSectionForNode(TreeNode node) {
         if (node == null) throw new NullPointerException("No node provided");
         if (node instanceof SectionNode) return ((SectionNode) node).getSection();
-        if (node.getParent() == null) throw new CaaersSystemException(node
-                        + " doesn't belong to a section");
+        if (node.getParent() == null) throw new CaaersSystemException(node + " doesn't belong to a section");
         return getSectionForNode(node.getParent());
     }
 

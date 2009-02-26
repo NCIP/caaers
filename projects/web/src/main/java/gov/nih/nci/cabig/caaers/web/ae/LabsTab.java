@@ -27,8 +27,7 @@ public class LabsTab extends AeTab {
     private LabTermDao labTermDao;
 
     public LabsTab() {
-        super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION
-                .getDisplayName(), "ae/labs");
+        super("Diagnostic test and lab results", ExpeditedReportSection.LABS_SECTION.getDisplayName(), "ae/labs");
     }
 
     private void addLabValueFields(RepeatingFieldGroupFactory fieldFactory, String propName,
@@ -55,12 +54,10 @@ public class LabsTab extends AeTab {
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                                     ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         // InputField labNameField = InputFieldFactory.createAutocompleterField("labTerm", "Lab test
         // name");
-        InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name",
-                false, createOptions());
+        InputField labNameField = InputFieldFactory.createSelectField("labTerm", "Lab test name",false, createOptions());
         InputFieldAttributes.setSize(labNameField, 60);
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 60);

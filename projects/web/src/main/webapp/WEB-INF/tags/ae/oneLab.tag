@@ -6,7 +6,8 @@
 <%@attribute name="index" required="true" type="java.lang.Integer" %>
 <%@attribute name="style"%>
 
-<ae:fieldGroupDivision fieldGroupFactoryName="lab" index="${index}" style="${style}">
+<c:set var="v" value="aeReport.labs[${index}]" />
+<ae:fieldGroupDivision fieldGroupFactoryName="lab" index="${index}" style="${style}" collapsed="${!empties[v]}">
 	
 	 <div class="row">
             <div class="label"><label for="aeReport.labs[${index}].lab-category">Lab category</label></div>

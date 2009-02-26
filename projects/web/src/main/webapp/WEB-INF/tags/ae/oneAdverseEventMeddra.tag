@@ -16,7 +16,8 @@
     <c:otherwise>${command.aeReport.adverseEvents[index].adverseEventMeddraLowLevelTerm.fullName}</c:otherwise>
 </c:choose></c:set>
 
-<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${collapsed}">
+<c:set var="v" value="aeReport.adverseEvents[${index}]" />
+<chrome:division title="${title}" id="ae-section-${index}" cssClass="ae-section" style="${style}" collapsable="true" collapsed="${!empties[v]}">
     <div class="row">
       <div class="label">MedDRA Version</div>
       <div class="value">${command.assignment.studySite.study.aeTerminology.meddraVersion.name}</div>
