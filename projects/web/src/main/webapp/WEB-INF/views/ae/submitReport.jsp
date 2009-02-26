@@ -35,7 +35,12 @@
     		
     		<tr>
     			
-    			<td><div class="label">${report.reportDeliveryDefinition.entityType eq 1 ? report.reportDeliveryDefinition.entityName : report.endPoint}</div></td>
+    			<td><div class="label">
+    			${report.reportDeliveryDefinition.entityType eq 1 ? report.reportDeliveryDefinition.entityName : report.endPoint }
+    			 <c:if test="${report.reportDeliveryDefinition.entityType ne 1}">
+    			 (${report.reportDeliveryDefinition.entityName})
+    			 </c:if>
+    			 </div></td>
     		
     		</tr>
     	</c:forEach>
