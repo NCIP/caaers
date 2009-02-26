@@ -86,7 +86,7 @@
 		
 		function enableReportsInPopup(){
 		
-			if(hasReportableAEs() && ${fn:length(command.adverseEventReportingPeriod.aeReports) gt 0}){
+			if(hasReportableAEs() && ${fn:length(command.adverseEventReportingPeriod.activeAeReports) gt 0}){
 				if(checkIfReportSelected() == false){
 					$('create-new-report-table').style.display = 'none';
 					$('create-new-report-statement').style.display = '';
@@ -192,12 +192,11 @@ background-color:#e5e8ff;
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review" saveButtonLabel="Create Report" hideBox="true">
   <jsp:attribute name="singleFields">
   
-	    <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.aeReports)}" />
+	    <c:set var="aeReportsLength" value="${fn:length(command.adverseEventReportingPeriod.activeAeReports)}" />
 	    <input type="hidden" name="_finish"/>
 	    <input type="hidden" name="_action" value="${aeReportsLength gt 0 ? '' : 'createNew' }">
 	    <input type="hidden" name="_reportId" value="">
 	    <input type="hidden" name="_repId" value="">
-   
       <c:choose>
         <c:when test="${not empty rpdSelectedTable}">
          
@@ -264,7 +263,7 @@ background-color:#e5e8ff;
 
        	 
         	<c:if test="${aeReportsLength gt 0}">
-          	<c:forEach items="${command.adverseEventReportingPeriod.aeReports}" var="aeReport" varStatus="statusAeReport">
+          	<c:forEach items="${command.adverseEventReportingPeriod.activeAeReports}" var="aeReport" varStatus="statusAeReport">
           	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;">
              <tr id="existing-reports-row" class="${ ((statusAeReport.index % 2 ) gt 0 )? 'odd' : 'even'  }">
                <td width="5%" align="left">

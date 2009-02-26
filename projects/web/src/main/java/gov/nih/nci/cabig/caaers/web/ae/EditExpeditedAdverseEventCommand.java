@@ -128,7 +128,7 @@ public class EditExpeditedAdverseEventCommand extends AbstractExpeditedAdverseEv
      */
     public void withdrawReports(List<Report> withdrawReportList){
     	for(Report report: withdrawReportList){
-    		reportRepository.deleteReport(report);
+    		reportRepository.replaceReport(report);
     	}
     }
 	/**
