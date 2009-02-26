@@ -8,6 +8,7 @@ import gov.nih.nci.cabig.caaers.dao.StudyParticipantAssignmentDao;
 import gov.nih.nci.cabig.caaers.dao.report.ReportDefinitionDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
@@ -58,7 +59,11 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 		
 		aes = new ArrayList<AdverseEvent>();
 		for(int i = 0; i < 3; i++){
+			
+			CtcTerm ctcTerm = Fixtures.createCtcTerm("abc", "ef");
+			
 			AdverseEvent ae = new AdverseEvent();
+			Fixtures.createAdverseEventCtcTerm(ae, ctcTerm);
 			ae.setId(i + 1);
 			aes.add(ae);
 		}
@@ -70,6 +75,8 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	
 	public void testIsHavingSolicitedAEs(){
 		AdverseEvent ae1 = new AdverseEvent();
+		CtcTerm ctcTerm = Fixtures.createCtcTerm("abc", "ef");
+		Fixtures.createAdverseEventCtcTerm(ae1, ctcTerm);
 		ae1.setSolicited(false);
 		reportingPeriod.addAdverseEvent(ae1);
 		command = new CaptureAdverseEventInputCommand();
@@ -78,9 +85,13 @@ public class CaptureAdverseEventInputCommandTest extends AbstractNoSecurityTestC
 	}
 	public void testIsHavingSolicitedAEsYesOneSolicited(){
 		AdverseEvent ae1 = new AdverseEvent();
+		CtcTerm ctcTerm = Fixtures.createCtcTerm("abc", "ef");
+		Fixtures.createAdverseEventCtcTerm(ae1, ctcTerm);
 		ae1.setSolicited(false);
 		reportingPeriod.addAdverseEvent(ae1);
 		AdverseEvent ae2 = new AdverseEvent();
+		CtcTerm ctcTerm2 = Fixtures.createCtcTerm("abc", "ef");
+		Fixtures.createAdverseEventCtcTerm(ae2, ctcTerm2);
 		ae2.setSolicited(true);
 		reportingPeriod.addAdverseEvent(ae2);
 		command = new CaptureAdverseEventInputCommand();
