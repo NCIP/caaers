@@ -66,18 +66,32 @@ public class ReportRepositoryImpl implements ReportRepository {
     public void withdrawLastReportVersion(Report report) {
 
         ReportVersion reportVersion = report.getLastVersion();
-        reportVersion.setReportStatus(ReportStatus.WITHDRAWN);
         reportVersion.setWithdrawnOn(nowFactory.getNow());
         reportVersion.setDueOn(null);
     }
 
+    public void withdrawOrReplaceReport(Report report){
+    	schedulerService.unScheduleNotification(report);
+        
+        withdrawLastReportVersion(report);
+        reportDao.save(report);
+    }
+    
     @Transactional(readOnly = false)
     public void deleteReport(Report report) {
         assert !report.getStatus().equals(ReportStatus.WITHDRAWN) : "Cannot withdraw a report that is already withdrawn";
-        schedulerService.unScheduleNotification(report);
         report.setStatus(ReportStatus.WITHDRAWN);
-        withdrawLastReportVersion(report);
-        reportDao.save(report);
+        report.getLastVersion().setReportStatus(ReportStatus.WITHDRAWN);
+        withdrawOrReplaceReport(report);
+    }
+    
+    @Transactional(readOnly = false)
+    public void replaceReport(Report report){
+    	assert !report.getStatus().equals(ReportStatus.REPLACED) : "Cannot replace a report that is already replaced";
+    	assert !report.getStatus().equals(ReportStatus.WITHDRAWN): "Cannot replace a report that is already withdrawn";
+    	report.setStatus(ReportStatus.REPLACED);
+    	report.getLastVersion().setReportStatus(ReportStatus.REPLACED);
+    	withdrawOrReplaceReport(report);
     }
 
     /**

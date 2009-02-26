@@ -25,6 +25,13 @@ public interface ReportRepository {
     void deleteReport(Report report);
 
     /**
+     * Will mark the report as replaced (ReportStatus = REPLACED). At present it will unschedule the
+     * pending scheduled notifications present inthe scheduler, by delegating the call to 
+     * SchedulerService.
+     */
+    void replaceReport(Report report);
+    
+    /**
      * Creates a report from the given definition and associates it with the given aeReport and
      * saves it in the database.
      * <p/>
@@ -67,5 +74,6 @@ public interface ReportRepository {
      * @param mandatorySections
      */
     public void initializeMandatorySectionFields(ExpeditedAdverseEventReport aeReport, Collection<ExpeditedReportSection> mandatorySections);
+    
   
 }

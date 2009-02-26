@@ -89,6 +89,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
 	
 	private List<ReportingPeriodReviewComment> reviewComments;
 	
+	private List<ExpeditedAdverseEventReport> activeAeReports;
 	
 	public AdverseEventReportingPeriod() {
 		formatter = new SimpleDateFormat("MM/dd/yy");
@@ -268,6 +269,38 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	return aeReports;
 	}
     
+    /**
+     * This method returns a list of expedited aeReports that are active. An Expedited AeReport
+     * is active if it has atleast on report in non-withdrawn state.
+     * @return
+     */
+    @Transient
+    public List<ExpeditedAdverseEventReport> getActiveAeReports() {
+    	activeAeReports = new ArrayList<ExpeditedAdverseEventReport>();
+    	if(aeReports != null)
+    	{
+    		for(ExpeditedAdverseEventReport aeReport: aeReports){
+    			if(isAeReportActive(aeReport))
+    				activeAeReports.add(aeReport);
+    		}
+    	}
+    	return activeAeReports;
+    }
+    
+    /**
+     * If any report associated to expedited AeReport is in non-withdrawn state,
+     * the expedited aeReport is considered to be an active report.
+     * @param aeReport
+     * @return
+     */
+    private Boolean isAeReportActive(ExpeditedAdverseEventReport aeReport){
+    	for(Report report: aeReport.getReports()){
+    		if(!report.getStatus().equals(ReportStatus.WITHDRAWN) && !report.getStatus().equals(ReportStatus.REPLACED))
+    			return true;
+    	}
+    	return false;
+    }
+    
     public void setAeReports(List<ExpeditedAdverseEventReport> aeReports) {
 		this.aeReports = aeReports;
 	}
@@ -328,7 +361,7 @@ public class AdverseEventReportingPeriod extends AbstractMutableDomainObject imp
     	}
     	return count;
     }
-    
+        
     @Transient
     public int getNumberOfAEs(){
     	int count = 0;
