@@ -136,11 +136,24 @@
             margin-left: 22em;
         }
     </style>
+<!--[if lte IE 6]>
+	<style>
+		#reporter-summary {
+			margin-top:80px;
+			margin-bottom:0;
+		}
+	</style>
+<![endif]-->
 </head>
 <body>
     <tags:tabForm tab="${tab}" flow="${flow}" pageHelpAnchor="section11courseandagent">
         <jsp:attribute name="singleFields">
         	<chrome:division title="Treatment Information">
+        		<!--[if lte IE 6]>
+					<br/>
+					<br/>
+					<br/>
+				<![endif]-->
 	            <div class="row">
     	            <div class="label">
         	        	<input type="radio" id="description-type-default" value="default" name="treatmentDescriptionType" checked="checked"/>
@@ -169,6 +182,11 @@
                 </div>
             </chrome:division>
 			<chrome:division title="Course Information">
+				<!--[if lte IE 6]>
+					<br/>
+					<br/>
+					<br/>
+				<![endif]-->
 				<tags:renderRow field="${fieldGroups.treatmentInfo.fields[3]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[4]}"/>
             	<tags:renderRow field="${fieldGroups.treatmentInfo.fields[5]}"/>

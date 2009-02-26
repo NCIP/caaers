@@ -66,7 +66,14 @@
 		}
 		
 	</script>
-
+	<!--[if lte IE 6]>
+<style>
+		#reporter-summary {
+			margin-top:80px;
+			margin-bottom:0;
+		}
+	</style>
+<![endif]-->
     
 </head>
 <body>

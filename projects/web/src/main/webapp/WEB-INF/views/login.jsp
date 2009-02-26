@@ -14,16 +14,21 @@
 
         #all {
             margin-top: 50px;
+			background: none;
+            width: 850px;
         }
 
         .right {
             position: absolute;
-            right: 100px;
+            right: 50px;
             top: -145px;
             margin-left: 25px;
             margin-top: 1em;
             text-align: center;
         }
+		.left {
+			margin-left:50px;
+		}
 
         .forgot {
 
@@ -45,11 +50,6 @@
 
         #taskbar {
             width: 10px;
-        }
-
-        #all {
-            background: none;
-            width: 850px;
         }
 
         #build-name {
@@ -91,6 +91,34 @@
             width: 10em;
         }
     </style>
+<!--[if lte IE 6]>
+	<style>
+		#all {
+			margin-top:145px;
+		}
+		#ie6 {
+			height:165px;
+			width:100%;
+			background-color:#c2c9df;
+			position:absolute;
+			top:-310px;
+		}
+		a.get-browser {
+			display:block;
+			float:left;
+			margin-top:10px;
+			font-size:18px;
+			text-decoration:none;
+			color:black;
+		}
+		a.get-browser img {
+			margin-right:8px;
+		}
+		a.get-browser:hover {
+			text-decoration:underline;
+		}
+	</style>
+<![endif]-->
     <link href="../images/caaers.ico" rel="shortcut icon"/>
 </head>
 <body>
@@ -124,6 +152,20 @@
         return true;
     }
 </SCRIPT>
+<!--[if lte IE 6]>
+<div id="ie6">
+	<img src="/caaers/images/blue/no-ie-warning.png" alt="Internet Explorer" style="position:absolute; top:20px; left:20px;">
+	<div style="position:absolute; top:20px; left:160px; color:black;">
+		<div style="font-size:20px; margin-bottom:5px;">You are using an outdated web browser.</div>
+		<div>We cannot guarantee that caAERS will function completely in this browser.</div>
+		<div>Please upgrade (or ask your systems administrator to upgrade) to one of the following FREE browsers:</div>
+		<a href="http://www.mozilla.com/firefox/" target="_blank" class="get-browser" style="margin-left:5px"><img src="/caaers/images/blue/FF3-logo.png" alt="" />Firefox 3</a>
+		<a href="http://www.microsoft.com/windows/downloads/ie/getitnow.mspx" target="_blank" class="get-browser" style="margin-left:40px"><img src="/caaers/images/blue/ie7-logo.png" alt="" />Internet Explorer 7</a>
+	</div>
+	<img src="/caaers/images/blue/ie-warning-BL.png" alt="" style="position:absolute; bottom:-1px; left:0;">
+	<img src="/caaers/images/blue/ie-warning-BR.png" alt="" style="position:absolute; bottom:-1px; right:0;">
+</div>
+<![endif]-->
 <div class="left"><img src="/caaers/images/blue/login-logo.png" id="logo" alt="Cancer Adverse Event Reporting System">
 
     <h2>Please Log in</h2>

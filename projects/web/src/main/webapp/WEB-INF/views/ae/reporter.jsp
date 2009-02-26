@@ -104,8 +104,9 @@
     </script>
 	<!--[if lte IE 6]>
 <style>
-		.pane {
-			margin-top:40px;
+		#reporter-summary {
+			margin-top:80px;
+			margin-bottom:0;
 		}
 	</style>
 <![endif]-->

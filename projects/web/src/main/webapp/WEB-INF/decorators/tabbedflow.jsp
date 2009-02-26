@@ -49,8 +49,7 @@
 
         <!-- AE summary  -->
 		<c:if test="${not empty aesummary}">
-		<div> 
-			<div class="pane">
+			<div class="pane" id="reporter-summary">
 			  <div class="row">
 			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${aesummary['Participant']}</div>
@@ -64,13 +63,11 @@
 			    <div class="summaryvalue">${aesummary['Course']}</div>
 			  </div>
             </div>
-		</div>
 		</c:if>
         
         <!-- AE summary  -->
 		<c:if test="${not empty routineAeSummary}">
-		<div> 
-			<div class="pane">
+			<div class="pane" id="ae-summary">
 			  <div class="row">
 			    <div class="summarylabel">Subject</div>
 			    <div class="summaryvalue">${routineAeSummary['Participant']}</div>
@@ -84,7 +81,6 @@
 			    <div class="summaryvalue">${routineAeSummary['Course']}</div>
 			  </div>
 			</div>
-		</div>
 		</c:if>
         <div id="main${hasSummary ? '' : '-no-summary'}-pane" class="pane">
             <decorator:body/>

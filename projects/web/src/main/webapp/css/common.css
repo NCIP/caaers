@@ -358,7 +358,7 @@ ul.tabs li {
 	float:left;
 	margin-top:6px;
 }
-#taskbar li.lte4.gt18 {
+#taskbar li.lte4 a.gt18 {
 	padding-top:2px;
 	display:inline;
 }

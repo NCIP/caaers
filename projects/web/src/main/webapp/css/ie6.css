@@ -1,4 +1,8 @@
 /* IE 6 CSS ONLY */
+#header {
+	background-image:none;
+	background-color:#d8e9ec;
+}
 .hr {
 	font-size:2px;
 }
@@ -12,6 +16,9 @@
 }
 #main div.row.instructions div.value {
 	margin-left:60px;
+}
+#thirdlevelnav div {
+	background-image: url(../images/blue/thirdlevelarrow_grey_ie6.png);
 }
 a.omnipotent-button, button.omnipotent-button {
 	font-size:14px;
