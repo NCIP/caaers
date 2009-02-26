@@ -106,11 +106,23 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		reportingPeriod.setAssignment(assignment);
 		//expect(assignment.getStudySite()).andReturn(studySite).anyTimes();
 		//expect(studySite.getStudy()).andReturn(study).anyTimes();
+		AdverseEvent ae0 = new AdverseEvent();
+		Fixtures.createAdverseEventCtcTerm(ae0, Fixtures.createCtcTerm("a0", "c0"));
+		reportingPeriod.addAdverseEvent(setId(0, ae0));
 		
-		reportingPeriod.addAdverseEvent(setId(0, new AdverseEvent()));
-        reportingPeriod.addAdverseEvent(setId(1, new AdverseEvent()));
-        reportingPeriod.addAdverseEvent(setId(2, new AdverseEvent()));
-        reportingPeriod.addAdverseEvent(setId(3, new AdverseEvent()));
+		AdverseEvent ae1 = new AdverseEvent();
+		Fixtures.createAdverseEventCtcTerm(ae1, Fixtures.createCtcTerm("a1", "c1"));
+		reportingPeriod.addAdverseEvent(setId(1, ae1));
+		
+		AdverseEvent ae2 = new AdverseEvent();
+		Fixtures.createAdverseEventCtcTerm(ae2, Fixtures.createCtcTerm("a2", "c2"));
+		reportingPeriod.addAdverseEvent(setId(2, ae2));
+		
+		AdverseEvent ae3 = new AdverseEvent();
+		Fixtures.createAdverseEventCtcTerm(ae3, Fixtures.createCtcTerm("a3", "c3"));
+		reportingPeriod.addAdverseEvent(setId(3, ae3));
+		
+		
 		command.setAdverseEvents(new IndexFixedList<AdverseEvent>(reportingPeriod.getAdverseEvents()));
 		command.setAdverseEventReportingPeriod(reportingPeriod);
 		
