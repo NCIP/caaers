@@ -111,6 +111,8 @@
 		function displayCreateNewReportTable(){
 			$('create-new-report-table').style.display = '';
 			$('create-new-report-statement').style.display = 'none';
+			selectReport('createNew','');
+			$('create-new-radio-button-id').checked = true;
 		}
 		
 		function checkIfReportSelected(){
@@ -301,7 +303,7 @@ background-color:#e5e8ff;
       	 	<table width="100%" border="0" cellspacing="0" class="reportSet" style="margin-bottom:30px;display:none" id="create-new-report-table">
       	 	<tr id="create-new-report-row" class="${aeReportsLength gt 0 ? 'even' : 'odd' }">
       	 		<td width="10%" align="left">
-          			<input type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
+          			<input id="create-new-radio-button-id" type="radio" value="New"  name="report-radio" onClick="javascript:selectReport('createNew','');"/>&nbsp;Create
           		</td>
         		<td>
 			        <div class="eXtremeTable">
