@@ -44,9 +44,6 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 	private static final String PRE_EXISTING_CONDITION = "preExistingCondition";
 	private static final String CONCOMITANT_MEDICATION = "concomitantMedication";
 	
-	private int[] agentsPossiblePriorTherapies = {3,4,5,7,8,11};
-	
-	
     private static final Log log = LogFactory.getLog(SubjectMedHistoryTab.class);
     Map<String, String> methodNameMap = new HashMap<String, String>();
 
