@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.utils;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamReader;
@@ -36,39 +37,16 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         super();
         setPhase(Phase.PARSE);
         before(ReadHeadersHandler.class.getName());
-
-        // Load the schema - note that handler is only
-        // instantiated once, so we can keep the schema in 
-        // an instance variable
         factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     }
 
 	public void invoke(MessageContext ctx) throws Exception {
         InMessage message = ctx.getInMessage();
         XMLStreamReader streamReader = message.getXMLStreamReader();
-        // create JDom from the stream - alternatively we can rely on
-        // DOM and XFire DOM handler
         StaxBuilder builder = new StaxBuilder();
         Document doc = builder.build(streamReader);
-        // get to the body first
-        Element body = 
-            (Element)doc.getRootElement().getChildren().get(0);
         
-        Element payload = (Element)((Element) (body.getChildren().get(0))).getChildren().get(0);
-        
-        if(payload.getName().toLowerCase().equals("studies")){
-        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd")[0].getFile());
-        	schema = factory.newSchema(ss);
-        }else if(payload.getName().toLowerCase().equals("participants")){
-        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd")[0].getFile());
-        	schema = factory.newSchema(ss);
-        }else if("http://schema.integration.caaers.cabig.nci.nih.gov/investigator".equalsIgnoreCase(payload.getNamespaceURI())){
-        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/Investigator.xsd")[0].getFile());
-        	schema = factory.newSchema(ss);
-        }else if("http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff".equalsIgnoreCase(payload.getNamespaceURI())){
-        	ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd")[0].getFile());
-        	schema = factory.newSchema(ss);
-        }
+        Element payload = getPayLoad(doc.getRootElement());
         
         if(schema != null){
             // dump the message for testing purposes
@@ -92,9 +70,48 @@ public class XFireSchemaValidationHandler extends AbstractHandler {
         }
 	}
 	
-	private static Resource[] getResources(String pattern) throws IOException {
+	private Resource[] getResources(String pattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(pattern);
         return resources;
     }
+	
+	private Element getPayLoad(Element element) throws Exception{
+		Element payLoad = null;
+		if(element.getChildren() != null && element.getChildren().size() > 0){
+			List<Element> elements = element.getChildren();
+			for(Element eachElement : elements){
+				String elementName = eachElement.getName();
+				String elementNamespaceURI = eachElement.getNamespaceURI();
+				String investigatorNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/investigator";
+				String researchStaffNamespace = "http://schema.integration.caaers.cabig.nci.nih.gov/researchstaff";
+				if("studies".equalsIgnoreCase(elementName)){
+					payLoad = eachElement;
+					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/StudySchema.xsd")[0].getFile());
+		        	schema = factory.newSchema(ss);
+					break;
+				}else if("participants".equalsIgnoreCase(elementName)){
+					payLoad = eachElement;
+					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ParticipantSchema.xsd")[0].getFile());
+		        	schema = factory.newSchema(ss);
+					break;
+				}else if("staff".equalsIgnoreCase(elementName) && investigatorNamespace.equalsIgnoreCase(elementNamespaceURI)){
+					payLoad = eachElement;
+					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/Investigator.xsd")[0].getFile());
+		        	schema = factory.newSchema(ss);
+					break;
+				}else if("staff".equalsIgnoreCase(elementName) && researchStaffNamespace.equalsIgnoreCase(elementNamespaceURI)){
+					payLoad = eachElement;
+					ss = new StreamSource(getResources("classpath:gov/nih/nci/cabig/caaers/ResearchStaff.xsd")[0].getFile());
+		        	schema = factory.newSchema(ss);
+					break;
+				}else{
+					if(payLoad == null){
+						payLoad = getPayLoad(eachElement);
+					}
+				}
+			}
+		}
+		return payLoad;
+	}
 }
