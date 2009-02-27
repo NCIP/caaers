@@ -54,11 +54,7 @@ class InvestigatorsTab extends StudyTab {
 
                  if (rmStudyInvestigator != null) {
                      rmStudyInvestigator.setStudyOrganization(null);
-                     SiteInvestigator siteInvestigator = rmStudyInvestigator.getSiteInvestigator();
-                     if (siteInvestigator != null) {
-                         siteInvestigator.getStudyInvestigators().remove(rmStudyInvestigator);
-                         rmStudyInvestigator.setSiteInvestigator(null);
-                     }
+                    
                  }
              }
          
