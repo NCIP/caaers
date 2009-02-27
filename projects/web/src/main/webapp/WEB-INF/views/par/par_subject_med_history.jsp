@@ -10,6 +10,8 @@
 	 		border-width:1px 0px 0px 0px;
 		}
 		 div.row div.label { width: 15em; } 
+		 div.summary div.row div.label { width: 10em; } 
+		 div.summary div.row div.value, div.summary div.row div.extra {margin-left:11em;}
 		 div.row div.value, div.row div.extra { margin-left: 16em; }
 		 .tablecontent td {
 		 	border : 0px;
@@ -231,17 +233,16 @@
 	</script>
   </head>
   <body>
-
-  <p id="instructions">
-      <div class="instructions">
-          <div class="summarylabel"><b>Subject</b></div>
-          <div class="summaryvalue">${command.participant.fullName}</div>
-
-          <div class="summarylabel"><b>Study</b></div>
-          <div class="summaryvalue">${command.study.shortTitle}</div>
+  	<div class="summary">
+      <div class="row">
+          <div class="label">Subject</div>
+          <div class="value">${command.participant.fullName}</div>
+	  </div>
+	  <div class="row">
+          <div class="label">Study</div>
+          <div class="value">${command.study.shortTitle}</div>
       </div>
-  </p>
-
+	  </div>
   <p><tags:instructions code="instruction_subject_enter.medhist.top"/></p>
    <form:form id="command">
    <div id="showAllDropDown" style="position: absolute; display: none; left: 300px; width:300px; z-index:99; top:0px;">

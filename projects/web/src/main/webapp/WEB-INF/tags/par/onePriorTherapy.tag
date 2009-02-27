@@ -17,7 +17,7 @@
 		<ui:label path="assignment.priorTherapies[${index}].other" text="Comments" />
 	 </jsp:attribute>
 	 <jsp:attribute name="value">
-		<ui:textarea path="assignment.priorTherapies[${index}].other" cols="65" />
+		<ui:textarea path="assignment.priorTherapies[${index}].other" cols="55" />
 	 </jsp:attribute>
 	</ui:row>
 

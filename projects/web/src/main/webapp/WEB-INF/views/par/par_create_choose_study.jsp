@@ -53,26 +53,16 @@ function ajaxStudySearch(searchText, searchType) {
 }
 
 </script>
-    <style>
-        div.row div.label {
-            float : left;
-            font-weight: normal;
-            margin-left: 0.5em;
-            margin-right: 0.5em;
-            text-align: right;
-            width: 15em;
-        }
-    </style>
 </head>
 <body>
 <!-- TOP LOGOS END HERE -->
 <!-- TOP NAVIGATION STARTS HERE -->
-<p id="instructions">
-    <div class="instructions">
-        <div class="summarylabel"><b>Subject</b></div>
-        <div class="summaryvalue">${command.participant.fullName}</div>
+
+    <div class="row">
+        <div class="label">Subject</div>
+        <div class="value">${command.participant.fullName}</div>
     </div>
-</p>
+
 
 <chrome:box autopad="true" title="Search Criteria">
   	<p><tags:instructions code="instruction_subject_enter.choosestudy"/></p>

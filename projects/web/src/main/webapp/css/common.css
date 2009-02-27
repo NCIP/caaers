@@ -363,11 +363,11 @@ ul.tabs li {
 	display:inline;
 }
 .spangt18 { padding-right:4px }
-#taskbar .lte4 a.selected {
+#taskbar .lte4 a.selected, #taskbar .lte4 a.selected:hover, #taskbar .lte4 a.selected:active {
 	background-image: url(../images/blue/secondlevelnav_selected.jpg);
 	background-repeat: no-repeat;
 }
-#taskbar .gt4 a.selected{
+#taskbar .gt4 a.selected, #taskbar .gt4 a.selected:hover, #taskbar .gt4 a.selected:active {
 	background-image: url(../images/blue/secondlevelnav_gt4_selected.png);
 	background-repeat: no-repeat;
 }

@@ -70,4 +70,9 @@
 */
 </script>
 <link rel="shortcut icon" href="../../images/caaers.ico" type="image/x-icon"/>
+<!--[if lte IE 6]>
+<script type="text/javascript">  
+try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}  
+</script>  
+<![endif]-->
 <!-- END tags\standard\head.tag -->

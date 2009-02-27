@@ -1,7 +1,7 @@
 /* IE 6 CSS ONLY */
 #header {
 	background-image:none;
-	background-color:#d8e9ec;
+	background-color:#c2c9df;
 }
 .hr {
 	font-size:2px;
@@ -19,6 +19,17 @@
 }
 #thirdlevelnav div {
 	background-image: url(../images/blue/thirdlevelarrow_grey_ie6.png);
+}
+#taskbar li.gt4 {
+	list-style-type:none;
+}
+#taskbar li a:hover {
+	color:#ffe9a5;
+	background-image:none;
+}
+#taskbar li a:active {
+	color:#ffe9a5;
+	background-image:none;
 }
 a.omnipotent-button, button.omnipotent-button {
 	font-size:14px;
