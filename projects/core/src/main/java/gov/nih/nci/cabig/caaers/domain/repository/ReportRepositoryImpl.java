@@ -194,46 +194,51 @@ public class ReportRepositoryImpl implements ReportRepository {
      */
     public void amendReport(Report report, Boolean useDefaultVersion){
     	
-    	participantDao.lock(report.getAeReport().getParticipant());
-    	reportDao.reassociate(report);
-    	studyDao.lock(report.getAeReport().getStudy());
-    	
-    	ReportVersion reportVersion = new ReportVersion();
-        reportVersion.setCreatedOn(nowFactory.getNow());
-        reportVersion.setReportStatus(ReportStatus.PENDING);
-        report.setStatus(ReportStatus.PENDING);
-        
-        // Set report due date
-        Calendar cal = GregorianCalendar.getInstance();
-        Date now = nowFactory.getNow();
-        cal.setTime(now);
-        cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
-        report.setDueOn(cal.getTime());
-        reportVersion.setDueOn(cal.getTime());
-        
-        // Logic to update the reportVersionId
-        //ReportVersion lastVersion = report.getLastVersion();
-        //Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
-        //currentVersionId++;
-        //reportVersion.setReportVersionId(currentVersionId.toString());
-        
-        String nciInstituteCode = report.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
-        Integer currentBaseVersion = Integer.parseInt(report.getAeReport().getCurrentVersionForSponsorReport(nciInstituteCode));
-        Integer newVersionId = currentBaseVersion + 1;
-        if(useDefaultVersion)
-        	reportVersion.setReportVersionId(currentBaseVersion.toString());
-        else
-        	reportVersion.setReportVersionId(newVersionId.toString());
-        
-        report.addReportVersion(reportVersion);
-        
-        // Add notifications to the report object
-        reportFactory.addScheduledNotifications(report.getReportDefinition(), report);
-        
-        // Save the report to save the scheduled notifications
-        reportDao.merge(report);
-        //reportDao.initialize(report.getScheduledNotifications());
-        schedulerService.scheduleNotification(report);
+    	try {
+			participantDao.lock(report.getAeReport().getParticipant());
+			reportDao.reassociate(report);
+			studyDao.lock(report.getAeReport().getStudy());
+			
+			ReportVersion reportVersion = new ReportVersion();
+			reportVersion.setCreatedOn(nowFactory.getNow());
+			reportVersion.setReportStatus(ReportStatus.PENDING);
+			report.setStatus(ReportStatus.PENDING);
+			
+			// Set report due date
+			Calendar cal = GregorianCalendar.getInstance();
+			Date now = nowFactory.getNow();
+			cal.setTime(now);
+			cal.add(report.getReportDefinition().getTimeScaleUnitType().getCalendarTypeCode(), report.getReportDefinition().getDuration());
+			report.setDueOn(cal.getTime());
+			reportVersion.setDueOn(cal.getTime());
+			
+			// Logic to update the reportVersionId
+			//ReportVersion lastVersion = report.getLastVersion();
+			//Integer currentVersionId = Integer.parseInt(lastVersion.getReportVersionId());
+			//currentVersionId++;
+			//reportVersion.setReportVersionId(currentVersionId.toString());
+			
+			String nciInstituteCode = report.getAeReport().getStudy().getPrimaryFundingSponsorOrganization().getNciInstituteCode();
+			Integer currentBaseVersion = Integer.parseInt(report.getAeReport().getCurrentVersionForSponsorReport(nciInstituteCode));
+			Integer newVersionId = currentBaseVersion + 1;
+			if(useDefaultVersion)
+				reportVersion.setReportVersionId(currentBaseVersion.toString());
+			else
+				reportVersion.setReportVersionId(newVersionId.toString());
+			
+			report.addReportVersion(reportVersion);
+			
+			// Add notifications to the report object
+			reportFactory.addScheduledNotifications(report.getReportDefinition(), report);
+			
+			// Save the report to save the scheduled notifications
+			reportDao.merge(report);
+			//reportDao.initialize(report.getScheduledNotifications());
+			schedulerService.scheduleNotification(report);
+		} catch (Exception e) {
+			log.error("Error while ammending" , e);
+			throw new CaaersSystemException("Error while amending the report", e);
+		}
     }
     
 
