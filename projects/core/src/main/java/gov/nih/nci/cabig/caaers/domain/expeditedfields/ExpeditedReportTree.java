@@ -314,7 +314,7 @@ public class ExpeditedReportTree extends PropertylessNode {
 
     private static TreeNode participantMeasure(String baseName) {
         return property(baseName, StringUtils.capitalize(baseName),
-                        property("quantity", "Quantity"), property("unit", "Units"));
+                        property("quantity", StringUtils.capitalize(baseName) + "-" + "Quantity"), property("unit", "Units"));
     }
 
     private static TreeNode dosage(String baseName, String displayName) {
