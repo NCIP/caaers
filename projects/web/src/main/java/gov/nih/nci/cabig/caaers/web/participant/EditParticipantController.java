@@ -94,7 +94,6 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
 */
 
         response.sendRedirect("view?participantId=" + participant.getId() + "&type=edit");
-
         return null;
     }
 
@@ -119,7 +118,6 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
     protected T save(T command, Errors errors) {
         ParticipantInputCommand participantCommand = (ParticipantInputCommand) command;
         participantDao.merge(participantCommand.getParticipant());
-
         return command;
     }
 
@@ -142,8 +140,7 @@ public class EditParticipantController<T extends ParticipantInputCommand> extend
         // supress validation when target page is less than current page.
         int curPage = getCurrentPage(request);
         int targetPage = getTargetPage(request, curPage);
-        if (targetPage <= curPage) return true;
-
+        
         // supress for ajax and delete requests
         if (isAjaxRequest(request) && !StringUtils.equals("save", command.getTask())) return true;
         return super.suppressValidation(request, command);

@@ -67,10 +67,7 @@ public class PatientDetailsTab extends AeTab {
 	private static final String PRE_EXISTING_CONDITION = "preExistingCondition";
 	private static final String CONCOMITANT_MEDICATION = "concomitantMedication";
 	
-	private int[] agentsPossiblePriorTherapies = {3,4,5,7,8,11};
-    
     Map<String, String> methodNameMap = new HashMap<String, String>();
-
 	
     public PatientDetailsTab() {
         super("Patient Details", ExpeditedReportSection.MEDICAL_INFO_SECTION.getDisplayName(), "ae/patientDetails");
@@ -191,8 +188,7 @@ public class PatientDetailsTab extends AeTab {
      * 
      */
     private void createPreExistingConditionFields(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command){
-        InputField preCondField = InputFieldFactory.createSelectField("preExistingCondition","Pre-Existing condition", false, 
-        		initializePreExistingConditionOptions());
+        InputField preCondField = InputFieldFactory.createSelectField("preExistingCondition","Pre-Existing condition", false, initializePreExistingConditionOptions());
         InputField otherField = InputFieldFactory.createTextField("other", "Other", false);
         InputFieldAttributes.setSize(otherField, 50);
 

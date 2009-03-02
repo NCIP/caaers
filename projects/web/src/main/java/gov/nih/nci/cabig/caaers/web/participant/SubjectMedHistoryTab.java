@@ -375,13 +375,34 @@ public class SubjectMedHistoryTab <T extends ParticipantInputCommand> extends Ta
 
         // check PriorTherapies duplicates
         List list = command.getAssignment().getPriorTherapies();
-        Set set = new HashSet();
+        Set<String> set = new HashSet<String>();
+        boolean hasDuplicatePT = false;
+        boolean hasDuplicateAg = false;
+        
         for (Object object : list) {
             StudyParticipantPriorTherapy pt = (StudyParticipantPriorTherapy)object;
-            if (pt != null)
-                if (!set.add(pt.getName())) errors.reject("PT_004", new Object[] {pt.getName()}, "Duplicate Prior Therapy Condition");;
-                set.add(pt.getName());
+
+            // check Prior Therapy uniqueness
+            if (pt != null) {
+                StringBuffer ptUnique = new StringBuffer();
+                ptUnique.append(pt.getName()).append(pt.getStartDate().getYear()).append(pt.getStartDate().getMonth());
+                if (!set.add(ptUnique.toString())) hasDuplicatePT = true;
+            }
+
+            // check the agents within the Prior Therapy objects
+            List<StudyParticipantPriorTherapyAgent> agents = pt.getPriorTherapyAgents();
+            if (agents == null || agents.size() < 2) continue;
+
+            Set agentsSet = new HashSet();
+            for (StudyParticipantPriorTherapyAgent agent : agents) {
+                if (!agentsSet.add(agent.getChemoAgent().getName())) {
+                    hasDuplicateAg = true;
+                }
+            }
         }
+        
+        if (hasDuplicatePT) errors.reject("PTY_UK_ERR", null, "Two identical prior therapies cannot share the same starting month and year");
+        if (hasDuplicateAg) errors.reject("PTA_UK_ERR", null, "");
 
 
         // check PreExistingConditions duplicates

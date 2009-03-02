@@ -140,8 +140,6 @@ public class CreateParticipantController extends AutomaticSaveAjaxableFormContro
         
         // supress for ajax and delete requests
         if(isAjaxRequest(request) && !StringUtils.equals("save",command.getTask())) return true;
-        
-        
         return super.suppressValidation(request, command);
     }
 

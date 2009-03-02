@@ -243,17 +243,19 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
 
-                public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                HashSet hSet = new HashSet();
-                for(SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(!hSet.add(pt)){
-                errors.addValidationError("PTY_UK_ERR","Prior Therapy must be unique", i);
-                }
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
-                }
+                        public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
+                            int i = 0;
+                            HashSet hSet = new HashSet();
+                            for (SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()) {
+                                String hash = pt.getPriorTherapy().getText() + pt.getStartDate().getYear() + pt.getStartDate().getMonth();
+                                i++;
+                                if(!hSet.add(hash)) {
+                                    errors.addValidationError("PTY_UK_ERR","Two identical prior therapies cannot share the same starting month and year", i);
+                                }
+                            }
+                            return errors.hasErrors() ? FAIL : SUCCESS;
+                        }
+                
                 }.validate(aeReport, errors)
             </eval>
         </lhs>
@@ -275,18 +277,18 @@
             <pattern identifier="errors" object-type="gov.nih.nci.cabig.caaers.validation.ValidationErrors"/>
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
-                int i = 0;
-                HashSet hSet = new HashSet();
-                for(SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()){
-                i++;
-                if(aet.getPriorTherapyAgents() == null) continue;
-                for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()){
-                if(!hSet.add(pta.getChemoAgent())){
-                errors.addValidationError("PTA_UK_ERR", "Prior therapy agents must be unique", i);
-                }
-                }
-                }
-                return errors.hasErrors() ? FAIL : SUCCESS;
+                    int i = 0;
+                    HashSet hSet = new HashSet();
+                    for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
+                        i++;
+                        if(aet.getPriorTherapyAgents() == null) continue;
+                        for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {
+                            if (!hSet.add(pta.getChemoAgent())) {
+                                errors.addValidationError("PTA_UK_ERR", "Agents within a single prior therapy must be unique", i);
+                            }
+                        }
+                    }
+                    return errors.hasErrors() ? FAIL : SUCCESS;
                 }
                 }.validate(aeReport, errors)
             </eval>

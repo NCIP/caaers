@@ -24,14 +24,11 @@ import java.util.List;
 @Table(name = "ae_prior_therapies")
 @GenericGenerator(name = "id-generator", strategy = "native", parameters = {@Parameter(name = "sequence", value = "seq_ae_prior_therapies_id")})
 public class SAEReportPriorTherapy extends AbstractExpeditedReportCollectionElementChild {
+
     private PriorTherapy priorTherapy;
-
     private String other;
-
     private DateValue startDate;
-
     private DateValue endDate;
-
     private LazyListHelper lazyListHelper;
 
     public SAEReportPriorTherapy() {

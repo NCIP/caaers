@@ -121,9 +121,9 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
     }
 
     public ExpeditedAdverseEventReport createAEReport() {
-        Participant p = Fixtures.createParticipant("Biju", "Joseph");
+        Participant p = Fixtures.createParticipant("John", "Doe");
         Study s = Fixtures.createStudy("Test");
-        Organization org = Fixtures.createOrganization("Test");
+        Organization org = Fixtures.createOrganization("Test Organization");
         StudyParticipantAssignment assignment = Fixtures.assignParticipant(p, s, org);
         ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
         AdverseEventReportingPeriod reportingPeriod = Fixtures.createReportingPeriod();
@@ -132,6 +132,7 @@ public abstract class AbstractBusinessRulesExecutionTestCase extends RulesTestCa
         reportingPeriod.addAeReport(aeReport);
         aeReport.setReportingPeriod(reportingPeriod);
         aeReport.setId(-5);
+        
         // update adverseEvents
         AdverseEvent ae1 = new AdverseEvent();
         ae1.setGrade(Grade.MILD);

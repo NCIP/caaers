@@ -10,7 +10,6 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
 
     @Override
     public String getBindUri() {
-        // TODO Auto-generated method stub
         return "gov.nih.nci.cabig.caaers.rules.reporting_prior_therapies_section";
     }
 
@@ -64,8 +63,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 2);
-        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(1)
-                .getReplacementVariables()[0]);
+        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(1).getReplacementVariables()[0]);
     }
 
     /**
@@ -84,8 +82,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_BR1_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
+        assertEquals("Correct replacement variable value", 2, errors.getErrorAt(0).getReplacementVariables()[0]);
 
     }
 
@@ -123,8 +120,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_UK_ERR");
         assertSameErrorCount(errors, 1);
-        assertEquals("Replacement variable incorrect", 3, errors.getErrorAt(0)
-                .getReplacementVariables()[0]);
+        assertEquals("Replacement variable incorrect", 3, errors.getErrorAt(0).getReplacementVariables()[0]);
     }
 
     /**
@@ -148,8 +144,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
             aet.getPriorTherapyAgents().add(pta);
         }
         ValidationErrors errors = fireRules(aeReport);
-        assertNoErrors(errors,
-                "when bone marrow transplant has priortherapy agents with chemo agents");
+        assertNoErrors(errors,"when bone marrow transplant has priortherapy agents with chemo agents");
     }
 
     /**
