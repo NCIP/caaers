@@ -228,7 +228,7 @@ public class SearchStudyAjaxFacade {
 
         Column columnNciInstituteCode = model.getColumnInstance();
         columnNciInstituteCode.setProperty("nciIdentifier");
-        columnNciInstituteCode.setTitle("NCI Institute Code");
+        columnNciInstituteCode.setTitle("Investigator Number");
 
         model.addColumn(columnNciInstituteCode);
 
