@@ -247,9 +247,10 @@
                             int i = 0;
                             HashSet hSet = new HashSet();
                             for (SAEReportPriorTherapy pt : aeReport.getSaeReportPriorTherapies()) {
-                                String hash = pt.getPriorTherapy().getText() + pt.getStartDate().getYear() + pt.getStartDate().getMonth();
+                                StringBuffer ptUnique = new StringBuffer();
+                                ptUnique.append(pt.getName()).append(pt.getStartDate().getYear()).append(pt.getStartDate().getMonth());
                                 i++;
-                                if(!hSet.add(hash)) {
+                                if(!hSet.add(ptUnique.toString())) {
                                     errors.addValidationError("PTY_UK_ERR","Two identical prior therapies cannot share the same starting month and year", i);
                                 }
                             }
@@ -278,8 +279,8 @@
             <eval>new ExpeditedAdverseEventValidator() {
                 public boolean validate(ExpeditedAdverseEventReport aeReport,ValidationErrors errors) {
                     int i = 0;
-                    HashSet hSet = new HashSet();
                     for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
+                        HashSet hSet = new HashSet();
                         i++;
                         if(aet.getPriorTherapyAgents() == null) continue;
                         for(PriorTherapyAgent pta : aet.getPriorTherapyAgents()) {

@@ -104,10 +104,15 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     public void testDuplicatePriorTherapy() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("ll");
+        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setYear(2009);
+        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setMonth(01);
+
         aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("ll");
+        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setYear(2009);
+        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setMonth(01);
+
         ValidationErrors errors = fireRules(aeReport);
         assertCorrectErrorCode(errors, "PTY_UK_ERR");
-        assertSameErrorCount(errors, 1);
     }
 
     /**
