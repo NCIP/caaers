@@ -148,7 +148,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput deleteAdverseEvent(int index, String reportId){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
+    	//command.reassociate();
     	
     	AdverseEvent deletedAe = command.getAdverseEvents().get(index);
     	boolean reportsGotAmmended = false;
