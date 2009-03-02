@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade{
@@ -33,6 +35,7 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
 	 private AdverseEventReportingPeriodDao adverseEventReportingPeriodDao;
 	 private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 	 
+	 private static final Log log = LogFactory.getLog(CaptureAdverseEventAjaxFacade.class);
 	 @Override
 	public Class<?>[] controllers() {
 		return CONTROLLERS;
@@ -228,7 +231,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     
     public AjaxOutput retrieveReviewComments(){
     	CaptureAdverseEventInputCommand command = (CaptureAdverseEventInputCommand) extractCommand();
-    	command.reassociate();
+    	try {
+			command.reassociate();
+		} catch (Exception e) {
+			log.warn("Error while reassociating, we can ignore this, as the parent page refresh call might have ended in validation error", e);
+		}
     	return fetchPreviousComments(command.getAdverseEventReportingPeriod().getId(), getUserId());
     }
     

@@ -1,38 +1,35 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
-import gov.nih.nci.cabig.caaers.domain.ReviewStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.repository.AdverseEventRoutingAndReviewRepository;
 import gov.nih.nci.cabig.caaers.service.EvaluationService;
-import gov.nih.nci.cabig.caaers.service.workflow.WorkflowService;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
+import gov.nih.nci.cabig.caaers.web.ae.AeTab.AeInputFieldCreator;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 import gov.nih.nci.cabig.ctms.lang.NowFactory;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.validation.Errors;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.validation.Errors;
 
 /**
  * @author Kulasekaran

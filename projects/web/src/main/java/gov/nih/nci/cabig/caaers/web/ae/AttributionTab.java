@@ -119,8 +119,12 @@ public class AttributionTab extends AeTab {
     public boolean hasEmptyMandatoryFields(ExpeditedAdverseEventInputCommand command,HttpServletRequest request) {
     	boolean hasEmptyFields = super.hasEmptyMandatoryFields(command, request);
     	if(command.getAeReport().getId() != null && (request.getParameter("subview") == null)){
-    		ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
-    		hasEmptyFields |= validationErrors.containsErrorWithCode("ATT_BR1_ERR");
+    		try {
+				ValidationErrors validationErrors = evaluationService.validateReportingBusinessRules(command.getAeReport(), section());
+				hasEmptyFields |= validationErrors.containsErrorWithCode("ATT_BR1_ERR");
+			} catch (Exception e) {
+				
+			}
     	}
     	
     	return hasEmptyFields;
