@@ -49,8 +49,7 @@ public class ReporterTab extends AeTab {
     private AdverseEventRoutingAndReviewRepository adverseEventRoutingAndReviewRepository;
 
     public ReporterTab() {
-        super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter",
-                "ae/reporter");
+        super(ExpeditedReportSection.REPORTER_INFO_SECTION.getDisplayName(), "Reporter", "ae/reporter");
     }
 
     @Override
@@ -59,8 +58,7 @@ public class ReporterTab extends AeTab {
     }
 
     @Override
-    protected void createFieldGroups(AeInputFieldCreator creator,
-                                     ExpeditedAdverseEventInputCommand command) {
+    protected void createFieldGroups(AeInputFieldCreator creator, ExpeditedAdverseEventInputCommand command) {
         createPersonGroup(creator, "reporter");
         createPersonGroup(creator, "physician");
     }
@@ -75,13 +73,11 @@ public class ReporterTab extends AeTab {
         InputField emailField = createContactField(base, ReportPerson.EMAIL, "E-mail address", true);
         InputFieldAttributes.setSize(emailField, 50);
 
-
         InputField phoneField = createContactField(base, ReportPerson.PHONE, false);
         phoneField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
 
         InputField faxField = createContactField(base, ReportPerson.FAX, false);
         faxField.getAttributes().put(InputField.EXTRA_VALUE_PARAMS, "phone-number");
-
 
         InputField streetField = InputFieldFactory.createTextField(base + "address.street", "Street");
         InputFieldAttributes.setColumns(streetField, 50);
@@ -92,13 +88,10 @@ public class ReporterTab extends AeTab {
         InputField stateField = InputFieldFactory.createTextField(base + "address.state", "State");
         InputFieldAttributes.setColumns(stateField, 50);
 
-
         InputField zipField = InputFieldFactory.createZipCodeField(base + "address.zip", "Zip", false);
         InputFieldAttributes.setColumns(zipField, 5);
 
-
-        creator.createFieldGroup(person, StringUtils.capitalize(person) + " details",
-                title, firstNameField, middleNameField, lastNameField, emailField, phoneField, faxField, streetField, cityField, stateField, zipField);
+        creator.createFieldGroup(person, StringUtils.capitalize(person) + " details", title, firstNameField, middleNameField, lastNameField, emailField, phoneField, faxField, streetField, cityField, stateField, zipField);
     }
 
     private InputField createContactField(String base, String contactType, boolean required) {
@@ -107,13 +100,9 @@ public class ReporterTab extends AeTab {
 
     private InputField createContactField(String base, String contactType, String displayName, boolean required) {
         if (contactType.equals(ReportPerson.PHONE) || contactType.equals(ReportPerson.FAX)) {
-            return InputFieldFactory.createPhoneField(base + "contactMechanisms[" + contactType + ']',
-                    displayName, required);
-
+            return InputFieldFactory.createPhoneField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         } else {
-            return InputFieldFactory.createEmailField(base + "contactMechanisms[" + contactType + ']',
-                    displayName, required);
-
+            return InputFieldFactory.createEmailField(base + "contactMechanisms[" + contactType + ']', displayName, required);
         }
     }
 
@@ -152,8 +141,7 @@ public class ReporterTab extends AeTab {
      *  6. Pre-instantiate the mandatory section's repeating fields (biz rule) 
      *  7. Refresh the mandatory fields map.
      */
-    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd,
-                            Errors errors) {
+    public void postProcess(HttpServletRequest request, ExpeditedAdverseEventInputCommand cmd, Errors errors) {
         EditExpeditedAdverseEventCommand command = (EditExpeditedAdverseEventCommand) cmd;
         String action = (String) request.getSession().getAttribute(ACTION_PARAMETER);
         if (StringUtils.equals("createNew", action)) {

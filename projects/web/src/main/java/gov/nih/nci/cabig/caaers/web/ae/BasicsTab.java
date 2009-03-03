@@ -62,7 +62,6 @@ public abstract class BasicsTab extends AeTab {
         InputField attributionField = InputFieldFactory.createSelectField("attributionSummary", "Attribution to study", false, createAttributionOptions());
         InputField exField = InputFieldFactory.createBooleanSelectField("expected", "Expected", false);
         InputField timeOfEventField = createTimeField("eventApproximateTime", "Event time");
-
         InputField otherVerbatimField = InputFieldFactory.createTextField("detailsForOther","Verbatim", false);
         InputFieldAttributes.setSize(otherVerbatimField, 30);
 

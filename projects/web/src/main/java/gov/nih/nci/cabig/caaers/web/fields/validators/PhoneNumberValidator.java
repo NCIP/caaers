@@ -8,17 +8,15 @@ public class PhoneNumberValidator extends FieldValidator {
     public boolean isValid(Object fieldValue) {
         String strVal = stringValue(fieldValue);
 
-        if (StringUtils.isEmpty(strVal)) return true; // empty phone number is considered as
+        if (StringUtils.isEmpty(strVal)) return true;
         // valid.
 
-        int expectedSize = 10;
-        if (strVal.startsWith("+")) expectedSize = 12;
-
-        // strip off the + symbol, - symbol and barackets.
-        String strPhNo = StringUtils.replaceChars(strVal, "+()-", "");
+        // strip off the symbols
+        String strPhNo = StringUtils.replaceChars(strVal, "+()-. ", "");
         if (!StringUtils.isNumeric(strPhNo)) return false;
-        return strPhNo.length() == expectedSize;
+        if (strPhNo.length() != 10 && strPhNo.length() != 11) return false;
 
+        return true;
     }
 
     @Override
@@ -27,7 +25,7 @@ public class PhoneNumberValidator extends FieldValidator {
     }
 
     public String getValidatorCSSClassName() {
-        return "US_PHONE_NO";  //To change body of implemented methods use File | Settings | File Templates.
+        return "US_PHONE_NO";  
     }
 
 }

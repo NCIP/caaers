@@ -1,14 +1,9 @@
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<%@taglib prefix="tags" tagdir="/WEB-INF/tags"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="chrome" tagdir="/WEB-INF/tags/chrome" %>
-<%@ taglib prefix="ae" tagdir="/WEB-INF/tags/ae" %>
-<%@page contentType="text/html;charset=UTF-8" language="java" %>
+<%@include file="/WEB-INF/views/taglibs.jsp"%>
+
 <html>
 <head>
     <title>${tab.longTitle}</title>
     <tags:stylesheetLink name="ae"/>
-    <tags:includeScriptaculous/>
     <tags:dwrJavascriptLink objects="createAE,routingAndReview"/>
     <tags:javascriptLink name="routing_and_review" />
 	<tags:stylesheetLink name="slider" />
@@ -136,7 +131,7 @@
                 <div class="value">
                     <select id="staff" name="aeReport.reporter.user">
                         <option value="">please select--</option>
-                        <optgroup label="Research staff">
+                        <optgroup label="Reporter">
                         <c:forEach var="person" items="${command.assignment.studySite.organization.researchStaffs}">
                             <option value="${person.id}" ${person.id eq command.aeReport.reporter.user.id ? 'SELECTED' : '' }>${person.firstName} ${person.lastName}</option>
                         </c:forEach>
