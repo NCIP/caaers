@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
+import org.hsqldb.lib.HashMap;
 
 /**
  * @author Rhett Sutphin
@@ -204,5 +205,13 @@ public abstract class BasicsTab extends AeTab {
     	}
     	return super.hasEmptyMandatoryFields(command, request) || primaryAEStartDateNotFilled;
     }
-    
+
+    @SuppressWarnings("unchecked")
+    protected void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
+        super.populateMandatoryFlag(fieldGroups, command, refData);
+        if (command.getAeReport() != null && command.getAeReport().getAdverseEvents() != null && command.getAeReport().getAdverseEvents().size() > 0)
+            if (command.getAeReport().getAdverseEvents().get(0).getStartDate() == null) {
+                hm.put("aeReport.adverseEvents[0]", Boolean.TRUE);
+            }
+    }
 }

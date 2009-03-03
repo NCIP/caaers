@@ -68,7 +68,7 @@ public abstract class AeTab extends TabWithFields<ExpeditedAdverseEventInputComm
      * Will populate the mandatory flag.
      */
     @SuppressWarnings("unchecked")
-    private void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
+    protected void populateMandatoryFlag(Object fieldGroups, ExpeditedAdverseEventInputCommand command, Map<String, Object> refData) {
         // TODO: need to see how to manage (this or that) kind mandatory fields
         // TODO: Why not this we handle in createFields() of every tab, so that the looping through
         // the fields
