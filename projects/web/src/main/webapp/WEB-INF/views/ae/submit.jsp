@@ -41,7 +41,7 @@
     }
     
     Event.observe(window, "load", function() {
-    	 $('flow-next').value="Go to Manage Reports ";
+    	 $('flow-next').value="Go to Manage Reports ";	 
     	 
     	 //only show the workflow tab, if it is associated to workflow
             var associatedToWorkflow = ${command.associatedToWorkflow};
@@ -131,7 +131,6 @@
 	            		<td/>
 	            	</c:if>
             		<td class="completion-messages">
-						
                         <c:choose>
                             <c:when test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
                                 Yes
@@ -195,14 +194,18 @@
             			--%>
             		</td>
             		<td>
-            			<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
+            		<!--[if IE 7]>
+<div style="height:31px; width:135px;">
+<![endif]-->
+						<c:if test="${reportMessages[command.ZERO].submittable and reportMessages[report.id].submittable}" >
 							<c:if test="${(report.reportDefinition.amendable == false) or (report.isLatestVersion == true)}">
 								<c:if test="${(report.lastVersion.reportStatus == 'PENDING') or (report.lastVersion.reportStatus == 'FAILED')}" >
-									<center>
-										<a href="<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>">Submit</a> |	
+									<c:set var="submithref">
+										<c:url value="/pages/ae/submitReport?aeReport=${command.aeReport.id}&reportId=${report.id}"/>
+									</c:set>
+										<tags:button onclick="javascript:location.href = '${submithref}'" value="Submit" type="button" color="orange" cssClass="fix-ie" icon="check" />	
 										<%-- <a href="#" onClick="withdraw(${command.aeReport.id},${report.id})">Withdraw</a> --%>
-										<a href="javascript:fireAction('withdraw',${report.id});">Withdraw</a>
-									</center>
+									
 								</c:if>
 							
 								<c:if test="${report.reportDefinition.amendable and ( (report.lastVersion.reportStatus == 'WITHDRAWN') or (report.lastVersion.reportStatus == 'COMPLETED') )}" >
@@ -213,7 +216,9 @@
 							</c:if>					
 						
 						</c:if>
-            		
+            		<!--[if IE 7]>
+</div>
+<![endif]-->
             		</td>
     			</tr>
     			</c:forEach>    						
