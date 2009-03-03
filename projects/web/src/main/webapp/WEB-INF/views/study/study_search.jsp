@@ -52,6 +52,17 @@ function fireAction(action, selected){
 	document.searchForm.submit();
 }
 
+function onKey(e) {
+    var keynum = getKeyNum(e);
+
+    if (keynum == 13) {
+        Event.stop(e);
+        buildTable('searchForm');
+        $('bigSearch').show();
+    } else return;
+}
+
+
 </script>
 </head>
 <body>
@@ -72,7 +83,7 @@ function fireAction(action, selected){
                 	<form:select path="searchCriteria[${status.index}].searchType">
 						<form:options items="${studySearchType}" itemLabel="desc" itemValue="code" />
 					</form:select>
-					<form:input path="searchCriteria[${status.index}].searchText" size="25"/>
+					<form:input path="searchCriteria[${status.index}].searchText" size="25" onkeydown="onKey(event);"/>
 					<div id="error"></div>
 				</div>
 			</div>
