@@ -78,8 +78,6 @@ public class CaptureAdverseEventAjaxFacadeTest extends DwrFacadeTestCase{
 		CaptureAdverseEventAjaxFacade facadeMock = registerMockFor(CaptureAdverseEventAjaxFacade.class);
 		
 		expect(facadeMock.getWebContext()).andReturn(webContext).anyTimes();
-		 studyDao.lock(command.getStudy());
-		adverseEventReportingPeriodDao.reassociate(command.getAdverseEventReportingPeriod());
 		adverseEventReportingPeriodDao.save(command.getAdverseEventReportingPeriod());
 		replayMocks();
 		facade.deleteAdverseEvent(1,null);
