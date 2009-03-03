@@ -362,6 +362,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
             aet.getPriorTherapy().setId(3);
             PriorTherapyAgent pta = new PriorTherapyAgent();
+
             ChemoAgent ca = new ChemoAgent();
             ca.setId(2 + i);
             ca.setName("chemoagent");
@@ -370,7 +371,6 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
         }
         ValidationErrors errors = fireRules(aeReport);
         assertSameErrorCount(errors, 0);
-        assertCorrectErrorCode(errors, "PTA_UK_ERR");
 
     }
 }
