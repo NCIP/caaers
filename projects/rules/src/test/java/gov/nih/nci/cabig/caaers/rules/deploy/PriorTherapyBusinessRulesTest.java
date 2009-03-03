@@ -369,7 +369,7 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
             aet.getPriorTherapyAgents().add(pta);
         }
         ValidationErrors errors = fireRules(aeReport);
-        assertSameErrorCount(errors, 1);
+        assertSameErrorCount(errors, 0);
         assertCorrectErrorCode(errors, "PTA_UK_ERR");
 
     }
