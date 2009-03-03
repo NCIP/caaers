@@ -64,5 +64,12 @@ public class CtcDaoTest extends DaoTestCase<CtcDao> {
         assertEquals("Wrong term", 3, (int) actualTerms.get(2).getId());
     }
 
+    public void testGetCtcWithCategories() {
+        Ctc v3 = getDao().getCtcWithCategories(2);
+        assertEquals(4, v3.getCategories().size());
+        interruptSession();
+        assertEquals(4, v3.getCategories().size());
+    }
+
 }
 

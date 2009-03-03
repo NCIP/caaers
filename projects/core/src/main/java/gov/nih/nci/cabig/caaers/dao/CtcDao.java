@@ -49,4 +49,9 @@ public class CtcDao extends CaaersDao<Ctc> {
     public Ctc getCtcaeV3() {
         return getById(Ctc.CTC_V3);
     }
+
+    public Ctc getCtcWithCategories(Integer id) {
+        String query = "select c from Ctc as c left join fetch c.categories as cats where c.id = ?";
+        return (Ctc)getHibernateTemplate().find(query, new Object[] {id}).get(0);
+    }
 }
