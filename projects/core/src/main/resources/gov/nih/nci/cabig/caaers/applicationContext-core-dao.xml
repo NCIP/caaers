@@ -3,8 +3,7 @@
 This applicationContext contains the definition of the DAOs
 -->
 
-<beans
-        xmlns="http://www.springframework.org/schema/beans"
+<beans  xmlns="http://www.springframework.org/schema/beans"
         xmlns:tx="http://www.springframework.org/schema/tx"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="
@@ -12,8 +11,7 @@ This applicationContext contains the definition of the DAOs
 			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
 			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
         default-lazy-init="true">
-
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName"/>
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" autowire="byName" />
 
     <bean id="medDRADao" class="gov.nih.nci.cabig.caaers.dao.MedDRADao">
         <property name="jdbcTemplate">

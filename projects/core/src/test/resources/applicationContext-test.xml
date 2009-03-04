@@ -89,5 +89,7 @@
     <bean id="mailer" class="gov.nih.nci.cabig.caaers.service.MailerStub">
     	<property name="configuration" ref="configuration" />
     </bean>
+    
+    <bean id="caaersLoggingAspect" class="gov.nih.nci.cabig.caaers.tools.logging.CaaersLoggingAspect"  />
 
 </beans>
