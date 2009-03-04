@@ -10,7 +10,7 @@
 	
 	<import file="${parent.dir}/common.xml"/>
 	
-	<target name="module-specific-flow" depends="resolve, common.aspectj-compile ">
+	<target name="module-specific-flow" >
 	</target>
 
 	<!-- ==============================================================
