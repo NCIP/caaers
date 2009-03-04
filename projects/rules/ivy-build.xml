@@ -2,7 +2,7 @@
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml" />
-	<target name="module-specific-flow" depends="resolve,generate-jaxb">
+	<target name="module-specific-flow" depends="resolve,generate-jaxb,common.aspectj-compile">
 		<echo>overwriting rules module flow...</echo>
 	</target>
 	
