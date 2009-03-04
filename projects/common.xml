@@ -667,7 +667,10 @@
         <property name="loaded.ajc" value="true"/>
     </target>
 	
-	 <!--  Passes the source files in core through the ajc -->
+	 <!--=============================================================================== 
+	 	target : aspectj-compile
+	  Passes the source files in core through the ajc 
+	  ==================================================================================-->
 	 <target name="aspectj-compile" depends="load-ivy,load-ajc"
 	            description="Passes the source files in core through the ajc">
 	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5">
