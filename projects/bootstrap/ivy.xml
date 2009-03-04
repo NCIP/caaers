@@ -36,7 +36,12 @@
 			<dependency org="org.springframework" name="spring" rev="2.0.2" force="true" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
         	<dependency org="commons-lang" name="commons-lang" rev="2.3" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
         	<dependency org="commons-logging" name="commons-logging" rev="1.1" conf="build->master(*);runtime->runtime(*),master(*);dist->default(*);distGrid->default(*)"/>
-
+			
+			
+			<!--  dependency on aspectJ -->
+			<dependency org="aspectj" name="aspectjrt" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
+			<dependency org="aspectj" name="aspectjweaver" rev="1.5.3" force="true" conf="build->compile(*),runtime(*),master(*)"/>
+		
         	<!-- compile only dependencies -->
         	<dependency org="ant" name="ant" rev="1.6.5" conf="build->master(*)"/>
         	

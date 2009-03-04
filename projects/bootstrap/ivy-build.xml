@@ -20,7 +20,7 @@
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml" />
-	<target name="module-specific-flow">
+	<target name="module-specific-flow" depends="resolve, common.aspectj-compile">
 		<echo>overwriting bootstrap module flow...</echo>
 	</target>
 </project>
