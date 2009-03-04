@@ -9,6 +9,9 @@
 	</condition>
 	
 	<import file="${parent.dir}/common.xml"/>
+	
+	<target name="module-specific-flow" depends="resolve, common.aspectj-compile ">
+	</target>
 
 	<!-- ==============================================================
 		target: resolve-dist
