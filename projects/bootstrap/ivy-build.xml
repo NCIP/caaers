@@ -20,27 +20,8 @@
 	<property name="parent.dir" value="${basedir}/.." />
 	<property file="${parent.dir}/build.properties" />
 	<import file="${parent.dir}/common.xml" />
-	<target name="module-specific-flow" depends="resolve, aspectj-compile">
+	<target name="module-specific-flow" depends="resolve, common.aspectj-compile">
 		<echo>overwriting bootstrap module flow...</echo>
 	</target>
 	
-	 <!--=============================================================================== 
-	 	target : aspectj-compile
-	 	For some reason this is not getting picked from commons.
-	  Passes the source files in core through the ajc 
-	  ==================================================================================-->
-	 <target name="aspectj-compile" depends="load-ivy,load-ajc"
-	            description="Passes the source files in core through the ajc">
-	        <iajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5">
-	            <aspectpath refid="aspect.path" />
-	        	<classpath>
-	                <path refid="main.classpath"/>
-	                <pathelement path="${classes.dir}"/>
-	            </classpath>
-	        </iajc>
-
-	 </target>
-	
-	
-
 </project>
