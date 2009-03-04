@@ -25,6 +25,7 @@ import org.easymock.classextension.EasyMock;
 
 /**
  * @author Rhett Sutphin
+ * @author Biju Joseph
  */
 @CaaersUseCases( { CREATE_EXPEDITED_REPORT, CREATE_ROUTINE_REPORT })
 public class CtcBasicsTabTest extends AeTabTestCase {
@@ -61,14 +62,14 @@ public class CtcBasicsTabTest extends AeTabTestCase {
 
     @SuppressWarnings("unchecked")
     public void testRefDataIncludesCtcCategories() throws Exception {
-    	 EasyMock.expect(ctcDao.getById(ctcae3.getId())).andReturn(ctcae3);
+    	 EasyMock.expect(ctcDao.getCtcWithCategories(ctcae3.getId())).andReturn(ctcae3);
     	replayMocks();
         List<CtcCategory> actual = (List<CtcCategory>) getTab().referenceData(request, command).get("ctcCategories");
         assertEquals("Wrong categories in refdata", ctcae3.getCategories().size(), actual.size());
     }
 
     public void testRefDataIncludesFieldGroups() throws Exception {
-    	 EasyMock.expect(ctcDao.getById(ctcae3.getId())).andReturn(ctcae3);
+    	 EasyMock.expect(ctcDao.getCtcWithCategories(ctcae3.getId())).andReturn(ctcae3);
     	replayMocks();
         assertTrue(getTab().referenceData(request, command).containsKey("fieldGroups"));
     }
