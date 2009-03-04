@@ -40,6 +40,15 @@
         ctep_code="10043882"
         other_required="0"
         />
+        
+     <ctc_terms
+        category_id="303"
+        id="3014"
+        term="Tinnitus2"
+        ctep_term="Tinnitus2"
+        ctep_code="10043883"
+        other_required="0"
+        />    
     <ctc_grades/> <!-- to delete in case of existing refs -->
     
 	 <studies
@@ -341,7 +350,18 @@
     	term_type="ctep"
     	/>
 		
-		
+	 <ADVERSE_EVENTS
+        id="-50"
+        reporting_period_id="1005"
+        routine_list_index="1"
+        />
+        
+     <AE_TERMS
+    	id="-51"
+    	adverse_event_id="-50"
+    	term_id="3014" 
+    	term_type="ctep"
+    	/>	
 
 
 	<ae_reporting_periods
@@ -359,6 +379,7 @@
         id="-75"
         reporting_period_id="1006"
         routine_list_index="1"
+        low_level_term_id="-2"
         />
         
      <AE_TERMS
@@ -381,7 +402,20 @@
     	term_id="3012" 
     	term_type="ctep"
     	/>
-		
+    	
+    	
+	<ADVERSE_EVENTS
+        id="-77"
+        reporting_period_id="1006"
+        routine_list_index="2"
+        />
+        
+     <AE_TERMS
+    	id="-18"
+    	adverse_event_id="-77"
+    	term_id="3014" 
+    	term_type="ctep"
+    	/>
 		
 		
 	 <ind_holders />

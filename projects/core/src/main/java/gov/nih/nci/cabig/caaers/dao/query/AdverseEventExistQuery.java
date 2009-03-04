@@ -36,5 +36,9 @@ public class AdverseEventExistQuery extends AbstractQuery {
     	setParameter("lltId", llt.getId());
     }
     
-    
+    public void filterByReportingPeriodId(Integer id){
+    	if(id == null) return;
+    	andWhere(" rp.id = :rpid");
+    	setParameter("rpid", id);
+    }
 }

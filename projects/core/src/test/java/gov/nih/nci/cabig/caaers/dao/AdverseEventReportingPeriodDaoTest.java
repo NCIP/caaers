@@ -116,7 +116,14 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     
 
     public void testIsAdverseEventPresent(){
+    	
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1003);
+    	
+    	
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
+    	
     	ae1.setId(-999);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -130,7 +137,11 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_SameAEId_DifferentTermId(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1006);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
+    	
     	ae1.setId(-76);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -144,7 +155,10 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_SameAEId_SameTermId(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1006);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
     	ae1.setId(-76);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -158,7 +172,10 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_DifferentAEId_SameTermId(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1006);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
     	ae1.setId(-766);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -172,7 +189,10 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_DifferentAEId_SameTermId_DifferentLowLevelTerm(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1006);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
     	ae1.setId(-766);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -189,7 +209,10 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_DifferentAEId_SameTermId_SameLowLevelTerm(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1001);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
     	ae1.setId(-766);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();
@@ -206,7 +229,10 @@ public class AdverseEventReportingPeriodDaoTest extends DaoNoSecurityTestCase<Ad
     }
     
     public void testIsAdverseEventPresent_SameAEId_SameTermId_SameLowLevelTerm(){
+    	AdverseEventReportingPeriod reportingPeriod = new AdverseEventReportingPeriod();
+    	reportingPeriod.setId(1001);
     	AdverseEvent ae1 = new AdverseEvent();
+    	ae1.setReportingPeriod(reportingPeriod);
     	ae1.setId(-70);
     	AdverseEventCtcTerm ctcTerm = new AdverseEventCtcTerm();
     	CtcTerm term = new CtcTerm();

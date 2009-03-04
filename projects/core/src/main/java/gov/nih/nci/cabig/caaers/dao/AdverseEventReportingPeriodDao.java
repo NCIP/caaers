@@ -96,6 +96,7 @@ public class AdverseEventReportingPeriodDao extends GridIdentifiableDao<AdverseE
     	query.filterByDifferentAdverseEventId(ae.getId());
     	query.filterByAdverseEventTerm(ae.getAdverseEventTerm());
     	query.filterByLowLevelTerm(ae.getLowLevelTerm());
+    	query.filterByReportingPeriodId(ae.getReportingPeriod().getId());
     	List<AdverseEvent> aeList = (List<AdverseEvent>) find(query);
     	return (aeList != null && !aeList.isEmpty());
     }

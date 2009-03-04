@@ -1,10 +1,8 @@
 package gov.nih.nci.cabig.caaers.dao.query;
 
-import gov.nih.nci.cabig.caaers.domain.AbstractAdverseEventTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
-import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import junit.framework.TestCase;
 
 public class AdverseEventExistQueryTest extends TestCase {
@@ -47,6 +45,11 @@ public class AdverseEventExistQueryTest extends TestCase {
 		llt.setId(55);
 		query.filterByLowLevelTerm(llt);
 		assertEquals("select ae from AdverseEventReportingPeriod rp  left join rp.adverseEvents as ae  left outer join ae.lowLevelTerm as llt  left outer join ae.adverseEventTerm as term WHERE llt.id = :lltId", query.getQueryString());
+	}
+	
+	public void testFilterByReportingPeriodId(){
+		query.filterByReportingPeriodId(55);
+		assertEquals("select ae from AdverseEventReportingPeriod rp  left join rp.adverseEvents as ae  left outer join ae.lowLevelTerm as llt  left outer join ae.adverseEventTerm as term WHERE  rp.id = :rpid", query.getQueryString());
 	}
 
 }
