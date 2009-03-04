@@ -8,58 +8,19 @@
                 <copy-resources src="${module.lib}/main/xfire" dest="${lib.dir}"  filter="false" />
         </target>
     -->
-    <target name="module-specific-flow" depends="resolve,generate-jaxb,aspectj-compile ">
+    <target name="module-specific-flow" depends="resolve,generate-jaxb,common.aspectj-compile ">
         <mkdir dir="${classes.dir}/db"/>
         <copy-resources src="${main.src}/../db" dest="${classes.dir}/db" filter="true"/>
     </target>
 
-    <!-- ===========================================================================
-         target: load-ajc
-   ============================================================================= -->
-    <target name="load-ajc" unless="loaded.ajc" description="--> define the ajc task">
-        <ivy:retrieve organisation="org.aspectj" module="aspectjtools" inline="true"
-                      pattern="${ivy.jar.dir}/aspectjtools-1.5.4.jar" sync="true"/>
-        <taskdef name="ajc" classname="org.aspectj.tools.ant.taskdefs.Ajc10">
-            <classpath>
-                <pathelement location="${ivy.jar.dir}/aspectjtools-1.5.4.jar"/>
-            </classpath>
-        </taskdef>
-        <property name="loaded.ajc" value="true"/>
-    </target>
 
-
-    <!--  Passes the source files in core through the ajc -->
-    <target name="aspectj-compile" depends="load-ivy, load-ajc"
-            description="Passes the source files in core through the ajc">
-        <ajc srcdir="${main.src};${generated.src.dir}" destdir="${classes.dir}" includes="**/*.java" source="1.5">
-            <classpath>
-                <path refid="main.classpath"/>
-                <pathelement path="${classes.dir}"/>
-            </classpath>
-        </ajc>
-
-    </target>
 
     <!-- ========================================================================
          target : jar-test
              Will call aspectj-compile of test classes then delegates to common jar-test
      ============================================================================-->
-    <target name="jar-test" depends="aspectj-compile-test, common.jar-test">
+    <target name="jar-test" depends="common.aspectj-compile-test, common.jar-test">
         <!--<makeJar dir="${dist.dir}" dir.classes="${test.classes.dir}" file.name="${test.jar.file}"/> -->
-    </target>
-
-    <!-- =============================================================================
-         target : aspectj-compile-test
-             Passes the test files in core through the ajc
-     ================================================================================== -->
-    <target name="aspectj-compile-test" depends="load-ivy,load-ajc, resolve-test"
-            description="Passes the test files in core through the ajc">
-        <ajc srcdir="${test.src}" destdir="${test.classes.dir}" includes="**/*.java" source="1.5">
-            <classpath>
-                <path refid="test.classpath"/>
-                <pathelement path="${test.classes.dir}"/>
-            </classpath>
-        </ajc>
     </target>
 
     <!-- ========================================================================
