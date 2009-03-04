@@ -45,49 +45,6 @@ public class ReportDeliveryDao extends GridIdentifiableDao<ReportDelivery> {
     }
 
     /**
-     * Get the list of all report deliveries.
-     * 
-     * @return return the list of report deliveries.
-     */
-    @SuppressWarnings("unchecked")
-    public List<ReportDelivery> getAll() {
-        return getHibernateTemplate().find("from ReportDelivery");
-    }
-
-    /**
-     * Delete report delivery from db
-     * 
-     * @param id
-     *                The ID of the report
-     * @return True if report delivery successfully deleted. False otherwise.
-     */
-    public boolean deleteById(int id) {
-        int count = getHibernateTemplate().bulkUpdate("delete ReportDelivery t where t.id=?",
-                        new Object[] { id });
-        return count >= 1;
-    }
-
-    /**
-     * Delete report delivery from db.
-     * 
-     * @param rd
-     *                The report delivery object to be deleted.
-     */
-    public void delete(ReportDelivery rd) {
-        getHibernateTemplate().delete(rd);
-    }
-
-    /**
-     * Delete multiple report deliveries.
-     * 
-     * @param c
-     *                The report delivery collection.
-     */
-    public void delete(Collection<ReportDelivery> c) {
-        getHibernateTemplate().deleteAll(c);
-    }
-
-    /**
      * Get the report delivery given the report delivery id.
      * 
      * @param arg0
