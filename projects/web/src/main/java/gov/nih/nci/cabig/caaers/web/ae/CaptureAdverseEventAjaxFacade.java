@@ -185,6 +185,11 @@ public class CaptureAdverseEventAjaxFacade  extends CreateAdverseEventAjaxFacade
     	command.getAdverseEvents().remove(index);
     	deletedAe.setReportingPeriod(null);
     	
+    	//save the expedited report
+    	if(ammendedReport != null)
+    		aeReportDao.save(ammendedReport);
+    	
+    	//save the reporting period
     	reportingPeriodDao.save(command.getAdverseEventReportingPeriod());
     	
     	if(command.getWorkflowEnabled() && command.isAssociatedToWorkflow()){
