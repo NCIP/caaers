@@ -10,9 +10,16 @@
 	
 	<import file="${parent.dir}/common.xml"/>
 	
-	<target name="module-specific-flow" >
+	<condition property="windows.os" value="true">
+		<os family="windows" />
+	</condition>
+	
+	<target name="module-specific-flow" unless="windows.os" >
+		<echo message="Executing ${ant.project.name} : module-specific-flow" />
+		<antcall target="resolve"  />
+		<antcall target="common.aspectj-compile" />
 	</target>
-
+	
 	<!-- ==============================================================
 		target: resolve-dist
 	================================================================== -->
