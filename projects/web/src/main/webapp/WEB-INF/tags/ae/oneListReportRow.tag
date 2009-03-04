@@ -40,27 +40,28 @@
 		</td>
 		<td width="20%" id="action${report.id}" align="center">
 			
-			<SELECT id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')">
-		     	<OPTION selected label="none" value="none">None</OPTION>
+			<SELECT style="width:100px;" id="actions-${report.id}" name="actions" onChange="executeAction(${report.id},'<c:url value='/pages/ae/generateExpeditedfPdf?aeReport=${report.aeReport.id}'/>')">
+		     	<OPTION selected value="none">None</OPTION>
 		     	<c:if test="${command.study.caaersXMLType}">
-		     		<OPTION label="xml" value="xml">caAERS XML</OPTION>
+		     		<OPTION value="xml">caAERS XML</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.adeersPDFType}">
-		     		<OPTION label="pdf" value="pdf">AdEERS PDF</OPTION>
+		     		<OPTION value="pdf">AdEERS PDF</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.medwatchPDFType}">
-		     		<OPTION label="medwatchpdf" value="medwatchpdf">MedWatch 3500A PDF</OPTION>
+		     		<OPTION value="medwatchpdf">MedWatch 3500A PDF</OPTION>
 		     	</c:if>
 		     	<c:if test="${command.study.dcpSAEPDFType}">
-		     		<OPTION label="dcp" value="dcp">DCP SAE PDF</OPTION>
+		     		<OPTION value="dcp">DCP SAE PDF</OPTION>
 		     	</c:if>
 		     		<c:if test="${command.study.ciomsPDFType}">
-		     	<OPTION label="cioms" value="cioms">CIOMS PDF</OPTION>
+		     	<OPTION value="cioms">CIOMS PDF</OPTION>
 		     		</c:if>
 		     	<c:if test="${command.study.ciomsSaePDFType}">
-		     		<OPTION label="ciomssae" value="ciomssae">DCP Safety Report PDF</OPTION>
+		     		<OPTION value="ciomssae">DCP Safety Report PDF</OPTION>
 		     	</c:if>
 	 		</SELECT>
+			
 	 		<br>
 	 		<c:if test="${report.aeReport.notificationMessagePossible}">
 	   	     <span class="notify-unit" id="notify-unit-${report.aeReport.id}">
