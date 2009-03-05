@@ -156,4 +156,12 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
     	// Test prior Therapies
     	assertEquals("Wrong number of prior therapies", 1, assignment.getPriorTherapies().size());
     }
+
+    public void testReassociate() {
+        StudyParticipantAssignment assignment = getDao().getById(-15);
+        assignment.setVersion(10);
+        interruptSession();
+        getDao().reassociate(assignment);
+        assertEquals(10, assignment.getVersion().intValue());
+    }
 }
