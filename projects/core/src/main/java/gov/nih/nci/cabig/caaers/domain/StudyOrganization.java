@@ -44,13 +44,8 @@ public abstract class StudyOrganization extends AbstractMutableDomainObject impl
 
     public StudyOrganization() {
         lazyListHelper = new LazyListHelper();
-        lazyListHelper.add(StudyInvestigator.class,
-                        new StudyOrganizationChildInstantiateFactory<StudyInvestigator>(this,
-                                        StudyInvestigator.class));
-        lazyListHelper.add(StudyPersonnel.class,
-                        new StudyOrganizationChildInstantiateFactory<StudyPersonnel>(this,
-                                        StudyPersonnel.class));
-
+        lazyListHelper.add(StudyInvestigator.class, new StudyOrganizationChildInstantiateFactory<StudyInvestigator>(this, StudyInvestigator.class));
+        lazyListHelper.add(StudyPersonnel.class, new StudyOrganizationChildInstantiateFactory<StudyPersonnel>(this, StudyPersonnel.class));
     }
 
     public void addStudyPersonnel(StudyPersonnel studyPersonnel) {

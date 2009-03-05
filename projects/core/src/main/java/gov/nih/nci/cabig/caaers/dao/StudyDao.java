@@ -194,21 +194,6 @@ public class StudyDao extends GridIdentifiableDao<Study> implements MutableDomai
     }
 
     /**
-     * TODO kkk
-     *
-     * @param domainObjectImportOutcome
-     */
-    @Transactional(readOnly = false)
-    public void batchSave(final List<DomainObjectImportOutcome<Study>> domainObjectImportOutcome) {
-        log.debug("Batch saving start time : " + new java.util.Date());
-        Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-        for (DomainObjectImportOutcome<Study> outcome : domainObjectImportOutcome) {
-            final Study study = outcome.getImportedDomainObject();
-            session.merge(study);
-        }
-    }
-
-    /**
      * Get the list of studies matching the name fragments.
      *
      * @param subnames the name fragments to search on.

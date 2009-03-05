@@ -20,9 +20,11 @@
     <!-- START STUDY-TERMS-->
 
         <CTC_CATEGORIES id="302" name="auditory/ear" version_id="3" />
-        <CTC_TERMS id="3012" category_id="302" term="Tinnitus" ctep_term="Tinnitus" ctep_code="10043882" other_required="0" />
+        <CTC_TERMS id="3012" category_id="302" term="Tinnitus1" ctep_term="Tinnitus1" ctep_code="10043882" other_required="0" />
+        <CTC_TERMS id="3010" category_id="302" term="Tinnitus2" ctep_term="Tinnitus2" ctep_code="10043883" other_required="1" />
         <MEDDRA_LLT id="-11" meddra_code="2" meddra_term="Hello World" />
 
+        <EXPECTED_AES id="-7" study_id="-2" term_id="3010" term_type="ctep" />
         <EXPECTED_AES id="-8" study_id="-2" term_id="3012" term_type="ctep"/>
         <EXPECTED_AES id="-9" study_id="-3" term_id="-11" term_type="meddra" />
 
@@ -220,6 +222,14 @@
             organization_id="-1003"
             discriminator_column="1"/>
 
+    <IDENTIFIERS
+            id="-21"
+            stu_id="-5"
+            value="FSSI-01"
+            type="uniqueness"
+            organization_id="-1003"
+            discriminator_column="1"/>
+
     <!--
  <ORGANIZATIONS
      id="-1050"
@@ -264,6 +274,16 @@
     -->
     <STUDY_ORGANIZATIONS
             id="-1000"
+            version="1"
+            status_code="active"
+            start_date="01-01-2001"
+            end_date="01-01-2002"
+            study_id="-2"
+            site_id="-1003"
+            type="SST"/>
+
+    <STUDY_ORGANIZATIONS
+            id="-1009"
             version="1"
             status_code="active"
             start_date="01-01-2001"

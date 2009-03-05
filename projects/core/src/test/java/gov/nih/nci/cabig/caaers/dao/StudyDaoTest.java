@@ -205,6 +205,23 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     	assertTrue(true);
     }
 
+    public void testSearchByExactExampleWithIdentifiers() throws Exception {
+        Study example = new Study();
+        example.setDescription("Description");
+
+        OrganizationAssignedIdentifier idOne = new OrganizationAssignedIdentifier();
+        SystemAssignedIdentifier idTwo= new SystemAssignedIdentifier();
+        idOne.setValue("FSSI-01");
+
+        example.addIdentifier(idOne);
+        example.addIdentifier(idTwo);
+
+        List<Study> actual = getDao().searchByExample(example, true);
+        assertEquals("Wrong number of matches", 1, actual.size());
+        assertEquals("Wrong match", -5, (int) actual.get(0).getId());
+    	assertTrue(true);
+    }
+
     public void testSearchByWildcardExample() throws Exception {
         Study example = new Study();
         example.setShortTitle("orte");
@@ -234,7 +251,7 @@ public class StudyDaoTest extends DaoNoSecurityTestCase<StudyDao> {
     public void testGetStudySites() throws Exception {
         Study study = getDao().getById(-2);
         List<StudySite> sites = study.getStudySites();
-        assertEquals("Wrong number of study sites", 1, sites.size());
+        assertEquals("Wrong number of study sites", 2, sites.size());
         List<Integer> ids = collectIds(sites);
 
         assertContains("Missing expected study site", ids, -1000);
@@ -706,7 +723,15 @@ assertTrue(true);
         assertNotNull("Ctc Term List is null", loaded.getExpectedAECtcTerms());
         assertEquals("This StudyTerm is not Ctc", true, loaded.getExpectedAECtcTerms().get(0) instanceof ExpectedAECtcTerm);
         assertEquals("This term is not CtcTerm", true, loaded.getExpectedAECtcTerms().get(0).getTerm() instanceof CtcTerm);
-        assertEquals("Wrong Ctc Id", 3012, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
+        assertEquals("Wrong Ctc Id", 3010, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
+    }
+
+    public void testLoadCtcBasedTermWithOtherMeddra() throws Exception {
+        Study loaded = getDao().getById(-2);
+        assertNotNull("Ctc Term List is null", loaded.getExpectedAECtcTerms());
+        assertEquals("This StudyTerm is not Ctc", true, loaded.getExpectedAECtcTerms().get(0) instanceof ExpectedAECtcTerm);
+        assertEquals("This term is not CtcTerm", true, loaded.getExpectedAECtcTerms().get(0).getTerm() instanceof CtcTerm);
+        assertEquals("Wrong Ctc Id", 3010, loaded.getExpectedAECtcTerms().get(0).getTerm().getId().intValue());
     }
 
     public void testLoadMeddraBasedTerm() throws Exception {
