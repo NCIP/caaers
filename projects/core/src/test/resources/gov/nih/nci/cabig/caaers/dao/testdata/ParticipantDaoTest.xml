@@ -131,19 +131,36 @@
      <IDENTIFIERS
         id="-200"
         participant_id="-100"
+        organization_id="-1001"
         stu_id="-999"
         value="13js77"
         type="MRN"
         system_name="system name"
+        primary_indicator="0"
         discriminator_column="2"	/>
-        
+
+     <IDENTIFIERS
+        id="-229"
+        organization_id="-1001"
+        value="abc"
+        primary_indicator="1"
+        discriminator_column="1"	/>
+
+     <IDENTIFIERS
+        id="-228"
+        organization_id="-1001"
+        value="def"
+        primary_indicator="1"
+        discriminator_column="1"	/>
+
         <IDENTIFIERS
         id="-201"
         stu_id="-2000"
         value="nci_test"
         type="MRN"
         system_name="system name"
-        discriminator_column="2"/>	
+        discriminator_column="2"/>
+
         <IDENTIFIERS
         id="-208"
         value="11112"

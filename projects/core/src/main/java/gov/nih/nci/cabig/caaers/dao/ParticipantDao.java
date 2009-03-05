@@ -56,21 +56,6 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
     }
 
     /**
-     * TODO
-     *
-     * @param domainObjectImportOutcome
-     */
-    @Transactional(readOnly = false)
-    public void batchSave(final List<DomainObjectImportOutcome<Participant>> domainObjectImportOutcome) {
-        log.debug("Time now : " + new java.util.Date());
-        Session session = getHibernateTemplate().getSessionFactory().getCurrentSession();
-        for (DomainObjectImportOutcome<Participant> outcome : domainObjectImportOutcome) {
-            final Participant participant = outcome.getImportedDomainObject();
-            session.merge(participant);
-        }
-    }
-
-    /**
      * Get the list of all participants.
      *
      * @return return the list of participants.
@@ -88,17 +73,6 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
     @SuppressWarnings("unchecked")
     public List<Participant> getBySubnames(final String[] subnames) {
         return findBySubname(subnames, SUBSTRING_MATCH_PROPERTIES, EXACT_MATCH_PROPERTIES);
-    }
-
-
-    /**
-     * @param subnames a set of substrings to match
-     * @return a list of participants such that each entry in <code>subnames</code> is a
-     *         case-insensitive substring match of the participant's name or other identifier
-     */
-    @SuppressWarnings("unchecked")
-    public List<Participant> getByUniqueIdentifiers(final String[] subnames) {
-        return findBySubname(subnames, EMPTY_PROPERTIES, EXACT_MATCH_UNIQUE_PROPERTIES);
     }
 
     /**
@@ -132,6 +106,7 @@ public class ParticipantDao extends GridIdentifiableDao<Participant> implements
      * @return List<Identidier>
      */
     public List<Identifier> getSitePrimaryIdentifiers(int siteID) {
+        System.out.println("siteID="+siteID);
         return getHibernateTemplate().find("FROM Identifier idt WHERE idt.organization.id = ? AND idt.primaryIndicator = ?", new Object[]{siteID, true});
     }
 

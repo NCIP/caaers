@@ -5,6 +5,7 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_PARTICIPANT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.IMPORT_PARTICIPANTS;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
+import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.Organization;
@@ -28,10 +29,11 @@ import org.springframework.jdbc.core.StatementCallback;
  * @author Krikor Krumlian
  * @author Rhett Sutphin
  */
+
 @CaaersUseCases({CREATE_PARTICIPANT, ASSIGN_PARTICIPANT, IMPORT_PARTICIPANTS})
 public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
-    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean(
-            "organizationDao");
+
+    private OrganizationDao organizationDao = (OrganizationDao) getApplicationContext().getBean("organizationDao");
 
     public void testGetById() throws Exception {
         Participant participant = getDao().getById(-100);
@@ -232,6 +234,15 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
         assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
     }
 
+    public void testSearchParticipantByparticipantIdentifier() throws Exception {
+        List<Participant> results;
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("participantIdentifier", "13js77");
+        results = getDao().searchParticipant(m);
+        assertEquals("Wrong number of results", 1, results.size());
+        assertEquals("Wrong match", "Dilbert", results.get(0).getFirstName());
+    }
+
     public void testSearchParticipantByStudyIdentifier() throws Exception {
         List<Participant> results;
         Map<String, String> m = new HashMap<String, String>();
@@ -338,5 +349,23 @@ public class ParticipantDaoTest extends DaoNoSecurityTestCase<ParticipantDao> {
         assertNull("Participant should be null", participant);
     }
 
+    public void testGetAll() {
+        List all = getDao().getAll();
+        assertNotNull(all);
+        assertEquals(2, all.size());
+    }
 
+    public void testGetSitePrimaryIdentifiers() {
+        List all = getDao().getSitePrimaryIdentifiers(-1001);
+        assertNotNull(all);
+        assertEquals(2, all.size());
+    }
+
+    public void testSearchParticipant() {
+        ParticipantQuery pq = new ParticipantQuery();
+        pq.filterByFirstName("Dilbert");
+        List all = getDao().searchParticipant(pq);
+        assertNotNull(all);
+        assertEquals(1, all.size());
+    }
 }

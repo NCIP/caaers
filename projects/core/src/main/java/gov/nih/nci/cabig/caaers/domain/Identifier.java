@@ -27,9 +27,7 @@ import gov.nih.nci.cabig.ctms.domain.AbstractMutableDomainObject;
 public class Identifier extends AbstractMutableDomainObject {
 
     private String type;
-
     private String value;
-
     private Boolean primaryIndicator = false;
 
     public static Identifier createTemplate(final String type, final String value) {

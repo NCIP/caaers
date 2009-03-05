@@ -412,17 +412,6 @@ public class RoutineAdverseEventReportServiceImpl extends AbstractImportServiceI
 			}
 		}
 
-		/*
-		private void checkIfParticipantExistsForGivenIdentifiers(Participant participant, DomainObjectImportOutcome participantImportOutcome, Severity severity){
-
-			String[] s = { participant.getFirstName(),participant.getLastName() };
-			List<Participant> pars = participantDao.getByUniqueIdentifiers(s);
-			if (pars != null && pars.size() >= 1){
-				participantImportOutcome.addErrorMessage(participant.getClass().getSimpleName() + " already exists. ",severity);
-			}
-		}
-		*/
-
 		public ParticipantDao getParticipantDao() {
 			return participantDao;
 		}
