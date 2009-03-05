@@ -58,14 +58,14 @@ public class StudyQuery extends AbstractQuery {
 
     public void filterByIdentifierValueExactMatch(final String identifiervalue) {
             String searchString = identifiervalue.toLowerCase();
-            andWhere("lower(s.identifiers.value) LIKE :" + STUDY_IDENTIFIER_VALUE);
+            andWhere("s.identifiers.value = :" + STUDY_IDENTIFIER_VALUE);
             setParameter(STUDY_IDENTIFIER_VALUE, searchString);
         
     }
 
     public void filterByIdentifierType(final String type) {
         andWhere("s.identifiers.type LIKE :" + STUDY_IDENTIFIER_TYPE);
-        setParameter(STUDY_IDENTIFIER_TYPE, type);
+        setParameter(STUDY_IDENTIFIER_TYPE, "%" + type.toLowerCase() + "%");
     }
 
     // shortTitle
@@ -95,7 +95,7 @@ public class StudyQuery extends AbstractQuery {
     // p.gender
     public void filterByParticipantGender(final String gender) {
         andWhere("lower(p.gender) LIKE :pGender");
-        setParameter("pGender", gender.toLowerCase());
+        setParameter("pGender", "%" +gender.toLowerCase()+"%");
     }
 
     // participant DOB
