@@ -92,7 +92,7 @@ public abstract class BasicsTab extends AeTab {
             validateAdverseEvent(ae, lit.previousIndex(), fieldGroups, errors);
             if(command.isAdverseEventPresent(ae)){
             	String termName = ae.getAdverseEventTerm().getFullName();
-            	errors.reject("SAE_022",new Object[] {termName, termName}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
+                errors.reject("SAE_022", new Object[] {termName, termName}, "Duplicate AE term deteced in course, please use Enter Adverse Events flow");
             }
         }
         InputField firstStartDateField = fieldGroups.get(MAIN_FIELD_GROUP + '0').getFields().get(2);

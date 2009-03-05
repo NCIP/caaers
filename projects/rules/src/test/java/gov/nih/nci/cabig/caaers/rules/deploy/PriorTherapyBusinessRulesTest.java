@@ -101,24 +101,6 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
      * RuleName : PTY_UK_CHK Logic : Prior Therapy must be unique Error Code : PTY_UK_ERR Error
      * Message : PRIOR_THERAPY must be unique
      */
-    public void testDuplicatePriorTherapy() throws Exception {
-        ExpeditedAdverseEventReport aeReport = createAEReport();
-        aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("ll");
-        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setYear(2009);
-        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setMonth(01);
-
-        aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("ll");
-        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setYear(2009);
-        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setMonth(01);
-
-        ValidationErrors errors = fireRules(aeReport);
-        assertCorrectErrorCode(errors, "PTY_UK_ERR");
-    }
-
-    /**
-     * RuleName : PTY_UK_CHK Logic : Prior Therapy must be unique Error Code : PTY_UK_ERR Error
-     * Message : PRIOR_THERAPY must be unique
-     */
     public void testTwoOutOfThreeSamePriorTherapy() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         aeReport.addSaeReportPriorTherapies(aeReport.getSaeReportPriorTherapies().get(1));
@@ -332,6 +314,52 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     }
 
     /**
+     * RuleName : PTY_UK_CHK Logic : Prior Therapy must be unique Error Code : PTY_UK_ERR Error
+     * Message : Two identical prior therapies cannot share the same starting month and year
+     */
+    public void testDuplicatePriorTherapy() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        aeReport.getSaeReportPriorTherapies().get(0).getPriorTherapy().setText("ll");
+        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setYear(2009);
+        aeReport.getSaeReportPriorTherapies().get(0).getStartDate().setMonth(01);
+
+        aeReport.getSaeReportPriorTherapies().get(1).getPriorTherapy().setText("ll");
+        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setYear(2009);
+        aeReport.getSaeReportPriorTherapies().get(1).getStartDate().setMonth(01);
+
+        ValidationErrors errors = fireRules(aeReport);
+        assertCorrectErrorCode(errors, "PTY_UK_ERR");
+        System.out.println("errors=" + errors.getErrors().size());
+    }
+
+    /**
+     * RuleName : PTA_UK_CHK Logic : Agents within a single prior therapy must be unique
+     * Message : Agents within a single prior therapy must be unique
+     * Input Data:  2 Prior Therapies with the same Agent
+     * Output Data:  0 error messages expected
+     */
+    public void testTheSameAgentForDifferentPriorTherapies() throws Exception {
+        ExpeditedAdverseEventReport aeReport = createAEReport();
+        int i = 0;
+
+        for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
+            aet.getPriorTherapy().setId(3 + i*10);
+
+            PriorTherapyAgent ptaOne = new PriorTherapyAgent();
+
+            ChemoAgent caOne = new ChemoAgent();
+            caOne.setId(200);
+            caOne.setName("Chemoagent");
+            ptaOne.setChemoAgent(caOne);
+
+            aet.getPriorTherapyAgents().add(ptaOne);
+        }
+
+        ValidationErrors errors = fireRules(aeReport);
+        assertSameErrorCount(errors, 0);
+    }
+
+    /**
      * RuleName : PTA_UK_CHK Logic : Prior Therapy Agents must be unique Error Code : PTA_UK_ERR
      * Error Message : CHEMO_AGENT_NAME must be unique
      */
@@ -355,22 +383,36 @@ public class PriorTherapyBusinessRulesTest extends AbstractBusinessRulesExecutio
     /**
      * RuleName : PTA_UK_CHK Logic : Prior Therapy Agents must be unique Error Code : PTA_UK_ERR
      * Error Message : CHEMO_AGENT_NAME must be unique
+     * Input Data:  2 Prior Therapies with two identical Agents each
+     * Output Data:  2 error messages expected complaining about duplicate agents within the same PT
      */
     public void testDuplicateChemoAgents() throws Exception {
         ExpeditedAdverseEventReport aeReport = createAEReport();
         int i = 0;
+        
         for (SAEReportPriorTherapy aet : aeReport.getSaeReportPriorTherapies()) {
-            aet.getPriorTherapy().setId(3);
-            PriorTherapyAgent pta = new PriorTherapyAgent();
+            aet.getPriorTherapy().setId(3 + 11*i);
 
-            ChemoAgent ca = new ChemoAgent();
-            ca.setId(2 + i);
-            ca.setName("chemoagent");
-            pta.setChemoAgent(ca);
-            aet.getPriorTherapyAgents().add(pta);
+            PriorTherapyAgent pta1 = new PriorTherapyAgent();
+            PriorTherapyAgent pta2 = new PriorTherapyAgent();
+
+            ChemoAgent ca1 = new ChemoAgent();
+            ca1.setId(2 + i);
+            ca1.setName("Chemoagent");
+            pta1.setChemoAgent(ca1);
+
+            ChemoAgent ca2 = new ChemoAgent();
+            ca2.setId(100 + i);
+            ca2.setName("Chemoagent");
+            pta2.setChemoAgent(ca2);
+
+            aet.getPriorTherapyAgents().add(pta1);
+            aet.getPriorTherapyAgents().add(pta2);
         }
+        
         ValidationErrors errors = fireRules(aeReport);
-        assertSameErrorCount(errors, 0);
-
+        assertSameErrorCount(errors, 2);
+        assertCorrectErrorCode(errors, "PTA_UK_ERR");
     }
+
 }
