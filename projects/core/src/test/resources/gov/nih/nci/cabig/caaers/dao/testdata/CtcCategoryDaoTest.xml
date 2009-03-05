@@ -1,0 +1,30 @@
+<dataset>
+	<ctc_versions
+		id="1"
+		name="ctc_version_one"
+	/>
+	<ctc_versions
+		id="2"
+		name="ctc_version_two"
+	/>
+	<ctc_categories
+		id="1"
+		version_id="1"
+		name="category_one"
+	/>
+	<ctc_categories
+		id="2"
+		version_id="1"
+		name="category_two"
+	/>
+	<ctc_categories
+		id="3"
+		version_id="2"
+		name="category_three"
+	/>
+	<ctc_categories
+		id="4"
+		version_id="2"
+		name="category_four"
+	/>
+</dataset>
