@@ -757,6 +757,6 @@ assertTrue(true);
         identifier.setId(-15);
         Study study = getDao().getStudyDesignByIdentifier(identifier);
         assertNotNull(study);
-        assertEquals(-3, study.getId().intValue());
+        assertEquals(-2, study.getId().intValue());
     }
 }
