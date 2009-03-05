@@ -46,7 +46,19 @@ public class StudyHavingStudySiteQueryTest extends TestCase {
         assertEquals("wrong number of parameters", query.getParameterMap().size(), 1);
         assertTrue("missing paramenter name", query.getParameterMap().containsKey("identifier"));
         assertEquals("wrong parameter value", query.getParameterMap().get("identifier"), "%a%");
+        
+        
+        query = new StudyHavingStudySiteQuery();
+        query.filterByIdentifierValueExactMatch("a");
+        assertEquals(
+                "select distinct ss.study from StudySite ss WHERE lower(ss.study.identifiers.value) LIKE :identifier",
+                query.getQueryString());
+        assertEquals("wrong number of parameters", query.getParameterMap().size(), 1);
+        assertTrue("missing paramenter name", query.getParameterMap().containsKey("identifier"));
+        assertEquals("wrong parameter value", query.getParameterMap().get("identifier"), "a");
 
     }
+    
+    
 
 }
