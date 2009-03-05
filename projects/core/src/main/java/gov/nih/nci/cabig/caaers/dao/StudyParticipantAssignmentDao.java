@@ -44,13 +44,11 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
      * 
      * @param participant
      * @param study
-     * @return
+     * @return assignment
      */
     @SuppressWarnings("unchecked")
     public StudyParticipantAssignment getAssignment(Participant participant, Study study) {
-        return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find(
-                                                        "from StudyParticipantAssignment a where a.participant = ? and a.studySite.study = ?",
-                                                        new Object[] { participant, study }));
+        return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("from StudyParticipantAssignment a where a.participant = ? and a.studySite.study = ?", new Object[] { participant, study }));
     }
 
     /**
@@ -62,9 +60,7 @@ public class StudyParticipantAssignmentDao extends GridIdentifiableDao<StudyPart
      */
     @SuppressWarnings("unchecked")
     public StudyParticipantAssignment getAssignment(Participant participant, StudySite studySite) {
-        return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find(
-                                                        "from StudyParticipantAssignment a where a.participant = ? and a.studySite = ?",
-                                                        new Object[] { participant, studySite }));
+        return CollectionUtils.firstElement((List<StudyParticipantAssignment>) getHibernateTemplate().find("from StudyParticipantAssignment a where a.participant = ? and a.studySite = ?", new Object[] { participant, studySite }));
     }
 
     /**

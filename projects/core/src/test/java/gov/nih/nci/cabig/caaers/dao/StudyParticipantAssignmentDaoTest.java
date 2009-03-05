@@ -3,15 +3,7 @@ package gov.nih.nci.cabig.caaers.dao;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.ASSIGN_PARTICIPANT;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.domain.DateValue;
-import gov.nih.nci.cabig.caaers.domain.Participant;
-import gov.nih.nci.cabig.caaers.domain.PreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.*;
 
 import java.util.Date;
 
@@ -20,10 +12,10 @@ import java.util.Date;
  */
 @CaaersUseCases( { ASSIGN_PARTICIPANT })
 public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<StudyParticipantAssignmentDao> {
-    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean(
-                    "participantDao");
 
+    private ParticipantDao participantDao = (ParticipantDao) getApplicationContext().getBean("participantDao");
     private StudyDao studyDao = (StudyDao) getApplicationContext().getBean("studyDao");
+    private StudySiteDao studySiteDao = (StudySiteDao) getApplicationContext().getBean("studySiteDao");
     private PreExistingConditionDao pecDao = (PreExistingConditionDao) getApplicationContext().getBean("preExistingConditionDao");
     private AnatomicSiteDao anatomicSiteDao = (AnatomicSiteDao) getApplicationContext().getBean("anatomicSiteDao");
     private PriorTherapyDao priorTherapyDao = (PriorTherapyDao) getApplicationContext().getBean("priorTherapyDao");
@@ -48,10 +40,16 @@ public class StudyParticipantAssignmentDaoTest extends DaoNoSecurityTestCase<Stu
         assertEquals("Wrong number of prior therapies", 2, assignment.getPriorTherapies().size());
     }
 
+    public void testGetFromParticipantAndStudySite() throws Exception {
+        Participant p = participantDao.getById(-5);
+        StudySite ss = studySiteDao.getById(-10);
+        StudyParticipantAssignment actual = getDao().getAssignment(p, ss);
+        assertEquals("Wrong assignment found", -13, (int) actual.getId());
+    }
+
     public void testGetFromParticipantAndStudy() throws Exception {
         Participant p = participantDao.getById(-5);
         Study s = studyDao.getById(-4);
-
         StudyParticipantAssignment actual = getDao().getAssignment(p, s);
         assertEquals("Wrong assignment found", -13, (int) actual.getId());
     }
