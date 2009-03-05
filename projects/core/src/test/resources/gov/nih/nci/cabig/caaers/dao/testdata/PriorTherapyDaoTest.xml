@@ -1,0 +1,16 @@
+<dataset>
+	<prior_therapies
+		id="1"
+		therapy_text="pTherapy_one"
+	/>
+	
+	<prior_therapies
+		id="2"
+		therapy_text="pTherapy_two"
+	/>
+	
+	<prior_therapies
+		id="3"
+		therapy_text="pTherapy_three"
+	/>
+</dataset>
