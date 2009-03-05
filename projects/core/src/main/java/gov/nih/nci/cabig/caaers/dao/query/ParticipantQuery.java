@@ -79,7 +79,7 @@ public class ParticipantQuery extends AbstractQuery {
     }
 
     public void excludeHavingRace(final String race) {
-        andWhere("p.gender != :" + RACE);
+        andWhere("p.race != :" + RACE);
         setParameter(RACE, race);
 
     }
