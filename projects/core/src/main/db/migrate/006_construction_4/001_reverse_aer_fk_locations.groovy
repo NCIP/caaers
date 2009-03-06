@@ -12,11 +12,12 @@ class ReverseAerFkLocations extends edu.northwestern.bioinformatics.bering.Migra
         execute("ALTER TABLE disease_history ADD CONSTRAINT fk_disease_history_report FOREIGN KEY (report_id) REFERENCES ae_reports")
         execute("ALTER TABLE participant_history ADD CONSTRAINT fk_participant_history_report FOREIGN KEY (report_id) REFERENCES ae_reports")
 
-        execute("UPDATE reporters SET report_id=(SELECT aer.id FROM ae_reports aer WHERE aer.reporter_id=reporters.id)");
+/*      
+		execute("UPDATE reporters SET report_id=(SELECT aer.id FROM ae_reports aer WHERE aer.reporter_id=reporters.id)");
         execute("UPDATE physicians SET report_id=(SELECT aer.id FROM ae_reports aer WHERE aer.physician_id=physicians.id)");
         execute("UPDATE disease_history SET report_id=(SELECT aer.id FROM ae_reports aer WHERE aer.disease_history_id=disease_history.id)");
         execute("UPDATE participant_history SET report_id=(SELECT aer.id FROM ae_reports aer WHERE aer.participant_history_id=participant_history.id)");
-
+*/
         dropColumn("ae_reports", "reporter_id")
         dropColumn("ae_reports", "physician_id")
         dropColumn("ae_reports", "disease_history_id")
