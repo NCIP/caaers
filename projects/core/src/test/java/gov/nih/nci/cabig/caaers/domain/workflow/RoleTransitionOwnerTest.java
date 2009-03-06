@@ -26,4 +26,14 @@ public class RoleTransitionOwnerTest extends TestCase {
 		ra.setUserRole(PersonRole.ADVERSE_EVENT_COORDINATOR);
 		assertSame(PersonRole.ADVERSE_EVENT_COORDINATOR, ra.getUserRole());
 	}
+	
+	public void testSetName() {
+		ra.setName("joel");
+		assertEquals("joel", ra.getName());
+	}
+
+	public void testGetName() {
+		ra.setName("joel");
+		assertEquals("joel", ra.getName());
+	}
 }
