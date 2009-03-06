@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<tags:standardForm title="Course Information">
+<tags:standardForm title="Course/Cycle Information">
     <jsp:attribute name="instructions" />
     <jsp:attribute name="singleFields">
 
@@ -34,7 +34,7 @@
 
         <ui:row path="reportingPeriod.endDate">
              <jsp:attribute name="label"></jsp:attribute>
-             <jsp:attribute name="value"><span style="font-size:8pt;"><b>Note:</b> Enter estimated end date if course is in-progress.</span></jsp:attribute>
+             <jsp:attribute name="value"><span style="font-size:8pt;"><b>Note:</b> Enter estimated end date if course/cycle is in-progress.</span></jsp:attribute>
         </ui:row>
 
         <ui:row path="reportingPeriod.epoch">

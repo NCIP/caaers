@@ -267,9 +267,9 @@
                 You have selected the subject <span id="participant-selected-name"></span>.
             </p>
         </chrome:box>
-        <chrome:box title="Select course" id="course-entry" autopad="true">
-			<div style="display:none" id="created-message"><b><font color="green">Course created successfully</font></b></div>
-			<div style="display:none" id="edited-message"><b><font color="green">Course details saved successfully</font></b></div>
+        <chrome:box title="Select course/cycle" id="course-entry" autopad="true">
+			<div style="display:none" id="created-message"><b><font color="green">Course/Cycle created successfully</font></b></div>
+			<div style="display:none" id="edited-message"><b><font color="green">Course/Cycle details saved successfully</font></b></div>
         	<p><tags:instructions code="instruction_ae_select_course"/></p>
         	<form:hidden path="adverseEventReportingPeriod"/>
         	<tags:requiredIndicator/>

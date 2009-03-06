@@ -21,7 +21,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
     }
 
     public BeginTab(String instructions) {
-    	  super("Select study, subject and course", "Study,&nbsp;Subject &amp; Course", "ae/selectAssignment");
+    	  super("Select study, subject and course/cycle", "Study,&nbsp;Subject &amp; Course/Cycle", "ae/selectAssignment");
         this.instructions = instructions;
 
     }
@@ -49,7 +49,7 @@ public class BeginTab<T extends AdverseEventInputCommand> extends WorkFlowTab<T>
         boolean noAdverseEventReportingPeriod = command.getAdverseEventReportingPeriod() == null;
         if (noStudy) errors.rejectValue("study", "REQUIRED", "Missing study");
         if (noParticipant) errors.rejectValue("participant", "REQUIRED", "Missing subject");
-        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course");
+        if (noAdverseEventReportingPeriod) errors.rejectValue("adverseEventReportingPeriod", "REQUIRED", "Missing course/cycle");
     }
     
     

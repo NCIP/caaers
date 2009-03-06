@@ -135,10 +135,10 @@ public class CreateReportingPeriodController extends SimpleFormController {
         InputFieldGroupMap fieldMap = new InputFieldGroupMap();
         reportingPeriodFieldGroup = new DefaultInputFieldGroup(REPORTINGPERIOD_FIELD_GROUP);
 
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course", true));
-        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course associated with this AE report", true));
-        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course", true);
-        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course is in-progress");
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("assignment.startDateOfFirstCourse", "Start date of first course/cycle", true));
+        reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createDateField("reportingPeriod.startDate", "Start date of course/cycle associated with this AE report", true));
+        InputField endDateField = InputFieldFactory.createDateField("reportingPeriod.endDate", "End date of course/cycle", true);
+        endDateField.getAttributes().put(InputField.DETAILS, "Note: enter estimated end date if course/cycle is in-progress");
         reportingPeriodFieldGroup.getFields().add(endDateField);
         reportingPeriodFieldGroup.getFields().add(InputFieldFactory.createSelectField("reportingPeriod.epoch", "Treatment type", true, createEpochOptions(command)));
         InputField cycleNumberField = InputFieldFactory.createNumberField("reportingPeriod.cycleNumber", "Course/cycle #", true);
@@ -271,7 +271,7 @@ public class CreateReportingPeriodController extends SimpleFormController {
                         ((sDate.getTime() - endDate.getTime() < 0) && (endDate.getTime() - eDate.getTime() < 0)) ||
                         ((startDate.getTime() - sDate.getTime() < 0) && (eDate.getTime() - endDate.getTime() < 0)) ||
                         (sDate.compareTo(startDate) == 0 && eDate.compareTo(endDate) == 0)) {
-                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Course cannot overlap with an existing course.");
+                    errors.rejectValue(endDateField.getPropertyName(), "REQUIRED", "Course/cycle cannot overlap with an existing course/cycle.");
                     break;
                 }
             }
