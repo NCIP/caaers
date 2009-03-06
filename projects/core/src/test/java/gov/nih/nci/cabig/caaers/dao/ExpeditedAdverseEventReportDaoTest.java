@@ -23,18 +23,31 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Lab;
 import gov.nih.nci.cabig.caaers.domain.LabValue;
+import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
+import gov.nih.nci.cabig.caaers.domain.OtherCause;
 import gov.nih.nci.cabig.caaers.domain.ParticipantHistory;
 import gov.nih.nci.cabig.caaers.domain.Physician;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
+import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.ReportPerson;
 import gov.nih.nci.cabig.caaers.domain.Reporter;
+import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.TreatmentInformation;
+import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.DiseaseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.OtherCauseAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.RadiationAttribution;
+import gov.nih.nci.cabig.caaers.domain.attribution.SurgeryAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.ctms.domain.DomainObject;
 import gov.nih.nci.cabig.ctms.lang.DateTools;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -465,7 +478,13 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
             }
         });
     }
-
+    
+    public void testSaveWhenDetached(){
+    	ExpeditedAdverseEventReport report = getDao().getById(-1);
+    	interruptSession();
+    	getDao().save(report);
+    }
+    
     public void testSaveSavesReporterWhenSavable() throws Exception {
         doSaveTest(new SaveTester() {
             private static final String FIRST_NAME = "Joe";
@@ -587,22 +606,38 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
         assertEquals("Wrong number of results", 1, results.size());
     }
 
-    public void testSearchExpeditedReportByParticipantFirstName() throws Exception {
+    public void testSearchExpeditedReportByParticipant() throws Exception {
         List<ExpeditedAdverseEventReport> results;
         Map<String, String> m = new HashMap<String, String>();
         m.put("participantFirstName", "Michael");
+        m.put("participantLastName", "Jordan");
+        m.put("participantEthnicity", "ethnicity");
+        m.put("participantGender", "Male");
+        m.put("participantDateOfBirth","01/02/2006");
+        m.put("participantIdentifier", "13js77");
         results = getDao().searchExpeditedReports(m);
         assertEquals("Wrong number of results", 1, results.size());
     }
 
-    public void testSearchExpeditedReportByStudyShortTitle() throws Exception {
+    public void testSearchExpeditedReportByStudy() throws Exception {
         List<ExpeditedAdverseEventReport> results;
         Map<String, String> m = new HashMap<String, String>();
         m.put("studyShortTitle", "That");
+        m.put("studyIdentifier", "nci_test");
         results = getDao().searchExpeditedReports(m);
         assertEquals("Wrong number of results", 1, results.size());
     }
-
+    //10043882
+    public void testSearchExpeditedReportByCtepCodeAndCategory() throws Exception {
+        List<ExpeditedAdverseEventReport> results;
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("ctcCtepCode", "10043882");
+        m.put("ctcCategory", "auditory/ear");
+        results = getDao().searchExpeditedReports(m);
+        assertEquals("Wrong number of results", 1, results.size());
+    }
+    
+    
     public void testSerializeExpeditedAdverseEventReport() throws Exception {
 
     	ExpeditedAdverseEventReport aer = getDao().getById(-1);
@@ -654,4 +689,212 @@ public class ExpeditedAdverseEventReportDaoTest extends DaoNoSecurityTestCase<Ex
 
         void assertCorrect(ExpeditedAdverseEventReport loaded);
     }
+    
+    public void testGetByCriteria(){
+    	 List<ExpeditedAdverseEventReport> reports = getDao().getByCriteria(null, null);
+    	 assertTrue(reports.isEmpty());
+    }
+    
+    public void testReassociate(){
+    	 ExpeditedAdverseEventReport report = getDao().getById(-1);
+    	 interruptSession();
+    	 try{
+    		report.getReporter().getContactMechanisms().size();
+    		fail("should throw lazy exception");
+    	 }catch(Exception e){
+    		 
+    	 }
+    	 
+    	 getDao().reassociate(report);
+    	 assertEquals(2,report.getReporter().getContactMechanisms().size());
+    	 
+    }
+    
+    public void testDeleteAttribution(){
+    	
+    	RadiationAttribution rAttribution1 = new RadiationAttribution();
+    	RadiationIntervention cause = new RadiationIntervention();
+    	cause.setId(5);
+    	rAttribution1.setCause(cause);
+    	
+    	RadiationAttribution rAttribution2 = new RadiationAttribution();
+    	RadiationIntervention cause2 = new RadiationIntervention();
+    	cause2.setId(6);
+    	rAttribution2.setCause(cause2);
+    	
+    	List<RadiationAttribution> list = new ArrayList<RadiationAttribution>();
+    	list.add(rAttribution1);
+    	list.add(rAttribution2);
+    	
+    	
+    	getDao().deleteAttribution(rAttribution1.getCause(), list, null);
+    	
+    	assertEquals(1,list.size());
+    }
+    
+    public void testCascaeDeleteToAttributions(){
+    	
+    	RadiationAttribution rAttribution1 = new RadiationAttribution();
+    	RadiationIntervention cause = new RadiationIntervention();
+    	cause.setId(5);
+    	rAttribution1.setCause(cause);
+    	
+    	RadiationAttribution rAttribution2 = new RadiationAttribution();
+    	RadiationIntervention cause2 = new RadiationIntervention();
+    	cause2.setId(6);
+    	rAttribution2.setCause(cause2);
+    	
+    	List<RadiationAttribution> list = new ArrayList<RadiationAttribution>();
+    	list.add(rAttribution1);
+    	list.add(rAttribution2);
+    	
+    	ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+    	aeReport.getAdverseEvents().get(0).setRadiationAttributions(list);
+
+    	boolean returnVal = getDao().cascaeDeleteToAttributions(cause2, aeReport);
+    	assertTrue(returnVal);
+    	assertEquals(1, list.size());
+    }
+    
+   public void testCascadeDeleteToAttributions_DiseaseAttribution(){
+	   DiseaseAttribution d1 = new DiseaseAttribution();
+	   DiseaseHistory dh1 = new DiseaseHistory();
+	   dh1.setId(4);
+	   d1.setCause(dh1);
+	   
+	   DiseaseAttribution d2 = new DiseaseAttribution();
+	   DiseaseHistory dh2 = new DiseaseHistory();
+	   dh2.setId(5);
+	   d2.setCause(dh2);
+	   
+	   List<DiseaseAttribution> list = new ArrayList<DiseaseAttribution>();
+	   list.add(d1); 
+	   list.add(d2);
+	   
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+   	   aeReport.getAdverseEvents().get(0).setDiseaseAttributions(list);
+   	   
+   	boolean returnVal = getDao().cascaeDeleteToAttributions(dh2, aeReport);
+	assertTrue(returnVal);
+	assertEquals(1, list.size());
+	   
+   }
+   
+   public void testCascadeDeleteToAtrributions_CourseAgentAttribution(){
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	   List<CourseAgentAttribution> list = new ArrayList<CourseAgentAttribution>();
+	   aeReport.getAdverseEvents().get(0).setCourseAgentAttributions(list);
+	   
+	   CourseAgentAttribution a1 = new CourseAgentAttribution();
+	   CourseAgent c1 = new CourseAgent();
+	   
+	   CourseAgentAttribution a2 = new CourseAgentAttribution();
+	   CourseAgent c2 = new CourseAgent();
+	   
+	   c1.setId(3);
+	   c2.setId(4);
+	   a1.setCause(c1);
+	   a2.setCause(c2);
+	   list.add(a1);
+	   list.add(a2);
+	   
+	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+		assertTrue(returnVal);
+		assertEquals(1, list.size());
+	  
+	   
+	   
+   }
+   
+   public void testCascadeDeleteToAtrributions_OtherCauseAttribution(){
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	   List<OtherCauseAttribution> list = new ArrayList<OtherCauseAttribution>();
+	   aeReport.getAdverseEvents().get(0).setOtherCauseAttributions(list);
+	   
+	   OtherCauseAttribution a1 = new OtherCauseAttribution();
+	   OtherCause c1 = new OtherCause();
+	   
+	   OtherCauseAttribution a2 = new OtherCauseAttribution();
+	   OtherCause c2 = new OtherCause();
+	   
+	   c1.setId(3);
+	   c2.setId(4);
+	   a1.setCause(c1);
+	   a2.setCause(c2);
+	   list.add(a1);
+	   list.add(a2);
+	   
+	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+		assertTrue(returnVal);
+		assertEquals(1, list.size());
+   }
+   public void testCascadeDeleteToAtrributions_ConcomitantMedicationAttribution(){
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	   List<ConcomitantMedicationAttribution> list = new ArrayList<ConcomitantMedicationAttribution>();
+	   aeReport.getAdverseEvents().get(0).setConcomitantMedicationAttributions(list);
+	   
+	   ConcomitantMedicationAttribution a1 = new ConcomitantMedicationAttribution();
+	   ConcomitantMedication c1 = new ConcomitantMedication();
+	   
+	   ConcomitantMedicationAttribution a2 = new ConcomitantMedicationAttribution();
+	   ConcomitantMedication c2 = new ConcomitantMedication();
+	   
+	   c1.setId(3);
+	   c2.setId(4);
+	   a1.setCause(c1);
+	   a2.setCause(c2);
+	   list.add(a1);
+	   list.add(a2);
+	   
+	   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+		assertTrue(returnVal);
+		assertEquals(1, list.size());
+   }
+   public void testCascadeDeleteToAtrributions_MedicalDeviceAttribution(){
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	   List<DeviceAttribution> list = new ArrayList<DeviceAttribution>();
+	   aeReport.getAdverseEvents().get(0).setDeviceAttributions(list);
+	   
+	   DeviceAttribution a1 = new DeviceAttribution();
+	   MedicalDevice c1 = new MedicalDevice();
+	   
+	   DeviceAttribution a2 = new DeviceAttribution();
+	   MedicalDevice c2 = new MedicalDevice();
+	   
+	   c1.setId(3);
+	   c2.setId(4);
+	   a1.setCause(c1);
+	   a2.setCause(c2);
+	   list.add(a1);
+	   list.add(a2);
+	   
+   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+	assertTrue(returnVal);
+	assertEquals(1, list.size());
+   }
+   
+   public void testCascadeDeleteToAtrributions_SurgeryAttribution(){
+	   ExpeditedAdverseEventReport aeReport = Fixtures.createSavableExpeditedReport();
+	   List<SurgeryAttribution> list = new ArrayList<SurgeryAttribution>();
+	   aeReport.getAdverseEvents().get(0).setSurgeryAttributions(list);
+	   
+	   SurgeryAttribution a1 = new SurgeryAttribution();
+	   SurgeryIntervention c1 = new SurgeryIntervention();
+	   
+	   SurgeryAttribution a2 = new SurgeryAttribution();
+	   SurgeryIntervention c2 = new SurgeryIntervention();
+	   
+	   c1.setId(3);
+	   c2.setId(4);
+	   a1.setCause(c1);
+	   a2.setCause(c2);
+	   list.add(a1);
+	   list.add(a2);
+	   
+   	boolean returnVal = getDao().cascaeDeleteToAttributions(c1, aeReport);
+	assertTrue(returnVal);
+	assertEquals(1, list.size());
+   }
+   
+   
 }

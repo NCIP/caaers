@@ -4,6 +4,7 @@ import gov.nih.nci.cabig.caaers.dao.report.ReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ConcomitantMedication;
 import gov.nih.nci.cabig.caaers.domain.CourseAgent;
+import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.DiseaseHistory;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.MedicalDevice;
@@ -12,6 +13,7 @@ import gov.nih.nci.cabig.caaers.domain.RadiationIntervention;
 import gov.nih.nci.cabig.caaers.domain.SurgeryIntervention;
 import gov.nih.nci.cabig.caaers.domain.attribution.AdverseEventAttribution;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
+import gov.nih.nci.cabig.caaers.utils.DateUtils;
 import gov.nih.nci.cabig.ctms.dao.MutableDomainObjectDao;
 import gov.nih.nci.cabig.ctms.domain.DomainObject;
 
@@ -165,13 +167,6 @@ public class ExpeditedAdverseEventReportDao extends
         StringBuilder queryBuf = new StringBuilder(" select distinct o from ").append(
                         domainClass().getName()).append(" o ").append(JOINS);
 
-        if (props.get("expeditedDate") != null) {
-            queryBuf.append(firstClause ? " where " : " and ");
-            queryBuf.append(" o.detectionDate").append(" = ? ");
-            String p = (String) props.get("expeditedDate");
-            params.add(stringToDate(p));
-            firstClause = false;
-        }
 
         if (props.get("ctcTerm") != null) {
             queryBuf.append(firstClause ? " where " : " and ");
@@ -247,11 +242,30 @@ public class ExpeditedAdverseEventReportDao extends
         }
 
         if (props.get("participantDateOfBirth") != null) {
-            queryBuf.append(firstClause ? " where " : " and ");
-            queryBuf.append(" p.dateOfBirth").append(" = ? ");
+        	   
             String p = (String) props.get("participantDateOfBirth");
-            params.add(stringToDate(p));
-            firstClause = false;
+            DateValue dob = DateUtils.parseDateString(p);
+            
+            if(dob != null){
+            	if(dob.getDay() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.day").append(" = ? ");
+                    params.add(dob.getDay());
+                    firstClause = false;
+            	}
+            	if(dob.getMonth() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.month").append(" = ? ");
+                    params.add(dob.getMonth());
+                    firstClause = false;
+            	}
+            	if(dob.getYear() != null){
+            		queryBuf.append(firstClause ? " where " : " and ");
+                    queryBuf.append(" p.dateOfBirth.year").append(" = ? ");
+                    params.add(dob.getYear());
+                    firstClause = false;
+            	}
+            }
         }
 
         log.debug("::: " + queryBuf.toString());

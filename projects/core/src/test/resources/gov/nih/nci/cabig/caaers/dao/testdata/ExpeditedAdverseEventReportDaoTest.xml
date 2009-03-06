@@ -15,7 +15,8 @@
                term="Auditory/Ear - Other (Specify, __)" ctep_term="Ear disorder"
                ctep_code="10014004" other_required="1"/>
     <ctc_terms category_id="302" id="3012" term="Tinnitus"
-               ctep_term="Tinnitus" ctep_code="10043882" other_required="0"/>
+               ctep_term="Tinnitus" ctep_code="10043882" other_required="0"
+               />
     <ctc_grades/>
     <!-- to delete in case of existing refs -->
 
@@ -91,7 +92,7 @@
                     start_date="2007-09-12 21:43:56.987"
                     end_date="2007-09-12 21:43:56.987"
                     event_time_zone="0" event_location="home"/>
-    <AE_TERMS id="-11" adverse_event_id="-70" term_id="3007"
+    <AE_TERMS id="-11" adverse_event_id="-70" term_id="3012"
               term_type="ctep"/>
     <AE_TERMS id="-12" adverse_event_id="-11" term_id="3007"
               term_type="ctep"/>
