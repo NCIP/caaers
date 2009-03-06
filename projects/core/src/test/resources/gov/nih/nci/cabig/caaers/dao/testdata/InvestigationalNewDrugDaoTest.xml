@@ -16,9 +16,13 @@
    <investigational_new_drugs id = "-882"  ind_number="-882"/>
    <investigational_new_drugs id = "-883" ind_number="-883"/>
    <investigational_new_drugs id = "-884" ind_number="-884"/>
+   <investigational_new_drugs id = "-885" ind_number="-111"/>
+   <investigational_new_drugs id = "-886" ind_number="-222"/>
    
    <ind_holders id="-771" dtype="ORG" org_id="-1001" drug_id="-881" />
    <ind_holders id="-772" dtype="ORG" org_id="-1001" drug_id="-882" />
    <ind_holders id="-773" dtype="INV" inv_id="-100" drug_id="-883" />
    <ind_holders id="-774" dtype="INV" inv_id="-100" drug_id="-884" />
+   <ind_holders id="-775" dtype="ORG" inv_id="-100" drug_id="-885" />
+   <ind_holders id="-776" dtype="ORG" inv_id="-100" drug_id="-886" />
 </dataset>
