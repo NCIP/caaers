@@ -97,5 +97,15 @@ public class InvestigationalNewDrugDaoTest extends DaoTestCase<InvestigationalNe
         assertNotNull("There should be Investigational New Drugs available", drugs);
         assertEquals("IND number should be -881", -881, (int) drugs.get(0).getIndNumber());
     }
+    
+    public void testFetchCtepInd(){
+    	InvestigationalNewDrug nDrug = getDao().fetchCtepInd();
+    	assertEquals("IND number should be same", new Integer(-111), nDrug.getIndNumber());
+    }
 
+    public void testFetchDcpInd(){
+    	InvestigationalNewDrug nDrug = getDao().fetchDcpInd();
+    	assertEquals("IND number should be same", new Integer(-222), nDrug.getIndNumber());
+    }
+    
 }
