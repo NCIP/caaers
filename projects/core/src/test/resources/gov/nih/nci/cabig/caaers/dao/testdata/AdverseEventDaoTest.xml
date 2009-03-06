@@ -262,6 +262,7 @@
             event_time_minute="3"
             event_time_zone="1"
             low_level_term_id="-11"
+            solicited="1"
             />
 
     <AE_TERMS
