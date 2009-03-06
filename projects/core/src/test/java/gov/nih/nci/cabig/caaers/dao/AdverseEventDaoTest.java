@@ -5,7 +5,6 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_EXPEDITED_REPORT;
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_ROUTINE_REPORT;
 import gov.nih.nci.cabig.caaers.CaaersDbNoSecurityTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventCtcTerm;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventMeddraLowLevelTerm;
@@ -16,6 +15,7 @@ import gov.nih.nci.cabig.caaers.domain.Grade;
 import gov.nih.nci.cabig.caaers.domain.Hospitalization;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.TimeValue;
 import gov.nih.nci.cabig.caaers.domain.attribution.ConcomitantMedicationAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.CourseAgentAttribution;
 import gov.nih.nci.cabig.caaers.domain.attribution.DeviceAttribution;
@@ -455,7 +455,30 @@ public class AdverseEventDaoTest extends CaaersDbNoSecurityTestCase {
     	List<AdverseEvent> aes = getDao().getByParticipant(p, ae);
     	assertEquals(2, aes.size());
     }
-    
+    public void testGetByStudyParticipant() throws Exception {
+    	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4));
+    	assertTrue(loaded.size()==3);
+    	
+    }
+ 
+    public void testGetByStudyParticipantAndAE() throws Exception {
+    	AdverseEvent adverseEvent = new AdverseEvent();
+    	adverseEvent.setHospitalization(Hospitalization.NONE);
+    	adverseEvent.setSolicited(true);
+		TimeValue tv = new TimeValue();		
+		tv.setType(1);
+    	adverseEvent.setEventApproximateTime(tv);    	
+    	List<AdverseEvent> loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
+    	assertTrue(loaded.size()==1);
+    	adverseEvent = new AdverseEvent();
+    	adverseEvent.setHospitalization(Hospitalization.NO);
+    	adverseEvent.setSolicited(true);
+    	adverseEvent.setEventApproximateTime(tv);    	
+    	loaded = getDao().getByStudyParticipant(this.studyDao.getById(-2), this.participantDao.getById(-4),adverseEvent);
+    	assertTrue(loaded.size()==0);
+
+    	
+    }
     
     public AdverseEventDao getDao(){
     	return (AdverseEventDao) getDeployedApplicationContext().getBean("adverseEventDao");
