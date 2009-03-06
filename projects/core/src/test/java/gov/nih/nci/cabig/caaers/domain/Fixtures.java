@@ -389,14 +389,6 @@ public class Fixtures {
     	return agent;
     }
     
-    public static StudyDisease createStudyDisease(Study s, DiseaseTerm term){
-    	StudyDisease sd = new StudyDisease();
-    	sd.setDiseaseTerm(term);
-    	sd.setStudy(s);
-    	sd.setLeadDisease(true);
-    	return sd;
-    }
-    
     public static CtepStudyDisease createCtepStudyDisease(Study s, DiseaseTerm term){
     	CtepStudyDisease d = new CtepStudyDisease();
     	d.setDiseaseTerm(term);
