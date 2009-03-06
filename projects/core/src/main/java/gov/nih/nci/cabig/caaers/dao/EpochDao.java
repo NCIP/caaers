@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @Transactional(readOnly = true)
-public class EpochDao extends GridIdentifiableDao<Epoch> implements MutableDomainObjectDao<Epoch>{
+public class EpochDao extends GridIdentifiableDao<Epoch> implements MutableDomainObjectDao<Epoch> {
 	
     /**
      * Get the Class representation of the domain object that this DAO is representing.

@@ -1,0 +1,93 @@
+<dataset>
+    <organizations
+        id="1002"
+        name="New Site"/>
+
+    <studies
+       id="1001"
+       short_title="That one"
+       load_status="1"
+       />
+
+    <participants
+        id="1004"
+        instituitional_patient_number="P002"
+        institution="Hospital"
+        first_name="Michael"
+        last_name="Jordan"
+        birth_day="02"
+        birth_month="01"
+        birth_year="2006"
+        gender="Male"
+        ethnicity="ethnicity"
+        race="race"
+        middle_name="m"
+        maiden_name="m"
+        load_status="1" />
+
+    <study_organizations
+       id="1003"
+       site_id="1002"
+       study_id="1001"
+       type="SST"
+       />
+
+    <treatment_assignment
+        id="1001"
+        code="adverseEventReportingPeriodCode"
+        study_id="1001"
+        />
+    
+    <participant_assignments
+        id="-15"
+        study_site_id="1004"
+        participant_id="1005"
+        date_of_enrollment="2006-09-30"
+        load_status="1"
+        />
+
+    <epochs id="-10" name="e-00" order_no="1" />
+    <epochs id="-11" name="e-01" order_no="1" />
+
+    <ae_reporting_periods
+        id="-50"
+        epoch_id="-10"
+        assignment_id="-15"
+        start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		review_status_code="1"
+    />
+    <ae_reporting_periods
+        id="-51"
+        epoch_id="-10"
+        assignment_id="-15"
+        start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		review_status_code="1"
+    />
+    <ae_reporting_periods
+        id="-52"
+        epoch_id="-10"
+        assignment_id="-15"
+        start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		review_status_code="1"
+    />
+    <ae_reporting_periods
+        id="-53"
+        epoch_id="-11"
+        assignment_id="-15"
+        start_date="2008-05-23"
+		end_date="2008-05-25"
+		description="test object 1001"
+		treatment_assignment_id="1001"
+		review_status_code="1"
+    />
+    
+</dataset>
