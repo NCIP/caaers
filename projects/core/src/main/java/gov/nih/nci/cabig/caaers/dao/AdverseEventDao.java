@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class AdverseEventDao extends CaaersDao<AdverseEvent> {
+	
+	private StudyParticipantAssignmentDao studyParticipantAssignmentDao;
 
     @Override
     public Class<AdverseEvent> domainClass() {
@@ -218,10 +220,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 
 	public List<AdverseEvent> getByStudyParticipant(Study study, Participant participant, AdverseEvent adverseEvent) {
 		
-		StudyParticipantAssignmentDao studyParticipantAssignmentDao = null;
-		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
-		
-		
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);		
 		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
 		criteria.add(getAdverseEventExample(adverseEvent)).createCriteria("reportingPeriod").createCriteria("assignment").add(getAssignmentExample(assignment));
 		//if (study.getIdentifiers().size() > 0) {
@@ -232,10 +231,7 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 	
 	public List<AdverseEvent> getByStudyParticipant(Study study, Participant participant) {
 		
-		StudyParticipantAssignmentDao studyParticipantAssignmentDao = null;
-		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);
-		
-		
+		StudyParticipantAssignment assignment = studyParticipantAssignmentDao.getAssignment(participant, study);		
 		DetachedCriteria criteria = DetachedCriteria.forClass(AdverseEvent.class);		
 		criteria.createCriteria("reportingPeriod").createCriteria("assignment").add(getAssignmentExample(assignment));
 		//if (study.getIdentifiers().size() > 0) {
@@ -261,6 +257,11 @@ public class AdverseEventDao extends CaaersDao<AdverseEvent> {
 		example.enableLike();
 		example.ignoreCase();
 		return example;
+	}
+
+	public void setStudyParticipantAssignmentDao(
+			StudyParticipantAssignmentDao studyParticipantAssignmentDao) {
+		this.studyParticipantAssignmentDao = studyParticipantAssignmentDao;
 	}   
    
 }
