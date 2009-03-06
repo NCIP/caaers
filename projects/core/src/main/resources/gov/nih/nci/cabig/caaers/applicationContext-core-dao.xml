@@ -421,7 +421,9 @@ This applicationContext contains the definition of the DAOs
 
     <tx:annotation-driven proxy-target-class="true"/>
 
-    <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao"/>
+    <bean id="adverseEventDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventDao">
+    	<property name="studyParticipantAssignmentDao" ref="studyParticipantAssignmentDao"/>
+    </bean>
     <bean id="expeditedAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao" autowire="byName"/>
     <bean id="routineAdverseEventReportDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao"/>
     <bean id="adverseEventReportingPeriodDao" parent="daoTemplate" class="gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao"/>
