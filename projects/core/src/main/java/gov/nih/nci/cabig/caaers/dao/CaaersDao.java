@@ -40,46 +40,7 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
     protected List<T> findBySubname(String[] subnames, List<String> substringMatchProperties, List<String> exactMatchProperties) {
         return findBySubname(subnames, null, null, substringMatchProperties, exactMatchProperties);
     }
-
-    /**
-     * @see findBySubname
-     */
-    @SuppressWarnings("unchecked")
-    protected List<T> findBySubname(String[] subnames, String extraConditions, List<Object> extraParameters, List<String> substringMatchProperties, List<String> exactMatchProperties, String joins) {
-        if (subnames == null || subnames.length == 0) {
-            return Collections.emptyList();
-        }
-
-        StringBuilder query = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(" o ");
-        if (joins != null) {
-            query.append(joins).append(" where ");
-        }
-        
-        if (extraConditions != null) {
-            query.append(extraConditions).append(" and ");
-        }
-
-        List<Object> params = new LinkedList<Object>();
-        if (extraParameters != null) {
-            params.addAll(extraParameters);
-        }
-
-        for (int i = 0; i < subnames.length; i++) {
-            buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, false);
-            if (i < subnames.length - 1) {
-                query.append(" and ");
-            }
-        }
-
-        log.debug("query::" + query.toString());
-        getHibernateTemplate().setMaxResults(30);
-        List<T> result =  getHibernateTemplate().find(query.toString(), params.toArray());
-        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
-        return result;
-    }
-
-   
-
+    
     /**
      * A query builder for use by subclass DAOs. It makes it easy to match a fragment of a name or
      * identifier against multiple properties. This is intended for use in implementing
@@ -130,6 +91,53 @@ public abstract class CaaersDao<T extends DomainObject> extends AbstractDomainOb
         return result;
     }
 
+    protected String buildSubnameQuery( String[] subnames, String extraConditions, List<Object> extraParameters,String joins,List<Object> params,List<String> substringMatchProperties, List<String> exactMatchProperties){
+    	 
+
+          StringBuilder query = new StringBuilder(" select distinct o from ").append(domainClass().getName()).append(" o ");
+          if (joins != null) {
+              query.append(joins).append(" where ");
+          }
+          
+          if (extraConditions != null) {
+              query.append(extraConditions).append(" and ");
+          }
+
+          
+          if (extraParameters != null) {
+              params.addAll(extraParameters);
+          }
+
+          for (int i = 0; i < subnames.length; i++) {
+              buildSubnameQuery(subnames[i], query, params, substringMatchProperties, exactMatchProperties, false);
+              if (i < subnames.length - 1) {
+                  query.append(" and ");
+              }
+          }
+
+          log.debug("query::" + query.toString());
+          return query.toString();
+    }
+    /**
+     * @see findBySubname
+     */
+    @SuppressWarnings("unchecked")
+    protected List<T> findBySubname(String[] subnames, String extraConditions, List<Object> extraParameters, List<String> substringMatchProperties, List<String> exactMatchProperties, String joins) {
+    	 if (subnames == null || subnames.length == 0) {
+             return Collections.emptyList();
+         }
+    	 
+        getHibernateTemplate().setMaxResults(30);
+        List<Object> params = new LinkedList<Object>();
+        List<T> result =  getHibernateTemplate().find(buildSubnameQuery(subnames, extraConditions, extraParameters,
+        		joins, params, substringMatchProperties, exactMatchProperties), params.toArray());
+        getHibernateTemplate().setMaxResults(DEFAULT_MAX_RESULTS_SIZE);
+        return result;
+    }
+
+   
+
+  
     private void buildSubnameQuery(String subname, StringBuilder query, List<Object> params,
                     List<String> substringMatchProperties, List<String> exactMatchProperties,
                     boolean includeObjectReference) {

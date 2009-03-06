@@ -2,7 +2,11 @@ package gov.nih.nci.cabig.caaers.dao;
 
 import gov.nih.nci.cabig.caaers.domain.CtepStudyDisease;
 import junit.framework.TestCase;
-
+/**
+ * 
+ * @author Biju Joseph
+ *
+ */
 public class CtepStudyDiseaseDaoTest extends TestCase {
 
 	protected void setUp() throws Exception {
