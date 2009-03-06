@@ -1,0 +1,7 @@
+<dataset>
+    <anatomic_sites id="-11" name="AS-01"       category="C-01" />
+    <anatomic_sites id="-12" name="AS-02-Test"  category="C-01" />
+    <anatomic_sites id="-13" name="AS-03"       category="C-01" />
+    <anatomic_sites id="-14" name="AS-04-Test"  category="C-02" />
+    <anatomic_sites id="-15" name="AS-05"       category="C-02" />
+</dataset>

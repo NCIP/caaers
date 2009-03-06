@@ -18,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AnatomicSiteDao extends CaaersDao<AnatomicSite> {
 
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
-
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
     private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
 
     /**
