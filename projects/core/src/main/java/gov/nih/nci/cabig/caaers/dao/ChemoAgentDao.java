@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional(readOnly = true)
 public class ChemoAgentDao extends CaaersDao<ChemoAgent> {
+    
     private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("name");
-
     private static final List<String> EMPTY_PROPERTIES = Collections.emptyList();
 
     /**

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class AnatomicSiteDaoTest extends DaoTestCase<AnatomicSiteDao> {
 
-    public void testGetDomainClass(){
+    public void testGetDomainClass() {
         Object obj = getDao().domainClass();
         assertNotNull(obj);
     }

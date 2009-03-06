@@ -4,15 +4,34 @@ import static gov.nih.nci.cabig.caaers.CaaersUseCase.MAPPING_VOCAB;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.DaoTestCase;
 import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+import gov.nih.nci.cabig.caaers.domain.AnatomicSite;
 
 import java.util.List;
 
 /**
- * @author Krikor Krumlian
+ * @author Ion C. Olaru
  */
 
-@CaaersUseCases( { MAPPING_VOCAB })
 public class ChemoAgentDaoTest extends DaoTestCase<ChemoAgentDao> {
+
+    public void testGetDomainClass() {
+        Object obj = getDao().domainClass();
+        assertNotNull(obj);
+    }
+
+    public void testGetAll() throws Exception {
+        List<ChemoAgent> all = getDao().getAll();
+        assertNotNull(all);
+        assertEquals(2, all.size());
+    }
+
+    public void testGetBySubnames() throws Exception {
+        List<ChemoAgent> all = getDao().getBySubname(new String[] {"Test"});
+        assertNotNull(all);
+        assertEquals(1, all.size());
+    }
+
+
     public void testGetById() throws Exception {
         ChemoAgent loaded = getDao().getById(1002);
         assertNotNull(loaded);
