@@ -16,13 +16,9 @@ import java.util.List;
  */
 public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
 
-    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList(
-                    "investigator.firstName", "investigator.lastName");
-    
+    private static final List<String> SUBSTRING_MATCH_PROPERTIES = Arrays.asList("investigator.firstName", "investigator.lastName");
     private static final List<String> NCIIDENTIFIER_MATCH_PROPERTIES = Arrays.asList("investigator.nciIdentifier");
-
     private static final List<String> EXACT_MATCH_PROPERTIES = Collections.emptyList();
-
     private static final List<Object> EXTRA_PARAMS = Collections.emptyList();
 
     /**
@@ -44,11 +40,8 @@ public class SiteInvestigatorDao extends GridIdentifiableDao<SiteInvestigator> {
      * @return The site investigator.
      */
     @SuppressWarnings("unchecked")
-    public SiteInvestigator getOrganizationInvestigator(Organization organization,
-                    Investigator investigator) {
-        return CollectionUtils.firstElement((List<SiteInvestigator>) getHibernateTemplate().find(
-                        "from SiteInvestigator a where a.organization = ? and a.investigator = ?",
-                        new Object[] { organization, investigator }));
+    public SiteInvestigator getOrganizationInvestigator(Organization organization, Investigator investigator) {
+        return CollectionUtils.firstElement((List<SiteInvestigator>) getHibernateTemplate().find("from SiteInvestigator a where a.organization = ? and a.investigator = ?", new Object[] { organization, investigator }));
     }
 
     /**
