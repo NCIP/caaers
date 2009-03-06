@@ -7,9 +7,9 @@
 
     <style>
         #main {
-            padding : 12px 18px 20px;
-            position: relative;
-            top: 10px;
+            padding:0;
+            top:0;
+            margin-top:0;
         }
     </style>
 </head>
