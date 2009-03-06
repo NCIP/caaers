@@ -32,8 +32,6 @@
 
 package gov.nih.nci.cabig.caaers.web.security.cas;
 
-import gov.nih.nci.cabig.caaers.web.security.cas.ServiceTicketValidator.Handler;
-
 import java.util.ArrayList;
 import java.util.List;
 

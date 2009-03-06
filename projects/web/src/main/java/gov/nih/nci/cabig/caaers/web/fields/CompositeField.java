@@ -1,12 +1,12 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.validation.Errors;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.LinkedList;
 
 /**
  * An {@link InputField} which actually should be rendered as multiple HTML inputs. The multiple

@@ -8,11 +8,12 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroupMap;
 import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
+
+import java.util.Map;
+
 import org.apache.commons.validator.EmailValidator;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-
-import java.util.Map;
 
 /**
  * @author Krikor Krumlian

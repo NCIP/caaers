@@ -1,14 +1,17 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.web.ae.CaptureAdverseEventInputCommand;
-import gov.nih.nci.cabig.caaers.web.fields.*;
+import gov.nih.nci.cabig.caaers.domain.AbstractExpectedAE;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAECtcTerm;
+import gov.nih.nci.cabig.caaers.domain.ExpectedAEMeddraLowLevelTerm;
+import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import org.springframework.validation.Errors;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Ion C. Olaru

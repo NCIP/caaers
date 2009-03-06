@@ -1,6 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;

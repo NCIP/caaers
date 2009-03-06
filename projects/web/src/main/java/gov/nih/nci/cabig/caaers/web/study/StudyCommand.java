@@ -1,39 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import org.hibernate.annotations.*;
-import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.apache.commons.lang.StringUtils;
+import gov.nih.nci.cabig.caaers.domain.AeTerminology;
+import gov.nih.nci.cabig.caaers.domain.CoordinatingCenter;
+import gov.nih.nci.cabig.caaers.domain.Design;
+import gov.nih.nci.cabig.caaers.domain.DiseaseTerminology;
+import gov.nih.nci.cabig.caaers.domain.Epoch;
+import gov.nih.nci.cabig.caaers.domain.FundingSponsor;
+import gov.nih.nci.cabig.caaers.domain.LoadStatus;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.CascadeType;
-
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.utils.ProjectedList;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-
-import java.io.Serializable;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
 
-import gov.nih.nci.cabig.caaers.utils.ProjectedList;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueIdentifierForStudy;
-import gov.nih.nci.cabig.caaers.validation.annotation.UniqueObjectInCollection;
-import gov.nih.nci.cabig.ctms.collections.LazyListHelper;
-import org.apache.commons.collections15.functors.InstantiateFactory;
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.*;
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import java.io.Serializable;
-import java.util.*;
+import javax.persistence.Transient;
 
 /**
  * User: Ion C. Olaru

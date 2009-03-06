@@ -1,11 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.table;
 
 
-import org.apache.commons.collections.comparators.ComparableComparator;
-import org.apache.commons.collections.comparators.NullComparator;
-
-import java.io.Serializable;
 import java.util.Comparator;
+
+import org.apache.commons.collections.comparators.NullComparator;
 
 /**
  * A Comparator that will compare nulls to be either lower or higher than

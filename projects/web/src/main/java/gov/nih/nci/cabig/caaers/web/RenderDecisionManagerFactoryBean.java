@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web;
 
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 

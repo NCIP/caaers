@@ -370,11 +370,6 @@
   <bean name="aeCreateTask" id="aeCreateTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
   	  autowire="byType" p:displayName="Create expedited report" p:linkName="createAdverseEventController"/>
   
-  <bean name="routineAeEditTask" id="routineAeEditTask" class="gov.nih.nci.cabig.ctms.web.chrome.Task"
-  	  autowire="byType" p:displayName="Document routine AEs" p:linkName="editRoutineAdverseEventController"/>	  
-  
-  <bean name="/ae/createRoutine" id="createRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.CreateRoutineAdverseEventController"/>
 	
   <bean name="/ae/routingAndReview" id="routingAndReviewController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewController"/>	
   <bean name="/ae/listReviewComments" id="listReviewCommentsController" autowire="byType" class="gov.nih.nci.cabig.caaers.web.ae.RoutingAndReviewCommentController" />
@@ -389,12 +384,6 @@
   <bean name="/ae/submitReport" id="submitReportController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.SubmitReportController"/>    
   
-  <bean name="/ae/editRoutine" id="editRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.EditRoutineAdverseEventController" p:task-ref="routineAeEditTask"/>
-	
- <bean name="/ae/viewRoutine" id="viewRoutineAdverseEventController" autowire="byType"
-	class="gov.nih.nci.cabig.caaers.web.ae.ViewRoutineAeController" >
-  </bean>	   
   
   <bean name="/ae/list" id="listAdverseEventsController" autowire="byType"
 	class="gov.nih.nci.cabig.caaers.web.ae.ListAdverseEventsController"/>

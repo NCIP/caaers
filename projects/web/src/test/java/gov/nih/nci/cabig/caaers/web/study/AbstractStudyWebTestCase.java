@@ -1,29 +1,23 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-
+import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.ConditionDao;
+import gov.nih.nci.cabig.caaers.dao.CtcDao;
+import gov.nih.nci.cabig.caaers.dao.CtcTermDao;
+import gov.nih.nci.cabig.caaers.dao.DiseaseTermDao;
+import gov.nih.nci.cabig.caaers.dao.EpochDao;
+import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
 import gov.nih.nci.cabig.caaers.dao.meddra.LowLevelTermDao;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.utils.Lov;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import org.springframework.validation.BindException;
-import org.springframework.validation.Errors;
-import org.springframework.beans.BeanWrapperImpl;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.InvalidPropertyException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 /**
  * @author Ion C. Olaru

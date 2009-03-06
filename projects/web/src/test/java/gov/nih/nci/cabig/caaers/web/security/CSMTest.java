@@ -3,10 +3,8 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.security.acegi.csm.authorization.CSMAuthorizationCheck;
-import junit.framework.TestCase;
 
 import org.acegisecurity.Authentication;
 import org.acegisecurity.GrantedAuthority;

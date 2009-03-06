@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
+import gov.nih.nci.cabig.caaers.domain.Study;
 
 import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;

@@ -1,8 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.List;
-import java.util.ArrayList;
 import gov.nih.nci.cabig.caaers.domain.Study;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin

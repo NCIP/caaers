@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
-import java.util.Map;
-import java.util.TreeMap;
-
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
 import gov.nih.nci.cabig.ctms.tools.configuration.ConfigurationProperty;
+
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author Rhett Sutphin

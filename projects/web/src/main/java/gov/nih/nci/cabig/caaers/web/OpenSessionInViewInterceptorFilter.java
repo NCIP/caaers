@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
-import org.springframework.web.context.request.ServletWebRequest;
-import org.springframework.web.context.request.WebRequest;
+import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
+
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -10,9 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
-import gov.nih.nci.cabig.ctms.web.filters.ContextRetainingFilterAdapter;
+import org.springframework.orm.hibernate3.support.OpenSessionInViewInterceptor;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 
 /**
  * A filter which implements the Open Session In View pattern. Different from the one built into

@@ -7,12 +7,11 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
 import gov.nih.nci.cabig.caaers.web.ListValues;
 import gov.nih.nci.cabig.caaers.web.study.SearchStudyCommand;
-import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,8 +48,6 @@ public abstract class SearchController extends SimpleFormController {
 
     private ExpeditedAdverseEventReportDao expeditedDao;
 
-    private RoutineAdverseEventReportDao routineDao;
-
     private AdverseEventDao adverseEventDao;
 
     private InvestigatorDao investigatorDao;
@@ -73,7 +70,7 @@ public abstract class SearchController extends SimpleFormController {
     // TODO: I really do not like the way I am implementing this I need to find a better way
     protected void buildSearchResultTable(final HttpServletRequest request, final String prop, final String value, final int x) throws Exception {
 
-        SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao, expeditedDao, routineDao, organizationDao);
+        SearchStudyAjaxFacade searchFacade = new SearchStudyAjaxFacade(studyDao, participantDao, adverseEventDao, expeditedDao, organizationDao);
         searchFacade.setResearchStaffDao(researchStaffDao);
         searchFacade.setInvestigatorDao(investigatorDao);
         Context context = new HttpServletRequestContext(request);
@@ -96,7 +93,6 @@ public abstract class SearchController extends SimpleFormController {
                     viewData = searchFacade.getExpeditedReportTable(null, prop, value, request);
                     break;
                 case 4:
-                    viewData = searchFacade.getRoutineReportTable(null, prop, value, request);
                     break;
                 case 5:
                     viewData = searchFacade.getINDTable(null, prop, value, request);
@@ -196,13 +192,6 @@ public abstract class SearchController extends SimpleFormController {
         this.organizationDao = organizationDao;
     }
 
-    public RoutineAdverseEventReportDao getRoutineDao() {
-        return routineDao;
-    }
-
-    public void setRoutineDao(final RoutineAdverseEventReportDao routineDao) {
-        this.routineDao = routineDao;
-    }
 
     public void setResearchStaffDao(final ResearchStaffDao researchStaffDao) {
         this.researchStaffDao = researchStaffDao;

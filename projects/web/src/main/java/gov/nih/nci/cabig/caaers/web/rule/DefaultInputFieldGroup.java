@@ -1,7 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin

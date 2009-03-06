@@ -1,13 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.rule.notification;
 
+import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
+import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
-import gov.nih.nci.cabig.caaers.web.fields.TabWithFields;
-import gov.nih.nci.cabig.caaers.web.rule.RuleInputCommand;
 
 /**
  * This class will be removed after the demo

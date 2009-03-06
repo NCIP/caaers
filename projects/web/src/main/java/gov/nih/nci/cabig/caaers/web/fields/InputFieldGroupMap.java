@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import org.apache.commons.collections15.map.LazyMap;
-
 import java.util.LinkedHashMap;
+
+import org.apache.commons.collections15.map.LazyMap;
 
 /**
  * @author Rhett Sutphin

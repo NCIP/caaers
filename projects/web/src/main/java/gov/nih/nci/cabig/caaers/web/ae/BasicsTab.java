@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanWrapper;
 import org.springframework.validation.Errors;
-import org.hsqldb.lib.HashMap;
 
 /**
  * @author Rhett Sutphin

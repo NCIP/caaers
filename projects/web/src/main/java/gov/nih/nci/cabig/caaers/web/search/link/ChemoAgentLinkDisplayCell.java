@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.search.link;
 
+import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
+
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.bean.Column;
-import gov.nih.nci.cabig.caaers.domain.LabTerm;
-import gov.nih.nci.cabig.caaers.domain.ChemoAgent;
 
 /**
  * @author Biju Joseph

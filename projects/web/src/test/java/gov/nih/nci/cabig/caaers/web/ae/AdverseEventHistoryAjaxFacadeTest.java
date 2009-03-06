@@ -2,22 +2,10 @@ package gov.nih.nci.cabig.caaers.web.ae;
 
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.Attribution;
-import gov.nih.nci.cabig.caaers.domain.Grade;
-import gov.nih.nci.cabig.caaers.domain.Hospitalization;
-//import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryDao;
 import gov.nih.nci.cabig.ctms.audit.dao.AuditHistoryRepository;
-import gov.nih.nci.cabig.ctms.audit.dao.query.DataAuditEventQuery;
 import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEvent;
-import gov.nih.nci.cabig.ctms.audit.domain.DataAuditEventValue;
-import gov.nih.nci.cabig.ctms.audit.domain.Operation;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
-import org.springframework.mock.web.MockHttpServletRequest;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**

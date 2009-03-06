@@ -1,13 +1,12 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.report.Mandatory;
 import gov.nih.nci.cabig.caaers.domain.report.ReportDefinition;
 import gov.nih.nci.cabig.caaers.domain.report.ReportMandatoryFieldDefinition;
-import junit.framework.TestCase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RenderDecisionManagerTest extends WebTestCase {
 

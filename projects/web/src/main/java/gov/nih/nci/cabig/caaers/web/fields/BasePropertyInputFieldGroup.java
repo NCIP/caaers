@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Rhett Sutphin

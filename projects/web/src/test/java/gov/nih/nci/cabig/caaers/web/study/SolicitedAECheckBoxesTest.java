@@ -1,10 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.Arm;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -15,6 +11,10 @@ import gov.nih.nci.cabig.caaers.domain.LoadStatus;
 import gov.nih.nci.cabig.caaers.domain.SolicitedAdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import junit.framework.TestCase;
 
 @CaaersUseCases( { CREATE_STUDY })

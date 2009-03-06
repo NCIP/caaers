@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
-import gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.isA;
+import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySiteAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.ajax.StudySearchableAjaxableDomainObjectRepository;
-import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.isA;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import gov.nih.nci.cabig.caaers.web.study.SearchStudyAjaxFacade;
 
 import java.util.Arrays;
 

@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.tools;
 
+import java.util.List;
+
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.list.AbstractListDecorator;
-
-import java.util.List;
 
 /**
  * Just like {@link org.apache.commons.collections15.list.LazyList}, except that it uses a

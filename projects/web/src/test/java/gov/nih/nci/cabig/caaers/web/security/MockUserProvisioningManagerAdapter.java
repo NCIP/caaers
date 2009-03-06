@@ -3,13 +3,6 @@
  */
 package gov.nih.nci.cabig.caaers.web.security;
 
-import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-
-import javax.security.auth.Subject;
-
 import gov.nih.nci.security.UserProvisioningManager;
 import gov.nih.nci.security.authorization.domainobjects.Application;
 import gov.nih.nci.security.authorization.domainobjects.ApplicationContext;
@@ -24,6 +17,13 @@ import gov.nih.nci.security.dao.SearchCriteria;
 import gov.nih.nci.security.exceptions.CSException;
 import gov.nih.nci.security.exceptions.CSObjectNotFoundException;
 import gov.nih.nci.security.exceptions.CSTransactionException;
+
+import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+import javax.security.auth.Subject;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>

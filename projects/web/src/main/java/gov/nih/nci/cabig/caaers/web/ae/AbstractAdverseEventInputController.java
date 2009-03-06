@@ -16,7 +16,6 @@ import gov.nih.nci.cabig.caaers.dao.MeddraStudyDiseaseDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.PreExistingConditionDao;
 import gov.nih.nci.cabig.caaers.dao.PriorTherapyDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyAgentDao;
 import gov.nih.nci.cabig.caaers.dao.StudyConditionDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
@@ -88,8 +87,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
     protected AgentDao agentDao;
 
     protected ExpeditedAdverseEventReportDao reportDao;
-
-    protected RoutineAdverseEventReportDao routineReportDao;
 
     protected StudyAgentDao studyAgentDao;
 
@@ -365,13 +362,6 @@ public abstract class AbstractAdverseEventInputController extends AutomaticSaveA
         this.nowFactory = nowFactory;
     }
 
-    public RoutineAdverseEventReportDao getRoutineReportDao() {
-        return routineReportDao;
-    }
-
-    public void setRoutineReportDao(RoutineAdverseEventReportDao routineReportDao) {
-        this.routineReportDao = routineReportDao;
-    }
 
     public PreExistingConditionDao getPreExistingConditionDao() {
         return preExistingConditionDao;

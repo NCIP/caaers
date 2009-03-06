@@ -5,21 +5,17 @@ import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
 import gov.nih.nci.cabig.caaers.domain.StudySite;
 
-// import Apache commons
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import java.util.ArrayList;
+import java.util.List;
 
-//Spring imports
-import org.springframework.web.servlet.mvc.ParameterizableViewController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.RequestUtils;
-import org.springframework.web.bind.ServletRequestUtils;
-
-//java servlet imports
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.ArrayList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.web.bind.ServletRequestUtils;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 public class ViewParticipantController extends ParameterizableViewController {
 

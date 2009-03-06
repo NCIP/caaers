@@ -8,6 +8,10 @@ import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 import gov.nih.nci.cabig.caaers.web.utils.ConfigPropertyHelper;
 import gov.nih.nci.cabig.ctms.web.tabs.Tab;
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.BeanWrapper;
@@ -16,9 +20,6 @@ import org.springframework.beans.InvalidPropertyException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Biju Joseph

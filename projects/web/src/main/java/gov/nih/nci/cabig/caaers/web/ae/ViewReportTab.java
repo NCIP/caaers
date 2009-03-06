@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.caaers.domain.ReportFormatType;
 import gov.nih.nci.cabig.caaers.domain.ReportStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.domain.report.Report;
@@ -9,15 +8,15 @@ import gov.nih.nci.cabig.caaers.validation.ValidationError;
 import gov.nih.nci.cabig.caaers.validation.ValidationErrors;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.context.MessageSource;
-import org.springframework.validation.Errors;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import java.util.Locale;
-import java.util.Map;
-import java.util.HashMap;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.context.MessageSource;
+import org.springframework.validation.Errors;
 
 /**
  * @author Krikor Krumlian

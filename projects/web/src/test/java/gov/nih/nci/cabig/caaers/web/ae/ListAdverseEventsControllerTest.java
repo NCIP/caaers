@@ -14,8 +14,6 @@ import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.easymock.classextension.EasyMock;
-
 /**
  * @author Rhett Sutphin
  */

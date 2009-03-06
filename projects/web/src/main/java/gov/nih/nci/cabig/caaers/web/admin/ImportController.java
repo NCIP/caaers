@@ -10,7 +10,6 @@ import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.MedDRADao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -95,8 +94,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
     private StudyDao studyDao;
 
     private OrganizationDao organizationDao;
-
-    private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
@@ -751,14 +748,6 @@ public class ImportController extends AbstractTabbedFlowFormController<ImportCom
         this.ctcDao = ctcDao;
     }
 
-    public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
-        return routineAdverseEventReportDao;
-    }
-
-    public void setRoutineAdverseEventReportDao(
-                    RoutineAdverseEventReportDao routineAdverseEventReportDao) {
-        this.routineAdverseEventReportDao = routineAdverseEventReportDao;
-    }
 
     public RoutineAdverseEventReportServiceImpl getRoutineAdverseEventReportServiceImpl() {
         return routineAdverseEventReportServiceImpl;

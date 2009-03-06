@@ -1,11 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createBooleanSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createPastDateField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createSelectField;
+import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.createTextArea;
 import gov.nih.nci.cabig.caaers.domain.PostAdverseEventStatus;
 import gov.nih.nci.cabig.caaers.domain.expeditedfields.ExpeditedReportSection;
 import gov.nih.nci.cabig.caaers.web.fields.InputField;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldAttributes;
 import gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory;
-import static gov.nih.nci.cabig.caaers.web.fields.InputFieldFactory.*;
 import gov.nih.nci.cabig.caaers.web.utils.WebUtils;
 
 import java.util.Arrays;

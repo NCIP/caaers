@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.tools.editors;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.beans.PropertyEditorSupport;
+
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Rhett Sutphin

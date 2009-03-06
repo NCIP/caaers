@@ -5,7 +5,6 @@ import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
@@ -13,7 +12,6 @@ import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
 import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
-import gov.nih.nci.cabig.caaers.domain.Status;
 import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.domain.repository.ResearchStaffRepository;
 import gov.nih.nci.cabig.caaers.rules.business.service.AdverseEventEvaluationService;
@@ -51,8 +49,6 @@ public class ImportAjaxFacade {
     private static final Log log = LogFactory.getLog(ImportAjaxFacade.class);
 
     private NowFactory nowFactory;
-
-    private RoutineAdverseEventReportDao routineAdverseEventReportDao;
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
@@ -161,46 +157,6 @@ public class ImportAjaxFacade {
     }
 
 
-    //
-    public String saveRoutineAeBlock(final int loopNumber) {
-        HttpServletRequest request = getHttpServletRequest();
-
-        ImportCommand importCommand = getImportCommand(request);
-        // int startIndex = importCommand.getRoutineStart();
-        int startIndex = 5 * loopNumber;
-        int endIndex = importCommand.getImportableRoutineAdverseEventReports().size();
-        int loopBy = startIndex + 5 >= endIndex ? endIndex : startIndex + 5;
-        System.out.println("startIndex : " + startIndex + " endIndex " + endIndex + " loopBy "
-                        + loopBy);
-        saveRoutineAEs(importCommand.getImportableRoutineAdverseEventReports(), startIndex, loopBy);
-        // importCommand.setRoutineStart(loopBy);
-
-        return String.valueOf(loopBy - startIndex);
-    }
-
-    private void saveRoutineAEs(
-                    List<DomainObjectImportOutcome<RoutineAdverseEventReport>> importableRoutineAdverseEventReports,
-                    int startIndex, int endIndex) {
-        if (importableRoutineAdverseEventReports.size() > 0) {
-
-            for (DomainObjectImportOutcome<RoutineAdverseEventReport> importOutcome : importableRoutineAdverseEventReports
-                            .subList(startIndex, endIndex)) {
-                if (importOutcome.getImportedDomainObject().getStatus() == Status.CURRENT) {
-                    // expedited reporting ? , create ExpeditedReport save
-                    // routineReport,expeditedReport
-                    ExpeditedAdverseEventReport expeditedReport = getExpedited(importOutcome
-                                    .getImportedDomainObject());
-                    routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-                    if (expeditedReport != null) {
-                        expeditedAdverseEventReportDao.save(expeditedReport);
-                    }
-                } else {
-                    // Status = Legacy => save routineAe
-                    routineAdverseEventReportDao.save(importOutcome.getImportedDomainObject());
-                }
-            }
-        }
-    }
 
     public ExpeditedAdverseEventReport getExpedited(RoutineAdverseEventReport raer) {
         log.debug("Checking for expedited AEs");
@@ -288,14 +244,6 @@ public class ImportAjaxFacade {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
-    public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
-        return routineAdverseEventReportDao;
-    }
-
-    public void setRoutineAdverseEventReportDao(
-                    RoutineAdverseEventReportDao routineAdverseEventReportDao) {
-        this.routineAdverseEventReportDao = routineAdverseEventReportDao;
-    }
 
     public NowFactory getNowFactory() {
         return nowFactory;

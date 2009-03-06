@@ -1,9 +1,10 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 import static org.easymock.EasyMock.expect;
 import gov.nih.nci.cabig.caaers.web.dwr.MockWebContextBuilder;
+
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 
 /**
  * @author Rhett Sutphin

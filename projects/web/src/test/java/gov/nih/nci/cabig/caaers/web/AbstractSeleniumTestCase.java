@@ -1,10 +1,12 @@
 package gov.nih.nci.cabig.caaers.web;
 
-import com.thoughtworks.selenium.DefaultSelenium;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import org.apache.log4j.Logger;
 
 import java.util.Calendar;
+
+import org.apache.log4j.Logger;
+
+import com.thoughtworks.selenium.DefaultSelenium;
 
 /**
  * This class is used instead of SeleneseTestCase because SeleneseTestCase has a bug

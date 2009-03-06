@@ -1,12 +1,19 @@
 package gov.nih.nci.cabig.caaers.web.participant;
 
-import gov.nih.nci.cabig.caaers.domain.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import gov.nih.nci.cabig.caaers.domain.Participant;
+import gov.nih.nci.cabig.caaers.domain.Study;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantConcomitantMedication;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantDiseaseHistory;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPreExistingCondition;
+import gov.nih.nci.cabig.caaers.domain.StudyParticipantPriorTherapy;
+import gov.nih.nci.cabig.caaers.domain.StudySite;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Ion C. Olaru

@@ -1,16 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import org.springframework.validation.Errors;
+import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
 
 import java.util.Map;
 
-import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.WorkFlowTab;
-import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
-import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;
-import gov.nih.nci.cabig.caaers.domain.Term;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
-
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.validation.Errors;
 
 /**
  * @author Biju Joseph

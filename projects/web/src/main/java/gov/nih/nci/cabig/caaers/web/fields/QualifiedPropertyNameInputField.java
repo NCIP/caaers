@@ -1,13 +1,14 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
 import gov.nih.nci.cabig.caaers.web.fields.validators.FieldValidator;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.validation.Errors;
 
 /**
  * @author Rhett Sutphin

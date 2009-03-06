@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.search;
 
+import gov.nih.nci.cabig.caaers.domain.CtcTerm;
+
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.AbstractCell;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.bean.Column;
-import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.CtcTerm;
 
 /**
  * @author Biju Joseph

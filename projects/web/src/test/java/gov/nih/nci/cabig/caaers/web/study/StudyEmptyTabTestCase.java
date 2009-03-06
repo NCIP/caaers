@@ -1,17 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.*;
-import gov.nih.nci.cabig.caaers.utils.Lov;
+import gov.nih.nci.cabig.caaers.domain.Study;
 import gov.nih.nci.cabig.caaers.utils.ConfigProperty;
-import gov.nih.nci.cabig.caaers.web.fields.InputFieldGroup;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
-
-import org.easymock.EasyMock;
-import org.springframework.validation.ObjectError;
 
 /**
  * @author Ion C. Olaru

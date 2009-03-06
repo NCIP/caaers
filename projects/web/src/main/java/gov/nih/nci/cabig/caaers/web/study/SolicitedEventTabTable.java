@@ -12,7 +12,7 @@ import gov.nih.nci.cabig.caaers.domain.meddra.LowLevelTerm;
 import gov.nih.nci.cabig.caaers.utils.CustomLinkedSet;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet; 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;

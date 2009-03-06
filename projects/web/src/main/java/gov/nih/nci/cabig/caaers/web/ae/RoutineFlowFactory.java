@@ -1,9 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
-import gov.nih.nci.cabig.ctms.web.tabs.Flow;
-import gov.nih.nci.cabig.ctms.web.tabs.Tab;
 import gov.nih.nci.cabig.caaers.domain.Term;
+import gov.nih.nci.cabig.ctms.web.tabs.Flow;
+import gov.nih.nci.cabig.ctms.web.tabs.FlowFactory;
 
 /**
  * This factory is a lot like {@link ExpeditedFlowFactory}, but not in such a way that it's

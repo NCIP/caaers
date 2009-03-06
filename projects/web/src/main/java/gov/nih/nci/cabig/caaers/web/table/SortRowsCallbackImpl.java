@@ -1,20 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.table;
 
-import org.extremecomponents.table.callback.SortRowsCallback;
-import org.extremecomponents.table.callback.NullSafeBeanComparator;
-
 import java.util.Collection;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.beanutils.BeanComparator;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.comparators.NullComparator;
 import org.apache.commons.collections.comparators.ReverseComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.extremecomponents.table.bean.Table;
-import org.extremecomponents.table.core.RetrievalUtils;
+import org.extremecomponents.table.callback.NullSafeBeanComparator;
+import org.extremecomponents.table.callback.SortRowsCallback;
 import org.extremecomponents.table.core.TableConstants;
 import org.extremecomponents.table.core.TableModel;
 import org.extremecomponents.table.limit.Sort;

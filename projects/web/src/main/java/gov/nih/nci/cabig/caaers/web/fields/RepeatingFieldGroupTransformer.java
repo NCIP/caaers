@@ -1,13 +1,13 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.collections15.Transformer;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * @author Rhett Sutphin

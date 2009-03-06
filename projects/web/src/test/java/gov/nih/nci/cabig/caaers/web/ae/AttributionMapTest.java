@@ -7,7 +7,6 @@ import static gov.nih.nci.cabig.caaers.domain.Fixtures.createParticipant;
 import static gov.nih.nci.cabig.caaers.domain.Fixtures.createStudy;
 import gov.nih.nci.cabig.caaers.AbstractTestCase;
 import gov.nih.nci.cabig.caaers.CaaersSystemException;
-import gov.nih.nci.cabig.caaers.CaaersTestCase;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.AdverseEvent;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;

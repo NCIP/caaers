@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.ae;
 
-import java.util.List;
-
 import gov.nih.nci.cabig.caaers.dao.AdverseEventReportingPeriodDao;
 import gov.nih.nci.cabig.caaers.dao.ExpeditedAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.domain.AdverseEventReportingPeriod;

@@ -1,10 +1,10 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
-
 import java.util.Collection;
 import java.util.LinkedHashMap;
+
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * @author Rhett Sutphin

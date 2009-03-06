@@ -1,7 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
-import gov.nih.nci.cabig.caaers.domain.Study;
-
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;

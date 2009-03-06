@@ -5,9 +5,6 @@ import gov.nih.nci.cabig.caaers.CaaersUseCases;
 import gov.nih.nci.cabig.caaers.domain.DateValue;
 import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.web.participant.NewParticipantCommand;
-
-import java.util.Date;
-
 import junit.framework.TestCase;
 
 /**

@@ -1,10 +1,7 @@
 package gov.nih.nci.cabig.caaers.web.fields;
 
-import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.*;
+import gov.nih.nci.cabig.caaers.tools.spring.tabbedflow.InPlaceEditableTab;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,16 +1,18 @@
 package gov.nih.nci.cabig.caaers.web.study;
 
 import static gov.nih.nci.cabig.caaers.CaaersUseCase.CREATE_STUDY;
-import org.easymock.EasyMock;
-import org.springframework.validation.Errors;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BeanPropertyBindingResult;
 import gov.nih.nci.cabig.caaers.CaaersUseCases;
-import gov.nih.nci.cabig.caaers.dao.*;
+import gov.nih.nci.cabig.caaers.dao.ConditionDao;
+import gov.nih.nci.cabig.caaers.dao.StudyDao;
+import gov.nih.nci.cabig.caaers.domain.Condition;
 import gov.nih.nci.cabig.caaers.domain.Fixtures;
 import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.Condition;
 import gov.nih.nci.cabig.caaers.web.WebTestCase;
+
+import org.easymock.EasyMock;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 /**
  * @author Ion C. Olaru

@@ -1,12 +1,11 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
+import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
+
+import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.cell.Cell;
 import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.bean.Column;
 import org.extremecomponents.table.view.html.ColumnBuilder;
-import org.apache.commons.beanutils.BeanUtils;
-import gov.nih.nci.cabig.caaers.domain.Study;
-import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 
 
 /**

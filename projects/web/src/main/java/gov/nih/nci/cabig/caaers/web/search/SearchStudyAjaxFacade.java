@@ -8,11 +8,9 @@ import gov.nih.nci.cabig.caaers.dao.InvestigatorDao;
 import gov.nih.nci.cabig.caaers.dao.OrganizationDao;
 import gov.nih.nci.cabig.caaers.dao.ParticipantDao;
 import gov.nih.nci.cabig.caaers.dao.ResearchStaffDao;
-import gov.nih.nci.cabig.caaers.dao.RoutineAdverseEventReportDao;
 import gov.nih.nci.cabig.caaers.dao.StudyDao;
 import gov.nih.nci.cabig.caaers.dao.query.InvestigatorQuery;
 import gov.nih.nci.cabig.caaers.dao.query.OrganizationQuery;
-import gov.nih.nci.cabig.caaers.dao.query.ParticipantQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ResearchStaffQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.ParticipantAjaxableDomainObjectQuery;
 import gov.nih.nci.cabig.caaers.dao.query.ajax.StudySearchableAjaxableDomainObjectQuery;
@@ -21,9 +19,7 @@ import gov.nih.nci.cabig.caaers.domain.ExpeditedAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.InvestigationalNewDrug;
 import gov.nih.nci.cabig.caaers.domain.Investigator;
 import gov.nih.nci.cabig.caaers.domain.Organization;
-import gov.nih.nci.cabig.caaers.domain.Participant;
 import gov.nih.nci.cabig.caaers.domain.ResearchStaff;
-import gov.nih.nci.cabig.caaers.domain.RoutineAdverseEventReport;
 import gov.nih.nci.cabig.caaers.domain.ajax.ParticipantAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.ajax.StudySearchableAjaxableDomainObject;
 import gov.nih.nci.cabig.caaers.domain.repository.StudyRepository;
@@ -78,8 +74,6 @@ public class SearchStudyAjaxFacade {
 
     private ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao;
 
-    private RoutineAdverseEventReportDao routineAdverseEventReportDao;
-
     private InvestigationalNewDrugDao investigationalNewDrugDao;
 
     public SearchStudyAjaxFacade() {
@@ -89,13 +83,11 @@ public class SearchStudyAjaxFacade {
                                  final ParticipantDao participantDoa,
                                  final AdverseEventDao adverseEventDao,
                                  final ExpeditedAdverseEventReportDao expeditedAdverseEventReportDao,
-                                 final RoutineAdverseEventReportDao routineAdverseEventReportDao,
                                  final OrganizationDao organizationDao) {
         this.studyDao = studyDao;
         participantDao = participantDoa;
         this.adverseEventDao = adverseEventDao;
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
-        this.routineAdverseEventReportDao = routineAdverseEventReportDao;
         this.organizationDao = organizationDao;
     }
 
@@ -928,49 +920,7 @@ public class SearchStudyAjaxFacade {
 
     }
 
-    @SuppressWarnings("finally")
-    private List<RoutineAdverseEventReport> constructExecuteRoutineReportQuery(final String type, final String text) {
-
-        StringTokenizer typeToken = new StringTokenizer(type, ",");
-        StringTokenizer textToken = new StringTokenizer(text, ",");
-        log.debug("type :: " + type);
-        log.debug("text :: " + text);
-        String sType, sText;
-        Map<String, String> propValue = new HashMap<String, String>();
-        List<RoutineAdverseEventReport> routineReports = new ArrayList<RoutineAdverseEventReport>();
-
-        // map the html properties to the model properties
-        Map<String, String> m = new HashMap<String, String>();
-        m.put("prop0", "date");
-        m.put("prop1", "ctcTerm");
-        m.put("prop2", "ctcCategory");
-        m.put("prop3", "ctcCtepCode");
-        m.put("prop4", "studyIdentifier");
-        m.put("prop5", "studyShortTitle");
-        m.put("prop6", "participantIdentifier");
-        m.put("prop7", "participantFirstName");
-        m.put("prop8", "participantLastName");
-        m.put("prop9", "participantEthnicity");
-        m.put("prop10", "participantGender");
-        m.put("prop11", "participantDateOfBirth");
-
-        while (typeToken.hasMoreTokens() && textToken.hasMoreTokens()) {
-            sType = typeToken.nextToken();
-            sText = textToken.nextToken();
-            // Create a map of property key ,and search criteria
-            propValue.put(m.get(sType), sText);
-        }
-
-        try {
-            routineReports = routineAdverseEventReportDao.searchRoutineReports(propValue);
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Formatting Error", e);
-        }
-        finally {
-            return routineReports;
-        }
-    }
+   
 
     /*
       * Ajax Call hits this method to generate table
@@ -1265,35 +1215,7 @@ public class SearchStudyAjaxFacade {
         return model.assemble();
     }
 
-    /*
-      * Ajax Call hits this method to generate table
-      */
-    public String getRoutineReportTable(final Map parameterMap, final String type, final String text,
-                                        final HttpServletRequest request) {
-
-        List<RoutineAdverseEventReport> routineReports = new ArrayList<RoutineAdverseEventReport>();
-        if (type != null && text != null) {
-            routineReports = constructExecuteRoutineReportQuery(type, text);
-        }
-        log.debug("AdverseEvents :: " + routineReports.size());
-
-        Context context = null;
-        if (parameterMap == null) {
-            context = new HttpServletRequestContext(request);
-        } else {
-            context = new HttpServletRequestContext(request, parameterMap);
-        }
-
-        TableModel model = new TableModelImpl(context);
-        try {
-            return buildRoutineReport(model, routineReports).toString();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "";
-    }
+ 
 
     @SuppressWarnings("finally")
     private List<ParticipantAjaxableDomainObject> getParticipants(final String type, final String text) {
@@ -1463,13 +1385,6 @@ public class SearchStudyAjaxFacade {
         this.expeditedAdverseEventReportDao = expeditedAdverseEventReportDao;
     }
 
-    public RoutineAdverseEventReportDao getRoutineAdverseEventReportDao() {
-        return routineAdverseEventReportDao;
-    }
-
-    public void setRoutineAdverseEventReportDao(final RoutineAdverseEventReportDao routineAdverseEventReportDao) {
-        this.routineAdverseEventReportDao = routineAdverseEventReportDao;
-    }
 
     public InvestigationalNewDrugDao getInvestigationalNewDrugDao() {
         return investigationalNewDrugDao;

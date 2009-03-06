@@ -1,7 +1,6 @@
 package gov.nih.nci.cabig.caaers.web.admin;
 
 import gov.nih.nci.cabig.caaers.tools.configuration.Configuration;
-import gov.nih.nci.cabig.caaers.tools.mail.CaaersJavaMailSender;
 
 
 public class DiagnosticsCommand extends ConfigurationCommand{

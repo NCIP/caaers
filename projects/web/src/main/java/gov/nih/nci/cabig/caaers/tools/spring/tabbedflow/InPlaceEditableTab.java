@@ -1,15 +1,15 @@
 package gov.nih.nci.cabig.caaers.tools.spring.tabbedflow;
 
+import gov.nih.nci.cabig.caaers.web.utils.DefaultObjectPropertyReader;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.servlet.ModelAndView;
-
-import org.apache.commons.lang.StringUtils;
-import gov.nih.nci.cabig.caaers.web.utils.DefaultObjectPropertyReader;
 
 /**
  * @author Rhett Sutphin

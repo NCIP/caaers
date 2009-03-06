@@ -1,16 +1,16 @@
 package gov.nih.nci.cabig.caaers.web.search.cell;
 
-import org.extremecomponents.table.core.TableModel;
-import org.extremecomponents.table.core.TableModelImpl;
-import org.extremecomponents.table.context.Context;
-import org.extremecomponents.table.context.HttpServletRequestContext;
-import org.extremecomponents.table.bean.Row;
-import org.extremecomponents.table.bean.Table;
-import org.extremecomponents.table.bean.Column;
+import gov.nih.nci.cabig.caaers.web.WebTestCase;
 
 import java.util.Collection;
 
-import gov.nih.nci.cabig.caaers.web.WebTestCase;
+import org.extremecomponents.table.bean.Column;
+import org.extremecomponents.table.bean.Row;
+import org.extremecomponents.table.bean.Table;
+import org.extremecomponents.table.context.Context;
+import org.extremecomponents.table.context.HttpServletRequestContext;
+import org.extremecomponents.table.core.TableModel;
+import org.extremecomponents.table.core.TableModelImpl;
 
 /**
  * @author Biju Joseph

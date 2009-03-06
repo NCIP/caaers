@@ -2,9 +2,6 @@ package gov.nih.nci.cabig.caaers.web;
 
 import edu.nwu.bioinformatics.commons.DateUtils;
 import gov.nih.nci.cabig.caaers.AbstractNoSecurityTestCase;
-import gov.nih.nci.cabig.caaers.AbstractTestCase;
-import gov.nih.nci.cabig.caaers.domain.StudyParticipantAssignment;
-import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 import gov.nih.nci.cabig.ctms.lang.StaticNowFactory;
 
 import java.sql.Timestamp;
@@ -12,7 +9,6 @@ import java.util.Calendar;
 
 import org.acegisecurity.intercept.method.aspectj.AspectJCallback;
 import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
-import org.aspectj.lang.Aspects;
 import org.aspectj.lang.JoinPoint;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.rule;
 
-import java.util.List;
 
 /**
  * @author Rhett Sutphin

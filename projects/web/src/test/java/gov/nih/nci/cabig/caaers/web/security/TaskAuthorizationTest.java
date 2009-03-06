@@ -4,23 +4,18 @@
 package gov.nih.nci.cabig.caaers.web.security;
 
 import gov.nih.nci.cabig.caaers.CaaersTestCase;
-import gov.nih.nci.cabig.caaers.security.StudyParticipantAssignmentAspect;
 
-import org.acegisecurity.intercept.method.aspectj.AspectJSecurityInterceptor;
-import org.acegisecurity.intercept.web.FilterInvocation;
-import org.aspectj.lang.Aspects;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.FileSystemResourceLoader;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.web.context.support.XmlWebApplicationContext;
+import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import java.io.IOException;
+
+import org.acegisecurity.intercept.web.FilterInvocation;
+import org.springframework.context.ApplicationContext;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 /**
  * @author <a href="mailto:joshua.phillips@semanticbits.com">Joshua Phillips</a>
