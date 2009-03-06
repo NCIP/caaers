@@ -15,7 +15,6 @@ import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.SeleneseTestCase;
-import org.springframework.core.io.*;
 
 public class CaaersSeleniumTestCase extends SeleneseTestCase {
 

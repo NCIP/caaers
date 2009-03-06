@@ -1,9 +1,9 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-import com.thoughtworks.selenium.*;
-
 import java.util.Calendar;
-import java.util.regex.Pattern;
+
+import com.thoughtworks.selenium.SeleneseTestCase;
+import com.thoughtworks.selenium.Selenium;
 
 public class CaaersSubjectFlowFixtures extends SeleneseTestCase {
 	Selenium selenium;

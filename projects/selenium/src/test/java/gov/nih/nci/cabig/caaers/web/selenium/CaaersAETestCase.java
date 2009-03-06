@@ -1,6 +1,5 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-import junit.framework.TestCase;
 
 public class CaaersAETestCase extends CaaersSeleniumTestCase {
 

@@ -1,8 +1,8 @@
 package gov.nih.nci.cabig.caaers.web.selenium;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import com.thoughtworks.selenium.*;
+import com.thoughtworks.selenium.Selenium;
 
 /**
  * @author Karthik Iyer

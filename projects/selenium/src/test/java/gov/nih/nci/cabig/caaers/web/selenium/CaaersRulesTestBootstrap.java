@@ -2,7 +2,8 @@ package gov.nih.nci.cabig.caaers.web.selenium;
 
 import java.io.File;
 
-import org.apache.tools.ant.*;
+import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Task;
 
 public class CaaersRulesTestBootstrap extends Task {
 	String rulesDir = null;
