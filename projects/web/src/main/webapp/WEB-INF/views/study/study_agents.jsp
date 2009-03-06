@@ -14,6 +14,13 @@ td#linkPosition a img {
 	right: 30px;
 }
 </style>
+<!--[if lte IE 6]>
+<style>
+	#main {
+		top:50px;
+	}
+</style>
+<![endif]-->
 <tags:includeScriptaculous />
 <tags:dwrJavascriptLink objects="createStudy" />
 <script type="text/javascript">

@@ -20,9 +20,16 @@
        div.row div.value  {white-space:normal;}
 	   #studyDetails td.label { font-weight: bold; float: left; margin-left: 0.5em; margin-right: 0.5em; width:12em; padding: 1px; }
 </style>
- 
+<!--[if lte IE 6]>
+<style>
+	#main {
+		top:50px;
+	}
+</style> 
+<![endif]-->
 </head>
 <body>
+
 <p><tags:instructions code="study.study_overview.top" /></p>
 <tags:tabForm tab="${tab}" flow="${flow}" formName="review">
     <jsp:attribute name="repeatingFields">
@@ -93,6 +100,10 @@
         	</div>
        </chrome:division>
     <chrome:division title="Report Formats">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
     	<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Report Format</th>
@@ -110,6 +121,10 @@
 		</table>
     </chrome:division>       
     <chrome:division title="Therapies">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
     	<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Therapy name</th>
@@ -127,6 +142,10 @@
 		</table>
     </chrome:division>
     <chrome:division title="Agents">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
 		<table class="tablecontent" width="100%" >
 		<tr >						
 			<th scope="col">Agent name</th>
@@ -164,6 +183,10 @@
     </chrome:division>
          
     <chrome:division title="Treatment Assignments">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
         	<table class="tablecontent" width="100%" >
             	<tr>
                  <th scope="col">Code</th>
@@ -189,6 +212,10 @@
 		
 		       
     <chrome:division title="Sites">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
        		<table class="tablecontent" width="100%" >
 				<tr>
 					<th scope="col">Study Site</th>
@@ -204,6 +231,10 @@
 			</table>	
 	</chrome:division>
    	<chrome:division title="Investigators">
+   		<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
     	<c:set var="invCnt" value="0" />
         <table class="tablecontent" width="100%" >
             <tr>
@@ -230,6 +261,10 @@
     	</chrome:division>
    
     <chrome:division title="Personnel">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
     	<c:set var="staffCnt" value="0" />
         <table class="tablecontent" width="100%" >
             <tr>
@@ -258,6 +293,10 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'MEDDRA'}">
             <c:if test="${not empty command.study.meddraStudyDiseases}">
             <chrome:division title="Diseases">
+            	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
                 <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
@@ -280,6 +319,10 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'CTEP'}">
             <c:if test="${not empty command.study.ctepStudyDiseases}">
             <chrome:division title="Diseases">
+            	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
                 <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
@@ -302,6 +345,10 @@
     <c:if test="${command.study.diseaseTerminology.diseaseCodeTerm == 'OTHER'}">
             <c:if test="${not empty command.study.studyConditions}">
             <chrome:division title="Diseases">
+            	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
                 <table class="tablecontent" width="100%" >
                     <br>
                     <tr>
@@ -321,6 +368,10 @@
 
     <%-- START EXPECTED AEs --%>
     <chrome:division title="Expected AEs">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
        <table class="tablecontent" width="100%" >
            <br>
 
@@ -344,6 +395,10 @@
     <%-- STOP EXPECTED AEs --%>
 
     <chrome:division title="Identifiers">
+    	<!--[if lte IE 6]>
+		<br>
+		<br>
+		<![endif]-->
 			<table class="tablecontent" width="100%">
 			<tr>
 				<th scope="col">Assigning Authority</th>

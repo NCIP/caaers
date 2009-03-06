@@ -212,7 +212,7 @@
   		</div>
 		<div style="margin:0 20px; display:inline;">or</div>
   		<c:if test="${not isMeddra}">
-  			<tags:button size="small" type="button" color="blue" icon="window" value="Browse Terms" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
+  			<tags:button size="small" type="button" color="blue" icon="window" value="Add Multiple" id="addMultiTermBtn" onclick="catSel.showCategoryBox();"/>
   		</c:if>
   	</chrome:box>
   	<!-- the hidden window for category popup -->
