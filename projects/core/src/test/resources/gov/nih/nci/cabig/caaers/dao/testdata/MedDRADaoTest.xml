@@ -1,11 +1,11 @@
 <dataset>
-	<meddra_llt />
-	<meddra_hlgt />
-	<meddra_hlgt_hlt />
-	<meddra_hlt />
-	<meddra_hlt_pt />
+	<meddra_versions/>
 	<meddra_soc />
-	<meddra_pt />
+	<meddra_hlgt />
+	<meddra_hlt/>
 	<meddra_soc_hlgt />
-	
+	<meddra_hlgt_hlt />
+	<meddra_pt/>
+	<meddra_hlt_pt/>
+	<meddra_llt />
 </dataset>
