@@ -2,7 +2,6 @@ package gov.nih.nci.cabig.caaers.service.migrator;
 
 import gov.nih.nci.cabig.caaers.dao.CtcDao;
 import gov.nih.nci.cabig.caaers.dao.MeddraVersionDao;
-import gov.nih.nci.cabig.caaers.dao.MedDRADao.MedDRA;
 import gov.nih.nci.cabig.caaers.domain.AeTerminology;
 import gov.nih.nci.cabig.caaers.domain.Ctc;
 import gov.nih.nci.cabig.caaers.domain.CtcTerm;
@@ -22,7 +21,7 @@ public class StudyTerminologyMigrator implements Migrator<Study> {
     
 	/**
 	 * Will copy the study terminology from source to destination
-	 * @see {@link CtcTerm} {@link MedDRA}
+	 * @see {@link CtcTerm}
 	 */
 	public void migrate(Study source, Study destination, DomainObjectImportOutcome<Study> outcome) {
 		AeTerminology srcAeTerminology = source.getAeTerminology();
